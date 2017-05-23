@@ -1,0 +1,48 @@
+{
+  "name": "lsretail/ls-mag-two",
+  "description": "LS NAV Magento 2 Integration",
+  "type": "library",
+  "license": "propietary",
+  "authors": [
+    {
+      "name": "Claudio Maubert",
+      "email": "claudio@lsretail.com"
+    }
+  ],
+  "config": {
+    "bin-dir": "bin"
+  },
+  "bin": [
+    "bin/ls-mag"
+  ],
+  "minimum-stability": "alpha",
+  "require": {
+    "php": "~5.6.5|7.0.2|7.0.4|~7.0.6",
+    "monolog/monolog": "^1.17",
+    "symfony/console": "~2.3,!=2.7.0",
+    "zendframework/zend-http": "^2.6",
+    "zendframework/zend-soap": "^2.6",
+    "myclabs/php-enum": "^1.5",
+    "zendframework/zend-uri": "^2.5",
+    "sabre/xml": "^1.5",
+    "symfony/filesystem": "^3.2",
+    "nabil1337/case-helper": "^0.1.0"
+  },
+  "require-dev": {
+    "magento/framework": "^100.1",
+    "magento-ecg/coding-standard": "^2.0",
+    "magento/module-cron": "^100.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ls\\Core\\": "core",
+      "Ls\\Omni\\": "omni",
+      "Ls\\Replication\\": "replication"
+    },
+    "files": [
+      "core/registration.php",
+      "omni/registration.php",
+      "replication/registration.php"
+    ]
+  }
+}

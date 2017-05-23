@@ -1,0 +1,3204 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "46889da62a5e4f3ec9a5ae58f07eb87a",
+    "packages": [
+        {
+            "name": "container-interop/container-interop",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/container-interop/container-interop.git",
+                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/container-interop/container-interop/zipball/79cbf1341c22ec75643d841642dd5d6acd83bdb8",
+                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8",
+                "shasum": ""
+            },
+            "require": {
+                "psr/container": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Container\\": "src/Interop/Container/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
+            "homepage": "https://github.com/container-interop/container-interop",
+            "time": "2017-02-14T19:40:03+00:00"
+        },
+        {
+            "name": "monolog/monolog",
+            "version": "1.22.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1e044bc4b34e91743943479f1be7a1d5eb93add0",
+                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "psr/log": "~1.0"
+            },
+            "provide": {
+                "psr/log-implementation": "1.0.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
+                "doctrine/couchdb": "~1.0@dev",
+                "graylog2/gelf-php": "~1.0",
+                "jakub-onderka/php-parallel-lint": "0.9",
+                "php-amqplib/php-amqplib": "~2.4",
+                "php-console/php-console": "^3.1.3",
+                "phpunit/phpunit": "~4.5",
+                "phpunit/phpunit-mock-objects": "2.3.0",
+                "ruflin/elastica": ">=0.90 <3.0",
+                "sentry/sentry": "^0.13",
+                "swiftmailer/swiftmailer": "~5.3"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
+                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+                "ext-mongo": "Allow sending log messages to a MongoDB server",
+                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
+                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
+                "php-console/php-console": "Allow sending log messages to Google Chrome",
+                "rollbar/rollbar": "Allow sending log messages to Rollbar",
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
+                "sentry/sentry": "Allow sending log messages to a Sentry server"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Monolog\\": "src/Monolog"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+            "homepage": "http://github.com/Seldaek/monolog",
+            "keywords": [
+                "log",
+                "logging",
+                "psr-3"
+            ],
+            "time": "2017-03-13T07:08:03+00:00"
+        },
+        {
+            "name": "myclabs/php-enum",
+            "version": "1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/php-enum.git",
+                "reference": "61f4a24da5be216301447f3278ea6562609d61f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/61f4a24da5be216301447f3278ea6562609d61f5",
+                "reference": "61f4a24da5be216301447f3278ea6562609d61f5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MyCLabs\\Enum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP Enum contributors",
+                    "homepage": "https://github.com/myclabs/php-enum/graphs/contributors"
+                }
+            ],
+            "description": "PHP Enum implementation",
+            "homepage": "http://github.com/myclabs/php-enum",
+            "keywords": [
+                "enum"
+            ],
+            "time": "2017-03-26T10:24:21+00:00"
+        },
+        {
+            "name": "nabil1337/case-helper",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nabil1337/case-helper.git",
+                "reference": "8cead5fe6470402d127ae0d759168f9778078992"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nabil1337/case-helper/zipball/8cead5fe6470402d127ae0d759168f9778078992",
+                "reference": "8cead5fe6470402d127ae0d759168f9778078992",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CaseHelper\\": "src/",
+                    "CaseHelper\\Test\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Easily convert between camelCase, PascalCase, kebab-case, snake_case, SCREAMING_SNAKE_CASE, Train-Case, and string case!",
+            "time": "2014-12-06T02:33:17+00:00"
+        },
+        {
+            "name": "psr/container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "time": "2017-02-14T16:28:37+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2016-10-10T12:19:37+00:00"
+        },
+        {
+            "name": "sabre/uri",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fruux/sabre-uri.git",
+                "reference": "ada354d83579565949d80b2e15593c2371225e61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/ada354d83579565949d80b2e15593c2371225e61",
+                "reference": "ada354d83579565949d80b2e15593c2371225e61",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.0,<6.0",
+                "sabre/cs": "~1.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/functions.php"
+                ],
+                "psr-4": {
+                    "Sabre\\Uri\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Evert Pot",
+                    "email": "me@evertpot.com",
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Functions for making sense out of URIs.",
+            "homepage": "http://sabre.io/uri/",
+            "keywords": [
+                "rfc3986",
+                "uri",
+                "url"
+            ],
+            "time": "2017-02-20T19:59:28+00:00"
+        },
+        {
+            "name": "sabre/xml",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fruux/sabre-xml.git",
+                "reference": "59b20e5bbace9912607481634f97d05a776ffca7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fruux/sabre-xml/zipball/59b20e5bbace9912607481634f97d05a776ffca7",
+                "reference": "59b20e5bbace9912607481634f97d05a776ffca7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-xmlreader": "*",
+                "ext-xmlwriter": "*",
+                "lib-libxml": ">=2.6.20",
+                "php": ">=5.5.5",
+                "sabre/uri": ">=1.0,<3.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "sabre/cs": "~1.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sabre\\Xml\\": "lib/"
+                },
+                "files": [
+                    "lib/Deserializer/functions.php",
+                    "lib/Serializer/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Evert Pot",
+                    "email": "me@evertpot.com",
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Markus Staab",
+                    "email": "markus.staab@redaxo.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "sabre/xml is an XML library that you may not hate.",
+            "homepage": "https://sabre.io/xml/",
+            "keywords": [
+                "XMLReader",
+                "XMLWriter",
+                "dom",
+                "xml"
+            ],
+            "time": "2016-10-09T22:57:52+00:00"
+        },
+        {
+            "name": "symfony/console",
+            "version": "v2.8.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/console.git",
+                "reference": "2cfcbced8e39e2313ed4da8896fc8c59a56c0d7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/console/zipball/2cfcbced8e39e2313ed4da8896fc8c59a56c0d7e",
+                "reference": "2cfcbced8e39e2313ed4da8896fc8c59a56c0d7e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9",
+                "symfony/debug": "^2.7.2|~3.0.0",
+                "symfony/polyfill-mbstring": "~1.0"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/event-dispatcher": "~2.1|~3.0.0",
+                "symfony/process": "~2.1|~3.0.0"
+            },
+            "suggest": {
+                "psr/log": "For using the console logger",
+                "symfony/event-dispatcher": "",
+                "symfony/process": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Console\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-04-26T01:38:53+00:00"
+        },
+        {
+            "name": "symfony/debug",
+            "version": "v3.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/debug.git",
+                "reference": "697c527acd9ea1b2d3efac34d9806bf255278b0a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/697c527acd9ea1b2d3efac34d9806bf255278b0a",
+                "reference": "697c527acd9ea1b2d3efac34d9806bf255278b0a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9",
+                "psr/log": "~1.0"
+            },
+            "conflict": {
+                "symfony/http-kernel": ">=2.3,<2.3.24|~2.4.0|>=2.5,<2.5.9|>=2.6,<2.6.2"
+            },
+            "require-dev": {
+                "symfony/class-loader": "~2.8|~3.0",
+                "symfony/http-kernel": "~2.8|~3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Debug\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Debug Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-07-30T07:22:48+00:00"
+        },
+        {
+            "name": "symfony/filesystem",
+            "version": "v3.3.0-RC1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/filesystem.git",
+                "reference": "cf1e3a0c50c0d30b40be8996df55c8b05b704ccc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/cf1e3a0c50c0d30b40be8996df55c8b05b704ccc",
+                "reference": "cf1e3a0c50c0d30b40be8996df55c8b05b704ccc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Filesystem\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Filesystem Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-05-11T16:47:52+00:00"
+        },
+        {
+            "name": "symfony/polyfill-mbstring",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-mbstring.git",
+                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/e79d363049d1c2128f133a2667e4f4190904f7f4",
+                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-mbstring": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Mbstring\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for the Mbstring extension",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "mbstring",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "time": "2016-11-14T01:06:16+00:00"
+        },
+        {
+            "name": "zendframework/zend-code",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-code.git",
+                "reference": "2899c17f83a7207f2d7f53ec2f421204d3beea27"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/2899c17f83a7207f2d7f53ec2f421204d3beea27",
+                "reference": "2899c17f83a7207f2d7f53ec2f421204d3beea27",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || 7.0.0 - 7.0.4 || ^7.0.6",
+                "zendframework/zend-eventmanager": "^2.6 || ^3.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "~1.0",
+                "ext-phar": "*",
+                "phpunit/phpunit": "^4.8.21",
+                "squizlabs/php_codesniffer": "^2.5",
+                "zendframework/zend-stdlib": "^2.7 || ^3.0"
+            },
+            "suggest": {
+                "doctrine/annotations": "Doctrine\\Common\\Annotations >=1.0 for annotation features",
+                "zendframework/zend-stdlib": "Zend\\Stdlib component"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev",
+                    "dev-develop": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Code\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides facilities to generate arbitrary code using an object oriented interface",
+            "homepage": "https://github.com/zendframework/zend-code",
+            "keywords": [
+                "code",
+                "zf2"
+            ],
+            "time": "2016-10-24T13:23:32+00:00"
+        },
+        {
+            "name": "zendframework/zend-escaper",
+            "version": "2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-escaper.git",
+                "reference": "2dcd14b61a72d8b8e27d579c6344e12c26141d4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-escaper/zipball/2dcd14b61a72d8b8e27d579c6344e12c26141d4e",
+                "reference": "2dcd14b61a72d8b8e27d579c6344e12c26141d4e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "1.7.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev",
+                    "dev-develop": "2.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Escaper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zend-escaper",
+            "keywords": [
+                "escaper",
+                "zf2"
+            ],
+            "time": "2016-06-30T19:48:38+00:00"
+        },
+        {
+            "name": "zendframework/zend-eventmanager",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-eventmanager.git",
+                "reference": "c3bce7b7d47c54040b9ae51bc55491c72513b75d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/c3bce7b7d47c54040b9ae51bc55491c72513b75d",
+                "reference": "c3bce7b7d47c54040b9ae51bc55491c72513b75d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "athletic/athletic": "^0.1",
+                "container-interop/container-interop": "^1.1.0",
+                "phpunit/phpunit": "^5.6",
+                "zendframework/zend-coding-standard": "~1.0.0",
+                "zendframework/zend-stdlib": "^2.7.3 || ^3.0"
+            },
+            "suggest": {
+                "container-interop/container-interop": "^1.1.0, to use the lazy listeners feature",
+                "zendframework/zend-stdlib": "^2.7.3 || ^3.0, to use the FilterChain feature"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev",
+                    "dev-develop": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\EventManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Trigger and listen to events within a PHP application",
+            "homepage": "https://github.com/zendframework/zend-eventmanager",
+            "keywords": [
+                "event",
+                "eventmanager",
+                "events",
+                "zf2"
+            ],
+            "time": "2016-12-19T21:47:12+00:00"
+        },
+        {
+            "name": "zendframework/zend-http",
+            "version": "2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-http.git",
+                "reference": "09f4d279f46d86be63171ff62ee0f79eca878678"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-http/zipball/09f4d279f46d86be63171ff62ee0f79eca878678",
+                "reference": "09f4d279f46d86be63171ff62ee0f79eca878678",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5 || ^7.0",
+                "zendframework/zend-loader": "^2.5",
+                "zendframework/zend-stdlib": "^2.5 || ^3.0",
+                "zendframework/zend-uri": "^2.5",
+                "zendframework/zend-validator": "^2.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0",
+                "zendframework/zend-coding-standard": "~1.0.0",
+                "zendframework/zend-config": "^2.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6-dev",
+                    "dev-develop": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Http\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides an easy interface for performing Hyper-Text Transfer Protocol (HTTP) requests",
+            "homepage": "https://github.com/zendframework/zend-http",
+            "keywords": [
+                "http",
+                "zf2"
+            ],
+            "time": "2017-01-31T14:41:02+00:00"
+        },
+        {
+            "name": "zendframework/zend-loader",
+            "version": "2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-loader.git",
+                "reference": "c5fd2f071bde071f4363def7dea8dec7393e135c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-loader/zipball/c5fd2f071bde071f4363def7dea8dec7393e135c",
+                "reference": "c5fd2f071bde071f4363def7dea8dec7393e135c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "1.7.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev",
+                    "dev-develop": "2.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Loader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zend-loader",
+            "keywords": [
+                "loader",
+                "zf2"
+            ],
+            "time": "2015-06-03T14:05:47+00:00"
+        },
+        {
+            "name": "zendframework/zend-server",
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-server.git",
+                "reference": "7cb617ca3e9b24579f544a244ee79ae61f480914"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-server/zipball/7cb617ca3e9b24579f544a244ee79ae61f480914",
+                "reference": "7cb617ca3e9b24579f544a244ee79ae61f480914",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0",
+                "zendframework/zend-code": "^2.5 || ^3.0",
+                "zendframework/zend-stdlib": "^2.5 || ^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8",
+                "squizlabs/php_codesniffer": "^2.3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev",
+                    "dev-develop": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zend-server",
+            "keywords": [
+                "server",
+                "zf2"
+            ],
+            "time": "2016-06-20T22:27:55+00:00"
+        },
+        {
+            "name": "zendframework/zend-soap",
+            "version": "2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-soap.git",
+                "reference": "2d6012e7231cce550219eccfc80836a028d20bf1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-soap/zipball/2d6012e7231cce550219eccfc80836a028d20bf1",
+                "reference": "2d6012e7231cce550219eccfc80836a028d20bf1",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5 || ^7.0",
+                "zendframework/zend-server": "^2.6.1",
+                "zendframework/zend-stdlib": "^2.7 || ^3.0",
+                "zendframework/zend-uri": "^2.5.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8",
+                "squizlabs/php_codesniffer": "^2.3.1",
+                "zendframework/zend-config": "^2.6",
+                "zendframework/zend-http": "^2.5.4"
+            },
+            "suggest": {
+                "zendframework/zend-http": "Zend\\Http component"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6-dev",
+                    "dev-develop": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Soap\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zend-soap",
+            "keywords": [
+                "soap",
+                "zf2"
+            ],
+            "time": "2016-04-21T16:06:27+00:00"
+        },
+        {
+            "name": "zendframework/zend-stdlib",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-stdlib.git",
+                "reference": "debedcfc373a293f9250cc9aa03cf121428c8e78"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/debedcfc373a293f9250cc9aa03cf121428c8e78",
+                "reference": "debedcfc373a293f9250cc9aa03cf121428c8e78",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "athletic/athletic": "~0.1",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "^2.6.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev",
+                    "dev-develop": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Stdlib\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zend-stdlib",
+            "keywords": [
+                "stdlib",
+                "zf2"
+            ],
+            "time": "2016-09-13T14:38:50+00:00"
+        },
+        {
+            "name": "zendframework/zend-uri",
+            "version": "2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-uri.git",
+                "reference": "0bf717a239432b1a1675ae314f7c4acd742749ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-uri/zipball/0bf717a239432b1a1675ae314f7c4acd742749ed",
+                "reference": "0bf717a239432b1a1675ae314f7c4acd742749ed",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5 || ^7.0",
+                "zendframework/zend-escaper": "^2.5",
+                "zendframework/zend-validator": "^2.5"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "1.7.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev",
+                    "dev-develop": "2.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Uri\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "a component that aids in manipulating and validating » Uniform Resource Identifiers (URIs)",
+            "homepage": "https://github.com/zendframework/zend-uri",
+            "keywords": [
+                "uri",
+                "zf2"
+            ],
+            "time": "2016-02-17T22:38:51+00:00"
+        },
+        {
+            "name": "zendframework/zend-validator",
+            "version": "2.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-validator.git",
+                "reference": "c9a8160a0191e34bb98ac1ecd4e453391c424bb3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/c9a8160a0191e34bb98ac1ecd4e453391c424bb3",
+                "reference": "c9a8160a0191e34bb98ac1ecd4e453391c424bb3",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/container-interop": "^1.1",
+                "php": "^5.6 || ^7.0",
+                "zendframework/zend-stdlib": "^2.7.6 || ^3.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0.8 || ^5.7.15",
+                "zendframework/zend-cache": "^2.6.1",
+                "zendframework/zend-coding-standard": "~1.0.0",
+                "zendframework/zend-config": "^2.6",
+                "zendframework/zend-db": "^2.7",
+                "zendframework/zend-filter": "^2.6",
+                "zendframework/zend-http": "^2.5.4",
+                "zendframework/zend-i18n": "^2.6",
+                "zendframework/zend-math": "^2.6",
+                "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
+                "zendframework/zend-session": "^2.6.2",
+                "zendframework/zend-uri": "^2.5"
+            },
+            "suggest": {
+                "zendframework/zend-db": "Zend\\Db component, required by the (No)RecordExists validator",
+                "zendframework/zend-filter": "Zend\\Filter component, required by the Digits validator",
+                "zendframework/zend-i18n": "Zend\\I18n component to allow translation of validation error messages",
+                "zendframework/zend-i18n-resources": "Translations of validator messages",
+                "zendframework/zend-math": "Zend\\Math component, required by the Csrf validator",
+                "zendframework/zend-servicemanager": "Zend\\ServiceManager component to allow using the ValidatorPluginManager and validator chains",
+                "zendframework/zend-session": "Zend\\Session component, required by the Csrf validator",
+                "zendframework/zend-uri": "Zend\\Uri component, required by the Uri and Sitemap\\Loc validators"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.9-dev",
+                    "dev-develop": "2.10-dev"
+                },
+                "zf": {
+                    "component": "Zend\\Validator",
+                    "config-provider": "Zend\\Validator\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Validator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides a set of commonly needed validators",
+            "homepage": "https://github.com/zendframework/zend-validator",
+            "keywords": [
+                "validator",
+                "zf2"
+            ],
+            "time": "2017-05-17T22:06:13+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "magento-ecg/coding-standard",
+            "version": "2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/magento-ecg/coding-standard.git",
+                "reference": "eea9b1d1a21d844f28eb65b0d66a1a4c320e0d6b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/magento-ecg/coding-standard/zipball/eea9b1d1a21d844f28eb65b0d66a1a4c320e0d6b",
+                "reference": "eea9b1d1a21d844f28eb65b0d66a1a4c320e0d6b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Magento Expert Consulting Group",
+                    "homepage": "http://magentocommerce.com/consulting",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A set of PHP_CodeSniffer rules and sniffs.",
+            "homepage": "https://github.com/magento-ecg/coding-standard",
+            "time": "2015-12-18T16:52:59+00:00"
+        },
+        {
+            "name": "magento/framework",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/framework/magento-framework-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "b12c9b47ee9566c7ab76090de8ce2cb967dc050e"
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-dom": "*",
+                "ext-gd": "*",
+                "ext-hash": "*",
+                "ext-iconv": "*",
+                "ext-mcrypt": "*",
+                "ext-openssl": "*",
+                "ext-simplexml": "*",
+                "ext-spl": "*",
+                "ext-xsl": "*",
+                "lib-libxml": "*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6",
+                "symfony/process": "~2.1"
+            },
+            "suggest": {
+                "ext-imagick": "Use Image Magick >=3.0.0 as an optional alternative image processing library"
+            },
+            "type": "magento2-library",
+            "autoload": {
+                "psr-4": {
+                    "Magento\\Framework\\": ""
+                },
+                "files": [
+                    "registration.php"
+                ]
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-authorization",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-authorization/magento-module-authorization-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "b3bbc4ce889e1b43e45e1adb50208a8fc4721662"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Authorization\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "Authorization module provides access to Magento ACL functionality."
+        },
+        {
+            "name": "magento/module-backend",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-backend/magento-module-backend-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "f0cc30af16c204cb4c1c39a5b06c099a5c1dc298"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backup": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-developer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-reports": "100.1.*",
+                "magento/module-require-js": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-security": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-translation": "100.1.*",
+                "magento/module-user": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Backend\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-backup",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-backup/magento-module-backup-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "bd4e3999c075177bcce4d74aa087d692ad01bf86"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-cron": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Backup\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-catalog",
+            "version": "101.0.6",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-catalog/magento-module-catalog-101.0.6.0.zip",
+                "reference": null,
+                "shasum": "73bb86b0d63558522c8ce684363b6ac232d6310e"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-catalog-rule": "100.1.*",
+                "magento/module-catalog-url-rewrite": "100.1.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-cms": "101.0.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-indexer": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-msrp": "100.1.*",
+                "magento/module-page-cache": "100.1.*",
+                "magento/module-product-alert": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "magento/module-url-rewrite": "100.1.*",
+                "magento/module-widget": "100.1.*",
+                "magento/module-wishlist": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-catalog-sample-data": "Sample Data version:100.1.*",
+                "magento/module-cookie": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Catalog\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-catalog-import-export",
+            "version": "100.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-catalog-import-export/magento-module-catalog-import-export-100.1.4.0.zip",
+                "reference": null,
+                "shasum": "a0ab2bf88437d0e2dd01e2517c08d858803b39a9"
+            },
+            "require": {
+                "ext-ctype": "*",
+                "magento/framework": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-catalog-url-rewrite": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-import-export": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\CatalogImportExport\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-catalog-inventory",
+            "version": "100.1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-catalog-inventory/magento-module-catalog-inventory-100.1.5.0.zip",
+                "reference": null,
+                "shasum": "5026aa0aa4dfd0c9b90896ec038b6ba5c021d4d9"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\CatalogInventory\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-catalog-rule",
+            "version": "100.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-catalog-rule/magento-module-catalog-rule-100.1.4.0.zip",
+                "reference": null,
+                "shasum": "520a5ff8614cbd1cc6a760e3655e9e69d71c28f6"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-rule": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-catalog-rule-sample-data": "Sample Data version:100.1.*",
+                "magento/module-import-export": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\CatalogRule\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-catalog-url-rewrite",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-catalog-url-rewrite/magento-module-catalog-url-rewrite-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "555910660780371c509a9e719191e09e00512829"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-import-export": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-import-export": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "magento/module-url-rewrite": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\CatalogUrlRewrite\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-checkout",
+            "version": "100.1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-checkout/magento-module-checkout-100.1.5.0.zip",
+                "reference": null,
+                "shasum": "7a8f1ba428fbd679b0a50874df5084e0ff4b043b"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-msrp": "100.1.*",
+                "magento/module-page-cache": "100.1.*",
+                "magento/module-payment": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-sales-rule": "100.1.*",
+                "magento/module-shipping": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-cookie": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Checkout\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-cms",
+            "version": "101.0.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-cms/magento-module-cms-101.0.4.0.zip",
+                "reference": null,
+                "shasum": "4db0f2ac1062e9af022afc025de74f2b8aa986ff"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-email": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "magento/module-variable": "100.1.*",
+                "magento/module-widget": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-cms-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Cms\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-cms-url-rewrite",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-cms-url-rewrite/magento-module-cms-url-rewrite-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "7a703192417c5b6ba33606a9e41f992aef3fa616"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-cms": "101.0.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-url-rewrite": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\CmsUrlRewrite\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-config",
+            "version": "100.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-config/magento-module-config-100.1.4.0.zip",
+                "reference": null,
+                "shasum": "bca1740910cbc29e2311274cad9d1393f8b79628"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-cron": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-email": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-deploy": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Config\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-contact",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-contact/magento-module-contact-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "e01aed6486bc20edc575e706df2f68225041df41"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-cms": "101.0.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Contact\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-cron",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-cron/magento-module-cron-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "e6a118163ee02877e45af43c078c37dbe80bb871"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-config": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Cron\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-customer",
+            "version": "100.1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-customer/magento-module-customer-100.1.5.0.zip",
+                "reference": null,
+                "shasum": "bb113e2141a94307fd9a8d5a8c14083eebb18147"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-authorization": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-integration": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-newsletter": "100.1.*",
+                "magento/module-page-cache": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-review": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "magento/module-wishlist": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-cookie": "100.1.*",
+                "magento/module-customer-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Customer\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-developer",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-developer/magento-module-developer-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "7aa5019f536dcd3fed19cc275768b2333ec66a88"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Developer\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-directory",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-directory/magento-module-directory-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "5422f689e7422c47c9600c7325b3c46d99f2607b"
+            },
+            "require": {
+                "lib-libxml": "*",
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Directory\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-downloadable",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-downloadable/magento-module-downloadable-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "8571648a5efa4fb2691c2c43921470a0c4c77fb0"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-gift-message": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-downloadable-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Downloadable\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-eav",
+            "version": "100.1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-eav/magento-module-eav-100.1.5.0.zip",
+                "reference": null,
+                "shasum": "ca2f79d53bebbc057cf7bab30f847bc123289d2d"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Eav\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-email",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-email/magento-module-email-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "8a8ad8fc63a3b3f801d815974d7cf12fe974d25a"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-cms": "101.0.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-variable": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Email\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-gift-message",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-gift-message/magento-module-gift-message-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "334374ba59d18205df363922791242f0cf0e447c"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-multishipping": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\GiftMessage\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-grouped-product",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-grouped-product/magento-module-grouped-product-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "976b055abdb6e1b59cc2e46d813136ccbc808783"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-msrp": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-grouped-product-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\GroupedProduct\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-import-export",
+            "version": "100.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-import-export/magento-module-import-export-100.1.4.0.zip",
+                "reference": null,
+                "shasum": "f4485ee55b19d04811185645a77698246c82ab8f"
+            },
+            "require": {
+                "ext-ctype": "*",
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\ImportExport\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-indexer",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-indexer/magento-module-indexer-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "df967f885ec950ee039e50b1994d737cd509f72e"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Indexer\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-integration",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-integration/magento-module-integration-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "fc0a2824fb6e323c5982aabf3b92e9f1d0b557ea"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-authorization": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-security": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-user": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Integration\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-media-storage",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-media-storage/magento-module-media-storage-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "5c88554bc62f952c1fb56abe3baf9f0dea41ef41"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\MediaStorage\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-msrp",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-msrp/magento-module-msrp-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "930bfe39fca6a01a2522c47afe6b3de8d3d41584"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-downloadable": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-grouped-product": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-bundle": "100.1.*",
+                "magento/module-msrp-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Msrp\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-newsletter",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-newsletter/magento-module-newsletter-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "112341233d8bb1bea8269610862aea30424ee943"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-cms": "101.0.*",
+                "magento/module-cron": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-email": "100.1.*",
+                "magento/module-require-js": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-widget": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Newsletter\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-page-cache",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-page-cache/magento-module-page-cache-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "8e56550b19c32e18fa50585e847c3462200fe505"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\PageCache\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-payment",
+            "version": "100.1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-payment/magento-module-payment-100.1.5.0.zip",
+                "reference": null,
+                "shasum": "d54474ea7df4cd1a852dac781b57e56f10dfa8ac"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Payment\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-product-alert",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-product-alert/magento-module-product-alert-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "ff06f944d6d731cca19f7d51102fec1b591b76e3"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\ProductAlert\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-quote",
+            "version": "100.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-quote/magento-module-quote-100.1.4.0.zip",
+                "reference": null,
+                "shasum": "917acc6701f77d37bf5580dd8e05cd02bf38c68a"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-authorization": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-payment": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-sales-sequence": "100.1.*",
+                "magento/module-shipping": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Quote\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-reports",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-reports/magento-module-reports-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "b10b5be71dab1fd8263cb9c111b682ce5667b8f4"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-cms": "101.0.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-downloadable": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-review": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-sales-rule": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "magento/module-widget": "100.1.*",
+                "magento/module-wishlist": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Reports\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-require-js",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-require-js/magento-module-require-js-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "be66ac4d9b1ed7167df1613dd406c860a7b43941"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\RequireJs\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-review",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-review/magento-module-review-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "d5f52754bf2be8215243d87a8f0ce6114788e4cc"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-newsletter": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-cookie": "100.1.*",
+                "magento/module-review-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Review\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-rss",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-rss/magento-module-rss-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "b13baeff26d1c0e49dd42447a2f566682a970114"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Rss\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-rule",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-rule/magento-module-rule-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "ba985f20455f34047a22a8f9b0925f3c75fb5668"
+            },
+            "require": {
+                "lib-libxml": "*",
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Rule\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-sales",
+            "version": "100.1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-sales/magento-module-sales-100.1.5.0.zip",
+                "reference": null,
+                "shasum": "e7054bbb3f0412c5f215d698f87286e9b8599cb2"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-authorization": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-gift-message": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-payment": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-reports": "100.1.*",
+                "magento/module-sales-rule": "100.1.*",
+                "magento/module-sales-sequence": "100.1.*",
+                "magento/module-shipping": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "magento/module-widget": "100.1.*",
+                "magento/module-wishlist": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-sales-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Sales\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-sales-rule",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-sales-rule/magento-module-sales-rule-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "6e43bdea459d2f519b2a1197f18a72a87dd300b2"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-rule": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-payment": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-reports": "100.1.*",
+                "magento/module-rule": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-shipping": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "magento/module-widget": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-sales-rule-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\SalesRule\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-sales-sequence",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-sales-sequence/magento-module-sales-sequence-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "a688f3a820109f0254afce29bb3f0cbd53b3ce69"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\SalesSequence\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-security",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-security/magento-module-security-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "899408cb15904caa3b065a6a71f9874faf456f36"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-customer": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Security\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "Security management module"
+        },
+        {
+            "name": "magento/module-shipping",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-shipping/magento-module-shipping-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "95be48dc18e047d412e4eac1e660328bb6be44f8"
+            },
+            "require": {
+                "ext-gd": "*",
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-contact": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-payment": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-tax": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "magento/module-user": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-fedex": "100.1.*",
+                "magento/module-ups": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Shipping\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-store",
+            "version": "100.1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-store/magento-module-store-100.1.5.0.zip",
+                "reference": null,
+                "shasum": "30f33fb3e830854d5f7bd6cc455d2412c566fc77"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-deploy": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Store\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-tax",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-tax/magento-module-tax-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "2b971cf9585ffa1926dde977de6417242d6da726"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-page-cache": "100.1.*",
+                "magento/module-quote": "100.1.*",
+                "magento/module-reports": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-shipping": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-tax-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Tax\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-theme",
+            "version": "100.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-theme/magento-module-theme-100.1.4.0.zip",
+                "reference": null,
+                "shasum": "5119e901b42c986d548c700990d4a58f3850f855"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-cms": "101.0.*",
+                "magento/module-config": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-directory": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-media-storage": "100.1.*",
+                "magento/module-require-js": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "magento/module-widget": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-theme-sample-data": "Sample Data version:100.1.*",
+                "magento/module-translation": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Theme\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-translation",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-translation/magento-module-translation-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "942971fe9e2288b842dbf54ca1f7639c0eded25a"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-developer": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-deploy": "100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Translation\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-ui",
+            "version": "100.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-ui/magento-module-ui-100.1.4.0.zip",
+                "reference": null,
+                "shasum": "e079ede6bac0cd923613404744ef1f56ca3b301b"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-authorization": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-eav": "100.1.*",
+                "magento/module-user": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Ui\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-url-rewrite",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-url-rewrite/magento-module-url-rewrite-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "984d4e723f24121f50dd25317a76cd3c3152a07d"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-url-rewrite": "100.1.*",
+                "magento/module-cms": "101.0.*",
+                "magento/module-cms-url-rewrite": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\UrlRewrite\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-user",
+            "version": "100.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-user/magento-module-user-100.1.3.0.zip",
+                "reference": null,
+                "shasum": "cbcec4149800c86614ee6436ecece787250dee16"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-authorization": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-email": "100.1.*",
+                "magento/module-integration": "100.1.*",
+                "magento/module-security": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\User\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-variable",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-variable/magento-module-variable-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "d497c6dcb94730c9271962c80b1ac84367cec95e"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-email": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Variable\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-widget",
+            "version": "100.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-widget/magento-module-widget-100.1.2.0.zip",
+                "reference": null,
+                "shasum": "badda3ff964644cf4450782a0e6d417f4c15cb9f"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-cms": "101.0.*",
+                "magento/module-email": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-variable": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-widget-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Widget\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "magento/module-wishlist",
+            "version": "100.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/magento/module-wishlist/magento-module-wishlist-100.1.4.0.zip",
+                "reference": null,
+                "shasum": "d856a805dfbc044eddd06d1a9ce3a3afd4f33e6a"
+            },
+            "require": {
+                "magento/framework": "100.1.*",
+                "magento/module-backend": "100.1.*",
+                "magento/module-catalog": "101.0.*",
+                "magento/module-catalog-inventory": "100.1.*",
+                "magento/module-checkout": "100.1.*",
+                "magento/module-customer": "100.1.*",
+                "magento/module-grouped-product": "100.1.*",
+                "magento/module-rss": "100.1.*",
+                "magento/module-sales": "100.1.*",
+                "magento/module-store": "100.1.*",
+                "magento/module-theme": "100.1.*",
+                "magento/module-ui": "100.1.*",
+                "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+            },
+            "suggest": {
+                "magento/module-bundle": "100.1.*",
+                "magento/module-configurable-product": "100.1.*",
+                "magento/module-cookie": "100.1.*",
+                "magento/module-downloadable": "100.1.*",
+                "magento/module-wishlist-sample-data": "Sample Data version:100.1.*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Magento\\Wishlist\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "N/A"
+        },
+        {
+            "name": "symfony/process",
+            "version": "v2.8.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "aff35fb3dee799c84a7313c576b72208b046ef8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/aff35fb3dee799c84a7313c576b72208b046ef8d",
+                "reference": "aff35fb3dee799c84a7313c576b72208b046ef8d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Process\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Process Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-04-12T14:07:15+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "alpha",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+    },
+    "platform-dev": []
+}
