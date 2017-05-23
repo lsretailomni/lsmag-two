@@ -4,7 +4,7 @@ namespace Ls\Replication\Console\Command;
 
 use Ls\Omni\Client\Code\AbstractGenerator;
 use Ls\Omni\Console\Command as OmniCommand;
-use Ls\Omni\Exception\InvalidServiceType;
+use Ls\Omni\Exception\InvalidServiceTypeException;
 use Ls\Omni\Service\Service;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client;
@@ -24,7 +24,7 @@ class ReplicationGenerate extends OmniCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @throws InvalidServiceType
+     * @throws InvalidServiceTypeException
      */
     protected function initialize ( InputInterface $input, OutputInterface $output ) {
         $this->type = ServiceType::ECOMMERCE();
@@ -35,7 +35,7 @@ class ReplicationGenerate extends OmniCommand
 
         $this->setName( self::COMMAND_NAME )
              ->setDescription( 'show WSDL contents' )
-             ->addOption( 'base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url' );
+             ->addOption( self::BASE_URL, 'b', InputOption::VALUE_OPTIONAL, 'omni service base url' );
     }
 
     protected function execute ( InputInterface $input, OutputInterface $output ) {
@@ -80,7 +80,7 @@ class ReplicationGenerate extends OmniCommand
         $this->output->writeln( "\tDISCOVERING MAIN ENTITY - {$response->getName()}" );
         $response_fqn = AbstractGenerator::fqn( $base_namespace, $response->getName() );
         $response_reflection = new ReflectionClass( $response_fqn );
-        $result_docbblock = $response_reflection->getMethod( 'getResponse' )->getDocComment();
+        $result_docbblock = $response_reflection->getMethod( 'getResult' )->getDocComment();
 
         preg_match( '/@return\s(:?[\w]+)/', $result_docbblock, $matches );
         $result_fqn = AbstractGenerator::fqn( $base_namespace, $matches[ 1 ] );

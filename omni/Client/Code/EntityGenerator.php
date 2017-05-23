@@ -1,8 +1,11 @@
 <?php
 namespace Ls\Omni\Client\Code;
 
+use ArrayIterator;
+use IteratorAggregate;
 use Ls\Omni\Client\IRequest;
 use Ls\Omni\Client\IResponse;
+use Ls\Omni\Exception\InvalidEnumException;
 use Ls\Omni\Service\Metadata;
 use Ls\Omni\Service\Soap\Entity;
 use Ls\Omni\Service\Soap\SoapType;
@@ -24,7 +27,6 @@ class EntityGenerator extends AbstractGenerator
         'char' => 'int',
         'guid' => 'string',
         'StreamBody' => 'string',
-        'NotificationStatus' => 'string',
     ];
     /** @var Entity */
     private $entity;
@@ -61,12 +63,13 @@ class EntityGenerator extends AbstractGenerator
             $field_data_type = $this->normalizeDataType( $field_type->getDataType() ) . ( $is_array ? '[]' : '' );
             $field_name_capitalized = ucfirst( $field_name );
 
-            if ( array_key_exists( $field_data_type, $this->metadata->getRestrictions() ) ) {
+            $field_is_restriction = array_key_exists( $field_data_type, $this->metadata->getRestrictions() );
+            if ( $field_is_restriction ) {
                 $this->class->addUse( self::fqn( $entity_namespace, 'Enum', $field_data_type ) );
             }
             $this->class->addPropertyFromGenerator( PropertyGenerator::fromArray(
                 [ 'name' => $field_name,
-                  'defaultvalue' => NULL,
+                  'defaultvalue' => $is_array ? [ ] : NULL,
                   'docblock' => DocBlockGenerator::fromArray(
                       [ 'tags' => [ new Tag\PropertyTag( $field_name, [ $field_data_type ] ) ] ] ),
                   'flags' => [ PropertyGenerator::FLAG_PROTECTED ] ] ) );
@@ -79,10 +82,47 @@ class EntityGenerator extends AbstractGenerator
                 $set_method->setName( $set_method_name );
                 $set_method->setParameter( ParameterGenerator::fromArray( [ 'name' => $field_name ] ) );
                 $set_method->setDocBlock(
-                    DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ParamTag( $field_name, $field_data_type ),
+                    DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ParamTag( $field_name, [ $field_data_type ] ),
                                                                 new Tag\ReturnTag( [ '$this', ] ) ] ] ) );
+                $set_method->setBody( <<<CODE
+\$this->$field_name = \$$field_name;
+return \$this;
+CODE
+                );
+                if ( $field_is_restriction ) {
+                    $set_method->setDocBlock(
+                        DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ParamTag( $field_name,
+                                                                                      [ $field_data_type, 'string' ] ),
+                                                                    new Tag\ReturnTag( [ '$this' ] ),
+                                                                    new Tag\ThrowsTag( [ 'InvalidEnumException' ] ) ] ] ) );
+                    $this->class->addUse( InvalidEnumException::class );
+                    $set_method->setBody( <<<CODE
+if ( $field_data_type::isValid( \$$field_name) ) 
+    \$this->$field_name = new $field_data_type( \$$field_name );
+elseif ( $field_data_type::isValidKey( \$$field_name) ) 
+    \$this->$field_name = new $field_data_type( constant( "$field_data_type::\$$field_name" ) );
+else 
+    throw new InvalidEnumException();
+return \$this;
+CODE
+                    );
+                }
 
                 $this->class->addMethodFromGenerator( $set_method );
+
+                // ADD ArrayOf's ARRAY ACCESS SUPPORT
+                if ( $is_array ) {
+                    $this->class->addUse( IteratorAggregate::class );
+                    $this->class->addUse( ArrayIterator::class );
+                    $this->class->setImplementedInterfaces( [ IteratorAggregate::class ] );
+                    $iterator_method = new MethodGenerator();
+                    $iterator_method->setName( 'getIterator' );
+                    $iterator_method->setBody( <<<CODE
+return new ArrayIterator( \$this->$field_name );
+CODE
+                    );
+                    $this->class->addMethodFromGenerator( $iterator_method );
+                }
             }
 
             if ( !$this->class->hasMethod( $get_method_name ) ) {
@@ -90,6 +130,10 @@ class EntityGenerator extends AbstractGenerator
                 $get_method->setName( $get_method_name )
                            ->setDocBlock(
                                DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ $field_data_type ] ) ] ] ) );
+                $get_method->setBody( <<<CODE
+return \$this->$field_name;
+CODE
+                );
 
                 $this->class->addMethodFromGenerator( $get_method );
             }
@@ -106,26 +150,27 @@ class EntityGenerator extends AbstractGenerator
             foreach ( $type->getDefinition() as $field_name => $field_type ) {
 
                 $field_data_type = $this->normalizeDataType( $field_type->getDataType() );
-                $method_name = "getResponse";
+                $method_name = "getResult";
 
                 if ( !$this->class->hasMethod( $method_name ) ) {
                     $method = new MethodGenerator();
                     $method->setName( $method_name )
                            ->setDocBlock(
                                DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ $field_data_type ] ) ] ] ) );
+                    $method->setBody( <<<CODE
+return \$this->$field_name;
+CODE
+                    );
 
                     $this->class->addMethodFromGenerator( $method );
                 }
             }
         }
-        // ADD ArrayOf's ARRAY ACCESS SUPPORT
-        if ( $is_array ) {
-
-        }
 
         $this->file->setClass( $this->class );
 
         $content = $this->file->generate();
+        $content = str_replace( 'implements \\IteratorAggregate', 'implements IteratorAggregate', $content );
         $content = str_replace( 'implements Ls\\Omni\\Client\\IRequest', 'implements IRequest', $content );
         $content = str_replace( 'implements Ls\\Omni\\Client\\IResponse', 'implements IResponse', $content );
 

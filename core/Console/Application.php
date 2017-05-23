@@ -5,6 +5,7 @@ use Ls\Omni\Console\Command\ClientGenerate;
 use Ls\Omni\Console\Command\ClientPing;
 use Ls\Omni\Console\Command\ClientWsdl;
 use Ls\Replication\Console\Command\ReplicationGenerate;
+use Ls\Replication\Console\Command\ReplicationTest;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 class Application extends SymfonyApplication
@@ -23,6 +24,7 @@ class Application extends SymfonyApplication
         $commands[] = new ClientGenerate();
         $commands[] = new ClientPing();
         $commands[] = new ReplicationGenerate();
+        $commands[] = new ReplicationTest();
 
         return $commands;
     }

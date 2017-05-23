@@ -3,6 +3,6 @@ namespace Ls\Omni\Exception;
 
 use Exception;
 
-class InvalidServiceType extends Exception
+class InvalidServiceTypeException extends Exception
 {
 }

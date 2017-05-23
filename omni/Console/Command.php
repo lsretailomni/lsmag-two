@@ -1,7 +1,7 @@
 <?php
 namespace Ls\Omni\Console;
 
-use Ls\Omni\Exception\InvalidServiceType;
+use Ls\Omni\Exception\InvalidServiceTypeException;
 use Ls\Omni\Service\Service;
 use Ls\Omni\Service\ServiceType;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -26,7 +26,7 @@ class Command extends SymfonyCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @throws InvalidServiceType
+     * @throws InvalidServiceTypeException
      */
     protected function initialize ( InputInterface $input, OutputInterface $output ) {
 
@@ -37,7 +37,7 @@ class Command extends SymfonyCommand
 
         if ( is_null( $this->type ) ) {
             $type = $input->getOption( self::TYPE );
-            if ( !ServiceType::isValid( $type ) ) throw new InvalidServiceType();
+            if ( !ServiceType::isValid( $type ) ) throw new InvalidServiceTypeException();
             $this->type = new ServiceType( $type );
         }
 

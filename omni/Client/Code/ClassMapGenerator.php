@@ -18,8 +18,10 @@ class ClassMapGenerator extends AbstractGenerator
             $fqn = str_replace( '\\', '\\\\', $fqn );
             $body .= sprintf( "\t\t'%1\$s' => '%2\$s',\n", $entity_name, $fqn );
         }
-        $restriction_blacklist = [ 'char', 'duration', 'guid', 'StreamBody' , 'NotificationStatus',
-                                   'OrderQueueStatusFilterType'];
+        $restriction_blacklist = [ 'char', 'duration', 'guid', 'StreamBody' ,
+//                                   'NotificationStatus',
+//                                   'OrderQueueStatusFilterType',
+        ];
         foreach ( $this->metadata->getRestrictions() as $restriction_name => $restriction ) {
             if ( array_search( $restriction_name, $restriction_blacklist ) === FALSE ) {
                 $fqn = self::fqn( $this->base_namespace, 'Entity', 'Enum', $restriction_name );

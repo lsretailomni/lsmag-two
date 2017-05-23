@@ -84,7 +84,7 @@ CODE
         $input_method->setName( 'getOperationInput' );
         $input_method->setReturnsReference( TRUE );
         $input_method->setDocBlock(
-            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ $response_alias ] ) ] ] ) );
+            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ $request_alias ] ) ] ] ) );
         $input_method->setBody( <<<CODE
 if ( is_null( \$this->request ) ) {
     \$this->request = new $request_alias();
@@ -102,7 +102,6 @@ CODE
 return ClassMap::getClassMap();
 CODE
         );
-
 
         // CLASS DECLARATION
 
