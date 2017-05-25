@@ -116,6 +116,8 @@ CODE
                     $this->class->addUse( ArrayIterator::class );
                     $this->class->setImplementedInterfaces( [ IteratorAggregate::class ] );
                     $iterator_method = new MethodGenerator();
+                    $iterator_method->setDocBlock(
+                        DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ $field_data_type ] ) ] ] ) );
                     $iterator_method->setName( 'getIterator' );
                     $iterator_method->setBody( <<<CODE
 return new ArrayIterator( \$this->$field_name );

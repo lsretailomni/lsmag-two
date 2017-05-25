@@ -4,8 +4,10 @@ namespace Ls\Replication\Console\Command;
 
 use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use Ls\Omni\Client\Ecommerce\Operation\ReplEcommAttribute;
+use Ls\Omni\Client\Ecommerce\Operation\ReplEcommItems;
 use Ls\Omni\Console\Command as OmniCommand;
 use Ls\Omni\Exception\InvalidServiceTypeException;
+use Ls\Omni\Service\Service;
 use Ls\Omni\Service\ServiceType;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,8 +31,12 @@ class ReplicationTest extends OmniCommand
      * @throws InvalidServiceTypeException
      */
     protected function initialize ( InputInterface $input, OutputInterface $output ) {
+
+        $this->input = $input;
+        $this->output = $output;
+
         $this->type = ServiceType::ECOMMERCE();
-        parent::initialize( $input, $output );
+        $this->base_url = Service::DEFAULT_BASE_URL;
 
         $this->store = $this->input->getOption( self::STORE );
         $batch_size = $this->input->getOption( self::BATCH_SIZE );
@@ -44,8 +50,7 @@ class ReplicationTest extends OmniCommand
         $this->setName( self::COMMAND_NAME )
              ->setDescription( 'show WSDL contents' )
              ->addOption( self::STORE, 's', InputOption::VALUE_REQUIRED, 'omni service associated store', 'S0013' )
-             ->addOption( self::BATCH_SIZE, 'r', InputOption::VALUE_OPTIONAL, 'replication batch size' )
-             ->addOption( self::BASE_URL, 'b', InputOption::VALUE_OPTIONAL, 'omni service base url' );
+             ->addOption( self::BATCH_SIZE, 'r', InputOption::VALUE_OPTIONAL, 'replication batch size' );
     }
 
     protected function execute ( InputInterface $input, OutputInterface $output ) {
@@ -53,7 +58,7 @@ class ReplicationTest extends OmniCommand
         $remaining = INF;
         $last_key = NULL;
         while ( $remaining != 0 ) {
-            $operation = new ReplEcommAttribute();
+            $operation = new ReplEcommItems();
             $repl_request = new ReplRequest();
             $repl_request->setBatchSize( $this->batch_size )
                          ->setFullReplication( TRUE )

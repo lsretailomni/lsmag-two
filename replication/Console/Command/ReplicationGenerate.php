@@ -10,6 +10,12 @@ use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client;
 use Ls\Omni\Service\Soap\Element;
 use Ls\Omni\Service\Soap\Operation;
+use Ls\Replication\Job\Code\CronJobGenerator;
+use Ls\Replication\Job\Code\MagentoModelGenerator;
+use Ls\Replication\Job\Code\MagentoResourceModelGenerator;
+use Ls\Replication\Job\Code\ModuleVersionGenerator;
+use Ls\Replication\Job\Code\SchemaUpdateGenerator;
+use Ls\Replication\Job\Code\SystemConfigGenerator;
 use ReflectionClass;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,6 +25,7 @@ class ReplicationGenerate extends OmniCommand
 {
     const COMMAND_NAME = 'replication:generate';
     private static $known_result_properties = [ 'LastKey', 'MaxKey', 'RecordsRemaining' ];
+    private $metadata;
 
     /**
      * @param InputInterface  $input
@@ -42,10 +49,10 @@ class ReplicationGenerate extends OmniCommand
 
         $url = Service::getUrl( $this->type, $this->base_url );
         $client = new Client( $url, $this->type );
-        $metadata = $client->getMetadata();
+        $this->metadata = $client->getMetadata();
 
         /** @var Operation $operation */
-        foreach ( $metadata->getOperations() as $operation_name => $operation ) {
+        foreach ( $this->metadata->getOperations() as $operation_name => $operation ) {
             if ( strpos( $operation_name, 'ReplEcomm' ) !== FALSE ) {
                 $this->processOperation( $operation );
             }
@@ -61,10 +68,20 @@ class ReplicationGenerate extends OmniCommand
         $this->output->writeln( "PROCESSING REPLICATION JOB - {$operation->getName()}" );
 
         $main_entity = $this->discoverMainEntity( $operation->getResponse() );
-        $this->updateInstall( $main_entity );
-        $this->createResource( $main_entity );
-        $this->createReplicationJob( $operation );
 
+        $schema_update = new SchemaUpdateGenerator( $main_entity );
+        $magento_model = new MagentoModelGenerator( $main_entity );
+        $magento_resource_model = new MagentoResourceModelGenerator( $main_entity );
+        $module_version = new ModuleVersionGenerator();
+        $system_config = new SystemConfigGenerator( $main_entity );
+        $cron_job = new CronJobGenerator( $main_entity );
+
+//        $generator->generate();
+//        $this->updateInstall( $main_entity );
+//        $this->createResource( $main_entity );
+//        $this->createReplicationJob( $operation );
+
+        $this->output->writeln( $schema_update->generate() );
         $this->output->writeln( '- - - - -' );
 //        $generator = new JobGenerator( $main_entity );
     }
@@ -98,7 +115,8 @@ class ReplicationGenerate extends OmniCommand
         $array_of_reflection = new ReflectionClass( $array_of_fqn );
 
         // DRILL INTO THE MAIN ENTIY
-        $main_entity = array_pop( $array_of_reflection->getProperties() );
+        $array_of_properties = $array_of_reflection->getProperties();
+        $main_entity = array_pop( $array_of_properties );
         $main_entity_docblock = $main_entity->getDocComment();
         preg_match( '/@property\s(:?[\w]+)\[\]\s(:?\$[\w]+)/', $main_entity_docblock, $matches );
         $main_entity_fqn = AbstractGenerator::fqn( $base_namespace, $matches[ 1 ] );

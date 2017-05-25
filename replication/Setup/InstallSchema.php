@@ -10,11 +10,14 @@ use Magento\Framework\Setup\SchemaSetupInterface;
  */
 class InstallSchema implements InstallSchemaInterface
 {
+    /** @var  SchemaSetupInterface */
     private $installer;
+    /** @var  ModuleContextInterface */
     private $context;
 
     /**
-     * {@inheritdoc}
+     * @param SchemaSetupInterface   $setup
+     * @param ModuleContextInterface $context
      */
     public function install ( SchemaSetupInterface $setup, ModuleContextInterface $context ) {
 
@@ -22,9 +25,6 @@ class InstallSchema implements InstallSchemaInterface
         $this->context = $context;
 
         $this->installer->startSetup();
-
-//        $this->createTables();
-
         $this->installer->endSetup();
     }
 }
