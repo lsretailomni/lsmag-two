@@ -1,11 +1,8 @@
 <?php
 namespace Ls\Omni\Console\Command;
 
-use Ls\Omni\Client\Ecommerce\Entity\Ping;
 use Ls\Omni\Client\IOperation;
 use Ls\Omni\Console\Command;
-use Ls\Omni\Service\Service;
-use Ls\Omni\Service\Soap\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

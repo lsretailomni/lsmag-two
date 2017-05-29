@@ -3,7 +3,6 @@ namespace Ls\Replication\Console\Command;
 
 
 use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Client\Ecommerce\Operation\ReplEcommAttribute;
 use Ls\Omni\Client\Ecommerce\Operation\ReplEcommItems;
 use Ls\Omni\Console\Command as OmniCommand;
 use Ls\Omni\Exception\InvalidServiceTypeException;

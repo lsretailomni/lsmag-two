@@ -7,6 +7,8 @@ use Zend\Uri\UriFactory;
 class Service
 {
     const DEFAULT_BASE_URL = 'http://lsretail.cloudapp.net/lsomniservice';
+//    const DEFAULT_BASE_URL = 'http://rotta.machine/lsomniservice';
+
     static protected $endpoints = [
         ServiceType::ECOMMERCE => 'ecommerceservice.svc',
         ServiceType::LOYALTY => 'loyservice.svc',

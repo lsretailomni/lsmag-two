@@ -6,7 +6,7 @@ use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\FileGenerator;
 use Zend\Code\Generator\GeneratorInterface;
 
-class MagentoModelGenerator implements GeneratorInterface
+class ResourceModelGenerator implements GeneratorInterface
 {
     /** @var  string */
     private $entity_fqn;

@@ -6,15 +6,14 @@ use CaseHelper\CaseHelperInterface;
 
 class Operation
 {
+    /** @var CaseHelperInterface */
+    private static $case_helper = NULL;
     /** @var string */
     private $name;
     /** @var Element */
     private $request;
     /** @var Element */
     private $response;
-
-    /** @var CaseHelperInterface */
-    private static $case_helper = NULL;
 
     /**
      * @param string  $name

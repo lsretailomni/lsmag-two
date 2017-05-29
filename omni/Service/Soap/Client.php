@@ -2,7 +2,6 @@
 namespace Ls\Omni\Service\Soap;
 
 use DOMDocument;
-use Ls\Omni\Client\Ecommerce\ClassMap;
 use Ls\Omni\Service\Metadata;
 use Ls\Omni\Service\ServiceType;
 use Zend\Http\ClientStatic;

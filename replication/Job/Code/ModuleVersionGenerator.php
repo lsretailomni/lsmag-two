@@ -2,26 +2,50 @@
 namespace Ls\Replication\Job\Code;
 
 
-use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\FileGenerator;
+use Sabre\Xml\Reader;
+use Sabre\Xml\Service as XmlService;
 use Zend\Code\Generator\GeneratorInterface;
 
 class ModuleVersionGenerator implements GeneratorInterface
 {
     /** @var  string */
+    private $xml_path;
+    /** @var  string */
+    private $xsd_path;
+    /** @var  string */
     private $version;
-    /** @var FileGenerator */
-    private $file;
-    /** @var ClassGenerator */
-    private $class;
+    /** @var XmlService */
+    private $xml_service;
+    /** @var array|object|string */
+    private $xml;
 
+    /**
+     * @param $xml_path
+     * @param $xsd_path
+     */
+    public function __construct ( $xml_path, $xsd_path ) {
 
-    public function __construct () {
-        $this->file = new FileGenerator();
-        $this->class = new ClassGenerator();
-        $this->file->setClass( $this->class );
+        $this->xml_path = $xml_path;
+        $this->xsd_path = $xsd_path;
+        $this->xml_service = new XmlService();
+        /** @var Reader $reader */
+        $reader = $this->xml_service->getReader();
+
+        $xml = file_get_contents( $this->xml_path );
+        $parsed = $this->xml_service->parse( $xml );
+        $parts = explode( '.', $parsed[ 0 ][ 'attributes' ][ 'setup_version' ] );
+        $parts [ 2 ] = intval( $parts[ 2 ] ) + 1;
+        $this->version = join( '.', $parts );
+
+        $reader->XML( $xml, 'UTF-8', LIBXML_PEDANTIC );
+        $reader->setSchema( $this->xsd_path );
+
+        $this->xml = $reader->parse();
     }
 
+    /**
+     * @return string
+     */
     public function getVersion () {
         return $this->version;
     }
@@ -31,6 +55,10 @@ class ModuleVersionGenerator implements GeneratorInterface
      */
     public function generate () {
 
-        return $this->file->generate();
+        $this->xml[ 'value' ][ 0 ][ 'attributes' ][ 'setup_version' ] = $this->getVersion();
+        $content = $this->xml_service->write( NULL, $this->xml );
+        $content = str_replace( 'xmlns="" ', '', $content );
+
+        return $content;
     }
 }
