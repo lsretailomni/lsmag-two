@@ -16,8 +16,9 @@ use Ls\Replication\Job\Code\CronJobGenerator;
 use Ls\Replication\Job\Code\ModelGenerator;
 use Ls\Replication\Job\Code\ModelInterfaceGenerator;
 use Ls\Replication\Job\Code\ModuleVersionGenerator;
-use Ls\Replication\Job\Code\RepositoryInterfaceGenerator;
 use Ls\Replication\Job\Code\RepositoryGenerator;
+use Ls\Replication\Job\Code\RepositoryInterfaceGenerator;
+use Ls\Replication\Job\Code\ResourceCollectionGenerator;
 use Ls\Replication\Job\Code\ResourceModelGenerator;
 use Ls\Replication\Job\Code\SchemaUpdateGenerator;
 use Ls\Replication\Job\Code\SystemConfigGenerator;
@@ -95,7 +96,8 @@ class ReplicationGenerate extends OmniCommand
         $repository_interface_generator = new RepositoryInterfaceGenerator( $main_entity );
         $model_generator = new ModelGenerator( $main_entity, $table_name );
         $repository_generator = new RepositoryGenerator( $main_entity, $table_name );
-        $magento_resource_model = new ResourceModelGenerator( $main_entity );
+        $resource_model_generator = new ResourceModelGenerator( $main_entity, $table_name );
+        $resource_collection_generator = new ResourceCollectionGenerator( $main_entity, $table_name );
         $system_config = new SystemConfigGenerator( $main_entity );
         $cron_job = new CronJobGenerator( $main_entity );
 
@@ -105,10 +107,8 @@ class ReplicationGenerate extends OmniCommand
         file_put_contents( $repository_interface_generator->getPath(), $repository_interface_generator->generate() );
         file_put_contents( $model_generator->getPath(), $model_generator->generate() );
         file_put_contents( $repository_generator->getPath(), $repository_generator->generate() );
-//        file_put_contents( $magento_model->getPath(), $magento_model->generate() );
-//        file_put_contents( $magento_resource_model->getPath(), $magento_resource_model->generate() );
-//        file_put_contents( $system_config->getPath(), $system_config->generate() );
-//        file_put_contents( $cron_job->getPath(), $cron_job->generate() );
+        file_put_contents( $resource_model_generator->getPath(), $resource_model_generator->generate() );
+        file_put_contents( $resource_collection_generator->getPath(), $resource_collection_generator->generate() );
 
         $this->output->writeln( '- - - - -' );
 //        $this->output->writeln( 'OK' );

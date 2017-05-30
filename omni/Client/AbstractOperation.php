@@ -2,6 +2,7 @@
 namespace Ls\Omni\Client;
 
 use Ls\Omni\Service\ServiceType;
+use Ls\Omni\Service\Soap\Client as OmniClient;
 
 abstract class AbstractOperation implements IOperation
 {
@@ -19,11 +20,15 @@ abstract class AbstractOperation implements IOperation
         return $this->service_type;
     }
 
+    /**
+     * @return OmniClient
+     */
     abstract function getClient ();
 
     protected function makeRequest ( $operation_name ) {
         $request_input = $this->getOperationInput();
-        $response = $this->client->{$operation_name}( $request_input );
+        $client = $this->getClient();
+        $response = $client->{$operation_name}( $request_input );
 
         return $response;
     }

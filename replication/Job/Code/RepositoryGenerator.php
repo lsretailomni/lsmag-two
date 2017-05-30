@@ -11,8 +11,11 @@ use Magento\Framework\Data\SearchResultInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Phrase;
 use ReflectionClass;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\DocBlock\Tag\PropertyTag;
+use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\FileGenerator;
 use Zend\Code\Generator\GeneratorInterface;
 use Zend\Code\Generator\MethodGenerator;
@@ -53,34 +56,57 @@ class RepositoryGenerator implements GeneratorInterface
     public function generate () {
 
         $interface_name = $this->getRepositoryInterfaceName( FALSE );
+        $collection_name = $this->getCollectionName( FALSE );
         $model_interface_name = $this->getModelInterfaceName( FALSE );
         $model_name = $this->getModelName();
+        $slim_model_name = $this->getModelName( FALSE );
         $entity_name = $this->reflected_entity->getShortName();
 
         $this->class->setNamespaceName( self::$namespace );
-        /*
-use Ls\Workspace\Model\ResourceModel\Thing\CollectionFactory;
-         */
         $search_factory =
             str_replace( 'SearchResultInterface', 'SearchResultInterfaceFactory', SearchResultInterface::class );
+
         $this->class->addUse( CouldNotDeleteException::class );
         $this->class->addUse( CouldNotSaveException::class );
         $this->class->addUse( NoSuchEntityException::class );
         $this->class->addUse( SearchCriteriaInterface::class );
         $this->class->addUse( SearchResultInterface::class );
         $this->class->addUse( Exception::class );
+        $this->class->addUse( Phrase::class );
         $this->class->addUse( SortOrder::class );
         $this->class->addUse( $search_factory );
         $this->class->addUse( $this->getRepositoryInterfaceName() );
+        $this->class->addUse( $this->getCollectionName() . 'Factory' );
         $this->class->addUse( $this->getModelInterfaceName() );
         $this->class->addUse( "{$model_name}Factory" );
 
         $this->class->setName( $this->getName() );
         $this->class->setImplementedInterfaces( [ $interface_name ] );
 
-        $this->class->addProperty( 'object_factory', NULL, [ PropertyGenerator::FLAG_PROTECTED ] );
-        $this->class->addProperty( 'collection_factory', NULL, [ PropertyGenerator::FLAG_PROTECTED ] );
-        $this->class->addProperty( 'result_factory', NULL, [ PropertyGenerator::FLAG_PROTECTED ] );
+        $object_factory_property = new PropertyGenerator();
+        $object_factory_property->setName( 'object_factory' );
+        $object_factory_property->setDefaultValue( NULL );
+        $object_factory_property->setVisibility( PropertyGenerator::VISIBILITY_PROTECTED );
+        $object_factory_property->setDocBlock( DocBlockGenerator::fromArray(
+            [ 'tags' => [ new PropertyTag( 'object_factory', $slim_model_name . 'Factory' ) ] ] ) );
+
+        $collection_factory_property = new PropertyGenerator();
+        $collection_factory_property->setName( 'collection_factory' );
+        $collection_factory_property->setDefaultValue( NULL );
+        $collection_factory_property->setVisibility( PropertyGenerator::VISIBILITY_PROTECTED );
+        $collection_factory_property->setDocBlock( DocBlockGenerator::fromArray(
+            [ 'tags' => [ new PropertyTag( 'collection_factory', 'CollectionFactory' ) ] ] ) );
+
+        $result_factory_property = new PropertyGenerator();
+        $result_factory_property->setName( 'result_factory' );
+        $result_factory_property->setDefaultValue( NULL );
+        $result_factory_property->setVisibility( PropertyGenerator::VISIBILITY_PROTECTED );
+        $result_factory_property->setDocBlock( DocBlockGenerator::fromArray(
+            [ 'tags' => [ new PropertyTag( 'result_factory', 'SearchResultInterfaceFactory' ) ] ] ) );
+
+        $this->class->addPropertyFromGenerator( $object_factory_property );
+        $this->class->addPropertyFromGenerator( $collection_factory_property );
+        $this->class->addPropertyFromGenerator( $result_factory_property );
 
         $this->class->addMethodFromGenerator( $this->getConstructorMethod() );
         $this->class->addMethodFromGenerator( $this->getGetListMethod() );
@@ -90,7 +116,14 @@ use Ls\Workspace\Model\ResourceModel\Thing\CollectionFactory;
         $this->class->addMethodFromGenerator( $this->getDeleteByIdMethod() );
 
         $content = $this->file->generate();
+        $content = str_replace( '\\Magento\\Framework\\Data\\SearchResultInterfaceFactory $result_factory',
+                                'SearchResultInterfaceFactory $result_factory', $content );
+        $content = str_replace( "implements \\$interface_name", "implements $interface_name", $content );
+        $content = str_replace( "\\{$slim_model_name}Factory \$object_factory",
+                                "{$slim_model_name}Factory \$object_factory", $content );
         $content = str_replace( "\\{$entity_name}Interface \$object", "{$entity_name}Interface \$object", $content );
+        $content = str_replace( '\\CollectionFactory $collection_factory', 'CollectionFactory $collection_factory',
+                                $content );
         $content = str_replace( "\\Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
                                 "SearchCriteriaInterface \$criteria", $content );
 
@@ -144,6 +177,22 @@ use Ls\Workspace\Model\ResourceModel\Thing\CollectionFactory;
     }
 
     /**
+     * @param bool $full
+     *
+     * @return string
+     */
+    protected function getCollectionName ( $full = TRUE ) {
+        $generator = new ResourceCollectionGenerator( $this->entity_fqn, $this->table_name );
+        $name = 'Collection';
+        if ( $full ) {
+            $namespace = $generator->getNamespace();
+            $name = "$namespace\\$name";
+        }
+
+        return $name;
+    }
+
+    /**
      * @return string
      */
     public function getName () {
@@ -162,8 +211,8 @@ use Ls\Workspace\Model\ResourceModel\Thing\CollectionFactory;
             str_replace( 'SearchResultInterface', 'SearchResultInterfaceFactory', SearchResultInterface::class );
 
 
-        $method->setParameters( [ new ParameterGenerator( 'object_factory', $this->getModelName() . 'Factory' ),
-                                  new ParameterGenerator( 'collection_factory' ),
+        $method->setParameters( [ new ParameterGenerator( 'object_factory', $this->getModelName( FALSE ) . 'Factory' ),
+                                  new ParameterGenerator( 'collection_factory', 'CollectionFactory' ),
                                   new ParameterGenerator( 'result_factory', $search_factory ) ] );
         $method->setBody( <<<CODE
 \$this->object_factory = \$object_factory;
@@ -183,8 +232,12 @@ CODE
         $method->setName( 'getList' );
         $method->setParameters( [ new ParameterGenerator( 'criteria', SearchCriteriaInterface::class ) ] );
         $method->setBody( <<<CODE
+/** @var SearchResultInterface \$results */
+/** @noinspection PhpUndefinedMethodInspection */
 \$results = \$this->result_factory->create();
 \$results->setSearchCriteria( \$criteria );
+/** @var Collection \$collection */
+/** @noinspection PhpUndefinedMethodInspection */
 \$collection = \$this->collection_factory->create();
 foreach ( \$criteria->getFilterGroups() as \$filter_group ) {
     \$fields = [ ];
@@ -199,7 +252,7 @@ foreach ( \$criteria->getFilterGroups() as \$filter_group ) {
     }
 }
 \$results->setTotalCount( \$collection->getSize() );
-\$sort_rrders = \$criteria->getSortOrders();
+\$sort_orders = \$criteria->getSortOrders();
 if ( \$sort_orders ) {
     /** @var SortOrder \$sort_order */
     foreach ( \$sort_orders as \$sort_order ) {
@@ -235,7 +288,7 @@ CODE
 try {
     \$object->save();
 } catch ( Exception \$e ) {
-    throw new CouldNotSaveException( \$e->getMessage() );
+    throw new CouldNotSaveException( new Phrase( \$e->getMessage() ) );
 }
 
 return \$object;
@@ -256,7 +309,7 @@ CODE
 \$object = \$this->object_factory->create();
 \$object->load( \$id );
 if ( ! \$object->getId() ) {
-    throw new NoSuchEntityException( "Object with id '\$id' does not exist." );
+    throw new NoSuchEntityException( new Phrase( "Object with id '\$id' does not exist." ) );
 }
 
 return \$object;
@@ -277,7 +330,7 @@ CODE
 try {
     \$object->delete();
 } catch ( Exception \$e) {
-    throw new CouldNotDeleteException( \$e->getMessage() );
+    throw new CouldNotDeleteException( new Phrase( \$e->getMessage() ) );
 }
 
 return TRUE;

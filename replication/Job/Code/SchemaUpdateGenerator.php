@@ -71,6 +71,16 @@ class SchemaUpdateGenerator implements GeneratorInterface
     /**
      * @return string
      */
+    public function getTableNameId () {
+        $entity_name = strtolower( $this->case_helper->toSnakeCase( $this->reflected_entity->getShortName() ) );
+        $idx = "$entity_name" . '_id';
+
+        return $idx;
+    }
+
+    /**
+     * @return string
+     */
     public function generate () {
 
         $entity_name = $this->case_helper->toPascalCase( $this->reflected_entity->getShortName() );
@@ -132,13 +142,14 @@ class SchemaUpdateGenerator implements GeneratorInterface
         };
 
         $table_name = $this->getTableName();
+        $table_idx_name = $this->getTableNameId();
         $method_body = <<<CODE
 if ( ! \$setup->tableExists( '$table_name' ) ) {
 
 \t\$table = new Table();
 \t\$table->setName( '$table_name' ); 
 
-\t\$table->addColumn( 'id', Table::TYPE_INTEGER, NULL, 
+\t\$table->addColumn( '$table_idx_name', Table::TYPE_INTEGER, NULL, 
 \t                    [ 'identity' => TRUE, 'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment' => TRUE ] );
 
 CODE;

@@ -60,7 +60,7 @@ class OperationGenerator extends AbstractGenerator
 parent::__construct( \$service_type );
 \$url = OmniService::getUrl( \$service_type ); 
 \$this->client = new OmniClient( \$url, \$service_type );
-\$this->client->setClassMap( \$this->getClassMap() );
+\$this->client->setClassmap( \$this->getClassMap() );
 CODE
         );
 
