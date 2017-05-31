@@ -2,17 +2,18 @@ version: '2'
 services:
     web:
         build: .
-        container_name: magento2devbox_web
+        container_name: devbox_web
         restart: always
         volumes:
-          - "../shared/webroot:/home/magento2/magento2"
+          - "./run/webroot:/var/www/magento2"
+          - "./run/webroot:/home/magento2/magento2"
           - "~/.composer:/home/magento2/.composer"
           - "~/.ssh:/home/magento2/.ssh"
-          - "../shared/logs/apache2:/var/log/apache2"
-          - "../shared/logs/php-fpm:/var/log/php-fpm"
-          - "../shared/.magento-cloud:/home/magento2/.magento-cloud"
+          - "./run/logs/apache2:/var/log/apache2"
+          - "./run/logs/php-fpm:/var/log/php-fpm"
+          - "./run/.magento-cloud:/home/magento2/.magento-cloud"
         environment:
-          - USE_SHARED_WEBROOT=0
+          - USE_SHARED_WEBROOT=1
           - SHARED_CODE_PATH="/home/magento2/magento2"
           - USE_RABBITMQ=0
           - USE_REDIS_FULL_PAGE_CACHE=0
@@ -24,7 +25,7 @@ services:
           - MAGENTO_PRIVATE_KEY=028509eaf0da0e47d5ca07329f955175
           - MAGENTO_USE_SOURCES_IN_HOST=0
           - CREATE_SYMLINK_EE=0
-          - HOST_CE_PATH=../shared/webroot
+          - HOST_CE_PATH=./run/webroot
           - EE_DIRNAME=magento2ee
           - MAGENTO_DOWNLOAD_SOURCES_COMPOSER=1
           - MAGENTO_EDITION=ce
@@ -48,7 +49,7 @@ services:
           - "22"
 
     db:
-        container_name: magento2devbox_db
+        container_name: devbox_db
         restart: always
         image: mysql:5.6
         ports:
@@ -57,10 +58,10 @@ services:
           - MYSQL_ROOT_PASSWORD=root
           - MYSQL_DATABASE=magento2
         volumes:
-          - "./shared/db:/var/lib/mysql"
-          - "./shared/var/logs/mysql:/var/log/mysql"
+          - "./run/db:/var/lib/mysql"
+          - "./run/var/logs/mysql:/var/log/mysql"
 
     redis:
-        container_name: magento2devbox_redis
+        container_name: devbox_redis
         restart: always
         image: redis:3.0.7
