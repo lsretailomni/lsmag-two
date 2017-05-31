@@ -2,11 +2,15 @@
   "name": "lsretail/ls-mag-two",
   "description": "LS NAV Magento 2 Integration",
   "type": "library",
-  "license": "propietary",
+  "license": "proprietary",
   "authors": [
     {
       "name": "Claudio Maubert",
       "email": "claudio@lsretail.com"
+    },
+    {
+      "name": "Florin Godard",
+      "email": "florin@lsretail.com"
     }
   ],
   "config": {
@@ -40,12 +44,14 @@
     "psr-4": {
       "Ls\\Core\\": "core",
       "Ls\\Omni\\": "omni",
-      "Ls\\Replication\\": "replication"
+      "Ls\\Replication\\": "replication",
+      "Ls\\Customer\\": "customer"
     },
     "files": [
       "core/registration.php",
       "omni/registration.php",
-      "replication/registration.php"
+      "replication/registration.php",
+      "customer/registration.php",
     ]
   }
 }
