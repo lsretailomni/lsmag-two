@@ -18,15 +18,15 @@
   "minimum-stability": "alpha",
   "require": {
     "php": "~5.6.5|7.0.2|7.0.4|~7.0.6",
-    "monolog/monolog": "^1.17",
     "symfony/console": "~2.3,!=2.7.0",
-    "symfony/filesystem": "^3.2",
-    "zendframework/zend-http": "^2.6",
-    "zendframework/zend-soap": "^2.6",
-    "zendframework/zend-uri": "^2.5",
+    "symfony/filesystem": "^2.3.0",
+    "zendframework/zend-http": "~2.4",
+    "zendframework/zend-soap": "~2.4",
+    "zendframework/zend-uri": "~2.4.6",
     "myclabs/php-enum": "^1.5",
     "sabre/xml": "^1.5",
-    "nabil1337/case-helper": "^0.1.0"
+    "nabil1337/case-helper": "^0.1.0",
+    "monolog/monolog": "1.16.*"
   },
   "require-dev": {
     "magento/framework": "^100.1",
