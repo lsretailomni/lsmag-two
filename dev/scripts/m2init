@@ -1,0 +1,49 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+namespace MagentoDevBox;
+
+$blockCommand = true;
+$initStatus = '[BGN] Synchronisation of the webroot and shared code directory started.';
+
+while ($blockCommand) {
+    if (!file_exists('/var/www/magento2/status.html')) {
+        $blockCommand = false;
+    } else {
+        $status = file_get_contents('/var/www/magento2/status.html');
+
+        if ($status != $initStatus) {
+            echo "\n" . $status . "\n";
+            $initStatus = $status;
+        }
+
+        if (strpos($status, '[DONE]') !== false) {
+            $blockCommand = false;
+        }
+    }
+    echo '.';
+    sleep(5);
+}
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use MagentoDevBox\Command\MagentoInstall;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$commands = [];
+
+foreach (glob(__DIR__ . '/Command/Pool/*.php') as $fileName)
+{
+    $className = 'MagentoDevBox\\Command\\Pool\\' . basename($fileName, '.php');
+    $commands[] = new $className();
+}
+
+$application->addCommands($commands);
+$wrapperCommand = new MagentoInstall();
+$application->add($wrapperCommand);
+$wrapperCommand->postConfigure();
+$application->run();
