@@ -51,7 +51,7 @@
       "core/registration.php",
       "omni/registration.php",
       "replication/registration.php",
-      "customer/registration.php",
+      "customer/registration.php"
     ]
   }
 }
