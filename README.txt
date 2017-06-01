@@ -2,7 +2,7 @@ Development Installation:
 
 1. Install Magento2
 
-2. Clone lsmag-two somewhere somwhere outside the installation folder of Magento2, for example inside /var/www/lsmag-two.
+2. Clone lsmag-two somewhere somwhere outside the installation folder of Magento2, for example inside /var/www/lsmag-two
 
 3. Open composer.json of Magento2
 
@@ -15,13 +15,13 @@ Development Installation:
         }
     ]
 
-5. composer require "lsretail/ls-mag-two @dev"
+5. Run composer require "lsretail/ls-mag-two @dev" inside the Magento2 directory
 
 6. This installs our module with a symlink. This breaks the ls-mag binary. To get it to run, add a symlink to the magento/vendor/autoload.php file in the directory ls-mag-two/vendor (which you need to create).
 Run inside ls-mag-two:
 mkdir vendor
 ln -s /var/www/magento2/vendor/autoload.php vendor/autoload.php
-Now you can run bin/ls-mag again.
+Now you can run bin/ls-mag again
 
 Development Notes:
 
@@ -33,6 +33,7 @@ Development Notes:
 
 - It might be useful to use the automatic conversion tools at https://github.com/magento/code-migration to convert an old Magento1 installation with our modules and base the new code on the converted file. As there are a lot of changes in Magento2, you can probably only re-use the general logic from the old module, not any actual code
 
+- If you are working on the InstalLData class of a module and want to re-run the install method, drop the appropriate line from the setup_module table and run bin/magento setup:upgrade.
 
 Older notes:
 - Development inside app/code? See http://devdocs.magento.com/guides/v2.0/extension-dev-guide/build/module-file-structure.html
