@@ -97,12 +97,16 @@ CODE
                                                                     new Tag\ThrowsTag( [ 'InvalidEnumException' ] ) ] ] ) );
                     $this->class->addUse( InvalidEnumException::class );
                     $set_method->setBody( <<<CODE
-if ( $field_data_type::isValid( \$$field_name) ) 
-    \$this->$field_name = new $field_data_type( \$$field_name );
-elseif ( $field_data_type::isValidKey( \$$field_name) ) 
-    \$this->$field_name = new $field_data_type( constant( "$field_data_type::\$$field_name" ) );
-else 
-    throw new InvalidEnumException();
+if ( ! \$$field_name instanceof $field_data_type ) {
+    if ( $field_data_type::isValid( \$$field_name ) ) 
+        \$$field_name = new $field_data_type( \$$field_name );
+    elseif ( $field_data_type::isValidKey( \$$field_name ) ) 
+        \$$field_name = new $field_data_type( constant( "$field_data_type::\$$field_name" ) );
+    elseif ( ! \$$field_name instanceof $field_data_type )
+        throw new InvalidEnumException();
+}
+\$this->$field_name = \${$field_name}->getValue();
+
 return \$this;
 CODE
                     );

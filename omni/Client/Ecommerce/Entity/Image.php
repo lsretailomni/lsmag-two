@@ -117,12 +117,16 @@ class Image
      */
     public function setLocationType($LocationType)
     {
-        if ( LocationType::isValid( $LocationType) ) 
-            $this->LocationType = new LocationType( $LocationType );
-        elseif ( LocationType::isValidKey( $LocationType) ) 
-            $this->LocationType = new LocationType( constant( "LocationType::$LocationType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $LocationType instanceof LocationType ) {
+            if ( LocationType::isValid( $LocationType ) ) 
+                $LocationType = new LocationType( $LocationType );
+            elseif ( LocationType::isValidKey( $LocationType ) ) 
+                $LocationType = new LocationType( constant( "LocationType::$LocationType" ) );
+            elseif ( ! $LocationType instanceof LocationType )
+                throw new InvalidEnumException();
+        }
+        $this->LocationType = $LocationType->getValue();
+
         return $this;
     }
 

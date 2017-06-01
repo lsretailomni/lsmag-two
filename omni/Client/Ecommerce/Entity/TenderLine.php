@@ -356,12 +356,16 @@ class TenderLine
      */
     public function setEFTAuthStatus($EFTAuthStatus)
     {
-        if ( AuthorizationStatus::isValid( $EFTAuthStatus) ) 
-            $this->EFTAuthStatus = new AuthorizationStatus( $EFTAuthStatus );
-        elseif ( AuthorizationStatus::isValidKey( $EFTAuthStatus) ) 
-            $this->EFTAuthStatus = new AuthorizationStatus( constant( "AuthorizationStatus::$EFTAuthStatus" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $EFTAuthStatus instanceof AuthorizationStatus ) {
+            if ( AuthorizationStatus::isValid( $EFTAuthStatus ) ) 
+                $EFTAuthStatus = new AuthorizationStatus( $EFTAuthStatus );
+            elseif ( AuthorizationStatus::isValidKey( $EFTAuthStatus ) ) 
+                $EFTAuthStatus = new AuthorizationStatus( constant( "AuthorizationStatus::$EFTAuthStatus" ) );
+            elseif ( ! $EFTAuthStatus instanceof AuthorizationStatus )
+                throw new InvalidEnumException();
+        }
+        $this->EFTAuthStatus = $EFTAuthStatus->getValue();
+
         return $this;
     }
 
@@ -470,12 +474,16 @@ class TenderLine
      */
     public function setEFTTransType($EFTTransType)
     {
-        if ( EFTTransactionType::isValid( $EFTTransType) ) 
-            $this->EFTTransType = new EFTTransactionType( $EFTTransType );
-        elseif ( EFTTransactionType::isValidKey( $EFTTransType) ) 
-            $this->EFTTransType = new EFTTransactionType( constant( "EFTTransactionType::$EFTTransType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $EFTTransType instanceof EFTTransactionType ) {
+            if ( EFTTransactionType::isValid( $EFTTransType ) ) 
+                $EFTTransType = new EFTTransactionType( $EFTTransType );
+            elseif ( EFTTransactionType::isValidKey( $EFTTransType ) ) 
+                $EFTTransType = new EFTTransactionType( constant( "EFTTransactionType::$EFTTransType" ) );
+            elseif ( ! $EFTTransType instanceof EFTTransactionType )
+                throw new InvalidEnumException();
+        }
+        $this->EFTTransType = $EFTTransType->getValue();
+
         return $this;
     }
 
@@ -512,12 +520,16 @@ class TenderLine
      */
     public function setEFTVerificationMethod($EFTVerificationMethod)
     {
-        if ( EFTVerificationMethod::isValid( $EFTVerificationMethod) ) 
-            $this->EFTVerificationMethod = new EFTVerificationMethod( $EFTVerificationMethod );
-        elseif ( EFTVerificationMethod::isValidKey( $EFTVerificationMethod) ) 
-            $this->EFTVerificationMethod = new EFTVerificationMethod( constant( "EFTVerificationMethod::$EFTVerificationMethod" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $EFTVerificationMethod instanceof EFTVerificationMethod ) {
+            if ( EFTVerificationMethod::isValid( $EFTVerificationMethod ) ) 
+                $EFTVerificationMethod = new EFTVerificationMethod( $EFTVerificationMethod );
+            elseif ( EFTVerificationMethod::isValidKey( $EFTVerificationMethod ) ) 
+                $EFTVerificationMethod = new EFTVerificationMethod( constant( "EFTVerificationMethod::$EFTVerificationMethod" ) );
+            elseif ( ! $EFTVerificationMethod instanceof EFTVerificationMethod )
+                throw new InvalidEnumException();
+        }
+        $this->EFTVerificationMethod = $EFTVerificationMethod->getValue();
+
         return $this;
     }
 
@@ -536,12 +548,16 @@ class TenderLine
      */
     public function setEntryStatus($EntryStatus)
     {
-        if ( EntryStatus::isValid( $EntryStatus) ) 
-            $this->EntryStatus = new EntryStatus( $EntryStatus );
-        elseif ( EntryStatus::isValidKey( $EntryStatus) ) 
-            $this->EntryStatus = new EntryStatus( constant( "EntryStatus::$EntryStatus" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $EntryStatus instanceof EntryStatus ) {
+            if ( EntryStatus::isValid( $EntryStatus ) ) 
+                $EntryStatus = new EntryStatus( $EntryStatus );
+            elseif ( EntryStatus::isValidKey( $EntryStatus ) ) 
+                $EntryStatus = new EntryStatus( constant( "EntryStatus::$EntryStatus" ) );
+            elseif ( ! $EntryStatus instanceof EntryStatus )
+                throw new InvalidEnumException();
+        }
+        $this->EntryStatus = $EntryStatus->getValue();
+
         return $this;
     }
 

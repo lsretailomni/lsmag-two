@@ -193,12 +193,16 @@ class Attribute
      */
     public function setLinkType($LinkType)
     {
-        if ( AttributeLinkType::isValid( $LinkType) ) 
-            $this->LinkType = new AttributeLinkType( $LinkType );
-        elseif ( AttributeLinkType::isValidKey( $LinkType) ) 
-            $this->LinkType = new AttributeLinkType( constant( "AttributeLinkType::$LinkType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $LinkType instanceof AttributeLinkType ) {
+            if ( AttributeLinkType::isValid( $LinkType ) ) 
+                $LinkType = new AttributeLinkType( $LinkType );
+            elseif ( AttributeLinkType::isValidKey( $LinkType ) ) 
+                $LinkType = new AttributeLinkType( constant( "AttributeLinkType::$LinkType" ) );
+            elseif ( ! $LinkType instanceof AttributeLinkType )
+                throw new InvalidEnumException();
+        }
+        $this->LinkType = $LinkType->getValue();
+
         return $this;
     }
 

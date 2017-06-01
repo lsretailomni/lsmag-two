@@ -73,12 +73,16 @@ class Profile
      */
     public function setDataType($DataType)
     {
-        if ( ProfileDataType::isValid( $DataType) ) 
-            $this->DataType = new ProfileDataType( $DataType );
-        elseif ( ProfileDataType::isValidKey( $DataType) ) 
-            $this->DataType = new ProfileDataType( constant( "ProfileDataType::$DataType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $DataType instanceof ProfileDataType ) {
+            if ( ProfileDataType::isValid( $DataType ) ) 
+                $DataType = new ProfileDataType( $DataType );
+            elseif ( ProfileDataType::isValidKey( $DataType ) ) 
+                $DataType = new ProfileDataType( constant( "ProfileDataType::$DataType" ) );
+            elseif ( ! $DataType instanceof ProfileDataType )
+                throw new InvalidEnumException();
+        }
+        $this->DataType = $DataType->getValue();
+
         return $this;
     }
 

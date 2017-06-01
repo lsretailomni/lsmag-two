@@ -36,12 +36,16 @@ class ContactSearch implements IRequest
      */
     public function setSearchType($searchType)
     {
-        if ( ContactSearchType::isValid( $searchType) ) 
-            $this->searchType = new ContactSearchType( $searchType );
-        elseif ( ContactSearchType::isValidKey( $searchType) ) 
-            $this->searchType = new ContactSearchType( constant( "ContactSearchType::$searchType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $searchType instanceof ContactSearchType ) {
+            if ( ContactSearchType::isValid( $searchType ) ) 
+                $searchType = new ContactSearchType( $searchType );
+            elseif ( ContactSearchType::isValidKey( $searchType ) ) 
+                $searchType = new ContactSearchType( constant( "ContactSearchType::$searchType" ) );
+            elseif ( ! $searchType instanceof ContactSearchType )
+                throw new InvalidEnumException();
+        }
+        $this->searchType = $searchType->getValue();
+
         return $this;
     }
 

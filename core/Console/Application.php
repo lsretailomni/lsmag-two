@@ -1,6 +1,7 @@
 <?php
 namespace Ls\Core\Console;
 
+use Ls\Omni\Console\Command\ClientContactSearch;
 use Ls\Omni\Console\Command\ClientGenerate;
 use Ls\Omni\Console\Command\ClientPing;
 use Ls\Omni\Console\Command\ClientWsdl;
@@ -23,6 +24,7 @@ class Application extends SymfonyApplication
         $commands[] = new ClientWsdl();
         $commands[] = new ClientGenerate();
         $commands[] = new ClientPing();
+        $commands[] = new ClientContactSearch();
         $commands[] = new ReplicationGenerate();
         $commands[] = new ReplicationTest();
 

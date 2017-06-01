@@ -31,12 +31,16 @@ class AppSettingsGetByKey implements IRequest
      */
     public function setKey($key)
     {
-        if ( AppSettingsKey::isValid( $key) ) 
-            $this->key = new AppSettingsKey( $key );
-        elseif ( AppSettingsKey::isValidKey( $key) ) 
-            $this->key = new AppSettingsKey( constant( "AppSettingsKey::$key" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $key instanceof AppSettingsKey ) {
+            if ( AppSettingsKey::isValid( $key ) ) 
+                $key = new AppSettingsKey( $key );
+            elseif ( AppSettingsKey::isValidKey( $key ) ) 
+                $key = new AppSettingsKey( constant( "AppSettingsKey::$key" ) );
+            elseif ( ! $key instanceof AppSettingsKey )
+                throw new InvalidEnumException();
+        }
+        $this->key = $key->getValue();
+
         return $this;
     }
 

@@ -316,12 +316,16 @@ class ContactPOS
      */
     public function setGender($Gender)
     {
-        if ( Gender::isValid( $Gender) ) 
-            $this->Gender = new Gender( $Gender );
-        elseif ( Gender::isValidKey( $Gender) ) 
-            $this->Gender = new Gender( constant( "Gender::$Gender" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $Gender instanceof Gender ) {
+            if ( Gender::isValid( $Gender ) ) 
+                $Gender = new Gender( $Gender );
+            elseif ( Gender::isValidKey( $Gender ) ) 
+                $Gender = new Gender( constant( "Gender::$Gender" ) );
+            elseif ( ! $Gender instanceof Gender )
+                throw new InvalidEnumException();
+        }
+        $this->Gender = $Gender->getValue();
+
         return $this;
     }
 
@@ -394,12 +398,16 @@ class ContactPOS
      */
     public function setMaritalStatus($MaritalStatus)
     {
-        if ( MaritalStatus::isValid( $MaritalStatus) ) 
-            $this->MaritalStatus = new MaritalStatus( $MaritalStatus );
-        elseif ( MaritalStatus::isValidKey( $MaritalStatus) ) 
-            $this->MaritalStatus = new MaritalStatus( constant( "MaritalStatus::$MaritalStatus" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $MaritalStatus instanceof MaritalStatus ) {
+            if ( MaritalStatus::isValid( $MaritalStatus ) ) 
+                $MaritalStatus = new MaritalStatus( $MaritalStatus );
+            elseif ( MaritalStatus::isValidKey( $MaritalStatus ) ) 
+                $MaritalStatus = new MaritalStatus( constant( "MaritalStatus::$MaritalStatus" ) );
+            elseif ( ! $MaritalStatus instanceof MaritalStatus )
+                throw new InvalidEnumException();
+        }
+        $this->MaritalStatus = $MaritalStatus->getValue();
+
         return $this;
     }
 

@@ -72,12 +72,16 @@ class NotificationsUpdateStatus implements IRequest
      */
     public function setNotificationStatus($notificationStatus)
     {
-        if ( NotificationStatus::isValid( $notificationStatus) ) 
-            $this->notificationStatus = new NotificationStatus( $notificationStatus );
-        elseif ( NotificationStatus::isValidKey( $notificationStatus) ) 
-            $this->notificationStatus = new NotificationStatus( constant( "NotificationStatus::$notificationStatus" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $notificationStatus instanceof NotificationStatus ) {
+            if ( NotificationStatus::isValid( $notificationStatus ) ) 
+                $notificationStatus = new NotificationStatus( $notificationStatus );
+            elseif ( NotificationStatus::isValidKey( $notificationStatus ) ) 
+                $notificationStatus = new NotificationStatus( constant( "NotificationStatus::$notificationStatus" ) );
+            elseif ( ! $notificationStatus instanceof NotificationStatus )
+                throw new InvalidEnumException();
+        }
+        $this->notificationStatus = $notificationStatus->getValue();
+
         return $this;
     }
 

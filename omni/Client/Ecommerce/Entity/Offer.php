@@ -189,12 +189,16 @@ class Offer
      */
     public function setType($Type)
     {
-        if ( OfferType::isValid( $Type) ) 
-            $this->Type = new OfferType( $Type );
-        elseif ( OfferType::isValidKey( $Type) ) 
-            $this->Type = new OfferType( constant( "OfferType::$Type" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $Type instanceof OfferType ) {
+            if ( OfferType::isValid( $Type ) ) 
+                $Type = new OfferType( $Type );
+            elseif ( OfferType::isValidKey( $Type ) ) 
+                $Type = new OfferType( constant( "OfferType::$Type" ) );
+            elseif ( ! $Type instanceof OfferType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
         return $this;
     }
 
@@ -231,12 +235,16 @@ class Offer
      */
     public function setDiscountType($DiscountType)
     {
-        if ( DiscountType::isValid( $DiscountType) ) 
-            $this->DiscountType = new DiscountType( $DiscountType );
-        elseif ( DiscountType::isValidKey( $DiscountType) ) 
-            $this->DiscountType = new DiscountType( constant( "DiscountType::$DiscountType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $DiscountType instanceof DiscountType ) {
+            if ( DiscountType::isValid( $DiscountType ) ) 
+                $DiscountType = new DiscountType( $DiscountType );
+            elseif ( DiscountType::isValidKey( $DiscountType ) ) 
+                $DiscountType = new DiscountType( constant( "DiscountType::$DiscountType" ) );
+            elseif ( ! $DiscountType instanceof DiscountType )
+                throw new InvalidEnumException();
+        }
+        $this->DiscountType = $DiscountType->getValue();
+
         return $this;
     }
 

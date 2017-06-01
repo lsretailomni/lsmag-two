@@ -143,12 +143,16 @@ class OrderClickCollect
      */
     public function setItemNumberType($ItemNumberType)
     {
-        if ( ItemNumberType::isValid( $ItemNumberType) ) 
-            $this->ItemNumberType = new ItemNumberType( $ItemNumberType );
-        elseif ( ItemNumberType::isValidKey( $ItemNumberType) ) 
-            $this->ItemNumberType = new ItemNumberType( constant( "ItemNumberType::$ItemNumberType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $ItemNumberType instanceof ItemNumberType ) {
+            if ( ItemNumberType::isValid( $ItemNumberType ) ) 
+                $ItemNumberType = new ItemNumberType( $ItemNumberType );
+            elseif ( ItemNumberType::isValidKey( $ItemNumberType ) ) 
+                $ItemNumberType = new ItemNumberType( constant( "ItemNumberType::$ItemNumberType" ) );
+            elseif ( ! $ItemNumberType instanceof ItemNumberType )
+                throw new InvalidEnumException();
+        }
+        $this->ItemNumberType = $ItemNumberType->getValue();
+
         return $this;
     }
 
@@ -221,12 +225,16 @@ class OrderClickCollect
      */
     public function setSourceType($SourceType)
     {
-        if ( SourceType::isValid( $SourceType) ) 
-            $this->SourceType = new SourceType( $SourceType );
-        elseif ( SourceType::isValidKey( $SourceType) ) 
-            $this->SourceType = new SourceType( constant( "SourceType::$SourceType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $SourceType instanceof SourceType ) {
+            if ( SourceType::isValid( $SourceType ) ) 
+                $SourceType = new SourceType( $SourceType );
+            elseif ( SourceType::isValidKey( $SourceType ) ) 
+                $SourceType = new SourceType( constant( "SourceType::$SourceType" ) );
+            elseif ( ! $SourceType instanceof SourceType )
+                throw new InvalidEnumException();
+        }
+        $this->SourceType = $SourceType->getValue();
+
         return $this;
     }
 

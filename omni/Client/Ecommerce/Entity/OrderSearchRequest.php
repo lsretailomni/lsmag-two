@@ -120,12 +120,16 @@ class OrderSearchRequest
      */
     public function setOrderStatusFilter($OrderStatusFilter)
     {
-        if ( OrderQueueStatusFilterType::isValid( $OrderStatusFilter) ) 
-            $this->OrderStatusFilter = new OrderQueueStatusFilterType( $OrderStatusFilter );
-        elseif ( OrderQueueStatusFilterType::isValidKey( $OrderStatusFilter) ) 
-            $this->OrderStatusFilter = new OrderQueueStatusFilterType( constant( "OrderQueueStatusFilterType::$OrderStatusFilter" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $OrderStatusFilter instanceof OrderQueueStatusFilterType ) {
+            if ( OrderQueueStatusFilterType::isValid( $OrderStatusFilter ) ) 
+                $OrderStatusFilter = new OrderQueueStatusFilterType( $OrderStatusFilter );
+            elseif ( OrderQueueStatusFilterType::isValidKey( $OrderStatusFilter ) ) 
+                $OrderStatusFilter = new OrderQueueStatusFilterType( constant( "OrderQueueStatusFilterType::$OrderStatusFilter" ) );
+            elseif ( ! $OrderStatusFilter instanceof OrderQueueStatusFilterType )
+                throw new InvalidEnumException();
+        }
+        $this->OrderStatusFilter = $OrderStatusFilter->getValue();
+
         return $this;
     }
 
@@ -144,12 +148,16 @@ class OrderSearchRequest
      */
     public function setOrderType($OrderType)
     {
-        if ( OrderQueueType::isValid( $OrderType) ) 
-            $this->OrderType = new OrderQueueType( $OrderType );
-        elseif ( OrderQueueType::isValidKey( $OrderType) ) 
-            $this->OrderType = new OrderQueueType( constant( "OrderQueueType::$OrderType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $OrderType instanceof OrderQueueType ) {
+            if ( OrderQueueType::isValid( $OrderType ) ) 
+                $OrderType = new OrderQueueType( $OrderType );
+            elseif ( OrderQueueType::isValidKey( $OrderType ) ) 
+                $OrderType = new OrderQueueType( constant( "OrderQueueType::$OrderType" ) );
+            elseif ( ! $OrderType instanceof OrderQueueType )
+                throw new InvalidEnumException();
+        }
+        $this->OrderType = $OrderType->getValue();
+
         return $this;
     }
 

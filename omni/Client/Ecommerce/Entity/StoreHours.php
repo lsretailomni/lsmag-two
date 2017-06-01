@@ -145,12 +145,16 @@ class StoreHours
      */
     public function setStoreHourtype($StoreHourtype)
     {
-        if ( StoreHourType::isValid( $StoreHourtype) ) 
-            $this->StoreHourtype = new StoreHourType( $StoreHourtype );
-        elseif ( StoreHourType::isValidKey( $StoreHourtype) ) 
-            $this->StoreHourtype = new StoreHourType( constant( "StoreHourType::$StoreHourtype" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $StoreHourtype instanceof StoreHourType ) {
+            if ( StoreHourType::isValid( $StoreHourtype ) ) 
+                $StoreHourtype = new StoreHourType( $StoreHourtype );
+            elseif ( StoreHourType::isValidKey( $StoreHourtype ) ) 
+                $StoreHourtype = new StoreHourType( constant( "StoreHourType::$StoreHourtype" ) );
+            elseif ( ! $StoreHourtype instanceof StoreHourType )
+                throw new InvalidEnumException();
+        }
+        $this->StoreHourtype = $StoreHourtype->getValue();
+
         return $this;
     }
 

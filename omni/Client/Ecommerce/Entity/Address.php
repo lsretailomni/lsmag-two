@@ -186,12 +186,16 @@ class Address
      */
     public function setType($Type)
     {
-        if ( AddressType::isValid( $Type) ) 
-            $this->Type = new AddressType( $Type );
-        elseif ( AddressType::isValidKey( $Type) ) 
-            $this->Type = new AddressType( constant( "AddressType::$Type" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $Type instanceof AddressType ) {
+            if ( AddressType::isValid( $Type ) ) 
+                $Type = new AddressType( $Type );
+            elseif ( AddressType::isValidKey( $Type ) ) 
+                $Type = new AddressType( constant( "AddressType::$Type" ) );
+            elseif ( ! $Type instanceof AddressType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
         return $this;
     }
 

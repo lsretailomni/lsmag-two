@@ -127,12 +127,16 @@ class Card
      */
     public function setCardStatus($CardStatus)
     {
-        if ( CardStatus::isValid( $CardStatus) ) 
-            $this->CardStatus = new CardStatus( $CardStatus );
-        elseif ( CardStatus::isValidKey( $CardStatus) ) 
-            $this->CardStatus = new CardStatus( constant( "CardStatus::$CardStatus" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $CardStatus instanceof CardStatus ) {
+            if ( CardStatus::isValid( $CardStatus ) ) 
+                $CardStatus = new CardStatus( $CardStatus );
+            elseif ( CardStatus::isValidKey( $CardStatus ) ) 
+                $CardStatus = new CardStatus( constant( "CardStatus::$CardStatus" ) );
+            elseif ( ! $CardStatus instanceof CardStatus )
+                throw new InvalidEnumException();
+        }
+        $this->CardStatus = $CardStatus->getValue();
+
         return $this;
     }
 
