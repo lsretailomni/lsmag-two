@@ -36,12 +36,14 @@ class InstallSchema implements InstallSchemaInterface
         $folder = dirname( $filename );
         $upgrades = glob( $folder . DIRECTORY_SEPARATOR . '*' );
         foreach ( $upgrades as $upgrade_file ) {
-            if ( $fs->exists( $upgrade_file ) ) {
-                $upgrade_class = str_replace( '.php', '', $fs->makePathRelative( $upgrade_file, $folder ) );
-                $upgrade_class_fqn = $base_namespace . '\\' . $upgrade_class;
-                /** @var UpgradeSchemaBlockInterface $upgrade */
-                $upgrade = new $upgrade_class_fqn();
-                $upgrade->upgrade( $this->installer, $this->context );
+            if ( strpos( $upgrade_file, 'UpgradeSchemaBlockInterface' ) === FALSE ) {
+                if ( $fs->exists( $upgrade_file ) ) {
+                    $upgrade_class = str_replace( '.php', '', $fs->makePathRelative( $upgrade_file, $folder ) );
+                    $upgrade_class_fqn = $base_namespace . '\\' . substr( $upgrade_class, 0, -1 );
+                    /** @var UpgradeSchemaBlockInterface $upgrade */
+                    $upgrade = new $upgrade_class_fqn();
+                    $upgrade->upgrade( $this->installer, $this->context );
+                }
             }
         }
 

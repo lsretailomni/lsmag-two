@@ -11,17 +11,20 @@ class ProductGroup implements UpgradeSchemaBlockInterface
 
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
-        if ( ! $setup->tableExists( 'lsr_replication_product_group' ) ) {
+        $table_name = $setup->getTable( 'lsr_replication_product_group' ); 
+        if ( ! $setup->tableExists( $table_name ) ) {
 
-        	$table = new Table();
-        	$table->setName( 'lsr_replication_product_group' ); 
+        	$table = $setup->getConnection()->newTable( $table_name );
+        	//$table = new Table();
+        	//$table->setName( $table_name ); 
 
         	$table->addColumn( 'product_group_id', Table::TYPE_INTEGER, NULL, 
-        	                    [ 'identity' => TRUE, 'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment' => TRUE ] );
+        	                    [ 'identity' => TRUE, 'primary' => TRUE,
+        	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
         	$table->addColumn( 'Del' , Table::TYPE_BOOLEAN );
-        	$table->addColumn( 'Description' , Table::TYPE_BLOB );
-        	$table->addColumn( 'Id' , Table::TYPE_BLOB );
-        	$table->addColumn( 'ItemCategoryID' , Table::TYPE_BLOB );
+        	$table->addColumn( 'Description' , Table::TYPE_TEXT );
+        	$table->addColumn( 'Id' , Table::TYPE_TEXT );
+        	$table->addColumn( 'ItemCategoryID' , Table::TYPE_TEXT );
         	$table->addColumn( 'scope', Table::TYPE_TEXT, 8);
         	$table->addColumn( 'scope_id', Table::TYPE_INTEGER, 11);
         	$table->addColumn( 'processed', Table::TYPE_BOOLEAN, null, [ 'default' => FALSE ] );

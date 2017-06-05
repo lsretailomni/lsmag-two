@@ -7,42 +7,47 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use IteratorAggregate;
 use ArrayIterator;
+use IteratorAggregate;
 
 class ArrayOfContactPOS implements IteratorAggregate
 {
 
+
     /**
      * @property ContactPOS[] $ContactPOS
      */
-    protected $ContactPOS = array(
-        
-    );
+    protected $ContactPOS = array();
+
+    /**
+     * ArrayOfContactPOS constructor.
+     *
+     * @param array $ContactPOS
+     */
+    public function __construct ( array $ContactPOS ) { $this->ContactPOS = $ContactPOS; }
 
     /**
      * @param ContactPOS[] $ContactPOS
+     *
      * @return $this
      */
-    public function setContactPOS($ContactPOS)
-    {
+    public function setContactPOS ( $ContactPOS ) {
         $this->ContactPOS = $ContactPOS;
+
         return $this;
     }
 
     /**
      * @return ContactPOS[]
      */
-    public function getIterator()
-    {
+    public function getIterator () {
         return new ArrayIterator( $this->ContactPOS );
     }
 
     /**
      * @return ContactPOS[]
      */
-    public function getContactPOS()
-    {
+    public function getContactPOS () {
         return $this->ContactPOS;
     }
 

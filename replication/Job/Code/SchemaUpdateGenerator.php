@@ -110,12 +110,6 @@ class SchemaUpdateGenerator implements GeneratorInterface
         $content = str_replace( '\\Magento\\Framework\\Setup\\ModuleContextInterface $context',
                                 'ModuleContextInterface $context', $content );
 
-//        $upgrade_schema = new UpgradeSchema();
-//        $versions = $this->reflected_upgrade->getProperty( 'versions' );
-//        $version_value = $versions->getValue( $upgrade_schema );
-//        $version_value[] = "'{$this->version}'";
-//        $versions->setValue( $version_value );
-
         return $content;
     }
 
@@ -144,13 +138,16 @@ class SchemaUpdateGenerator implements GeneratorInterface
         $table_name = $this->getTableName();
         $table_idx_name = $this->getTableNameId();
         $method_body = <<<CODE
-if ( ! \$setup->tableExists( '$table_name' ) ) {
+\$table_name = \$setup->getTable( '$table_name' ); 
+if ( ! \$setup->tableExists( \$table_name ) ) {
 
-\t\$table = new Table();
-\t\$table->setName( '$table_name' ); 
+\t\$table = \$setup->getConnection()->newTable( \$table_name );
+\t//\$table = new Table();
+\t//\$table->setName( \$table_name ); 
 
 \t\$table->addColumn( '$table_idx_name', Table::TYPE_INTEGER, NULL, 
-\t                    [ 'identity' => TRUE, 'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment' => TRUE ] );
+\t                    [ 'identity' => TRUE, 'primary' => TRUE,
+\t                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
 
 CODE;
         foreach ( $property_types as $name => $type ) {
@@ -163,7 +160,7 @@ CODE;
                 $field_type = 'Table::TYPE_BOOLEAN';
             } else {
                 $lower_name = strtolower( $name );
-                if ( strpos( $lower_name, 'base64' ) !== FALSE ) {
+                if ( strpos( $lower_name, 'image64' ) === FALSE ) {
                     $field_type = 'Table::TYPE_TEXT';
                 } else $field_type = 'Table::TYPE_BLOB';
             }
