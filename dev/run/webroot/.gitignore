@@ -49,3 +49,6 @@ atlassian*
 !/var/.htaccess
 /vendor/*
 !/vendor/.htaccess
+
+dev/*
+lib/web/*
