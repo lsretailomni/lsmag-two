@@ -7,7 +7,7 @@
         <resource id="Magento_Backend::stores">
           <resource id="Magento_Backend::stores_settings">
             <resource id="Magento_Config::config">
-              <resource id="Ls_Core::config" title="LS Retail" sortOrder="500"/>
+              <resource id="Ls_Omni::config" title="LS Omni Service" sortOrder="501"/>
             </resource>
           </resource>
         </resource>
