@@ -8,7 +8,6 @@ services:
           - "./run/webroot:/var/www/magento2"
           - "./run/webroot:/home/magento2/magento2"
           - "..:/home/magento2/lsmag2"
-          - "~/.composer:/home/magento2/.composer"
           - "~/.ssh:/home/magento2/.ssh"
           - "./run/logs/apache2:/var/log/apache2"
           - "./run/logs/php-fpm:/var/log/php-fpm"
