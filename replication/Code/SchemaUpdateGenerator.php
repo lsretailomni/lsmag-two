@@ -1,5 +1,5 @@
 <?php
-namespace Ls\Replication\Job\Code;
+namespace Ls\Replication\Code;
 
 
 use CaseHelper\CaseHelperFactory;
@@ -103,11 +103,11 @@ class SchemaUpdateGenerator implements GeneratorInterface
         $this->class->addMethodFromGenerator( $upgrade_method );
 
         $content = $this->file->generate();
-        $content = str_replace( 'implements \\Magento\\Framework\\Setup\\UpgradeSchemaInterface',
-                                'implements UpgradeSchemaInterface', $content );
-        $content = str_replace( '\\Magento\\Framework\\Setup\\SchemaSetupInterface $setup',
+        $content = str_replace( 'implements Ls\\Replication\\Setup\\UpgradeSchema\\UpgradeSchemaBlockInterface',
+                                'implements UpgradeSchemaBlockInterface', $content );
+        $content = str_replace( 'Magento\\Framework\\Setup\\SchemaSetupInterface $setup',
                                 'SchemaSetupInterface $setup', $content );
-        $content = str_replace( '\\Magento\\Framework\\Setup\\ModuleContextInterface $context',
+        $content = str_replace( 'Magento\\Framework\\Setup\\ModuleContextInterface $context',
                                 'ModuleContextInterface $context', $content );
 
         return $content;
@@ -142,8 +142,6 @@ class SchemaUpdateGenerator implements GeneratorInterface
 if ( ! \$setup->tableExists( \$table_name ) ) {
 
 \t\$table = \$setup->getConnection()->newTable( \$table_name );
-\t//\$table = new Table();
-\t//\$table->setName( \$table_name ); 
 
 \t\$table->addColumn( '$table_idx_name', Table::TYPE_INTEGER, NULL, 
 \t                    [ 'identity' => TRUE, 'primary' => TRUE,

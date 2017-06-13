@@ -60,12 +60,16 @@ class Advertisement
      */
     public function setAdType($AdType)
     {
-        if ( AdvertisementType::isValid( $AdType) ) 
-            $this->AdType = new AdvertisementType( $AdType );
-        elseif ( AdvertisementType::isValidKey( $AdType) ) 
-            $this->AdType = new AdvertisementType( constant( "AdvertisementType::$AdType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $AdType instanceof AdvertisementType ) {
+            if ( AdvertisementType::isValid( $AdType ) ) 
+                $AdType = new AdvertisementType( $AdType );
+            elseif ( AdvertisementType::isValidKey( $AdType ) ) 
+                $AdType = new AdvertisementType( constant( "AdvertisementType::$AdType" ) );
+            elseif ( ! $AdType instanceof AdvertisementType )
+                throw new InvalidEnumException();
+        }
+        $this->AdType = $AdType->getValue();
+
         return $this;
     }
 

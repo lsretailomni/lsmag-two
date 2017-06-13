@@ -1,18 +1,17 @@
 <?php
-namespace Ls\Replication\Job\Code;
+namespace Ls\Replication\Code;
 
 
 use Composer\Autoload\ClassLoader;
 use Ls\Replication\Model\ResourceModel\Anchor;
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use ReflectionClass;
-use Symfony\Component\Filesystem\Filesystem;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\FileGenerator;
 use Zend\Code\Generator\GeneratorInterface;
 use Zend\Code\Generator\MethodGenerator;
 
-class ResourceCollectionGenerator implements GeneratorInterface
+class ResourceModelGenerator implements GeneratorInterface
 {
     /** @var string */
     static public $namespace = 'Ls\\Replication\\Model\\ResourceModel';
@@ -26,8 +25,6 @@ class ResourceCollectionGenerator implements GeneratorInterface
     private $reflected_entity;
     /** @var string */
     private $table_name;
-    /** @var Filesystem */
-    private $fs;
 
     /**
      * @param string $entity_fqn
@@ -40,7 +37,6 @@ class ResourceCollectionGenerator implements GeneratorInterface
         $this->file = new FileGenerator();
         $this->class = new ClassGenerator();
         $this->file->setClass( $this->class );
-        $this->fs = new Filesystem();
     }
 
     /**
@@ -54,17 +50,9 @@ class ResourceCollectionGenerator implements GeneratorInterface
         /** @var ClassLoader $loader */
         $loader = $GLOBALS[ 'loader' ];
         $path = $loader->findFile( Anchor::class );
-        $path = str_replace( 'Anchor.php', $this->getName(), $path );
-        if ( !$this->fs->exists( $path ) ) $this->fs->mkdir( $path );
-        $path .= DIRECTORY_SEPARATOR . 'Collection.php';
+        $path = str_replace( 'Anchor', $this->getName(), $path );
 
         return $path;
-    }
-
-    public function getNamespace () {
-        $entity_name = $this->getName();
-
-        return self::$namespace . "\\{$entity_name}";
     }
 
     /**
@@ -72,27 +60,29 @@ class ResourceCollectionGenerator implements GeneratorInterface
      */
     public function generate () {
 
-        $model_generator = new ModelGenerator( $this->entity_fqn, $this->table_name );
-        $resource_model_generator = new ResourceModelGenerator( $this->entity_fqn, $this->table_name );
-        $model_class = $model_generator::$namespace . "\\" . $model_generator->getName();
-        $resource_model_class = $resource_model_generator::$namespace . "\\" . $resource_model_generator->getName();
+        $interface_generator = new ModelInterfaceGenerator( $this->entity_fqn );
+        $interface_name = $interface_generator->getName();
+//        $entity_name = $this->getName();
 
         $contructor_method = new MethodGenerator();
         $contructor_method->setName( '_construct' );
-        $contructor_method->setBody( "\$this->_init( '$model_class', '$resource_model_class' );" );
+        $idx_column = str_replace( 'lsr_replication_', '', $this->table_name ) . '_id';
+        $contructor_method->setBody( "\$this->_init( '{$this->table_name}', '$idx_column' );" );
 
-        $this->class->setNamespaceName( $this->getNamespace() );
-        $this->class->addUse( AbstractCollection::class );
+        $this->class->setNamespaceName( self::$namespace );
+        $this->class->addUse( AbstractDb::class );
 
-        $this->class->setName( 'Collection' );
-        $this->class->setExtendedClass( AbstractCollection::class );
+        $this->class->setName( $this->getName() );
+        $this->class->setExtendedClass( AbstractDb::class );
 
         $this->class->addMethodFromGenerator( $contructor_method );
 
         $content = $this->file->generate();
-        $content =
-            str_replace( 'extends \\Magento\\Framework\\Model\\ResourceModel\\Db\\Collection\\AbstractCollection',
-                         'extends AbstractCollection', $content );
+        $content = str_replace( 'extends Magento\\Framework\\Model\\ResourceModel\\Db\\AbstractDb',
+                                'extends AbstractDb', $content );
+        $content = str_replace( "implements \\$interface_name", "implements $interface_name", $content );
+        $content = str_replace( ', \\Magento\\Framework\\DataObject\\IdentityInterface',
+                                ', IdentityInterface', $content );
 
         return $content;
     }

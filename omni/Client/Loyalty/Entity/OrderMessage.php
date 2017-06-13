@@ -163,12 +163,16 @@ class OrderMessage
      */
     public function setOrderQueueStatus($OrderQueueStatus)
     {
-        if ( OrderMessageStatus::isValid( $OrderQueueStatus) ) 
-            $this->OrderQueueStatus = new OrderMessageStatus( $OrderQueueStatus );
-        elseif ( OrderMessageStatus::isValidKey( $OrderQueueStatus) ) 
-            $this->OrderQueueStatus = new OrderMessageStatus( constant( "OrderMessageStatus::$OrderQueueStatus" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $OrderQueueStatus instanceof OrderMessageStatus ) {
+            if ( OrderMessageStatus::isValid( $OrderQueueStatus ) ) 
+                $OrderQueueStatus = new OrderMessageStatus( $OrderQueueStatus );
+            elseif ( OrderMessageStatus::isValidKey( $OrderQueueStatus ) ) 
+                $OrderQueueStatus = new OrderMessageStatus( constant( "OrderMessageStatus::$OrderQueueStatus" ) );
+            elseif ( ! $OrderQueueStatus instanceof OrderMessageStatus )
+                throw new InvalidEnumException();
+        }
+        $this->OrderQueueStatus = $OrderQueueStatus->getValue();
+
         return $this;
     }
 

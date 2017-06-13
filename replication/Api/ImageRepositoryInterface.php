@@ -9,10 +9,15 @@ interface ImageRepositoryInterface
 {
 
     public function getList(SearchCriteriaInterface $criteria);
+
     public function save(ImageInterface $page);
+
     public function delete(ImageInterface $page);
+
     public function getById($id);
+
     public function deleteById($id);
+
 
 }
 

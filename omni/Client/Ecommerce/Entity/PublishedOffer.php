@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferCode;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferType;
 
 class PublishedOffer
 {

@@ -49,12 +49,16 @@ class OrderQueueUpdateStatus implements IRequest
      */
     public function setStatus($status)
     {
-        if ( OrderQueueStatus::isValid( $status) ) 
-            $this->status = new OrderQueueStatus( $status );
-        elseif ( OrderQueueStatus::isValidKey( $status) ) 
-            $this->status = new OrderQueueStatus( constant( "OrderQueueStatus::$status" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $status instanceof OrderQueueStatus ) {
+            if ( OrderQueueStatus::isValid( $status ) ) 
+                $status = new OrderQueueStatus( $status );
+            elseif ( OrderQueueStatus::isValidKey( $status ) ) 
+                $status = new OrderQueueStatus( constant( "OrderQueueStatus::$status" ) );
+            elseif ( ! $status instanceof OrderQueueStatus )
+                throw new InvalidEnumException();
+        }
+        $this->status = $status->getValue();
+
         return $this;
     }
 

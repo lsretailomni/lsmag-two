@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\EntryStatus;
-use Ls\Omni\Client\Loyalty\Entity\Enum\LineType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Loyalty\Entity\Enum\LineType;
 
 class BasketLineCalcResponse
 {
@@ -313,12 +313,16 @@ class BasketLineCalcResponse
      */
     public function setEntryStatus($EntryStatus)
     {
-        if ( EntryStatus::isValid( $EntryStatus) ) 
-            $this->EntryStatus = new EntryStatus( $EntryStatus );
-        elseif ( EntryStatus::isValidKey( $EntryStatus) ) 
-            $this->EntryStatus = new EntryStatus( constant( "EntryStatus::$EntryStatus" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $EntryStatus instanceof EntryStatus ) {
+            if ( EntryStatus::isValid( $EntryStatus ) ) 
+                $EntryStatus = new EntryStatus( $EntryStatus );
+            elseif ( EntryStatus::isValidKey( $EntryStatus ) ) 
+                $EntryStatus = new EntryStatus( constant( "EntryStatus::$EntryStatus" ) );
+            elseif ( ! $EntryStatus instanceof EntryStatus )
+                throw new InvalidEnumException();
+        }
+        $this->EntryStatus = $EntryStatus->getValue();
+
         return $this;
     }
 
@@ -373,12 +377,16 @@ class BasketLineCalcResponse
      */
     public function setLineType($LineType)
     {
-        if ( LineType::isValid( $LineType) ) 
-            $this->LineType = new LineType( $LineType );
-        elseif ( LineType::isValidKey( $LineType) ) 
-            $this->LineType = new LineType( constant( "LineType::$LineType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $LineType instanceof LineType ) {
+            if ( LineType::isValid( $LineType ) ) 
+                $LineType = new LineType( $LineType );
+            elseif ( LineType::isValidKey( $LineType ) ) 
+                $LineType = new LineType( constant( "LineType::$LineType" ) );
+            elseif ( ! $LineType instanceof LineType )
+                throw new InvalidEnumException();
+        }
+        $this->LineType = $LineType->getValue();
+
         return $this;
     }
 

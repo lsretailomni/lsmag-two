@@ -12,16 +12,16 @@ use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client;
 use Ls\Omni\Service\Soap\Element;
 use Ls\Omni\Service\Soap\Operation;
-use Ls\Replication\Job\Code\CronJobGenerator;
-use Ls\Replication\Job\Code\ModelGenerator;
-use Ls\Replication\Job\Code\ModelInterfaceGenerator;
-use Ls\Replication\Job\Code\ModuleVersionGenerator;
-use Ls\Replication\Job\Code\RepositoryGenerator;
-use Ls\Replication\Job\Code\RepositoryInterfaceGenerator;
-use Ls\Replication\Job\Code\ResourceCollectionGenerator;
-use Ls\Replication\Job\Code\ResourceModelGenerator;
-use Ls\Replication\Job\Code\SchemaUpdateGenerator;
-use Ls\Replication\Job\Code\SystemConfigGenerator;
+use Ls\Replication\Code\CronJobGenerator;
+use Ls\Replication\Code\ModelGenerator;
+use Ls\Replication\Code\ModelInterfaceGenerator;
+use Ls\Replication\Code\ModuleVersionGenerator;
+use Ls\Replication\Code\RepositoryGenerator;
+use Ls\Replication\Code\RepositoryInterfaceGenerator;
+use Ls\Replication\Code\ResourceCollectionGenerator;
+use Ls\Replication\Code\ResourceModelGenerator;
+use Ls\Replication\Code\SchemaUpdateGenerator;
+use Ls\Replication\Code\SystemConfigGenerator;
 use ReflectionClass;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -69,7 +69,6 @@ class ReplicationGenerate extends OmniCommand
             }
         }
         $this->output->writeln( '- - - - - -' );
-        $this->output->writeln( 'OK' );
     }
 
     /**
@@ -79,40 +78,52 @@ class ReplicationGenerate extends OmniCommand
 
         $this->output->writeln( "PROCESSING REPLICATION JOB - {$operation->getName()}" );
 
-        $main_entity = $this->discoverMainEntity( $operation->getResponse() );
+        try {
+            $main_entity = $this->discoverMainEntity( $operation->getResponse() );
 
-        $replication_base_path = $this->loader->getPrefixesPsr4()[ 'Ls\\Replication\\' ][ 0 ];
-        $magento_base_path = $this->loader->getPrefixesPsr4()[ 'Magento\\Framework\\' ][ 0 ];
+            $replication_base_path = $this->loader->getPrefixesPsr4()[ 'Ls\\Replication\\' ][ 0 ];
+            $magento_base_path = $this->loader->getPrefixesPsr4()[ 'Magento\\Framework\\' ][ 0 ];
 
-        $module_xml_path = $this->path( $replication_base_path, 'etc', 'module.xml' );
-        $module_xsd_path = $this->path( $magento_base_path, 'Module', 'etc', 'module.xsd' );
+            $module_xml_path = $this->path( $replication_base_path, 'etc', 'module.xml' );
+            $module_xsd_path = $this->path( $magento_base_path, 'Module', 'etc', 'module.xsd' );
 
-        $module_version = new ModuleVersionGenerator( $module_xml_path, $module_xsd_path );
-        $version = $module_version->getVersion();
+            $module_version = new ModuleVersionGenerator( $module_xml_path, $module_xsd_path );
+            $version = $module_version->getVersion();
 
-        $schema_update_generator = new SchemaUpdateGenerator( $main_entity, $version );
-        $table_name = $schema_update_generator->getTableName();
-        $model_interface_generator = new ModelInterfaceGenerator( $main_entity );
-        $repository_interface_generator = new RepositoryInterfaceGenerator( $main_entity );
-        $model_generator = new ModelGenerator( $main_entity, $table_name );
-        $repository_generator = new RepositoryGenerator( $main_entity, $table_name );
-        $resource_model_generator = new ResourceModelGenerator( $main_entity, $table_name );
-        $resource_collection_generator = new ResourceCollectionGenerator( $main_entity, $table_name );
-        $system_config = new SystemConfigGenerator( $main_entity );
-        $cron_job = new CronJobGenerator( $main_entity );
+            $schema_update_generator = new SchemaUpdateGenerator( $main_entity, $version );
+            $table_name = $schema_update_generator->getTableName();
+            $model_interface_generator = new ModelInterfaceGenerator( $main_entity );
+            $repository_interface_generator = new RepositoryInterfaceGenerator( $main_entity );
+            $model_generator = new ModelGenerator( $main_entity, $table_name );
+            $repository_generator = new RepositoryGenerator( $main_entity, $table_name );
+            $resource_model_generator = new ResourceModelGenerator( $main_entity, $table_name );
+            $resource_collection_generator = new ResourceCollectionGenerator( $main_entity, $table_name );
+            $system_config = new SystemConfigGenerator( $main_entity );
+            $cron_job = new CronJobGenerator( $main_entity );
 
 //        file_put_contents( $module_xml_path, $module_version->generate() );
-        file_put_contents( $schema_update_generator->getPath(), $schema_update_generator->generate() );
-        file_put_contents( $model_interface_generator->getPath(), $model_interface_generator->generate() );
-        file_put_contents( $repository_interface_generator->getPath(), $repository_interface_generator->generate() );
-        file_put_contents( $model_generator->getPath(), $model_generator->generate() );
-        file_put_contents( $repository_generator->getPath(), $repository_generator->generate() );
-        file_put_contents( $resource_model_generator->getPath(), $resource_model_generator->generate() );
-        file_put_contents( $resource_collection_generator->getPath(), $resource_collection_generator->generate() );
+            $this->output->writeln( "\tGENERATING SCHEMA UPDATE - {$schema_update_generator->getPath()}" );
+            file_put_contents( $schema_update_generator->getPath(), $schema_update_generator->generate() );
+            $this->output->writeln( "\tGENERATING MODEL API - {$model_interface_generator->getPath()}" );
+            file_put_contents( $model_interface_generator->getPath(), $model_interface_generator->generate() );
+            $this->output->writeln( "\tGENERATING REPOSITORY API - {$repository_interface_generator->getPath()}" );
+            file_put_contents( $repository_interface_generator->getPath(),
+                               $repository_interface_generator->generate() );
+            $this->output->writeln( "\tGENERATING MODEL - {$model_generator->getPath()}" );
+            file_put_contents( $model_generator->getPath(), $model_generator->generate() );
+            $this->output->writeln( "\tGENERATING REPOSITORY - {$repository_generator->getPath()}" );
+            file_put_contents( $repository_generator->getPath(), $repository_generator->generate() );
+            $this->output->writeln( "\tGENERATING RESOURCE MODEL - {$resource_model_generator->getPath()}" );
+            file_put_contents( $resource_model_generator->getPath(), $resource_model_generator->generate() );
+            $this->output->writeln( "\tGENERATING RESOURCE COLLECTION - {$resource_collection_generator->getPath()}" );
+            file_put_contents( $resource_collection_generator->getPath(), $resource_collection_generator->generate() );
 
-        $this->output->writeln( '- - - - -' );
-//        $this->output->writeln( 'OK' );
-//        $generator = new JobGenerator( $main_entity );
+            $this->output->writeln( '- - - -' );
+        } catch ( \Exception $e ) {
+            $this->output->writeln( "\tNOT TODAY" );
+            $this->output->writeln( $e->getMessage() );
+            $this->output->writeln( '- - - -' );
+        }
     }
 
     /**

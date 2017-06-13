@@ -249,12 +249,16 @@ class BasketCalcResponse implements IResponse
      */
     public function setEntryStatus($EntryStatus)
     {
-        if ( EntryStatus::isValid( $EntryStatus) ) 
-            $this->EntryStatus = new EntryStatus( $EntryStatus );
-        elseif ( EntryStatus::isValidKey( $EntryStatus) ) 
-            $this->EntryStatus = new EntryStatus( constant( "EntryStatus::$EntryStatus" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $EntryStatus instanceof EntryStatus ) {
+            if ( EntryStatus::isValid( $EntryStatus ) ) 
+                $EntryStatus = new EntryStatus( $EntryStatus );
+            elseif ( EntryStatus::isValidKey( $EntryStatus ) ) 
+                $EntryStatus = new EntryStatus( constant( "EntryStatus::$EntryStatus" ) );
+            elseif ( ! $EntryStatus instanceof EntryStatus )
+                throw new InvalidEnumException();
+        }
+        $this->EntryStatus = $EntryStatus->getValue();
+
         return $this;
     }
 

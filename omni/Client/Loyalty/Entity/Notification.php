@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\NotificationTextType;
-use Ls\Omni\Client\Loyalty\Entity\Enum\NotificationStatus;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Loyalty\Entity\Enum\NotificationStatus;
 
 class Notification
 {
@@ -197,12 +197,16 @@ class Notification
      */
     public function setNotificationTextType($NotificationTextType)
     {
-        if ( NotificationTextType::isValid( $NotificationTextType) ) 
-            $this->NotificationTextType = new NotificationTextType( $NotificationTextType );
-        elseif ( NotificationTextType::isValidKey( $NotificationTextType) ) 
-            $this->NotificationTextType = new NotificationTextType( constant( "NotificationTextType::$NotificationTextType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $NotificationTextType instanceof NotificationTextType ) {
+            if ( NotificationTextType::isValid( $NotificationTextType ) ) 
+                $NotificationTextType = new NotificationTextType( $NotificationTextType );
+            elseif ( NotificationTextType::isValidKey( $NotificationTextType ) ) 
+                $NotificationTextType = new NotificationTextType( constant( "NotificationTextType::$NotificationTextType" ) );
+            elseif ( ! $NotificationTextType instanceof NotificationTextType )
+                throw new InvalidEnumException();
+        }
+        $this->NotificationTextType = $NotificationTextType->getValue();
+
         return $this;
     }
 
@@ -239,12 +243,16 @@ class Notification
      */
     public function setStatus($Status)
     {
-        if ( NotificationStatus::isValid( $Status) ) 
-            $this->Status = new NotificationStatus( $Status );
-        elseif ( NotificationStatus::isValidKey( $Status) ) 
-            $this->Status = new NotificationStatus( constant( "NotificationStatus::$Status" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $Status instanceof NotificationStatus ) {
+            if ( NotificationStatus::isValid( $Status ) ) 
+                $Status = new NotificationStatus( $Status );
+            elseif ( NotificationStatus::isValidKey( $Status ) ) 
+                $Status = new NotificationStatus( constant( "NotificationStatus::$Status" ) );
+            elseif ( ! $Status instanceof NotificationStatus )
+                throw new InvalidEnumException();
+        }
+        $this->Status = $Status->getValue();
+
         return $this;
     }
 

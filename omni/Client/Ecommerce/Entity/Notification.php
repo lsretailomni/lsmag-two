@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\NotificationTextType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\NotificationStatus;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\NotificationStatus;
 
 class Notification
 {

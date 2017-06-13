@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemNumberType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\SourceType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\SourceType;
 
 class Order
 {

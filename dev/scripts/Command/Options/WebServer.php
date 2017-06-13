@@ -31,7 +31,7 @@ class WebServer extends AbstractOptions
                 'question' => 'Please enter web server port %default%'
             ],
             static::HOME_PORT => [
-                'default' => 1748,
+                'default' => '10080',
                 'description' => 'Web server port for the home machine.',
                 'question' => 'Please enter web server port for the home machine'
                     . '. See docker-compose.yml -> web -> ports -> xxxx:80, where xxxx - is home port %default%'

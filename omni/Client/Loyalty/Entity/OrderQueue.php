@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\OrderQueueStatus;
-use Ls\Omni\Client\Loyalty\Entity\Enum\OrderQueueType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Loyalty\Entity\Enum\OrderQueueType;
 
 class OrderQueue
 {
@@ -245,12 +245,16 @@ class OrderQueue
      */
     public function setOrderQueueStatus($OrderQueueStatus)
     {
-        if ( OrderQueueStatus::isValid( $OrderQueueStatus) ) 
-            $this->OrderQueueStatus = new OrderQueueStatus( $OrderQueueStatus );
-        elseif ( OrderQueueStatus::isValidKey( $OrderQueueStatus) ) 
-            $this->OrderQueueStatus = new OrderQueueStatus( constant( "OrderQueueStatus::$OrderQueueStatus" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $OrderQueueStatus instanceof OrderQueueStatus ) {
+            if ( OrderQueueStatus::isValid( $OrderQueueStatus ) ) 
+                $OrderQueueStatus = new OrderQueueStatus( $OrderQueueStatus );
+            elseif ( OrderQueueStatus::isValidKey( $OrderQueueStatus ) ) 
+                $OrderQueueStatus = new OrderQueueStatus( constant( "OrderQueueStatus::$OrderQueueStatus" ) );
+            elseif ( ! $OrderQueueStatus instanceof OrderQueueStatus )
+                throw new InvalidEnumException();
+        }
+        $this->OrderQueueStatus = $OrderQueueStatus->getValue();
+
         return $this;
     }
 
@@ -269,12 +273,16 @@ class OrderQueue
      */
     public function setOrderQueueType($OrderQueueType)
     {
-        if ( OrderQueueType::isValid( $OrderQueueType) ) 
-            $this->OrderQueueType = new OrderQueueType( $OrderQueueType );
-        elseif ( OrderQueueType::isValidKey( $OrderQueueType) ) 
-            $this->OrderQueueType = new OrderQueueType( constant( "OrderQueueType::$OrderQueueType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $OrderQueueType instanceof OrderQueueType ) {
+            if ( OrderQueueType::isValid( $OrderQueueType ) ) 
+                $OrderQueueType = new OrderQueueType( $OrderQueueType );
+            elseif ( OrderQueueType::isValidKey( $OrderQueueType ) ) 
+                $OrderQueueType = new OrderQueueType( constant( "OrderQueueType::$OrderQueueType" ) );
+            elseif ( ! $OrderQueueType instanceof OrderQueueType )
+                throw new InvalidEnumException();
+        }
+        $this->OrderQueueType = $OrderQueueType->getValue();
+
         return $this;
     }
 

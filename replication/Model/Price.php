@@ -11,6 +11,10 @@ class Price extends AbstractModel implements PriceInterface, IdentityInterface
 
     const CACHE_TAG = 'lsr_replication_price';
 
+    protected $_cacheTag = 'lsr_replication_price';
+
+    protected $_eventPrefix = 'lsr_replication_price';
+
     public function _construct()
     {
         $this->_init( 'Ls\Replication\Model\ResourceModel\Price' );

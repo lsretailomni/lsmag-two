@@ -71,12 +71,16 @@ class StoreServices
      */
     public function setStoreServiceType($StoreServiceType)
     {
-        if ( StoreServiceType::isValid( $StoreServiceType) ) 
-            $this->StoreServiceType = new StoreServiceType( $StoreServiceType );
-        elseif ( StoreServiceType::isValidKey( $StoreServiceType) ) 
-            $this->StoreServiceType = new StoreServiceType( constant( "StoreServiceType::$StoreServiceType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $StoreServiceType instanceof StoreServiceType ) {
+            if ( StoreServiceType::isValid( $StoreServiceType ) ) 
+                $StoreServiceType = new StoreServiceType( $StoreServiceType );
+            elseif ( StoreServiceType::isValidKey( $StoreServiceType ) ) 
+                $StoreServiceType = new StoreServiceType( constant( "StoreServiceType::$StoreServiceType" ) );
+            elseif ( ! $StoreServiceType instanceof StoreServiceType )
+                throw new InvalidEnumException();
+        }
+        $this->StoreServiceType = $StoreServiceType->getValue();
+
         return $this;
     }
 

@@ -1,5 +1,5 @@
 <?php
-namespace Ls\Replication\Job\Code;
+namespace Ls\Replication\Code;
 
 
 use Composer\Autoload\ClassLoader;
@@ -8,7 +8,6 @@ use Magento\Framework\Api\SearchCriteriaInterface;
 use ReflectionClass;
 use Zend\Code\Generator\FileGenerator;
 use Zend\Code\Generator\GeneratorInterface;
-use Zend\Code\Generator\InterfaceGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 
 class RepositoryInterfaceGenerator implements GeneratorInterface
@@ -62,9 +61,17 @@ class RepositoryInterfaceGenerator implements GeneratorInterface
         $this->class->addMethod( 'deleteById', [ new ParameterGenerator( 'id' ) ] );
 
         $content = $this->file->generate();
+        $not_abstract = <<<CODE
+
+    {
+    }
+CODE;
+
         $content = str_replace( "\\$entity_interface_name \$page", "$entity_interface_name \$page", $content );
-        $content = str_replace( "\\Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
+        $content = str_replace( "Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
                                 "SearchCriteriaInterface \$criteria", $content );
+        $content = str_replace( $not_abstract, ';', $content );
+
 
         return $content;
     }

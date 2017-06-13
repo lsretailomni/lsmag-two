@@ -9,10 +9,15 @@ interface BarcodeRepositoryInterface
 {
 
     public function getList(SearchCriteriaInterface $criteria);
+
     public function save(BarcodeInterface $page);
+
     public function delete(BarcodeInterface $page);
+
     public function getById($id);
+
     public function deleteById($id);
+
 
 }
 

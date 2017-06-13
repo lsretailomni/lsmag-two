@@ -1,5 +1,5 @@
 <?php
-namespace Ls\Replication\Job\Code;
+namespace Ls\Replication\Code;
 
 
 use Zend\Code\Generator\ClassGenerator;

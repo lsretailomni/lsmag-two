@@ -8,10 +8,10 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\AuthorizationStatus;
+use Ls\Omni\Exception\InvalidEnumException;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\EFTTransactionType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\EFTVerificationMethod;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\EntryStatus;
-use Ls\Omni\Exception\InvalidEnumException;
 
 class TenderLine
 {

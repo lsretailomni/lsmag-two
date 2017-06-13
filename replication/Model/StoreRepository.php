@@ -13,6 +13,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\SearchResultInterfaceFactory;
 use Ls\Replication\Api\StoreRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\Store\CollectionFactory;
+use Ls\Replication\Model\ResourceModel\Store\Collection;
 use Ls\Replication\Api\Data\StoreInterface;
 use Ls\Replication\Model\StoreFactory;
 

@@ -1,5 +1,5 @@
 <?php
-namespace Ls\Replication\Job\Code;
+namespace Ls\Replication\Code;
 
 
 use Composer\Autoload\ClassLoader;
@@ -56,8 +56,8 @@ class RepositoryGenerator implements GeneratorInterface
     public function generate () {
 
         $interface_name = $this->getRepositoryInterfaceName( FALSE );
-        $collection_name = $this->getCollectionName( FALSE );
-        $model_interface_name = $this->getModelInterfaceName( FALSE );
+//        $collection_name = $this->getCollectionName( FALSE );
+//        $model_interface_name = $this->getModelInterfaceName( FALSE );
         $model_name = $this->getModelName();
         $slim_model_name = $this->getModelName( FALSE );
         $entity_name = $this->reflected_entity->getShortName();
@@ -77,6 +77,7 @@ class RepositoryGenerator implements GeneratorInterface
         $this->class->addUse( $search_factory );
         $this->class->addUse( $this->getRepositoryInterfaceName() );
         $this->class->addUse( $this->getCollectionName() . 'Factory' );
+        $this->class->addUse( $this->getCollectionName() );
         $this->class->addUse( $this->getModelInterfaceName() );
         $this->class->addUse( "{$model_name}Factory" );
 
@@ -116,7 +117,7 @@ class RepositoryGenerator implements GeneratorInterface
         $this->class->addMethodFromGenerator( $this->getDeleteByIdMethod() );
 
         $content = $this->file->generate();
-        $content = str_replace( '\\Magento\\Framework\\Data\\SearchResultInterfaceFactory $result_factory',
+        $content = str_replace( 'Magento\\Framework\\Data\\SearchResultInterfaceFactory $result_factory',
                                 'SearchResultInterfaceFactory $result_factory', $content );
         $content = str_replace( "implements \\$interface_name", "implements $interface_name", $content );
         $content = str_replace( "\\{$slim_model_name}Factory \$object_factory",
@@ -124,7 +125,7 @@ class RepositoryGenerator implements GeneratorInterface
         $content = str_replace( "\\{$entity_name}Interface \$object", "{$entity_name}Interface \$object", $content );
         $content = str_replace( '\\CollectionFactory $collection_factory', 'CollectionFactory $collection_factory',
                                 $content );
-        $content = str_replace( "\\Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
+        $content = str_replace( "Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
                                 "SearchCriteriaInterface \$criteria", $content );
 
 

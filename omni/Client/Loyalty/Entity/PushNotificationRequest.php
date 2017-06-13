@@ -8,9 +8,9 @@
 namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\PushApplication;
+use Ls\Omni\Exception\InvalidEnumException;
 use Ls\Omni\Client\Loyalty\Entity\Enum\PushPlatform;
 use Ls\Omni\Client\Loyalty\Entity\Enum\PushStatus;
-use Ls\Omni\Exception\InvalidEnumException;
 
 class PushNotificationRequest
 {
@@ -47,12 +47,16 @@ class PushNotificationRequest
      */
     public function setApplication($Application)
     {
-        if ( PushApplication::isValid( $Application) ) 
-            $this->Application = new PushApplication( $Application );
-        elseif ( PushApplication::isValidKey( $Application) ) 
-            $this->Application = new PushApplication( constant( "PushApplication::$Application" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $Application instanceof PushApplication ) {
+            if ( PushApplication::isValid( $Application ) ) 
+                $Application = new PushApplication( $Application );
+            elseif ( PushApplication::isValidKey( $Application ) ) 
+                $Application = new PushApplication( constant( "PushApplication::$Application" ) );
+            elseif ( ! $Application instanceof PushApplication )
+                throw new InvalidEnumException();
+        }
+        $this->Application = $Application->getValue();
+
         return $this;
     }
 
@@ -107,12 +111,16 @@ class PushNotificationRequest
      */
     public function setPlatform($Platform)
     {
-        if ( PushPlatform::isValid( $Platform) ) 
-            $this->Platform = new PushPlatform( $Platform );
-        elseif ( PushPlatform::isValidKey( $Platform) ) 
-            $this->Platform = new PushPlatform( constant( "PushPlatform::$Platform" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $Platform instanceof PushPlatform ) {
+            if ( PushPlatform::isValid( $Platform ) ) 
+                $Platform = new PushPlatform( $Platform );
+            elseif ( PushPlatform::isValidKey( $Platform ) ) 
+                $Platform = new PushPlatform( constant( "PushPlatform::$Platform" ) );
+            elseif ( ! $Platform instanceof PushPlatform )
+                throw new InvalidEnumException();
+        }
+        $this->Platform = $Platform->getValue();
+
         return $this;
     }
 
@@ -131,12 +139,16 @@ class PushNotificationRequest
      */
     public function setStatus($Status)
     {
-        if ( PushStatus::isValid( $Status) ) 
-            $this->Status = new PushStatus( $Status );
-        elseif ( PushStatus::isValidKey( $Status) ) 
-            $this->Status = new PushStatus( constant( "PushStatus::$Status" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $Status instanceof PushStatus ) {
+            if ( PushStatus::isValid( $Status ) ) 
+                $Status = new PushStatus( $Status );
+            elseif ( PushStatus::isValidKey( $Status ) ) 
+                $Status = new PushStatus( constant( "PushStatus::$Status" ) );
+            elseif ( ! $Status instanceof PushStatus )
+                throw new InvalidEnumException();
+        }
+        $this->Status = $Status->getValue();
+
         return $this;
     }
 

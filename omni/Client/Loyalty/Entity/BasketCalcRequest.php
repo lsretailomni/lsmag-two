@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\BasketCalcType;
-use Ls\Omni\Client\Loyalty\Entity\Enum\BasketCalcItemType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Loyalty\Entity\Enum\BasketCalcItemType;
 
 class BasketCalcRequest
 {
@@ -79,12 +79,16 @@ class BasketCalcRequest
      */
     public function setCalcType($CalcType)
     {
-        if ( BasketCalcType::isValid( $CalcType) ) 
-            $this->CalcType = new BasketCalcType( $CalcType );
-        elseif ( BasketCalcType::isValidKey( $CalcType) ) 
-            $this->CalcType = new BasketCalcType( constant( "BasketCalcType::$CalcType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $CalcType instanceof BasketCalcType ) {
+            if ( BasketCalcType::isValid( $CalcType ) ) 
+                $CalcType = new BasketCalcType( $CalcType );
+            elseif ( BasketCalcType::isValidKey( $CalcType ) ) 
+                $CalcType = new BasketCalcType( constant( "BasketCalcType::$CalcType" ) );
+            elseif ( ! $CalcType instanceof BasketCalcType )
+                throw new InvalidEnumException();
+        }
+        $this->CalcType = $CalcType->getValue();
+
         return $this;
     }
 
@@ -157,12 +161,16 @@ class BasketCalcRequest
      */
     public function setItemType($ItemType)
     {
-        if ( BasketCalcItemType::isValid( $ItemType) ) 
-            $this->ItemType = new BasketCalcItemType( $ItemType );
-        elseif ( BasketCalcItemType::isValidKey( $ItemType) ) 
-            $this->ItemType = new BasketCalcItemType( constant( "BasketCalcItemType::$ItemType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $ItemType instanceof BasketCalcItemType ) {
+            if ( BasketCalcItemType::isValid( $ItemType ) ) 
+                $ItemType = new BasketCalcItemType( $ItemType );
+            elseif ( BasketCalcItemType::isValidKey( $ItemType ) ) 
+                $ItemType = new BasketCalcItemType( constant( "BasketCalcItemType::$ItemType" ) );
+            elseif ( ! $ItemType instanceof BasketCalcItemType )
+                throw new InvalidEnumException();
+        }
+        $this->ItemType = $ItemType->getValue();
+
         return $this;
     }
 

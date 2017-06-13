@@ -53,12 +53,16 @@ class MenuNodeLine
      */
     public function setNodeLineType($NodeLineType)
     {
-        if ( NodeLineType::isValid( $NodeLineType) ) 
-            $this->NodeLineType = new NodeLineType( $NodeLineType );
-        elseif ( NodeLineType::isValidKey( $NodeLineType) ) 
-            $this->NodeLineType = new NodeLineType( constant( "NodeLineType::$NodeLineType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $NodeLineType instanceof NodeLineType ) {
+            if ( NodeLineType::isValid( $NodeLineType ) ) 
+                $NodeLineType = new NodeLineType( $NodeLineType );
+            elseif ( NodeLineType::isValidKey( $NodeLineType ) ) 
+                $NodeLineType = new NodeLineType( constant( "NodeLineType::$NodeLineType" ) );
+            elseif ( ! $NodeLineType instanceof NodeLineType )
+                throw new InvalidEnumException();
+        }
+        $this->NodeLineType = $NodeLineType->getValue();
+
         return $this;
     }
 

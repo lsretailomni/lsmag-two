@@ -324,12 +324,16 @@ class TenderPaymentLine
      */
     public function setType($Type)
     {
-        if ( TenderType::isValid( $Type) ) 
-            $this->Type = new TenderType( $Type );
-        elseif ( TenderType::isValidKey( $Type) ) 
-            $this->Type = new TenderType( constant( "TenderType::$Type" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $Type instanceof TenderType ) {
+            if ( TenderType::isValid( $Type ) ) 
+                $Type = new TenderType( $Type );
+            elseif ( TenderType::isValidKey( $Type ) ) 
+                $Type = new TenderType( constant( "TenderType::$Type" ) );
+            elseif ( ! $Type instanceof TenderType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
         return $this;
     }
 

@@ -104,12 +104,16 @@ class OrderMessageSearchRequest
      */
     public function setMessageStatusFilter($MessageStatusFilter)
     {
-        if ( OrderMessageStatusFilterType::isValid( $MessageStatusFilter) ) 
-            $this->MessageStatusFilter = new OrderMessageStatusFilterType( $MessageStatusFilter );
-        elseif ( OrderMessageStatusFilterType::isValidKey( $MessageStatusFilter) ) 
-            $this->MessageStatusFilter = new OrderMessageStatusFilterType( constant( "OrderMessageStatusFilterType::$MessageStatusFilter" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $MessageStatusFilter instanceof OrderMessageStatusFilterType ) {
+            if ( OrderMessageStatusFilterType::isValid( $MessageStatusFilter ) ) 
+                $MessageStatusFilter = new OrderMessageStatusFilterType( $MessageStatusFilter );
+            elseif ( OrderMessageStatusFilterType::isValidKey( $MessageStatusFilter ) ) 
+                $MessageStatusFilter = new OrderMessageStatusFilterType( constant( "OrderMessageStatusFilterType::$MessageStatusFilter" ) );
+            elseif ( ! $MessageStatusFilter instanceof OrderMessageStatusFilterType )
+                throw new InvalidEnumException();
+        }
+        $this->MessageStatusFilter = $MessageStatusFilter->getValue();
+
         return $this;
     }
 

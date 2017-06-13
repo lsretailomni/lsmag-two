@@ -15,8 +15,6 @@ class ImageLink implements UpgradeSchemaBlockInterface
         if ( ! $setup->tableExists( $table_name ) ) {
 
         	$table = $setup->getConnection()->newTable( $table_name );
-        	//$table = new Table();
-        	//$table->setName( $table_name ); 
 
         	$table->addColumn( 'image_link_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,

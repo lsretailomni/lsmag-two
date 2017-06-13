@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderQueueStatusFilterType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderQueueType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderQueueType;
 
 class OrderSearchRequest
 {

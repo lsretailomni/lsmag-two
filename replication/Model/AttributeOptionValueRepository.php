@@ -13,6 +13,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\SearchResultInterfaceFactory;
 use Ls\Replication\Api\AttributeOptionValueRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\AttributeOptionValue\CollectionFactory;
+use Ls\Replication\Model\ResourceModel\AttributeOptionValue\Collection;
 use Ls\Replication\Api\Data\AttributeOptionValueInterface;
 use Ls\Replication\Model\AttributeOptionValueFactory;
 

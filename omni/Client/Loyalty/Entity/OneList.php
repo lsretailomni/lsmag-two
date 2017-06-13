@@ -242,12 +242,16 @@ class OneList
      */
     public function setListType($ListType)
     {
-        if ( ListType::isValid( $ListType) ) 
-            $this->ListType = new ListType( $ListType );
-        elseif ( ListType::isValidKey( $ListType) ) 
-            $this->ListType = new ListType( constant( "ListType::$ListType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $ListType instanceof ListType ) {
+            if ( ListType::isValid( $ListType ) ) 
+                $ListType = new ListType( $ListType );
+            elseif ( ListType::isValidKey( $ListType ) ) 
+                $ListType = new ListType( constant( "ListType::$ListType" ) );
+            elseif ( ! $ListType instanceof ListType )
+                throw new InvalidEnumException();
+        }
+        $this->ListType = $ListType->getValue();
+
         return $this;
     }
 

@@ -13,6 +13,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\SearchResultInterfaceFactory;
 use Ls\Replication\Api\PriceRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\Price\CollectionFactory;
+use Ls\Replication\Model\ResourceModel\Price\Collection;
 use Ls\Replication\Api\Data\PriceInterface;
 use Ls\Replication\Model\PriceFactory;
 
