@@ -66,7 +66,7 @@ class RestrictionGenerator extends AbstractGenerator
         $this->file->setClass( $this->class );
         $content = $this->file->generate();
 
-        $content = str_replace( "extends {$enum_class}", 'implements Enum', $content );
+        $content = str_replace( "extends {$enum_class}", 'extends Enum', $content );
 
         return $content;
     }

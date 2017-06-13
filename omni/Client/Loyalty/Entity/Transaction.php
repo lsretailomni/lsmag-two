@@ -269,12 +269,16 @@ class Transaction
      */
     public function setPlatform($Platform)
     {
-        if ( Platform::isValid( $Platform) ) 
-            $this->Platform = new Platform( $Platform );
-        elseif ( Platform::isValidKey( $Platform) ) 
-            $this->Platform = new Platform( constant( "Platform::$Platform" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $Platform instanceof Platform ) {
+            if ( Platform::isValid( $Platform ) ) 
+                $Platform = new Platform( $Platform );
+            elseif ( Platform::isValidKey( $Platform ) ) 
+                $Platform = new Platform( constant( "Platform::$Platform" ) );
+            elseif ( ! $Platform instanceof Platform )
+                throw new InvalidEnumException();
+        }
+        $this->Platform = $Platform->getValue();
+
         return $this;
     }
 

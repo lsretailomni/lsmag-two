@@ -54,12 +54,16 @@ class OneListGetByContactId implements IRequest
      */
     public function setListType($listType)
     {
-        if ( ListType::isValid( $listType) ) 
-            $this->listType = new ListType( $listType );
-        elseif ( ListType::isValidKey( $listType) ) 
-            $this->listType = new ListType( constant( "ListType::$listType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $listType instanceof ListType ) {
+            if ( ListType::isValid( $listType ) ) 
+                $listType = new ListType( $listType );
+            elseif ( ListType::isValidKey( $listType ) ) 
+                $listType = new ListType( constant( "ListType::$listType" ) );
+            elseif ( ! $listType instanceof ListType )
+                throw new InvalidEnumException();
+        }
+        $this->listType = $listType->getValue();
+
         return $this;
     }
 

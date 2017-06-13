@@ -1,5 +1,5 @@
 <?php
-namespace Ls\Replication\Job\Code;
+namespace Ls\Replication\Code;
 
 
 use Composer\Autoload\ClassLoader;
@@ -11,6 +11,8 @@ use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\FileGenerator;
 use Zend\Code\Generator\GeneratorInterface;
 use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\ParameterGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 class ModelGenerator implements GeneratorInterface
 {
@@ -82,14 +84,32 @@ class ModelGenerator implements GeneratorInterface
         $this->class->setImplementedInterfaces( [ $interface_name, IdentityInterface::class ] );
 
         $this->class->addConstant( 'CACHE_TAG', $this->table_name );
+        $this->class->addProperty( '_cacheTag', $this->table_name, PropertyGenerator::FLAG_PROTECTED );
+        $this->class->addProperty( '_eventPrefix', $this->table_name, PropertyGenerator::FLAG_PROTECTED );
         $this->class->addMethodFromGenerator( $contructor_method );
         $this->class->addMethodFromGenerator( $identities_method );
 
+        foreach ( $this->reflected_entity->getProperties() as $property ) {
+
+            $set_method = new MethodGenerator();
+            $set_method->setName( 'set' . $property->getName() );
+            $set_method->setParameters( [ new ParameterGenerator( $property->getName() ) ] );
+            $set_method->setBody( "\$this->{$property->getName()} = \${$property->getName()};\nreturn \$this;" );
+            $get_method = new MethodGenerator();
+            $get_method->setName( 'get' . $property->getName() );
+            $get_method->setBody( "return \$this->{$property->getName()};" );
+
+            $this->class->addProperty( $property->getName(), NULL, PropertyGenerator::FLAG_PROTECTED );
+            $this->class->addMethodFromGenerator( $set_method );
+            $this->class->addMethodFromGenerator( $get_method );
+        }
+
+
         $content = $this->file->generate();
-        $content = str_replace( 'extends \\Magento\\Framework\\Model\\AbstractModel',
+        $content = str_replace( 'extends Magento\\Framework\\Model\\AbstractModel',
                                 'extends AbstractModel', $content );
         $content = str_replace( "implements \\$interface_name", "implements $interface_name", $content );
-        $content = str_replace( ', \\Magento\\Framework\\DataObject\\IdentityInterface',
+        $content = str_replace( ', Magento\\Framework\\DataObject\\IdentityInterface',
                                 ', IdentityInterface', $content );
 
         return $content;

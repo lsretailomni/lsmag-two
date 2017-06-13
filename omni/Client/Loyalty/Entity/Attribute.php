@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\AttributeLinkType;
-use Ls\Omni\Client\Loyalty\Entity\Enum\AttributeValueType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Loyalty\Entity\Enum\AttributeValueType;
 
 class Attribute
 {
@@ -189,12 +189,16 @@ class Attribute
      */
     public function setLinkType($LinkType)
     {
-        if ( AttributeLinkType::isValid( $LinkType) ) 
-            $this->LinkType = new AttributeLinkType( $LinkType );
-        elseif ( AttributeLinkType::isValidKey( $LinkType) ) 
-            $this->LinkType = new AttributeLinkType( constant( "AttributeLinkType::$LinkType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $LinkType instanceof AttributeLinkType ) {
+            if ( AttributeLinkType::isValid( $LinkType ) ) 
+                $LinkType = new AttributeLinkType( $LinkType );
+            elseif ( AttributeLinkType::isValidKey( $LinkType ) ) 
+                $LinkType = new AttributeLinkType( constant( "AttributeLinkType::$LinkType" ) );
+            elseif ( ! $LinkType instanceof AttributeLinkType )
+                throw new InvalidEnumException();
+        }
+        $this->LinkType = $LinkType->getValue();
+
         return $this;
     }
 
@@ -285,12 +289,16 @@ class Attribute
      */
     public function setValueType($ValueType)
     {
-        if ( AttributeValueType::isValid( $ValueType) ) 
-            $this->ValueType = new AttributeValueType( $ValueType );
-        elseif ( AttributeValueType::isValidKey( $ValueType) ) 
-            $this->ValueType = new AttributeValueType( constant( "AttributeValueType::$ValueType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $ValueType instanceof AttributeValueType ) {
+            if ( AttributeValueType::isValid( $ValueType ) ) 
+                $ValueType = new AttributeValueType( $ValueType );
+            elseif ( AttributeValueType::isValidKey( $ValueType ) ) 
+                $ValueType = new AttributeValueType( constant( "AttributeValueType::$ValueType" ) );
+            elseif ( ! $ValueType instanceof AttributeValueType )
+                throw new InvalidEnumException();
+        }
+        $this->ValueType = $ValueType->getValue();
+
         return $this;
     }
 

@@ -2,7 +2,6 @@
 namespace Ls\Omni\Client\Code;
 
 use Ls\Omni\Client\AbstractOperation;
-use Ls\Omni\Client\IOperation;
 use Ls\Omni\Client\IRequest;
 use Ls\Omni\Client\IResponse;
 use Ls\Omni\Service\Metadata;
@@ -49,60 +48,6 @@ class OperationGenerator extends AbstractGenerator
         $response_fqn = self::fqn( $entity_namespace, $response_type );
         $response_alias = "{$operation_name}Response";
 
-        $constructor = new MethodGenerator();
-        $constructor->setName( '__construct' );
-        $constructor->setDocBlock(
-            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ParamTag( 'request',
-                                                                          $request_alias ),
-                                                        new Tag\ReturnTag( [ 'IResponse', $response_alias ] ) ] ] ) );
-        $constructor->setBody( <<<CODE
-\$service_type = new ServiceType( self::SERVICE_TYPE );
-parent::__construct( \$service_type );
-\$url = OmniService::getUrl( \$service_type ); 
-\$this->client = new OmniClient( \$url, \$service_type );
-\$this->client->setClassmap( \$this->getClassMap() );
-CODE
-        );
-
-        $execute_method = new MethodGenerator();
-        $execute_method->setName( 'execute' );
-        $execute_method->setParameter( ParameterGenerator::fromArray( [ 'name' => 'request',
-                                                                        'type' => 'IRequest',
-                                                                        'defaultvalue' => NULL ] ) );
-        $execute_method->setDocBlock(
-            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ParamTag( 'request', $request_alias ),
-                                                        new Tag\ReturnTag( [ 'IResponse', $response_alias ] ) ] ] ) );
-        $execute_method->setBody( <<<CODE
-if ( !is_null( \$request ) ) {
-    \$this->setRequest( \$request );
-}
-return \$this->makeRequest( '$operation_name' );
-CODE
-        );
-
-        $input_method = new MethodGenerator();
-        $input_method->setName( 'getOperationInput' );
-        $input_method->setReturnsReference( TRUE );
-        $input_method->setDocBlock(
-            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ $request_alias ] ) ] ] ) );
-        $input_method->setBody( <<<CODE
-if ( is_null( \$this->request ) ) {
-    \$this->request = new $request_alias();
-}
-return \$this->request;
-CODE
-        );
-
-        $classmap_method = new MethodGenerator();
-        $classmap_method->setName( 'getClassMap' );
-        $classmap_method->setVisibility( MethodGenerator::FLAG_PROTECTED );
-        $classmap_method->setDocBlock(
-            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ 'array' ] ) ] ] ) );
-        $classmap_method->setBody( <<<CODE
-return ClassMap::getClassMap();
-CODE
-        );
-
         // CLASS DECLARATION
 
         // NAMESPACE
@@ -111,7 +56,6 @@ CODE
         // USE STATEMENTS
         $this->class->addUse( IRequest::class );
         $this->class->addUse( IResponse::class );
-        $this->class->addUse( str_replace( 'IRequest', 'IOperation', IRequest::class ) );
         $this->class->addUse( AbstractOperation::class );
         $this->class->addUse( Service::class, 'OmniService' );
         $this->class->addUse( ServiceType::class );
@@ -124,7 +68,6 @@ CODE
         // class OPERATION extends AbstractOperation implements IOperation
         $this->class->setName( $this->operation->getName() );
         $this->class->setExtendedClass( AbstractOperation::class );
-        $this->class->setImplementedInterfaces( [ IOperation::class ] );
 
         // SOME NICE TO HAVE STRING VALUES
         // const OPERATION_NAME = 'OPERATION_NAME'
@@ -134,10 +77,11 @@ CODE
 
         // ADD METHODS
         //  __construct & execute & getOperationInput
-        $this->class->addMethodFromGenerator( $constructor );
-        $this->class->addMethodFromGenerator( $execute_method );
-        $this->class->addMethodFromGenerator( $input_method );
-        $this->class->addMethodFromGenerator( $classmap_method );
+        $this->class->addMethodFromGenerator( $this->getConstructorMethod() );
+        $this->class->addMethodFromGenerator( $this->getExecuteMethod( $request_alias, $response_alias,
+                                                                       $operation_name ) );
+        $this->class->addMethodFromGenerator( $this->getInputMethod( $request_alias ) );
+        $this->class->addMethodFromGenerator( $this->getClassMapMethod() );
 
         // CLASS PROPERTIES TO BE USED BY THE AbstractOperation
         $this->createProperty( 'client', 'OmniClient', [ PropertyGenerator::VISIBILITY_PROTECTED ] );
@@ -155,13 +99,90 @@ CODE
         // NOT AN ELEGANT MOVE TO ADD THE INSPECTION TO EVERY DOCBLOCK... BUT WILL DO FOR NOW
         // TODO: IMPROVE REGEX TO ONLY ADD INSPECTION PARAMETER SUPRESSION TO THE execute METHOD
         $no_inspection = '/** @noinspection PhpDocSignatureInspection */';
-        $content = str_replace( '/**', "$no_inspection\n\t/**", $content );
-        // USE SIMPLIFIED FULLY QUALIFIED NAME
+        $execute_docblock = <<<COMMENT
+	/**
+     * @param $request_alias \$request
+COMMENT;
+        $content = str_replace( $execute_docblock, "$no_inspection\n$execute_docblock", $content );
+        // USE SIMPLIFIED FULLY QUALIFIED NAME                                                                 f
         $content = str_replace( 'execute(\\IRequest', 'execute(IRequest', $content );
         $content = str_replace( 'implements Ls\\Omni\\Client\\IOperation', 'implements IOperation', $content );
-        $content = str_replace( 'extends Ls\\Omni\\Client\\AbstractOperation', 'implements AbstractOperation',
+        $content = str_replace( 'extends Ls\\Omni\\Client\\AbstractOperation', 'extends AbstractOperation',
+                                $content );
+        $content = str_replace( 'public function getOperationInput()', 'public function & getOperationInput()',
                                 $content );
 
         return $content;
+    }
+
+    private function getConstructorMethod () {
+
+        $method = new MethodGenerator();
+        $method->setName( '__construct' );
+        $method->setDocBlock(
+            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ParamTag( 'service_type', 'ServiceType' ) ] ] ) );
+        $method->setBody( <<<CODE
+\$service_type = new ServiceType( self::SERVICE_TYPE );
+parent::__construct( \$service_type );
+\$url = OmniService::getUrl( \$service_type ); 
+\$this->client = new OmniClient( \$url, \$service_type );
+\$this->client->setClassmap( \$this->getClassMap() );
+CODE
+        );
+
+        return $method;
+    }
+
+    private function getExecuteMethod ( $request_alias, $response_alias, $operation_name ) {
+
+        $method = new MethodGenerator();
+        $method->setName( 'execute' );
+        $method->setParameter( ParameterGenerator::fromArray( [ 'name' => 'request',
+                                                                'type' => 'IRequest',
+                                                                'defaultvalue' => NULL ] ) );
+        $method->setDocBlock(
+            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ParamTag( 'request', $request_alias ),
+                                                        new Tag\ReturnTag( [ 'IResponse', $response_alias ] ) ] ] ) );
+        $method->setBody( <<<CODE
+if ( !is_null( \$request ) ) {
+    \$this->setRequest( \$request );
+}
+return \$this->makeRequest( '$operation_name' );
+CODE
+        );
+
+        return $method;
+    }
+
+    private function getInputMethod ( $request_alias ) {
+
+        $method = new MethodGenerator();
+        $method->setName( 'getOperationInput' );
+        $method->setDocBlock(
+            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ $request_alias ] ) ] ] ) );
+        $method->setBody( <<<CODE
+if ( is_null( \$this->request ) ) {
+    \$this->request = new $request_alias();
+}
+return \$this->request;
+CODE
+        );
+
+        return $method;
+    }
+
+    private function getClassMapMethod () {
+
+        $method = new MethodGenerator();
+        $method->setName( 'getClassMap' );
+        $method->setVisibility( MethodGenerator::FLAG_PROTECTED );
+        $method->setDocBlock(
+            DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ 'array' ] ) ] ] ) );
+        $method->setBody( <<<CODE
+return ClassMap::getClassMap();
+CODE
+        );
+
+        return $method;
     }
 }

@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\PeriodicDiscType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\PeriodicDiscType;
 
 class BasketPostSaleDiscLineRequest
 {

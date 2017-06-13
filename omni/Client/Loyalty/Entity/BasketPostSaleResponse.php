@@ -128,12 +128,16 @@ class BasketPostSaleResponse implements IResponse
      */
     public function setDocumentType($DocumentType)
     {
-        if ( DocumentType::isValid( $DocumentType) ) 
-            $this->DocumentType = new DocumentType( $DocumentType );
-        elseif ( DocumentType::isValidKey( $DocumentType) ) 
-            $this->DocumentType = new DocumentType( constant( "DocumentType::$DocumentType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $DocumentType instanceof DocumentType ) {
+            if ( DocumentType::isValid( $DocumentType ) ) 
+                $DocumentType = new DocumentType( $DocumentType );
+            elseif ( DocumentType::isValidKey( $DocumentType ) ) 
+                $DocumentType = new DocumentType( constant( "DocumentType::$DocumentType" ) );
+            elseif ( ! $DocumentType instanceof DocumentType )
+                throw new InvalidEnumException();
+        }
+        $this->DocumentType = $DocumentType->getValue();
+
         return $this;
     }
 

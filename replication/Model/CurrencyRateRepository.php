@@ -13,6 +13,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\SearchResultInterfaceFactory;
 use Ls\Replication\Api\CurrencyRateRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\CurrencyRate\CollectionFactory;
+use Ls\Replication\Model\ResourceModel\CurrencyRate\Collection;
 use Ls\Replication\Api\Data\CurrencyRateInterface;
 use Ls\Replication\Model\CurrencyRateFactory;
 

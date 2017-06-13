@@ -72,12 +72,16 @@ class Search implements IRequest
      */
     public function setSearchTypes($searchTypes)
     {
-        if ( SearchType::isValid( $searchTypes) ) 
-            $this->searchTypes = new SearchType( $searchTypes );
-        elseif ( SearchType::isValidKey( $searchTypes) ) 
-            $this->searchTypes = new SearchType( constant( "SearchType::$searchTypes" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $searchTypes instanceof SearchType ) {
+            if ( SearchType::isValid( $searchTypes ) ) 
+                $searchTypes = new SearchType( $searchTypes );
+            elseif ( SearchType::isValidKey( $searchTypes ) ) 
+                $searchTypes = new SearchType( constant( "SearchType::$searchTypes" ) );
+            elseif ( ! $searchTypes instanceof SearchType )
+                throw new InvalidEnumException();
+        }
+        $this->searchTypes = $searchTypes->getValue();
+
         return $this;
     }
 

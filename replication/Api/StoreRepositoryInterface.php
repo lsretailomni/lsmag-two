@@ -9,10 +9,15 @@ interface StoreRepositoryInterface
 {
 
     public function getList(SearchCriteriaInterface $criteria);
+
     public function save(StoreInterface $page);
+
     public function delete(StoreInterface $page);
+
     public function getById($id);
+
     public function deleteById($id);
+
 
 }
 

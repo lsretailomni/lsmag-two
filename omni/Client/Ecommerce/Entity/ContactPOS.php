@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\Gender;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\MaritalStatus;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\MaritalStatus;
 
 class ContactPOS
 {

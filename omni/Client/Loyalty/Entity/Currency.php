@@ -85,12 +85,16 @@ class Currency
      */
     public function setAmountRoundingMethod($AmountRoundingMethod)
     {
-        if ( CurrencyRoundingMethod::isValid( $AmountRoundingMethod) ) 
-            $this->AmountRoundingMethod = new CurrencyRoundingMethod( $AmountRoundingMethod );
-        elseif ( CurrencyRoundingMethod::isValidKey( $AmountRoundingMethod) ) 
-            $this->AmountRoundingMethod = new CurrencyRoundingMethod( constant( "CurrencyRoundingMethod::$AmountRoundingMethod" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $AmountRoundingMethod instanceof CurrencyRoundingMethod ) {
+            if ( CurrencyRoundingMethod::isValid( $AmountRoundingMethod ) ) 
+                $AmountRoundingMethod = new CurrencyRoundingMethod( $AmountRoundingMethod );
+            elseif ( CurrencyRoundingMethod::isValidKey( $AmountRoundingMethod ) ) 
+                $AmountRoundingMethod = new CurrencyRoundingMethod( constant( "CurrencyRoundingMethod::$AmountRoundingMethod" ) );
+            elseif ( ! $AmountRoundingMethod instanceof CurrencyRoundingMethod )
+                throw new InvalidEnumException();
+        }
+        $this->AmountRoundingMethod = $AmountRoundingMethod->getValue();
+
         return $this;
     }
 
@@ -271,12 +275,16 @@ class Currency
      */
     public function setSaleRoundingMethod($SaleRoundingMethod)
     {
-        if ( CurrencyRoundingMethod::isValid( $SaleRoundingMethod) ) 
-            $this->SaleRoundingMethod = new CurrencyRoundingMethod( $SaleRoundingMethod );
-        elseif ( CurrencyRoundingMethod::isValidKey( $SaleRoundingMethod) ) 
-            $this->SaleRoundingMethod = new CurrencyRoundingMethod( constant( "CurrencyRoundingMethod::$SaleRoundingMethod" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $SaleRoundingMethod instanceof CurrencyRoundingMethod ) {
+            if ( CurrencyRoundingMethod::isValid( $SaleRoundingMethod ) ) 
+                $SaleRoundingMethod = new CurrencyRoundingMethod( $SaleRoundingMethod );
+            elseif ( CurrencyRoundingMethod::isValidKey( $SaleRoundingMethod ) ) 
+                $SaleRoundingMethod = new CurrencyRoundingMethod( constant( "CurrencyRoundingMethod::$SaleRoundingMethod" ) );
+            elseif ( ! $SaleRoundingMethod instanceof CurrencyRoundingMethod )
+                throw new InvalidEnumException();
+        }
+        $this->SaleRoundingMethod = $SaleRoundingMethod->getValue();
+
         return $this;
     }
 

@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\BasketCalcType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\BasketCalcItemType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\BasketCalcItemType;
 
 class BasketCalcRequest
 {

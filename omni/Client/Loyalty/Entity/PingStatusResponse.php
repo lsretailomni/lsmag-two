@@ -26,12 +26,16 @@ class PingStatusResponse implements IResponse
      */
     public function setPingStatusResult($PingStatusResult)
     {
-        if ( StatusCode::isValid( $PingStatusResult) ) 
-            $this->PingStatusResult = new StatusCode( $PingStatusResult );
-        elseif ( StatusCode::isValidKey( $PingStatusResult) ) 
-            $this->PingStatusResult = new StatusCode( constant( "StatusCode::$PingStatusResult" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $PingStatusResult instanceof StatusCode ) {
+            if ( StatusCode::isValid( $PingStatusResult ) ) 
+                $PingStatusResult = new StatusCode( $PingStatusResult );
+            elseif ( StatusCode::isValidKey( $PingStatusResult ) ) 
+                $PingStatusResult = new StatusCode( constant( "StatusCode::$PingStatusResult" ) );
+            elseif ( ! $PingStatusResult instanceof StatusCode )
+                throw new InvalidEnumException();
+        }
+        $this->PingStatusResult = $PingStatusResult->getValue();
+
         return $this;
     }
 

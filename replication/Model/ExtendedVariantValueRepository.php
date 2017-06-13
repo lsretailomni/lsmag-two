@@ -13,6 +13,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\SearchResultInterfaceFactory;
 use Ls\Replication\Api\ExtendedVariantValueRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\ExtendedVariantValue\CollectionFactory;
+use Ls\Replication\Model\ResourceModel\ExtendedVariantValue\Collection;
 use Ls\Replication\Api\Data\ExtendedVariantValueInterface;
 use Ls\Replication\Model\ExtendedVariantValueFactory;
 

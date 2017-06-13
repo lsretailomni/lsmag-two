@@ -1,5 +1,5 @@
 <?php
-namespace Ls\Replication\Job\Code;
+namespace Ls\Replication\Code;
 
 
 use Sabre\Xml\Reader;

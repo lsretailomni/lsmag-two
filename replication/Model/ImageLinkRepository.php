@@ -13,6 +13,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\SearchResultInterfaceFactory;
 use Ls\Replication\Api\ImageLinkRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\ImageLink\CollectionFactory;
+use Ls\Replication\Model\ResourceModel\ImageLink\Collection;
 use Ls\Replication\Api\Data\ImageLinkInterface;
 use Ls\Replication\Model\ImageLinkFactory;
 

@@ -9,10 +9,15 @@ interface UnitOfMeasureRepositoryInterface
 {
 
     public function getList(SearchCriteriaInterface $criteria);
+
     public function save(UnitOfMeasureInterface $page);
+
     public function delete(UnitOfMeasureInterface $page);
+
     public function getById($id);
+
     public function deleteById($id);
+
 
 }
 

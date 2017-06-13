@@ -13,6 +13,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\SearchResultInterfaceFactory;
 use Ls\Replication\Api\BarcodeRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\Barcode\CollectionFactory;
+use Ls\Replication\Model\ResourceModel\Barcode\Collection;
 use Ls\Replication\Api\Data\BarcodeInterface;
 use Ls\Replication\Model\BarcodeFactory;
 

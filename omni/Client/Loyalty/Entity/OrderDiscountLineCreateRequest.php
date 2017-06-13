@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\DiscountType;
-use Ls\Omni\Client\Loyalty\Entity\Enum\PeriodicDiscType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Loyalty\Entity\Enum\PeriodicDiscType;
 
 class OrderDiscountLineCreateRequest
 {
@@ -125,12 +125,16 @@ class OrderDiscountLineCreateRequest
      */
     public function setDiscountType($DiscountType)
     {
-        if ( DiscountType::isValid( $DiscountType) ) 
-            $this->DiscountType = new DiscountType( $DiscountType );
-        elseif ( DiscountType::isValidKey( $DiscountType) ) 
-            $this->DiscountType = new DiscountType( constant( "DiscountType::$DiscountType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $DiscountType instanceof DiscountType ) {
+            if ( DiscountType::isValid( $DiscountType ) ) 
+                $DiscountType = new DiscountType( $DiscountType );
+            elseif ( DiscountType::isValidKey( $DiscountType ) ) 
+                $DiscountType = new DiscountType( constant( "DiscountType::$DiscountType" ) );
+            elseif ( ! $DiscountType instanceof DiscountType )
+                throw new InvalidEnumException();
+        }
+        $this->DiscountType = $DiscountType->getValue();
+
         return $this;
     }
 
@@ -239,12 +243,16 @@ class OrderDiscountLineCreateRequest
      */
     public function setPeriodicDiscType($PeriodicDiscType)
     {
-        if ( PeriodicDiscType::isValid( $PeriodicDiscType) ) 
-            $this->PeriodicDiscType = new PeriodicDiscType( $PeriodicDiscType );
-        elseif ( PeriodicDiscType::isValidKey( $PeriodicDiscType) ) 
-            $this->PeriodicDiscType = new PeriodicDiscType( constant( "PeriodicDiscType::$PeriodicDiscType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $PeriodicDiscType instanceof PeriodicDiscType ) {
+            if ( PeriodicDiscType::isValid( $PeriodicDiscType ) ) 
+                $PeriodicDiscType = new PeriodicDiscType( $PeriodicDiscType );
+            elseif ( PeriodicDiscType::isValidKey( $PeriodicDiscType ) ) 
+                $PeriodicDiscType = new PeriodicDiscType( constant( "PeriodicDiscType::$PeriodicDiscType" ) );
+            elseif ( ! $PeriodicDiscType instanceof PeriodicDiscType )
+                throw new InvalidEnumException();
+        }
+        $this->PeriodicDiscType = $PeriodicDiscType->getValue();
+
         return $this;
     }
 

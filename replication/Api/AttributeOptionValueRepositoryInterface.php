@@ -9,10 +9,15 @@ interface AttributeOptionValueRepositoryInterface
 {
 
     public function getList(SearchCriteriaInterface $criteria);
+
     public function save(AttributeOptionValueInterface $page);
+
     public function delete(AttributeOptionValueInterface $page);
+
     public function getById($id);
+
     public function deleteById($id);
+
 
 }
 

@@ -13,6 +13,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\SearchResultInterfaceFactory;
 use Ls\Replication\Api\ItemVariantRegistrationRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\ItemVariantRegistration\CollectionFactory;
+use Ls\Replication\Model\ResourceModel\ItemVariantRegistration\Collection;
 use Ls\Replication\Api\Data\ItemVariantRegistrationInterface;
 use Ls\Replication\Model\ItemVariantRegistrationFactory;
 

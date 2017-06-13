@@ -9,10 +9,15 @@ interface CurrencyRepositoryInterface
 {
 
     public function getList(SearchCriteriaInterface $criteria);
+
     public function save(CurrencyInterface $page);
+
     public function delete(CurrencyInterface $page);
+
     public function getById($id);
+
     public function deleteById($id);
+
 
 }
 

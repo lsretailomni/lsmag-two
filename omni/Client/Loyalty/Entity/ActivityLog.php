@@ -8,8 +8,8 @@
 namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\ActivityLogSolution;
-use Ls\Omni\Client\Loyalty\Entity\Enum\ActivityLogType;
 use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Client\Loyalty\Entity\Enum\ActivityLogType;
 
 class ActivityLog
 {
@@ -59,12 +59,16 @@ class ActivityLog
      */
     public function setLogSolution($LogSolution)
     {
-        if ( ActivityLogSolution::isValid( $LogSolution) ) 
-            $this->LogSolution = new ActivityLogSolution( $LogSolution );
-        elseif ( ActivityLogSolution::isValidKey( $LogSolution) ) 
-            $this->LogSolution = new ActivityLogSolution( constant( "ActivityLogSolution::$LogSolution" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $LogSolution instanceof ActivityLogSolution ) {
+            if ( ActivityLogSolution::isValid( $LogSolution ) ) 
+                $LogSolution = new ActivityLogSolution( $LogSolution );
+            elseif ( ActivityLogSolution::isValidKey( $LogSolution ) ) 
+                $LogSolution = new ActivityLogSolution( constant( "ActivityLogSolution::$LogSolution" ) );
+            elseif ( ! $LogSolution instanceof ActivityLogSolution )
+                throw new InvalidEnumException();
+        }
+        $this->LogSolution = $LogSolution->getValue();
+
         return $this;
     }
 
@@ -83,12 +87,16 @@ class ActivityLog
      */
     public function setLogType($LogType)
     {
-        if ( ActivityLogType::isValid( $LogType) ) 
-            $this->LogType = new ActivityLogType( $LogType );
-        elseif ( ActivityLogType::isValidKey( $LogType) ) 
-            $this->LogType = new ActivityLogType( constant( "ActivityLogType::$LogType" ) );
-        else 
-            throw new InvalidEnumException();
+        if ( ! $LogType instanceof ActivityLogType ) {
+            if ( ActivityLogType::isValid( $LogType ) ) 
+                $LogType = new ActivityLogType( $LogType );
+            elseif ( ActivityLogType::isValidKey( $LogType ) ) 
+                $LogType = new ActivityLogType( constant( "ActivityLogType::$LogType" ) );
+            elseif ( ! $LogType instanceof ActivityLogType )
+                throw new InvalidEnumException();
+        }
+        $this->LogType = $LogType->getValue();
+
         return $this;
     }
 
