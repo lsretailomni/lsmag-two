@@ -100,7 +100,7 @@ class LoginObserver implements ObserverInterface
         // TRY TO LOGIN
         $this->logger->debug('LOGIN');
         $result = $this->contactHelper->login( $username, $login[ 'password' ] );
-        //$this->logger->debug(var_export($result));
+        $this->logger->debug('LOGIN AFTER');
 
         if ( $result == FALSE ) {
             //$this->customerSession->addError( 'Invalid Omni login or Omni password' );
@@ -121,9 +121,19 @@ class LoginObserver implements ObserverInterface
             $searchCriteria = $this->searchCriteriaBuilder->create();
             $searchResults = $this->customerRepository->getList($searchCriteria);
 
-            if ( $searchResults->getTotalCount() != 0 ) {
+            $this->logger->debug(var_export($searchResults->getTotalCount(),true));
+            $customer = NULL;
+
+            if ( $searchResults->getTotalCount() == 0 ) {
                 $customer = $this->contactHelper->customer( $result , $login[ 'password' ] );
+            }else{
+                foreach($searchResults->getItems() as $match){
+                    $customer = $match;
+                    break;
+                }
             }
+            $this->logger->debug(var_export($customer,true));
+
             if ( is_null( $customer->getData( 'lsr_id' ) ) ) {
                 $customer->setData( 'lsr_id', $result->getId() );
             }

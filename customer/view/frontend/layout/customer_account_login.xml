@@ -10,7 +10,7 @@
         <referenceContainer name="content">
             <!-- customer.form.login.extra -->
             <container name="customer.login.container" label="Customer Login Container" htmlTag="div" htmlClass="login-container">
-                <block class="Magento\Customer\Block\Form\Login" name="customer_form_login" template="form/login.phtml">
+                <block class="Magento\Customer\Block\Form\Login" name="customer_form_login" template="Ls_Customer::form/login.phtml">
                     <container name="form.additional.info" as="form_additional_info"/>
                 </block>
                 <block class="Magento\Customer\Block\Form\Login\Info" name="customer.new" template="newcustomer.phtml"/>

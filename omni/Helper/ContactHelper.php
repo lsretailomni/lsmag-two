@@ -4,10 +4,12 @@ namespace Ls\Omni\Helper;
 use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\Customer;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Webapi\Exception;
 
 class ContactHelper extends AbstractHelper
 {
@@ -15,17 +17,23 @@ class ContactHelper extends AbstractHelper
     protected $filterBuilder;
     protected $searchCriteriaBuilder;
     protected $customerRepository;
+    protected $storeManager;
+    protected $customerFactory;
 
     public function __construct (
         Context $context,
         FilterBuilder $filterBuilder,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Customer\Model\CustomerFactory $customerFactory
     ) {
         $this->logger = $context->getLogger();
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerRepository = $customerRepository;
+        $this->storeManager     = $storeManager;
+        $this->customerFactory  = $customerFactory;
         parent::__construct(
             $context
         );
@@ -97,4 +105,53 @@ class ContactHelper extends AbstractHelper
             return NULL;
         }
     }
+    
+    /**
+     * @param string $user
+     * @param string $pass
+     *
+     * @return bool|Entity\Contact|null
+     */
+    public function login ( $user, $pass ) {
+
+//        $contact = Mage::helper( 'lsr/omni_contact' )->search( $user );
+
+        $request = new Operation\LoginWeb();
+        $loginWeb = new Entity\LoginWeb();
+        $loginWeb->setUserName( $user )
+                ->setPassword( $pass );
+        $response = $request->execute($loginWeb);
+
+        return $response ? $response->getLoginWebResult() : $response;
+    }
+
+    /**
+     * @param Entity\Contact|Entity\ContactPOS $contact
+     *
+     * @return Customer
+     * @throws Exception
+     */
+    public function customer ( $contact , $password) {
+
+        $this->logger->debug('customerHelper');
+
+        $websiteId  = $this->storeManager->getWebsite()->getWebsiteId();
+
+        // Instantiate object (this is the most important part)
+        $customer   = $this->customerFactory->create();
+        $customer->setPassword( $password )
+                 ->setData( 'website_id', $websiteId )
+                 ->setData( 'email', $contact->getEmail() )
+                 ->setData( 'lsr_id', $contact->getId() )
+                 ->setData( 'lsr_username', $contact->getUserName() )
+                 ->setData( 'firstname', $contact->getFirstName() )
+                 ->setData( 'lastname', $contact->getLastName() );
+
+        $this->logger->debug(var_export($customer,true));
+
+        $customer->save();
+        //$customer->sendNewAccountEmail();
+        return $customer;
+    }
+
 }
