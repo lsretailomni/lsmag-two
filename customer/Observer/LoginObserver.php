@@ -121,7 +121,6 @@ class LoginObserver implements ObserverInterface
             $searchCriteria = $this->searchCriteriaBuilder->create();
             $searchResults = $this->customerRepository->getList($searchCriteria);
 
-            $this->logger->debug(var_export($searchResults->getTotalCount(),true));
             $customer = NULL;
 
             if ( $searchResults->getTotalCount() == 0 ) {

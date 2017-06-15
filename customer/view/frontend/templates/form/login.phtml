@@ -33,7 +33,7 @@ $_isLSR = true;
                 <div class="field email required">
                     <label class="label" for="email"><span><?php /* @escapeNotVerified */ echo __('Email') ?></span></label>
                     <div class="control">
-                        <input name="login[username]" value="<?php echo $block->escapeHtml($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()) :?> autocomplete="off"<?php endif; ?> id="email" type="email" class="input-text" title="<?php /* @escapeNotVerified */ echo __('Email') ?>" data-validate="<?php echo $_isLSR ? '{required:true}'  : "{required:true, 'validate-email':true}" ?>>
+                        <input name="login[username]" value="<?php echo $block->escapeHtml($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()) :?> autocomplete="off"<?php endif; ?> id="email" <?php echo $_isLSR ? 'type="text"'  : 'type="email"' ?> class="input-text" title="<?php /* @escapeNotVerified */ echo __('Email') ?>" data-validate="<?php echo $_isLSR ? '{required:true}'  : "{required:true, 'validate-email':true}" ?>>
                     </div>
                 </div>
                 <div class="field password required">
