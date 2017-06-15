@@ -128,12 +128,27 @@ class LoginObserver implements ObserverInterface
                 $customer = $this->contactHelper->customer( $result , $login[ 'password' ] );
             }else{
                 foreach($searchResults->getItems() as $match){
-                    $customer = $match;
+                    $customer = $this->customerRepository->getById($match->getId());
                     break;
                 }
             }
-            $this->logger->debug(var_export($customer,true));
 
+            $customer_email = $customer->getEmail();
+            $this->logger->debug($customer->getId());
+            $this->logger->debug($customer->getEmail());
+
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $url = \Magento\Framework\App\ObjectManager::getInstance();
+            $storeManager = $url->get('\Magento\Store\Model\StoreManagerInterface');
+            $websiteId = $storeManager->getWebsite()->getWebsiteId();
+            // Get Store ID
+            $store = $storeManager->getStore();
+            $storeId = $store->getStoreId();
+            $customerFactory = $objectManager->get('\Magento\Customer\Model\CustomerFactory');
+            /** @var \Magento\Customer\Model\Customer $customer */
+            $customer=$customerFactory->create();
+            $customer->setWebsiteId($websiteId);
+            $customer->loadByEmail($customer_email);// load customer by email address
             if ( is_null( $customer->getData( 'lsr_id' ) ) ) {
                 $customer->setData( 'lsr_id', $result->getId() );
             }
@@ -162,8 +177,8 @@ class LoginObserver implements ObserverInterface
             $customer->save();
 
             $this->registry->register(  \Ls\Customer\Model\LSR::REGISTRY_LOYALTY_LOGINRESULT, $result );
-            $this->registry->setData(   \Ls\Customer\Model\LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token );
-            $this->registry->setData(   \Ls\Customer\Model\LSR::SESSION_CUSTOMER_LSRID, $result->getId() );
+            $this->customerSession->setData(   \Ls\Customer\Model\LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token );
+            $this->customerSession->setData(   \Ls\Customer\Model\LSR::SESSION_CUSTOMER_LSRID, $result->getId() );
 
             /** @var LSR_Omni_Model_Omni_Domain_Card $card */
             $card = $result->getCard();

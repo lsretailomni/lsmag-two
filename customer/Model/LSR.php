@@ -6,7 +6,7 @@
  * Time: 3:48 PM
  */
 
-namespace Ls\Customer\Model
+namespace Ls\Customer\Model;
 
 class LSR
 {
