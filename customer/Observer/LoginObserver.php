@@ -8,6 +8,7 @@ use Zend_Validate;
 use Zend_Validate_EmailAddress;
 use Ls\Omni\Helper\ContactHelper;
 use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Customer\Model\LSR;
 
 class LoginObserver implements ObserverInterface
 {
@@ -175,14 +176,14 @@ class LoginObserver implements ObserverInterface
             $customer->setData( 'lsr_token', $token );
             $customer->save();
 
-            $this->registry->register(  \Ls\Customer\Model\LSR::REGISTRY_LOYALTY_LOGINRESULT, $result );
-            $this->customerSession->setData(   \Ls\Customer\Model\LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token );
-            $this->customerSession->setData(   \Ls\Customer\Model\LSR::SESSION_CUSTOMER_LSRID, $result->getId() );
+            $this->registry->register(  LSR::REGISTRY_LOYALTY_LOGINRESULT, $result );
+            $this->customerSession->setData(   LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token );
+            $this->customerSession->setData(   LSR::SESSION_CUSTOMER_LSRID, $result->getId() );
 
             /** @var LSR_Omni_Model_Omni_Domain_Card $card */
             $card = $result->getCard();
             if ( $card instanceof Entity\Card && !is_null( $card->getId() ) ) {
-                $this->customerSession->setData(  \Ls\Customer\Model\LSR::SESSION_CUSTOMER_CARDID, $card->getId() );
+                $this->customerSession->setData(  LSR::SESSION_CUSTOMER_CARDID, $card->getId() );
             }
 
             $this->customerSession->setCustomerAsLoggedIn( $customer );
