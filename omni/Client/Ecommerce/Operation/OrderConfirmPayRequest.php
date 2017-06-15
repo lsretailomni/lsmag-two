@@ -97,6 +97,11 @@ class OrderConfirmPayRequest extends AbstractOperation
         return ClassMap::getClassMap();
     }
 
+    protected function isTokenized()
+    {
+        return FALSE;
+    }
+
     /**
      * @param OmniClient $client
      * @return $this

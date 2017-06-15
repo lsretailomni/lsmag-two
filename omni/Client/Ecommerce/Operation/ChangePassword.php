@@ -97,6 +97,11 @@ class ChangePassword extends AbstractOperation
         return ClassMap::getClassMap();
     }
 
+    protected function isTokenized()
+    {
+        return TRUE;
+    }
+
     /**
      * @param OmniClient $client
      * @return $this

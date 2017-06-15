@@ -1,6 +1,7 @@
 <?php
 namespace Ls\Core\Console;
 
+use Ls\Omni\Console\Command\ClientContactToken;
 use Ls\Omni\Console\Command\ClientContactSearch;
 use Ls\Omni\Console\Command\ClientGenerate;
 use Ls\Omni\Console\Command\ClientPing;
@@ -25,6 +26,7 @@ class Application extends SymfonyApplication
         $commands[] = new ClientGenerate();
         $commands[] = new ClientPing();
         $commands[] = new ClientContactSearch();
+        $commands[] = new ClientContactToken();
         $commands[] = new ReplicationGenerate();
         $commands[] = new ReplicationTest();
 

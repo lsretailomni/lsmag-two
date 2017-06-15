@@ -20,6 +20,8 @@ class OperationGenerator extends AbstractGenerator
     /** @var  Operation */
     private $operation;
 
+    private $tokenized_operations = [ 'AccountGetById', 'ChangePassword', 'TransactionGetById', 'OneListDeleteById' ];
+
     /**
      * @param Operation $operation
      * @param Metadata  $metadata
@@ -48,6 +50,8 @@ class OperationGenerator extends AbstractGenerator
         $response_fqn = self::fqn( $entity_namespace, $response_type );
         $response_alias = "{$operation_name}Response";
 
+        $is_tokenized = array_search( $operation_name, $this->tokenized_operations ) !== FALSE ? 'TRUE' : 'FALSE';
+
         // CLASS DECLARATION
 
         // NAMESPACE
@@ -75,6 +79,7 @@ class OperationGenerator extends AbstractGenerator
         $this->class->addConstant( 'OPERATION_NAME', $this->operation->getScreamingSnakeName() );
         $this->class->addConstant( 'SERVICE_TYPE', $this->metadata->getClient()->getServiceType()->getValue() );
 
+
         // ADD METHODS
         //  __construct & execute & getOperationInput
         $this->class->addMethodFromGenerator( $this->getConstructorMethod() );
@@ -82,6 +87,7 @@ class OperationGenerator extends AbstractGenerator
                                                                        $operation_name ) );
         $this->class->addMethodFromGenerator( $this->getInputMethod( $request_alias ) );
         $this->class->addMethodFromGenerator( $this->getClassMapMethod() );
+        $this->class->addMethod( 'isTokenized', [ ], MethodGenerator::FLAG_PROTECTED, "return $is_tokenized;" );
 
         // CLASS PROPERTIES TO BE USED BY THE AbstractOperation
         $this->createProperty( 'client', 'OmniClient', [ PropertyGenerator::VISIBILITY_PROTECTED ] );
