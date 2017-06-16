@@ -31,9 +31,13 @@ class ItemCategory extends AbstractModel implements ItemCategoryInterface, Ident
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -42,9 +46,13 @@ class ItemCategory extends AbstractModel implements ItemCategoryInterface, Ident
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setDescription($Description)
     {
-        $this->Description = $Description;
+        $this->setData( 'Description', $Description );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -53,9 +61,13 @@ class ItemCategory extends AbstractModel implements ItemCategoryInterface, Ident
         return $this->Description;
     }
 
+    /**
+     * @return $this
+     */
     public function setId($Id)
     {
-        $this->Id = $Id;
+        $this->setData( 'Id', $Id );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

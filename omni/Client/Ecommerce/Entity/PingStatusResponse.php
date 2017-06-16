@@ -9,9 +9,9 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\StatusCode;
 use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\ResponseInterface;
 
-class PingStatusResponse implements IResponse
+class PingStatusResponse implements ResponseInterface
 {
 
     /**

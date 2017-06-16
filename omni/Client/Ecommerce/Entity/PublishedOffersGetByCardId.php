@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class PublishedOffersGetByCardId implements IRequest
+class PublishedOffersGetByCardId implements RequestInterface
 {
 
     /**

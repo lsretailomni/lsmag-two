@@ -1,10 +1,10 @@
 <?php
-namespace Ls\Omni\Client\Code;
+namespace Ls\Omni\Code;
 
 use ArrayIterator;
 use IteratorAggregate;
-use Ls\Omni\Client\IRequest;
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\RequestInterface;
+use Ls\Omni\Client\ResponseInterface;
 use Ls\Omni\Exception\InvalidEnumException;
 use Ls\Omni\Service\Metadata;
 use Ls\Omni\Service\Soap\Entity;
@@ -146,13 +146,13 @@ CODE
         }
         // ADD REQUEST INTERFACE
         if ( $element->isRequest() ) {
-            $this->class->addUse( IRequest::class );
-            $this->class->setImplementedInterfaces( [ IRequest::class ] );
+            $this->class->addUse( RequestInterface::class );
+            $this->class->setImplementedInterfaces( [ RequestInterface::class ] );
         }
         // ADD RESPONSE INTERFACE
         if ( $element->isResponse() ) {
-            $this->class->addUse( IResponse::class );
-            $this->class->setImplementedInterfaces( [ IResponse::class ] );
+            $this->class->addUse( ResponseInterface::class );
+            $this->class->setImplementedInterfaces( [ ResponseInterface::class ] );
             foreach ( $type->getDefinition() as $field_name => $field_type ) {
 
                 $field_data_type = $this->normalizeDataType( $field_type->getDataType() );
@@ -177,8 +177,8 @@ CODE
 
         $content = $this->file->generate();
         $content = str_replace( 'implements \\IteratorAggregate', 'implements IteratorAggregate', $content );
-        $content = str_replace( 'implements Ls\\Omni\\Client\\IRequest', 'implements IRequest', $content );
-        $content = str_replace( 'implements Ls\\Omni\\Client\\IResponse', 'implements IResponse', $content );
+        $content = str_replace( 'implements Ls\\Omni\\Client\\RequestInterface', 'implements RequestInterface', $content );
+        $content = str_replace( 'implements Ls\\Omni\\Client\\ResponseInterface', 'implements ResponseInterface', $content );
 
         return $content;
     }

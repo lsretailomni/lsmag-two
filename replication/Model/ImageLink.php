@@ -35,9 +35,13 @@ class ImageLink extends AbstractModel implements ImageLinkInterface, IdentityInt
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -46,9 +50,13 @@ class ImageLink extends AbstractModel implements ImageLinkInterface, IdentityInt
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setDisplayOrder($DisplayOrder)
     {
-        $this->DisplayOrder = $DisplayOrder;
+        $this->setData( 'DisplayOrder', $DisplayOrder );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -57,9 +65,13 @@ class ImageLink extends AbstractModel implements ImageLinkInterface, IdentityInt
         return $this->DisplayOrder;
     }
 
+    /**
+     * @return $this
+     */
     public function setImageId($ImageId)
     {
-        $this->ImageId = $ImageId;
+        $this->setData( 'ImageId', $ImageId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -68,9 +80,13 @@ class ImageLink extends AbstractModel implements ImageLinkInterface, IdentityInt
         return $this->ImageId;
     }
 
+    /**
+     * @return $this
+     */
     public function setKeyValue($KeyValue)
     {
-        $this->KeyValue = $KeyValue;
+        $this->setData( 'KeyValue', $KeyValue );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -79,9 +95,13 @@ class ImageLink extends AbstractModel implements ImageLinkInterface, IdentityInt
         return $this->KeyValue;
     }
 
+    /**
+     * @return $this
+     */
     public function setTableName($TableName)
     {
-        $this->TableName = $TableName;
+        $this->setData( 'TableName', $TableName );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

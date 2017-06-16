@@ -2,7 +2,7 @@
 namespace Ls\Omni\Console\Command;
 
 use Ls\Omni\Client\Ecommerce\Operation\LoginWeb;
-use Ls\Omni\Client\IOperation;
+use Ls\Omni\Client\OperationInterface;
 use Ls\Omni\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -58,7 +58,7 @@ class ClientContactToken extends Command
                 $operation_class = str_replace( '.php', '', $fs->makePathRelative( $operation_file, $folder ) );
                 $operation_class_fqn = $base_namespace . '\\' . substr( $operation_class, 0, -1 );
 
-                /** @var IOperation $operation */
+                /** @var OperationInterface $operation */
                 $operation = new $operation_class_fqn();
                 try {
                     $operation->execute();

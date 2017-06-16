@@ -9,9 +9,9 @@ namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\AppSettingsKey;
 use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class AppSettingsGetByKey implements IRequest
+class AppSettingsGetByKey implements RequestInterface
 {
 
     /**

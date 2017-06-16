@@ -7,8 +7,8 @@
 
 namespace Ls\Omni\Client\Loyalty\Operation;
 
-use Ls\Omni\Client\IRequest;
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\RequestInterface;
+use Ls\Omni\Client\ResponseInterface;
 use Ls\Omni\Client\AbstractOperation;
 use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
@@ -68,9 +68,9 @@ class SchemesGetAll extends AbstractOperation
 
     /**
      * @param SchemesGetAllRequest $request
-     * @return IResponse|SchemesGetAllResponse
+     * @return ResponseInterface|SchemesGetAllResponse
      */
-    public function execute(IRequest $request = null)
+    public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
@@ -95,6 +95,11 @@ class SchemesGetAll extends AbstractOperation
     public function getClassMap()
     {
         return ClassMap::getClassMap();
+    }
+
+    protected function isTokenized()
+    {
+        return FALSE;
     }
 
     /**

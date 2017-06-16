@@ -1,7 +1,7 @@
 <?php
 namespace Ls\Omni\Console\Command;
 
-use Ls\Omni\Client\IOperation;
+use Ls\Omni\Client\OperationInterface;
 use Ls\Omni\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,7 +25,7 @@ class ClientPing extends Command
         $uc_type = ucfirst( $this->type->getValue() );
         $class = "Ls\\Omni\\Client\\$uc_type\\Operation\\Ping";
 
-        /** @var IOperation $ping */
+        /** @var OperationInterface $ping */
         $ping = new $class();
         $pong = $ping->execute();
 

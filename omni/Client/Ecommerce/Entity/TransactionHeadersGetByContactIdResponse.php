@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\ResponseInterface;
 
-class TransactionHeadersGetByContactIdResponse implements IResponse
+class TransactionHeadersGetByContactIdResponse implements ResponseInterface
 {
 
     /**

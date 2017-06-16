@@ -1,5 +1,5 @@
 <?php
-namespace Ls\Omni\Client\Code;
+namespace Ls\Omni\Code;
 
 use CaseHelper\CaseHelperFactory;
 use CaseHelper\CaseHelperInterface;

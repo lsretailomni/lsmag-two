@@ -69,9 +69,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setAllowedToSell($AllowedToSell)
     {
-        $this->AllowedToSell = $AllowedToSell;
+        $this->setData( 'AllowedToSell', $AllowedToSell );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -80,9 +84,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->AllowedToSell;
     }
 
+    /**
+     * @return $this
+     */
     public function setDescription($Description)
     {
-        $this->Description = $Description;
+        $this->setData( 'Description', $Description );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -91,9 +99,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->Description;
     }
 
+    /**
+     * @return $this
+     */
     public function setDetails($Details)
     {
-        $this->Details = $Details;
+        $this->setData( 'Details', $Details );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -102,9 +114,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->Details;
     }
 
+    /**
+     * @return $this
+     */
     public function setId($Id)
     {
-        $this->Id = $Id;
+        $this->setData( 'Id', $Id );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -113,9 +129,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->Id;
     }
 
+    /**
+     * @return $this
+     */
     public function setImages($Images)
     {
-        $this->Images = $Images;
+        $this->setData( 'Images', $Images );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -124,9 +144,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->Images;
     }
 
+    /**
+     * @return $this
+     */
     public function setItemAttributes($ItemAttributes)
     {
-        $this->ItemAttributes = $ItemAttributes;
+        $this->setData( 'ItemAttributes', $ItemAttributes );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -135,9 +159,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->ItemAttributes;
     }
 
+    /**
+     * @return $this
+     */
     public function setPrice($Price)
     {
-        $this->Price = $Price;
+        $this->setData( 'Price', $Price );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -146,9 +174,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->Price;
     }
 
+    /**
+     * @return $this
+     */
     public function setProductGroupId($ProductGroupId)
     {
-        $this->ProductGroupId = $ProductGroupId;
+        $this->setData( 'ProductGroupId', $ProductGroupId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -157,9 +189,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->ProductGroupId;
     }
 
+    /**
+     * @return $this
+     */
     public function setSalesUomId($SalesUomId)
     {
-        $this->SalesUomId = $SalesUomId;
+        $this->setData( 'SalesUomId', $SalesUomId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -168,9 +204,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->SalesUomId;
     }
 
+    /**
+     * @return $this
+     */
     public function setUOMs($UOMs)
     {
-        $this->UOMs = $UOMs;
+        $this->setData( 'UOMs', $UOMs );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -179,9 +219,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->UOMs;
     }
 
+    /**
+     * @return $this
+     */
     public function setVariants($Variants)
     {
-        $this->Variants = $Variants;
+        $this->setData( 'Variants', $Variants );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -190,9 +234,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->Variants;
     }
 
+    /**
+     * @return $this
+     */
     public function setVariantsExt($VariantsExt)
     {
-        $this->VariantsExt = $VariantsExt;
+        $this->setData( 'VariantsExt', $VariantsExt );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -201,9 +249,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->VariantsExt;
     }
 
+    /**
+     * @return $this
+     */
     public function setVariantsRegistration($VariantsRegistration)
     {
-        $this->VariantsRegistration = $VariantsRegistration;
+        $this->setData( 'VariantsRegistration', $VariantsRegistration );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -212,9 +264,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->VariantsRegistration;
     }
 
+    /**
+     * @return $this
+     */
     public function setBaseUOM($BaseUOM)
     {
-        $this->BaseUOM = $BaseUOM;
+        $this->setData( 'BaseUOM', $BaseUOM );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -223,9 +279,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->BaseUOM;
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -234,9 +294,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setFullDescription($FullDescription)
     {
-        $this->FullDescription = $FullDescription;
+        $this->setData( 'FullDescription', $FullDescription );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -245,9 +309,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->FullDescription;
     }
 
+    /**
+     * @return $this
+     */
     public function setProductGroupCode($ProductGroupCode)
     {
-        $this->ProductGroupCode = $ProductGroupCode;
+        $this->setData( 'ProductGroupCode', $ProductGroupCode );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -256,9 +324,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->ProductGroupCode;
     }
 
+    /**
+     * @return $this
+     */
     public function setPurchUOM($PurchUOM)
     {
-        $this->PurchUOM = $PurchUOM;
+        $this->setData( 'PurchUOM', $PurchUOM );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -267,9 +339,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->PurchUOM;
     }
 
+    /**
+     * @return $this
+     */
     public function setSalesUOM($SalesUOM)
     {
-        $this->SalesUOM = $SalesUOM;
+        $this->setData( 'SalesUOM', $SalesUOM );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -278,9 +354,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->SalesUOM;
     }
 
+    /**
+     * @return $this
+     */
     public function setScaleItem($ScaleItem)
     {
-        $this->ScaleItem = $ScaleItem;
+        $this->setData( 'ScaleItem', $ScaleItem );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -289,9 +369,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->ScaleItem;
     }
 
+    /**
+     * @return $this
+     */
     public function setVendorId($VendorId)
     {
-        $this->VendorId = $VendorId;
+        $this->setData( 'VendorId', $VendorId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -300,9 +384,13 @@ class Item extends AbstractModel implements ItemInterface, IdentityInterface
         return $this->VendorId;
     }
 
+    /**
+     * @return $this
+     */
     public function setVendorItemId($VendorItemId)
     {
-        $this->VendorItemId = $VendorItemId;
+        $this->setData( 'VendorItemId', $VendorItemId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

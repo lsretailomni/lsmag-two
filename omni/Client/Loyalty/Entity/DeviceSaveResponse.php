@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\ResponseInterface;
 
-class DeviceSaveResponse implements IResponse
+class DeviceSaveResponse implements ResponseInterface
 {
 
     /**

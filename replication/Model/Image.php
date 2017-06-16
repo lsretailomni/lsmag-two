@@ -35,9 +35,13 @@ class Image extends AbstractModel implements ImageInterface, IdentityInterface
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -46,9 +50,13 @@ class Image extends AbstractModel implements ImageInterface, IdentityInterface
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setId($Id)
     {
-        $this->Id = $Id;
+        $this->setData( 'Id', $Id );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -57,9 +65,13 @@ class Image extends AbstractModel implements ImageInterface, IdentityInterface
         return $this->Id;
     }
 
+    /**
+     * @return $this
+     */
     public function setImage64($Image64)
     {
-        $this->Image64 = $Image64;
+        $this->setData( 'Image64', $Image64 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -68,9 +80,13 @@ class Image extends AbstractModel implements ImageInterface, IdentityInterface
         return $this->Image64;
     }
 
+    /**
+     * @return $this
+     */
     public function setLocation($Location)
     {
-        $this->Location = $Location;
+        $this->setData( 'Location', $Location );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -79,9 +95,13 @@ class Image extends AbstractModel implements ImageInterface, IdentityInterface
         return $this->Location;
     }
 
+    /**
+     * @return $this
+     */
     public function setLocationType($LocationType)
     {
-        $this->LocationType = $LocationType;
+        $this->setData( 'LocationType', $LocationType );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

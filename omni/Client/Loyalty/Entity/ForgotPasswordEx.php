@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class ForgotPasswordEx implements IRequest
+class ForgotPasswordEx implements RequestInterface
 {
 
     /**

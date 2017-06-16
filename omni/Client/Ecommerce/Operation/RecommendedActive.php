@@ -7,8 +7,8 @@
 
 namespace Ls\Omni\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\IRequest;
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\RequestInterface;
+use Ls\Omni\Client\ResponseInterface;
 use Ls\Omni\Client\AbstractOperation;
 use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
@@ -68,9 +68,9 @@ class RecommendedActive extends AbstractOperation
 
     /**
      * @param RecommendedActiveRequest $request
-     * @return IResponse|RecommendedActiveResponse
+     * @return ResponseInterface|RecommendedActiveResponse
      */
-    public function execute(IRequest $request = null)
+    public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class OrderSearchClickCollect implements IRequest
+class OrderSearchClickCollect implements RequestInterface
 {
 
     /**

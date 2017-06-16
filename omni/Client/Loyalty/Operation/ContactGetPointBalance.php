@@ -7,8 +7,8 @@
 
 namespace Ls\Omni\Client\Loyalty\Operation;
 
-use Ls\Omni\Client\IRequest;
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\RequestInterface;
+use Ls\Omni\Client\ResponseInterface;
 use Ls\Omni\Client\AbstractOperation;
 use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
@@ -68,9 +68,9 @@ class ContactGetPointBalance extends AbstractOperation
 
     /**
      * @param ContactGetPointBalanceRequest $request
-     * @return IResponse|ContactGetPointBalanceResponse
+     * @return ResponseInterface|ContactGetPointBalanceResponse
      */
-    public function execute(IRequest $request = null)
+    public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
@@ -95,6 +95,11 @@ class ContactGetPointBalance extends AbstractOperation
     public function getClassMap()
     {
         return ClassMap::getClassMap();
+    }
+
+    protected function isTokenized()
+    {
+        return FALSE;
     }
 
     /**

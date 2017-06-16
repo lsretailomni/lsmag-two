@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\ResponseInterface;
 
-class ChangePasswordResponse implements IResponse
+class ChangePasswordResponse implements ResponseInterface
 {
 
     /**

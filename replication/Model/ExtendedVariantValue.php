@@ -41,9 +41,13 @@ class ExtendedVariantValue extends AbstractModel implements ExtendedVariantValue
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setCode($Code)
     {
-        $this->Code = $Code;
+        $this->setData( 'Code', $Code );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -52,9 +56,13 @@ class ExtendedVariantValue extends AbstractModel implements ExtendedVariantValue
         return $this->Code;
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -63,9 +71,13 @@ class ExtendedVariantValue extends AbstractModel implements ExtendedVariantValue
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setDimensions($Dimensions)
     {
-        $this->Dimensions = $Dimensions;
+        $this->setData( 'Dimensions', $Dimensions );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -74,9 +86,13 @@ class ExtendedVariantValue extends AbstractModel implements ExtendedVariantValue
         return $this->Dimensions;
     }
 
+    /**
+     * @return $this
+     */
     public function setFrameworkCode($FrameworkCode)
     {
-        $this->FrameworkCode = $FrameworkCode;
+        $this->setData( 'FrameworkCode', $FrameworkCode );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -85,9 +101,13 @@ class ExtendedVariantValue extends AbstractModel implements ExtendedVariantValue
         return $this->FrameworkCode;
     }
 
+    /**
+     * @return $this
+     */
     public function setItemId($ItemId)
     {
-        $this->ItemId = $ItemId;
+        $this->setData( 'ItemId', $ItemId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -96,9 +116,13 @@ class ExtendedVariantValue extends AbstractModel implements ExtendedVariantValue
         return $this->ItemId;
     }
 
+    /**
+     * @return $this
+     */
     public function setOrder($Order)
     {
-        $this->Order = $Order;
+        $this->setData( 'Order', $Order );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -107,9 +131,13 @@ class ExtendedVariantValue extends AbstractModel implements ExtendedVariantValue
         return $this->Order;
     }
 
+    /**
+     * @return $this
+     */
     public function setTimestamp($Timestamp)
     {
-        $this->Timestamp = $Timestamp;
+        $this->setData( 'Timestamp', $Timestamp );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -118,9 +146,13 @@ class ExtendedVariantValue extends AbstractModel implements ExtendedVariantValue
         return $this->Timestamp;
     }
 
+    /**
+     * @return $this
+     */
     public function setValue($Value)
     {
-        $this->Value = $Value;
+        $this->setData( 'Value', $Value );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

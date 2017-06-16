@@ -8,6 +8,9 @@ use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractModel;
 use ReflectionClass;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\DocBlock\Tag\ParamTag;
+use Zend\Code\Generator\DocBlock\Tag\ReturnTag;
+use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\FileGenerator;
 use Zend\Code\Generator\GeneratorInterface;
 use Zend\Code\Generator\MethodGenerator;
@@ -42,13 +45,6 @@ class ModelGenerator implements GeneratorInterface
         $this->file->setClass( $this->class );
     }
 
-    /**
-     * @return string
-     */
-    public function getName () {
-        return $this->reflected_entity->getShortName();
-    }
-
     public function getPath () {
         /** @var ClassLoader $loader */
         $loader = $GLOBALS[ 'loader' ];
@@ -56,6 +52,13 @@ class ModelGenerator implements GeneratorInterface
         $path = str_replace( 'Anchor', $this->getName(), $path );
 
         return $path;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName () {
+        return $this->reflected_entity->getShortName();
     }
 
     /**
@@ -90,18 +93,7 @@ class ModelGenerator implements GeneratorInterface
         $this->class->addMethodFromGenerator( $identities_method );
 
         foreach ( $this->reflected_entity->getProperties() as $property ) {
-
-            $set_method = new MethodGenerator();
-            $set_method->setName( 'set' . $property->getName() );
-            $set_method->setParameters( [ new ParameterGenerator( $property->getName() ) ] );
-            $set_method->setBody( "\$this->{$property->getName()} = \${$property->getName()};\nreturn \$this;" );
-            $get_method = new MethodGenerator();
-            $get_method->setName( 'get' . $property->getName() );
-            $get_method->setBody( "return \$this->{$property->getName()};" );
-
-            $this->class->addProperty( $property->getName(), NULL, PropertyGenerator::FLAG_PROTECTED );
-            $this->class->addMethodFromGenerator( $set_method );
-            $this->class->addMethodFromGenerator( $get_method );
+            $this->createProperty( $property->getName() );
         }
 
 
@@ -113,5 +105,24 @@ class ModelGenerator implements GeneratorInterface
                                 ', IdentityInterface', $content );
 
         return $content;
+    }
+
+    private function createProperty ( $property_name ) {
+
+        $set_method = new MethodGenerator();
+        $set_method->setDocBlock( DocBlockGenerator::fromArray( [ 'tags' => [ new ParamTag( $property_name ),
+                                                                              new ReturnTag( '$this' ) ] ] ) );
+        $set_method->setName( 'set' . $property_name );
+        $set_method->setParameters( [ new ParameterGenerator( $property_name ) ] );
+        $set_method->setBody( "\$this->setData( '$property_name', \$$property_name );\n\$this->setDataChanges( TRUE );\nreturn \$this;" );
+
+        $get_method = new MethodGenerator();
+        $set_method->setDocBlock( DocBlockGenerator::fromArray( [ 'tags' => [ new ReturnTag( '$this' ) ] ] ) );
+        $get_method->setName( 'get' . $property_name );
+        $get_method->setBody( "return \$this->$property_name;" );
+
+        $this->class->addProperty( $property_name, NULL, PropertyGenerator::FLAG_PROTECTED );
+        $this->class->addMethodFromGenerator( $set_method );
+        $this->class->addMethodFromGenerator( $get_method );
     }
 }

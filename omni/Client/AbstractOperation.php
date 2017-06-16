@@ -5,7 +5,7 @@ use Ls\Omni\Exception\TokenNotFoundException;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 
-abstract class AbstractOperation implements IOperation
+abstract class AbstractOperation implements OperationInterface
 {
     private static $header = 'LSRETAIL-TOKEN';
     /** @var  ServiceType */
@@ -46,7 +46,7 @@ abstract class AbstractOperation implements IOperation
     /**
      * @param $operation_name
      *
-     * @return IResponse
+     * @return ResponseInterface
      * @throws TokenNotFoundException
      */
     protected function makeRequest ( $operation_name ) {

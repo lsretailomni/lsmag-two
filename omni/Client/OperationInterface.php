@@ -3,17 +3,17 @@ namespace Ls\Omni\Client;
 
 use Ls\Omni\Service\Soap\Client;
 
-interface IOperation
+interface OperationInterface
 {
-    /** @return IRequest */
+    /** @return RequestInterface */
     function & getOperationInput ();
 
     /**
-     * @param IRequest $request
+     * @param RequestInterface $request
      *
-     * @return IResponse
+     * @return ResponseInterface
      */
-    function execute ( IRequest $request = NULL );
+    function execute ( RequestInterface $request = NULL );
 
     /**
      * @return Client

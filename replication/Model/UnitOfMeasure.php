@@ -35,9 +35,13 @@ class UnitOfMeasure extends AbstractModel implements UnitOfMeasureInterface, Ide
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -46,9 +50,13 @@ class UnitOfMeasure extends AbstractModel implements UnitOfMeasureInterface, Ide
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setDescription($Description)
     {
-        $this->Description = $Description;
+        $this->setData( 'Description', $Description );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -57,9 +65,13 @@ class UnitOfMeasure extends AbstractModel implements UnitOfMeasureInterface, Ide
         return $this->Description;
     }
 
+    /**
+     * @return $this
+     */
     public function setId($Id)
     {
-        $this->Id = $Id;
+        $this->setData( 'Id', $Id );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -68,9 +80,13 @@ class UnitOfMeasure extends AbstractModel implements UnitOfMeasureInterface, Ide
         return $this->Id;
     }
 
+    /**
+     * @return $this
+     */
     public function setShortDescription($ShortDescription)
     {
-        $this->ShortDescription = $ShortDescription;
+        $this->setData( 'ShortDescription', $ShortDescription );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -79,9 +95,13 @@ class UnitOfMeasure extends AbstractModel implements UnitOfMeasureInterface, Ide
         return $this->ShortDescription;
     }
 
+    /**
+     * @return $this
+     */
     public function setUnitDecimals($UnitDecimals)
     {
-        $this->UnitDecimals = $UnitDecimals;
+        $this->setData( 'UnitDecimals', $UnitDecimals );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

@@ -45,9 +45,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -56,9 +60,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setFrameworkCode($FrameworkCode)
     {
-        $this->FrameworkCode = $FrameworkCode;
+        $this->setData( 'FrameworkCode', $FrameworkCode );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -67,9 +75,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return $this->FrameworkCode;
     }
 
+    /**
+     * @return $this
+     */
     public function setItemId($ItemId)
     {
-        $this->ItemId = $ItemId;
+        $this->setData( 'ItemId', $ItemId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -78,9 +90,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return $this->ItemId;
     }
 
+    /**
+     * @return $this
+     */
     public function setVarDim1($VarDim1)
     {
-        $this->VarDim1 = $VarDim1;
+        $this->setData( 'VarDim1', $VarDim1 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -89,9 +105,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return $this->VarDim1;
     }
 
+    /**
+     * @return $this
+     */
     public function setVarDim2($VarDim2)
     {
-        $this->VarDim2 = $VarDim2;
+        $this->setData( 'VarDim2', $VarDim2 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -100,9 +120,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return $this->VarDim2;
     }
 
+    /**
+     * @return $this
+     */
     public function setVarDim3($VarDim3)
     {
-        $this->VarDim3 = $VarDim3;
+        $this->setData( 'VarDim3', $VarDim3 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -111,9 +135,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return $this->VarDim3;
     }
 
+    /**
+     * @return $this
+     */
     public function setVarDim4($VarDim4)
     {
-        $this->VarDim4 = $VarDim4;
+        $this->setData( 'VarDim4', $VarDim4 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -122,9 +150,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return $this->VarDim4;
     }
 
+    /**
+     * @return $this
+     */
     public function setVarDim5($VarDim5)
     {
-        $this->VarDim5 = $VarDim5;
+        $this->setData( 'VarDim5', $VarDim5 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -133,9 +165,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return $this->VarDim5;
     }
 
+    /**
+     * @return $this
+     */
     public function setVarDim6($VarDim6)
     {
-        $this->VarDim6 = $VarDim6;
+        $this->setData( 'VarDim6', $VarDim6 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -144,9 +180,13 @@ class ItemVariantRegistration extends AbstractModel implements ItemVariantRegist
         return $this->VarDim6;
     }
 
+    /**
+     * @return $this
+     */
     public function setVariantId($VariantId)
     {
-        $this->VariantId = $VariantId;
+        $this->setData( 'VariantId', $VariantId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

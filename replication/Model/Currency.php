@@ -65,9 +65,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setAmountRoundingMethod($AmountRoundingMethod)
     {
-        $this->AmountRoundingMethod = $AmountRoundingMethod;
+        $this->setData( 'AmountRoundingMethod', $AmountRoundingMethod );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -76,9 +80,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->AmountRoundingMethod;
     }
 
+    /**
+     * @return $this
+     */
     public function setCulture($Culture)
     {
-        $this->Culture = $Culture;
+        $this->setData( 'Culture', $Culture );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -87,9 +95,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->Culture;
     }
 
+    /**
+     * @return $this
+     */
     public function setDecimalPlaces($DecimalPlaces)
     {
-        $this->DecimalPlaces = $DecimalPlaces;
+        $this->setData( 'DecimalPlaces', $DecimalPlaces );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -98,9 +110,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->DecimalPlaces;
     }
 
+    /**
+     * @return $this
+     */
     public function setDecimalSeparator($DecimalSeparator)
     {
-        $this->DecimalSeparator = $DecimalSeparator;
+        $this->setData( 'DecimalSeparator', $DecimalSeparator );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -109,9 +125,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->DecimalSeparator;
     }
 
+    /**
+     * @return $this
+     */
     public function setDescription($Description)
     {
-        $this->Description = $Description;
+        $this->setData( 'Description', $Description );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -120,9 +140,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->Description;
     }
 
+    /**
+     * @return $this
+     */
     public function setId($Id)
     {
-        $this->Id = $Id;
+        $this->setData( 'Id', $Id );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -131,9 +155,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->Id;
     }
 
+    /**
+     * @return $this
+     */
     public function setPostfix($Postfix)
     {
-        $this->Postfix = $Postfix;
+        $this->setData( 'Postfix', $Postfix );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -142,9 +170,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->Postfix;
     }
 
+    /**
+     * @return $this
+     */
     public function setPrefix($Prefix)
     {
-        $this->Prefix = $Prefix;
+        $this->setData( 'Prefix', $Prefix );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -153,9 +185,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->Prefix;
     }
 
+    /**
+     * @return $this
+     */
     public function setRoundOfAmount($RoundOfAmount)
     {
-        $this->RoundOfAmount = $RoundOfAmount;
+        $this->setData( 'RoundOfAmount', $RoundOfAmount );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -164,9 +200,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->RoundOfAmount;
     }
 
+    /**
+     * @return $this
+     */
     public function setRoundOffSales($RoundOffSales)
     {
-        $this->RoundOffSales = $RoundOffSales;
+        $this->setData( 'RoundOffSales', $RoundOffSales );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -175,9 +215,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->RoundOffSales;
     }
 
+    /**
+     * @return $this
+     */
     public function setSaleRoundingMethod($SaleRoundingMethod)
     {
-        $this->SaleRoundingMethod = $SaleRoundingMethod;
+        $this->setData( 'SaleRoundingMethod', $SaleRoundingMethod );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -186,9 +230,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->SaleRoundingMethod;
     }
 
+    /**
+     * @return $this
+     */
     public function setSymbol($Symbol)
     {
-        $this->Symbol = $Symbol;
+        $this->setData( 'Symbol', $Symbol );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -197,9 +245,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->Symbol;
     }
 
+    /**
+     * @return $this
+     */
     public function setThousandSeparator($ThousandSeparator)
     {
-        $this->ThousandSeparator = $ThousandSeparator;
+        $this->setData( 'ThousandSeparator', $ThousandSeparator );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -208,9 +260,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->ThousandSeparator;
     }
 
+    /**
+     * @return $this
+     */
     public function setCurrencyCode($CurrencyCode)
     {
-        $this->CurrencyCode = $CurrencyCode;
+        $this->setData( 'CurrencyCode', $CurrencyCode );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -219,9 +275,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->CurrencyCode;
     }
 
+    /**
+     * @return $this
+     */
     public function setCurrencyPrefix($CurrencyPrefix)
     {
-        $this->CurrencyPrefix = $CurrencyPrefix;
+        $this->setData( 'CurrencyPrefix', $CurrencyPrefix );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -230,9 +290,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->CurrencyPrefix;
     }
 
+    /**
+     * @return $this
+     */
     public function setCurrencySuffix($CurrencySuffix)
     {
-        $this->CurrencySuffix = $CurrencySuffix;
+        $this->setData( 'CurrencySuffix', $CurrencySuffix );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -241,9 +305,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->CurrencySuffix;
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -252,9 +320,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setRoundOfSales($RoundOfSales)
     {
-        $this->RoundOfSales = $RoundOfSales;
+        $this->setData( 'RoundOfSales', $RoundOfSales );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -263,9 +335,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->RoundOfSales;
     }
 
+    /**
+     * @return $this
+     */
     public function setRoundOfTypeAmount($RoundOfTypeAmount)
     {
-        $this->RoundOfTypeAmount = $RoundOfTypeAmount;
+        $this->setData( 'RoundOfTypeAmount', $RoundOfTypeAmount );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -274,9 +350,13 @@ class Currency extends AbstractModel implements CurrencyInterface, IdentityInter
         return $this->RoundOfTypeAmount;
     }
 
+    /**
+     * @return $this
+     */
     public function setRoundOfTypeSales($RoundOfTypeSales)
     {
-        $this->RoundOfTypeSales = $RoundOfTypeSales;
+        $this->setData( 'RoundOfTypeSales', $RoundOfTypeSales );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

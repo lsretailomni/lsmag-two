@@ -9,9 +9,9 @@ namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\EntryStatus;
 use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\ResponseInterface;
 
-class BasketCalcResponse implements IResponse
+class BasketCalcResponse implements ResponseInterface
 {
 
     /**

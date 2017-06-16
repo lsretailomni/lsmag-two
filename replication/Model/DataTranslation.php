@@ -35,9 +35,13 @@ class DataTranslation extends AbstractModel implements DataTranslationInterface,
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -46,9 +50,13 @@ class DataTranslation extends AbstractModel implements DataTranslationInterface,
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setKey($Key)
     {
-        $this->Key = $Key;
+        $this->setData( 'Key', $Key );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -57,9 +65,13 @@ class DataTranslation extends AbstractModel implements DataTranslationInterface,
         return $this->Key;
     }
 
+    /**
+     * @return $this
+     */
     public function setLC($LC)
     {
-        $this->LC = $LC;
+        $this->setData( 'LC', $LC );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -68,9 +80,13 @@ class DataTranslation extends AbstractModel implements DataTranslationInterface,
         return $this->LC;
     }
 
+    /**
+     * @return $this
+     */
     public function setTId($TId)
     {
-        $this->TId = $TId;
+        $this->setData( 'TId', $TId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -79,9 +95,13 @@ class DataTranslation extends AbstractModel implements DataTranslationInterface,
         return $this->TId;
     }
 
+    /**
+     * @return $this
+     */
     public function setTx($Tx)
     {
-        $this->Tx = $Tx;
+        $this->setData( 'Tx', $Tx );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

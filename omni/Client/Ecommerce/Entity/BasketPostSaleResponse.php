@@ -9,9 +9,9 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentType;
 use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\ResponseInterface;
 
-class BasketPostSaleResponse implements IResponse
+class BasketPostSaleResponse implements ResponseInterface
 {
 
     /**

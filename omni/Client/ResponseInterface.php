@@ -1,7 +1,7 @@
 <?php
 namespace Ls\Omni\Client;
 
-interface IResponse
+interface ResponseInterface
 {
     function getResult ();
 }

@@ -39,9 +39,13 @@ class Barcode extends AbstractModel implements BarcodeInterface, IdentityInterfa
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setBlocked($Blocked)
     {
-        $this->Blocked = $Blocked;
+        $this->setData( 'Blocked', $Blocked );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -50,9 +54,13 @@ class Barcode extends AbstractModel implements BarcodeInterface, IdentityInterfa
         return $this->Blocked;
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -61,9 +69,13 @@ class Barcode extends AbstractModel implements BarcodeInterface, IdentityInterfa
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setDescription($Description)
     {
-        $this->Description = $Description;
+        $this->setData( 'Description', $Description );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -72,9 +84,13 @@ class Barcode extends AbstractModel implements BarcodeInterface, IdentityInterfa
         return $this->Description;
     }
 
+    /**
+     * @return $this
+     */
     public function setId($Id)
     {
-        $this->Id = $Id;
+        $this->setData( 'Id', $Id );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -83,9 +99,13 @@ class Barcode extends AbstractModel implements BarcodeInterface, IdentityInterfa
         return $this->Id;
     }
 
+    /**
+     * @return $this
+     */
     public function setItemId($ItemId)
     {
-        $this->ItemId = $ItemId;
+        $this->setData( 'ItemId', $ItemId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -94,9 +114,13 @@ class Barcode extends AbstractModel implements BarcodeInterface, IdentityInterfa
         return $this->ItemId;
     }
 
+    /**
+     * @return $this
+     */
     public function setUom($Uom)
     {
-        $this->Uom = $Uom;
+        $this->setData( 'Uom', $Uom );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -105,9 +129,13 @@ class Barcode extends AbstractModel implements BarcodeInterface, IdentityInterfa
         return $this->Uom;
     }
 
+    /**
+     * @return $this
+     */
     public function setVariantId($VariantId)
     {
-        $this->VariantId = $VariantId;
+        $this->setData( 'VariantId', $VariantId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

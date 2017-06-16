@@ -51,9 +51,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setCode($Code)
     {
-        $this->Code = $Code;
+        $this->setData( 'Code', $Code );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -62,9 +66,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->Code;
     }
 
+    /**
+     * @return $this
+     */
     public function setDefaultValue($DefaultValue)
     {
-        $this->DefaultValue = $DefaultValue;
+        $this->setData( 'DefaultValue', $DefaultValue );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -73,9 +81,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->DefaultValue;
     }
 
+    /**
+     * @return $this
+     */
     public function setDescription($Description)
     {
-        $this->Description = $Description;
+        $this->setData( 'Description', $Description );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -84,9 +96,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->Description;
     }
 
+    /**
+     * @return $this
+     */
     public function setLinkField1($LinkField1)
     {
-        $this->LinkField1 = $LinkField1;
+        $this->setData( 'LinkField1', $LinkField1 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -95,9 +111,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->LinkField1;
     }
 
+    /**
+     * @return $this
+     */
     public function setLinkField2($LinkField2)
     {
-        $this->LinkField2 = $LinkField2;
+        $this->setData( 'LinkField2', $LinkField2 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -106,9 +126,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->LinkField2;
     }
 
+    /**
+     * @return $this
+     */
     public function setLinkField3($LinkField3)
     {
-        $this->LinkField3 = $LinkField3;
+        $this->setData( 'LinkField3', $LinkField3 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -117,9 +141,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->LinkField3;
     }
 
+    /**
+     * @return $this
+     */
     public function setLinkType($LinkType)
     {
-        $this->LinkType = $LinkType;
+        $this->setData( 'LinkType', $LinkType );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -128,9 +156,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->LinkType;
     }
 
+    /**
+     * @return $this
+     */
     public function setNumbericValue($NumbericValue)
     {
-        $this->NumbericValue = $NumbericValue;
+        $this->setData( 'NumbericValue', $NumbericValue );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -139,9 +171,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->NumbericValue;
     }
 
+    /**
+     * @return $this
+     */
     public function setOptionValues($OptionValues)
     {
-        $this->OptionValues = $OptionValues;
+        $this->setData( 'OptionValues', $OptionValues );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -150,9 +186,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->OptionValues;
     }
 
+    /**
+     * @return $this
+     */
     public function setSequence($Sequence)
     {
-        $this->Sequence = $Sequence;
+        $this->setData( 'Sequence', $Sequence );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -161,9 +201,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->Sequence;
     }
 
+    /**
+     * @return $this
+     */
     public function setValue($Value)
     {
-        $this->Value = $Value;
+        $this->setData( 'Value', $Value );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -172,9 +216,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->Value;
     }
 
+    /**
+     * @return $this
+     */
     public function setValueType($ValueType)
     {
-        $this->ValueType = $ValueType;
+        $this->setData( 'ValueType', $ValueType );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -183,9 +231,13 @@ class Attribute extends AbstractModel implements AttributeInterface, IdentityInt
         return $this->ValueType;
     }
 
+    /**
+     * @return $this
+     */
     public function setIsDeleted($IsDeleted)
     {
-        $this->IsDeleted = $IsDeleted;
+        $this->setData( 'IsDeleted', $IsDeleted );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

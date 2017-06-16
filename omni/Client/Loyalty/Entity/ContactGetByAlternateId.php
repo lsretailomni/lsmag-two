@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class ContactGetByAlternateId implements IRequest
+class ContactGetByAlternateId implements RequestInterface
 {
 
     /**

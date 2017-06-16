@@ -2,10 +2,10 @@
 namespace Ls\Omni\Console\Command;
 
 use Composer\Autoload\ClassLoader;
-use Ls\Omni\Client\Code\ClassMapGenerator;
-use Ls\Omni\Client\Code\EntityGenerator;
-use Ls\Omni\Client\Code\OperationGenerator;
-use Ls\Omni\Client\Code\RestrictionGenerator;
+use Ls\Omni\Code\ClassMapGenerator;
+use Ls\Omni\Code\EntityGenerator;
+use Ls\Omni\Code\OperationGenerator;
+use Ls\Omni\Code\RestrictionGenerator;
 use Ls\Omni\Console\Command;
 use Ls\Omni\Service\Service;
 use Ls\Omni\Service\Soap\Client;

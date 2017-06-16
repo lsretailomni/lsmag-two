@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class BasketCalc implements IRequest
+class BasketCalc implements RequestInterface
 {
 
     /**

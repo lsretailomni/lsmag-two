@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\ResponseInterface;
 
-class NotificationsUpdateStatusResponse implements IResponse
+class NotificationsUpdateStatusResponse implements ResponseInterface
 {
 
     /**

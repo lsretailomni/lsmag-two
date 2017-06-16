@@ -51,9 +51,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setACTSPS($ACTSPS)
     {
-        $this->ACTSPS = $ACTSPS;
+        $this->setData( 'ACTSPS', $ACTSPS );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -62,9 +66,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->ACTSPS;
     }
 
+    /**
+     * @return $this
+     */
     public function setCOUtc($COUtc)
     {
-        $this->COUtc = $COUtc;
+        $this->setData( 'COUtc', $COUtc );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -73,9 +81,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->COUtc;
     }
 
+    /**
+     * @return $this
+     */
     public function setDO($DO)
     {
-        $this->DO = $DO;
+        $this->setData( 'DO', $DO );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -84,9 +96,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->DO;
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -95,9 +111,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setDeleted($Deleted)
     {
-        $this->Deleted = $Deleted;
+        $this->setData( 'Deleted', $Deleted );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -106,9 +126,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->Deleted;
     }
 
+    /**
+     * @return $this
+     */
     public function setId($Id)
     {
-        $this->Id = $Id;
+        $this->setData( 'Id', $Id );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -117,9 +141,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->Id;
     }
 
+    /**
+     * @return $this
+     */
     public function setMTId($MTId)
     {
-        $this->MTId = $MTId;
+        $this->setData( 'MTId', $MTId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -128,9 +156,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->MTId;
     }
 
+    /**
+     * @return $this
+     */
     public function setName($Name)
     {
-        $this->Name = $Name;
+        $this->setData( 'Name', $Name );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -139,9 +171,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->Name;
     }
 
+    /**
+     * @return $this
+     */
     public function setPId($PId)
     {
-        $this->PId = $PId;
+        $this->setData( 'PId', $PId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -150,9 +186,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->PId;
     }
 
+    /**
+     * @return $this
+     */
     public function setPS($PS)
     {
-        $this->PS = $PS;
+        $this->setData( 'PS', $PS );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -161,9 +201,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->PS;
     }
 
+    /**
+     * @return $this
+     */
     public function setPSO($PSO)
     {
-        $this->PSO = $PSO;
+        $this->setData( 'PSO', $PSO );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -172,9 +216,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->PSO;
     }
 
+    /**
+     * @return $this
+     */
     public function setPub($Pub)
     {
-        $this->Pub = $Pub;
+        $this->setData( 'Pub', $Pub );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -183,9 +231,13 @@ class Vendor extends AbstractModel implements VendorInterface, IdentityInterface
         return $this->Pub;
     }
 
+    /**
+     * @return $this
+     */
     public function setUOUtc($UOUtc)
     {
-        $this->UOUtc = $UOUtc;
+        $this->setData( 'UOUtc', $UOUtc );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

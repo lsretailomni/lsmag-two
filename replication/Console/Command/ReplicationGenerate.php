@@ -3,7 +3,7 @@ namespace Ls\Replication\Console\Command;
 
 
 use Composer\Autoload\ClassLoader;
-use Ls\Omni\Client\Code\AbstractGenerator;
+use Ls\Omni\Code\AbstractGenerator;
 use Ls\Omni\Console\Command as OmniCommand;
 use Ls\Omni\Exception\InvalidServiceTypeException;
 use Ls\Omni\Service\Metadata;

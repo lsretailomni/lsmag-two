@@ -9,9 +9,9 @@ namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\OrderQueueStatus;
 use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class OrderQueueUpdateStatus implements IRequest
+class OrderQueueUpdateStatus implements RequestInterface
 {
 
     /**

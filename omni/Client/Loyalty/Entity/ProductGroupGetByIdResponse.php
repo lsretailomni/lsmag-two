@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\ResponseInterface;
 
-class ProductGroupGetByIdResponse implements IResponse
+class ProductGroupGetByIdResponse implements ResponseInterface
 {
 
     /**

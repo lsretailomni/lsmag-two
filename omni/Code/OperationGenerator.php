@@ -1,9 +1,9 @@
 <?php
-namespace Ls\Omni\Client\Code;
+namespace Ls\Omni\Code;
 
 use Ls\Omni\Client\AbstractOperation;
-use Ls\Omni\Client\IRequest;
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\RequestInterface;
+use Ls\Omni\Client\ResponseInterface;
 use Ls\Omni\Service\Metadata;
 use Ls\Omni\Service\Service;
 use Ls\Omni\Service\ServiceType;
@@ -58,8 +58,8 @@ class OperationGenerator extends AbstractGenerator
         $this->class->setNamespaceName( $operation_namespace );
 
         // USE STATEMENTS
-        $this->class->addUse( IRequest::class );
-        $this->class->addUse( IResponse::class );
+        $this->class->addUse( RequestInterface::class );
+        $this->class->addUse( ResponseInterface::class );
         $this->class->addUse( AbstractOperation::class );
         $this->class->addUse( Service::class, 'OmniService' );
         $this->class->addUse( ServiceType::class );
@@ -69,7 +69,7 @@ class OperationGenerator extends AbstractGenerator
         $this->class->addUse( $response_fqn, $response_alias );
 
         // CLASS DEFINITION
-        // class OPERATION extends AbstractOperation implements IOperation
+        // class OPERATION extends AbstractOperation implements OperationInterface
         $this->class->setName( $this->operation->getName() );
         $this->class->setExtendedClass( AbstractOperation::class );
 
@@ -111,8 +111,8 @@ class OperationGenerator extends AbstractGenerator
 COMMENT;
         $content = str_replace( $execute_docblock, "$no_inspection\n$execute_docblock", $content );
         // USE SIMPLIFIED FULLY QUALIFIED NAME                                                                 f
-        $content = str_replace( 'execute(\\IRequest', 'execute(IRequest', $content );
-        $content = str_replace( 'implements Ls\\Omni\\Client\\IOperation', 'implements IOperation', $content );
+        $content = str_replace( 'execute(\\RequestInterface', 'execute(RequestInterface', $content );
+        $content = str_replace( 'implements Ls\\Omni\\Client\\OperationInterface', 'implements OperationInterface', $content );
         $content = str_replace( 'extends Ls\\Omni\\Client\\AbstractOperation', 'extends AbstractOperation',
                                 $content );
         $content = str_replace( 'public function getOperationInput()', 'public function & getOperationInput()',
@@ -144,11 +144,11 @@ CODE
         $method = new MethodGenerator();
         $method->setName( 'execute' );
         $method->setParameter( ParameterGenerator::fromArray( [ 'name' => 'request',
-                                                                'type' => 'IRequest',
+                                                                'type' => 'RequestInterface',
                                                                 'defaultvalue' => NULL ] ) );
         $method->setDocBlock(
             DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ParamTag( 'request', $request_alias ),
-                                                        new Tag\ReturnTag( [ 'IResponse', $response_alias ] ) ] ] ) );
+                                                        new Tag\ReturnTag( [ 'ResponseInterface', $response_alias ] ) ] ] ) );
         $method->setBody( <<<CODE
 if ( !is_null( \$request ) ) {
     \$this->setRequest( \$request );

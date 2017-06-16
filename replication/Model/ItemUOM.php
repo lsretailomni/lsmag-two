@@ -35,9 +35,13 @@ class ItemUOM extends AbstractModel implements ItemUOMInterface, IdentityInterfa
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -46,9 +50,13 @@ class ItemUOM extends AbstractModel implements ItemUOMInterface, IdentityInterfa
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setItemId($ItemId)
     {
-        $this->ItemId = $ItemId;
+        $this->setData( 'ItemId', $ItemId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -57,9 +65,13 @@ class ItemUOM extends AbstractModel implements ItemUOMInterface, IdentityInterfa
         return $this->ItemId;
     }
 
+    /**
+     * @return $this
+     */
     public function setQtyPrUom($QtyPrUom)
     {
-        $this->QtyPrUom = $QtyPrUom;
+        $this->setData( 'QtyPrUom', $QtyPrUom );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -68,9 +80,13 @@ class ItemUOM extends AbstractModel implements ItemUOMInterface, IdentityInterfa
         return $this->QtyPrUom;
     }
 
+    /**
+     * @return $this
+     */
     public function setStoreId($StoreId)
     {
-        $this->StoreId = $StoreId;
+        $this->setData( 'StoreId', $StoreId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -79,9 +95,13 @@ class ItemUOM extends AbstractModel implements ItemUOMInterface, IdentityInterfa
         return $this->StoreId;
     }
 
+    /**
+     * @return $this
+     */
     public function setUomCode($UomCode)
     {
-        $this->UomCode = $UomCode;
+        $this->setData( 'UomCode', $UomCode );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

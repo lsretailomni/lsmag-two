@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\IResponse;
+use Ls\Omni\Client\ResponseInterface;
 
-class StoresGetbyItemInStockResponse implements IResponse
+class StoresGetbyItemInStockResponse implements ResponseInterface
 {
 
     /**

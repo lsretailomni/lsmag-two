@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class ItemsInStockGet implements IRequest
+class ItemsInStockGet implements RequestInterface
 {
 
     /**

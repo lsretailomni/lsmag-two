@@ -33,9 +33,13 @@ class CurrencyRate extends AbstractModel implements CurrencyRateInterface, Ident
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setCC($CC)
     {
-        $this->CC = $CC;
+        $this->setData( 'CC', $CC );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -44,9 +48,13 @@ class CurrencyRate extends AbstractModel implements CurrencyRateInterface, Ident
         return $this->CC;
     }
 
+    /**
+     * @return $this
+     */
     public function setCF($CF)
     {
-        $this->CF = $CF;
+        $this->setData( 'CF', $CF );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -55,9 +63,13 @@ class CurrencyRate extends AbstractModel implements CurrencyRateInterface, Ident
         return $this->CF;
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -66,9 +78,13 @@ class CurrencyRate extends AbstractModel implements CurrencyRateInterface, Ident
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setSD($SD)
     {
-        $this->SD = $SD;
+        $this->setData( 'SD', $SD );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

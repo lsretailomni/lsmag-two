@@ -37,9 +37,13 @@ class VendorItemMapping extends AbstractModel implements VendorItemMappingInterf
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setDO($DO)
     {
-        $this->DO = $DO;
+        $this->setData( 'DO', $DO );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -48,9 +52,13 @@ class VendorItemMapping extends AbstractModel implements VendorItemMappingInterf
         return $this->DO;
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -59,9 +67,13 @@ class VendorItemMapping extends AbstractModel implements VendorItemMappingInterf
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setDeleted($Deleted)
     {
-        $this->Deleted = $Deleted;
+        $this->setData( 'Deleted', $Deleted );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -70,9 +82,13 @@ class VendorItemMapping extends AbstractModel implements VendorItemMappingInterf
         return $this->Deleted;
     }
 
+    /**
+     * @return $this
+     */
     public function setFP($FP)
     {
-        $this->FP = $FP;
+        $this->setData( 'FP', $FP );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -81,9 +97,13 @@ class VendorItemMapping extends AbstractModel implements VendorItemMappingInterf
         return $this->FP;
     }
 
+    /**
+     * @return $this
+     */
     public function setMId($MId)
     {
-        $this->MId = $MId;
+        $this->setData( 'MId', $MId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -92,9 +112,13 @@ class VendorItemMapping extends AbstractModel implements VendorItemMappingInterf
         return $this->MId;
     }
 
+    /**
+     * @return $this
+     */
     public function setNId($NId)
     {
-        $this->NId = $NId;
+        $this->setData( 'NId', $NId );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

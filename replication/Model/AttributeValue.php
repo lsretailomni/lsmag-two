@@ -43,9 +43,13 @@ class AttributeValue extends AbstractModel implements AttributeValueInterface, I
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setCode($Code)
     {
-        $this->Code = $Code;
+        $this->setData( 'Code', $Code );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -54,9 +58,13 @@ class AttributeValue extends AbstractModel implements AttributeValueInterface, I
         return $this->Code;
     }
 
+    /**
+     * @return $this
+     */
     public function setIsDeleted($IsDeleted)
     {
-        $this->IsDeleted = $IsDeleted;
+        $this->setData( 'IsDeleted', $IsDeleted );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -65,9 +73,13 @@ class AttributeValue extends AbstractModel implements AttributeValueInterface, I
         return $this->IsDeleted;
     }
 
+    /**
+     * @return $this
+     */
     public function setLinkField1($LinkField1)
     {
-        $this->LinkField1 = $LinkField1;
+        $this->setData( 'LinkField1', $LinkField1 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -76,9 +88,13 @@ class AttributeValue extends AbstractModel implements AttributeValueInterface, I
         return $this->LinkField1;
     }
 
+    /**
+     * @return $this
+     */
     public function setLinkField2($LinkField2)
     {
-        $this->LinkField2 = $LinkField2;
+        $this->setData( 'LinkField2', $LinkField2 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -87,9 +103,13 @@ class AttributeValue extends AbstractModel implements AttributeValueInterface, I
         return $this->LinkField2;
     }
 
+    /**
+     * @return $this
+     */
     public function setLinkField3($LinkField3)
     {
-        $this->LinkField3 = $LinkField3;
+        $this->setData( 'LinkField3', $LinkField3 );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -98,9 +118,13 @@ class AttributeValue extends AbstractModel implements AttributeValueInterface, I
         return $this->LinkField3;
     }
 
+    /**
+     * @return $this
+     */
     public function setLinkType($LinkType)
     {
-        $this->LinkType = $LinkType;
+        $this->setData( 'LinkType', $LinkType );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -109,9 +133,13 @@ class AttributeValue extends AbstractModel implements AttributeValueInterface, I
         return $this->LinkType;
     }
 
+    /**
+     * @return $this
+     */
     public function setNumbericValue($NumbericValue)
     {
-        $this->NumbericValue = $NumbericValue;
+        $this->setData( 'NumbericValue', $NumbericValue );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -120,9 +148,13 @@ class AttributeValue extends AbstractModel implements AttributeValueInterface, I
         return $this->NumbericValue;
     }
 
+    /**
+     * @return $this
+     */
     public function setSequence($Sequence)
     {
-        $this->Sequence = $Sequence;
+        $this->setData( 'Sequence', $Sequence );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -131,9 +163,13 @@ class AttributeValue extends AbstractModel implements AttributeValueInterface, I
         return $this->Sequence;
     }
 
+    /**
+     * @return $this
+     */
     public function setValue($Value)
     {
-        $this->Value = $Value;
+        $this->setData( 'Value', $Value );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

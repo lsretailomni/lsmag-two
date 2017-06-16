@@ -33,9 +33,13 @@ class AttributeOptionValue extends AbstractModel implements AttributeOptionValue
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setCode($Code)
     {
-        $this->Code = $Code;
+        $this->setData( 'Code', $Code );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -44,9 +48,13 @@ class AttributeOptionValue extends AbstractModel implements AttributeOptionValue
         return $this->Code;
     }
 
+    /**
+     * @return $this
+     */
     public function setSequence($Sequence)
     {
-        $this->Sequence = $Sequence;
+        $this->setData( 'Sequence', $Sequence );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -55,9 +63,13 @@ class AttributeOptionValue extends AbstractModel implements AttributeOptionValue
         return $this->Sequence;
     }
 
+    /**
+     * @return $this
+     */
     public function setValue($Value)
     {
-        $this->Value = $Value;
+        $this->setData( 'Value', $Value );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -66,9 +78,13 @@ class AttributeOptionValue extends AbstractModel implements AttributeOptionValue
         return $this->Value;
     }
 
+    /**
+     * @return $this
+     */
     public function setIsDeleted($IsDeleted)
     {
-        $this->IsDeleted = $IsDeleted;
+        $this->setData( 'IsDeleted', $IsDeleted );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

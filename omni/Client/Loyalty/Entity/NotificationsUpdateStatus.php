@@ -9,9 +9,9 @@ namespace Ls\Omni\Client\Loyalty\Entity;
 
 use Ls\Omni\Client\Loyalty\Entity\Enum\NotificationStatus;
 use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class NotificationsUpdateStatus implements IRequest
+class NotificationsUpdateStatus implements RequestInterface
 {
 
     /**

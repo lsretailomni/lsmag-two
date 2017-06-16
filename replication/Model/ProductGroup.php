@@ -33,9 +33,13 @@ class ProductGroup extends AbstractModel implements ProductGroupInterface, Ident
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -44,9 +48,13 @@ class ProductGroup extends AbstractModel implements ProductGroupInterface, Ident
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setDescription($Description)
     {
-        $this->Description = $Description;
+        $this->setData( 'Description', $Description );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -55,9 +63,13 @@ class ProductGroup extends AbstractModel implements ProductGroupInterface, Ident
         return $this->Description;
     }
 
+    /**
+     * @return $this
+     */
     public function setId($Id)
     {
-        $this->Id = $Id;
+        $this->setData( 'Id', $Id );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -66,9 +78,13 @@ class ProductGroup extends AbstractModel implements ProductGroupInterface, Ident
         return $this->Id;
     }
 
+    /**
+     * @return $this
+     */
     public function setItemCategoryID($ItemCategoryID)
     {
-        $this->ItemCategoryID = $ItemCategoryID;
+        $this->setData( 'ItemCategoryID', $ItemCategoryID );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

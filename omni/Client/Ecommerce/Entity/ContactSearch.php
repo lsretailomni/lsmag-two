@@ -9,9 +9,9 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ContactSearchType;
 use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\IRequest;
+use Ls\Omni\Client\RequestInterface;
 
-class ContactSearch implements IRequest
+class ContactSearch implements RequestInterface
 {
 
     /**

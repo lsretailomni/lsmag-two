@@ -79,9 +79,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
+    /**
+     * @return $this
+     */
     public function setAddress($Address)
     {
-        $this->Address = $Address;
+        $this->setData( 'Address', $Address );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -90,9 +94,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Address;
     }
 
+    /**
+     * @return $this
+     */
     public function setCurrencyCode($CurrencyCode)
     {
-        $this->CurrencyCode = $CurrencyCode;
+        $this->setData( 'CurrencyCode', $CurrencyCode );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -101,9 +109,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->CurrencyCode;
     }
 
+    /**
+     * @return $this
+     */
     public function setDescription($Description)
     {
-        $this->Description = $Description;
+        $this->setData( 'Description', $Description );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -112,9 +124,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Description;
     }
 
+    /**
+     * @return $this
+     */
     public function setDistance($Distance)
     {
-        $this->Distance = $Distance;
+        $this->setData( 'Distance', $Distance );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -123,9 +139,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Distance;
     }
 
+    /**
+     * @return $this
+     */
     public function setId($Id)
     {
-        $this->Id = $Id;
+        $this->setData( 'Id', $Id );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -134,9 +154,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Id;
     }
 
+    /**
+     * @return $this
+     */
     public function setImages($Images)
     {
-        $this->Images = $Images;
+        $this->setData( 'Images', $Images );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -145,9 +169,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Images;
     }
 
+    /**
+     * @return $this
+     */
     public function setIsClickAndCollect($IsClickAndCollect)
     {
-        $this->IsClickAndCollect = $IsClickAndCollect;
+        $this->setData( 'IsClickAndCollect', $IsClickAndCollect );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -156,9 +184,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->IsClickAndCollect;
     }
 
+    /**
+     * @return $this
+     */
     public function setLatitude($Latitude)
     {
-        $this->Latitude = $Latitude;
+        $this->setData( 'Latitude', $Latitude );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -167,9 +199,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Latitude;
     }
 
+    /**
+     * @return $this
+     */
     public function setLongitude($Longitude)
     {
-        $this->Longitude = $Longitude;
+        $this->setData( 'Longitude', $Longitude );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -178,9 +214,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Longitude;
     }
 
+    /**
+     * @return $this
+     */
     public function setPhone($Phone)
     {
-        $this->Phone = $Phone;
+        $this->setData( 'Phone', $Phone );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -189,9 +229,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Phone;
     }
 
+    /**
+     * @return $this
+     */
     public function setStoreHours($StoreHours)
     {
-        $this->StoreHours = $StoreHours;
+        $this->setData( 'StoreHours', $StoreHours );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -200,9 +244,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->StoreHours;
     }
 
+    /**
+     * @return $this
+     */
     public function setStoreServices($StoreServices)
     {
-        $this->StoreServices = $StoreServices;
+        $this->setData( 'StoreServices', $StoreServices );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -211,9 +259,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->StoreServices;
     }
 
+    /**
+     * @return $this
+     */
     public function setCAC($CAC)
     {
-        $this->CAC = $CAC;
+        $this->setData( 'CAC', $CAC );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -222,9 +274,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->CAC;
     }
 
+    /**
+     * @return $this
+     */
     public function setCity($City)
     {
-        $this->City = $City;
+        $this->setData( 'City', $City );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -233,9 +289,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->City;
     }
 
+    /**
+     * @return $this
+     */
     public function setCountry($Country)
     {
-        $this->Country = $Country;
+        $this->setData( 'Country', $Country );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -244,9 +304,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Country;
     }
 
+    /**
+     * @return $this
+     */
     public function setCounty($County)
     {
-        $this->County = $County;
+        $this->setData( 'County', $County );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -255,9 +319,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->County;
     }
 
+    /**
+     * @return $this
+     */
     public function setCultureName($CultureName)
     {
-        $this->CultureName = $CultureName;
+        $this->setData( 'CultureName', $CultureName );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -266,9 +334,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->CultureName;
     }
 
+    /**
+     * @return $this
+     */
     public function setCurrency($Currency)
     {
-        $this->Currency = $Currency;
+        $this->setData( 'Currency', $Currency );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -277,9 +349,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Currency;
     }
 
+    /**
+     * @return $this
+     */
     public function setDefaultCustAcct($DefaultCustAcct)
     {
-        $this->DefaultCustAcct = $DefaultCustAcct;
+        $this->setData( 'DefaultCustAcct', $DefaultCustAcct );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -288,9 +364,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->DefaultCustAcct;
     }
 
+    /**
+     * @return $this
+     */
     public function setDel($Del)
     {
-        $this->Del = $Del;
+        $this->setData( 'Del', $Del );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -299,9 +379,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Del;
     }
 
+    /**
+     * @return $this
+     */
     public function setFunctProfile($FunctProfile)
     {
-        $this->FunctProfile = $FunctProfile;
+        $this->setData( 'FunctProfile', $FunctProfile );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -310,9 +394,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->FunctProfile;
     }
 
+    /**
+     * @return $this
+     */
     public function setName($Name)
     {
-        $this->Name = $Name;
+        $this->setData( 'Name', $Name );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -321,9 +409,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Name;
     }
 
+    /**
+     * @return $this
+     */
     public function setState($State)
     {
-        $this->State = $State;
+        $this->setData( 'State', $State );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -332,9 +424,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->State;
     }
 
+    /**
+     * @return $this
+     */
     public function setStreet($Street)
     {
-        $this->Street = $Street;
+        $this->setData( 'Street', $Street );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -343,9 +439,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->Street;
     }
 
+    /**
+     * @return $this
+     */
     public function setTaxGroup($TaxGroup)
     {
-        $this->TaxGroup = $TaxGroup;
+        $this->setData( 'TaxGroup', $TaxGroup );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -354,9 +454,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->TaxGroup;
     }
 
+    /**
+     * @return $this
+     */
     public function setUserDefaultCustAcct($UserDefaultCustAcct)
     {
-        $this->UserDefaultCustAcct = $UserDefaultCustAcct;
+        $this->setData( 'UserDefaultCustAcct', $UserDefaultCustAcct );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -365,9 +469,13 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         return $this->UserDefaultCustAcct;
     }
 
+    /**
+     * @return $this
+     */
     public function setZipCode($ZipCode)
     {
-        $this->ZipCode = $ZipCode;
+        $this->setData( 'ZipCode', $ZipCode );
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
