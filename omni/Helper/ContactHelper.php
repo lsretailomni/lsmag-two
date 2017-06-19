@@ -25,7 +25,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -34,7 +33,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Customer\Model\Session $customerSession
     )
     {
-        $this->logger = $logger;
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeManager = $storeManager;
@@ -57,7 +55,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         $is_email = \Zend_Validate::is($email, \Zend_Validate_EmailAddress::class);
 
-        $this->logger->debug("$email is $is_email");
+        $this->_logger->debug("$email is $is_email");
 
         // load lsr_username from magento customer database if we didn't get an email
         if (!$is_email) {
@@ -97,7 +95,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
                 $contact_pos = $response->getContactSearchResult();
             } catch (Exception $e) {
-                $this->logger->error($e->getMessage());
+                $this->_logger->error($e->getMessage());
             }
 
         } else {
@@ -132,7 +130,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             $response = $request->execute($login);
         } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->_logger->error($e->getMessage());
         }
 
         return $response ? $response->getLoginWebResult() : $response;
@@ -151,7 +149,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             $response = $request->execute($logout);
         } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->_logger->error($e->getMessage());
         }
 
         return $response ? $response->getLogoutResult() : $response;
@@ -190,7 +188,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function contact(\Magento\Customer\Model\Customer $customer)
     {
 
-        $this->logger->debug(var_export($customer->getData(), true));
+        $this->_logger->debug(var_export($customer->getData(), true));
 
         $response = NULL;
         $alternate_id = 'LSM' . str_pad(md5(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
@@ -206,16 +204,17 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setLastName($customer->getData('lastname'))
             ->setMiddleName($customer->getData('middlename') ? $customer->getData('middlename') : NULL)
             ->setPassword($customer->getData('password'))
-            ->setUserName($customer->getData('lsr_username'));
+            ->setUserName($customer->getData('lsr_username'))
+            ->setAddresses(array());
 
         $contactCreate->setContact($contact);
 
-        $this->logger->debug(var_export($contactCreate, true));
+        $this->_logger->debug(var_export($contactCreate, true));
 
         try {
             $response = $request->execute($contactCreate);
         } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->_logger->error($e->getMessage());
         }
 
         return $response ? $response->getContactCreateResult() : $response;
@@ -314,7 +313,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                     )
                 )
             ));
-        $this->logger->debug($xml);
+        $this->_logger->debug($xml);
         $soap_request = new \SoapVar($xml, XSD_ANYXML);
 
         $service_type = new ServiceType(self::SERVICE_TYPE);
@@ -324,7 +323,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $response = $omni_service_client->getSoapClient()
             ->ContactCreate($soap_request);
 
-        $this->logger->debug(var_export($response, true));
+        $this->_logger->debug(var_export($response, true));
 
         return $response ? $response->getContactCreateResult() : $response;
     }
