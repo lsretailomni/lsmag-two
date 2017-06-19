@@ -99,7 +99,7 @@ class TransactionHeadersGetByContactId extends AbstractOperation
 
     protected function isTokenized()
     {
-        return FALSE;
+        return TRUE;
     }
 
     /**

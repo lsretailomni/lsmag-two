@@ -99,7 +99,7 @@ class PublishedOffersGetByCardId extends AbstractOperation
 
     protected function isTokenized()
     {
-        return FALSE;
+        return TRUE;
     }
 
     /**

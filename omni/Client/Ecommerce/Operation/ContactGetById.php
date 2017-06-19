@@ -99,7 +99,7 @@ class ContactGetById extends AbstractOperation
 
     protected function isTokenized()
     {
-        return FALSE;
+        return TRUE;
     }
 
     /**
