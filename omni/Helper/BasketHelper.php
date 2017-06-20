@@ -8,6 +8,7 @@ use \Magento\Catalog\Model\ProductRepository;
 use \Magento\Checkout\Model\Session;
 use \Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Catalog\Model\ProductFactory;
+use Magento\Quote\Model\Quote;
 
 class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
 
@@ -45,7 +46,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
      * @return \Ls\Omni\Client\Ecommerce\Entity\OneList|null|bool
      */
     public function fetch() {
-        $this->fetchFromOmni();
+        return $this->fetchFromOmni();
     }
 
     /**
@@ -98,6 +99,20 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
     }
 
     /**
+     * Get OneList from currently logged in User from Magento if there is one
+     * @return Entity\OneList
+     */
+    public function get() {
+        throw new Exception("Not yet implemented.");
+        // TODO: load from magento
+        // in Magento 1, we stored the user in the registry
+        // if there is no OneList in this user, call fetchFromOmni()
+        if (is_null($list)) {
+            return $this->fetchFromOmni();
+        }
+    }
+
+    /**
      * @param Entity\OneList $list
      * @deprecated renamed to saveToOmni
      * @return Entity\OneList|false
@@ -143,29 +158,32 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
     /**
      * @param Entity\OneList $list
      * @deprecated renamed to storeAsCart
+     * @return Cart
      */
     public function cart( Entity\OneList $list) {
-        $this->storeAsCart($list);
+        return $this->storeAsCart($list);
     }
 
     /**
      * @param Entity\OneList $list
      * Store the given OneList as the cart, while doing availability checks
+     * @return Cart
      */
     public function storeAsCart(Entity\OneList $oneList) {
         $basket = $oneList;
 
+        // TODO: remove alias
         $cart = $this->cart;
 
         // if the oneList has items
         if ( $items = $oneList->getItems() ) {
-
+            // TODO: remove this alias
             $session = $this->checkoutSession;
             // get quote from checkout session
             $quote = $this->checkoutSession->getQuote();
 
             // set quote of cart, but remove all items
-            $this->cart->init()->setQuote( $quote )->truncate();
+            $this->cart->setQuote( $quote )->truncate();
 
             // if we have a multiple items in the itemsList
             if ( !is_null( $items->getOneListItem() ) ) {
@@ -210,7 +228,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
                                 // and sending this together with the parent product to $cart->addProduct
                                 // here is a similar approach for Mag2:
                                 // https://webkul.com/blog/get-configurable-associated-products-id-magento2/
-                                // WORKING UNTIL HERE
+
+                                // CHANGED CODE ONLY UNTIL HERE
                                 $attribute_options = $configurable->getTypeInstance( TRUE )
                                     ->getConfigurableAttributesAsArray( $configurable );
                                 $options = array();
@@ -267,100 +286,77 @@ MESSAGE;
         }
 
         return $cart;
+    }
 
-        // converted
-        $cart = $this->checkoutCartFactory->create();
+    /**
+     * Compared a OneList with a quote and returns an array which contains
+     * the items present only in the quote and only in the OneList (basket)
+     * @param Entity\OneList $list
+     * @param Quote $quote
+     * @return array
+     */
+    public function compare(Entity\OneList $list, Quote $quote) {
+        throw new Exception("Not yet implemented.");
+        $onlyInOneList = array();
+        $onlyInQuote = array();
+        return ($onlyInQuote, $onlyInOneList);
+    }
 
-        if ( $items = $basket->getItems() ) {
+    /**
+     * @param Quote $quote
+     * @param Entity\OneList $basket
+     * @deprecated
+     */
+    public function basket(Quote $quote, Entity\OneList $basket) {
+        return $this->setOneListQuote($quote,$basket);
+    }
 
-            $session = $this->checkoutSession;
-            $quote = $session->getQuote();
+    /**
+     * Set the Quote inside the OneList
+     * @param Quote $quote
+     * @param Entity\OneList $oneList
+     * @return Entity\OneList
+     */
+    public function setOneListQuote(Quote $quote, Entity\OneList $oneList) {
+        // TODO: convert the items inside the $quote to OneListItem s and store them to the OneList
+        throw new Exception("Not yet implemented.");
+        return $oneList;
+    }
 
-            $cart->init()
-                ->setQuote( $quote )
-                ->truncate();
 
-            if ( !is_null( $items->getOneListItem() ) ) {
+    public function delete(Entity\OneList $list) {
+        throw new Exception("Not yet implemented.");
+    }
 
-                foreach ( $items->getOneListItem() as $list_item ) {
-                    /** @var \LSR\Omni\Model\Omni\Domain\OneListItem $list_item */
-                    // TODO: no variants
-                    $item = $list_item->getItem();
-                    $lsr_id = $item->getId();
+    /**
+     * Calculate current price and check inventory
+     * @param Entity\OneList $oneList
+     */
+    public function update(Entity\OneList $oneList) {
 
-                    if ( !is_null( $list_item->getVariant() ) ) {
-                        $lsr_id = join( '.', array( $item->getId(), $list_item->getVariant()->getId() ) );
-                    }
-                    $query = $this->catalogResourceModelProductCollectionFactory->create()
-                        ->addAttributeToFilter( 'lsr_id', array( 'like' => $lsr_id ) );
-                    /** @var \Magento\Catalog\Model\Product $product */
-                    $product = $query->getFirstItem();
-                    //TODO: improve this part of the code to avoid the second load
-                    $product = $this->catalogProductFactory->create()
-                        ->load( $product->getId() );
+    }
 
-                    if ( !is_null( $product->getId() ) ) {
+    /**
+     * Load Shipment Fee Product
+     */
+    public function getShipmentFeeProduct() {
 
-                        if ( strpos( $lsr_id, '.' ) != FALSE ) {
-                            $parent_ids = $this->catalogProductTypeConfigurable->getParentIdsByChild( $product->getId() );
-                            // check if something is returned
-                            if ( !empty( array_filter( $parent_ids ) ) ) {
-                                $pid = $parent_ids[ 0 ];
+    }
 
-                                $configurable = $this->catalogProductFactory->create()->load( $pid );
-                                $attribute_options = $configurable->getTypeInstance( TRUE )
-                                    ->getConfigurableAttributesAsArray( $configurable );
-                                $options = array();
+    /**
+     * Call BasketCalc on the OneList
+     * @param Entity\OneList $oneList
+     * @return false|Entity\BasketCalcResponse
+     */
+    public function calculate(Entity\OneList $oneList) {
 
-                                foreach ( $attribute_options as $attribute ) {
-                                    $values = array_column( $attribute[ 'values' ], 'value_index' );
-                                    $current = $product->getData( $attribute[ 'attribute_code' ] );
-                                    if ( in_array( $current, $values ) ) {
-                                        $options[ $attribute[ 'attribute_id' ] ] = $current;
-                                    }
-                                }
+    }
 
-                                // Get cart instance
-                                $cart = $this->checkoutCart;
-                                $cart->init();
-                                // Add a product with custom options
-                                $params = array(
-                                    'product' => $configurable->getId(),
-                                    'qty' => $list_item->getQuantity(),
-                                    'super_attribute' => $options,
-                                );
-                                $request = $this->dataObjectFactory->create();
-                                $request->setData( $params );
-                                try {
-                                    $cart->addProduct( $configurable, $request );
-                                } catch ( Exception $e ) {
-                                    $this->checkoutSession
-                                        ->addError( $configurable->getData( 'name' ) .
-                                            ' is not available' );
-                                }
-                            }
-                        } else {
-                            try {
-                                $cart->addProduct( $product, array( 'qty' => intval( $list_item->getQuantity() ) ) );
-                            } catch ( Exception $e ) {
-                                $this->checkoutSession
-                                    ->addError( $product->getData( 'name' ) .
-                                        ' is not available' );
-                            }
-                        }
-                    } else {
+    /**
+     * Check availability of the items
+     * @param Entity\OneList $oneList
+     */
+    public function availability(Entity\OneList $oneList) {
 
-                        //TODO: i18n
-                        $notice = <<<MESSAGE
-Product "{$list_item->getItem()->getDescription()}" is not available and was not added to the cart
-MESSAGE;
-                        $this->catalogSession
-                            ->addNotice( $notice );
-                    }
-                }
-            }
-        }
-
-        return $cart;
     }
 }

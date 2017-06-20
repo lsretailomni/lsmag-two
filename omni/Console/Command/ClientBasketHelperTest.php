@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use \Magento\Framework\ObjectManagerInterface;
-
+use Magento\Framework\App\Bootstrap;
 
 class ClientBasketHelperTest extends Command {
 
@@ -27,13 +27,22 @@ class ClientBasketHelperTest extends Command {
     }
 
     protected function execute ( InputInterface $input, OutputInterface $output ) {
-        #$manager = $this->getObjectManager();
-        #$helper = \Magento\Core\Model\ObjectManager::getInstance()->get('Ls\Omni\Helper\BasketHelper');
-        // doesn't work, needs Autoloading now
-        $helper = new BasketHelper();
+        # ugly hack to get ObjectManager to use autoloading
+        require '/var/www/magento2/app/bootstrap.php';
+        $bootstrap = Bootstrap::create(BP, $_SERVER);
+        $objectManager = $bootstrap->getObjectManager();
+        $objectManager->get('Magento\Framework\App\State')->setAreaCode(\Magento\Framework\App\Area::AREA_FRONTEND);
+
+        # get helper with enabled autoloading
+        $helper = $objectManager->get('Ls\Omni\Helper\BasketHelper');
+
         $oneList = $helper->fetch();
         #var_dump($oneList);
-        $cart = $helper->storeAsCart($oneList);
+        if (!is_null($oneList)) {
+            $cart = $helper->storeAsCart($oneList);
+        } else {
+            throw new Exception("OneList is null");
+        }
     }
 
 }
