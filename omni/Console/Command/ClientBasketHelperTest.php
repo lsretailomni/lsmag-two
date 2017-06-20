@@ -39,7 +39,8 @@ class ClientBasketHelperTest extends Command {
         $oneList = $helper->fetch();
         #var_dump($oneList);
         if (!is_null($oneList)) {
-            $cart = $helper->storeAsCart($oneList);
+            #$cart = $helper->storeAsCart($oneList);
+            $availability = $helper->availability($oneList);
         } else {
             throw new Exception("OneList is null");
         }

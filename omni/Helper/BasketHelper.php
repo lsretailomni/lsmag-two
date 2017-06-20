@@ -18,16 +18,18 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
     protected $productRepository;
     /** @var Session $checkoutSession */
     protected $checkoutSession;
+    protected $customerSession;
+
     /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
     protected $searchCriteriaBuilder;
-
     protected $catalogProductTypeConfigurable;
     protected $productFactory;
 
     public function __construct(
         Cart $cart,
         ProductRepository $productRepository,
-        Session $checkoutSession,
+        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Customer\Model\Session $customerSession,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
         ProductFactory $productFactory
@@ -36,6 +38,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
         $this->cart = $cart;
         $this->productRepository = $productRepository;
         $this->checkoutSession = $checkoutSession;
+        $this->customerSession = $customerSession;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
         $this->productFactory = $productFactory;
@@ -299,7 +302,7 @@ MESSAGE;
         throw new Exception("Not yet implemented.");
         $onlyInOneList = array();
         $onlyInQuote = array();
-        return ($onlyInQuote, $onlyInOneList);
+        return array($onlyInQuote, $onlyInOneList);
     }
 
     /**
@@ -357,6 +360,50 @@ MESSAGE;
      * @param Entity\OneList $oneList
      */
     public function availability(Entity\OneList $oneList) {
+        $oneListItems = $oneList->getItems();
+        $response = FALSE;
 
+        if ( !is_null( $oneListItems->getOneListItem() ) ) {
+
+            $array = array();
+
+            $count = 1;
+            /** @var Entity\OneListItem $listItem */
+            foreach ( $oneListItems->getOneListItem() as $listItem ) {
+                $variant = $listItem->getVariant();
+                $uom = !is_null( $listItem->getUom() ) ? $listItem->getUom()->getId() : NULL;
+                $line = ( new Entity\OrderLineAvailability() )
+                    ->setItemId( $listItem->getItem()->getId() )
+                    ->setLineType( Entity\Enum\LineType::ITEM)
+                    ->setUomId( $uom )
+                    ->setLineNumber( $count++ )
+                    ->setQuantity( $listItem->getQuantity() )
+                    ->setVariantId( is_null( $variant ) ? NULL : $variant->getId() );
+                $array[] = $line;
+                unset( $line );
+            }
+
+            $lines = new Entity\ArrayOfOrderLineAvailability();
+            $lines->setOrderLineAvailability($array);
+
+            // TODO: get actual store and CardId
+            #$storeId = LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE );
+            #$cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );
+            $storeId = "S0013";
+            $cardId = 10021;
+
+            $request = ( new Entity\OrderAvailabilityRequest() )
+                ->setStoreId( $storeId )
+                ->setCardId( $cardId )
+                ->setSourceType( Entity\Enum\SourceType::STANDARD )
+                ->setItemNumberType( Entity\Enum\ItemNumberType::ITEM_NO )
+                ->setOrderLineAvailabilityRequests( $lines );
+            $entity = new Entity\OrderAvailabilityCheck();
+            $entity->setRequest($request);
+            $operation = new Operation\OrderAvailabilityCheck();
+            $response = $operation->execute($entity);
+        }
+
+        return $response ? $response->getOrderAvailabilityCheckResult() : $response;
     }
 }
