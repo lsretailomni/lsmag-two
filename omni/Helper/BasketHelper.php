@@ -10,6 +10,7 @@ use \Magento\Checkout\Model\Session;
 use \Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Quote\Model\Quote;
+use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 
 class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
 
@@ -315,10 +316,12 @@ MESSAGE;
     /**
      * @param Quote $quote
      * @param Entity\OneList $basket
-     * @deprecated
+     * @return Entity\OneList
+     * @deprecated Use setOneListQuote instead
+     * @see BasketHelper::setOneListQuote() Use this function instead, has better naming
      */
     public function basket(Quote $quote, Entity\OneList $basket) {
-        return $this->setOneListQuote($quote,$basket);
+        return $this->setOneListQuote($quote, $basket);
     }
 
     /**
@@ -334,8 +337,15 @@ MESSAGE;
     }
 
 
-    public function delete(Entity\OneList $list) {
-        throw new Exception("Not yet implemented.");
+    public function delete(Entity\OneList $oneList) {
+        $entity = new Entity\OneListDeleteById();
+        $entity
+            ->setOneListId($oneList->getId())
+            ->setListType(Entity\Enum\ListType::BASKET);
+        $request = new Operation\OneListDeleteById();
+        $response = $request->execute($entity);
+
+        return $response ? $response->getOneListDeleteByIdResult() : FALSE;
     }
 
     /**
