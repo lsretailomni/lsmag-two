@@ -1,6 +1,7 @@
 <?php
 namespace Ls\Omni\Helper;
 
+use Magento\Framework\App\Helper\Context;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Bundle\Model\Product\Type;
@@ -31,7 +32,10 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
     /** @var StockItemRepository $stockItemRepository */
     protected $stockItemRepository;
 
+    protected $itemHelper;
+
     public function __construct(
+        Context $context,
         Cart $cart,
         ProductRepository $productRepository,
         \Magento\Checkout\Model\Session $checkoutSession,
@@ -39,9 +43,11 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
         SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
         ProductFactory $productFactory,
-        StockItemRepository $stockItemRepository
+        StockItemRepository $stockItemRepository,
+        ItemHelper $itemHelper
     )
     {
+        parent::__construct($context);
         $this->cart = $cart;
         $this->productRepository = $productRepository;
         $this->checkoutSession = $checkoutSession;
@@ -50,6 +56,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
         $this->catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
         $this->productFactory = $productFactory;
         $this->stockItemRepository = $stockItemRepository;
+        $this->itemHelper = $itemHelper;
     }
 
     /**
@@ -331,8 +338,60 @@ MESSAGE;
      * @return Entity\OneList
      */
     public function setOneListQuote(Quote $quote, Entity\OneList $oneList) {
-        // TODO: convert the items inside the $quote to OneListItem s and store them to the OneList
-        throw new Exception("Not yet implemented.");
+        // TODO: test when the Quote actually works
+
+        /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
+        $quoteItems = $quote->getAllVisibleItems();
+
+        $items = new Entity\ArrayOfOneListItem();
+        foreach ( $quoteItems as $quoteItem ) {
+
+            // TODO: fix double load of product as lsr_id is not loaded to quote_item product
+            $sku = $quoteItem->getSku();
+            $parts = explode( '.', $sku );
+
+            // delete first element of $parts, which is the magento id
+            array_shift( $parts );
+            // second element is lsr_id
+            $lsr_id = array_shift( $parts );
+            // third element, if it exists, is variant id
+            $variant_id = count( $parts ) ? array_shift( $parts ) : NULL;
+
+            $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku',$sku, 'eq')->create();
+            $productList = $this->productRepository->getList($searchCriteria);
+            $product = $productList[0];
+
+            $item = $this->itemHelper->get( $lsr_id );
+            $uom = $this->itemHelper->uom($item);
+
+            $variant = is_null( $variant_id )
+                ? NULL
+                : ( new Entity\Variant() )
+                    ->setItemId( $item->getId() )
+                    ->setId( $variant_id );
+
+            $list_item = ( new Entity\OneListItem() )
+                ->setQuantity( $quoteItem->getData( 'qty' ) )
+                ->setItem( $helper->lite( $item ) )
+                ->setBarcodeId( $product->getData( 'lsr_barcode' ) ? $product->getData( 'lsr_barcode' ) : '' )
+                ->setVariant( $variant )
+                ->setId( '' )
+                ->setUom( $uom );
+
+            $items->add( $list_item );
+        }
+
+        $basket->setItems( $items )
+            ->setOffers( $this->_offers() )
+            ->setCoupons( $this->_coupons() );
+
+        if ( empty( $basket->getCardId() ) ) {
+            $basket->setCardId( NULL );
+        }
+        if ( empty( $basket->getCustomerId() ) ) {
+            $basket->setCustomerId( NULL );
+        }
+
         return $oneList;
     }
 
