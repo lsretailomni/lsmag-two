@@ -3,6 +3,7 @@ namespace Ls\Omni\Helper;
 
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use Magento\Bundle\Model\Product\Type;
 use \Magento\Checkout\Model\Cart;
 use \Magento\Catalog\Model\ProductRepository;
 use \Magento\Checkout\Model\Session;
@@ -18,12 +19,16 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
     protected $productRepository;
     /** @var Session $checkoutSession */
     protected $checkoutSession;
+    /** @var \Magento\Customer\Model\Session $customerSession */
     protected $customerSession;
-
     /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
     protected $searchCriteriaBuilder;
+    /** @var \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable */
     protected $catalogProductTypeConfigurable;
+    /** @var ProductFactory $productFactory */
     protected $productFactory;
+    /** @var StockItemRepository $stockItemRepository */
+    protected $stockItemRepository;
 
     public function __construct(
         Cart $cart,
@@ -32,7 +37,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
         \Magento\Customer\Model\Session $customerSession,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
-        ProductFactory $productFactory
+        ProductFactory $productFactory,
+        StockItemRepository $stockItemRepository
     )
     {
         $this->cart = $cart;
@@ -42,6 +48,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
         $this->productFactory = $productFactory;
+        $this->stockItemRepository = $stockItemRepository;
     }
 
     /**
@@ -336,7 +343,102 @@ MESSAGE;
      * @param Entity\OneList $oneList
      */
     public function update(Entity\OneList $oneList) {
+        $cart_helper = Mage::helper( 'checkout/cart' );
 
+        $calculation = $this->calculate( $oneList );
+        $this->checkoutSession->setData( LSR::SESSION_CHECKOUT_BASKET, $oneList );
+        $this->checkoutSession->setData( LSR::SESSION_CHECKOUT_BASKETCALCULATION, $calculation );
+
+        $check_inventory = LSR::getStoreConfig( LSR::SC_CART_CHECK_INVENTORY );
+        $update_inventory = LSR::getStoreConfig( LSR::SC_CART_UPDATE_INVENTORY );
+
+        if ( $check_inventory ) {
+            /** @var Entity\ArrayOfOrderLineAvailability $availability */
+            $availability = $this->availability( $oneList );
+            /** @var OrderLineAvailability[] $availabilityLines */
+            if ( $availability && $availabilityLines = $availability->getOrderLineAvailability() ) {
+
+                $quote = $this->checkoutSession->getQuote();
+                /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
+                $quoteItems = $quote->getAllVisibleItems();
+
+                foreach ( $availabilityLines as $availabilityLine ) {
+
+                    $productLsrId = $availabilityLine->getItemId();
+                    if ( !is_empty_date( $availabilityLine->getVariantId() ) ) {
+                        # build LSR Id
+                        $productLsrId = join(
+                            '.',
+                            array($availabilityLine->getItemId(),$availabilityLine->getVariantId())
+                        );
+                    }
+                    $stock = intval( $availabilityLine->getQuantity() );
+
+                    $searchCriteria = $this->searchCriteriaBuilder->addFilter('lsr_id',$productLsrId, 'like')->create();
+                    $productList = $this->productRepository->getList($searchCriteria);
+
+                    /** @var \Magento\Catalog\Model\Product $product */
+                    $product = $productList[0];
+
+                    if( $product->getId() ){
+                        $stockItem = $this->stockItemRepository->get($product->getId());
+
+                        if ( !$stockItem->getId() ) {
+                            $stockItem->setData( 'product_id', $product->getId() );
+                            $stockItem->setData( 'stock_id', 1 );
+                        }
+
+                        $isInStock = $stock > 0 ? 1 : 0;
+                        $stockItem
+                            ->setData( 'is_in_stock', $isInStock )
+                            ->setData( 'manage_stock', 0 )
+                            ->setData( 'qty', $stock );
+
+                        $stockItem->save();
+
+                        if ( !$isInStock && $update_inventory ) {
+
+                            // avoid endless loop
+                            // $cart->save() calls the event checkout_cart_save_after which
+                            // calls LSR_Omni_Model_Observer_Cart::update_basket() which calls this function
+                            //$watchNextSave = Mage::registry( LSR::REGISTRY_LOYALTY_WATCHNEXTSAVE );
+                            //if ($watchNextSave) {
+                                //Mage::unregister( LSR::REGISTRY_LOYALTY_WATCHNEXTSAVE );
+                            //}
+
+                            /** @var \Magento\Quote\Model\Quote\Item $quoteItem */
+                            foreach ( $quoteItems as $quoteItem ) {
+                                $isConfigurable = $quoteItem->getData( 'product_type' ) ==
+                                    Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+                                if ( $isConfigurable ) {
+                                    /** @var Quote\Item $childQuoteItem */ // not sure
+                                    $childQuoteItem = array_pop( $quoteItem->getChildren() );
+                                    if ( $product->getId() == $childQuoteItem->getProduct()->getId() ) {
+                                        $this->cart->removeItem( $quoteItem->getData( 'item_id' ) );
+                                        // check if this is necessary
+                                        $this->cart->save();
+
+                                    }
+                                } else {
+                                    if ( $product->getId() == $quoteItem->getProduct()->getId() ) {
+                                        $this->cart->removeItem( $quoteItem->getData( 'item_id' ) );
+                                        // check if this is necessary
+                                        $this->cart->save();
+                                    }
+                                }
+                            }
+                            // restore previous state if someone didn't already
+                            //if ($watchNextSave && !Mage::registry( LSR::REGISTRY_LOYALTY_WATCHNEXTSAVE )) {
+                                //Mage::register( LSR::REGISTRY_LOYALTY_WATCHNEXTSAVE, $watchNextSave );
+                            //}
+                        }
+                    }
+                }
+            }
+        }
+        // store the updated basket to Omni
+        // needs a OneList
+        $this->saveToOmni($oneList);
     }
 
     /**
@@ -352,12 +454,100 @@ MESSAGE;
      * @return false|Entity\BasketCalcResponse
      */
     public function calculate(Entity\OneList $oneList) {
+        $oneListItems = $oneList->getItems();
+        // TODO: use real data
+        #$shipmentFee = $this->getShipmentFeeProdut();
+        #$shipmentFeeId = $shipmentFee->getData('lsr_id');
+        $shipmentFeeId = 66010;
 
+        $response = FALSE;
+
+        if ( !is_null( $oneListItems->getOneListItem() ) ) {
+
+            $array = array();
+            $n = 1;
+
+            /** @var LSR_Omni_Model_Omni_Domain_OneListItem $listItem */
+            foreach ( $oneListItems->getOneListItem() as $listItem ) {
+
+                $item = $listItem->getItem();
+                $uom = $listItem->getUom();
+
+                $line = ( new Entity\BasketCalcLineRequest() )
+                    ->setLineNumber( $n++ )
+                    ->setItemId( $item->getId() )
+//                 ->setExternalId( $item->getId() )
+                    ->setQuantity( $listItem->getQuantity() )
+                    ->setUomId( !is_null( $uom ) ? $uom->getId() : NULL );
+                if ( !is_null( $listItem->getVariant() ) ) {
+                    $line->setVariantId( $listItem->getVariant()->getId() );
+                }
+
+                $array[] = $line;
+                unset( $line );
+            }
+
+
+            $quote = $this->checkoutSession->getQuote();
+            $shippingAddress = $quote->getShippingAddress();
+            $shippingAmount = $shippingAddress->getShippingAmount();
+
+            if ( !is_null( $shippingAmount ) && $shippingAmount > 0 ) {
+                $line = ( new Entity\BasketCalcLineRequest() )
+                    ->setLineNumber( $n++ )
+                    ->setItemId( $shipmentFeeId )
+                    ->setQuantity( $shippingAmount )
+                    ->setUomId( NULL );
+                $array[] = $line;
+                unset( $line );
+            }
+
+            $coupon = $quote->getData( LSR::ATTRIBUTE_COUPON_CODE);
+            if ( !is_null( $coupon ) ) {
+                $line = ( new Entity\BasketCalcLineRequest() )
+                    ->setLineNumber( $n )
+                    ->setCouponCode( $coupon )
+                    ->setQuantity( 1 )
+                    ->setUomId( NULL );
+                $array[] = $line;
+            }
+
+            $lines = new Entity\ArrayOfBasketCalcLineRequest();
+            $lines->setBasketCalcLineRequest($array);
+
+            $basketCalcRequest = ( new Entity\BasketCalcRequest() )
+                ->setContactId( $this->customerSession->getData( LSR::SESSION_CUSTOMER_LSRID ) )
+                ->setCardId( $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID ) )
+                ->setItemType( Entity\Enum\BasketCalcItemType::ITEM_NO )
+                ->setId( $oneList->getId() )
+                ->setBasketCalcLineRequests( $lines )
+                ->setStoreId( LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE ) );
+
+            $store = LSR::getStore();
+            if ( LSR::isW1( $store ) ) {
+                $basketCalcRequest->setCalcType( Entity\Enum\BasketCalcType::TYPE_FINAL );
+            } else {
+                if ( LSR::isNA( $store ) ) {
+                    $basketCalcRequest->setCalcType( Entity\Enum\BasketCalcType::COLLECT );
+                }
+            }
+
+            $request = new Operation\BasketCalc();
+            $response = $request->execute($basketCalcRequest);
+
+            LSR::getLogger()
+                ->dump( $request->__request()->getData( LSR_Omni_Model_Omni_Service_BaseRequest::OPERATION_REQUEST ) );
+            LSR::getLogger()
+                ->dump( $request->__request()->getData( LSR_Omni_Model_Omni_Service_BaseRequest::OPERATION_RESPONSE ) );
+        }
+
+        return $response ? $response->getBasketCalcResult() : $response;
     }
 
     /**
      * Check availability of the items
      * @param Entity\OneList $oneList
+     * @return Entity\ArrayOfOrderLineAvailability
      */
     public function availability(Entity\OneList $oneList) {
         $oneListItems = $oneList->getItems();
