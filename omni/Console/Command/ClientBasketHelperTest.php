@@ -35,12 +35,17 @@ class ClientBasketHelperTest extends Command {
 
         # get helper with enabled autoloading
         $helper = $objectManager->get('Ls\Omni\Helper\BasketHelper');
+        $itemHelper = $objectManager->get('Ls\Omni\Helper\ItemHelper');
+        #$item = $itemHelper->get(66010);
+        #$uom = $itemHelper->uom($item);
+        #$sku = $itemHelper->sku($item);
 
         $oneList = $helper->fetch();
         #var_dump($oneList);
         if (!is_null($oneList)) {
             #$cart = $helper->storeAsCart($oneList);
-            $availability = $helper->availability($oneList);
+            #$availability = $helper->availability($oneList);
+            #$helper->delete($oneList);
         } else {
             throw new Exception("OneList is null");
         }
