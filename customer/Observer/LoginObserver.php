@@ -2,6 +2,7 @@
 namespace Ls\Customer\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\TestFramework\Event\Magento;
 use MagentoDevBox\Command\Pool\MagentoReset;
 use Zend_Validate;
@@ -95,9 +96,6 @@ class LoginObserver implements ObserverInterface
 //            }
         }
 
-        // MORE OR LESS WORKING UNTIL HERE
-        // below this, you need to adapt the old mag1 code to mag2 code once we are able to actually create users in Magento2
-
         // TRY TO LOGIN
         $this->logger->debug('LOGIN');
         $result = $this->contactHelper->login( $username, $login[ 'password' ] );
@@ -165,7 +163,19 @@ class LoginObserver implements ObserverInterface
             /** @var Entity\ArrayOfOneList $oneListArray */
             $oneListArray = $result->getOneList()->getOneList();
             // filter for basket OneLists
-            $basketOneLists = array_filter($oneListArray, function($oneList) { return $oneList->getListType() == 'Basket';});
+            $basketOneLists = array();
+            if ($basketOneLists instanceof Entity\ArrayOfOneList) {
+                $basketOneLists = array_filter($oneListArray, function($oneList) { return $oneList->getListType() == 'Basket';});
+            } else {
+                // not actually an array
+                if ($oneListArray instanceof Entity\OneList) {
+                    $basketOneLists = array($oneListArray);
+                } else {
+                    // something went wrong
+                    $this->logger->error("Customer ".$customer_email." has invalid data for its OneList.");
+                    throw new LocalizedException("An error occured while logging in. Please try again later.");
+                }
+            }
             if (count($basketOneLists) > 1) {
                 $this->logger->debug("Multiple OneLists with type basket for customer.");
             } else {

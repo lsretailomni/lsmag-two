@@ -12,13 +12,21 @@ use \Ls\Customer\Model\LSR;
 
 class RegisterObserver implements ObserverInterface
 {
+    /** @var ContactHelper $contactHelper */
     private $contactHelper;
+    /** @var \Magento\Framework\Api\FilterBuilder $filterBuilder */
     protected $filterBuilder;
+    /** @var \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder */
     protected $searchCriteriaBuilder;
+    /** @var \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository */
     protected $customerRepository;
+    /** @var \Magento\Framework\Message\ManagerInterface $messageManager */
     protected $messageManager;
+    /** @var \Magento\Framework\Registry $registry */
     protected $registry;
+    /** @var \Psr\Log\LoggerInterface $logger */
     protected $logger;
+    /** @var \Magento\Customer\Model\Session $customerSession */
     protected $customerSession;
 
     public function __construct(
