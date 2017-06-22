@@ -130,13 +130,21 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper {
      * @param Entity\Item         $item
      * @param Entity\Variant|null $variant
      *
-     * @return \Magento\Catalog\Model\Product]null
+     * @return \Magento\Catalog\Model\Product|null
      */
     public function product ( Entity\Item $item, Entity\Variant $variant = NULL ) {
         // TODO: test this once replication works
         $itemId = is_null( $variant )
             ? $item->getId()
             : join( '.', array( $item->getId(), $variant->getId() ));
+        return $this->productByLsrId($itemId);
+    }
+
+    /**
+     * @param integer $lsrId
+     * @return \Magento\Catalog\Model\Product|null
+     */
+    public function productByLsrId($lsrId) {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('lsr_id',$itemId, 'like')->create();
         $productList = $this->productRepository->getList($searchCriteria);
         return $productList[0];

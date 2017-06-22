@@ -73,7 +73,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
      */
     public function fetchFromOmni () {
 
-        // TODO: get current ContactID
+        // TODO: get current ContactID when user functionality is implemented
         $contactId = "MO000008";
 
         $request = new Operation\OneListGetByContactId();
@@ -122,7 +122,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
      */
     public function get() {
         throw new Exception("Not yet implemented.");
-        // TODO: load from magento
+        // TODO: load from magento when user functionality is implemented
         // in Magento 1, we stored the user in the registry
         // if there is no OneList in this user, call fetchFromOmni()
         if (is_null($list)) {
@@ -219,86 +219,75 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
                         $lsr_id = join( '.', array( $item->getId(), $listItem->getVariant()->getId() ) );
                     }
 
-                    // find right product by lsr_id
-                    $searchCriteria = $this->searchCriteriaBuilder->addFilter('lsr_id',$lsr_id, 'like')->create();
-                    $productList = $this->productRepository->getList($searchCriteria);
-                    if ($productList->getTotalCount() > 1) {
-                        // TODO: what do we do?!?
-                    } elseif ($productList->getTotalCount() == 1) {
-                        // if only one product is found
+                    /** @var \Magento\Catalog\Model\Product $product */
+                    $product = $this->itemHelper->product($item, $listItem->getVariant());
 
-                        /** @var \Magento\Catalog\Model\Product $product */
-                        $product = $productList[0];
+                    // if there is a . in the lsr_id, we have a variant
+                    if ( strpos( $lsr_id, '.' ) != FALSE ) {
+                        // find parent product
+                        $parent_ids = $this->catalogProductTypeConfigurable->getParentIdsByChild($product->getId());
+                        // check if something is returned
+                        if ( !empty( array_filter( $parent_ids ) ) ) {
+                            $pid = $parent_ids[0];
 
-                        // if there is a . in the lsr_id, we have a variant
-                        if ( strpos( $lsr_id, '.' ) != FALSE ) {
-                            // find parent product
-                            $parent_ids = $this->catalogProductTypeConfigurable->getParentIdsByChild($product->getId());
-                            // check if something is returned
-                            if ( !empty( array_filter( $parent_ids ) ) ) {
-                                $pid = $parent_ids[0];
+                            // load parent product
+                            $configurable = $this->productFactory->create()->load($pid);
 
-                                // load parent product
-                                $configurable = $this->productFactory->create()->load($pid);
+                            // now we need to find out which actual variant is loaded
+                            // in Mag1, we did this by loading all attributes with their data
+                            // and sending this together with the parent product to $cart->addProduct
+                            // here is a similar approach for Mag2:
+                            // https://webkul.com/blog/get-configurable-associated-products-id-magento2/
 
-                                // now we need to find out which actual variant is loaded
-                                // in Mag1, we did this by loading all attributes with their data
-                                // and sending this together with the parent product to $cart->addProduct
-                                // here is a similar approach for Mag2:
-                                // https://webkul.com/blog/get-configurable-associated-products-id-magento2/
-
-                                // CHANGED CODE ONLY UNTIL HERE
-                                $attribute_options = $configurable->getTypeInstance( TRUE )
-                                    ->getConfigurableAttributesAsArray( $configurable );
-                                $options = array();
-                                // load optionsarray
-                                foreach ( $attribute_options as $attribute ) {
-                                    $values = array_column( $attribute[ 'values' ], 'value_index' );
-                                    $current = $product->getData( $attribute[ 'attribute_code' ] );
-                                    if ( in_array( $current, $values ) ) {
-                                        $options[ $attribute[ 'attribute_id' ] ] = $current;
-                                    }
-                                }
-
-                                // Get cart instance
-                                $cart = Mage::getSingleton( 'checkout/cart' );
-                                $cart->init();
-                                // Add a product with custom options
-                                $params = array(
-                                    'product' => $configurable->getId(),
-                                    'qty' => $list_item->getQuantity(),
-                                    'super_attribute' => $options,
-                                );
-                                $request = new Varien_Object();
-                                $request->setData( $params );
-                                try {
-                                    $cart->addProduct( $configurable, $request );
-                                } catch ( Exception $e ) {
-                                    Mage::getSingleton( 'checkout/session' )
-                                        ->addError( $configurable->getData( 'name' ) .
-                                            ' is not available' );
+                            // CHANGED CODE ONLY UNTIL HERE
+                            $attribute_options = $configurable->getTypeInstance( TRUE )
+                                ->getConfigurableAttributesAsArray( $configurable );
+                            $options = array();
+                            // load optionsarray
+                            foreach ( $attribute_options as $attribute ) {
+                                $values = array_column( $attribute[ 'values' ], 'value_index' );
+                                $current = $product->getData( $attribute[ 'attribute_code' ] );
+                                if ( in_array( $current, $values ) ) {
+                                    $options[ $attribute[ 'attribute_id' ] ] = $current;
                                 }
                             }
-                        } else {
-                            // no . in lsr_id => product without variants
+
+                            // Get cart instance
+                            $cart = Mage::getSingleton( 'checkout/cart' );
+                            $cart->init();
+                            // Add a product with custom options
+                            $params = array(
+                                'product' => $configurable->getId(),
+                                'qty' => $listItem->getQuantity(),
+                                'super_attribute' => $options,
+                            );
+                            $request = new Varien_Object();
+                            $request->setData( $params );
                             try {
-                                $cart->addProduct( $product, array( 'qty' => intval( $list_item->getQuantity() ) ) );
+                                $cart->addProduct( $configurable, $request );
                             } catch ( Exception $e ) {
                                 Mage::getSingleton( 'checkout/session' )
-                                    ->addError( $product->getData( 'name' ) .
+                                    ->addError( $configurable->getData( 'name' ) .
                                         ' is not available' );
                             }
                         }
                     } else {
-                        // product loading failed
+                        // no . in lsr_id => product without variants
+                        try {
+                            $cart->addProduct( $product, array( 'qty' => intval( $listItem->getQuantity() ) ) );
+                        } catch ( Exception $e ) {
+                            Mage::getSingleton( 'checkout/session' )
+                                ->addError( $product->getData( 'name' ) .
+                                    ' is not available' );
+                        }
+                    }
 
-                        //TODO: i18n
-                        $notice = <<<MESSAGE
+                    //TODO: i18n
+                    $notice = <<<MESSAGE
 Product "{$list_item->getItem()->getDescription()}" is not available and was not added to the cart
 MESSAGE;
-                        Mage::getSingleton( 'catalog/session' )
-                            ->addNotice( $notice );
-                    }
+                    Mage::getSingleton( 'catalog/session' )
+                        ->addNotice( $notice );
                 }
             }
         }
@@ -313,10 +302,63 @@ MESSAGE;
      * @param Quote $quote
      * @return array
      */
-    public function compare(Entity\OneList $list, Quote $quote) {
-        throw new Exception("Not yet implemented.");
+    public function compare(Entity\OneList $oneList, Quote $quote) {
+        /** @var Entity\OneListItem[] $onlyInOneList */
+        /** @var Entity\OneListItem[] $onlyInQuote */
         $onlyInOneList = array();
         $onlyInQuote = array();
+
+        /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
+        $cache = array();
+        $quoteItems = $quote->getAllVisibleItems();
+
+        /** @var Entity\OneListItem[] $oneListItems */
+        $oneListItems = !is_null( $oneList->getItems()->getOneListItem() )
+            ? $oneList->getItems()->getOneListItem()
+            : array();
+
+        foreach ( $oneListItems as $oneListItem ) {
+
+            $found = FALSE;
+
+            foreach ( $quoteItems as $quoteItem ) {
+                // TODO: check Product Type
+                $isConfigurable = $quoteItem->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_CONFIGURABLE;
+                if ( isset( $cache[ $quoteItem->getId() ] ) || $isConfigurable ) {
+                    continue;
+                }
+
+                $productLsrId = $this->productFactory->create()
+                    ->load( $quoteItem->getProduct()->getId() )
+                    ->getData( 'lsr_id' );
+                $quote_has_item = $productLsrId == $oneListItem->getItem()->getId();
+                $qi_qty = $quoteItem->getData( 'qty' );
+                $item_qty = intval( $oneListItem->getQuantity() );
+                $match = $quote_has_item && ( $qi_qty == $item_qty );
+
+                if ( $match ) {
+                    $cache[ $quoteItem->getId() ] = $found = TRUE;
+                    break;
+                }
+            }
+
+            // if found is still false, the item is not presend in the quote
+            if ( !$found ) {
+                $onlyInOneList[] = $oneListItem;
+            }
+        }
+
+        foreach ( $quoteItems as $quoteItem ) {
+            $isConfigurable = $quoteItem->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_CONFIGURABLE;
+
+            // if the item is in the cache, it is present in the oneList and the quote
+            if ( isset( $cache[ $quoteItem->getId() ] ) || $isConfigurable ) {
+                continue;
+            }
+
+            $onlyInQuote[] = $quoteItem;
+        }
+
         return array($onlyInQuote, $onlyInOneList);
     }
 
@@ -381,15 +423,15 @@ MESSAGE;
             $items->add( $list_item );
         }
 
-        $basket->setItems( $items )
+        $oneList->setItems( $items )
             ->setOffers( $this->_offers() )
             ->setCoupons( $this->_coupons() );
 
-        if ( empty( $basket->getCardId() ) ) {
-            $basket->setCardId( NULL );
+        if ( empty( $oneList->getCardId() ) ) {
+            $oneList->setCardId( NULL );
         }
-        if ( empty( $basket->getCustomerId() ) ) {
-            $basket->setCustomerId( NULL );
+        if ( empty( $oneList->getCustomerId() ) ) {
+            $oneList->setCustomerId( NULL );
         }
 
         return $oneList;
