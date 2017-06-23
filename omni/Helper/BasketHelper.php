@@ -12,6 +12,8 @@ use \Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Quote\Model\Quote;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
+use Magento\Framework\Registry;
+use Ls\Customer\Model\LSR;
 
 class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
 
@@ -33,6 +35,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
     protected $stockItemRepository;
 
     protected $itemHelper;
+    protected $registry;
 
     public function __construct(
         Context $context,
@@ -44,7 +47,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
         ProductFactory $productFactory,
         StockItemRepository $stockItemRepository,
-        ItemHelper $itemHelper
+        ItemHelper $itemHelper,
+        Registry $registry
     )
     {
         parent::__construct($context);
@@ -57,6 +61,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
         $this->productFactory = $productFactory;
         $this->stockItemRepository = $stockItemRepository;
         $this->itemHelper = $itemHelper;
+        $this->registry = $registry;
     }
 
     /**
@@ -118,16 +123,37 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
 
     /**
      * Get OneList from currently logged in User from Magento if there is one
-     * @return Entity\OneList
+     * @return Entity\OneList|null
      */
     public function get() {
-        throw new Exception("Not yet implemented.");
-        // TODO: load from magento when user functionality is implemented
-        // in Magento 1, we stored the user in the registry
-        // if there is no OneList in this user, call fetchFromOmni()
-        if (is_null($list)) {
+        /** @var Entity\OneList $list */
+        $list = NULL;
+
+        /** @var Entity\Contact $loginContact */
+        if ( $loginContact = $this->registry->registry( LSR::REGISTRY_LOYALTY_LOGINRESULT ) ) {
+            try {
+                if ($loginContact->getOneList()->getOneList() instanceof Entity\OneList) {
+                    if ($loginContact->getOneList()->getOneList()->getListType() == Entity\Enum\ListType::BASKET) {
+                        return $loginContact->getOneList()->getOneList();
+                    }
+                } else {
+                    foreach ($loginContact->getOneList()->getIterator() as $list) {
+                        $isBasket = $list->getListType() == Entity\Enum\ListType::BASKET;
+                        if ($isBasket && $list->getIsDefaultList()) {
+                            return $list;
+                        }
+                    }
+                }
+            } catch ( Exception $e ) {
+                Mage::logException( $e );
+            }
+        }
+        // there is no onelist for the contact... let's create one
+        if ( is_null( $list ) ) {
             return $this->fetchFromOmni();
         }
+
+        return NULL;
     }
 
     /**
