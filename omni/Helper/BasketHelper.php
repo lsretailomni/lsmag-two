@@ -79,7 +79,11 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
     public function fetchFromOmni () {
 
         // TODO: get current ContactID when user functionality is implemented
-        $contactId = "MO000008";
+        $contactId = $this->customerSession->getData(   LSR::SESSION_CUSTOMER_LSRID );
+        if (is_null($contactId)) {
+            $contactId = "MO000008";
+        }
+
 
         $request = new Operation\OneListGetByContactId();
         $entity = new Entity\OneListGetByContactId();
@@ -597,6 +601,16 @@ MESSAGE;
         #$shipmentFeeId = $shipmentFee->getData('lsr_id');
         $shipmentFeeId = 66010;
 
+        $contactId = $this->customerSession->getData(   LSR::SESSION_CUSTOMER_LSRID );
+        if (is_null($contactId)) {
+            $contactId = "MO000008";
+        }
+        #$storeId = LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE );
+        $cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );
+        $storeId = "S0013";
+        $cardId = 10021;
+
+        /** @var Entity\BasketCalcResponse $response */
         $response = FALSE;
 
         if ( !is_null( $oneListItems->getOneListItem() ) ) {
@@ -604,7 +618,7 @@ MESSAGE;
             $array = array();
             $n = 1;
 
-            /** @var LSR_Omni_Model_Omni_Domain_OneListItem $listItem */
+            /** @var Entity\OneListItem $listItem */
             foreach ( $oneListItems->getOneListItem() as $listItem ) {
 
                 $item = $listItem->getItem();
@@ -639,6 +653,8 @@ MESSAGE;
                 unset( $line );
             }
 
+            // TODO: support coupons
+            /*
             $coupon = $quote->getData( LSR::ATTRIBUTE_COUPON_CODE);
             if ( !is_null( $coupon ) ) {
                 $line = ( new Entity\BasketCalcLineRequest() )
@@ -648,18 +664,21 @@ MESSAGE;
                     ->setUomId( NULL );
                 $array[] = $line;
             }
+            */
 
-            $lines = new Entity\ArrayOfBasketCalcLineRequest();
-            $lines->setBasketCalcLineRequest($array);
+            $lineRequest = new Entity\ArrayOfBasketCalcLineRequest();
+            $lineRequest->setBasketCalcLineRequest($array);
 
             $basketCalcRequest = ( new Entity\BasketCalcRequest() )
-                ->setContactId( $this->customerSession->getData( LSR::SESSION_CUSTOMER_LSRID ) )
-                ->setCardId( $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID ) )
+                ->setContactId( $contactId )
+                ->setCardId( $cardId )
                 ->setItemType( Entity\Enum\BasketCalcItemType::ITEM_NO )
                 ->setId( $oneList->getId() )
-                ->setBasketCalcLineRequests( $lines )
-                ->setStoreId( LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE ) );
+                ->setBasketCalcLineRequests( $lineRequest )
+                ->setStoreId( $storeId );
 
+            // TODO: support store type
+            /*
             $store = LSR::getStore();
             if ( LSR::isW1( $store ) ) {
                 $basketCalcRequest->setCalcType( Entity\Enum\BasketCalcType::TYPE_FINAL );
@@ -668,17 +687,17 @@ MESSAGE;
                     $basketCalcRequest->setCalcType( Entity\Enum\BasketCalcType::COLLECT );
                 }
             }
+            */
 
+            $entity = new Entity\BasketCalc();
+            $entity->setBasketRequest($basketCalcRequest);
             $request = new Operation\BasketCalc();
-            $response = $request->execute($basketCalcRequest);
+            $response = $request->execute($entity);
 
-            LSR::getLogger()
-                ->dump( $request->__request()->getData( LSR_Omni_Model_Omni_Service_BaseRequest::OPERATION_REQUEST ) );
-            LSR::getLogger()
-                ->dump( $request->__request()->getData( LSR_Omni_Model_Omni_Service_BaseRequest::OPERATION_RESPONSE ) );
+            // TODO: add logging
         }
-
-        return $response ? $response->getBasketCalcResult() : $response;
+        // TODO: add access to actual result when possible
+        return !is_null($response) ? $response->getResult() : NULL;
     }
 
     /**
