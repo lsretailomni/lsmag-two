@@ -697,7 +697,7 @@ MESSAGE;
             // TODO: add logging
         }
         // TODO: add access to actual result when possible
-        return !is_null($response) ? $response->getResult() : NULL;
+        return !is_null($response) ? $response->getBasketCalcResult() : NULL;
     }
 
     /**
