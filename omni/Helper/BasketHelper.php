@@ -416,9 +416,10 @@ MESSAGE;
         $quoteItems = $quote->getAllVisibleItems();
 
         $items = new Entity\ArrayOfOneListItem();
+        $itemsArray = array();
         foreach ( $quoteItems as $quoteItem ) {
 
-            // TODO: fix double load of product as lsr_id is not loaded to quote_item product
+            // TODO: check if lsr_id is not loaded to quote_item product
             $sku = $quoteItem->getSku();
             $parts = explode( '.', $sku );
 
@@ -430,8 +431,14 @@ MESSAGE;
             $variant_id = count( $parts ) ? array_shift( $parts ) : NULL;
 
             $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku',$sku, 'eq')->create();
-            $productList = $this->productRepository->getList($searchCriteria);
-            $product = $productList[0];
+            $productList = $this->productRepository->getList($searchCriteria)->getItems();
+            $product = array_pop($productList);
+
+            // TODO: remove if replication works
+            if ($sku == "Test Product 1") {
+                $lsr_id = "40045";
+                $product->setData('lsr_barcode', '5699100005869');
+            }
 
             $item = $this->itemHelper->get( $lsr_id );
             $uom = $this->itemHelper->uom($item);
@@ -444,14 +451,15 @@ MESSAGE;
 
             $list_item = ( new Entity\OneListItem() )
                 ->setQuantity( $quoteItem->getData( 'qty' ) )
-                ->setItem( $helper->lite( $item ) )
+                ->setItem( $this->itemHelper->lite( $item ) )
                 ->setBarcodeId( $product->getData( 'lsr_barcode' ) ? $product->getData( 'lsr_barcode' ) : '' )
                 ->setVariant( $variant )
                 ->setId( '' )
                 ->setUom( $uom );
 
-            $items->add( $list_item );
+            $itemsArray[] = $list_item ;
         }
+        $items->setOneListItem($itemsArray);
 
         $oneList->setItems( $items )
             ->setOffers( $this->_offers() )
