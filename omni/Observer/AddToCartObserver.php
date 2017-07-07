@@ -47,7 +47,6 @@ class AddToCartObserver implements ObserverInterface
         // add items from the quote to the oneList
         $this->basketHelper->setOneListQuote($quote, $oneList);
 
-        $this->basketHelper->saveToOmni( $oneList );
         $this->basketHelper->update( $oneList );
         return $this;
 
