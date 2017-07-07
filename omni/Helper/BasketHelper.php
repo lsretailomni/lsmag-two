@@ -492,14 +492,15 @@ MESSAGE;
      * @param Entity\OneList $oneList
      */
     public function update(Entity\OneList $oneList) {
-        $cart_helper = Mage::helper( 'checkout/cart' );
-
         $calculation = $this->calculate( $oneList );
-        $this->checkoutSession->setData( LSR::SESSION_CHECKOUT_BASKET, $oneList );
-        $this->checkoutSession->setData( LSR::SESSION_CHECKOUT_BASKETCALCULATION, $calculation );
+        // TODO: re-enable
+        #$this->checkoutSession->setData( LSR::SESSION_CHECKOUT_BASKETCALCULATION, $calculation );
 
-        $check_inventory = LSR::getStoreConfig( LSR::SC_CART_CHECK_INVENTORY );
-        $update_inventory = LSR::getStoreConfig( LSR::SC_CART_UPDATE_INVENTORY );
+        #$check_inventory = LSR::getStoreConfig( LSR::SC_CART_CHECK_INVENTORY );
+        #$update_inventory = LSR::getStoreConfig( LSR::SC_CART_UPDATE_INVENTORY );
+
+        $check_inventory = FALSE;
+        $update_inventory = FALSE;
 
         if ( $check_inventory ) {
             /** @var Entity\ArrayOfOrderLineAvailability $availability */
@@ -514,7 +515,7 @@ MESSAGE;
                 foreach ( $availabilityLines as $availabilityLine ) {
 
                     $productLsrId = $availabilityLine->getItemId();
-                    if ( !is_empty_date( $availabilityLine->getVariantId() ) ) {
+                    if ( $availabilityLine->getVariantId() !== "" ) {
                         # build LSR Id
                         $productLsrId = join(
                             '.',
@@ -630,7 +631,7 @@ MESSAGE;
             foreach ( $oneListItems->getOneListItem() as $listItem ) {
 
                 $item = $listItem->getItem();
-                $uom = $listItem->getUom();
+                $uom = $listItem->getUom()[0];
 
                 $line = ( new Entity\BasketCalcLineRequest() )
                     ->setLineNumber( $n++ )
@@ -725,7 +726,7 @@ MESSAGE;
             /** @var Entity\OneListItem $listItem */
             foreach ( $oneListItems->getOneListItem() as $listItem ) {
                 $variant = $listItem->getVariant();
-                $uom = !is_null( $listItem->getUom() ) ? $listItem->getUom()->getId() : NULL;
+                $uom = !is_null( $listItem->getUom() ) ? $listItem->getUom()[0]->getId() : NULL;
                 $line = ( new Entity\OrderLineAvailability() )
                     ->setItemId( $listItem->getItem()->getId() )
                     ->setLineType( Entity\Enum\LineType::ITEM)
