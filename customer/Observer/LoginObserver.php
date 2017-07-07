@@ -161,20 +161,15 @@ class LoginObserver implements ObserverInterface
 
             // load OneLists from $result
             /** @var Entity\ArrayOfOneList $oneListArray */
-            $oneListArray = $result->getOneList()->getOneList();
+            $oneListArray = $result->getOneList();
             // filter for basket OneLists
             $basketOneLists = array();
-            if ($basketOneLists instanceof Entity\ArrayOfOneList) {
-                $basketOneLists = array_filter($oneListArray, function($oneList) { return $oneList->getListType() == 'Basket';});
+            if ($oneListArray instanceof Entity\ArrayOfOneList) {
+                $basketOneLists = array_filter($oneListArray->getOneList(), function($oneList) { return $oneList->getListType() == 'Basket';});
             } else {
-                // not actually an array
-                if ($oneListArray instanceof Entity\OneList) {
-                    $basketOneLists = array($oneListArray);
-                } else {
-                    // something went wrong
-                    $this->logger->error("Customer ".$customer_email." has invalid data for its OneList.");
-                    throw new LocalizedException("An error occured while logging in. Please try again later.");
-                }
+                // something went wrong
+                $this->logger->error("Customer ".$customer_email." has invalid data for its OneList.");
+                throw new LocalizedException("An error occured while logging in. Please try again later.");
             }
             if (count($basketOneLists) > 1) {
                 $this->logger->debug("Multiple OneLists with type basket for customer.");
