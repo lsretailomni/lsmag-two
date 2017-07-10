@@ -3,21 +3,18 @@ namespace Ls\Omni\Observer;
 
 use Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\TestFramework\Event\Magento;
-use MagentoDevBox\Command\Pool\MagentoReset;
-use Zend_Validate;
-use Zend_Validate_EmailAddress;
 use Ls\Omni\Helper\ContactHelper;
 use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Customer\Model\LSR;
 
-class AddToCartObserver implements ObserverInterface
+class CartObserver implements ObserverInterface
 {
     private $contactHelper;
     protected $basketHelper;
     protected $logger;
     protected $customerSession;
     protected $checkoutSession;
+    protected $watchNextSave = FALSE;
 
     public function __construct(
         ContactHelper $contactHelper,
@@ -36,19 +33,24 @@ class AddToCartObserver implements ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        // taken over from LSR_Core_Model_Observer_Cart::update_basket from LS Mag for Magento 1
-        /** @var \Magento\Quote\Model\Quote $quote */
-        $quote = $this->checkoutSession->getQuote();
+        if ($this->watchNextSave) {
+            // taken over from LSR_Core_Model_Observer_Cart::update_basket from LS Mag for Magento 1
+            /** @var \Magento\Quote\Model\Quote $quote */
+            $quote = $this->checkoutSession->getQuote();
 
-        // $helper->get() loads the OneList from Omni
-        // TODO: load the oneList from the user, only if empty, use the one from nav to speed up things
-        $oneList = $this->basketHelper->get();
+            // $helper->get() loads the OneList from Omni
+            // TODO: load the oneList from the user, only if empty, use the one from nav to speed up things
+            $oneList = $this->basketHelper->get();
 
-        // add items from the quote to the oneList
-        $this->basketHelper->setOneListQuote($quote, $oneList);
+            // add items from the quote to the oneList
+            $this->basketHelper->setOneListQuote($quote, $oneList);
 
-        $this->basketHelper->update( $oneList );
+            $this->basketHelper->update($oneList);
+        }
         return $this;
+    }
 
+    public function watchNextSave(bool $value = TRUE) {
+        $this->watchNextSave = $value;
     }
 }
