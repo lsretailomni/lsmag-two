@@ -44,11 +44,8 @@ class OrderHelper extends AbstractHelper {
         $shippingMethod = $order->getShippingMethod( TRUE );
         $isClickCollect = $shippingMethod->getData( 'carrier_code' ) == 'clickcollect';
 
-        /** @var Entity\BasketCalcResponse $basketCalculation */
-        #$basketCalculation = $this->checkoutSession->getData( LSR::SESSION_CHECKOUT_BASKETCALCULATION );
-        #if (is_null($basketCalculation)) {
-            # TODO: sometimes, $basketCalculation is not already cached, and we need to recalculate the basketLines
-        #}
+        /** @var Entity\BasketCalcResponse $basketCalcResponse */
+        $basketCalcResponse = $this->basketHelper->getOneListCalculation();
         /** @var Entity\BasketLineCalcResponse[] $lines */
         $lines = $basketCalcResponse->getBasketLineCalcResponses()->getBasketLineCalcResponse();
 

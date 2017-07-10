@@ -4,7 +4,6 @@ namespace Ls\Omni\Helper;
 use Magento\Framework\App\Helper\Context;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use Magento\Bundle\Model\Product\Type;
 use \Magento\Checkout\Model\Cart;
 use \Magento\Catalog\Model\ProductRepository;
 use \Magento\Checkout\Model\Session;
@@ -16,6 +15,8 @@ use Magento\Framework\Registry;
 use Ls\Customer\Model\LSR;
 
 class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
+    // Beware that this class should be handled as a Singleton, that means it should not be set as shared inside di.xml
+    // http://alanstorm.com/magento_2_object_manager_instance_objects/
 
     /** @var Cart $cart */
     protected $cart;
@@ -36,6 +37,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
 
     protected $itemHelper;
     protected $registry;
+
+    /** @var null|Entity\BasketCalcResponse $oneListCalculation */
+    protected $oneListCalculation = NULL;
 
     public function __construct(
         Context $context,
@@ -492,9 +496,7 @@ MESSAGE;
      * @param Entity\OneList $oneList
      */
     public function update(Entity\OneList $oneList) {
-        $calculation = $this->calculate( $oneList );
-        // TODO: re-enable
-        #$this->checkoutSession->setData( LSR::SESSION_CHECKOUT_BASKETCALCULATION, $calculation );
+        $this->setOneListCalculation($this->calculate( $oneList ));
 
         #$check_inventory = LSR::getStoreConfig( LSR::SC_CART_CHECK_INVENTORY );
         #$update_inventory = LSR::getStoreConfig( LSR::SC_CART_UPDATE_INVENTORY );
@@ -611,16 +613,16 @@ MESSAGE;
         $shipmentFeeId = 66010;
 
         $contactId = $this->customerSession->getData(   LSR::SESSION_CUSTOMER_LSRID );
-        if (is_null($contactId)) {
-            $contactId = "MO000008";
-        }
-        #$storeId = LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE );
         $cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );
+
+        #$storeId = LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE );
         $storeId = "S0013";
-        $cardId = 10021;
 
         /** @var Entity\BasketCalcResponse $response */
         $response = FALSE;
+
+
+
 
         if ( !is_null( $oneListItems->getOneListItem() ) ) {
 
@@ -743,7 +745,7 @@ MESSAGE;
 
             // TODO: get actual store and CardId
             #$storeId = LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE );
-            #$cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );
+            $cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );
             $storeId = "S0013";
             $cardId = 10021;
 
@@ -760,5 +762,19 @@ MESSAGE;
         }
 
         return $response ? $response->getOrderAvailabilityCheckResult() : $response;
+    }
+
+    public function getOneListCalculation() {
+        if (is_null($this->oneListCalculation)) {
+            $this->oneListCalculation = $this->calculate($this->get());
+        }
+        return $this->oneListCalculation;
+    }
+
+    /**
+     * @param Entity\BasketCalcResponse $calculation
+     */
+    public function setOneListCalculation(Entity\BasketCalcResponse $calculation) {
+        $this->oneListCalculation = $calculation;
     }
 }
