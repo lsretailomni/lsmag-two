@@ -137,6 +137,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
         /** @var Entity\OneList $list */
         $list = NULL;
 
+        // TODO: don't use registry but ContactHelper (or another)
         /** @var Entity\Contact $loginContact */
         if ( $loginContact = $this->registry->registry( LSR::REGISTRY_LOYALTY_LOGINRESULT ) ) {
             try {
@@ -621,9 +622,6 @@ MESSAGE;
         /** @var Entity\BasketCalcResponse $response */
         $response = FALSE;
 
-
-
-
         if ( !is_null( $oneListItems->getOneListItem() ) ) {
 
             $array = array();
@@ -743,11 +741,10 @@ MESSAGE;
             $lines = new Entity\ArrayOfOrderLineAvailability();
             $lines->setOrderLineAvailability($array);
 
-            // TODO: get actual store and CardId
+            // TODO: get actual store
             #$storeId = LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE );
-            $cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );
             $storeId = "S0013";
-            $cardId = 10021;
+            $cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );
 
             $request = ( new Entity\OrderAvailabilityRequest() )
                 ->setStoreId( $storeId )
