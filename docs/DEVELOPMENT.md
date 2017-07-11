@@ -1,4 +1,6 @@
 # LS Mag for Magento 2 Development Guide 
+More documents on Magento development inside LS Retail can be found under `R:\LS Omni\LS Mag`.
+
 ## Development Installation:
 
 1. Install Magento2
@@ -36,7 +38,15 @@ Now you can run `bin/ls-mag` again.
 
 - If you are working on the InstalLData class of a module and want to re-run the install method, drop the appropriate line from the setup_module table and run bin/magento setup:upgrade.
 
+## Conversion Notes
+
+While converting the Module from Magento 1 to Magento 2, some architectural things changed. In Magento 1, we relied heavily on the registry and session. In Magento 2, we sometimes use Helper classes instead. Below, some identifiers and their replacements are noted:
+
+* LSR::SESSION_CHECKOUT_BASKETCALCULATION => BasketHelper::getOneListCalculation()
+* LSR::REGISTRY_LOYALTY_WATCHNEXTSAVE => AddToCartObserver::watchNextSave()
+  * Used in CartObserver and BasketObserver
+
 Older notes:
 - Development inside app/code? See http://devdocs.magento.com/guides/v2.0/extension-dev-guide/build/module-file-structure.html
--- No feasible due to composer dependencies we need
+-- Not feasible due to composer dependencies we need
 - php7.0 bin/ls-mag omni:client:generate -b "http://vmw-lsnav.local/LSOmniService/"
