@@ -705,8 +705,18 @@ MESSAGE;
 
             // TODO: add logging
         }
-        // TODO: add access to actual result when possible
-        return !is_null($response) ? $response->getBasketCalcResult() : NULL;
+        if (is_null($response)) {
+            return NULL;
+        }
+        // we have problems with the identifier BasketCalcResponse used twice in the WSDL
+        // see issue OMNI-3561
+        // workaround: check if $response has another BasketCalcResult
+        if (property_exists($response, "BasketCalcResult")) {
+            // access inner object and return it
+            return $response->BasketCalcResult;
+        }
+        // return object directly
+        return $response;
     }
 
     /**
