@@ -141,9 +141,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
         /** @var Entity\Contact $loginContact */
         if ( $loginContact = $this->registry->registry( LSR::REGISTRY_LOYALTY_LOGINRESULT ) ) {
             try {
-                if ($loginContact->getOneList()->getOneList() instanceof Entity\OneList) {
-                    if ($loginContact->getOneList()->getOneList()->getListType() == Entity\Enum\ListType::BASKET) {
-                        return $loginContact->getOneList()->getOneList();
+                if ($loginContact->getOneList()->getOneList()[0] instanceof Entity\OneList) {
+                    if ($loginContact->getOneList()->getOneList()[0]->getListType() == Entity\Enum\ListType::BASKET) {
+                        return $loginContact->getOneList()->getOneList()[0];
                     }
                 } else {
                     foreach ($loginContact->getOneList()->getIterator() as $list) {
