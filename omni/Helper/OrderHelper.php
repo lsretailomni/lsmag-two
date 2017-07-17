@@ -142,6 +142,32 @@ class OrderHelper extends AbstractHelper {
             ->setContactId($contactId)
             ->setSourceType(Enum\SourceType::E_COMMERCE);
 
+        /*
+        'customer_id' => $customerSession->getCustomer()->getId(),
+		'customer_lsr_id' => $customerSession->getData( LSR::SESSION_CUSTOMER_LSRID ),
+		'customer_card_id' => $customerSession->getData( LSR::SESSION_CUSTOMER_CARDID ),
+		'customer_email' => $customerSession->getCustomer()->getData( 'email' ),
+		'order_id' => $order->getId(),
+		'lines' => $orderLines,
+		'is_inline' => $is_inline,
+		'currency' => $basketCalculation->getCurrencyCode(),
+		'total_amount' => $basketCalculation->getTotalAmount(),
+		'total_discount_amount' => $basketCalculation->getTotalDiscAmount(),
+		'total_net_amount' => $basketCalculation->getTotalNetAmount(),
+		'total_tax_amount' => $basketCalculation->getTotalTaxAmount(),
+		'order_base_subtotal' => $order->getBaseSubtotal(),
+		'order_discount_amount' => $order->getDiscountAmount(),
+		'order_grand_total' => $order->getGrandTotal(),
+		'order_shipping_amount' => $order->getShippingAmount(),
+		'store_id' => LSR::getStore()->getId(),
+		'navstore_id' => $is_clickcollect
+				? $order->getData( 'quote' )->getData( 'lsr_clickcollect_navstore' )
+				: LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE ),
+		'session_id' => $customerSession->getEncryptedSessionId(),
+		'coupon_code' => $quote->getData( LSR::ATTRIBUTE_COUPON_CODE ),
+		'token' => LSR::getToken() );
+         */
+
         $request = new Entity\OrderCreate();
         $request->setRequest($entity);
 
