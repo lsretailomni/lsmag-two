@@ -33,10 +33,15 @@ class OrderHelper extends AbstractHelper {
     }
 
     public function placeOrderById($orderId, Entity\BasketCalcResponse $basketCalcResponse) {
-        $this->placeOrder($this->order->load($orderId), $basketCalcResponse);
+        $this->placeOrder($this->prepareOrder($this->order->load($orderId), $basketCalcResponse));
     }
 
-    public function placeOrder(Model\Order $order, Entity\BasketCalcResponse $basketCalcResponse) {
+    /**
+     * @param Model\Order $order
+     * @param Entity\BasketCalcResponse $basketCalcResponse
+     * @return Entity\OrderCreate
+     */
+    public function prepareOrder(Model\Order $order, Entity\BasketCalcResponse $basketCalcResponse) {
         // TODO: add inline feature again
         //$isInline = LSR::getStoreConfig( LSR::SC_CART_SALESORDER_INLINE ) == LSR_Core_Model_System_Source_Process_Type::ON_DEMAND;
         $isInline = true;
@@ -137,10 +142,18 @@ class OrderHelper extends AbstractHelper {
             ->setContactId($contactId)
             ->setSourceType(Enum\SourceType::E_COMMERCE);
 
-
-        // TODO: add possibility to add cronjob to run OrderCreate for faster checkout
         $request = new Entity\OrderCreate();
         $request->setRequest($entity);
+
+        return $request;
+    }
+
+    /**
+     * Place the Order directly
+     * @param Entity\OrderCreate $request
+     * @return Entity\OrderCreateResponse|\Ls\Omni\Client\IResponse
+     */
+    public function placeOrder(Entity\OrderCreate $request) {
         $operation = new Operation\OrderCreate();
         $response = $operation->execute($request);
 
@@ -149,8 +162,6 @@ class OrderHelper extends AbstractHelper {
         /** @var Entity\OneList $oneList */
         // TODO: get current oneList and delete it
         // $this->basketHelper->delete($oneList);
-
-
 
         return $response;
     }

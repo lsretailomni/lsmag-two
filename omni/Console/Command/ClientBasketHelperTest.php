@@ -71,7 +71,7 @@ class ClientBasketHelperTest extends Command {
             $order = $objectManager->get('Magento\Sales\Model\Order');
             $order->setShippingMethod("homedelivery");
 
-            $orderHelper->placeOrder($order, $result);
+            $orderHelper->placeOrder($orderHelper->prepareOrder($order, $result));
         } else {
             throw new Exception("OneList is null");
         }
