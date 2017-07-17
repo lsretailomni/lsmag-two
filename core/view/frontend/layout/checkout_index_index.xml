@@ -19,7 +19,7 @@
                                             <item name="children" xsi:type="array">
                                                 <item name="totals" xsi:type="array">
                                                     <item name="children" xsi:type="array">
-                                                        <item name="testdiscount" xsi:type="array">
+                                                        <item name="navdiscount" xsi:type="array">
                                                             <item name="config" xsi:type="array">
                                                                 <item name="title" xsi:type="string" translate="true">My Discount</item>
                                                             </item>
