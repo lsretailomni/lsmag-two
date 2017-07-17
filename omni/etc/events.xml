@@ -12,4 +12,7 @@
     <event name="checkout_cart_save_after">
         <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
     </event>
+    <event name="sales_order_place_after">
+        <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
+    </event>
 </config>
