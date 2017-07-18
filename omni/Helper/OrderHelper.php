@@ -44,6 +44,12 @@ class OrderHelper extends AbstractHelper {
     public function prepareOrder(Model\Order $order, Entity\BasketCalcResponse $basketCalcResponse) {
         // TODO: add inline feature again
         //$isInline = LSR::getStoreConfig( LSR::SC_CART_SALESORDER_INLINE ) == LSR_Core_Model_System_Source_Process_Type::ON_DEMAND;
+        $storeId = "S0013";
+        #$shipmentFee = $this->getShipmentFeeProdut();
+        #$shipmentFeeId = $shipmentFee->getData('lsr_id');
+        $shipmentFeeId = 66010;
+
+
         $isInline = true;
 
         $shippingMethod = $order->getShippingMethod( TRUE );
@@ -65,6 +71,13 @@ class OrderHelper extends AbstractHelper {
             // not actually needed
             // 'barcode_id' => $line->getBarcodeId(),
             // 'coupon' => $line->getCouponCode(),
+
+            // adjust price of shipping item if there is one
+            if ($line->getItemId() == $shipmentFeeId) {
+                $line->setPrice($order->getShippingAmount());
+                $line->setNetPrice($order->getBaseShippingAmount());
+            }
+
             $orderLinesArray[] = (new Entity\OrderLineCreateRequest())
                 ->setItemId($line->getItemId())
                 ->setQuantity($line->getQuantity())
@@ -75,10 +88,11 @@ class OrderHelper extends AbstractHelper {
                 ->setNetPrice($line->getNetPrice())
                 ->setUomId($line->getUom())
                 ->setVariantId($line->getVariantId())
-                ->setTaxAmount($line->getTAXAmount());
+                ->setTaxAmount($line->getTAXAmount())
+                ->setLineNumber($line->getLineNumber());
         }
 
-        // TODO: add shipping cost
+        // TODO: check if shipping cost item is there
 
         $orderLinesArrayObject->setOrderLineCreateRequest($orderLinesArray);
         $entity->setOrderLineCreateRequests($orderLinesArrayObject);
@@ -114,7 +128,10 @@ class OrderHelper extends AbstractHelper {
         }
         $entity->setOrderDiscountLineCreateRequests($discountArrayObject);
 
-        // TODO: add payment, shipping info, user info, anonymous order info
+        // TODO: implement anonymous order
+        $anonymousOrder = false;
+
+        // TODO: add payment
         /*
         $entity
             ->setAnonymousOrder()
@@ -138,17 +155,22 @@ class OrderHelper extends AbstractHelper {
             ->setStoreId();
         */
         $contactId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_LSRID );
+        $cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );
         $entity
             ->setContactId($contactId)
-            ->setSourceType(Enum\SourceType::E_COMMERCE);
+            ->setCardId($cardId)
+            ->setEmail($this->customerSession->getCustomer()->getData( 'email' ))
+            ->setContactName($order->getCustomerName())
+            ->setContactAddress($this->convertAddress($order->getBillingAddress()))
+            ->setShipToAddress($this->convertAddress($order->getShippingAddress()))
+            ->setAnonymousOrder($anonymousOrder)
+            ->setClickAndCollectOrder($isClickCollect)
+            ->setSourceType(Enum\SourceType::E_COMMERCE)
+            ->setStoreId($storeId);
 
         /*
         'customer_id' => $customerSession->getCustomer()->getId(),
-		'customer_lsr_id' => $customerSession->getData( LSR::SESSION_CUSTOMER_LSRID ),
-		'customer_card_id' => $customerSession->getData( LSR::SESSION_CUSTOMER_CARDID ),
-		'customer_email' => $customerSession->getCustomer()->getData( 'email' ),
 		'order_id' => $order->getId(),
-		'lines' => $orderLines,
 		'is_inline' => $is_inline,
 		'currency' => $basketCalculation->getCurrencyCode(),
 		'total_amount' => $basketCalculation->getTotalAmount(),
@@ -190,6 +212,24 @@ class OrderHelper extends AbstractHelper {
         // $this->basketHelper->delete($oneList);
 
         return $response;
+    }
+
+    /**
+     * @param Model\Order\Address $magentoAddress
+     * @return Entity\Address
+     */
+    public function convertAddress(Model\Order\Address $magentoAddress) {
+        $omniAddress = new Entity\Address();
+        foreach ($magentoAddress->getStreet() as $i => $street) {
+            $method = "setAddress".strval($i+1);
+            $omniAddress->$method($street);
+        }
+        $omniAddress
+            ->setCity($magentoAddress->getCity())
+            ->setCountry($magentoAddress->getCountryId())
+            ->setStateProvinceRegion($magentoAddress->getRegion())
+            ->setPostCode($magentoAddress->getPostcode());
+        return $omniAddress;
     }
 
 

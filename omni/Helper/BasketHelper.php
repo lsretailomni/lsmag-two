@@ -651,13 +651,13 @@ MESSAGE;
             $quote = $this->checkoutSession->getQuote();
             $shippingAddress = $quote->getShippingAddress();
             $shippingAmount = $shippingAddress->getShippingAmount();
-
+            // TODO: might not be needed, as its price is 0 anyway
             if ( !is_null( $shippingAmount ) && $shippingAmount > 0 ) {
                 $line = ( new Entity\BasketCalcLineRequest() )
                     ->setLineNumber( $n++ )
                     ->setItemId( $shipmentFeeId )
                     ->setQuantity( $shippingAmount )
-                    ->setUomId( NULL );
+                    ->setUomId( "PCS" );
                 $array[] = $line;
                 unset( $line );
             }
@@ -773,6 +773,7 @@ MESSAGE;
 
     public function getOneListCalculation() {
         if (is_null($this->oneListCalculation)) {
+            // TODO: maybe add caching? AJAX Magento 2 calls this a lot with new requests every time
             $this->oneListCalculation = $this->calculate($this->get());
         }
         return $this->oneListCalculation;
