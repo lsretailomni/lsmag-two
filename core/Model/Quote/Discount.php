@@ -69,7 +69,7 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
     ) {
         parent::collect($quote, $shippingAssignment, $total);
         $label               = 'Discount';
-        $discountAmount      = -$this->basketHelper->getOneListCalculation()->getTotalDiscAmount();;
+        $discountAmount      = -$this->basketHelper->getOneListCalculation()->getTotalDiscAmount();
         $appliedCartDiscount = 0;
 
 
