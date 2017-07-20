@@ -709,8 +709,10 @@ MESSAGE;
         // workaround: check if $response has another BasketCalcResult
         if (property_exists($response, "BasketCalcResult")) {
             // access inner object and return it
+            $this->setOneListCalculation($response->BasketCalcResult);
             return $response->BasketCalcResult;
         }
+        $this->setOneListCalculation($response);
         // return object directly
         return $response;
     }
@@ -768,18 +770,20 @@ MESSAGE;
     }
 
     public function getOneListCalculation() {
-        if (is_null($this->oneListCalculation)) {
-            // TODO: maybe add caching? AJAX Magento 2 calls this a lot with new requests every time
-            $this->oneListCalculation = $this->calculate($this->get());
+        $oneListCalc = $this->checkoutSession->getOneListCalculation();
+        if (is_null($oneListCalc)) {
+            $this->calculate($this->get());
+            // calculate updates the session, so we fetch again
+            return $this->checkoutSession->getOneListCalculation();
         }
-        return $this->oneListCalculation;
+        return $oneListCalc;
     }
 
     /**
      * @param Entity\BasketCalcResponse $calculation
      */
     public function setOneListCalculation(Entity\BasketCalcResponse $calculation) {
-        $this->oneListCalculation = $calculation;
+        $this->checkoutSession->setOneListCalculation($calculation);
     }
 
     public function setCouponCode($couponCode) {
@@ -787,6 +791,8 @@ MESSAGE;
         // TODO: validation?
         $quote->setCouponCode($couponCode);
         $quote->save();
+        // update BasketCalculation with new coupon
+        $this->calculate($this->get());
     }
 
     /**
