@@ -42,15 +42,13 @@ class OrderHelper extends AbstractHelper {
      * @return Entity\OrderCreate
      */
     public function prepareOrder(Model\Order $order, Entity\BasketCalcResponse $basketCalcResponse) {
-        // TODO: add inline feature again
+        // TODO: add on demand feature again
         //$isInline = LSR::getStoreConfig( LSR::SC_CART_SALESORDER_INLINE ) == LSR_Core_Model_System_Source_Process_Type::ON_DEMAND;
+        $isInline = true;
         $storeId = "S0013";
         #$shipmentFee = $this->getShipmentFeeProdut();
         #$shipmentFeeId = $shipmentFee->getData('lsr_id');
         $shipmentFeeId = 66010;
-
-
-        $isInline = true;
 
         $shippingMethod = $order->getShippingMethod( TRUE );
         $isClickCollect = $shippingMethod->getData( 'carrier_code' ) == 'clickcollect';
@@ -66,13 +64,21 @@ class OrderHelper extends AbstractHelper {
         $orderLinesArray = array();
         $orderLinesArrayObject = new Entity\ArrayOfOrderLineCreateRequest();
 
+        /** @var Entity\OrderDiscountLineCreateRequest[] $discountArray */
+        $discountArray = array();
+        $discountArrayObject = new Entity\ArrayOfOrderDiscountLineCreateRequest();
+
         /** @var Entity\BasketLineCalcResponse $line */
         foreach ( $lines as $line ) {
-            // not actually needed
-            // 'barcode_id' => $line->getBarcodeId(),
-            // 'coupon' => $line->getCouponCode(),
+            // not actually needed?
+            // 'barcode_id' => $line->getBarcodeId()
 
-            // adjust price of shipping item if there is one
+            // ignore lines without ID
+            if (!$line->getItemId()) {
+                continue;
+            }
+
+            // adjust price of shipping item if it is one
             if ($line->getItemId() == $shipmentFeeId) {
                 $line->setPrice($order->getShippingAmount());
                 $line->setNetPrice($order->getBaseShippingAmount());
@@ -90,6 +96,31 @@ class OrderHelper extends AbstractHelper {
                 ->setVariantId($line->getVariantId())
                 ->setTaxAmount($line->getTAXAmount())
                 ->setLineNumber($line->getLineNumber());
+
+            $lineDiscounts = $line->getBasketLineDiscResponses();
+            $discounts = array();
+            if (!is_null( $lineDiscounts->getBasketLineDiscResponse() )) {
+                /** @var Entity\BasketLineDiscResponse[] $discounts */
+                $discounts = $lineDiscounts->getBasketLineDiscResponse();
+            }
+            if ( count($discounts) > 0 ) {
+                /** @var Entity\BasketLineCalcResponse $discount */
+                foreach ($discounts as $discount) {
+                    // not actually needed
+                    // 'qty' => $discount->getQuantity(),
+                    # store information from current discount
+                    $discountArray[] = ( new Entity\OrderDiscountLineCreateRequest() )
+                        ->setDescription($discount->getDescription())
+                        ->setDiscountAmount($discount->getDiscountAmount())
+                        ->setDiscountPercent($discount->getDiscountPercent())
+                        ->setDiscountType($discount->getDiscountType())
+                        ->setLineNumber($discount->getLineNumber())
+                        ->setNo($discount->getNo())
+                        ->setOfferNumber($discount->getOfferNumber())
+                        ->setPeriodicDiscGroup($discount->getPeriodicDiscGroup())
+                        ->setPeriodicDiscType($discount->getPeriodicDiscType());
+                }
+            }
         }
 
         // TODO: check if shipping cost item is there
@@ -97,35 +128,7 @@ class OrderHelper extends AbstractHelper {
         $orderLinesArrayObject->setOrderLineCreateRequest($orderLinesArray);
         $entity->setOrderLineCreateRequests($orderLinesArrayObject);
 
-        $discountArrayObject = new Entity\ArrayOfOrderDiscountLineCreateRequest();
-        /** @var Entity\OrderDiscountLineCreateRequest[] $discountArray */
-        $discountArray = array();
-
-        $lineDiscounts = $line->getBasketLineDiscResponses();
-        $discounts = array();
-        if (!is_null( $lineDiscounts->getBasketLineDiscResponse() )) {
-            /** @var Entity\BasketLineDiscResponse[] $discounts */
-            $discounts = $lineDiscounts->getBasketLineDiscResponse();
-        }
-        if ( count($discounts) > 0 ) {
-            /** @var Entity\BasketLineCalcResponse $discount */
-            foreach ($discounts as $discount) {
-                // not actually needed
-                // 'qty' => $discount->getQuantity(),
-                # store information from current discount
-                $discountArray[] = ( new Entity\OrderDiscountLineCreateRequest() )
-                    ->setDescription($discount->getDescription())
-                    ->setDiscountAmount($discount->getDiscountAmount())
-                    ->setDiscountPercent($discount->getDiscountPercent())
-                    ->setDiscountType($discount->getDiscountType())
-                    ->setLineNumber($discount->getLineNumber())
-                    ->setNo($discount->getNo())
-                    ->setOfferNumber($discount->getOfferNumber())
-                    ->setPeriodicDiscGroup($discount->getPeriodicDiscGroup())
-                    ->setPeriodicDiscType($discount->getPeriodicDiscType());
-            }
-            $discountArrayObject->setOrderDiscountLineCreateRequest($discountArray);
-        }
+        $discountArrayObject->setOrderDiscountLineCreateRequest($discountArray);
         $entity->setOrderDiscountLineCreateRequests($discountArrayObject);
 
         // TODO: implement anonymous order
