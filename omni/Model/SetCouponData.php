@@ -25,7 +25,10 @@ class SetCouponData
     public function aroundExecute(CouponPost $subject, callable $proceed) {
         // set coupon code in the quote directly, to circumvent Magento validation
         // TODO: validation?
-        $this->basketHelper->setCouponCode($subject->getRequest()->getParam('coupon_code'));
+        $couponCode = $subject->getRequest()->getParam('remove') == 1
+            ? ''
+            : trim($subject->getRequest()->getParam('coupon_code'));
+        $this->basketHelper->setCouponCode($couponCode);
 
         // redirect to basket
         $redirect = $this->redirectFactory->create();
