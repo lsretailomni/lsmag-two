@@ -34,10 +34,10 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
     protected $productFactory;
     /** @var StockItemRepository $stockItemRepository */
     protected $stockItemRepository;
-
+    /** @var ItemHelper $itemHelper */
     protected $itemHelper;
+    /** @var Registry $registry */
     protected $registry;
-
     /** @var null|Entity\BasketCalcResponse $oneListCalculation */
     protected $oneListCalculation = NULL;
 
@@ -203,7 +203,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper {
      * @return Entity\ArrayOfOneListCoupon
      */
     private function _coupons () {
-        // TODO: actually load coupons
+        // TODO: actually load available coupons
         $coupons = new Entity\ArrayOfOneListCoupon();
         return $coupons;
     }
@@ -441,8 +441,8 @@ MESSAGE;
 
             // TODO: remove if replication works
             if ($sku == "Test Product 1") {
-                $lsr_id = "40045";
-                $product->setData('lsr_barcode', '5699100005869');
+                $lsr_id = "40180"; // 40045: T-Shirt Linda, 40180: Leather backpack
+                $product->setData('lsr_barcode', '0200000034439'); // T-Shirt: 5699100005869 Backpack: 0200000034439
             }
 
             $item = $this->itemHelper->get( $lsr_id );
@@ -499,6 +499,7 @@ MESSAGE;
     public function update(Entity\OneList $oneList) {
         $this->setOneListCalculation($this->calculate( $oneList ));
 
+        // TODO: add config again
         #$check_inventory = LSR::getStoreConfig( LSR::SC_CART_CHECK_INVENTORY );
         #$update_inventory = LSR::getStoreConfig( LSR::SC_CART_UPDATE_INVENTORY );
 
@@ -607,17 +608,17 @@ MESSAGE;
      * @return false|Entity\BasketCalcResponse
      */
     public function calculate(Entity\OneList $oneList) {
-        $oneListItems = $oneList->getItems();
         // TODO: use real data
         #$shipmentFee = $this->getShipmentFeeProdut();
         #$shipmentFeeId = $shipmentFee->getData('lsr_id');
         $shipmentFeeId = 66010;
+        #$storeId = LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE );
+        $storeId = "S0013";
 
         $contactId = $this->customerSession->getData(   LSR::SESSION_CUSTOMER_LSRID );
         $cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );
 
-        #$storeId = LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE );
-        $storeId = "S0013";
+        $oneListItems = $oneList->getItems();
 
         /** @var Entity\BasketCalcResponse $response */
         $response = FALSE;
@@ -662,10 +663,8 @@ MESSAGE;
                 unset( $line );
             }
 
-            // TODO: support coupons
-            /*
-            $coupon = $quote->getData( LSR::ATTRIBUTE_COUPON_CODE);
-            if ( !is_null( $coupon ) ) {
+            $coupon = $this->getCouponCode();
+            if ( !is_null( $coupon ) and strlen($coupon) > 0 ) {
                 $line = ( new Entity\BasketCalcLineRequest() )
                     ->setLineNumber( $n )
                     ->setCouponCode( $coupon )
@@ -673,7 +672,6 @@ MESSAGE;
                     ->setUomId( NULL );
                 $array[] = $line;
             }
-            */
 
             $lineRequest = new Entity\ArrayOfBasketCalcLineRequest();
             $lineRequest->setBasketCalcLineRequest($array);
@@ -702,8 +700,6 @@ MESSAGE;
             $entity->setBasketRequest($basketCalcRequest);
             $request = new Operation\BasketCalc();
             $response = $request->execute($entity);
-
-            // TODO: add logging
         }
         if (is_null($response)) {
             return NULL;
@@ -784,5 +780,25 @@ MESSAGE;
      */
     public function setOneListCalculation(Entity\BasketCalcResponse $calculation) {
         $this->oneListCalculation = $calculation;
+    }
+
+    public function setCouponCode($couponCode) {
+        $quote = $this->checkoutSession->getQuote();
+        // TODO: validation?
+        $quote->setCouponCode($couponCode);
+        $quote->save();
+    }
+
+    /**
+    * @return String
+    */
+    public function getCouponCode()
+    {
+        $quote = $this->checkoutSession->getQuote();
+        $quoteCoupon = $quote->getCouponCode();
+        if (!is_null($quoteCoupon)) {
+            return $quoteCoupon;
+        }
+        return NULL;
     }
 }
