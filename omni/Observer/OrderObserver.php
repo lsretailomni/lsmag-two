@@ -40,19 +40,14 @@ class OrderObserver implements ObserverInterface
     {
         /** @var Order $order */
         $order = $observer->getEvent()->getData( 'order' );
-        $customerSession = $this->customerSession;
-        $checkoutSession = $this->checkoutSession;
 
-        $shipping_method = $order->getShippingMethod( TRUE );
-        $is_clickcollect = $shipping_method->getData( 'carrier_code' ) == 'clickcollect';
-
-        // WE ARE GONNA PREPARE THE MAIN DATA FOR BOTH CREATORS
         /** @var Entity\BasketCalcResponse $basketCalculation */
         $basketCalculation = $this->basketHelper->getOneListCalculation();
-
+        
         $request = $this->orderHelper->prepareOrder($order, $basketCalculation);
         $response = $this->orderHelper->placeOrder($request);
-        
+        // TODO: error handling
+
         return $this;
     }
 }
