@@ -499,6 +499,8 @@ MESSAGE;
     public function update(Entity\OneList $oneList) {
         $this->setOneListCalculation($this->calculate( $oneList ));
 
+        // set item prices and basket price from calculation
+
         // TODO: add config again
         #$check_inventory = LSR::getStoreConfig( LSR::SC_CART_CHECK_INVENTORY );
         #$update_inventory = LSR::getStoreConfig( LSR::SC_CART_UPDATE_INVENTORY );
@@ -769,6 +771,9 @@ MESSAGE;
         return $response ? $response->getOrderAvailabilityCheckResult() : $response;
     }
 
+    /**
+     * @return Entity\BasketCalcResponse $oneListCalc
+     */
     public function getOneListCalculation() {
         $oneListCalc = $this->checkoutSession->getOneListCalculation();
         if (is_null($oneListCalc)) {

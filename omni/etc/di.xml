@@ -8,7 +8,7 @@
                 type="Ls\Omni\Model\SetCouponData"
                 sortOrder="1" />
     </type>
-    <type name="Magento\Checkout\Model\Cart">
-            <plugin name="omniTotalCalculator" type="Ls\Omni\Model\Cart" sortOrder="1" />
-    </type>
+    <preference
+            for="Magento\Quote\Model\Quote"
+            type="Ls\Omni\Model\Quote" />
 </config>
