@@ -9,6 +9,6 @@
                 sortOrder="1" />
     </type>
     <preference
-            for="Magento\Quote\Model\Quote"
-            type="Ls\Omni\Model\Quote" />
+            for="\Magento\Quote\Model\Quote\TotalsCollector"
+            type="Ls\Omni\Model\TotalsCollector" />
 </config>
