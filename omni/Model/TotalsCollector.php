@@ -50,6 +50,54 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
             ['quote' => $this]
         );
 
+        // handle addresses
+        $addresses = $quote->getAllAddresses();
+        // we should have one billing and one delivery address
+        if (count($addresses) != 2) {
+            // uh-oh, probably multi-address checkout, we can't handle this yet
+            throw new Exception("Failure in Quote calculation.");
+        }
+        foreach ($addresses as $address) {
+            // taken from parent::collectAddressTotals
+            $this->collectAddressTotals($quote, $address);
+            //if ($address->getAddressType() == "shipping") {
+            //    $address->addData($total->getData());
+            //}
+        }
+
+        $this->quoteValidator->validateQuoteAmount($quote, $quote->getGrandTotal());
+        $this->quoteValidator->validateQuoteAmount($quote, $quote->getBaseGrandTotal());
+        $this->eventManager->dispatch(
+            'sales_quote_collect_totals_after',
+            ['quote' => $quote]
+        );
+
+        return $total;
+    }
+
+    public function collectAddressTotals(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address $address)
+    {
+        // needs to do the job of Magento/Quote/Model/Quote/TotalsCollector::collectAddressTotals
+        $shippingAssignment = $this->shippingAssignmentFactory->create();
+
+        /** @var \Magento\Quote\Api\Data\ShippingInterface $shipping */
+        $shipping = $this->shippingFactory->create();
+        $shipping->setMethod($address->getShippingMethod());
+        $shipping->setAddress($address);
+        $shippingAssignment->setShipping($shipping);
+        $shippingAssignment->setItems($address->getAllItems());
+
+        /** @var \Magento\Quote\Model\Quote\Address\Total $total */
+        $total = $this->totalFactory->create('Magento\Quote\Model\Quote\Address\Total');
+        $this->eventManager->dispatch(
+            'sales_quote_address_collect_totals_before',
+            [
+                'quote' => $quote,
+                'shipping_assignment' => $shippingAssignment,
+                'total' => $total
+            ]
+        );
+
         // fetch calculation via BasketHelper
         /** @var Entity\BasketCalcResponse $basketCalc */
         $basketCalc = $this->basketHelper->getOneListCalculation();
@@ -79,6 +127,11 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
         #$total->setShippingDescription($this->basketHelper->getShipmentFeeProduct()->getDescription());
         $total->setShippingAmount(5);
         $total->setBaseShippingAmount(5);
+
+        $total->setShippingAmountInclTax(5);
+        $total->setBaseShippingTaxAmount(0);
+        $total->setShippingTaxAmount(0);
+
         $total->setShippingDescription("Shipping");
 
         // customer currency, before tax
@@ -86,37 +139,36 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
         // shop currency, before tax
         $total->setBaseSubtotal((float)$basketCalc->getTotalNetAmount());
 
+        // customer currency, without shipping, after tax
+        $total->setSubtotalInclTax((float)$basketCalc->getTotalAmount()-$total->getShippingAmount());
+
         // customer currency, with discount, before tax
         $total->setSubtotalWithDiscount((float)$basketCalc->getTotalNetAmount()-$basketCalc->getTotalDiscAmount());
         // shop currency, with discount, before tax
         $total->setBaseSubtotalWithDiscount((float)$basketCalc->getTotalNetAmount()-$basketCalc->getTotalDiscAmount());
+
+        // discount
+        $total->setDiscountAmount($basketCalc->getTotalDiscAmount());
+
+        $total->setTaxAmount($basketCalc->getTotalTaxAmount());
 
         // after tax, customer currency
         $total->setGrandTotal((float)$basketCalc->getTotalAmount());
         // after tax, shop currency
         $total->setBaseGrandTotal((float)$basketCalc->getTotalNetAmount());
 
-        // handle addresses
-        $addresses = $quote->getAllAddresses();
-        // we should have one billing and one delivery address
-        if (count($addresses) != 2) {
-            // uh-oh, probably multi-address checkout, we can't handle this yet
-            throw new Exception("Failure in Quote calculation.");
-        }
-        foreach ($addresses as $address) {
-            //$addressTotal = $this->collectAddressTotals($quote, $address);
-            if ($address->getAddressType() == "shipping") {
-                $address->addData($total->getData());
-            }
-        }
-
-        $this->quoteValidator->validateQuoteAmount($quote, $quote->getGrandTotal());
-        $this->quoteValidator->validateQuoteAmount($quote, $quote->getBaseGrandTotal());
         $this->eventManager->dispatch(
-            'sales_quote_collect_totals_after',
-            ['quote' => $quote]
+            'sales_quote_address_collect_totals_after',
+            [
+                'quote' => $quote,
+                'shipping_assignment' => $shippingAssignment,
+                'total' => $total
+            ]
         );
 
+        $address->addData($total->getData());
+        $address->setAppliedTaxes($total->getAppliedTaxes());
         return $total;
+
     }
 }
