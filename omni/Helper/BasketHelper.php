@@ -785,9 +785,9 @@ MESSAGE;
     }
 
     /**
-     * @param Entity\BasketCalcResponse $calculation
+     * @param Entity\BasketCalcResponse|null $calculation
      */
-    public function setOneListCalculation(Entity\BasketCalcResponse $calculation) {
+    public function setOneListCalculation($calculation) {
         $this->checkoutSession->setOneListCalculation($calculation);
     }
 
