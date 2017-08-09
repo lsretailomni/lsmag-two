@@ -1,21 +1,30 @@
 <?php
 namespace Ls\Omni\Client;
 
+use Ls\Omni\Exception\NavException;
+use Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 
 abstract class AbstractOperation implements IOperation
 {
-    /** @var  ServiceType */
+    /** @var $service_type ServiceType */
     protected $service_type;
     protected $logger;
     protected $writer;
+    protected $magentoLogger;
+    /** @var $objectManager \Magento\Framework\App\ObjectManager */
+    protected $objectManager;
 
     public function __construct ( ServiceType $service_type ) {
         $this->service_type = $service_type;
         $this->writer = new \Zend\Log\Writer\Stream(BP . '/var/log/omniclient.log');
         $this->logger = new \Zend\Log\Logger();
         $this->logger->addWriter($this->writer);
+        // we're not using Magento autoloading for these classes, we we can't use its dependency injection
+        $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+        $this->magentoLogger = $this->objectManager->get('\Psr\Log\LoggerInterface');
     }
 
     /**
@@ -39,9 +48,8 @@ abstract class AbstractOperation implements IOperation
     }
 
     private function debugLog($operation_name) {
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
         /** @return \Magento\Framework\App\State */
-        $state = $om->get('Magento\Framework\App\State');
+        $state = $this->objectManager->get('Magento\Framework\App\State');
         /** @var bool $isDeveloperMode */
         $isDeveloperMode = \Magento\Framework\App\State::MODE_DEVELOPER === $state->getMode();
 
@@ -57,8 +65,23 @@ abstract class AbstractOperation implements IOperation
         $request_input = $this->getOperationInput();
         $client = $this->getClient();
         // TODO: add error handling, maybe parse Nav errors into new NavException?
-        $response = $client->{$operation_name}( $request_input );
+        try {
+            $response = $client->{$operation_name}($request_input);
+        } catch (\SoapFault $e) {
+            $navException = $this->parseException($e);
+            $this->magentoLogger->critical($navException);
+            $response = NULL;
+        }
         $this->debugLog($operation_name);
         return $response;
+    }
+
+    protected function parseException(\SoapFault $exception) {
+        $navException = new NavException($exception->getMessage(),1,$exception);
+        // usually, this means that some kind of information is missing, e.g. one line in the XML is not set
+        if (strpos($exception->getMessage(), "Object reference not set to an instance of an object") !== -1) {
+            $navException = new NavObjectReferenceNotAnInstanceException($exception->getMessage(),1,$exception);
+        }
+        return $navException;
     }
 }
