@@ -104,6 +104,23 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
 
         $this->_collectItemsQtys($quote);
 
+        // check if sums add up
+        $quoteSum = 0;
+        /** @var \Magento\Quote\Model\ResourceModel\Quote\Item $item */
+        foreach ($quote->getAllItems() as $item) {
+            /** @var \Magento\Catalog\Model\Product\Interceptor $product */
+            $product = $item->getProduct();
+            $price = $product->getPrice();
+            $qty = $item->getQty();
+            $sum = $price*$qty;
+            $quoteSum += $sum;
+        }
+        if ($quoteSum != $basketCalc->getTotalAmount()) {
+            // TODO: what to do now? Discounts maybe not included?
+            // maybe use $item->setCustomPrice()
+            // https://magento.stackexchange.com/questions/108324/magento2-change-bundle-item-price-in-cart
+        }
+
         // calculate totals
         // (base)GrandTotal is after tax, (base)SubTotal is before tax
         // (sub/grand)Total is in customer currency, base(Sub/Grand)total in shop currency
@@ -121,17 +138,14 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
         // 'order_shipping_amount' => $order->getShippingAmount()
 
         // TODO: add shipping
-
         #$total->setShippingAmount($basketCalc->getShippingAmount());
         #$total->setBaseShippingAmount($basketCalc->getShippingAmount());
         #$total->setShippingDescription($this->basketHelper->getShipmentFeeProduct()->getDescription());
         $total->setShippingAmount(5);
         $total->setBaseShippingAmount(5);
-
         $total->setShippingAmountInclTax(5);
         $total->setBaseShippingTaxAmount(0);
         $total->setShippingTaxAmount(0);
-
         $total->setShippingDescription("Shipping");
 
         // customer currency, before tax
