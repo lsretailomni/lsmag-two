@@ -4,29 +4,31 @@ More documents on Magento development at LS Retail can be found under `R:\LS Omn
 ## Development Installation:
 
 1. Install Magento2
-2. Clone lsmag-two somewhere somewhere outside the installation folder of Magento2, for example inside /var/www/lsmag-two
-3. Open composer.json of Magento2
+2. Clone lsmag-two somewhere somewhere outside the installation folder of Magento2, for example inside `/var/www/lsmag-two`
+3. Open composer.json of Magento2 (usually `/var/www/magento/composer.json` or `/srv/magento/composer.json`).
 4. Add path of step 2 to composer repositories:
 
-`"repositories": [
-        {
-            "type": "path",
-            "url" : "/var/www/lsmag-two"
-        }
-    ]`
+    `"repositories": [
+            {
+                "type": "path",
+                "url" : "/var/www/lsmag-two"
+            }
+        ]`
 
-5. Run composer require "lsretail/ls-mag-two @dev" inside the Magento2 directory
-6. This installs our module with a symlink. This breaks the `ls-mag` binary. To get it to run, add a symlink to the `magento/vendor/autoload.php` file and the composer directory in the directory `ls-mag-two/vendor` (which you need to create):
-
-Run inside `ls-mag-two`:
-
-`mkdir vendor`
-
-`ln -s /var/www/magento2/vendor/autoload.php vendor/autoload.php`
-
-`ln -s /var/www/magento2/vendor/composer vendor/composer`
-
-Now you can run `bin/ls-mag` again.
+5. Now you can either do a symlink installation or a copy. The symlink breaks a few things, which need to be fixed with more symlinks, the copy on the other hand needs a `composer update` every time you change something in the code.
+    - Symlink installation:
+        1. Run `composer require "lsretail/ls-mag-two @dev"` inside the Magento2 directory (the [@dev tells composer to use a symlink](https://stackoverflow.com/questions/29994088/composer-require-local-package))
+        2. This installs our module with a symlink. This breaks the `ls-mag` binary. To get it to run, add a symlink to the `magento/vendor/autoload.php` file and the composer directory in the directory `ls-mag-two/vendor` (which you need to create):
+            - Run inside `ls-mag-two`:
+                - `mkdir vendor`
+                - `ln -s /var/www/magento2/vendor/autoload.php vendor/autoload.php`
+                - `ln -s /var/www/magento2/vendor/composer vendor/composer`
+            - Now you can run `bin/ls-mag` again.
+         3. Templates
+    - Copy installation:
+        1. Run `composer require "lsretail/ls-mag-two"` inside the Magento2 directory
+        2. Run the command again after _each_ code change
+ 
 
 ## Development Notes:
 
