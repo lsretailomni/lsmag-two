@@ -52,6 +52,22 @@ While converting the Module from Magento 1 to Magento 2, some architectural thin
 * LSR::REGISTRY_LOYALTY_WATCHNEXTSAVE => AddToCartObserver::watchNextSave()
   * Used in CartObserver and BasketObserver
 
+## Release process
+We run our own composer repository on the stable server under the URL [lsmag-stable.lsretail.com/dist](http://lsmag-stable.lsretail.com/dist/). It should be populated on every release using this process:
+
+1. Log into master server
+2. Switch to omni user if you are not already: `sudo -i -u omni`
+3. Go to `/home/omni/satis/satis`
+4. Run `php5 bin/satis build -n satis.json ./build`
+5. Copy the `build` directory to the web server:
+    
+    `sudo cp -r build/* /srv/magento/dist`
+6. Change ownership back to www-data:
+    
+    `sudo chown -R www-data:www-data /srv/magento/dist`
+
+It might also be possible to use this as a source of updates on the master server. This needs to be investigated.
+
 ## Older notes:
 - Development inside app/code? See http://devdocs.magento.com/guides/v2.0/extension-dev-guide/build/module-file-structure.html
 -- Not feasible due to composer dependencies we need
