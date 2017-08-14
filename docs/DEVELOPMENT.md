@@ -57,7 +57,7 @@ We run our own composer repository on the stable server under the URL [lsmag-sta
 
 1. Log into master server
 2. Switch to omni user if you are not already: `sudo -i -u omni`
-3. Go to `/home/omni/satis/satis`
+3. Go to `/home/omni/satis`
 4. Run `php5 bin/satis build -n satis.json ./build`
 5. Copy the `build` directory to the web server:
     
