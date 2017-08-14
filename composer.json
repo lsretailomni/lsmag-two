@@ -54,5 +54,8 @@
       "replication/registration.php",
       "customer/registration.php"
     ]
+  },
+  "archive": {
+    "exclude": ["/docs/", "/README.txt"]
   }
 }
