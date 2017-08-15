@@ -56,6 +56,6 @@
     ]
   },
   "archive": {
-    "exclude": ["/docs", "/README.txt"]
+    "exclude": ["/docs", "/README.txt", "/dev"]
   }
 }

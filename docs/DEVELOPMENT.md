@@ -29,7 +29,10 @@ More documents on Magento development at LS Retail can be found under `R:\LS Omn
         1. Run `composer require "lsretail/ls-mag-two"` inside the Magento2 directory
         2. Run the command again after _each_ code change
  
-
+- Releases don't contain some folders as noted in our `composer.json`:
+    - `/docs` (raw documentation files not intented for customers)
+    - `/dev` (Docker installation, should get releases seperately)
+    - `/README.txt` (Not intended for customers)
 ## Development Notes:
 
 - In contrast to Magento1, in Magento2 the whole module is on a single folder, inside vendor/lsretail/ls-mag-two if you followed the above steps
@@ -40,7 +43,9 @@ More documents on Magento development at LS Retail can be found under `R:\LS Omn
 
 - It might be useful to use the automatic conversion tools at https://github.com/magento/code-migration to convert an old Magento1 installation with our modules and base the new code on the converted file. As there are a lot of changes in Magento2, you can probably only re-use the general logic from the old module, not any actual code without changes.
 
-- If you are working on the InstallData class of a module and want to re-run the install method, drop the appropriate line from the setup_module table and run bin/magento setup:upgrade.
+- If you are working on the InstallData class of a module and want to re-run the install method, drop the appropriate line from the `setup_module` table and run `bin/magento setup:upgrade`.
+
+- After switching branches or changing the signature of a constructor, you will probably need to run `bin/magento setup:di:compile` again. If you switch to a branch where one of the modules specifies a lower version than the previous one (inside `etc\module.xml`), you need to either uninstall the module and install it again (`bin/magento module:uninstall module && bin/magento module:install module`) or manually edit the database table `setup_module` (which might break things).
 
 ## Conversion Notes
 
