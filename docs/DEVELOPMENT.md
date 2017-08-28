@@ -5,6 +5,8 @@ More documents on Magento development at LS Retail can be found under `R:\LS Omn
 
 1. Install Magento2
 2. Clone lsmag-two somewhere somewhere outside the installation folder of Magento2, for example inside `/var/www/lsmag-two`
+    * We use a [Bitbucket repository](https://bitbucket.org/account/user/lsmag/projects/LM) for version control. LS Retail IT is part of this team, so they should be able to give you access
+    * There is also a mirror on the [internal Bitbucket instance](https://bitbucket.lsretail.com/projects/OMNI/repos/lsmag-two/browse), but as this is not reachable from the outside, it cannot be used for pulling from outside servers. It also might not be up to date as the mirroring is not automated.
 3. Open composer.json of Magento2 (usually `/var/www/magento/composer.json` or `/srv/magento/composer.json`).
 4. Add path of step 2 to composer repositories:
 
