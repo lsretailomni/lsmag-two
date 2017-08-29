@@ -47,6 +47,7 @@ services:
         ports:
           - "10080:80"
           - "22"
+        mem_limit: "4000MB"
 
     db:
         container_name: devbox_db
@@ -60,6 +61,7 @@ services:
         volumes:
           - "./run/db:/var/lib/mysql"
           - "./run/var/logs/mysql:/var/log/mysql"
+        mem_limit: "2000MB"
 
     redis:
         container_name: devbox_redis

@@ -17,7 +17,7 @@ class Client extends ZendSoapClient
     /** @var  ServiceType */
     protected $type;
     /** @var array */
-    protected $soap_options = [ 'soap_version' => SOAP_1_1 ];
+    protected $soap_options = [ 'soap_version' => SOAP_1_1, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ];
 
     /**
      * BaseClient constructor.

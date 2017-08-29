@@ -2,10 +2,14 @@
 namespace Ls\Customer\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\TestFramework\Event\Magento;
+use MagentoDevBox\Command\Pool\MagentoReset;
 use Zend_Validate;
 use Zend_Validate_EmailAddress;
 use Ls\Omni\Helper\ContactHelper;
 use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Customer\Model\LSR;
 
 class LoginObserver implements ObserverInterface
 {
@@ -14,13 +18,19 @@ class LoginObserver implements ObserverInterface
     protected $searchCriteriaBuilder;
     protected $customerRepository;
     protected $messageManager;
+    protected $registry;
+    protected $logger;
+    protected $customerSession;
 
     public function __construct(
         ContactHelper $contactHelper,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\Message\ManagerInterface $messageManager
+        \Magento\Framework\Message\ManagerInterface $messageManager,
+        \Magento\Framework\Registry $registry,
+        \Psr\Log\LoggerInterface $logger,
+        \Magento\Customer\Model\Session $customerSession
     )
     {
         //Observer initialization code...
@@ -30,6 +40,9 @@ class LoginObserver implements ObserverInterface
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerRepository = $customerRepository;
         $this->messageManager = $messageManager;
+        $this->registry = $registry;
+        $this->logger = $logger;
+        $this->customerSession = $customerSession;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -76,34 +89,64 @@ class LoginObserver implements ObserverInterface
                 $this->messageManager->addErrorMessage('Unfortunately email login is only available for members registered in Magento' );
 
                 return $this;
-            } else {
-                // TODO: get the username from the data
-                $username = $customer->getData( 'lsr_username' );
             }
+//            else {
+//                // TODO: get the username from the data
+//                $username = $customer->getData( 'lsr_username' );
+//            }
         }
 
-        // MORE OR LESS WORKING UNTIL HERE
-        // below this, you need to adapt the old mag1 code to mag2 code once we are able to actually create users in Magento2
-
         // TRY TO LOGIN
-        $result = Mage::helper( 'lsr_omni/omni_contact' )->login( $username, $login[ 'password' ] );
+        $this->logger->debug('LOGIN');
+        $result = $this->contactHelper->login( $username, $login[ 'password' ] );
+        $this->logger->debug('LOGIN AFTER');
 
         if ( $result == FALSE ) {
-            //$customer_session->addError( 'Invalid Omni login or Omni password' );
-            LSR::getLogger(LSR::LOG_OMNICLIENT)->error('Invalid Omni login or Omni password');
-
+            //$this->customerSession->addError( 'Invalid Omni login or Omni password' );
+            $this->logger->debug('Invalid Omni login or Omni password');
             return $this;
         }
 
-        if ( $result instanceof LSR_Omni_Model_Omni_Domain_Contact ) {
+        if ( $result instanceof Entity\Contact ) {
 
-            $customer = Mage::getModel( 'customer/customer' )
-                ->getCollection()
-                ->addFieldToFilter( 'email', array( 'eq' => $result->getEmail() ) )
-                ->getFirstItem();
-            if ( empty( $customer->getId() ) ) {
-                $customer = Mage::helper( 'lsr_omni/omni_contact' )->customer( $result , $login[ 'password' ] );
+            $obj_manager = \Magento\Framework\App\ObjectManager::getInstance();
+
+            $filters = [$this->filterBuilder
+                ->setField('email')
+                ->setConditionType('eq')
+                ->setValue($result->getEmail())
+                ->create()];
+            $this->searchCriteriaBuilder->addFilters($filters);
+            $searchCriteria = $this->searchCriteriaBuilder->create();
+            $searchResults = $this->customerRepository->getList($searchCriteria);
+
+            $customer = NULL;
+
+            if ( $searchResults->getTotalCount() == 0 ) {
+                $customer = $this->contactHelper->customer( $result , $login[ 'password' ] );
+            }else{
+                foreach($searchResults->getItems() as $match){
+                    $customer = $this->customerRepository->getById($match->getId());
+                    break;
+                }
             }
+
+            $customer_email = $customer->getEmail();
+            $this->logger->debug($customer->getId());
+            $this->logger->debug($customer->getEmail());
+
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $url = \Magento\Framework\App\ObjectManager::getInstance();
+            $storeManager = $url->get('\Magento\Store\Model\StoreManagerInterface');
+            $websiteId = $storeManager->getWebsite()->getWebsiteId();
+            // Get Store ID
+            $store = $storeManager->getStore();
+            $storeId = $store->getStoreId();
+            $customerFactory = $objectManager->get('\Magento\Customer\Model\CustomerFactory');
+            /** @var \Magento\Customer\Model\Customer $customer */
+            $customer=$customerFactory->create();
+            $customer->setWebsiteId($websiteId);
+            $customer->loadByEmail($customer_email);// load customer by email address
             if ( is_null( $customer->getData( 'lsr_id' ) ) ) {
                 $customer->setData( 'lsr_id', $result->getId() );
             }
@@ -117,12 +160,19 @@ class LoginObserver implements ObserverInterface
             // TODO: merge with maybe existing cart
 
             // load OneLists from $result
-            /** @var LSR_Omni_Model_Omni_Domain_ArrayOf_OneList $oneListArray */
-            $oneListArray = $result->getOneList()->getOneList();
+            /** @var Entity\ArrayOfOneList $oneListArray */
+            $oneListArray = $result->getOneList();
             // filter for basket OneLists
-            $basketOneLists = array_filter($oneListArray, function($oneList) { return $oneList->getListType() == 'Basket';});
+            $basketOneLists = array();
+            if ($oneListArray instanceof Entity\ArrayOfOneList) {
+                $basketOneLists = array_filter($oneListArray->getOneList(), function($oneList) { return $oneList->getListType() == 'Basket';});
+            } else {
+                // something went wrong
+                $this->logger->error("Customer ".$customer_email." has invalid data for its OneList.");
+                throw new LocalizedException("An error occured while logging in. Please try again later.");
+            }
             if (count($basketOneLists) > 1) {
-                LSR::getLogger(LSR::LOG_GENERAL)->error("Multiple OneLists with type basket for customer.");
+                $this->logger->debug("Multiple OneLists with type basket for customer.");
             } else {
                 // TODO: OMNI-3410 Synchronize OneList with Apps
             }
@@ -131,19 +181,19 @@ class LoginObserver implements ObserverInterface
             $customer->setData( 'lsr_token', $token );
             $customer->save();
 
-            Mage::register( LSR::REGISTRY_LOYALTY_LOGINRESULT, $result );
-            $customer_session->setData( LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token );
-            $customer_session->setData( LSR::SESSION_CUSTOMER_LSRID, $result->getId() );
+            $this->registry->register(  LSR::REGISTRY_LOYALTY_LOGINRESULT, $result );
+            $this->customerSession->setData(   LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token );
+            $this->customerSession->setData(   LSR::SESSION_CUSTOMER_LSRID, $result->getId() );
 
             /** @var LSR_Omni_Model_Omni_Domain_Card $card */
             $card = $result->getCard();
-            if ( $card instanceof LSR_Omni_Model_Omni_Domain_Card && !is_null( $card->getId() ) ) {
-                $customer_session->setData( LSR::SESSION_CUSTOMER_CARDID, $card->getId() );
+            if ( $card instanceof Entity\Card && !is_null( $card->getId() ) ) {
+                $this->customerSession->setData(  LSR::SESSION_CUSTOMER_CARDID, $card->getId() );
             }
 
-            $customer_session->setCustomerAsLoggedIn( $customer );
+            $this->customerSession->setCustomerAsLoggedIn( $customer );
         } else {
-            $customer_session->addError( 'The service is currently unavailable. Please try again later.' );
+            $this->customerSession->addError( 'The service is currently unavailable. Please try again later.' );
         }
         #}
 

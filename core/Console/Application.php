@@ -6,6 +6,7 @@ use Ls\Omni\Console\Command\ClientContactSearch;
 use Ls\Omni\Console\Command\ClientGenerate;
 use Ls\Omni\Console\Command\ClientPing;
 use Ls\Omni\Console\Command\ClientWsdl;
+use Ls\Omni\Console\Command\ClientBasketHelperTest;
 use Ls\Replication\Console\Command\ReplicationGenerate;
 use Ls\Replication\Console\Command\ReplicationTest;
 use Symfony\Component\Console\Application as SymfonyApplication;
@@ -29,6 +30,7 @@ class Application extends SymfonyApplication
         $commands[] = new ClientContactToken();
         $commands[] = new ReplicationGenerate();
         $commands[] = new ReplicationTest();
+        $commands[] = new ClientBasketHelperTest();
 
         return $commands;
     }
