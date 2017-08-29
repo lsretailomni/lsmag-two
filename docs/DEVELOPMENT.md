@@ -20,12 +20,13 @@ More documents on Magento development at LS Retail can be found under `R:\LS Omn
 5. Now you can either do a symlink installation or a copy. The symlink breaks a few things, which need to be fixed with more symlinks, the copy on the other hand needs a `composer update` every time you change something in the code.
     - Symlink installation:
         1. Run `composer require "lsretail/ls-mag-two @dev"` inside the Magento2 directory (the [@dev tells composer to use a symlink](https://stackoverflow.com/questions/29994088/composer-require-local-package))
-        2. This installs our module with a symlink. This breaks the `ls-mag` binary. To get it to run, add a symlink to the `magento/vendor/autoload.php` file and the composer directory in the directory `ls-mag-two/vendor` (which you need to create):
+        2. This installs our module with a symlink. This breaks the `ls-mag` binary and some parts of the `magento` binary. To get it to run, add a symlink to the `magento/vendor/autoload.php` file and the `composer` and `magento` directories in the directory `ls-mag-two/vendor` (which you need to create):
             - Run inside `ls-mag-two`:
                 - `mkdir vendor`
                 - `ln -s /var/www/magento2/vendor/autoload.php vendor/autoload.php`
                 - `ln -s /var/www/magento2/vendor/composer vendor/composer`
-            - Now you can run `bin/ls-mag` again.
+                - `ln -s /var/www/magento2/vendor/magento vendor/magento`
+            - Now you can run `bin/ls-mag` and `magento` again.
          3. It also breaks the template loading. Go to the admin backend and set Stores->Advanced->Developer->Template Settings->Allow symlinks to True.
     - Copy installation:
         1. Run `composer require "lsretail/ls-mag-two"` inside the Magento2 directory
