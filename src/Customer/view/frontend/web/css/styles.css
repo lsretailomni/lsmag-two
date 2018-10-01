@@ -1,0 +1,305 @@
+/**
+*
+* @category    design
+* @package     default_default
+*
+**/
+/* Coupons ================================================================================= */
+
+.coupons-grid li.item {
+    float: left;
+    min-height: 460px;
+    list-style: none;
+
+}
+
+.coupons-grid li.last {
+    width: 250px !important;
+}
+
+.coupons-grid li img {
+    max-width: 250px;
+    min-width: 250px;
+    max-height: 200px;
+}
+
+.coupons-grid li div.item-img-cont {
+    max-width: 250px;
+    min-width: 250px;
+    min-height: 200px;
+    max-height: 200px;
+}
+
+.coupons-grid li div.title {
+    max-width: 250px;
+    min-width: 250px;
+    min-height: 60px;
+    max-height: 60px;
+
+}
+
+.coupon-info div.code {
+    bottom: 0px;
+    min-height: 45px;
+    width: 100%;
+    margin: 0 32%;
+}
+
+.coupon-info div.coupon-description {
+    padding-top: 10px;
+    bottom: 0px;
+    min-height: 45px;
+    width: 100%;
+    line-height: 1.8em;
+}
+
+.coupon-info div span {
+    background: #3399cc;
+    display: inline-block;
+    padding: 7px 15px;
+    border: 0;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 19px;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Notifications ============================================================================= */
+
+.notifications-grid li.item {
+    border-bottom: 1px darkgrey solid;
+}
+
+.notifications-grid li.last {
+    border-bottom: 1px darkgrey solid;
+}
+
+.notifications-grid li table tr th.notification-image img {
+    width: 110px;
+}
+
+.notification-info div {
+    padding-top: 10px;
+    bottom: 0px;
+    min-height: 85px;
+    width: 100%;
+}
+
+.notification-info th.notification-title span {
+    width: 250px;
+    display: block;
+}
+
+.notification-info th.notification-description span {
+    width: 180px;
+    display: block;
+}
+
+.notification-info div span {
+    background: #3399cc;
+    display: inline-block;
+    padding: 7px 15px;
+    border: 0;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 19px;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.white-popup {
+    position: relative;
+    background: #FFF;
+    padding: 20px;
+    width: auto;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+/* Dashboard ================================================================================= */
+
+.club-info {
+    margin: 25px 0;
+}
+
+.club-info table tr td {
+    padding: 0 30px 0 0;
+}
+
+.club-next-level {
+    margin: 25px 0;
+}
+
+.club-next-level table tr td {
+    padding: 0 30px 0 0;
+}
+
+.club-next-level-benefits {
+    margin: 25px 0;
+}
+
+.club-next-level-benefits table tr td {
+    padding: 0 30px 0 0;
+}
+
+/* Transactions ================================================================================= */
+
+.transactions-info {
+    margin: 25px 0;
+}
+
+.transactions-info table {
+    width: 100%;
+}
+
+.transactions-info table tr td {
+    width: 33%;
+    padding: 10px;
+    color: #ff674a;
+    font-size: larger;
+}
+
+table.transactions-table tr td {
+    width: 35%;
+    padding: 5px 20px;
+    font-size: larger;
+    cursor: pointer;
+}
+
+table.transactions-table tr th {
+    text-align: center;
+}
+
+table.transactions-table tr td.amount {
+    text-align: right;
+}
+
+table.transactions-table tr:hover {
+    background-color: #a7a9ac;
+}
+
+.transactions-info div.rows table {
+    width: 100%;
+}
+
+.transactions-info div.rows table tr td {
+    width: 33%;
+    padding: 10px;
+    color: #2a5d75;
+}
+
+.transactions-info div.rows table tr:hover {
+    background-color: #a7a9ac;
+}
+
+.transaction-container div.additional-info {
+    margin: 20px 0;
+}
+
+.transaction-container div.sale-lines {
+    display: block;
+    width: 100%;
+}
+
+.transaction-container div.sale-lines thead {
+    display: block;
+}
+
+.transaction-container div.sale-lines thead th {
+    text-align: center;
+}
+
+.transaction-container div.sale-lines thead th.name {
+    max-width: 350px;
+    width: 350px;
+
+}
+
+.transaction-container div.sale-lines thead th.price {
+    max-width: 60px;
+    width: 60px;
+
+}
+
+.transaction-container div.sale-lines thead th.qty {
+    max-width: 40px;
+    width: 40px;
+
+}
+
+.transaction-container div.sale-lines thead th.subtotal {
+    max-width: 100px;
+    width: 100px;
+}
+
+.transaction-container div.sale-lines tbody {
+    display: block;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.transaction-container div.sale-lines tbody td {
+    text-align: right;
+    padding: 0 15px 0 0;
+}
+
+.transaction-container div.sale-lines tbody td.name {
+    max-width: 350px;
+    width: 350px;
+    text-align: left;
+}
+
+.transaction-container div.sale-lines tbody td.price {
+    max-width: 60px;
+    width: 60px;
+
+}
+
+.transaction-container div.sale-lines tbody td.qty {
+    max-width: 40px;
+    width: 40px;
+
+}
+
+.transaction-container div.sale-lines tbody td.subtotal {
+    max-width: 100px;
+    width: 100px;
+
+}
+
+.transaction-container div.sale-lines table.transaction-totals-table {
+    width: 100%;
+    display: block;
+    margin: 25px 0;
+}
+
+.transaction-container div.sale-lines tbody td.first {
+    max-width: 480px;
+    width: 480px;
+    padding: 0 20px 0 0;
+    vertical-align: baseline !important;
+}
+
+.transaction-container div.sale-lines tbody td.last {
+    max-width: 100px;
+    width: 100px;
+    padding: 0 25px 0 0;
+    vertical-align: baseline !important;
+}
+
+/* Customer Form Register Edit ================================================================================= */
+
+.form-list div.profiles span {
+    margin: 0 10px 0 0;
+}
+
+.header-inline {
+    display: inline;
+}

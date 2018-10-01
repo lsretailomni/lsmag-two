@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ls_mag>
+            <service>
+                <base_url>http://lsretail.cloudapp.net/lsomniservice</base_url>
+                <selected_store>HO</selected_store>
+                <debug>0</debug>
+                <advanced>0</advanced>
+                <timeout>120</timeout>
+            </service>
+        </ls_mag>
+        <!-- On basic level - creation of custom payment method for loyalty profile -->
+        <payment>
+            <loyaltypoints>
+                <active>1</active>
+                <model>Ls\Omni\Model\Loyaltypoints</model>
+                <order_status>pending</order_status>
+                <title>Loyalty Points</title>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </loyaltypoints>
+        </payment>
+        <!-- End of creation of custom payment method. -->
+        <!-- For Click and Collect -->
+        <omni_clickandcollect>
+            <general>
+                <default_latitude>52.1349</default_latitude>
+                <default_longitude>-0.04615</default_longitude>
+                <default_zoom>6</default_zoom>
+                <!-- This needs to be replaced on Production-->
+                <maps_api_key>AIzaSyCcd1UZ_3NDFZD_8g8375EqAGM5x6_rIqc</maps_api_key>
+            </general>
+        </omni_clickandcollect>
+        <carriers>
+            <clickandcollect>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <price>0</price>
+                <model>Ls\Omni\Model\Carrier\Clickandcollect</model>
+                <name>Fixed</name>
+                <title>Click And Collect</title>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.
+                </specificerrmsg>
+            </clickandcollect>
+        </carriers>
+    </default>
+</config>

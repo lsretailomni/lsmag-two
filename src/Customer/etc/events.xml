@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- Predispatch event to Hijack Magento login and do the Omni check -->
+    <event name="controller_action_predispatch_customer_account_loginPost">
+        <observer name="ls_login_observer" instance="Ls\Customer\Observer\LoginObserver" />
+    </event>
+    <!-- Ajax Customer Login -->
+    <event name="controller_action_predispatch_customer_ajax_login">
+        <observer name="ls_ajax_login_observer" instance="Ls\Customer\Observer\AjaxLoginObserver" />
+    </event>
+    <!-- For Omni Registration - Check if Username is available before registering it in Magento and Omni -->
+    <event name="controller_action_predispatch_customer_account_createpost">
+        <observer name="ls_register_predispatch_observer" instance="Ls\Customer\Observer\UsernameObserver" />
+    </event>
+    <!-- For Omni Registration to Magento Post Dispatch Event to register user successfully into the Omni, once we are passed with everything -->
+    <event name="controller_action_postdispatch_customer_account_createpost">
+        <observer name="ls_register_postdispatch_observer" instance="Ls\Customer\Observer\RegisterObserver" />
+    </event>
+    <!-- Customer Registration on Checkout -->
+    <event name="controller_action_postdispatch_checkout_account_create">
+        <observer name="ls_register_checkout_observer" instance="Ls\Customer\Observer\CheckoutRegisterObserver" />
+    </event>
+    <!-- For Omni Logout -->
+    <event name="controller_action_predispatch_customer_account_logout">
+        <observer name="ls_logout_observer" instance="Ls\Customer\Observer\LogoutObserver" />
+    </event>
+    <!-- For  Customer/Account/Edit Update customer information to Omni once customer changed their information -->
+    <event name="controller_action_predispatch_customer_account_editpost">
+        <observer name="ls_account_edit_observer" instance="Ls\Customer\Observer\AccountEditObserver" />
+    </event>
+    <!-- For Customer Password Reset Code Generator Through Omni -->
+    <event name="controller_action_predispatch_customer_account_forgotpasswordpost">
+        <observer name="ls_forgot_password_observer" instance="Ls\Customer\Observer\ForgotPasswordObserver" />
+    </event>
+    <!-- To Reset Customer Password on Omni -->
+    <event name="controller_action_postdispatch_customer_account_resetpasswordpost">
+        <observer name="ls_reset_password_observer" instance="Ls\Customer\Observer\ResetPasswordObserver" />
+    </event>
+    <!-- For Customer Address Update -->
+    <event name="customer_address_save_after">
+        <observer name="ls_account_address_observer" instance="Ls\Customer\Observer\AccountAddressObserver" />
+    </event>
+</config>

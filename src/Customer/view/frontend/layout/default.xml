@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Adding Loyalty Link to Top menu bar -->
+        <referenceBlock name="top.links">
+            <block class="Ls\Customer\Block\Link" name="loyalty-link" after="my-account-link">
+                <arguments>
+                    <argument name="sortOrder" xsi:type="number">60</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

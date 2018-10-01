@@ -1,23 +1,17 @@
 {
-  "name": "lsretail/ls-mag-two",
+  "name": "lsretail/lsmag-two",
   "description": "LS NAV Magento 2 Integration",
   "type": "library",
   "license": "proprietary",
   "authors": [
     {
-      "name": "Claudio Maubert",
-      "email": "claudio@lsretail.com"
+      "name": "Zeeshan Khuwaja",
+      "email": "zeeshan.khuwaja@lsretail.com"
     },
     {
-      "name": "Florin Godard",
-      "email": "florin@lsretail.com"
+      "name": "Sudhanshu Bajaj",
+      "email": "sudhanshu.b@lsretail.com"
     }
-  ],
-  "config": {
-    "bin-dir": "bin"
-  },
-  "bin": [
-    "bin/ls-mag"
   ],
   "minimum-stability": "alpha",
   "require": {
@@ -43,19 +37,19 @@
   },
   "autoload": {
     "psr-4": {
-      "Ls\\Core\\": "core",
-      "Ls\\Omni\\": "omni",
-      "Ls\\Replication\\": "replication",
-      "Ls\\Customer\\": "customer"
+      "Ls\\Core\\": "src/Core",
+      "Ls\\Omni\\": "src/Omni",
+      "Ls\\Replication\\": "src/Replication",
+      "Ls\\Customer\\": "src/Customer"
     },
     "files": [
-      "core/registration.php",
-      "omni/registration.php",
-      "replication/registration.php",
-      "customer/registration.php"
+      "src/Core/registration.php",
+      "src/Omni/registration.php",
+      "src/Replication/registration.php",
+      "src/Customer/registration.php"
     ]
   },
   "archive": {
-    "exclude": ["/docs", "/README.txt", "/dev"]
+    "exclude": ["/docs", "/README.txt"]
   }
 }

@@ -1,4 +1,0 @@
-run/webroot/app/etc/env.php
-run/db/*
-run/logs/*
-run/var/*
