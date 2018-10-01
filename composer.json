@@ -24,7 +24,7 @@
     "myclabs/php-enum": "^1.5",
     "sabre/xml": "^1.5",
     "nabil1337/case-helper": "^0.1.0",
-    "monolog/monolog": "1.16.*"
+    "monolog/monolog": "1.23.*"
   },
   "require-dev": {
     "magento/framework": "^100.1",
