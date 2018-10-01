@@ -1,3 +1,8 @@
+This will be used for the release package.
+
+Please modify the instructions to fit the current process
+
+
 Development Installation:
 
 1. Install Magento2
