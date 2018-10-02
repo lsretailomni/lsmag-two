@@ -1,7 +1,7 @@
 # LS Mag for Magento 2 Development Guide 
 ## Development Installation:
 
-1. Navigate to your magento2 installation directory and run `omposer require "lsretail/lsmag-two:dev-Release/1.0" `
+1. Navigate to your magento2 installation directory and run `composer require "lsretail/lsmag-two:dev-Release/1.0" `
 2. Run `composer update` to install all the dependencies it needs.
 3. Once done, you will see the list of our LS retail modules in disable section once you triggered the  `php bin/magento module:status` command from your Magento 2 CLI and lsretail folder in the vendor directory.
 4. To enable all our modules, run command from command line, `php bin/magento module:enable Ls_Core Ls_Omni Ls_Customer Ls_Replication`
