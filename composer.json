@@ -1,61 +1,40 @@
 {
-  "name": "lsretail/ls-mag-two",
+  "name": "lsretail/lsmag-two",
   "description": "LS NAV Magento 2 Integration",
   "type": "library",
   "license": "proprietary",
   "authors": [
     {
-      "name": "Claudio Maubert",
-      "email": "claudio@lsretail.com"
+      "name": "Zeeshan Khuwaja",
+      "email": "zeeshan.khuwaja@lsretail.com"
     },
     {
-      "name": "Florin Godard",
-      "email": "florin@lsretail.com"
+      "name": "Sudhanshu Bajaj",
+      "email": "sudhanshu.b@lsretail.com"
     }
-  ],
-  "config": {
-    "bin-dir": "bin"
-  },
-  "bin": [
-    "bin/ls-mag"
   ],
   "minimum-stability": "alpha",
   "require": {
-    "php": "~5.6.5|7.0.2|7.0.4|~7.0.6",
-    "symfony/console": "~2.3,!=2.7.0",
-    "symfony/filesystem": "^2.3.0",
-    "zendframework/zend-http": "~2.4.6",
-    "zendframework/zend-soap": "~2.4.6",
-    "zendframework/zend-uri": "~2.4.6",
     "myclabs/php-enum": "^1.5",
     "sabre/xml": "^1.5",
     "nabil1337/case-helper": "^0.1.0",
-    "monolog/monolog": "1.16.*"
-  },
-  "require-dev": {
-    "magento/framework": "^100.1",
-    "magento/module-catalog": "^101.0",
-    "magento/module-cron": "^100.1",
-    "magento/module-config": "^100.1",
-    "magento/module-customer": "^100.1",
-    "magento/module-store": "^100.1",
-    "magento-ecg/coding-standard": "^2.0"
+    "monolog/monolog": "1.23.*"
   },
   "autoload": {
     "psr-4": {
-      "Ls\\Core\\": "core",
-      "Ls\\Omni\\": "omni",
-      "Ls\\Replication\\": "replication",
-      "Ls\\Customer\\": "customer"
+      "Ls\\Core\\": "src/Core",
+      "Ls\\Omni\\": "src/Omni",
+      "Ls\\Replication\\": "src/Replication",
+      "Ls\\Customer\\": "src/Customer"
     },
     "files": [
-      "core/registration.php",
-      "omni/registration.php",
-      "replication/registration.php",
-      "customer/registration.php"
+      "src/Core/registration.php",
+      "src/Omni/registration.php",
+      "src/Replication/registration.php",
+      "src/Customer/registration.php"
     ]
   },
   "archive": {
-    "exclude": ["/docs", "/README.txt", "/dev"]
+    "exclude": ["/docs", "/README.txt"]
   }
 }

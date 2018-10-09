@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+  <type name="Magento\Framework\Console\CommandList">
+    <arguments>
+      <argument name="commands" xsi:type="array">
+        <item name="replication_generate" xsi:type="object">Ls\Replication\Console\Command\ReplicationGenerate</item>
+      </argument>
+    </arguments>
+  </type>
+  <preference for="Ls\Replication\Api\ReplImageLinkRepositoryInterface" type="Ls\Replication\Model\ReplImageLinkRepository" />
+  <preference for="Ls\Replication\Api\ReplAttributeRepositoryInterface" type="Ls\Replication\Model\ReplAttributeRepository" />
+  <preference for="Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface" type="Ls\Replication\Model\ReplAttributeOptionValueRepository" />
+  <preference for="Ls\Replication\Api\ReplAttributeValueRepositoryInterface" type="Ls\Replication\Model\ReplAttributeValueRepository" />
+  <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface" type="Ls\Replication\Model\ReplStoreRepository" />
+  <preference for="Ls\Replication\Api\ReplDiscountRepositoryInterface" type="Ls\Replication\Model\ReplDiscountRepository" />
+  <preference for="Magento\Catalog\Block\Product\View\Attributes" type="Ls\Replication\Block\Product\View\Attributes" />
+</config>

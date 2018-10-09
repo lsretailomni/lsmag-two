@@ -70,4 +70,3 @@ The LS Omni Service will call LS Nav’s web services on behalf of Magento. Also
 * Composer
 * Git
 
-# Installation

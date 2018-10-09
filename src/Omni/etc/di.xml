@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+  <type name="Magento\Framework\Console\CommandList">
+    <arguments>
+      <argument name="commands" xsi:type="array">
+        <item name="ls_omni_client_generate" xsi:type="object">Ls\Omni\Console\Command\ClientGenerate</item>
+        <item name="ls_omni_client_ping" xsi:type="object">Ls\Omni\Console\Command\ClientPing</item>
+        <item name="ls_omni_client_wsdl" xsi:type="object">Ls\Omni\Console\Command\ClientWsdl</item>
+      </argument>
+    </arguments>
+  </type>
+  <type name="Magento\Checkout\Controller\Cart\CouponPost">
+    <plugin name="SetCouponData"
+            type="Ls\Omni\Model\SetCouponData"
+            sortOrder="1" />
+  </type>
+  <!-- For loyalty Points Payment Method -->
+  <type name="Magento\Config\Model\Config\TypePool">
+    <arguments>
+      <argument name="sensitive" xsi:type="array">
+        <item name="payment/loyaltypoints/mailing_address" xsi:type="string">1</item>
+      </argument>
+    </arguments>
+  </type>
+  <!-- For Click and Collect -->
+  <type name="Magento\Checkout\Model\ShippingInformationManagement">
+    <plugin name="savePickupInfoToQuote"
+            type="Ls\Omni\Plugin\Checkout\Model\ShippingInformationManagement" />
+  </type>
+</config>

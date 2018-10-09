@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+      label="Customer My Account (All Pages)" design_abstraction="custom">
+    <head>
+        <css src="Ls_Customer::css/styles.css"/>
+    </head>
+    <body>
+        <attribute name="class" value="account"/>
+
+        <referenceContainer name="sidebar.main">
+            <block class="Magento\Framework\View\Element\Template" name="sidebar.main.account_nav"
+                   template="Magento_Theme::html/collapsible.phtml" before="-">
+                <arguments>
+                    <argument name="block_css" xsi:type="string">account-nav</argument>
+                </arguments>
+                <block class="Magento\Customer\Block\Account\Navigation" name="customer_account_navigation" before="-">
+                    <arguments>
+                        <argument name="css_class" xsi:type="string">nav items</argument>
+                    </arguments>
+                    <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-loyalty-offers-link">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Loyalty Offers</argument>
+                            <argument name="path" xsi:type="string">customer/loyalty</argument>
+                            <argument name="sortOrder" xsi:type="number">350</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Customer\Block\Account\SortLinkInterface"
+                           name="customer-loyalty-memberoffers-link">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Member Offers</argument>
+                            <argument name="path" xsi:type="string">customer/loyalty/memberoffers</argument>
+                            <argument name="sortOrder" xsi:type="number">190</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Customer\Block\Account\SortLinkInterface"
+                           name="customer-loyalty-pointoffers-link">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Point Offers</argument>
+                            <argument name="path" xsi:type="string">customer/loyalty/pointoffers</argument>
+                            <argument name="sortOrder" xsi:type="number">180</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Customer\Block\Account\SortLinkInterface"
+                           name="customer-loyalty-generaloffers-link">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">General Offers</argument>
+                            <argument name="path" xsi:type="string">customer/loyalty/generaloffers</argument>
+                            <argument name="sortOrder" xsi:type="number">170</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Customer\Block\Account\SortLinkInterface"
+                           name="customer-loyalty-coupons-link">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Coupons</argument>
+                            <argument name="path" xsi:type="string">customer/loyalty/coupons</argument>
+                            <argument name="sortOrder" xsi:type="number">160</argument>
+                        </arguments>
+                    </block>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

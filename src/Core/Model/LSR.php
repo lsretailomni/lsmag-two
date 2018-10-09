@@ -1,0 +1,268 @@
+<?php
+
+/**
+ * Created by PhpStorm.
+ * User: sudhanshu
+ * Date: 11/06/2018
+ * Time: 2:05 PM
+ */
+
+namespace Ls\Core\Model;
+
+use Ls\Omni\Service\ServiceType;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use SoapClient;
+
+class LSR
+{
+    const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to Stores > Configuration > LS Retail > General Configuration.';
+    const APP_NAME = 'ls-mag';
+    const APP_VERSION = '1.0.0';
+    // DEFAULT IMAGE SIZE
+    const DEFAULT_IMAGE_WIDTH = 500;
+    const DEFAULT_IMAGE_HEIGHT = 500;
+    // CACHE PATHS
+    const CACHE_OMNICLIENT_OPERATIONDATA_PREFIX = 'lsr-oc-od-{@1}';
+    const CACHE_OMNISERVICEABSTRACT_OPTIONS_PREFIX = 'lsr-osa-o-{@1}';
+    const CACHE_DOMAIN_ITEM_PREFIX = 'lsr-d-i-{@1}';
+    const CACHE_PRODUCTGROUP_HASH_PREFIX = 'lsr-pg-h-{@1}';
+    const CACHE_CONTACT_OFFERS_PREFIX = 'lsr-c-o-{@1}';
+    const CACHE_CONTACT_COUPONS_PREFIX = 'lsr-c-c-{@1}';
+    const CACHE_CONTACT_TRANSACTIONS_PREFIX = 'lsr-c-tx-{@1}';
+    const CACHE_CONTACT_TRANSACTION_PREFIX = 'lsr-c-tnx-{@1}';
+    const CACHE_CONTACT_ADVERTISEMENTS_PREFIX = 'lsr-adv-a-{@1}';
+    const CACHE_CONTACT_CLUB_PREFIX = 'lsr-cl-id-{@1}';
+    const CACHE_CONTACT_PROFILE_PREFIX = 'lsr-prf-id-{@1}';
+    const CACHE_COREOBSERVER_WSDLCHANGE = 'lsr-co-wc';
+    const CACHE_ADMINHTML_CONFIGURATIONWATCHER_PREFIX = 'lsr-ah-cw-{@1}';
+    const CACHE_CONFIGDATA_WATCHES = 'lsr-cd-w';
+    const CACHE_PROCESS_CHECK_PREFIX = 'lsr-p-c-{@1}';
+    const CACHE_STORE_ENABLED_PREFIX = 'lsr-s-e-{@1}';
+    const CACHE_NAV_PROFILE = 'lsr-n-p';
+    const CACHE_CUSTOMER_SYNCHRONIZE_SESSID_PREFIX = 'lsr-c-s-sid-{@1}';
+    const CACHE_OMNICLIENT_TOKENIZED_OPERATION_PREFIX = 'lsr-oc-t-o-{@1}';
+    // STORE CONFIGURATION PATHS
+    // SYSTEM CONFIG
+    const SC_SYSTEM_SYMLINK = 'dev/template/allow_symlink';
+    // SERVICE
+    const SC_SERVICE_ENABLE = 'ls_mag/service/enabled';
+    const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
+    const SC_SERVICE_STORE = 'ls_mag/service/selected_store';
+    const SC_SERVICE_DEBUG = 'ls_mag/service/debug';
+    const SC_SERVICE_TOKENIZED = 'ls_mag/service/tokenized_operations';
+    const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
+    // REPLICATION
+    const SC_REPLICATION_GETCATEGORIES = 'ls_mag/replication/replicate_category';
+    const SC_REPLICATION_HIERARCHY_CODE = 'ls_mag/replication/replicate_hierarchy_code';
+    const SC_REPLICATION_CREATEATTRSET = 'ls_mag/replication/create_attribute_set';
+    const SC_REPLICATION_CATEGORIZE = 'ls_mag/replication/categorize_products';
+    const SC_REPLICATION_BATCHSIZE = 'ls_mag/replication/batch_size_configuration';
+    const SC_REPLICATION_CRONEXPR = 'ls_mag/replication/cron_expr_configuration';
+    const SC_REPLICATION_VARIANTMAP = 'ls_mag/replication/variant_map';
+    const SC_REPLICATION_CATEGORYPATH = 'ls_mag/replication/category_path';
+    const SC_REPLICATION_DEBUGONERROR = 'ls_mag/replication/debug_on_error';
+    const SC_REPLICATION_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
+    const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
+    const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
+    // ENHANCEMENT
+    const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
+    const SC_ENHANCEMENT_STORE_UUID_PREFIX = 'ls_mag/cron_enhancement/requests_per_run';
+    const SC_ENHANCEMENT_INVENTORY_ACTIVE_FROM = 'ls_mag/cron_enhancement/inventory_active_from';
+    const SC_ENHANCEMENT_INVENTORY_ACTIVE_TO = 'ls_mag/cron_enhancement/inventory_active_to';
+    const SC_ENHANCEMENT_STORE_INVENTORY_CALCUlATION = 'ls_mag/cron_enhancement/invetory_per_store';
+    const SC_ENHANCEMENT_STORE_UPDATE_INVENTORY_WHEN_ZERO = 'ls_mag/cron_enhancement/if_zero';
+    // LOYALTY
+    const SC_LOYALTY_SHOW_OFFERS = 'ls_mag/loyalty/enable_loyalty_offers';
+    const SC_LOYALTY_OFFERS_USE_STATIC_BLOCK = 'ls_mag/loyalty/use_static_block';
+    const SC_LOYALTY_OFFERS_STATIC_BLOCK = 'ls_mag/loyalty/offers_block';
+    const SC_LOYALTY_SHOW_POINT_OFFERS = 'ls_mag/loyalty/show_point_offers';
+    const SC_LOYALTY_SHOW_MEMBER_OFFERS = 'ls_mag/loyalty/show_member_offers';
+    const SC_LOYALTY_SHOW_GENERAL_OFFERS = 'ls_mag/loyalty/show_general_offers';
+    const SC_LOYALTY_SHOW_COUPONS = 'ls_mag/loyalty/show_coupons';
+    const SC_LOYALTY_SHOW_NOTIFICATIONS = 'ls_mag/loyalty/show_notifications';
+    const SC_LOYALTY_SHOW_NOTIFICATIONS_TOP = 'ls_mag/loyalty/show_notifications_top';
+    const SC_LOYALTY_SHOW_NOTIFICATIONS_LEFT = 'ls_mag/loyalty/show_notifications_left';
+    // CART
+    const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
+    const SC_CART_UPDATE_INVENTORY = 'ls_mag/one_list/update_inventory';
+    const SC_CART_GUEST_CHECKOUT_EMAIL = 'ls_mag/one_list/guest_checkout_email';
+    const SC_CART_GUEST_CHECKOUT_PASSWORD = 'ls_mag/one_list/guest_checkout_password';
+    const SC_CART_SALES_ORDER_CREATE_METHOD = 'ls_mag/one_list/sales_order_create_method';
+    const SC_CART_SPECIAL_ORDER_RETRIES = 'ls_mag/one_list/special_order_create_retries';
+    const SC_CART_ORDER_RETRIES = 'ls_mag/one_list/sales_order_create_retries';
+    const SC_CART_SHIPMENT_FEE = 'ls_mag/one_list/shipment_fee';
+    // CLICK & COLLECT
+    const SC_CLICKCOLLECT_ACTIVE = 'carriers/clickcollect/active';
+    const SC_CLICKCOLLECT_MAP = 'carriers/clickcollect/map';
+    const SC_CLICKCOLLECT_GOOGLE_APIKEY = 'carriers/clickcollect/api_key';
+    const SC_CLICKCOLLECT_HERE_APP_ID = 'carriers/clickcollect/app_id';
+    const SC_CLICKCOLLECT_HERE_APP_CODE = 'carriers/clickcollect/app_code';
+    const SC_CLICKCOLLECT_STOCKLEVEL_STORES = 'ls_mag/clickcollectsetup/showstockforstores';
+    // CUSTOM CONFIGURATION PATHS
+    const CONFIG_REPLICATION_JOBS = 'ls_mag/replication/jobs';
+    const CONFIG_CONFIGDATA_WATCHES = 'ls_mag/configdata/watches';
+    // REGISTRY PATHS
+    const REGISTRY_LOYALTY_LOGINRESULT = 'lsr-l-lr';
+    const REGISTRY_LOYALTY_WATCHNEXTSAVE = 'lsr-l-cwns';
+    const REGISTRY_LOYALTY_WATCHNEXTSAVE_ADDED = 'lsr-l-cwns-a';
+    const REGISTRY_LOYALTY_WATCHNEXTSAVE_REMOVED = 'lsr-l-cwns-r';
+    const REGISTRY_CURRENT_REPLICATION_RUN = 'lsr-c-r-r';
+    const REGISTRY_CURRENT_ENHANCEMENT_RUN = 'lsr-c-e-r';
+    const REGISTRY_CURRENT_STORE = 'lsr-c-s';
+    const REGISTRY_WEBSITE = 'lsr-w';
+    const REGISTRY_CURRENT_JSON_PAYLOAD = 'lsr-c-j-p';
+    // SESSION KEYS
+    const SESSION_CUSTOMER_SECURITYTOKEN = 'lsr-s-c-st';
+    const SESSION_CUSTOMER_CARDID = 'lsr-s-c-cid';
+    const SESSION_CUSTOMER_LSRID = 'lsr-s-c-lid';
+    const SESSION_CHECKOUT_BASKET = 'lsr-s-l-b';
+    const SESSION_CHECKOUT_BASKETCALCULATION = 'lsr-s-l-bc';
+    const SESSION_CHECKOUT_AVAILABILITY = 'lsr-s-l-ba';
+    const SESSION_CHECKOUT_COUPON = 'lsr-s-l-c';
+    const SESSION_CART_ONELIST = 'lsr-s-c-onelist';
+
+    // WORKFLOW
+    const W_TYPE = 'T';
+    const W_PAYLOAD = 'P';
+    const W_CURRENT = 'C';
+    const W_STEPS = 'S';
+    const W_WEBSITE = 'w';
+    const W_STORE = 's';
+    const W_STORES = 'ss';
+    const W_JOB = 'j';
+    const W_TIEDPAYLOAD_PREFIX = 'tp-{@1}';
+    const W_BEFORE_DISPATCH = 'w-f-d';
+    const W_STORE_REPLICATION_PREFIX = 'lsr_replication_store_{@1}';
+    const W_STORE_ENHANCEMENT_PREFIX = 'lsr_enhancement_store_{@1}';
+    const W_STORE_ENHANCEMENT_JOB_PREFIX = 'lsr_enhancement_store_{@1}_{@2}';
+    // JOBS
+    const JOB_CUSTOMER_SYNCHRONIZE = 'lsr_customer_synchronize';
+    const JOB_SALESORDER_CREATE = 'lsr_order_create';
+    const JOB_SALESORDER_CONSOLIDATOR = 'lsr_order_consolidate';
+    const JOB_CLICKCOLLECT_CREATE = 'lsr_clickcollect_create';
+    const JOB_HEARTBEAT = 'lsr_heartbeat';
+    const JOB_SALES_ORDER_SYNCHRONIZE = 'lsr_sos';
+    // CONFIGURATION WATCHER KEYS
+    const CW_BEFORE = 'before';
+    const CW_AFTER = 'after';
+    const CW_PATH = 'path';
+    const CW_WEBSITE = 'website';
+    const CW_STORE = 'store';
+    // SESSION MESSAGE SEVERITY
+    const SEVERITY_NOTICE = 'notice';
+    const SEVERITY_ERROR = 'error';
+    const SEVERITY_WARNING = 'warning';
+    const SEVERITY_SUCCESS = 'success';
+    // ATTRIBUTE CODES
+    const ATTRIBUTE_ORDER_STORE = 'store_id';
+    const ATTRIBUTE_ORDER_NAVSTORE = 'lsr_clickcollect_navstore';
+    const ATTRIBUTE_ORDER_SPECIALORDER_CREATED = 'lsr_specialorder_created';
+    const ATTRIBUTE_ORDER_BLACKLIST = 'lsr_blacklist';
+    const ATTRIBUTE_ORDER_ID = 'lsr_order_id';
+    const ATTRIBUTE_ORDER_JSON = 'lsr_json';
+    const ATTRIBUTE_ORDER_ERROR = 'lsr_error';
+    const ATTRIBUTE_ORDER_HASH = 'lsr_hash';
+    const ATTRIBUTE_ORDER_STATE = 'lsr_state';
+    const ATTRIBUTE_PRODUCT_INVENTORY = 'lsr_inventory_check';
+    const ATTRIBUTE_PRODUCT_DIVISION_CODE = 'lsr_division_code';
+    const ATTRIBUTE_PRODUCT_ITEM_CATEGORY = 'lsr_item_category';
+    const ATTRIBUTE_PRODUCT_PRODUCT_GROUP = 'lsr_product_group';
+    const ATTRIBUTE_TAX = 'lsr_tax';
+    const ATTRIBUTE_BASE_TAX = 'lsr_base_tax';
+    const ATTRIBUTE_TAX_INVOICED = 'lsr_tax_invoiced';
+    const ATTRIBUTE_BASE_TAX_INVOICED = 'lsr_base_tax_invoiced';
+    const ATTRIBUTE_TAX_REFUNDED = 'lsr_tax_refunded';
+    const ATTRIBUTE_BASE_TAX_REFUNDED = 'lsr_base_tax_refunded';
+    const ATTRIBUTE_COUPON_CODE = 'lsr_coupon_code';
+    // ORDER STATES
+    const ORDER_STATE_NA = 'NOT_AVAILABLE';
+    const ORDER_STATE_NC = 'NOT_CREATED';
+    const ORDER_STATE_NEW = 'NEW';
+    const ORDER_STATE_GONE = 'GONE';
+    const ORDER_STATE_CREATED = 'CREATED';
+    const ORDER_STATE_OPEN = 'OPEN';
+    const ORDER_STATE_PAID = 'PAID';
+    const ORDER_STATE_COMPLETE = 'COMPLETE';
+    protected $_scopeConfig;
+    // END POINTS
+    protected $endpoints = [
+        ServiceType::ECOMMERCE => 'ecommerceservice.svc',
+        ServiceType::LOYALTY => 'loyservice.svc',
+        ServiceType::GENERAL => 'service.svc',
+    ];
+
+    /**
+     * LSR constructor.
+     * @param ScopeConfigInterface $scopeConfig
+     */
+    public function __construct(
+        ScopeConfigInterface $scopeConfig
+    )
+    {
+        $this->_scopeConfig = $scopeConfig;
+    }
+
+    /**
+     * @param $path
+     * @param bool $notDefault
+     * @return string
+     */
+    public function getStoreConfig($path, $notDefault = false)
+    {
+        if ($notDefault) {
+            $sc = $this->_scopeConfig->getValue($path, $notDefault);
+        } else {
+            $sc = $this->_scopeConfig->getValue($path,
+                \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        }
+        return $sc;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLSR()
+    {
+        //TODO integrate multiple store.
+        $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
+        $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE);
+        if (empty($baseUrl) || empty($store)) {
+            return false;
+        } else {
+            try {
+                $url = join('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
+                $soapClient = new SoapClient($url . '?singlewsdl');
+                if ($soapClient) {
+                    return true;
+                }
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultWebStore()
+    {
+        //TODO support multiple web store.
+        return $this->getStoreConfig(LSR::SC_SERVICE_STORE, \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getInvalidMessageContainer(){
+
+        $message     = '<div class="invalid-lsr">';
+        $message    .= '<strong>LS Retail Setup Incomplete</strong>';
+        $message    .= '<br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>';
+        $message    .= 'Go to Stores > Configuration > LS Retail > General Configuration.';
+        $message    .= '</div>';
+
+        return $message;
+    }
+
+}

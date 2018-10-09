@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="lscore">
+        <job name="lsr_check" instance="Ls\Core\Cron\AdminNotificationTask" method="execute">
+            <schedule>1 1 * * *</schedule>
+        </job>
+    </group>
+</config>

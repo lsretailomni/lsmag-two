@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_loyalty"/>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Member Offers</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Ls\Customer\Block\Loyalty\Offers" name="ls_customer_member_offers"
+                   template="Ls_Customer::loyalty/members.phtml" cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>

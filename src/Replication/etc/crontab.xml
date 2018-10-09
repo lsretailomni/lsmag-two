@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+  <group id="replication">
+    <job name="repl_ecomm_barcodes" instance="Ls\Replication\Cron\ReplEcommBarcodesTask" method="execute">
+      <schedule> 59 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_currency" instance="Ls\Replication\Cron\ReplEcommCurrencyTask" method="execute">
+      <schedule> 3 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_currency_rate" instance="Ls\Replication\Cron\ReplEcommCurrencyRateTask" method="execute">
+      <schedule> 5 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_extended_variants" instance="Ls\Replication\Cron\ReplEcommExtendedVariantsTask" method="execute">
+      <schedule> 7 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_image_links" instance="Ls\Replication\Cron\ReplEcommImageLinksTask" method="execute">
+      <schedule> 9 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_images" instance="Ls\Replication\Cron\ReplEcommImagesTask" method="execute">
+      <schedule> 11 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_item_categories" instance="Ls\Replication\Cron\ReplEcommItemCategoriesTask" method="execute">
+      <schedule> 13 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_items" instance="Ls\Replication\Cron\ReplEcommItemsTask" method="execute">
+      <schedule> 15 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_item_unit_of_measures" instance="Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask" method="execute">
+      <schedule> 17 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_item_variant_registrations" instance="Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask" method="execute">
+      <schedule> 19 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_prices" instance="Ls\Replication\Cron\ReplEcommPricesTask" method="execute">
+      <schedule> 21 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_base_prices" instance="Ls\Replication\Cron\ReplEcommBasePricesTask" method="execute">
+      <schedule> 23 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_product_groups" instance="Ls\Replication\Cron\ReplEcommProductGroupsTask" method="execute">
+      <schedule> 25 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_stores" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
+      <schedule> 27 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_unit_of_measures" instance="Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask" method="execute">
+      <schedule> 29 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_vendor" instance="Ls\Replication\Cron\ReplEcommVendorTask" method="execute">
+      <schedule> 31 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_vendor_item_mapping" instance="Ls\Replication\Cron\ReplEcommVendorItemMappingTask" method="execute">
+      <schedule> 33 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_attribute" instance="Ls\Replication\Cron\ReplEcommAttributeTask" method="execute">
+      <schedule> 35 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_attribute_value" instance="Ls\Replication\Cron\ReplEcommAttributeValueTask" method="execute">
+      <schedule> 37 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_attribute_option_value" instance="Ls\Replication\Cron\ReplEcommAttributeOptionValueTask" method="execute">
+      <schedule> 39 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_data_translation" instance="Ls\Replication\Cron\ReplEcommDataTranslationTask" method="execute">
+      <schedule> 41 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_hierarchy" instance="Ls\Replication\Cron\ReplEcommHierarchyTask" method="execute">
+      <schedule> 43 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_hierarchy_node" instance="Ls\Replication\Cron\ReplEcommHierarchyNodeTask" method="execute">
+      <schedule> 45 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_hierarchy_leaf" instance="Ls\Replication\Cron\ReplEcommHierarchyLeafTask" method="execute">
+      <schedule> 47 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_full_item" instance="Ls\Replication\Cron\ReplEcommFullItemTask" method="execute">
+      <schedule> 49 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_discounts" instance="Ls\Replication\Cron\ReplEcommDiscountsTask" method="execute">
+      <schedule> 51 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_mix_and_match" instance="Ls\Replication\Cron\ReplEcommMixAndMatchTask" method="execute">
+      <schedule> 53 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_discount_validations" instance="Ls\Replication\Cron\ReplEcommDiscountValidationsTask" method="execute">
+      <schedule> 55 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_shipping_agent" instance="Ls\Replication\Cron\ReplEcommShippingAgentTask" method="execute">
+      <schedule> 57 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_member" instance="Ls\Replication\Cron\ReplEcommMemberTask" method="execute">
+      <schedule> 59 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_country_code" instance="Ls\Replication\Cron\ReplEcommCountryCodeTask" method="execute">
+      <schedule> 3 * * * *</schedule>
+    </job>
+    <job name="repl_ecomm_store_tender_types" instance="Ls\Replication\Cron\ReplEcommStoreTenderTypesTask" method="execute">
+      <schedule> 5 * * * *</schedule>
+    </job>
+  </group>
+</config>

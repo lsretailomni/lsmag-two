@@ -1,9 +1,0 @@
-#!/usr/bin/expect
-
-set timeout 10
-
-spawn "magento-cloud"
-expect "Your email address:" {send "$env(MCLOUD_USERNAME)\r"}
-expect "Your password:" {send "$env(MCLOUD_PASSWORD)\r"}
-
-interact
