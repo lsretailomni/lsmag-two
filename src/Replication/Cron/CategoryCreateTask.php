@@ -5,6 +5,7 @@ namespace Ls\Replication\Cron;
 use Ls\Replication\Model\ReplHierarchyRepository;
 use Ls\Replication\Model\ReplHierarchyNodeRepository;
 use Ls\Replication\Model\ReplHierarchyLeafRepository;
+use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
@@ -28,6 +29,9 @@ class CategoryCreateTask
 
     /** @var ReplHierarchyLeafRepository */
     protected $replHierarchyLeafRepository;
+
+    /** @var ReplImageLinkRepositoryInterface */
+    protected $replImageLinkRepositoryInterface;
 
     /** @var LoggerInterface */
     protected $logger;
@@ -53,6 +57,7 @@ class CategoryCreateTask
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ReplHierarchyNodeRepository $replHierarchyNodeRepository
      * @param ReplHierarchyLeafRepository $replHierarchyLeafRepository
+     * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
      * @param CollectionFactory $collectionFactory
      * @param LoggerInterface $logger
      * @param LoyaltyHelper $loyaltyHelper
@@ -64,6 +69,7 @@ class CategoryCreateTask
         CategoryRepositoryInterface $categoryRepository,
         ReplHierarchyNodeRepository $replHierarchyNodeRepository,
         ReplHierarchyLeafRepository $replHierarchyLeafRepository,
+        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
         CollectionFactory $collectionFactory,
         LoggerInterface $logger,
         LoyaltyHelper $loyaltyHelper,
@@ -76,6 +82,7 @@ class CategoryCreateTask
         $this->categoryRepository = $categoryRepository;
         $this->replHierarchyNodeRepository = $replHierarchyNodeRepository;
         $this->replHierarchyLeafRepository = $replHierarchyLeafRepository;
+        $this->replImageLinkRepositoryInterface = $replImageLinkRepositoryInterface;
         $this->logger = $logger;
         $this->collectionFactory = $collectionFactory;
         $this->loyaltyHelper = $loyaltyHelper;
@@ -192,6 +199,8 @@ class CategoryCreateTask
                 }
             }
         }
+        //Update the Modified Images 
+        $this->updateImagesOnly();
     }
 
     /**
@@ -265,6 +274,38 @@ class CategoryCreateTask
     {
         $mediadirectory = $this->loyaltyHelper->getMediaPathtoStore();
         return $mediadirectory . "catalog" . DIRECTORY_SEPARATOR . "category" . DIRECTORY_SEPARATOR;
+    }
+
+
+    /**
+     * Update/Add the modified/added images of the item
+     */
+    protected function updateImagesOnly()
+    {
+        $filters = array(
+            array('field' => 'TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq')
+        );
+        $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
+        $images = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
+        if (count($images) > 0) {
+            foreach ($images as $image) {
+                try {
+                    $keyValue = explode(',', $image->getKeyValue());
+                    $navId = $keyValue[1];
+                    $categoryExistData = $this->isCategoryExist($navId);
+                    if ($categoryExistData) {
+                        $imageSub = $this->getImage($image->getImageId());
+                        $mediaAttribute = array('image', 'small_image', 'thumbnail');
+                        $categoryExistData->setImage($imageSub, $mediaAttribute, true, false);
+                        $this->categoryRepository->save($categoryExistData);
+                        $image->setData('is_updated', '0');
+                        $image->save();
+                    }
+                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                    continue;
+                }
+            }
+        }
     }
 
 }

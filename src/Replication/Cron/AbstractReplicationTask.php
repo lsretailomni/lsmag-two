@@ -6,6 +6,8 @@ use IteratorAggregate;
 use Ls\Core\Helper\Data as LsHelper;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Omni\Client\OperationInterface;
+use Ls\Replication\Model\ReplHierarchyNode;
+use Ls\Replication\Model\ReplHierarchyNodeRepository;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
@@ -49,7 +51,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_hierarchy_leaf" => array("nav_id"),
         "ls_mag/replication/repl_hierarchy_node" => array("nav_id"),
         "ls_mag/replication/repl_image" => array("nav_id"),
-        "ls_mag/replication/repl_image_link" => array("ImageId","KeyValue"),
+        "ls_mag/replication/repl_image_link" => array("ImageId", "KeyValue"),
         "ls_mag/replication/repl_item" => array("nav_id"),
         "ls_mag/replication/repl_item_category" => array("nav_id"),
         "ls_mag/replication/repl_item_unit_of_measure" => array("Code", "ItemId"),
@@ -127,51 +129,94 @@ abstract class AbstractReplicationTask
                 $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             }
             while ($remaining != 0) {
-                $request = $this->makeRequest($last_key, $fullReplication, $batchSize,$webStoreID );
-                //$request = $this->makeRequest(0, true, $batchSize, $webStoreID);
-
+                $request = $this->makeRequest(0, $fullReplication, $batchSize, $webStoreID);
                 $response = $request->execute();
                 $result = $response->getResult();
                 $last_key = $result->getLastKey();
                 $remaining = $result->getRecordsRemaining();
-                $this->persistLastKey($last_key);
-                $this->saveReplicationStatus(1);
                 $traversable = $this->getIterator($result);
                 if (!is_null($traversable)) {
-                    foreach ($traversable as $source) {
-                        $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
-                        if ($this->checkEntityExistByAttributes($uniqueAttributes, $source)) {
-                            $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
-                            foreach ($entityArray as $value) {
-                                $entity = $value;
-                            }
-                            $entity->setIsUpdated(1);
-                        } else {
+                    if (count($traversable) > 0) {
+                        foreach ($traversable as $source) {
+                            $this->saveSource($properties, $source);
+                        }
+                    } else {
+                        $arrayTraversable = (array)$traversable;
+                        if (count($arrayTraversable) > 0) {
+                            $entityClass = new ReflectionClass($this->getMainEntity());
+                            $singleObject = (object)$traversable->getArrayCopy();
                             $entity = $this->getFactory()->create();
                             $entity->setScope('default')->setScopeId(0);
-                        }
-                        foreach ($properties as $property) {
-                            if ($property == 'nav_id') {
-                                $set_method = 'setNavId';
-                                $get_method = 'getId';
-                            } else {
-                                $set_method = "set$property";
-                                $get_method = "get$property";
+                            foreach ($singleObject as $keyprop=>$valueprop) {
+                                if ($keyprop == 'nav_id') {
+                                    $set_method = 'setNavId';
+                                } else {
+                                    $set_method = "set$keyprop";
+                                }
+                                $entity->{$set_method}($valueprop);
                             }
-                            if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
-                                $entity->{$set_method}($source->{$get_method}());
+                            try {
+                                $this->getRepository()->save($entity);
+                            } catch (\Exception $e) {
+                                $this->logger->debug($e->getMessage());
                             }
-                        }
-                        try {
-                            $this->getRepository()->save($entity);
-                        } catch (\Exception $e) {
-                            $this->logger->debug($e->getMessage());
                         }
                     }
                 }
+                $this->persistLastKey($last_key);
+                $this->saveReplicationStatus(1);
             }
         } else {
             $this->logger->debug("LS Retail validation failed.");
+        }
+    }
+
+    protected function toObject(array $array, $object)
+    {
+        $class = get_class($object);
+        $methods = get_class_methods($class);
+        foreach ($methods as $method) {
+            preg_match(' /^(set)(.*?)$/i', $method, $results);
+            $pre = $results[1] ?? '';
+            $k = $results[2] ?? '';
+            $k = strtolower(substr($k, 0, 1)) . substr($k, 1);
+            if ($pre == 'set' && !empty($array[$k])) {
+                $object->$method($array[$k]);
+            }
+        }
+        return $object;
+    }
+
+
+    protected function saveSource($properties, $source)
+    {
+        $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+        if ($this->checkEntityExistByAttributes($uniqueAttributes, $source)) {
+            $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
+            foreach ($entityArray as $value) {
+                $entity = $value;
+            }
+            $entity->setIsUpdated(1);
+        } else {
+            $entity = $this->getFactory()->create();
+            $entity->setScope('default')->setScopeId(0);
+        }
+        foreach ($properties as $property) {
+            if ($property == 'nav_id') {
+                $set_method = 'setNavId';
+                $get_method = 'getId';
+            } else {
+                $set_method = "set$property";
+                $get_method = "get$property";
+            }
+            if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
+                $entity->{$set_method}($source->{$get_method}());
+            }
+        }
+        try {
+            $this->getRepository()->save($entity);
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
     }
 

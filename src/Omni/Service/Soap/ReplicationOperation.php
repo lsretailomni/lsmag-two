@@ -5,6 +5,14 @@ use Composer\Autoload\ClassLoader;
 use Ls\Core\Code\AbstractGenerator;
 use ReflectionClass;
 
+/**
+ * Note  : There are lots of things wrong in this file, all needs to be done according to the Magento coding standards.
+ *
+ * Class ReplicationOperation
+ * @package Ls\Omni\Service\Soap
+ * @
+ */
+
 class ReplicationOperation extends Operation
 {
     const BASE_API_NAMESPACE = 'Ls\Replication\Api';
@@ -26,7 +34,7 @@ class ReplicationOperation extends Operation
      * @param Element $response
      */
     public function __construct (
-        $name, Element $request, Element $response ) {
+        $name, Element $request, Element $response) {
 
         parent::__construct( $name, $request, $response );
         $this->entity_name = $this->discoverEntity( $response );
@@ -77,16 +85,26 @@ class ReplicationOperation extends Operation
     }
 
     /**
+     * @return \Magento\Framework\ObjectManagerInterface
+     */
+
+    private function getObjectManager(){
+         return \Magento\Framework\App\ObjectManager::getInstance();
+    }
+
+    /**
+     * @return \Magento\Framework\Module\Dir\Reader
+     */
+    private function getDirReader(){
+        return $this->getObjectManager()->get('\Magento\Framework\Module\Dir\Reader');
+    }
+
+    /**
      * @return string
      */
     private function discoverBasePath () {
 
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-
-        /** @var  \Magento\Framework\Module\Dir\Reader $dirReader */
-        $dirReader  =   $objectManager->get('\Magento\Framework\Module\Dir\Reader');
-
-        return $dirReader->getModuleDir('','Ls_Replication');
+        return $this->getDirReader()->getModuleDir('','Ls_Replication');
     }
 
     /**

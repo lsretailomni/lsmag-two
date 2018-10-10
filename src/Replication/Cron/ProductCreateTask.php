@@ -609,17 +609,18 @@ class ProductCreateTask
         if (count($images) > 0) {
             foreach ($images as $image) {
                 try {
-                    /** @var ReplImageLink $image */
-                    $item = $image->getKeyValue();
-                    $item = str_replace(',', '-', $item);
-                    /** @var ProductRepositoryInterface $productData */
-                    $productData = $this->productRepository->get($item);
-                    $galleryImage = array($image);
-                    $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
-                    $this->productRepository->save($productData);
-                    $image->setData('processed', '1');
-                    $image->setData('is_updated', '0');
-                    $image->save();
+                    if ($image->getTableName() == "Item" || $image->getTableName() == "Item Variant") {
+                        /** @var ReplImageLink $image */
+                        $item = $image->getKeyValue();
+                        $item = str_replace(',', '-', $item);
+                        /** @var ProductRepositoryInterface $productData */
+                        $productData = $this->productRepository->get($item);
+                        $galleryImage = array($image);
+                        $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
+                        $this->productRepository->save($productData);
+                        $image->setData('is_updated', '0');
+                        $image->save();
+                    }
                 } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
                     continue;
                 }

@@ -262,29 +262,50 @@ class AjaxLoginObserver implements ObserverInterface
                 /** @var Entity\OneList $oneListBasket */
                 $oneListBasket       =   $result->getBasket();
 
+                $quote      =   $this->checkoutSession->getQuote();
 
-                if(!is_array($oneListBasket) and $oneListBasket instanceof Entity\OneList){
+
+                if(!is_array($oneListBasket) and $oneListBasket instanceof Entity\OneList and $oneListBasket->getId() != ''){
                     // If customer has previously one list created then get that and sync the current information with that.
+
                     // store the onelist returned from Omni into Magento session.
                     $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $oneListBasket);
 
-                    $quote      =   $this->checkoutSession->getQuote();
                     // update items from quote to basket.
                     $oneList       =   $this->basketHelper->setOneListQuote($quote, $oneListBasket);
-                    // update the onelist to Omni.
 
+                    // update the onelist to Omni.
                     $this->basketHelper->update($oneList);
 
                 }elseif($this->customerSession->getData(LSR::SESSION_CART_ONELIST)){
-                    // updaet current onelist if the magento has any previous items in the cart which was not synced.
+
+                    // if customer already has onelist created then update the list to get the information with user.
+
+
                     $oneListBasket      =   $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
 
-                    $quote      =   $this->checkoutSession->getQuote();
+                    //Update onelist in Omni with user data.
+
+                    $oneListBasket->setCardId($card->getId())
+                        ->setContactId($result->getId())
+                        ->setDescription('OneList Magento')
+                        ->setIsDefaultList(TRUE)
+                        ->setListType(Entity\Enum\ListType::BASKET);
+
                     // update items from quote to basket.
                     $oneList       =   $this->basketHelper->setOneListQuote($quote, $oneListBasket);
                     // update the onelist to Omni.
 
                     $this->basketHelper->update($oneList);
+                }elseif(count($quote->getAllItems()) > 0){
+                    // get the onelist or if not exist then create new one with empty data of customer.
+
+                    $oneList       = $this->basketHelper->get();
+
+                    $oneList       =   $this->basketHelper->setOneListQuote($quote, $oneList);
+
+                    $this->basketHelper->update($oneList);
+
                 }
 
 
