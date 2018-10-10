@@ -14,5 +14,5 @@
 !/src/Replication/Cron/BarcodeUpdateTask.php
 !/src/Replication/Cron/UomUpdateTask.php
 !/src/Replication/Cron/DiscountCreateTask.php
-/src/Core/Controller/Development/
+/src/Core/Controller/Development/*
 !/src/Replication/Model/Message/
