@@ -1,3 +1,18 @@
-.idea/*
-vendor/*
-workspace/*
+# For LS Development work
+/src/Omni/Client/Ecommerce/*
+/src/Omni/Client/Loyalty/*
+/src/Replication/Api/*
+/src/Replication/Model/*
+/src/Replication/Setup/UpgradeSchema/*
+!/src/Replication/Setup/UpgradeSchema/AbstractUpgradeSchema.php
+/src/Replication/Cron/*
+!/src/Replication/Cron/AbstractReplicationTask.php
+!/src/Replication/Cron/HeartbeatTask.php
+!/src/Replication/Cron/ProductCreateTask.php
+!/src/Replication/Cron/CategoryCreateTask.php
+!/src/Replication/Cron/AttributesCreateTask.php
+!/src/Replication/Cron/BarcodeUpdateTask.php
+!/src/Replication/Cron/UomUpdateTask.php
+!/src/Replication/Cron/DiscountCreateTask.php
+/src/Core/Controller/Development/
+!/src/Replication/Model/Message/
