@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @var \Ls\Replication\Block\Stores\Stores $block
+ */
+
+$collection = $block->getStores();
+$counter = 0;
+$countHours=0;
+$apiKey=$block->getStoreMapKey();
+
+if(!empty($collection)) {
+?>
+<div id="map" style="height: 300px; width: 100%;"></div>
+<div class="row mt-5">
+    <?php
+    foreach ($collection as $stores) {
+        $store = $stores->getData();
+        $storeId=$store['nav_id'];
+        $hours=$block->getStoreHours($storeId);
+        ?>
+        <div class="col-md-4 mb-5">
+            <div id="map<?php echo $counter?>" style="width:300px; height:200px;"></div>
+            <br/>
+            <br/>
+            <?php if (!empty($store['Name'])) { ?>
+                <p><i class="fas fa-store"></i>&nbsp;<lable><strong>Store Name:</strong>
+                    </lable> <?php echo $store['Name']; ?></p>
+            <?php } ?>
+            <?php if (!empty($store['Street']) && !empty($store['City']) && !empty($store['Country'])) { ?>
+                <p>
+                    <i class="fas fa-map-marker"></i>&nbsp;<strong>Address:</strong> <?php echo $store['Street'] . " " . $store['City'] . " " . $store['ZipCode'] . " " . $store['Country'] . " " . "<br/>"; ?>
+                </p>
+            <?php } ?>
+            <?php if (!empty($store['Phone'])) { ?>
+                <p><i class="fas fa-phone"></i><label>&nbsp;<strong>Phone:</strong></label> <a
+                            href="tel:<?php echo $store['Phone']; ?>"><?php echo $store['Phone']; ?></a></p>
+            <?php } ?>
+            <?php if (!empty($hours)) {
+                ?>
+                <p><label><i class="far fa-hourglass"></i>&nbsp;<strong>Opening Hours:</strong></label></p>
+                <?php
+                foreach($hours as $h) {
+                ?>
+                <p>
+                    <?php echo $h['day']." : "." ".$h['openhours']." to ".$h['closedhours'] ?></p>
+            <?php $countHours++; } } ?>
+
+        </div>
+        <?php
+        $counter++;
+      }
+    }
+
+?>
+    <script type="text/javascript">// <![CDATA[
+        var apiKey = '<?php echo $apiKey;?>';
+        var locations = [
+            <?php foreach($collection->getData() as $store) {
+            ?>
+            ['<?php echo $store['Name']?><br/><?php echo $store['Street']?> ', <?php echo $store['Latitute']?>,<?php echo $store['Longitude'];?>, 14],
+            <?php }  ?>
+        ];
+        requirejs([
+            'Ls_Replication/js/googlemaps'
+        ], function (map) {
+            map.allStoresMap(locations);
+            map.singleStoreMap(locations);}
+            );
+        // ]]>
+    </script>
+</div>
