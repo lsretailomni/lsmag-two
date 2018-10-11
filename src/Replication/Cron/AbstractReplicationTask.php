@@ -129,7 +129,7 @@ abstract class AbstractReplicationTask
                 $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             }
             while ($remaining != 0) {
-                $request = $this->makeRequest(0, $fullReplication, $batchSize, $webStoreID);
+                $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
                 $response = $request->execute();
                 $result = $response->getResult();
                 $last_key = $result->getLastKey();
