@@ -57,7 +57,7 @@
     <job name="repl_attribute_option_value" instance="Ls\Replication\Cron\ReplEcommAttributeOptionValueTask" method="execute">
       <schedule>*/2 * * * *</schedule>
     </job>
-    <job name="repl_customer" instance="Ls\Replication\Cron\ReplEcommCustomerTask" method="execute">
+    <job name="repl_customer" instance="Ls\Replication\Cron\ReplEcommMemberTask" method="execute">
       <schedule>*/2 * * * *</schedule>
     </job>
     <job name="repl_discount" instance="Ls\Replication\Cron\ReplEcommDiscountsTask" method="execute">

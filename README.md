@@ -14,7 +14,7 @@ Followed by `php bin/magento  setup:upgrade ` and  `php bin/magento setu
 . 
 10. Once done, you will see all the new tables created in your Magento 2 database with prefix `ls_replication_*`.
 11. Next thing is to set configurations and Nav store from Backend to replicate data, to do so, navigate to Stores->Configuration->LS Retail->General Configuration, and choose the store and Hierarchy code to replicate data. make sure you do all the configurations which are required on the Omni server for ecommerce i-e disabling security token for authentication.
-12. If your server is setup for cron, then you will see all the new cron created in the `cron_schedule` table if not, it means your server is not setup to schedule cron, to trigger the cron manually,run `php bin/magento cron:run` from command line. 
+12. If your server is setup for cron, then you will see all the new cron created in the `cron_schedule` table if not, it means your server is not setup to schedule cron, to trigger the cron manually,run `php bin/magento cron:run --group="flat_replication"` from command line. 
 13. Once done, you will see all the data in their respective LS and Magento tables from Omni. 
 14. Once all data are replicated, uncomment these lines from `Replication/etc/crontab.xml` file to start populating those data into magento tables.
 
