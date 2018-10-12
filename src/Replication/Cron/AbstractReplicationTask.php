@@ -148,7 +148,7 @@ abstract class AbstractReplicationTask
                             $entity = $this->getFactory()->create();
                             $entity->setScope('default')->setScopeId(0);
                             foreach ($singleObject as $keyprop=>$valueprop) {
-                                if ($keyprop == 'nav_id') {
+                                if ($keyprop == 'Id') {
                                     $set_method = 'setNavId';
                                 } else {
                                     $set_method = "set$keyprop";
