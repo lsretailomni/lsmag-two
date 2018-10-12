@@ -167,6 +167,7 @@ abstract class AbstractReplicationTask
                 $this->persistLastKey($last_key);
                 $this->saveReplicationStatus(1);
             }
+            $this->flushConfig();
         } else {
             $this->logger->debug("LS Retail validation failed.");
         }
@@ -306,7 +307,6 @@ abstract class AbstractReplicationTask
     protected function isFirstTime()
     {
         return $this->scope_config->getValue($this->getConfigPathStatus(), ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
-
     }
 
     /**
@@ -360,6 +360,17 @@ abstract class AbstractReplicationTask
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         return $objectManager->get('\Ls\Core\Model\LSR');
+    }
+
+    /**
+     * Flush the config data
+     */
+    protected function flushConfig()
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $cacheTypeList = $objectManager->get('\Magento\Framework\App\Cache\TypeListInterface');
+        $cacheTypeList->cleanType('config');
+        $this->logger->debug('Config Flushed');
     }
 
     /**
