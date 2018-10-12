@@ -62,7 +62,7 @@ if(!empty($collection)) {
             <?php }  ?>
         ];
         requirejs([
-            'Ls_Replication/js/googlemaps'
+            'Ls_Omni/js/view/stores/googlemaps'
         ], function (map) {
             map.allStoresMap(locations);
             map.singleStoreMap(locations);}

@@ -4,8 +4,5 @@
         <route id="omni" frontName="omni">
             <module name="Ls_Omni" />
         </route>
-        <route id="page" frontName="page">
-            <module name="Ls_Omni" />
-        </route>
     </router>
 </config>

@@ -2,7 +2,7 @@ var markers = [];
 var maps = [];
 
 define([
-    'Ls_Replication/js/async!https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap',
+    'Ls_Omni/js/view/stores/async!https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap',
     'uiComponent',
     'jquery',
     'ko'
