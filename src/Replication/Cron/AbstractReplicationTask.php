@@ -63,7 +63,8 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_store" => array("nav_id"),
         "ls_mag/replication/repl_store_tender_type" => array("StoreID", "TenderTypeId"),
         "ls_mag/replication/repl_unit_of_measure" => array("nav_id"),
-        "ls_mag/replication/repl_vendor" => array("Name")
+        "ls_mag/replication/repl_vendor" => array("Name"),
+        "ls_mag/replication/loy_item" => array("nav_id")
     );
 
     /** @var LoggerInterface */
