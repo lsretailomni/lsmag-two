@@ -110,7 +110,7 @@ class ReplicationGenerate extends OmniCommand
             }
         }
 
-        CronTabGenerator::Generate($this->metadata);
+        //CronTabGenerator::Generate($this->metadata);
         $this->output->writeln('- - - - - -');
     }
 
