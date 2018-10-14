@@ -2,10 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
   <!-- After Omni Replication, Uncomment these lines to populate all data into Magento tables. -->
-
-
-<!--  <group id="replication">
-
+<!--<group id="replication">
     <job name="repl_attributes" instance="Ls\Replication\Cron\AttributesCreateTask" method="execute">
       <schedule>*/5 * * * *</schedule>
     </job>
@@ -40,43 +37,28 @@
       <schedule>*/2 * * * *</schedule>
     </job>
     <job name="repl_hierarchy" instance="Ls\Replication\Cron\ReplEcommHierarchyTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
+      <schedule>*/4 * * * *</schedule>
     </job>
     <job name="repl_hierarchy_node" instance="Ls\Replication\Cron\ReplEcommHierarchyNodeTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
+      <schedule>*/4 * * * *</schedule>
     </job>
     <job name="repl_hierarchy_leaf" instance="Ls\Replication\Cron\ReplEcommHierarchyLeafTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
+      <schedule>*/4 * * * *</schedule>
     </job>
     <job name="repl_attribute" instance="Ls\Replication\Cron\ReplEcommAttributeTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
+      <schedule>*/4 * * * *</schedule>
     </job>
     <job name="repl_attribute_value" instance="Ls\Replication\Cron\ReplEcommAttributeValueTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
+      <schedule>*/4 * * * *</schedule>
     </job>
     <job name="repl_attribute_option_value" instance="Ls\Replication\Cron\ReplEcommAttributeOptionValueTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
-    </job>
-    <job name="repl_customer" instance="Ls\Replication\Cron\ReplEcommMemberTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
+      <schedule>*/4 * * * *</schedule>
     </job>
     <job name="repl_discount" instance="Ls\Replication\Cron\ReplEcommDiscountsTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
+      <schedule>*/4 * * * *</schedule>
     </job>
     <!-- Less Important-->
-    <job name="repl_currency" instance="Ls\Replication\Cron\ReplEcommCurrencyTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_currency_exch_rate" instance="Ls\Replication\Cron\ReplEcommCurrencyRateTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
     <job name="repl_item_category" instance="Ls\Replication\Cron\ReplEcommItemCategoriesTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_item_unit_of_measure" instance="Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_price" instance="Ls\Replication\Cron\ReplEcommPricesTask" method="execute">
       <schedule>*/5 * * * *</schedule>
     </job>
     <job name="repl_product_group" instance="Ls\Replication\Cron\ReplEcommProductGroupsTask" method="execute">
@@ -88,26 +70,10 @@
     <job name="repl_unit_of_measure" instance="Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask" method="execute">
       <schedule>*/5 * * * *</schedule>
     </job>
-    <job name="repl_vendor" instance="Ls\Replication\Cron\ReplEcommVendorTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_loy_vendor_item_mapping" instance="Ls\Replication\Cron\ReplEcommVendorItemMappingTask"
-         method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_data_translation" instance="Ls\Replication\Cron\ReplEcommDataTranslationTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
     <job name="repl_discount_validation" instance="Ls\Replication\Cron\ReplEcommDiscountValidationsTask" method="execute">
       <schedule>*/5 * * * *</schedule>
     </job>
-    <job name="repl_shipping_agent" instance="Ls\Replication\Cron\ReplEcommShippingAgentTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
     <job name="repl_country_code" instance="Ls\Replication\Cron\ReplEcommCountryCodeTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_store_tender_type" instance="Ls\Replication\Cron\ReplEcommStoreTenderTypesTask" method="execute">
       <schedule>*/5 * * * *</schedule>
     </job>
   </group>
