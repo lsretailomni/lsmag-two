@@ -6,9 +6,9 @@
 3. Once done, you will see the list of our LS retail modules in disable section once you triggered the  `php bin/magento module:status` command from your Magento 2 CLI and lsretail folder in the vendor directory.
 4. To enable all our modules, run command from command line, `php bin/magento module:enable Ls_Core Ls_Omni Ls_Customer Ls_Replication`
 5. Set the base url of Omni by using this command `php bin/magento config:set ls_mag/service/base_url http://yourOmnihostname/LSOmniService`
-6. Run `php bin/magento omni:client:generate` to generate all the files required for the communication. 
-7. Run `php bin/magento replication:generate` to generate all the files required for replication 
-Followed by `php bin/magento  setup:upgrade ` and  `php bin/magento setup:di:compile` from Magento 2 instance so that it can update the magento2 database with our modules schema and interceptor files.
+6. Run `php bin/magento omni:client:generate` to generate all the files required for the communication. 
+7. Run `php bin/magento replication:generate` to generate all the files required for replication 
+Followed by `php bin/magento setup:upgrade ` and  `php bin/magento setup:di:compile` from Magento 2 instance so that it can update the magento2 database with our modules schema and interceptor files.
 8. Once done, you will see the list of our modules by running `php bin/magento module:status` which means our module is now good to go.  
 9. To check the commands available for our module run 'php bin/magento' from the command line, you will see all the commands available for our extension.  
 . 
