@@ -10,8 +10,7 @@
 7. Run `php bin/magento replication:generate` to generate all the files required for replication 
 Followed by `php bin/magento setup:upgrade ` and  `php bin/magento setup:di:compile` from Magento 2 instance so that it can update the magento2 database with our modules schema and interceptor files.
 8. Once done, you will see the list of our modules by running `php bin/magento module:status` which means our module is now good to go.  
-9. To check the commands available for our module run 'php bin/magento' from the command line, you will see all the commands available for our extension.  
-. 
+9. To check the commands available for our module run 'php bin/magento' from the command line, you will see all the commands available for our extension.
 10. Once done, you will see all the new tables created in your Magento 2 database with prefix `ls_replication_*`.
 11. Next thing is to set configurations and Nav store from Backend to replicate data, to do so, navigate to Stores->Configuration->LS Retail->General Configuration, and choose the store and Hierarchy code to replicate data. make sure you do all the configurations which are required on the Omni server for ecommerce i-e disabling security token for authentication.
 12. If your server is setup for cron, then you will see all the new cron created in the `cron_schedule` table if not, it means your server is not setup to schedule cron, to trigger the cron manually,run `php bin/magento cron:run --group="flat_replication"` from command line. 
