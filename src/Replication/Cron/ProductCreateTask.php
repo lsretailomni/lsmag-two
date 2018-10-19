@@ -220,8 +220,8 @@ class ProductCreateTask
      */
     public function execute()
     {
-        $fullReplicationAttributeStatus = $this->_lsr->getStoreConfig(ReplAttributeTask::CONFIG_PATH_STATUS);
-        $fullReplicationAttributeOptionValueStatus = $this->_lsr->getStoreConfig(ReplAttributeOptionValueTask::CONFIG_PATH_STATUS);
+        $fullReplicationAttributeStatus = $this->_lsr->getStoreConfig(ReplEcommAttributeTask::CONFIG_PATH_STATUS);
+        $fullReplicationAttributeOptionValueStatus = $this->_lsr->getStoreConfig(ReplEcommAttributeValueTask::CONFIG_PATH_STATUS);
         if ($fullReplicationAttributeStatus != 1 && $fullReplicationAttributeOptionValueStatus != 1)
             return;
         $this->logger->debug('Running ProductCreateTask');
@@ -302,10 +302,10 @@ class ProductCreateTask
         }
         if (count($items->getItems()) == 0)
             $this->assignProductToCategory();
-        $fullReplicationVariantStatus = $this->_lsr->getStoreConfig(ReplItemVariantRegistrationTask::CONFIG_PATH_STATUS);
+        $fullReplicationVariantStatus = $this->_lsr->getStoreConfig(ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS);
         if ($fullReplicationVariantStatus == 1)
             $this->updateVariantsOnly();
-        $fullReplicationImageLinkStatus = $this->_lsr->getStoreConfig(ReplImageLinkTask::CONFIG_PATH_STATUS);
+        $fullReplicationImageLinkStatus = $this->_lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
         if ($fullReplicationImageLinkStatus == 1)
             $this->updateImagesOnly();
         $this->logger->debug('End ProductCreateTask');
