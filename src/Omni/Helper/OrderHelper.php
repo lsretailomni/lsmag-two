@@ -5,7 +5,7 @@ namespace Ls\Omni\Helper;
 use \Magento\Framework\App\Helper\Context;
 use \Magento\Sales\Model;
 use \Magento\Framework\App\Helper\AbstractHelper;
-use \Ls\Omni\Client\Loyalty\Entity\Enum;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Helper\BasketHelper;
