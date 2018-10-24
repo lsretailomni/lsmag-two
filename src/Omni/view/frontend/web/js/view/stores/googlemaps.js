@@ -50,10 +50,18 @@ define([
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 });
 
-                markers[i] = new google.maps.Marker({
+                marker = new google.maps.Marker({
                     position: {lat: parseFloat(locations[i][1]), lng: parseFloat(locations[i][2])},
                     map: maps[i]
                 });
+
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
+                        var url="https://www.google.com/maps/dir/?api=1&destination="+locations[i][1]+","+locations[i][2];
+                        window.open(url, "_blank");
+                    }
+                })(marker, i));
+
             }
 
         }
