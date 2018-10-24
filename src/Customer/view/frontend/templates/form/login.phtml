@@ -30,10 +30,11 @@ $_isLSR = true;
                                id="email" <?php echo $_isLSR ? 'type="text"' : 'type="email"' ?> class="input-text"
                                title="<?php /* @escapeNotVerified */
                                echo __('Email') ?>"
-                               data-validate="<?php echo $_isLSR ? '{required:true}' : "{required:true, 'validate-email':true}" ?>>
+                               data-validate="<?php echo $_isLSR ? "{required:true}" : "{required:true, 'validate-email':true}" ?>"
+                               />
                     </div>
                 </div>
-                <div class=" field password required">
+                <div class="field password required">
                         <label for="pass" class="label"><span><?php /* @escapeNotVerified */
                                 echo __('Password') ?></span></label>
                         <div class="control">
