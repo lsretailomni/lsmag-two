@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Ls_Replication::parent" title="LS Retail" sortOrder="85">
+                    <resource id="Ls_Replication::replication_grid_group" title="Flat Tables Grids" translate="title" sortOrder="10">
+                        <resource id="Ls_Replication::item_grid" title="Item Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::barcode_grid" title="Barcode Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::extendedvariantvalue_grid" title="Extended Variant Value Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::imagelink_grid" title="Image Link Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::itemvariantregistration_grid" title="Item Variant Registration Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::hierarchy_grid" title="Hierarchy Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::hierarchynode_grid" title="Hierarchy Node Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::hierarchyleaf_grid" title="Hierarchy Leaf Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::attribute_grid" title="Attribute Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::attributevalue_grid" title="Attribute Value Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::attributeoptionvalue_grid" title="Attribute Option Value Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::discount_grid" title="Discount Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::itemcategory_grid" title="Item Category Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::productgroup_grid" title="Product Group Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::store_grid" title="Store Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::unitofmeasure_grid" title="Unit of Measure Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::discountvalidation_grid" title="Discount Validation Replication" translate="title" sortOrder="10" />
+                        <resource id="Ls_Replication::countrycode_grid" title="Country Code Replication" translate="title" sortOrder="10" />
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
