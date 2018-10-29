@@ -14,6 +14,7 @@ use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use \Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\App\Cache\TypeListInterface;
 
 class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -46,6 +47,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var Set */
     protected $attributeSet;
 
+    /** @var chache type list */
+    protected $cacheTypeList;
+
     /**
      * ReplicationHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
@@ -69,7 +73,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\Filesystem $Filesystem,
         Config $eavConfig,
         WriterInterface $configWriter,
-        Set $attributeSet
+        Set $attributeSet,
+        TypeListInterface $cacheTypeList
     )
     {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -81,6 +86,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->eavConfig = $eavConfig;
         $this->configWriter=$configWriter;
         $this->attributeSet = $attributeSet;
+        $this->cacheTypeList=$cacheTypeList;
 
         parent::__construct(
             $context
@@ -329,9 +335,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function flushConfig()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $cacheTypeList = $objectManager->get('\Magento\Framework\App\Cache\TypeListInterface');
-        $cacheTypeList->cleanType('config');
+        $this->cacheTypeList->cleanType('config');
         $this->_logger->debug('Config Flushed');
     }
 
