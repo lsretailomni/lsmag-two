@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Adding Stores page Link to Footer Menu -->
+        <referenceBlock name="footer_links">
+            <block class="Magento\Framework\View\Element\Html\Link" name="omni.stores" before="-">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Stores</argument>
+                    <argument name="path" xsi:type="string" translate="true">omni/stores</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>
