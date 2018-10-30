@@ -64,6 +64,19 @@ class LSR
     const SC_REPLICATION_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
     const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
+
+    // CRON CHECKING
+
+    //check for Attribute
+    const SC_SUCCESS_CRON_ATTRIBUTE = 'ls_mag/replication/success_repl_attribute';
+
+    //check for Category
+    const SC_SUCCESS_CRON_CATEGORY  = 'ls_mag/replication/success_repl_category';
+
+    //check for Product
+    const SC_SUCCESS_CRON_PRODUCT   = 'ls_mag/replication/success_repl_product';
+
+
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
     const SC_ENHANCEMENT_STORE_UUID_PREFIX = 'ls_mag/cron_enhancement/requests_per_run';

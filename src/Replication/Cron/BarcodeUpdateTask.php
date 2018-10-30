@@ -6,6 +6,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Ls\Replication\Model\ReplBarcodeRepository;
 use Psr\Log\LoggerInterface;
 use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Core\Model\LSR;
 
 class BarcodeUpdateTask
 {
@@ -21,46 +22,60 @@ class BarcodeUpdateTask
     /** @var LoggerInterface */
     protected $logger;
 
+    /** @var LSR */
+    protected $_lsr;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ReplBarcodeRepository $replBarcodeRepository,
         LoggerInterface $logger,
-        ReplicationHelper $replicationHelper
+        ReplicationHelper $replicationHelper,
+        LSR $LSR
     )
     {
         $this->productRepository = $productRepository;
         $this->replBarcodeRepository = $replBarcodeRepository;
         $this->logger = $logger;
         $this->replicationHelper = $replicationHelper;
+        $this->_lsr=$LSR;
     }
 
     public function execute()
     {
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+        $CronProductCheck= $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+        if($CronProductCheck==1) {
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems();
 
-        /** @var \Ls\Replication\Model\ReplBarcodeSearchResults $replAttributes */
-        $replBarcodes = $this->replBarcodeRepository->getList($criteria);
+            /** @var \Ls\Replication\Model\ReplBarcodeSearchResults $replAttributes */
+            $replBarcodes = $this->replBarcodeRepository->getList($criteria);
 
-        /** @var \Ls\Replication\Model\ReplBarcode $replBarcode */
-        foreach ($replBarcodes->getItems() as $replBarcode) {
-            if ($replBarcode->getIsUpdated() == 1) {
-                try {
-                    if (!$replBarcode->getVariantId())
-                        $sku = $replBarcode->getItemId();
-                    else
-                        $sku = $replBarcode->getItemId() . '-' . $replBarcode->getVariantId();
-                    $productData = $this->productRepository->get($sku);
-                    if (isset($productData)) {
-                        $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
-                        $productData->save();
-                        $replBarcode->setData('is_updated', '0');
-                        $replBarcode->save();
+            /** @var \Ls\Replication\Model\ReplBarcode $replBarcode */
+            foreach ($replBarcodes->getItems() as $replBarcode) {
+                if ($replBarcode->getIsUpdated() == 1) {
+                    try {
+                        if (!$replBarcode->getVariantId())
+                            $sku = $replBarcode->getItemId();
+                        else
+                            $sku = $replBarcode->getItemId() . '-' . $replBarcode->getVariantId();
+                        $productData = $this->productRepository->get($sku);
+                        if (isset($productData)) {
+                            $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
+                            $productData->save();
+                            $replBarcode->setData('is_updated', '0');
+                            $replBarcode->save();
+                        }
+                    } catch (\Exception $e) {
+                        $this->logger->debug($e->getMessage());
                     }
-                } catch (\Exception $e) {
-                    $this->logger->debug($e->getMessage());
                 }
             }
-        }
 
+
+
+        }
+        else {
+            $this->logger->debug("Barcode Replication cron fails because product replication cron not executed successfully.");
+        }
     }
+
 }
