@@ -16,3 +16,4 @@
 !/src/Replication/Cron/DiscountCreateTask.php
 /src/Core/Controller/Development/*
 !/src/Replication/Model/Message/
+composer.lock
