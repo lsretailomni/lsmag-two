@@ -4,7 +4,9 @@
     <update handle="styles"/>
     <body>
         <referenceContainer name="content">
-            <uiComponent name="ls_repl_grids_unitofmeasure_listing"/>
+            <container name="custom.container" htmlTag="div" htmlClass="ls-repl-grid-container">
+                <uiComponent name="ls_repl_grids_unitofmeasure_listing"/>
+            </container>
         </referenceContainer>
     </body>
 </page>
