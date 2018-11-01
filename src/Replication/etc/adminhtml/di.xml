@@ -113,13 +113,6 @@
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplStore</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure\Collection"
-                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
-        <arguments>
-            <argument name="mainTable" xsi:type="string">ls_replication_repl_unit_of_measure</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure</argument>
-        </arguments>
-    </virtualType>
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
@@ -138,7 +131,6 @@
                 <item name="ls_repl_grids_itemcategory_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemCategory\Collection</item>
                 <item name="ls_repl_grids_productgroup_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplProductGroup\Collection</item>
                 <item name="ls_repl_grids_store_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplStore\Collection</item>
-                <item name="ls_repl_grids_unitofmeasure_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure\Collection</item>
             </argument>
         </arguments>
     </type>

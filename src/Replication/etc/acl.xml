@@ -20,7 +20,6 @@
                         <resource id="Ls_Replication::itemcategory_grid" title="Item Category Replication" translate="title" sortOrder="10" />
                         <resource id="Ls_Replication::productgroup_grid" title="Product Group Replication" translate="title" sortOrder="10" />
                         <resource id="Ls_Replication::store_grid" title="Store Replication" translate="title" sortOrder="10" />
-                        <resource id="Ls_Replication::unitofmeasure_grid" title="Unit of Measure Replication" translate="title" sortOrder="10" />
                     </resource>
                 </resource>
             </resource>
