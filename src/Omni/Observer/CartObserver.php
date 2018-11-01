@@ -60,7 +60,6 @@ class CartObserver implements ObserverInterface
         if ($this->watchNextSave) {
             /** @var \Magento\Quote\Model\Quote $quote */
             $quote = $this->checkoutSession->getQuote();
-
             // This will create one list if not created and will return onelist if its already created.
             /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList|null  $oneList */
             $oneList = $this->basketHelper->get();
@@ -73,7 +72,12 @@ class CartObserver implements ObserverInterface
             //$this->logger->debug(var_export($oneList,true));
             // update the onelist to Omni.
 
-            $this->basketHelper->update($oneList);
+            $bastketData = $this->basketHelper->update($oneList);
+            //Override the magento basket
+//            echo "<pre>";
+//            print_r($bastketData);
+//            echo var_export($bastketData,true);
+//            exit;
         }
         return $this;
     }

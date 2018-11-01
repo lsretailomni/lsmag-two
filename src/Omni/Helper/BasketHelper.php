@@ -345,8 +345,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             }
         }
         $this->saveToOmni($oneList);
-        $this->setOneListCalculation($this->calculate($oneList));
-
+        $basketData = $this->calculate($oneList);
+        $this->setOneListCalculation($basketData);
+        return $basketData;
     }
 
     /**
