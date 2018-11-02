@@ -70,58 +70,45 @@
 
     <columns name="ls_repl_grids_store_columns">
         <!--The list of columns-->
-        <column name="repl_store_id">
+        <column name="nav_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">repl_store_id</item>
+                    <item name="label" xsi:type="string" translate="true">Nav ID</item>
                     <item name="sortOrder" xsi:type="number">1</item>
                 </item>
             </argument>
         </column>
-        <column name="scope">
+        <column name="Name">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">scope</item>
+                    <item name="label" xsi:type="string" translate="true">Name</item>
                     <item name="sortOrder" xsi:type="number">2</item>
                 </item>
             </argument>
         </column>
-        <column name="scope_id">
+        <column name="processed" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">scope_id</item>
-                    <item name="sortOrder" xsi:type="number">3</item>
-                </item>
-            </argument>
-        </column>
-        <column name="processed">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">processed</item>
                     <item name="sortOrder" xsi:type="number">4</item>
+                    <item name="label" xsi:type="string" translate="true">Flat to Magento</item>
                 </item>
             </argument>
         </column>
-        <column name="is_updated">
+        <column name="is_updated" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">is_updated</item>
                     <item name="sortOrder" xsi:type="number">5</item>
+                    <item name="label" xsi:type="string" translate="true">Omni to Flat</item>
                 </item>
             </argument>
         </column>
@@ -142,7 +129,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">ClickAndCollect</item>
+                    <item name="label" xsi:type="string" translate="true">Click And Collect</item>
                     <item name="sortOrder" xsi:type="number">7</item>
                 </item>
             </argument>
@@ -175,7 +162,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">CultureName</item>
+                    <item name="label" xsi:type="string" translate="true">Culture Name</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -208,40 +195,19 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">FunctionalityProfile</item>
+                    <item name="label" xsi:type="string" translate="true">Functionality Profile</item>
                     <item name="sortOrder" xsi:type="number">12</item>
                 </item>
             </argument>
         </column>
-        <column name="nav_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">nav_id</item>
-                    <item name="sortOrder" xsi:type="number">13</item>
-                </item>
-            </argument>
-        </column>
-        <column name="IsDeleted">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">IsDeleted</item>
-                    <item name="sortOrder" xsi:type="number">14</item>
-                </item>
-            </argument>
-        </column>
+
         <column name="Latitute">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Latitute</item>
+                    <item name="label" xsi:type="string" translate="true">Latitude</item>
                     <item name="sortOrder" xsi:type="number">15</item>
                 </item>
             </argument>
@@ -263,22 +229,12 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">MainMenuID</item>
+                    <item name="label" xsi:type="string" translate="true">Main Menu ID</item>
                     <item name="sortOrder" xsi:type="number">17</item>
                 </item>
             </argument>
         </column>
-        <column name="Name">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Name</item>
-                    <item name="sortOrder" xsi:type="number">18</item>
-                </item>
-            </argument>
-        </column>
+
         <column name="Phone">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -329,7 +285,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">UserDefaultCustomerAccount</item>
+                    <item name="label" xsi:type="string" translate="true">User Default Customer Account</item>
                     <item name="sortOrder" xsi:type="number">23</item>
                 </item>
             </argument>
@@ -340,7 +296,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">ZipCode</item>
+                    <item name="label" xsi:type="string" translate="true">Zip Code</item>
                     <item name="sortOrder" xsi:type="number">24</item>
                 </item>
             </argument>

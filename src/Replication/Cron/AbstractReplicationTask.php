@@ -79,6 +79,9 @@ abstract class AbstractReplicationTask
     protected $iterator_method = null;
     /** @var null */
     protected $properties = null;
+    /** @var RepHelper */
+    protected $rep_helper;
+
 
     /**
      * AbstractReplicationTask constructor.
@@ -94,13 +97,15 @@ abstract class AbstractReplicationTask
         ScopeConfigInterface $scope_config,
         Config $resouce_config,
         LoggerInterface $logger,
-        LsHelper $helper
+        LsHelper $helper,
+        ReplicationHelper $repHelper
     )
     {
         $this->scope_config = $scope_config;
         $this->resource_config = $resouce_config;
         $this->logger = $logger;
         $this->ls_helper = $helper;
+        $this->rep_helper = $repHelper;
     }
 
     /**
@@ -167,7 +172,7 @@ abstract class AbstractReplicationTask
                 $this->persistLastKey($last_key);
                 $this->saveReplicationStatus(1);
             }
-            $this->flushConfig();
+            $this->rep_helper->flushConfig();
         } else {
             $this->logger->debug("LS Retail validation failed.");
         }
@@ -360,17 +365,6 @@ abstract class AbstractReplicationTask
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         return $objectManager->get('\Ls\Core\Model\LSR');
-    }
-
-    /**
-     * Flush the config data
-     */
-    protected function flushConfig()
-    {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $cacheTypeList = $objectManager->get('\Magento\Framework\App\Cache\TypeListInterface');
-        $cacheTypeList->cleanType('config');
-        $this->logger->debug('Config Flushed');
     }
 
     /**

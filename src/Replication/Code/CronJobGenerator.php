@@ -13,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Magento\Config\Model\ResourceModel\Config;
+use Ls\Replication\Helper\ReplicationHelper;
 
 class CronJobGenerator extends AbstractGenerator
 {
@@ -44,6 +45,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addUse(ScopeConfigInterface::class);
         $this->class->addUse(Config::class);
         $this->class->addUse(LsHelper::class, 'LsHelper');
+        $this->class->addUse(ReplicationHelper::class);
         $this->class->addUse(ReplRequest::class);
         $this->class->addUse($this->operation->getOperationFqn());
         $this->class->addUse($this->operation->getRepositoryFqn());
@@ -82,6 +84,9 @@ class CronJobGenerator extends AbstractGenerator
         // removing the slashes from \LsHelper -- Same for All
         $content = str_replace('\LsHelper $helper', 'LsHelper $helper', $content);
 
+        // removing the slashes from \ReplicationHelper -- Same for All
+        $content = str_replace('\ReplicationHelper $repHelper', 'ReplicationHelper $repHelper', $content);
+
         // removing slashes from \$classnameFactory --- Dynamic differet
         $content = str_replace("\\{$factory_name} \$factory", "{$factory_name} \$factory", $content);
 
@@ -104,11 +109,12 @@ class CronJobGenerator extends AbstractGenerator
             new ParameterGenerator('resource_config', 'Config'),
             new ParameterGenerator('logger', 'LoggerInterface'),
             new ParameterGenerator('helper', 'LsHelper'),
+            new ParameterGenerator('repHelper', 'ReplicationHelper'),
             new ParameterGenerator('factory', $this->operation->getFactoryName()),
             new ParameterGenerator('repository',
                 $this->operation->getRepositoryName())]);
         $constructor->setBody(<<<CODE
-parent::__construct(\$scope_config, \$resource_config, \$logger, \$helper);
+parent::__construct(\$scope_config, \$resource_config, \$logger, \$helper, \$repHelper);
 \$this->repository = \$repository;
 \$this->factory = \$factory;
 CODE

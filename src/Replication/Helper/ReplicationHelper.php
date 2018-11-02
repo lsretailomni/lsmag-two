@@ -12,6 +12,9 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use \Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\App\Cache\TypeListInterface;
 
 class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -37,8 +40,15 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var Config */
     protected $eavConfig;
 
+    /** @var cron config save */
+    protected $configWriter;
+
+
     /** @var Set */
     protected $attributeSet;
+
+    /** @var chache type list */
+    protected $cacheTypeList;
 
     /**
      * ReplicationHelper constructor.
@@ -62,7 +72,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\Filesystem $Filesystem,
         Config $eavConfig,
-        Set $attributeSet
+        WriterInterface $configWriter,
+        Set $attributeSet,
+        TypeListInterface $cacheTypeList
     )
     {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -72,7 +84,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->_filesystem = $Filesystem;
         $this->replImageLinkRepositoryInterface = $replImageLinkRepositoryInterface;
         $this->eavConfig = $eavConfig;
+        $this->configWriter=$configWriter;
         $this->attributeSet = $attributeSet;
+        $this->cacheTypeList=$cacheTypeList;
 
         parent::__construct(
             $context
@@ -319,5 +333,23 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     }
 
+    public function flushConfig()
+    {
+        $this->cacheTypeList->cleanType('config');
+        $this->_logger->debug('Config Flushed');
+    }
+
+    public function updateCronStatus($data,$path)
+    {
+        if($data==true) {
+                $this->configWriter->save($path,1,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0);
+        }
+        else {
+                $this->configWriter->save($path,0,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0);
+        }
+        $this->flushConfig();
+    }
 
 }
