@@ -70,58 +70,34 @@
 
     <columns name="ls_repl_grids_discount_columns">
         <!--The list of columns-->
-        <column name="repl_discount_id">
+        <column name="Description">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">repl_discount_id</item>
+                    <item name="label" xsi:type="string" translate="true">Description</item>
                     <item name="sortOrder" xsi:type="number">1</item>
                 </item>
             </argument>
         </column>
-        <column name="scope">
+        <column name="processed" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">scope</item>
-                    <item name="sortOrder" xsi:type="number">2</item>
-                </item>
-            </argument>
-        </column>
-        <column name="scope_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">scope_id</item>
-                    <item name="sortOrder" xsi:type="number">3</item>
-                </item>
-            </argument>
-        </column>
-        <column name="processed">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">processed</item>
                     <item name="sortOrder" xsi:type="number">4</item>
+                    <item name="label" xsi:type="string" translate="true">Flat to Magento</item>
                 </item>
             </argument>
         </column>
-        <column name="is_updated">
+        <column name="is_updated" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">is_updated</item>
                     <item name="sortOrder" xsi:type="number">5</item>
+                    <item name="label" xsi:type="string" translate="true">Omni to Flat</item>
                 </item>
             </argument>
         </column>
@@ -131,7 +107,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Code</item>
+                    <item name="label" xsi:type="string" translate="true">Currency Code</item>
                     <item name="sortOrder" xsi:type="number">6</item>
                 </item>
             </argument>
@@ -142,22 +118,12 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">CustomerDiscountGroup</item>
+                    <item name="label" xsi:type="string" translate="true">Customer Discount Group</item>
                     <item name="sortOrder" xsi:type="number">7</item>
                 </item>
             </argument>
         </column>
-        <column name="Description">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Description</item>
-                    <item name="sortOrder" xsi:type="number">7</item>
-                </item>
-            </argument>
-        </column>
+
         <column name="Details">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -175,7 +141,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">DiscountValue</item>
+                    <item name="label" xsi:type="string" translate="true">Discount Value</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -186,7 +152,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">DiscountValueType</item>
+                    <item name="label" xsi:type="string" translate="true">Discount Value Type</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -197,18 +163,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">FromDate</item>
-                    <item name="sortOrder" xsi:type="number">9</item>
-                </item>
-            </argument>
-        </column>
-        <column name="IsDeleted">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">IsDeleted</item>
+                    <item name="label" xsi:type="string" translate="true">From Date</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -219,7 +174,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">ItemId</item>
+                    <item name="label" xsi:type="string" translate="true">Item ID</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -230,7 +185,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">LoyaltySchemeCode</item>
+                    <item name="label" xsi:type="string" translate="true">Loyalty Scheme Code</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -241,7 +196,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">MinimumQuantity</item>
+                    <item name="label" xsi:type="string" translate="true">Minimum Quantity</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -252,7 +207,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">ModifyDate</item>
+                    <item name="label" xsi:type="string" translate="true">Modify Date</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -263,7 +218,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">OfferNo</item>
+                    <item name="label" xsi:type="string" translate="true">Offer No</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -274,7 +229,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">PriorityNo</item>
+                    <item name="label" xsi:type="string" translate="true">Priority No</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -285,7 +240,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">StoreId</item>
+                    <item name="label" xsi:type="string" translate="true">Store ID</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -296,7 +251,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">ToDate</item>
+                    <item name="label" xsi:type="string" translate="true">To Date</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -318,7 +273,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">UnitOfMeasureId</item>
+                    <item name="label" xsi:type="string" translate="true">Unit Of Measure ID</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -329,7 +284,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">ValidationPeriodId</item>
+                    <item name="label" xsi:type="string" translate="true">Validation Period ID</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
@@ -340,7 +295,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">VariantId</item>
+                    <item name="label" xsi:type="string" translate="true">Variant ID</item>
                     <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
