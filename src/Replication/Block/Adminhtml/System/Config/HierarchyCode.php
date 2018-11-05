@@ -37,8 +37,8 @@ class HierarchyCode implements ArrayInterface
         /** @var \Ls\Replication\Model\ReplHierarchy $hierarchy */
         foreach ($replHierarchyRepository->getItems() as $hierarchy) {
             $hierarchyCodes[] = [
-                'value' => $hierarchy->getNavId(),
-                'label' => __($hierarchy->getDescription())
+                'value' => $hierarchy->getData('nav_id'),
+                'label' => __($hierarchy->getData('Description'))
             ];
         }
         return $hierarchyCodes;
