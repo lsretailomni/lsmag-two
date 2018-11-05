@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Omni\Observer;
 
 use Ls\Omni\Helper\BasketHelper;
@@ -7,23 +8,25 @@ use Ls\Omni\Helper\ContactHelper;
 
 class CartObserver implements ObserverInterface
 {
-    /** @var ContactHelper  */
+    /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var BasketHelper  */
+    /** @var BasketHelper */
     protected $basketHelper;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var \Psr\Log\LoggerInterface */
     protected $logger;
 
-    /** @var \Magento\Customer\Model\Session  */
+    /** @var \Magento\Customer\Model\Session */
     protected $customerSession;
 
-    /** @var \Magento\Checkout\Model\Session  */
+    /** @var \Magento\Checkout\Model\Session */
     protected $checkoutSession;
 
-    /** @var bool  */
+    /** @var bool */
     protected $watchNextSave = FALSE;
+
+    protected $session;
 
     /**
      * CartObserver constructor.
@@ -61,28 +64,20 @@ class CartObserver implements ObserverInterface
             /** @var \Magento\Quote\Model\Quote $quote */
             $quote = $this->checkoutSession->getQuote();
             // This will create one list if not created and will return onelist if its already created.
-            /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList|null  $oneList */
+            /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList|null $oneList */
             $oneList = $this->basketHelper->get();
 
             //TODO if there is any no items, i-e when user only has one item and s/he prefer to remove from cart, then dont calculate basket functionality below.
-
-            //var_dump($oneList); exit;
             // add items from the quote to the oneList and return the updated onelist
-            $oneList       =   $this->basketHelper->setOneListQuote($quote, $oneList);
-            //$this->logger->debug(var_export($oneList,true));
+            $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
             // update the onelist to Omni.
-
-            $bastketData = $this->basketHelper->update($oneList);
-            //Override the magento basket
-//            echo "<pre>";
-//            print_r($bastketData);
-//            echo var_export($bastketData,true);
-//            exit;
+            $this->basketHelper->update($oneList);
         }
         return $this;
     }
 
-    public function watchNextSave($value = TRUE) {
+    public function watchNextSave($value = TRUE)
+    {
         $this->watchNextSave = $value;
     }
 }
