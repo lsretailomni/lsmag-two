@@ -22,6 +22,7 @@ use Ls\Replication\Model\ReplItemVariantRegistrationRepository;
 use Ls\Replication\Model\ReplItemRepository;
 use Ls\Replication\Model\ReplHierarchyLeafRepository;
 use Ls\Replication\Model\ReplBarcodeRepository;
+use Ls\Replication\Model\ReplPriceRepository;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
@@ -96,6 +97,9 @@ class ProductCreateTask
     /** @var ReplHierarchyLeafRepository */
     protected $replHierarchyLeafRepository;
 
+    /** @var ReplPriceRepository */
+    protected $replPriceRepository;
+
     /** @var ProductAttributeMediaGalleryEntryInterface */
     protected $attributeMediaGalleryEntry;
 
@@ -127,7 +131,7 @@ class ProductCreateTask
     protected $_lsr;
 
     /** @var Cron Checking */
-    protected $cronStatus=false;
+    protected $cronStatus = false;
 
     /**
      * ProductCreateTask constructor.
@@ -177,6 +181,7 @@ class ProductCreateTask
         ReplImageRepository $replImageRepository,
         ReplHierarchyLeafRepository $replHierarchyLeafRepository,
         ReplBarcodeRepository $replBarcodeRepository,
+        ReplPriceRepository $replPriceRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
         FilterGroupBuilder $filterGroupBuilder,
@@ -205,6 +210,7 @@ class ProductCreateTask
         $this->imageRepository = $replImageRepository;
         $this->replHierarchyLeafRepository = $replHierarchyLeafRepository;
         $this->replBarcodeRepository = $replBarcodeRepository;
+        $this->replPriceRepository = $replPriceRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
@@ -226,10 +232,10 @@ class ProductCreateTask
         $fullReplicationAttributeStatus = $this->_lsr->getStoreConfig(ReplEcommAttributeTask::CONFIG_PATH_STATUS);
         $fullReplicationAttributeOptionValueStatus = $this->_lsr->getStoreConfig(ReplEcommAttributeValueTask::CONFIG_PATH_STATUS);
 
-        $CronCategoryCheck= $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
-        $CronAttributeCheck= $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+        $CronCategoryCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
+        $CronAttributeCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
 
-        if($CronCategoryCheck==1 &&  $CronAttributeCheck==1 ) {
+        if ($CronCategoryCheck == 1 && $CronAttributeCheck == 1) {
             if ($fullReplicationAttributeStatus != 1 && $fullReplicationAttributeOptionValueStatus != 1)
                 return;
 
@@ -260,7 +266,7 @@ class ProductCreateTask
                             $item->setData('is_updated', '0');
                             $item->setData('processed', '1');
                             $item->save();
-                            $this->cronStatus=true;
+                            $this->cronStatus = true;
 
                         } catch (\Exception $e) {
                             $this->logger->debug($e->getMessage());
@@ -276,7 +282,11 @@ class ProductCreateTask
                     $product->setVisibility(\Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH);
                     $product->setWeight(10);
                     $product->setDescription($item->getDetails());
-                    $product->setPrice($item->getUnitPrice());
+                    $itemPrice = $this->getItemPrice($item->getNavId());
+                    if (isset($itemPrice))
+                        $product->setPrice($itemPrice->getUnitPrice());
+                    else
+                        $product->setPrice($item->getUnitPrice());
                     $product->setAttributeSetId(4);
                     $product->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
                     $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE);
@@ -307,7 +317,7 @@ class ProductCreateTask
                     }
                     try {
                         $item->setProcessed(1)->save();
-                        $this->cronStatus=true;
+                        $this->cronStatus = true;
                     } catch (\Exception $e) {
                         $this->logger->debug($e->getMessage());
                     }
@@ -322,11 +332,11 @@ class ProductCreateTask
             if ($fullReplicationImageLinkStatus == 1)
                 $this->updateImagesOnly();
             $this->logger->debug('End ProductCreateTask');
-            $this->cronStatus=true;
+            $this->cronStatus = true;
         } else {
             $this->logger->debug("Product Replication cron fails because category or attribute replication cron not executed successfully.");
         }
-        $this->replicationHelper->updateCronStatus($this->cronStatus,LSR::SC_SUCCESS_CRON_PRODUCT);
+        $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT);
     }
 
     /**
@@ -584,6 +594,26 @@ class ProductCreateTask
         }
     }
 
+    /**
+     * Item Price
+     * @param $itemId
+     * @return mixed
+     */
+    protected function getItemPrice($itemId)
+    {
+        $storeId = $this->_lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+        $filters = array(
+            array('field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'),
+            array('field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'),
+            array('field' => 'QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq')
+        );
+        $items = array();
+        /** @var ReplPriceRepository $items */
+        $items = $this->replPriceRepository->getList($searchCriteria)->getItems();
+        foreach ($items as $item) {
+            return $item;
+        }
+    }
 
     /**
      * Update/Add the modified/added variants of the item
