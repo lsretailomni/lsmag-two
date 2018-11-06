@@ -257,6 +257,11 @@ class ProductCreateTask
                             $productData->setMetaTitle($item->getDescription());
                             $productData->setDescription($item->getDetails());
                             $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
+                            $itemPrice = $this->getItemPrice($item->getNavId());
+                            if (isset($itemPrice))
+                                $productData->setPrice($itemPrice->getUnitPrice());
+                            else
+                                $productData->setPrice($item->getUnitPrice());
                             $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
                             if ($productImages) {
                                 $this->logger->debug('Found images for the item ' . $item->getNavId());
@@ -599,15 +604,17 @@ class ProductCreateTask
      * @param $itemId
      * @return mixed
      */
-    protected function getItemPrice($itemId)
+    protected function getItemPrice($itemId, $variantId = NULL)
     {
         $storeId = $this->_lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
         $filters = array(
             array('field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'),
             array('field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'),
-            array('field' => 'QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq')
+            array('field' => 'QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq'),
+            //array('field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq')
         );
         $items = array();
+        $searchCriteria = $this->replicationHelper->buildCriteriaForArray($filters, 1);
         /** @var ReplPriceRepository $items */
         $items = $this->replPriceRepository->getList($searchCriteria)->getItems();
         foreach ($items as $item) {
@@ -714,6 +721,9 @@ class ProductCreateTask
                         $productData->setMetaTitle($value->getDescription());
                         $productData->setDescription($value->getDetails());
                         $productData->setCustomAttribute("uom", $value->getBaseUnitOfMeasure());
+                        $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
+                        if (isset($itemPrice))
+                            $productData->setPrice($itemPrice->getUnitPrice());
                         $productImages = $this->replicationHelper->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
                         if ($productImages) {
                             $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
@@ -738,7 +748,11 @@ class ProductCreateTask
                 $productV = $this->productFactory->create();
                 $productV->setName($item->getDescription() . (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : ''));
                 $productV->setSku($sku);
-                $productV->setPrice($item->getUnitPrice());
+                $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
+                if (isset($itemPrice))
+                    $productV->setPrice($itemPrice->getUnitPrice());
+                else
+                    $productV->setPrice($item->getUnitPrice());
                 $productV->setAttributeSetId(4);
                 $productV->setWebsiteIds([1]);
                 $productV->setVisibility(\Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE);
