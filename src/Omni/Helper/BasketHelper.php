@@ -14,7 +14,12 @@ use Magento\Quote\Model\Quote;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\Framework\Registry;
 use Ls\Core\Model\LSR;
+use Magento\Framework\Session\SessionManagerInterface;
 
+/**
+ * Class BasketHelper
+ * @package Ls\Omni\Helper
+ */
 class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /** @var Cart $cart */
@@ -56,6 +61,14 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var  LSR $_lsr */
     protected $_lsr;
 
+    /** @var array */
+    protected $basketDataResponse;
+
+    /**
+     * @var SessionManagerInterface
+     */
+    protected $session;
+
     /**
      * BasketHelper constructor.
      * @param Context $context
@@ -84,7 +97,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         StockItemRepository $stockItemRepository,
         ItemHelper $itemHelper,
         Registry $registry,
-        LSR $Lsr
+        LSR $Lsr,
+        SessionManagerInterface $session
     )
     {
         parent::__construct($context);
@@ -99,6 +113,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->itemHelper = $itemHelper;
         $this->registry = $registry;
         $this->_lsr = $Lsr;
+        $this->session = $session;
     }
 
     /**
@@ -345,8 +360,13 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             }
         }
         $this->saveToOmni($oneList);
-        $this->setOneListCalculation($this->calculate($oneList));
-
+        $basketData = $this->calculate($oneList);
+        $this->setOneListCalculation($basketData);
+        if (isset($basketData)) {
+            $this->unSetBasketSessionValue();
+            $this->setBasketSessionValue($basketData);
+        }
+        return $basketData;
     }
 
     /**
@@ -760,5 +780,31 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    /**
+     * Set Basket Session Data
+     * @param $value
+     */
+    public function setBasketSessionValue($value){
+        $this->session->start();
+        $this->session->setBasketdata($value);
+    }
+
+    /**
+     * Get Basket Session Data
+     * @return mixed
+     */
+    public function getBasketSessionValue(){
+        $this->session->start();
+        return $this->session->getBasketdata();
+    }
+
+    /**
+     * Unset Basket Session Data
+     * @return mixed
+     */
+    public function unSetBasketSessionValue(){
+        $this->session->start();
+        return $this->session->unsBasketdata();
+    }
 
 }

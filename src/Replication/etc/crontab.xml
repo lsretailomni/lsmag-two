@@ -24,6 +24,9 @@
     <job name="repl_item" instance="Ls\Replication\Cron\ReplEcommItemsTask" method="execute">
       <schedule>*/2 * * * *</schedule>
     </job>
+    <job name="repl_item_price" instance="Ls\Replication\Cron\ReplEcommPricesTask" method="execute">
+      <schedule>*/2 * * * *</schedule>
+    </job>
     <job name="repl_barcode" instance="Ls\Replication\Cron\ReplEcommBarcodesTask" method="execute">
       <schedule>*/2 * * * *</schedule>
     </job>

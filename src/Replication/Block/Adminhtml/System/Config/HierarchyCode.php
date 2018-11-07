@@ -34,6 +34,7 @@ class HierarchyCode implements ArrayInterface
         /** @var \Ls\Replication\Model\ReplHierarchySearchResults $replHierarchyRepository */
         $replHierarchyRepository = $this->replHierarchyRepository->getList($criteria);
         $hierarchyCodes = array();
+        $countItems = count($replHierarchyRepository->getItems());
         /** @var \Ls\Replication\Model\ReplHierarchy $hierarchy */
         foreach ($replHierarchyRepository->getItems() as $hierarchy) {
             $hierarchyCodes[] = [

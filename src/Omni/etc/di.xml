@@ -28,7 +28,6 @@
     <plugin name="savePickupInfoToQuote"
             type="Ls\Omni\Plugin\Checkout\Model\ShippingInformationManagement" />
   </type>
-
   <!-- To Override Tax Calculator -->
-  <!--<preference for="Magento\Tax\Model\Sales\Total\Quote\Tax" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Tax" /> -->
+  <preference for="Magento\Tax\Model\Sales\Total\Quote\Tax" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Tax" />
 </config>
