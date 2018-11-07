@@ -276,6 +276,15 @@ class ProductCreateTask
                         } catch (\Exception $e) {
                             $this->logger->debug($e->getMessage());
                         }
+                    }else if($item->getIsUpdated() == 0 && $item->getProcessed() == 0){
+                        try {
+                            $item->setData('is_updated', '0');
+                            $item->setData('processed', '1');
+                            $item->save();
+                            $this->cronStatus = true;
+                        }catch (\Exception $e) {
+                            $this->logger->debug($e->getMessage());
+                        }
                     }
                 } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
                     /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
