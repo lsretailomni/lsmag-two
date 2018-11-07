@@ -7,8 +7,9 @@ define([
     'Magento_Ui/js/modal/modal',
     'Magento_Checkout/js/model/quote',
     'lsomni/map-loader',
-    'lsomni/map'
-], function (Component, ko, $, $t, modal, quote, MapLoader, map) {
+    'lsomni/map',
+    'mage/url'
+], function (Component, ko, $, $t, modal, quote, MapLoader, map,url) {
     'use strict';
 
     var popUp = null;
@@ -79,13 +80,57 @@ define([
                 self.isMapVisible(false);
             });
 
+            $('body').on('click', '.check-store-availability', function() {
+                var selectedStore = $(this).data('id');
+                var controllerUrl = self.getBaseUrl("omni/stock/store"+"?storeid="+selectedStore);
+                var backUrl = self.getBaseUrl("checkout/cart");
+                var flag = "1";
+                $.ajax({
+                    url: controllerUrl,
+                    type: 'POST',
+                    dataType: "json",
+                    beforeSend: function() {
+                        $('.custom-loader').append('<p>loading...</p>');
+                    },
+                    complete: function() {
+                        $('.custom-loader').html("");
+                    },
+                    success: function (data) {
+                        $(".stock-remarks ul").html("");
+                        $(".stock-remarks strong").html("");
+                        for(var i = 0;i < data.stocks.length;i++){
+                            if(data.stocks[i].status === "0" && flag === "1"){
+                                flag = "0";
+                            }
+                            if(data.stocks[i].status === "0" ){
+                                $(".stock-remarks ul").append("<li><strong>" + data.stocks[i].name + ":</strong> <span style='color:red'>"+ data.stocks[i].display +"</span></li>")
+                            }else{
+                                $(".stock-remarks ul").append("<li><strong>" + data.stocks[i].name + ":</strong> <span style='color:green'>"+ data.stocks[i].display +"</span></li>")
+                            }
+
+                        }
+                        if(flag ==="1"){
+                            $('.apply-store').removeAttr('disabled');
+                        }else{
+                            $(".stock-remarks").append("<strong>"+data.remarks+" <a href='"+backUrl+"'>Cart</a></strong>");
+                        }
+                    },
+                    error: function(xhr) { // if error occured
+                        console.log(xhr.statusText + xhr.responseText);
+                    }
+                });
+
+            });
+
             return this._super();
         },
 
         showMap: function () {
             this.isMapVisible(true);
         },
-
+        getBaseUrl: function(param) {
+            return url.build(param);
+        },
         getPopUp: function () {
             var self = this,
                 buttons;

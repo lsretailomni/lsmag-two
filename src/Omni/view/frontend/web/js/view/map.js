@@ -32,8 +32,9 @@ define([
 
                     (function(marker, store) {
                         google.maps.event.addListener(marker, 'click', function(e) {
-                            infoWindow.setContent('<h3>'+ store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street +', '+ store.City+'<br /><br /><button data-id="'
-                                + store.nav_id + '" data-name="'+ store.Name +'" class="apply-store">Pick Up Here!</button></div>');
+                            infoWindow.setContent('<div class="infowindow"><h3>'+ store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street +', '+ store.City+'<br /><br /><div style="text-align: center;"><button style="font-size: 10px;width: 120px;padding: 2px 0px;margin-right: 5px;" data-id="'
+                                + store.nav_id + '" class="check-store-availability">Check Availability</button><button style="font-size: 10px;width: 120px;padding: 2px 0px;margin-right: 5px;" disabled data-id="'
+                                + store.nav_id + '" data-name="'+ store.Name +'" class="apply-store">Pick Up Here!</button></div><br /><div class="stock-remarks"><div class="custom-loader" style="text-align:center;"></div><ul style="padding:0;margin-bottom: 10px;"></ul></div></div>');
                             infoWindow.open(map, marker);
                         });
                     })(marker, store);
