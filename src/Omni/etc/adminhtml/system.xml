@@ -17,6 +17,7 @@
                        showInWebsite="1" showInStore="1">
                     <label>Selected Store</label>
                     <source_model>Ls\Omni\Model\System\Source\NavStore</source_model>
+                    <backend_model>Ls\Omni\Model\System\Backend\NavStore</backend_model>
                     <comment>Choose the web store</comment>
                 </field>
                 <field id="replicate_hierarchy_code" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
