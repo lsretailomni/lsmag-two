@@ -785,8 +785,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param $value
      */
     public function setBasketSessionValue($value){
-        $this->session->start();
-        $this->session->setBasketdata($value);
+        $this->checkoutSession->setBasketdata($value);
     }
 
     /**
@@ -794,8 +793,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @return mixed
      */
     public function getBasketSessionValue(){
-        $this->session->start();
-        return $this->session->getBasketdata();
+        return $this->checkoutSession->getBasketdata();
     }
 
     /**
@@ -803,8 +801,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @return mixed
      */
     public function unSetBasketSessionValue(){
-        $this->session->start();
-        return $this->session->unsBasketdata();
+        return $this->checkoutSession->unsBasketdata();
     }
 
 }
