@@ -352,4 +352,11 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->flushConfig();
     }
 
+
+    public function getLogger(){
+        return $this->_logger;
+    }
+
+
+
 }
