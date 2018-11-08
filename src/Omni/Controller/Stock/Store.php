@@ -57,28 +57,31 @@ class Store extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        $selectedStore = $this->_request->getParam('storeid');
-        $quote = $this->_session->getQuote();
-        $result = $this->_resultJsonFactory->create();
-        $totalItems = $quote->getAllItems();
-        $stockCollection = [];
-        $notAvailableNotice = __("Check other stores or remove not available at");
-        foreach ($totalItems as $item) {
-            $sku = $item->getSku();
-            if ($item->getProductType() == "configurable") {
-                continue;
+            $result = $this->_resultJsonFactory->create();
+        if ($this->getRequest()->isAjax())
+        {
+            $selectedStore = $this->_request->getParam('storeid');
+            $quote = $this->_session->getQuote();
+            $totalItems = $quote->getAllItems();
+            $stockCollection = [];
+            $notAvailableNotice = __("Check other stores or remove not available at");
+            foreach ($totalItems as $item) {
+                $sku = $item->getSku();
+                if ($item->getProductType() == "configurable") {
+                    continue;
+                }
+                if (strpos($sku, '-') !== false) {
+                    $sku = explode('-', $sku)[0];
+                }
+                $response = $this->_stockHelper->getItemStockInStore($selectedStore, $sku);
+                if ($response->getInventoryResponse()->getQtyActualInventory()) {
+                    $stockCollection[] = ["name" => $item->getName(), "status" => "1", "display" => __("This item is available")];
+                } else {
+                    $stockCollection[] = ["name" => $item->getName(), "status" => "0", "display" => __("This item is not available")];
+                }
             }
-            if (strpos($sku, '-') !== false) {
-                $sku = explode('-',$sku)[0];
-            }
-            $response = $this->_stockHelper->getItemStockInStore($selectedStore,$sku);
-            if($response->getInventoryResponse()->getQtyActualInventory()){
-                $stockCollection[] = ["name" => $item->getName(),"status" => "1","display"=>__("This item is available")];
-            }else{
-                $stockCollection[] = ["name" => $item->getName(),"status" => "0","display"=>__("This item is not available")];
-            }
+            $result = $result->setData(["remarks" => $notAvailableNotice, "stocks" => $stockCollection]);
         }
-        $result = $result->setData(["remarks" => $notAvailableNotice,"stocks" => $stockCollection]);
         return $result;
     }
 
