@@ -13,6 +13,7 @@ use Ls\Replication\Helper\ReplicationHelper;
 
 use Ls\Replication\Api\ReplAttributeRepositoryInterface;
 use Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
+use Ls\Core\Model\LSR;
 
 
 class AttributesCreateTask
@@ -52,7 +53,15 @@ class AttributesCreateTask
     /**
      * @var LoggerInterface
      */
+
+    /** @var LSR */
+    protected $_lsr;
+
+
     protected $logger;
+
+    /** @var Cron Checking */
+    protected $cronStatus=false;
 
     /**
      * AttributesCreateTask constructor.
@@ -63,6 +72,7 @@ class AttributesCreateTask
      * @param LoggerInterface $logger
      * @param AttributeFactory $eavAttributeFactory
      * @param Entity $eav_entity
+     * @param LSR $LSR
      */
     public function __construct(
         ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
@@ -74,7 +84,8 @@ class AttributesCreateTask
         ReplAttributeRepositoryInterface $replAttributeRepositoryInterface,
         ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
         \Magento\Eav\Model\Config $eavConfig,
-        ReplicationHelper $replicationHelper
+        ReplicationHelper $replicationHelper,
+        LSR $LSR
 
     )
     {
@@ -88,6 +99,7 @@ class AttributesCreateTask
         $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
         $this->eavConfig = $eavConfig;
         $this->replicationHelper = $replicationHelper;
+        $this->_lsr = $LSR;
     }
 
 
@@ -101,6 +113,9 @@ class AttributesCreateTask
         $this->processAttributes();
         // Process variants attributes which are going to be used for configurable product
         $this->processVariantAttributes();
+
+        $this->replicationHelper->updateCronStatus($this->cronStatus,LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+
     }
 
     /**
@@ -135,7 +150,9 @@ class AttributesCreateTask
                 }
                 $replAttribute->setData('processed', '1');
                 $replAttribute->save();
+            $this->cronStatus=true;
         }
+
     }
 
     /**
@@ -239,6 +256,8 @@ class AttributesCreateTask
                         );
                 }
             }
+
+            $this->cronStatus=true;
         }
     }
 
@@ -398,5 +417,4 @@ class AttributesCreateTask
         }
         return $optimziedArray;
     }
-
 }

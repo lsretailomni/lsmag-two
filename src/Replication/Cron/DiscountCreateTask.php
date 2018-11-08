@@ -71,6 +71,7 @@ class DiscountCreateTask
      */
     protected $replDiscountCollection;
 
+
     /**
      * DiscountCreateTask constructor.
      * @param RuleFactory $ruleFactory
@@ -115,69 +116,75 @@ class DiscountCreateTask
          * And the web store is being set in the Magento.
          * And we need to apply only those rules which are associated to the store assigned to it.
          */
-
-        if ($this->_lsr->isLSR()) {
-            $store_id = $this->_lsr->getDefaultWebStore();
-            $publishedOfferCollection = $this->getUniquePublishedOffers();
-            if (!empty($publishedOfferCollection)) {
-                /** @var \Ls\Replication\Model\ReplDiscount $item */
-                foreach ($publishedOfferCollection as $item) {
-
-
-                    $filters = array(
-                        //array('field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'),
-                        array('field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq')
-                    );
-
-                    $criteria = $this->_replicationHelper->buildCriteriaForArray($filters, 100);
-
-                    /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
-                    $replDiscounts = $this->replDiscountRepository->getList($criteria);
-
-                    $skuArray = array();
-
-                    if ($item->getLoyaltySchemeCode() == '' || is_null($item->getLoyaltySchemeCode())) {
-                        $useAllGroupIds = true;
-                        $customerGroupIds = $this->_contactHelper->getAllCustomerGroupIds();
-                    } else {
-                        $useAllGroupIds = false;
-                        $customerGroupIds = array();
-
-                    }
+        $CronProductCheck= $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+        if($CronProductCheck==1) {
+            if ($this->_lsr->isLSR()) {
+                $store_id = $this->_lsr->getDefaultWebStore();
+                $publishedOfferCollection = $this->getUniquePublishedOffers();
+                if (!empty($publishedOfferCollection)) {
+                    /** @var \Ls\Replication\Model\ReplDiscount $item */
+                    foreach ($publishedOfferCollection as $item) {
 
 
-                    /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
-                    foreach ($replDiscounts->getItems() as $replDiscount) {
+                        $filters = array(
+                            //array('field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'),
+                            array('field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq')
+                        );
 
-                        // To check if discounts groups are specific for any Member Scheme.
+                        $criteria = $this->_replicationHelper->buildCriteriaForArray($filters, 100);
 
-                        if (!$useAllGroupIds and !in_array($this->_contactHelper->getCustomerGroupIdByName($replDiscount->getLoyaltySchemeCode()), $customerGroupIds)) {
-                            $customerGroupIds[] = $this->_contactHelper->getCustomerGroupIdByName($replDiscount->getLoyaltySchemeCode());
-                        }
+                        /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+                        $replDiscounts = $this->replDiscountRepository->getList($criteria);
 
-                        if ($replDiscount->getVariantId() == '' || is_null($replDiscount->getVariantId())) {
-                            $skuArray[] = $replDiscount->getItemId();
+                        $skuArray = array();
 
+                        if ($item->getLoyaltySchemeCode() == '' || is_null($item->getLoyaltySchemeCode())) {
+                            $useAllGroupIds = true;
+                            $customerGroupIds = $this->_contactHelper->getAllCustomerGroupIds();
                         } else {
-                            $skuArray[] = $replDiscount->getItemId() . '-' . $replDiscount->getVariantId();
+                            $useAllGroupIds = false;
+                            $customerGroupIds = array();
+
                         }
+
+
+                        /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
+                        foreach ($replDiscounts->getItems() as $replDiscount) {
+
+                            // To check if discounts groups are specific for any Member Scheme.
+
+                            if (!$useAllGroupIds and !in_array($this->_contactHelper->getCustomerGroupIdByName($replDiscount->getLoyaltySchemeCode()), $customerGroupIds)) {
+                                $customerGroupIds[] = $this->_contactHelper->getCustomerGroupIdByName($replDiscount->getLoyaltySchemeCode());
+                            }
+
+                            if ($replDiscount->getVariantId() == '' || is_null($replDiscount->getVariantId())) {
+                                $skuArray[] = $replDiscount->getItemId();
+
+                            } else {
+                                $skuArray[] = $replDiscount->getItemId() . '-' . $replDiscount->getVariantId();
+                            }
 
                             $replDiscount->setProcessed(1)
                                 ->save();
 
+                        }
+
+                        if (!empty($skuArray)) {
+
+                            $this->addSalesRule($item, $skuArray, $customerGroupIds);
+
+                        }
+
+
+                        // apply rules.
+                        $this->jobApply->applyAll();
                     }
-
-                    if (!empty($skuArray)) {
-
-                        $this->addSalesRule($item, $skuArray, $customerGroupIds);
-
-                    }
-
-
-                    // apply rules.
-                    $this->jobApply->applyAll();
                 }
             }
+
+        }
+        else {
+            $this->logger->debug("Discount Replication cron fails because product replication cron not executed successfully.");
         }
     }
 

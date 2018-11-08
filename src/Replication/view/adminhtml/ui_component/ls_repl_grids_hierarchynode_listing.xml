@@ -70,69 +70,14 @@
 
     <columns name="ls_repl_grids_hierarchynode_columns">
         <!--The list of columns-->
-        <column name="repl_hierarchy_node_id">
+        <column name="nav_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">repl_hierarchy_node_id</item>
+                    <item name="label" xsi:type="string" translate="true">Nav ID</item>
                     <item name="sortOrder" xsi:type="number">1</item>
-                </item>
-            </argument>
-        </column>
-        <column name="scope">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">scope</item>
-                    <item name="sortOrder" xsi:type="number">2</item>
-                </item>
-            </argument>
-        </column>
-        <column name="scope_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">scope_id</item>
-                    <item name="sortOrder" xsi:type="number">3</item>
-                </item>
-            </argument>
-        </column>
-        <column name="processed">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">processed</item>
-                    <item name="sortOrder" xsi:type="number">4</item>
-                </item>
-            </argument>
-        </column>
-        <column name="is_updated">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">is_updated</item>
-                    <item name="sortOrder" xsi:type="number">5</item>
-                </item>
-            </argument>
-        </column>
-        <column name="ChildrenOrder">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">ChildrenOrder</item>
-                    <item name="sortOrder" xsi:type="number">6</item>
                 </item>
             </argument>
         </column>
@@ -143,39 +88,61 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Description</item>
-                    <item name="sortOrder" xsi:type="number">7</item>
+                    <item name="sortOrder" xsi:type="number">2</item>
                 </item>
             </argument>
         </column>
+        <column name="processed" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sortOrder" xsi:type="number">4</item>
+                    <item name="label" xsi:type="string" translate="true">Flat to Magento</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_updated" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sortOrder" xsi:type="number">5</item>
+                    <item name="label" xsi:type="string" translate="true">Omni to Flat</item>
+                </item>
+            </argument>
+        </column>
+        <column name="ChildrenOrder">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Children Order</item>
+                    <item name="sortOrder" xsi:type="number">6</item>
+                </item>
+            </argument>
+        </column>
+
         <column name="HierarchyCode">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">HierarchyCode</item>
+                    <item name="label" xsi:type="string" translate="true">Hierarchy Code</item>
                     <item name="sortOrder" xsi:type="number">7</item>
                 </item>
             </argument>
         </column>
-        <column name="nav_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">nav_id</item>
-                    <item name="sortOrder" xsi:type="number">8</item>
-                </item>
-            </argument>
-        </column>
+
         <column name="ImageId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">ImageId</item>
+                    <item name="label" xsi:type="string" translate="true">Image ID</item>
                     <item name="sortOrder" xsi:type="number">8</item>
                 </item>
             </argument>
@@ -187,17 +154,6 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Indentation</item>
-                    <item name="sortOrder" xsi:type="number">8</item>
-                </item>
-            </argument>
-        </column>
-        <column name="IsDeleted">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">IsDeleted</item>
                     <item name="sortOrder" xsi:type="number">8</item>
                 </item>
             </argument>
@@ -219,7 +175,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">PresentationOrder</item>
+                    <item name="label" xsi:type="string" translate="true">Presentation Order</item>
                     <item name="sortOrder" xsi:type="number">8</item>
                 </item>
             </argument>

@@ -13,14 +13,6 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Get categories from omni</comment>
                 </field>
-                <field id="replicate_hierarchy_code" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Select Hierarchy Code</label>
-                    <comment>Get categories/items heirarchy from omni</comment>
-                    <source_model>Ls\Replication\Block\Adminhtml\System\Config\HierarchyCode</source_model>
-                    <depends>
-                        <field id="*/*/replicate_category">1</field>
-                    </depends>
-                </field>
                 <field id="variant_map" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Use Variant Map</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
