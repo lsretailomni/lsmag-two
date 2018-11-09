@@ -50,6 +50,10 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var chache type list */
     protected $cacheTypeList;
 
+    /** @var LSR  */
+    protected $_lsr;
+
+
     /**
      * ReplicationHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
@@ -74,7 +78,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         Config $eavConfig,
         WriterInterface $configWriter,
         Set $attributeSet,
-        TypeListInterface $cacheTypeList
+        TypeListInterface $cacheTypeList,
+        LSR $LSR
     )
     {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -87,6 +92,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->configWriter=$configWriter;
         $this->attributeSet = $attributeSet;
         $this->cacheTypeList=$cacheTypeList;
+        $this->_lsr         =   $LSR;
 
         parent::__construct(
             $context
@@ -352,11 +358,51 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->flushConfig();
     }
 
-
+    /**
+     * @return \Psr\Log\LoggerInterface
+     */
     public function getLogger(){
         return $this->_logger;
     }
 
+    /**
+     * Trigger the disposable Hierarchy replication job to get Hierarchy based on stores.
+     */
+    public function getHierarchyByStore(){
+
+        $response = array();
+
+        $store_id       =   $this->_lsr->getDefaultWebStore();
+
+
+        /** @var Entity\ReplEcommHierarchy $hierarchy */
+        $hierarchy      =   new Entity\ReplEcommHierarchy();
+
+        /** @var  Entity\ReplRequest $request */
+        $request          =     new Entity\ReplRequest();
+
+        /** @var Operation\ReplEcommHierarchy  $operation */
+        $operation      =   new Operation\ReplEcommHierarchy();
+
+        $request->setStoreId($store_id)
+                ->setBatchSize(100)
+                ->setFullReplication(true)
+                ->setLastKey(0)
+                ->setMaxKey(0)
+                ->setTerminalId('');
+
+
+
+        $this->_logger->debug(var_export($operation->getResponse(),true));
+
+        try {
+            $response = $operation->execute($hierarchy->setReplRequest($request));
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getResult() : $response;
+
+    }
 
 
 }
