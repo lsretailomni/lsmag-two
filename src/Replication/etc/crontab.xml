@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
   <!-- After Omni Replication, Uncomment these lines to populate all data into Magento tables. -->
-<!--<group id="replication">
+<group id="replication">
     <job name="repl_attributes" instance="Ls\Replication\Cron\AttributesCreateTask" method="execute">
       <schedule>*/5 * * * *</schedule>
     </job>
@@ -10,15 +10,15 @@
       <schedule>*/5 * * * *</schedule>
     </job>
     <job name="repl_products" instance="Ls\Replication\Cron\ProductCreateTask" method="execute">
-      <schedule>*/10 * * * *</schedule>
+      <schedule>*/5 * * * *</schedule>
     </job>
     <job name="repl_barcode_update" instance="Ls\Replication\Cron\BarcodeUpdateTask" method="execute">
-      <schedule>*/12 * * * *</schedule>
+      <schedule>*/5 * * * *</schedule>
     </job>
     <job name="repl_discount_create" instance="Ls\Replication\Cron\DiscountCreateTask" method="execute">
-      <schedule>*/20 * * * *</schedule>
+      <schedule>*/5 * * * *</schedule>
     </job>
-  </group>-->
+  </group>
   <group id="flat_replication">
     <!-- Most Important-->
     <job name="repl_item" instance="Ls\Replication\Cron\ReplEcommItemsTask" method="execute">
