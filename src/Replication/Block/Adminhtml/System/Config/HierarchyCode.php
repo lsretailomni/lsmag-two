@@ -37,6 +37,7 @@ class HierarchyCode implements ArrayInterface
     public function toOptionArray()
     {
 
+        $loger      =   $this->replicationHelper->getLogger();
         $hierarchyCodes = array();
         if($this->_lsr->isLSR()) {
             /**
@@ -47,14 +48,53 @@ class HierarchyCode implements ArrayInterface
             /** @var \Ls\Replication\Model\ReplHierarchySearchResults $replHierarchyRepository */
             $replHierarchyRepository = $this->replHierarchyRepository->getList($criteria);
 
-            $countItems = count($replHierarchyRepository->getItems());
-            /** @var \Ls\Replication\Model\ReplHierarchy $hierarchy */
-            foreach ($replHierarchyRepository->getItems() as $hierarchy) {
-                $hierarchyCodes[] = [
-                    'value' => $hierarchy->getData('nav_id'),
-                    'label' => __($hierarchy->getData('Description'))
-                ];
+
+            if($replHierarchyRepository->getTotalCount() > 0){
+                // We got the data from our system, so use that.
+                /** @var \Ls\Replication\Model\ReplHierarchy $hierarchy */
+                foreach ($replHierarchyRepository->getItems() as $hierarchy) {
+                    $hierarchyCodes[] = [
+                        'value' => $hierarchy->getData('nav_id'),
+                        'label' => __($hierarchy->getData('Description'))
+                    ];
+                }
+            }else{
+                // get data directly from Omni.
+
+                $hierarchyData     =   $this->replicationHelper->getHierarchyByStore();
+
+                if($hierarchyData){
+
+                    $data       =   $hierarchyData->getHierarchies()->getReplHierarchy();
+                    if(is_array($data)){
+                        //$loger->debug('Reached on the level of array ');
+                        // to cover the array
+                        /** @var \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy $item */
+                        foreach ($data as $item){
+
+                            if($item instanceof \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy ){
+                                $hierarchyCodes[] = [
+                                    'value' => $item->getId(),
+                                    'label' => __($item->getDescription())
+                                ];
+
+                            }
+                        }
+
+                    }elseif($data instanceof \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy){
+                        // for single instance
+                        $item   = $data;
+
+                        $hierarchyCodes[] = [
+                            'value' => $item->getId(),
+                            'label' => __($item->getDescription())
+                        ];
+                    }
+
+                }
+
             }
+
         }else{
             $this->replicationHelper->getLogger()->debug('Store not set');
             $hierarchyCodes[] = [
