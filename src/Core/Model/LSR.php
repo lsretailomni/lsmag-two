@@ -53,7 +53,7 @@ class LSR
     const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
     // REPLICATION
     const SC_REPLICATION_GETCATEGORIES = 'ls_mag/replication/replicate_category';
-    const SC_REPLICATION_HIERARCHY_CODE = 'ls_mag/replication/replicate_hierarchy_code';
+    const SC_REPLICATION_HIERARCHY_CODE = 'ls_mag/service/replicate_hierarchy_code';
     const SC_REPLICATION_CREATEATTRSET = 'ls_mag/replication/create_attribute_set';
     const SC_REPLICATION_CATEGORIZE = 'ls_mag/replication/categorize_products';
     const SC_REPLICATION_BATCHSIZE = 'ls_mag/replication/batch_size_configuration';

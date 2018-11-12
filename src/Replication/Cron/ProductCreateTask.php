@@ -242,7 +242,7 @@ class ProductCreateTask
 
             $this->logger->debug('Running ProductCreateTask');
             /** @var \Magento\Framework\Api\SearchCriteria $criteria */
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 40);
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 25);
 
             /** @var \Ls\Replication\Model\ReplItemSearchResults $items */
             $items = $this->itemRepository->getList($criteria);
