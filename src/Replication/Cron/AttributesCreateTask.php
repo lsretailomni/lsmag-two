@@ -118,6 +118,16 @@ class AttributesCreateTask
 
     }
 
+    public function executeManually()
+    {
+        $this->execute();
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+        /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
+        $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
+        $itemsLeftToProcess=count($replAttributes->getItems());
+        return array($itemsLeftToProcess);
+    }
+
     /**
      * @throws \Exception
      * @throws \Magento\Framework\Exception\LocalizedException

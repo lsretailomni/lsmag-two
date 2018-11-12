@@ -8,129 +8,153 @@
             </argument>
         </arguments>
     </type>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplItem\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplItem\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_item</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItem</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplBarcode\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplBarcode\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_barcode</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplBarcode</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_extended_variant_value</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplImageLink\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplImageLink\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_image_link</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplImageLink</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplItemVariantRegistration\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplItemVariantRegistration\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_item_variant_registration</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemVariantRegistration</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplHierarchy\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplHierarchy\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_hierarchy</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchy</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplHierarchyNode\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplHierarchyNode\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_hierarchy_node</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyNode</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_hierarchy_leaf</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplAttribute\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplAttribute\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_attribute</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttribute</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplAttributeValue\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplAttributeValue\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_attribute_value</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttributeValue</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplAttributeOptionValue\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplAttributeOptionValue\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_attribute_option_value</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttributeOptionValue</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplDiscount\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplDiscount\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_discount</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplDiscount</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplItemCategory\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplItemCategory\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_item_category</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemCategory</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplProductGroup\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplProductGroup\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_product_group</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplProductGroup</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Ls\Replication\Model\ResourceModel\ReplStore\Collection"
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplStore\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_store</argument>
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplStore</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_unit_of_measure</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplDiscountValidation\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_discount_validation</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplDiscountValidation</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplCountryCode\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_country_code</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplCountryCode</argument>
+        </arguments>
+    </virtualType>
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="ls_repl_grids_item_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItem\Collection</item>
-                <item name="ls_repl_grids_barcode_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplBarcode\Collection</item>
-                <item name="ls_repl_grids_extendedvariantvalue_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\Collection</item>
-                <item name="ls_repl_grids_imagelink_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplImageLink\Collection</item>
-                <item name="ls_repl_grids_itemvariantregistration_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemVariantRegistration\Collection</item>
-                <item name="ls_repl_grids_hierarchy_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchy\Collection</item>
-                <item name="ls_repl_grids_hierarchynode_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyNode\Collection</item>
-                <item name="ls_repl_grids_hierarchyleaf_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\Collection</item>
-                <item name="ls_repl_grids_attribute_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttribute\Collection</item>
-                <item name="ls_repl_grids_attributevalue_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttributeValue\Collection</item>
-                <item name="ls_repl_grids_attributeoptionvalue_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttributeOptionValue\Collection</item>
-                <item name="ls_repl_grids_discount_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplDiscount\Collection</item>
-                <item name="ls_repl_grids_itemcategory_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemCategory\Collection</item>
-                <item name="ls_repl_grids_productgroup_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplProductGroup\Collection</item>
-                <item name="ls_repl_grids_store_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplStore\Collection</item>
+                <item name="ls_repl_grids_item_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItem\Grid\Collection</item>
+                <item name="ls_repl_grids_barcode_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplBarcode\Grid\Collection</item>
+                <item name="ls_repl_grids_extendedvariantvalue_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\Grid\Collection</item>
+                <item name="ls_repl_grids_imagelink_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplImageLink\Grid\Collection</item>
+                <item name="ls_repl_grids_itemvariantregistration_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemVariantRegistration\Grid\Collection</item>
+                <item name="ls_repl_grids_hierarchy_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchy\Grid\Collection</item>
+                <item name="ls_repl_grids_hierarchynode_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyNode\Grid\Collection</item>
+                <item name="ls_repl_grids_hierarchyleaf_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\Grid\Collection</item>
+                <item name="ls_repl_grids_attribute_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttribute\Grid\Collection</item>
+                <item name="ls_repl_grids_attributevalue_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttributeValue\Grid\Collection</item>
+                <item name="ls_repl_grids_attributeoptionvalue_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttributeOptionValue\Grid\Collection</item>
+                <item name="ls_repl_grids_discount_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplDiscount\Grid\Collection</item>
+                <item name="ls_repl_grids_itemcategory_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemCategory\Grid\Collection</item>
+                <item name="ls_repl_grids_productgroup_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplProductGroup\Grid\Collection</item>
+                <item name="ls_repl_grids_store_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplStore\Grid\Collection</item>
+                <item name="ls_repl_grids_unitofmeasure_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure\Grid\Collection</item>
+                <item name="ls_repl_grids_discountvalidation_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplDiscountValidation\Grid\Collection</item>
+                <item name="ls_repl_grids_countrycode_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplCountryCode\Grid\Collection</item>
             </argument>
         </arguments>
     </type>

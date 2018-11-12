@@ -78,4 +78,17 @@ class BarcodeUpdateTask
         }
     }
 
+
+    /**
+     * @return array
+     */
+    public function executeManually()
+    {
+        $this->execute();
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+        $replBarcodes = $this->replBarcodeRepository->getList($criteria);
+        $barcodesLeftToProcess=count($replBarcodes->getItems());
+        return array($barcodesLeftToProcess);
+    }
+
 }
