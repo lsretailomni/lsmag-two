@@ -30,4 +30,8 @@
   </type>
   <!-- To Override Tax Calculator -->
   <preference for="Magento\Tax\Model\Sales\Total\Quote\Tax" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Tax" />
+  <!-- For Street Fields Overwrite -->
+  <type name="Magento\Checkout\Block\Checkout\AttributeMerger">
+    <plugin name="shippingAddress" type="Ls\Omni\Plugin\Checkout\Block\Checkout\AttributeMerger\StreetPlugin"/>
+  </type>
 </config>
