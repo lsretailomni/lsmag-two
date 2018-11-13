@@ -214,6 +214,23 @@ class CategoryCreateTask
     }
 
     /**
+     * @return array
+     */
+    public function executeManually()
+    {
+        $this->execute();
+        $hierarchyCode = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $filters = array(
+            array('field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'),
+            array('field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq')
+        );
+        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
+        $replHierarchy = $this->replHierarchyNodeRepository->getList($criteria);
+        $categoriesLeftToProcess=count($replHierarchy->getItems());
+        return array($categoriesLeftToProcess);
+    }
+
+    /**
      * @param $string
      * @return string]
      */

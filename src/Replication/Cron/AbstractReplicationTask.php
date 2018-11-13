@@ -178,6 +178,71 @@ abstract class AbstractReplicationTask
         }
     }
 
+    function executeManually()
+    {
+        $lsr = $this->getLsrModel();
+        if ($lsr->isLSR()) {
+            $this->rep_helper->flushConfig();
+            $properties = $this->getProperties();
+            $batchSize = 100;
+            $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE);
+            if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
+                $batchSize = $isBatchSizeSet;
+            }
+            $last_key = $this->getLastKey();
+            $fullReplication = 1;
+            $isFirstTime = $this->isFirstTime();
+            if (isset($isFirstTime) && $isFirstTime == 1) {
+                $fullReplication = 0;
+                if ($this->isLastKeyAlwaysZero())
+                    return;
+            }
+            $webStoreID = '';
+            if (in_array($this->getConfigPath(), self::$store_id_needed)) {
+                $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+            }
+            $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
+            $response = $request->execute();
+            $result = $response->getResult();
+            $last_key = $result->getLastKey();
+            $remaining = $result->getRecordsRemaining();
+            $traversable = $this->getIterator($result);
+            if (!is_null($traversable)) {
+                if (count($traversable) > 0) {
+                    foreach ($traversable as $source) {
+                        $this->saveSource($properties, $source);
+                    }
+                } else {
+                    $arrayTraversable = (array)$traversable;
+                    if (count($arrayTraversable) > 0) {
+                        $entityClass = new ReflectionClass($this->getMainEntity());
+                        $singleObject = (object)$traversable->getArrayCopy();
+                        $entity = $this->getFactory()->create();
+                        $entity->setScope('default')->setScopeId(0);
+                        foreach ($singleObject as $keyprop => $valueprop) {
+                            if ($keyprop == 'Id') {
+                                $set_method = 'setNavId';
+                            } else {
+                                $set_method = "set$keyprop";
+                            }
+                            $entity->{$set_method}($valueprop);
+                        }
+                        try {
+                            $this->getRepository()->save($entity);
+                        } catch (\Exception $e) {
+                            $this->logger->debug($e->getMessage());
+                        }
+                    }
+                }
+            }
+            $this->persistLastKey($last_key);
+            $this->saveReplicationStatus(1);
+
+        }
+
+        return array($remaining,$batchSize);
+    }
+
     protected function toObject(array $array, $object)
     {
         $class = get_class($object);

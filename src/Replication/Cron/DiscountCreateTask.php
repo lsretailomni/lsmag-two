@@ -189,6 +189,16 @@ class DiscountCreateTask
     }
 
     /**
+     * @return array
+     */
+    public function executeManually()
+    {
+        $discountsLeftToProcess=0;
+        $this->execute();
+        return array($discountsLeftToProcess);
+    }
+
+    /**
      * @param \Ls\Replication\Model\ReplDiscount $replDiscount
      * @param array $skuArray
      * @param $customerGroupIds
