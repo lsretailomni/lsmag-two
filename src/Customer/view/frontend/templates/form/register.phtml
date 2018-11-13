@@ -100,7 +100,7 @@ echo $block->getPostActionUrl() ?>" method="post" id="form-validate" enctype="mu
                                         echo __('Address') ?></span>
                                 </label>
                                 <div class="control">
-                                    <input type="text" name="street[]" maxlength="50"
+                                    <input type="text" name="street[]" maxlength="50" data-validate='{"maxlength":50}'
                                            value="<?php echo $block->escapeHtml($block->getFormData()->getStreetLine($_i - 1)) ?>"
                                            title="<?php /* @escapeNotVerified */
                                            echo __('Street Address %1', $_i) ?>"
