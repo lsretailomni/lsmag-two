@@ -85,7 +85,7 @@ echo $block->getPostActionUrl() ?>" method="post" id="form-validate" enctype="mu
                 <label for="street_1" class="label"><span><?php /* @escapeNotVerified */
                         echo __('Street Address') ?></span></label>
                 <div class="control">
-                    <input type="text" name="street[]"
+                    <input type="text" name="street[]" data-validate='{"required":true,"maxlength":50}'
                            value="<?php echo $block->escapeHtml($block->getFormData()->getStreet(0)) ?>"
                            title="<?php /* @escapeNotVerified */
                            echo __('Street Address') ?>" id="street_1" class="input-text <?php /* @escapeNotVerified */
@@ -100,7 +100,7 @@ echo $block->getPostActionUrl() ?>" method="post" id="form-validate" enctype="mu
                                         echo __('Address') ?></span>
                                 </label>
                                 <div class="control">
-                                    <input type="text" name="street[]"
+                                    <input type="text" name="street[]" maxlength="50" data-validate='{"maxlength":50}'
                                            value="<?php echo $block->escapeHtml($block->getFormData()->getStreetLine($_i - 1)) ?>"
                                            title="<?php /* @escapeNotVerified */
                                            echo __('Street Address %1', $_i) ?>"
@@ -304,7 +304,5 @@ echo $block->getPostActionUrl() ?>" method="post" id="form-validate" enctype="mu
             }
         }
     }
-
-
     </script>
 <?php endif; ?>
