@@ -112,12 +112,26 @@
                 </item>
             </argument>
         </column>
+        <column name="condition">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">id</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="align" xsi:type="string">left</item>
+                    <item name="label" xsi:type="string" translate="true">Action</item>
+                    <item name="sortOrder" xsi:type="number">4</item>
+                </item>
+            </argument>
+        </column>
             <actionsColumn name="actions" class="Ls\Replication\Ui\Component\Listing\Column\Actions">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="sortable" xsi:type="boolean">false</item>
                         <item name="label" xsi:type="string" translate="true">Execute</item>
-                        <item name="sortOrder" xsi:type="number">14</item>
+                        <item name="sortOrder" xsi:type="number">5</item>
                         <item name="fieldAction" xsi:type="boolean">false</item>
                     </item>
                 </argument>
