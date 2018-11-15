@@ -112,7 +112,7 @@ define([
                         if(flag ==="1"){
                             $('.apply-store').removeAttr('disabled');
                         }else{
-                            $(".stock-remarks").append("<strong>"+data.remarks+" <a href='"+backUrl+"'>Cart</a></strong>");
+                            $(".stock-remarks").append("<strong>"+data.remarks+" <a href='"+backUrl+"'>cart</a></strong>");
                         }
                     },
                     error: function(xhr) { // if error occured

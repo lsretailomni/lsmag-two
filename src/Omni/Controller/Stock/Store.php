@@ -64,7 +64,7 @@ class Store extends \Magento\Framework\App\Action\Action
             $quote = $this->_session->getQuote();
             $totalItems = $quote->getAllItems();
             $stockCollection = [];
-            $notAvailableNotice = __("Check other stores or remove not available at");
+            $notAvailableNotice = __("Please check other stores or remove the not available item(s) from your ");
             foreach ($totalItems as $item) {
                 $sku = $item->getSku();
                 if ($item->getProductType() == "configurable") {
