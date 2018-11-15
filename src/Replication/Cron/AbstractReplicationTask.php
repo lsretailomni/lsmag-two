@@ -48,7 +48,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_discount_validation" => array("nav_id"),
         "ls_mag/replication/repl_extended_variant_value" => array("Code", "FrameworkCode", "ItemId"),
         "ls_mag/replication/repl_hierarchy" => array("nav_id"),
-        "ls_mag/replication/repl_hierarchy_leaf" => array("nav_id"),
+        "ls_mag/replication/repl_hierarchy_leaf" => array("nav_id","NodeId"),
         "ls_mag/replication/repl_hierarchy_node" => array("nav_id"),
         "ls_mag/replication/repl_image" => array("nav_id"),
         "ls_mag/replication/repl_image_link" => array("ImageId", "KeyValue"),
