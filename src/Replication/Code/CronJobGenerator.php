@@ -48,9 +48,9 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addUse(ReplicationHelper::class);
         $this->class->addUse(ReplRequest::class);
         $this->class->addUse($this->operation->getOperationFqn());
-        $this->class->addUse($this->operation->getRepositoryFqn());
+        $this->class->addUse($this->operation->getRepositoryInterfaceFqn(), $this->operation->getRepositoryName());
         $this->class->addUse($this->operation->getFactoryFqn());
-        $this->class->addUse($this->operation->getMainEntityFqn());
+        $this->class->addUse($this->operation->getInterfaceFqn(), $this->operation->getEntityName());
 
         $this->class->addConstant('JOB_CODE', $this->operation->getJobId());
         $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$this->operation->getTableName()}");

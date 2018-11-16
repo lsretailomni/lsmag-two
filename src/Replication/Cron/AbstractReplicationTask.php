@@ -6,8 +6,6 @@ use IteratorAggregate;
 use Ls\Core\Helper\Data as LsHelper;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Omni\Client\OperationInterface;
-use Ls\Replication\Model\ReplHierarchyNode;
-use Ls\Replication\Model\ReplHierarchyNodeRepository;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
@@ -44,11 +42,11 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_currency_exch_rate" => array("CurrencyCode"),
         "ls_mag/replication/repl_customer" => array("AccountNumber"),
         "ls_mag/replication/repl_data_translation" => array("TranslationId"),
-        "ls_mag/replication/repl_discount" => array("ItemId", "LoyaltySchemeCode","StoreId"),
+        "ls_mag/replication/repl_discount" => array("ItemId", "LoyaltySchemeCode", "StoreId"),
         "ls_mag/replication/repl_discount_validation" => array("nav_id"),
         "ls_mag/replication/repl_extended_variant_value" => array("Code", "FrameworkCode", "ItemId"),
         "ls_mag/replication/repl_hierarchy" => array("nav_id"),
-        "ls_mag/replication/repl_hierarchy_leaf" => array("nav_id","NodeId"),
+        "ls_mag/replication/repl_hierarchy_leaf" => array("nav_id", "NodeId"),
         "ls_mag/replication/repl_hierarchy_node" => array("nav_id"),
         "ls_mag/replication/repl_image" => array("nav_id"),
         "ls_mag/replication/repl_image_link" => array("ImageId", "KeyValue"),
@@ -153,7 +151,7 @@ abstract class AbstractReplicationTask
                             $singleObject = (object)$traversable->getArrayCopy();
                             $entity = $this->getFactory()->create();
                             $entity->setScope('default')->setScopeId(0);
-                            foreach ($singleObject as $keyprop=>$valueprop) {
+                            foreach ($singleObject as $keyprop => $valueprop) {
                                 if ($keyprop == 'Id') {
                                     $set_method = 'setNavId';
                                 } else {
@@ -239,8 +237,7 @@ abstract class AbstractReplicationTask
             $this->saveReplicationStatus(1);
 
         }
-
-        return array($remaining,$batchSize);
+        return array($remaining, $batchSize);
     }
 
     protected function toObject(array $array, $object)

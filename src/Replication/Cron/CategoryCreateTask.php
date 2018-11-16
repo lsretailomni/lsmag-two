@@ -2,9 +2,9 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Replication\Model\ReplHierarchyRepository;
-use Ls\Replication\Model\ReplHierarchyNodeRepository;
-use Ls\Replication\Model\ReplHierarchyLeafRepository;
+use Ls\Replication\Api\ReplHierarchyRepositoryInterface as ReplHierarchyRepository;
+use Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNodeRepository;
+use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\CategoryFactory;

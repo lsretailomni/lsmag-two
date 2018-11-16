@@ -7,11 +7,56 @@
       </argument>
     </arguments>
   </type>
-  <preference for="Ls\Replication\Api\ReplImageLinkRepositoryInterface" type="Ls\Replication\Model\ReplImageLinkRepository" />
-  <preference for="Ls\Replication\Api\ReplAttributeRepositoryInterface" type="Ls\Replication\Model\ReplAttributeRepository" />
-  <preference for="Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface" type="Ls\Replication\Model\ReplAttributeOptionValueRepository" />
-  <preference for="Ls\Replication\Api\ReplAttributeValueRepositoryInterface" type="Ls\Replication\Model\ReplAttributeValueRepository" />
-  <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface" type="Ls\Replication\Model\ReplStoreRepository" />
-  <preference for="Ls\Replication\Api\ReplDiscountRepositoryInterface" type="Ls\Replication\Model\ReplDiscountRepository" />
   <preference for="Magento\Catalog\Block\Product\View\Attributes" type="Ls\Replication\Block\Product\View\Attributes" />
+  <!--Replication API Repository Inferfaces-->
+  <preference for="Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface" type="Ls\Replication\Model\ReplAttributeOptionValueRepository" />
+  <preference for="Ls\Replication\Api\ReplAttributeRepositoryInterface" type="Ls\Replication\Model\ReplAttributeRepository" />
+  <preference for="Ls\Replication\Api\ReplAttributeValueRepositoryInterface" type="Ls\Replication\Model\ReplAttributeValueRepository" />
+  <preference for="Ls\Replication\Api\ReplBarcodeRepositoryInterface" type="Ls\Replication\Model\ReplBarcodeRepository" />
+  <preference for="Ls\Replication\Api\ReplDiscountRepositoryInterface" type="Ls\Replication\Model\ReplDiscountRepository" />
+  <preference for="Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface" type="Ls\Replication\Model\ReplExtendedVariantValueRepository" />
+  <preference for="Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface" type="Ls\Replication\Model\ReplHierarchyLeafRepository" />
+  <preference for="Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface" type="Ls\Replication\Model\ReplHierarchyNodeRepository" />
+  <preference for="Ls\Replication\Api\ReplHierarchyRepositoryInterface" type="Ls\Replication\Model\ReplHierarchyRepository" />
+  <preference for="Ls\Replication\Api\ReplImageLinkRepositoryInterface" type="Ls\Replication\Model\ReplImageLinkRepository" />  
+  <preference for="Ls\Replication\Api\ReplImageRepositoryInterface" type="Ls\Replication\Model\ReplImageRepository" />
+  <preference for="Ls\Replication\Api\ReplItemCategoryRepositoryInterface" type="Ls\Replication\Model\ReplItemCategoryRepository" />
+  <preference for="Ls\Replication\Api\ReplItemRepositoryInterface" type="Ls\Replication\Model\ReplItemRepository" />
+  <preference for="Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface" type="Ls\Replication\Model\ReplItemVariantRegistrationRepository" />
+  <preference for="Ls\Replication\Api\ReplPriceRepositoryInterface" type="Ls\Replication\Model\ReplPriceRepository" />  
+  <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface" type="Ls\Replication\Model\ReplStoreRepository" />
+  <!--Replication API Data Inferfaces-->
+  <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueInterface" type="Ls\Replication\Model\ReplAttributeOptionValue" />
+  <preference for="Ls\Replication\Api\Data\ReplAttributeInterface" type="Ls\Replication\Model\ReplAttribute" />
+  <preference for="Ls\Replication\Api\Data\ReplAttributeValueInterface" type="Ls\Replication\Model\ReplAttributeValue" />
+  <preference for="Ls\Replication\Api\Data\ReplBarcodeInterface" type="Ls\Replication\Model\ReplBarcode" />
+  <preference for="Ls\Replication\Api\Data\ReplDiscountInterface" type="Ls\Replication\Model\ReplDiscount" />
+  <preference for="Ls\Replication\Api\Data\ReplExtendedVariantValueInterface" type="Ls\Replication\Model\ReplExtendedVariantValue" />
+  <preference for="Ls\Replication\Api\Data\ReplHierarchyLeafInterface" type="Ls\Replication\Model\ReplHierarchyLeaf" />
+  <preference for="Ls\Replication\Api\Data\ReplHierarchyNodeInterface" type="Ls\Replication\Model\ReplHierarchyNode" />
+  <preference for="Ls\Replication\Api\Data\ReplHierarchyInterface" type="Ls\Replication\Model\ReplHierarchy" />
+  <preference for="Ls\Replication\Api\Data\ReplImageLinkInterface" type="Ls\Replication\Model\ReplImageLink" />  
+  <preference for="Ls\Replication\Api\Data\ReplImageInterface" type="Ls\Replication\Model\ReplImage" />
+  <preference for="Ls\Replication\Api\Data\ReplItemCategoryInterface" type="Ls\Replication\Model\ReplItemCategory" />
+  <preference for="Ls\Replication\Api\Data\ReplItemInterface" type="Ls\Replication\Model\ReplItem" />
+  <preference for="Ls\Replication\Api\Data\ReplItemVariantRegistrationInterface" type="Ls\Replication\Model\ReplItemVariantRegistration" />
+  <preference for="Ls\Replication\Api\Data\ReplPriceInterface" type="Ls\Replication\Model\ReplPrice" />  
+  <preference for="Ls\Replication\Api\Data\ReplStoreInterface" type="Ls\Replication\Model\ReplStore" />
+  <!--Replication API Search Results Inferfaces-->
+  <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueSearchResultsInterface" type="Ls\Replication\Model\ReplAttributeOptionValueSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplAttributeSearchResultsInterface" type="Ls\Replication\Model\ReplAttributeSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplAttributeValueSearchResultsInterface" type="Ls\Replication\Model\ReplAttributeValueSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplBarcodeSearchResultsInterface" type="Ls\Replication\Model\ReplBarcodeSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplDiscountSearchResultsInterface" type="Ls\Replication\Model\ReplDiscountSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplExtendedVariantValueSearchResultsInterface" type="Ls\Replication\Model\ReplExtendedVariantValueSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplHierarchyLeafSearchResultsInterface" type="Ls\Replication\Model\ReplHierarchyLeafSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplHierarchyNodeSearchResultsInterface" type="Ls\Replication\Model\ReplHierarchyNodeSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplHierarchySearchResultsInterface" type="Ls\Replication\Model\ReplHierarchySearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplImageLinkSearchResultsInterface" type="Ls\Replication\Model\ReplImageLinkSearchResults" />  
+  <preference for="Ls\Replication\Api\Data\ReplImageSearchResultsInterface" type="Ls\Replication\Model\ReplImageSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplItemCategorySearchResultsInterface" type="Ls\Replication\Model\ReplItemCategorySearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplItemSearchResultsInterface" type="Ls\Replication\Model\ReplItemSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplItemVariantRegistrationSearchResultsInterface" type="Ls\Replication\Model\ReplItemVariantRegistrationSearchResults" />
+  <preference for="Ls\Replication\Api\Data\ReplPriceSearchResultsInterface" type="Ls\Replication\Model\ReplPriceSearchResults" />  
+  <preference for="Ls\Replication\Api\Data\ReplStoreSearchResultsInterface" type="Ls\Replication\Model\ReplStoreSearchResults" />
 </config>

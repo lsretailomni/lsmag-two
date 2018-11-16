@@ -10,38 +10,26 @@ use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
 use Magento\CatalogInventory\Model\Stock\Item;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable\Attribute;
-/*
- * TODO replace all Models with API interfaces.
- * for now, we dont have di.xml which can implement Interface with our model
- *
- */
 
-use Ls\Replication\Model\ReplImageRepository;
-use Ls\Replication\Model\ReplExtendedVariantValueRepository;
-use Ls\Replication\Model\ReplItemVariantRegistrationRepository;
-use Ls\Replication\Model\ReplItemRepository;
-use Ls\Replication\Model\ReplHierarchyLeafRepository;
-use Ls\Replication\Model\ReplBarcodeRepository;
-use Ls\Replication\Model\ReplPriceRepository;
+use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
+use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
+use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
+use Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Framework\Api\Data\ImageContentInterface;
-
-/*
- * For search filters
- */
-
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
-
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use Ls\Omni\Helper\LoyaltyHelper;
-
 use Psr\Log\LoggerInterface;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Core\Model\LSR;
