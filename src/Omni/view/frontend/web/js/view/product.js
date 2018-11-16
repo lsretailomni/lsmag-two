@@ -92,8 +92,6 @@ define([
             zoom: parseInt(defaultZoom),
             center: myLatLng
         });
-
-        console.log(stores);
         var infoWindow = new google.maps.InfoWindow();
 
         $.each(stores.items, function (index, store) {
