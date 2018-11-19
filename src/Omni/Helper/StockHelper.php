@@ -46,7 +46,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $itemStock->setItemId($itemId)->setStoreId($storeId);
         try {
             $response = $request->execute($itemStock);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getItemsInStockGetResult() : $response;
@@ -78,7 +78,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         try {
             $response = $request->execute($itemStock);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ?
