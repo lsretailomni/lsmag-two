@@ -6,7 +6,6 @@ use Magento\Framework\App\Helper\Context;
 use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Omni\Client\Ecommerce\Operation;
 use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
-use Magento\Setup\Exception;
 
 /**
  * Class StockHelper
@@ -17,9 +16,12 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     protected $_productRepository;
     /** @var CollectionFactory  */
     protected $_storeCollectionFactory;
+
     /**
-     * StockHelper constructor
+     * StockHelper constructor.
      * @param Context $context
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param CollectionFactory $storeCollectionFactory
      */
     public function __construct(
         Context $context,
