@@ -3,7 +3,6 @@ var config = {
     map: {
        '*': {
            'lsomni/map-loader' : 'Ls_Omni/js/map-loader',
-           'lsomni/map-config' : 'Ls_Omni/js/map-config',
            'lsomni/stores-provider' : 'Ls_Omni/js/model/stores-provider',
            'lsomni/map' : 'Ls_Omni/js/view/map',
            'lsomni/stock':'Ls_Omni/js/view/product',

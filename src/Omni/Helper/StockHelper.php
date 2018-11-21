@@ -13,8 +13,13 @@ use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
  */
 class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
     protected $_productRepository;
-    /** @var CollectionFactory  */
+    /**
+     * @var CollectionFactory
+     */
     protected $_storeCollectionFactory;
 
     /**

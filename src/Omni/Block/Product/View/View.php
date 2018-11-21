@@ -12,7 +12,9 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 
 class View extends \Magento\Catalog\Block\Product\View
 {
-    /** @var $_lsr */
+    /**
+     * @var \Ls\Core\Model\LSR
+     */
     protected $_lsr;
 
     /**
