@@ -12,12 +12,12 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 
 class View extends \Magento\Catalog\Block\Product\View
 {
-    /** @var $_scopeConfig */
-    protected $_scopeConfig;
+    /** @var $_lsr */
+    protected $_lsr;
 
     /**
      * View Constructor.
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Ls\Core\Model\LSR $lsr
      * @param \Magento\Catalog\Block\Product\Context $context
      * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
      * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
@@ -32,7 +32,7 @@ class View extends \Magento\Catalog\Block\Product\View
      * @param array $data = []
      */
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Ls\Core\Model\LSR $lsr,
         \Magento\Catalog\Block\Product\Context $context,
         \Magento\Framework\Url\EncoderInterface $urlEncoder,
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
@@ -46,7 +46,7 @@ class View extends \Magento\Catalog\Block\Product\View
         array $data = []
     )
     {
-        $this->_scopeConfig = $scopeConfig;
+        $this->_lsr = $lsr;
         parent::__construct(
             $context,
             $urlEncoder,
@@ -68,11 +68,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getGoogleMapsApiKey()
     {
-        $configValue = $this->_scopeConfig->getValue(
-            'omni_clickandcollect/general/maps_api_key',
-            \Magento\Framework\App\Config\ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
-        );
+        $configValue = $this->_lsr->getGoogleMapsApiKey();
         return $configValue;
     }
 
@@ -82,11 +78,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultLatitude()
     {
-        $configValue = $this->_scopeConfig->getValue(
-            'omni_clickandcollect/general/default_latitude',
-            \Magento\Framework\App\Config\ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
-        );
+        $configValue = $this->_lsr->getDefaultLatitude();
         return $configValue;
     }
 
@@ -96,11 +88,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultLongitude()
     {
-        $configValue = $this->_scopeConfig->getValue(
-            'omni_clickandcollect/general/default_longitude',
-            \Magento\Framework\App\Config\ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
-        );
+        $configValue = $this->_lsr->getDefaultLongitude();
         return $configValue;
     }
 
@@ -110,11 +98,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultZoom()
     {
-        $configValue = $this->_scopeConfig->getValue(
-            'omni_clickandcollect/general/default_zoom',
-            \Magento\Framework\App\Config\ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
-        );
+        $configValue = $this->_lsr->getDefaultZoom();
         return $configValue;
     }
 }

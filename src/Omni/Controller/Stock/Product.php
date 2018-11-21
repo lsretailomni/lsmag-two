@@ -64,9 +64,11 @@ class Product extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         $result = $this->_resultJsonFactory->create();
-        $notAvailableNoticeTitle = __("Notice");
+        $notAvailableNoticeTitle = __(
+            \Ls\Core\Model\LSR::MSG_NOT_AVAILABLE_NOTICE_TITLE
+        );
         $notAvailableNoticeContent = __(
-            "This item may not be available using click and collect."
+            \Ls\Core\Model\LSR::MSG_NOT_AVAILABLE_NOTICE_CONTENT
         );
         if ($this->getRequest()->isAjax()) {
             $storesNavId = array();
@@ -87,9 +89,11 @@ class Product extends \Magento\Framework\App\Action\Action
                 $storesNavId
             );
             $result = $result->setData(
-                ["title" => $notAvailableNoticeTitle,
+                [
+                    "title" => $notAvailableNoticeTitle,
                     "content" => $notAvailableNoticeContent,
-                    "stocks" => $customResponse]
+                    "stocks" => $customResponse
+                ]
             );
         }
         return $result;
