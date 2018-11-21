@@ -1,7 +1,7 @@
 define([
     'jquery',
     'mage/validation',
-    'lsomni/map-config',
+    'lsomni/map-loader',
     'mage/url',
     'ko',
     'Magento_Ui/js/modal/modal',
