@@ -14,10 +14,6 @@ class Product extends \Magento\Framework\App\Action\Action
      */
     protected $_request;
     /**
-     * @var $_scopeConfig
-     */
-    protected $_scopeConfig;
-    /**
      * @var $_session
      */
     protected $_session;
@@ -36,7 +32,6 @@ class Product extends \Magento\Framework\App\Action\Action
      * @param \Magento\Framework\Controller\Result\JsonFactory
      *        $resultJsonFactory
      * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Checkout\Model\Session $session
      * @param \Ls\Omni\Helper\StockHelper $stockHelper
      */
@@ -44,13 +39,11 @@ class Product extends \Magento\Framework\App\Action\Action
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Checkout\Model\Session $session,
         \Ls\Omni\Helper\StockHelper $stockHelper
     )
     {
         $this->_request = $request;
-        $this->_scopeConfig = $scopeConfig;
         $this->_session = $session;
         $this->_stockHelper = $stockHelper;
         $this->_resultJsonFactory = $resultJsonFactory;
