@@ -2,19 +2,13 @@
 
 namespace Ls\Omni\Block\Stores;
 
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfStoreHours;
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItems;
-use Ls\Omni\Client\Ecommerce\Entity\StoreHours;
 use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
-use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Setup\Exception;
 use Magento\Store\Model\ScopeInterface;
-use Zend\Code\Generator\MethodGenerator;
-use Ls\Core\Model\LSR;
 use \Magento\Framework\Session\SessionManagerInterface;
 
 class Stores extends Template
@@ -97,6 +91,7 @@ class Stores extends Template
     {
         try {
             $storeScope = ScopeInterface::SCOPE_STORE;
+            //TODO replace this variable with proper constant declared in LSR Model
             $this->_scopeConfig->getValue('omni_clickandcollect/general/maps_api_key' , \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
         }
         catch(Exception $e){

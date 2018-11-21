@@ -1,5 +1,5 @@
 
-    <?php
+<?php
 
 /** @var \Ls\Omni\Block\Product\View\Loyalty $block */
 
@@ -7,35 +7,26 @@
  * Generate info message for user to loggedin or register in order to view discounts.
  *
  */
+if(!$block->isLoggedIn()){
+    /** For the refer url redirecton. $currenturl */
+    $currenturl         =   $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+    /** Login and Registration URL links. */
+    $login_url          =   $block->getUrl('customer/account/login', array('referer' => base64_encode($currenturl)));
+    $registrationUrl    =   $block->getUrl('customer/account/create', array('referer' => base64_encode($currenturl))); ?>
+    <div class="messages">
 
-    if(!$block->isLoggedIn()){
+        <div class="message message-info info" role="alert">
 
-        /** For the refer url redirecton. $currenturl */
-        $currenturl         =   $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+            <?php
+            $loginAnchor    =   "<a href=\"$login_url\" title=\" Login\"> Login </a> ";
+            $registerAnchor    =   "<a href=\"$registrationUrl\" title=\" Register \"> Register </a> ";
 
-        /** Login and Registration URL links. */
-        $login_url          =   $block->getUrl('customer/account/login', array('referer' => base64_encode($currenturl)));
-        $registrationUrl    =   $block->getUrl('customer/account/create', array('referer' => base64_encode($currenturl)));
+            echo __(
+                "Please $loginAnchor / $registerAnchor to view available discounts on this product."
+            );
 
-        ?>
-
-
-        <div class="messages">
-
-            <div class="message message-info info" role="alert">
-
-                <?php
-
-                $loginAnchor    =   "<a href=\"$login_url\" title=\" Login\"> Login </a> ";
-                $registerAnchor    =   "<a href=\"$registrationUrl\" title=\" Register \"> Register </a> ";
-
-                echo __(
-                    "Please $loginAnchor / $registerAnchor to view available discounts on this product."
-                );
-
-                ?>
-            </div>
-
+            ?>
         </div>
+    </div>
 
-    <?php } ?>
+<?php } ?>

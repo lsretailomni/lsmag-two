@@ -3,7 +3,6 @@
 namespace Ls\Omni\Controller\Ajax;
 
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
 use Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Model\Session;
 use Ls\Core\Model\LSR;

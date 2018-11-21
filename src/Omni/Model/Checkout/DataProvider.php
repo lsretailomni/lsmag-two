@@ -80,7 +80,7 @@ class DataProvider implements ConfigProviderInterface
         $stores = $this->storeCollectionFactory
             ->create()
             ->addFieldToFilter('ClickAndCollect', 1)
-            ->toArray(); //            ->addActiveFilter() //TODO add click and collect filter
+            ->toArray();
         return \Zend_Json::encode($stores);
     }
 }

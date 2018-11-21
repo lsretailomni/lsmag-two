@@ -15,8 +15,6 @@ use Zend\Code\Generator\DocBlock\Tag;
 use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
-
 class OperationGenerator extends AbstractOmniGenerator
 {
     /** @var  Operation */

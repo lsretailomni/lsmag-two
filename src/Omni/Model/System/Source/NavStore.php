@@ -11,7 +11,7 @@ class NavStore implements ArrayInterface
      * @return array
      */
     public function toOptionArray () {
-        $option_array = [ [ 'value' => '', 'label' => 'Select One' ] ];
+        $option_array = [ [ 'value' => '', 'label' => __('Select One') ] ];
 
         foreach ( $this->getNavStores() as $nav_store ) {
             $option_array[] = [ 'value' => $nav_store->getId(), 'label' => $nav_store->getDescription() ];
@@ -25,7 +25,7 @@ class NavStore implements ArrayInterface
      */
     public function toArray () {
         $option_array = [
-            '' => 'Select One'
+            '' => __('Select One')
         ];
         foreach ( $this->getNavStores() as $nav_store ) {
             $option_array[ $nav_store->getId() ] = $nav_store->getDescription();
@@ -41,9 +41,8 @@ class NavStore implements ArrayInterface
     protected function getNavStores () {
 
         $get_nav_stores = new StoresGetAll();
-        $nav_stores = $get_nav_stores->execute();
-
-        $result = $nav_stores->getResult();
+        $result = $get_nav_stores->execute()
+                                ->getResult();
         if ( is_null( $result ) ) {
             return [ ];
         } else {

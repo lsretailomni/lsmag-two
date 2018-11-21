@@ -4,12 +4,8 @@ namespace Ls\Omni\Model\Tax\Sales\Total\Quote;
 
 use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
 use Magento\Customer\Api\Data\RegionInterfaceFactory as CustomerAddressRegionFactory;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote\Address;
-use Magento\Tax\Api\Data\TaxClassKeyInterface;
-use Magento\Tax\Model\Calculation;
 use Ls\Omni\Helper\BasketHelper;
 
 class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax

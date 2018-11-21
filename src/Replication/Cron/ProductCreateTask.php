@@ -135,7 +135,6 @@ class ProductCreateTask
 
     /**
      * ProductCreateTask constructor.
-     *
      * @param Factory $factory
      * @param Item $item
      * @param Config $eavConfig
@@ -153,6 +152,7 @@ class ProductCreateTask
      * @param ReplImageRepository $replImageRepository
      * @param ReplHierarchyLeafRepository $replHierarchyLeafRepository
      * @param ReplBarcodeRepository $replBarcodeRepository
+     * @param ReplPriceRepository $replPriceRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
      * @param FilterGroupBuilder $filterGroupBuilder

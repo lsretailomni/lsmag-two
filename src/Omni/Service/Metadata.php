@@ -395,44 +395,5 @@ class Metadata
         return $this->entities;
     }
 
-    /**
-     * @param Element $response
-     *
-     * @return string
-     */
-    private function discoverMainEntity(Element $response)
-    {
-        $base_namespace =
-            AbstractOmniGenerator::fqn('Ls', 'Omni', 'Client', 'Ecommerce', 'Entity');
-        $response_fqn = AbstractOmniGenerator::fqn($base_namespace, $response->getName());
-        $response_reflection = new ReflectionClass($response_fqn);
-        $result_docbblock = $response_reflection->getMethod('getResult')->getDocComment();
-
-        preg_match('/@return\s(:?[\w]+)/', $result_docbblock, $matches);
-        $result_fqn = AbstractOmniGenerator::fqn($base_namespace, $matches[1]);
-        $result_reflection = new ReflectionClass($result_fqn);
-
-        $array_of = NULL;
-        foreach ($result_reflection->getProperties() as $array_of) {
-            // FILTER OUT THE MAIN ARRAY_OF ENTITY
-            if (array_search($array_of->getName(), self::$known_result_properties) === FALSE) {
-                break;
-            }
-        }
-        $array_of_docblock = $array_of->getDocComment();
-        preg_match('/@property\s(:?[\w]+)\s(:?\$[\w]+)/', $array_of_docblock, $matches);
-        $array_of_fqn = AbstractOmniGenerator::fqn($base_namespace, $matches[1]);
-        $array_of_reflection = new ReflectionClass($array_of_fqn);
-
-        // DRILL INTO THE MAIN ENTIY
-        $array_of_properties = $array_of_reflection->getProperties();
-        /** @var \ReflectionProperty $main_entity */
-        $main_entity = array_pop($array_of_properties);
-        $main_entity_docblock = $main_entity->getDocComment();
-        preg_match('/@property\s(:?[\w]+)\[\]\s(:?\$[\w]+)/', $main_entity_docblock, $matches);
-        $main_entity = $matches[1];
-
-        return [$base_namespace, $main_entity];
-    }
 
 }

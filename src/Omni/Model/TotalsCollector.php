@@ -13,6 +13,12 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
     protected $basketHelper;
 
     /**
+     ****** Important ***********
+     * We are not using this uptill now for Omni Calculation, but might be planning to use this while handling complex pricing management.
+     *
+     */
+
+    /**
      * TotalsCollector constructor.
      * @param Collector $totalCollector
      * @param CollectorFactory $totalCollectorFactory
