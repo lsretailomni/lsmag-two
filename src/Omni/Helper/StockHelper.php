@@ -6,6 +6,10 @@ use Magento\Framework\App\Helper\Context;
 use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Omni\Client\Ecommerce\Operation;
 
+/**
+ * Class StockHelper
+ * @package Ls\Omni\Helper
+ */
 class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
@@ -21,18 +25,28 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
     /**
      * @param $storeId
-     * @param $itemId
+     * @param $parentProductId
+     * @param $childProductId
      * @return \Ls\Omni\Client\Ecommerce\Entity\ArrayOfInventoryResponse|\Ls\Omni\Client\Ecommerce\Entity\ItemsInStockGetResponse|\Ls\Omni\Client\ResponseInterface
      */
-    public function getItemStockInStore($storeId, $itemId)
+    public function getItemStockInStore(
+        $storeId,
+        $parentProductId,
+        $childProductId
+    )
     {
         $response = NULL;
         $request = new Operation\ItemsInStockGet();
         $itemStock = new Entity\ItemsInStockGet();
-        $itemStock->setItemId($itemId)->setStoreId($storeId);
+        if (!empty($parentProductId) && !empty($childProductId)) {
+            $itemStock->setItemId($parentProductId)->
+            setVariantId($childProductId)->setStoreId($storeId);
+        } else {
+            $itemStock->setItemId($parentProductId)->setStoreId($storeId);
+        }
         try {
             $response = $request->execute($itemStock);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getItemsInStockGetResult() : $response;

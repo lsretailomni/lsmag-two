@@ -1,7 +1,10 @@
 <?php
 
 namespace Ls\Omni\Controller\Stock;
-
+/**
+ * Class Store
+ * @package Ls\Omni\Controller\Stock
+ */
 
 class Store extends \Magento\Framework\App\Action\Action
 {
@@ -28,7 +31,8 @@ class Store extends \Magento\Framework\App\Action\Action
     /**
      * Store constructor
      * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\Controller\Result\JsonFactory
+     *         $resultJsonFactory
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Checkout\Model\Session $session
@@ -57,30 +61,45 @@ class Store extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-            $result = $this->_resultJsonFactory->create();
-        if ($this->getRequest()->isAjax())
-        {
+        $result = $this->_resultJsonFactory->create();
+        if ($this->getRequest()->isAjax()) {
             $selectedStore = $this->_request->getParam('storeid');
-            $quote = $this->_session->getQuote();
-            $totalItems = $quote->getAllItems();
+            $items = $this->_session->getQuote()->getAllVisibleItems();
             $stockCollection = [];
-            $notAvailableNotice = __("Please check other stores or remove the not available item(s) from your ");
-            foreach ($totalItems as $item) {
+            $notAvailableNotice = __(
+                "Please check other stores or remove
+                 the not available item(s) from your "
+            );
+            foreach ($items as $item) {
                 $sku = $item->getSku();
-                if ($item->getProductType() == "configurable") {
-                    continue;
-                }
+                $parentProductSku = $childProductSku = "";
                 if (strpos($sku, '-') !== false) {
-                    $sku = explode('-', $sku)[0];
-                }
-                $response = $this->_stockHelper->getItemStockInStore($selectedStore, $sku);
-                if ($response->getInventoryResponse()->getQtyActualInventory()) {
-                    $stockCollection[] = ["name" => $item->getName(), "status" => "1", "display" => __("This item is available")];
+                    $parentProductSku = explode('-', $sku)[0];
+                    $childProductSku = explode('-', $sku)[1];
                 } else {
-                    $stockCollection[] = ["name" => $item->getName(), "status" => "0", "display" => __("This item is not available")];
+                    $parentProductSku = $sku;
+                }
+                $response = $this->_stockHelper->getItemStockInStore(
+                    $selectedStore, $parentProductSku, $childProductSku
+                );
+                if ($response->getInventoryResponse()
+                    ->getQtyActualInventory()) {
+                    $stockCollection[] = [
+                        "name" => $item->getName(),
+                        "status" => "1",
+                        "display" => __("This item is available")
+                    ];
+                } else {
+                    $stockCollection[] = [
+                        "name" => $item->getName(),
+                        "status" => "0",
+                        "display" => __("This item is not available")
+                    ];
                 }
             }
-            $result = $result->setData(["remarks" => $notAvailableNotice, "stocks" => $stockCollection]);
+            $result = $result->setData(
+                ["remarks" => $notAvailableNotice, "stocks" => $stockCollection]
+            );
         }
         return $result;
     }
