@@ -111,6 +111,12 @@ class LSR
     const SC_CLICKCOLLECT_HERE_APP_ID = 'carriers/clickcollect/app_id';
     const SC_CLICKCOLLECT_HERE_APP_CODE = 'carriers/clickcollect/app_code';
     const SC_CLICKCOLLECT_STOCKLEVEL_STORES = 'ls_mag/clickcollectsetup/showstockforstores';
+    const SC_CLICKCOLLECT_GOOGLE_API_KEY = 'omni_clickandcollect/general/maps_api_key';
+    const SC_CLICKCOLLECT_DEFAULT_LATITUDE = 'omni_clickandcollect/general/default_latitude';
+    const SC_CLICKCOLLECT_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
+    const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
+    const MSG_NOT_AVAILABLE_NOTICE_TITLE = "Notice";
+    const MSG_NOT_AVAILABLE_NOTICE_CONTENT = "This item may not be available using click and collect.";
     // CUSTOM CONFIGURATION PATHS
     const CONFIG_REPLICATION_JOBS = 'ls_mag/replication/jobs';
     const CONFIG_CONFIGDATA_WATCHES = 'ls_mag/configdata/watches';
@@ -277,5 +283,59 @@ class LSR
 
         return $message;
     }
+    /**
+     * Get default google map api key from config
+     * @return string
+     */
+    public function getGoogleMapsApiKey()
+    {
+        $configValue = $this->_scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
+            \Magento\Framework\App\Config\ScopeConfigInterface::
+            SCOPE_TYPE_DEFAULT
+        );
+        return $configValue;
+    }
 
+    /**
+     * Get default latitude from config
+     * @return string
+     */
+    public function getDefaultLatitude()
+    {
+        $configValue = $this->_scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
+            \Magento\Framework\App\Config\ScopeConfigInterface::
+            SCOPE_TYPE_DEFAULT
+        );
+        return $configValue;
+    }
+
+    /**
+     * Get default longitude from config
+     * @return string
+     */
+    public function getDefaultLongitude()
+    {
+        $configValue = $this->_scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
+            \Magento\Framework\App\Config\ScopeConfigInterface::
+            SCOPE_TYPE_DEFAULT
+        );
+        return $configValue;
+    }
+
+    /**
+     * Get default default zoom from config
+     * @return string
+     */
+    public function getDefaultZoom()
+    {
+        $configValue = $this->_scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_DEFAULT_ZOOM,
+            \Magento\Framework\App\Config\ScopeConfigInterface::
+            SCOPE_TYPE_DEFAULT
+        );
+        return $configValue;
+    }
 }
