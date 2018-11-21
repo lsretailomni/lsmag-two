@@ -65,7 +65,7 @@ class Category extends Action
             }
         }
         $this->messageManager->addSuccessMessage(__('Categories deleted successfully.'));
-        $this->_redirect('admin/system_config/index');
+        $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
 
 }
