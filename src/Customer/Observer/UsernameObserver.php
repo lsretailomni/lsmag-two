@@ -4,7 +4,6 @@ namespace Ls\Customer\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Ls\Omni\Helper\ContactHelper;
-use MongoDB\Driver\Exception\ExecutionTimeoutException;
 
 class UsernameObserver implements ObserverInterface
 {
