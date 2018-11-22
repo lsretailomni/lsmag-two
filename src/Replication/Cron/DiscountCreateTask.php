@@ -158,16 +158,11 @@ class DiscountCreateTask
                             } else {
                                 $skuArray[] = $replDiscount->getItemId() . '-' . $replDiscount->getVariantId();
                             }
-
-                            $replDiscount->setProcessed(1)
-                                ->save();
-
+                            $replDiscount->setData('processed', '1');
+                            $this->replDiscountRepository->save($replDiscount);
                         }
-
                         if (!empty($skuArray)) {
-
                             $this->addSalesRule($item, $skuArray, $customerGroupIds);
-
                         }
                         $this->jobApply->applyAll();
                     }

@@ -153,7 +153,7 @@ class AttributesCreateTask
                 $this->addAttributeOptions($replAttribute->getCode());
             }
             $replAttribute->setData('processed', '1');
-            $replAttribute->save();
+            $this->replAttributeRepositoryInterface->save($replAttribute);
             $this->cronStatus = true;
         }
 
@@ -177,11 +177,8 @@ class AttributesCreateTask
         $variantCodes = array();
         /** @var \Ls\Replication\Model\ReplExtendedVariantValue $variant */
         foreach ($variants as $variant) {
-            try {
-                $variant->setProcessed('1')->save();
-            } catch (\Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
+            $variant->setData('processed', '1');
+            $this->replExtendedVariantValueRepository->save($variant);
             if (empty($variantCodes[$variant->getCode()]) || !in_array($variant->getValue(), $variantCodes[$variant->getCode()]))
                 $variantCodes[$variant->getCode()][] = $variant->getValue();
         }
@@ -362,7 +359,7 @@ class AttributesCreateTask
         /** @var \Ls\Replication\Model\ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
             $item->setProcessed('1');
-            $item->save();
+            $this->replAttributeOptionValueRepositoryInterface->save($item);
             // if have existing option and current value is a part of existing option then don't do anything
             if (!empty($existingOptions) and in_array($item->getValue(), $existingOptions)) {
                 continue;

@@ -50,7 +50,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addUse($this->operation->getOperationFqn());
         $this->class->addUse($this->operation->getRepositoryInterfaceFqn(), $this->operation->getRepositoryName());
         $this->class->addUse($this->operation->getFactoryFqn());
-        $this->class->addUse($this->operation->getInterfaceFqn(), $this->operation->getEntityName());
+        $this->class->addUse($this->operation->getInterfaceFqn());
 
         $this->class->addConstant('JOB_CODE', $this->operation->getJobId());
         $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$this->operation->getTableName()}");
@@ -58,9 +58,11 @@ class CronJobGenerator extends AbstractGenerator
 
         $this->createProperty('repository', $this->operation->getRepositoryName());
         $this->createProperty('factory', $this->operation->getFactoryName());
+        $this->createProperty('dataInterface', $this->operation->getInterfaceName());
 
         $repository_name = $this->operation->getRepositoryName();
         $factory_name = $this->operation->getFactoryName();
+        $data_interface = $this->operation->getInterfaceName();
 
         $this->class->addMethodFromGenerator($this->getConstructor());
         $this->class->addMethodFromGenerator($this->getMakeRequest());
@@ -87,11 +89,14 @@ class CronJobGenerator extends AbstractGenerator
         // removing the slashes from \ReplicationHelper -- Same for All
         $content = str_replace('\ReplicationHelper $repHelper', 'ReplicationHelper $repHelper', $content);
 
-        // removing slashes from \$classnameFactory --- Dynamic differet
+        // removing slashes from \$classnameFactory --- Dynamic different
         $content = str_replace("\\{$factory_name} \$factory", "{$factory_name} \$factory", $content);
 
-        // removing slashes from \$classnameRepository --- Dynamic differet
+        // removing slashes from \$classnameRepository --- Dynamic different
         $content = str_replace("\\{$repository_name} \$repository", "{$repository_name} \$repository", $content);
+
+        // removing slashes from \$apiDataInterface --- Dynamic different
+        $content = str_replace("\\{$data_interface} \$data_interface", "{$data_interface} \$data_interface", $content);
 
         // removing the slashes from \Config -- Same for All
         return $content;
@@ -111,12 +116,14 @@ class CronJobGenerator extends AbstractGenerator
             new ParameterGenerator('helper', 'LsHelper'),
             new ParameterGenerator('repHelper', 'ReplicationHelper'),
             new ParameterGenerator('factory', $this->operation->getFactoryName()),
-            new ParameterGenerator('repository',
-                $this->operation->getRepositoryName())]);
+            new ParameterGenerator('repository', $this->operation->getRepositoryName()),
+            new ParameterGenerator('data_interface', $this->operation->getInterfaceName())
+        ]);
         $constructor->setBody(<<<CODE
 parent::__construct(\$scope_config, \$resource_config, \$logger, \$helper, \$repHelper);
 \$this->repository = \$repository;
 \$this->factory = \$factory;
+\$this->data_interface = \$data_interface;
 CODE
         );
 
@@ -188,7 +195,7 @@ CODE
             ->setVisibility(MethodGenerator::FLAG_PROTECTED);
         $main_entity = $this->operation->getEntityName();
         $config_path->setBody(<<<CODE
-return $main_entity::class;
+return \$this->data_interface;
 CODE
         );
 

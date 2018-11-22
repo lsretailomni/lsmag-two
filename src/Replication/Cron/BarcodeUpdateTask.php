@@ -60,9 +60,9 @@ class BarcodeUpdateTask
                         $productData = $this->productRepository->get($sku);
                         if (isset($productData)) {
                             $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
-                            $productData->save();
+                            $this->productRepository->save($productData);
                             $replBarcode->setData('is_updated', '0');
-                            $replBarcode->save();
+                            $this->replBarcodeRepository->save($replBarcode);
                         }
                     } catch (\Exception $e) {
                         $this->logger->debug($e->getMessage());
