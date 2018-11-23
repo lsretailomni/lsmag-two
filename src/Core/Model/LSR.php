@@ -72,10 +72,10 @@ class LSR
     const SC_SUCCESS_CRON_ATTRIBUTE = 'ls_mag/replication/success_repl_attribute';
 
     //check for Category
-    const SC_SUCCESS_CRON_CATEGORY  = 'ls_mag/replication/success_repl_category';
+    const SC_SUCCESS_CRON_CATEGORY = 'ls_mag/replication/success_repl_category';
 
     //check for Product
-    const SC_SUCCESS_CRON_PRODUCT   = 'ls_mag/replication/success_repl_product';
+    const SC_SUCCESS_CRON_PRODUCT = 'ls_mag/replication/success_repl_product';
 
 
     // ENHANCEMENT
@@ -203,6 +203,9 @@ class LSR
     const ORDER_STATE_OPEN = 'OPEN';
     const ORDER_STATE_PAID = 'PAID';
     const ORDER_STATE_COMPLETE = 'COMPLETE';
+    //Store Hours Format
+    const STORE_HOURS_TIME_FORMAT = 'h:i A';
+
     protected $_scopeConfig;
     // END POINTS
     protected $endpoints = [
@@ -274,16 +277,18 @@ class LSR
     /**
      * @return string
      */
-    public function getInvalidMessageContainer(){
+    public function getInvalidMessageContainer()
+    {
 
-        $message     = '<div class="invalid-lsr">';
-        $message    .= '<strong>LS Retail Setup Incomplete</strong>';
-        $message    .= '<br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>';
-        $message    .= 'Go to Stores > Configuration > LS Retail > General Configuration.';
-        $message    .= '</div>';
+        $message = '<div class="invalid-lsr">';
+        $message .= '<strong>LS Retail Setup Incomplete</strong>';
+        $message .= '<br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>';
+        $message .= 'Go to Stores > Configuration > LS Retail > General Configuration.';
+        $message .= '</div>';
 
         return $message;
     }
+
     /**
      * Get default google map api key from config
      * @return string
