@@ -128,8 +128,13 @@ abstract class AbstractReplicationTask
             if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
                 $batchSize = $isBatchSizeSet;
             }
-            $webStoreID = '';
-            if (in_array($this->getConfigPath(), self::$store_id_needed)) {
+            $isAllStoresItemsSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_ALL_STORES_ITEMS);
+            if ($isAllStoresItemsSet) {
+                $webStoreID = '';
+                if (in_array($this->getConfigPath(), self::$store_id_needed)) {
+                    $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+                }
+            } else {
                 $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             }
             while ($remaining != 0) {

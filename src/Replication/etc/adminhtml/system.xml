@@ -4,6 +4,11 @@
         <section id="ls_mag">
             <group id="replication" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Replication</label>
+                <field id="replicate_all_stores_items" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Replicate All Stores Items</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable if you want to replicate all the stores items</comment>
+                </field>
                 <field id="default_batch_size" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Default Batch Size</label>
                     <comment>Records Requested on Replication Jobs</comment>
