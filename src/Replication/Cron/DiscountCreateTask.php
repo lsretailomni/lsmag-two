@@ -92,15 +92,16 @@ class DiscountCreateTask
         CollectionFactory $replDiscountCollection,
         ContactHelper $contactHelper,
         LoggerInterface $logger
-    ) {
+    )
+    {
         $this->catalogRule = $catalogRule;
         $this->ruleFactory = $ruleFactory;
         $this->jobApply = $jobApply;
         $this->replDiscountRepository = $replDiscountRepository;
-        $this->_replicationHelper       =   $replicationHelper;
-        $this->_contactHelper           =   $contactHelper;
+        $this->_replicationHelper = $replicationHelper;
+        $this->_contactHelper = $contactHelper;
         $this->_lsr = $LSR;
-        $this->replDiscountCollection   =   $replDiscountCollection;
+        $this->replDiscountCollection = $replDiscountCollection;
         $this->logger = $logger;
     }
 
@@ -116,16 +117,14 @@ class DiscountCreateTask
          * And the web store is being set in the Magento.
          * And we need to apply only those rules which are associated to the store assigned to it.
          */
-        $CronProductCheck= $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
-        if($CronProductCheck==1) {
+        $CronProductCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+        if ($CronProductCheck == 1) {
             if ($this->_lsr->isLSR()) {
                 $store_id = $this->_lsr->getDefaultWebStore();
                 $publishedOfferCollection = $this->getUniquePublishedOffers();
                 if (!empty($publishedOfferCollection)) {
                     /** @var \Ls\Replication\Model\ReplDiscount $item */
                     foreach ($publishedOfferCollection as $item) {
-
-
                         $filters = array(
                             //array('field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'),
                             array('field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq')
@@ -144,15 +143,11 @@ class DiscountCreateTask
                         } else {
                             $useAllGroupIds = false;
                             $customerGroupIds = array();
-
                         }
-
 
                         /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
                         foreach ($replDiscounts->getItems() as $replDiscount) {
-
                             // To check if discounts groups are specific for any Member Scheme.
-
                             if (!$useAllGroupIds and !in_array($this->_contactHelper->getCustomerGroupIdByName($replDiscount->getLoyaltySchemeCode()), $customerGroupIds)) {
                                 $customerGroupIds[] = $this->_contactHelper->getCustomerGroupIdByName($replDiscount->getLoyaltySchemeCode());
                             }
@@ -163,27 +158,18 @@ class DiscountCreateTask
                             } else {
                                 $skuArray[] = $replDiscount->getItemId() . '-' . $replDiscount->getVariantId();
                             }
-
-                            $replDiscount->setProcessed(1)
-                                ->save();
-
+                            $replDiscount->setData('processed', '1');
+                            $this->replDiscountRepository->save($replDiscount);
                         }
-
                         if (!empty($skuArray)) {
-
                             $this->addSalesRule($item, $skuArray, $customerGroupIds);
-
                         }
-
-
-                        // apply rules.
                         $this->jobApply->applyAll();
                     }
                 }
             }
 
-        }
-        else {
+        } else {
             $this->logger->debug("Discount Replication cron fails because product replication cron not executed successfully.");
         }
     }
@@ -193,7 +179,7 @@ class DiscountCreateTask
      */
     public function executeManually()
     {
-        $discountsLeftToProcess=0;
+        $discountsLeftToProcess = 0;
         $this->execute();
         return array($discountsLeftToProcess);
     }
@@ -210,7 +196,6 @@ class DiscountCreateTask
         if ($replDiscount instanceof \Ls\Replication\Model\ReplDiscount) {
 
             $websiteIds = $this->_replicationHelper->getAllWebsitesIds();
-
             $rule = $this->ruleFactory->create();
 
             // create root conditions to match with all child conditions
@@ -238,12 +223,12 @@ class DiscountCreateTask
                 ->setFromDate($replDiscount->getFromDate());
 
             // Discounts for aspecific time.
-            if(strtolower($replDiscount->getToDate()) != strtolower('1753-01-01T00:00:00')){
+            if (strtolower($replDiscount->getToDate()) != strtolower('1753-01-01T00:00:00')) {
                 $rule->setToDate($replDiscount->getToDate());
             }
             $rule->setSimpleAction('by_percent')//THis is fixed from Omni so we dont have to change
-                ->setDiscountAmount($replDiscount->getDiscountValue())
-                ->setStopRulesProcessing(1) // NAV only allow one preactive discount at the time, so yes we dont need this dynamic from Nav.
+            ->setDiscountAmount($replDiscount->getDiscountValue())
+                ->setStopRulesProcessing(1)// NAV only allow one preactive discount at the time, so yes we dont need this dynamic from Nav.
                 ->setSortOrder($replDiscount->getPriorityNo());
 
             /**
@@ -254,9 +239,7 @@ class DiscountCreateTask
              * to_fixed.
              *
              */
-
-
-            $rule->setData('conditions',$conditions);
+            $rule->setData('conditions', $conditions);
             $validateResult = $rule->validateData(new \Magento\Framework\DataObject($rule->getData()));
 
 
@@ -280,19 +263,17 @@ class DiscountCreateTask
     /**
      * @return array|\Ls\Replication\Model\ResourceModel\ReplDiscount\Collection
      */
-    protected function getUniquePublishedOffers(){
+    protected function getUniquePublishedOffers()
+    {
 
-        $publishedOfferIds  =   array();
-
+        $publishedOfferIds = array();
         /** @var  \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection $collection */
-        $collection     =   $this->replDiscountCollection->create();
-
+        $collection = $this->replDiscountCollection->create();
         $collection->getSelect()
-                    ->columns('OfferNo')
-                    ->group('OfferNo');
+            ->columns('OfferNo')
+            ->group('OfferNo');
 
-        if($collection->getSize() > 0){
-
+        if ($collection->getSize() > 0) {
             return $collection;
 
         }

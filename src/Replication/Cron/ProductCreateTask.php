@@ -10,38 +10,26 @@ use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
 use Magento\CatalogInventory\Model\Stock\Item;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable\Attribute;
-/*
- * TODO replace all Models with API interfaces.
- * for now, we dont have di.xml which can implement Interface with our model
- *
- */
 
-use Ls\Replication\Model\ReplImageRepository;
-use Ls\Replication\Model\ReplExtendedVariantValueRepository;
-use Ls\Replication\Model\ReplItemVariantRegistrationRepository;
-use Ls\Replication\Model\ReplItemRepository;
-use Ls\Replication\Model\ReplHierarchyLeafRepository;
-use Ls\Replication\Model\ReplBarcodeRepository;
-use Ls\Replication\Model\ReplPriceRepository;
+use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
+use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
+use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
+use Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Framework\Api\Data\ImageContentInterface;
-
-/*
- * For search filters
- */
-
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
-
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use Ls\Omni\Helper\LoyaltyHelper;
-
 use Psr\Log\LoggerInterface;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Core\Model\LSR;
@@ -270,21 +258,16 @@ class ProductCreateTask
                             $productData->save();
                             $item->setData('is_updated', '0');
                             $item->setData('processed', '1');
-                            $item->save();
+                            $this->itemRepository->save($item);
                             $this->cronStatus = true;
-
                         } catch (\Exception $e) {
                             $this->logger->debug($e->getMessage());
                         }
-                    }else if($item->getIsUpdated() == 0 && $item->getProcessed() == 0){
-                        try {
-                            $item->setData('is_updated', '0');
-                            $item->setData('processed', '1');
-                            $item->save();
-                            $this->cronStatus = true;
-                        }catch (\Exception $e) {
-                            $this->logger->debug($e->getMessage());
-                        }
+                    } else if ($item->getIsUpdated() == 0 && $item->getProcessed() == 0) {
+                        $item->setData('is_updated', '0');
+                        $item->setData('processed', '1');
+                        $this->itemRepository->save($item);
+                        $this->cronStatus = true;
                     }
                 } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
                     /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
@@ -329,12 +312,9 @@ class ProductCreateTask
                     if (count($variants) > 0) {
                         $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
                     }
-                    try {
-                        $item->setProcessed(1)->save();
-                        $this->cronStatus = true;
-                    } catch (\Exception $e) {
-                        $this->logger->debug($e->getMessage());
-                    }
+                    $item->setData('processed', '1');
+                    $this->itemRepository->save($item);
+                    $this->cronStatus = true;
                 }
             }
             if (count($items->getItems()) == 0)
@@ -361,7 +341,7 @@ class ProductCreateTask
         $this->execute();
         $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 40);
         $items = $this->itemRepository->getList($criteria);
-        $itemsLeftToProcess=count($items->getItems());
+        $itemsLeftToProcess = count($items->getItems());
         return array($itemsLeftToProcess);
     }
 
@@ -396,11 +376,8 @@ class ProductCreateTask
                 $value = $item->getValue();
             }
             $product->setData($formattedCode, $value);
-            try {
-                $item->setProcessed(1)->save();
-            } catch (\Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
+            $item->setData('processed', '1');
+            $this->replAttributeValueRepositoryInterface->save($item);
         }
         return $product;
     }
@@ -441,15 +418,11 @@ class ProductCreateTask
                         )
                     )->setContent($imageContent);
                 $galleryArray[] = $this->attributeMediaGalleryEntry;
-                try {
-                    $image->setProcessed(1)->save();
-                } catch (\Exception $e) {
-                    $this->logger->debug($e->getMessage());
-                }
+                $image->setData('processed', '1');
+                $this->replImageLinkRepositoryInterface->save($image);
             }
         }
         return $galleryArray;
-
     }
 
     /**
@@ -493,7 +466,7 @@ class ProductCreateTask
                     $this->categoryLinkManagement->assignProductToCategories($hierarchyLeaf->getNavId(), $categoryArray);
                     $hierarchyLeaf->setData('processed', '1');
                     $hierarchyLeaf->setData('is_updated', '0');
-                    $hierarchyLeaf->save();
+                    $this->replHierarchyLeafRepository->save($hierarchyLeaf);
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
@@ -574,11 +547,8 @@ class ProductCreateTask
         foreach ($attributeCodes as $valueCode) {
             $formattedCode = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
             $finalCodes[$valueCode->getDimensions()] = $formattedCode;
-            try {
-                $valueCode->setProcessed(1)->save();
-            } catch (\Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
+            $valueCode->setData('processed', '1');
+            $this->extendedVariantValueRepository->save($valueCode);
         }
         return $finalCodes;
     }
@@ -695,7 +665,7 @@ class ProductCreateTask
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
                         $this->productRepository->save($productData);
                         $image->setData('is_updated', '0');
-                        $image->save();
+                        $this->replImageLinkRepositoryInterface->save($image);
                     }
                 } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
                     continue;
@@ -751,7 +721,7 @@ class ProductCreateTask
                         }
                         $productData->save();
                         $value->setData('is_updated', '0');
-                        $value->save();
+                        $this->replItemVariantRegistrationRepository->save($value);
                     } catch (\Exception $e) {
                         $this->logger->debug($e->getMessage());
                     }
@@ -807,7 +777,8 @@ class ProductCreateTask
                 $productSaved = $this->productRepository->save($productV);
                 $associatedProductIds[] = $productSaved->getId();
                 $value->setData('is_updated', '0');
-                $value->setProcessed(1)->save();
+                $value->setData('processed', '1');
+                $this->replItemVariantRegistrationRepository->save($value);
             }
         }
         $productId = $configProduct->getId();

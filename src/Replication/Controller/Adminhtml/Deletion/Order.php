@@ -106,7 +106,7 @@ class Order extends Action
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         $this->messageManager->addSuccessMessage(__('Orders deleted successfully.'));
-        $this->_redirect('admin/system_config/index');
+        $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
 
 }

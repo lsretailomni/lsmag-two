@@ -161,7 +161,7 @@ class Product extends Action
         $connection->query("DELETE FROM " . $tableURLRewrite . " WHERE entity_type = 'product';");
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
-        $this->_redirect('admin/system_config/index');
+        $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
 
 }
