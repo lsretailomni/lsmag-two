@@ -339,7 +339,7 @@ class ProductCreateTask
     public function executeManually()
     {
         $this->execute();
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 40);
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1);
         $items = $this->itemRepository->getList($criteria);
         $itemsLeftToProcess = count($items->getItems());
         return array($itemsLeftToProcess);
