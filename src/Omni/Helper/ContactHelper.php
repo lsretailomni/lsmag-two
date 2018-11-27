@@ -211,7 +211,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $request = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
         $contact = new Entity\MemberContact();
-
         $contact->setAlternateId($alternate_id)
             ->setEmail($customer->getData('email'))
             ->setFirstName($customer->getData('firstname'))
@@ -310,16 +309,15 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param $customer_post
      * @return bool|Entity\ResetPasswordResponse|\Ls\Omni\Client\ResponseInterface|null
      */
-    public function resetPassword($customer, $customer_post)
+    public function resetPassword(\Magento\Customer\Api\Data\CustomerInterface $customer, $customer_post)
     {
-
         $response = NULL;
         $request = new Operation\ResetPassword();
-        $request->setToken($customer->getData('lsr_token'));
+        $request->setToken($customer->getCustomAttribute('lsr_token')->getValue());
         $resetpassword = new Entity\ResetPassword();
 
-        $resetpassword->setUserName($customer->getData('lsr_username'))
-            ->setResetCode($customer->getData('lsr_resetcode'))
+        $resetpassword->setUserName($customer->getCustomAttribute('lsr_username')->getValue())
+            ->setResetCode($customer->getCustomAttribute('lsr_resetcode')->getValue())
             ->setNewPassword($customer_post['password']);
 
         try {

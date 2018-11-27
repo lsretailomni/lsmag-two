@@ -62,51 +62,54 @@ class Offers extends \Magento\Framework\View\Element\Template
      */
     public function fetchImages(\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon)
     {
+        try {
+            $images = array();
+            $index = 0;
 
-        $images = array();
-        $index = 0;
-
-        $img = $coupon->getImages()
-            ->getImageView();
+            $img = $coupon->getImages()
+                ->getImageView();
 
 
-        if (empty($img)) {
-            return $img;
-        }
-        // Normally it should return a single object, but in case if it return multiple images than we are only considering the first one,
-        if (is_array($img)) {
-            $img = $img[0];
-        }
-        $index++;
-        $img_size = $img->getImgSize();
-        if ($img_size->getWidth() == 0 || $img_size->getHeight() == 0) {
-            $img_size->setWidth(100);
-            $img_size->setHeight(100);
-        }
-
-        $result = $this->loyaltyHelper->getImageById($img->getId(), $img_size);
-
-        if ($result instanceof \Ls\Omni\Client\Ecommerce\Entity\ImageView) {
-            $offerpath = $this->getMediaPathtoStore();
-            if (!is_dir($offerpath)) {
-                $this->_file->mkdir($offerpath, 0775);
+            if (empty($img)) {
+                return $img;
             }
-            $format = strtolower($result->getFormat());
-            $id = $img->getId();
-            $output_file = "{$id}-{$index}.$format";
-            $file = "{$offerpath}{$output_file}";
-
-            if (!$this->_file->fileExists($file)) {
-                $base64 = $result->getImage();
-                $image_file = fopen($file, 'wb');
-                fwrite($image_file, base64_decode($base64));
-                fclose($image_file);
+            // Normally it should return a single object, but in case if it return multiple images than we are only considering the first one,
+            if (is_array($img)) {
+                $img = $img[0];
             }
-            $images[] = "{$output_file}";
+            $index++;
+            $img_size = $img->getImgSize();
+            if ($img_size->getWidth() == 0 || $img_size->getHeight() == 0) {
+                $img_size->setWidth(100);
+                $img_size->setHeight(100);
+            }
 
+            $result = $this->loyaltyHelper->getImageById($img->getId(), $img_size);
+
+            if ($result instanceof \Ls\Omni\Client\Ecommerce\Entity\ImageView) {
+                $offerpath = $this->getMediaPathtoStore();
+                if (!is_dir($offerpath)) {
+                    $this->_file->mkdir($offerpath, 0775);
+                }
+                $format = strtolower($result->getFormat());
+                $id = $img->getId();
+                $output_file = "{$id}-{$index}.$format";
+                $file = "{$offerpath}{$output_file}";
+
+                if (!$this->_file->fileExists($file)) {
+                    $base64 = $result->getImage();
+                    $image_file = fopen($file, 'wb');
+                    fwrite($image_file, base64_decode($base64));
+                    fclose($image_file);
+                }
+                $images[] = "{$output_file}";
+
+            }
+            return $images;
         }
-
-        return $images;
+        catch(\Exception $e){
+            $this->logger->error($e->getMessage());
+        }
     }
 
     /**

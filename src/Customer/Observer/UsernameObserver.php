@@ -64,20 +64,26 @@ class UsernameObserver implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
-        $controller_action = $observer->getData('controller_action');
-        $parameters = $controller_action->getRequest()->getParams();
-        $this->customerSession->setLsrUsername($parameters['lsr_username']);
-        if ($this->contactHelper->isUsernameExist($parameters['lsr_username'])) {
-            $this->messageManager->addErrorMessage(
-                __('Username already exist, please try another one.')
-            );
-            $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-            $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
-            $this->customerSession->setCustomerFormData($parameters);
+        try {
+            /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
+            $controller_action = $observer->getData('controller_action');
+            $parameters = $controller_action->getRequest()->getParams();
+            $this->customerSession->setLsrUsername($parameters['lsr_username']);
+            if ($this->contactHelper->isUsernameExist($parameters['lsr_username'])) {
+                $this->messageManager->addErrorMessage(
+                    __('Username already exist, please try another one.')
+                );
+                $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
+                $this->customerSession->setCustomerFormData($parameters);
+            }
+
+            return $this;
         }
 
-        return $this;
+        catch (\Exception $e){
+            $this->logger->error($e->getMessage());
+        }
 
 
     }
