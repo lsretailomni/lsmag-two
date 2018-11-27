@@ -3,7 +3,7 @@
 namespace Ls\Replication\Cron;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Ls\Replication\Model\ReplBarcodeRepository;
+use Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
 use Psr\Log\LoggerInterface;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Core\Model\LSR;
@@ -37,13 +37,13 @@ class BarcodeUpdateTask
         $this->replBarcodeRepository = $replBarcodeRepository;
         $this->logger = $logger;
         $this->replicationHelper = $replicationHelper;
-        $this->_lsr=$LSR;
+        $this->_lsr = $LSR;
     }
 
     public function execute()
     {
-        $CronProductCheck= $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
-        if($CronProductCheck==1) {
+        $CronProductCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+        if ($CronProductCheck == 1) {
             $criteria = $this->replicationHelper->buildCriteriaForNewItems();
 
             /** @var \Ls\Replication\Model\ReplBarcodeSearchResults $replAttributes */
@@ -60,9 +60,9 @@ class BarcodeUpdateTask
                         $productData = $this->productRepository->get($sku);
                         if (isset($productData)) {
                             $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
-                            $productData->save();
+                            $this->productRepository->save($productData);
                             $replBarcode->setData('is_updated', '0');
-                            $replBarcode->save();
+                            $this->replBarcodeRepository->save($replBarcode);
                         }
                     } catch (\Exception $e) {
                         $this->logger->debug($e->getMessage());
@@ -71,9 +71,7 @@ class BarcodeUpdateTask
             }
 
 
-
-        }
-        else {
+        } else {
             $this->logger->debug("Barcode Replication cron fails because product replication cron not executed successfully.");
         }
     }
@@ -87,7 +85,7 @@ class BarcodeUpdateTask
         $this->execute();
         $criteria = $this->replicationHelper->buildCriteriaForNewItems();
         $replBarcodes = $this->replBarcodeRepository->getList($criteria);
-        $barcodesLeftToProcess=count($replBarcodes->getItems());
+        $barcodesLeftToProcess = count($replBarcodes->getItems());
         return array($barcodesLeftToProcess);
     }
 

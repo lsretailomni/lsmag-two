@@ -4,6 +4,7 @@
  * @package     Ls_Replication
  * @copyright   Copyright (c) 2018 LSRetail
  */
+
 namespace Ls\Replication\Controller\Adminhtml\Cron;
 
 use Magento\Backend\App\Action\Context;
@@ -39,12 +40,12 @@ class Grid extends Action
     )
     {
         $this->resultPageFactory = $resultPageFactory;
-        $this->_objectManager=$objectManager;
+        $this->_objectManager = $objectManager;
         parent::__construct($context);
 
 
-
     }
+
     public function execute()
     {
         try {
@@ -55,13 +56,13 @@ class Grid extends Action
             if ($jobUrl != "") {
                 $cron = $this->_objectManager->create($jobUrl);
                 $info = $cron->executeManually();
-                if(!empty($info)) {
-                    $jobControllerUrl= '<a href="'. $this->_url->getUrl(self::URL_PATH_Execute, ['joburl' => $jobUrl,'jobname' =>$jobName]).'">Click Here</a>';
-                    $executeMoreData='';
-                    if($info[0] >0) {
+                if (!empty($info)) {
+                    $jobControllerUrl = '<a href="' . $this->_url->getUrl(self::URL_PATH_Execute, ['joburl' => $jobUrl, 'jobname' => $jobName]) . '">Click Here</a>';
+                    $executeMoreData = '';
+                    if ($info[0] > 0) {
                         $executeMoreData = ' Do you want to execute More Data? ' . $jobControllerUrl;
                     }
-                    $this->messageManager->addSuccess($jobName . ' Cron has been executed. Remaining entries  ' .$info[0].'. '.$executeMoreData);
+                    $this->messageManager->addSuccessMessage(__($jobName . ' Cron has been executed. Remaining entries  ' . $info[0] . '. ' . $executeMoreData));
                 }
                 $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
@@ -69,8 +70,7 @@ class Grid extends Action
             } else {
                 return $resultPage;
             }
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
 
         }
     }

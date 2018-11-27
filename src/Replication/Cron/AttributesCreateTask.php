@@ -2,17 +2,15 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Replication\Model\ReplExtendedVariantValueRepository;
+use Ls\Replication\Api\ReplAttributeRepositoryInterface;
+use Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
+use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Eav\Model\Entity;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 use Psr\Log\LoggerInterface;
 use Ls\Replication\Helper\ReplicationHelper;
-
-
-use Ls\Replication\Api\ReplAttributeRepositoryInterface;
-use Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
 use Ls\Core\Model\LSR;
 
 
@@ -22,18 +20,17 @@ class AttributesCreateTask
     /**
      * @var ReplExtendedVariantValueRepository
      */
-
     protected $replExtendedVariantValueRepository;
+
     /**
      * @var ProductAttributeRepositoryInterface
      */
-
     protected $productAttributeRepository;
+
     /**
      * @var EavSetupFactory
      */
     protected $eavSetupFactory;
-
 
     /** @var ReplAttributeRepositoryInterface */
     protected $replAttributeRepositoryInterface;
@@ -49,19 +46,16 @@ class AttributesCreateTask
     /** @var ReplicationHelper */
     protected $replicationHelper;
 
+    /** @var LSR */
+    protected $_lsr;
 
     /**
      * @var LoggerInterface
      */
-
-    /** @var LSR */
-    protected $_lsr;
-
-
     protected $logger;
 
     /** @var Cron Checking */
-    protected $cronStatus=false;
+    protected $cronStatus = false;
 
     /**
      * AttributesCreateTask constructor.
@@ -114,7 +108,7 @@ class AttributesCreateTask
         // Process variants attributes which are going to be used for configurable product
         $this->processVariantAttributes();
 
-        $this->replicationHelper->updateCronStatus($this->cronStatus,LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+        $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
 
     }
 
@@ -124,7 +118,7 @@ class AttributesCreateTask
         $criteria = $this->replicationHelper->buildCriteriaForNewItems();
         /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
         $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
-        $itemsLeftToProcess=count($replAttributes->getItems());
+        $itemsLeftToProcess = count($replAttributes->getItems());
         return array($itemsLeftToProcess);
     }
 
@@ -154,13 +148,13 @@ class AttributesCreateTask
 
         /** @var \Ls\Replication\Model\ReplAttribute $replAttribute */
         foreach ($replAttributes->getItems() as $replAttribute) {
-                $this->createAttributeByObject($replAttribute, $defaultAttributeSetId, $defaultGroupId);
-                if ($replAttribute->getValueType() == '5' || $replAttribute->getValueType() == '7') {
-                    $this->addAttributeOptions($replAttribute->getCode());
-                }
-                $replAttribute->setData('processed', '1');
-                $replAttribute->save();
-            $this->cronStatus=true;
+            $this->createAttributeByObject($replAttribute, $defaultAttributeSetId, $defaultGroupId);
+            if ($replAttribute->getValueType() == '5' || $replAttribute->getValueType() == '7') {
+                $this->addAttributeOptions($replAttribute->getCode());
+            }
+            $replAttribute->setData('processed', '1');
+            $this->replAttributeRepositoryInterface->save($replAttribute);
+            $this->cronStatus = true;
         }
 
     }
@@ -183,11 +177,8 @@ class AttributesCreateTask
         $variantCodes = array();
         /** @var \Ls\Replication\Model\ReplExtendedVariantValue $variant */
         foreach ($variants as $variant) {
-            try {
-                $variant->setProcessed('1')->save();
-            } catch (\Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
+            $variant->setData('processed', '1');
+            $this->replExtendedVariantValueRepository->save($variant);
             if (empty($variantCodes[$variant->getCode()]) || !in_array($variant->getValue(), $variantCodes[$variant->getCode()]))
                 $variantCodes[$variant->getCode()][] = $variant->getValue();
         }
@@ -267,7 +258,7 @@ class AttributesCreateTask
                 }
             }
 
-            $this->cronStatus=true;
+            $this->cronStatus = true;
         }
     }
 
@@ -368,7 +359,7 @@ class AttributesCreateTask
         /** @var \Ls\Replication\Model\ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
             $item->setProcessed('1');
-            $item->save();
+            $this->replAttributeOptionValueRepositoryInterface->save($item);
             // if have existing option and current value is a part of existing option then don't do anything
             if (!empty($existingOptions) and in_array($item->getValue(), $existingOptions)) {
                 continue;

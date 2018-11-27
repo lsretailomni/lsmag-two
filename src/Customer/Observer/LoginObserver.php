@@ -120,193 +120,199 @@ class LoginObserver implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
-        $controller_action = $observer->getData('controller_action');
+        try {
+            /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
+            $controller_action = $observer->getData('controller_action');
 
-        $login = $controller_action->getRequest()->getPost('login');
-        $email = $username = $login['username'];
+            $login = $controller_action->getRequest()->getPost('login');
+            $email = $username = $login['username'];
 
-        $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
-        if ($is_email) {
-            $search = $this->contactHelper->search($username);
-            $found = !is_null($search)
-                && ($search instanceof Entity\MemberContact)
-                && !empty($search->getEmail());
+            $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
+            if ($is_email) {
+                $search = $this->contactHelper->search($username);
+                $found = !is_null($search)
+                    && ($search instanceof Entity\MemberContact)
+                    && !empty($search->getEmail());
 
-            if (!$found) {
-                $this->messageManager->addErrorMessage(
-                    __('Sorry. No account found with the provided email address')
-                );
-                $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
-                return $this;
-            }
-            $email = $search->getEmail();
-        }
-
-        if ($is_email) {
-            $filters = [$this->filterBuilder
-                ->setField('email')
-                ->setConditionType('eq')
-                ->setValue($email)
-                ->create()];
-            $this->searchCriteriaBuilder->addFilters($filters);
-            $searchCriteria = $this->searchCriteriaBuilder->create();
-            $searchResults = $this->customerRepository->getList($searchCriteria);
-
-            if ($searchResults->getTotalCount() == 0) {
-                $this->messageManager->addErrorMessage(
-                    __('Unfortunately email login is only available for members registered in Magento')
-                );
-                $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
-
-                return $this;
-            } else {
-                foreach ($searchResults->getItems() as $match) {
-                    $customerObj = $this->_customerFactory->create()
-                        ->load($match->getId());
-                    break;
+                if (!$found) {
+                    $this->messageManager->addErrorMessage(
+                        __('Sorry. No account found with the provided email address')
+                    );
+                    $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                    $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
+                    return $this;
                 }
-                $username = $customerObj->getData('lsr_username');
+                $email = $search->getEmail();
             }
-        }
 
-        /** @var  Entity\MemberContact $result */
-        $result = $this->contactHelper->login($username, $login['password']);
+            if ($is_email) {
+                $filters = [$this->filterBuilder
+                    ->setField('email')
+                    ->setConditionType('eq')
+                    ->setValue($email)
+                    ->create()];
+                $this->searchCriteriaBuilder->addFilters($filters);
+                $searchCriteria = $this->searchCriteriaBuilder->create();
+                $searchResults = $this->customerRepository->getList($searchCriteria);
 
-        if ($result == FALSE) {
-            $this->messageManager->addErrorMessage(
-                __('Invalid Omni login or Omni password')
-            );
-            $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-            $observer->getControllerAction()
-                ->getResponse()
-                ->setRedirect($this->_redirectInterface->getRefererUrl());
+                if ($searchResults->getTotalCount() == 0) {
+                    $this->messageManager->addErrorMessage(
+                        __('Unfortunately email login is only available for members registered in Magento')
+                    );
+                    $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                    $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
+
+                    return $this;
+                } else {
+                    foreach ($searchResults->getItems() as $match) {
+                        $customerObj = $this->customerRepository->getById($match->getId());
+                        break;
+                    }
+                    if (!(is_null($customerObj->getCustomAttribute('lsr_username')))) {
+                        $username = $customerObj->getCustomAttribute('lsr_username')->getValue();
+                    }
+                }
+            }
+
+            /** @var  Entity\MemberContact $result */
+            $result = $this->contactHelper->login($username, $login['password']);
+
+            if ($result == FALSE) {
+                $this->messageManager->addErrorMessage(
+                    __('Invalid Omni login or Omni password')
+                );
+                $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                $observer->getControllerAction()
+                    ->getResponse()
+                    ->setRedirect($this->_redirectInterface->getRefererUrl());
+                return $this;
+            }
+
+            if ($result instanceof Entity\MemberContact) {
+                $filters = [$this->filterBuilder
+                    ->setField('email')
+                    ->setConditionType('eq')
+                    ->setValue($result->getEmail())
+                    ->create()];
+                $this->searchCriteriaBuilder->addFilters($filters);
+                $searchCriteria = $this->searchCriteriaBuilder->create();
+                $searchResults = $this->customerRepository->getList($searchCriteria);
+
+                $customer = NULL;
+                if ($searchResults->getTotalCount() == 0) {
+                    $customer = $this->contactHelper->customer($result, $login['password']);
+                } else {
+                    foreach ($searchResults->getItems() as $match) {
+                        $customer = $this->customerRepository->getById($match->getId());
+                        break;
+                    }
+                }
+
+                $customer_email = $customer->getEmail();
+                $websiteId = $this->_storeManager->getWebsite()->getWebsiteId();
+                $customer = $this->_customerFactory->create()
+                    ->setWebsiteId($websiteId)
+                    ->loadByEmail($customer_email);
+                $card = $result->getCard();
+
+                if (is_null($customer->getData('lsr_id'))) {
+                    $customer->setData('lsr_id', $result->getId());
+                }
+                if (!$is_email && empty($customer->getData('lsr_username'))) {
+                    $customer->setData('lsr_username', $username);
+                }
+                if (is_null($customer->getData('lsr_cardid'))) {
+                    $customer->setData('lsr_cardid', $card->getId());
+                }
+                $token = $result->getLoggedOnToDevice()
+                    ->getSecurityToken();
+
+                $customer->setData('lsr_token', $token);
+                $customer->setData('attribute_set_id', CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
+
+                if ($result->getAccount()->getScheme()->getId()) {
+                    $customerGroupId = $this->contactHelper->getCustomerGroupIdByName($result->getAccount()->getScheme()->getId());
+                    $customer->setGroupId($customerGroupId);
+                }
+
+                $customer->save();
+                $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
+                $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
+                $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $result->getId());
+                if ($card instanceof Entity\Card && !is_null($card->getId())) {
+                    $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $card->getId());
+                }
+
+                $this->customerSession->setCustomerAsLoggedIn($customer);
+
+                /** @var Entity\OneList $oneListBasket */
+                $oneListBasket = $result->getBasket();
+
+                $quote = $this->checkoutSession->getQuote();
+
+
+                if (!is_array($oneListBasket) and $oneListBasket instanceof Entity\OneList and $oneListBasket->getId() != '') {
+                    // If customer has previously one list created then get that and sync the current information with that.
+
+                    // delete onelist in session if any for the guest user.
+
+                    if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+                        // delete previous onelist in session.
+                        $this->basketHelper->delete($this->customerSession->getData(LSR::SESSION_CART_ONELIST));
+                    }
+
+
+                    // store the onelist returned from Omni into Magento session.
+                    $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $oneListBasket);
+
+                    // update items from quote to basket.
+                    $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
+
+                    // update the onelist to Omni.
+                    $this->basketHelper->update($oneList);
+
+                } elseif ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+
+                    // if customer already has onelist created then update the list to get the information with user.
+
+
+                    $oneListBasket = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
+
+                    //Update onelist in Omni with user data.
+
+                    $oneListBasket->setCardId($card->getId())
+                        ->setContactId($result->getId())
+                        ->setDescription('OneList Magento')
+                        ->setIsDefaultList(TRUE)
+                        ->setListType(Entity\Enum\ListType::BASKET);
+
+                    // update items from quote to basket.
+                    $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
+                    // update the onelist to Omni.
+
+                    $this->basketHelper->update($oneList);
+                } elseif (count($quote->getAllItems()) > 0) {
+                    // get the onelist or if not exist then create new one with empty data of customer.
+
+                    $oneList = $this->basketHelper->get();
+
+                    $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
+
+                    $this->basketHelper->update($oneList);
+
+                }
+
+
+            } else {
+                $this->customerSession->addError(
+                    __('The service is currently unavailable. Please try again later.')
+                );
+            }
             return $this;
         }
-
-        if ($result instanceof Entity\MemberContact) {
-            $filters = [$this->filterBuilder
-                ->setField('email')
-                ->setConditionType('eq')
-                ->setValue($result->getEmail())
-                ->create()];
-            $this->searchCriteriaBuilder->addFilters($filters);
-            $searchCriteria = $this->searchCriteriaBuilder->create();
-            $searchResults = $this->customerRepository->getList($searchCriteria);
-
-            $customer = NULL;
-            if ($searchResults->getTotalCount() == 0) {
-                $customer = $this->contactHelper->customer($result, $login['password']);
-            } else {
-                foreach ($searchResults->getItems() as $match) {
-                    $customer = $this->customerRepository->getById($match->getId());
-                    break;
-                }
-            }
-
-            $customer_email = $customer->getEmail();
-            $websiteId = $this->_storeManager->getWebsite()->getWebsiteId();
-            $customer = $this->_customerFactory->create()
-                ->setWebsiteId($websiteId)
-                ->loadByEmail($customer_email);
-            $card = $result->getCard();
-            if (is_null($customer->getData('lsr_id'))) {
-                $customer->setData('lsr_id', $result->getId());
-            }
-            if (!$is_email && empty($customer->getData('lsr_username'))) {
-                $customer->setData('lsr_username', $username);
-            }
-            if (is_null($customer->getData('lsr_cardid'))) {
-                $customer->setData('lsr_cardid', $card->getId());
-            }
-            $token = $result->getLoggedOnToDevice()
-                ->getSecurityToken();
-
-            $customer->setData('lsr_token', $token);
-            $customer->setData('attribute_set_id', CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
-
-            if($result->getAccount()->getScheme()->getId()){
-                $customerGroupId      =   $this->contactHelper->getCustomerGroupIdByName($result->getAccount()->getScheme()->getId());
-                $customer->setGroupId($customerGroupId);
-            }
-
-            $customer->save();
-            $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
-            $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
-            $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $result->getId());
-            if ($card instanceof Entity\Card && !is_null($card->getId())) {
-                $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $card->getId());
-            }
-
-            $this->customerSession->setCustomerAsLoggedIn($customer);
-
-            /** @var Entity\OneList $oneListBasket */
-            $oneListBasket       =   $result->getBasket();
-
-            $quote      =   $this->checkoutSession->getQuote();
-
-
-            if(!is_array($oneListBasket) and $oneListBasket instanceof Entity\OneList and $oneListBasket->getId() != ''){
-                // If customer has previously one list created then get that and sync the current information with that.
-
-                // delete onelist in session if any for the guest user.
-
-                if($this->customerSession->getData(LSR::SESSION_CART_ONELIST)){
-                    // delete previous onelist in session.
-                    $this->basketHelper->delete($this->customerSession->getData(LSR::SESSION_CART_ONELIST));
-                }
-
-
-                // store the onelist returned from Omni into Magento session.
-                $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $oneListBasket);
-
-                // update items from quote to basket.
-                $oneList       =   $this->basketHelper->setOneListQuote($quote, $oneListBasket);
-
-                // update the onelist to Omni.
-                $this->basketHelper->update($oneList);
-
-            }elseif($this->customerSession->getData(LSR::SESSION_CART_ONELIST)){
-
-                // if customer already has onelist created then update the list to get the information with user.
-
-
-                $oneListBasket      =   $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-
-                //Update onelist in Omni with user data.
-
-                $oneListBasket->setCardId($card->getId())
-                            ->setContactId($result->getId())
-                            ->setDescription('OneList Magento')
-                            ->setIsDefaultList(TRUE)
-                            ->setListType(Entity\Enum\ListType::BASKET);
-
-                // update items from quote to basket.
-                $oneList       =   $this->basketHelper->setOneListQuote($quote, $oneListBasket);
-                // update the onelist to Omni.
-
-                $this->basketHelper->update($oneList);
-            }elseif(count($quote->getAllItems()) > 0){
-                // get the onelist or if not exist then create new one with empty data of customer.
-
-                $oneList       = $this->basketHelper->get();
-
-                $oneList       =   $this->basketHelper->setOneListQuote($quote, $oneList);
-
-                $this->basketHelper->update($oneList);
-
-            }
-
-
-
-        } else {
-            $this->customerSession->addError(
-                __('The service is currently unavailable. Please try again later.')
-            );
+        catch(\Exception $e){
+            $this->logger->error($e->getMessage());
         }
-        return $this;
 
     }
 }

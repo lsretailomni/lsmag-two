@@ -64,6 +64,7 @@ class LSR
     const SC_REPLICATION_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
     const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
+    const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
 
     // CRON CHECKING
 
@@ -71,10 +72,10 @@ class LSR
     const SC_SUCCESS_CRON_ATTRIBUTE = 'ls_mag/replication/success_repl_attribute';
 
     //check for Category
-    const SC_SUCCESS_CRON_CATEGORY  = 'ls_mag/replication/success_repl_category';
+    const SC_SUCCESS_CRON_CATEGORY = 'ls_mag/replication/success_repl_category';
 
     //check for Product
-    const SC_SUCCESS_CRON_PRODUCT   = 'ls_mag/replication/success_repl_product';
+    const SC_SUCCESS_CRON_PRODUCT = 'ls_mag/replication/success_repl_product';
 
 
     // ENHANCEMENT
@@ -111,6 +112,12 @@ class LSR
     const SC_CLICKCOLLECT_HERE_APP_ID = 'carriers/clickcollect/app_id';
     const SC_CLICKCOLLECT_HERE_APP_CODE = 'carriers/clickcollect/app_code';
     const SC_CLICKCOLLECT_STOCKLEVEL_STORES = 'ls_mag/clickcollectsetup/showstockforstores';
+    const SC_CLICKCOLLECT_GOOGLE_API_KEY = 'omni_clickandcollect/general/maps_api_key';
+    const SC_CLICKCOLLECT_DEFAULT_LATITUDE = 'omni_clickandcollect/general/default_latitude';
+    const SC_CLICKCOLLECT_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
+    const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
+    const MSG_NOT_AVAILABLE_NOTICE_TITLE = "Notice";
+    const MSG_NOT_AVAILABLE_NOTICE_CONTENT = "This item may not be available using click and collect.";
     // CUSTOM CONFIGURATION PATHS
     const CONFIG_REPLICATION_JOBS = 'ls_mag/replication/jobs';
     const CONFIG_CONFIGDATA_WATCHES = 'ls_mag/configdata/watches';
@@ -196,6 +203,9 @@ class LSR
     const ORDER_STATE_OPEN = 'OPEN';
     const ORDER_STATE_PAID = 'PAID';
     const ORDER_STATE_COMPLETE = 'COMPLETE';
+    //Store Hours Format
+    const STORE_HOURS_TIME_FORMAT = 'h:i A';
+
     protected $_scopeConfig;
     // END POINTS
     protected $endpoints = [
@@ -267,15 +277,71 @@ class LSR
     /**
      * @return string
      */
-    public function getInvalidMessageContainer(){
+    public function getInvalidMessageContainer()
+    {
 
-        $message     = '<div class="invalid-lsr">';
-        $message    .= '<strong>LS Retail Setup Incomplete</strong>';
-        $message    .= '<br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>';
-        $message    .= 'Go to Stores > Configuration > LS Retail > General Configuration.';
-        $message    .= '</div>';
+        $message = '<div class="invalid-lsr">';
+        $message .= '<strong>LS Retail Setup Incomplete</strong>';
+        $message .= '<br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>';
+        $message .= 'Go to Stores > Configuration > LS Retail > General Configuration.';
+        $message .= '</div>';
 
         return $message;
     }
 
+    /**
+     * Get default google map api key from config
+     * @return string
+     */
+    public function getGoogleMapsApiKey()
+    {
+        $configValue = $this->_scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
+            \Magento\Framework\App\Config\ScopeConfigInterface::
+            SCOPE_TYPE_DEFAULT
+        );
+        return $configValue;
+    }
+
+    /**
+     * Get default latitude from config
+     * @return string
+     */
+    public function getDefaultLatitude()
+    {
+        $configValue = $this->_scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
+            \Magento\Framework\App\Config\ScopeConfigInterface::
+            SCOPE_TYPE_DEFAULT
+        );
+        return $configValue;
+    }
+
+    /**
+     * Get default longitude from config
+     * @return string
+     */
+    public function getDefaultLongitude()
+    {
+        $configValue = $this->_scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
+            \Magento\Framework\App\Config\ScopeConfigInterface::
+            SCOPE_TYPE_DEFAULT
+        );
+        return $configValue;
+    }
+
+    /**
+     * Get default default zoom from config
+     * @return string
+     */
+    public function getDefaultZoom()
+    {
+        $configValue = $this->_scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_DEFAULT_ZOOM,
+            \Magento\Framework\App\Config\ScopeConfigInterface::
+            SCOPE_TYPE_DEFAULT
+        );
+        return $configValue;
+    }
 }

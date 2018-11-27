@@ -6,8 +6,6 @@ use IteratorAggregate;
 use Ls\Core\Helper\Data as LsHelper;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Omni\Client\OperationInterface;
-use Ls\Replication\Model\ReplHierarchyNode;
-use Ls\Replication\Model\ReplHierarchyNodeRepository;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
@@ -36,19 +34,19 @@ abstract class AbstractReplicationTask
     /** @var array List of Replication Tables with unique field */
     static private $jobCodeUniqueFieldArray = array(
         "ls_mag/replication/repl_attribute" => array("Code"),
-        "ls_mag/replication/repl_attribute_option_value" => array("Code", "Sequence"),
-        "ls_mag/replication/repl_attribute_value" => array("Code", "LinkField1"),
+        "ls_mag/replication/repl_attribute_option_value" => array("Code", "Sequence", "Value"),
+        "ls_mag/replication/repl_attribute_value" => array("Code", "LinkField1", "LinkField2", "LinkField3", "Value"),
         "ls_mag/replication/repl_barcode" => array("nav_id"),
         "ls_mag/replication/repl_country_code" => array("Name"),
         "ls_mag/replication/repl_currency" => array("CurrencyCode"),
         "ls_mag/replication/repl_currency_exch_rate" => array("CurrencyCode"),
         "ls_mag/replication/repl_customer" => array("AccountNumber"),
         "ls_mag/replication/repl_data_translation" => array("TranslationId"),
-        "ls_mag/replication/repl_discount" => array("ItemId", "LoyaltySchemeCode","StoreId"),
+        "ls_mag/replication/repl_discount" => array("ItemId", "LoyaltySchemeCode", "StoreId"),
         "ls_mag/replication/repl_discount_validation" => array("nav_id"),
         "ls_mag/replication/repl_extended_variant_value" => array("Code", "FrameworkCode", "ItemId"),
         "ls_mag/replication/repl_hierarchy" => array("nav_id"),
-        "ls_mag/replication/repl_hierarchy_leaf" => array("nav_id","NodeId"),
+        "ls_mag/replication/repl_hierarchy_leaf" => array("nav_id", "NodeId"),
         "ls_mag/replication/repl_hierarchy_node" => array("nav_id"),
         "ls_mag/replication/repl_image" => array("nav_id"),
         "ls_mag/replication/repl_image_link" => array("ImageId", "KeyValue"),
@@ -130,8 +128,13 @@ abstract class AbstractReplicationTask
             if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
                 $batchSize = $isBatchSizeSet;
             }
-            $webStoreID = '';
-            if (in_array($this->getConfigPath(), self::$store_id_needed)) {
+            $isAllStoresItemsSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_ALL_STORES_ITEMS);
+            if ($isAllStoresItemsSet) {
+                $webStoreID = '';
+                if (in_array($this->getConfigPath(), self::$store_id_needed)) {
+                    $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+                }
+            } else {
                 $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             }
             while ($remaining != 0) {
@@ -153,7 +156,7 @@ abstract class AbstractReplicationTask
                             $singleObject = (object)$traversable->getArrayCopy();
                             $entity = $this->getFactory()->create();
                             $entity->setScope('default')->setScopeId(0);
-                            foreach ($singleObject as $keyprop=>$valueprop) {
+                            foreach ($singleObject as $keyprop => $valueprop) {
                                 if ($keyprop == 'Id') {
                                     $set_method = 'setNavId';
                                 } else {
@@ -180,67 +183,8 @@ abstract class AbstractReplicationTask
 
     function executeManually()
     {
-        $lsr = $this->getLsrModel();
-        if ($lsr->isLSR()) {
-            $this->rep_helper->flushConfig();
-            $properties = $this->getProperties();
-            $batchSize = 100;
-            $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE);
-            if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
-                $batchSize = $isBatchSizeSet;
-            }
-            $last_key = $this->getLastKey();
-            $fullReplication = 1;
-            $isFirstTime = $this->isFirstTime();
-            if (isset($isFirstTime) && $isFirstTime == 1) {
-                $fullReplication = 0;
-                if ($this->isLastKeyAlwaysZero())
-                    return;
-            }
-            $webStoreID = '';
-            if (in_array($this->getConfigPath(), self::$store_id_needed)) {
-                $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
-            }
-            $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
-            $response = $request->execute();
-            $result = $response->getResult();
-            $last_key = $result->getLastKey();
-            $remaining = $result->getRecordsRemaining();
-            $traversable = $this->getIterator($result);
-            if (!is_null($traversable)) {
-                if (count($traversable) > 0) {
-                    foreach ($traversable as $source) {
-                        $this->saveSource($properties, $source);
-                    }
-                } else {
-                    $arrayTraversable = (array)$traversable;
-                    if (count($arrayTraversable) > 0) {
-                        $entityClass = new ReflectionClass($this->getMainEntity());
-                        $singleObject = (object)$traversable->getArrayCopy();
-                        $entity = $this->getFactory()->create();
-                        $entity->setScope('default')->setScopeId(0);
-                        foreach ($singleObject as $keyprop => $valueprop) {
-                            if ($keyprop == 'Id') {
-                                $set_method = 'setNavId';
-                            } else {
-                                $set_method = "set$keyprop";
-                            }
-                            $entity->{$set_method}($valueprop);
-                        }
-                        try {
-                            $this->getRepository()->save($entity);
-                        } catch (\Exception $e) {
-                            $this->logger->debug($e->getMessage());
-                        }
-                    }
-                }
-            }
-            $this->persistLastKey($last_key);
-            $this->saveReplicationStatus(1);
-
-        }
-
-        return array($remaining,$batchSize);
+        $this->execute();
+        return array(0);
     }
 
     protected function toObject(array $array, $object)
@@ -299,7 +243,6 @@ abstract class AbstractReplicationTask
     {
         if (is_null($this->properties)) {
             $reflected_entity = new ReflectionClass($this->getMainEntity());
-
             $properties = [];
             foreach ($reflected_entity->getProperties() as $property) {
                 $properties[] = $property->getName();

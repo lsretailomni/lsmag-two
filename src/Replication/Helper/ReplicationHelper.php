@@ -130,7 +130,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             );
         }
         $criteria->addFilter('IsDeleted', 0, 'eq');
-        $criteria->setPageSize($pagesize);
+        if($pagesize!=-1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
