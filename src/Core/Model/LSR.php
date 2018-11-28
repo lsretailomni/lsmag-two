@@ -64,6 +64,7 @@ class LSR
     const SC_REPLICATION_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
     const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
+    const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
 
     // CRON CHECKING
@@ -98,6 +99,7 @@ class LSR
     const SC_LOYALTY_SHOW_NOTIFICATIONS_LEFT = 'ls_mag/loyalty/show_notifications_left';
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
+    const SC_CART_PRODUCT_AVAILABILITY = 'ls_mag/one_list/product_availability';
     const SC_CART_UPDATE_INVENTORY = 'ls_mag/one_list/update_inventory';
     const SC_CART_GUEST_CHECKOUT_EMAIL = 'ls_mag/one_list/guest_checkout_email';
     const SC_CART_GUEST_CHECKOUT_PASSWORD = 'ls_mag/one_list/guest_checkout_password';
