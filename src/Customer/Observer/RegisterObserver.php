@@ -7,6 +7,10 @@ use Ls\Omni\Helper\ContactHelper;
 use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Core\Model\LSR;
 
+/**
+ * Class RegisterObserver
+ * @package Ls\Customer\Observer
+ */
 class RegisterObserver implements ObserverInterface
 {
     /** @var ContactHelper $contactHelper */
@@ -15,8 +19,8 @@ class RegisterObserver implements ObserverInterface
     protected $filterBuilder;
     /** @var \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder */
     protected $searchCriteriaBuilder;
-    /** @var \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository */
-    protected $customerRepository;
+    /** @var \Magento\Customer\Model\ResourceModel\Customer */
+    protected $customerResourceModel;
     /** @var \Magento\Framework\Message\ManagerInterface $messageManager */
     protected $messageManager;
     /** @var \Magento\Framework\Registry $registry */
@@ -31,7 +35,7 @@ class RegisterObserver implements ObserverInterface
      * @param ContactHelper $contactHelper
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magento\Framework\Registry $registry
      * @param \Psr\Log\LoggerInterface $logger
@@ -42,7 +46,7 @@ class RegisterObserver implements ObserverInterface
         ContactHelper $contactHelper,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
+        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Registry $registry,
         \Psr\Log\LoggerInterface $logger,
@@ -52,7 +56,7 @@ class RegisterObserver implements ObserverInterface
         $this->contactHelper = $contactHelper;
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->customerRepository = $customerRepository;
+        $this->customerResourceModel = $customerResourceModel;
         $this->messageManager = $messageManager;
         $this->registry = $registry;
         $this->logger = $logger;
@@ -78,7 +82,6 @@ class RegisterObserver implements ObserverInterface
             if ($customer->getId()) {
                 $customer->setData('lsr_username', $parameters['lsr_username']);
                 $customer->setData('password', $parameters['password']);
-
                 /** @var Entity\MemberContact $contact */
                 $contact = $this->contactHelper->contact($customer);
                 if (is_object($contact) && $contact->getId()) {
@@ -90,12 +93,14 @@ class RegisterObserver implements ObserverInterface
                     $customer->setData('lsr_cardid', $card->getId());
 
                     if ($contact->getAccount()->getScheme()->getId()) {
-                        $customerGroupId = $this->contactHelper->getCustomerGroupIdByName($contact->getAccount()->getScheme()->getId());
+                        $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
+                            $contact->getAccount()->getScheme()->getId()
+                        );
                         $customer->setGroupId($customerGroupId);
                     }
 
                     // TODO use Repository instead of Model.
-                    $customer->save();
+                    $this->customerResourceModel->save($customer);
                     $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $contact);
                     $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
                     $session->setData(LSR::SESSION_CUSTOMER_LSRID, $contact->getId());
@@ -105,7 +110,7 @@ class RegisterObserver implements ObserverInterface
                 }
 
                 $loginResult = $this->contactHelper->login($customer->getData('lsr_username'), $parameters['password']);
-                if ($loginResult == FALSE) {
+                if ($loginResult == false) {
                     $this->logger->error('Invalid Omni login or Omni password');
                     return $this;
                 } else {
@@ -113,12 +118,9 @@ class RegisterObserver implements ObserverInterface
                     $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
                 }
             }
-
-            return $this;
-        }
-        catch(\Exception $e){
-
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
+        return $this;
     }
 }

@@ -20,6 +20,10 @@
     <event name="controller_action_postdispatch_checkout_account_create">
         <observer name="ls_register_checkout_observer" instance="Ls\Customer\Observer\CheckoutRegisterObserver" />
     </event>
+    <!-- Customer Registration on Checkout -->
+    <event name="controller_action_postdispatch_checkout_account_delegatecreate">
+        <observer name="ls_register_checkout_delegatecreate_observer" instance="Ls\Customer\Observer\CheckoutRegisterObserver" />
+    </event>
     <!-- For Omni Logout -->
     <event name="controller_action_predispatch_customer_account_logout">
         <observer name="ls_logout_observer" instance="Ls\Customer\Observer\LogoutObserver" />
