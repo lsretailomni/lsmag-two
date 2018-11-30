@@ -5,6 +5,10 @@ namespace Ls\Customer\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Ls\Omni\Helper\ContactHelper;
 
+/**
+ * Class LogoutObserver
+ * @package Ls\Customer\Observer
+ */
 class LogoutObserver implements ObserverInterface
 {
     /** @var ContactHelper  */
@@ -31,8 +35,7 @@ class LogoutObserver implements ObserverInterface
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session $customerSession
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
         $this->logger = $logger;
@@ -52,6 +55,5 @@ class LogoutObserver implements ObserverInterface
         }
         $this->customerSession->destroy();
         return $this;
-
     }
 }

@@ -38,16 +38,16 @@ class LoginObserver implements ObserverInterface
     protected $customerSession;
 
     /** @var \Magento\Framework\App\Response\RedirectInterface */
-    protected $_redirectInterface;
+    protected $redirectInterface;
 
     /** @var \Magento\Framework\App\ActionFlag */
-    protected $_actionFlag;
+    protected $actionFlag;
 
     /** @var \Magento\Store\Model\StoreManagerInterface */
-    protected $_storeManager;
+    protected $storeManager;
 
-    /** @var \Magento\Customer\Model\CustomerFactory */
-    protected $_customerFactory;
+    /** @var \Magento\Customer\Model\ResourceModel\Customer */
+    protected $customerResourceModel;
 
     /** @var \Magento\Checkout\Model\Session  */
     protected $checkoutSession;
@@ -55,12 +55,15 @@ class LoginObserver implements ObserverInterface
     /** @var  \Ls\Omni\Helper\BasketHelper  */
     protected $basketHelper;
 
+    /** @var \Magento\Customer\Model\CustomerFactory */
+    protected $customerFactory;
 
     /**
      * LoginObserver constructor.
      * @param ContactHelper $contactHelper
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magento\Framework\Registry $registry
@@ -70,12 +73,15 @@ class LoginObserver implements ObserverInterface
      * @param \Magento\Framework\App\ActionFlag $actionFlag
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
      */
 
     public function __construct(
         ContactHelper $contactHelper,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Registry $registry,
@@ -88,22 +94,22 @@ class LoginObserver implements ObserverInterface
         \Magento\Checkout\Model\Session $checkoutSession,
         \Ls\Omni\Helper\BasketHelper $basketHelper
 
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->customerRepository = $customerRepository;
+        $this->customerResourceModel = $customerResourceModel;
         $this->messageManager = $messageManager;
         $this->registry = $registry;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
-        $this->_redirectInterface = $redirectInterface;
-        $this->_actionFlag = $actionFlag;
-        $this->_storeManager = $storeManager;
-        $this->_customerFactory = $customerFactory;
+        $this->redirectInterface = $redirectInterface;
+        $this->actionFlag = $actionFlag;
+        $this->storeManager = $storeManager;
+        $this->customerFactory = $customerFactory;
         $this->checkoutSession  =   $checkoutSession;
         $this->basketHelper     =   $basketHelper;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -113,7 +119,7 @@ class LoginObserver implements ObserverInterface
      * If user exist in NAV but does not in Magento, then after login, we need to create user in magento based on the data we received from NAV.
      * If input is email but the account does not exist in Magento then we need to throw an error that "Email login is only available for users registered in Magento".
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this|void
+     * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Zend_Validate_Exception
@@ -126,7 +132,7 @@ class LoginObserver implements ObserverInterface
 
             $login = $controller_action->getRequest()->getPost('login');
             $email = $username = $login['username'];
-
+            $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
             $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
             if ($is_email) {
                 $search = $this->contactHelper->search($username);
@@ -138,8 +144,10 @@ class LoginObserver implements ObserverInterface
                     $this->messageManager->addErrorMessage(
                         __('Sorry. No account found with the provided email address')
                     );
-                    $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
+                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                    $observer->getControllerAction()->getResponse()->setRedirect(
+                        $this->redirectInterface->getRefererUrl()
+                    );
                     return $this;
                 }
                 $email = $search->getEmail();
@@ -159,32 +167,34 @@ class LoginObserver implements ObserverInterface
                     $this->messageManager->addErrorMessage(
                         __('Unfortunately email login is only available for members registered in Magento')
                     );
-                    $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
+                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                    $observer->getControllerAction()->getResponse()->setRedirect(
+                        $this->redirectInterface->getRefererUrl()
+                    );
 
                     return $this;
                 } else {
+                    $customerObj = null;
                     foreach ($searchResults->getItems() as $match) {
-                        $customerObj = $this->customerRepository->getById($match->getId());
+                        $customerObj = $this->customerFactory->create()->setWebsiteId($websiteId)
+                            ->loadByEmail($email);
                         break;
                     }
-                    if (!(is_null($customerObj->getCustomAttribute('lsr_username')))) {
-                        $username = $customerObj->getCustomAttribute('lsr_username')->getValue();
-                    }
+                    $username = $customerObj->getData('lsr_username');
                 }
             }
 
             /** @var  Entity\MemberContact $result */
             $result = $this->contactHelper->login($username, $login['password']);
 
-            if ($result == FALSE) {
+            if ($result == false) {
                 $this->messageManager->addErrorMessage(
                     __('Invalid Omni login or Omni password')
                 );
-                $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
                 $observer->getControllerAction()
                     ->getResponse()
-                    ->setRedirect($this->_redirectInterface->getRefererUrl());
+                    ->setRedirect($this->redirectInterface->getRefererUrl());
                 return $this;
             }
 
@@ -198,7 +208,7 @@ class LoginObserver implements ObserverInterface
                 $searchCriteria = $this->searchCriteriaBuilder->create();
                 $searchResults = $this->customerRepository->getList($searchCriteria);
 
-                $customer = NULL;
+                $customer = null;
                 if ($searchResults->getTotalCount() == 0) {
                     $customer = $this->contactHelper->customer($result, $login['password']);
                 } else {
@@ -209,8 +219,8 @@ class LoginObserver implements ObserverInterface
                 }
 
                 $customer_email = $customer->getEmail();
-                $websiteId = $this->_storeManager->getWebsite()->getWebsiteId();
-                $customer = $this->_customerFactory->create()
+
+                $customer = $this->customerFactory->create()
                     ->setWebsiteId($websiteId)
                     ->loadByEmail($customer_email);
                 $card = $result->getCard();
@@ -231,11 +241,13 @@ class LoginObserver implements ObserverInterface
                 $customer->setData('attribute_set_id', CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
 
                 if ($result->getAccount()->getScheme()->getId()) {
-                    $customerGroupId = $this->contactHelper->getCustomerGroupIdByName($result->getAccount()->getScheme()->getId());
+                    $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
+                        $result->getAccount()->getScheme()->getId()
+                    );
                     $customer->setGroupId($customerGroupId);
                 }
 
-                $customer->save();
+                $this->customerResourceModel->save($customer);
                 $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
                 $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
                 $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $result->getId());
@@ -272,7 +284,6 @@ class LoginObserver implements ObserverInterface
                     $this->basketHelper->update($oneList);
 
                 } elseif ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-
                     // if customer already has onelist created then update the list to get the information with user.
 
 
@@ -283,7 +294,7 @@ class LoginObserver implements ObserverInterface
                     $oneListBasket->setCardId($card->getId())
                         ->setContactId($result->getId())
                         ->setDescription('OneList Magento')
-                        ->setIsDefaultList(TRUE)
+                        ->setIsDefaultList(true)
                         ->setListType(Entity\Enum\ListType::BASKET);
 
                     // update items from quote to basket.
@@ -308,11 +319,9 @@ class LoginObserver implements ObserverInterface
                     __('The service is currently unavailable. Please try again later.')
                 );
             }
-            return $this;
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-
+        return $this;
     }
 }
