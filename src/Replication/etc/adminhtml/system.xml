@@ -1,35 +1,48 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="ls_mag">
-            <group id="replication" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="replication" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
                 <label>Replication</label>
-                <field id="replicate_all_stores_items" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="replicate_all_stores_items" translate="label" type="select" sortOrder="0" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>Replicate All Stores Items</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable if you want to replicate all the stores items</comment>
                 </field>
-                <field id="default_batch_size" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="default_batch_size" translate="label" type="text" sortOrder="1" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>Default Batch Size</label>
                     <comment>Records Requested on Replication Jobs</comment>
                 </field>
-                <field id="replicate_category" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="product_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Product Batch Size</label>
+                    <comment>Product batch size can be increase or decrease from here</comment>
+                </field>
+                <field id="replicate_category" translate="label" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Replicate Categories</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Get categories from omni</comment>
                 </field>
-                <field id="variant_map" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="variant_map" translate="label" type="select" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Use Variant Map</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Specify if you want to map variants vs attributes</comment>
                 </field>
-                <field id="advanced" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="advanced" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
                     <label>Advanced Settings</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Enable Advanced Settings</comment>              
+                    <comment>Enable Advanced Settings</comment>
                 </field>
-                                
-                <field id="create_attribute_set" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="create_attribute_set" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Create Attribute Sets</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Create attribute set by category</comment>
@@ -37,8 +50,9 @@
                         <field id="*/*/advanced">1</field>
                     </depends>
                 </field>
-                                
-                <field id="categorize_products" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="categorize_products" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Categorize Products</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Categorize products on replication</comment>
@@ -46,41 +60,46 @@
                         <field id="*/*/advanced">1</field>
                     </depends>
                 </field>
-                
-                <field id="batch_size_configuration" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="batch_size_configuration" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Batch Size Settings</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="*/*/advanced">1</field>
                     </depends>
                 </field>
-                
-                <field id="debug_on_error" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="debug_on_error" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Debug on Error</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Turn ON Debug on Error</comment>
                     <depends>
                         <field id="*/*/advanced">1</field>
-                    </depends>          
+                    </depends>
                 </field>
-                
-                <field id="cron_expr_configuration" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="cron_expr_configuration" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Cron Expression Settings</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="*/*/advanced">1</field>
-                    </depends>              
+                    </depends>
                 </field>
-                
-                <field id="cron_expr_nav_store" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="cron_expr_nav_store" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>NAV Store CronExpr</label>
                     <comment>Cron Expression for NAV Store Replication Jobs</comment>
                     <depends>
                         <field id="*/*/cron_expr_configuration">1</field>
                     </depends>
                 </field>
-               
-                <field id="cron_expr_tender_type" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="cron_expr_tender_type" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Tender Type CronExpr</label>
                     <comment>Cron Expression for Tender Type Replication Jobs</comment>
                     <depends>
@@ -88,31 +107,35 @@
                     </depends>
                 </field>
 
-                <field id="cron_expr_category" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="cron_expr_category" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Category CronExpr</label>
                     <comment>Cron Expression for Category Replication Jobs</comment>
                     <depends>
                         <field id="*/*/cron_expr_configuration">1</field>
                     </depends>
                 </field>
-                
-                <field id="cron_expr_variant" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="cron_expr_variant" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Variant CronExpr</label>
                     <comment>Cron Expression for Variant Registration Replication Jobs</comment>
                     <depends>
                         <field id="*/*/cron_expr_configuration">1</field>
                     </depends>
                 </field>
-                
-                <field id="cron_expr_uom" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="cron_expr_uom" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>UOM CronExpr</label>
                     <comment>Cron Expression for UOM Replication Jobs</comment>
                     <depends>
                         <field id="*/*/cron_expr_configuration">1</field>
                     </depends>
                 </field>
-                
-                <field id="cron_expr_barcode" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="cron_expr_barcode" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Barcode CronExpr</label>
                     <comment>Cron Expression for Barcode Replication Jobs</comment>
                     <depends>
@@ -120,7 +143,8 @@
                     </depends>
                 </field>
 
-                <field id="cron_expr_product" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="cron_expr_product" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Product CronExpr</label>
                     <comment>Cron Expression for Product Replication Jobs</comment>
                     <depends>
@@ -128,178 +152,220 @@
                     </depends>
                 </field>
             </group>
-            <group id="one_list" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="one_list" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
                 <label>One List Integration</label>
-                <field id="availability_check" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="availability_check" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Availability Check</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable/Disable basket availability check when adding products to the cart</comment>
                 </field>
-
-                <field id="update_inventory" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="product_availability" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Product Availability in Stores</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Show a link in product detail page for product availability</comment>
+                </field>
+                <field id="update_inventory" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Update inventory</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Enable/Disable on-demand inventory update with returned result from availability check</comment>
+                    <comment>Enable/Disable on-demand inventory update with returned result from availability check
+                    </comment>
                     <depends>
                         <field id="*/*/availability_check">1</field>
                     </depends>
                 </field>
 
-                <field id="guest_checkout_email" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="guest_checkout_email" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Guest Email</label>
                     <comment>When enabled the guest checkout will use this member email</comment>
                 </field>
 
-                <field id="guest_checkout_password" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="guest_checkout_password" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Guest Password</label>
                     <comment>When enabled the guest checkout will use this member password</comment>
                 </field>
-                
-                <field id="sales_order_create_method" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+
+                <field id="sales_order_create_method" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>NAV Sales Order Creation Method</label>
                     <source_model>Ls\Replication\Block\Adminhtml\System\Config\OrderCreationMethod</source_model>
                 </field>
-                
-                <field id="special_order_create_retries" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+
+                <field id="special_order_create_retries" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>NAV Special Order Creation Retries</label>
                 </field>
-                
-                <field id="sales_order_create_retries" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+
+                <field id="sales_order_create_retries" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>NAV Sales Order Creation Retries</label>
                 </field>
-                
+
             </group>
 
-            <group id="cron" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="cron" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
                 <label>Cron</label>
-                <field id="sales_order_workflow" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="sales_order_workflow" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>LSR Sales Order Synchronize Workflow</label>
                     <comment>CronExpr for LSR Sales Order Synchronize Workflow</comment>
                 </field>
 
-                <field id="heartbeat_workflow" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="heartbeat_workflow" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>LSR Heartbeat Workflow</label>
                     <comment>CronExpr for LSR Heartbeat Workflow</comment>
                 </field>
             </group>
-            
-            <group id="cron_enhancement" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+
+            <group id="cron_enhancement" translate="label" type="text" sortOrder="30" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
                 <label>Cron Enhancement</label>
-                <field id="requests_per_run" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="requests_per_run" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>Requests per Run</label>
                     <comment>How many Item's Stock are requested each run</comment>
                 </field>
 
-                <field id="inventory_active_from" translate="label" type="time" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="inventory_active_from" translate="label" type="time" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>Inventory Check Period From</label>
                     <comment>Time between Inventory Checks for an Item</comment>
                 </field>
-                
-                <field id="inventory_active_to" translate="label" type="time" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+
+                <field id="inventory_active_to" translate="label" type="time" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
                     <label>Inventory Check Period To</label>
                     <comment>Time between Inventory Checks for an Item</comment>
                 </field>
-                
-                <field id="inventory_per_store" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+
+                <field id="inventory_per_store" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Inventory totals\Inventory per store</label>
-                    <comment>Choose how do you want to manage the inventory. Per store just gets the inventory for the current store. Inventory totals will show the sum of inventory in all stores.</comment>
+                    <comment>Choose how do you want to manage the inventory. Per store just gets the inventory for the
+                        current store. Inventory totals will show the sum of inventory in all stores.
+                    </comment>
                     <source_model>Ls\Replication\Block\Adminhtml\System\Config\InventoryPerStore</source_model>
                 </field>
-                
-                <field id="if_zero" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+
+                <field id="if_zero" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
                     <label>Update inventory if zero</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Still updating inventory when the response is zero</comment>                 
+                    <comment>Still updating inventory when the response is zero</comment>
                 </field>
             </group>
 
-            <group id="loyalty" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="loyalty" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
                 <label>Loyalty Elements</label>
-                
-                <field id="enable_loyalty_offers" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="enable_loyalty_offers" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Enable Loyalty Offers</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                   
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                
-                <field id="use_static_block" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="use_static_block" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Use Static Block for Loyalty Offers Page</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                   
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                
-                <field id="show_point_offers" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="show_point_offers" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Show Point Offers</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                   
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                
-                <field id="show_member_offers" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="show_member_offers" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Show Memeber Offers</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                   
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                
-                <field id="show_general_offers" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="show_general_offers" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Show General Offers</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                   
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                
-                
-                <field id="show_coupons" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+
+                <field id="show_coupons" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Show Coupons</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                   
-                </field>   
-                             
-                <field id="enable_notifications" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Notifications</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                   
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                
-                <field id="show_notifications_top" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="enable_notifications" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enable Notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="show_notifications_top" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Show Notifications Top</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Ajax response in popup window</comment>
                 </field>
-                
-                <field id="show_notifications_left" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <field id="show_notifications_left" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Show Notifications Left</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Only in Loyalty Offers Page</comment>
                 </field>
             </group>
 
-            <group id="restore_database" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="restore_database" translate="label" type="text" sortOrder="30" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
                 <label>Restore Database</label>
 
-                <field id="orders" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="orders" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Orders</label>
                     <comment>You cannot recover from this action</comment>
-                    <button_label>Delete ! </button_label>
+                    <button_label>Delete !</button_label>
                     <button_url>admin/ls_repl/deletion/order</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="customers" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="customers" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Customers</label>
                     <comment>You cannot recover from this action</comment>
-                    <button_label>Delete ! </button_label>
+                    <button_label>Delete !</button_label>
                     <button_url>admin/ls_repl/deletion/customer</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="products" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="products" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Products</label>
                     <comment>You cannot recover from this action</comment>
-                    <button_label>Delete ! </button_label>
+                    <button_label>Delete !</button_label>
                     <button_url>admin/ls_repl/deletion/product</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="categories" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="categories" translate="label" type="button" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Delete Categories</label>
                     <comment>You cannot recover from this action</comment>
-                    <button_label>Delete ! </button_label>
+                    <button_label>Delete !</button_label>
                     <button_url>admin/ls_repl/deletion/category</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="attributes" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="attributes" translate="label" type="button" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Delete Attributes</label>
                     <comment>You cannot recover from this action</comment>
-                    <button_label>Delete ! </button_label>
+                    <button_label>Delete !</button_label>
                     <button_url>admin/ls_repl/deletion/attribute</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>

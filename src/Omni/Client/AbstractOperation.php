@@ -7,7 +7,7 @@ use Ls\Omni\Exception\NavException;
 use Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
-
+use Ls\Core\Model\LSR;
 abstract class AbstractOperation implements OperationInterface
 {
     /** @var string  */
@@ -119,12 +119,9 @@ abstract class AbstractOperation implements OperationInterface
      */
     private function debugLog($operation_name)
     {
-        /** @return \Magento\Framework\App\State */
-        $state = $this->objectManager->get('Magento\Framework\App\State');
-        /** @var bool $isDeveloperMode */
-        $isDeveloperMode = \Magento\Framework\App\State::MODE_DEVELOPER === $state->getMode();
-
-        if ($isDeveloperMode) {
+        $lsr=$this->objectManager->get("\Ls\Core\Model\LSR");
+        $isEnable=$lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
+        if ($isEnable) {
             $this->logger->debug("==== REQUEST == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
             $this->logger->debug($this->formatXML($this->getClient()->getLastRequest()));
             $this->logger->debug("==== RESPONSE == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
