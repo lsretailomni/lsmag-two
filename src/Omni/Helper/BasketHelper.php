@@ -53,13 +53,13 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     protected $registry;
 
     /** @var null|Entity\BasketCalcResponse $oneListCalculation */
-    protected $oneListCalculation = NULL;
+    protected $oneListCalculation = null;
 
     /** @var null|string */
-    protected $store_id = NULL;
+    protected $store_id = null;
 
-    /** @var  LSR $_lsr */
-    protected $_lsr;
+    /** @var  LSR $lsr */
+    protected $lsr;
 
     /** @var array */
     protected $basketDataResponse;
@@ -83,8 +83,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param ItemHelper $itemHelper
      * @param Registry $registry
      * @param LSR $Lsr
+     * @param SessionManagerInterface $session
      */
-
     public function __construct(
         Context $context,
         Cart $cart,
@@ -99,8 +99,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         Registry $registry,
         LSR $Lsr,
         SessionManagerInterface $session
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->cart = $cart;
         $this->productRepository = $productRepository;
@@ -112,7 +111,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->stockItemRepository = $stockItemRepository;
         $this->itemHelper = $itemHelper;
         $this->registry = $registry;
-        $this->_lsr = $Lsr;
+        $this->lsr = $Lsr;
         $this->session = $session;
     }
 
@@ -140,9 +139,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             : array();
 
         foreach ($oneListItems as $oneListItem) {
-
-            $found = FALSE;
-
+            $found = false;
             foreach ($quoteItems as $quoteItem) {
                 $isConfigurable = $quoteItem->getProductType() == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE;
                 if (isset($cache[$quoteItem->getId()]) || $isConfigurable) {
@@ -158,7 +155,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $match = $quote_has_item && ($qi_qty == $item_qty);
 
                 if ($match) {
-                    $cache[$quoteItem->getId()] = $found = TRUE;
+                    $cache[$quoteItem->getId()] = $found = true;
                     break;
                 }
             }
@@ -200,7 +197,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         foreach ($quoteItems as $quoteItem) {
             // initialize the default null value
-            $variant = $barcode = NULL;
+            $variant = $barcode = null;
 
             $sku = $quoteItem->getSku();
 
@@ -217,7 +214,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             // first element is lsr_id
             $lsr_id = array_shift($parts);
             // second element, if it exists, is variant id
-            $variant_id = count($parts) ? array_shift($parts) : NULL;
+            $variant_id = count($parts) ? array_shift($parts) : null;
 
             /** @var \Ls\Omni\Client\Ecommerce\Entity\LoyItem $item */
             $item = $this->itemHelper->get($lsr_id);
@@ -243,7 +240,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $oneList->setItems($items)
             ->setPublishedOffers($this->_offers());
         return $oneList;
-
     }
 
     /**
@@ -273,31 +269,30 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         /** @var  Entity\OneListDeleteByIdResponse $response */
         $response = $request->execute($entity);
 
-        return $response ? $response->getOneListDeleteByIdResult() : FALSE;
+        return $response ? $response->getOneListDeleteByIdResult() : false;
     }
 
     /**
      * @param Entity\OneList $oneList
+     * @return Entity\BasketCalcResponse|null
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function update(Entity\OneList $oneList)
     {
-        $check_inventory = FALSE;
-        $update_inventory = FALSE;
+        $check_inventory = false;
+        $update_inventory = false;
 
         if ($check_inventory) {
             /** @var Entity\ArrayOfOrderLineAvailability $availability */
             $availability = $this->availability($oneList);
             /** @var OrderLineAvailability[] $availabilityLines */
             if ($availability && $availabilityLines = $availability->getOrderLineAvailability()) {
-
                 $quote = $this->checkoutSession->getQuote();
                 /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
                 $quoteItems = $quote->getAllVisibleItems();
 
                 foreach ($availabilityLines as $availabilityLine) {
-
                     $productLsrId = $availabilityLine->getItemId();
                     if ($availabilityLine->getVariantId() !== "") {
                         # build LSR Id
@@ -377,10 +372,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function availability(Entity\OneList $oneList)
     {
         $oneListItems = $oneList->getItems();
-        $response = FALSE;
+        $response = false;
 
         if (!is_null($oneListItems->getOneListItem())) {
-
             $array = array();
 
             $count = 1;
@@ -388,14 +382,14 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             foreach ($oneListItems->getOneListItem() as $listItem) {
                 $variant = $listItem->getVariant();
-                $uom = !is_null($listItem->getUom()) ? $listItem->getUom()[0]->getId() : NULL;
+                $uom = !is_null($listItem->getUom()) ? $listItem->getUom()[0]->getId() : null;
                 $line = (new Entity\OrderLineAvailability())
                     ->setItemId($listItem->getItem()->getId())
                     ->setLineType(Entity\Enum\LineType::ITEM)
                     ->setUomId($uom)
                     ->setLineNumber($count++)
                     ->setQuantity($listItem->getQuantity())
-                    ->setVariantId(is_null($variant) ? NULL : $variant->getId());
+                    ->setVariantId(is_null($variant) ? null : $variant->getId());
                 $array[] = $line;
                 unset($line);
             }
@@ -425,13 +419,11 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getDefaultWebStore()
     {
-
         if (is_null($this->store_id)) {
-            $this->store_id = $this->_lsr->getDefaultWebStore();
+            $this->store_id = $this->lsr->getDefaultWebStore();
 
         }
         return $this->store_id;
-
     }
 
     /**
@@ -457,7 +449,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $response->getOneListSaveResult());
             return $response->getOneListSaveResult();
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -480,10 +472,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $oneListItems = $oneList->getItems();
 
         /** @var Entity\BasketCalcResponse $response */
-        $response = FALSE;
+        $response = false;
 
         if (!is_null($oneListItems->getOneListItem())) {
-
             $array = array();
             $n = 1;
 
@@ -491,7 +482,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $listItems = $oneListItems->getOneListItem();
 
             if (!is_array($listItems) and $listItems instanceof Entity\OneListItem) {
-
                 $listItem = $listItems;
 
                 /** @var Entity\LoyItem $item */
@@ -505,7 +495,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                     ->setLineNumber($n++)
                     ->setItemId($item->getId())
                     ->setQuantity($listItem->getQuantity())
-                    ->setUomId(!is_null($uom) ? $uom->getId() : NULL);
+                    ->setUomId(!is_null($uom) ? $uom->getId() : null);
 
                 if (!is_null($listItem->getVariantReg())) {
                     $line->setVariantId($listItem->getVariantReg()->getId());
@@ -532,7 +522,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                         ->setLineNumber($n++)
                         ->setItemId($item->getId())
                         ->setQuantity($listItem->getQuantity())
-                        ->setUomId(!is_null($uom) ? $uom->getId() : NULL);
+                        ->setUomId(!is_null($uom) ? $uom->getId() : null);
                     if (!is_null($listItem->getVariantReg())) {
                         $line->setVariantId($listItem->getVariantReg()->getId());
                     }
@@ -590,7 +580,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $response = $request->execute($entity);
         }
         if (is_null($response)) {
-            return NULL;
+            return null;
         }
         if (property_exists($response, "BasketCalcResult")) {
             // access inner object and return it
@@ -611,7 +601,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (!is_null($quoteCoupon)) {
             return $quoteCoupon;
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -621,11 +611,11 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getShipmentFeeProduct()
     {
-
     }
 
     /**
-     * @return Entity\BasketCalcResponse $oneListCalc
+     * @return mixed
+     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function getOneListCalculation()
     {
@@ -649,38 +639,38 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return bool|Entity\OneList|mixed|null
+     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed|null
+     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function get()
     {
         /** @var Entity\OneList $list */
-        $list = NULL;
+        $list = null;
 
         //check if onelist is created and stored in session. if it is, than return it.
         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
             return $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
         }
 
-        /** @var Entity\Contact $loginContact */
+        /** @var Entity\MemberContact $loginContact */
         // For logged in users check if onelist is already stored in registry.
         if ($loginContact = $this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT)) {
             try {
-
-                if ($loginContact->getOneList()->getOneList()[0] instanceof Entity\OneList) {
-                    if ($loginContact->getOneList()->getOneList()[0]->getListType() == Entity\Enum\ListType::BASKET) {
-                        $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $loginContact->getOneList()->getOneList()[0]);
-                        return $loginContact->getOneList()->getOneList()[0];
-                    }
+                if ($loginContact->getBasket() instanceof Entity\OneList) {
+                        $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $loginContact->getBasket());
+                        return $loginContact->getBasket();
                 } else {
-                    foreach ($loginContact->getOneList()->getIterator() as $list) {
-                        $isBasket = $list->getListType() == Entity\Enum\ListType::BASKET;
-                        if ($isBasket && $list->getIsDefaultList()) {
-                            $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $list);
-                            return $list;
+                    if ($loginContact->getBasket() instanceof Entity\ArrayOfOneList) {
+                        foreach ($loginContact->getBasket()->getIterator() as $list) {
+                            $list->getListType() == Entity\Enum\ListType::BASKET;
+                            if ($list->getIsDefaultList()) {
+                                $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $list);
+                                return $list;
+                            }
                         }
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->_logger->critical($e);
             }
         }
@@ -690,12 +680,12 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return $this->fetchFromOmni();
         }
 
-        return NULL;
+        return null;
     }
 
     /**
-     * Fetch OneList for current contact from Omni Server
-     * @return \Ls\Omni\Client\Ecommerce\Entity\OneList|null|bool
+     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed
+     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function fetchFromOmni()
     {
@@ -720,7 +710,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             $entity->setContactId($contactId)
                 ->setListType(Entity\Enum\ListType::BASKET)
-                ->setIncludeLines(TRUE);
+                ->setIncludeLines(true);
 
             /** @var Entity\OneListGetByContactIdResponse $response */
             $response = $request->execute($entity);
@@ -747,7 +737,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setContactId($contactId)
             ->setCardId($cardId)
             ->setDescription('OneList Magento')
-            ->setIsDefaultList(TRUE)
+            ->setIsDefaultList(true)
             ->setListType(Entity\Enum\ListType::BASKET)
             ->setItems(new Entity\ArrayOfOneListItem())
             ->setPublishedOffers($this->_offers())
@@ -761,7 +751,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function unSetOneListCalculation()
     {
         $this->checkoutSession->unsOneListCalculation();
-
     }
 
     /**
@@ -784,7 +773,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Set Basket Session Data
      * @param $value
      */
-    public function setBasketSessionValue($value){
+    public function setBasketSessionValue($value)
+    {
         $this->checkoutSession->setBasketdata($value);
     }
 
@@ -792,7 +782,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Get Basket Session Data
      * @return mixed
      */
-    public function getBasketSessionValue(){
+    public function getBasketSessionValue()
+    {
         return $this->checkoutSession->getBasketdata();
     }
 
@@ -800,8 +791,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Unset Basket Session Data
      * @return mixed
      */
-    public function unSetBasketSessionValue(){
+    public function unSetBasketSessionValue()
+    {
         return $this->checkoutSession->unsBasketdata();
     }
-
 }
