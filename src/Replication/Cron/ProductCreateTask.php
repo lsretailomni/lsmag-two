@@ -222,6 +222,8 @@ class ProductCreateTask
 
         $CronCategoryCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
         $CronAttributeCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+        $productBatchSize = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE);
+
 
         if ($CronCategoryCheck == 1 && $CronAttributeCheck == 1) {
             if ($fullReplicationAttributeStatus != 1 && $fullReplicationAttributeOptionValueStatus != 1)
@@ -230,7 +232,7 @@ class ProductCreateTask
 
             $this->logger->debug('Running ProductCreateTask');
             /** @var \Magento\Framework\Api\SearchCriteria $criteria */
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 25);
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $productBatchSize);
 
             /** @var \Ls\Replication\Model\ReplItemSearchResults $items */
             $items = $this->itemRepository->getList($criteria);

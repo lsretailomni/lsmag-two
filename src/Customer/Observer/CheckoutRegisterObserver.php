@@ -5,6 +5,10 @@ namespace Ls\Customer\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Ls\Omni\Helper\ContactHelper;
 
+/**
+ * Class CheckoutRegisterObserver
+ * @package Ls\Customer\Observer
+ */
 class CheckoutRegisterObserver implements ObserverInterface
 {
     /** @var ContactHelper */
@@ -18,9 +22,11 @@ class CheckoutRegisterObserver implements ObserverInterface
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
     protected $orderRepository;
     /** @var \Magento\Customer\Model\CustomerFactory */
-    protected $_customerFactory;
+    protected $customerFactory;
     /** @var \Magento\Store\Model\StoreManagerInterface */
-    protected $_storeManager;
+    protected $storeManager;
+    /** @var \Magento\Customer\Model\ResourceModel\Customer */
+    protected $customerResourceModel;
 
     /**
      * CheckoutRegisterObserver constructor.
@@ -31,6 +37,7 @@ class CheckoutRegisterObserver implements ObserverInterface
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
      */
 
     public function __construct(
@@ -40,17 +47,18 @@ class CheckoutRegisterObserver implements ObserverInterface
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
 
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->orderRepository = $orderRepository;
-        $this->_customerFactory = $customerFactory;
-        $this->_storeManager = $storeManager;
+        $this->customerFactory = $customerFactory;
+        $this->storeManager = $storeManager;
+        $this->customerResourceModel = $customerResourceModel;
     }
 
     /**
@@ -65,8 +73,8 @@ class CheckoutRegisterObserver implements ObserverInterface
         $order = $this->orderRepository->get($orderId);
         if ($order->getCustomerId()) {
             // only performed when a customer id is created
-            $customer = $this->_customerFactory->create()
-                ->setWebsiteId($this->_storeManager->getWebsite()->getWebsiteId())
+            $customer = $this->customerFactory->create()
+                ->setWebsiteId($this->storeManager->getWebsite()->getWebsiteId())
                 ->loadByEmail($order->getCustomerEmail());
             // setting the lsr_username field
             $customer->setData('lsr_username', $customer->getEmail());
@@ -81,17 +89,18 @@ class CheckoutRegisterObserver implements ObserverInterface
                 $customer->setData('lsr_token', $token);
                 $customer->setData('lsr_cardid', $card->getId());
 
-                if($contact->getAccount()->getScheme()->getId()){
-                    $customerGroupId      =   $this->contactHelper->getCustomerGroupIdByName($contact->getAccount()->getScheme()->getId());
+                if ($contact->getAccount()->getScheme()->getId()) {
+                    $customerGroupId      =   $this->contactHelper->getCustomerGroupIdByName(
+                        $contact->getAccount()->getScheme()->getId()
+                    );
                     $customer->setGroupId($customerGroupId);
                 }
                 $result = $this->contactHelper->forgotPassword($customer->getEmail());
                 if ($result) {
                     $customer->setData('lsr_resetcode', $result);
                 }
-                $customer->save();
+                $this->customerResourceModel->save($customer);
             }
         }
-
     }
 }

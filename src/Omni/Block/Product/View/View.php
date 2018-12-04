@@ -103,4 +103,14 @@ class View extends \Magento\Catalog\Block\Product\View
         $configValue = $this->_lsr->getDefaultZoom();
         return $configValue;
     }
+
+    /**
+     * Get default default zoom from config
+     * @return string
+     */
+    public function isEnable()
+    {
+        $configValue = $this->_lsr->getStoreConfig($this->_lsr::SC_CART_PRODUCT_AVAILABILITY);
+        return $configValue;
+    }
 }

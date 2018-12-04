@@ -9,6 +9,7 @@
 /** @var $block \Ls\Omni\Block\Product\View\View */
 ?>
 <?php $_product = $block->getProduct(); ?>
+<?php $isEnableCheck = $block->isEnable();?>
 <?php $buttonTitle = __('Add to Cart'); ?>
 <?php if ($_product->isSaleable()): ?>
     <div class="box-tocart">
@@ -32,10 +33,12 @@
                 </div>
             <?php endif; ?>
             <div class="actions">
-                <div class="availability-link-container">
-                    <a href="javascript:void()" name="checkavailability"
-                       class="checkavailability"><?php echo __('Check Availability for Click & Collect') ?></a>
-                </div>
+                <?php if($isEnableCheck){?>
+                    <div class="availability-link-container">
+                        <a href="javascript:void()" name="checkavailability"
+                           class="checkavailability"><?php echo __('Check Availability in Stores') ?></a>
+                    </div>
+                <?php } ?>
                 <button type="submit"
                         title="<?= /* @escapeNotVerified */
                         $buttonTitle ?>"
