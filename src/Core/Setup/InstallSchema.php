@@ -8,11 +8,6 @@ use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 
-/*
- * Add Parameters column into the Magento database table.
- * Author : Zeeshan Khuwaja
- * Date : 17th May, 2018
-  */
 
 class InstallSchema implements InstallSchemaInterface
 {

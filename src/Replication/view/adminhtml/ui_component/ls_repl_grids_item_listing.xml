@@ -28,11 +28,10 @@
         </argument>
     </dataSource>
 
-    <container name="listing_top">
+    <listingToolbar name="listing_top">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
-                <item name="template" xsi:type="string">ui/grid/toolbar</item>
-                <item name="stickyTmpl" xsi:type="string">ui/grid/sticky/toolbar</item>
+                <item name="sticky" xsi:type="boolean">true</item>
             </item>
         </argument>
         <bookmark name="bookmarks">
@@ -66,10 +65,36 @@
                 </item>
             </argument>
         </paging>
-    </container>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsProvider" xsi:type="string">ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">ls_repl_grids_attribute_listing.ls_repl_grids_attribute_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.filters</item>
+                    </item>
+                    <item name="childDefaults" xsi:type="array">
+                        <item name="provider" xsi:type="string">ls_repl_grids_attribute_listing.ls_repl_grids_attribute_listing.listing_top.listing_filters</item>
+                        <item name="imports" xsi:type="array">
+                            <item name="visible" xsi:type="string">ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns.${ $.index }:visible</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </filters>
+    </listingToolbar>
 
     <columns name="ls_repl_grids_item_columns">
         <!--The list of columns-->
+        <actionsColumn name="scroll" class="Ls\Replication\Ui\Component\Listing\Column\ScrollActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Scroll</item>
+                    <item name="sortOrder" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </actionsColumn>
         <column name="nav_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -135,6 +160,17 @@
                 </item>
             </argument>
         </column>
+        <column name="UnitPrice">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Unit Price</item>
+                    <item name="sortOrder" xsi:type="number">12</item>
+                </item>
+            </argument>
+        </column>
         <column name="GrossWeight">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -142,7 +178,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Gross Weight</item>
-                    <item name="sortOrder" xsi:type="number">12</item>
+                    <item name="sortOrder" xsi:type="number">13</item>
                 </item>
             </argument>
         </column>
@@ -232,17 +268,6 @@
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Unit Cost</item>
                     <item name="sortOrder" xsi:type="number">27</item>
-                </item>
-            </argument>
-        </column>
-        <column name="UnitPrice">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Unit Price</item>
-                    <item name="sortOrder" xsi:type="number">28</item>
                 </item>
             </argument>
         </column>

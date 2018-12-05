@@ -10,7 +10,7 @@ var config = {
        }
     },
     config: {
-    	mixins: {
+        mixins: {
             'Magento_Checkout/js/view/shipping': {
                 'Ls_Omni/js/view/plugin/shipping': true
             }

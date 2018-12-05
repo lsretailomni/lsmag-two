@@ -1,9 +1,9 @@
 # LS Magento 2 Development Guide (Beta)
 
 ## Compatibility
-1. Magento Open Source 2.2.x
+1. Magento Open Source 2.2.6 or later
 2. LS NAV 11.x
-3. LS Omni Server 3.1.x
+3. LS Omni Server 3.1.x | 3.2.x | 3.3.x or later
 
 ## Installation:
 
@@ -19,30 +19,14 @@ Followed by `php bin/magento  setup:upgrade ` and  `php bin/magento setu
 9. To check the commands available for our module run 'php bin/magento' from the command line, you will see all the commands available for our extension. 
 10. To test the connectivity to Omni server, run `php bin/magento omni:client:ping` to test the connection. If Ping return successfully, then you can procedd with next steps.
 10. Once done, you will see all the new tables created in your Magento 2 database with prefix `ls_replication_*`.
-11. Next thing is to set configurations and Nav store from Backend to replicate data, to do so, navigate to Stores->Configuration->LS Retail->General Configuration, and choose the store and Hierarchy code to replicate data. make sure you do all the configurations which are required on the Omni server for ecommerce i-e disabling security token for authentication.
-12. If your server is setup for cron, then you will see all the new cron created in the `cron_schedule` table if not, it means your server is not setup to schedule cron, to trigger the cron manually,run `php bin/magento cron:run --group="flat_replication"` from command line. 
-13. Once done, you will see all the data in their respective LS and Magento tables from Omni. 
-14. Once all data are replicated, uncomment these lines from `Replication/etc/crontab.xml` file to start populating those data into magento tables.
+11. Next thing is to set configurations of Nav store and Hierarchy from Backend to replicate data, to do so, navigate to Stores->Configuration->LS Retail->General Configuration, and choose the store and Hierarchy code to replicate data. make sure you do all the configurations which are required on the Omni server for ecommerce i-e disabling security token for authentication.
+12. If your server is setup for cron, then you will see all the new cron created in the `cron_schedule` table if not, it means your server is not setup to schedule cron, to trigger the cron manually,run `php bin/magento cron:run from command line. 
+13. To Trigger the cron manually from admin panel, navigateo to LS Retail -> Cron Listing from the left menu and click on the cron which needs to be run
+14. To see the status of data which are replicated, Navigate to `LS Retail -> Replication Status`.
+15. To see if the data are replicated in the Magento completely or not, you can navigate to any Replication job from `LS Retail -> Replciation` Status and there we can see the status with `Processed` or `Not Processed` in the grid
 
-`
-<group id="replication">
 
-    <job name="repl_attributes" instance="Ls\Replication\Cron\AttributesCreateTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_category" instance="Ls\Replication\Cron\CategoryCreateTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_products" instance="Ls\Replication\Cron\ProductCreateTask" method="execute">
-      <schedule>*/10 * * * *</schedule>
-    </job>
-    <job name="repl_barcode_update" instance="Ls\Replication\Cron\BarcodeUpdateTask" method="execute">
-      <schedule>*/12 * * * *</schedule>
-    </job>
-    <job name="repl_discount_create" instance="Ls\Replication\Cron\DiscountCreateTask" method="execute">
-      <schedule>*/20 * * * *</schedule>
-    </job>
-  </group>
+
   `
  
 

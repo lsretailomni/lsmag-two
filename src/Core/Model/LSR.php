@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: sudhanshu
- * Date: 11/06/2018
- * Time: 2:05 PM
- */
-
 namespace Ls\Core\Model;
 
 use Ls\Omni\Service\ServiceType;
@@ -282,11 +275,11 @@ class LSR
     public function getInvalidMessageContainer()
     {
 
-        $message = '<div class="invalid-lsr">';
-        $message .= '<strong>LS Retail Setup Incomplete</strong>';
-        $message .= '<br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>';
-        $message .= 'Go to Stores > Configuration > LS Retail > General Configuration.';
-        $message .= '</div>';
+        $message     = '<div class="invalid-lsr">';
+        $message    .= '<strong>'.__('LS Retail Setup Incomplete').'</strong>';
+        $message    .= '<br/>'.__('Please define the LS Retail Service Base URL and Web Store to proceed').'<br/>';
+        $message    .= __('Go to Stores > Configuration > LS Retail > General Configuration.');
+        $message    .= '</div>';
 
         return $message;
     }

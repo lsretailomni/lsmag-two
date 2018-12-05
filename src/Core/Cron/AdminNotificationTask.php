@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Sudhanshu Bajaj
- * Date: 09/07/2018
- * Time: 2:36 PM
- */
-
 namespace Ls\Core\Cron;
 
 use Ls\Core\Model\LSR;
