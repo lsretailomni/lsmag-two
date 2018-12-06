@@ -42,8 +42,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_currency_exch_rate" => array("CurrencyCode"),
         "ls_mag/replication/repl_customer" => array("AccountNumber"),
         "ls_mag/replication/repl_data_translation" => array("TranslationId"),
-        "ls_mag/replication/repl_discount" => array("ItemId", "LoyaltySchemeCode","OfferNo", "StoreId"),
-        "ls_mag/replication/repl_discount" => array("ItemId", "LoyaltySchemeCode", "StoreId"),
+        "ls_mag/replication/repl_discount" => array("ItemId", "LoyaltySchemeCode", "OfferNo", "StoreId"),
         "ls_mag/replication/repl_discount_validation" => array("nav_id"),
         "ls_mag/replication/repl_extended_variant_value" => array("Code", "FrameworkCode", "ItemId"),
         "ls_mag/replication/repl_hierarchy" => array("nav_id"),
@@ -80,7 +79,8 @@ abstract class AbstractReplicationTask
     protected $properties = null;
     /** @var RepHelper */
     protected $rep_helper;
-
+    /** @var integer */
+    protected $recordsRemaining = 0;
 
     /**
      * AbstractReplicationTask constructor.
@@ -138,43 +138,43 @@ abstract class AbstractReplicationTask
             } else {
                 $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             }
-            while ($remaining != 0) {
-                $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
-                $response = $request->execute();
-                $result = $response->getResult();
-                $last_key = $result->getLastKey();
-                $remaining = $result->getRecordsRemaining();
-                $traversable = $this->getIterator($result);
-                if (!is_null($traversable)) {
-                    if (count($traversable) > 0) {
-                        foreach ($traversable as $source) {
-                            $this->saveSource($properties, $source);
+            $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
+            $response = $request->execute();
+            $result = $response->getResult();
+            $last_key = $result->getLastKey();
+            $remaining = $result->getRecordsRemaining();
+            $this->recordsRemaining = $remaining;
+            $traversable = $this->getIterator($result);
+            if (!is_null($traversable)) {
+                if (count($traversable) > 0) {
+                    foreach ($traversable as $source) {
+                        $this->saveSource($properties, $source);
+                    }
+                } else {
+                    $arrayTraversable = (array)$traversable;
+                    if (count($arrayTraversable) > 0) {
+                        $entityClass = new ReflectionClass($this->getMainEntity());
+                        $singleObject = (object)$traversable->getArrayCopy();
+                        $entity = $this->getFactory()->create();
+                        $entity->setScope('default')->setScopeId(0);
+                        foreach ($singleObject as $keyprop => $valueprop) {
+                            if ($keyprop == 'Id') {
+                                $set_method = 'setNavId';
+                            } else {
+                                $set_method = "set$keyprop";
+                            }
+                            $entity->{$set_method}($valueprop);
                         }
-                    } else {
-                        $arrayTraversable = (array)$traversable;
-                        if (count($arrayTraversable) > 0) {
-                            $entityClass = new ReflectionClass($this->getMainEntity());
-                            $singleObject = (object)$traversable->getArrayCopy();
-                            $entity = $this->getFactory()->create();
-                            $entity->setScope('default')->setScopeId(0);
-                            foreach ($singleObject as $keyprop => $valueprop) {
-                                if ($keyprop == 'Id') {
-                                    $set_method = 'setNavId';
-                                } else {
-                                    $set_method = "set$keyprop";
-                                }
-                                $entity->{$set_method}($valueprop);
-                            }
-                            try {
-                                $this->getRepository()->save($entity);
-                            } catch (\Exception $e) {
-                                $this->logger->debug($e->getMessage());
-                            }
+                        try {
+                            $this->getRepository()->save($entity);
+                        } catch (\Exception $e) {
+                            $this->logger->debug($e->getMessage());
                         }
                     }
                 }
                 $this->persistLastKey($last_key);
-                $this->saveReplicationStatus(1);
+                if ($remaining == 0)
+                    $this->saveReplicationStatus(1);
             }
             $this->rep_helper->flushConfig();
         } else {
@@ -185,7 +185,7 @@ abstract class AbstractReplicationTask
     function executeManually()
     {
         $this->execute();
-        return array(0);
+        return array($this->recordsRemaining);
     }
 
     protected function toObject(array $array, $object)
