@@ -1,0 +1,21 @@
+{
+  "name": "lsretail/customer",
+  "description": "LS Customer",
+  "type": "magento2-module",
+  "license": "proprietary",
+  "version": "1.2.1",
+  "authors": [
+    {
+      "name": "LS Retail",
+      "email": "lsomnikl@lsretail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ls\\Customer\\": ""
+    },
+    "files": [
+      "registration.php"
+    ]
+  }
+}

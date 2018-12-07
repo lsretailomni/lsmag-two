@@ -1,0 +1,21 @@
+{
+  "name": "lsretail/omni",
+  "description": "LS Omni",
+  "type": "magento2-module",
+  "license": "proprietary",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "LS Retail",
+      "email": "lsomnikl@lsretail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ls\\Omni\\": ""
+    },
+    "files": [
+      "registration.php"
+    ]
+  }
+}
