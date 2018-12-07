@@ -83,7 +83,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity = new Entity\ProfilesGetAll();
         try {
             $response = $request->execute($entity);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -107,7 +107,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($entity);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -134,7 +134,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($entity);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -182,7 +182,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($entity);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -202,7 +202,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity = new Entity\GetPointRate();
         try {
             $response = $request->execute($entity);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;

@@ -116,5 +116,3 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
 
     }
 }
-
-?>

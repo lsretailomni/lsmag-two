@@ -70,7 +70,7 @@ class Grid extends Action
             } else {
                 return $resultPage;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
         }
     }

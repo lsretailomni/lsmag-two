@@ -118,7 +118,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             try {
                 $response = $request->execute($search);
                 $contact_pos = $response->getContactSearchResult();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
 
@@ -150,7 +150,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setPassword($pass);
         try {
             $response = $request->execute($login);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getLoginWebResult() : $response;
@@ -170,7 +170,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setDeviceId(NULL);
         try {
             $response = $request->execute($logout);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getLogoutResult() : $response;
@@ -222,7 +222,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $contactCreate->setContact($contact);
         try {
             $response = $request->execute($contactCreate);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getContactCreateResult() : $response;
@@ -275,7 +275,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($changepassword);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -297,7 +297,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($forgotpassword);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getForgotPasswordResult() : $response;
@@ -322,7 +322,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($resetpassword);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -357,7 +357,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $entity->setContact($memberContact);
             try {
                 $response = $request->execute($entity);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
             return $response ? $response->getResult() : $response;

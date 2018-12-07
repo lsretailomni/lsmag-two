@@ -69,7 +69,7 @@ class Stores extends Template
         try {
             $collection = $this->_replStoreFactory->create()->addFieldToFilter('IsDeleted', 0);
             return $collection;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
         }
 

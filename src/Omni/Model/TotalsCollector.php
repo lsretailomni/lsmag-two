@@ -69,7 +69,7 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
         // we should have one billing and one delivery address
         if (count($addresses) != 2) {
             // uh-oh, probably multi-address checkout, we can't handle this yet
-            throw new Exception("Failure in Quote calculation.");
+            throw new \Exception("Failure in Quote calculation.");
         }
         foreach ($addresses as $address) {
             // taken from parent::collectAddressTotals

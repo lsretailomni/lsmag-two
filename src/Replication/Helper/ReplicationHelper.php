@@ -283,7 +283,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity->setId($image_id);
         try {
             $response = $request->execute($entity);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -399,7 +399,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $operation->execute($hierarchy->setReplRequest($request));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
