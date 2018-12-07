@@ -8,6 +8,7 @@ use Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Core\Model\LSR;
+
 abstract class AbstractOperation implements OperationInterface
 {
     /** @var string  */
@@ -17,7 +18,7 @@ abstract class AbstractOperation implements OperationInterface
     protected $service_type;
 
     /** @var string */
-    protected $token = NULL;
+    protected $token = null;
 
     /** @var $service_type ServiceType */
     protected $logger;
@@ -59,7 +60,7 @@ abstract class AbstractOperation implements OperationInterface
      */
     protected function isTokenized()
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -90,7 +91,7 @@ abstract class AbstractOperation implements OperationInterface
         } catch (\SoapFault $e) {
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);
-            $response = NULL;
+            $response = null;
         }
         $this->debugLog($operation_name);
         return $response;

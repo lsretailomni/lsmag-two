@@ -33,7 +33,6 @@ class LoyaltypointsConfigProvider implements ConfigProviderInterface
         PaymentHelper $paymentHelper,
         Escaper $escaper,
         Session $checkoutSession
-
     ) {
         $this->escaper = $escaper;
         $this->method = $paymentHelper->getMethodInstance($this->methodCode);
@@ -55,5 +54,4 @@ class LoyaltypointsConfigProvider implements ConfigProviderInterface
             ],
         ] : [];
     }
-
 }

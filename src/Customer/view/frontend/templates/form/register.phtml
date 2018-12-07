@@ -22,11 +22,13 @@ $_isLSR = true;
             <input type="hidden" name="error_url" value="<?php /* @escapeNotVerified */
             echo $block->getErrorUrl() ?>">
             <?php echo $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
-            <?php if ($block->isNewsletterEnabled()): ?>
+            <?php if ($block->isNewsletterEnabled()) : ?>
                 <div class="field choice newsletter">
                     <input type="checkbox" name="is_subscribed" title="<?php /* @escapeNotVerified */
                     echo __('Sign Up for Newsletter') ?>" value="1"
-                           id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?>
+                           id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) :
+?> checked="checked"<?php
+                                             endif; ?>
                            class="checkbox">
                     <label for="is_subscribed" class="label"><span><?php /* @escapeNotVerified */
                             echo __('Sign Up for Newsletter') ?></span></label>
@@ -36,21 +38,21 @@ $_isLSR = true;
             <?php endif ?>
 
             <?php $_dob = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Dob') ?>
-            <?php if ($_dob->isEnabled()): ?>
+            <?php if ($_dob->isEnabled()) : ?>
                 <?php echo $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
             <?php endif ?>
 
             <?php $_taxvat = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Taxvat') ?>
-            <?php if ($_taxvat->isEnabled()): ?>
+            <?php if ($_taxvat->isEnabled()) : ?>
                 <?php echo $_taxvat->setTaxvat($block->getFormData()->getTaxvat())->toHtml() ?>
             <?php endif ?>
 
             <?php $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender') ?>
-            <?php if ($_gender->isEnabled()): ?>
+            <?php if ($_gender->isEnabled()) : ?>
                 <?php echo $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
         </fieldset>
-        <?php if ($block->getShowAddressFields()): ?>
+        <?php if ($block->getShowAddressFields()) : ?>
             <fieldset class="fieldset address">
                 <legend class="legend"><span><?php /* @escapeNotVerified */
                         echo __('Address Information') ?></span></legend>
@@ -63,7 +65,7 @@ $_isLSR = true;
                         <input type="text" name="company" id="company"
                                value="<?php echo $block->escapeHtml($block->getFormData()->getCompany()) ?>"
                                title="<?php /* @escapeNotVerified */
-                               echo __('Company') ?>" class="input-text <?php /* @escapeNotVerified */
+                                echo __('Company') ?>" class="input-text <?php /* @escapeNotVerified */
                         echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('company') ?>">
                     </div>
                 </div>
@@ -74,7 +76,7 @@ $_isLSR = true;
                         <input type="text" name="telephone" id="telephone"
                                value="<?php echo $block->escapeHtml($block->getFormData()->getTelephone()) ?>"
                                title="<?php /* @escapeNotVerified */
-                               echo __('Phone Number') ?>" class="input-text <?php /* @escapeNotVerified */
+                                echo __('Phone Number') ?>" class="input-text <?php /* @escapeNotVerified */
                         echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('telephone') ?>">
                     </div>
                 </div>
@@ -88,11 +90,11 @@ $_isLSR = true;
                         <input type="text" name="street[]" data-validate='{"required":true,"maxlength":50}'
                                value="<?php echo $block->escapeHtml($block->getFormData()->getStreet(0)) ?>"
                                title="<?php /* @escapeNotVerified */
-                               echo __('Street Address') ?>" id="street_1" class="input-text <?php /* @escapeNotVerified */
+                                echo __('Street Address') ?>" id="street_1" class="input-text <?php /* @escapeNotVerified */
                         echo $_streetValidationClass ?>">
                         <div class="nested">
                             <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
-                            <?php for ($_i = 2, $_n = $this->helper('Magento\Customer\Helper\Address')->getStreetLines(); $_i <= $_n; $_i++): ?>
+                            <?php for ($_i = 2, $_n = $this->helper('Magento\Customer\Helper\Address')->getStreetLines(); $_i <= $_n; $_i++) : ?>
                                 <div class="field additional">
                                     <label class="label" for="street_<?php /* @escapeNotVerified */
                                     echo $_i ?>">
@@ -103,9 +105,9 @@ $_isLSR = true;
                                         <input type="text" name="street[]" maxlength="50" data-validate='{"maxlength":50}'
                                                value="<?php echo $block->escapeHtml($block->getFormData()->getStreetLine($_i - 1)) ?>"
                                                title="<?php /* @escapeNotVerified */
-                                               echo __('Street Address %1', $_i) ?>"
+                                                echo __('Street Address %1', $_i) ?>"
                                                id="street_<?php /* @escapeNotVerified */
-                                               echo $_i ?>" class="input-text <?php /* @escapeNotVerified */
+                                                echo $_i ?>" class="input-text <?php /* @escapeNotVerified */
                                         echo $_streetValidationClass ?>">
                                     </div>
                                 </div>
@@ -121,7 +123,7 @@ $_isLSR = true;
                         <input type="text" name="city"
                                value="<?php echo $block->escapeHtml($block->getFormData()->getCity()) ?>"
                                title="<?php /* @escapeNotVerified */
-                               echo __('City') ?>" class="input-text <?php /* @escapeNotVerified */
+                                echo __('City') ?>" class="input-text <?php /* @escapeNotVerified */
                         echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('city') ?>"
                                id="city">
                     </div>
@@ -139,7 +141,7 @@ $_isLSR = true;
                         <input type="text" id="region" name="region"
                                value="<?php echo $block->escapeHtml($block->getRegion()) ?>"
                                title="<?php /* @escapeNotVerified */
-                               echo __('State/Province') ?>" class="input-text <?php /* @escapeNotVerified */
+                                echo __('State/Province') ?>" class="input-text <?php /* @escapeNotVerified */
                         echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('region') ?>"
                                style="display:none;">
                     </div>
@@ -152,9 +154,9 @@ $_isLSR = true;
                         <input type="text" name="postcode"
                                value="<?php echo $block->escapeHtml($block->getFormData()->getPostcode()) ?>"
                                title="<?php /* @escapeNotVerified */
-                               echo __('Zip/Postal Code') ?>" id="zip"
+                                echo __('Zip/Postal Code') ?>" id="zip"
                                class="input-text validate-zip-international <?php /* @escapeNotVerified */
-                               echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('postcode') ?>">
+                                echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('postcode') ?>">
                     </div>
                 </div>
 
@@ -166,7 +168,7 @@ $_isLSR = true;
                     </div>
                 </div>
                 <?php $addressAttributes = $block->getChildBlock('customer_form_address_user_attributes'); ?>
-                <?php if ($addressAttributes): ?>
+                <?php if ($addressAttributes) : ?>
                     <?php $addressAttributes->setEntityType('customer_address'); ?>
                     <?php $addressAttributes->setFieldIdFormat('address:%1$s')->setFieldNameFormat('address[%1$s]'); ?>
                     <?php $block->restoreSessionData($addressAttributes->getMetadataForm(), 'address'); ?>
@@ -182,7 +184,7 @@ $_isLSR = true;
             <legend class="legend"><span><?php /* @escapeNotVerified */
                     echo __('Sign-in Information') ?></span></legend>
             <br>
-            <?php if ($_isLSR): ?>
+            <?php if ($_isLSR) : ?>
                 <div class="field required">
                     <label for="lsr_username" class="label"><span><?php /* @escapeNotVerified */
                             echo __('Username') ?></span></label>
@@ -190,7 +192,7 @@ $_isLSR = true;
                         <input type="text" name="lsr_username" id="lsr_username"
                                value="<?php //echo $block->escapeHtml($block->getFormData()->getEmail()) ?>"
                                title="<?php /* @escapeNotVerified */
-                               echo __('Username') ?>" class="input-text" data-validate="{required:true}">
+                                echo __('Username') ?>" class="input-text" data-validate="{required:true}">
                     </div>
                 </div>
             <?php endif; ?>
@@ -201,7 +203,7 @@ $_isLSR = true;
                     <input type="email" name="email" autocomplete="email" id="email_address"
                            value="<?php echo $block->escapeHtml($block->getFormData()->getEmail()) ?>"
                            title="<?php /* @escapeNotVerified */
-                           echo __('Email') ?>" class="input-text" data-validate="{required:true, 'validate-email':true}">
+                            echo __('Email') ?>" class="input-text" data-validate="{required:true, 'validate-email':true}">
                 </div>
             </div>
             <div class="field password required" data-mage-init='{"passwordStrengthIndicator": {}}'>
@@ -210,7 +212,7 @@ $_isLSR = true;
                 <div class="control">
                     <input type="password" name="password" id="password"
                            title="<?php /* @escapeNotVerified */
-                           echo __('Password') ?>"
+                            echo __('Password') ?>"
                            class="input-text"
                            data-password-min-length="<?php echo $block->escapeHtml($block->getMinimumPasswordLength()) ?>"
                            data-password-min-character-sets="<?php echo $block->escapeHtml($block->getRequiredCharacterClassesNumber()) ?>"
@@ -263,7 +265,7 @@ $_isLSR = true;
             var ignore = <?php /* @escapeNotVerified */ echo $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null'; ?>;
 
             dataForm.mage('validation', {
-                <?php if ($_dob->isEnabled()): ?>
+                <?php if ($_dob->isEnabled()) : ?>
                 errorPlacement: function (error, element) {
                     if (element.prop('id').search('full') !== -1) {
                         var dobElement = $(element).parents('.customer-dob'),
@@ -277,30 +279,30 @@ $_isLSR = true;
                     }
                 },
                 ignore: ':hidden:not(' + ignore + ')'
-                <?php else: ?>
+                <?php else : ?>
                 ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
                 <?php endif ?>
             }).find('input:text').attr('autocomplete', 'off');
 
         });
     </script>
-<?php if ($block->getShowAddressFields()): ?>
+<?php if ($block->getShowAddressFields()) : ?>
     <script type="text/x-magento-init">
     {
         "#country": {
             "regionUpdater": {
                 "optionalRegionAllowed": <?php /* @escapeNotVerified */
-        echo($block->getConfig('general/region/display_all') ? 'true' : 'false'); ?>,
+                echo($block->getConfig('general/region/display_all') ? 'true' : 'false'); ?>,
                 "regionListId": "#region_id",
                 "regionInputId": "#region",
                 "postcodeId": "#zip",
                 "form": "#form-validate",
                 "regionJson": <?php /* @escapeNotVerified */
-        echo $this->helper('Magento\Directory\Helper\Data')->getRegionJson() ?>,
+                echo $this->helper('Magento\Directory\Helper\Data')->getRegionJson() ?>,
                 "defaultRegion": "<?php /* @escapeNotVerified */
-        echo $block->getFormData()->getRegionId() ?>",
+                echo $block->getFormData()->getRegionId() ?>",
                 "countriesWithOptionalZip": <?php /* @escapeNotVerified */
-        echo $this->helper('Magento\Directory\Helper\Data')->getCountriesWithOptionalZip(true) ?>
+                echo $this->helper('Magento\Directory\Helper\Data')->getCountriesWithOptionalZip(true) ?>
             }
         }
     }

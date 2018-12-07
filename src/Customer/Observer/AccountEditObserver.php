@@ -42,8 +42,7 @@ class AccountEditObserver implements ObserverInterface
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
         \Magento\Framework\App\ActionFlag $actionFlag
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
         $this->logger = $logger;
@@ -73,14 +72,12 @@ class AccountEditObserver implements ObserverInterface
                         __('Your password has been updated.')
                     );
                 } else {
-
                     $this->messageManager->addErrorMessage(
                         __('You have entered an invalid current password.')
                     );
                     $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
                     $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
                 }
-
             } else {
                 $this->messageManager->addErrorMessage(
                     __('Confirm password did not match.')
@@ -90,6 +87,5 @@ class AccountEditObserver implements ObserverInterface
             }
         }
         return $this;
-
     }
 }

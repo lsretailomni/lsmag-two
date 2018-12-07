@@ -42,16 +42,13 @@ class UsernameObserver implements ObserverInterface
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
         \Magento\Framework\App\ActionFlag $actionFlag
-
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->_redirectInterface = $redirectInterface;
         $this->_actionFlag = $actionFlag;
-
     }
 
     /**
@@ -79,12 +76,8 @@ class UsernameObserver implements ObserverInterface
             }
 
             return $this;
-        }
-
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-
-
     }
 }

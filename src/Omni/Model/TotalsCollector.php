@@ -13,7 +13,7 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
     protected $basketHelper;
 
     /**
-     ****** Important ***********
+     * ***** Important ***********
      * We are not using this uptill now for Omni Calculation, but might be planning to use this while handling complex pricing management.
      *
      */
@@ -44,8 +44,17 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
         \Magento\Quote\Model\QuoteValidator $quoteValidator,
         BasketHelper $basketHelper
     ) {
-        parent::__construct($totalCollector, $totalCollectorFactory, $eventManager, $storeManager, $totalFactory,
-            $collectorList, $shippingFactory, $shippingAssignmentFactory, $quoteValidator);
+        parent::__construct(
+            $totalCollector,
+            $totalCollectorFactory,
+            $eventManager,
+            $storeManager,
+            $totalFactory,
+            $collectorList,
+            $shippingFactory,
+            $shippingAssignmentFactory,
+            $quoteValidator
+        );
         $this->basketHelper = $basketHelper;
     }
 
@@ -171,6 +180,5 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
         $address->addData($total->getData());
         $address->setAppliedTaxes($total->getAppliedTaxes());
         return $total;
-
     }
 }

@@ -35,7 +35,7 @@ class ClassMapGenerator extends AbstractOmniGenerator
             //'NotificationStatus','OrderQueueStatusFilterType',
         ];
         foreach ($this->metadata->getRestrictions() as $restriction_name => $restriction) {
-            if (array_search($restriction_name, $restriction_blacklist) === FALSE) {
+            if (array_search($restriction_name, $restriction_blacklist) === false) {
                 $fqn = self::fqn($this->base_namespace, 'Entity', 'Enum', $restriction_name);
                 $fqn = str_replace('\\', '\\\\', $fqn);
                 $body .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $restriction_name, $fqn);
@@ -43,8 +43,8 @@ class ClassMapGenerator extends AbstractOmniGenerator
         }
         $map_method = new MethodGenerator();
         $map_method->setName('getClassMap');
-        $map_method->setFinal(TRUE);
-        $map_method->setStatic(TRUE);
+        $map_method->setFinal(true);
+        $map_method->setStatic(true);
         $map_method->setVisibility(MethodGenerator::FLAG_PROTECTED);
         $map_method->setBody(sprintf('return [%1$s];', $body));
         $this->class->setName('ClassMap');

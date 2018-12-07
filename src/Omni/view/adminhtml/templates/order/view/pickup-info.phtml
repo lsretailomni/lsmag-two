@@ -1,9 +1,10 @@
 <div id="pickup-info-wrapper">
-    <?php if($block->getPickupStore()): ?>
+    <?php if ($block->getPickupStore()) : ?>
         <strong><?php echo __('Choosen Store') ?>:</strong>
         <span class="price">
             <?php echo $this->helper('Ls\Omni\Helper\Data')->getStoreNameById(
-            $block->getPickupStore()); ?>
+                $block->getPickupStore()
+            ); ?>
         </span>
     <?php endif; ?>
     <br/>
@@ -14,7 +15,7 @@
     require(
         ['jquery'],
         function($) {
-        	$('#pickup-info-wrapper').appendTo('.order-shipping-method div:last-child');
+            $('#pickup-info-wrapper').appendTo('.order-shipping-method div:last-child');
         }
     );
 </script>

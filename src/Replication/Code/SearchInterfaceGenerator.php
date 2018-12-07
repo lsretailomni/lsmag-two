@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Code;
 
-
 use Ls\Core\Code\AbstractGenerator;
 use Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Api\SearchResultsInterface;
@@ -28,7 +27,6 @@ class SearchInterfaceGenerator extends AbstractGenerator
         $this->class = new InterfaceGenerator();
         $this->file->setClass($this->class);
         $this->operation = $operation;
-
     }
 
     /**
@@ -51,8 +49,11 @@ class SearchInterfaceGenerator extends AbstractGenerator
 CODE;
 
         $content = preg_replace('/\s+{\s+}+/', ";\n", $content);
-        $content = str_replace($interface_name, "$interface_name extends SearchResultsInterface",
-            $content);
+        $content = str_replace(
+            $interface_name,
+            "$interface_name extends SearchResultsInterface",
+            $content
+        );
 
         return $content;
     }

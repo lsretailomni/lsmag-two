@@ -8,7 +8,6 @@
 
 namespace Ls\Omni\Block\Info;
 
-
 class Loyaltypoints extends \Magento\Payment\Block\Info
 {
 

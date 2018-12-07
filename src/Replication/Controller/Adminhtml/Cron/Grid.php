@@ -13,7 +13,6 @@ use Magento\Backend\App\Action;
 use \Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\ObjectManagerInterface;
 
-
 class Grid extends Action
 {
     /** Url path */
@@ -37,13 +36,10 @@ class Grid extends Action
         Context $context,
         PageFactory $resultPageFactory,
         ObjectManagerInterface $objectManager
-    )
-    {
+    ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->_objectManager = $objectManager;
         parent::__construct($context);
-
-
     }
 
     public function execute()
@@ -71,7 +67,6 @@ class Grid extends Action
                 return $resultPage;
             }
         } catch (\Exception $e) {
-
         }
     }
 }

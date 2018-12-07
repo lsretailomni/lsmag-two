@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Console\Command;
 
-
 use Composer\Autoload\ClassLoader;
 use Ls\Omni\Console\Command as OmniCommand;
 use Ls\Omni\Service\Metadata as ServiceMetadata;
@@ -38,10 +37,10 @@ class ReplicationGenerate extends OmniCommand
     private static $known_result_properties = ['LastKey', 'MaxKey', 'RecordsRemaining'];
 
     /** @var boolean */
-    protected $system = FALSE;
+    protected $system = false;
 
     /** @var boolean */
-    protected $cron = FALSE;
+    protected $cron = false;
 
     /** @var ServiceMetadata */
     private $metadata;
@@ -61,8 +60,7 @@ class ReplicationGenerate extends OmniCommand
         Service $service,
         \Magento\Framework\Module\Dir\Reader $dirReader,
         \Magento\Framework\Filesystem\Io\File $file
-    )
-    {
+    ) {
         parent::__construct($service, $dirReader);
         $this->_fileHelper  =   $file;
     }
@@ -78,7 +76,7 @@ class ReplicationGenerate extends OmniCommand
         parent::initialize($input, $output);
 
         $client = new Client(Service::getUrl($this->type, $this->base_url), $this->type);
-        $this->metadata = $client->getMetadata(TRUE);
+        $this->metadata = $client->getMetadata(true);
         $this->system = !!$this->input->getOption(self::SYSTEM);
         $this->cron = !!$this->input->getOption(self::CRON);
         $this->loader = new \Composer\Autoload\ClassLoader; //new \Composer\Autoload\ClassLoader; //$GLOBALS[ 'loader' ];];
@@ -91,8 +89,8 @@ class ReplicationGenerate extends OmniCommand
         $this->setName(self::COMMAND_NAME)
             ->setDescription('Generate replication related after running omni:client:generate')
             ->addOption(self::BASE_URL, 'b', InputOption::VALUE_OPTIONAL, 'omni service base url')
-            ->addOption(self::CRON, 'c', InputOption::VALUE_OPTIONAL, 'display XML crontab configurations', FALSE)
-            ->addOption(self::SYSTEM, 's', InputOption::VALUE_OPTIONAL, 'display XML system configurations', FALSE);
+            ->addOption(self::CRON, 'c', InputOption::VALUE_OPTIONAL, 'display XML crontab configurations', false)
+            ->addOption(self::SYSTEM, 's', InputOption::VALUE_OPTIONAL, 'display XML system configurations', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -105,7 +103,7 @@ class ReplicationGenerate extends OmniCommand
 
         /** @var Operation $operation */
         foreach ($this->metadata->getOperations() as $operation_name => $operation) {
-            if (strpos($operation_name, 'ReplEcomm') !== FALSE) {
+            if (strpos($operation_name, 'ReplEcomm') !== false) {
                 $this->processOperation($operation);
             }
         }
@@ -132,7 +130,6 @@ class ReplicationGenerate extends OmniCommand
                 $cron_job_config_generator = new CronJobConfigGenerator($replication_operation);
                 $this->output->writeln($cron_job_config_generator->generate());
             } else {
-
                 // SCHEMA UPDATE Ls/Replication/Setup/UpgradeSchema/$classname.php
 
                 $schema_update_generator = new SchemaUpdateGenerator($replication_operation);
@@ -141,57 +138,72 @@ class ReplicationGenerate extends OmniCommand
 
                 // MODEL INTERFACE \\Ls\\Replication\\Api\\Data\$classname." ".Interface.php but not the search part
                 $model_interface_generator = new ModelInterfaceGenerator($replication_operation);
-                file_put_contents($replication_operation->getInterfacePath(TRUE),
-                    $model_interface_generator->generate());
+                file_put_contents(
+                    $replication_operation->getInterfacePath(true),
+                    $model_interface_generator->generate()
+                );
 
 
                 // MODEL Pure Model classes Ls\Replication\Model\@classname.php
                 $model_generator = new ModelGenerator($replication_operation);
-                file_put_contents($replication_operation->getMainEntityPath(TRUE), $model_generator->generate());
+                file_put_contents($replication_operation->getMainEntityPath(true), $model_generator->generate());
 
 
                 // REPOSITORY INTERFACE  /Ls/Replication/API/$classname.RepositoryInterface.php
                 $repository_interface_generator = new RepositoryInterfaceGenerator($replication_operation);
-                file_put_contents($replication_operation->getRepositoryInterfacePath(TRUE),
-                    $repository_interface_generator->generate());
+                file_put_contents(
+                    $replication_operation->getRepositoryInterfacePath(true),
+                    $repository_interface_generator->generate()
+                );
 
                 // REPOSITORY Ls\Replication\Model\$classname.Repository.php
                 $repository_generator = new RepositoryGenerator($replication_operation);
-                file_put_contents($replication_operation->getRepositoryPath(TRUE),
-                    $repository_generator->generate());
+                file_put_contents(
+                    $replication_operation->getRepositoryPath(true),
+                    $repository_generator->generate()
+                );
 
 
                 // RESOURCE MODEL \\Ls\Replication\Model\ResourceModel\$classname.php
 
                 $resource_model_generator = new ResourceModelGenerator($replication_operation);
-                file_put_contents($replication_operation->getResourceModelPath(TRUE),
-                    $resource_model_generator->generate());
+                file_put_contents(
+                    $replication_operation->getResourceModelPath(true),
+                    $resource_model_generator->generate()
+                );
 
 
                 // RESOURCE COLLECTION \\Ls\Replication\Model\ResourceModel\$classname\Collection.php
                 $resource_collection_generator = new ResourceCollectionGenerator($replication_operation);
                 $resource_collection_generator->createPath();
-                file_put_contents($replication_operation->getResourceCollectionPath(TRUE),
-                    $resource_collection_generator->generate());
+                file_put_contents(
+                    $replication_operation->getResourceCollectionPath(true),
+                    $resource_collection_generator->generate()
+                );
 
 
                 // CRON JOB  \LS\Replication\Cron\$classname.php
                 $cron_job_generator = new CronJobGenerator($replication_operation);
-                file_put_contents($replication_operation->getJobPath(TRUE),
-                    $cron_job_generator->generate());
+                file_put_contents(
+                    $replication_operation->getJobPath(true),
+                    $cron_job_generator->generate()
+                );
 
 
                 // SEARCH INTERFACE \Ls\Replication\API\Data\$classname.SearchResultInterface.php
                 $search_interface_generator = new SearchInterfaceGenerator($replication_operation);
-                file_put_contents($replication_operation->getSearchInterfacePath(TRUE),
-                    $search_interface_generator->generate());
+                file_put_contents(
+                    $replication_operation->getSearchInterfacePath(true),
+                    $search_interface_generator->generate()
+                );
                 // SEARCH MODEL
                 $search_generator = new SearchGenerator($replication_operation);
-                file_put_contents($replication_operation->getSearchPath(TRUE),
-                    $search_generator->generate());
+                file_put_contents(
+                    $replication_operation->getSearchPath(true),
+                    $search_generator->generate()
+                );
                 $this->output->writeln('- - - -');
             }
-
         } catch (\Exception $e) {
             $this->output->writeln("\tSomething went wrong, please check log directory");
             $this->output->writeln($e->getMessage());
@@ -204,40 +216,34 @@ class ReplicationGenerate extends OmniCommand
     /**
      * Create required directories if not exists.
      */
-    private function createPathIfNotExist(){
+    private function createPathIfNotExist()
+    {
 
-        $replicationBasePath    =   $this->_dirReader->getModuleDir('','Ls_Replication');
+        $replicationBasePath    =   $this->_dirReader->getModuleDir('', 'Ls_Replication');
 
 
         // For Replication API Data,
 
-        if(!is_dir(AbstractGenerator::path( $replicationBasePath, AbstractGenerator::fqn( 'Api/Data') ))){
-            $this->_fileHelper->mkdir(AbstractGenerator::path( $replicationBasePath, AbstractGenerator::fqn( 'Api/Data') ),0755);
-
+        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Api/Data')))) {
+            $this->_fileHelper->mkdir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Api/Data')), 0755);
         }
 
         // For Replication Cron
 
-        if(!is_dir(AbstractGenerator::path( $replicationBasePath, AbstractGenerator::fqn( 'Cron') ))){
-            $this->_fileHelper->mkdir(AbstractGenerator::path( $replicationBasePath, AbstractGenerator::fqn( 'Cron') ),0755);
-
+        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Cron')))) {
+            $this->_fileHelper->mkdir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Cron')), 0755);
         }
 
         // For Replication ResourceModel
 
-        if(!is_dir(AbstractGenerator::path( $replicationBasePath, AbstractGenerator::fqn( 'Model/ResourceModel') ))){
-            $this->_fileHelper->mkdir(AbstractGenerator::path( $replicationBasePath, AbstractGenerator::fqn( 'Model/ResourceModel') ),0755);
-
+        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Model/ResourceModel')))) {
+            $this->_fileHelper->mkdir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Model/ResourceModel')), 0755);
         }
 
 
         // For replication UpgradeSchema
-        if(!is_dir(AbstractGenerator::path( $replicationBasePath, AbstractGenerator::fqn( 'Setup/UpgradeSchema') ))){
-            $this->_fileHelper->mkdir(AbstractGenerator::path( $replicationBasePath, AbstractGenerator::fqn( 'Setup/UpgradeSchema') ),0755);
-
+        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Setup/UpgradeSchema')))) {
+            $this->_fileHelper->mkdir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Setup/UpgradeSchema')), 0755);
         }
-
-
-
     }
 }

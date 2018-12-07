@@ -20,8 +20,7 @@ class BlockObserver implements ObserverInterface
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $date,
         \Magento\Framework\View\Element\Template $coreTemplate
-    )
-    {
+    ) {
         $this->_date = $date;
         $this->_coreTemplate = $coreTemplate;
     }
@@ -33,11 +32,11 @@ class BlockObserver implements ObserverInterface
 
     public function execute(EventObserver $observer)
     {
-        if($observer->getElementName() == 'order_shipping_view') {
+        if ($observer->getElementName() == 'order_shipping_view') {
             $shippingInfoBlock = $observer->getLayout()->getBlock($observer->getElementName());
             $order = $shippingInfoBlock->getOrder();
 
-            if($order->getShippingMethod() != 'clickandcollect_clickandcollect') {
+            if ($order->getShippingMethod() != 'clickandcollect_clickandcollect') {
                 return $this;
             }
 

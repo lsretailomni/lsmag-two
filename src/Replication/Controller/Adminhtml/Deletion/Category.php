@@ -37,8 +37,7 @@ class Category extends Action
         Registry $registry,
         LoggerInterface $logger,
         Context $context
-    )
-    {
+    ) {
         $this->categoryFactory = $categoryFactory;
         $this->registry = $registry;
         $this->logger = $logger;
@@ -67,5 +66,4 @@ class Category extends Action
         $this->messageManager->addSuccessMessage(__('Categories deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
-
 }

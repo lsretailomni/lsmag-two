@@ -38,8 +38,7 @@ class Password extends \Magento\Customer\Model\Customer\Attribute\Backend\Passwo
     public function __construct(
         \Magento\Framework\Stdlib\StringUtils $string,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-    )
-    {
+    ) {
         $this->string = $string;
         $this->scopeConfig = $scopeConfig;
     }
@@ -60,9 +59,9 @@ class Password extends \Magento\Customer\Model\Customer\Attribute\Backend\Passwo
 
         $length = $this->string->strlen($password);
         if ($length > 0) {
-            if ($length < $min_password_length ) {
+            if ($length < $min_password_length) {
                 throw new LocalizedException(
-                    __('Please enter a password with at least %1 characters.', $min_password_length )
+                    __('Please enter a password with at least %1 characters.', $min_password_length)
                 );
             }
 

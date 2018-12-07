@@ -43,8 +43,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         Http $request,
         array $meta = [],
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->request = $request;
     }
@@ -56,7 +55,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      */
     public function getData()
     {
-        $items = array(
+        $items = [
             ['id' => "1", 'label' => 'Item', 'value' => 'Ls\Replication\Cron\ReplEcommItemsTask', 'condition' => 'Omni to Flat'],
             ['id' => "2", 'label' => 'Barcode', 'value' => 'Ls\Replication\Cron\ReplEcommBarcodesTask', 'condition' => 'Omni to Flat'],
             ['id' => "3", 'label' => 'Extended Variant Value', 'value' => 'Ls\Replication\Cron\ReplEcommExtendedVariantsTask', 'condition' => 'Omni to Flat'],
@@ -77,7 +76,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
             ['id' => "18", 'label' => 'Products', 'value' => 'Ls\Replication\Cron\ProductCreateTask', 'condition' => 'Flat to Magento'],
             ['id' => "19", 'label' => 'Barcode Update', 'value' => 'Ls\Replication\Cron\BarcodeUpdateTask', 'condition' => 'Flat to Magento'],
             ['id' => "20", 'label' => 'Discount Create', 'value' => 'Ls\Replication\Cron\DiscountCreateTask', 'condition' => 'Flat to Magento'],
-        );
+        ];
 
         $pagesize = intval($this->request->getParam('paging')['pageSize']);
         $pageCurrent = intval($this->request->getParam('paging')['current']);
@@ -108,11 +107,9 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      */
     public function searchResultToOutput(SearchResultInterface $searchResult)
     {
-
     }
 
     public function getItems()
     {
-
     }
 }

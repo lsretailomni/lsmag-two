@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Code;
 
-
 use Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use ReflectionClass;
@@ -74,8 +73,11 @@ class RepositoryInterfaceGenerator implements GeneratorInterface
 CODE;
 
         $content = str_replace("\\$entity_interface_name \$page", "$entity_interface_name \$page", $content);
-        $content = str_replace("\Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
-            "SearchCriteriaInterface \$criteria", $content);
+        $content = str_replace(
+            "\Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
+            "SearchCriteriaInterface \$criteria",
+            $content
+        );
         $content = preg_replace('/\s+{\s+}+/', ";\n", $content);
         return $content;
     }
@@ -88,6 +90,4 @@ CODE;
 
         return $this->operation->getRepositoryInterfaceName();
     }
-
-
 }

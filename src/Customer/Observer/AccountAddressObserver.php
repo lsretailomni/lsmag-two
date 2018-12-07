@@ -31,8 +31,7 @@ class AccountAddressObserver implements ObserverInterface
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session $customerSession
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
         $this->logger = $logger;
@@ -74,6 +73,5 @@ class AccountAddressObserver implements ObserverInterface
         }
 
         return $this;
-
     }
 }

@@ -41,8 +41,7 @@ class Product extends \Magento\Framework\App\Action\Action
         \Magento\Framework\App\Request\Http $request,
         \Magento\Checkout\Model\Session $session,
         \Ls\Omni\Helper\StockHelper $stockHelper
-    )
-    {
+    ) {
         $this->_request = $request;
         $this->_session = $session;
         $this->_stockHelper = $stockHelper;
@@ -64,11 +63,12 @@ class Product extends \Magento\Framework\App\Action\Action
             \Ls\Core\Model\LSR::MSG_NOT_AVAILABLE_NOTICE_CONTENT
         );
         if ($this->getRequest()->isAjax()) {
-            $storesNavId = array();
+            $storesNavId = [];
             $productSku = $this->_request->getParam('sku');
             $simpleProductId = $this->_request->getParam('id');
             $response = $this->_stockHelper->getAllStoresItemInStock(
-                $simpleProductId, $productSku
+                $simpleProductId,
+                $productSku
             );
             if (is_array($response->getStore())) {
                 foreach ($response->getStore() as $each) {
@@ -91,6 +91,4 @@ class Product extends \Magento\Framework\App\Action\Action
         }
         return $result;
     }
-
-
 }

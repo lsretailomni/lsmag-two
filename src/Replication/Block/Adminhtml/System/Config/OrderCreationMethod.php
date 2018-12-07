@@ -12,7 +12,7 @@ class OrderCreationMethod implements ArrayInterface
      */
     public function toOptionArray()
     {
-        $methods = array();
+        $methods = [];
 
         $methods[] = [
             'value' => '0',

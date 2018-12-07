@@ -62,11 +62,17 @@ class ResourceModelGenerator extends AbstractGenerator
         $this->class->addMethodFromGenerator($contructor_method);
 
         $content = $this->file->generate();
-        $content = str_replace('extends Magento\\Framework\\Model\\ResourceModel\\Db\\AbstractDb',
-            'extends AbstractDb', $content);
+        $content = str_replace(
+            'extends Magento\\Framework\\Model\\ResourceModel\\Db\\AbstractDb',
+            'extends AbstractDb',
+            $content
+        );
         $content = str_replace("implements \\$interface_name", "implements $interface_name", $content);
-        $content = str_replace(', \\Magento\\Framework\\DataObject\\IdentityInterface',
-            ', IdentityInterface', $content);
+        $content = str_replace(
+            ', \\Magento\\Framework\\DataObject\\IdentityInterface',
+            ', IdentityInterface',
+            $content
+        );
 
         return $content;
     }

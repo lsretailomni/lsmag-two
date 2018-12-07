@@ -1,7 +1,6 @@
 <?php
 namespace Ls\Customer\Block\Loyalty;
 
-
 use Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -34,8 +33,7 @@ class Offers extends \Magento\Framework\View\Element\Template
         \Magento\Framework\Filesystem\Io\File $file,
         StoreManagerInterface $storeManager,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $data);
         $this->loyaltyHelper = $loyaltyHelper;
         $this->logger = $logger;
@@ -63,7 +61,7 @@ class Offers extends \Magento\Framework\View\Element\Template
     public function fetchImages(\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon)
     {
         try {
-            $images = array();
+            $images = [];
             $index = 0;
 
             $img = $coupon->getImages()
@@ -103,11 +101,9 @@ class Offers extends \Magento\Framework\View\Element\Template
                     fclose($image_file);
                 }
                 $images[] = "{$output_file}";
-
             }
             return $images;
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
     }
@@ -127,5 +123,4 @@ class Offers extends \Magento\Framework\View\Element\Template
     {
         return $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . DIRECTORY_SEPARATOR . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
     }
-
 }

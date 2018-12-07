@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Code;
 
-
 use Ls\Core\Code\AbstractGenerator;
 use Ls\Core\Helper\Data as LsHelper;
 use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
@@ -141,7 +140,7 @@ CODE
         $make_request->setParameters([new ParameterGenerator('last_key')]);
         //making full replication dynamic instead of making it true all the time.
         // @see https://solutions.lsretail.com/jira/browse/OMNI-4508
-        $make_request->setParameters([new ParameterGenerator('full_replication', null, FALSE)]);
+        $make_request->setParameters([new ParameterGenerator('full_replication', null, false)]);
         // making batchsize dynamic and setting the default value to 100
         $make_request->setParameters([new ParameterGenerator('batchsize', null, 100)]);
         // setting storeid for those which requorire
@@ -171,7 +170,6 @@ CODE
         );
 
         return $config_path;
-
     }
 
     private function getConfigPathStatus()
@@ -185,7 +183,6 @@ CODE
         );
 
         return $config_path;
-
     }
 
     private function getMainEntity()
@@ -200,6 +197,5 @@ CODE
         );
 
         return $config_path;
-
     }
 }

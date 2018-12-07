@@ -38,8 +38,7 @@ class Data extends AbstractHelper
         StoreManagerInterface $store_manager,
         ReplStoreRepositoryInterface $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder
-    )
-    {
+    ) {
         $this->_storeManager = $store_manager;
         $this->storeRepository = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -69,7 +68,7 @@ class Data extends AbstractHelper
     public function getStoreHours($storeId)
     {
         try {
-            $storeResults = array();
+            $storeResults = [];
             $request = new StoreGetById();
             $request->getOperationInput()->setStoreId($storeId);
             if (empty($this->getValue())) {
@@ -79,7 +78,7 @@ class Data extends AbstractHelper
                 $storeResults = $this->getValue();
             }
             $counter = 0;
-            $storeHours = array();
+            $storeHours = [];
             foreach ($storeResults as $r) {
                 $storeHours[$counter]['openhours'] = date(LSR::STORE_HOURS_TIME_FORMAT, strtotime($r->getOpenFrom()));
                 $storeHours[$counter]['closedhours'] = date(LSR::STORE_HOURS_TIME_FORMAT, strtotime($r->getOpenTo()));

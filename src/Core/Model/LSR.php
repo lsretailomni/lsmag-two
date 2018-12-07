@@ -215,8 +215,7 @@ class LSR
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig
-    )
-    {
+    ) {
         $this->_scopeConfig = $scopeConfig;
     }
 
@@ -230,8 +229,10 @@ class LSR
         if ($notDefault) {
             $sc = $this->_scopeConfig->getValue($path, $notDefault);
         } else {
-            $sc = $this->_scopeConfig->getValue($path,
-                \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+            $sc = $this->_scopeConfig->getValue(
+                $path,
+                \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
         }
         return $sc;
     }

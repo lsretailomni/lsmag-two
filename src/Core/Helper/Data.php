@@ -37,5 +37,4 @@ class Data extends AbstractHelper
         $enabled = $this->scopeConfig->getValue(LSR::SC_SERVICE_ENABLE);
         return $enabled === '1' or $enabled === 1;
     }
-
 }

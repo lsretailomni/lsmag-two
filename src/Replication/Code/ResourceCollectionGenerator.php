@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Code;
 
-
 use Composer\Autoload\ClassLoader;
 use Ls\Core\Code\AbstractGenerator;
 use Ls\Omni\Service\Soap\ReplicationOperation;
@@ -37,9 +36,11 @@ class ResourceCollectionGenerator extends AbstractGenerator
     public function createPath()
     {
         /** @var ClassLoader $loader */
-        $path = $this->operation->getResourceCollectionPath(TRUE);
+        $path = $this->operation->getResourceCollectionPath(true);
         $folder_path = str_replace(DIRECTORY_SEPARATOR . 'Collection.php', '', $path);
-        if (!$this->fs->exists($folder_path)) $this->fs->mkdir($folder_path);
+        if (!$this->fs->exists($folder_path)) {
+            $this->fs->mkdir($folder_path);
+        }
     }
 
     /**
@@ -65,8 +66,11 @@ class ResourceCollectionGenerator extends AbstractGenerator
 
         $content = $this->file->generate();
         $content =
-            str_replace('extends Magento\\Framework\\Model\\ResourceModel\\Db\\Collection\\AbstractCollection',
-                'extends AbstractCollection', $content);
+            str_replace(
+                'extends Magento\\Framework\\Model\\ResourceModel\\Db\\Collection\\AbstractCollection',
+                'extends AbstractCollection',
+                $content
+            );
 
         return $content;
     }

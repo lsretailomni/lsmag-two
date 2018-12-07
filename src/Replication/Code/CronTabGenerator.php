@@ -23,7 +23,7 @@ class CronTabGenerator
         $group = $dom->createElement('group');
         $group->setAttribute('id', 'replication');
 
-        $jobNames = array();
+        $jobNames = [];
 
         $cronminute = 1;
 
@@ -34,14 +34,12 @@ class CronTabGenerator
             }
             $cronminute = $cronminute + 2;
 
-            if (strpos($operation_name, 'ReplEcomm') !== FALSE) {
-
+            if (strpos($operation_name, 'ReplEcomm') !== false) {
                 $jobName = $metadata->getReplicationOperationByName($operation->getName())->getJobName();
                 $jobId = strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', str_replace('Task', '', $jobName)));
 
                 // Only unique JOB ID will be added inside crontab.xml
                 if (!in_array($jobName, $jobNames)) {
-
                     $job = $dom->createElement('job');
                     $job->setAttribute('name', $jobId);
                     $job->setAttribute('instance', 'Ls\\Replication\\Cron\\' . $jobName);
@@ -54,20 +52,19 @@ class CronTabGenerator
                     $group->appendChild($job);
                     array_push($jobNames, $jobName);
                 }
-
             }
         }
 
         $config->appendChild($group);
         $dom->appendChild($config);
-        $dom->save(CronTabGenerator::getCronTabPath(TRUE));
+        $dom->save(CronTabGenerator::getCronTabPath(true));
     }
 
     /**
      * @param bool $absolute
      * @return string $path
      */
-    private static function getCronTabPath($absolute = FALSE)
+    private static function getCronTabPath($absolute = false)
     {
         $path = AbstractGenerator::path('etc', 'crontab.xml');
         $base_path = CronTabGenerator::getPath();

@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
-
 class DeleteDatabtn extends \Magento\Config\Block\System\Config\Form\Field
 {
 
@@ -43,7 +42,7 @@ class DeleteDatabtn extends \Magento\Config\Block\System\Config\Form\Field
             [
                 'button_label' => __($buttonLabel),
                 'button_url' => $this->getBaseUrl().$buttonUrl,
-                'html_id' => $element->getHtmlId(),               
+                'html_id' => $element->getHtmlId(),
             ]
         );
         
