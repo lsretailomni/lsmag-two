@@ -13,7 +13,7 @@
         <!-- On basic level - creation of custom payment method for loyalty profile -->
         <payment>
             <loyaltypoints>
-                <active>1</active>
+                <active>0</active>
                 <model>Ls\Omni\Model\Loyaltypoints</model>
                 <order_status>pending</order_status>
                 <title>Loyalty Points</title>
