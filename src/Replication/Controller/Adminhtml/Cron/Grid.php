@@ -57,7 +57,12 @@ class Grid extends Action
                 $cron = $this->_objectManager->create($jobUrl);
                 $info = $cron->executeManually();
                 if (!empty($info)) {
-                    $this->messageManager->addSuccessMessage(__($jobName . ' Cron has been executed. Remaining entries  ' . $info[0] . '.'));
+                    $jobControllerUrl = '<a href="' . $this->_url->getUrl(self::URL_PATH_Execute, ['joburl' => $jobUrl, 'jobname' => $jobName]) . '">Click Here</a>';
+                    $executeMoreData = '';
+                    if ($info[0] > 0) {
+                        $executeMoreData = ' Do you want to execute More Data? ' . $jobControllerUrl;
+                    }
+                    $this->messageManager->addSuccessMessage(__($jobName . ' Cron has been executed. Remaining entries  ' . $info[0] . '. ' . $executeMoreData));
                 }
                 $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
