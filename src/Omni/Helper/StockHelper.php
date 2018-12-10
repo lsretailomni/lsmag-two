@@ -32,12 +32,10 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         Context $context,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         CollectionFactory $storeCollectionFactory
-    )
-    {
+    ) {
         $this->_productRepository = $productRepository;
         $this->_storeCollectionFactory = $storeCollectionFactory;
         parent::__construct($context);
-
     }
     /**
      * getItemStockInStore
@@ -50,9 +48,8 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $storeId,
         $parentProductId,
         $childProductId
-    )
-    {
-        $response = NULL;
+    ) {
+        $response = null;
         $request = new Operation\ItemsInStockGet();
         $itemStock = new Entity\ItemsInStockGet();
         if (!empty($parentProductId) && !empty($childProductId)) {
@@ -78,7 +75,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAllStoresItemInStock($simpleProductId, $parentProductSku)
     {
         $simpleProductSku = "";
-        $response = NULL;
+        $response = null;
         $request = new Operation\StoresGetbyItemInStock();
         $itemStock = new Entity\StoresGetbyItemInStock();
         if (!empty($simpleProductId)) {
@@ -112,7 +109,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $stores = $this->_storeCollectionFactory
                 ->create()
                 ->addFieldToFilter('ClickAndCollect', 1)
-                ->addFieldToFilter('nav_id', array('in' => $storesNavIds))
+                ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
                 ->toArray();
             return \Zend_Json::encode($stores);
     }

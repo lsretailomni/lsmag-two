@@ -30,8 +30,7 @@ class Attribute extends Action
         ResourceConnection $resource,
         LoggerInterface $logger,
         Context $context
-    )
-    {
+    ) {
         $this->_resource = $resource;
         $this->logger = $logger;
         parent::__construct($context);
@@ -57,5 +56,4 @@ class Attribute extends Action
         $this->messageManager->addSuccessMessage(__('LS Attributes deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
-
 }

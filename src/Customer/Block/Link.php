@@ -38,7 +38,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
      */
     protected function _toHtml()
     {
-        if($this->isLoggedIn()) {
+        if ($this->isLoggedIn()) {
             return parent::_toHtml();
         }
         return '';

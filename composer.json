@@ -1,8 +1,9 @@
 {
   "name": "lsretail/lsmag-two",
   "description": "LS NAV Magento 2 Integration",
-  "type": "library",
+  "type": "magento2-module",
   "license": "proprietary",
+  "version": "1.0.0",
   "authors": [
     {
       "name": "LS Retail",
@@ -17,10 +18,10 @@
   },
   "autoload": {
     "psr-4": {
-      "Ls\\Core\\": "src/Core",
-      "Ls\\Omni\\": "src/Omni",
-      "Ls\\Replication\\": "src/Replication",
-      "Ls\\Customer\\": "src/Customer"
+      "Ls\\Core\\": "src/Core/",
+      "Ls\\Omni\\": "src/Omni/",
+      "Ls\\Replication\\": "src/Replication/",
+      "Ls\\Customer\\": "src/Customer/"
     },
     "files": [
       "src/Core/registration.php",

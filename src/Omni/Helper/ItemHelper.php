@@ -22,7 +22,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     protected $productRepository;
 
     /** @var array */
-    private $hashCache = array();
+    private $hashCache = [];
 
     /**
      * ItemHelper constructor.
@@ -37,8 +37,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         SearchCriteriaBuilder $searchCriteriaBuilder,
         ReplBarcodeRepository $barcodeRepository,
         ProductRepository $productRepository
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->barcodeRepository = $barcodeRepository;
@@ -50,10 +49,10 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param bool $lite
      * @return bool|Entity\LoyItem
      */
-    public function get($id, $lite = FALSE)
+    public function get($id, $lite = false)
     {
 
-        $result = FALSE;
+        $result = false;
         $entity = new Entity\ItemGetById();
         $entity->setItemId($id);
         $request = new Operation\ItemGetById();
@@ -107,7 +106,6 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
             }
         } else {
             $uom = $uoms;
-
         }
         /** @var Entity\UnitOfMeasure $response */
         $response = new Entity\UnitOfMeasure();
@@ -128,9 +126,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param null $variant_id
      * @return Entity\VariantRegistration|null
      */
-    public function getItemVariant(Entity\LoyItem $item, $variant_id = NULL)
+    public function getItemVariant(Entity\LoyItem $item, $variant_id = null)
     {
-        $variant = NULL;
+        $variant = null;
         if (is_null($variant_id)) {
             return $variant;
         }
@@ -159,6 +157,5 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setImages($variant->getImages());
 
         return $response;
-
     }
 }

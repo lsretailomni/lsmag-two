@@ -46,8 +46,7 @@ class View extends \Magento\Catalog\Block\Product\View
         ProductRepositoryInterface $productRepository,
         \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
         array $data = []
-    )
-    {
+    ) {
         $this->_lsr = $lsr;
         parent::__construct(
             $context,

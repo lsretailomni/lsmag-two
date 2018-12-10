@@ -12,12 +12,13 @@ class ClientWsdl extends Command
 {
     const COMMAND_NAME = 'omni:client:wsdl';
 
-    protected function configure () {
+    protected function configure()
+    {
 
-        $this->setName( self::COMMAND_NAME )
-             ->setDescription( 'show WSDL contents' )
-             ->addOption( 'type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce' )
-             ->addOption( 'base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url' );
+        $this->setName(self::COMMAND_NAME)
+             ->setDescription('show WSDL contents')
+             ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
+             ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url');
     }
 
     /**
@@ -25,11 +26,12 @@ class ClientWsdl extends Command
      * @param OutputInterface $output
      * @return int|null|void
      */
-    protected function execute ( InputInterface $input, OutputInterface $output ) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-        $wsdl = Service::getUrl( $this->type, $this->base_url );
-        $client = new Client( $wsdl, $this->type );
+        $wsdl = Service::getUrl($this->type, $this->base_url);
+        $client = new Client($wsdl, $this->type);
 
-        $this->output->writeln( $client->getWsdlXml()->saveXML() );
+        $this->output->writeln($client->getWsdlXml()->saveXML());
     }
 }

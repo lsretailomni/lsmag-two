@@ -51,8 +51,7 @@ class RegisterObserver implements ObserverInterface
         \Magento\Framework\Registry $registry,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session $customerSession
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;

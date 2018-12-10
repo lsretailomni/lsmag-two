@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Code;
 
-
 use CaseHelper\CaseHelperFactory;
 use CaseHelper\CaseHelperInterface;
 use Ls\Core\Code\AbstractGenerator;
@@ -65,8 +64,8 @@ class SchemaUpdateGenerator extends AbstractGenerator
 
         $upgrade_method = new MethodGenerator();
         $upgrade_method->setName("upgrade");
-        $upgrade_method->setParameters([new ParameterGenerator('setup', SchemaSetupInterface::class, NULL),
-            new ParameterGenerator('context', ModuleContextInterface::class, NULL)]);
+        $upgrade_method->setParameters([new ParameterGenerator('setup', SchemaSetupInterface::class, null),
+            new ParameterGenerator('context', ModuleContextInterface::class, null)]);
         $upgrade_method->setBody($this->getMethodBody());
 
         $this->class->setNamespaceName($this->reflected_upgrade->getNamespaceName() . '\\UpgradeSchema');
@@ -79,14 +78,26 @@ class SchemaUpdateGenerator extends AbstractGenerator
         $this->class->addMethodFromGenerator($upgrade_method);
 
         $content = $this->file->generate();
-        $content = str_replace('implements Ls\\Replication\\Setup\\UpgradeSchema\\UpgradeSchemaBlockInterface',
-            'implements UpgradeSchemaBlockInterface', $content);
-        $content = str_replace('extends Ls\\Replication\\Setup\\UpgradeSchema\\AbstractUpgradeSchema',
-            'extends AbstractUpgradeSchema', $content);
-        $content = str_replace('\Magento\\Framework\\Setup\\SchemaSetupInterface $setup',
-            'SchemaSetupInterface $setup', $content);
-        $content = str_replace('\Magento\\Framework\\Setup\\ModuleContextInterface $context',
-            'ModuleContextInterface $context', $content);
+        $content = str_replace(
+            'implements Ls\\Replication\\Setup\\UpgradeSchema\\UpgradeSchemaBlockInterface',
+            'implements UpgradeSchemaBlockInterface',
+            $content
+        );
+        $content = str_replace(
+            'extends Ls\\Replication\\Setup\\UpgradeSchema\\AbstractUpgradeSchema',
+            'extends AbstractUpgradeSchema',
+            $content
+        );
+        $content = str_replace(
+            '\Magento\\Framework\\Setup\\SchemaSetupInterface $setup',
+            'SchemaSetupInterface $setup',
+            $content
+        );
+        $content = str_replace(
+            '\Magento\\Framework\\Setup\\ModuleContextInterface $context',
+            'ModuleContextInterface $context',
+            $content
+        );
 
         return $content;
     }
@@ -105,7 +116,7 @@ class SchemaUpdateGenerator extends AbstractGenerator
             preg_match('/property\s(:?\w+)\s\$(:?\w+)/m', $docblock, $matches);
             $type = $matches[1];
             $name = $matches[2];
-            if (array_search($type, $simple_types) === FALSE) {
+            if (array_search($type, $simple_types) === false) {
                 if (array_key_exists($type, $restrictions)) {
                     $property_types[$name] = $type;
                 }
@@ -135,7 +146,7 @@ CODE;
             $name = $raw_name;
             $size = null;
 
-            (array_search($type, $simple_types) === FALSE) and ($type = 'string');
+            (array_search($type, $simple_types) === false) and ($type = 'string');
             if ($type == 'int') {
                 $field_type = 'Table::TYPE_INTEGER';
             } elseif ($type == 'float') {
@@ -144,7 +155,7 @@ CODE;
                 $field_type = 'Table::TYPE_BOOLEAN';
             } else {
                 $lower_name = strtolower($name);
-                if (strpos($lower_name, 'image64') === FALSE) {
+                if (strpos($lower_name, 'image64') === false) {
                     $field_type = 'Table::TYPE_TEXT';
                 } else {
                     $field_type = 'Table::TYPE_BLOB';
@@ -192,7 +203,7 @@ CODE;
         /** @var  \Magento\Framework\Module\Dir\Reader $dirReader */
         $dirReader  =   $objectManager->get('\Magento\Framework\Module\Dir\Reader');
 
-        $basepath       =    $dirReader->getModuleDir('','Ls_Replication');
+        $basepath       =    $dirReader->getModuleDir('', 'Ls_Replication');
         $upgrade_path = $basepath . "/Setup/UpgradeSchema";
 
         $entity_name = ucfirst($this->reflected_entity->getShortName());

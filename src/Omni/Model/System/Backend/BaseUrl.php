@@ -24,29 +24,32 @@ class BaseUrl extends Value
      * @param AbstractDb|null       $resourceCollection
      * @param array                 $data
      */
-    public function __construct ( Context $context,
-                                  Registry $registry,
-                                  ScopeConfigInterface $config,
-                                  TypeListInterface $cacheTypeList,
-                                  AbstractResource $resource = NULL,
-                                  AbstractDb $resourceCollection = NULL,
-                                  array $data = [ ]
+    public function __construct(
+        Context $context,
+        Registry $registry,
+        ScopeConfigInterface $config,
+        TypeListInterface $cacheTypeList,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
+        array $data = [ ]
     ) {
         $this->logger = $context->getLogger();
-        parent::__construct( $context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data );
+        parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
     }
 
 
-    public function beforeSave () {
+    public function beforeSave()
+    {
         return parent::beforeSave();
     }
 
-    public function afterSave () {
+    public function afterSave()
+    {
         return parent::afterSave();
     }
 
-    public function afterDelete () {
+    public function afterDelete()
+    {
         return parent::afterDelete();
     }
-
 }

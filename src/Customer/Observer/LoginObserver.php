@@ -93,7 +93,6 @@ class LoginObserver implements ObserverInterface
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Ls\Omni\Helper\BasketHelper $basketHelper
-
     ) {
         $this->contactHelper = $contactHelper;
         $this->filterBuilder = $filterBuilder;
@@ -282,7 +281,6 @@ class LoginObserver implements ObserverInterface
 
                     // update the onelist to Omni.
                     $this->basketHelper->update($oneList);
-
                 } elseif ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                     // if customer already has onelist created then update the list to get the information with user.
 
@@ -310,10 +308,7 @@ class LoginObserver implements ObserverInterface
                     $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
 
                     $this->basketHelper->update($oneList);
-
                 }
-
-
             } else {
                 $this->customerSession->addError(
                     __('The service is currently unavailable. Please try again later.')

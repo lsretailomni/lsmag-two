@@ -10,7 +10,6 @@ namespace Ls\Customer\Block\Account;
 
 use Ls\Omni\Helper\LoyaltyHelper;
 
-
 class Dashboard extends \Magento\Framework\View\Element\Template
 {
 
@@ -30,8 +29,7 @@ class Dashboard extends \Magento\Framework\View\Element\Template
         LoyaltyHelper $loyaltyHelper,
         \Psr\Log\LoggerInterface $logger,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $data);
         $this->loyaltyHelper = $loyaltyHelper;
         $this->logger = $logger;

@@ -19,7 +19,7 @@ class Order extends Action
     protected $_resource;
 
     /** @var array List of all the Order tables */
-    protected $order_tables = array(
+    protected $order_tables = [
         "gift_message",
         "quote",
         "quote_address",
@@ -65,7 +65,7 @@ class Order extends Action
         "sales_shipping_aggregated_order",
         "tax_order_aggregated_created",
         "tax_order_aggregated_updated"
-    );
+    ];
 
     /** @var array  */
     protected $_publicActions = ['order'];
@@ -79,8 +79,7 @@ class Order extends Action
         ResourceConnection $resource,
         LoggerInterface $logger,
         Context $context
-    )
-    {
+    ) {
         $this->_resource = $resource;
         $this->logger = $logger;
         parent::__construct($context);
@@ -108,5 +107,4 @@ class Order extends Action
         $this->messageManager->addSuccessMessage(__('Orders deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
-
 }

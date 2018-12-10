@@ -11,7 +11,6 @@ use Psr\Log\LoggerInterface;
  * Class Product Deletion
  */
 class Product extends Action
-
 {
     /** @var LoggerInterface */
     protected $logger;
@@ -20,7 +19,7 @@ class Product extends Action
     protected $_resource;
 
     /** @var array List of all the Catalog Product tables */
-    protected $catalog_products_tables = array(
+    protected $catalog_products_tables = [
         "catalog_product_attribute_cl",
         "catalog_product_bundle_option",
         "catalog_product_bundle_option_value",
@@ -118,7 +117,7 @@ class Product extends Action
         "report_viewed_product_aggregated_monthly",
         "report_viewed_product_aggregated_yearly",
         "report_viewed_product_index"
-    );
+    ];
 
     /** @var array  */
     protected $_publicActions = ['product'];
@@ -132,8 +131,7 @@ class Product extends Action
         ResourceConnection $resource,
         LoggerInterface $logger,
         Context $context
-    )
-    {
+    ) {
         $this->_resource = $resource;
         $this->logger = $logger;
         parent::__construct($context);
@@ -163,5 +161,4 @@ class Product extends Action
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
-
 }

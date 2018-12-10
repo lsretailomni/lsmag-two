@@ -43,8 +43,7 @@ class Points extends \Magento\Framework\App\Action\Action
         \Magento\Customer\Model\Session $customerSession,
         LoyaltyHelper $loyaltyHelper,
         Session $checkoutSession
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory = $resultRawFactory;

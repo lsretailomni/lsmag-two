@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Helper;
 
-
 use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Omni\Client\Ecommerce\Operation;
 use Ls\Core\Model\LSR;
@@ -80,8 +79,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         Set $attributeSet,
         TypeListInterface $cacheTypeList,
         LSR $LSR
-    )
-    {
+    ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
@@ -126,11 +124,13 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
         if ($filtername != '' && $filtervalue != '') {
             $criteria->addFilter(
-                $filtername, $filtervalue, $conditionType
+                $filtername,
+                $filtervalue,
+                $conditionType
             );
         }
         $criteria->addFilter('IsDeleted', 0, 'eq');
-        if($pagesize!=-1) {
+        if ($pagesize!=-1) {
             $criteria->setPageSize($pagesize);
         }
         return $criteria->create();
@@ -253,9 +253,13 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
         $criteria = $this->searchCriteriaBuilder->addFilter(
-            'KeyValue', $nav_id, 'eq'
+            'KeyValue',
+            $nav_id,
+            'eq'
         )->addFilter(
-            'TableName', $type, 'eq'
+            'TableName',
+            $type,
+            'eq'
         )->create();
 
         /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $items */
@@ -274,8 +278,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function imageStreamById($image_id = '')
     {
-        $response = NULL;
-        if ($image_id == '' || $image_id == NULL) {
+        $response = null;
+        if ($image_id == '' || $image_id == null) {
             return $response;
         }
         $request = new Operation\ImageStreamGetById();
@@ -283,7 +287,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity->setId($image_id);
         try {
             $response = $request->execute($entity);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -331,14 +335,13 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAllWebsitesIds()
     {
 
-        $websiteIds = array();
+        $websiteIds = [];
         $websites = $this->storeManager->getWebsites();
         /** @var \Magento\Store\Model\Website\Interceptor $website */
         foreach ($websites as $website) {
             $websiteIds[] = $website->getId();
         }
         return $websiteIds;
-
     }
 
     public function flushConfig()
@@ -347,15 +350,22 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->_logger->debug('Config Flushed');
     }
 
-    public function updateCronStatus($data,$path)
+    public function updateCronStatus($data, $path)
     {
-        if($data==true) {
-                $this->configWriter->save($path,1,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0);
-        }
-        else {
-                $this->configWriter->save($path,0,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0);
+        if ($data==true) {
+                $this->configWriter->save(
+                    $path,
+                    1,
+                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                    0
+                );
+        } else {
+                $this->configWriter->save(
+                    $path,
+                    0,
+                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                    0
+                );
         }
         $this->flushConfig();
     }
@@ -363,16 +373,18 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @return \Psr\Log\LoggerInterface
      */
-    public function getLogger(){
+    public function getLogger()
+    {
         return $this->_logger;
     }
 
     /**
      * Trigger the disposable Hierarchy replication job to get Hierarchy based on stores.
      */
-    public function getHierarchyByStore(){
+    public function getHierarchyByStore()
+    {
 
-        $response = array();
+        $response = [];
 
         $store_id       =   $this->_lsr->getDefaultWebStore();
 
@@ -395,16 +407,13 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
 
 
-        $this->_logger->debug(var_export($operation->getResponse(),true));
+        $this->_logger->debug(var_export($operation->getResponse(), true));
 
         try {
             $response = $operation->execute($hierarchy->setReplRequest($request));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
-
     }
-
-
 }

@@ -56,7 +56,6 @@ class ForgotPasswordObserver implements ObserverInterface
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
-
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
@@ -116,7 +115,6 @@ class ForgotPasswordObserver implements ObserverInterface
                     $observer->getControllerAction()
                         ->getResponse()
                         ->setRedirect($this->redirectInterface->getRefererUrl());
-
                 }
             }
         } catch (\Exception $e) {

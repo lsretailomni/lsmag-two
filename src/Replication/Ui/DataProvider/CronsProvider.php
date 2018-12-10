@@ -75,7 +75,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
     {
         $cronsGroupListing = $this->readCronFile();
         $condition = "";
-        $items = array();
+        $items = [];
         $counter = 1;
         $cronsGroupListing = array_reverse($cronsGroupListing);
         foreach ($cronsGroupListing as $cronlist) {
@@ -90,31 +90,28 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                     ];
                     $counter++;
                 }
-
-            }
-            else if ($cronlist['_attribute']['id'] == "flat_replication") {
+            } elseif ($cronlist['_attribute']['id'] == "flat_replication") {
                     $condition = __("Omni to Flat");
-                    foreach ($cronlist['_value']['job'] as $joblist) {
-                        $items[] = [
-                            'id' => $counter,
-                            'label' => $joblist['_attribute']['name'],
-                            'value' => $joblist['_attribute']['instance'],
-                            'condition' => $condition
-                        ];
-                        $counter++;
-                    }
-            }
-            else {
+                foreach ($cronlist['_value']['job'] as $joblist) {
+                    $items[] = [
+                        'id' => $counter,
+                        'label' => $joblist['_attribute']['name'],
+                        'value' => $joblist['_attribute']['instance'],
+                        'condition' => $condition
+                    ];
+                    $counter++;
+                }
+            } else {
                     $condition = __("");
-                    foreach ($cronlist['_value']['job'] as $joblist) {
-                        $items[] = [
-                            'id' => $counter,
-                            'label' => $joblist['_attribute']['name'],
-                            'value' => $joblist['_attribute']['instance'],
-                            'condition' => $condition
-                        ];
-                        $counter++;
-                    }
+                foreach ($cronlist['_value']['job'] as $joblist) {
+                    $items[] = [
+                        'id' => $counter,
+                        'label' => $joblist['_attribute']['name'],
+                        'value' => $joblist['_attribute']['instance'],
+                        'condition' => $condition
+                    ];
+                    $counter++;
+                }
             }
         }
 
@@ -134,11 +131,8 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
             $filePath = $this->moduleDirReader->getModuleDir('etc', 'Ls_Replication') . '/crontab.xml';
             $parsedArray = $this->parser->load($filePath)->xmlToArray();
             return $parsedArray['config']['_value']['group'];
+        } catch (\Exception $e) {
         }
-        catch(\Exception $e){
-
-        }
-
     }
 
 
@@ -160,13 +154,9 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      */
     public function searchResultToOutput(SearchResultInterface $searchResult)
     {
-
     }
 
     public function getItems()
     {
-
     }
 }
-
-?>

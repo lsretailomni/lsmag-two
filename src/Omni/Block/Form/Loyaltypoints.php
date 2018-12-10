@@ -8,7 +8,6 @@
 
 namespace Ls\Omni\Block\Form;
 
-
 class Loyaltypoints extends \Magento\Payment\Block\Form
 {
     /**
@@ -18,4 +17,3 @@ class Loyaltypoints extends \Magento\Payment\Block\Form
      */
     protected $_template = 'Ls_Omni::form/loyaltypoints.phtml';
 }
-

@@ -38,27 +38,29 @@ class EntityGenerator extends AbstractOmniGenerator
      * @param Metadata $metadata
      * @throws \Exception
      */
-    public function __construct ( Entity $restriction, Metadata $metadata ) {
-        parent::__construct( $metadata );
+    public function __construct(Entity $restriction, Metadata $metadata)
+    {
+        parent::__construct($metadata);
         $this->entity = $restriction;
     }
 
     /**
      * @return mixed|string
      */
-    function generate () {
+    function generate()
+    {
 
-        $service_folder = ucfirst( $this->getServiceType()->getValue() );
-        $base_namespace = self::fqn( 'Ls', 'Omni', 'Client', $service_folder );
-        $entity_namespace = self::fqn( $base_namespace, 'Entity' );
+        $service_folder = ucfirst($this->getServiceType()->getValue());
+        $base_namespace = self::fqn('Ls', 'Omni', 'Client', $service_folder);
+        $entity_namespace = self::fqn($base_namespace, 'Entity');
 
         $element = $this->entity->getElement();
         $types = $this->metadata->getTypes();
 
-        $this->class->setName( $this->entity->getName() );
+        $this->class->setName($this->entity->getName());
 
 
-        $this->class->setNamespaceName( $entity_namespace );
+        $this->class->setNamespaceName($entity_namespace);
 
         $type = $element->getType();
 
@@ -98,10 +100,12 @@ class EntityGenerator extends AbstractOmniGenerator
                 }
                 $this->class->addPropertyFromGenerator(PropertyGenerator::fromArray(
                     ['name' => $field_name,
-                        'defaultvalue' => $is_array ? [] : NULL,
+                        'defaultvalue' => $is_array ? [] : null,
                         'docblock' => DocBlockGenerator::fromArray(
-                            ['tags' => [new Tag\PropertyTag($field_name, [$field_data_type])]]),
-                        'flags' => [PropertyGenerator::FLAG_PROTECTED]]));
+                            ['tags' => [new Tag\PropertyTag($field_name, [$field_data_type])]]
+                        ),
+                    'flags' => [PropertyGenerator::FLAG_PROTECTED]]
+                ));
 
                 $set_method_name = "set{$field_name_capitalized}";
                 $get_method_name = "get{$field_name_capitalized}";
@@ -112,7 +116,8 @@ class EntityGenerator extends AbstractOmniGenerator
                     $set_method->setParameter(ParameterGenerator::fromArray(['name' => $field_name]));
                     $set_method->setDocBlock(
                         DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag($field_name, [$field_data_type]),
-                            new Tag\ReturnTag(['$this',])]]));
+                        new Tag\ReturnTag(['$this',])]])
+                    );
                     $set_method->setBody(<<<CODE
 \$this->$field_name = \$$field_name;
 return \$this;
@@ -120,10 +125,13 @@ CODE
                     );
                     if ($field_is_restriction) {
                         $set_method->setDocBlock(
-                            DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag($field_name,
-                                [$field_data_type, 'string']),
+                            DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag(
+                                $field_name,
+                                [$field_data_type, 'string']
+                            ),
                                 new Tag\ReturnTag(['$this']),
-                                new Tag\ThrowsTag(['InvalidEnumException'])]]));
+                            new Tag\ThrowsTag(['InvalidEnumException'])]])
+                        );
                         $this->class->addUse(InvalidEnumException::class);
                         $set_method->setBody(<<<CODE
 if ( ! \$$field_name instanceof $field_data_type ) {
@@ -150,7 +158,8 @@ CODE
                         $this->class->setImplementedInterfaces([IteratorAggregate::class]);
                         $iterator_method = new MethodGenerator();
                         $iterator_method->setDocBlock(
-                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$field_data_type])]]));
+                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$field_data_type])]])
+                        );
                         $iterator_method->setName('getIterator');
                         $iterator_method->setBody(<<<CODE
 return new ArrayIterator( \$this->$field_name );
@@ -164,7 +173,8 @@ CODE
                     $get_method = new MethodGenerator();
                     $get_method->setName($get_method_name)
                         ->setDocBlock(
-                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$field_data_type])]]));
+                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$field_data_type])]])
+                        );
                     $get_method->setBody(<<<CODE
 return \$this->$field_name;
 CODE
@@ -176,35 +186,35 @@ CODE
         }
 
         // ADD REQUEST INTERFACE
-        if ( $element->isRequest() ) {
-            $this->class->addUse( RequestInterface::class );
-            $this->class->setImplementedInterfaces( [ RequestInterface::class ] );
+        if ($element->isRequest()) {
+            $this->class->addUse(RequestInterface::class);
+            $this->class->setImplementedInterfaces([ RequestInterface::class ]);
         }
         // ADD RESPONSE INTERFACE
-        if ( $element->isResponse() ) {
-            $this->class->addUse( ResponseInterface::class );
-            $this->class->setImplementedInterfaces( [ ResponseInterface::class ] );
-            foreach ( $type->getDefinition() as $field_name => $field_type ) {
-
-                $field_data_type = $this->normalizeDataType( $field_type->getDataType() );
+        if ($element->isResponse()) {
+            $this->class->addUse(ResponseInterface::class);
+            $this->class->setImplementedInterfaces([ ResponseInterface::class ]);
+            foreach ($type->getDefinition() as $field_name => $field_type) {
+                $field_data_type = $this->normalizeDataType($field_type->getDataType());
                 $method_name = "getResult";
 
-                if ( !$this->class->hasMethod( $method_name ) ) {
+                if (!$this->class->hasMethod($method_name)) {
                     $method = new MethodGenerator();
-                    $method->setName( $method_name )
+                    $method->setName($method_name)
                            ->setDocBlock(
-                               DocBlockGenerator::fromArray( [ 'tags' => [ new Tag\ReturnTag( [ $field_data_type ] ) ] ] ) );
-                    $method->setBody( <<<CODE
+                               DocBlockGenerator::fromArray([ 'tags' => [ new Tag\ReturnTag([ $field_data_type ]) ] ])
+                           );
+                    $method->setBody(<<<CODE
 return \$this->$field_name;
 CODE
                     );
 
-                    $this->class->addMethodFromGenerator( $method );
+                    $this->class->addMethodFromGenerator($method);
                 }
             }
         }
 
-        if($type->getBase()){
+        if ($type->getBase()) {
             // for internal development only.
             $this->class->setExtendedClass("meannothing".$type->getBase());
         }
@@ -214,15 +224,15 @@ CODE
 
 
         // Zend add / in the start of base class which we dont need. so replace this with blah.
-        if($type->getBase()){
-            $content = str_replace( "\\meannothing".$type->getBase(), $type->getBase(), $content );
+        if ($type->getBase()) {
+            $content = str_replace("\\meannothing".$type->getBase(), $type->getBase(), $content);
         }
 
 
 
-        $content = str_replace( 'implements \\IteratorAggregate', 'implements IteratorAggregate', $content );
-        $content = str_replace( 'implements Ls\\Omni\\Client\\RequestInterface', 'implements RequestInterface', $content );
-        $content = str_replace( 'implements Ls\\Omni\\Client\\ResponseInterface', 'implements ResponseInterface', $content );
+        $content = str_replace('implements \\IteratorAggregate', 'implements IteratorAggregate', $content);
+        $content = str_replace('implements Ls\\Omni\\Client\\RequestInterface', 'implements RequestInterface', $content);
+        $content = str_replace('implements Ls\\Omni\\Client\\ResponseInterface', 'implements ResponseInterface', $content);
 
         return $content;
     }
@@ -232,7 +242,8 @@ CODE
      *
      * @return string
      */
-    protected function normalizeDataType ( $data_type ) {
-        return array_key_exists( $data_type, $this->equivalences ) ? $this->equivalences[ $data_type ] : $data_type;
+    protected function normalizeDataType($data_type)
+    {
+        return array_key_exists($data_type, $this->equivalences) ? $this->equivalences[ $data_type ] : $data_type;
     }
 }

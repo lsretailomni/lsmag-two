@@ -6,17 +6,16 @@ use Zend\Uri\Uri;
 use Zend\Uri\UriFactory;
 use Ls\Core\Model\LSR;
 
-
 class Service
 {
 
-    const DEFAULT_BASE_URL = NULL;
+    const DEFAULT_BASE_URL = null;
 
     /** @var  LSR $_lsr */
     protected $_lsr;
 
     /** @var null|string  */
-    protected $_baseurl = NULL;
+    protected $_baseurl = null;
 
 
     static protected $endpoints = [
@@ -42,15 +41,18 @@ class Service
      *
      * @return Uri
      */
-    public static function getUrl(ServiceType $type,
-                                  $base_url = self::DEFAULT_BASE_URL,
-                                  $wsdl = TRUE)
-    {
+    public static function getUrl(
+        ServiceType $type,
+        $base_url = self::DEFAULT_BASE_URL,
+        $wsdl = true
+    ) {
         if (is_null($base_url)) {
             $base_url = (new self)->getOmniBaseUrl();
         }
         $url = join('/', [$base_url, static::$endpoints[$type->getValue()]]);
-        if ($wsdl) $url .= '?singlewsdl';
+        if ($wsdl) {
+            $url .= '?singlewsdl';
+        }
         return UriFactory::factory($url);
     }
 
@@ -64,5 +66,4 @@ class Service
         $lsr = $objectManager->create('Ls\Core\Model\LSR');
         return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
     }
-
 }
