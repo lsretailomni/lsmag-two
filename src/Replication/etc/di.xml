@@ -81,7 +81,6 @@
         <item name="ls_repl_grids_itemcategory_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemCategory\Grid\Collection</item>
         <item name="ls_repl_grids_productgroup_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplProductGroup\Grid\Collection</item>
         <item name="ls_repl_grids_store_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplStore\Grid\Collection</item>
-        <item name="ls_repl_grids_discountvalidation_data_source" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplDiscountValidation\Grid\Collection</item>
       </argument>
     </arguments>
   </type>
