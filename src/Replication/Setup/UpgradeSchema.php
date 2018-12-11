@@ -14,25 +14,26 @@ class UpgradeSchema implements UpgradeSchemaInterface
     /**
      * @var  SchemaSetupInterface
      */
-    private $installer = NULL;
+    private $installer = null;
     /**
      * @var  ModuleContextInterface
      */
-    private $context = NULL;
+    private $context = null;
 
     /**
      * @param SchemaSetupInterface   $setup
      * @param ModuleContextInterface $context
      */
-    public function upgrade ( SchemaSetupInterface $setup, ModuleContextInterface $context ) {
+    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
         $this->installer = $setup;
         $this->context = $context;
 
         $this->installer->startSetup();
 
-        foreach ( UpgradeSchema::$versions as $version ) {
-            if ( version_compare( $version, $this->context->getVersion() ) == -1 ) {
-                $safe_version = UpgradeSchema::sanitizeVersion( $version );
+        foreach (UpgradeSchema::$versions as $version) {
+            if (version_compare($version, $this->context->getVersion()) == -1) {
+                $safe_version = UpgradeSchema::sanitizeVersion($version);
                 $method_name = "upgrade$safe_version";
                 $this->{$method_name}();
             }
@@ -46,8 +47,8 @@ class UpgradeSchema implements UpgradeSchemaInterface
      *
      * @return string
      */
-    public static function sanitizeVersion ( $version ) {
-        return str_replace( '.', '_', $version );
+    public static function sanitizeVersion($version)
+    {
+        return str_replace('.', '_', $version);
     }
 }
-

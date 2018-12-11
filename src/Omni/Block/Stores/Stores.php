@@ -51,8 +51,7 @@ class Stores extends Template
         ScopeConfigInterface $scopeConfig,
         SessionManagerInterface $session,
         Data $storeHousHelper
-    )
-    {
+    ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->_replStoreFactory = $replStoreCollectionFactory;
         $this->scopeConfig = $scopeConfig;
@@ -69,10 +68,8 @@ class Stores extends Template
         try {
             $collection = $this->_replStoreFactory->create()->addFieldToFilter('IsDeleted', 0);
             return $collection;
-        } catch (Exception $e) {
-
+        } catch (\Exception $e) {
         }
-
     }
 
     /**
@@ -97,9 +94,6 @@ class Stores extends Template
             $storeScope = ScopeInterface::SCOPE_STORE;
             return $this->_scopeConfig->getValue(LSR::SC_CLICKCOLLECT_GOOGLE_APIKEY, \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
         } catch (\Exception $e) {
-
         }
-
     }
-
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Ls\Omni\Controller\Stock;
+
 /**
  * Class Store
  * @package Ls\Omni\Controller\Stock
@@ -45,8 +46,7 @@ class Store extends \Magento\Framework\App\Action\Action
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Checkout\Model\Session $session,
         \Ls\Omni\Helper\StockHelper $stockHelper
-    )
-    {
+    ) {
         $this->_request = $request;
         $this->_scopeConfig = $scopeConfig;
         $this->_session = $session;
@@ -80,7 +80,9 @@ class Store extends \Magento\Framework\App\Action\Action
                     $parentProductSku = $sku;
                 }
                 $response = $this->_stockHelper->getItemStockInStore(
-                    $selectedStore, $parentProductSku, $childProductSku
+                    $selectedStore,
+                    $parentProductSku,
+                    $childProductSku
                 );
                 if ($response->getInventoryResponse()
                     ->getQtyActualInventory()) {
@@ -103,7 +105,4 @@ class Store extends \Magento\Framework\App\Action\Action
         }
         return $result;
     }
-
-
-
 }

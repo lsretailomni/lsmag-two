@@ -72,6 +72,4 @@ class ComplexTypeDefinition
     {
         $this->min_occurs = $min_occurs;
     }
-
-
 }

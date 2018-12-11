@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Code;
 
-
 use Ls\Core\Code\AbstractGenerator;
 use Ls\Omni\Service\Soap\ReplicationOperation;
 use Ls\Replication\Api\Data\Anchor;
@@ -38,7 +37,6 @@ class ModelInterfaceGenerator extends AbstractGenerator
         $this->operation = $operation;
         $this->entity_fqn = $this->operation->getOmniEntityFqn();
         $this->reflected_entity = new ReflectionClass($this->entity_fqn);
-
     }
 
     /**
@@ -53,9 +51,13 @@ class ModelInterfaceGenerator extends AbstractGenerator
         $property_regex = '/\@property\s(:?\w+)\s\$(:?\w+)/';
         foreach ($this->reflected_entity->getProperties() as $property) {
             $property_name = $property->getName();
-            if ($property_name[0] == '_') continue;
+            if ($property_name[0] == '_') {
+                continue;
+            }
             preg_match($property_regex, $property->getDocComment(), $matches);
-            if (!count($matches)) continue;
+            if (!count($matches)) {
+                continue;
+            }
             $property_type = $matches[1];
             $pascal_name = $property_name;
             $variable_name = $property_name;
@@ -64,18 +66,33 @@ class ModelInterfaceGenerator extends AbstractGenerator
                 $pascal_name = 'NavId';
                 $variable_name = 'nav_id';
             }
-            $this->createProperty(NULL, $property_type, [PropertyGenerator::FLAG_PROTECTED],
+            $this->createProperty(
+                null,
+                $property_type,
+                [PropertyGenerator::FLAG_PROTECTED],
                 ['pascal_name' => $pascal_name, 'variable_name' => $variable_name,
-                    'interface' => TRUE]);
-
+                'interface' => true]
+            );
         }
 
-        $this->createProperty(NULL, 'string', [PropertyGenerator::FLAG_PROTECTED],
-            ['pascal_name' => 'Scope', 'variable_name' => 'scope', 'interface' => TRUE]);
-        $this->createProperty(NULL, 'int', [PropertyGenerator::FLAG_PROTECTED],
-            ['pascal_name' => 'ScopeId', 'variable_name' => 'scope_id', 'interface' => TRUE]);
-        $this->createProperty(NULL, 'string', [PropertyGenerator::FLAG_PROTECTED],
-            ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'interface' => TRUE]);
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'Scope', 'variable_name' => 'scope', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'int',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'ScopeId', 'variable_name' => 'scope_id', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'interface' => true]
+        );
 
         $content = $this->file->generate();
 
@@ -91,6 +108,4 @@ class ModelInterfaceGenerator extends AbstractGenerator
     {
         return $this->operation->getInterfaceName();
     }
-
-
 }

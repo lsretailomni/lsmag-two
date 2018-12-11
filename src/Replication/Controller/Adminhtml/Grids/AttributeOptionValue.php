@@ -22,8 +22,7 @@ class AttributeOptionValue extends \Magento\Backend\App\Action
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
     }
@@ -40,5 +39,4 @@ class AttributeOptionValue extends \Magento\Backend\App\Action
         $resultPage->getConfig()->getTitle()->prepend(__('Attribute Option Value Replication'));
         return $resultPage;
     }
-
 }

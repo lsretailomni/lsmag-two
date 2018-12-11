@@ -126,17 +126,17 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         /** @var Entity\OneListItem[] $onlyInOneList */
         /** @var Entity\OneListItem[] $onlyInQuote */
-        $onlyInOneList = array();
-        $onlyInQuote = array();
+        $onlyInOneList = [];
+        $onlyInQuote = [];
 
         /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
-        $cache = array();
+        $cache = [];
         $quoteItems = $quote->getAllVisibleItems();
 
         /** @var Entity\OneListItem[] $oneListItems */
         $oneListItems = !is_null($oneList->getItems()->getOneListItem())
             ? $oneList->getItems()->getOneListItem()
-            : array();
+            : [];
 
         foreach ($oneListItems as $oneListItem) {
             $found = false;
@@ -176,7 +176,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $onlyInQuote[] = $quoteItem;
         }
 
-        return array($onlyInQuote, $onlyInOneList);
+        return [$onlyInQuote, $onlyInOneList];
     }
 
     /**
@@ -193,7 +193,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         /** @var Entity\ArrayOfOneListItem $items */
         $items = new Entity\ArrayOfOneListItem();
 
-        $itemsArray = array();
+        $itemsArray = [];
 
         foreach ($quoteItems as $quoteItem) {
             // initialize the default null value
@@ -298,7 +298,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                         # build LSR Id
                         $productLsrId = join(
                             '-',
-                            array($availabilityLine->getItemId(), $availabilityLine->getVariantId())
+                            [$availabilityLine->getItemId(), $availabilityLine->getVariantId()]
                         );
                     }
                     $stock = intval($availabilityLine->getQuantity());
@@ -339,7 +339,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                                         $this->cart->removeItem($quoteItem->getData('item_id'));
                                         // check if this is necessary
                                         $this->cart->save();
-
                                     }
                                 } else {
                                     if ($product->getId() == $quoteItem->getProduct()->getId()) {
@@ -375,7 +374,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $response = false;
 
         if (!is_null($oneListItems->getOneListItem())) {
-            $array = array();
+            $array = [];
 
             $count = 1;
             /** @var Entity\OneListItem $listItem */
@@ -421,7 +420,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         if (is_null($this->store_id)) {
             $this->store_id = $this->lsr->getDefaultWebStore();
-
         }
         return $this->store_id;
     }
@@ -475,7 +473,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $response = false;
 
         if (!is_null($oneListItems->getOneListItem())) {
-            $array = array();
+            $array = [];
             $n = 1;
 
             /** @var Entity\OneListItem || Entity\OneListItem[] $listItem */

@@ -32,8 +32,7 @@ class AdminNotificationTask
         LoggerInterface $logger,
         LSR $LSR,
         NotifierPool $notifierPool
-    )
-    {
+    ) {
         $this->logger = $logger;
         $this->lsr = $LSR;
         $this->notifierPool = $notifierPool;
@@ -46,8 +45,10 @@ class AdminNotificationTask
     {
         $this->logger->debug("Checking LS Retail Setup");
         if (!$this->lsr->isLSR()) {
-            $this->notifierPool->addMajor('Please define the LS Retail Service Base URL and Web Store to proceed.',
-                'Please complete the details under Stores > Settings > Configuration > LS Retail Tab');
+            $this->notifierPool->addMajor(
+                'Please define the LS Retail Service Base URL and Web Store to proceed.',
+                'Please complete the details under Stores > Settings > Configuration > LS Retail Tab'
+            );
         }
         $this->logger->debug("Finished Checking LS Retail Setup");
     }

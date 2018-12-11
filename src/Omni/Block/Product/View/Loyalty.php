@@ -8,7 +8,6 @@
 
 namespace Ls\Omni\Block\Product\View;
 
-
 class Loyalty extends \Magento\Framework\View\Element\Template
 {
 
@@ -23,8 +22,7 @@ class Loyalty extends \Magento\Framework\View\Element\Template
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Customer\Model\Session $customerSession
-    )
-    {
+    ) {
         $this->customerSession = $customerSession;
         parent::__construct($context);
     }
@@ -37,8 +35,5 @@ class Loyalty extends \Magento\Framework\View\Element\Template
     {
 
         return $this->customerSession->isLoggedIn();
-
     }
-
-
 }

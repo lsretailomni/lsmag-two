@@ -19,7 +19,7 @@ class WatchNextCartSaveObserver implements ObserverInterface
         // this observer might get called multiple times during a single page load
         // calling CartObserver::execute every time would lead to multiple Omni calls which leads to high
         // page loading times
-        $this->cartObserver->watchNextSave(TRUE);
+        $this->cartObserver->watchNextSave(true);
         return $this;
     }
 }

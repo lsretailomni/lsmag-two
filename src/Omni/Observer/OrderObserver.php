@@ -29,7 +29,7 @@ class OrderObserver implements ObserverInterface
     protected $checkoutSession;
 
     /** @var bool  */
-    protected $watchNextSave = FALSE;
+    protected $watchNextSave = false;
 
     /**
      * OrderObserver constructor.
@@ -48,8 +48,7 @@ class OrderObserver implements ObserverInterface
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $checkoutSession
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
         $this->orderHelper = $orderHelper;
@@ -60,7 +59,7 @@ class OrderObserver implements ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $order = $observer->getEvent()->getData( 'order' );
+        $order = $observer->getEvent()->getData('order');
 
 
         /** @var Entity\BasketCalcResponse $basketCalculation */
@@ -69,10 +68,10 @@ class OrderObserver implements ObserverInterface
         $request = $this->orderHelper->prepareOrder($order, $basketCalculation);
         $response = $this->orderHelper->placeOrder($request);
 
-        if($response){
+        if ($response) {
             //delete from Omni.
-            if($this->customerSession->getData(   LSR::SESSION_CART_ONELIST )){
-                $onelist        =    $this->customerSession->getData(   LSR::SESSION_CART_ONELIST );
+            if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+                $onelist        =    $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
 
                 //TODO error which Hjalti highlighted. when there is only one item in the cart and customer remove that.
                 $success      =   $this->basketHelper->delete($onelist);
@@ -81,10 +80,8 @@ class OrderObserver implements ObserverInterface
 
                 // delete checkout session data.
                 $this->basketHelper->unSetOneListCalculation();
-
             }
-
-        }else {
+        } else {
             // TODO: error handling
             $this->logger->critical(
                 __('Something trrible happen while placing order')
@@ -94,4 +91,3 @@ class OrderObserver implements ObserverInterface
         return $this;
     }
 }
-

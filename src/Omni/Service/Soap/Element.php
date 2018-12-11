@@ -14,12 +14,12 @@ class Element
     private $definition;
 
     /** @var boolean */
-    private $request = FALSE;
+    private $request = false;
     /** @var boolean */
-    private $response = FALSE;
+    private $response = false;
 
     /** @var string */
-    private $base = NULL;
+    private $base = null;
 
     /**
      * SoapEntity constructor.
@@ -28,7 +28,7 @@ class Element
      * @param string $type
      * @param array $definition
      */
-    public function __construct($name, $type, $definition = NULL)
+    public function __construct($name, $type, $definition = null)
     {
         $this->name = $name;
         $this->type = $type;

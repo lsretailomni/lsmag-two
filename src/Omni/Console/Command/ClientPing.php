@@ -11,12 +11,13 @@ class ClientPing extends Command
 {
     const COMMAND_NAME = 'omni:client:ping';
 
-    protected function configure () {
+    protected function configure()
+    {
 
-        $this->setName( self::COMMAND_NAME )
-             ->setDescription( 'show WSDL contents' )
-             ->addOption( 'type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce' )
-             ->addOption( 'base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url' );
+        $this->setName(self::COMMAND_NAME)
+             ->setDescription('show WSDL contents')
+             ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
+             ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url');
     }
 
     /**
@@ -24,13 +25,14 @@ class ClientPing extends Command
      * @param OutputInterface $output
      * @return int|null|void
      */
-    protected function execute ( InputInterface $input, OutputInterface $output ) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-        $uc_type = ucfirst( $this->type->getValue() );
+        $uc_type = ucfirst($this->type->getValue());
         $class = "Ls\\Omni\\Client\\$uc_type\\Operation\\Ping";
         /** @var OperationInterface $ping */
         $ping = new $class();
         $pong = $ping->execute();
-        $this->output->writeln( $pong );
+        $this->output->writeln($pong);
     }
 }

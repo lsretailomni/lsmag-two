@@ -41,13 +41,10 @@ class Command extends SymfonyCommand
     public function __construct(
         \Ls\Omni\Service\Service $service,
         \Magento\Framework\Module\Dir\Reader $dirReader
-
-    )
-    {
+    ) {
         $this->_service     =   $service;
         $this->_dirReader   =   $dirReader;
         parent::__construct();
-
     }
 
     /**
@@ -65,7 +62,9 @@ class Command extends SymfonyCommand
 
         if (is_null($this->type)) {
             $type = $input->getOption(self::TYPE);
-            if (!ServiceType::isValid($type)) throw new InvalidServiceTypeException();
+            if (!ServiceType::isValid($type)) {
+                throw new InvalidServiceTypeException();
+            }
             $this->type = new ServiceType($type);
         }
 
@@ -93,7 +92,5 @@ class Command extends SymfonyCommand
         /** @var \Ls\Omni\Service\Service  $service */
         $service = $objectManager->create('Ls\Omni\Service\Service');
         $service->getOmniBaseUrl();
-
-
     }
 }

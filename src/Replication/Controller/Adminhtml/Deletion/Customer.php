@@ -19,7 +19,7 @@ class Customer extends Action
     protected $_resource;
 
     /** @var array List of all the Customer tables */
-    protected $customer_tables = array(
+    protected $customer_tables = [
         "customer_address_entity",
         "customer_address_entity_datetime",
         "customer_address_entity_decimal",
@@ -40,7 +40,7 @@ class Customer extends Action
         "wishlist",
         "wishlist_item",
         "wishlist_item_option",
-    );
+    ];
 
     /** @var array  */
     protected $_publicActions = ['customer'];
@@ -54,8 +54,7 @@ class Customer extends Action
         ResourceConnection $resource,
         LoggerInterface $logger,
         Context $context
-    )
-    {
+    ) {
         $this->_resource = $resource;
         $this->logger = $logger;
         parent::__construct($context);
@@ -83,5 +82,4 @@ class Customer extends Action
         $this->messageManager->addSuccessMessage(__('Customers deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
-
 }

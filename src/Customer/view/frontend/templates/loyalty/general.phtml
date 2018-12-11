@@ -8,9 +8,9 @@ $c = 0;
 ?>
 <div class="coupons-view">
     <h2><?php echo __('General Offers'); ?></h2>
-    <?php if (is_array($offers) && count($offers) > 0): ?>
+    <?php if (is_array($offers) && count($offers) > 0) : ?>
         <ul class=" coupons-grid">
-            <?php foreach ($offers as $offer): ?>
+            <?php foreach ($offers as $offer) : ?>
                 <?php if ($offer->getType() != $type) {
                     continue;
                 }
@@ -19,7 +19,7 @@ $c = 0;
                 ?>
                 <li class="item <?php echo($total == $c ? ' last' : '') ?> col-sm-4 col-md-4 col-lg-4">
                     <div class="item-img-cont">
-                        <?php if (count($images) && !empty($images[0])): ?>
+                        <?php if (count($images) && !empty($images[0])) : ?>
                             <img id="coupon-collection-image-<?php echo $c ?>"
                                  src="<?php echo $this->getMediaPathToLoad() .
                                      $images[0] ?>" alt="<?php echo $offer->getDescription() ?> ">
@@ -41,7 +41,7 @@ $c = 0;
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
-    <?php if ($c < 1): ?>
+    <?php if ($c < 1) : ?>
         <h4><?php echo __('No offers'); ?></h4>
     <?php endif; ?>
 </div>

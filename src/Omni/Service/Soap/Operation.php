@@ -8,7 +8,7 @@ use CaseHelper\CaseHelperInterface;
 class Operation
 {
     /** @var CaseHelperInterface */
-    protected $case_helper = NULL;
+    protected $case_helper = null;
     /** @var string */
     protected $name;
     /** @var Element */
@@ -21,7 +21,7 @@ class Operation
      * @param Element $request
      * @param Element $response
      */
-    public function __construct($name = NULL, Element $request, Element $response = NULL)
+    public function __construct($name = null, Element $request, Element $response = null)
     {
 
         $this->name = $name;

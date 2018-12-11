@@ -25,14 +25,15 @@ class SetCouponData
     public function __construct(
         BasketHelper $basketHelper,
         \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
-        \Magento\Framework\UrlInterface $url)
-    {
+        \Magento\Framework\UrlInterface $url
+    ) {
         $this->basketHelper = $basketHelper;
         $this->redirectFactory = $redirectFactory;
         $this->url = $url;
     }
 
-    public function aroundExecute(CouponPost $subject, callable $proceed) {
+    public function aroundExecute(CouponPost $subject, callable $proceed)
+    {
 
         $couponCode = $subject->getRequest()->getParam('remove') == 1
             ? ''

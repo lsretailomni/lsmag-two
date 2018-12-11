@@ -49,9 +49,7 @@ class ResetPasswordObserver implements ObserverInterface
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Store\Model\StoreManagerInterface $storeManager
-
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
         $this->registry = $registry;
@@ -61,7 +59,6 @@ class ResetPasswordObserver implements ObserverInterface
         $this->_actionFlag = $actionFlag;
         $this->_customerRepository = $customerRepository;
         $this->_storeManager = $storeManager;
-
     }
 
     /**
@@ -92,7 +89,6 @@ class ResetPasswordObserver implements ObserverInterface
                 $result = $this->contactHelper->resetPassword($customer, $post_param);
                 if ($result) {
                     // Magento have already generated a success message so do nothing
-
                 } else {
                     $this->messageManager->addErrorMessage(
                         __('Something went wrong, Please try again later.')
@@ -102,10 +98,8 @@ class ResetPasswordObserver implements ObserverInterface
                 }
             }
             return $this;
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-
     }
 }

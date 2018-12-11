@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Code;
 
-
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\Exception;
@@ -36,7 +35,7 @@ class InterfaceGenerator extends ClassGenerator
         $methods = [];
 
         $cg->setSourceContent($cg->getSourceContent());
-        $cg->setSourceDirty(FALSE);
+        $cg->setSourceDirty(false);
 
         if ($classReflection->getDocComment() != '') {
             $cg->setDocBlock(DocBlockGenerator::fromReflection($classReflection->getDocBlock()));

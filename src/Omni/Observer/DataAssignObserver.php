@@ -17,8 +17,8 @@ class DataAssignObserver implements ObserverInterface
         
         $order->setPickupDate($quote->getPickupDate());
         
-        if($quote->getPickupStore()) {
-        	$order->setPickupStore($quote->getPickupStore());
+        if ($quote->getPickupStore()) {
+            $order->setPickupStore($quote->getPickupStore());
         }
         return $this;
     }

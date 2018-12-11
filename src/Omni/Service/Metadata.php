@@ -51,7 +51,7 @@ class Metadata
      * @param Client $client
      * @param bool $with_replication
      */
-    public function __construct(Client $client, $with_replication = FALSE)
+    public function __construct(Client $client, $with_replication = false)
     {
 
         $this->client = $client;
@@ -154,13 +154,13 @@ class Metadata
      *
      * @return ComplexType
      */
-    protected function parseComplexType(DOMElement $complex_type, $complex_name = NULL)
+    protected function parseComplexType(DOMElement $complex_type, $complex_name = null)
     {
 
         // TRAVERSE TO THE TYPE DEFINITION
         /** @var DOMElement $parent_node */
         $parent_node = $complex_type->firstChild;
-        $sequence = NULL;
+        $sequence = null;
 
         if ($parent_node->localName == 'sequence') {
             $sequence = $this->parseSequence($parent_node, $complex_type, $complex_name);
@@ -183,7 +183,7 @@ class Metadata
      *
      * @return ComplexType
      */
-    protected function parseSequence(DOMElement $sequence, DOMElement $complex_type, $complex_name = NULL, $baseClass = '')
+    protected function parseSequence(DOMElement $sequence, DOMElement $complex_type, $complex_name = null, $baseClass = '')
     {
         $complex_definition = [];
         $entity_name = $complex_name;
@@ -201,10 +201,12 @@ class Metadata
         }
         $is_array = preg_match(Metadata::ARRAY_REGEX, $entity_name);
 
-        return new ComplexType($entity_name,
+        return new ComplexType(
+            $entity_name,
             $is_array ? SoapType::ARRAY_OF() : SoapType::ENTITY(),
-            $complex_definition, $baseClass);
-
+            $complex_definition,
+            $baseClass
+        );
     }
 
     /**
@@ -230,7 +232,7 @@ class Metadata
         // MOST OF THE ELEMENTS ARE SINGLE NODES THAT ARE DEFINED BY THEIR ATTRIBUTES
         if (!$element->hasChildNodes()) {
             $type = $this->stripType($element->getAttribute('type'));
-            if (array_search($type, $this->type_blacklist) === FALSE) {
+            if (array_search($type, $this->type_blacklist) === false) {
                 $this->elements[$name] = new Element($name, $type);
             }
         } // OTHERWISE THE DEFINITION IS EMBEDDED AS A complexType
@@ -257,13 +259,13 @@ class Metadata
             $request = $match['request'];
             $response = $match['response'];
 
-            $this->elements[$request]->setRequest(TRUE);
-            $this->elements[$response]->setResponse(TRUE);
+            $this->elements[$request]->setRequest(true);
+            $this->elements[$response]->setResponse(true);
 
             $operation = new Operation($name, $this->elements[$request], $this->elements[$response]);
             $this->operations[$match['operation']] = $operation;
 
-            if ($this->with_replication && strpos($name, 'ReplEcomm') !== FALSE) {
+            if ($this->with_replication && strpos($name, 'ReplEcomm') !== false) {
                 $this->processReplicationOperation($operation);
             }
         }
@@ -307,9 +309,11 @@ class Metadata
                 $properties[$property_name] = $property_type;
             }
 
-            $this->entities[$entity_name] = new Entity($entity_name,
+            $this->entities[$entity_name] = new Entity(
+                $entity_name,
                 $this->elements[$entity_name],
-                $properties);
+                $properties
+            );
         }
     }
 
@@ -320,7 +324,7 @@ class Metadata
             return $this->replications[$operation_name];
         }
 
-        return NULL;
+        return null;
     }
 
     /**
@@ -394,6 +398,4 @@ class Metadata
     {
         return $this->entities;
     }
-
-
 }

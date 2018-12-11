@@ -79,8 +79,7 @@ class CategoryCreateTask
         File $file,
         ReplicationHelper $replicationHelper,
         LSR $LSR
-    )
-    {
+    ) {
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
         $this->replHierarchyNodeRepository = $replHierarchyNodeRepository;
@@ -102,23 +101,24 @@ class CategoryCreateTask
     {
         $this->logger->debug("Running CategoryCreateTask");
         // for defning category images to the product group
-        $mediaAttribute = array('image', 'small_image', 'thumbnail');
+        $mediaAttribute = ['image', 'small_image', 'thumbnail'];
         $hierarchyCode = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
             $this->logger->debug("Hierarchy Code not defined in the configuration.");
             return;
         }
-        $filters = array(
-            array('field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'),
-            array('field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq')
-        );
+        $filters = [
+            ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
+        ];
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyNodeSearchResults $replHierarchyNodeRepository */
         $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
         /** @var \Ls\Replication\Model\ReplHierarchyNode $itemCategory */
         foreach ($replHierarchyNodeRepository->getItems() as $hierarchyNode) {
-            if (empty($hierarchyNode->getNavId()))
+            if (empty($hierarchyNode->getNavId())) {
                 continue;
+            }
             $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
             if (!$categoryExistData) {
                 /** @var \Magento\Catalog\Model\Category $category */
@@ -157,10 +157,10 @@ class CategoryCreateTask
             }
         }
         // This is for the child/sub categories apply ParentNode Not Null Criteria
-        $filtersSub = array(
-            array('field' => 'ParentNode', 'value' => true, 'condition_type' => 'notnull'),
-            array('field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq')
-        );
+        $filtersSub = [
+            ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
+        ];
         $criteriaSub = $this->replicationHelper->buildCriteriaForArray($filtersSub, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyNodeSearchResults $replHierarchyNodeRepositorySub */
         $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
@@ -208,7 +208,7 @@ class CategoryCreateTask
         if (count($replHierarchyNodeRepositorySub->getItems()) == 0 && count($replHierarchyNodeRepositorySub->getItems()) == 0) {
             $this->cronStatus = true;
         }
-        //Update the Modified Images 
+        //Update the Modified Images
         $this->updateImagesOnly();
         $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY);
     }
@@ -220,14 +220,14 @@ class CategoryCreateTask
     {
         $this->execute();
         $hierarchyCode = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
-        $filters = array(
-            array('field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'),
-            array('field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq')
-        );
+        $filters = [
+            ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
+        ];
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
         $replHierarchy = $this->replHierarchyNodeRepository->getList($criteria);
         $categoriesLeftToProcess = count($replHierarchy->getItems());
-        return array($categoriesLeftToProcess);
+        return [$categoriesLeftToProcess];
     }
 
     /**
@@ -237,9 +237,19 @@ class CategoryCreateTask
     //TODO integrate existing slug check or check if the url already exist or not.
     protected function oSlug($string)
     {
-        return strtolower(trim(preg_replace('~[^0-9a-z]+~i', '-',
-            html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
-                '$1', htmlentities($string, ENT_QUOTES, 'UTF-8')), ENT_QUOTES, 'UTF-8')), '-'));
+        return strtolower(trim(preg_replace(
+            '~[^0-9a-z]+~i',
+            '-',
+            html_entity_decode(
+                preg_replace(
+                    '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+                    '$1',
+                    htmlentities($string, ENT_QUOTES, 'UTF-8')
+                ),
+                ENT_QUOTES,
+                'UTF-8'
+            )
+        ), '-'));
     }
 
     /**
@@ -266,10 +276,10 @@ class CategoryCreateTask
      */
     protected function getImage($imageId = '')
     {
-        $imageSize = array(
+        $imageSize = [
             'height' => $this->_lsr::DEFAULT_IMAGE_HEIGHT,
             'width' => $this->_lsr::DEFAULT_IMAGE_WIDTH
-        );
+        ];
         /** @var \Ls\Omni\Client\Ecommerce\Entity\ImageSize $imageSizeObject */
         $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
         $result = $this->loyaltyHelper->getImageById($imageId, $imageSizeObject);
@@ -309,9 +319,9 @@ class CategoryCreateTask
      */
     protected function updateImagesOnly()
     {
-        $filters = array(
-            array('field' => 'TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq')
-        );
+        $filters = [
+            ['field' => 'TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq']
+        ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $images = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
         if (count($images) > 0) {
@@ -322,7 +332,7 @@ class CategoryCreateTask
                     $categoryExistData = $this->isCategoryExist($navId);
                     if ($categoryExistData) {
                         $imageSub = $this->getImage($image->getImageId());
-                        $mediaAttribute = array('image', 'small_image', 'thumbnail');
+                        $mediaAttribute = ['image', 'small_image', 'thumbnail'];
                         $categoryExistData->setImage($imageSub, $mediaAttribute, true, false);
                         $this->categoryRepository->save($categoryExistData);
                         $image->setData('is_updated', '0');

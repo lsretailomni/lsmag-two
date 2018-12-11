@@ -24,7 +24,7 @@ class CartObserver implements ObserverInterface
     protected $checkoutSession;
 
     /** @var bool */
-    protected $watchNextSave = FALSE;
+    protected $watchNextSave = false;
 
     protected $session;
 
@@ -43,8 +43,7 @@ class CartObserver implements ObserverInterface
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $checkoutSession
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
         $this->logger = $logger;
@@ -76,7 +75,7 @@ class CartObserver implements ObserverInterface
         return $this;
     }
 
-    public function watchNextSave($value = TRUE)
+    public function watchNextSave($value = true)
     {
         $this->watchNextSave = $value;
     }

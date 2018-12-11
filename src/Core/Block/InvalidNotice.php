@@ -28,7 +28,6 @@ class InvalidNotice extends \Magento\Framework\View\Element\Template
     public function displayNotice()
     {
         if (!$this->lsr->isLSR()) {
-
             return $this->lsr->getInvalidMessageContainer();
         }
     }

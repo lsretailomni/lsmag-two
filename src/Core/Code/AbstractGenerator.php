@@ -88,11 +88,12 @@ DISCLAIMER;
      * @param array $flags
      * @param array $options
      */
-    protected function createProperty($name,
-                                      $type = 'mixed',
-                                      $flags = [PropertyGenerator::FLAG_PROTECTED],
-                                      $options = [])
-    {
+    protected function createProperty(
+        $name,
+        $type = 'mixed',
+        $flags = [PropertyGenerator::FLAG_PROTECTED],
+        $options = []
+    ) {
 
         $pascal_name = key_exists('pascal_name', $options)
             ? $options ['pascal_name']
@@ -114,14 +115,12 @@ DISCLAIMER;
         $set_method->setDocBlock(DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag($variable_name, $type),
             new Tag\ReturnTag(['$this'])]]));
         if (key_exists('abstract', $options)) {
-            $get_method->setAbstract(TRUE);
-            $set_method->setAbstract(TRUE);
+            $get_method->setAbstract(true);
+            $set_method->setAbstract(true);
         }
 
         if (!key_exists('abstract', $options) && !key_exists('interface', $options)) {
-
             if (key_exists('model', $options)) {
-
 // set & get methods for a magento model
                 $set_method->setBody(<<<CODE
 \$this->setData( '$variable_field', \$$variable_name );
@@ -134,9 +133,7 @@ CODE
 return \$this->getData( '$variable_field' );
 CODE
                 );
-
             } else {
-
 // set & get methods for everything else
                 $set_method->setBody(<<<CODE
 \$this->$variable_field = \$$variable_name;
@@ -150,8 +147,10 @@ CODE
             }
         }
 
-        $property_comment = DocBlockGenerator::fromArray(['tags' => [new Tag\PropertyTag($variable_name,
-            [$type])]]);
+        $property_comment = DocBlockGenerator::fromArray(['tags' => [new Tag\PropertyTag(
+            $variable_name,
+            [$type]
+        )]]);
         $property = PropertyGenerator::fromArray(['name' => $variable_name, 'flags' => $flags,
             'docblock' => $property_comment]);
 

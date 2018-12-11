@@ -26,8 +26,7 @@ class OrderHelper extends AbstractHelper
         Model\Order $order,
         BasketHelper $basketHelper,
         \Magento\Customer\Model\Session $customerSession
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->order = $order;
         $this->basketHelper = $basketHelper;
@@ -60,7 +59,7 @@ class OrderHelper extends AbstractHelper
 
         $anonymousOrder = false;
 
-        $shippingMethod = $order->getShippingMethod(TRUE);
+        $shippingMethod = $order->getShippingMethod(true);
 
 
         //TODO work on condition
@@ -75,11 +74,11 @@ class OrderHelper extends AbstractHelper
         $entity = new Entity\Order();
 
         /** @var Entity\OrderLine[] $orderLinesArray */
-        $orderLinesArray = array();
+        $orderLinesArray = [];
         $orderLinesArrayObject = new Entity\ArrayOfOrderLine();
 
         /** @var Entity\OrderDiscountLine[] $discountArray */
-        $discountArray = array();
+        $discountArray = [];
         $discountArrayObject = new Entity\ArrayOfOrderDiscountLine();
 
         $lines = $basketCalcResponse->getBasketLineCalcResponses()->getBasketLineCalcResponse();
@@ -111,7 +110,7 @@ class OrderHelper extends AbstractHelper
                 ->setLineNumber($line->getLineNumber());
 
             $lineDiscounts = $line->getBasketLineDiscResponses();
-            $discounts = array();
+            $discounts = [];
             if (!is_null($lineDiscounts->getBasketLineDiscResponse())) {
                 /** @var Entity\BasketLineDiscResponse[] $discounts */
                 $discounts = $lineDiscounts->getBasketLineDiscResponse();
@@ -134,8 +133,6 @@ class OrderHelper extends AbstractHelper
                         ->setPeriodicDiscType($discount->getPeriodicDiscType());
                 }
             }
-
-
         } elseif (is_array($lines)) {
             foreach ($lines as $line) {
                 if (!$line->getItemId()) {
@@ -161,7 +158,7 @@ class OrderHelper extends AbstractHelper
                     ->setLineNumber($line->getLineNumber());
 
                 $lineDiscounts = $line->getBasketLineDiscResponses();
-                $discounts = array();
+                $discounts = [];
                 if (!is_null($lineDiscounts->getBasketLineDiscResponse())) {
                     /** @var Entity\BasketLineDiscResponse[] $discounts */
                     $discounts = $lineDiscounts->getBasketLineDiscResponse();
@@ -185,7 +182,6 @@ class OrderHelper extends AbstractHelper
                     }
                 }
             }
-
         }
 
 
@@ -218,7 +214,7 @@ class OrderHelper extends AbstractHelper
             // @check https://solutions.lsretail.com/jira/browse/OMNI-4515 for further details.
 
 
-            $orderPaymentArray = array();
+            $orderPaymentArray = [];
             $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
 
             $orderPayment = new Entity\OrderPayment();
@@ -233,8 +229,6 @@ class OrderHelper extends AbstractHelper
 
 
             //$entity->setOrderPayments($orderPaymentArrayObject);
-
-
         }
         /*
         $entity
@@ -323,11 +317,10 @@ class OrderHelper extends AbstractHelper
      */
     public function placeOrder(Entity\OrderCreate $request)
     {
-        $response = NULL;
+        $response = null;
         $operation = new Operation\OrderCreate();
         $response = $operation->execute($request);
         return $response ? $response->getResult() : $response;
-
     }
 
     /**
@@ -353,6 +346,4 @@ class OrderHelper extends AbstractHelper
             ->setPostCode($magentoAddress->getPostcode());
         return $omniAddress;
     }
-
-
 }
