@@ -8,6 +8,18 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\View\Element\Message\MessageConfigurationsPool">
+        <arguments>
+            <argument name="configurationsMap" xsi:type="array">chmod
+                <item name="cronlinkmessage" xsi:type="array">
+                    <item name="renderer" xsi:type="const">\Magento\Framework\View\Element\Message\Renderer\BlockRenderer::CODE</item>
+                    <item name="data" xsi:type="array">
+                        <item name="template" xsi:type="string">Ls_Replication::cron/cronlinkmessage.phtml</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplItem\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
