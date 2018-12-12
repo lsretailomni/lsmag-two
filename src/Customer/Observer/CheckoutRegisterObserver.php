@@ -49,7 +49,6 @@ class CheckoutRegisterObserver implements ObserverInterface
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
-
     ) {
         $this->contactHelper = $contactHelper;
         $this->logger = $logger;

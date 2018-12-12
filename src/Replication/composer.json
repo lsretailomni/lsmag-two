@@ -1,0 +1,21 @@
+{
+  "name": "lsretail/replication",
+  "description": "LS Replicaton",
+  "type": "magento2-module",
+  "license": "proprietary",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "LS Retail",
+      "email": "lsomnikl@lsretail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ls\\Replication\\": ""
+    },
+    "files": [
+      "registration.php"
+    ]
+  }
+}

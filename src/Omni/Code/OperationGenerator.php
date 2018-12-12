@@ -15,6 +15,7 @@ use Zend\Code\Generator\DocBlock\Tag;
 use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
+
 class OperationGenerator extends AbstractOmniGenerator
 {
     /** @var  Operation */
@@ -50,7 +51,7 @@ class OperationGenerator extends AbstractOmniGenerator
         $response_fqn = self::fqn($entity_namespace, $response_type);
         $response_alias = "{$operation_name}Response";
 
-        $is_tokenized = array_search($operation_name, $this->tokenized_operations) !== FALSE ? 'TRUE' : 'FALSE';
+        $is_tokenized = array_search($operation_name, $this->tokenized_operations) !== false ? 'TRUE' : 'FALSE';
 
         // CLASS DECLARATION
 
@@ -81,8 +82,11 @@ class OperationGenerator extends AbstractOmniGenerator
 
         // ADD METHODS
         $this->class->addMethodFromGenerator($this->getConstructorMethod());
-        $this->class->addMethodFromGenerator($this->getExecuteMethod($request_alias, $response_alias,
-            $operation_name));
+        $this->class->addMethodFromGenerator($this->getExecuteMethod(
+            $request_alias,
+            $response_alias,
+            $operation_name
+        ));
         $this->class->addMethodFromGenerator($this->getInputMethod($request_alias));
         $this->class->addMethodFromGenerator($this->getClassMapMethod());
         $this->class->addMethod('isTokenized', [], MethodGenerator::FLAG_PROTECTED, "return $is_tokenized;");
@@ -143,11 +147,12 @@ CODE
         $method->setName('execute');
         $method->setParameter(ParameterGenerator::fromArray(['name' => 'request',
             'type' => 'RequestInterface',
-            'defaultvalue' => NULL]));
+            'defaultvalue' => null]));
         $method->setDocBlock(
             DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag('request', $request_alias),
                 new Tag\ReturnTag(['ResponseInterface',
-                    $response_alias])]]));
+            $response_alias])]])
+        );
         $method->setBody(<<<CODE
 if ( !is_null( \$request ) ) {
     \$this->setRequest( \$request );
@@ -169,7 +174,8 @@ CODE
         $method = new MethodGenerator();
         $method->setName('getOperationInput');
         $method->setDocBlock(
-            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$request_alias])]]));
+            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$request_alias])]])
+        );
         $method->setBody(<<<CODE
 if ( is_null( \$this->request ) ) {
     \$this->request = new $request_alias();
@@ -189,7 +195,8 @@ CODE
         $method->setName('getClassMap');
         $method->setVisibility(MethodGenerator::FLAG_PROTECTED);
         $method->setDocBlock(
-            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag(['array'])]]));
+            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag(['array'])]])
+        );
         $method->setBody(<<<CODE
 return ClassMap::getClassMap();
 CODE

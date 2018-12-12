@@ -73,24 +73,27 @@ class RepositoryGenerator extends AbstractGenerator
 
         $object_factory_property = new PropertyGenerator();
         $object_factory_property->setName('object_factory');
-        $object_factory_property->setDefaultValue(NULL);
+        $object_factory_property->setDefaultValue(null);
         $object_factory_property->setVisibility(PropertyGenerator::VISIBILITY_PROTECTED);
         $object_factory_property->setDocBlock(DocBlockGenerator::fromArray(
-            ['tags' => [new PropertyTag('object_factory', $simple_name . 'Factory')]]));
+            ['tags' => [new PropertyTag('object_factory', $simple_name . 'Factory')]]
+        ));
 
         $collection_factory_property = new PropertyGenerator();
         $collection_factory_property->setName('collection_factory');
-        $collection_factory_property->setDefaultValue(NULL);
+        $collection_factory_property->setDefaultValue(null);
         $collection_factory_property->setVisibility(PropertyGenerator::VISIBILITY_PROTECTED);
         $collection_factory_property->setDocBlock(DocBlockGenerator::fromArray(
-            ['tags' => [new PropertyTag('collection_factory', 'CollectionFactory')]]));
+            ['tags' => [new PropertyTag('collection_factory', 'CollectionFactory')]]
+        ));
 
         $result_factory_property = new PropertyGenerator();
         $result_factory_property->setName('result_factory');
-        $result_factory_property->setDefaultValue(NULL);
+        $result_factory_property->setDefaultValue(null);
         $result_factory_property->setVisibility(PropertyGenerator::VISIBILITY_PROTECTED);
         $result_factory_property->setDocBlock(DocBlockGenerator::fromArray(
-            ['tags' => [new PropertyTag('result_factory', $this->operation->getSearchFactory())]]));
+            ['tags' => [new PropertyTag('result_factory', $this->operation->getSearchFactory())]]
+        ));
 
         $this->class->addPropertyFromGenerator($object_factory_property);
         $this->class->addPropertyFromGenerator($collection_factory_property);
@@ -104,21 +107,36 @@ class RepositoryGenerator extends AbstractGenerator
         $this->class->addMethodFromGenerator($this->getDeleteByIdMethod());
 
         $content = $this->file->generate();
-        $content = str_replace('Magento\\Framework\\Data\\SearchResultInterfaceFactory $result_factory',
-            'SearchResultInterfaceFactory $result_factory', $content);
+        $content = str_replace(
+            'Magento\\Framework\\Data\\SearchResultInterfaceFactory $result_factory',
+            'SearchResultInterfaceFactory $result_factory',
+            $content
+        );
         $content = str_replace("implements \\$interface_name", "implements $interface_name", $content);
-        $content = str_replace("\\{$simple_name}Factory \$object_factory",
-            "{$simple_name}Factory \$object_factory", $content);
+        $content = str_replace(
+            "\\{$simple_name}Factory \$object_factory",
+            "{$simple_name}Factory \$object_factory",
+            $content
+        );
 
-        $content = str_replace("\\{$simple_name}SearchResultsFactory \$result_factory",
-            "{$simple_name}SearchResultsFactory \$result_factory", $content);
+        $content = str_replace(
+            "\\{$simple_name}SearchResultsFactory \$result_factory",
+            "{$simple_name}SearchResultsFactory \$result_factory",
+            $content
+        );
 
         $content = str_replace("\\{$entity_name}Interface \$object", "{$entity_name}Interface \$object", $content);
-        $content = str_replace('\\CollectionFactory $collection_factory', 'CollectionFactory $collection_factory',
-            $content);
+        $content = str_replace(
+            '\\CollectionFactory $collection_factory',
+            'CollectionFactory $collection_factory',
+            $content
+        );
 
-        $content = str_replace("\Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
-            "SearchCriteriaInterface \$criteria", $content);
+        $content = str_replace(
+            "\Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
+            "SearchCriteriaInterface \$criteria",
+            $content
+        );
 
         return $content;
     }
@@ -131,8 +149,10 @@ class RepositoryGenerator extends AbstractGenerator
         $method = new MethodGenerator();
         $method->setName('__construct');
 
-        $method->setParameters([new ParameterGenerator('object_factory',
-            $this->operation->getEntityName() . 'Factory'),
+        $method->setParameters([new ParameterGenerator(
+            'object_factory',
+            $this->operation->getEntityName() . 'Factory'
+        ),
             new ParameterGenerator('collection_factory', 'CollectionFactory'),
             new ParameterGenerator('result_factory', $this->operation->getSearchFactory())]);
 

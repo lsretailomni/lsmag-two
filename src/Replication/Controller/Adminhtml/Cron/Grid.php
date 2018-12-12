@@ -13,7 +13,6 @@ use Magento\Backend\App\Action;
 use \Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\ObjectManagerInterface;
 
-
 class Grid extends Action
 {
     /** Url path */
@@ -37,13 +36,10 @@ class Grid extends Action
         Context $context,
         PageFactory $resultPageFactory,
         ObjectManagerInterface $objectManager
-    )
-    {
+    ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->_objectManager = $objectManager;
         parent::__construct($context);
-
-
     }
 
     public function execute()
@@ -57,12 +53,11 @@ class Grid extends Action
                 $cron = $this->_objectManager->create($jobUrl);
                 $info = $cron->executeManually();
                 if (!empty($info)) {
-                    $jobControllerUrl = '<a href="' . $this->_url->getUrl(self::URL_PATH_Execute, ['joburl' => $jobUrl, 'jobname' => $jobName]) . '">Click Here</a>';
                     $executeMoreData = '';
                     if ($info[0] > 0) {
-                        $executeMoreData = ' Do you want to execute More Data? ' . $jobControllerUrl;
+                        $executeMoreData=$this->_url->getUrl(self::URL_PATH_Execute, ['joburl' => $jobUrl, 'jobname' => $jobName]);
                     }
-                    $this->messageManager->addSuccessMessage(__($jobName . ' Cron has been executed. Remaining entries  ' . $info[0] . '. ' . $executeMoreData));
+                    $this->messageManager->addComplexSuccessMessage('cronlinkmessage',['url'=>$executeMoreData,'jobName'=>$jobName,'remaining'=>$info[0]]);
                 }
                 $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
@@ -70,8 +65,7 @@ class Grid extends Action
             } else {
                 return $resultPage;
             }
-        } catch (Exception $e) {
-
+        } catch (\Exception $e) {
         }
     }
 }

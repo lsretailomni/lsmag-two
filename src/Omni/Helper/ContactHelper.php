@@ -29,7 +29,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     protected $customerSession;
 
     /** @var null */
-    protected $_ns = NULL;
+    protected $_ns = null;
 
     /** @var \Magento\Directory\Model\CountryFactory */
     protected $_countryFactory;
@@ -56,8 +56,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupColl,
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
         \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
-    )
-    {
+    ) {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeManager = $storeManager;
@@ -98,7 +97,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 /** @var \Magento\Customer\Model\Customer $customer */
                 $customer = $searchResults->getItems()[0];
                 if ($customer->getId()) {
-                    $is_email = TRUE;
+                    $is_email = true;
                     $email = $customer->getData('email');
                 }
             }
@@ -118,13 +117,12 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             try {
                 $response = $request->execute($search);
                 $contact_pos = $response->getContactSearchResult();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
-
         } else {
             // we cannot search by username in Omni as the API does not offer this information. So we quit.
-            return NULL;
+            return null;
         }
 
         if ($contact_pos instanceof Entity\ArrayOfMemberContact && count($contact_pos->getMemberContact()) > 0) {
@@ -132,7 +130,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } elseif ($contact_pos instanceof Entity\MemberContact) {
             return $contact_pos;
         } else {
-            return NULL;
+            return null;
         }
     }
 
@@ -143,14 +141,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function login($user, $pass)
     {
-        $response = NULL;
+        $response = null;
         $request = new Operation\LoginWeb();
         $login = new Entity\LoginWeb();
         $login->setUserName($user)
             ->setPassword($pass);
         try {
             $response = $request->execute($login);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getLoginWebResult() : $response;
@@ -162,15 +160,15 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function logout()
     {
         $customer = $this->customerSession->getCustomer();
-        $response = NULL;
+        $response = null;
         $request = new Operation\Logout();
         $request->setToken($customer->getData('lsr_token'));
         $logout = new Entity\Logout();
         $logout->setUserName($customer->getData('lsr_username'))
-            ->setDeviceId(NULL);
+            ->setDeviceId(null);
         try {
             $response = $request->execute($logout);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getLogoutResult() : $response;
@@ -206,7 +204,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function contact(\Magento\Customer\Model\Customer $customer)
     {
 
-        $response = NULL;
+        $response = null;
         $alternate_id = 'LSM' . str_pad(md5(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
         $request = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
@@ -215,14 +213,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setEmail($customer->getData('email'))
             ->setFirstName($customer->getData('firstname'))
             ->setLastName($customer->getData('lastname'))
-            ->setMiddleName($customer->getData('middlename') ? $customer->getData('middlename') : NULL)
+            ->setMiddleName($customer->getData('middlename') ? $customer->getData('middlename') : null)
             ->setPassword($customer->getData('password'))
             ->setUserName($customer->getData('lsr_username'))
-            ->setAddresses(array());
+            ->setAddresses([]);
         $contactCreate->setContact($contact);
         try {
             $response = $request->execute($contactCreate);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getContactCreateResult() : $response;
@@ -263,7 +261,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function changePassword($customer, $customer_post)
     {
 
-        $response = NULL;
+        $response = null;
         $request = new Operation\ChangePassword();
         $changepassword = new Entity\ChangePassword();
 
@@ -275,7 +273,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($changepassword);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -290,14 +288,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function forgotPassword($email)
     {
 
-        $response = NULL;
+        $response = null;
         $request = new Operation\ForgotPassword();
         $forgotpassword = new Entity\ForgotPassword();
         $forgotpassword->setUserNameOrEmail($email);
 
         try {
             $response = $request->execute($forgotpassword);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getForgotPasswordResult() : $response;
@@ -311,7 +309,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function resetPassword(\Magento\Customer\Api\Data\CustomerInterface $customer, $customer_post)
     {
-        $response = NULL;
+        $response = null;
         $request = new Operation\ResetPassword();
         $request->setToken($customer->getCustomAttribute('lsr_token')->getValue());
         $resetpassword = new Entity\ResetPassword();
@@ -322,7 +320,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($resetpassword);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -334,9 +332,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param null $customerAddress
      * @return Entity\ContactUpdateResponse|Entity\MemberContact|\Ls\Omni\Client\ResponseInterface|null
      */
-    public function UpdateAccount($customerAddress = NULL)
+    public function UpdateAccount($customerAddress = null)
     {
-        $response = NULL;
+        $response = null;
         $request = new Operation\ContactUpdate();
         $entity = new Entity\ContactUpdate();
 
@@ -357,7 +355,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $entity->setContact($memberContact);
             try {
                 $response = $request->execute($entity);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
             return $response ? $response->getResult() : $response;
@@ -368,7 +366,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param null $address
      * @return Entity\ArrayOfAddress|null
      */
-    public function setAddresses($address = NULL)
+    public function setAddresses($address = null)
     {
 
         $addresses = new Entity\ArrayOfAddress();
@@ -377,10 +375,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $addresses->setAddress($address);
             return $addresses;
         } else {
-            return NULL;
+            return null;
         }
-
-
     }
 
     /**
@@ -388,7 +384,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @return Entity\Address|null
      * @throws \Ls\Omni\Exception\InvalidEnumException
      */
-    private function setAddress($customerAddress = NULL)
+    private function setAddress($customerAddress = null)
     {
 
         $address = new Entity\Address();
@@ -417,7 +413,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $customerAddress->getRegion() ? $address->setStateProvinceRegion($customerAddress->getRegion()) : $address->setStateProvinceRegion('');
             return $address;
         } else {
-            return NULL;
+            return null;
         }
     }
 
@@ -437,7 +433,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAllCustomerGroupIds()
     {
-        $customerGroupsIds = array();
+        $customerGroupsIds = [];
         $customerGroups = $this->_customerGroupColl->create()
             ->toOptionArray();
         foreach ($customerGroups as $group) {
@@ -473,16 +469,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 return $customerGroup->getId();
                 // Stop processing further.
                 break;
-
             }
-
         } else {
             // If customer group does not exist in Magento, then create new one.
             $this->createCustomerGroupByName($groupname);
 
             return $this->getCustomerGroupIdByName($groupname);
         }
-
     }
 
     /**
@@ -501,8 +494,5 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setCode($groupname)
             ->setTaxClassId(3);// Default Tax Class ID for retail customers, please check tax_class table of magento2 database.
         $this->_groupRepository->save($group);
-
     }
-
-
 }

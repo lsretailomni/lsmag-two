@@ -40,8 +40,7 @@ class InstallData implements InstallDataInterface
         CustomerSetupFactory $customerSetupFactory,
         AttributeSetFactory $attributeSetFactory,
         EavSetupFactory $eavSetupFactory
-    )
-    {
+    ) {
         $this->customerSetupFactory = $customerSetupFactory;
         $this->attributeSetFactory = $attributeSetFactory;
         $this->eavSetupFactory = $eavSetupFactory;
@@ -78,8 +77,7 @@ class InstallData implements InstallDataInterface
     protected function createAllCustomerAttributes(
         ModuleDataSetupInterface $setup,
         ModuleContextInterface $context
-    )
-    {
+    ) {
         /** @var CustomerSetup $customerSetup */
         $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
         $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
@@ -96,7 +94,7 @@ class InstallData implements InstallDataInterface
             'visible_in_front' => true,
             'required' => false,
             'user_defined' => false,
-            'default' => NULL,
+            'default' => null,
             'attribute_set_id' => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_id', [
@@ -108,7 +106,7 @@ class InstallData implements InstallDataInterface
             'visible_in_front' => true,
             'required' => false,
             'user_defined' => false,
-            'default' => NULL,
+            'default' => null,
             'attribute_set_id' => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_token', [
@@ -120,7 +118,7 @@ class InstallData implements InstallDataInterface
             'visible_in_front' => true,
             'required' => false,
             'user_defined' => false,
-            'default' => NULL,
+            'default' => null,
             'attribute_set_id' => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_resetcode', [
@@ -132,7 +130,7 @@ class InstallData implements InstallDataInterface
             'visible_in_front' => true,
             'required' => false,
             'user_defined' => false,
-            'default' => NULL,
+            'default' => null,
             'attribute_set_id' => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_cardid', [
@@ -144,11 +142,10 @@ class InstallData implements InstallDataInterface
             'visible_in_front' => true,
             'required' => false,
             'user_defined' => false,
-            'default' => NULL,
+            'default' => null,
             'attribute_set_id' => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ]);
-
     }
 
 
@@ -159,11 +156,12 @@ class InstallData implements InstallDataInterface
     protected function createAllCategoryAttributes(
         ModuleDataSetupInterface $setup,
         ModuleContextInterface $context
-    )
-    {
+    ) {
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         $eavSetup->addAttribute(
-            \Magento\Catalog\Model\Category::ENTITY, 'nav_id', [
+            \Magento\Catalog\Model\Category::ENTITY,
+            'nav_id',
+            [
                 'type' => 'varchar',
                 'label' => 'Nav ID',
                 'input' => 'text',
@@ -176,7 +174,6 @@ class InstallData implements InstallDataInterface
                 'group' => 'General Information',
             ]
         );
-
     }
 
 
@@ -187,11 +184,12 @@ class InstallData implements InstallDataInterface
     protected function createAllProductAttributes(
         ModuleDataSetupInterface $setup,
         ModuleContextInterface $context
-    )
-    {
+    ) {
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         $eavSetup->addAttribute(
-            \Magento\Catalog\Model\Product::ENTITY, 'barcode', [
+            \Magento\Catalog\Model\Product::ENTITY,
+            'barcode',
+            [
                 'type' => 'varchar',
                 'label' => 'Barcode',
                 'input' => 'text',
@@ -204,7 +202,9 @@ class InstallData implements InstallDataInterface
                 'group' => 'General Information',
             ]
         )->addAttribute(
-            \Magento\Catalog\Model\Product::ENTITY, 'uom', [
+            \Magento\Catalog\Model\Product::ENTITY,
+            'uom',
+            [
                 'type' => 'varchar',
                 'label' => 'Unit of Measurement',
                 'input' => 'text',

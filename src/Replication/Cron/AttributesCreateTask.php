@@ -13,7 +13,6 @@ use Psr\Log\LoggerInterface;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Core\Model\LSR;
 
-
 class AttributesCreateTask
 {
 
@@ -80,9 +79,7 @@ class AttributesCreateTask
         \Magento\Eav\Model\Config $eavConfig,
         ReplicationHelper $replicationHelper,
         LSR $LSR
-
-    )
-    {
+    ) {
         $this->replExtendedVariantValueRepository = $replExtendedVariantValueRepository;
         $this->productAttributeRepository = $productAttributeRepository;
         $this->eavSetupFactory = $eavSetupFactory;
@@ -109,7 +106,6 @@ class AttributesCreateTask
         $this->processVariantAttributes();
 
         $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-
     }
 
     public function executeManually()
@@ -119,7 +115,7 @@ class AttributesCreateTask
         /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
         $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
         $itemsLeftToProcess = count($replAttributes->getItems());
-        return array($itemsLeftToProcess);
+        return [$itemsLeftToProcess];
     }
 
     /**
@@ -156,7 +152,6 @@ class AttributesCreateTask
             $this->replAttributeRepositoryInterface->save($replAttribute);
             $this->cronStatus = true;
         }
-
     }
 
     /**
@@ -174,13 +169,14 @@ class AttributesCreateTask
 
         $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 1000);
         $variants = $this->replExtendedVariantValueRepository->getList($criteria)->getItems();
-        $variantCodes = array();
+        $variantCodes = [];
         /** @var \Ls\Replication\Model\ReplExtendedVariantValue $variant */
         foreach ($variants as $variant) {
             $variant->setData('processed', '1');
             $this->replExtendedVariantValueRepository->save($variant);
-            if (empty($variantCodes[$variant->getCode()]) || !in_array($variant->getValue(), $variantCodes[$variant->getCode()]))
+            if (empty($variantCodes[$variant->getCode()]) || !in_array($variant->getValue(), $variantCodes[$variant->getCode()])) {
                 $variantCodes[$variant->getCode()][] = $variant->getValue();
+            }
         }
         foreach ($variantCodes as $code => $value) {
             $formattedCode = $this->replicationHelper->formatAttributeCode($code);
@@ -231,7 +227,7 @@ class AttributesCreateTask
             }
 
             $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
-            $newoptionsArray = array();
+            $newoptionsArray = [];
             if (empty($existingOptions)) {
                 $this->eavSetupFactory->create()
                     ->addAttributeOption(
@@ -240,7 +236,6 @@ class AttributesCreateTask
                             'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
                         ]
                     );
-
             } elseif (!empty($value)) {
                 foreach ($value as $k => $v) {
                     if (!in_array($v, $existingOptions)) {
@@ -338,7 +333,6 @@ class AttributesCreateTask
                     ]
                 );
         }
-
     }
 
     /**
@@ -348,7 +342,7 @@ class AttributesCreateTask
      */
     protected function generateOptionValues($attribute_code = '')
     {
-        $optionarray = array();
+        $optionarray = [];
         $criteria = $this->replicationHelper->buildCriteriaForNewItems('Code', $attribute_code, 'eq');
         /** @var \Ls\Replication\Model\ReplAttributeOptionValueSearchResults $replAttributeOptionValues */
         $replAttributeOptionValues = $this->replAttributeOptionValueRepositoryInterface->getList($criteria);
@@ -384,7 +378,7 @@ class AttributesCreateTask
      */
     protected function getValueTypeArray()
     {
-        return array(
+        return [
             '0' => 'text',
             '1' => 'text',
             '2' => 'price',
@@ -394,7 +388,7 @@ class AttributesCreateTask
             '6' => 'text',
             '7' => 'select',
             '100' => 'text'
-        );
+        ];
     }
 
     /**
@@ -404,7 +398,7 @@ class AttributesCreateTask
      */
     protected function getOptimizedOptionArrayByAttributeCode($attribute_code = '')
     {
-        $optimziedArray = array();
+        $optimziedArray = [];
         if ($attribute_code == '' || is_null($attribute_code)) {
             return $optimziedArray;
         }

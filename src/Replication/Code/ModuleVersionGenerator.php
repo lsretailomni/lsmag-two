@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Code;
 
-
 use Sabre\Xml\Reader;
 use Sabre\Xml\Service as XmlService;
 use Zend\Code\Generator\GeneratorInterface;
@@ -59,7 +58,7 @@ class ModuleVersionGenerator implements GeneratorInterface
     {
 
         $this->xml['value'][0]['attributes']['setup_version'] = $this->getVersion();
-        $content = $this->xml_service->write(NULL, $this->xml);
+        $content = $this->xml_service->write(null, $this->xml);
         $content = str_replace('xmlns="" ', '', $content);
         return $content;
     }

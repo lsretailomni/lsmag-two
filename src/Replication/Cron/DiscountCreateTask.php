@@ -92,8 +92,7 @@ class DiscountCreateTask
         CollectionFactory $replDiscountCollection,
         ContactHelper $contactHelper,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->catalogRule = $catalogRule;
         $this->ruleFactory = $ruleFactory;
         $this->jobApply = $jobApply;
@@ -125,24 +124,24 @@ class DiscountCreateTask
                 if (!empty($publishedOfferCollection)) {
                     /** @var \Ls\Replication\Model\ReplDiscount $item */
                     foreach ($publishedOfferCollection as $item) {
-                        $filters = array(
+                        $filters = [
                             //array('field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'),
-                            array('field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq')
-                        );
+                            ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq']
+                        ];
 
                         $criteria = $this->_replicationHelper->buildCriteriaForArray($filters, 100);
 
                         /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
                         $replDiscounts = $this->replDiscountRepository->getList($criteria);
 
-                        $skuArray = array();
+                        $skuArray = [];
 
                         if ($item->getLoyaltySchemeCode() == '' || is_null($item->getLoyaltySchemeCode())) {
                             $useAllGroupIds = true;
                             $customerGroupIds = $this->_contactHelper->getAllCustomerGroupIds();
                         } else {
                             $useAllGroupIds = false;
-                            $customerGroupIds = array();
+                            $customerGroupIds = [];
                         }
 
                         /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
@@ -154,7 +153,6 @@ class DiscountCreateTask
 
                             if ($replDiscount->getVariantId() == '' || is_null($replDiscount->getVariantId())) {
                                 $skuArray[] = $replDiscount->getItemId();
-
                             } else {
                                 $skuArray[] = $replDiscount->getItemId() . '-' . $replDiscount->getVariantId();
                             }
@@ -168,7 +166,6 @@ class DiscountCreateTask
                     }
                 }
             }
-
         } else {
             $this->logger->debug("Discount Replication cron fails because product replication cron not executed successfully.");
         }
@@ -181,7 +178,7 @@ class DiscountCreateTask
     {
         $discountsLeftToProcess = 0;
         $this->execute();
-        return array($discountsLeftToProcess);
+        return [$discountsLeftToProcess];
     }
 
     /**
@@ -194,26 +191,25 @@ class DiscountCreateTask
 
 
         if ($replDiscount instanceof \Ls\Replication\Model\ReplDiscount) {
-
             $websiteIds = $this->_replicationHelper->getAllWebsitesIds();
             $rule = $this->ruleFactory->create();
 
             // create root conditions to match with all child conditions
-            $conditions["1"] = array
-            (
+            $conditions["1"] =
+            [
                 "type" => "Magento\CatalogRule\Model\Rule\Condition\Combine",
                 "aggregator" => "all",
                 "value" => 1,
                 "new_child" => ""
-            );
+            ];
 
-            $conditions["1--1"] = array
-            (
+            $conditions["1--1"] =
+            [
                 "type" => "Magento\CatalogRule\Model\Rule\Condition\Product",
                 "attribute" => "sku",
                 "operator" => "()",
                 "value" => implode(',', $skuArray)
-            );
+            ];
 
             $rule->setName($replDiscount->getOfferNo())
                 ->setDescription($replDiscount->getOfferNo())
@@ -252,8 +248,6 @@ class DiscountCreateTask
             try {
                 $rule->loadPost($rule->getData());
                 $rule->save();
-
-
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
@@ -266,7 +260,7 @@ class DiscountCreateTask
     protected function getUniquePublishedOffers()
     {
 
-        $publishedOfferIds = array();
+        $publishedOfferIds = [];
         /** @var  \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection $collection */
         $collection = $this->replDiscountCollection->create();
         $collection->getSelect()
@@ -275,10 +269,7 @@ class DiscountCreateTask
 
         if ($collection->getSize() > 0) {
             return $collection;
-
         }
         return $publishedOfferIds;
-
     }
-
 }

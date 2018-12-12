@@ -28,12 +28,13 @@ class ClientGenerate extends Command
         parent::__construct($service, $dirReader);
     }
 
-    protected function configure () {
+    protected function configure()
+    {
 
-        $this->setName( self::COMMAND_NAME )
-             ->setDescription( 'Generate class based on OMNI endpoints. Run this one first before replication generate' )
-             ->addOption( 'type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce' )
-             ->addOption( 'base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url' );
+        $this->setName(self::COMMAND_NAME)
+             ->setDescription('Generate class based on OMNI endpoints. Run this one first before replication generate')
+             ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
+             ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url');
     }
 
     /**
@@ -42,85 +43,88 @@ class ClientGenerate extends Command
      * @return int|null|void
      * @throws \Exception
      */
-    protected function execute ( InputInterface $input, OutputInterface $output ) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
         $fs = new Filesystem();
         $cwd = getcwd();
 
-        $wsdl = Service::getUrl( $this->type, $this->base_url );
-        $client = new Client( $wsdl, $this->type );
+        $wsdl = Service::getUrl($this->type, $this->base_url);
+        $client = new Client($wsdl, $this->type);
         $metadata = $client->getMetadata();
-        $restrictions = array_keys( $metadata->getRestrictions() );
+        $restrictions = array_keys($metadata->getRestrictions());
 
 
-        $interface_folder = ucfirst( $this->type->getValue() );
+        $interface_folder = ucfirst($this->type->getValue());
 
-        $modulePath     =    $this->_dirReader->getModuleDir('','Ls_Omni');
-        $base_dir   = $this->path( $modulePath, 'Client', $interface_folder );
-        $operation_dir = $this->path( $base_dir, 'Operation' );
-        $entity_dir = $this->path( $base_dir, 'Entity' );
-        $this->clean( $base_dir );
+        $modulePath     =    $this->_dirReader->getModuleDir('', 'Ls_Omni');
+        $base_dir   = $this->path($modulePath, 'Client', $interface_folder);
+        $operation_dir = $this->path($base_dir, 'Operation');
+        $entity_dir = $this->path($base_dir, 'Entity');
+        $this->clean($base_dir);
 
-        foreach ( $metadata->getEntities() as $entity ) {
+        foreach ($metadata->getEntities() as $entity) {
             // RESTRICTIONS ARE CREATED IN ANOTHER LOOP SO WE FILTER THEM OUT
-            if ( array_search( $entity->getName(), $restrictions ) === FALSE ) {
-                $filename = $this->path( $entity_dir, "{$entity->getName()}.php" );
-                $generator = new EntityGenerator( $entity, $metadata );
+            if (array_search($entity->getName(), $restrictions) === false) {
+                $filename = $this->path($entity_dir, "{$entity->getName()}.php");
+                $generator = new EntityGenerator($entity, $metadata);
                 $content = $generator->generate();
-                file_put_contents( $filename, $content );
+                file_put_contents($filename, $content);
 
-                $ok = sprintf( 'generated entity ( %1$s )', $fs->makePathRelative( $filename, $cwd ) );
-                $this->output->writeln( $ok );
+                $ok = sprintf('generated entity ( %1$s )', $fs->makePathRelative($filename, $cwd));
+                $this->output->writeln($ok);
             }
         }
 
         $restriction_blacklist = [ 'char', 'duration', 'guid', 'StreamBody' ];
-        foreach ( $metadata->getRestrictions() as $restriction ) {
-            if ( array_search( $restriction->getName(), $restriction_blacklist ) === FALSE ) {
-                $filename = $this->path( $entity_dir, 'Enum', "{$restriction->getName()}.php" );
-                $generator = new RestrictionGenerator( $restriction, $metadata );
+        foreach ($metadata->getRestrictions() as $restriction) {
+            if (array_search($restriction->getName(), $restriction_blacklist) === false) {
+                $filename = $this->path($entity_dir, 'Enum', "{$restriction->getName()}.php");
+                $generator = new RestrictionGenerator($restriction, $metadata);
                 $content = $generator->generate();
-                file_put_contents( $filename, $content );
+                file_put_contents($filename, $content);
 
-                $ok = sprintf( 'generated restriction ( %1$s )', $fs->makePathRelative( $filename, $cwd ) );
-                $this->output->writeln( $ok );
+                $ok = sprintf('generated restriction ( %1$s )', $fs->makePathRelative($filename, $cwd));
+                $this->output->writeln($ok);
             }
         }
 
-        foreach ( $metadata->getOperations() as $operation ) {
-            $filename = $this->path( $operation_dir, "{$operation->getName()}.php" );
-            $generator = new OperationGenerator( $operation, $metadata );
+        foreach ($metadata->getOperations() as $operation) {
+            $filename = $this->path($operation_dir, "{$operation->getName()}.php");
+            $generator = new OperationGenerator($operation, $metadata);
             $content = $generator->generate();
-            file_put_contents( $filename, $content );
+            file_put_contents($filename, $content);
 
-            $ok = sprintf( 'generated operation ( %1$s )', $fs->makePathRelative( $filename, $cwd ) );
-            $this->output->writeln( $ok );
+            $ok = sprintf('generated operation ( %1$s )', $fs->makePathRelative($filename, $cwd));
+            $this->output->writeln($ok);
         }
 
-        $filename = $this->path( $base_dir, 'ClassMap.php' );
-        $generator = new ClassMapGenerator( $metadata );
+        $filename = $this->path($base_dir, 'ClassMap.php');
+        $generator = new ClassMapGenerator($metadata);
         $content = $generator->generate();
-        file_put_contents( $filename, $content );
+        file_put_contents($filename, $content);
 
-        $ok = sprintf( 'generated classmap ( %1$s )', $fs->makePathRelative( $filename, $cwd ) );
-        $this->output->writeln( $ok );
-        $this->output->writeln( '- - - - - - - - - - ' );
-        $this->output->writeln( 'OK' );
+        $ok = sprintf('generated classmap ( %1$s )', $fs->makePathRelative($filename, $cwd));
+        $this->output->writeln($ok);
+        $this->output->writeln('- - - - - - - - - - ');
+        $this->output->writeln('OK');
     }
 
     /**
      * @param string $folder
      */
-    private function clean ( $folder ) {
+    private function clean($folder)
+    {
 
         $fs = new Filesystem();
 
-        if ( $fs->exists( $folder ) ) $fs->remove( $folder );
-        $fs->mkdir( $this->path( $folder, 'Operation' ) );
-        $fs->mkdir( $this->path( $folder, 'Entity', 'Enum' ) );
+        if ($fs->exists($folder)) {
+            $fs->remove($folder);
+        }
+        $fs->mkdir($this->path($folder, 'Operation'));
+        $fs->mkdir($this->path($folder, 'Entity', 'Enum'));
 
-        $ok = sprintf( 'done cleaning folder ( %1$s )', $fs->makePathRelative( $folder, getcwd() ) );
-        $this->output->writeln( $ok );
-
+        $ok = sprintf('done cleaning folder ( %1$s )', $fs->makePathRelative($folder, getcwd()));
+        $this->output->writeln($ok);
     }
 }

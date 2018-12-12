@@ -292,7 +292,6 @@ class AjaxLoginObserver implements ObserverInterface
 
                         // update the onelist to Omni.
                         $this->basketHelper->update($oneList);
-
                     } elseif ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                         // if customer already has onelist created then update the list to get the information with user.
 
@@ -320,7 +319,6 @@ class AjaxLoginObserver implements ObserverInterface
                         $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
 
                         $this->basketHelper->update($oneList);
-
                     }
 
 
@@ -338,7 +336,6 @@ class AjaxLoginObserver implements ObserverInterface
                         ->representJson($this->jsonhelper->jsonEncode($response));
                     return $this;
                 }
-
             }
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

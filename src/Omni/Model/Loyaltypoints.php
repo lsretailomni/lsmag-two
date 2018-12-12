@@ -55,8 +55,7 @@ class Loyaltypoints extends \Magento\Payment\Model\Method\AbstractMethod
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct(
             $context,
             $registry,
@@ -99,7 +98,6 @@ class Loyaltypoints extends \Magento\Payment\Model\Method\AbstractMethod
         // if quote value is greater then loyalty value then return false;
         if ($quoteValue > $loyaltyAmount) {
             return false;
-
         }
 
         $checkResult->setData('is_available', true);
@@ -115,6 +113,4 @@ class Loyaltypoints extends \Magento\Payment\Model\Method\AbstractMethod
 
         return $checkResult->getData('is_available');
     }
-
-
 }

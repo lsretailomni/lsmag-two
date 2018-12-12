@@ -2,7 +2,8 @@
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
-class ColorStatus extends \Magento\Ui\Component\Listing\Columns\Column {
+class ColorStatus extends \Magento\Ui\Component\Listing\Columns\Column
+{
 
 
     /**
@@ -16,7 +17,7 @@ class ColorStatus extends \Magento\Ui\Component\Listing\Columns\Column {
         \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory,
         array $components = [],
         array $data = []
-    ){
+    ) {
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
@@ -30,16 +31,16 @@ class ColorStatus extends \Magento\Ui\Component\Listing\Columns\Column {
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
-                if($this->getData('name') == "processed"){
-                    if($item['processed'] == "1"){
+                if ($this->getData('name') == "processed") {
+                    if ($item['processed'] == "1") {
                         $item[$this->getData('name')] = '<div class="flag-green custom-grid-flag">Processed</div>';
-                    }else{
+                    } else {
                         $item[$this->getData('name')] = '<div class="flag-yellow custom-grid-flag">Not Processed</div>';
                     }
-                }else if($this->getData('name') == "is_updated"){
-                    if($item['is_updated'] == "0"){
+                } elseif ($this->getData('name') == "is_updated") {
+                    if ($item['is_updated'] == "0") {
                         $item[$this->getData('name')] = '<div class="flag-green custom-grid-flag">Updated</div>';
-                    }else{
+                    } else {
                         $item[$this->getData('name')] = '<div class="flag-yellow custom-grid-flag">Not Updated</div>';
                     }
                 }

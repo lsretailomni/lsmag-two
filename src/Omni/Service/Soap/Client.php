@@ -42,8 +42,8 @@ class Client extends ZendSoapClient
 
         $xml = new DomDocument('1.0');
         $xml->loadXML($response->getBody());
-        $xml->preserveWhiteSpace = FALSE;
-        $xml->formatOutput = TRUE;
+        $xml->preserveWhiteSpace = false;
+        $xml->formatOutput = true;
 
         return $xml;
     }
@@ -62,7 +62,7 @@ class Client extends ZendSoapClient
      *
      * @return Metadata
      */
-    public function getMetadata($with_replication = FALSE)
+    public function getMetadata($with_replication = false)
     {
         return new Metadata($this, $with_replication);
     }

@@ -31,8 +31,7 @@ class BarcodeUpdateTask
         LoggerInterface $logger,
         ReplicationHelper $replicationHelper,
         LSR $LSR
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->replBarcodeRepository = $replBarcodeRepository;
         $this->logger = $logger;
@@ -53,10 +52,11 @@ class BarcodeUpdateTask
             foreach ($replBarcodes->getItems() as $replBarcode) {
                 if ($replBarcode->getIsUpdated() == 1) {
                     try {
-                        if (!$replBarcode->getVariantId())
+                        if (!$replBarcode->getVariantId()) {
                             $sku = $replBarcode->getItemId();
-                        else
+                        } else {
                             $sku = $replBarcode->getItemId() . '-' . $replBarcode->getVariantId();
+                        }
                         $productData = $this->productRepository->get($sku);
                         if (isset($productData)) {
                             $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
@@ -69,8 +69,6 @@ class BarcodeUpdateTask
                     }
                 }
             }
-
-
         } else {
             $this->logger->debug("Barcode Replication cron fails because product replication cron not executed successfully.");
         }
@@ -86,7 +84,6 @@ class BarcodeUpdateTask
         $criteria = $this->replicationHelper->buildCriteriaForNewItems();
         $replBarcodes = $this->replBarcodeRepository->getList($criteria);
         $barcodesLeftToProcess = count($replBarcodes->getItems());
-        return array($barcodesLeftToProcess);
+        return [$barcodesLeftToProcess];
     }
-
 }

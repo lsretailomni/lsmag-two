@@ -45,7 +45,7 @@ class RestrictionGenerator extends AbstractOmniGenerator
     function sanitizeConstantValue($name)
     {
 
-        if (array_search(strtolower($name), self::$reserved_words) !== FALSE) {
+        if (array_search(strtolower($name), self::$reserved_words) !== false) {
             $name = ucfirst($name);
             $name = "Type$name";
         }

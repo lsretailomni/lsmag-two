@@ -9,7 +9,7 @@ class Restriction
     /** @var RestrictionDefinition[] */
     private $definition;
     /** @var string */
-    private $base = NULL;
+    private $base = null;
 
     /**
      * SoapEntity constructor.
@@ -18,7 +18,7 @@ class Restriction
      * @param RestrictionDefinition[] $definition
      * @param string $base
      */
-    public function __construct($name, $definition = NULL, $base = NULL)
+    public function __construct($name, $definition = null, $base = null)
     {
         $this->name = $name;
         $this->base = $base;

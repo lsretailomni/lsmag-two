@@ -2,7 +2,6 @@
 
 namespace LS\Replication\Model\Message;
 
-
 class Invalid implements \Magento\Framework\Notification\MessageInterface
 {
     /**
@@ -34,7 +33,7 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
      */
     public function isDisplayed()
     {
-        if($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR()) {
             return false;
         }
         return true;

@@ -13,7 +13,6 @@ use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Psr\Log\LoggerInterface;
 
-
 class Clickandcollect extends AbstractCarrier implements CarrierInterface
 {
 

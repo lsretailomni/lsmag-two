@@ -1,6 +1,6 @@
 <?php
 /** @var \Ls\Customer\Block\Account\Dashboard $this */
-if ($account = $this->getMembersInfo()): ?>
+if ($account = $this->getMembersInfo()) : ?>
     <div class="block block-club-info">
         <div class="block-title">
             <strong>Club Information</strong>
@@ -37,7 +37,7 @@ if ($account = $this->getMembersInfo()): ?>
                 <div class="box-content">
                     <?php if ($account->getScheme()
                         ->getNextScheme()
-                    ): ?>
+                    ) : ?>
                         <p>
                         <h6 class='header-inline'>
                             <?php echo __('Level:'); ?>
@@ -60,7 +60,7 @@ if ($account = $this->getMembersInfo()): ?>
                         <?php echo $account->getScheme()
                             ->getPerks(); ?>
                         </p>
-                    <?php else: ?>
+                    <?php else : ?>
                         <p>
                         <h6 class='header-inline'>
                             <?php echo __('You are at the top level.'); ?>
