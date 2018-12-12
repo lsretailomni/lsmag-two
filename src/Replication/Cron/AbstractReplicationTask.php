@@ -268,6 +268,7 @@ abstract class AbstractReplicationTask
      * Check the Entity exist or not
      * @param $uniqueAttributes
      * @param $source
+     * @param $notAnArraysObject
      * @return bool | array
      */
     protected function checkEntityExistByAttributes($uniqueAttributes, $source, $notAnArraysObject = false)
