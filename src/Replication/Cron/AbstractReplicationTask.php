@@ -155,8 +155,17 @@ abstract class AbstractReplicationTask
                     if (count($arrayTraversable) > 0) {
                         $entityClass = new ReflectionClass($this->getMainEntity());
                         $singleObject = (object)$traversable->getArrayCopy();
-                        $entity = $this->getFactory()->create();
-                        $entity->setScope('default')->setScopeId(0);
+                        $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+                        $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $singleObject, true);
+                        if (!empty($entityArray)) {
+                            foreach ($entityArray as $value) {
+                                $entity = $value;
+                            }
+                            $entity->setIsUpdated(1);
+                        } else {
+                            $entity = $this->getFactory()->create();
+                            $entity->setScope('default')->setScopeId(0);
+                        }
                         foreach ($singleObject as $keyprop => $valueprop) {
                             if ($keyprop == 'Id') {
                                 $set_method = 'setNavId';
@@ -209,8 +218,8 @@ abstract class AbstractReplicationTask
     protected function saveSource($properties, $source)
     {
         $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
-        if ($this->checkEntityExistByAttributes($uniqueAttributes, $source)) {
-            $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
+        $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
+        if (!empty($entityArray)) {
             foreach ($entityArray as $value) {
                 $entity = $value;
             }
@@ -256,29 +265,36 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Check the Entity exist or not
      * @param $uniqueAttributes
      * @param $source
-     * @return bool
+     * @return bool | array
      */
-    protected function checkEntityExistByAttributes($uniqueAttributes, $source)
+    protected function checkEntityExistByAttributes($uniqueAttributes, $source, $notAnArraysObject = false)
     {
         // TODO create SearchCriteria Instance
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
-        try {
-            foreach ($uniqueAttributes as $attribute) {
-                if ($attribute == 'nav_id') {
-                    $get_method = 'getId';
-                } else {
-                    $get_method = "get$attribute";
-                }
-                $criteria->addFilter($attribute, $source->{$get_method}());
+        foreach ($uniqueAttributes as $attribute) {
+            if ($attribute == 'nav_id') {
+                $get_method = 'getId';
+            } else {
+                $get_method = "get$attribute";
             }
-            $result = $this->getRepository()->getList($criteria->create());
-            return $result->getItems();
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-            return false;
+            if ($notAnArraysObject) {
+                foreach ($source as $keyprop => $valueprop) {
+                    if ($get_method == 'get' . $keyprop) {
+                        $sourceValue = $valueprop;
+                        break;
+                    }
+                }
+            } else {
+                $sourceValue = $source->{$get_method}();
+            }
+            $criteria->addFilter($attribute, $sourceValue);
         }
+        $result = $this->getRepository()->getList($criteria->create());
+        return $result->getItems();
     }
 
     /**
