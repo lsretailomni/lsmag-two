@@ -257,7 +257,8 @@ class ProductCreateTask
                                 $this->logger->debug('Found images for the item ' . $item->getNavId());
                                 $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                             }
-                            $productData->save();
+                            $product = $this->getProductAttributes($productData, $item);
+                            $this->productRepository->save($product);
                             $item->setData('is_updated', '0');
                             $item->setData('processed', '1');
                             $this->itemRepository->save($item);
