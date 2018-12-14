@@ -31,28 +31,32 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Debug Mode for Omni Client</comment>
                 </field>
-                <field id="advanced" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
-                       showInStore="1">
-                    <label>Advanced Settings</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Enable Advanced Settings</comment>
-                </field>
-                <field id="tokenized_operations" translate="label" type="multiselect" sortOrder="10" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
-                    <label>Tokenized Operations</label>
-                    <comment>Omni Service operations that need an authentication token</comment>
-                    <depends>
-                        <field id="*/*/advanced">1</field>
-                    </depends>
-                </field>
-                <field id="timeout" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
-                       showInStore="1">
-                    <label>Timeout</label>
-                    <comment>Timeout in seconds for the connection to Omni Service</comment>
-                    <depends>
-                        <field id="*/*/advanced">1</field>
-                    </depends>
-                </field>
+                <!-- Commenting the unnecessary configuration for now starts
+                -->
+                <!--<field id="advanced" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"-->
+                <!--showInStore="1">-->
+                <!--<label>Advanced Settings</label>-->
+                <!--<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>-->
+                <!--<comment>Enable Advanced Settings</comment>-->
+                <!--</field>-->
+                <!--<field id="tokenized_operations" translate="label" type="multiselect" sortOrder="10" showInDefault="1"-->
+                <!--showInWebsite="1" showInStore="1">-->
+                <!--<label>Tokenized Operations</label>-->
+                <!--<comment>Omni Service operations that need an authentication token</comment>-->
+                <!--<depends>-->
+                <!--<field id="*/*/advanced">1</field>-->
+                <!--</depends>-->
+                <!--</field>-->
+                <!--<field id="timeout" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"-->
+                <!--showInStore="1">-->
+                <!--<label>Timeout</label>-->
+                <!--<comment>Timeout in seconds for the connection to Omni Service</comment>-->
+                <!--<depends>-->
+                <!--<field id="*/*/advanced">1</field>-->
+                <!--</depends>-->
+                <!--</field>-->
+                <!-- Commenting the unnecessary configuration for now ends
+                -->
             </group>
         </section>
         <!-- For Loyalty Points Method Configuration
@@ -155,7 +159,7 @@
                 </field>
             </group>
         </section>
-        <section id="omni_clickandcollect" sortOrder="1" showInDefault="1">
+        <section id="omni_clickandcollect" sortOrder="2" showInDefault="1">
             <tab>ls_retail</tab>
             <label>Click And Collect</label>
             <resource>Magento_Config::config</resource>
