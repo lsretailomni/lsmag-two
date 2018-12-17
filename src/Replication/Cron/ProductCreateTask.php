@@ -217,17 +217,15 @@ class ProductCreateTask
     {
         $fullReplicationAttributeStatus = $this->_lsr->getStoreConfig(ReplEcommAttributeTask::CONFIG_PATH_STATUS);
         $fullReplicationAttributeOptionValueStatus = $this->_lsr->getStoreConfig(ReplEcommAttributeValueTask::CONFIG_PATH_STATUS);
-
+        $fullReplicationImageLinkStatus = $this->_lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
         $CronCategoryCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
         $CronAttributeCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
         $productBatchSize = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE);
 
-
-        if ($CronCategoryCheck == 1 && $CronAttributeCheck == 1) {
+        if ($CronCategoryCheck == 1 && $CronAttributeCheck == 1 && $fullReplicationImageLinkStatus == 1) {
             if ($fullReplicationAttributeStatus != 1 && $fullReplicationAttributeOptionValueStatus != 1) {
                 return;
             }
-
 
             $this->logger->debug('Running ProductCreateTask');
             /** @var \Magento\Framework\Api\SearchCriteria $criteria */
@@ -257,7 +255,8 @@ class ProductCreateTask
                                 $this->logger->debug('Found images for the item ' . $item->getNavId());
                                 $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                             }
-                            $productData->save();
+                            $product = $this->getProductAttributes($productData, $item);
+                            $this->productRepository->save($product);
                             $item->setData('is_updated', '0');
                             $item->setData('processed', '1');
                             $this->itemRepository->save($item);
@@ -334,7 +333,7 @@ class ProductCreateTask
             $this->logger->debug('End ProductCreateTask');
             $this->cronStatus = true;
         } else {
-            $this->logger->debug("Product Replication cron fails because category or attribute replication cron not executed successfully.");
+            $this->logger->debug("Product Replication cron fails because category, attribute or image replication cron not executed successfully.");
         }
         $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT);
     }
