@@ -292,7 +292,10 @@ abstract class AbstractReplicationTask
             } else {
                 $sourceValue = $source->{$get_method}();
             }
-            $criteria->addFilter($attribute, $sourceValue);
+            if ($sourceValue == "")
+                $criteria->addFilter($attribute, true , 'null');
+            else
+                $criteria->addFilter($attribute, $sourceValue);
         }
         $result = $this->getRepository()->getList($criteria->create());
         return $result->getItems();
