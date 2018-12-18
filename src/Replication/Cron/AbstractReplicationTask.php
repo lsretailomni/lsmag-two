@@ -44,7 +44,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_data_translation" => ["TranslationId"],
         "ls_mag/replication/repl_discount" => ["ItemId", "LoyaltySchemeCode", "OfferNo", "StoreId"],
         "ls_mag/replication/repl_discount_validation" => ["nav_id"],
-        "ls_mag/replication/repl_extended_variant_value" => ["Code", "FrameworkCode", "ItemId"],
+        "ls_mag/replication/repl_extended_variant_value" => ["Code", "FrameworkCode", "ItemId", "Value"],
         "ls_mag/replication/repl_hierarchy" => ["nav_id"],
         "ls_mag/replication/repl_hierarchy_leaf" => ["nav_id", "NodeId"],
         "ls_mag/replication/repl_hierarchy_node" => ["nav_id"],
