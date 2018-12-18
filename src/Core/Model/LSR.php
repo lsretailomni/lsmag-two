@@ -65,6 +65,9 @@ class LSR
     //check for Attribute
     const SC_SUCCESS_CRON_ATTRIBUTE = 'ls_mag/replication/success_repl_attribute';
 
+    //check for Attribute Variant
+    const SC_SUCCESS_CRON_ATTRIBUTE_VARIANT = 'ls_mag/replication/success_repl_attribute_variant';
+
     //check for Category
     const SC_SUCCESS_CRON_CATEGORY = 'ls_mag/replication/success_repl_category';
 
