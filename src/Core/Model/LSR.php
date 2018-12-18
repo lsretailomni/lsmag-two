@@ -4,6 +4,7 @@ namespace Ls\Core\Model;
 
 use Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Cache\TypeListInterface;
 use SoapClient;
 
 class LSR
@@ -11,6 +12,7 @@ class LSR
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to Stores > Configuration > LS Retail > General Configuration.';
     const APP_NAME = 'ls-mag';
     const APP_VERSION = '1.0.0';
+    const CRON_STATUS_PATH_PREFIX = 'ls_mag/replication/status_';
     // DEFAULT IMAGE SIZE
     const DEFAULT_IMAGE_WIDTH = 500;
     const DEFAULT_IMAGE_HEIGHT = 500;
@@ -205,6 +207,10 @@ class LSR
     const STORE_HOURS_TIME_FORMAT = 'h:i A';
 
     protected $_scopeConfig;
+
+    /** @var chache type list */
+    protected $cacheTypeList;
+
     // END POINTS
     protected $endpoints = [
         ServiceType::ECOMMERCE => 'ecommerceservice.svc',
@@ -217,9 +223,12 @@ class LSR
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig
-    ) {
+        ScopeConfigInterface $scopeConfig,
+        TypeListInterface $cacheTypeList
+    )
+    {
         $this->_scopeConfig = $scopeConfig;
+        $this->cacheTypeList = $cacheTypeList;
     }
 
     /**
@@ -238,6 +247,14 @@ class LSR
             );
         }
         return $sc;
+    }
+
+    /**
+     * Clear the cache for type config
+     */
+    public function flushConfig()
+    {
+        $this->cacheTypeList->cleanType('config');
     }
 
     /**
@@ -278,13 +295,11 @@ class LSR
      */
     public function getInvalidMessageContainer()
     {
-
-        $message     = '<div class="invalid-lsr">';
-        $message    .= '<strong>'.__('LS Retail Setup Incomplete').'</strong>';
-        $message    .= '<br/>'.__('Please define the LS Retail Service Base URL and Web Store to proceed').'<br/>';
-        $message    .= __('Go to Stores > Configuration > LS Retail > General Configuration.');
-        $message    .= '</div>';
-
+        $message = '<div class="invalid-lsr">';
+        $message .= '<strong>' . __('LS Retail Setup Incomplete') . '</strong>';
+        $message .= '<br/>' . __('Please define the LS Retail Service Base URL and Web Store to proceed') . '<br/>';
+        $message .= __('Go to Stores > Configuration > LS Retail > General Configuration.');
+        $message .= '</div>';
         return $message;
     }
 
