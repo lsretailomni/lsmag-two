@@ -79,7 +79,8 @@ class CategoryCreateTask
         File $file,
         ReplicationHelper $replicationHelper,
         LSR $LSR
-    ) {
+    )
+    {
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
         $this->replHierarchyNodeRepository = $replHierarchyNodeRepository;
@@ -141,7 +142,6 @@ class CategoryCreateTask
                 $this->categoryRepository->save($category);
                 $hierarchyNode->setData('processed', '1');
                 $this->replHierarchyNodeRepository->save($hierarchyNode);
-                $this->cronStatus = true;
             } else {
                 if ($hierarchyNode->getIsUpdated() == 1) {
                     $categoryExistData->setData('name', ($hierarchyNode->getDescription()) ? $hierarchyNode->getDescription() : $hierarchyNode->getNavId());
@@ -152,7 +152,6 @@ class CategoryCreateTask
                     $this->categoryRepository->save($categoryExistData);
                     $hierarchyNode->setData('is_updated', '0');
                     $this->replHierarchyNodeRepository->save($hierarchyNode);
-                    $this->cronStatus = true;
                 }
             }
         }
@@ -190,7 +189,6 @@ class CategoryCreateTask
                 $this->categoryRepository->save($categorysub);
                 $hierarchyNodeSub->setData('processed', '1');
                 $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
-                $this->cronStatus = true;
             } else {
                 if ($hierarchyNodeSub->getIsUpdated() == 1) {
                     $subCategoryExistData->setData('name', ($hierarchyNodeSub->getDescription()) ? $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId());
@@ -201,11 +199,10 @@ class CategoryCreateTask
                     $this->categoryRepository->save($subCategoryExistData);
                     $hierarchyNodeSub->setData('is_updated', '0');
                     $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
-                    $this->cronStatus = true;
                 }
             }
         }
-        if (count($replHierarchyNodeRepositorySub->getItems()) == 0 && count($replHierarchyNodeRepositorySub->getItems()) == 0) {
+        if (count($replHierarchyNodeRepository->getItems() == 0) && count($replHierarchyNodeRepositorySub->getItems()) == 0) {
             $this->cronStatus = true;
         }
         //Update the Modified Images
