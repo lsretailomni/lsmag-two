@@ -88,7 +88,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         $cronsGroupListing = array_reverse($cronsGroupListing);
         $this->_lsr->flushConfig();
         foreach ($cronsGroupListing as $cronlist) {
-            $fullReplicationStatus = $path = '';
+            $path = '';
             if ($cronlist['_attribute']['id'] == "replication") {
                 $condition = __("Flat to Magento");
             } elseif ($cronlist['_attribute']['id'] == "flat_replication") {
@@ -98,14 +98,28 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 $condition = __("");
             }
             foreach ($cronlist['_value']['job'] as $joblist) {
+                $fullReplicationStatus = 0;
+                $cronName = $joblist['_attribute']['name'];
                 if ($path != '') {
-                    $pathNew = $path . $joblist['_attribute']['name'];
+                    $pathNew = $path . $cronName;
                     $fullReplicationStatus = $this->_lsr->getStoreConfig($pathNew);
+                }
+                if ($cronName == 'repl_attributes') {
+                    $cronAttributeCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+                    $cronAttributeVariantCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
+                    if ($cronAttributeCheck && $cronAttributeCheck)
+                        $fullReplicationStatus = 1;
+                }
+                if ($cronName == 'repl_category') {
+                    $fullReplicationStatus = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
+                }
+                if ($cronName == 'repl_products') {
+                    $fullReplicationStatus = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
                 }
                 $items[] = [
                     'id' => $counter,
                     'fullreplicationstatus' => ($fullReplicationStatus == 1) ? '<div class="flag-green custom-grid-flag">Complete</div>' : '<div class="flag-yellow custom-grid-flag">Pending</div>',
-                    'label' => $joblist['_attribute']['name'],
+                    'label' => $cronName,
                     'value' => $joblist['_attribute']['instance'],
                     'condition' => $condition
                 ];
