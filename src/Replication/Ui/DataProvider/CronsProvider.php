@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Replication\Ui\DataProvider;
 
 use Magento\Framework\View\Element\UiComponent\DataProvider\DataProviderInterface;
@@ -7,6 +8,7 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\Xml\Parser;
+use Ls\Core\Model\LSR;
 
 /**
  * Class ProductDataProvider
@@ -38,6 +40,8 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      */
     private $parser;
 
+    /** @var LSR */
+    protected $_lsr;
 
     /**
      * CronsProvider constructor.
@@ -47,6 +51,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      * @param Http $request
      * @param Reader $moduleDirReader
      * @param Parser $parser
+     * @param LSR $LSR
      * @param array $meta
      * @param array $data
      */
@@ -57,13 +62,16 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         Http $request,
         Reader $moduleDirReader,
         Parser $parser,
+        LSR $LSR,
         array $meta = [],
         array $data = []
-    ) {
+    )
+    {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->request = $request;
         $this->moduleDirReader = $moduleDirReader;
         $this->parser = $parser;
+        $this->_lsr = $LSR;
     }
 
     /**
@@ -78,40 +86,30 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         $items = [];
         $counter = 1;
         $cronsGroupListing = array_reverse($cronsGroupListing);
+        $this->_lsr->flushConfig();
         foreach ($cronsGroupListing as $cronlist) {
+            $fullReplicationStatus = $path = '';
             if ($cronlist['_attribute']['id'] == "replication") {
                 $condition = __("Flat to Magento");
-                foreach ($cronlist['_value']['job'] as $joblist) {
-                    $items[] = [
-                        'id' => $counter,
-                        'label' => $joblist['_attribute']['name'],
-                        'value' => $joblist['_attribute']['instance'],
-                        'condition' => $condition
-                    ];
-                    $counter++;
-                }
             } elseif ($cronlist['_attribute']['id'] == "flat_replication") {
-                    $condition = __("Omni to Flat");
-                foreach ($cronlist['_value']['job'] as $joblist) {
-                    $items[] = [
-                        'id' => $counter,
-                        'label' => $joblist['_attribute']['name'],
-                        'value' => $joblist['_attribute']['instance'],
-                        'condition' => $condition
-                    ];
-                    $counter++;
-                }
+                $condition = __("Omni to Flat");
+                $path = $this->_lsr::CRON_STATUS_PATH_PREFIX;
             } else {
-                    $condition = __("");
-                foreach ($cronlist['_value']['job'] as $joblist) {
-                    $items[] = [
-                        'id' => $counter,
-                        'label' => $joblist['_attribute']['name'],
-                        'value' => $joblist['_attribute']['instance'],
-                        'condition' => $condition
-                    ];
-                    $counter++;
+                $condition = __("");
+            }
+            foreach ($cronlist['_value']['job'] as $joblist) {
+                if ($path != '') {
+                    $pathNew = $path . $joblist['_attribute']['name'];
+                    $fullReplicationStatus = $this->_lsr->getStoreConfig($pathNew);
                 }
+                $items[] = [
+                    'id' => $counter,
+                    'fullreplicationstatus' => ($fullReplicationStatus == 1) ? '<div class="flag-green custom-grid-flag">Complete</div>' : '<div class="flag-yellow custom-grid-flag">Pending</div>',
+                    'label' => $joblist['_attribute']['name'],
+                    'value' => $joblist['_attribute']['instance'],
+                    'condition' => $condition
+                ];
+                $counter++;
             }
         }
 
