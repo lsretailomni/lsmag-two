@@ -217,13 +217,13 @@ class ProductCreateTask
      */
     public function execute()
     {
-        $fullReplicationAttributeStatus = $this->_lsr->getStoreConfig(ReplEcommAttributeTask::CONFIG_PATH_STATUS);
-        $fullReplicationAttributeOptionValueStatus = $this->_lsr->getStoreConfig(ReplEcommAttributeValueTask::CONFIG_PATH_STATUS);
         $fullReplicationImageLinkStatus = $this->_lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
+        $fullReplicationBarcodsStatus = $this->_lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS);
+        $fullReplicationPriceStatus = $this->_lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS);
         $cronCategoryCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
         $cronAttributeCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
         $cronAttributeVariantCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
-        if ($cronCategoryCheck == 1 && $cronAttributeCheck == 1 && $cronAttributeVariantCheck == 1 && $fullReplicationImageLinkStatus == 1) {
+        if ($cronCategoryCheck == 1 && $cronAttributeCheck == 1 && $cronAttributeVariantCheck == 1 && $fullReplicationImageLinkStatus == 1 && $fullReplicationBarcodsStatus == 1 && $fullReplicationPriceStatus == 1) {
             $this->logger->debug('Running ProductCreateTask');
             $productBatchSize = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE);
             /** @var \Magento\Framework\Api\SearchCriteria $criteria */
@@ -304,21 +304,12 @@ class ProductCreateTask
             if (count($items->getItems()) == 0) {
                 $this->assignProductToCategory();
                 $this->cronStatus = true;
-            }
-            $fullReplicationVariantStatus = $this->_lsr->getStoreConfig(ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS);
-            if ($fullReplicationVariantStatus == 1) {
-                $this->updateVariantsOnly();
-            }
-            $fullReplicationImageLinkStatus = $this->_lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
-            if ($fullReplicationImageLinkStatus == 1) {
+                $fullReplicationVariantStatus = $this->_lsr->getStoreConfig(ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS);
+                if ($fullReplicationVariantStatus == 1) {
+                    $this->updateVariantsOnly();
+                }
                 $this->updateImagesOnly();
-            }
-            $fullReplicationBarcodeStatus = $this->_lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS);
-            if ($fullReplicationBarcodeStatus == 1) {
                 $this->updateBarcodeOnly();
-            }
-            $fullReplicationPriceStatus = $this->_lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS);
-            if ($fullReplicationPriceStatus == 1) {
                 $this->updatePriceOnly();
             }
             $this->logger->debug('End ProductCreateTask');
