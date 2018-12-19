@@ -16,12 +16,14 @@ abstract class AbstractReplicationTask
 {
     /** @var array */
     static private $bypass_methods = ['getMaxKey', 'getLastKey', 'getRecordsRemaining'];
+
     /** @var array All those config path don't have no lastkey means always zero as LastKey */
     static private $no_lastkey_config_path = [
         'ls_mag/replication/repl_country_code',
         'ls_mag/replication/repl_shipping_agent',
         'ls_mag/replication/repl_store_tender_type',
     ];
+
     /** @var array Config path which needed web store id instead of empty */
     static private $store_id_needed = [
         'ls_mag/replication/repl_hierarchy',
@@ -98,7 +100,8 @@ abstract class AbstractReplicationTask
         LoggerInterface $logger,
         LsHelper $helper,
         ReplicationHelper $repHelper
-    ) {
+    )
+    {
         $this->scope_config = $scope_config;
         $this->resource_config = $resouce_config;
         $this->logger = $logger;
@@ -150,6 +153,7 @@ abstract class AbstractReplicationTask
                     foreach ($traversable as $source) {
                         $this->saveSource($properties, $source);
                     }
+                    $this->updateSuccessStatus();
                 } else {
                     $arrayTraversable = (array)$traversable;
                     if (count($arrayTraversable) > 0) {
@@ -179,6 +183,7 @@ abstract class AbstractReplicationTask
                         } catch (\Exception $e) {
                             $this->logger->debug($e->getMessage());
                         }
+                        $this->updateSuccessStatus();
                     }
                 }
                 $this->persistLastKey($last_key);
@@ -196,6 +201,20 @@ abstract class AbstractReplicationTask
     {
         $this->execute();
         return [$this->recordsRemaining];
+    }
+
+    /**
+     * Update the Custom Replication Success Status
+     */
+    protected function updateSuccessStatus()
+    {
+        $confPath = $this->getConfigPath();
+        if ($confPath == "ls_mag/replication/repl_attribute" || $confPath == "ls_mag/replication/repl_extended_variant_value")
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+        elseif ($confPath == "ls_mag/replication/repl_hierarchy_node")
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY);
+        elseif ($confPath == "ls_mag/replication/repl_item")
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT);
     }
 
     protected function toObject(array $array, $object)
@@ -293,7 +312,7 @@ abstract class AbstractReplicationTask
                 $sourceValue = $source->{$get_method}();
             }
             if ($sourceValue == "")
-                $criteria->addFilter($attribute, true , 'null');
+                $criteria->addFilter($attribute, true, 'null');
             else
                 $criteria->addFilter($attribute, $sourceValue);
         }
