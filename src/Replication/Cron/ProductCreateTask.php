@@ -711,7 +711,8 @@ class ProductCreateTask
      */
     protected function updatePriceOnly()
     {
-        $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly();
+        $filters = array();
+        $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         /** @var \Ls\Replication\Model\ReplPriceSearchResults $replPrices */
         $replPrices = $this->replPriceRepository->getList($criteria);
         /** @var \Ls\Replication\Model\ReplPrice $replPrice */
