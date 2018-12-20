@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Zeeshan Khuwaja
- * Date: 5/28/2018
- * Time: 10:12 AM
- */
+
 namespace Ls\Customer\Controller\Loyalty;
 
 use Magento\Framework\App\Action\Context;
