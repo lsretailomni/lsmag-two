@@ -185,7 +185,7 @@ class AttributesCreateTask
                 $variantCodes[$variant->getCode()][] = $variant->getValue();
             }
         }
-        if (count($variants->getItems()) == 0) {
+        if (count($variants) == 0) {
             $this->successCronAttributeVariant = true;
         }
         foreach ($variantCodes as $code => $value) {

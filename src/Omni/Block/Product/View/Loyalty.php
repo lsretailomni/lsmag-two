@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Zeeshan Khuwaja
- * Date: 8/9/2018
- * Time: 3:53 PM
- */
 
 namespace Ls\Omni\Block\Product\View;
 

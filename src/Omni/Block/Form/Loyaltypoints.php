@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Zeeshan Khuwaja
- * Date: 6/25/2018
- * Time: 4:39 PM
- */
 
 namespace Ls\Omni\Block\Form;
 

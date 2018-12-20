@@ -92,7 +92,8 @@ class DiscountCreateTask
         CollectionFactory $replDiscountCollection,
         ContactHelper $contactHelper,
         LoggerInterface $logger
-    ) {
+    )
+    {
         $this->catalogRule = $catalogRule;
         $this->ruleFactory = $ruleFactory;
         $this->jobApply = $jobApply;
@@ -164,6 +165,14 @@ class DiscountCreateTask
                         }
                         $this->jobApply->applyAll();
                     }
+                    $criteriaTotal = $this->_replicationHelper->buildCriteriaForArray(array(), 100);
+                    /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+                    $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
+                    if (count($replDiscountsTotal->getItems()) == 0) {
+                        $this->_replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
+                    } else {
+                        $this->_replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
+                    }
                 }
             }
         } else {
@@ -196,20 +205,20 @@ class DiscountCreateTask
 
             // create root conditions to match with all child conditions
             $conditions["1"] =
-            [
-                "type" => "Magento\CatalogRule\Model\Rule\Condition\Combine",
-                "aggregator" => "all",
-                "value" => 1,
-                "new_child" => ""
-            ];
+                [
+                    "type" => "Magento\CatalogRule\Model\Rule\Condition\Combine",
+                    "aggregator" => "all",
+                    "value" => 1,
+                    "new_child" => ""
+                ];
 
             $conditions["1--1"] =
-            [
-                "type" => "Magento\CatalogRule\Model\Rule\Condition\Product",
-                "attribute" => "sku",
-                "operator" => "()",
-                "value" => implode(',', $skuArray)
-            ];
+                [
+                    "type" => "Magento\CatalogRule\Model\Rule\Condition\Product",
+                    "attribute" => "sku",
+                    "operator" => "()",
+                    "value" => implode(',', $skuArray)
+                ];
 
             $rule->setName($replDiscount->getOfferNo())
                 ->setDescription($replDiscount->getOfferNo())

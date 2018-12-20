@@ -76,6 +76,9 @@ class LSR
     //check for Product
     const SC_SUCCESS_CRON_PRODUCT = 'ls_mag/replication/success_repl_product';
 
+    //check for Discount
+    const SC_SUCCESS_CRON_DISCOUNT = 'ls_mag/replication/success_repl_discount';
+
 
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
