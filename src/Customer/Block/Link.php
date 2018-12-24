@@ -1,9 +1,5 @@
 <?php
-/*
- * Author : Zeeshan Khuwaja
- * Date : 31st May, 2018
- * Description : Block to add Custom Menu to Customer Acccount top Menu Bar.
- */
+
 namespace Ls\Customer\Block;
 
 use Magento\Customer\Block\Account\SortLinkInterface;

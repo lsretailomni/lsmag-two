@@ -53,8 +53,11 @@ class AttributesCreateTask
      */
     protected $logger;
 
-    /** @var Cron Checking */
-    protected $cronStatus = false;
+    /** @var Success Cron Attribute */
+    protected $successCronAttribute = false;
+
+    /** @var Success Cron Attribute Variant */
+    protected $successCronAttributeVariant = false;
 
     /**
      * AttributesCreateTask constructor.
@@ -104,8 +107,8 @@ class AttributesCreateTask
         $this->processAttributes();
         // Process variants attributes which are going to be used for configurable product
         $this->processVariantAttributes();
-
-        $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+        $this->replicationHelper->updateCronStatus($this->successCronAttribute, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+        $this->replicationHelper->updateCronStatus($this->successCronAttributeVariant, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
     }
 
     public function executeManually()
@@ -149,8 +152,11 @@ class AttributesCreateTask
                 $this->addAttributeOptions($replAttribute->getCode());
             }
             $replAttribute->setData('processed', '1');
+            $replAttribute->setData('is_updated', '0');
             $this->replAttributeRepositoryInterface->save($replAttribute);
-            $this->cronStatus = true;
+        }
+        if (count($replAttributes->getItems()) == 0) {
+            $this->successCronAttribute = true;
         }
     }
 
@@ -173,10 +179,14 @@ class AttributesCreateTask
         /** @var \Ls\Replication\Model\ReplExtendedVariantValue $variant */
         foreach ($variants as $variant) {
             $variant->setData('processed', '1');
+            $variant->setData('is_updated', '0');
             $this->replExtendedVariantValueRepository->save($variant);
             if (empty($variantCodes[$variant->getCode()]) || !in_array($variant->getValue(), $variantCodes[$variant->getCode()])) {
                 $variantCodes[$variant->getCode()][] = $variant->getValue();
             }
+        }
+        if (count($variants) == 0) {
+            $this->successCronAttributeVariant = true;
         }
         foreach ($variantCodes as $code => $value) {
             $formattedCode = $this->replicationHelper->formatAttributeCode($code);
@@ -252,8 +262,6 @@ class AttributesCreateTask
                         );
                 }
             }
-
-            $this->cronStatus = true;
         }
     }
 
