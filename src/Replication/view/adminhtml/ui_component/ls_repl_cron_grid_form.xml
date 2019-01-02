@@ -94,7 +94,7 @@
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="align" xsi:type="string">left</item>
-                    <item name="label" xsi:type="string" translate="true">Cron Jobs</item>
+                    <item name="label" xsi:type="string" translate="true">Job Code</item>
                     <item name="sortOrder" xsi:type="number">2</item>
                 </item>
             </argument>
@@ -107,7 +107,7 @@
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="align" xsi:type="string">left</item>
-                    <item name="label" xsi:type="string" translate="true">Full Replication Status</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
                     <item name="sortOrder" xsi:type="number">3</item>
                 </item>
             </argument>
@@ -120,7 +120,7 @@
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="align" xsi:type="string">left</item>
-                    <item name="label" xsi:type="string" translate="true">Cron Urls</item>
+                    <item name="label" xsi:type="string" translate="true">Cron Class</item>
                     <item name="sortOrder" xsi:type="number">4</item>
                 </item>
             </argument>
@@ -133,7 +133,7 @@
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="align" xsi:type="string">left</item>
-                    <item name="label" xsi:type="string" translate="true">Action</item>
+                    <item name="label" xsi:type="string" translate="true">Area</item>
                     <item name="sortOrder" xsi:type="number">5</item>
                 </item>
             </argument>
@@ -142,7 +142,7 @@
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="sortable" xsi:type="boolean">false</item>
-                        <item name="label" xsi:type="string" translate="true">Execute</item>
+                        <item name="label" xsi:type="string" translate="true">Action</item>
                         <item name="sortOrder" xsi:type="number">6</item>
                         <item name="fieldAction" xsi:type="boolean">false</item>
                     </item>
