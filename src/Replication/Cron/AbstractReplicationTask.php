@@ -211,9 +211,9 @@ abstract class AbstractReplicationTask
         $confPath = $this->getConfigPath();
         if ($confPath == "ls_mag/replication/repl_attribute" || $confPath == "ls_mag/replication/repl_extended_variant_value")
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-        elseif ($confPath == "ls_mag/replication/repl_hierarchy_node")
+        elseif ($confPath == "ls_mag/replication/repl_hierarchy_node" )
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY);
-        elseif ($confPath == "ls_mag/replication/repl_item")
+        elseif ($confPath == "ls_mag/replication/repl_item" || $confPath == "ls_mag/replication/repl_hierarchy_leaf")
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT);
     }
 
