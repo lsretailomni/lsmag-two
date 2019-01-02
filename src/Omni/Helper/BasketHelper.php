@@ -542,15 +542,16 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             $shippingAmount = $shippingAddress->getShippingAmount();
 
-            if (!is_null($shippingAmount) && $shippingAmount > 0) {
+            //if (!is_null($shippingAmount)) {
+            // This condition will never work on Cart unless the customer go through with checkout process
                 $line = (new Entity\BasketCalcLineRequest())
                     ->setLineNumber($n++)
                     ->setItemId($shipmentFeeId)
-                    ->setQuantity($shippingAmount)
+                    ->setQuantity(1)
                     ->setUomId("PCS");
                 $array[] = $line;
                 unset($line);
-            }
+            //}
 
             /** @var  Entity\ArrayOfBasketCalcLineRequest $lineRequest */
             $lineRequest = new Entity\ArrayOfBasketCalcLineRequest();

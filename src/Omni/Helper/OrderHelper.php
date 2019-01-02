@@ -47,7 +47,6 @@ class OrderHelper extends AbstractHelper
     {
 
 
-        // TODO: add on demand feature again
         //$isInline = LSR::getStoreConfig( LSR::SC_CART_SALESORDER_INLINE ) == LSR_Core_Model_System_Source_Process_Type::ON_DEMAND;
         $isInline = true;
 
@@ -92,8 +91,12 @@ class OrderHelper extends AbstractHelper
             $line = $lines;
             // adjust price of shipping item if it is one
             if ($line->getItemId() == $shipmentFeeId) {
-                $line->setPrice($order->getShippingAmount());
-                $line->setNetPrice($order->getBaseShippingAmount());
+                $line->setPrice($order->getShippingAmount())
+                    ->setNetPrice($order->getBaseShippingAmount())
+                    ->setLineType(Enum\LineType::SHIPPING)
+                    ->setQuantity(1)
+                    ->setPrice($order->getShippingAmount())
+                    ->setDiscountAmount($order->getShippingDiscountAmount());
             }
 
             $orderLinesArray[] = (new Entity\OrderLine())
@@ -140,8 +143,12 @@ class OrderHelper extends AbstractHelper
                 }
                 // adjust price of shipping item if it is one
                 if ($line->getItemId() == $shipmentFeeId) {
-                    $line->setPrice($order->getShippingAmount());
-                    $line->setNetPrice($order->getBaseShippingAmount());
+                    $line->setPrice($order->getShippingAmount())
+                        ->setNetPrice($order->getBaseShippingAmount())
+                        ->setLineType(Enum\LineType::SHIPPING)
+                        ->setQuantity(1)
+                        ->setPrice($order->getShippingAmount())
+                        ->setDiscountAmount($order->getShippingDiscountAmount());
                 }
 
                 $orderLinesArray[] = (new Entity\OrderLine())
@@ -185,7 +192,6 @@ class OrderHelper extends AbstractHelper
         }
 
 
-        // TODO: check if shipping cost item is there
 
         $orderLinesArrayObject->setOrderLine($orderLinesArray);
         $entity->setOrderLines($orderLinesArrayObject);
