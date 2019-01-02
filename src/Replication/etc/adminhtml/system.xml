@@ -338,7 +338,7 @@
                 -->
             </group>
 
-            <group id="restore_database" translate="label" type="text" sortOrder="30" showInDefault="1"
+            <group id="restore_database" translate="label" type="text" sortOrder="100" showInDefault="1"
                    showInWebsite="1" showInStore="1">
                 <label>Restore Database</label>
 
