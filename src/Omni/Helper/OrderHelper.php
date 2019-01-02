@@ -33,9 +33,17 @@ class OrderHelper extends AbstractHelper
         $this->customerSession = $customerSession;
     }
 
+    /**
+     * @param $orderId
+     * @param Entity\BasketCalcResponse $basketCalcResponse
+     */
     public function placeOrderById($orderId, Entity\BasketCalcResponse $basketCalcResponse)
     {
-        $this->placeOrder($this->prepareOrder($this->order->load($orderId), $basketCalcResponse));
+        $this->placeOrder(
+            $this->prepareOrder(
+                $this->order->load($orderId), $basketCalcResponse
+            )
+        );
     }
 
     /**
@@ -199,65 +207,11 @@ class OrderHelper extends AbstractHelper
         $discountArrayObject->setOrderDiscountLine($discountArray);
         $entity->setOrderDiscountLines($discountArrayObject);
 
+        /** @var Entity\ArrayOfOrderPayment  $orderPaymentArrayObject */
+        $orderPaymentArrayObject    =   $this->setOrderPayments($order);
 
-        // TODO: add payment
-        /*
-         * Handle the case for Loyalty Payment.
-         * If($order->getPayment()->getMethodInstance()->getCode() == 'loyaltypoints')
-         * setOrderPayments
-         *
-         */
+        $entity->setOrderPayments($orderPaymentArrayObject);
 
-        if ($order->getPayment()->getMethodInstance()->getCode() == 'loyaltypoints') {
-            // add payment method for loyalty payment.
-
-            /*
-             * Magento does not allow choosing muktiple payment method against each order.
-             * so we only have to pass the single method in the form of array
-             */
-
-            //TODO omni does not accept pay with Loyalty Point, end of the story :/
-            // @check https://solutions.lsretail.com/jira/browse/OMNI-4515 for further details.
-
-
-            $orderPaymentArray = [];
-            $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
-
-            $orderPayment = new Entity\OrderPayment();
-            //TODO check what items do we need to pass into the OrderPayment object
-
-            //$orderPayment->
-
-            $orderPaymentArray[] = $orderPayment;
-
-
-            $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
-
-
-            //$entity->setOrderPayments($orderPaymentArrayObject);
-        }
-        /*
-        $entity
-            ->setAnonymousOrder()
-            ->setCardId()
-            ->setClickAndCollectOrder()
-            ->setContactAddress()
-            ->setContactId()
-            ->setContactName()
-            ->setDayPhoneNumber()
-            ->setEmail()
-            ->setId()
-            ->setItemNumberType()
-            ->setMobileNumber()
-            ->setOrderPayments()
-            ->setPhoneNumber()
-            ->setShipToAddress()
-            ->setShipToEmail()
-            ->setShipToName()
-            ->setShipToPhoneNumber()
-            ->setShippingAgentCode()
-            ->setStoreId();
-        */
         // if guest, then empty cardId and contactId
         $contactId = (!is_null($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID)) ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID) : '');
         $cardId = (!is_null($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID)) ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
@@ -266,8 +220,6 @@ class OrderHelper extends AbstractHelper
             $anonymousOrder = true;
         }
 
-        /*        $contactId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_LSRID );
-                $cardId = $this->customerSession->getData( LSR::SESSION_CUSTOMER_CARDID );*/
         $entity
             ->setContactId($contactId)
             ->setCardId($cardId)
@@ -287,28 +239,6 @@ class OrderHelper extends AbstractHelper
             $entity->setPaymentStatus('PreApproved');
             $entity->setShippingStatus('NotYetShipped');
         }
-
-        /*
-        'customer_id' => $customerSession->getCustomer()->getId(),
-		'order_id' => $order->getId(),
-		'is_inline' => $is_inline,
-		'currency' => $basketCalculation->getCurrencyCode(),
-		'total_amount' => $basketCalculation->getTotalAmount(),
-		'total_discount_amount' => $basketCalculation->getTotalDiscAmount(),
-		'total_net_amount' => $basketCalculation->getTotalNetAmount(),
-		'total_tax_amount' => $basketCalculation->getTotalTaxAmount(),
-		'order_base_subtotal' => $order->getBaseSubtotal(),
-		'order_discount_amount' => $order->getDiscountAmount(),
-		'order_grand_total' => $order->getGrandTotal(),
-		'order_shipping_amount' => $order->getShippingAmount(),
-		'store_id' => LSR::getStore()->getId(),
-		'navstore_id' => $is_clickcollect
-				? $order->getData( 'quote' )->getData( 'lsr_clickcollect_navstore' )
-				: LSR::getStoreConfig( LSR::SC_OMNICLIENT_STORE ),
-		'session_id' => $customerSession->getEncryptedSessionId(),
-		'coupon_code' => $quote->getData( LSR::ATTRIBUTE_COUPON_CODE ),
-		'token' => LSR::getToken() );
-         */
 
         $request = new Entity\OrderCreate();
         $request->setRequest($entity);
@@ -352,4 +282,47 @@ class OrderHelper extends AbstractHelper
             ->setPostCode($magentoAddress->getPostcode());
         return $omniAddress;
     }
+
+
+    /**
+     * Please use this funciton to put all condition for different Order Payments:
+     * @param Model\Order $order
+     * @return Entity\ArrayOfOrderPayment
+     */
+    public function setOrderPayments(Model\Order $order)
+    {
+
+        $orderPaymentArray = [];
+        $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
+        $orderPayment = new Entity\OrderPayment();
+
+
+        //default values for all payment typoes.
+        $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
+            ->setCurrencyFactor($order->getBaseToGlobalRate())
+            ->setFinalizedAmount($order->getGrandTotal())
+            ->setLineNumber('1')
+            ->setOrderId($order->getEntityId())
+            ->setPreApprovedAmount($order->getGrandTotal());
+
+        // For Cash On Delivery and Cheque use Tender Type as 1
+
+        $orderPayment->setTenderType('0');
+        /*
+         * Not Supporting at the moment, so all payment methods will be offline,
+        if($order->getPayment()->getMethodInstance()->getCode() == 'cashondelivery' || $order->getPayment()->getMethodInstance()->getCode() == 'checkmo'){
+            // 0 Mean cash.
+        }
+         *
+         */
+
+
+        $orderPaymentArray[] = $orderPayment;
+
+
+         return   $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
+
+    }
+
+
 }
