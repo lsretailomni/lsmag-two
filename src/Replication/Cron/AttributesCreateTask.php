@@ -58,17 +58,25 @@ class AttributesCreateTask
 
     /** @var Success Cron Attribute Variant */
     protected $successCronAttributeVariant = false;
+    /**
+     * @var \Magento\Eav\Api\AttributeManagementInterface
+     */
+    protected $attributeManagement;
 
     /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ProductAttributeRepositoryInterface $productAttributeRepository
      * @param EavSetupFactory $eavSetupFactory
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param LoggerInterface $logger
      * @param AttributeFactory $eavAttributeFactory
      * @param Entity $eav_entity
+     * @param ReplAttributeRepositoryInterface $replAttributeRepositoryInterface
+     * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
+     * @param \Magento\Eav\Model\Config $eavConfig
+     * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
+     * @param \Magento\Eav\Api\AttributeManagementInterface $attributeManagement
      */
     public function __construct(
         ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
@@ -81,7 +89,8 @@ class AttributesCreateTask
         ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
         \Magento\Eav\Model\Config $eavConfig,
         ReplicationHelper $replicationHelper,
-        LSR $LSR
+        LSR $LSR,
+        \Magento\Eav\Api\AttributeManagementInterface $attributeManagement
     ) {
         $this->replExtendedVariantValueRepository = $replExtendedVariantValueRepository;
         $this->productAttributeRepository = $productAttributeRepository;
@@ -94,6 +103,7 @@ class AttributesCreateTask
         $this->eavConfig = $eavConfig;
         $this->replicationHelper = $replicationHelper;
         $this->_lsr = $LSR;
+        $this->attributeManagement = $attributeManagement;
     }
 
 
@@ -155,11 +165,40 @@ class AttributesCreateTask
             $replAttribute->setData('is_updated', '0');
             $this->replAttributeRepositoryInterface->save($replAttribute);
         }
-        if (count($replAttributes->getItems()) == 0) {
+        $attributesRemovalCounter = $this->caterAttributesRemoval($defaultAttributeSetId);
+        if (count($replAttributes->getItems()) == 0 && $attributesRemovalCounter == 0) {
             $this->successCronAttribute = true;
         }
     }
 
+    /**
+     * @param $defaultAttributeSetId
+     * @return int
+     */
+    public function caterAttributesRemoval($defaultAttributeSetId)
+    {
+        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly([]);
+        /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
+        $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
+        /** @var \Ls\Replication\Model\ReplAttribute $replAttribute */
+        foreach ($replAttributes->getItems() as $replAttribute) {
+            try {
+                $formattedCode = $this->replicationHelper->formatAttributeCode($replAttribute->getCode());
+                $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                if ($attribute) {
+                    $attributeId = $attribute->getId();
+                    $this->attributeManagement->unassign($defaultAttributeSetId, $attributeId);
+                }
+                $replAttribute->setData('processed', '1');
+                $replAttribute->setData('isDeleted', '1');
+                $replAttribute->setData('is_updated', '0');
+                $this->replAttributeRepositoryInterface->save($replAttribute);
+            } catch (\Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
+        }
+        return count($replAttributes->getItems());
+    }
     /**
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
