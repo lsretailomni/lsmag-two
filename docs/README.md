@@ -27,7 +27,7 @@ LS Mag particularly consumes the SOAP eCommerceService interface; other clients 
 LS Mag is a Magento extension that integrates with LS Retail NAV, allowing web retailers to leverage crucial operations to LS Nav, i.e. discount calculations, order life cycle management.   
 The extension will populate the web store’s catalog with items coming from LS Nav and manage the life cycle of the orders created in Magento mirroring the status updates coming from LS Nav.  
 LS Mag has been follows the best standards available for the Magento community.  
-LS Mag is compatible with Magento CE 1.9.X and Magento EE 1.14.X and has been tested against Magento CE 1.7.X also.
+LS Mag is compatible with Magento CE 2.2.X.
 
 ### LS Mag is an LS Omni Service client
 
@@ -62,11 +62,11 @@ The LS Omni Service will call LS Nav’s web services on behalf of Magento. Also
 ### Dependencies
 
 * PHP 5.6 or 7.0 with the modules
-  - soap 
+  - SOAP 
 * MySQL or MariaDB
-* A running Magento 2 installation
-* An LS Omni Server
-* NAV 10.03 or newer
+* A running Magento 2.2.6 or later
+* LS Omni Server 3.1.x | 3.2.x | 3.3.x or later
+* LS NAV 11.x
 * Composer
 * Git
 
