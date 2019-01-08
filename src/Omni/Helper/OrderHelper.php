@@ -107,41 +107,44 @@ class OrderHelper extends AbstractHelper
                     ->setDiscountAmount($order->getShippingDiscountAmount());
             }
 
-            $orderLinesArray[] = (new Entity\OrderLine())
-                ->setItemId($line->getItemId())
-                ->setQuantity($line->getQuantity())
-                ->setPrice($line->getPrice())
-                ->setDiscountAmount($line->getDiscountAmount())
-                ->setDiscountPercent($line->getDiscountPercent())
-                ->setNetAmount($line->getNetAmount())
-                ->setNetPrice($line->getNetPrice())
-                ->setUomId($line->getUom())
-                ->setVariantId($line->getVariantId())
-                ->setTaxAmount($line->getTAXAmount())
-                ->setLineNumber($line->getLineNumber());
+            if($line->getPrice() > 0) {
+                // avoid getting those enttries which does not have any  amount.
+                $orderLinesArray[] = (new Entity\OrderLine())
+                    ->setItemId($line->getItemId())
+                    ->setQuantity($line->getQuantity())
+                    ->setPrice($line->getPrice())
+                    ->setDiscountAmount($line->getDiscountAmount())
+                    ->setDiscountPercent($line->getDiscountPercent())
+                    ->setNetAmount($line->getNetAmount())
+                    ->setNetPrice($line->getNetPrice())
+                    ->setUomId($line->getUom())
+                    ->setVariantId($line->getVariantId())
+                    ->setTaxAmount($line->getTAXAmount())
+                    ->setLineNumber($line->getLineNumber());
 
-            $lineDiscounts = $line->getBasketLineDiscResponses();
-            $discounts = [];
-            if (!is_null($lineDiscounts->getBasketLineDiscResponse())) {
-                /** @var Entity\BasketLineDiscResponse[] $discounts */
-                $discounts = $lineDiscounts->getBasketLineDiscResponse();
-            }
-            if (count($discounts) > 0) {
-                /** @var Entity\BasketLineCalcResponse $discount */
-                foreach ($discounts as $discount) {
-                    // not actually needed
-                    // 'qty' => $discount->getQuantity(),
-                    # store information from current discount
-                    $discountArray[] = (new Entity\OrderDiscountLine())
-                        ->setDescription($discount->getDescription())
-                        ->setDiscountAmount($discount->getDiscountAmount())
-                        ->setDiscountPercent($discount->getDiscountPercent())
-                        ->setDiscountType($discount->getDiscountType())
-                        ->setLineNumber($discount->getLineNumber())
-                        ->setNo($discount->getNo())
-                        ->setOfferNumber($discount->getOfferNumber())
-                        ->setPeriodicDiscGroup($discount->getPeriodicDiscGroup())
-                        ->setPeriodicDiscType($discount->getPeriodicDiscType());
+                $lineDiscounts = $line->getBasketLineDiscResponses();
+                $discounts = [];
+                if (!is_null($lineDiscounts->getBasketLineDiscResponse())) {
+                    /** @var Entity\BasketLineDiscResponse[] $discounts */
+                    $discounts = $lineDiscounts->getBasketLineDiscResponse();
+                }
+                if (count($discounts) > 0) {
+                    /** @var Entity\BasketLineCalcResponse $discount */
+                    foreach ($discounts as $discount) {
+                        // not actually needed
+                        // 'qty' => $discount->getQuantity(),
+                        # store information from current discount
+                        $discountArray[] = (new Entity\OrderDiscountLine())
+                            ->setDescription($discount->getDescription())
+                            ->setDiscountAmount($discount->getDiscountAmount())
+                            ->setDiscountPercent($discount->getDiscountPercent())
+                            ->setDiscountType($discount->getDiscountType())
+                            ->setLineNumber($discount->getLineNumber())
+                            ->setNo($discount->getNo())
+                            ->setOfferNumber($discount->getOfferNumber())
+                            ->setPeriodicDiscGroup($discount->getPeriodicDiscGroup())
+                            ->setPeriodicDiscType($discount->getPeriodicDiscType());
+                    }
                 }
             }
         } elseif (is_array($lines)) {
@@ -151,6 +154,11 @@ class OrderHelper extends AbstractHelper
                 }
                 // adjust price of shipping item if it is one
                 if ($line->getItemId() == $shipmentFeeId) {
+                    if($order->getShippingAmount() <= 0){
+                        /** adding condition for shipment amount if its zero then does not include it. */
+                        continue;
+
+                    }
                     $line->setPrice($order->getShippingAmount())
                         ->setNetPrice($order->getBaseShippingAmount())
                         ->setLineType(Enum\LineType::SHIPPING)
@@ -158,6 +166,8 @@ class OrderHelper extends AbstractHelper
                         ->setPrice($order->getShippingAmount())
                         ->setDiscountAmount($order->getShippingDiscountAmount());
                 }
+
+
 
                 $orderLinesArray[] = (new Entity\OrderLine())
                     ->setItemId($line->getItemId())
@@ -236,8 +246,8 @@ class OrderHelper extends AbstractHelper
         if ($isClickCollect) {
             $entity->setCollectLocation($order->getPickupStore());
             $entity->setShipClickAndCollect(false);
-            $entity->setPaymentStatus('PreApproved');
-            $entity->setShippingStatus('NotYetShipped');
+            //$entity->setPaymentStatus('PreApproved');
+            //$entity->setShippingStatus('NotYetShipped');
         }
 
         $request = new Entity\OrderCreate();
