@@ -246,8 +246,8 @@ class OrderHelper extends AbstractHelper
         if ($isClickCollect) {
             $entity->setCollectLocation($order->getPickupStore());
             $entity->setShipClickAndCollect(false);
-            //$entity->setPaymentStatus('PreApproved');
-            //$entity->setShippingStatus('NotYetShipped');
+            $entity->setPaymentStatus('PreApproved');
+            $entity->setShippingStatus('NotYetShipped');
         }
 
         $request = new Entity\OrderCreate();
