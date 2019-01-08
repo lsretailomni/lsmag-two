@@ -625,7 +625,7 @@ class ProductCreateTask
                 foreach ($variants as $variant) {
                     $items[] = $variant->getItemId();
                 }
-                array_unique($items);
+                $items = array_unique($items);
                 foreach ($items as $item) {
                     $productData = $this->productRepository->get($item);
                     /** @var ReplBarcodeRepository $itemBarcodes */
