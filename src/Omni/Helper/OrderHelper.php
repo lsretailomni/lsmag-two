@@ -242,12 +242,13 @@ class OrderHelper extends AbstractHelper
             ->setSourceType(Enum\SourceType::E_COMMERCE)
             ->setStoreId($storeId);
 
+        $entity->setPaymentStatus('PreApproved');
+        $entity->setShippingStatus('NotYetShipped');
         //For click and collect.
         if ($isClickCollect) {
             $entity->setCollectLocation($order->getPickupStore());
             $entity->setShipClickAndCollect(false);
-            $entity->setPaymentStatus('PreApproved');
-            $entity->setShippingStatus('NotYetShipped');
+
         }
 
         $request = new Entity\OrderCreate();
