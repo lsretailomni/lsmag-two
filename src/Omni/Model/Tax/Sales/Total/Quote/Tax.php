@@ -36,7 +36,8 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         CustomerAddressRegionFactory $customerAddressRegionFactory,
         \Magento\Tax\Helper\Data $taxData,
         BasketHelper $basketHelper
-    ) {
+    )
+    {
         $this->setCode('tax');
         $this->basketHelper = $basketHelper;
         parent::__construct(
@@ -64,16 +65,18 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         \Magento\Quote\Model\Quote $quote,
         \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
         \Magento\Quote\Model\Quote\Address\Total $total
-    ) {
+    )
+    {
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
-            // customer currency, before tax
-            $total->setSubtotal((float)$basketData->getTotalNetAmount());
-            $total->setTotalAmount('subtotal', (float)$basketData->getTotalNetAmount());
-            // discount
-            $total->setDiscountAmount($basketData->getTotalDiscAmount());
+//            // customer currency, before tax
+//            $total->setSubtotal((float)$basketData->getTotalNetAmount());
+//            $total->setTotalAmount('subtotal', (float)$basketData->getTotalNetAmount());
+//            // discount
+            $discountAmount = -$basketData->getTotalDiscAmount();
+            $total->setDiscountAmount($discountAmount);
+//            $total->addTotalAmount('discount', $discountAmount);
             $total->setTaxAmount($basketData->getTotalTaxAmount());
-            $total->addTotalAmount('tax', $basketData->getTotalTaxAmount());
         }
         return $this;
     }
