@@ -513,7 +513,7 @@ class ProductCreateTask
     private function getUpdatedProductVariants($filters)
     {
         /** @var \Magento\Framework\Api\SearchCriteria $criteria */
-        $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
+        $criteria = $this->replicationHelper->buildCriteriaForArray($filters);
         $variants = $this->replItemVariantRegistrationRepository->getList($criteria)->getItems();
         return $variants;
     }
@@ -634,7 +634,8 @@ class ProductCreateTask
                     $itemData = $this->_getItem($item);
                     $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $variants);
                 }
-            } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+            } catch (\Exception $e) {
+                $this->logger->debug($e->getMessage());
                 return;
             }
         }
