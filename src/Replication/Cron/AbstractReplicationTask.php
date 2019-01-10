@@ -55,7 +55,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_item" => ["nav_id"],
         "ls_mag/replication/repl_item_category" => ["nav_id"],
         "ls_mag/replication/repl_item_unit_of_measure" => ["Code", "ItemId"],
-        "ls_mag/replication/repl_item_variant_registration" => ["ItemId", "VariantId"],
+        "ls_mag/replication/repl_item_variant_registration" => ["ItemId", "VariantDimension1", "VariantDimension2", "VariantDimension3", "VariantDimension4", "VariantDimension5", "VariantDimension6"],
         "ls_mag/replication/repl_loy_vendor_item_mapping" => ["NavManufacturerId", "NavProductId"],
         "ls_mag/replication/repl_price" => ["ItemId", "VariantId"],
         "ls_mag/replication/repl_product_group" => ["nav_id"],
