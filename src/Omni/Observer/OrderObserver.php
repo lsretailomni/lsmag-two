@@ -22,10 +22,14 @@ class OrderObserver implements ObserverInterface
     /** @var \Psr\Log\LoggerInterface  */
     protected $logger;
 
-    /** @var \Magento\Customer\Model\Session  */
+    /**
+     * @var \Magento\Customer\Model\Session\Proxy
+     */
     protected $customerSession;
 
-    /** @var \Magento\Checkout\Model\Session  */
+    /**
+     * @var \Magento\Checkout\Model\Session\Proxy
+     */
     protected $checkoutSession;
 
     /** @var bool  */

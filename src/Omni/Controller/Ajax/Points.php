@@ -4,7 +4,6 @@ namespace Ls\Omni\Controller\Ajax;
 
 use Magento\Framework\App\Action\Context;
 use Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Checkout\Model\Session;
 use Ls\Core\Model\LSR;
 
 class Points extends \Magento\Framework\App\Action\Action
@@ -19,10 +18,14 @@ class Points extends \Magento\Framework\App\Action\Action
     /** @var LoyaltyHelper  */
     private $loyaltyHelper;
 
-    /** @var Session  */
+    /**
+     * @var \Magento\Checkout\Model\Session\Proxy
+     */
     protected $_checkoutSession;
 
-    /** @var \Magento\Customer\Model\Session  */
+    /**
+     * @var \Magento\Customer\Model\Session\Proxy
+     */
     protected $customerSession;
 
     /**
@@ -31,18 +34,18 @@ class Points extends \Magento\Framework\App\Action\Action
      * @param \Magento\Framework\Json\Helper\Data $helper
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param LoyaltyHelper $loyaltyHelper
-     * @param Session $checkoutSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\Json\Helper\Data $helper,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         LoyaltyHelper $loyaltyHelper,
-        Session $checkoutSession
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;

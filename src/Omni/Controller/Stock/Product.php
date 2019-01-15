@@ -9,37 +9,40 @@ namespace Ls\Omni\Controller\Stock;
 
 class Product extends \Magento\Framework\App\Action\Action
 {
+
     /**
-     * @var $_request
+     * @var \Magento\Framework\App\Request\Http\Proxy
      */
     protected $_request;
+
     /**
-     * @var $_session
+     * @var \Magento\Checkout\Model\Session\Proxy
      */
     protected $_session;
+
     /**
-     * @var $_stockHelper
+     * @var \Ls\Omni\Helper\StockHelper
      */
     protected $_stockHelper;
+
     /**
-     * @var $_resultJsonFactory
+     * @var \Magento\Framework\Controller\Result\JsonFactory
      */
     protected $_resultJsonFactory;
 
     /**
-     * Product constructor
+     * Product constructor.
      * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\JsonFactory
-     *        $resultJsonFactory
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Checkout\Model\Session $session
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\App\Request\Http\Proxy $request
+     * @param \Magento\Checkout\Model\Session\Proxy $session
      * @param \Ls\Omni\Helper\StockHelper $stockHelper
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Checkout\Model\Session $session,
+        \Magento\Framework\App\Request\Http\Proxy $request,
+        \Magento\Checkout\Model\Session\Proxy $session,
         \Ls\Omni\Helper\StockHelper $stockHelper
     ) {
         $this->_request = $request;

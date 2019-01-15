@@ -7,7 +7,6 @@ use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Checkout\Model\Cart;
 use Magento\Catalog\Model\ProductRepository;
-use Magento\Checkout\Model\Session;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Quote\Model\Quote;
@@ -28,10 +27,14 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Catalog\Model\ProductRepository $productRepository */
     protected $productRepository;
 
-    /** @var Session $checkoutSession */
+    /**
+     * @var \Magento\Checkout\Model\Session\Proxy
+     */
     protected $checkoutSession;
 
-    /** @var \Magento\Customer\Model\Session $customerSession */
+    /**
+     * @var \Magento\Customer\Model\Session\Proxy
+     */
     protected $customerSession;
 
     /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
@@ -74,8 +77,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Context $context
      * @param Cart $cart
      * @param ProductRepository $productRepository
-     * @param Session $checkoutSession
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable
      * @param ProductFactory $productFactory
@@ -89,8 +92,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         Context $context,
         Cart $cart,
         ProductRepository $productRepository,
-        \Magento\Checkout\Model\Session $checkoutSession,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
         ProductFactory $productFactory,

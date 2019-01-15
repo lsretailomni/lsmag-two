@@ -17,10 +17,14 @@ class CartObserver implements ObserverInterface
     /** @var \Psr\Log\LoggerInterface */
     protected $logger;
 
-    /** @var \Magento\Customer\Model\Session */
+    /**
+     * @var \Magento\Customer\Model\Session\Proxy
+     */
     protected $customerSession;
 
-    /** @var \Magento\Checkout\Model\Session */
+    /**
+     * @var \Magento\Checkout\Model\Session\Proxy
+     */
     protected $checkoutSession;
 
     /** @var bool */
@@ -33,16 +37,15 @@ class CartObserver implements ObserverInterface
      * @param ContactHelper $contactHelper
      * @param BasketHelper $basketHelper
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      */
-
     public function __construct(
         ContactHelper $contactHelper,
         BasketHelper $basketHelper,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Checkout\Model\Session $checkoutSession
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession
     ) {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;

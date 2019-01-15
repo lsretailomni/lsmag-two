@@ -17,7 +17,9 @@ class OrderHelper extends AbstractHelper
     protected $order;
     /** @var \Ls\Omni\Helper\BasketHelper $basketHelper */
     protected $basketHelper;
-    /** @var \Magento\Customer\Model\Session $customerSession */
+    /**
+     * @var \Magento\Customer\Model\Session\Proxy
+     */
     protected $customerSession;
 
     public function __construct(

@@ -27,7 +27,9 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Customer\Model\CustomerFactory */
     protected $customerFactory;
 
-    /** @var \Magento\Customer\Model\Session */
+    /**
+     * @var \Magento\Customer\Model\Session\Proxy
+     */
     protected $customerSession;
 
     /** @var null */
@@ -44,7 +46,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Framework\Filesystem $Filesystem
      */
 
@@ -55,7 +57,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\Filesystem $Filesystem
     ) {
         $this->filterBuilder = $filterBuilder;
