@@ -2,18 +2,18 @@
 
 namespace Ls\Replication\Helper;
 
+use Ls\Core\Model\LSR;
 use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Core\Model\LSR;
+use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use \Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Config\Storage\WriterInterface;
 
 /**
  * Class ReplicationHelper
@@ -230,6 +230,25 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $criteria->create();
     }
 
+
+    /**
+     * Create Build Criteria with Array of filters as a parameters and return Updated Only
+     * @param array $filters
+     * @param int $pagesize
+     * @return \Magento\Framework\Api\SearchCriteria
+     */
+    public function buildCriteriaGetDeletedOnly(array $filters, $pagesize = 100)
+    {
+        $criteria = $this->searchCriteriaBuilder;
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+            }
+        }
+        $criteria->addFilter('IsDeleted', 1, 'eq');
+        $criteria->setPageSize($pagesize);
+        return $criteria->create();
+    }
 
     /**
      * Create Build Exit Criteria with Array of filters as a parameters
