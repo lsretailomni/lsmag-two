@@ -5,7 +5,6 @@ namespace Ls\Omni\Model;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\Escaper;
 use Magento\Payment\Helper\Data as PaymentHelper;
-use Magento\Checkout\Model\Session;
 
 class LoyaltypointsConfigProvider implements ConfigProviderInterface
 {
@@ -16,23 +15,27 @@ class LoyaltypointsConfigProvider implements ConfigProviderInterface
     /** @var \Magento\Payment\Model\MethodInterface  */
     protected $method;
 
-    /** @var Escaper  */
+    /**
+     * @var Escaper
+     */
     protected $escaper;
 
-    /** @var Session  */
+    /**
+     * @var \Magento\Checkout\Model\Session\Proxy
+     */
     protected $_checkoutSession;
 
     /**
      * LoyaltypointsConfigProvider constructor.
      * @param PaymentHelper $paymentHelper
      * @param Escaper $escaper
-     * @param Session $checkoutSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function __construct(
         PaymentHelper $paymentHelper,
         Escaper $escaper,
-        Session $checkoutSession
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession
     ) {
         $this->escaper = $escaper;
         $this->method = $paymentHelper->getMethodInstance($this->methodCode);

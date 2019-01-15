@@ -22,10 +22,14 @@ class OrderObserver implements ObserverInterface
     /** @var \Psr\Log\LoggerInterface  */
     protected $logger;
 
-    /** @var \Magento\Customer\Model\Session  */
+    /**
+     * @var \Magento\Customer\Model\Session\Proxy
+     */
     protected $customerSession;
 
-    /** @var \Magento\Checkout\Model\Session  */
+    /**
+     * @var \Magento\Checkout\Model\Session\Proxy
+     */
     protected $checkoutSession;
 
     /** @var bool  */
@@ -37,8 +41,8 @@ class OrderObserver implements ObserverInterface
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      */
 
     public function __construct(
@@ -46,8 +50,8 @@ class OrderObserver implements ObserverInterface
         BasketHelper $basketHelper,
         OrderHelper $orderHelper,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Checkout\Model\Session $checkoutSession
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession
     ) {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
@@ -57,27 +61,25 @@ class OrderObserver implements ObserverInterface
         $this->checkoutSession = $checkoutSession;
     }
 
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return $this|void
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $order = $observer->getEvent()->getData('order');
-
-
         /** @var Entity\BasketCalcResponse $basketCalculation */
         $basketCalculation = $this->basketHelper->getOneListCalculation();
-
         $request = $this->orderHelper->prepareOrder($order, $basketCalculation);
         $response = $this->orderHelper->placeOrder($request);
-
         if ($response) {
             //delete from Omni.
             if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                $onelist        =    $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-
+                $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
                 //TODO error which Hjalti highlighted. when there is only one item in the cart and customer remove that.
-                $success      =   $this->basketHelper->delete($onelist);
-
+                $success = $this->basketHelper->delete($onelist);
                 $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
-
                 // delete checkout session data.
                 $this->basketHelper->unSetOneListCalculation();
             }

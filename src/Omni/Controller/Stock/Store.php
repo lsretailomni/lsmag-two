@@ -10,41 +10,45 @@ namespace Ls\Omni\Controller\Stock;
 class Store extends \Magento\Framework\App\Action\Action
 {
     /**
-     * @var $_request
+     * @var \Magento\Framework\App\Request\Http\Proxy
      */
     protected $_request;
+
     /**
-     * @var $_scopeConfig
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     protected $_scopeConfig;
+
     /**
-     * @var $_session
+     * @var \Magento\Checkout\Model\Session\Proxy
      */
     protected $_session;
+
     /**
-     * @var $_stockHelper
+     * @var \Ls\Omni\Helper\StockHelper
      */
     protected $_stockHelper;
+
     /**
-     * @var $_resultJsonFactory
+     * @var \Magento\Framework\Controller\Result\JsonFactory
      */
     protected $_resultJsonFactory;
+
     /**
-     * Store constructor
+     * Store constructor.
      * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\JsonFactory
-     *         $resultJsonFactory
-     * @param \Magento\Framework\App\Request\Http $request
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\App\Request\Http\Proxy $request
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Checkout\Model\Session $session
+     * @param \Magento\Checkout\Model\Session\Proxy $session
      * @param \Ls\Omni\Helper\StockHelper $stockHelper
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-        \Magento\Framework\App\Request\Http $request,
+        \Magento\Framework\App\Request\Http\Proxy $request,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Checkout\Model\Session $session,
+        \Magento\Checkout\Model\Session\Proxy $session,
         \Ls\Omni\Helper\StockHelper $stockHelper
     ) {
         $this->_request = $request;
