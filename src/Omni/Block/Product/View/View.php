@@ -18,20 +18,19 @@ class View extends \Magento\Catalog\Block\Product\View
     protected $_lsr;
 
     /**
-     * View Constructor.
+     * View constructor.
      * @param \Ls\Core\Model\LSR $lsr
      * @param \Magento\Catalog\Block\Product\Context $context
      * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
      * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
      * @param \Magento\Framework\Stdlib\StringUtils $string
      * @param \Magento\Catalog\Helper\Product $productHelper
-     * @param \Magento\Catalog\Model\ProductTypes\ConfigInterface
-     *        $productTypeConfig
+     * @param \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig
      * @param \Magento\Framework\Locale\FormatInterface $localeFormat
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param  ProductRepositoryInterface $productRepository
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param ProductRepositoryInterface $productRepository
      * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
-     * @param array $data = []
+     * @param array $data
      */
     public function __construct(
         \Ls\Core\Model\LSR $lsr,
@@ -42,7 +41,7 @@ class View extends \Magento\Catalog\Block\Product\View
         \Magento\Catalog\Helper\Product $productHelper,
         \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig,
         \Magento\Framework\Locale\FormatInterface $localeFormat,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         ProductRepositoryInterface $productRepository,
         \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
         array $data = []

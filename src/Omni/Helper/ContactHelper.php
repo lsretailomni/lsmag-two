@@ -25,7 +25,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Customer\Model\CustomerFactory */
     protected $customerFactory;
 
-    /** @var \Magento\Customer\Model\Session */
+    /**
+     * @var \Magento\Customer\Model\Session\Proxy
+     */
     protected $customerSession;
 
     /** @var null */
@@ -43,7 +45,20 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Customer\Api\Data\GroupInterfaceFactory */
     protected $_groupInterfaceFactory;
 
-
+    /**
+     * ContactHelper constructor.
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Directory\Model\CountryFactory $countryFactory
+     * @param \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupColl
+     * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
+     * @param \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
+     */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
@@ -51,7 +66,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Directory\Model\CountryFactory $countryFactory,
         \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupColl,
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
