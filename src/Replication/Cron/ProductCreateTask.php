@@ -10,7 +10,6 @@ use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
 use Magento\CatalogInventory\Model\Stock\Item;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable\Attribute;
-
 use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
@@ -305,6 +304,7 @@ class ProductCreateTask
                 }
             }
             if (count($items->getItems()) == 0) {
+                $this->caterItemsRemoval();
                 $this->assignProductToCategory();
                 $this->cronStatus = true;
                 $fullReplicationVariantStatus = $this->_lsr->getStoreConfig(ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS);
@@ -521,6 +521,20 @@ class ProductCreateTask
         $variants = $this->replItemVariantRegistrationRepository->getList($criteria)->getItems();
         return $variants;
     }
+
+    /**
+     * Return all updated variants only
+     * @param type $filters
+     * @return type
+     */
+    private function getDeletedItemsOnly($filters)
+    {
+        /** @var \Magento\Framework\Api\SearchCriteria $criteria */
+        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters);
+        $items = $this->itemRepository->getList($criteria);
+        return $items;
+    }
+
     /**
      * Return all updated variants only
      * @param type $filters
@@ -654,6 +668,34 @@ class ProductCreateTask
             }
         }
     }
+
+    /**
+     * Cater Configurable Products Removal
+     */
+    protected function caterItemsRemoval(){
+        $filters = [
+            ['field' => 'nav_id', 'value' => true, 'condition_type' => 'notnull']
+        ];
+        $items = $this->getDeletedItemsOnly($filters);
+
+        if (count($items->getItems()) > 0) {
+            try {
+                foreach ($items->getItems() as $value) {
+                    $sku = $value->getNavId();
+                    $productData = $this->productRepository->get($sku);
+                    $productData->setStatus("0");
+                    $this->productRepository->save($productData);
+                    $value->setData('is_updated', '0');
+                    $value->setData('processed', '1');
+                    $value->setData('IsDeleted', '0');
+                    $this->itemRepository->save($value);
+                }
+            } catch (\Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
+        }
+    }
+
     /**
      * Cater SimpleProducts Removal
      */
