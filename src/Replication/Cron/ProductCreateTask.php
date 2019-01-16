@@ -25,7 +25,7 @@ use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
-use Magento\Framework\Api\Data\ImageContentInterface;
+use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
@@ -92,7 +92,7 @@ class ProductCreateTask
     /** @var ProductAttributeMediaGalleryEntryInterface */
     protected $attributeMediaGalleryEntry;
 
-    /** @var ImageContentInterface */
+    /** @var ImageContentFactory */
     protected $imageContent;
 
     /** @var SearchCriteriaBuilder */
@@ -132,7 +132,7 @@ class ProductCreateTask
      * @param ProductInterfaceFactory $productInterfaceFactory
      * @param ProductRepositoryInterface $productRepository
      * @param ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry
-     * @param ImageContentInterface $imageContent
+     * @param ImageContentFactory $imageContent
      * @param CollectionFactory $categoryCollectionFactory
      * @param CategoryLinkManagementInterface $categoryLinkManagement
      * @param ReplItemRepository $itemRepository
@@ -161,7 +161,7 @@ class ProductCreateTask
         ProductInterfaceFactory $productInterfaceFactory,
         ProductRepositoryInterface $productRepository,
         ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry,
-        ImageContentInterface $imageContent,
+        ImageContentFactory $imageContent,
         CollectionFactory $categoryCollectionFactory,
         CategoryLinkManagementInterface $categoryLinkManagement,
         ReplItemRepository $itemRepository,
@@ -304,7 +304,9 @@ class ProductCreateTask
                     $this->itemRepository->save($item);
                 }
             }
+            /** Process this only when all the replication of items is done. */
             if (count($items->getItems()) == 0) {
+
                 $this->assignProductToCategory();
                 $this->cronStatus = true;
                 $fullReplicationVariantStatus = $this->_lsr->getStoreConfig(ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS);
@@ -392,10 +394,13 @@ class ProductCreateTask
             $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
             if ($result) {
                 $i++;
-                /** @var \Magento\Framework\Api\Data\ImageContentInterface $imageContent */
-                $imageContent = $this->imageContent->setBase64EncodedData($result->getImage())
+                /** @var \Magento\Framework\Api\ImageContent $imageContent */
+                $imageContent = $this->imageContent->create()
+                    ->setBase64EncodedData($result->getImage())
                     ->setName($image->getImageId() . ".jpg")
                     ->setType($this->getMimeType($result->getImage()));
+
+                //$imageObject  = new Att
                 $this->attributeMediaGalleryEntry->setMediaType("image")
                     ->setLabel("Product Image")
                     ->setPosition($i)
@@ -407,7 +412,7 @@ class ProductCreateTask
                             "thumbnail"
                         ]
                     )->setContent($imageContent);
-                $galleryArray[] = $this->attributeMediaGalleryEntry;
+                $galleryArray[] = clone $this->attributeMediaGalleryEntry;
                 $image->setData('processed', '1');
                 $this->replImageLinkRepositoryInterface->save($image);
             }
@@ -685,9 +690,14 @@ class ProductCreateTask
                             $configurableAttributes[] = ["code"=>$code,'value'=>$codeValue];
                         }
                     }
+
                     $associatedSimpleProduct = $this->getConfAssoProductId($productData, $configurableAttributes);
-                    $associatedSimpleProduct->setStatus('0');
-                    $this->productRepository->save($associatedSimpleProduct);
+                    if(!is_null($associatedSimpleProduct)){
+                        $associatedSimpleProduct->setStatus('0');
+                        $this->productRepository->save($associatedSimpleProduct);
+
+                    }
+
                     $value->setData('is_updated', '0');
                     $value->setData('processed', '1');
                     $value->setData('IsDeleted', '0');
@@ -702,6 +712,7 @@ class ProductCreateTask
     public function getConfAssoProductId($product, $nameValueList)
     {
         //get configurable products attributes array with all values with lable (supper attribute which use for configuration)
+        $assPro = null;
         $optionsData = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
         $superAttrList = [];
         $superAttrOptions = [];
@@ -745,6 +756,8 @@ class ProductCreateTask
         $images = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
         if (count($images) > 0) {
             foreach ($images as $image) {
+                //TODO this needs to be optimized,
+
                 try {
                     if ($image->getTableName() == "Item" || $image->getTableName() == "Item Variant") {
                         /** @var ReplImageLink $image */
