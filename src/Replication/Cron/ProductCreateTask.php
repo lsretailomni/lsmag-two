@@ -684,7 +684,7 @@ class ProductCreateTask
                 foreach ($items->getItems() as $value) {
                     $sku = $value->getNavId();
                     $productData = $this->productRepository->get($sku);
-                    $productData->setStatus("0");
+                    $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED);
                     $this->productRepository->save($productData);
                     $value->setData('is_updated', '0');
                     $value->setData('processed', '1');
@@ -728,13 +728,12 @@ class ProductCreateTask
                         }
                     }
                     $associatedSimpleProduct = $this->getConfAssoProductId($productData, $configurableAttributes);
-                    $associatedSimpleProduct->setStatus('0');
+                    $associatedSimpleProduct->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED);
                     $this->productRepository->save($associatedSimpleProduct);
                     $value->setData('is_updated', '0');
                     $value->setData('processed', '1');
                     $value->setData('IsDeleted', '0');
                     $this->replItemVariantRegistrationRepository->save($value);
-
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
