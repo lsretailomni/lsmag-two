@@ -63,6 +63,7 @@ class CategoryCreateTask
      * @var \Magento\Catalog\Api\CategoryLinkRepositoryInterface
      */
     protected $categoryLinkRepositoryInterface;
+
     /**
      * CategoryCreateTask constructor.
      * @param CategoryFactory $categoryFactory
@@ -90,7 +91,8 @@ class CategoryCreateTask
         LSR $LSR,
         \Magento\Catalog\Api\CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
-    ) {
+    )
+    {
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
         $this->replHierarchyNodeRepository = $replHierarchyNodeRepository;
@@ -193,6 +195,7 @@ class CategoryCreateTask
                     if ($hierarchyNode->getIsUpdated() == 1) {
                         $categoryExistData->setData('name',
                             ($hierarchyNode->getDescription()) ? $hierarchyNode->getDescription() : $hierarchyNode->getNavId());
+                        $categoryExistData->setData('is_active', 1);
                         if ($hierarchyNode->getImageId()) {
                             $image = $this->getImage($hierarchyNode->getImageId());
                             $categoryExistData->setImage($image, $mediaAttribute, true, false);
@@ -257,6 +260,7 @@ class CategoryCreateTask
                     if ($hierarchyNodeSub->getIsUpdated() == 1) {
                         $subCategoryExistData->setData('name',
                             ($hierarchyNodeSub->getDescription()) ? $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId());
+                        $subCategoryExistData->setData('is_active', 1);
                         if ($hierarchyNodeSub->getImageId()) {
                             $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
                             $subCategoryExistData->setImage($imageSub, $mediaAttribute, true, false);
