@@ -118,7 +118,8 @@ class AttributesCreateTask
         // Process variants attributes which are going to be used for configurable product
         $this->processVariantAttributes();
         $this->replicationHelper->updateCronStatus($this->successCronAttribute, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-        $this->replicationHelper->updateCronStatus($this->successCronAttributeVariant, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
+        $this->replicationHelper->updateCronStatus($this->successCronAttributeVariant,
+            LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
     }
 
     public function executeManually()
@@ -199,6 +200,7 @@ class AttributesCreateTask
         }
         return count($replAttributes->getItems());
     }
+
     /**
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
@@ -220,7 +222,8 @@ class AttributesCreateTask
             $variant->setData('processed', '1');
             $variant->setData('is_updated', '0');
             $this->replExtendedVariantValueRepository->save($variant);
-            if (empty($variantCodes[$variant->getCode()]) || !in_array($variant->getValue(), $variantCodes[$variant->getCode()])) {
+            if (empty($variantCodes[$variant->getCode()]) || !in_array($variant->getValue(),
+                    $variantCodes[$variant->getCode()])) {
                 $variantCodes[$variant->getCode()][] = $variant->getValue();
             }
         }
@@ -310,8 +313,11 @@ class AttributesCreateTask
      * @param $attributeGroupId
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function createAttributeByObject(\Ls\Replication\Model\ReplAttribute $replAttribute, $attributeSetId, $attributeGroupId)
-    {
+    protected function createAttributeByObject(
+        \Ls\Replication\Model\ReplAttribute $replAttribute,
+        $attributeSetId,
+        $attributeGroupId
+    ) {
         $formattedCode = $this->replicationHelper->formatAttributeCode($replAttribute->getCode());
         /** @var \Magento\Eav\Api\Data\AttributeInterface $attribute */
         $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);

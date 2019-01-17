@@ -83,8 +83,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         Set $attributeSet,
         TypeListInterface $cacheTypeList,
         LSR $LSR
-    )
-    {
+    ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
@@ -133,8 +132,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $conditionType
             );
         }
-        if ($excludeDeleted)
+        if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
+        }
         if ($pagesize != -1) {
             $criteria->setPageSize($pagesize);
         }
@@ -166,8 +166,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
         $criteria->addFilter('LinkType', 0, 'eq');
         $criteria->addFilter('LinkField1', $item_id, 'eq');
-        if ($excludeDeleted)
+        if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
+        }
         $criteria->setPageSize($pagesize);
         return $criteria->create();
     }
@@ -202,8 +203,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
-        if ($excludeDeleted)
+        if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
+        }
         $criteria->setPageSize($pagesize);
         return $criteria->create();
     }
@@ -223,8 +225,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
-        if ($excludeDeleted)
+        if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
+        }
         $criteria->addFilter('is_updated', 1, 'eq');
         $criteria->setPageSize($pagesize);
         return $criteria->create();

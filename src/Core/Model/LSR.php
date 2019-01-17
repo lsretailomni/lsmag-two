@@ -228,8 +228,7 @@ class LSR
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         TypeListInterface $cacheTypeList
-    )
-    {
+    ) {
         $this->_scopeConfig = $scopeConfig;
         $this->cacheTypeList = $cacheTypeList;
     }
@@ -288,10 +287,11 @@ class LSR
      */
     public function getDefaultWebStore()
     {
-        //TODO support multiple web store.
-        return $this->getStoreConfig(LSR::SC_SERVICE_STORE, \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        return $this->getStoreConfig(
+            LSR::SC_SERVICE_STORE,
+            \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
     }
-
 
     /**
      * @return string
