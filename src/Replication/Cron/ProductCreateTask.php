@@ -180,8 +180,7 @@ class ProductCreateTask
         LoggerInterface $logger,
         LSR $LSR,
         ConfigurableProTypeModel $configurableProTypeModel
-    )
-    {
+    ) {
         $this->factory = $factory;
         $this->item = $item;
         $this->eavConfig = $eavConfig;
@@ -345,8 +344,7 @@ class ProductCreateTask
     protected function getProductAttributes(
         \Magento\Catalog\Api\Data\ProductInterface $product,
         \Ls\Replication\Model\ReplItem $item
-    )
-    {
+    ) {
         $criteria = $this->replicationHelper->buildCriteriaForProductAttributes($item->getNavId(), 100);
         /** @var \Ls\Replication\Model\ReplAttributeValueSearchResults $items */
         $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
@@ -674,7 +672,8 @@ class ProductCreateTask
     /**
      * Cater Configurable Products Removal
      */
-    protected function caterItemsRemoval(){
+    protected function caterItemsRemoval()
+    {
         $filters = [
             ['field' => 'nav_id', 'value' => true, 'condition_type' => 'notnull']
         ];
@@ -852,7 +851,7 @@ class ProductCreateTask
      */
     protected function updatePriceOnly()
     {
-        $filters = array();
+        $filters = [];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         /** @var \Ls\Replication\Model\ReplPriceSearchResults $replPrices */
         $replPrices = $this->replPriceRepository->getList($criteria);
@@ -922,6 +921,7 @@ class ProductCreateTask
                     if ($productImages) {
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
+                    $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
                     $productData->save();
                     $value->setData('processed', '1');
                     $value->setData('is_updated', '0');

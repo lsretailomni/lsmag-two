@@ -65,8 +65,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         LSR $LSR,
         array $meta = [],
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->request = $request;
         $this->moduleDirReader = $moduleDirReader;
@@ -107,8 +106,9 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 if ($cronName == 'repl_attributes') {
                     $cronAttributeCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
                     $cronAttributeVariantCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
-                    if ($cronAttributeCheck && $cronAttributeCheck)
+                    if ($cronAttributeCheck && $cronAttributeCheck) {
                         $fullReplicationStatus = 1;
+                    }
                 }
                 if ($cronName == 'repl_category') {
                     $fullReplicationStatus = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);

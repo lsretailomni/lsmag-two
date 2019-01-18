@@ -91,8 +91,7 @@ class CategoryCreateTask
         LSR $LSR,
         \Magento\Catalog\Api\CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
-    )
-    {
+    ) {
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
         $this->replHierarchyNodeRepository = $replHierarchyNodeRepository;
@@ -193,8 +192,10 @@ class CategoryCreateTask
                     $this->replHierarchyNodeRepository->save($hierarchyNode);
                 } else {
                     if ($hierarchyNode->getIsUpdated() == 1) {
-                        $categoryExistData->setData('name',
-                            ($hierarchyNode->getDescription()) ? $hierarchyNode->getDescription() : $hierarchyNode->getNavId());
+                        $categoryExistData->setData(
+                            'name',
+                            ($hierarchyNode->getDescription()) ? $hierarchyNode->getDescription() : $hierarchyNode->getNavId()
+                        );
                         $categoryExistData->setData('is_active', 1);
                         if ($hierarchyNode->getImageId()) {
                             $image = $this->getImage($hierarchyNode->getImageId());
@@ -258,8 +259,10 @@ class CategoryCreateTask
                     $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
                 } else {
                     if ($hierarchyNodeSub->getIsUpdated() == 1) {
-                        $subCategoryExistData->setData('name',
-                            ($hierarchyNodeSub->getDescription()) ? $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId());
+                        $subCategoryExistData->setData(
+                            'name',
+                            ($hierarchyNodeSub->getDescription()) ? $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId()
+                        );
                         $subCategoryExistData->setData('is_active', 1);
                         if ($hierarchyNodeSub->getImageId()) {
                             $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
@@ -305,7 +308,6 @@ class CategoryCreateTask
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
-
         }
         return count($replHierarchyNodeRepository->getItems());
     }
