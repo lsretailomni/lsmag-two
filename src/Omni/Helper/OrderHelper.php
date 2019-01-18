@@ -141,11 +141,11 @@ class OrderHelper extends AbstractHelper
             if ($line->getItemId() == $shipmentFeeId && $order->getShippingAmount() > 0) {
                 $this->setSpecialPropertiesForShipmentLine($line, $order);
             }
-            //if ($line->getPrice() > 0) {
+            if ($line->getPrice() > 0) {
                 // avoid getting those enttries which does not have any  amount.
                 $this->getOrderLineCollectionElement($line, $orderLinesArray);
                 $this->populateDiscountArrayForEachLine($line, $discountArray);
-            //}
+            }
         } elseif (is_array($lines)) {
             foreach ($lines as $line) {
                 /** @var Entity\BasketLineCalcResponse $line */
@@ -154,14 +154,16 @@ class OrderHelper extends AbstractHelper
                 }
                 // adjust price of shipping item if it is one
 
-                //if ($line->getPrice() > 0) {
-                    // avoid getting those enttries which does not have any  amount.
-                    $this->getOrderLineCollectionElement($line, $orderLinesArray);
-                    $this->populateDiscountArrayForEachLine($line, $discountArray);
-                //}
                 if ($line->getItemId() == $shipmentFeeId && $order->getShippingAmount() > 0) {
                     $this->setSpecialPropertiesForShipmentLine($line, $order);
                 }
+
+                if ($line->getPrice() > 0) {
+                    // avoid getting those enttries which does not have any  amount.
+                    $this->getOrderLineCollectionElement($line, $orderLinesArray);
+                    $this->populateDiscountArrayForEachLine($line, $discountArray);
+                }
+
             }
         }
     }
