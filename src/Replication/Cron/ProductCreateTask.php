@@ -24,7 +24,7 @@ use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
-use Magento\Framework\Api\Data\ImageContentInterface;
+use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
@@ -91,7 +91,7 @@ class ProductCreateTask
     /** @var ProductAttributeMediaGalleryEntryInterface */
     protected $attributeMediaGalleryEntry;
 
-    /** @var ImageContentInterface */
+    /** @var ImageContentFactory */
     protected $imageContent;
 
     /** @var SearchCriteriaBuilder */
@@ -131,7 +131,7 @@ class ProductCreateTask
      * @param ProductInterfaceFactory $productInterfaceFactory
      * @param ProductRepositoryInterface $productRepository
      * @param ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry
-     * @param ImageContentInterface $imageContent
+     * @param ImageContentFactory $imageContent
      * @param CollectionFactory $categoryCollectionFactory
      * @param CategoryLinkManagementInterface $categoryLinkManagement
      * @param ReplItemRepository $itemRepository
@@ -160,7 +160,7 @@ class ProductCreateTask
         ProductInterfaceFactory $productInterfaceFactory,
         ProductRepositoryInterface $productRepository,
         ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry,
-        ImageContentInterface $imageContent,
+        ImageContentFactory $imageContent,
         CollectionFactory $categoryCollectionFactory,
         CategoryLinkManagementInterface $categoryLinkManagement,
         ReplItemRepository $itemRepository,
@@ -390,8 +390,9 @@ class ProductCreateTask
             $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
             if ($result) {
                 $i++;
-                /** @var \Magento\Framework\Api\Data\ImageContentInterface $imageContent */
-                $imageContent = $this->imageContent->setBase64EncodedData($result->getImage())
+                /** @var \Magento\Framework\Api\ImageContent $imageContent */
+                $imageContent = $this->imageContent->create()
+                    ->setBase64EncodedData($result->getImage())
                     ->setName($image->getImageId() . ".jpg")
                     ->setType($this->getMimeType($result->getImage()));
                 $this->attributeMediaGalleryEntry->setMediaType("image")
@@ -727,8 +728,12 @@ class ProductCreateTask
                         }
                     }
                     $associatedSimpleProduct = $this->getConfAssoProductId($productData, $configurableAttributes);
-                    $associatedSimpleProduct->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED);
-                    $this->productRepository->save($associatedSimpleProduct);
+                    if(!is_null($associatedSimpleProduct)) {
+                        $associatedSimpleProduct->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED);
+                        $this->productRepository->save($associatedSimpleProduct);
+                    }
+
+
                     $value->setData('is_updated', '0');
                     $value->setData('processed', '1');
                     $value->setData('IsDeleted', '0');
@@ -742,6 +747,7 @@ class ProductCreateTask
     public function getConfAssoProductId($product, $nameValueList)
     {
         //get configurable products attributes array with all values with lable (supper attribute which use for configuration)
+        $assPro = null;
         $optionsData = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
         $superAttrList = [];
         $superAttrOptions = [];
@@ -785,6 +791,7 @@ class ProductCreateTask
         $images = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
         if (count($images) > 0) {
             foreach ($images as $image) {
+                //TODO this needs to be optimized,
                 try {
                     if ($image->getTableName() == "Item" || $image->getTableName() == "Item Variant") {
                         /** @var ReplImageLink $image */

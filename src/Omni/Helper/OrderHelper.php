@@ -153,19 +153,22 @@ class OrderHelper extends AbstractHelper
                     continue;
                 }
                 // adjust price of shipping item if it is one
+
                 if ($line->getItemId() == $shipmentFeeId && $order->getShippingAmount() > 0) {
                     $this->setSpecialPropertiesForShipmentLine($line, $order);
                 }
+
                 if ($line->getPrice() > 0) {
                     // avoid getting those enttries which does not have any  amount.
                     $this->getOrderLineCollectionElement($line, $orderLinesArray);
                     $this->populateDiscountArrayForEachLine($line, $discountArray);
                 }
+
             }
         }
     }
 
-    /**
+    /**omnipassword
      * @param $line
      * @param $order
      */
