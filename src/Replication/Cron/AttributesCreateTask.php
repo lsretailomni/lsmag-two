@@ -53,10 +53,14 @@ class AttributesCreateTask
      */
     protected $logger;
 
-    /** @var Success Cron Attribute */
+    /**
+     * @var bool
+     */
     protected $successCronAttribute = false;
 
-    /** @var Success Cron Attribute Variant */
+    /**
+     * @var bool
+     */
     protected $successCronAttributeVariant = false;
     /**
      * @var \Magento\Eav\Api\AttributeManagementInterface
@@ -105,7 +109,6 @@ class AttributesCreateTask
         $this->_lsr = $LSR;
         $this->attributeManagement = $attributeManagement;
     }
-
 
     /**
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -165,17 +168,16 @@ class AttributesCreateTask
             $replAttribute->setData('is_updated', '0');
             $this->replAttributeRepositoryInterface->save($replAttribute);
         }
-        $attributesRemovalCounter = $this->caterAttributesRemoval($defaultAttributeSetId);
+        $attributesRemovalCounter = $this->caterAttributesRemoval();
         if (count($replAttributes->getItems()) == 0 && $attributesRemovalCounter == 0) {
             $this->successCronAttribute = true;
         }
     }
 
     /**
-     * @param $defaultAttributeSetId
      * @return int
      */
-    public function caterAttributesRemoval($defaultAttributeSetId)
+    public function caterAttributesRemoval()
     {
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly([]);
         /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
@@ -184,13 +186,22 @@ class AttributesCreateTask
         foreach ($replAttributes->getItems() as $replAttribute) {
             try {
                 $formattedCode = $this->replicationHelper->formatAttributeCode($replAttribute->getCode());
-                $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                $attribute = $this->eavConfig->getAttribute(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
                 if ($attribute) {
                     $attributeId = $attribute->getId();
-                    $this->attributeManagement->unassign($defaultAttributeSetId, $attributeId);
+                    $entityTypeId = $this->eavConfig->getEntityType(
+                        \Magento\Catalog\Model\Product::ENTITY
+                    )->getEntityTypeId();
+                    $this->eavSetupFactory->create()->updateAttribute(
+                        $entityTypeId,
+                        $attributeId,
+                        'is_visible_on_front',
+                        0,
+                        null
+                    );
                 }
                 $replAttribute->setData('processed', '1');
-                $replAttribute->setData('isDeleted', '1');
+                $replAttribute->setData('IsDeleted', '0');
                 $replAttribute->setData('is_updated', '0');
                 $this->replAttributeRepositoryInterface->save($replAttribute);
             } catch (\Exception $e) {
@@ -229,7 +240,7 @@ class AttributesCreateTask
         }
         foreach ($variantCodes as $code => $value) {
             $formattedCode = $this->replicationHelper->formatAttributeCode($code);
-            $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+            $attribute = $this->eavConfig->getAttribute(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
             if (!$attribute || !$attribute->getAttributeId()) {
                 $attributeData = [
                     'attribute_code' => $formattedCode,
@@ -268,7 +279,7 @@ class AttributesCreateTask
                 try {
                     $this->_eavAttributeFactory->create()
                         ->addData($attributeData)
-                        ->setEntityTypeId($this->getEntityTypeId('catalog_product'))
+                        ->setEntityTypeId($this->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY))
                         ->save();
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
@@ -310,11 +321,15 @@ class AttributesCreateTask
      * @param $attributeGroupId
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function createAttributeByObject(\Ls\Replication\Model\ReplAttribute $replAttribute, $attributeSetId, $attributeGroupId)
+    protected function createAttributeByObject(
+        \Ls\Replication\Model\ReplAttribute $replAttribute,
+        $attributeSetId,
+        $attributeGroupId
+    )
     {
         $formattedCode = $this->replicationHelper->formatAttributeCode($replAttribute->getCode());
         /** @var \Magento\Eav\Api\Data\AttributeInterface $attribute */
-        $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+        $attribute = $this->eavConfig->getAttribute(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
         if (!$attribute || !$attribute->getAttributeId()) {
             $valueTypeArray = $this->getValueTypeArray();
             $attributeData = [
@@ -344,7 +359,7 @@ class AttributesCreateTask
             try {
                 $this->_eavAttributeFactory->create()
                     ->addData($attributeData)
-                    ->setEntityTypeId($this->getEntityTypeId('catalog_product'))
+                    ->setEntityTypeId($this->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY))
                     ->save();
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
@@ -357,7 +372,7 @@ class AttributesCreateTask
      * @param string
      * @return int
      */
-    protected function getEntityTypeId($type = 'catalog_product')
+    protected function getEntityTypeId($type = \Magento\Catalog\Model\Product::ENTITY)
     {
         return $this->_eavEntity->setType($type)->getTypeId();
     }
@@ -449,7 +464,7 @@ class AttributesCreateTask
         if ($attribute_code == '' || is_null($attribute_code)) {
             return $optimziedArray;
         }
-        $existingOptions = $this->eavConfig->getAttribute('catalog_product', $attribute_code)
+        $existingOptions = $this->eavConfig->getAttribute(\Magento\Catalog\Model\Product::ENTITY, $attribute_code)
             ->getSource()
             ->getAllOptions();
         if (!empty($existingOptions)) {
