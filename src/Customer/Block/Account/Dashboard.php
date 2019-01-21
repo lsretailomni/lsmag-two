@@ -4,10 +4,14 @@ namespace Ls\Customer\Block\Account;
 
 use Ls\Omni\Helper\LoyaltyHelper;
 
+/**
+ * Class Dashboard
+ * @package Ls\Customer\Block\Account
+ */
 class Dashboard extends \Magento\Framework\View\Element\Template
 {
 
-    /* @var \Ls\Omni\Helper\LoyaltyHelper */
+    /** @var LoyaltyHelper */
     private $loyaltyHelper;
 
     /**
@@ -17,7 +21,6 @@ class Dashboard extends \Magento\Framework\View\Element\Template
      * @param \Psr\Log\LoggerInterface $logger
      * @param array $data
      */
-
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         LoyaltyHelper $loyaltyHelper,
@@ -35,14 +38,11 @@ class Dashboard extends \Magento\Framework\View\Element\Template
 
     public function getMembersInfo()
     {
-
         $account = false;
-        /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $result */
         $result = $this->loyaltyHelper->getMemberInfo();
         if ($result) {
             $account = $result->getAccount();
         }
-
         return $account;
     }
 }

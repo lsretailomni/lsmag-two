@@ -5,6 +5,10 @@ namespace Ls\Customer\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Ls\Omni\Helper\ContactHelper;
 
+/**
+ * Class UsernameObserver
+ * @package Ls\Customer\Observer
+ */
 class UsernameObserver implements ObserverInterface
 {
     /** @var ContactHelper  */
@@ -16,22 +20,21 @@ class UsernameObserver implements ObserverInterface
     /** @var \Psr\Log\LoggerInterface  */
     protected $logger;
 
-    /** @var \Magento\Customer\Model\Session  */
+    /** @var \Magento\Customer\Model\Session\Proxy  */
     protected $customerSession;
 
     /** @var \Magento\Framework\App\Response\RedirectInterface  */
-    protected $_redirectInterface;
+    protected $redirectInterface;
 
     /** @var \Magento\Framework\App\ActionFlag  */
-    protected $_actionFlag;
-
+    protected $actionFlag;
 
     /**
      * UsernameObserver constructor.
      * @param ContactHelper $contactHelper
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Framework\App\Response\RedirectInterface $redirectInterface
      * @param \Magento\Framework\App\ActionFlag $actionFlag
      */
@@ -39,7 +42,7 @@ class UsernameObserver implements ObserverInterface
         ContactHelper $contactHelper,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
         \Magento\Framework\App\ActionFlag $actionFlag
     ) {
@@ -47,13 +50,14 @@ class UsernameObserver implements ObserverInterface
         $this->messageManager = $messageManager;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
-        $this->_redirectInterface = $redirectInterface;
-        $this->_actionFlag = $actionFlag;
+        $this->redirectInterface = $redirectInterface;
+        $this->actionFlag = $actionFlag;
     }
 
     /**
      * We need to check if username is already exist or not,
-     * Magento does not care about the lsr_username field of whatever it is, but since NAV rely on it, and it does not allow creation of duplicate lsr_username
+     * Magento does not care about the lsr_username field of whatever it is,
+     * but since NAV rely on it, and it does not allow creation of duplicate lsr_username
      * so we need to check if the username field which is coming with the form is already exist or not.
      * If exist redirect back to registration with error message that username already exist.
      * @param \Magento\Framework\Event\Observer $observer
@@ -70,11 +74,11 @@ class UsernameObserver implements ObserverInterface
                 $this->messageManager->addErrorMessage(
                     __('Username already exist, please try another one.')
                 );
-                $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
+                $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                $observer->getControllerAction()
+                    ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
                 $this->customerSession->setCustomerFormData($parameters);
             }
-
             return $this;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

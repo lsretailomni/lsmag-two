@@ -5,6 +5,10 @@ namespace Ls\Customer\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Ls\Omni\Helper\ContactHelper;
 
+/**
+ * Class AccountEditObserver
+ * @package Ls\Customer\Observer
+ */
 class AccountEditObserver implements ObserverInterface
 {
     /** @var ContactHelper $contactHelper */
@@ -16,14 +20,14 @@ class AccountEditObserver implements ObserverInterface
     /** @var \Psr\Log\LoggerInterface $logger */
     protected $logger;
 
-    /** @var \Magento\Customer\Model\Session $customerSession */
+    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
     protected $customerSession;
 
     /** @var \Magento\Framework\App\ActionFlag */
-    protected $_actionFlag;
+    protected $actionFlag;
 
     /** @var \Magento\Framework\App\Response\RedirectInterface */
-    protected $_redirectInterface;
+    protected $redirectInterface;
 
     /**
      * AccountEditObserver constructor.
@@ -39,7 +43,7 @@ class AccountEditObserver implements ObserverInterface
         ContactHelper $contactHelper,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
         \Magento\Framework\App\ActionFlag $actionFlag
     ) {
@@ -47,12 +51,13 @@ class AccountEditObserver implements ObserverInterface
         $this->messageManager = $messageManager;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
-        $this->_redirectInterface = $redirectInterface;
-        $this->_actionFlag = $actionFlag;
+        $this->redirectInterface = $redirectInterface;
+        $this->actionFlag = $actionFlag;
     }
 
     /**
-     * Customer Update Password through Omni End Point, currently we are only working on changing customer password and is not focusing on changing the customer account information.
+     * Customer Update Password through Omni End Point, currently we are only working on
+     * changing customer password and is not focusing on changing the customer account information.
      * @param \Magento\Framework\Event\Observer $observer
      * @return $this|void
      */
@@ -75,15 +80,17 @@ class AccountEditObserver implements ObserverInterface
                     $this->messageManager->addErrorMessage(
                         __('You have entered an invalid current password.')
                     );
-                    $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
+                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                    $observer->getControllerAction()->getResponse()
+                        ->setRedirect($this->redirectInterface->getRefererUrl());
                 }
             } else {
                 $this->messageManager->addErrorMessage(
                     __('Confirm password did not match.')
                 );
-                $this->_actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                $observer->getControllerAction()->getResponse()->setRedirect($this->_redirectInterface->getRefererUrl());
+                $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                $observer->getControllerAction()->getResponse()
+                    ->setRedirect($this->redirectInterface->getRefererUrl());
             }
         }
         return $this;

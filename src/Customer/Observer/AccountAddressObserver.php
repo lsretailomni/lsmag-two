@@ -5,6 +5,10 @@ namespace Ls\Customer\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Ls\Omni\Helper\ContactHelper;
 
+/**
+ * Class AccountAddressObserver
+ * @package Ls\Customer\Observer
+ */
 class AccountAddressObserver implements ObserverInterface
 {
     /** @var ContactHelper $contactHelper */
@@ -16,7 +20,7 @@ class AccountAddressObserver implements ObserverInterface
     /** @var \Psr\Log\LoggerInterface $logger */
     protected $logger;
 
-    /** @var \Magento\Customer\Model\Session $customerSession */
+    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
     protected $customerSession;
 
     /**
@@ -30,7 +34,7 @@ class AccountAddressObserver implements ObserverInterface
         ContactHelper $contactHelper,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session $customerSession
+        \Magento\Customer\Model\Session\Proxy $customerSession
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
@@ -47,8 +51,10 @@ class AccountAddressObserver implements ObserverInterface
         /** @var $customerAddress \Magento\Customer\Model\Address */
         $customerAddress = $observer->getCustomerAddress();
         // only process if the customer has any valid lsr_username
-        if ($customerAddress->getCustomer()->getData('lsr_username') and $customerAddress->getCustomer()->getData('lsr_token')) {
-            $defaultshipping = $customerAddress->getCustomer()->getDefaultShippingAddress();
+        if ($customerAddress->getCustomer()->getData('lsr_username')
+            && $customerAddress->getCustomer()->getData('lsr_token')
+        ) {
+            $defaultShipping = $customerAddress->getCustomer()->getDefaultShippingAddress();
             if ($customerAddress->getData('is_default_shipping')) {
                 $result = $this->contactHelper->UpdateAccount($customerAddress);
                 if ($result) {
@@ -58,8 +64,8 @@ class AccountAddressObserver implements ObserverInterface
                         __('Something went wrong, Please try again later.')
                     );
                 }
-            } elseif ($defaultshipping) {
-                if ($defaultshipping->getId() == $customerAddress->getId()) {
+            } elseif ($defaultShipping) {
+                if ($defaultShipping->getId() == $customerAddress->getId()) {
                     $result = $this->contactHelper->UpdateAccount($customerAddress);
                     if ($result) {
                         // Magento have already generated a success message so do nothing
@@ -71,7 +77,6 @@ class AccountAddressObserver implements ObserverInterface
                 }
             }
         }
-
         return $this;
     }
 }
