@@ -92,8 +92,7 @@ class DiscountCreateTask
         CollectionFactory $replDiscountCollection,
         ContactHelper $contactHelper,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->catalogRule = $catalogRule;
         $this->ruleFactory = $ruleFactory;
         $this->jobApply = $jobApply;
@@ -165,7 +164,7 @@ class DiscountCreateTask
                         }
                         $this->jobApply->applyAll();
                     }
-                    $criteriaTotal = $this->_replicationHelper->buildCriteriaForArray(array(), 100);
+                    $criteriaTotal = $this->_replicationHelper->buildCriteriaForArray([], 100);
                     /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
                     $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
                     if (count($replDiscountsTotal->getItems()) == 0) {

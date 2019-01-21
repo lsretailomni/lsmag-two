@@ -100,8 +100,7 @@ abstract class AbstractReplicationTask
         LoggerInterface $logger,
         LsHelper $helper,
         ReplicationHelper $repHelper
-    )
-    {
+    ) {
         $this->scope_config = $scope_config;
         $this->resource_config = $resouce_config;
         $this->logger = $logger;
@@ -209,14 +208,15 @@ abstract class AbstractReplicationTask
     protected function updateSuccessStatus()
     {
         $confPath = $this->getConfigPath();
-        if ($confPath == "ls_mag/replication/repl_attribute")
+        if ($confPath == "ls_mag/replication/repl_attribute") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-        elseif ($confPath == "ls_mag/replication/repl_extended_variant_value")
+        } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
-        elseif ($confPath == "ls_mag/replication/repl_hierarchy_node")
+        } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY);
-        elseif ($confPath == "ls_mag/replication/repl_item" || $confPath == "ls_mag/replication/repl_hierarchy_leaf")
+        } elseif ($confPath == "ls_mag/replication/repl_item" || $confPath == "ls_mag/replication/repl_hierarchy_leaf") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT);
+        }
     }
 
     protected function toObject(array $array, $object)
@@ -313,10 +313,11 @@ abstract class AbstractReplicationTask
             } else {
                 $sourceValue = $source->{$get_method}();
             }
-            if ($sourceValue == "")
+            if ($sourceValue == "") {
                 $criteria->addFilter($attribute, true, 'null');
-            else
+            } else {
                 $criteria->addFilter($attribute, $sourceValue);
+            }
         }
         $result = $this->getRepository()->getList($criteria->create());
         return $result->getItems();

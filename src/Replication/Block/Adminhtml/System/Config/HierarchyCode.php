@@ -15,7 +15,7 @@ class HierarchyCode implements ArrayInterface
     /** @var ReplicationHelper */
     protected $replicationHelper;
 
-    /** @var LSR  */
+    /** @var LSR */
     protected $_lsr;
 
     /**
@@ -30,13 +30,13 @@ class HierarchyCode implements ArrayInterface
     ) {
         $this->replHierarchyRepository = $replHierarchyRepository;
         $this->replicationHelper = $replicationHelper;
-        $this->_lsr                =    $lsr;
+        $this->_lsr = $lsr;
     }
 
     public function toOptionArray()
     {
 
-        $loger      =   $this->replicationHelper->getLogger();
+        $loger = $this->replicationHelper->getLogger();
         $hierarchyCodes = [];
         if ($this->_lsr->isLSR()) {
             /**
@@ -60,10 +60,10 @@ class HierarchyCode implements ArrayInterface
             } else {
                 // get data directly from Omni.
 
-                $hierarchyData     =   $this->replicationHelper->getHierarchyByStore();
+                $hierarchyData = $this->replicationHelper->getHierarchyByStore();
 
                 if ($hierarchyData) {
-                    $data       =   $hierarchyData->getHierarchies()->getReplHierarchy();
+                    $data = $hierarchyData->getHierarchies()->getReplHierarchy();
                     if (is_array($data)) {
                         //$loger->debug('Reached on the level of array ');
                         // to cover the array
@@ -78,7 +78,7 @@ class HierarchyCode implements ArrayInterface
                         }
                     } elseif ($data instanceof \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy) {
                         // for single instance
-                        $item   = $data;
+                        $item = $data;
 
                         $hierarchyCodes[] = [
                             'value' => $item->getId(),
