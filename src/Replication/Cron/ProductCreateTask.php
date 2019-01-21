@@ -408,7 +408,7 @@ class ProductCreateTask
                             "thumbnail"
                         ]
                     )->setContent($imageContent);
-                $galleryArray[] = $this->attributeMediaGalleryEntry;
+                $galleryArray[] = clone $this->attributeMediaGalleryEntry;
                 $image->setData('processed', '1');
                 $this->replImageLinkRepositoryInterface->save($image);
             }
