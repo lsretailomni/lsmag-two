@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
@@ -14,11 +15,15 @@ use Zend\Code\Generator\ParameterGenerator;
 use Magento\Config\Model\ResourceModel\Config;
 use Ls\Replication\Helper\ReplicationHelper;
 
+/**
+ * Class CronJobGenerator
+ * @package Ls\Replication\Code
+ */
 class CronJobGenerator extends AbstractGenerator
 {
 
     /** @var ReplicationOperation */
-    protected $operation;
+    public $operation;
 
     /**
      * CronJobGenerator constructor.
@@ -71,7 +76,11 @@ class CronJobGenerator extends AbstractGenerator
 
         $content = $this->file->generate();
 
-        $content = str_replace('extends Ls\\Replication\\Cron\\AbstractReplicationTask', 'extends AbstractReplicationTask', $content);
+        $content = str_replace(
+            'extends Ls\\Replication\\Cron\\AbstractReplicationTask',
+            'extends AbstractReplicationTask',
+            $content
+        );
 
         // removing slashes from the ScopeConfigInterface -- Same for all
         $content = str_replace('\ScopeConfigInterface $scope_config', 'ScopeConfigInterface $scope_config', $content);
@@ -109,7 +118,8 @@ class CronJobGenerator extends AbstractGenerator
         $constructor = new MethodGenerator();
         $constructor->setName('__construct')
             ->setVisibility(MethodGenerator::FLAG_PUBLIC);
-        $constructor->setParameters([new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
+        $constructor->setParameters([
+            new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
             new ParameterGenerator('resource_config', 'Config'),
             new ParameterGenerator('logger', 'LoggerInterface'),
             new ParameterGenerator('helper', 'LsHelper'),

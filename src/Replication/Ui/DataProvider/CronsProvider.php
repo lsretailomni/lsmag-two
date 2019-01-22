@@ -121,7 +121,9 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 }
                 $items[] = [
                     'id' => $counter,
-                    'fullreplicationstatus' => ($fullReplicationStatus == 1) ? '<div class="flag-green custom-grid-flag">Complete</div>' : '<div class="flag-yellow custom-grid-flag">Pending</div>',
+                    'fullreplicationstatus' => ($fullReplicationStatus == 1) ?
+                        '<div class="flag-green custom-grid-flag">Complete</div>' :
+                        '<div class="flag-yellow custom-grid-flag">Pending</div>',
                     'label' => $cronName,
                     'value' => $joblist['_attribute']['instance'],
                     'condition' => $condition
@@ -129,9 +131,10 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 $counter++;
             }
         }
-
+        // @codingStandardsIgnoreStart
         $pagesize = intval($this->request->getParam('paging')['pageSize']);
         $pageCurrent = intval($this->request->getParam('paging')['current']);
+        // @codingStandardsIgnoreEnd
         $pageoffset = ($pageCurrent - 1) * $pagesize;
 
         return [
@@ -149,7 +152,6 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         } catch (\Exception $e) {
         }
     }
-
 
     public function setLimit($offset, $size)
     {

@@ -13,13 +13,13 @@ use Psr\Log\LoggerInterface;
 class Attribute extends Action
 {
     /** @var LoggerInterface */
-    protected $logger;
+    public $logger;
 
     /** @var ResourceConnection */
-    protected $_resource;
+    public $resource;
 
     /** @var array */
-    protected $_publicActions = ['attribute'];
+    public $publicActions = ['attribute'];
 
     /**
      * Order Deletion constructor.
@@ -31,7 +31,7 @@ class Attribute extends Action
         LoggerInterface $logger,
         Context $context
     ) {
-        $this->_resource = $resource;
+        $this->resource = $resource;
         $this->logger = $logger;
         parent::__construct($context);
     }
@@ -43,7 +43,8 @@ class Attribute extends Action
      */
     public function execute()
     {
-        $connection = $this->_resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        // @codingStandardsIgnoreStart
+        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         $tableName = $connection->getTableName('eav_attribute');
         $query = "DELETE FROM " . $tableName ." WHERE attribute_code LIKE 'ls_%'";
@@ -53,6 +54,7 @@ class Attribute extends Action
             $this->logger->debug($e->getMessage());
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
+        // @codingStandardsIgnoreEnd
         $this->messageManager->addSuccessMessage(__('LS Attributes deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }

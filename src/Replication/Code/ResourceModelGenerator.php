@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
@@ -9,6 +10,10 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use ReflectionClass;
 use Zend\Code\Generator\MethodGenerator;
 
+/**
+ * Class ResourceModelGenerator
+ * @package Ls\Replication\Code
+ */
 class ResourceModelGenerator extends AbstractGenerator
 {
     /** @var string */

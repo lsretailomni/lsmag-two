@@ -4,6 +4,10 @@ namespace Ls\Replication\Block\Adminhtml\System\Config;
 
 use Magento\Framework\Option\ArrayInterface;
 
+/**
+ * Class InventoryPerStore
+ * @package Ls\Replication\Block\Adminhtml\System\Config
+ */
 class InventoryPerStore implements ArrayInterface
 
     /**

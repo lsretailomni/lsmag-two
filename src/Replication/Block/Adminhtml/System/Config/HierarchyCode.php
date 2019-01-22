@@ -7,6 +7,10 @@ use Ls\Replication\Model\ReplHierarchyRepository;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Core\Model\LSR;
 
+/**
+ * Class HierarchyCode
+ * @package Ls\Replication\Block\Adminhtml\System\Config
+ */
 class HierarchyCode implements ArrayInterface
 {
     /** @var ReplHierarchyRepository */

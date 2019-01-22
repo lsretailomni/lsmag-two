@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
-  <router id="admin">
-    <route id="ls_repl" frontName="ls_repl">
-      <module name="Ls_Replication"/>
-    </route>
-  </router>
+    <router id="admin">
+        <route id="ls_repl" frontName="ls_repl">
+            <module name="Ls_Replication"/>
+        </route>
+    </router>
 </config>

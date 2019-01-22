@@ -6,6 +6,10 @@
  */
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
+/**
+ * Class ItemVariantRegistration
+ * @package Ls\Replication\Controller\Adminhtml\Grids
+ */
 class ItemVariantRegistration extends \Magento\Backend\App\Action
 {
     /**

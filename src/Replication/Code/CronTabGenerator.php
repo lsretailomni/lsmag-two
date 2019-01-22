@@ -1,10 +1,15 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
 use Ls\Core\Code\AbstractGenerator;
 use Ls\Omni\Service;
 
+/**
+ * Class CronTabGenerator
+ * @package Ls\Replication\Code
+ */
 class CronTabGenerator
 {
 

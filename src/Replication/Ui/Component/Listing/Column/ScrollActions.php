@@ -8,16 +8,17 @@ use Magento\Ui\Component\Listing\Columns\Column;
 use Ls\Replication\Block\Adminhtml\Grid\Renderer\Action\UrlBuilder;
 use Magento\Framework\UrlInterface;
 
+/**
+ * Class ScrollActions
+ * @package Ls\Replication\Ui\Component\Listing\Column
+ */
 class ScrollActions extends Column
 {
-    /** Url path */
-    const URL_PATH_Execute = 'ls_repl/cron/grid';
-
     /** @var UrlBuilder */
-    protected $actionUrlBuilder;
+    public $actionUrlBuilder;
 
     /** @var UrlInterface */
-    protected $urlBuilder;
+    public $urlBuilder;
 
     /**
      * @param ContextInterface $context
@@ -50,7 +51,8 @@ class ScrollActions extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 $fieldName = $this->getData('name');
-                $item[$fieldName] = "<button class='ls_scrollbutton_forward'><span>".__('Forward')."</span></button><button class='ls_scrollbutton_back'><span>".__('Back')."</span></button>";
+                $item[$fieldName] = "<button class='ls_scrollbutton_forward'><span>".__('Forward').
+                    "</span></button><button class='ls_scrollbutton_back'><span>".__('Back')."</span></button>";
             }
         }
         return $dataSource;

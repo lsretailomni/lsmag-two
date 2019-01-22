@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
@@ -9,6 +10,10 @@ use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\ClassReflection;
 
+/**
+ * Class InterfaceGenerator
+ * @package Ls\Replication\Code
+ */
 class InterfaceGenerator extends ClassGenerator
 {
     const OBJECT_TYPE = 'interface';

@@ -2,9 +2,12 @@
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
+/**
+ * Class ColorStatus
+ * @package Ls\Replication\Ui\Component\Listing\Column
+ */
 class ColorStatus extends \Magento\Ui\Component\Listing\Columns\Column
 {
-
 
     /**
      * @param \Magento\Framework\View\Element\UiComponent\ContextInterface $context

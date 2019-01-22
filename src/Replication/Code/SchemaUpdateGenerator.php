@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
@@ -18,6 +19,10 @@ use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Reflection\ClassReflection;
 
+/**
+ * Class SchemaUpdateGenerator
+ * @package Ls\Replication\Code
+ */
 class SchemaUpdateGenerator extends AbstractGenerator
 {
     /** @var ClassReflection */

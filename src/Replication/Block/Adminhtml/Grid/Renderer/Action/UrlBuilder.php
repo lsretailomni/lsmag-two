@@ -2,13 +2,17 @@
 
 namespace Ls\Replication\Block\Adminhtml\Grid\Renderer\Action;
 
+/**
+ * Class UrlBuilder
+ * @package Ls\Replication\Block\Adminhtml\Grid\Renderer\Action
+ */
 class UrlBuilder
 {
     /**
      * @var \Magento\Framework\UrlInterface
      */
 
-    protected $frontendUrlBuilder;
+    public $frontendUrlBuilder;
     /**
      * @param \Magento\Framework\UrlInterface $frontendUrlBuilder
      */

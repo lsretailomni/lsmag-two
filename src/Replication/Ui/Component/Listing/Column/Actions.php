@@ -8,16 +8,20 @@ use Magento\Ui\Component\Listing\Columns\Column;
 use Ls\Replication\Block\Adminhtml\Grid\Renderer\Action\UrlBuilder;
 use Magento\Framework\UrlInterface;
 
+/**
+ * Class Actions
+ * @package Ls\Replication\Ui\Component\Listing\Column
+ */
 class Actions extends Column
 {
     /** Url path */
-    const URL_PATH_Execute = 'ls_repl/cron/grid';
+    const URL_PATH_EXECUTE = 'ls_repl/cron/grid';
 
     /** @var UrlBuilder */
-    protected $actionUrlBuilder;
+    public $actionUrlBuilder;
 
     /** @var UrlInterface */
-    protected $urlBuilder;
+    public $urlBuilder;
 
     /**
      * @param ContextInterface $context
@@ -52,7 +56,7 @@ class Actions extends Column
                 $name = $this->getData('name');
                 if (isset($item['value'])) {
                     $item[$name]['execute'] = [
-                        'href' => $this->urlBuilder->getUrl(self::URL_PATH_Execute, ['joburl' => $item['value'],'jobname' =>$item['label']]),
+                        'href' => $this->urlBuilder->getUrl(self::URL_PATH_EXECUTE, ['joburl' => $item['value'],'jobname' =>$item['label']]),
                         'label' => __('Execute'),
                         'confirm' => [
                             'title' => __('Want to process ${ $.$data.label } Cron?'),

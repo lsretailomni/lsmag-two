@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Replication\Setup;
 
 use Ls\Replication\Setup\UpgradeSchema\AbstractUpgradeSchema;
@@ -10,7 +11,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Zend\Code\Reflection\ClassReflection;
 
 /**
- * @codeCoverageIgnore
+ * Class InstallSchema
+ * @package Ls\Replication\Setup
  */
 class InstallSchema implements InstallSchemaInterface
 {
@@ -20,7 +22,7 @@ class InstallSchema implements InstallSchemaInterface
     private $context;
 
     /**
-     * @param SchemaSetupInterface   $setup
+     * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
      */
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
@@ -30,7 +32,7 @@ class InstallSchema implements InstallSchemaInterface
         $this->context = $context;
 
         $this->installer->startSetup();
-
+        // @codingStandardsIgnoreStart
         $fs = new Filesystem();
         // /var/www/magento2/app/code/Ls/Replication/Setup/InstallSchema.php:
         $anchor = new ClassReflection(AbstractUpgradeSchema::class);
@@ -42,7 +44,6 @@ class InstallSchema implements InstallSchemaInterface
         $folder = dirname($filename);
 
         $upgrades = glob($folder . DIRECTORY_SEPARATOR . '*');
-
 
         foreach ($upgrades as $upgrade_file) {
             if (strpos($upgrade_file, 'AbstractUpgradeSchema') === false) {
@@ -57,7 +58,7 @@ class InstallSchema implements InstallSchemaInterface
                 }
             }
         }
-
+        // @codingStandardsIgnoreEnd
         $this->installer->endSetup();
     }
 }

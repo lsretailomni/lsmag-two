@@ -2,17 +2,21 @@
 
 namespace LS\Replication\Model\Message;
 
+/**
+ * Class Invalid
+ * @package LS\Replication\Model\Message
+ */
 class Invalid implements \Magento\Framework\Notification\MessageInterface
 {
     /**
      * @var \Magento\Framework\UrlInterface
      */
-    protected $urlBuilder;
+    public $urlBuilder;
 
     /**
      * @var \Ls\Core\Model\LSR
      */
-    protected $lsr;
+    public $lsr;
 
     /**
      * @param \Magento\Framework\UrlInterface $urlBuilder

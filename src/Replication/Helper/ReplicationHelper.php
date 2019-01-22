@@ -105,8 +105,13 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $filtervalue
      * @return \Magento\Framework\Api\SearchCriteria
      */
-    public function buildCriteriaForNewItems($filtername = '', $filtervalue = '', $conditionType = 'eq', $pagesize = 100, $excludeDeleted = true)
-    {
+    public function buildCriteriaForNewItems(
+        $filtername = '',
+        $filtervalue = '',
+        $conditionType = 'eq',
+        $pagesize = 100,
+        $excludeDeleted = true
+    ) {
         // creating search criteria for two fields
         // processed = 0 which means not yet processed
         $attr_processed = $this->filterBuilder->setField('processed')
@@ -210,7 +215,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $criteria->create();
     }
 
-
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
      * @param array $filters
@@ -232,7 +236,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $criteria->setPageSize($pagesize);
         return $criteria->create();
     }
-
 
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only

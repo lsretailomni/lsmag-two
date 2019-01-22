@@ -1,27 +1,69 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
     <menu>
-        <add id="Ls_Replication::ls_retail" title="LS Retail" module="Ls_Replication" sortOrder="20" resource="Ls_Replication::ls_retail"/>
-        <add id="Ls_Replication::ls_retail_conf_group" title="Configuration" translate="title" module="Ls_Replication" sortOrder="10" parent="Ls_Replication::ls_retail" resource="Ls_Replication::ls_retail_conf_group"/>
-        <add id="Ls_Replication::ls_retail_conf_group_configuration" title="LS Retail Configuration" translate="title" module="Ls_Replication" sortOrder="10" resource="Ls_Replication::ls_retail_conf_group_configuration" parent="Ls_Replication::ls_retail_conf_group" action="adminhtml/system_config/edit/section/ls_mag" />
-        <add id="Ls_Replication::ls_retail_cron_group" title="Manual Crons" translate="title" module="Ls_Replication" sortOrder="20" parent="Ls_Replication::ls_retail" resource="Ls_Replication::ls_retail_cron_group"/>
-        <add id="Ls_Replication::ls_retail_cron_group_crons_grid" title="Crons Listing" translate="title" module="Ls_Replication" sortOrder="10" resource="Ls_Replication::ls_retail_cron_group_crons_grid" parent="Ls_Replication::ls_retail_cron_group" action="ls_repl/cron/grid" />
-        <add id="Ls_Replication::replication_grid_group" title="Replication Status" translate="title" module="Ls_Replication" sortOrder="30" parent="Ls_Replication::ls_retail" resource="Ls_Replication::replication_grid_group"/>
-        <add id="Ls_Replication::item_grid" title="Item" translate="title" module="Ls_Replication" sortOrder="1" resource="Ls_Replication::item_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/item" />
-        <add id="Ls_Replication::item_price_grid" title="Price" translate="title" module="Ls_Replication" sortOrder="1" resource="Ls_Replication::item_price_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/price" />
-        <add id="Ls_Replication::barcode_grid" title="Barcode" translate="title"  module="Ls_Replication" sortOrder="2" resource="Ls_Replication::barcode_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/barcode" />
-        <add id="Ls_Replication::extendedvariantvalue_grid" title="Extended Variant Value" translate="title" module="Ls_Replication" sortOrder="2" resource="Ls_Replication::extendedvariantvalue_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/extendedvariantvalue" />
-        <add id="Ls_Replication::imagelink_grid" title="Image Link" translate="title" module="Ls_Replication" sortOrder="4" resource="Ls_Replication::imagelink_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/imagelink" />
-        <add id="Ls_Replication::itemvariantregistration_grid" title="Item Variant Registration" translate="title" module="Ls_Replication" sortOrder="5" resource="Ls_Replication::itemvariantregistration_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/itemvariantregistration" />
-        <add id="Ls_Replication::hierarchy_grid" title="Hierarchy" translate="title" module="Ls_Replication" sortOrder="6" resource="Ls_Replication::hierarchy_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/hierarchy" />
-        <add id="Ls_Replication::hierarchynode_grid" title="Hierarchy Node" translate="title" module="Ls_Replication" sortOrder="7" resource="Ls_Replication::hierarchynode_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/hierarchynode" />
-        <add id="Ls_Replication::hierarchyleaf_grid" title="Hierarchy Leaf" translate="title" module="Ls_Replication" sortOrder="8" resource="Ls_Replication::hierarchyleaf_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/hierarchyleaf" />
-        <add id="Ls_Replication::attribute_grid" title="Attribute" translate="title" module="Ls_Replication" sortOrder="9" resource="Ls_Replication::attribute_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/attribute" />
-        <add id="Ls_Replication::attributevalue_grid" title="Attribute Value" translate="title" module="Ls_Replication" sortOrder="10" resource="Ls_Replication::attributevalue_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/attributevalue" />
-        <add id="Ls_Replication::attributeoptionvalue_grid" title="Attribute Option Value" translate="title" module="Ls_Replication" sortOrder="11" resource="Ls_Replication::attributeoptionvalue_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/attributeoptionvalue" />
-        <add id="Ls_Replication::discount_grid" title="Discount" translate="title" module="Ls_Replication" sortOrder="12" resource="Ls_Replication::discount_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/discount" />
-        <add id="Ls_Replication::itemcategory_grid" title="Item Category" translate="title" module="Ls_Replication" sortOrder="13" resource="Ls_Replication::itemcategory_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/itemcategory" />
-        <add id="Ls_Replication::productgroup_grid" title="Product Group" translate="title" module="Ls_Replication" sortOrder="14" resource="Ls_Replication::productgroup_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/productgroup" />
-        <add id="Ls_Replication::store_grid" title="Store" translate="title" module="Ls_Replication" sortOrder="15" resource="Ls_Replication::store_grid" parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/store" />
+        <add id="Ls_Replication::ls_retail" title="LS Retail" module="Ls_Replication" sortOrder="20"
+             resource="Ls_Replication::ls_retail"/>
+        <add id="Ls_Replication::ls_retail_conf_group" title="Configuration" translate="title" module="Ls_Replication"
+             sortOrder="10" parent="Ls_Replication::ls_retail" resource="Ls_Replication::ls_retail_conf_group"/>
+        <add id="Ls_Replication::ls_retail_conf_group_configuration" title="LS Retail Configuration" translate="title"
+             module="Ls_Replication" sortOrder="10" resource="Ls_Replication::ls_retail_conf_group_configuration"
+             parent="Ls_Replication::ls_retail_conf_group" action="adminhtml/system_config/edit/section/ls_mag"/>
+        <add id="Ls_Replication::ls_retail_cron_group" title="Manual Crons" translate="title" module="Ls_Replication"
+             sortOrder="20" parent="Ls_Replication::ls_retail" resource="Ls_Replication::ls_retail_cron_group"/>
+        <add id="Ls_Replication::ls_retail_cron_group_crons_grid" title="Crons Listing" translate="title"
+             module="Ls_Replication" sortOrder="10" resource="Ls_Replication::ls_retail_cron_group_crons_grid"
+             parent="Ls_Replication::ls_retail_cron_group" action="ls_repl/cron/grid"/>
+        <add id="Ls_Replication::replication_grid_group" title="Replication Status" translate="title"
+             module="Ls_Replication" sortOrder="30" parent="Ls_Replication::ls_retail"
+             resource="Ls_Replication::replication_grid_group"/>
+        <add id="Ls_Replication::item_grid" title="Item" translate="title" module="Ls_Replication" sortOrder="1"
+             resource="Ls_Replication::item_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/item"/>
+        <add id="Ls_Replication::item_price_grid" title="Price" translate="title" module="Ls_Replication" sortOrder="1"
+             resource="Ls_Replication::item_price_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/price"/>
+        <add id="Ls_Replication::barcode_grid" title="Barcode" translate="title" module="Ls_Replication" sortOrder="2"
+             resource="Ls_Replication::barcode_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/barcode"/>
+        <add id="Ls_Replication::extendedvariantvalue_grid" title="Extended Variant Value" translate="title"
+             module="Ls_Replication" sortOrder="2" resource="Ls_Replication::extendedvariantvalue_grid"
+             parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/extendedvariantvalue"/>
+        <add id="Ls_Replication::imagelink_grid" title="Image Link" translate="title" module="Ls_Replication"
+             sortOrder="4" resource="Ls_Replication::imagelink_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/imagelink"/>
+        <add id="Ls_Replication::itemvariantregistration_grid" title="Item Variant Registration" translate="title"
+             module="Ls_Replication" sortOrder="5" resource="Ls_Replication::itemvariantregistration_grid"
+             parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/itemvariantregistration"/>
+        <add id="Ls_Replication::hierarchy_grid" title="Hierarchy" translate="title" module="Ls_Replication"
+             sortOrder="6" resource="Ls_Replication::hierarchy_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/hierarchy"/>
+        <add id="Ls_Replication::hierarchynode_grid" title="Hierarchy Node" translate="title" module="Ls_Replication"
+             sortOrder="7" resource="Ls_Replication::hierarchynode_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/hierarchynode"/>
+        <add id="Ls_Replication::hierarchyleaf_grid" title="Hierarchy Leaf" translate="title" module="Ls_Replication"
+             sortOrder="8" resource="Ls_Replication::hierarchyleaf_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/hierarchyleaf"/>
+        <add id="Ls_Replication::attribute_grid" title="Attribute" translate="title" module="Ls_Replication"
+             sortOrder="9" resource="Ls_Replication::attribute_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/attribute"/>
+        <add id="Ls_Replication::attributevalue_grid" title="Attribute Value" translate="title" module="Ls_Replication"
+             sortOrder="10" resource="Ls_Replication::attributevalue_grid"
+             parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/attributevalue"/>
+        <add id="Ls_Replication::attributeoptionvalue_grid" title="Attribute Option Value" translate="title"
+             module="Ls_Replication" sortOrder="11" resource="Ls_Replication::attributeoptionvalue_grid"
+             parent="Ls_Replication::replication_grid_group" action="ls_repl/grids/attributeoptionvalue"/>
+        <add id="Ls_Replication::discount_grid" title="Discount" translate="title" module="Ls_Replication"
+             sortOrder="12" resource="Ls_Replication::discount_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/discount"/>
+        <add id="Ls_Replication::itemcategory_grid" title="Item Category" translate="title" module="Ls_Replication"
+             sortOrder="13" resource="Ls_Replication::itemcategory_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/itemcategory"/>
+        <add id="Ls_Replication::productgroup_grid" title="Product Group" translate="title" module="Ls_Replication"
+             sortOrder="14" resource="Ls_Replication::productgroup_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/productgroup"/>
+        <add id="Ls_Replication::store_grid" title="Store" translate="title" module="Ls_Replication" sortOrder="15"
+             resource="Ls_Replication::store_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/store"/>
     </menu>
 </config>
