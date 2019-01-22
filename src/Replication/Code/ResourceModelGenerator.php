@@ -57,15 +57,11 @@ class ResourceModelGenerator extends AbstractGenerator
         $contructor_method->setName('_construct');
         $idx_column = $this->operation->getTableName() . '_id';
         $contructor_method->setBody("\$this->_init( 'ls_replication_{$this->operation->getTableName()}', '$idx_column' );");
-
         $this->class->setNamespaceName(self::$namespace);
         $this->class->addUse(AbstractDb::class);
-
         $this->class->setName($this->getName());
         $this->class->setExtendedClass(AbstractDb::class);
-
         $this->class->addMethodFromGenerator($contructor_method);
-
         $content = $this->file->generate();
         $content = str_replace(
             'extends Magento\\Framework\\Model\\ResourceModel\\Db\\AbstractDb',

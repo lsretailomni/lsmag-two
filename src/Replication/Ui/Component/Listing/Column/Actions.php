@@ -43,6 +43,7 @@ class Actions extends Column
         $this->actionUrlBuilder = $actionUrlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
+
     /**
      * Prepare Data Source
      *
@@ -56,7 +57,10 @@ class Actions extends Column
                 $name = $this->getData('name');
                 if (isset($item['value'])) {
                     $item[$name]['execute'] = [
-                        'href' => $this->urlBuilder->getUrl(self::URL_PATH_EXECUTE, ['joburl' => $item['value'],'jobname' =>$item['label']]),
+                        'href' => $this->urlBuilder->getUrl(
+                            self::URL_PATH_EXECUTE,
+                            ['joburl' => $item['value'], 'jobname' => $item['label']]
+                        ),
                         'label' => __('Execute'),
                         'confirm' => [
                             'title' => __('Want to process ${ $.$data.label } Cron?'),

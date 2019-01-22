@@ -41,7 +41,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
     private $parser;
 
     /** @var LSR */
-    protected $_lsr;
+    protected $lsr;
 
     /**
      * CronsProvider constructor.
@@ -70,7 +70,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         $this->request = $request;
         $this->moduleDirReader = $moduleDirReader;
         $this->parser = $parser;
-        $this->_lsr = $LSR;
+        $this->lsr = $LSR;
     }
 
     /**
@@ -85,14 +85,14 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         $items = [];
         $counter = 1;
         $cronsGroupListing = array_reverse($cronsGroupListing);
-        $this->_lsr->flushConfig();
+        $this->lsr->flushConfig();
         foreach ($cronsGroupListing as $cronlist) {
             $path = '';
             if ($cronlist['_attribute']['id'] == "replication") {
                 $condition = __("Flat to Magento");
             } elseif ($cronlist['_attribute']['id'] == "flat_replication") {
                 $condition = __("Omni to Flat");
-                $path = $this->_lsr::CRON_STATUS_PATH_PREFIX;
+                $path = $this->lsr::CRON_STATUS_PATH_PREFIX;
             } else {
                 $condition = __("");
             }
@@ -101,23 +101,23 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 $cronName = $joblist['_attribute']['name'];
                 if ($path != '') {
                     $pathNew = $path . $cronName;
-                    $fullReplicationStatus = $this->_lsr->getStoreConfig($pathNew);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig($pathNew);
                 }
                 if ($cronName == 'repl_attributes') {
-                    $cronAttributeCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-                    $cronAttributeVariantCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
+                    $cronAttributeCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
                     if ($cronAttributeCheck && $cronAttributeCheck) {
                         $fullReplicationStatus = 1;
                     }
                 }
                 if ($cronName == 'repl_category') {
-                    $fullReplicationStatus = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
                 }
                 if ($cronName == 'repl_products') {
-                    $fullReplicationStatus = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
                 }
                 if ($cronName == 'repl_discount_create') {
-                    $fullReplicationStatus = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DISCOUNT);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DISCOUNT);
                 }
                 $items[] = [
                     'id' => $counter,

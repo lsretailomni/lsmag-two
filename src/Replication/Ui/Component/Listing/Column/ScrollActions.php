@@ -40,6 +40,7 @@ class ScrollActions extends Column
         $this->actionUrlBuilder = $actionUrlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
+
     /**
      * Prepare Data Source
      *
@@ -51,8 +52,8 @@ class ScrollActions extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 $fieldName = $this->getData('name');
-                $item[$fieldName] = "<button class='ls_scrollbutton_forward'><span>".__('Forward').
-                    "</span></button><button class='ls_scrollbutton_back'><span>".__('Back')."</span></button>";
+                $item[$fieldName] = "<button class='ls_scrollbutton_forward'><span>" . __('Forward') .
+                    "</span></button><button class='ls_scrollbutton_back'><span>" . __('Back') . "</span></button>";
             }
         }
         return $dataSource;

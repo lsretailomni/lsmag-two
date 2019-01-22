@@ -12,7 +12,8 @@ use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 
 /**
- * @codeCoverageIgnore
+ * Class InstallData
+ * @package Ls\Customer\Setup
  */
 class InstallData implements InstallDataInterface
 {
@@ -20,7 +21,7 @@ class InstallData implements InstallDataInterface
     /**
      * @var CustomerSetupFactory
      */
-    protected $customerSetupFactory;
+    public $customerSetupFactory;
 
     /**
      * @var AttributeSetFactory
@@ -45,7 +46,6 @@ class InstallData implements InstallDataInterface
         $this->attributeSetFactory = $attributeSetFactory;
         $this->eavSetupFactory = $eavSetupFactory;
     }
-
 
     /**
      * {@inheritdoc}
@@ -73,7 +73,6 @@ class InstallData implements InstallDataInterface
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
      */
-
     protected function createAllCustomerAttributes(
         ModuleDataSetupInterface $setup,
         ModuleContextInterface $context
@@ -148,7 +147,6 @@ class InstallData implements InstallDataInterface
         ]);
     }
 
-
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
@@ -175,7 +173,6 @@ class InstallData implements InstallDataInterface
             ]
         );
     }
-
 
     /**
      * @param ModuleDataSetupInterface $setup

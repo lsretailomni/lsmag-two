@@ -5,22 +5,26 @@ use Ls\Core\Model\LSR;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Notification\NotifierInterface as NotifierPool;
 
+/**
+ * Class AdminNotificationTask
+ * @package Ls\Core\Cron
+ */
 class AdminNotificationTask
 {
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    public $logger;
 
     /**
      * @var LSR
      */
-    protected $lsr;
+    public $lsr;
 
     /**
      * @var NotifierPool
      */
-    protected $notifierPool;
+    public $notifierPool;
 
     /**
      * AdminNotificationTask constructor.

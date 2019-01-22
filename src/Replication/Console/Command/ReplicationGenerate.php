@@ -97,6 +97,20 @@ class ReplicationGenerate extends OmniCommand
             ->addOption(self::SYSTEM, 's', InputOption::VALUE_OPTIONAL, 'display XML system configurations', false);
     }
 
+    /**
+     * Executes the current command.
+     *
+     * This method is not abstract because you can use this class
+     * as a concrete class. In this case, instead of defining the
+     * execute() method, you set the code to execute by passing
+     * a Closure to the setCode() method.
+     *
+     * @return int|null null or 0 if everything went fine, or an error code
+     *
+     * @throws LogicException When this abstract method is not implemented
+     *
+     * @see setCode()
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         /**

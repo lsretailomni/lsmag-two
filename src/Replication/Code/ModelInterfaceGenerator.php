@@ -100,7 +100,7 @@ class ModelInterfaceGenerator extends AbstractGenerator
 
         $content = $this->file->generate();
 
-        $content = preg_replace('/\s+{\s+}+/', ";\n", $content);
+        $content = preg_replace('/\s+{\s+}+/', ";", $content);
 
         return $content;
     }

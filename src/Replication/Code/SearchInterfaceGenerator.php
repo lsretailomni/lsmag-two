@@ -53,7 +53,7 @@ class SearchInterfaceGenerator extends AbstractGenerator
 
 CODE;
 
-        $content = preg_replace('/\s+{\s+}+/', ";\n", $content);
+        $content = preg_replace('/\s+{\s+}+/', ";", $content);
         $content = str_replace(
             $interface_name,
             "$interface_name extends SearchResultsInterface",

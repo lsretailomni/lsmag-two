@@ -94,6 +94,7 @@ class Offers extends \Magento\Framework\View\Element\Template
 
             if ($result instanceof \Ls\Omni\Client\Ecommerce\Entity\ImageView) {
                 $offerpath = $this->getMediaPathtoStore();
+                // @codingStandardsIgnoreStart
                 if (!is_dir($offerpath)) {
                     $this->file->mkdir($offerpath, 0775);
                 }
@@ -108,6 +109,7 @@ class Offers extends \Magento\Framework\View\Element\Template
                     fwrite($image_file, base64_decode($base64));
                     fclose($image_file);
                 }
+                // @codingStandardsIgnoreEnd
                 $images[] = "{$output_file}";
             }
             return $images;

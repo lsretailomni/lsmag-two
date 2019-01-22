@@ -62,7 +62,7 @@ class Grid extends Action
             if ($jobUrl != "") {
                 // @codingStandardsIgnoreStart
                 $cron = $this->objectManager->create($jobUrl);
-                // @codingStandardsIgnoreLine
+                // @codingStandardsIgnoreEnd
                 $info = $cron->executeManually();
                 if (!empty($info)) {
                     $executeMoreData = '';

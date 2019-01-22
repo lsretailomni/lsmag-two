@@ -7,9 +7,15 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Cache\TypeListInterface;
 use SoapClient;
 
+/**
+ * Class LSR
+ * @package Ls\Core\Model
+ */
 class LSR
 {
-    const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to Stores > Configuration > LS Retail > General Configuration.';
+    const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
+Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
+Go to Stores > Configuration > LS Retail > General Configuration.';
     const APP_NAME = 'ls-mag';
     const APP_VERSION = '1.0.0';
     const CRON_STATUS_PATH_PREFIX = 'ls_mag/replication/status_';
@@ -79,13 +85,12 @@ class LSR
     //check for Discount
     const SC_SUCCESS_CRON_DISCOUNT = 'ls_mag/replication/success_repl_discount';
 
-
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
     const SC_ENHANCEMENT_STORE_UUID_PREFIX = 'ls_mag/cron_enhancement/requests_per_run';
     const SC_ENHANCEMENT_INVENTORY_ACTIVE_FROM = 'ls_mag/cron_enhancement/inventory_active_from';
     const SC_ENHANCEMENT_INVENTORY_ACTIVE_TO = 'ls_mag/cron_enhancement/inventory_active_to';
-    const SC_ENHANCEMENT_STORE_INVENTORY_CALCUlATION = 'ls_mag/cron_enhancement/invetory_per_store';
+    const SC_ENHANCEMENT_STORE_INVENTORY_CALCULATION = 'ls_mag/cron_enhancement/invetory_per_store';
     const SC_ENHANCEMENT_STORE_UPDATE_INVENTORY_WHEN_ZERO = 'ls_mag/cron_enhancement/if_zero';
     // LOYALTY
     const SC_LOYALTY_SHOW_OFFERS = 'ls_mag/loyalty/enable_loyalty_offers';
@@ -209,13 +214,13 @@ class LSR
     //Store Hours Format
     const STORE_HOURS_TIME_FORMAT = 'h:i A';
 
-    protected $_scopeConfig;
+    public $scopeConfig;
 
-    /** @var chache type list */
-    protected $cacheTypeList;
+    /** @var TypeListInterface */
+    public $cacheTypeList;
 
-    // END POINTS
-    protected $endpoints = [
+    /** @var array End Points */
+    public $endpoints = [
         ServiceType::ECOMMERCE => 'ecommerceservice.svc',
         ServiceType::LOYALTY => 'loyservice.svc',
         ServiceType::GENERAL => 'service.svc',
@@ -229,7 +234,7 @@ class LSR
         ScopeConfigInterface $scopeConfig,
         TypeListInterface $cacheTypeList
     ) {
-        $this->_scopeConfig = $scopeConfig;
+        $this->scopeConfig = $scopeConfig;
         $this->cacheTypeList = $cacheTypeList;
     }
 
@@ -241,9 +246,9 @@ class LSR
     public function getStoreConfig($path, $notDefault = false)
     {
         if ($notDefault) {
-            $sc = $this->_scopeConfig->getValue($path, $notDefault);
+            $sc = $this->scopeConfig->getValue($path, $notDefault);
         } else {
-            $sc = $this->_scopeConfig->getValue(
+            $sc = $this->scopeConfig->getValue(
                 $path,
                 \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             );
@@ -312,7 +317,7 @@ class LSR
      */
     public function getGoogleMapsApiKey()
     {
-        $configValue = $this->_scopeConfig->getValue(
+        $configValue = $this->scopeConfig->getValue(
             LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
             \Magento\Framework\App\Config\ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
@@ -326,7 +331,7 @@ class LSR
      */
     public function getDefaultLatitude()
     {
-        $configValue = $this->_scopeConfig->getValue(
+        $configValue = $this->scopeConfig->getValue(
             LSR::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
             \Magento\Framework\App\Config\ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
@@ -340,7 +345,7 @@ class LSR
      */
     public function getDefaultLongitude()
     {
-        $configValue = $this->_scopeConfig->getValue(
+        $configValue = $this->scopeConfig->getValue(
             LSR::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
             \Magento\Framework\App\Config\ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
@@ -354,7 +359,7 @@ class LSR
      */
     public function getDefaultZoom()
     {
-        $configValue = $this->_scopeConfig->getValue(
+        $configValue = $this->scopeConfig->getValue(
             LSR::SC_CLICKCOLLECT_DEFAULT_ZOOM,
             \Magento\Framework\App\Config\ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT

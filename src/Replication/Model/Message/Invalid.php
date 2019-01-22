@@ -52,7 +52,9 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
      */
     public function getIdentity()
     {
+        //@codingStandardsIgnoreStart
         return md5('LSR_INVALID');
+        //@codingStandardsIgnoreEnd
     }
 
     /**

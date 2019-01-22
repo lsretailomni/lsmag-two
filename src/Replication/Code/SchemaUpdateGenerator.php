@@ -69,8 +69,10 @@ class SchemaUpdateGenerator extends AbstractGenerator
 
         $upgrade_method = new MethodGenerator();
         $upgrade_method->setName("upgrade");
-        $upgrade_method->setParameters([new ParameterGenerator('setup', SchemaSetupInterface::class, null),
-            new ParameterGenerator('context', ModuleContextInterface::class, null)]);
+        $upgrade_method->setParameters([
+            new ParameterGenerator('setup', SchemaSetupInterface::class, null),
+            new ParameterGenerator('context', ModuleContextInterface::class, null)
+        ]);
         $upgrade_method->setBody($this->getMethodBody());
 
         $this->class->setNamespaceName($this->reflected_upgrade->getNamespaceName() . '\\UpgradeSchema');
@@ -206,9 +208,9 @@ CODE;
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
         /** @var  \Magento\Framework\Module\Dir\Reader $dirReader */
-        $dirReader  =   $objectManager->get('\Magento\Framework\Module\Dir\Reader');
+        $dirReader = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
 
-        $basepath       =    $dirReader->getModuleDir('', 'Ls_Replication');
+        $basepath = $dirReader->getModuleDir('', 'Ls_Replication');
         $upgrade_path = $basepath . "/Setup/UpgradeSchema";
 
         $entity_name = ucfirst($this->reflected_entity->getShortName());
