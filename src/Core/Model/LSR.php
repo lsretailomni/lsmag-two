@@ -277,7 +277,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         } else {
             try {
                 $url = join('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
+                // @codingStandardsIgnoreStart
                 $soapClient = new SoapClient($url . '?singlewsdl');
+                // @codingStandardsIgnoreEnd
                 if ($soapClient) {
                     return true;
                 }

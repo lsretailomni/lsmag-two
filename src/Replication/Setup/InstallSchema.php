@@ -34,22 +34,14 @@ class InstallSchema implements InstallSchemaInterface
         $this->installer->startSetup();
         // @codingStandardsIgnoreStart
         $fs = new Filesystem();
-        // /var/www/magento2/app/code/Ls/Replication/Setup/InstallSchema.php:
         $anchor = new ClassReflection(AbstractUpgradeSchema::class);
-        // "Ls\Replication\Setup\UpgradeSchema"
         $base_namespace = $anchor->getNamespaceName();
-        //  "/var/www/magento2/app/code/Ls/Replication/Setup/UpgradeSchema/AbstractUpgradeSchema.php"
         $filename = $anchor->getFileName();
-        // FOLDER DETAILS "/var/www/magento2/app/code/Ls/Replication/Setup/UpgradeSchema"
         $folder = dirname($filename);
-
         $upgrades = glob($folder . DIRECTORY_SEPARATOR . '*');
-
         foreach ($upgrades as $upgrade_file) {
             if (strpos($upgrade_file, 'AbstractUpgradeSchema') === false) {
                 if ($fs->exists($upgrade_file)) {
-                    // $upgradefile = /var/www/magento2/app/code/Ls/Replication/Setup/UpgradeSchema/$filename
-
                     $upgrade_class = str_replace('.php', '', $fs->makePathRelative($upgrade_file, $folder));
                     $upgrade_class_fqn = $base_namespace . '\\' . substr($upgrade_class, 0, -1);
                     /** @var AbstractUpgradeSchema $upgrade */
