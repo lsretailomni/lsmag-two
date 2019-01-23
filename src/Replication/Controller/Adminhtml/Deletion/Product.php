@@ -20,14 +20,12 @@ class Product extends Action
 
     /** @var array List of all the Catalog Product tables */
     public $catalog_products_tables = [
-        "catalog_product_attribute_cl",
         "catalog_product_bundle_option",
         "catalog_product_bundle_option_value",
         "catalog_product_bundle_price_index",
         "catalog_product_bundle_selection",
         "catalog_product_bundle_selection_price",
         "catalog_product_bundle_stock_index",
-        "catalog_product_category_cl",
         "catalog_product_entity",
         "catalog_product_entity_datetime",
         "catalog_product_entity_decimal",
@@ -85,7 +83,6 @@ class Product extends Action
         "catalog_product_option_type_price",
         "catalog_product_option_type_title",
         "catalog_product_option_type_value",
-        "catalog_product_price_cl",
         "catalog_product_relation",
         "catalog_product_super_attribute",
         "catalog_product_super_attribute_label",
