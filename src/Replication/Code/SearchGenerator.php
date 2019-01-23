@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
@@ -7,6 +8,10 @@ use Ls\Omni\Service\Soap\ReplicationOperation;
 use Ls\Replication\Model\Anchor;
 use Magento\Framework\Api\SearchResults;
 
+/**
+ * Class SearchGenerator
+ * @package Ls\Replication\Code
+ */
 class SearchGenerator extends AbstractGenerator
 {
     /** @var string */

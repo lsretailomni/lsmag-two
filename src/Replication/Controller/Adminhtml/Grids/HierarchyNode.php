@@ -6,6 +6,10 @@
  */
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
+/**
+ * Class HierarchyNode
+ * @package Ls\Replication\Controller\Adminhtml\Grids
+ */
 class HierarchyNode extends \Magento\Backend\App\Action
 {
     /**

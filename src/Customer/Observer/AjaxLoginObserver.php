@@ -18,28 +18,28 @@ use Magento\Customer\Api\CustomerMetadataInterface;
 class AjaxLoginObserver implements ObserverInterface
 {
 
-    /** @var ContactHelper  */
+    /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var \Magento\Framework\Api\FilterBuilder  */
+    /** @var \Magento\Framework\Api\FilterBuilder */
     protected $filterBuilder;
 
-    /** @var \Magento\Framework\Api\SearchCriteriaBuilder  */
+    /** @var \Magento\Framework\Api\SearchCriteriaBuilder */
     protected $searchCriteriaBuilder;
 
-    /** @var \Magento\Customer\Api\CustomerRepositoryInterface   */
+    /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     protected $customerRepository;
 
-    /** @var \Magento\Framework\Message\ManagerInterface  */
+    /** @var \Magento\Framework\Message\ManagerInterface */
     protected $messageManager;
 
-    /** @var \Magento\Framework\Registry  */
+    /** @var \Magento\Framework\Registry */
     protected $registry;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var \Psr\Log\LoggerInterface */
     protected $logger;
 
-    /** @var \Magento\Customer\Model\Session  */
+    /** @var \Magento\Customer\Model\Session\Proxy */
     protected $customerSession;
 
     /** @var \Magento\Framework\App\ActionFlag */
@@ -54,15 +54,16 @@ class AjaxLoginObserver implements ObserverInterface
     /** @var \Magento\Customer\Model\CustomerFactory */
     protected $customerFactory;
 
-    /** @var \Magento\Checkout\Model\Session  */
+    /** @var \Magento\Checkout\Model\Session\Proxy */
     protected $checkoutSession;
 
-    /** @var  \Ls\Omni\Helper\BasketHelper  */
+    /** @var  \Ls\Omni\Helper\BasketHelper */
     protected $basketHelper;
 
     /** @var \Magento\Customer\Model\ResourceModel\Customer */
     protected $customerResourceModel;
 
+    /** @var \Magento\Framework\Controller\Result\JsonFactory */
     protected $resultJsonFactory;
 
     /**
@@ -74,14 +75,14 @@ class AjaxLoginObserver implements ObserverInterface
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magento\Framework\Registry $registry
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Framework\Json\Helper\Data $jsonhelper
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Framework\App\ActionFlag $actionFlag
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
-     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Ls\Omni\Helper\BasketHelper $basketHelper
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
      */
@@ -93,14 +94,14 @@ class AjaxLoginObserver implements ObserverInterface
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Registry $registry,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\Json\Helper\Data $jsonhelper,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Ls\Omni\Helper\BasketHelper $basketHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
     ) {
@@ -118,8 +119,8 @@ class AjaxLoginObserver implements ObserverInterface
         $this->actionFlag = $actionFlag;
         $this->storeManage = $storeManager;
         $this->customerFactory = $customerFactory;
-        $this->checkoutSession  =   $checkoutSession;
-        $this->basketHelper     =   $basketHelper;
+        $this->checkoutSession = $checkoutSession;
+        $this->basketHelper = $basketHelper;
         $this->customerResourceModel = $customerResourceModel;
     }
 
@@ -150,7 +151,7 @@ class AjaxLoginObserver implements ObserverInterface
                 // CASE FOR EMAIL LOGIN := TRANSLATION TO USERNAME
                 if ($is_email) {
                     $search = $this->contactHelper->search($username);
-                    $found = !is_null($search)
+                    $found = $search !== null
                         && ($search instanceof Entity\MemberContact)
                         && !empty($search->getEmail());
                     if (!$found) {
@@ -168,11 +169,13 @@ class AjaxLoginObserver implements ObserverInterface
                 }
 
                 if ($is_email) {
-                    $filters = [$this->filterBuilder
-                        ->setField('email')
-                        ->setConditionType('eq')
-                        ->setValue($email)
-                        ->create()];
+                    $filters = [
+                        $this->filterBuilder
+                            ->setField('email')
+                            ->setConditionType('eq')
+                            ->setValue($email)
+                            ->create()
+                    ];
                     $this->searchCriteriaBuilder->addFilters($filters);
                     $searchCriteria = $this->searchCriteriaBuilder->create();
                     $searchResults = $this->customerRepository->getList($searchCriteria);
@@ -218,11 +221,13 @@ class AjaxLoginObserver implements ObserverInterface
                     'message' => __('Omni login successful.')
                 ];
                 if ($result instanceof Entity\MemberContact) {
-                    $filters = [$this->filterBuilder
-                        ->setField('email')
-                        ->setConditionType('eq')
-                        ->setValue($result->getEmail())
-                        ->create()];
+                    $filters = [
+                        $this->filterBuilder
+                            ->setField('email')
+                            ->setConditionType('eq')
+                            ->setValue($result->getEmail())
+                            ->create()
+                    ];
                     $this->searchCriteriaBuilder->addFilters($filters);
                     $searchCriteria = $this->searchCriteriaBuilder->create();
                     $searchResults = $this->customerRepository->getList($searchCriteria);
@@ -242,13 +247,13 @@ class AjaxLoginObserver implements ObserverInterface
                         ->setWebsiteId($websiteId)
                         ->loadByEmail($customer_email);
                     $card = $result->getCard();
-                    if (is_null($customer->getData('lsr_id'))) {
+                    if ($customer->getData('lsr_id') === null) {
                         $customer->setData('lsr_id', $result->getId());
                     }
                     if (!$is_email && empty($customer->getData('lsr_username'))) {
                         $customer->setData('lsr_username', $username);
                     }
-                    if (is_null($customer->getData('lsr_cardid'))) {
+                    if ($customer->getData('lsr_cardid') === null) {
                         $customer->setData('lsr_cardid', $card->getId());
                     }
                     $token = $result->getLoggedOnToDevice()->getSecurityToken();
@@ -269,7 +274,7 @@ class AjaxLoginObserver implements ObserverInterface
                     $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $result->getId());
 
                     $card = $result->getCard();
-                    if ($card instanceof Entity\Card && !is_null($card->getId())) {
+                    if ($card instanceof Entity\Card && $card->getId() !== null) {
                         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $card->getId());
                     }
 
@@ -280,10 +285,10 @@ class AjaxLoginObserver implements ObserverInterface
 
                     $quote = $this->checkoutSession->getQuote();
 
-
-                    if (!is_array($oneListBasket) and $oneListBasket instanceof Entity\OneList and $oneListBasket->getId() != '') {
-                        // If customer has previously one list created then get that and sync the current information with that.
-
+                    if (!is_array($oneListBasket) &&
+                        $oneListBasket instanceof Entity\OneList && $oneListBasket->getId() != '') {
+                        // If customer has previously one list created then get
+                        // that and sync the current information with that
                         // store the onelist returned from Omni into Magento session.
                         $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $oneListBasket);
 
@@ -293,35 +298,26 @@ class AjaxLoginObserver implements ObserverInterface
                         // update the onelist to Omni.
                         $this->basketHelper->update($oneList);
                     } elseif ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                        // if customer already has onelist created then update the list to get the information with user.
-
-
+                        // if customer already has onelist created then update
+                        // the list to get the information with user.
                         $oneListBasket = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
 
                         //Update onelist in Omni with user data.
-
                         $oneListBasket->setCardId($card->getId())
                             ->setContactId($result->getId())
                             ->setDescription('OneList Magento')
                             ->setIsDefaultList(true)
                             ->setListType(Entity\Enum\ListType::BASKET);
-
                         // update items from quote to basket.
                         $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
                         // update the onelist to Omni.
-
                         $this->basketHelper->update($oneList);
-                    } elseif (count($quote->getAllItems()) > 0) {
+                    } elseif (!empty($quote->getAllItems())) {
                         // get the onelist or if not exist then create new one with empty data of customer.
-
                         $oneList = $this->basketHelper->get();
-
                         $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-
                         $this->basketHelper->update($oneList);
                     }
-
-
                     $this->customerSession->regenerateId();
                     $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
                     return $resultJson->setData($response);

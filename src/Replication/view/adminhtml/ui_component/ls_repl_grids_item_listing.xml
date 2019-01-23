@@ -12,7 +12,9 @@
     <dataSource name="ls_repl_grids_item_data_source">
         <!--The data source-->
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+            <argument name="class" xsi:type="string">
+                Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
+            </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_item_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">repl_item_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
@@ -47,7 +49,9 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsData" xsi:type="array">
-                        <item name="provider" xsi:type="string">ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns</item>
+                        <item name="provider" xsi:type="string">
+                            ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns
+                        </item>
                     </item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
@@ -58,25 +62,37 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">ls_repl_grids_item_listing.ls_repl_grids_item_listing.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            ls_repl_grids_item_listing.ls_repl_grids_item_listing.listing_top.bookmarks
+                        </item>
                         <item name="namespace" xsi:type="string">current.paging</item>
                     </item>
-                    <item name="selectProvider" xsi:type="string">ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns.ids</item>
+                    <item name="selectProvider" xsi:type="string">
+                        ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns.ids
+                    </item>
                 </item>
             </argument>
         </paging>
         <filters name="listing_filters">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="columnsProvider" xsi:type="string">ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns</item>
+                    <item name="columnsProvider" xsi:type="string">
+                        ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns
+                    </item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">ls_repl_grids_attribute_listing.ls_repl_grids_attribute_listing.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            ls_repl_grids_attribute_listing.ls_repl_grids_attribute_listing.listing_top.bookmarks
+                        </item>
                         <item name="namespace" xsi:type="string">current.filters</item>
                     </item>
                     <item name="childDefaults" xsi:type="array">
-                        <item name="provider" xsi:type="string">ls_repl_grids_attribute_listing.ls_repl_grids_attribute_listing.listing_top.listing_filters</item>
+                        <item name="provider" xsi:type="string">
+                            ls_repl_grids_attribute_listing.ls_repl_grids_attribute_listing.listing_top.listing_filters
+                        </item>
                         <item name="imports" xsi:type="array">
-                            <item name="visible" xsi:type="string">ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns.${ $.index }:visible</item>
+                            <item name="visible" xsi:type="string">
+                                ls_repl_grids_item_listing.ls_repl_grids_item_listing.ls_repl_grids_item_columns.${ $.index }:visible
+                            </item>
                         </item>
                     </item>
                 </item>
@@ -123,7 +139,7 @@
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="filter" xsi:type="string">text</item>
                     <item name="sortOrder" xsi:type="number">4</item>
-                        <item name="label" xsi:type="string" translate="true">Flat to Magento</item>
+                    <item name="label" xsi:type="string" translate="true">Flat to Magento</item>
                 </item>
             </argument>
         </column>

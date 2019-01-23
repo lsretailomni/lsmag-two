@@ -16,15 +16,15 @@ $c = 0;
             <ul class=" coupons-grid">
                 <?php foreach ($offers as $offer) : ?>
                     <?php
-                    $c ++;
+                    $c++;
                     $images = $this->fetchImages($offer);
                     ?>
-                    <li class="item <?php echo( $total == $c ? ' last' : '' ) ?> col-sm-4 col-md-4 col-lg-4">
+                    <li class="item <?php echo($total == $c ? ' last' : '') ?> col-sm-4 col-md-4 col-lg-4">
                         <div class="item-img-cont">
-                            <?php if (count($images) && !empty($images[ 0 ])) : ?>
+                            <?php if (count($images) && !empty($images[0])) : ?>
                                 <img id="coupon-collection-image-<?php echo $c ?>"
-                                     src="<?php  echo $this->getMediaPathToLoad().
-                                         $images[ 0 ]; ?>" alt="<?php echo $offer->getDescription() ?> ">
+                                     src="<?php echo $this->getMediaPathToLoad() .
+                                         $images[0]; ?>" alt="<?php echo $offer->getDescription() ?> ">
                             <?php endif; ?>
                         </div>
                         <div class="coupon-info">

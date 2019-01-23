@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <!--Declare data source, columns list, button...-->
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
@@ -40,9 +41,13 @@
         <paging name="listing_paging">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="selectProvider" xsi:type="string">ls_repl_cron_grid_form.ls_repl_cron_grid_form.ls_repl_cron_grid_form_columns.ids</item>
+                    <item name="selectProvider" xsi:type="string">
+                        ls_repl_cron_grid_form.ls_repl_cron_grid_form.ls_repl_cron_grid_form_columns.ids
+                    </item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">ls_repl_cron_grid_form.ls_repl_cron_grid_form.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            ls_repl_cron_grid_form.ls_repl_cron_grid_form.listing_top.bookmarks
+                        </item>
                         <item name="namespace" xsi:type="string">current.paging</item>
                     </item>
                 </item>
@@ -56,7 +61,9 @@
             <item name="config" xsi:type="array">
                 <item name="childDefaults" xsi:type="array">
                     <item name="fieldAction" xsi:type="array">
-                        <item name="provider" xsi:type="string">ls_repl_cron_grid_form.ls_repl_cron_grid_form.ls_repl_cron_grid_form_columns.actions</item>
+                        <item name="provider" xsi:type="string">
+                            ls_repl_cron_grid_form.ls_repl_cron_grid_form.ls_repl_cron_grid_form_columns.actions
+                        </item>
                         <item name="target" xsi:type="string">applyAction</item>
                         <item name="params" xsi:type="array">
                             <item name="0" xsi:type="string">edit</item>
@@ -64,9 +71,13 @@
                         </item>
                     </item>
                     <item name="controlVisibility" xsi:type="boolean">true</item>
-                    <item name="appendTo" xsi:type="string">ls_repl_cron_grid_form.ls_repl_cron_grid_form.listing_top.columns_controls</item>
+                    <item name="appendTo" xsi:type="string">
+                        ls_repl_cron_grid_form.ls_repl_cron_grid_form.listing_top.columns_controls
+                    </item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">ls_repl_cron_grid_form.ls_repl_cron_grid_form_grid.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            ls_repl_cron_grid_form.ls_repl_cron_grid_form_grid.listing_top.bookmarks
+                        </item>
                         <item name="root" xsi:type="string">columns.${ $.index }</item>
                         <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
                     </item>
@@ -138,15 +149,15 @@
                 </item>
             </argument>
         </column>
-            <actionsColumn name="actions" class="Ls\Replication\Ui\Component\Listing\Column\Actions">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="sortable" xsi:type="boolean">false</item>
-                        <item name="label" xsi:type="string" translate="true">Action</item>
-                        <item name="sortOrder" xsi:type="number">6</item>
-                        <item name="fieldAction" xsi:type="boolean">false</item>
-                    </item>
-                </argument>
-            </actionsColumn>
+        <actionsColumn name="actions" class="Ls\Replication\Ui\Component\Listing\Column\Actions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Action</item>
+                    <item name="sortOrder" xsi:type="number">6</item>
+                    <item name="fieldAction" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </actionsColumn>
     </columns>
 </listing>

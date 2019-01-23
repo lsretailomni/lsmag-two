@@ -3,7 +3,8 @@
 ?>
 <div class="actions actions-validate-vat">
     <div id="validation_result" class="message-validation hidden"></div>
-    <button onclick="if(confirm('Are you sure to delete this data?')) window.location.href= document.getElementById('<?= $block->escapeHtmlAttr($block->getHtmlId()) ?>').getAttribute('data-url'); else return false;" class="action-validate-vat primary" type="button"
+    <button onclick="if(confirm('Are you sure to delete this data?')) window.location.href= document.getElementById('<?= $block->escapeHtmlAttr($block->getHtmlId()) ?>').getAttribute('data-url'); else return false;"
+            class="action-validate-vat primary" type="button"
             data-url="<?= $block->escapeHtmlAttr($block->getButtonUrl()) ?>"
             id="<?= $block->escapeHtmlAttr($block->getHtmlId()) ?>">
         <span><?= $block->escapeHtml($block->getButtonLabel()) ?></span>

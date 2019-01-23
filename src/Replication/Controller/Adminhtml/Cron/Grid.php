@@ -13,35 +13,45 @@ use Magento\Backend\App\Action;
 use \Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\ObjectManagerInterface;
 
+/**
+ * Class Grid
+ * @package Ls\Replication\Controller\Adminhtml\Cron
+ */
 class Grid extends Action
 {
     /** Url path */
-    const URL_PATH_Execute = 'ls_repl/cron/grid';
+    const URL_PATH_EXECUTE = 'ls_repl/cron/grid';
+
+    /** @var PageFactory */
+    public $resultPageFactory;
+
+    /** @var ObjectManagerInterface */
+    public $objectManager;
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * Grid constructor.
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     * @param ObjectManagerInterface $objectManager
      */
-    protected $resultPageFactory;
-
-    /**
-     * @var ObjectManager
-     */
-
-    protected $_objectManager;
-
-    protected $_replicationHelper;
-
-
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         ObjectManagerInterface $objectManager
     ) {
         $this->resultPageFactory = $resultPageFactory;
-        $this->_objectManager = $objectManager;
+        $this->objectManager = $objectManager;
         parent::__construct($context);
     }
 
+    /**
+     * Execute action based on request and return result
+     *
+     * Note: Request will be added as operation argument in future
+     *
+     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
+     * @throws \Magento\Framework\Exception\NotFoundException
+     */
     public function execute()
     {
         try {
@@ -50,14 +60,22 @@ class Grid extends Action
             $jobUrl = $this->_request->getParam('joburl');
             $jobName = $this->_request->getParam('jobname');
             if ($jobUrl != "") {
-                $cron = $this->_objectManager->create($jobUrl);
+                // @codingStandardsIgnoreStart
+                $cron = $this->objectManager->create($jobUrl);
+                // @codingStandardsIgnoreEnd
                 $info = $cron->executeManually();
                 if (!empty($info)) {
                     $executeMoreData = '';
                     if ($info[0] > 0) {
-                        $executeMoreData=$this->_url->getUrl(self::URL_PATH_Execute, ['joburl' => $jobUrl, 'jobname' => $jobName]);
+                        $executeMoreData=$this->_url->getUrl(
+                            self::URL_PATH_EXECUTE,
+                            ['joburl' => $jobUrl, 'jobname' => $jobName]
+                        );
                     }
-                    $this->messageManager->addComplexSuccessMessage('cronlinkmessage', ['url'=>$executeMoreData,'jobName'=>$jobName,'remaining'=>$info[0]]);
+                    $this->messageManager->addComplexSuccessMessage(
+                        'cronlinkmessage',
+                        ['url'=>$executeMoreData,'jobName'=>$jobName,'remaining'=>$info[0]]
+                    );
                 }
                 $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());

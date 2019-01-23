@@ -4,15 +4,21 @@
     <!--Declare data source, columns list, button...-->
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_data_source</item>
-            <item name="deps" xsi:type="string">ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_data_source</item>
+            <item name="provider" xsi:type="string">
+                ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_data_source
+            </item>
+            <item name="deps" xsi:type="string">
+                ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_data_source
+            </item>
         </item>
         <item name="spinner" xsi:type="string">ls_repl_grids_productgroup_columns</item>
     </argument>
     <dataSource name="ls_repl_grids_productgroup_data_source">
         <!--The data source-->
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+            <argument name="class" xsi:type="string">
+                Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
+            </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_productgroup_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">repl_product_group_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
@@ -47,7 +53,9 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsData" xsi:type="array">
-                        <item name="provider" xsi:type="string">ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_columns</item>
+                        <item name="provider" xsi:type="string">
+                            ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_columns
+                        </item>
                     </item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
@@ -58,10 +66,14 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_listing.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_listing.listing_top.bookmarks
+                        </item>
                         <item name="namespace" xsi:type="string">current.paging</item>
                     </item>
-                    <item name="selectProvider" xsi:type="string">ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_columns.ids</item>
+                    <item name="selectProvider" xsi:type="string">
+                        ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_listing.ls_repl_grids_productgroup_columns.ids
+                    </item>
                 </item>
             </argument>
         </paging>

@@ -13,13 +13,13 @@ use Psr\Log\LoggerInterface;
 class Customer extends Action
 {
     /** @var LoggerInterface */
-    protected $logger;
+    public $logger;
 
     /** @var ResourceConnection */
-    protected $_resource;
+    public $resource;
 
     /** @var array List of all the Customer tables */
-    protected $customer_tables = [
+    public $customer_tables = [
         "customer_address_entity",
         "customer_address_entity_datetime",
         "customer_address_entity_decimal",
@@ -42,8 +42,10 @@ class Customer extends Action
         "wishlist_item_option",
     ];
 
+    // @codingStandardsIgnoreStart
     /** @var array  */
     protected $_publicActions = ['customer'];
+    // @codingStandardsIgnoreEnd
 
     /**
      * Product Deletion constructor.
@@ -55,7 +57,7 @@ class Customer extends Action
         LoggerInterface $logger,
         Context $context
     ) {
-        $this->_resource = $resource;
+        $this->resource = $resource;
         $this->logger = $logger;
         parent::__construct($context);
     }
@@ -67,7 +69,8 @@ class Customer extends Action
      */
     public function execute()
     {
-        $connection = $this->_resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        // @codingStandardsIgnoreStart
+        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->customer_tables as $customerTable) {
             $tableName = $connection->getTableName($customerTable);
@@ -79,6 +82,7 @@ class Customer extends Action
             }
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
+        // @codingStandardsIgnoreEnd
         $this->messageManager->addSuccessMessage(__('Customers deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }

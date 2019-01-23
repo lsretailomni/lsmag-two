@@ -13,13 +13,13 @@ use Psr\Log\LoggerInterface;
 class Order extends Action
 {
     /** @var LoggerInterface */
-    protected $logger;
+    public $logger;
 
     /** @var ResourceConnection */
-    protected $_resource;
+    public $resource;
 
     /** @var array List of all the Order tables */
-    protected $order_tables = [
+    public $order_tables = [
         "gift_message",
         "quote",
         "quote_address",
@@ -67,8 +67,10 @@ class Order extends Action
         "tax_order_aggregated_updated"
     ];
 
+    // @codingStandardsIgnoreStart
     /** @var array  */
     protected $_publicActions = ['order'];
+    // @codingStandardsIgnoreEnd
 
     /**
      * Order Deletion constructor.
@@ -80,7 +82,7 @@ class Order extends Action
         LoggerInterface $logger,
         Context $context
     ) {
-        $this->_resource = $resource;
+        $this->resource = $resource;
         $this->logger = $logger;
         parent::__construct($context);
     }
@@ -92,7 +94,8 @@ class Order extends Action
      */
     public function execute()
     {
-        $connection = $this->_resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        // @codingStandardsIgnoreStart
+        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->order_tables as $orderTable) {
             $tableName = $connection->getTableName($orderTable);
@@ -104,6 +107,7 @@ class Order extends Action
             }
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
+        // @codingStandardsIgnoreEnd
         $this->messageManager->addSuccessMessage(__('Orders deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }

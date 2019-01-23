@@ -6,6 +6,10 @@
  */
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
+/**
+ * Class ExtendedVariantValue
+ * @package Ls\Replication\Controller\Adminhtml\Grids
+ */
 class ExtendedVariantValue extends \Magento\Backend\App\Action
 {
     /**

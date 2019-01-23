@@ -1,4 +1,6 @@
 <?php
+// @codingStandardsIgnoreFile
+
 namespace Ls\Replication\Code;
 
 use Composer\Autoload\ClassLoader;
@@ -10,19 +12,23 @@ use ReflectionClass;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
+/**
+ * Class ModelGenerator
+ * @package Ls\Replication\Code
+ */
 class ModelGenerator extends AbstractGenerator
 {
     /** @var string */
     static public $namespace = 'Ls\\Replication\\Model';
 
     /** @var ReplicationOperation */
-    protected $operation;
+    public $operation;
 
     /** @var ReflectionClass */
-    protected $reflected_entity;
+    public $reflected_entity;
 
     /** @var string */
-    protected $table_name;
+    public $table_name;
 
     /**
      * ModelGenerator constructor.
@@ -30,15 +36,15 @@ class ModelGenerator extends AbstractGenerator
      * @throws \Exception
      * @throws \ReflectionException
      */
-
     public function __construct(ReplicationOperation $operation)
     {
 
         parent::__construct();
         $this->operation = $operation;
+        // @codingStandardsIgnoreStart
         $this->reflected_entity = new ReflectionClass($this->operation->getOmniEntityFqn());
+        // @codingStandardsIgnoreLine
     }
-
 
     /**
      * @return string
@@ -95,7 +101,7 @@ class ModelGenerator extends AbstractGenerator
                 continue;
             }
             preg_match($property_regex, $property->getDocComment(), $matches);
-            if (!count($matches)) {
+            if (empty($matches)) {
                 continue;
             }
             $property_type = $matches[ 1 ];
@@ -135,7 +141,6 @@ class ModelGenerator extends AbstractGenerator
             [ 'pascal_name' => 'Processed', 'variable_name' => 'processed', 'model' => true ]
         );
 
-
         $content = $this->file->generate();
         $content = str_replace(
             'extends Magento\\Framework\\Model\\AbstractModel',
@@ -148,7 +153,6 @@ class ModelGenerator extends AbstractGenerator
             ', IdentityInterface',
             $content
         );
-       // echo $content; exit;
         return $content;
     }
 }

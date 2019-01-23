@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
@@ -8,6 +9,10 @@ use Ls\Replication\Api\Data\Anchor;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
+/**
+ * Class ModelInterfaceGenerator
+ * @package Ls\Replication\Code
+ */
 class ModelInterfaceGenerator extends AbstractGenerator
 {
     /** @var string */
@@ -30,7 +35,6 @@ class ModelInterfaceGenerator extends AbstractGenerator
      */
     public function __construct(ReplicationOperation $operation)
     {
-
         parent::__construct();
         $this->class = new InterfaceGenerator();
         $this->file->setClass($this->class);
@@ -55,7 +59,7 @@ class ModelInterfaceGenerator extends AbstractGenerator
                 continue;
             }
             preg_match($property_regex, $property->getDocComment(), $matches);
-            if (!count($matches)) {
+            if (empty($matches)) {
                 continue;
             }
             $property_type = $matches[1];
@@ -96,7 +100,7 @@ class ModelInterfaceGenerator extends AbstractGenerator
 
         $content = $this->file->generate();
 
-        $content = preg_replace('/\s+{\s+}+/', ";\n", $content);
+        $content = preg_replace('/\s+{\s+}+/', ";", $content);
 
         return $content;
     }
