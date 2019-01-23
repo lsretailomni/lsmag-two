@@ -18,8 +18,10 @@ class Attribute extends Action
     /** @var ResourceConnection */
     public $resource;
 
+    // @codingStandardsIgnoreStart
     /** @var array */
-    public $publicActions = ['attribute'];
+    protected $_publicActions = ['attribute'];
+    // @codingStandardsIgnoreEnd
 
     /**
      * Order Deletion constructor.

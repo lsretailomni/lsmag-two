@@ -23,8 +23,10 @@ class Category extends Action
     /** @var CategoryFactory $categoryFactory */
     public $categoryFactory;
 
+    // @codingStandardsIgnoreStart
     /** @var array  */
-    public $publicActions = ['category'];
+    protected $_publicActions = ['category'];
+    // @codingStandardsIgnoreEnd
     
     /**
      * Category Deletion constructor.

@@ -119,8 +119,10 @@ class Product extends Action
         "report_viewed_product_index"
     ];
 
+    // @codingStandardsIgnoreStart
     /** @var array  */
-    public $publicActions = ['product'];
+    protected $_publicActions = ['product'];
+    // @codingStandardsIgnoreEnd
 
     /**
      * Product Deletion constructor.

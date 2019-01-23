@@ -42,6 +42,11 @@ class Customer extends Action
         "wishlist_item_option",
     ];
 
+    // @codingStandardsIgnoreStart
+    /** @var array  */
+    protected $_publicActions = ['customer'];
+    // @codingStandardsIgnoreEnd
+
     /**
      * Product Deletion constructor.
      * @param ResourceConnection $resource

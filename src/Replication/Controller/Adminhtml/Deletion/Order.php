@@ -67,8 +67,10 @@ class Order extends Action
         "tax_order_aggregated_updated"
     ];
 
+    // @codingStandardsIgnoreStart
     /** @var array  */
-    public $publicActions = ['order'];
+    protected $_publicActions = ['order'];
+    // @codingStandardsIgnoreEnd
 
     /**
      * Order Deletion constructor.
