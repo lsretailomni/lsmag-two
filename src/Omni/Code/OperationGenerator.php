@@ -16,6 +16,10 @@ use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 
+/**
+ * Class OperationGenerator
+ * @package Ls\Omni\Code
+ */
 class OperationGenerator extends AbstractOmniGenerator
 {
     /** @var  Operation */
@@ -76,9 +80,9 @@ class OperationGenerator extends AbstractOmniGenerator
 
         // SOME NICE TO HAVE STRING VALUES
         // const OPERATION_NAME = 'OPERATION_NAME'
+
         $this->class->addConstant('OPERATION_NAME', $this->operation->getScreamingSnakeName());
         $this->class->addConstant('SERVICE_TYPE', $this->metadata->getClient()->getServiceType()->getValue());
-
 
         // ADD METHODS
         $this->class->addMethodFromGenerator($this->getConstructorMethod());
@@ -89,7 +93,7 @@ class OperationGenerator extends AbstractOmniGenerator
         ));
         $this->class->addMethodFromGenerator($this->getInputMethod($request_alias));
         $this->class->addMethodFromGenerator($this->getClassMapMethod());
-        $this->class->addMethod('isTokenized', [], MethodGenerator::FLAG_PROTECTED, "return $is_tokenized;");
+        $this->class->addMethod('isTokenized', [], MethodGenerator::FLAG_PUBLIC, "return $is_tokenized;");
 
         // CLASS PROPERTIES TO BE USED BY THE AbstractOperation
         $this->createProperty('client', 'OmniClient');
@@ -110,9 +114,17 @@ COMMENT;
         $content = str_replace($execute_docblock, "$no_inspection\n$execute_docblock", $content);
         // USE SIMPLIFIED FULLY QUALIFIED NAME
         $content = str_replace('execute(\\RequestInterface', 'execute(RequestInterface', $content);
-        $content = str_replace('implements Ls\\Omni\\Client\\OperationInterface', 'implements OperationInterface', $content);
+        $content = str_replace(
+            'implements Ls\\Omni\\Client\\OperationInterface',
+            'implements OperationInterface',
+            $content
+        );
         $content = str_replace('extends Ls\\Omni\\Client\\AbstractOperation', 'extends AbstractOperation', $content);
-        $content = str_replace('public function getOperationInput()', 'public function & getOperationInput()', $content);
+        $content = str_replace(
+            'public function getOperationInput()',
+            'public function & getOperationInput()',
+            $content
+        );
         return $content;
     }
 
@@ -121,6 +133,7 @@ COMMENT;
      */
     private function getConstructorMethod()
     {
+        // @codingStandardsIgnoreLine
         $method = new MethodGenerator();
         $method->setName('__construct');
         $method->setBody(<<<CODE
@@ -143,16 +156,19 @@ CODE
      */
     private function getExecuteMethod($request_alias, $response_alias, $operation_name)
     {
+        // @codingStandardsIgnoreLine
         $method = new MethodGenerator();
         $method->setName('execute');
         $method->setParameter(ParameterGenerator::fromArray(['name' => 'request',
             'type' => 'RequestInterface',
             'defaultvalue' => null]));
+        // @codingStandardsIgnoreStart
         $method->setDocBlock(
             DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag('request', $request_alias),
                 new Tag\ReturnTag(['ResponseInterface',
             $response_alias])]])
         );
+        // @codingStandardsIgnoreEnd
         $method->setBody(<<<CODE
 if ( !is_null( \$request ) ) {
     \$this->setRequest( \$request );
@@ -170,12 +186,13 @@ CODE
      */
     private function getInputMethod($request_alias)
     {
-
+        // @codingStandardsIgnoreStart
         $method = new MethodGenerator();
         $method->setName('getOperationInput');
         $method->setDocBlock(
             DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$request_alias])]])
         );
+        // @codingStandardsIgnoreEnd
         $method->setBody(<<<CODE
 if ( is_null( \$this->request ) ) {
     \$this->request = new $request_alias();
@@ -191,12 +208,15 @@ CODE
      */
     private function getClassMapMethod()
     {
+        // @codingStandardsIgnoreLine
         $method = new MethodGenerator();
         $method->setName('getClassMap');
         $method->setVisibility(MethodGenerator::FLAG_PROTECTED);
+        // @codingStandardsIgnoreStart
         $method->setDocBlock(
             DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag(['array'])]])
         );
+        // @codingStandardsIgnoreEnd
         $method->setBody(<<<CODE
 return ClassMap::getClassMap();
 CODE

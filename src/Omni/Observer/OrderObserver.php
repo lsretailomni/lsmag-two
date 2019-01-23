@@ -8,32 +8,36 @@ use Ls\Omni\Helper\ContactHelper;
 use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Core\Model\LSR;
 
+/**
+ * Class OrderObserver
+ * @package Ls\Omni\Observer
+ */
 class OrderObserver implements ObserverInterface
 {
     /** @var ContactHelper  */
     private $contactHelper;
 
     /** @var BasketHelper  */
-    protected $basketHelper;
+    private $basketHelper;
 
     /** @var OrderHelper  */
-    protected $orderHelper;
+    private $orderHelper;
 
     /** @var \Psr\Log\LoggerInterface  */
-    protected $logger;
+    private $logger;
 
     /**
      * @var \Magento\Customer\Model\Session\Proxy
      */
-    protected $customerSession;
+    private $customerSession;
 
     /**
      * @var \Magento\Checkout\Model\Session\Proxy
      */
-    protected $checkoutSession;
+    private $checkoutSession;
 
     /** @var bool  */
-    protected $watchNextSave = false;
+    private $watchNextSave = false;
 
     /**
      * OrderObserver constructor.

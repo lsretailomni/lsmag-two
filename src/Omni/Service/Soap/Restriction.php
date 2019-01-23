@@ -2,6 +2,10 @@
 
 namespace Ls\Omni\Service\Soap;
 
+/**
+ * Class Restriction
+ * @package Ls\Omni\Service\Soap
+ */
 class Restriction
 {
     /** @var string */
@@ -36,7 +40,7 @@ class Restriction
     /**
      * @param string $name
      */
-    protected function setName($name)
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -52,7 +56,7 @@ class Restriction
     /**
      * @param RestrictionDefinition[] $definition
      */
-    protected function setDefinition($definition)
+    public function setDefinition($definition)
     {
         $this->definition = $definition;
     }
@@ -68,7 +72,7 @@ class Restriction
     /**
      * @param string $base
      */
-    protected function setBase($base)
+    public function setBase($base)
     {
         $this->base = $base;
     }

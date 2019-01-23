@@ -9,14 +9,18 @@ use Zend\Http\ClientStatic;
 use Zend\Soap\Client as ZendSoapClient;
 use Zend\Uri\Uri;
 
+/**
+ * Class Client
+ * @package Ls\Omni\Service\Soap
+ */
 class Client extends ZendSoapClient
 {
     /** @var Uri */
-    protected $URL;
+    public $URL;
     /** @var  ServiceType */
-    protected $type;
+    public $type;
     /** @var array */
-    protected $soap_options = ['soap_version' => SOAP_1_1];
+    public $soap_options = ['soap_version' => SOAP_1_1];
 
     /**
      * Client constructor.
@@ -39,7 +43,7 @@ class Client extends ZendSoapClient
     {
 
         $response = ClientStatic::get($this->URL);
-
+        // @codingStandardsIgnoreLine
         $xml = new DomDocument('1.0');
         $xml->loadXML($response->getBody());
         $xml->preserveWhiteSpace = false;
@@ -56,7 +60,6 @@ class Client extends ZendSoapClient
         return $this->type;
     }
 
-
     /**
      * @param bool $with_replication
      *
@@ -64,6 +67,7 @@ class Client extends ZendSoapClient
      */
     public function getMetadata($with_replication = false)
     {
+        // @codingStandardsIgnoreLine
         return new Metadata($this, $with_replication);
     }
 }

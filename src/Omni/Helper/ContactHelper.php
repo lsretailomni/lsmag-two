@@ -6,44 +6,48 @@ use Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Omni\Client\Ecommerce\Operation;
 use Ls\Core\Model\LSR;
 
+/**
+ * Class ContactHelper
+ * @package Ls\Omni\Helper
+ */
 class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
     const SERVICE_TYPE = 'ecommerce';
 
     /** @var \Magento\Framework\Api\FilterBuilder */
-    protected $filterBuilder;
+    public $filterBuilder;
 
     /** @var \Magento\Framework\Api\SearchCriteriaBuilder */
-    protected $searchCriteriaBuilder;
+    public $searchCriteriaBuilder;
 
     /** @var \Magento\Store\Model\StoreManagerInterface */
-    protected $storeManager;
+    public $storeManager;
 
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
-    protected $customerRepository;
+    public $customerRepository;
 
     /** @var \Magento\Customer\Model\CustomerFactory */
-    protected $customerFactory;
+    public $customerFactory;
 
     /**
      * @var \Magento\Customer\Model\Session\Proxy
      */
-    protected $customerSession;
+    public $customerSession;
 
     /** @var null */
-    protected $_ns = null;
+    public $ns = null;
 
     /** @var \Magento\Directory\Model\CountryFactory */
-    protected $_countryFactory;
+    public $countryFactory;
 
     /** @var \Magento\Customer\Model\ResourceModel\Group\CollectionFactory */
-    protected $_customerGroupColl;
+    public $customerGroupColl;
 
     /** @var \Magento\Customer\Api\GroupRepositoryInterface */
-    protected $_groupRepository;
+    public $groupRepository;
 
     /** @var \Magento\Customer\Api\Data\GroupInterfaceFactory */
-    protected $_groupInterfaceFactory;
+    public $groupInterfaceFactory;
 
     /**
      * ContactHelper constructor.
@@ -78,10 +82,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerRepository = $customerRepository;
         $this->customerFactory = $customerFactory;
         $this->customerSession = $customerSession;
-        $this->_countryFactory = $countryFactory;
-        $this->_customerGroupColl = $customerGroupColl;
-        $this->_groupRepository = $groupRepository;
-        $this->_groupInterfaceFactory = $groupInterfaceFactory;
+        $this->countryFactory = $countryFactory;
+        $this->customerGroupColl = $customerGroupColl;
+        $this->groupRepository = $groupRepository;
+        $this->groupInterfaceFactory = $groupInterfaceFactory;
         parent::__construct(
             $context
         );
@@ -120,9 +124,11 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         if ($is_email) {
             /** @var Operation\ContactGetById $request */
+            // @codingStandardsIgnoreStart
             $request = new Operation\ContactSearch();
             /** @var Entity\ContactSearch $search */
             $search = new Entity\ContactSearch();
+            // @codingStandardsIgnoreEnd
             $search->setSearch($email);
             $search->setMaxNumberOfRowsReturned(1);
 
@@ -140,7 +146,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return null;
         }
 
-        if ($contact_pos instanceof Entity\ArrayOfMemberContact && count($contact_pos->getMemberContact()) > 0) {
+        if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
             return $contact_pos->getMemberContact();
         } elseif ($contact_pos instanceof Entity\MemberContact) {
             return $contact_pos;
@@ -157,8 +163,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function login($user, $pass)
     {
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\LoginWeb();
         $login = new Entity\LoginWeb();
+        // @codingStandardsIgnoreEnd
         $login->setUserName($user)
             ->setPassword($pass);
         try {
@@ -176,9 +184,11 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $customer = $this->customerSession->getCustomer();
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\Logout();
         $request->setToken($customer->getData('lsr_token'));
         $logout = new Entity\Logout();
+        // @codingStandardsIgnoreEnd
         $logout->setUserName($customer->getData('lsr_username'))
             ->setDeviceId(null);
         try {
@@ -188,7 +198,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $response ? $response->getLogoutResult() : $response;
     }
-
 
     /**
      * @param $contact
@@ -220,10 +229,12 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
 
         $response = null;
+        // @codingStandardsIgnoreStart
         $alternate_id = 'LSM' . str_pad(md5(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
         $request = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
         $contact = new Entity\MemberContact();
+        // @codingStandardsIgnoreEnd
         $contact->setAlternateId($alternate_id)
             ->setEmail($customer->getData('email'))
             ->setFirstName($customer->getData('firstname'))
@@ -277,8 +288,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
 
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\ChangePassword();
         $changepassword = new Entity\ChangePassword();
+        // @codingStandardsIgnoreEnd
 
         $request->setToken($customer->getData('lsr_token'));
 
@@ -295,7 +308,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $response ? $response->getChangePasswordResult() : $response;
     }
 
-
     /**
      * @param string $email
      * @return bool| Entity\ForgotPasswordResponse | null
@@ -304,8 +316,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
 
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\ForgotPassword();
         $forgotpassword = new Entity\ForgotPassword();
+        // @codingStandardsIgnoreEnd
         $forgotpassword->setUserNameOrEmail($email);
 
         try {
@@ -316,7 +330,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $response ? $response->getForgotPasswordResult() : $response;
     }
 
-
     /**
      * @param $customer
      * @param $customer_post
@@ -325,9 +338,11 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function resetPassword(\Magento\Customer\Api\Data\CustomerInterface $customer, $customer_post)
     {
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\ResetPassword();
         $request->setToken($customer->getCustomAttribute('lsr_token')->getValue());
         $resetpassword = new Entity\ResetPassword();
+        // @codingStandardsIgnoreEnd
 
         $resetpassword->setUserName($customer->getCustomAttribute('lsr_username')->getValue())
             ->setResetCode($customer->getCustomAttribute('lsr_resetcode')->getValue())
@@ -342,21 +357,23 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $response ? $response->getResetPasswordResult() : $response;
     }
 
-
     /**
      * @param null $customerAddress
      * @return Entity\ContactUpdateResponse|Entity\MemberContact|\Ls\Omni\Client\ResponseInterface|null
      */
-    public function UpdateAccount($customerAddress = null)
+    public function updateAccount($customerAddress = null)
     {
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\ContactUpdate();
         $entity = new Entity\ContactUpdate();
+        // @codingStandardsIgnoreEnd
 
         // only process if the pass object is the instance of Customer Address
         if ($customerAddress instanceof \Magento\Customer\Model\Address) {
             $customer = $customerAddress->getCustomer();
             $request->setToken($customer->getData('lsr_token'));
+            // @codingStandardsIgnoreLine
             $memberContact = new Entity\MemberContact();
             $memberContact->setFirstName($customerAddress->getFirstname())
                 ->setLastName($customerAddress->getLastname())
@@ -383,7 +400,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function setAddresses($address = null)
     {
-
+        // @codingStandardsIgnoreLine
         $addresses = new Entity\ArrayOfAddress();
         // only process if the pass object in the instance of customer address
         if ($address instanceof Entity\Address) {
@@ -401,7 +418,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     private function setAddress($customerAddress = null)
     {
-
+        // @codingStandardsIgnoreLine
         $address = new Entity\Address();
         // only process if the pass object in the instance of customer address
         if ($customerAddress instanceof \Magento\Customer\Model\Address) {
@@ -425,7 +442,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setCountry($countryname)
                 ->setPostCode($customerAddress->getPostcode())
                 ->setType(Entity\Enum\AddressType::RESIDENTIAL);
-            $customerAddress->getRegion() ? $address->setStateProvinceRegion($customerAddress->getRegion()) : $address->setStateProvinceRegion('');
+            $customerAddress->getRegion() ? $address->setStateProvinceRegion($customerAddress->getRegion())
+                : $address->setStateProvinceRegion('');
             return $address;
         } else {
             return null;
@@ -438,10 +456,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     private function getCountryname($countryCode)
     {
-        $country = $this->_countryFactory->create()->loadByCode($countryCode);
+        $country = $this->countryFactory->create()->loadByCode($countryCode);
         return $country->getName();
     }
-
 
     /**
      * @return array
@@ -449,7 +466,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAllCustomerGroupIds()
     {
         $customerGroupsIds = [];
-        $customerGroups = $this->_customerGroupColl->create()
+        $customerGroups = $this->customerGroupColl->create()
             ->toOptionArray();
         foreach ($customerGroups as $group) {
             $customerGroupsIds[] = $group['value'];
@@ -469,12 +486,12 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getCustomerGroupIdByName($groupname = '')
     {
 
-        if (is_null($groupname) or $groupname == '') {
+        if ($groupname==null or $groupname == '') {
             return false;
         }
 
         /** @var \Magento\Customer\Model\ResourceModel\Group\Collection $customerGroups */
-        $customerGroups = $this->_customerGroupColl->create()
+        $customerGroups = $this->customerGroupColl->create()
             ->addFieldToFilter('customer_group_code', $groupname);
 
         if ($customerGroups->getSize() > 0) {
@@ -482,8 +499,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             /** @var \Magento\Customer\Model\Group $customerGroup */
             foreach ($customerGroups as $customerGroup) {
                 return $customerGroup->getId();
-                // Stop processing further.
-                break;
             }
         } else {
             // If customer group does not exist in Magento, then create new one.
@@ -505,9 +520,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     private function createCustomerGroupByName($groupname = '')
     {
         /** @var \Magento\Customer\Model\Group $group */
-        $group = $this->_groupInterfaceFactory->create()
+        $group = $this->groupInterfaceFactory->create()
             ->setCode($groupname)
-            ->setTaxClassId(3);// Default Tax Class ID for retail customers, please check tax_class table of magento2 database.
-        $this->_groupRepository->save($group);
+            // Default Tax Class ID for retail customers, please check tax_class table of magento2 database.
+            ->setTaxClassId(3);
+        $this->groupRepository->save($group);
     }
 }

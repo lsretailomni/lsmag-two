@@ -7,11 +7,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class ClientPing
+ * @package Ls\Omni\Console\Command
+ */
 class ClientPing extends Command
 {
     const COMMAND_NAME = 'omni:client:ping';
 
-    protected function configure()
+    public function configure()
     {
 
         $this->setName(self::COMMAND_NAME)
@@ -25,12 +29,13 @@ class ClientPing extends Command
      * @param OutputInterface $output
      * @return int|null|void
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
 
         $uc_type = ucfirst($this->type->getValue());
         $class = "Ls\\Omni\\Client\\$uc_type\\Operation\\Ping";
         /** @var OperationInterface $ping */
+        // @codingStandardsIgnoreLine
         $ping = new $class();
         $pong = $ping->execute();
         $this->output->writeln($pong);

@@ -5,16 +5,20 @@ namespace Ls\Omni\Model;
 use Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Controller\Cart\CouponPost;
 
+/**
+ * Class SetCouponData
+ * @package Ls\Omni\Model
+ */
 class SetCouponData
 {
     /** @var BasketHelper  */
-    protected $basketHelper;
+    public $basketHelper;
 
     /** @var  \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory */
-    protected $redirectFactory;
+    public $redirectFactory;
 
     /** @var \Magento\Framework\UrlInterface  */
-    protected $url;
+    public $url;
 
     /**
      * SetCouponData constructor.

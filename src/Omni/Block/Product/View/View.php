@@ -15,7 +15,7 @@ class View extends \Magento\Catalog\Block\Product\View
     /**
      * @var \Ls\Core\Model\LSR
      */
-    protected $_lsr;
+    public $lsr;
 
     /**
      * View constructor.
@@ -46,7 +46,7 @@ class View extends \Magento\Catalog\Block\Product\View
         \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
         array $data = []
     ) {
-        $this->_lsr = $lsr;
+        $this->lsr = $lsr;
         parent::__construct(
             $context,
             $urlEncoder,
@@ -68,7 +68,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getGoogleMapsApiKey()
     {
-        $configValue = $this->_lsr->getGoogleMapsApiKey();
+        $configValue = $this->lsr->getGoogleMapsApiKey();
         return $configValue;
     }
 
@@ -78,7 +78,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultLatitude()
     {
-        $configValue = $this->_lsr->getDefaultLatitude();
+        $configValue = $this->lsr->getDefaultLatitude();
         return $configValue;
     }
 
@@ -88,7 +88,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultLongitude()
     {
-        $configValue = $this->_lsr->getDefaultLongitude();
+        $configValue = $this->lsr->getDefaultLongitude();
         return $configValue;
     }
 
@@ -98,7 +98,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultZoom()
     {
-        $configValue = $this->_lsr->getDefaultZoom();
+        $configValue = $this->lsr->getDefaultZoom();
         return $configValue;
     }
 
@@ -108,7 +108,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function isEnable()
     {
-        $configValue = $this->_lsr->getStoreConfig($this->_lsr::SC_CART_PRODUCT_AVAILABILITY);
+        $configValue = $this->lsr->getStoreConfig($this->lsr::SC_CART_PRODUCT_AVAILABILITY);
         return $configValue;
     }
 }

@@ -5,6 +5,10 @@ use Ls\Omni\Client\Ecommerce\Entity\Store;
 use Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use Magento\Framework\Option\ArrayInterface;
 
+/**
+ * Class NavStore
+ * @package Ls\Omni\Model\System\Source
+ */
 class NavStore implements ArrayInterface
 {
     /**
@@ -39,13 +43,13 @@ class NavStore implements ArrayInterface
     /**
      * @return Store[]
      */
-    protected function getNavStores()
+    public function getNavStores()
     {
-
+        // @codingStandardsIgnoreLine
         $get_nav_stores = new StoresGetAll();
         $result = $get_nav_stores->execute()
                                 ->getResult();
-        if (is_null($result)) {
+        if ($result==null) {
             return [ ];
         } else {
             return $result->getIterator();
