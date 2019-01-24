@@ -807,9 +807,6 @@ class ProductCreateTask
         $processedItems = [];
 
         if ($images->getTotalCount() > 0) {
-            echo $images->getTotalCount(); exit;
-            ///
-            $iw = 0;
             /** @var \Ls\Replication\Model\ReplImage $image */
             foreach ($images->getItems() as $image) {
                 if (in_array($image->getKeyValue(), $processedItems)) {
@@ -845,7 +842,6 @@ class ProductCreateTask
 
                         // Adding items into an array whose images are processed.
                         $processedItems[]   = $image->getKeyValue();
-                        $iw++;
                     }
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
