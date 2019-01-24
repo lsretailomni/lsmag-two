@@ -1,5 +1,4 @@
 <?php
-// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Cron;
 
@@ -225,7 +224,13 @@ class ProductCreateTask
         $cronCategoryCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
         $cronAttributeCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
         $cronAttributeVariantCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
-        if ($cronCategoryCheck == 1 && $cronAttributeCheck == 1 && $cronAttributeVariantCheck == 1 && $fullReplicationImageLinkStatus == 1 && $fullReplicationBarcodsStatus == 1 && $fullReplicationPriceStatus == 1) {
+        if ($cronCategoryCheck == 1 &&
+            $cronAttributeCheck == 1 &&
+            $cronAttributeVariantCheck == 1 &&
+            $fullReplicationImageLinkStatus == 1 &&
+            $fullReplicationBarcodsStatus == 1 &&
+            $fullReplicationPriceStatus == 1
+        ) {
             $this->logger->debug('Running ProductCreateTask');
             $productBatchSize = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE);
             /** @var \Magento\Framework\Api\SearchCriteria $criteria */
@@ -312,7 +317,8 @@ class ProductCreateTask
                     $this->updateVariantsOnly();
                     $this->caterVariantsRemoval();
                 }
-                $this->updateImagesOnly();
+                // This will update all the latest images for the product including new
+                $this->updateAndAddNewImageOnly();
                 $this->updateBarcodeOnly();
                 $this->updatePriceOnly();
             }
@@ -342,7 +348,7 @@ class ProductCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      */
 
-    protected function getProductAttributes(
+    public function getProductAttributes(
         \Magento\Catalog\Api\Data\ProductInterface $product,
         \Ls\Replication\Model\ReplItem $item
     ) {
@@ -409,6 +415,8 @@ class ProductCreateTask
                     )->setContent($imageContent);
                 $galleryArray[] = clone $this->attributeMediaGalleryEntry;
                 $image->setData('processed', '1');
+                $image->setData('is_updated', '0');
+
                 $this->replImageLinkRepositoryInterface->save($image);
             }
         }
@@ -783,29 +791,61 @@ class ProductCreateTask
     /**
      * Update/Add the modified/added images of the item
      */
-    protected function updateImagesOnly()
+    public function updateAndAddNewImageOnly()
     {
+        //
         $filters = [
-            ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like']
+            ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
+            ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
+
         ];
-        $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
-        $images = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
-        if (count($images) > 0) {
-            foreach ($images as $image) {
-                //TODO this needs to be optimized,
+        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 2000);
+
+        /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $images */
+        $images = $this->replImageLinkRepositoryInterface->getList($criteria);
+
+        $processedItems = [];
+
+        if ($images->getTotalCount() > 0) {
+            echo $images->getTotalCount(); exit;
+            ///
+            $iw = 0;
+            /** @var \Ls\Replication\Model\ReplImage $image */
+            foreach ($images->getItems() as $image) {
+                if (in_array($image->getKeyValue(), $processedItems)) {
+                    continue;
+                }
                 try {
                     if ($image->getTableName() == "Item" || $image->getTableName() == "Item Variant") {
-                        /** @var ReplImageLink $image */
+                        /* @var ReplImageLink $image */
+                        $additionalFilters = [];
+                        if ($image->getTableName() == "Item") {
+                            $additionalFilters = ['field' => 'TableName', 'value' => 'Item', 'condition_type' => 'eq'];
+                        } elseif ($image->getTableName() == "Item Variant") {
+                            $additionalFilters =
+                                ['field' => 'TableName', 'value' => 'Item Variant', 'condition_type' => 'eq'];
+                        }
+                        $filters = [
+                            $additionalFilters,
+                            ['field' => 'KeyValue', 'value' => $image->getKeyValue(), 'condition_type' => 'eq'],
+                            ['field' => 'isDeleted', 'value' => 0, 'condition_type' => 'eq']
+                        ];
+                        $criteria = $this->replicationHelper->buildExitCriteriaForArray($filters, 100);
+                        $allImages = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
                         $item = $image->getKeyValue();
                         $item = str_replace(',', '-', $item);
-                        /** @var ProductRepositoryInterface $productData */
-                        $productData = $this->productRepository->get($item);
-                        $galleryImage = [$image];
-                        $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
-                        $this->productRepository->save($productData);
                         $image->setData('is_updated', '0');
                         $image->setData('processed', '1');
                         $this->replImageLinkRepositoryInterface->save($image);
+                        /* @var ProductRepositoryInterface $productData */
+                        $productData = $this->productRepository->get($item);
+                        $galleryImage = $allImages;
+                        $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
+                        $this->productRepository->save($productData);
+
+                        // Adding items into an array whose images are processed.
+                        $processedItems[]   = $image->getKeyValue();
+                        $iw++;
                     }
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
