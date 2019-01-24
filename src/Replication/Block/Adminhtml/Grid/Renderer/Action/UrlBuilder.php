@@ -11,8 +11,8 @@ class UrlBuilder
     /**
      * @var \Magento\Framework\UrlInterface
      */
-
     public $frontendUrlBuilder;
+
     /**
      * @param \Magento\Framework\UrlInterface $frontendUrlBuilder
      */
@@ -20,6 +20,7 @@ class UrlBuilder
     {
         $this->frontendUrlBuilder = $frontendUrlBuilder;
     }
+
     /**
      * Get action url
      *

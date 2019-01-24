@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Ls\Core\Setup;
 
 use Magento\Framework\DB\Ddl\Table;

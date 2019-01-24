@@ -1,5 +1,4 @@
 <?php
-// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Cron;
 
@@ -14,59 +13,59 @@ use Psr\Log\LoggerInterface;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Core\Model\LSR;
 
+/**
+ * Class AttributesCreateTask
+ * @package Ls\Replication\Cron
+ */
 class AttributesCreateTask
 {
 
     /**
      * @var ReplExtendedVariantValueRepository
      */
-    protected $replExtendedVariantValueRepository;
+    public $replExtendedVariantValueRepository;
 
     /**
      * @var ProductAttributeRepositoryInterface
      */
-    protected $productAttributeRepository;
+    public $productAttributeRepository;
 
-    /**
-     * @var EavSetupFactory
-     */
-    protected $eavSetupFactory;
+    /** @var EavSetupFactory */
+    public $eavSetupFactory;
 
     /** @var ReplAttributeRepositoryInterface */
-    protected $replAttributeRepositoryInterface;
+    public $replAttributeRepositoryInterface;
 
     /** @var ReplAttributeOptionValueRepositoryInterface */
-    protected $replAttributeOptionValueRepositoryInterface;
+    public $replAttributeOptionValueRepositoryInterface;
 
-    /**
-     * @var \Magento\Eav\Model\Config
-     */
-    protected $eavConfig;
+    /** @var \Magento\Eav\Model\Config */
+    public $eavConfig;
 
     /** @var ReplicationHelper */
-    protected $replicationHelper;
+    public $replicationHelper;
 
     /** @var LSR */
-    protected $_lsr;
+    public $lsr;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    public $logger;
 
     /**
      * @var bool
      */
-    protected $successCronAttribute = false;
+    public $successCronAttribute = false;
 
     /**
      * @var bool
      */
-    protected $successCronAttributeVariant = false;
+    public $successCronAttributeVariant = false;
     /**
      * @var \Magento\Eav\Api\AttributeManagementInterface
      */
-    protected $attributeManagement;
+    public $attributeManagement;
 
     /**
      * AttributesCreateTask constructor.
@@ -107,7 +106,7 @@ class AttributesCreateTask
         $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
         $this->eavConfig = $eavConfig;
         $this->replicationHelper = $replicationHelper;
-        $this->_lsr = $LSR;
+        $this->lsr = $LSR;
         $this->attributeManagement = $attributeManagement;
     }
 
@@ -122,10 +121,18 @@ class AttributesCreateTask
         // Process variants attributes which are going to be used for configurable product
         $this->processVariantAttributes();
         $this->replicationHelper->updateCronStatus($this->successCronAttribute, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-        $this->replicationHelper->updateCronStatus($this->successCronAttributeVariant,
-            LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
+        $this->replicationHelper->updateCronStatus(
+            $this->successCronAttributeVariant,
+            LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT
+        );
     }
 
+    /**
+     * For Manual Cron
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function executeManually()
     {
         $this->execute();
@@ -141,7 +148,7 @@ class AttributesCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function processAttributes()
+    public function processAttributes()
     {
         /*
          * Replicating data from ls_replication_repl_attribute table
@@ -168,7 +175,9 @@ class AttributesCreateTask
             }
             $replAttribute->setData('processed', '1');
             $replAttribute->setData('is_updated', '0');
+            // @codingStandardsIgnoreStart
             $this->replAttributeRepositoryInterface->save($replAttribute);
+            // @codingStandardsIgnoreEnd
         }
         $attributesRemovalCounter = $this->caterAttributesRemoval();
         if (count($replAttributes->getItems()) == 0 && $attributesRemovalCounter == 0) {
@@ -205,7 +214,9 @@ class AttributesCreateTask
                 $replAttribute->setData('processed', '1');
                 $replAttribute->setData('IsDeleted', '0');
                 $replAttribute->setData('is_updated', '0');
+                // @codingStandardsIgnoreStart
                 $this->replAttributeRepositoryInterface->save($replAttribute);
+                // @codingStandardsIgnoreEnd
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
@@ -217,7 +228,7 @@ class AttributesCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function processVariantAttributes()
+    public function processVariantAttributes()
     {
         $this->logger->debug("Running Varients create task...");
         /** @var default attribute set id for catalog_product $defaultAttributeSetId */
@@ -233,9 +244,12 @@ class AttributesCreateTask
         foreach ($variants as $variant) {
             $variant->setData('processed', '1');
             $variant->setData('is_updated', '0');
+            // @codingStandardsIgnoreStart
             $this->replExtendedVariantValueRepository->save($variant);
-            if (empty($variantCodes[$variant->getCode()]) || !in_array($variant->getValue(),
-                    $variantCodes[$variant->getCode()])) {
+            // @codingStandardsIgnoreEnd
+            if (empty($variantCodes[$variant->getCode()]) ||
+                !in_array($variant->getValue(), $variantCodes[$variant->getCode()])
+            ) {
                 $variantCodes[$variant->getCode()][] = $variant->getValue();
             }
         }
@@ -281,10 +295,12 @@ class AttributesCreateTask
                     'attribute_group_id' => $defaultGroupId
                 ];
                 try {
+                    // @codingStandardsIgnoreStart
                     $this->_eavAttributeFactory->create()
                         ->addData($attributeData)
                         ->setEntityTypeId($this->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY))
                         ->save();
+                    // @codingStandardsIgnoreEnd
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
                 }
@@ -325,7 +341,7 @@ class AttributesCreateTask
      * @param $attributeGroupId
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function createAttributeByObject(
+    public function createAttributeByObject(
         \Ls\Replication\Model\ReplAttribute $replAttribute,
         $attributeSetId,
         $attributeGroupId
@@ -375,7 +391,7 @@ class AttributesCreateTask
      * @param string
      * @return int
      */
-    protected function getEntityTypeId($type = \Magento\Catalog\Model\Product::ENTITY)
+    public function getEntityTypeId($type = \Magento\Catalog\Model\Product::ENTITY)
     {
         return $this->_eavEntity->setType($type)->getTypeId();
     }
@@ -385,7 +401,7 @@ class AttributesCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function addAttributeOptions($attribute_code = '')
+    public function addAttributeOptions($attribute_code = '')
     {
         $option_data = $this->generateOptionValues($attribute_code);
         if (!empty($option_data)) {
@@ -405,7 +421,7 @@ class AttributesCreateTask
      * @return array
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function generateOptionValues($attribute_code = '')
+    public function generateOptionValues($attribute_code = '')
     {
         $optionarray = [];
         $criteria = $this->replicationHelper->buildCriteriaForNewItems('Code', $attribute_code, 'eq');
@@ -418,7 +434,9 @@ class AttributesCreateTask
         /** @var \Ls\Replication\Model\ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
             $item->setProcessed('1');
+            // @codingStandardsIgnoreStart
             $this->replAttributeOptionValueRepositoryInterface->save($item);
+            // @codingStandardsIgnoreEnd
             // if have existing option and current value is a part of existing option then don't do anything
             if (!empty($existingOptions) and in_array($item->getValue(), $existingOptions)) {
                 continue;
@@ -433,7 +451,7 @@ class AttributesCreateTask
      * @return int|null
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function getAttributeIdbyCode($attribute_code = '')
+    public function getAttributeIdbyCode($attribute_code = '')
     {
         return $this->productAttributeRepository->get($attribute_code)->getAttributeId();
     }
@@ -441,7 +459,7 @@ class AttributesCreateTask
     /**
      * @return array
      */
-    protected function getValueTypeArray()
+    public function getValueTypeArray()
     {
         return [
             '0' => 'text',
@@ -461,10 +479,10 @@ class AttributesCreateTask
      * @return array
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function getOptimizedOptionArrayByAttributeCode($attribute_code = '')
+    public function getOptimizedOptionArrayByAttributeCode($attribute_code = '')
     {
         $optimziedArray = [];
-        if ($attribute_code == '' || is_null($attribute_code)) {
+        if ($attribute_code == '' || $attribute_code == null) {
             return $optimziedArray;
         }
         $existingOptions = $this->eavConfig->getAttribute(\Magento\Catalog\Model\Product::ENTITY, $attribute_code)

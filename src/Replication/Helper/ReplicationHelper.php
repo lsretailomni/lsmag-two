@@ -23,37 +23,37 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
     /** @var \Magento\Store\Model\StoreManagerInterface */
-    protected $storeManager;
+    public $storeManager;
 
     /** @var \Magento\Framework\Filesystem */
-    protected $_filesystem;
+    public $filesystem;
 
     /** @var SearchCriteriaBuilder */
-    protected $searchCriteriaBuilder;
+    public $searchCriteriaBuilder;
 
     /** @var FilterBuilder */
-    protected $filterBuilder;
+    public $filterBuilder;
 
     /** @var FilterGroupBuilder */
-    protected $filterGroupBuilder;
+    public $filterGroupBuilder;
 
     /** @var ReplImageLinkRepositoryInterface */
-    protected $replImageLinkRepositoryInterface;
+    public $replImageLinkRepositoryInterface;
 
     /** @var Config */
-    protected $eavConfig;
+    public $eavConfig;
 
     /** @var cron config save */
-    protected $configWriter;
+    public $configWriter;
 
     /** @var Set */
-    protected $attributeSet;
+    public $attributeSet;
 
     /** @var chache type list */
-    protected $cacheTypeList;
+    public $cacheTypeList;
 
     /** @var LSR */
-    protected $lsr;
+    public $lsr;
 
     /**
      * ReplicationHelper constructor.
@@ -86,7 +86,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
         $this->storeManager = $storeManager;
-        $this->_filesystem = $Filesystem;
+        $this->filesystem = $Filesystem;
         $this->replImageLinkRepositoryInterface = $replImageLinkRepositoryInterface;
         $this->eavConfig = $eavConfig;
         $this->configWriter = $configWriter;
