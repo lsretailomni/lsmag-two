@@ -4,8 +4,13 @@ namespace Ls\Omni\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
 
+/**
+ * Class WatchNextCartSaveObserver
+ * @package Ls\Omni\Observer
+ */
 class WatchNextCartSaveObserver implements ObserverInterface
 {
+    /** @var CartObserver  */
     protected $cartObserver;
 
     public function __construct(CartObserver $cartObserver)

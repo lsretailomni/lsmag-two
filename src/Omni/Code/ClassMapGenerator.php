@@ -5,6 +5,10 @@ namespace Ls\Omni\Code;
 use Ls\Omni\Service\Metadata;
 use Zend\Code\Generator\MethodGenerator;
 
+/**
+ * Class ClassMapGenerator
+ * @package Ls\Omni\Code
+ */
 class ClassMapGenerator extends AbstractOmniGenerator
 {
 
@@ -41,6 +45,7 @@ class ClassMapGenerator extends AbstractOmniGenerator
                 $body .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $restriction_name, $fqn);
             }
         }
+        // @codingStandardsIgnoreLine
         $map_method = new MethodGenerator();
         $map_method->setName('getClassMap');
         $map_method->setFinal(true);

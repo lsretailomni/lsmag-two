@@ -7,36 +7,40 @@ use Ls\Omni\Client\Ecommerce\Operation;
 use Ls\Core\Model\LSR;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
+/**
+ * Class LoyaltyHelper
+ * @package Ls\Omni\Helper
+ */
 class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
     const SERVICE_TYPE = 'ecommerce';
 
     /** @var \Magento\Framework\Api\FilterBuilder */
-    protected $filterBuilder;
+    public $filterBuilder;
 
     /** @var \Magento\Framework\Api\SearchCriteriaBuilder */
-    protected $searchCriteriaBuilder;
+    public $searchCriteriaBuilder;
 
     /** @var \Magento\Store\Model\StoreManagerInterface */
-    protected $storeManager;
+    public $storeManager;
 
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
-    protected $customerRepository;
+    public $customerRepository;
 
     /** @var \Magento\Customer\Model\CustomerFactory */
-    protected $customerFactory;
+    public $customerFactory;
 
     /**
      * @var \Magento\Customer\Model\Session\Proxy
      */
-    protected $customerSession;
+    public $customerSession;
 
     /** @var null */
-    protected $_ns = null;
+    public $ns = null;
 
     /** @var \Magento\Framework\Filesystem */
-    protected $_filesystem;
+    public $filesystem;
 
     /**
      * LoyaltyHelper constructor.
@@ -66,7 +70,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerRepository = $customerRepository;
         $this->customerFactory = $customerFactory;
         $this->customerSession = $customerSession;
-        $this->_filesystem = $Filesystem;
+        $this->filesystem = $Filesystem;
 
         parent::__construct(
             $context
@@ -79,8 +83,10 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAllProfiles()
     {
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\ProfilesGetAll();
         $entity = new Entity\ProfilesGetAll();
+        // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {
@@ -95,15 +101,14 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getOffers()
     {
 
-
         $response = null;
         $customer = $this->customerSession->getCustomer();
+        // @codingStandardsIgnoreLine
         $request = new Operation\PublishedOffersGetByCardId();
         $request->setToken($customer->getData('lsr_token'));
-
+        // @codingStandardsIgnoreLine
         $entity = new Entity\PublishedOffersGetByCardId();
         $entity->setCardId($customer->getData('lsr_cardid'));
-
 
         try {
             $response = $request->execute($entity);
@@ -125,12 +130,12 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($image_id == null || $image_size == null) {
             return $response;
         }
-
+        // @codingStandardsIgnoreStart
         $request = new Operation\ImageGetById();
         $entity = new Entity\ImageGetById();
+        // @codingStandardsIgnoreEnd
         $entity->setId($image_id)
             ->setImageSize($image_size);
-
 
         try {
             $response = $request->execute($entity);
@@ -140,6 +145,9 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $response ? $response->getResult() : $response;
     }
 
+    /**
+     * @return float|int
+     */
     public function convertPointsIntoValues()
     {
 
@@ -150,7 +158,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $pointrate = $this->getPointRate();
 
         // check if we have something in there.
-        if (!is_null($memberProfile) and !is_null($pointrate)) {
+        if ($memberProfile!=null and $pointrate!=null) {
             $points = $memberProfile->getAccount()->getPointBalance();
             $value = $points * $pointrate;
             return $value;
@@ -173,9 +181,10 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (!$lsrId) {
             $lsrId = $customer->getData('lsr_id');
         }
-
+        // @codingStandardsIgnoreLine
         $request = new Operation\ContactGetById();
         $request->setToken($customer->getData('lsr_token'));
+        // @codingStandardsIgnoreLine
         $entity = new Entity\ContactGetById();
         $entity->setContactId($lsrId);
 
@@ -197,8 +206,10 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getPointRate()
     {
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\GetPointRate();
         $entity = new Entity\GetPointRate();
+        // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {
@@ -213,7 +224,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getImageSize($size = null)
     {
-
+        // @codingStandardsIgnoreLine
         $imagesize = new Entity\ImageSize();
         $imagesize->setHeight($size['height'])
             ->setWidth($size['width']);
@@ -225,6 +236,6 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getMediaPathtoStore()
     {
-        return $this->_filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
+        return $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
     }
 }

@@ -19,30 +19,34 @@ use Ls\Omni\Service\Soap\RestrictionDefinition;
 use Ls\Omni\Service\Soap\SoapType;
 use ReflectionClass;
 
+/**
+ * Class Metadata
+ * @package Ls\Omni\Service
+ */
 class Metadata
 {
     const ARRAY_REGEX = '/ArrayOf/';
 
     /** @var Client */
-    protected $client;
+    public $client;
     /** @var bool */
-    protected $with_replication;
+    public $with_replication;
     /** @var Operation[] */
-    protected $operations = [];
+    public $operations = [];
     /** @var ReplicationOperation[] */
-    protected $replications = [];
+    public $replications = [];
     /** @var Element[] */
-    protected $elements = [];
+    public $elements = [];
     /** @var Element[] */
-    protected $entities = [];
+    public $entities = [];
     /** @var ComplexType[] */
-    protected $types = [];
+    public $types = [];
     /** @var Restriction[] */
-    protected $restrictions = [];
+    public $restrictions = [];
 
-    protected $baseClasses = [];
+    public $baseClasses = [];
     /** @var DOMDocument */
-    protected $wsdl;
+    public $wsdl;
     private $type_blacklist = ['anyType', 'anyURI', 'base64Binary', 'boolean', 'byte', 'dateTime', 'decimal',
         'double', 'float', 'int', 'long', 'QName', 'short', 'string', 'unsignedByte',
         'unsignedInt', 'unsignedLong', 'unsignedShort', 'char', 'duration', 'guid'];
@@ -56,12 +60,13 @@ class Metadata
 
         $this->client = $client;
         $this->wsdl = $this->client->getWsdlXml();
+        // @codingStandardsIgnoreLine
         $this->xpath = new DOMXPath($this->wsdl);
         $this->with_replication = $with_replication;
         $this->build();
     }
 
-    protected function build()
+    public function build()
     {
 
         $omni_namespace_regex = '/(lsomni|lsretail)/';
@@ -81,15 +86,17 @@ class Metadata
     /**
      * @param DOMElement $schema
      */
-    protected function processOmniSchema(DOMElement $schema)
+    public function processOmniSchema(DOMElement $schema)
     {
 
         /** @var DOMNodeList $simple_types */
+        // @codingStandardsIgnoreStart
         $simple_types = $this->xpath->query('//*[local-name()=\'schema\']/*[local-name()=\'simpleType\']', $schema);
         /** @var DOMNodeList $complex_types */
         $complex_types = $this->xpath->query('//*[local-name()=\'schema\']/*[local-name()=\'complexType\']', $schema);
         /** @var DOMNodeList $elements */
         $elements = $this->xpath->query('//*[local-name()=\'schema\']/*[local-name()=\'element\']', $schema);
+        // @codingStandardsIgnoreEnd
 
         // FIRST WE TRAVERSE SIMPLE TYPES
         // THIS TYPE IS REPRESENTING ENUMERATED VALUES MEANT TO BE USED AS string CONSTANTS WITHIN THE API
@@ -138,11 +145,12 @@ class Metadata
             $detail_name = $restriction_detail->localName;
             $detail_value = $restriction_detail->getAttribute('value');
             $detail_mapping = $restriction_detail->nodeValue;
-
+            // @codingStandardsIgnoreLine
             $definition[] = new RestrictionDefinition($detail_name, $detail_value, $detail_mapping);
         }
 
         // ASSIGN THE VALUE OF THE enumeration USING THE SERIALIZED VALUE
+        // @codingStandardsIgnoreLine
         $this->restrictions[$name] = new Restriction($name, $definition, $base);
 
         return $this->restrictions[$name];
@@ -154,7 +162,7 @@ class Metadata
      *
      * @return ComplexType
      */
-    protected function parseComplexType(DOMElement $complex_type, $complex_name = null)
+    public function parseComplexType(DOMElement $complex_type, $complex_name = null)
     {
 
         // TRAVERSE TO THE TYPE DEFINITION
@@ -183,11 +191,11 @@ class Metadata
      *
      * @return ComplexType
      */
-    protected function parseSequence(DOMElement $sequence, DOMElement $complex_type, $complex_name = null, $baseClass = '')
+    public function parseSequence(DOMElement $sequence, DOMElement $complex_type, $complex_name = null, $baseClass = '')
     {
         $complex_definition = [];
         $entity_name = $complex_name;
-        if (is_null($complex_name)) {
+        if ($complex_name==null) {
             $entity_name = $complex_type->getAttribute('name');
         }
 
@@ -196,11 +204,11 @@ class Metadata
             $name = $element->getAttribute('name');
             $type = $this->stripType($element->getAttribute('type'));
             $min_occurs = $element->getAttribute('minOccurs');
-
+            // @codingStandardsIgnoreLine
             $complex_definition [$name] = new ComplexTypeDefinition($name, $type, $min_occurs);
         }
         $is_array = preg_match(Metadata::ARRAY_REGEX, $entity_name);
-
+        // @codingStandardsIgnoreLine
         return new ComplexType(
             $entity_name,
             $is_array ? SoapType::ARRAY_OF() : SoapType::ENTITY(),
@@ -225,7 +233,7 @@ class Metadata
     /**
      * @param DOMElement $element
      */
-    protected function parseElement(DOMElement $element)
+    public function parseElement(DOMElement $element)
     {
 
         $name = $element->getAttribute('name');
@@ -233,11 +241,12 @@ class Metadata
         if (!$element->hasChildNodes()) {
             $type = $this->stripType($element->getAttribute('type'));
             if (array_search($type, $this->type_blacklist) === false) {
+                // @codingStandardsIgnoreLine
                 $this->elements[$name] = new Element($name, $type);
             }
-        } // OTHERWISE THE DEFINITION IS EMBEDDED AS A complexType
-        elseif (!array_key_exists($name, $this->elements)) {
+        } elseif (!array_key_exists($name, $this->elements)) {
             $complex_type = $this->parseComplexType($element->firstChild, $name);
+            // @codingStandardsIgnoreLine
             $this->elements[$complex_type->getName()] = new Element($name, $name);
         }
     }
@@ -246,7 +255,7 @@ class Metadata
      * THIS METHOD IS CALLED AFTER ALL THE DATA TYPES INFORMATION WAS ACQUIRED
      * WE USE THE PHP NATIVE'S SOAP CLIENT CAPABILITIES TO DISCOVER THE OPERATIONS ALONGSIDE THEIR CONTRACTS
      */
-    protected function processOmniOperations()
+    public function processOmniOperations()
     {
 
         $regex_operation = '/^(?\'response\'.+)\s(?\'operation\'.+)\((?\'request\'.+)\s.*$/';
@@ -261,7 +270,7 @@ class Metadata
 
             $this->elements[$request]->setRequest(true);
             $this->elements[$response]->setResponse(true);
-
+            // @codingStandardsIgnoreLine
             $operation = new Operation($name, $this->elements[$request], $this->elements[$response]);
             $this->operations[$match['operation']] = $operation;
 
@@ -276,12 +285,14 @@ class Metadata
      */
     private function processReplicationOperation(Operation $operation)
     {
+        // @codingStandardsIgnoreStart
         $replication_operation =
             new ReplicationOperation($operation->getName(), $operation->getRequest(), $operation->getResponse());
+        // @codingStandardsIgnoreEnd
         $this->replications[$operation->getName()] = $replication_operation;
     }
 
-    protected function processEntities()
+    public function processEntities()
     {
         $types = $this->client->getSoapClient()->__getTypes();
         foreach ($types as $soap_type) {
@@ -308,7 +319,7 @@ class Metadata
                 }
                 $properties[$property_name] = $property_type;
             }
-
+            // @codingStandardsIgnoreLine
             $this->entities[$entity_name] = new Entity(
                 $entity_name,
                 $this->elements[$entity_name],

@@ -6,14 +6,18 @@ use Magento\Framework\App\Action\Context;
 use Ls\Omni\Helper\LoyaltyHelper;
 use Ls\Core\Model\LSR;
 
+/**
+ * Class Points
+ * @package Ls\Omni\Controller\Ajax
+ */
 class Points extends \Magento\Framework\App\Action\Action
 {
 
     /** @var \Magento\Framework\Controller\Result\JsonFactory  */
-    protected $resultJsonFactory;
+    public $resultJsonFactory;
 
     /** @var \Magento\Framework\Controller\Result\RawFactory  */
-    protected $resultRawFactory;
+    public $resultRawFactory;
 
     /** @var LoyaltyHelper  */
     private $loyaltyHelper;
@@ -21,12 +25,12 @@ class Points extends \Magento\Framework\App\Action\Action
     /**
      * @var \Magento\Checkout\Model\Session\Proxy
      */
-    protected $_checkoutSession;
+    public $checkoutSession;
 
     /**
      * @var \Magento\Customer\Model\Session\Proxy
      */
-    protected $customerSession;
+    public $customerSession;
 
     /**
      * Points constructor.
@@ -51,7 +55,7 @@ class Points extends \Magento\Framework\App\Action\Action
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory = $resultRawFactory;
         $this->loyaltyHelper = $loyaltyHelper;
-        $this->_checkoutSession = $checkoutSession;
+        $this->checkoutSession = $checkoutSession;
         $this->customerSession = $customerSession;
     }
 
@@ -67,7 +71,7 @@ class Points extends \Magento\Framework\App\Action\Action
             return $resultJson->setData('');
         }
         // for now its just returning value into the base currency which is expected to be the same as the NAV currency.
-        $base_currency = $this->_checkoutSession->getQuote()->getBaseCurrencyCode();
+        $base_currency = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
         return $resultJson->setData($base_currency . ' ' . $this->loyaltyHelper->convertPointsIntoValues());
     }
 }

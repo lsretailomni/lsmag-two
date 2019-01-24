@@ -2,38 +2,45 @@
 
 namespace Ls\Omni\Block\Stores;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItems;
 use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Ls\Omni\Helper\Data;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Store\Model\ScopeInterface;
 use Ls\Core\Model\LSR;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Result\PageFactory;
 use \Magento\Framework\Session\SessionManagerInterface;
+use Psr\Log\LoggerInterface;
 
+/**
+ * Class Stores
+ * @package Ls\Omni\Block\Stores
+ */
 class Stores extends Template
 {
     /**
      * @var PageFactory
      */
-    protected $resultPageFactory;
+    public $resultPageFactory;
     /**
      * @var CollectionFactory
      */
-    protected $_replStoreFactory;
+    public $replStoreFactory;
     /**
      * @var ScopeConfigInterface
      */
-    protected $scopeConfig;
+    public $scopeConfig;
     /**
      * @var SessionManagerInterface
      */
-    protected $session;
+    public $session;
     /**
      * @var Data
      */
-    protected $storeHoursHelper;
+    public $storeHoursHelper;
+    /**
+     * @var Data
+     */
+    public $logger;
 
     /**
      * Stores constructor.
@@ -50,13 +57,15 @@ class Stores extends Template
         CollectionFactory $replStoreCollectionFactory,
         ScopeConfigInterface $scopeConfig,
         SessionManagerInterface $session,
-        Data $storeHousHelper
+        Data $storeHousHelper,
+        LoggerInterface $logger
     ) {
         $this->resultPageFactory = $resultPageFactory;
-        $this->_replStoreFactory = $replStoreCollectionFactory;
+        $this->replStoreFactory = $replStoreCollectionFactory;
         $this->scopeConfig = $scopeConfig;
         $this->session = $session;
         $this->storeHoursHelper = $storeHousHelper;
+        $this->logger = $logger;
         parent::__construct($context);
     }
 
@@ -66,9 +75,10 @@ class Stores extends Template
     public function getStores()
     {
         try {
-            $collection = $this->_replStoreFactory->create()->addFieldToFilter('IsDeleted', 0);
+            $collection = $this->replStoreFactory->create()->addFieldToFilter('IsDeleted', 0);
             return $collection;
         } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
         }
     }
 
@@ -82,6 +92,7 @@ class Stores extends Template
             $storeHours = $this->storeHoursHelper->getStoreHours($storeId);
             return $storeHours;
         } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
         }
     }
 
@@ -91,9 +102,12 @@ class Stores extends Template
     public function getStoreMapKey()
     {
         try {
-            $storeScope = ScopeInterface::SCOPE_STORE;
-            return $this->_scopeConfig->getValue(LSR::SC_CLICKCOLLECT_GOOGLE_APIKEY, \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+            return $this->scopeConfig->getValue(
+                LSR::SC_CLICKCOLLECT_GOOGLE_APIKEY,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
         } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
         }
     }
 }

@@ -2,24 +2,27 @@
 
 namespace Ls\Omni\Block\Info;
 
+/**
+ * Class Loyaltypoints
+ * @package Ls\Omni\Block\Info
+ */
 class Loyaltypoints extends \Magento\Payment\Block\Info
 {
 
     /**
      * @var string
      */
-    protected $_payableTo;
+    public $payableTo;
 
     /**
      * @var string
      */
-    protected $_mailingAddress;
+    public $mailingAddress;
 
     /**
      * @var string
      */
-    protected $_template = 'Ls_Omni::info/loyaltypoints.phtml';
-
+    public $template = 'Ls_Omni::info/loyaltypoints.phtml';
 
     /**
      * @return string

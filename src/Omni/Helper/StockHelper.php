@@ -16,11 +16,11 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @var \Magento\Catalog\Api\ProductRepositoryInterface
      */
-    protected $_productRepository;
+    public $productRepository;
     /**
      * @var CollectionFactory
      */
-    protected $_storeCollectionFactory;
+    public $storeCollectionFactory;
 
     /**
      * StockHelper constructor.
@@ -33,8 +33,8 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         CollectionFactory $storeCollectionFactory
     ) {
-        $this->_productRepository = $productRepository;
-        $this->_storeCollectionFactory = $storeCollectionFactory;
+        $this->productRepository = $productRepository;
+        $this->storeCollectionFactory = $storeCollectionFactory;
         parent::__construct($context);
     }
     /**
@@ -50,8 +50,10 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $childProductId
     ) {
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\ItemsInStockGet();
         $itemStock = new Entity\ItemsInStockGet();
+        // @codingStandardsIgnoreEnd
         if (!empty($parentProductId) && !empty($childProductId)) {
             $itemStock->setItemId($parentProductId)->
             setVariantId($childProductId)->setStoreId($storeId);
@@ -76,10 +78,12 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $simpleProductSku = "";
         $response = null;
+        // @codingStandardsIgnoreStart
         $request = new Operation\StoresGetbyItemInStock();
         $itemStock = new Entity\StoresGetbyItemInStock();
+        // @codingStandardsIgnoreEnd
         if (!empty($simpleProductId)) {
-            $simpleProductSku = $this->_productRepository->
+            $simpleProductSku = $this->productRepository->
             getById($simpleProductId)->getSku();
             if (strpos($simpleProductSku, '-') !== false) {
                 $parentProductSku = explode('-', $simpleProductSku)[0];
@@ -106,7 +110,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAllStoresFromReplTable($storesNavIds)
     {
 
-            $stores = $this->_storeCollectionFactory
+            $stores = $this->storeCollectionFactory
                 ->create()
                 ->addFieldToFilter('ClickAndCollect', 1)
                 ->addFieldToFilter('nav_id', ['in' => $storesNavIds])

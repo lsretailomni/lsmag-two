@@ -2,6 +2,10 @@
 
 namespace Ls\Omni\Service\Soap;
 
+/**
+ * Class ComplexTypeDefinition
+ * @package Ls\Omni\Service\Soap
+ */
 class ComplexTypeDefinition
 {
     /** @var string */

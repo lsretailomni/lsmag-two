@@ -8,6 +8,10 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 
+/**
+ * Class DataProvider
+ * @package Ls\Omni\Model\Checkout
+ */
 class DataProvider implements ConfigProviderInterface
 {
     const XPATH_MAPS_API_KEY        = 'omni_clickandcollect/general/maps_api_key';
@@ -16,13 +20,13 @@ class DataProvider implements ConfigProviderInterface
     const XPATH_DEFAULT_ZOOM        = 'omni_clickandcollect/general/default_zoom';
 
     /** @var StoreManagerInterface  */
-    protected $storeManager;
+    public $storeManager;
 
     /** @var CollectionFactory  */
-    protected $storeCollectionFactory;
+    public $storeCollectionFactory;
 
     /** @var ScopeConfigInterface  */
-    protected $scopeConfig;
+    public $scopeConfig;
 
     /**
      * DataProvider constructor.
@@ -47,8 +51,16 @@ class DataProvider implements ConfigProviderInterface
     {
         $store = $this->getStoreId();
         $mapsApiKey = $this->scopeConfig->getValue(self::XPATH_MAPS_API_KEY, ScopeInterface::SCOPE_STORE, $store);
-        $defaultLatitude = $this->scopeConfig->getValue(self::XPATH_DEFAULT_LATITUDE, ScopeInterface::SCOPE_STORE, $store);
-        $defaultLongitude = $this->scopeConfig->getValue(self::XPATH_DEFAULT_LONGITUDE, ScopeInterface::SCOPE_STORE, $store);
+        $defaultLatitude = $this->scopeConfig->getValue(
+            self::XPATH_DEFAULT_LATITUDE,
+            ScopeInterface::SCOPE_STORE,
+            $store
+        );
+        $defaultLongitude = $this->scopeConfig->getValue(
+            self::XPATH_DEFAULT_LONGITUDE,
+            ScopeInterface::SCOPE_STORE,
+            $store
+        );
         $defaultZoom = $this->scopeConfig->getValue(self::XPATH_DEFAULT_ZOOM, ScopeInterface::SCOPE_STORE, $store);
 
         $config = [

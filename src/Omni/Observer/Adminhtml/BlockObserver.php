@@ -4,13 +4,17 @@ namespace Ls\Omni\Observer\Adminhtml;
 use Magento\Framework\Event\Observer as EventObserver;
 use Magento\Framework\Event\ObserverInterface;
 
+/**
+ * Class BlockObserver
+ * @package Ls\Omni\Observer\Adminhtml
+ */
 class BlockObserver implements ObserverInterface
 {
     /** @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface  */
-    protected $_date;
+    private $date;
 
     /** @var \Magento\Framework\View\Element\Template  */
-    protected $_coreTemplate;
+    private $coreTemplate;
 
     /**
      * BlockObserver constructor.
@@ -21,8 +25,8 @@ class BlockObserver implements ObserverInterface
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $date,
         \Magento\Framework\View\Element\Template $coreTemplate
     ) {
-        $this->_date = $date;
-        $this->_coreTemplate = $coreTemplate;
+        $this->date = $date;
+        $this->coreTemplate = $coreTemplate;
     }
 
     /**
@@ -40,8 +44,8 @@ class BlockObserver implements ObserverInterface
                 return $this;
             }
 
-            $formattedDate = $this->_date->formatDate($order->getPickupDate(), \IntlDateFormatter::MEDIUM);
-            $pickupInfo = $this->_coreTemplate
+            $formattedDate = $this->date->formatDate($order->getPickupDate(), \IntlDateFormatter::MEDIUM);
+            $pickupInfo = $this->coreTemplate
                 ->setPickupDate($formattedDate)
                 ->setPickupStore($order->getPickupStore())
                 ->setTemplate('Ls_Omni::order/view/pickup-info.phtml')
