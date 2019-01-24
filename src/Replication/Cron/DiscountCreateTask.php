@@ -1,5 +1,5 @@
 <?php
-// @codingStandardsIgnoreFile
+
 
 namespace Ls\Replication\Cron;
 

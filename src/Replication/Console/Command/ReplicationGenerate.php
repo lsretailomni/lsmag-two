@@ -221,7 +221,7 @@ class ReplicationGenerate extends OmniCommand
     private function createPathIfNotExist()
     {
 
-        $replicationBasePath = $this->_dirReader->getModuleDir('', 'Ls_Replication');
+        $replicationBasePath = $this->dirReader->getModuleDir('', 'Ls_Replication');
 
         // For Replication API Data,
         if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Api/Data')))) {

@@ -66,10 +66,13 @@ abstract class AbstractOperation implements OperationInterface
     /**
      * @return bool
      */
-    public function isTokenized()
+    /** If we change this then we need to change our generator classes in Client/Loyalty Folder as well. */
+    // @codingStandardsIgnoreStart
+    protected function isTokenized()
     {
         return false;
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * @param string $token
