@@ -6,24 +6,28 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\Escaper;
 use Magento\Payment\Helper\Data as PaymentHelper;
 
+/**
+ * Class LoyaltypointsConfigProvider
+ * @package Ls\Omni\Model
+ */
 class LoyaltypointsConfigProvider implements ConfigProviderInterface
 {
 
     /** @var string  */
-    protected $methodCode = Loyaltypoints::PAYMENT_METHOD_LOYALTYPOINTS_CODE;
+    public $methodCode = Loyaltypoints::PAYMENT_METHOD_LOYALTYPOINTS_CODE;
 
     /** @var \Magento\Payment\Model\MethodInterface  */
-    protected $method;
+    public $method;
 
     /**
      * @var Escaper
      */
-    protected $escaper;
+    public $escaper;
 
     /**
      * @var \Magento\Checkout\Model\Session\Proxy
      */
-    protected $_checkoutSession;
+    public $checkoutSession;
 
     /**
      * LoyaltypointsConfigProvider constructor.
@@ -39,7 +43,7 @@ class LoyaltypointsConfigProvider implements ConfigProviderInterface
     ) {
         $this->escaper = $escaper;
         $this->method = $paymentHelper->getMethodInstance($this->methodCode);
-        $this->_checkoutSession = $checkoutSession;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -48,7 +52,7 @@ class LoyaltypointsConfigProvider implements ConfigProviderInterface
     public function getConfig()
     {
 
-        return $this->method->isAvailable($this->_checkoutSession->getQuote()) ? [
+        return $this->method->isAvailable($this->checkoutSession->getQuote()) ? [
             'payment' => [
                 'loyaltypoints' => [
                     'mailingAddress' => $this->getMailingAddress(),

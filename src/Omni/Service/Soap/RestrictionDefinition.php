@@ -2,6 +2,10 @@
 
 namespace Ls\Omni\Service\Soap;
 
+/**
+ * Class RestrictionDefinition
+ * @package Ls\Omni\Service\Soap
+ */
 class RestrictionDefinition
 {
     /** @var string */

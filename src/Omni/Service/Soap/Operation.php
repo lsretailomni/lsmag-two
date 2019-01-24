@@ -5,16 +5,20 @@ namespace Ls\Omni\Service\Soap;
 use CaseHelper\CaseHelperFactory;
 use CaseHelper\CaseHelperInterface;
 
+/**
+ * Class Operation
+ * @package Ls\Omni\Service\Soap
+ */
 class Operation
 {
     /** @var CaseHelperInterface */
-    protected $case_helper = null;
+    public $case_helper = null;
     /** @var string */
-    protected $name;
+    public $name;
     /** @var Element */
-    protected $request;
+    public $request;
     /** @var Element */
-    protected $response;
+    public $response;
 
     /**
      * @param string $name
@@ -49,7 +53,7 @@ class Operation
     /**
      * @param string $name
      */
-    protected function setName($name)
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -65,7 +69,7 @@ class Operation
     /**
      * @param Element $request
      */
-    protected function setRequest($request)
+    public function setRequest($request)
     {
         $this->request = $request;
     }
@@ -81,7 +85,7 @@ class Operation
     /**
      * @param Element $response
      */
-    protected function setResponse($response)
+    public function setResponse($response)
     {
         $this->response = $response;
     }

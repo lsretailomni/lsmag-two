@@ -10,10 +10,14 @@ use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class BaseUrl
+ * @package Ls\Omni\Model\System\Backend
+ */
 class BaseUrl extends Value
 {
     /** @var LoggerInterface */
-    protected $logger;
+    public $logger;
 
     /**
      * @param Context               $context
@@ -36,8 +40,7 @@ class BaseUrl extends Value
         $this->logger = $context->getLogger();
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
     }
-
-
+    // @codingStandardsIgnoreStart
     public function beforeSave()
     {
         return parent::beforeSave();
@@ -52,4 +55,5 @@ class BaseUrl extends Value
     {
         return parent::afterDelete();
     }
+    // @codingStandardsIgnoreEnd
 }

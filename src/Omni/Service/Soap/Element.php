@@ -2,6 +2,10 @@
 
 namespace Ls\Omni\Service\Soap;
 
+/**
+ * Class Element
+ * @package Ls\Omni\Service\Soap
+ */
 class Element
 {
     /** @var string */
@@ -62,11 +66,10 @@ class Element
     /**
      * @param string $type
      */
-    protected function setType($type)
+    public function setType($type)
     {
         $this->type = $type;
     }
-
 
     /**
      * @return array
@@ -79,7 +82,7 @@ class Element
     /**
      * @param array $definition
      */
-    protected function setDefinition($definition)
+    public function setDefinition($definition)
     {
         $this->definition = $definition;
     }
@@ -127,7 +130,7 @@ class Element
     /**
      * @param string $base
      */
-    protected function setBase($base)
+    public function setBase($base)
     {
         $this->base = $base;
     }

@@ -9,29 +9,35 @@ use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Core\Model\LSR;
 
+/**
+ * Class AbstractOperation
+ * @package Ls\Omni\Client
+ */
 abstract class AbstractOperation implements OperationInterface
 {
     /** @var string  */
     private static $header = 'LSRETAIL-TOKEN';
 
     /** @var  ServiceType */
-    protected $service_type;
+    public $service_type;
 
     /** @var string */
-    protected $token = null;
+    public $token = null;
 
     /** @var $service_type ServiceType */
-    protected $logger;
+    public $logger;
 
     /** @var \Zend\Log\Writer\Stream  */
-    protected $writer;
+    public $writer;
 
     /** @var \Psr\Log\LoggerInterface  */
-    protected $magentoLogger;
+    public $magentoLogger;
 
     /** @var $objectManager \Magento\Framework\App\ObjectManager */
-    protected $objectManager;
+    public $objectManager;
 
+    /*** @var Zend\Log\Writer\Stream  */
+    public $zendWriter;
 
     /**
      * AbstractOperation constructor.
@@ -40,11 +46,13 @@ abstract class AbstractOperation implements OperationInterface
     public function __construct(ServiceType $service_type)
     {
         $this->service_type = $service_type;
+        //@codingStandardsIgnoreStart
         $this->writer = new \Zend\Log\Writer\Stream(BP . '/var/log/omniclient.log');
         $this->logger = new \Zend\Log\Logger();
         $this->logger->addWriter($this->writer);
         $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $this->magentoLogger = $this->objectManager->get('\Psr\Log\LoggerInterface');
+        //@codingStandardsIgnoreEnd
     }
 
     /**
@@ -58,7 +66,7 @@ abstract class AbstractOperation implements OperationInterface
     /**
      * @return bool
      */
-    protected function isTokenized()
+    public function isTokenized()
     {
         return false;
     }
@@ -80,12 +88,14 @@ abstract class AbstractOperation implements OperationInterface
      * @return ResponseInterface
      * @throws TokenNotFoundException
      */
-    protected function makeRequest($operation_name)
+    public function makeRequest($operation_name)
     {
         $request_input = $this->getOperationInput();
         $client = $this->getClient();
         $header = self::$header;
+        //@codingStandardsIgnoreStart
         $client->setStreamContext(stream_context_create(['http' => ['header' => "$header: {$this->token}"]]));
+        //@codingStandardsIgnoreEnd
         try {
             $response = $client->{$operation_name}($request_input);
         } catch (\SoapFault $e) {
@@ -100,7 +110,7 @@ abstract class AbstractOperation implements OperationInterface
     /**
      * @return OmniClient
      */
-    abstract function getClient();
+    abstract public function getClient();
 
     /**
      * @param $xmlString
@@ -108,7 +118,9 @@ abstract class AbstractOperation implements OperationInterface
      */
     private function formatXML($xmlString)
     {
+        //@codingStandardsIgnoreStart
         $dom = new \DOMDocument("1.0");
+        //@codingStandardsIgnoreEnd
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $dom->loadXML($xmlString);
@@ -120,7 +132,9 @@ abstract class AbstractOperation implements OperationInterface
      */
     private function debugLog($operation_name)
     {
+        //@codingStandardsIgnoreStart
         $lsr=$this->objectManager->get("\Ls\Core\Model\LSR");
+        //@codingStandardsIgnoreEnd
         $isEnable=$lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
         if ($isEnable) {
             $this->logger->debug("==== REQUEST == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
@@ -134,12 +148,14 @@ abstract class AbstractOperation implements OperationInterface
      * @param \SoapFault $exception
      * @return NavException|NavObjectReferenceNotAnInstanceException
      */
-    protected function parseException(\SoapFault $exception)
+    public function parseException(\SoapFault $exception)
     {
+        //@codingStandardsIgnoreStart
         $navException = new NavException($exception->getMessage(), 1, $exception);
         if (strpos($exception->getMessage(), "Object reference not set to an instance of an object") !== -1) {
             $navException = new NavObjectReferenceNotAnInstanceException($exception->getMessage(), 1, $exception);
         }
+        //@codingStandardsIgnoreEnd
         return $navException;
     }
 }

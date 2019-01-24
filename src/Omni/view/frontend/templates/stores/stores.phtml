@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var \Ls\Replication\Block\Stores\Stores $block
+ * @var \Ls\Omni\Block\Stores\Stores $block
  */
 
 $collection = $block->getStores();
@@ -40,7 +40,7 @@ if(!empty($collection)) {
                 ?>
                 <p><label><i class="far fa-hourglass"></i>&nbsp;<strong>Opening Hours:</strong></label></p>
                 <?php
-                foreach($hours as $h) {
+                foreach ($hours as $h) {
                 ?>
                 <p>
                     <?php echo $h['day']." : "." ".$h['openhours']." to ".$h['closedhours'] ?></p>

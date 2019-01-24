@@ -21,12 +21,12 @@ class ReplicationOperation extends Operation
     const BASE_OMNI_NAMESPACE = 'Ls\Omni\Client\Ecommerce\Entity';
     const BASE_OPERATION_NAMESPACE = 'Ls\Omni\Client\Ecommerce\Operation';
 
-    const known_result_properties = [ 'LastKey', 'MaxKey', 'RecordsRemaining' ];
+    const KNOWN_RESULT_PROPERTIES = [ 'LastKey', 'MaxKey', 'RecordsRemaining' ];
 
     /** @var string */
-    protected $entity_name;
+    public $entity_name;
     /** @var string */
-    protected $base_path;
+    public $base_path;
 
     /**
      * @param string  $name
@@ -53,23 +53,26 @@ class ReplicationOperation extends Operation
     {
 
         $response_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $response->getName());
+        // @codingStandardsIgnoreLine
         $response_reflection = new ReflectionClass($response_fqn);
         $result_docbblock = $response_reflection->getMethod('getResult')->getDocComment();
 
         preg_match('/@return\s(:?[\w]+)/', $result_docbblock, $matches);
         $result_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $matches[ 1 ]);
+        // @codingStandardsIgnoreLine
         $result_reflection = new ReflectionClass($result_fqn);
 
         $array_of = null;
         foreach ($result_reflection->getProperties() as $array_of) {
             // FILTER OUT THE MAIN ARRAY_OF ENTITY
-            if (array_search($array_of->getName(), self::known_result_properties) === false) {
+            if (array_search($array_of->getName(), self::KNOWN_RESULT_PROPERTIES) === false) {
                 break;
             }
         }
         $array_of_docblock = $array_of->getDocComment();
         preg_match('/@property\s(:?[\w]+)\s(:?\$[\w]+)/', $array_of_docblock, $matches);
         $array_of_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $matches[ 1 ]);
+        // @codingStandardsIgnoreLine
         $array_of_reflection = new ReflectionClass($array_of_fqn);
 
         // DRILL INTO THE MAIN ENTIY
@@ -101,6 +104,7 @@ class ReplicationOperation extends Operation
      */
     private function getDirReader()
     {
+        // @codingStandardsIgnoreLine
         return $this->getObjectManager()->get('\Magento\Framework\Module\Dir\Reader');
     }
 
@@ -475,7 +479,6 @@ class ReplicationOperation extends Operation
     {
         return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, $this->getSearchName());
     }
-
 
     /**
      * @param bool $absolute

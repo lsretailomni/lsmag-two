@@ -7,10 +7,14 @@ use Ls\Omni\Client\Ecommerce\Entity;
 use Magento\Quote\Model\Quote\Address\Total\Collector;
 use Magento\Quote\Model\Quote\Address\Total\CollectorFactory;
 
+/**
+ * Class TotalsCollector
+ * @package Ls\Omni\Model
+ */
 class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
 {
     /** @var BasketHelper  */
-    protected $basketHelper;
+    public $basketHelper;
 
     /**
      * ***** Important ***********
@@ -134,9 +138,11 @@ class TotalsCollector extends \Magento\Quote\Model\Quote\TotalsCollector
             $sum = $price*$qty;
             $quoteSum += $sum;
         }
+        // @codingStandardsIgnoreStart
         if ($quoteSum != $basketCalc->getTotalAmount()) {
             // TODO: what to do now? Discounts maybe not included?
         }
+        // @codingStandardsIgnoreEnd
 
         $total->setShippingAmount(5);
         $total->setBaseShippingAmount(5);

@@ -7,6 +7,10 @@ use Ls\Core\Code\AbstractGenerator as CoreGenerator;
 use Ls\Omni\Service\Metadata;
 use Ls\Omni\Service\ServiceType;
 
+/**
+ * Class AbstractOmniGenerator
+ * @package Ls\Omni\Code
+ */
 abstract class AbstractOmniGenerator extends CoreGenerator
 {
     /** @var ServiceType */
@@ -38,7 +42,7 @@ abstract class AbstractOmniGenerator extends CoreGenerator
     /**
      * @return ServiceType
      */
-    protected function getServiceType()
+    public function getServiceType()
     {
         return $this->service_type;
     }
@@ -46,7 +50,7 @@ abstract class AbstractOmniGenerator extends CoreGenerator
     /**
      * @return Metadata
      */
-    protected function getMetadata()
+    public function getMetadata()
     {
         return $this->metadata;
     }

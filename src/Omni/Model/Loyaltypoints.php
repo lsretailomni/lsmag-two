@@ -5,21 +5,26 @@ namespace Ls\Omni\Model;
 use Magento\Framework\DataObject;
 use Ls\Omni\Helper\LoyaltyHelper;
 
+/**
+ * Class Loyaltypoints
+ * @package Ls\Omni\Model
+ */
 class Loyaltypoints extends \Magento\Payment\Model\Method\AbstractMethod
 {
     const PAYMENT_METHOD_LOYALTYPOINTS_CODE = 'loyaltypoints';
 
     /** @var string */
+    // @codingStandardsIgnoreLine
     protected $_code = self::PAYMENT_METHOD_LOYALTYPOINTS_CODE;
 
     /** @var string */
-    protected $_formBlockType = \Ls\Omni\Block\Form\Loyaltypoints::class;
+    public $formBlockType = \Ls\Omni\Block\Form\Loyaltypoints::class;
 
     /** @var string */
-    protected $_infoBlockType = \Ls\Omni\Block\Info\Loyaltypoints::class;
+    public $infoBlockType = \Ls\Omni\Block\Info\Loyaltypoints::class;
 
     /** @var bool */
-    protected $_isOffline = true;
+    public $isOffline = true;
 
     /** @var LoyaltyHelper */
     private $loyaltyHelper;
@@ -91,7 +96,6 @@ class Loyaltypoints extends \Magento\Payment\Model\Method\AbstractMethod
         }
         // get member point value and check if its greater then the order amount.
         $loyaltyAmount = $this->loyaltyHelper->convertPointsIntoValues();
-
 
         $quoteValue = $quote->getBaseGrandTotal();
 

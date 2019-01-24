@@ -2,6 +2,10 @@
 
 namespace Ls\Omni\Service\Soap;
 
+/**
+ * Class Entity
+ * @package Ls\Omni\Service\Soap
+ */
 class Entity
 {
     /** @var string */
@@ -37,7 +41,7 @@ class Entity
     /**
      * @param string $name
      */
-    protected function setName($name)
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -53,7 +57,7 @@ class Entity
     /**
      * @param Element $element
      */
-    protected function setElement($element)
+    public function setElement($element)
     {
         $this->element = $element;
     }
@@ -69,7 +73,7 @@ class Entity
     /**
      * @param array $definition
      */
-    protected function setDefinition($definition)
+    public function setDefinition($definition)
     {
         $this->definition = $definition;
     }
