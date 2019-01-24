@@ -17,7 +17,7 @@ class RestrictionGenerator extends AbstractOmniGenerator
     private $caseHelperFactory;
 
     /** @var array  */
-    protected $equivalences = [
+    public $equivalences = [
         'decimal' => 'float',
         'long' => 'int',
         'dateTime' => 'string',
