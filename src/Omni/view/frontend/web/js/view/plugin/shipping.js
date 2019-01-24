@@ -10,7 +10,8 @@ define([
             validateShippingInformation: function () {
                 if( quote.shippingMethod().carrier_code == 'clickandcollect') {
                     var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
-                    if ($('#pickup-date').val() == '' || (stores.totalRecords > 1 && $('#pickup-store').val() == '')) {
+                    // if ($('#pickup-date').val() == '' || (stores.totalRecords > 1 && $('#pickup-store').val() == '')) {
+                    if (stores.totalRecords > 1 && $('#pickup-store').val() == '') {
                         this.errorValidationMessage('Please provide when and where (if suitable) you prefer to pick your order.');
                         return false;
                     }
