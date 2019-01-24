@@ -11,10 +11,10 @@ use Magento\Framework\Event\ObserverInterface;
 class BlockObserver implements ObserverInterface
 {
     /** @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface  */
-    private $_date;
+    private $date;
 
     /** @var \Magento\Framework\View\Element\Template  */
-    private $_coreTemplate;
+    private $coreTemplate;
 
     /**
      * BlockObserver constructor.
@@ -25,8 +25,8 @@ class BlockObserver implements ObserverInterface
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $date,
         \Magento\Framework\View\Element\Template $coreTemplate
     ) {
-        $this->_date = $date;
-        $this->_coreTemplate = $coreTemplate;
+        $this->date = $date;
+        $this->coreTemplate = $coreTemplate;
     }
 
     /**
@@ -45,7 +45,7 @@ class BlockObserver implements ObserverInterface
             }
 
             $formattedDate = $this->date->formatDate($order->getPickupDate(), \IntlDateFormatter::MEDIUM);
-            $pickupInfo = $this->_coreTemplate
+            $pickupInfo = $this->coreTemplate
                 ->setPickupDate($formattedDate)
                 ->setPickupStore($order->getPickupStore())
                 ->setTemplate('Ls_Omni::order/view/pickup-info.phtml')
