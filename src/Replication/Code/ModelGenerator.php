@@ -144,7 +144,7 @@ class ModelGenerator extends AbstractGenerator
             null,
             'string',
             [ PropertyGenerator::FLAG_PROTECTED ],
-            [ 'pascal_name' => 'Is Updated', 'variable_name' => 'is_updated', 'model' => true ]
+            [ 'pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'model' => true ]
         );
         $content = $this->file->generate();
         $content = str_replace(
