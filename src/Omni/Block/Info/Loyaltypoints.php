@@ -22,7 +22,8 @@ class Loyaltypoints extends \Magento\Payment\Block\Info
     /**
      * @var string
      */
-    public $template = 'Ls_Omni::info/loyaltypoints.phtml';
+    // @codingStandardsIgnoreLine
+    public $_template = 'Ls_Omni::info/loyaltypoints.phtml';
 
     /**
      * @return string

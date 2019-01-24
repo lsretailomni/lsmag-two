@@ -70,7 +70,7 @@ class ReplicationGenerate extends OmniCommand
      * @param OutputInterface $output
      * @throws \Ls\Omni\Exception\InvalidServiceTypeException
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    public function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->type = ServiceType::ECOMMERCE();
         parent::initialize($input, $output);

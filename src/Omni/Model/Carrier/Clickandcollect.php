@@ -21,10 +21,12 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
 {
 
     /** @var string  */
-    public $code = 'clickandcollect';
+    // @codingStandardsIgnoreLine
+    public $_code = 'clickandcollect';
 
     /** @var bool  */
-    public $isFixed = true;
+    // @codingStandardsIgnoreLine
+    public $_isFixed = true;
 
     /** @var ResultFactory  */
     public $rateResultFactory;
