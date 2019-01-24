@@ -1,10 +1,15 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
 use Ls\Omni\Service\Soap\ReplicationOperation;
 use Zend\Code\Generator\GeneratorInterface;
 
+/**
+ * Class SystemConfigGenerator
+ * @package Ls\Replication\Code
+ */
 class SystemConfigGenerator implements GeneratorInterface
 {
     /** @var  ReplicationOperation */

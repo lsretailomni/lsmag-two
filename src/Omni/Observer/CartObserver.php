@@ -6,31 +6,35 @@ use Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Event\ObserverInterface;
 use Ls\Omni\Helper\ContactHelper;
 
+/**
+ * Class CartObserver
+ * @package Ls\Omni\Observer
+ */
 class CartObserver implements ObserverInterface
 {
     /** @var ContactHelper */
     private $contactHelper;
 
     /** @var BasketHelper */
-    protected $basketHelper;
+    private $basketHelper;
 
     /** @var \Psr\Log\LoggerInterface */
-    protected $logger;
+    private $logger;
 
     /**
      * @var \Magento\Customer\Model\Session\Proxy
      */
-    protected $customerSession;
+    private $customerSession;
 
     /**
      * @var \Magento\Checkout\Model\Session\Proxy
      */
-    protected $checkoutSession;
+    private $checkoutSession;
 
     /** @var bool */
-    protected $watchNextSave = false;
+    private $watchNextSave = false;
 
-    protected $session;
+    private $session;
 
     /**
      * CartObserver constructor.

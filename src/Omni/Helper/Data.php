@@ -7,24 +7,32 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Ls\Replication\Api\ReplStoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Ls\Omni\Client\Ecommerce\Entity\StoreHours;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfStoreHours;
 use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use Ls\Core\Model\LSR;
+use \Magento\Framework\Session\SessionManagerInterface;
 
+/**
+ * Class Data
+ * @package Ls\Omni\Helper
+ */
 class Data extends AbstractHelper
 {
     /** @var StoreManagerInterface */
-    protected $_storeManager;
+    public $storeManager;
 
     /** @var \Magento\Framework\App\Config\ScopeConfigInterface */
-    protected $_config;
+    public $config;
 
     /** @var ReplStoreRepositoryInterface */
-    protected $storeRepository;
+    public $storeRepository;
 
     /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
-    protected $searchCriteriaBuilder;
+    public $searchCriteriaBuilder;
+
+    /**
+     * @var SessionManagerInterface
+     */
+    public $session;
 
     /**
      * Data constructor.
@@ -37,15 +45,16 @@ class Data extends AbstractHelper
         Context $context,
         StoreManagerInterface $store_manager,
         ReplStoreRepositoryInterface $storeRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        SessionManagerInterface $session
     ) {
-        $this->_storeManager = $store_manager;
+        $this->storeManager = $store_manager;
         $this->storeRepository = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->_config = $context->getScopeConfig();
+        $this->session = $session;
+        $this->config = $context->getScopeConfig();
         parent::__construct($context);
     }
-
 
     /**
      * @param $storeId
@@ -68,7 +77,7 @@ class Data extends AbstractHelper
     public function getStoreHours($storeId)
     {
         try {
-            $storeResults = [];
+            // @codingStandardsIgnoreLine
             $request = new StoreGetById();
             $request->getOperationInput()->setStoreId($storeId);
             if (empty($this->getValue())) {
@@ -91,19 +100,27 @@ class Data extends AbstractHelper
         }
     }
 
-
+    /**
+     * @param $value
+     */
     public function setValue($value)
     {
         $this->session->start();
         $this->session->setMessage($value);
     }
 
+    /**
+     * @return mixed
+     */
     public function getValue()
     {
         $this->session->start();
         return $this->session->getMessage();
     }
 
+    /**
+     * @return mixed
+     */
     public function unSetValue()
     {
         $this->session->start();

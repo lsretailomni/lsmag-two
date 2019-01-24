@@ -15,16 +15,18 @@ class Category extends Action
 {
 
     /** @var LoggerInterface */
-    protected $logger;
+    public $logger;
 
     /** @var Registry $registry */
     private $registry;
 
     /** @var CategoryFactory $categoryFactory */
-    protected $categoryFactory;
+    public $categoryFactory;
 
+    // @codingStandardsIgnoreStart
     /** @var array  */
     protected $_publicActions = ['category'];
+    // @codingStandardsIgnoreEnd
     
     /**
      * Category Deletion constructor.
@@ -44,7 +46,6 @@ class Category extends Action
         parent::__construct($context);
     }
 
-
     /**
      * Remove categories tree
      *
@@ -57,7 +58,9 @@ class Category extends Action
         foreach ($categories as $category) {
             if ($category->getId() > 2) {
                 try {
+                    // @codingStandardsIgnoreStart
                     $category->delete();
+                    // @codingStandardsIgnoreEnd
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
                 }

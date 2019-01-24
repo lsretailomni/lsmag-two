@@ -7,7 +7,7 @@ require([
             if ($('.ls_scrollbutton_forward').length) {
                 $(document).on('click', '.ls_scrollbutton_forward', function (event) {
                     event.preventDefault();
-                    if($(".admin__data-grid-wrap").filter(':animated').length>0) {
+                    if ($(".admin__data-grid-wrap").filter(':animated').length > 0) {
                         return false;
                     }
                     $('.admin__data-grid-wrap').animate({
@@ -22,7 +22,7 @@ require([
             if ($('.ls_scrollbutton_back').length) {
                 $(document).on('click', '.ls_scrollbutton_back', function (event) {
                     event.preventDefault();
-                    if($(".admin__data-grid-wrap").filter(':animated').length>0) {
+                    if ($(".admin__data-grid-wrap").filter(':animated').length > 0) {
                         return false;
                     }
                     $('.admin__data-grid-wrap').animate({

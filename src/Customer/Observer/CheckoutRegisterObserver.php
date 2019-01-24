@@ -13,18 +13,25 @@ class CheckoutRegisterObserver implements ObserverInterface
 {
     /** @var ContactHelper */
     private $contactHelper;
+
     /** @var \Psr\Log\LoggerInterface */
     protected $logger;
+
     /** @var \Magento\Customer\Model\Session $customerSession */
     protected $customerSession;
-    /** @var \Magento\Checkout\Model\Session */
+
+    /** @var \Magento\Checkout\Model\Session\Proxy */
     protected $checkoutSession;
+
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
     protected $orderRepository;
+
     /** @var \Magento\Customer\Model\CustomerFactory */
     protected $customerFactory;
+
     /** @var \Magento\Store\Model\StoreManagerInterface */
     protected $storeManager;
+
     /** @var \Magento\Customer\Model\ResourceModel\Customer */
     protected $customerResourceModel;
 
@@ -32,8 +39,8 @@ class CheckoutRegisterObserver implements ObserverInterface
      * CheckoutRegisterObserver constructor.
      * @param ContactHelper $contactHelper
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
@@ -43,8 +50,8 @@ class CheckoutRegisterObserver implements ObserverInterface
     public function __construct(
         ContactHelper $contactHelper,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -67,7 +74,6 @@ class CheckoutRegisterObserver implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-
         $orderId = $this->checkoutSession->getLastOrderId();
         $order = $this->orderRepository->get($orderId);
         if ($order->getCustomerId()) {
@@ -89,7 +95,7 @@ class CheckoutRegisterObserver implements ObserverInterface
                 $customer->setData('lsr_cardid', $card->getId());
 
                 if ($contact->getAccount()->getScheme()->getId()) {
-                    $customerGroupId      =   $this->contactHelper->getCustomerGroupIdByName(
+                    $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
                         $contact->getAccount()->getScheme()->getId()
                     );
                     $customer->setGroupId($customerGroupId);

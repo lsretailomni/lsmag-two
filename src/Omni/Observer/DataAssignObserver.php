@@ -4,6 +4,10 @@ namespace Ls\Omni\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 
+/**
+ * Class DataAssignObserver
+ * @package Ls\Omni\Observer
+ */
 class DataAssignObserver implements ObserverInterface
 {
     /**

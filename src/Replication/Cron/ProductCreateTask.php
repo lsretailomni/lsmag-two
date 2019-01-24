@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Cron;
 
@@ -382,8 +383,8 @@ class ProductCreateTask
         /** @var \Ls\Replication\Model\ReplImageLink $image */
         foreach ($productImages as $image) {
             $imageSize = [
-                'height' => $this->_lsr::DEFAULT_IMAGE_HEIGHT,
-                'width' => $this->_lsr::DEFAULT_IMAGE_WIDTH
+                'height' => $this->_lsr::DEFAULT_ITEM_IMAGE_HEIGHT,
+                'width' => $this->_lsr::DEFAULT_ITEM_IMAGE_WIDTH
             ];
             /** @var \Ls\Omni\Client\Ecommerce\Entity\ImageSize $imageSizeObject */
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);

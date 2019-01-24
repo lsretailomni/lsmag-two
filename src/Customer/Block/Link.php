@@ -5,14 +5,18 @@ namespace Ls\Customer\Block;
 use Magento\Customer\Block\Account\SortLinkInterface;
 use Magento\Customer\Model\Context;
 
+/**
+ * Class Link
+ * @package Ls\Customer\Block
+ */
 class Link extends \Magento\Framework\View\Element\Html\Link implements SortLinkInterface
 {
 
     /** @var string  */
-    protected $_template = 'Ls_Customer::link.phtml';
+    public $template = 'Ls_Customer::link.phtml';
 
     /** @var \Magento\Framework\App\Http\Context  */
-    protected $httpContext;
+    public $httpContext;
 
     /**
      * Link constructor.
@@ -32,7 +36,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
     /**
      * @return string
      */
-    protected function _toHtml()
+    public function _toHtml()
     {
         if ($this->isLoggedIn()) {
             return parent::_toHtml();

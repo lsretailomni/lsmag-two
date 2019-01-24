@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 namespace Ls\Omni\Code;
 
 use ArrayIterator;
@@ -15,11 +16,15 @@ use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
+/**
+ * Class EntityGenerator
+ * @package Ls\Omni\Code
+ */
 class EntityGenerator extends AbstractOmniGenerator
 {
 
     /** @var array  */
-    protected $equivalences = [
+    public $equivalences = [
         'decimal' => 'float',
         'long' => 'int',
         'dateTime' => 'string',
@@ -30,7 +35,6 @@ class EntityGenerator extends AbstractOmniGenerator
 
     /** @var Entity */
     private $entity;
-
 
     /**
      * EntityGenerator constructor.
@@ -59,12 +63,9 @@ class EntityGenerator extends AbstractOmniGenerator
 
         $this->class->setName($this->entity->getName());
 
-
         $this->class->setNamespaceName($entity_namespace);
 
         $type = $element->getType();
-
-
 
         $type = $types[ $type ];
 
@@ -73,7 +74,6 @@ class EntityGenerator extends AbstractOmniGenerator
         //Force those Response classes to put the iterator methods to be first
         //See Replication/Cron/AbstractReplicationTask->getIterator for how these Entity classes are used by Replication
         $typeDefinition = $type->getDefinition();
-
 
         $typeDefinitionArray = [];
         foreach ($typeDefinition as $k => $v) {
@@ -219,15 +219,12 @@ CODE
             $this->class->setExtendedClass("meannothing".$type->getBase());
         }
 
-
         $content = $this->file->generate();
-
 
         // Zend add / in the start of base class which we dont need. so replace this with blah.
         if ($type->getBase()) {
             $content = str_replace("\\meannothing".$type->getBase(), $type->getBase(), $content);
         }
-
 
 
         $content = str_replace('implements \\IteratorAggregate', 'implements IteratorAggregate', $content);

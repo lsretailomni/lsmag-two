@@ -6,6 +6,10 @@
  */
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
+/**
+ * Class Discount
+ * @package Ls\Replication\Controller\Adminhtml\Grids
+ */
 class Discount extends \Magento\Backend\App\Action
 {
     /**

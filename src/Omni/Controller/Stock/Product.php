@@ -13,22 +13,22 @@ class Product extends \Magento\Framework\App\Action\Action
     /**
      * @var \Magento\Framework\App\Request\Http\Proxy
      */
-    protected $_request;
+    public $request;
 
     /**
      * @var \Magento\Checkout\Model\Session\Proxy
      */
-    protected $_session;
+    public $session;
 
     /**
      * @var \Ls\Omni\Helper\StockHelper
      */
-    protected $_stockHelper;
+    public $stockHelper;
 
     /**
      * @var \Magento\Framework\Controller\Result\JsonFactory
      */
-    protected $_resultJsonFactory;
+    public $resultJsonFactory;
 
     /**
      * Product constructor.
@@ -45,10 +45,10 @@ class Product extends \Magento\Framework\App\Action\Action
         \Magento\Checkout\Model\Session\Proxy $session,
         \Ls\Omni\Helper\StockHelper $stockHelper
     ) {
-        $this->_request = $request;
-        $this->_session = $session;
-        $this->_stockHelper = $stockHelper;
-        $this->_resultJsonFactory = $resultJsonFactory;
+        $this->request = $request;
+        $this->session = $session;
+        $this->stockHelper = $stockHelper;
+        $this->resultJsonFactory = $resultJsonFactory;
         parent::__construct($context);
     }
 
@@ -58,7 +58,7 @@ class Product extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        $result = $this->_resultJsonFactory->create();
+        $result = $this->resultJsonFactory->create();
         $notAvailableNoticeTitle = __(
             \Ls\Core\Model\LSR::MSG_NOT_AVAILABLE_NOTICE_TITLE
         );
@@ -67,9 +67,9 @@ class Product extends \Magento\Framework\App\Action\Action
         );
         if ($this->getRequest()->isAjax()) {
             $storesNavId = [];
-            $productSku = $this->_request->getParam('sku');
-            $simpleProductId = $this->_request->getParam('id');
-            $response = $this->_stockHelper->getAllStoresItemInStock(
+            $productSku = $this->request->getParam('sku');
+            $simpleProductId = $this->request->getParam('id');
+            $response = $this->stockHelper->getAllStoresItemInStock(
                 $simpleProductId,
                 $productSku
             );
@@ -81,7 +81,7 @@ class Product extends \Magento\Framework\App\Action\Action
                 $storesNavId[] = $response->getStore()->getId();
             }
 
-            $customResponse = $this->_stockHelper->getAllStoresFromReplTable(
+            $customResponse = $this->stockHelper->getAllStoresFromReplTable(
                 $storesNavId
             );
             $result = $result->setData(

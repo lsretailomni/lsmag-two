@@ -1,19 +1,30 @@
 <?php
+
 namespace Ls\Customer\Block\Loyalty;
 
 use Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Store\Model\StoreManagerInterface;
 
+/**
+ * Class Offers
+ * @package Ls\Customer\Block\Loyalty
+ */
 class Offers extends \Magento\Framework\View\Element\Template
 {
 
-    /* @var \Ls\Omni\Helper\LoyaltyHelper */
+    /**
+     * @var LoyaltyHelper
+     */
     private $loyaltyHelper;
 
-    /* @var \Magento\Framework\Filesystem\Io\File $_file */
-    protected $_file;
+    /**
+     * @var \Magento\Framework\Filesystem\Io\File
+     */
+    protected $file;
 
-    /* @var \Magento\Store\Model\StoreManagerInterface */
+    /**
+     * @var StoreManagerInterface
+     */
     protected $storeManager;
 
     /**
@@ -37,18 +48,15 @@ class Offers extends \Magento\Framework\View\Element\Template
         parent::__construct($context, $data);
         $this->loyaltyHelper = $loyaltyHelper;
         $this->logger = $logger;
-        $this->_file = $file;
+        $this->file = $file;
         $this->storeManager = $storeManager;
     }
 
-
     /**
-     * @return \Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer |false
+     * @return \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer[]
      */
     public function getOffers()
     {
-
-        /* \Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer $result */
         $result = $this->loyaltyHelper->getOffers()
             ->getPublishedOffer();
         return $result;
@@ -67,11 +75,11 @@ class Offers extends \Magento\Framework\View\Element\Template
             $img = $coupon->getImages()
                 ->getImageView();
 
-
             if (empty($img)) {
                 return $img;
             }
-            // Normally it should return a single object, but in case if it return multiple images than we are only considering the first one,
+            // Normally it should return a single object, but in case if it
+            // return multiple images than we are only considering the first one,
             if (is_array($img)) {
                 $img = $img[0];
             }
@@ -86,20 +94,22 @@ class Offers extends \Magento\Framework\View\Element\Template
 
             if ($result instanceof \Ls\Omni\Client\Ecommerce\Entity\ImageView) {
                 $offerpath = $this->getMediaPathtoStore();
+                // @codingStandardsIgnoreStart
                 if (!is_dir($offerpath)) {
-                    $this->_file->mkdir($offerpath, 0775);
+                    $this->file->mkdir($offerpath, 0775);
                 }
                 $format = strtolower($result->getFormat());
                 $id = $img->getId();
                 $output_file = "{$id}-{$index}.$format";
                 $file = "{$offerpath}{$output_file}";
 
-                if (!$this->_file->fileExists($file)) {
+                if (!$this->file->fileExists($file)) {
                     $base64 = $result->getImage();
                     $image_file = fopen($file, 'wb');
                     fwrite($image_file, base64_decode($base64));
                     fclose($image_file);
                 }
+                // @codingStandardsIgnoreEnd
                 $images[] = "{$output_file}";
             }
             return $images;
@@ -111,9 +121,10 @@ class Offers extends \Magento\Framework\View\Element\Template
     /**
      * @return string
      */
-    protected function getMediaPathtoStore()
+    public function getMediaPathtoStore()
     {
-        return $this->getMediaDirectory()->getAbsolutePath(). "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
+        return $this->getMediaDirectory()
+                ->getAbsolutePath() . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -121,6 +132,8 @@ class Offers extends \Magento\Framework\View\Element\Template
      */
     public function getMediaPathToLoad()
     {
-        return $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . DIRECTORY_SEPARATOR . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
+        return $this->storeManager->getStore()
+                ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
+            . DIRECTORY_SEPARATOR . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
     }
 }

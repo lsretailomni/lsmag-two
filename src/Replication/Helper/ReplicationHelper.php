@@ -46,7 +46,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var cron config save */
     protected $configWriter;
 
-
     /** @var Set */
     protected $attributeSet;
 
@@ -54,8 +53,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     protected $cacheTypeList;
 
     /** @var LSR */
-    protected $_lsr;
-
+    protected $lsr;
 
     /**
      * ReplicationHelper constructor.
@@ -94,7 +92,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->configWriter = $configWriter;
         $this->attributeSet = $attributeSet;
         $this->cacheTypeList = $cacheTypeList;
-        $this->_lsr = $LSR;
+        $this->lsr = $LSR;
         parent::__construct(
             $context
         );
@@ -105,8 +103,13 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $filtervalue
      * @return \Magento\Framework\Api\SearchCriteria
      */
-    public function buildCriteriaForNewItems($filtername = '', $filtervalue = '', $conditionType = 'eq', $pagesize = 100, $excludeDeleted = true)
-    {
+    public function buildCriteriaForNewItems(
+        $filtername = '',
+        $filtervalue = '',
+        $conditionType = 'eq',
+        $pagesize = 100,
+        $excludeDeleted = true
+    ) {
         // creating search criteria for two fields
         // processed = 0 which means not yet processed
         $attr_processed = $this->filterBuilder->setField('processed')
@@ -210,7 +213,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $criteria->create();
     }
 
-
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
      * @param array $filters
@@ -232,7 +234,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $criteria->setPageSize($pagesize);
         return $criteria->create();
     }
-
 
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
@@ -279,7 +280,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getImageLinksByType($nav_id = '', $type = 'Item Category')
     {
         //first and the most important condition
-        if ($nav_id == '' || is_null($nav_id)) {
+        if ($nav_id == '' || $nav_id === null) {
             return false;
         }
         $criteria = $this->searchCriteriaBuilder->addFilter(
@@ -312,8 +313,10 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($image_id == '' || $image_id == null) {
             return $response;
         }
+        // @codingStandardsIgnoreStart
         $request = new Operation\ImageStreamGetById();
         $entity = new Entity\ImageStreamGetById();
+        // @codingStandardsIgnoreEnd
         $entity->setId($image_id);
         try {
             $response = $request->execute($entity);
@@ -322,7 +325,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $response ? $response->getResult() : $response;
     }
-
 
     /**
      * @return null|string
@@ -357,7 +359,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $code = str_replace(" ", "_", $code);
         return 'ls_' . $code;
     }
-
 
     /**
      * @return array
@@ -415,9 +416,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         $response = [];
 
-        $store_id = $this->_lsr->getDefaultWebStore();
+        $store_id = $this->lsr->getDefaultWebStore();
 
-
+        // @codingStandardsIgnoreStart
         /** @var Entity\ReplEcommHierarchy $hierarchy */
         $hierarchy = new Entity\ReplEcommHierarchy();
 
@@ -426,6 +427,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         /** @var Operation\ReplEcommHierarchy $operation */
         $operation = new Operation\ReplEcommHierarchy();
+        // @codingStandardsIgnoreEnd
 
         $request->setStoreId($store_id)
             ->setBatchSize(100)
@@ -433,7 +435,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setLastKey(0)
             ->setMaxKey(0)
             ->setTerminalId('');
-
 
         $this->_logger->debug(var_export($operation->getResponse(), true));
 

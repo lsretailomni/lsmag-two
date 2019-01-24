@@ -3,20 +3,24 @@ namespace Ls\Omni\Client;
 
 use Ls\Omni\Service\Soap\Client;
 
+/**
+ * Interface OperationInterface
+ * @package Ls\Omni\Client
+ */
 interface OperationInterface
 {
     /** @return RequestInterface */
-    function & getOperationInput();
+    public function & getOperationInput();
 
     /**
      * @param RequestInterface $request
      *
      * @return ResponseInterface
      */
-    function execute(RequestInterface $request = null);
+    public function execute(RequestInterface $request = null);
 
     /**
      * @return Client
      */
-    function getClient();
+    public function getClient();
 }

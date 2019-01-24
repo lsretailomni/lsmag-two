@@ -6,6 +6,10 @@
  */
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
+/**
+ * Class Item
+ * @package Ls\Replication\Controller\Adminhtml\Grids
+ */
 class Item extends \Magento\Backend\App\Action
 {
     /**

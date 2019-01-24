@@ -9,6 +9,10 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class Command
+ * @package Ls\Omni\Console
+ */
 class Command extends SymfonyCommand
 {
     const TYPE = 'type';
@@ -16,34 +20,31 @@ class Command extends SymfonyCommand
     const BASE_URL = 'base';
 
     /** @var InputInterface */
-    protected $input;
+    public $input;
 
     /** @var OutputInterface */
-    protected $output;
+    public $output;
 
     /** @var ServiceType */
-    protected $type;
+    public $type;
 
     /** @var string */
-    protected $base_url;
+    public $base_url;
 
     /**
      * @var Service
      */
-    protected $_service;
-
+    public $service;
 
     /** @var \Magento\Framework\Module\Dir\Reader  */
-    protected $_dirReader;
-
-
+    public $dirReader;
 
     public function __construct(
         \Ls\Omni\Service\Service $service,
         \Magento\Framework\Module\Dir\Reader $dirReader
     ) {
-        $this->_service     =   $service;
-        $this->_dirReader   =   $dirReader;
+        $this->service     =   $service;
+        $this->dirReader   =   $dirReader;
         parent::__construct();
     }
 
@@ -52,7 +53,7 @@ class Command extends SymfonyCommand
      * @param OutputInterface $output
      * @throws InvalidServiceTypeException
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    public function initialize(InputInterface $input, OutputInterface $output)
     {
 
         parent::initialize($input, $output);
@@ -60,11 +61,12 @@ class Command extends SymfonyCommand
         $this->input = $input;
         $this->output = $output;
 
-        if (is_null($this->type)) {
+        if ($this->type==null) {
             $type = $input->getOption(self::TYPE);
             if (!ServiceType::isValid($type)) {
                 throw new InvalidServiceTypeException();
             }
+            // @codingStandardsIgnoreLine
             $this->type = new ServiceType($type);
         }
 
@@ -78,18 +80,19 @@ class Command extends SymfonyCommand
      *
      * @return string
      */
-    protected function path($path)
+    public function path($path)
     {
         $parts = func_get_args();
 
         return join(DIRECTORY_SEPARATOR, $parts);
     }
 
-    protected function getBaseUrl()
+    public function getBaseUrl()
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
         /** @var \Ls\Omni\Service\Service  $service */
+        // @codingStandardsIgnoreLine
         $service = $objectManager->create('Ls\Omni\Service\Service');
         $service->getOmniBaseUrl();
     }

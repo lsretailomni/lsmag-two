@@ -331,8 +331,6 @@ class CategoryCreateTask
                 $categoryExistData = $this->isCategoryExist($hierarchyNode->getNodeId());
                 if (!empty($categoryExistData)) {
                     $categoryId = $categoryExistData->getEntityId();
-                    //Checking if product is associated with this category,
-                    // because found some products coming from omni that were not associated with the category in magento
                     if (in_array($categoryId, $categories)) {
                         $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
                     }
@@ -405,7 +403,6 @@ class CategoryCreateTask
         }
         return false;
     }
-
 
     /**
      * @param string

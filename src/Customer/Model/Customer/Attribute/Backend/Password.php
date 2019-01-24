@@ -4,6 +4,10 @@ namespace Ls\Customer\Model\Customer\Attribute\Backend;
 
 use Magento\Framework\Exception\LocalizedException;
 
+/**
+ * Class Password
+ * @package Ls\Customer\Model\Customer\Attribute\Backend
+ */
 class Password extends \Magento\Customer\Model\Customer\Attribute\Backend\Password
 {
     /**
@@ -21,14 +25,14 @@ class Password extends \Magento\Customer\Model\Customer\Attribute\Backend\Passwo
      *
      * @var \Magento\Framework\Stdlib\StringUtils
      */
-    protected $string;
+    public $string;
 
     /**
      * Magento string lib
      *
      * @var \Magento\Framework\Stdlib\StringUtils
      */
-    protected $scopeConfig;
+    public $scopeConfig;
 
     /**
      * Password constructor.

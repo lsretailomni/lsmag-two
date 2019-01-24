@@ -12,7 +12,9 @@
         <arguments>
             <argument name="configurationsMap" xsi:type="array">chmod
                 <item name="cronlinkmessage" xsi:type="array">
-                    <item name="renderer" xsi:type="const">\Magento\Framework\View\Element\Message\Renderer\BlockRenderer::CODE</item>
+                    <item name="renderer" xsi:type="const">
+                        \Magento\Framework\View\Element\Message\Renderer\BlockRenderer::CODE
+                    </item>
                     <item name="data" xsi:type="array">
                         <item name="template" xsi:type="string">Ls_Replication::cron/cronlinkmessage.phtml</item>
                     </item>
@@ -45,7 +47,9 @@
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_extended_variant_value</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplImageLink\Grid\Collection"
@@ -59,7 +63,9 @@
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_item_variant_registration</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemVariantRegistration</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Ls\Replication\Model\ResourceModel\ReplItemVariantRegistration
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplHierarchy\Grid\Collection"
@@ -73,14 +79,16 @@
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_hierarchy_node</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyNode</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyNode
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_hierarchy_leaf</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplAttribute\Grid\Collection"
@@ -94,14 +102,17 @@
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_attribute_value</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttributeValue</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttributeValue
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplAttributeOptionValue\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_attribute_option_value</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplAttributeOptionValue</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Ls\Replication\Model\ResourceModel\ReplAttributeOptionValue
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplDiscount\Grid\Collection"
@@ -115,14 +126,16 @@
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_item_category</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemCategory</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemCategory
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplProductGroup\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_product_group</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplProductGroup</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplProductGroup
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplStore\Grid\Collection"

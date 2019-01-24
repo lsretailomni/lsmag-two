@@ -16,20 +16,28 @@ class ForgotPasswordObserver implements ObserverInterface
 {
     /** @var ContactHelper $contactHelper */
     private $contactHelper;
+
     /** @var \Magento\Framework\Message\ManagerInterface $messageManager */
     protected $messageManager;
+
     /** @var \Psr\Log\LoggerInterface $logger */
     protected $logger;
-    /** @var \Magento\Customer\Model\Session $customerSession */
+
+    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
     protected $customerSession;
+
     /** @var \Magento\Framework\App\ActionFlag */
     protected $actionFlag;
+
     /** @var \Magento\Framework\App\Response\RedirectInterface */
     protected $redirectInterface;
+
     /** @var \Magento\Customer\Model\CustomerFactory */
     protected $customerFactory;
+
     /** @var \Magento\Store\Model\StoreManagerInterface */
     protected $storeManager;
+
     /** @var \Magento\Customer\Model\ResourceModel\Customer */
     protected $customerResourceModel;
 
@@ -38,7 +46,7 @@ class ForgotPasswordObserver implements ObserverInterface
      * @param ContactHelper $contactHelper
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Framework\App\Response\RedirectInterface $redirectInterface
      * @param \Magento\Framework\App\ActionFlag $actionFlag
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
@@ -50,7 +58,7 @@ class ForgotPasswordObserver implements ObserverInterface
         ContactHelper $contactHelper,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
@@ -69,7 +77,8 @@ class ForgotPasswordObserver implements ObserverInterface
     }
 
     /**
-     * Check if email is belongs to any account on Omni, if yes then generate the resetpasswordcode and store it in customer account.
+     * Check if email is belongs to any account on Omni, i
+     * f yes then generate the resetpasswordcode and store it in customer account.
      * @param \Magento\Framework\Event\Observer $observer
      * @return $this|void
      * @throws \Exception

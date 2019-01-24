@@ -12,27 +12,27 @@ class Store extends \Magento\Framework\App\Action\Action
     /**
      * @var \Magento\Framework\App\Request\Http\Proxy
      */
-    protected $_request;
+    public $request;
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
-    protected $_scopeConfig;
+    public $scopeConfig;
 
     /**
      * @var \Magento\Checkout\Model\Session\Proxy
      */
-    protected $_session;
+    public $session;
 
     /**
      * @var \Ls\Omni\Helper\StockHelper
      */
-    protected $_stockHelper;
+    public $stockHelper;
 
     /**
      * @var \Magento\Framework\Controller\Result\JsonFactory
      */
-    protected $_resultJsonFactory;
+    public $resultJsonFactory;
 
     /**
      * Store constructor.
@@ -51,11 +51,11 @@ class Store extends \Magento\Framework\App\Action\Action
         \Magento\Checkout\Model\Session\Proxy $session,
         \Ls\Omni\Helper\StockHelper $stockHelper
     ) {
-        $this->_request = $request;
-        $this->_scopeConfig = $scopeConfig;
-        $this->_session = $session;
-        $this->_stockHelper = $stockHelper;
-        $this->_resultJsonFactory = $resultJsonFactory;
+        $this->request = $request;
+        $this->scopeConfig = $scopeConfig;
+        $this->session = $session;
+        $this->stockHelper = $stockHelper;
+        $this->resultJsonFactory = $resultJsonFactory;
         parent::__construct($context);
     }
 
@@ -65,10 +65,10 @@ class Store extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        $result = $this->_resultJsonFactory->create();
+        $result = $this->resultJsonFactory->create();
         if ($this->getRequest()->isAjax()) {
-            $selectedStore = $this->_request->getParam('storeid');
-            $items = $this->_session->getQuote()->getAllVisibleItems();
+            $selectedStore = $this->request->getParam('storeid');
+            $items = $this->session->getQuote()->getAllVisibleItems();
             $stockCollection = [];
             $notAvailableNotice = __(
                 "Please check other stores or remove
@@ -83,7 +83,7 @@ class Store extends \Magento\Framework\App\Action\Action
                 } else {
                     $parentProductSku = $sku;
                 }
-                $response = $this->_stockHelper->getItemStockInStore(
+                $response = $this->stockHelper->getItemStockInStore(
                     $selectedStore,
                     $parentProductSku,
                     $childProductSku

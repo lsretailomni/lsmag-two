@@ -13,21 +13,19 @@ use Psr\Log\LoggerInterface;
 class Product extends Action
 {
     /** @var LoggerInterface */
-    protected $logger;
+    public $logger;
 
     /** @var ResourceConnection */
-    protected $_resource;
+    public $resource;
 
     /** @var array List of all the Catalog Product tables */
-    protected $catalog_products_tables = [
-        "catalog_product_attribute_cl",
+    public $catalog_products_tables = [
         "catalog_product_bundle_option",
         "catalog_product_bundle_option_value",
         "catalog_product_bundle_price_index",
         "catalog_product_bundle_selection",
         "catalog_product_bundle_selection_price",
         "catalog_product_bundle_stock_index",
-        "catalog_product_category_cl",
         "catalog_product_entity",
         "catalog_product_entity_datetime",
         "catalog_product_entity_decimal",
@@ -85,7 +83,6 @@ class Product extends Action
         "catalog_product_option_type_price",
         "catalog_product_option_type_title",
         "catalog_product_option_type_value",
-        "catalog_product_price_cl",
         "catalog_product_relation",
         "catalog_product_super_attribute",
         "catalog_product_super_attribute_label",
@@ -119,8 +116,10 @@ class Product extends Action
         "report_viewed_product_index"
     ];
 
+    // @codingStandardsIgnoreStart
     /** @var array  */
     protected $_publicActions = ['product'];
+    // @codingStandardsIgnoreEnd
 
     /**
      * Product Deletion constructor.
@@ -132,7 +131,7 @@ class Product extends Action
         LoggerInterface $logger,
         Context $context
     ) {
-        $this->_resource = $resource;
+        $this->resource = $resource;
         $this->logger = $logger;
         parent::__construct($context);
     }
@@ -144,7 +143,8 @@ class Product extends Action
      */
     public function execute()
     {
-        $connection = $this->_resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        // @codingStandardsIgnoreStart
+        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->catalog_products_tables as $catalogTable) {
             $tableName = $connection->getTableName($catalogTable);
@@ -158,6 +158,7 @@ class Product extends Action
         $tableURLRewrite = $connection->getTableName('url_rewrite');
         $connection->query("DELETE FROM " . $tableURLRewrite . " WHERE entity_type = 'product';");
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
+        // @codingStandardsIgnoreEnd
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }

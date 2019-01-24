@@ -13,20 +13,24 @@ use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class Clickandcollect
+ * @package Ls\Omni\Model\Carrier
+ */
 class Clickandcollect extends AbstractCarrier implements CarrierInterface
 {
 
     /** @var string  */
-    protected $_code = 'clickandcollect';
+    public $code = 'clickandcollect';
 
     /** @var bool  */
-    protected $_isFixed = true;
+    public $isFixed = true;
 
     /** @var ResultFactory  */
-    protected $_rateResultFactory;
+    public $rateResultFactory;
 
     /** @var MethodFactory  */
-    protected $_rateMethodFactory;
+    public $rateMethodFactory;
 
     /**
      * Clickandcollect constructor.
@@ -45,8 +49,8 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
         MethodFactory $rateMethodFactory,
         array $data = []
     ) {
-        $this->_rateResultFactory = $rateResultFactory;
-        $this->_rateMethodFactory = $rateMethodFactory;
+        $this->rateResultFactory = $rateResultFactory;
+        $this->rateMethodFactory = $rateMethodFactory;
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
     }
 
@@ -69,12 +73,12 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
         }
 
         /** @var \Magento\Shipping\Model\Rate\Result $result */
-        $result = $this->_rateResultFactory->create();
+        $result = $this->rateResultFactory->create();
 
         $shippingPrice = $this->getConfigData('price');
 
         /** @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method */
-        $method = $this->_rateMethodFactory->create()
+        $method = $this->rateMethodFactory->create()
                             ->setCarrier($this->getCarrierCode())
                             ->setCarrierTitle($this->getConfigData('title'))
                             ->setMethod($this->getCarrierCode())

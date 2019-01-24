@@ -2,6 +2,10 @@
 
 namespace Ls\Omni\Block\Product\View;
 
+/**
+ * Class Loyalty
+ * @package Ls\Omni\Block\Product\View
+ */
 class Loyalty extends \Magento\Framework\View\Element\Template
 {
     /**

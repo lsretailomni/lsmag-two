@@ -2,13 +2,16 @@
 
 namespace Ls\Omni\Controller\Stores;
 
+/**
+ * Class Index
+ * @package Ls\Omni\Controller\Stores
+ */
 class Index extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
-    protected $resultPageFactory;
-
+    public $resultPageFactory;
 
     /**
      * Index constructor.
@@ -24,7 +27,6 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
-
 
     /**
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page

@@ -2,6 +2,10 @@
 
 namespace Ls\Replication\Block\Product\View;
 
+/**
+ * Class Attributes
+ * @package Ls\Replication\Block\Product\View
+ */
 class Attributes extends \Magento\Catalog\Block\Product\View\Attributes
 {
     /**
@@ -31,7 +35,7 @@ class Attributes extends \Magento\Catalog\Block\Product\View\Attributes
                 } elseif ($attribute->getFrontendInput() == 'price' && is_string($value)) {
                     $value = $this->priceCurrency->convertAndFormat($value);
                 }
-
+                // @codingStandardsIgnoreStart
                 if (is_string($value) && strlen($value)) {
                     $data[$attribute->getAttributeCode()] = [
                         'label' => __($attribute->getStoreLabel()),
@@ -39,6 +43,7 @@ class Attributes extends \Magento\Catalog\Block\Product\View\Attributes
                         'code' => $attribute->getAttributeCode(),
                     ];
                 }
+                // @codingStandardsIgnoreEnd
             }
         }
         return $data;

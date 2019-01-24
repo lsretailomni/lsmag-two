@@ -1,10 +1,15 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
 use Ls\Omni\Service\Soap\ReplicationOperation;
 use Zend\Code\Generator\GeneratorInterface;
 
+/**
+ * Class CronJobConfigGenerator
+ * @package Ls\Replication\Code
+ */
 class CronJobConfigGenerator implements GeneratorInterface
 {
     /** @var  ReplicationOperation */

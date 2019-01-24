@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
@@ -9,6 +10,10 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Symfony\Component\Filesystem\Filesystem;
 use Zend\Code\Generator\MethodGenerator;
 
+/**
+ * Class ResourceCollectionGenerator
+ * @package Ls\Replication\Code
+ */
 class ResourceCollectionGenerator extends AbstractGenerator
 {
     /** @var string */

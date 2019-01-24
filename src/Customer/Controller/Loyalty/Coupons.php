@@ -5,12 +5,14 @@ namespace Ls\Customer\Controller\Loyalty;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 
+/**
+ * Class Coupons
+ * @package Ls\Customer\Controller\Loyalty
+ */
 class Coupons extends \Magento\Customer\Controller\AbstractAccount
 {
-    /**
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
+    /** @var PageFactory */
+    public $resultPageFactory;
 
     /**
      * @param Context $context

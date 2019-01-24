@@ -4,6 +4,10 @@ namespace Ls\Replication\Block\Adminhtml\System\Config;
 
 use Magento\Framework\Option\ArrayInterface;
 
+/**
+ * Class OrderCreationMethod
+ * @package Ls\Replication\Block\Adminhtml\System\Config
+ */
 class OrderCreationMethod implements ArrayInterface
 {
 

@@ -1,6 +1,10 @@
 <?php
 namespace Ls\Omni\Service\Soap;
 
+/**
+ * Class ComplexType
+ * @package Ls\Omni\Service\Soap
+ */
 class ComplexType
 {
     private static $registry = [ ];
@@ -39,7 +43,7 @@ class ComplexType
 
             $difference = array_diff($keys, $base_keys);
             $merged = array_merge(ComplexType::$cache[ $name ]->getDefinition(), $this->definition);
-            if (count($difference) > 0) {
+            if (!empty($difference)) {
                 $this->definition = $merged;
             }
         }

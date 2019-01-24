@@ -8,6 +8,10 @@ use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 
+/**
+ * Class InstallSchema
+ * @package Ls\Core\Setup
+ */
 class InstallSchema implements InstallSchemaInterface
 {
 
@@ -32,7 +36,6 @@ class InstallSchema implements InstallSchemaInterface
             'nullable' => true,
             'comment' => 'Accept parameters from the specific job types'
         ]);
-
 
         /**
          * For Click and Collect.

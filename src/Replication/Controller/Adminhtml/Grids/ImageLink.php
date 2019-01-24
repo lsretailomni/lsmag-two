@@ -6,6 +6,10 @@
  */
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
+/**
+ * Class ImageLink
+ * @package Ls\Replication\Controller\Adminhtml\Grids
+ */
 class ImageLink extends \Magento\Backend\App\Action
 {
     /**

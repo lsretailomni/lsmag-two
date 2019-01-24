@@ -1,71 +1,74 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
-  <!-- After Omni Replication, Uncomment these lines to populate all data into Magento tables. -->
-<group id="replication">
-    <job name="repl_attributes" instance="Ls\Replication\Cron\AttributesCreateTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_category" instance="Ls\Replication\Cron\CategoryCreateTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_products" instance="Ls\Replication\Cron\ProductCreateTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_discount_create" instance="Ls\Replication\Cron\DiscountCreateTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-  </group>
-  <group id="flat_replication">
-    <!-- Most Important-->
-    <job name="repl_item" instance="Ls\Replication\Cron\ReplEcommItemsTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
-    </job>
-    <job name="repl_price" instance="Ls\Replication\Cron\ReplEcommPricesTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
-    </job>
-    <job name="repl_barcode" instance="Ls\Replication\Cron\ReplEcommBarcodesTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
-    </job>
-    <job name="repl_extended_variant_value" instance="Ls\Replication\Cron\ReplEcommExtendedVariantsTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
-    </job>
-    <job name="repl_image_link" instance="Ls\Replication\Cron\ReplEcommImageLinksTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
-    </job>
-    <job name="repl_item_variant_registration" instance="Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask" method="execute">
-      <schedule>*/2 * * * *</schedule>
-    </job>
-    <job name="repl_hierarchy" instance="Ls\Replication\Cron\ReplEcommHierarchyTask" method="execute">
-      <schedule>*/4 * * * *</schedule>
-    </job>
-    <job name="repl_hierarchy_node" instance="Ls\Replication\Cron\ReplEcommHierarchyNodeTask" method="execute">
-      <schedule>*/4 * * * *</schedule>
-    </job>
-    <job name="repl_hierarchy_leaf" instance="Ls\Replication\Cron\ReplEcommHierarchyLeafTask" method="execute">
-      <schedule>*/4 * * * *</schedule>
-    </job>
-    <job name="repl_attribute" instance="Ls\Replication\Cron\ReplEcommAttributeTask" method="execute">
-      <schedule>*/4 * * * *</schedule>
-    </job>
-    <job name="repl_attribute_value" instance="Ls\Replication\Cron\ReplEcommAttributeValueTask" method="execute">
-      <schedule>*/4 * * * *</schedule>
-    </job>
-    <job name="repl_attribute_option_value" instance="Ls\Replication\Cron\ReplEcommAttributeOptionValueTask" method="execute">
-      <schedule>*/4 * * * *</schedule>
-    </job>
-    <job name="repl_discount" instance="Ls\Replication\Cron\ReplEcommDiscountsTask" method="execute">
-      <schedule>*/4 * * * *</schedule>
-    </job>
-    <!-- Less Important-->
-    <job name="repl_item_category" instance="Ls\Replication\Cron\ReplEcommItemCategoriesTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_product_group" instance="Ls\Replication\Cron\ReplEcommProductGroupsTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-    <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
-      <schedule>*/5 * * * *</schedule>
-    </job>
-  </group>
+    <!-- After Omni Replication, Uncomment these lines to populate all data into Magento tables. -->
+    <group id="replication">
+        <job name="repl_attributes" instance="Ls\Replication\Cron\AttributesCreateTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="repl_category" instance="Ls\Replication\Cron\CategoryCreateTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="repl_products" instance="Ls\Replication\Cron\ProductCreateTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="repl_discount_create" instance="Ls\Replication\Cron\DiscountCreateTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+    </group>
+    <group id="flat_replication">
+        <!-- Most Important-->
+        <job name="repl_item" instance="Ls\Replication\Cron\ReplEcommItemsTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_price" instance="Ls\Replication\Cron\ReplEcommPricesTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_barcode" instance="Ls\Replication\Cron\ReplEcommBarcodesTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_extended_variant_value" instance="Ls\Replication\Cron\ReplEcommExtendedVariantsTask"
+             method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_image_link" instance="Ls\Replication\Cron\ReplEcommImageLinksTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_item_variant_registration" instance="Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask"
+             method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_hierarchy" instance="Ls\Replication\Cron\ReplEcommHierarchyTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_hierarchy_node" instance="Ls\Replication\Cron\ReplEcommHierarchyNodeTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_hierarchy_leaf" instance="Ls\Replication\Cron\ReplEcommHierarchyLeafTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_attribute" instance="Ls\Replication\Cron\ReplEcommAttributeTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_attribute_value" instance="Ls\Replication\Cron\ReplEcommAttributeValueTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_attribute_option_value" instance="Ls\Replication\Cron\ReplEcommAttributeOptionValueTask"
+             method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_discount" instance="Ls\Replication\Cron\ReplEcommDiscountsTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <!-- Less Important-->
+        <job name="repl_item_category" instance="Ls\Replication\Cron\ReplEcommItemCategoriesTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="repl_product_group" instance="Ls\Replication\Cron\ReplEcommProductGroupsTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+    </group>
 </config>

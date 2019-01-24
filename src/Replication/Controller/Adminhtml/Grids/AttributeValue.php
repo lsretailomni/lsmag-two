@@ -6,6 +6,10 @@
  */
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
+/**
+ * Class AttributeValue
+ * @package Ls\Replication\Controller\Adminhtml\Grids
+ */
 class AttributeValue extends \Magento\Backend\App\Action
 {
     /**

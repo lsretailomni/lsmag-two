@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
@@ -19,6 +20,10 @@ use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
+/**
+ * Class RepositoryGenerator
+ * @package Ls\Replication\Code
+ */
 class RepositoryGenerator extends AbstractGenerator
 {
     /** @var string */

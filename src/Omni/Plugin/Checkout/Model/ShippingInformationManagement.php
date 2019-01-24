@@ -2,10 +2,14 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+/**
+ * Class ShippingInformationManagement
+ * @package Ls\Omni\Plugin\Checkout\Model
+ */
 class ShippingInformationManagement
 {
     /** @var \Magento\Quote\Model\QuoteRepository  */
-    protected $quoteRepository;
+    public $quoteRepository;
 
     /**
      * ShippingInformationManagement constructor.

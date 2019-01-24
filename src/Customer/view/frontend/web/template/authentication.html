@@ -1,9 +1,8 @@
-
 <div class="authentication-wrapper" data-block="authentication" data-bind="visible: isActive()">
     <button
-        type="button"
-        class="action action-auth-toggle"
-        data-trigger="authentication">
+            type="button"
+            class="action action-auth-toggle"
+            data-trigger="authentication">
         <span data-bind="i18n: 'Sign In'"></span>
     </button>
     <div class="block-authentication"
@@ -39,16 +38,17 @@
                       data-bind="submit:login"
                       method="post">
                     <div class="fieldset"
-                              data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+                         data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
                         <div class="field field-email required">
-                            <label class="label" for="login-email"><span data-bind="i18n: 'Username/Email'"></span></label>
+                            <label class="label" for="login-email"><span
+                                    data-bind="i18n: 'Username/Email'"></span></label>
                             <div class="control">
                                 <input type="text"
                                        class="input-text"
                                        id="login-email"
                                        name="username"
                                        data-bind="attr: {autocomplete: autocomplete}"
-                                       data-validate="{required:true}" />
+                                       data-validate="{required:true}"/>
                             </div>
                         </div>
                         <div class="field field-password required">
@@ -68,9 +68,10 @@
                         <!-- /ko -->
                     </div>
                     <div class="actions-toolbar">
-                        <input name="context" type="hidden" value="checkout" />
+                        <input name="context" type="hidden" value="checkout"/>
                         <div class="primary">
-                            <button type="submit" class="action action-login secondary"><span data-bind="i18n: 'Sign In'"></span></button>
+                            <button type="submit" class="action action-login secondary"><span
+                                    data-bind="i18n: 'Sign In'"></span></button>
                         </div>
                         <div class="secondary">
                             <a class="action action-remind" data-bind="attr: { href: forgotPasswordUrl }">

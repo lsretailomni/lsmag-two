@@ -8,6 +8,10 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
+/**
+ * Class Data
+ * @package Ls\Core\Helper
+ */
 class Data extends AbstractHelper
 {
     private $object_manager;

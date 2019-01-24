@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Ls\Replication\Code;
 
@@ -6,6 +7,10 @@ use Sabre\Xml\Reader;
 use Sabre\Xml\Service as XmlService;
 use Zend\Code\Generator\GeneratorInterface;
 
+/**
+ * Class ModuleVersionGenerator
+ * @package Ls\Replication\Code
+ */
 class ModuleVersionGenerator implements GeneratorInterface
 {
     /** @var  string */

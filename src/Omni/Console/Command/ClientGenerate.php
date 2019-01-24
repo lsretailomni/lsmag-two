@@ -13,10 +13,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * Class ClientGenerate
+ * @package Ls\Omni\Console\Command
+ */
 class ClientGenerate extends Command
 {
     const COMMAND_NAME = 'omni:client:generate';
-
 
     /**
      * ClientGenerate constructor.
@@ -28,7 +31,7 @@ class ClientGenerate extends Command
         parent::__construct($service, $dirReader);
     }
 
-    protected function configure()
+    public function configure()
     {
 
         $this->setName(self::COMMAND_NAME)
@@ -43,21 +46,21 @@ class ClientGenerate extends Command
      * @return int|null|void
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
-
+        // @codingStandardsIgnoreLine
         $fs = new Filesystem();
         $cwd = getcwd();
 
         $wsdl = Service::getUrl($this->type, $this->base_url);
+        // @codingStandardsIgnoreLine
         $client = new Client($wsdl, $this->type);
         $metadata = $client->getMetadata();
         $restrictions = array_keys($metadata->getRestrictions());
 
-
         $interface_folder = ucfirst($this->type->getValue());
 
-        $modulePath     =    $this->_dirReader->getModuleDir('', 'Ls_Omni');
+        $modulePath     =    $this->dirReader->getModuleDir('', 'Ls_Omni');
         $base_dir   = $this->path($modulePath, 'Client', $interface_folder);
         $operation_dir = $this->path($base_dir, 'Operation');
         $entity_dir = $this->path($base_dir, 'Entity');
@@ -67,9 +70,11 @@ class ClientGenerate extends Command
             // RESTRICTIONS ARE CREATED IN ANOTHER LOOP SO WE FILTER THEM OUT
             if (array_search($entity->getName(), $restrictions) === false) {
                 $filename = $this->path($entity_dir, "{$entity->getName()}.php");
+                // @codingStandardsIgnoreStart
                 $generator = new EntityGenerator($entity, $metadata);
                 $content = $generator->generate();
                 file_put_contents($filename, $content);
+                // @codingStandardsIgnoreEnd
 
                 $ok = sprintf('generated entity ( %1$s )', $fs->makePathRelative($filename, $cwd));
                 $this->output->writeln($ok);
@@ -80,9 +85,11 @@ class ClientGenerate extends Command
         foreach ($metadata->getRestrictions() as $restriction) {
             if (array_search($restriction->getName(), $restriction_blacklist) === false) {
                 $filename = $this->path($entity_dir, 'Enum', "{$restriction->getName()}.php");
+                // @codingStandardsIgnoreStart
                 $generator = new RestrictionGenerator($restriction, $metadata);
                 $content = $generator->generate();
                 file_put_contents($filename, $content);
+                // @codingStandardsIgnoreEnd
 
                 $ok = sprintf('generated restriction ( %1$s )', $fs->makePathRelative($filename, $cwd));
                 $this->output->writeln($ok);
@@ -91,18 +98,22 @@ class ClientGenerate extends Command
 
         foreach ($metadata->getOperations() as $operation) {
             $filename = $this->path($operation_dir, "{$operation->getName()}.php");
+            // @codingStandardsIgnoreStart
             $generator = new OperationGenerator($operation, $metadata);
             $content = $generator->generate();
             file_put_contents($filename, $content);
+            // @codingStandardsIgnoreEnd
 
             $ok = sprintf('generated operation ( %1$s )', $fs->makePathRelative($filename, $cwd));
             $this->output->writeln($ok);
         }
 
         $filename = $this->path($base_dir, 'ClassMap.php');
+        // @codingStandardsIgnoreStart
         $generator = new ClassMapGenerator($metadata);
         $content = $generator->generate();
         file_put_contents($filename, $content);
+        // @codingStandardsIgnoreEnd
 
         $ok = sprintf('generated classmap ( %1$s )', $fs->makePathRelative($filename, $cwd));
         $this->output->writeln($ok);
@@ -115,8 +126,9 @@ class ClientGenerate extends Command
      */
     private function clean($folder)
     {
-
+        // @codingStandardsIgnoreStart
         $fs = new Filesystem();
+        // @codingStandardsIgnoreEnd
 
         if ($fs->exists($folder)) {
             $fs->remove($folder);
