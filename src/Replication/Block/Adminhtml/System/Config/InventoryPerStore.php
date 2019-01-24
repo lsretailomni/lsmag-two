@@ -9,11 +9,10 @@ use Magento\Framework\Option\ArrayInterface;
  * @package Ls\Replication\Block\Adminhtml\System\Config
  */
 class InventoryPerStore implements ArrayInterface
-
+{
     /**
      * @return array
      */
-{
     public function toOptionArray()
     {
         $methods = [];

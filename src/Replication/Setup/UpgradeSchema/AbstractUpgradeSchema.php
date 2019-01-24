@@ -10,5 +10,5 @@ use Magento\Framework\Setup\SchemaSetupInterface;
  */
 abstract class AbstractUpgradeSchema
 {
-    abstract function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context);
+    abstract public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context);
 }

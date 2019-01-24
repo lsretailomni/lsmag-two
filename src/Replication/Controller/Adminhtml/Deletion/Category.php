@@ -18,7 +18,7 @@ class Category extends Action
     public $logger;
 
     /** @var Registry $registry */
-    private $registry;
+    public $registry;
 
     /** @var CategoryFactory $categoryFactory */
     public $categoryFactory;

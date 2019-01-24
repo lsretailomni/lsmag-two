@@ -140,7 +140,12 @@ class ModelGenerator extends AbstractGenerator
             [ PropertyGenerator::FLAG_PROTECTED ],
             [ 'pascal_name' => 'Processed', 'variable_name' => 'processed', 'model' => true ]
         );
-
+        $this->createProperty(
+            null,
+            'string',
+            [ PropertyGenerator::FLAG_PROTECTED ],
+            [ 'pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'model' => true ]
+        );
         $content = $this->file->generate();
         $content = str_replace(
             'extends Magento\\Framework\\Model\\AbstractModel',

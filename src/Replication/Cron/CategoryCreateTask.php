@@ -4,6 +4,8 @@ namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\LSR;
 use Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
 use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNodeRepository;
 use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
@@ -12,57 +14,56 @@ use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Framework\Filesystem\Io\File;
+use Magento\Setup\Console\Style\MagentoStyleInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class CategoryCreateTask
+ * @package Ls\Replication\Cron
+ */
 class CategoryCreateTask
 {
     /** @var CategoryFactory */
-    protected $categoryFactory;
+    public $categoryFactory;
 
     /** @var CategoryRepositoryInterface */
-    protected $categoryRepository;
+    public $categoryRepository;
 
     /** @var ReplHierarchyNodeRepository */
-    protected $replHierarchyNodeRepository;
+    public $replHierarchyNodeRepository;
 
     /** @var ReplHierarchyLeafRepository */
-    protected $replHierarchyLeafRepository;
+    public $replHierarchyLeafRepository;
 
     /** @var ReplImageLinkRepositoryInterface */
-    protected $replImageLinkRepositoryInterface;
+    public $replImageLinkRepositoryInterface;
 
     /** @var LoggerInterface */
-    protected $logger;
+    public $logger;
 
     /** @var CollectionFactory */
-    protected $collectionFactory;
+    public $collectionFactory;
 
-    /* @var LoyaltyHelper */
-    private $loyaltyHelper;
+    /** @var LoyaltyHelper */
+    public $loyaltyHelper;
 
     /** @var ReplicationHelper */
-    protected $replicationHelper;
+    public $replicationHelper;
 
-    /* @var \Magento\Framework\Filesystem\Io\File $_file */
-    protected $_file;
+    /** @var File */
+    public $file;
 
-    /**
-     * @var LSR
-     */
-    protected $_lsr;
+    /** @var LSR */
+    public $lsr;
 
     /** @var Cron Checking */
-    protected $cronStatus = false;
+    public $cronStatus = false;
 
-    /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
-     */
-    protected $productRepository;
+    /** @var ProductRepositoryInterface */
+    public $productRepository;
 
-    /**
-     * @var \Magento\Catalog\Api\CategoryLinkRepositoryInterface
-     */
-    protected $categoryLinkRepositoryInterface;
+    /** @var CategoryLinkRepositoryInterface */
+    public $categoryLinkRepositoryInterface;
 
     /**
      * CategoryCreateTask constructor.
@@ -89,8 +90,8 @@ class CategoryCreateTask
         File $file,
         ReplicationHelper $replicationHelper,
         LSR $LSR,
-        \Magento\Catalog\Api\CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+        CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
@@ -100,9 +101,9 @@ class CategoryCreateTask
         $this->logger = $logger;
         $this->collectionFactory = $collectionFactory;
         $this->loyaltyHelper = $loyaltyHelper;
-        $this->_file = $file;
+        $this->file = $file;
         $this->replicationHelper = $replicationHelper;
-        $this->_lsr = $LSR;
+        $this->lsr = $LSR;
         $this->categoryLinkRepositoryInterface = $categoryLinkRepositoryInterface;
         $this->productRepository = $productRepository;
     }
@@ -114,7 +115,7 @@ class CategoryCreateTask
     {
         $this->logger->debug("Running CategoryCreateTask");
         // for defning category images to the product group
-        $hierarchyCode = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
             $this->logger->debug("Hierarchy Code not defined in the configuration.");
             return;
@@ -162,7 +163,7 @@ class CategoryCreateTask
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyNodeSearchResults $replHierarchyNodeRepository */
         $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
-        /** @var \Ls\Replication\Model\ReplHierarchyNode $itemCategory */
+        /** @var \Ls\Replication\Model\ReplHierarchyNode $hierarchyNode */
         foreach ($replHierarchyNodeRepository->getItems() as $hierarchyNode) {
             try {
                 if (empty($hierarchyNode->getNavId())) {
@@ -174,12 +175,14 @@ class CategoryCreateTask
                     $category = $this->categoryFactory->create();
                     $data = [
                         'parent_id' => 2,
-                        'name' => ($hierarchyNode->getDescription()) ? $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
+                        'name' => ($hierarchyNode->getDescription()) ?
+                            $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
                         'url_key' => $this->oSlug($hierarchyNode->getNavId()),
                         'is_active' => true,
                         'is_anchor' => false,
                         'include_in_menu' => true,
-                        'meta_title' => ($hierarchyNode->getDescription()) ? $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
+                        'meta_title' => ($hierarchyNode->getDescription()) ?
+                            $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
                         'nav_id' => $hierarchyNode->getNavId()
                     ];
                     $category->setData($data)->setAttributeSetId($category->getDefaultAttributeSetId());
@@ -187,23 +190,28 @@ class CategoryCreateTask
                         $image = $this->getImage($hierarchyNode->getImageId());
                         $category->setImage($image, $mediaAttribute, true, false);
                     }
+                    // @codingStandardsIgnoreStart
                     $this->categoryRepository->save($category);
                     $hierarchyNode->setData('processed', '1');
                     $this->replHierarchyNodeRepository->save($hierarchyNode);
+                    // @codingStandardsIgnoreEnd
                 } else {
                     if ($hierarchyNode->getIsUpdated() == 1) {
                         $categoryExistData->setData(
                             'name',
-                            ($hierarchyNode->getDescription()) ? $hierarchyNode->getDescription() : $hierarchyNode->getNavId()
+                            ($hierarchyNode->getDescription()) ?
+                                $hierarchyNode->getDescription() : $hierarchyNode->getNavId()
                         );
                         $categoryExistData->setData('is_active', 1);
                         if ($hierarchyNode->getImageId()) {
                             $image = $this->getImage($hierarchyNode->getImageId());
                             $categoryExistData->setImage($image, $mediaAttribute, true, false);
                         }
+                        // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($categoryExistData);
                         $hierarchyNode->setData('is_updated', '0');
                         $this->replHierarchyNodeRepository->save($hierarchyNode);
+                        // @codingStandardsIgnoreEnd
                     }
                 }
             } catch (\Exception $e) {
@@ -230,6 +238,7 @@ class CategoryCreateTask
         $criteriaSub = $this->replicationHelper->buildCriteriaForArray($filtersSub, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyNodeSearchResults $replHierarchyNodeRepositorySub */
         $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
+        /** @var \Ls\Replication\Model\ReplHierarchyNode $hierarchyNodeSub */
         foreach ($replHierarchyNodeRepositorySub->getItems() as $hierarchyNodeSub) {
             try {
                 $itemCategoryId = $hierarchyNodeSub->getParentNode();
@@ -238,15 +247,20 @@ class CategoryCreateTask
                     ->setPageSize(1);
                 $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId());
                 if ($collection->getSize() && !$subCategoryExistData) {
+                    /** @var \Magento\Catalog\Model\CategoryFactory $categorysub */
                     $categorysub = $this->categoryFactory->create();
                     $data = [
+                        // @codingStandardsIgnoreStart
                         'parent_id' => $collection->getFirstItem()->getId(),
-                        'name' => ($hierarchyNodeSub->getDescription()) ? $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId(),
+                        // @codingStandardsIgnoreEnd
+                        'name' => ($hierarchyNodeSub->getDescription()) ?
+                            $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId(),
                         'url_key' => $this->oSlug($hierarchyNodeSub->getNavId()),
                         'is_active' => true,
                         'is_anchor' => true,
                         'include_in_menu' => true,
-                        'meta_title' => ($hierarchyNodeSub->getDescription()) ? $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId(),
+                        'meta_title' => ($hierarchyNodeSub->getDescription()) ?
+                            $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId(),
                         'nav_id' => $hierarchyNodeSub->getNavId()
                     ];
                     $categorysub->setData($data)->setAttributeSetId($categorysub->getDefaultAttributeSetId());
@@ -254,23 +268,28 @@ class CategoryCreateTask
                         $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
                         $categorysub->setImage($imageSub, $mediaAttribute, true, false);
                     }
+                    // @codingStandardsIgnoreStart
                     $this->categoryRepository->save($categorysub);
                     $hierarchyNodeSub->setData('processed', '1');
                     $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
+                    // @codingStandardsIgnoreEnd
                 } else {
                     if ($hierarchyNodeSub->getIsUpdated() == 1) {
                         $subCategoryExistData->setData(
                             'name',
-                            ($hierarchyNodeSub->getDescription()) ? $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId()
+                            ($hierarchyNodeSub->getDescription()) ?
+                                $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId()
                         );
                         $subCategoryExistData->setData('is_active', 1);
                         if ($hierarchyNodeSub->getImageId()) {
                             $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
                             $subCategoryExistData->setImage($imageSub, $mediaAttribute, true, false);
                         }
+                        // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($subCategoryExistData);
                         $hierarchyNodeSub->setData('is_updated', '0');
                         $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
+                        // @codingStandardsIgnoreEnd
                     }
                 }
             } catch (\Exception $e) {
@@ -292,19 +311,24 @@ class CategoryCreateTask
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters, 100);
         $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
+        /** @var \Ls\Replication\Model\ReplHierarchyNode $hierarchyNode */
         foreach ($replHierarchyNodeRepository->getItems() as $hierarchyNode) {
             try {
                 if (!empty($hierarchyNode->getNavId())) {
                     $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
                     if ($categoryExistData) {
                         $categoryExistData->setData('is_active', 0);
+                        // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($categoryExistData);
+                        // @codingStandardsIgnoreEnd
                     }
                 }
                 $hierarchyNode->setData('is_processed', '1');
                 $hierarchyNode->setData('IsDeleted', '0');
                 $hierarchyNode->setData('is_updated', '0');
+                // @codingStandardsIgnoreStart
                 $this->replHierarchyNodeRepository->save($hierarchyNode);
+                // @codingStandardsIgnoreEnd
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
@@ -323,22 +347,25 @@ class CategoryCreateTask
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters, 100);
         $replHierarchyLeafRepository = $this->replHierarchyLeafRepository->getList($criteria);
-        foreach ($replHierarchyLeafRepository->getItems() as $hierarchyNode) {
+        /** @var \Ls\Replication\Model\ReplHierarchyLeaf $hierarchyLeaf */
+        foreach ($replHierarchyLeafRepository->getItems() as $hierarchyLeaf) {
             try {
-                $sku = $hierarchyNode->getNavId();
+                $sku = $hierarchyLeaf->getNavId();
                 $product = $this->productRepository->get($sku);
                 $categories = $product->getCategoryIds();
-                $categoryExistData = $this->isCategoryExist($hierarchyNode->getNodeId());
+                $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId());
                 if (!empty($categoryExistData)) {
                     $categoryId = $categoryExistData->getEntityId();
                     if (in_array($categoryId, $categories)) {
                         $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
                     }
                 }
-                $hierarchyNode->setData('is_processed', '1');
-                $hierarchyNode->setData('IsDeleted', '0');
-                $hierarchyNode->setData('is_updated', '0');
-                $this->replHierarchyLeafRepository->save($hierarchyNode);
+                $hierarchyLeaf->setData('is_processed', '1');
+                $hierarchyLeaf->setData('IsDeleted', '0');
+                $hierarchyLeaf->setData('is_updated', '0');
+                // @codingStandardsIgnoreStart
+                $this->replHierarchyLeafRepository->save($hierarchyLeaf);
+                // @codingStandardsIgnoreEnd
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
@@ -354,7 +381,7 @@ class CategoryCreateTask
     public function executeManually()
     {
         $this->execute();
-        $hierarchyCode = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         $filters = [
             ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
@@ -370,8 +397,9 @@ class CategoryCreateTask
      * @return string]
      */
     //TODO integrate existing slug check or check if the url already exist or not.
-    protected function oSlug($string)
+    public function oSlug($string)
     {
+        // @codingStandardsIgnoreStart
         return strtolower(trim(preg_replace(
             '~[^0-9a-z]+~i',
             '-',
@@ -385,6 +413,7 @@ class CategoryCreateTask
                 'UTF-8'
             )
         ), '-'));
+        // @codingStandardsIgnoreEnd
     }
 
     /**
@@ -393,13 +422,15 @@ class CategoryCreateTask
      * @return bool|\Magento\Framework\DataObject
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function isCategoryExist($nav_id)
+    public function isCategoryExist($nav_id)
     {
         $collection = $this->collectionFactory->create()
             ->addAttributeToFilter('nav_id', $nav_id)
             ->setPageSize(1);
         if ($collection->getSize()) {
+            // @codingStandardsIgnoreStart
             return $collection->getFirstItem();
+            // @codingStandardsIgnoreEnd
         }
         return false;
     }
@@ -408,11 +439,11 @@ class CategoryCreateTask
      * @param string
      * @return \Ls\Omni\Client\Ecommerce\Entity\ImageGetByIdResponse|NULL
      */
-    protected function getImage($imageId = '')
+    public function getImage($imageId = '')
     {
         $imageSize = [
-            'height' => $this->_lsr::DEFAULT_IMAGE_HEIGHT,
-            'width' => $this->_lsr::DEFAULT_IMAGE_WIDTH
+            'height' => $this->lsr::DEFAULT_IMAGE_HEIGHT,
+            'width' => $this->lsr::DEFAULT_IMAGE_WIDTH
         ];
         /** @var \Ls\Omni\Client\Ecommerce\Entity\ImageSize $imageSizeObject */
         $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
@@ -420,18 +451,20 @@ class CategoryCreateTask
         if ($result instanceof \Ls\Omni\Client\Ecommerce\Entity\ImageView) {
             //check if directory exists or not and if it has the proper permission or not
             $offerpath = $this->getMediaPathtoStore();
+            // @codingStandardsIgnoreStart
             if (!is_dir($offerpath)) {
-                $this->_file->mkdir($offerpath, 0775);
+                $this->file->mkdir($offerpath, 0775);
             }
             $format = strtolower($result->getFormat());
             $output_file = "{$imageId}.$format";
             $file = "{$offerpath}{$output_file}";
-            if (!$this->_file->fileExists($file)) {
+            if (!$this->file->fileExists($file)) {
                 $base64 = $result->getImage();
                 $image_file = fopen($file, 'wb');
                 fwrite($image_file, base64_decode($base64));
                 fclose($image_file);
             }
+            // @codingStandardsIgnoreEnd
             $image = "{$output_file}";
         }
         return $image;
@@ -441,24 +474,23 @@ class CategoryCreateTask
      * Return the media path of the category
      * @return string
      */
-    protected function getMediaPathtoStore()
+    public function getMediaPathtoStore()
     {
         $mediadirectory = $this->loyaltyHelper->getMediaPathtoStore();
         return $mediadirectory . "catalog" . DIRECTORY_SEPARATOR . "category" . DIRECTORY_SEPARATOR;
     }
 
-
     /**
      * Update/Add the modified/added images of the item
      */
-    protected function updateImagesOnly()
+    public function updateImagesOnly()
     {
         $filters = [
             ['field' => 'TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $images = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
-        if (count($images) > 0) {
+        if (!empty($images)) {
             foreach ($images as $image) {
                 try {
                     $keyValue = explode(',', $image->getKeyValue());
@@ -468,12 +500,15 @@ class CategoryCreateTask
                         $imageSub = $this->getImage($image->getImageId());
                         $mediaAttribute = ['image', 'small_image', 'thumbnail'];
                         $categoryExistData->setImage($imageSub, $mediaAttribute, true, false);
+                        // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($categoryExistData);
                         $image->setData('is_updated', '0');
                         $this->replImageLinkRepositoryInterface->save($image);
+                        // @codingStandardsIgnoreEnd
                         $this->cronStatus = true;
                     }
-                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                } catch (\Exception $e) {
+                    $this->logger->debug($e->getMessage());
                     continue;
                 }
             }
