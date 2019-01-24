@@ -300,25 +300,30 @@ class ProductCreateTask
 
                     /** @var \Magento\Catalog\Api\ProductRepositoryInterface $productSaved */
                     $product = $this->getProductAttributes($product, $item);
+                    // @codingStandardsIgnoreStart
                     $productSaved = $this->productRepository->save($product);
                     $variants = $this->getProductVarients($item->getNavId());
-                    if (count($variants) > 0) {
+                    if (!empty($variants)) {
                         $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
                     }
                     $item->setData('processed', '1');
                     $this->itemRepository->save($item);
+                    // @codingStandardsIgnoreEnd
                 }
             }
             if (count($items->getItems()) == 0) {
                 $this->caterItemsRemoval();
                 $this->assignProductToCategory();
                 $this->cronStatus = true;
-                $fullReplicationVariantStatus = $this->lsr->getStoreConfig(ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS);
+                $fullReplicationVariantStatus = $this->lsr->getStoreConfig(
+                    ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS
+                );
                 if ($fullReplicationVariantStatus == 1) {
                     $this->updateVariantsOnly();
                     $this->caterVariantsRemoval();
                 }
-                $this->updateImagesOnly();
+                // This will update all the latest images for the product including new
+                $this->updateAndAddNewImageOnly();
                 $this->updateBarcodeOnly();
                 $this->updatePriceOnly();
             }
@@ -348,6 +353,7 @@ class ProductCreateTask
      * @return \Magento\Catalog\Api\Data\ProductInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
+
     public function getProductAttributes(
         \Magento\Catalog\Api\Data\ProductInterface $product,
         \Ls\Replication\Model\ReplItem $item
@@ -372,7 +378,9 @@ class ProductCreateTask
             }
             $product->setData($formattedCode, $value);
             $item->setData('processed', '1');
+            // @codingStandardsIgnoreStart
             $this->replAttributeValueRepositoryInterface->save($item);
+            // @codingStandardsIgnoreEnd
         }
         return $product;
     }
@@ -415,7 +423,10 @@ class ProductCreateTask
                     )->setContent($imageContent);
                 $galleryArray[] = clone $this->attributeMediaGalleryEntry;
                 $image->setData('processed', '1');
+                $image->setData('is_updated', '0');
+                // @codingStandardsIgnoreStart
                 $this->replImageLinkRepositoryInterface->save($image);
+                // @codingStandardsIgnoreEnd
             }
         }
         return $galleryArray;
@@ -433,10 +444,12 @@ class ProductCreateTask
             $productGroupId
         )->setPageSize(1);
         if ($categoryCollection->getSize()) {
+            // @codingStandardsIgnoreStart
             return [
                 $categoryCollection->getFirstItem()->getParentId(),
                 $categoryCollection->getFirstItem()->getId()
             ];
+            // @codingStandardsIgnoreEnd
         }
     }
 
@@ -461,11 +474,13 @@ class ProductCreateTask
             try {
                 $categoryArray = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
                 if (!empty($categoryArray)) {
+                    // @codingStandardsIgnoreStart
                     $this->categoryLinkManagement->assignProductToCategories($hierarchyLeaf->getNavId(),
                         $categoryArray);
                     $hierarchyLeaf->setData('processed', '1');
                     $hierarchyLeaf->setData('is_updated', '0');
                     $this->replHierarchyLeafRepository->save($hierarchyLeaf);
+                    // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
@@ -479,9 +494,10 @@ class ProductCreateTask
      */
     private function getMimeType($image64)
     {
+        // @codingStandardsIgnoreStart
         return finfo_buffer(finfo_open(), base64_decode($image64), FILEINFO_MIME_TYPE);
+        // @codingStandardsIgnoreEnd
     }
-
 
     /**
      * @param $string
@@ -489,6 +505,7 @@ class ProductCreateTask
      */
     public function oSlug($string)
     {
+        // @codingStandardsIgnoreStart
         return strtolower(trim(preg_replace(
             '~[^0-9a-z]+~i',
             '-',
@@ -502,6 +519,7 @@ class ProductCreateTask
                 'UTF-8'
             )
         ), '-'));
+        // @codingStandardsIgnoreEnd
     }
 
     /**
@@ -583,7 +601,9 @@ class ProductCreateTask
             $formattedCode = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
             $finalCodes[$valueCode->getDimensions()] = $formattedCode;
             $valueCode->setData('processed', '1');
+            // @codingStandardsIgnoreStart
             $this->extendedVariantValueRepository->save($valueCode);
+            // @codingStandardsIgnoreEnd
         }
         return $finalCodes;
     }
@@ -601,7 +621,8 @@ class ProductCreateTask
         /** @var ReplBarcodeRepository $itemBarcodes */
         $itemBarcodes = $this->replBarcodeRepository->getList($searchCriteria)->getItems();
         foreach ($itemBarcodes as $itemBarcode) {
-            $sku = $itemBarcode->getItemId() . (($itemBarcode->getVariantId()) ? '-' . $itemBarcode->getVariantId() : '');
+            $sku = $itemBarcode->getItemId() .
+                (($itemBarcode->getVariantId()) ? '-' . $itemBarcode->getVariantId() : '');
             $allBarCodes[$sku] = $itemBarcode->getNavId();
         }
         return $allBarCodes;
@@ -655,7 +676,7 @@ class ProductCreateTask
             ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull']
         ];
         $variants = $this->getUpdatedProductVariants($filters);
-        if (count($variants) > 0) {
+        if (!empty($variants)) {
             try {
                 foreach ($variants as $variant) {
                     $items[] = $variant->getItemId();
@@ -686,17 +707,19 @@ class ProductCreateTask
         ];
         $items = $this->getDeletedItemsOnly($filters);
 
-        if (count($items->getItems()) > 0) {
+        if (!empty($items->getItems())) {
             try {
                 foreach ($items->getItems() as $value) {
                     $sku = $value->getNavId();
                     $productData = $this->productRepository->get($sku);
                     $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED);
+                    // @codingStandardsIgnoreStart
                     $this->productRepository->save($productData);
                     $value->setData('is_updated', '0');
                     $value->setData('processed', '1');
                     $value->setData('IsDeleted', '0');
                     $this->itemRepository->save($value);
+                    // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
@@ -716,6 +739,7 @@ class ProductCreateTask
 
         if (count($variants) > 0) {
             try {
+                /** @var \Ls\Replication\Model\ReplItemVariantRegistration $value */
                 foreach ($variants as $value) {
                     $d1 = (($value->getVariantDimension1()) ? $value->getVariantDimension1() : '');
                     $d2 = (($value->getVariantDimension2()) ? $value->getVariantDimension2() : '');
@@ -735,15 +759,20 @@ class ProductCreateTask
                         }
                     }
                     $associatedSimpleProduct = $this->getConfAssoProductId($productData, $configurableAttributes);
-                    if (!is_null($associatedSimpleProduct)) {
-                        $associatedSimpleProduct->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED);
+                    if ($associatedSimpleProduct != null) {
+                        $associatedSimpleProduct->setStatus(
+                            \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED
+                        );
+                        // @codingStandardsIgnoreStart
                         $this->productRepository->save($associatedSimpleProduct);
+                        // @codingStandardsIgnoreEnd
                     }
-
                     $value->setData('is_updated', '0');
                     $value->setData('processed', '1');
                     $value->setData('IsDeleted', '0');
+                    // @codingStandardsIgnoreStart
                     $this->replItemVariantRegistrationRepository->save($value);
+                    // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
@@ -787,7 +816,7 @@ class ProductCreateTask
 
         if (count($attributeValues) == count($nameValueList)) {
             // pass this prepared array with $product
-            $assPro = $this->_configurableProTypeModel->getProductByAttributes($attributeValues, $product);
+            $assPro = $this->configurableProTypeModel->getProductByAttributes($attributeValues, $product);
             // it return complete product accoring to attribute values which you pass
         }
         return $assPro;
@@ -796,29 +825,58 @@ class ProductCreateTask
     /**
      * Update/Add the modified/added images of the item
      */
-    public function updateImagesOnly()
+    public function updateAndAddNewImageOnly()
     {
+        //
         $filters = [
-            ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like']
+            ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
+            ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
+
         ];
-        $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
-        $images = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
-        if (!empty($images)) {
-            foreach ($images as $image) {
-                //TODO this needs to be optimized,
+        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 2000);
+
+        /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $images */
+        $images = $this->replImageLinkRepositoryInterface->getList($criteria);
+
+        $processedItems = [];
+
+        if ($images->getTotalCount() > 0) {
+            /** @var \Ls\Replication\Model\ReplImage $image */
+            foreach ($images->getItems() as $image) {
+                if (in_array($image->getKeyValue(), $processedItems)) {
+                    continue;
+                }
                 try {
                     if ($image->getTableName() == "Item" || $image->getTableName() == "Item Variant") {
                         /** @var ReplImageLink $image */
+                        $additionalFilters = [];
+                        if ($image->getTableName() == "Item") {
+                            $additionalFilters = ['field' => 'TableName', 'value' => 'Item', 'condition_type' => 'eq'];
+                        } elseif ($image->getTableName() == "Item Variant") {
+                            $additionalFilters =
+                                ['field' => 'TableName', 'value' => 'Item Variant', 'condition_type' => 'eq'];
+                        }
+                        $filters = [
+                            $additionalFilters,
+                            ['field' => 'KeyValue', 'value' => $image->getKeyValue(), 'condition_type' => 'eq'],
+                            ['field' => 'isDeleted', 'value' => 0, 'condition_type' => 'eq']
+                        ];
+                        $criteria = $this->replicationHelper->buildExitCriteriaForArray($filters, 100);
+                        $allImages = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
                         $item = $image->getKeyValue();
                         $item = str_replace(',', '-', $item);
-                        /** @var ProductRepositoryInterface $productData */
-                        $productData = $this->productRepository->get($item);
-                        $galleryImage = [$image];
-                        $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
-                        $this->productRepository->save($productData);
                         $image->setData('is_updated', '0');
                         $image->setData('processed', '1');
+                        // @codingStandardsIgnoreStart
                         $this->replImageLinkRepositoryInterface->save($image);
+                        /* @var ProductRepositoryInterface $productData */
+                        $productData = $this->productRepository->get($item);
+                        $galleryImage = $allImages;
+                        $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
+                        $this->productRepository->save($productData);
+                        // @codingStandardsIgnoreEnd
+                        // Adding items into an array whose images are processed.
+                        $processedItems[]   = $image->getKeyValue();
                     }
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
@@ -848,10 +906,12 @@ class ProductCreateTask
                     $productData = $this->productRepository->get($sku);
                     if (isset($productData)) {
                         $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
+                        // @codingStandardsIgnoreStart
                         $this->productRepository->save($productData);
                         $replBarcode->setData('is_updated', '0');
                         $replBarcode->setData('processed', '1');
                         $this->replBarcodeRepository->save($replBarcode);
+                        // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
@@ -880,10 +940,12 @@ class ProductCreateTask
                 $productData = $this->productRepository->get($sku);
                 if (isset($productData)) {
                     $productData->setPrice($replPrice->getUnitPrice());
+                    // @codingStandardsIgnoreStart
                     $this->productRepository->save($productData);
                     $replPrice->setData('is_updated', '0');
                     $replPrice->setData('processed', '1');
                     $this->replPriceRepository->save($replPrice);
+                    // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
@@ -931,16 +993,20 @@ class ProductCreateTask
                     if (isset($itemPrice)) {
                         $productData->setPrice($itemPrice->getUnitPrice());
                     }
-                    $productImages = $this->replicationHelper->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(),
-                        'Item Variant');
+                    $productImages = $this->replicationHelper->getImageLinksByType(
+                        $value->getItemId() . ',' . $value->getVariantId(),
+                        'Item Variant'
+                    );
                     if ($productImages) {
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
                     $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
+                    // @codingStandardsIgnoreStart
                     $productData->save();
                     $value->setData('processed', '1');
                     $value->setData('is_updated', '0');
                     $this->replItemVariantRegistrationRepository->save($value);
+                    // @codingStandardsIgnoreEnd
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
                 }
@@ -995,11 +1061,13 @@ class ProductCreateTask
                     'qty' => 100
                 ]);
                 /** @var \Magento\Catalog\Api\Data\ProductInterface $productSaved */
+                // @codingStandardsIgnoreStart
                 $productSaved = $this->productRepository->save($productV);
                 $associatedProductIds[] = $productSaved->getId();
                 $value->setData('is_updated', '0');
                 $value->setData('processed', '1');
                 $this->replItemVariantRegistrationRepository->save($value);
+                // @codingStandardsIgnoreEnd
             }
         }
         $productId = $configProduct->getId();
@@ -1010,7 +1078,9 @@ class ProductCreateTask
                 'position' => $attributeKey
             ];
             try {
+                // @codingStandardsIgnoreStart
                 $this->attribute->setData($data)->save();
+                // @codingStandardsIgnoreEnd
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }

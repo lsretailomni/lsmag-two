@@ -21,7 +21,7 @@ class ForgotPasswordObserver implements ObserverInterface
     protected $messageManager;
 
     /** @var \Psr\Log\LoggerInterface $logger */
-    protected $logger;
+    private $logger;
 
     /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
     protected $customerSession;

@@ -43,8 +43,8 @@ class Command extends SymfonyCommand
         \Ls\Omni\Service\Service $service,
         \Magento\Framework\Module\Dir\Reader $dirReader
     ) {
-        $this->service     =   $service;
-        $this->dirReader   =   $dirReader;
+        $this->service       =   $service;
+        $this->dirReader    =   $dirReader;
         parent::__construct();
     }
 
