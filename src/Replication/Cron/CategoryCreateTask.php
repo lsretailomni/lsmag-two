@@ -14,6 +14,7 @@ use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Framework\Filesystem\Io\File;
+use Magento\Setup\Console\Style\MagentoStyleInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -162,7 +163,7 @@ class CategoryCreateTask
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyNodeSearchResults $replHierarchyNodeRepository */
         $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
-        /** @var \Ls\Replication\Model\ReplHierarchyNode $itemCategory */
+        /** @var \Ls\Replication\Model\ReplHierarchyNode $hierarchyNode */
         foreach ($replHierarchyNodeRepository->getItems() as $hierarchyNode) {
             try {
                 if (empty($hierarchyNode->getNavId())) {
@@ -237,6 +238,7 @@ class CategoryCreateTask
         $criteriaSub = $this->replicationHelper->buildCriteriaForArray($filtersSub, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyNodeSearchResults $replHierarchyNodeRepositorySub */
         $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
+        /** @var \Ls\Replication\Model\ReplHierarchyNode $hierarchyNodeSub */
         foreach ($replHierarchyNodeRepositorySub->getItems() as $hierarchyNodeSub) {
             try {
                 $itemCategoryId = $hierarchyNodeSub->getParentNode();
@@ -245,9 +247,12 @@ class CategoryCreateTask
                     ->setPageSize(1);
                 $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId());
                 if ($collection->getSize() && !$subCategoryExistData) {
+                    /** @var \Magento\Catalog\Model\CategoryFactory $categorysub */
                     $categorysub = $this->categoryFactory->create();
                     $data = [
+                        // @codingStandardsIgnoreStart
                         'parent_id' => $collection->getFirstItem()->getId(),
+                        // @codingStandardsIgnoreEnd
                         'name' => ($hierarchyNodeSub->getDescription()) ?
                             $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId(),
                         'url_key' => $this->oSlug($hierarchyNodeSub->getNavId()),
@@ -306,6 +311,7 @@ class CategoryCreateTask
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters, 100);
         $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
+        /** @var \Ls\Replication\Model\ReplHierarchyNode $hierarchyNode */
         foreach ($replHierarchyNodeRepository->getItems() as $hierarchyNode) {
             try {
                 if (!empty($hierarchyNode->getNavId())) {
@@ -341,23 +347,24 @@ class CategoryCreateTask
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters, 100);
         $replHierarchyLeafRepository = $this->replHierarchyLeafRepository->getList($criteria);
-        foreach ($replHierarchyLeafRepository->getItems() as $hierarchyNode) {
+        /** @var \Ls\Replication\Model\ReplHierarchyLeaf $hierarchyLeaf */
+        foreach ($replHierarchyLeafRepository->getItems() as $hierarchyLeaf) {
             try {
-                $sku = $hierarchyNode->getNavId();
+                $sku = $hierarchyLeaf->getNavId();
                 $product = $this->productRepository->get($sku);
                 $categories = $product->getCategoryIds();
-                $categoryExistData = $this->isCategoryExist($hierarchyNode->getNodeId());
+                $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId());
                 if (!empty($categoryExistData)) {
                     $categoryId = $categoryExistData->getEntityId();
                     if (in_array($categoryId, $categories)) {
                         $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
                     }
                 }
-                $hierarchyNode->setData('is_processed', '1');
-                $hierarchyNode->setData('IsDeleted', '0');
-                $hierarchyNode->setData('is_updated', '0');
+                $hierarchyLeaf->setData('is_processed', '1');
+                $hierarchyLeaf->setData('IsDeleted', '0');
+                $hierarchyLeaf->setData('is_updated', '0');
                 // @codingStandardsIgnoreStart
-                $this->replHierarchyLeafRepository->save($hierarchyNode);
+                $this->replHierarchyLeafRepository->save($hierarchyLeaf);
                 // @codingStandardsIgnoreEnd
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
