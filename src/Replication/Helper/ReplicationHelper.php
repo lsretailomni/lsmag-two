@@ -291,6 +291,10 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             'TableName',
             $type,
             'eq'
+        )->addFilter(
+            'IsDeleted',
+            0,
+            'eq'
         )->create();
 
         /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $items */
