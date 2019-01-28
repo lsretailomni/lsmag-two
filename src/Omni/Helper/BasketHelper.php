@@ -200,6 +200,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $quoteItems = $quote->getAllVisibleItems();
 
         /** @var Entity\ArrayOfOneListItem $items */
+        // @codingStandardsIgnoreLine
         $items = new Entity\ArrayOfOneListItem();
 
         $itemsArray = [];
@@ -290,6 +291,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
+    // @codingStandardsIgnoreLine
     public function update(Entity\OneList $oneList)
     {
         $check_inventory = false;
@@ -408,7 +410,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $array[] = $line;
                 unset($line);
             }
-
+            // @codingStandardsIgnoreStart
             $lines = new Entity\ArrayOfOrderLineAvailability();
             $lines->setOrderLineAvailability($array);
 
@@ -423,6 +425,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $entity = new Entity\OrderAvailabilityCheck();
             $entity->setRequest($request);
             $operation = new Operation\OrderAvailabilityCheck();
+            // @codingStandardsIgnoreEnd
             $response = $operation->execute($entity);
         }
 
@@ -473,8 +476,10 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @return Entity\BasketCalcResponse|null
      * @throws \Ls\Omni\Exception\InvalidEnumException
      */
+    // @codingStandardsIgnoreLine
     public function calculate(Entity\OneList $oneList)
     {
+        // @codingStandardsIgnoreLine
         //TODO check if this is something needs to be configure from Admin panel or on shopping cart page.
         $shipmentFeeId = 66010;
 
@@ -571,6 +576,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             //}
 
             /** @var  Entity\ArrayOfBasketCalcLineRequest $lineRequest */
+            // @codingStandardsIgnoreStart
             $lineRequest = new Entity\ArrayOfBasketCalcLineRequest();
 
             $lineRequest->setBasketCalcLineRequest($array);
@@ -583,15 +589,17 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setBasketCalcLineRequests($lineRequest)
                 ->setStoreId($storeId);
 
+
             //$basketCalcRequest->setId($oneList->getId());
 
             /** @var Entity\BasketCalc $entity */
             $entity = new Entity\BasketCalc();
-            // @codingStandardsIgnoreEnd
 
             $entity->setBasketRequest($basketCalcRequest);
 
             $request = new Operation\BasketCalc();
+
+            // @codingStandardsIgnoreEnd
 
             /** @var  Entity\BasketCalcResponse $response */
             $response = $request->execute($entity);
@@ -602,6 +610,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         if (property_exists($response, "BasketCalcResult")) {
             // access inner object and return it
+            // @codingStandardsIgnoreLine
             $this->setOneListCalculation($response->BasketCalcResult);
             return $response->BasketCalcResult;
         }
@@ -627,6 +636,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Load Shipment Fee Product
      *
      */
+    // @codingStandardsIgnoreLine
     public function getShipmentFeeProduct()
     {
     }
@@ -637,6 +647,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getOneListCalculation()
     {
+        // @codingStandardsIgnoreStart
         $oneListCalc = $this->checkoutSession->getOneListCalculation();
         if ($oneListCalc==null) {
             $this->calculate(
@@ -644,6 +655,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             );
             // calculate updates the session, so we fetch again
             return $this->checkoutSession->getOneListCalculation();
+            // @codingStandardsIgnoreEnd
         }
         return $oneListCalc;
     }
@@ -660,6 +672,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @return array|bool|Entity\OneList|Entity\OneList[]|mixed|null
      * @throws \Ls\Omni\Exception\InvalidEnumException
      */
+    // @codingStandardsIgnoreLine
     public function get()
     {
         /** @var Entity\OneList $list */
@@ -680,6 +693,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 } else {
                     if ($loginContact->getBasket() instanceof Entity\ArrayOfOneList) {
                         foreach ($loginContact->getBasket()->getIterator() as $list) {
+                            // @codingStandardsIgnoreLine
                             $list->getListType() == Entity\Enum\ListType::BASKET;
                             if ($list->getIsDefaultList()) {
                                 $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $list);
