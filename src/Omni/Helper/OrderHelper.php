@@ -26,6 +26,13 @@ class OrderHelper extends AbstractHelper
      */
     public $customerSession;
 
+    /**
+     * OrderHelper constructor.
+     * @param Context $context
+     * @param Model\Order $order
+     * @param BasketHelper $basketHelper
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     */
     public function __construct(
         Context $context,
         Model\Order $order,
@@ -232,6 +239,7 @@ class OrderHelper extends AbstractHelper
             /** @var Entity\BasketLineCalcResponse $discount */
             foreach ($discounts as $discount) {
                 // not actually needed
+                // @codingStandardsIgnoreStart
                 // 'qty' => $discount->getQuantity(),
                 # store information from current discount
                 // @codingStandardsIgnoreLine
@@ -246,6 +254,7 @@ class OrderHelper extends AbstractHelper
                     ->setPeriodicDiscGroup($discount->getPeriodicDiscGroup())
                     ->setPeriodicDiscType($discount->getPeriodicDiscType());
             }
+            // @codingStandardsIgnoreEnd
         }
     }
 
@@ -260,6 +269,7 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreLine
         $operation = new Operation\OrderCreate();
         $response = $operation->execute($request);
+        // @codingStandardsIgnoreLine
         return $response ? $response->getResult() : $response;
     }
 
@@ -272,6 +282,7 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreLine
         $omniAddress = new Entity\Address();
         foreach ($magentoAddress->getStreet() as $i => $street) {
+            // @codingStandardsIgnoreLine
             //TODO support multiple line address more than 3.
             // stopping the address for multiple street lines, only accepting Address1 and Address2.
             if ($i > 1) {
@@ -311,6 +322,7 @@ class OrderHelper extends AbstractHelper
 
         // For Cash On Delivery and Cheque use Tender Type as 1
         $orderPayment->setTenderType('0');
+        // @codingStandardsIgnoreLine
         /*
          * Not Supporting at the moment, so all payment methods will be offline,
         if($order->getPayment()->getMethodInstance()->getCode() == 'cashondelivery'
