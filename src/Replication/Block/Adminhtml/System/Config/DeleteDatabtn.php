@@ -25,7 +25,6 @@ class DeleteDatabtn extends \Magento\Config\Block\System\Config\Form\Field
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string
      */
-
     public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
@@ -36,7 +35,6 @@ class DeleteDatabtn extends \Magento\Config\Block\System\Config\Form\Field
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string
      */
-
     public function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         $originalData = $element->getOriginalData();

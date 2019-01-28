@@ -14,16 +14,16 @@ use Ls\Omni\Service\ServiceType;
 abstract class AbstractOmniGenerator extends CoreGenerator
 {
     /** @var ServiceType */
-    protected $service_type;
+    public $service_type;
 
     /** @var Metadata */
-    protected $metadata;
+    public $metadata;
 
     /** @var string */
-    protected $base_namespace;
+    public $base_namespace;
 
     /** @var CaseHelperInterface */
-    protected $case_helper;
+    public $case_helper;
 
     /**
      * AbstractOmniGenerator constructor.

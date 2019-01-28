@@ -41,85 +41,85 @@ use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableP
 class ProductCreateTask
 {
     /** @var Factory */
-    protected $factory;
+    public $factory;
 
     /** @var Item */
-    protected $item;
+    public $item;
 
     /** @var Config */
-    protected $eavConfig;
+    public $eavConfig;
 
     /** @var Configurable */
-    protected $configurable;
+    public $configurable;
 
     /** @var Attribute */
-    protected $attribute;
+    public $attribute;
 
     /** @var ProductInterfaceFactory */
-    protected $productFactory;
+    public $productFactory;
 
     /** @var ProductRepositoryInterface */
-    protected $productRepository;
+    public $productRepository;
 
     /** @var CollectionFactory */
-    protected $categoryCollectionFactory;
+    public $categoryCollectionFactory;
 
     /** @var CategoryLinkManagementInterface */
-    protected $categoryLinkManagement;
+    public $categoryLinkManagement;
 
     /** @var ReplItemRepository */
-    protected $itemRepository;
+    public $itemRepository;
 
     /** @var ReplExtendedVariantValueRepository */
-    protected $extendedVariantValueRepository;
+    public $extendedVariantValueRepository;
 
     /** @var ReplImageRepository */
-    protected $imageRepository;
+    public $imageRepository;
 
     /** @var ReplBarcodeRepository */
-    protected $replBarcodeRepository;
+    public $replBarcodeRepository;
 
     /** @var ReplImageLinkRepositoryInterface */
-    protected $replImageLinkRepositoryInterface;
+    public $replImageLinkRepositoryInterface;
 
     /** @var ReplHierarchyLeafRepository */
-    protected $replHierarchyLeafRepository;
+    public $replHierarchyLeafRepository;
 
     /** @var ReplPriceRepository */
-    protected $replPriceRepository;
+    public $replPriceRepository;
 
     /** @var ProductAttributeMediaGalleryEntryInterface */
-    protected $attributeMediaGalleryEntry;
+    public $attributeMediaGalleryEntry;
 
     /** @var ImageContentFactory */
-    protected $imageContent;
+    public $imageContent;
 
     /** @var SearchCriteriaBuilder */
-    protected $searchCriteriaBuilder;
+    public $searchCriteriaBuilder;
 
     /** @var FilterBuilder */
-    protected $filterBuilder;
+    public $filterBuilder;
 
     /** @var FilterGroupBuilder */
-    protected $filterGroupBuilder;
+    public $filterGroupBuilder;
 
     /** @var LoggerInterface */
-    protected $logger;
+    public $logger;
 
-    /* @var LoyaltyHelper */
-    private $loyaltyHelper;
+    /** @var LoyaltyHelper */
+    public $loyaltyHelper;
 
     /** @var ReplicationHelper */
-    protected $replicationHelper;
+    public $replicationHelper;
 
     /** @var ReplAttributeValueRepositoryInterface */
-    protected $replAttributeValueRepositoryInterface;
+    public $replAttributeValueRepositoryInterface;
 
     /** @var LSR */
-    protected $_lsr;
+    public $lsr;
 
     /** @var Cron Checking */
-    protected $cronStatus = false;
+    public $cronStatus = false;
 
     /**
      * ProductCreateTask constructor.
@@ -207,8 +207,8 @@ class ProductCreateTask
         $this->loyaltyHelper = $loyaltyHelper;
         $this->replicationHelper = $replicationHelper;
         $this->replAttributeValueRepositoryInterface = $replAttributeValueRepositoryInterface;
-        $this->_lsr = $LSR;
-        $this->_configurableProTypeModel = $configurableProTypeModel;
+        $this->lsr = $LSR;
+        $this->configurableProTypeModel = $configurableProTypeModel;
     }
 
     /**
@@ -218,21 +218,20 @@ class ProductCreateTask
      */
     public function execute()
     {
-        $fullReplicationImageLinkStatus = $this->_lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
-        $fullReplicationBarcodsStatus = $this->_lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS);
-        $fullReplicationPriceStatus = $this->_lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS);
-        $cronCategoryCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
-        $cronAttributeCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-        $cronAttributeVariantCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
+        $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
+        $fullReplicationBarcodsStatus = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS);
+        $fullReplicationPriceStatus = $this->lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS);
+        $cronCategoryCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
+        $cronAttributeCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+        $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
         if ($cronCategoryCheck == 1 &&
             $cronAttributeCheck == 1 &&
             $cronAttributeVariantCheck == 1 &&
             $fullReplicationImageLinkStatus == 1 &&
             $fullReplicationBarcodsStatus == 1 &&
-            $fullReplicationPriceStatus == 1
-        ) {
+            $fullReplicationPriceStatus == 1) {
             $this->logger->debug('Running ProductCreateTask');
-            $productBatchSize = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE);
+            $productBatchSize = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE);
             /** @var \Magento\Framework\Api\SearchCriteria $criteria */
             $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $productBatchSize);
             /** @var \Ls\Replication\Model\ReplItemSearchResults $items */
@@ -253,10 +252,12 @@ class ProductCreateTask
                             $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                         }
                         $product = $this->getProductAttributes($productData, $item);
+                        // @codingStandardsIgnoreStart
                         $this->productRepository->save($product);
                         $item->setData('is_updated', '0');
                         $item->setData('processed', '1');
                         $this->itemRepository->save($item);
+                        // @codingStandardsIgnoreEnd
                     } catch (\Exception $e) {
                         $this->logger->debug($e->getMessage());
                     }
@@ -299,20 +300,24 @@ class ProductCreateTask
 
                     /** @var \Magento\Catalog\Api\ProductRepositoryInterface $productSaved */
                     $product = $this->getProductAttributes($product, $item);
+                    // @codingStandardsIgnoreStart
                     $productSaved = $this->productRepository->save($product);
                     $variants = $this->getProductVarients($item->getNavId());
-                    if (count($variants) > 0) {
+                    if (!empty($variants)) {
                         $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
                     }
                     $item->setData('processed', '1');
                     $this->itemRepository->save($item);
+                    // @codingStandardsIgnoreEnd
                 }
             }
             if (count($items->getItems()) == 0) {
                 $this->caterItemsRemoval();
                 $this->assignProductToCategory();
                 $this->cronStatus = true;
-                $fullReplicationVariantStatus = $this->_lsr->getStoreConfig(ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS);
+                $fullReplicationVariantStatus = $this->lsr->getStoreConfig(
+                    ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS
+                );
                 if ($fullReplicationVariantStatus == 1) {
                     $this->updateVariantsOnly();
                     $this->caterVariantsRemoval();
@@ -324,7 +329,8 @@ class ProductCreateTask
             }
             $this->logger->debug('End ProductCreateTask');
         } else {
-            $this->logger->debug("Product Replication cron fails because custom category, custom attribute or full image replication cron not executed successfully.");
+            $this->logger->debug("Product Replication cron fails because custom category, 
+            custom attribute or full image replication cron not executed successfully.");
         }
         $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT);
     }
@@ -372,7 +378,9 @@ class ProductCreateTask
             }
             $product->setData($formattedCode, $value);
             $item->setData('processed', '1');
+            // @codingStandardsIgnoreStart
             $this->replAttributeValueRepositoryInterface->save($item);
+            // @codingStandardsIgnoreEnd
         }
         return $product;
     }
@@ -389,8 +397,8 @@ class ProductCreateTask
         /** @var \Ls\Replication\Model\ReplImageLink $image */
         foreach ($productImages as $image) {
             $imageSize = [
-                'height' => $this->_lsr::DEFAULT_ITEM_IMAGE_HEIGHT,
-                'width' => $this->_lsr::DEFAULT_ITEM_IMAGE_WIDTH
+                'height' => $this->lsr::DEFAULT_ITEM_IMAGE_HEIGHT,
+                'width' => $this->lsr::DEFAULT_ITEM_IMAGE_WIDTH
             ];
             /** @var \Ls\Omni\Client\Ecommerce\Entity\ImageSize $imageSizeObject */
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
@@ -416,8 +424,9 @@ class ProductCreateTask
                 $galleryArray[] = clone $this->attributeMediaGalleryEntry;
                 $image->setData('processed', '1');
                 $image->setData('is_updated', '0');
-
+                // @codingStandardsIgnoreStart
                 $this->replImageLinkRepositoryInterface->save($image);
+                // @codingStandardsIgnoreEnd
             }
         }
         return $galleryArray;
@@ -435,10 +444,12 @@ class ProductCreateTask
             $productGroupId
         )->setPageSize(1);
         if ($categoryCollection->getSize()) {
+            // @codingStandardsIgnoreStart
             return [
                 $categoryCollection->getFirstItem()->getParentId(),
                 $categoryCollection->getFirstItem()->getId()
             ];
+            // @codingStandardsIgnoreEnd
         }
     }
 
@@ -447,7 +458,7 @@ class ProductCreateTask
      */
     private function assignProductToCategory()
     {
-        $hierarchyCode = $this->_lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
             $this->logger->debug("Hierarchy Code not defined in the configuration.");
             return;
@@ -463,10 +474,13 @@ class ProductCreateTask
             try {
                 $categoryArray = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
                 if (!empty($categoryArray)) {
-                    $this->categoryLinkManagement->assignProductToCategories($hierarchyLeaf->getNavId(), $categoryArray);
+                    // @codingStandardsIgnoreStart
+                    $this->categoryLinkManagement->assignProductToCategories($hierarchyLeaf->getNavId(),
+                        $categoryArray);
                     $hierarchyLeaf->setData('processed', '1');
                     $hierarchyLeaf->setData('is_updated', '0');
                     $this->replHierarchyLeafRepository->save($hierarchyLeaf);
+                    // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
@@ -480,16 +494,18 @@ class ProductCreateTask
      */
     private function getMimeType($image64)
     {
+        // @codingStandardsIgnoreStart
         return finfo_buffer(finfo_open(), base64_decode($image64), FILEINFO_MIME_TYPE);
+        // @codingStandardsIgnoreEnd
     }
-
 
     /**
      * @param $string
      * @return string
      */
-    protected function oSlug($string)
+    public function oSlug($string)
     {
+        // @codingStandardsIgnoreStart
         return strtolower(trim(preg_replace(
             '~[^0-9a-z]+~i',
             '-',
@@ -503,6 +519,7 @@ class ProductCreateTask
                 'UTF-8'
             )
         ), '-'));
+        // @codingStandardsIgnoreEnd
     }
 
     /**
@@ -555,13 +572,14 @@ class ProductCreateTask
         $variants = $this->replItemVariantRegistrationRepository->getList($criteria)->getItems();
         return $variants;
     }
+
     /**
      *
      * @param type $code
      * @param type $value
      * @return type
      */
-    protected function _getOptionIDByCode($code, $value)
+    public function _getOptionIDByCode($code, $value)
     {
         $attribute = $this->eavConfig->getAttribute('catalog_product', $code);
         $optionID = $attribute->getSource()->getOptionId($value);
@@ -574,7 +592,7 @@ class ProductCreateTask
      * @return type
      * @throws \Exception
      */
-    protected function _getAttributesCodes($itemId)
+    public function _getAttributesCodes($itemId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)->create();
         $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
@@ -583,11 +601,12 @@ class ProductCreateTask
             $formattedCode = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
             $finalCodes[$valueCode->getDimensions()] = $formattedCode;
             $valueCode->setData('processed', '1');
+            // @codingStandardsIgnoreStart
             $this->extendedVariantValueRepository->save($valueCode);
+            // @codingStandardsIgnoreEnd
         }
         return $finalCodes;
     }
-
 
     /**
      * Return all the barcodes including the variant
@@ -595,14 +614,15 @@ class ProductCreateTask
      * @param $itemId
      * @return array
      */
-    protected function _getBarcode($itemId)
+    public function _getBarcode($itemId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)->create();
         $allBarCodes = [];
         /** @var ReplBarcodeRepository $itemBarcodes */
         $itemBarcodes = $this->replBarcodeRepository->getList($searchCriteria)->getItems();
         foreach ($itemBarcodes as $itemBarcode) {
-            $sku = $itemBarcode->getItemId() . (($itemBarcode->getVariantId()) ? '-' . $itemBarcode->getVariantId() : '');
+            $sku = $itemBarcode->getItemId() .
+                (($itemBarcode->getVariantId()) ? '-' . $itemBarcode->getVariantId() : '');
             $allBarCodes[$sku] = $itemBarcode->getNavId();
         }
         return $allBarCodes;
@@ -614,7 +634,7 @@ class ProductCreateTask
      * @param $itemId
      * @return array
      */
-    protected function _getItem($itemId)
+    public function _getItem($itemId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('nav_id', $itemId)->create();
         $items = [];
@@ -630,14 +650,13 @@ class ProductCreateTask
      * @param $itemId
      * @return mixed
      */
-    protected function getItemPrice($itemId, $variantId = null)
+    public function getItemPrice($itemId, $variantId = null)
     {
-        $storeId = $this->_lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+        $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
         $filters = [
             ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
             ['field' => 'QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq'],
-            //array('field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq')
         ];
         $items = [];
         $searchCriteria = $this->replicationHelper->buildCriteriaForArray($filters, 1);
@@ -651,13 +670,13 @@ class ProductCreateTask
     /**
      * Update/Add the modified/added variants of the item
      */
-    protected function updateVariantsOnly()
+    public function updateVariantsOnly()
     {
         $filters = [
             ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull']
         ];
         $variants = $this->getUpdatedProductVariants($filters);
-        if (count($variants) > 0) {
+        if (!empty($variants)) {
             try {
                 foreach ($variants as $variant) {
                     $items[] = $variant->getItemId();
@@ -681,24 +700,26 @@ class ProductCreateTask
     /**
      * Cater Configurable Products Removal
      */
-    protected function caterItemsRemoval()
+    public function caterItemsRemoval()
     {
         $filters = [
             ['field' => 'nav_id', 'value' => true, 'condition_type' => 'notnull']
         ];
         $items = $this->getDeletedItemsOnly($filters);
 
-        if (count($items->getItems()) > 0) {
+        if (!empty($items->getItems())) {
             try {
                 foreach ($items->getItems() as $value) {
                     $sku = $value->getNavId();
                     $productData = $this->productRepository->get($sku);
                     $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED);
+                    // @codingStandardsIgnoreStart
                     $this->productRepository->save($productData);
                     $value->setData('is_updated', '0');
                     $value->setData('processed', '1');
                     $value->setData('IsDeleted', '0');
                     $this->itemRepository->save($value);
+                    // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
@@ -709,7 +730,7 @@ class ProductCreateTask
     /**
      * Cater SimpleProducts Removal
      */
-    protected function caterVariantsRemoval()
+    public function caterVariantsRemoval()
     {
         $filters = [
             ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull']
@@ -718,6 +739,7 @@ class ProductCreateTask
 
         if (count($variants) > 0) {
             try {
+                /** @var \Ls\Replication\Model\ReplItemVariantRegistration $value */
                 foreach ($variants as $value) {
                     $d1 = (($value->getVariantDimension1()) ? $value->getVariantDimension1() : '');
                     $d2 = (($value->getVariantDimension2()) ? $value->getVariantDimension2() : '');
@@ -733,29 +755,40 @@ class ProductCreateTask
                         if (isset($keyCode) && $keyCode != '') {
                             $code = $valueCode;
                             $codeValue = ${'d' . $keyCode};
-                            $configurableAttributes[] = ["code"=>$code,'value'=>$codeValue];
+                            $configurableAttributes[] = ["code" => $code, 'value' => $codeValue];
                         }
                     }
                     $associatedSimpleProduct = $this->getConfAssoProductId($productData, $configurableAttributes);
-                    if(!is_null($associatedSimpleProduct)) {
-                        $associatedSimpleProduct->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED);
+                    if ($associatedSimpleProduct != null) {
+                        $associatedSimpleProduct->setStatus(
+                            \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED
+                        );
+                        // @codingStandardsIgnoreStart
                         $this->productRepository->save($associatedSimpleProduct);
+                        // @codingStandardsIgnoreEnd
                     }
-
-
                     $value->setData('is_updated', '0');
                     $value->setData('processed', '1');
                     $value->setData('IsDeleted', '0');
+                    // @codingStandardsIgnoreStart
                     $this->replItemVariantRegistrationRepository->save($value);
+                    // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }
     }
+
+    /**
+     * @param $product
+     * @param $nameValueList
+     * @return \Magento\Catalog\Model\Product|null
+     */
     public function getConfAssoProductId($product, $nameValueList)
     {
-        //get configurable products attributes array with all values with lable (supper attribute which use for configuration)
+        //get configurable products attributes array with all values
+        // with lable (supper attribute which use for configuration)
         $assPro = null;
         $optionsData = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
         $superAttrList = [];
@@ -783,11 +816,12 @@ class ProductCreateTask
 
         if (count($attributeValues) == count($nameValueList)) {
             // pass this prepared array with $product
-            $assPro = $this->_configurableProTypeModel->getProductByAttributes($attributeValues, $product);
+            $assPro = $this->configurableProTypeModel->getProductByAttributes($attributeValues, $product);
             // it return complete product accoring to attribute values which you pass
         }
         return $assPro;
     }
+
     /**
      * Update/Add the modified/added images of the item
      */
@@ -814,7 +848,7 @@ class ProductCreateTask
                 }
                 try {
                     if ($image->getTableName() == "Item" || $image->getTableName() == "Item Variant") {
-                        /* @var ReplImageLink $image */
+                        /** @var ReplImageLink $image */
                         $additionalFilters = [];
                         if ($image->getTableName() == "Item") {
                             $additionalFilters = ['field' => 'TableName', 'value' => 'Item', 'condition_type' => 'eq'];
@@ -833,13 +867,14 @@ class ProductCreateTask
                         $item = str_replace(',', '-', $item);
                         $image->setData('is_updated', '0');
                         $image->setData('processed', '1');
+                        // @codingStandardsIgnoreStart
                         $this->replImageLinkRepositoryInterface->save($image);
                         /* @var ProductRepositoryInterface $productData */
                         $productData = $this->productRepository->get($item);
                         $galleryImage = $allImages;
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
                         $this->productRepository->save($productData);
-
+                        // @codingStandardsIgnoreEnd
                         // Adding items into an array whose images are processed.
                         $processedItems[]   = $image->getKeyValue();
                     }
@@ -853,9 +888,9 @@ class ProductCreateTask
     /**
      * Update the modified/added barcode of the items & item variants
      */
-    protected function updateBarcodeOnly()
+    public function updateBarcodeOnly()
     {
-        $cronProductCheck = $this->_lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+        $cronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
         if ($cronProductCheck == 1) {
             $criteria = $this->replicationHelper->buildCriteriaForNewItems();
             /** @var \Ls\Replication\Model\ReplBarcodeSearchResults $replBarcodes */
@@ -871,10 +906,12 @@ class ProductCreateTask
                     $productData = $this->productRepository->get($sku);
                     if (isset($productData)) {
                         $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
+                        // @codingStandardsIgnoreStart
                         $this->productRepository->save($productData);
                         $replBarcode->setData('is_updated', '0');
                         $replBarcode->setData('processed', '1');
                         $this->replBarcodeRepository->save($replBarcode);
+                        // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
@@ -886,7 +923,7 @@ class ProductCreateTask
     /**
      * Update the modified price of the items & item variants
      */
-    protected function updatePriceOnly()
+    public function updatePriceOnly()
     {
         $filters = [];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
@@ -903,10 +940,12 @@ class ProductCreateTask
                 $productData = $this->productRepository->get($sku);
                 if (isset($productData)) {
                     $productData->setPrice($replPrice->getUnitPrice());
+                    // @codingStandardsIgnoreStart
                     $this->productRepository->save($productData);
                     $replPrice->setData('is_updated', '0');
                     $replPrice->setData('processed', '1');
                     $this->replPriceRepository->save($replPrice);
+                    // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
@@ -924,7 +963,7 @@ class ProductCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\StateException
      */
-    protected function createConfigurableProducts($configProduct, $item, $itemBarcodes, $variants)
+    public function createConfigurableProducts($configProduct, $item, $itemBarcodes, $variants)
     {
         // get those attribute codes which are assigned to product.
         $attributesCode = $this->_getAttributesCodes($item->getNavId());
@@ -954,15 +993,20 @@ class ProductCreateTask
                     if (isset($itemPrice)) {
                         $productData->setPrice($itemPrice->getUnitPrice());
                     }
-                    $productImages = $this->replicationHelper->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
+                    $productImages = $this->replicationHelper->getImageLinksByType(
+                        $value->getItemId() . ',' . $value->getVariantId(),
+                        'Item Variant'
+                    );
                     if ($productImages) {
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
                     $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
+                    // @codingStandardsIgnoreStart
                     $productData->save();
                     $value->setData('processed', '1');
                     $value->setData('is_updated', '0');
                     $this->replItemVariantRegistrationRepository->save($value);
+                    // @codingStandardsIgnoreEnd
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
                 }
@@ -977,7 +1021,8 @@ class ProductCreateTask
 
                 /** @var \Magento\Catalog\Api\Data\ProductInterface $productV */
                 $productV = $this->productFactory->create();
-                $productV->setName($item->getDescription() . (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : ''));
+                $dMerged = (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : '');
+                $productV->setName($item->getDescription() . $dMerged);
                 $productV->setSku($sku);
                 $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
                 if (isset($itemPrice)) {
@@ -998,7 +1043,8 @@ class ProductCreateTask
                         }
                     }
                 }
-                $productImages = $this->replicationHelper->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
+                $productImages = $this->replicationHelper
+                    ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
                 if ($productImages) {
                     $this->logger->debug('Found images for the item ' . $item->getNavId());
                     $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
@@ -1015,11 +1061,13 @@ class ProductCreateTask
                     'qty' => 100
                 ]);
                 /** @var \Magento\Catalog\Api\Data\ProductInterface $productSaved */
+                // @codingStandardsIgnoreStart
                 $productSaved = $this->productRepository->save($productV);
                 $associatedProductIds[] = $productSaved->getId();
                 $value->setData('is_updated', '0');
                 $value->setData('processed', '1');
                 $this->replItemVariantRegistrationRepository->save($value);
+                // @codingStandardsIgnoreEnd
             }
         }
         $productId = $configProduct->getId();
@@ -1030,7 +1078,9 @@ class ProductCreateTask
                 'position' => $attributeKey
             ];
             try {
+                // @codingStandardsIgnoreStart
                 $this->attribute->setData($data)->save();
+                // @codingStandardsIgnoreEnd
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }

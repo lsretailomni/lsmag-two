@@ -19,21 +19,21 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
     /**
      * @var \Magento\Ui\DataProvider\AddFieldToCollectionInterface[]
      */
-    protected $addFieldStrategies;
+    public $addFieldStrategies;
 
     /**
      * @var \Magento\Ui\DataProvider\AddFilterToCollectionInterface[]
      */
-    protected $addFilterStrategies;
+    public $addFilterStrategies;
 
     /**
      * @var \Magento\Framework\App\Request\Http
      */
-    protected $request;
+    public $request;
     /**
      * @var \Magento\Framework\Module\Dir\Reader
      */
-    protected $moduleDirReader;
+    public $moduleDirReader;
 
     /**
      * @var \Magento\Framework\Xml\Parser
@@ -41,7 +41,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
     private $parser;
 
     /** @var LSR */
-    protected $lsr;
+    public $lsr;
 
     /**
      * CronsProvider constructor.
@@ -143,6 +143,9 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         ];
     }
 
+    /**
+     * @return mixed
+     */
     public function readCronFile()
     {
         try {
@@ -153,14 +156,26 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         }
     }
 
+    /**
+     * @param int $offset
+     * @param int $size
+     */
     public function setLimit($offset, $size)
     {
     }
 
+    /**
+     * @param string $field
+     * @param string $direction
+     */
     public function addOrder($field, $direction)
     {
     }
 
+    /**
+     * @param \Magento\Framework\Api\Filter $filter
+     * @return mixed|void
+     */
     public function addFilter(\Magento\Framework\Api\Filter $filter)
     {
     }
