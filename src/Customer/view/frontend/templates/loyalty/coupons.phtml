@@ -2,6 +2,8 @@
 
 /** @var \Ls\Customer\Block\Loyalty\Offers $this */
 $type = 'Club';
+
+/** @var \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer[] $offers */
 $offers = $this->getOffers();
 $total = count($offers);
 $c = 0;
@@ -9,10 +11,11 @@ $c = 0;
 
 <div class="coupons-view">
     <h2><?php echo __('Coupons'); ?></h2>
-    <?php if (is_array($offers) && count($offers) > 0) : ?>
+    <?php if (is_array($offers) && $total > 0) : ?>
         <ul class=" coupons-grid">
             <?php foreach ($offers as $offer) : ?>
-                <?php if ($offer->getType() != $type) {
+                <?php
+                if ($offer->getType() != $type) {
                     continue;
                 }
                 $c++;
@@ -20,7 +23,11 @@ $c = 0;
                 ?>
                 <li class="item <?php echo($total == $c ? ' last' : '') ?> col-sm-4 col-md-4 col-lg-4">
                     <div class="item-img-cont">
-                        <?php if (count($images) && !empty($images[0])) : ?>
+                        <?php
+                        // @codingStandardsIgnoreStart
+                        if (count($images) && !empty($images[0])) :
+                            // @codingStandardsIgnoreEnd
+                            ?>
                             <img id="coupon-collection-image-<?php echo $c ?>"
                                  src="<?php echo $this->getMediaPathToLoad() .
                                      $images[0] ?>" alt="<?php echo $offer->getDescription() ?> ">

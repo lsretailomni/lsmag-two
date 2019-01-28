@@ -14,14 +14,11 @@ class LogoutObserver implements ObserverInterface
     /** @var ContactHelper  */
     private $contactHelper;
 
-    /** @var \Magento\Framework\Message\ManagerInterface  */
-    protected $messageManager;
-
     /** @var \Psr\Log\LoggerInterface  */
-    protected $logger;
+    private $logger;
 
     /** @var \Magento\Customer\Model\Session\Proxy  */
-    protected $customerSession;
+    private $customerSession;
 
     /**
      * LogoutObserver constructor.
@@ -32,20 +29,19 @@ class LogoutObserver implements ObserverInterface
      */
     public function __construct(
         ContactHelper $contactHelper,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession
     ) {
         $this->contactHelper = $contactHelper;
-        $this->messageManager = $messageManager;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
     }
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this|void
+     * @return $this
      */
+    // @codingStandardsIgnoreStart
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $result = $this->contactHelper->logout();
@@ -55,4 +51,5 @@ class LogoutObserver implements ObserverInterface
         $this->customerSession->destroy();
         return $this;
     }
+    // @codingStandardsIgnoreEnd
 }

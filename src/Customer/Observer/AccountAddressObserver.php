@@ -15,13 +15,13 @@ class AccountAddressObserver implements ObserverInterface
     private $contactHelper;
 
     /** @var \Magento\Framework\Message\ManagerInterface $messageManager */
-    protected $messageManager;
+    private $messageManager;
 
     /** @var \Psr\Log\LoggerInterface $logger */
-    protected $logger;
+    private $logger;
 
     /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
-    protected $customerSession;
+    private $customerSession;
 
     /**
      * AccountAddressObserver constructor.
@@ -44,7 +44,7 @@ class AccountAddressObserver implements ObserverInterface
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this|void
+     * @return $this
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
@@ -57,9 +57,8 @@ class AccountAddressObserver implements ObserverInterface
             $defaultShipping = $customerAddress->getCustomer()->getDefaultShippingAddress();
             if ($customerAddress->getData('is_default_shipping')) {
                 $result = $this->contactHelper->UpdateAccount($customerAddress);
-                if ($result) {
-                    // Magento have already generated a success message so do nothing
-                } else {
+                if (empty($result)) {
+                    //Generate Message only when Variable is either empty, null, 0 or undefined.
                     $this->messageManager->addErrorMessage(
                         __('Something went wrong, Please try again later.')
                     );
@@ -67,9 +66,7 @@ class AccountAddressObserver implements ObserverInterface
             } elseif ($defaultShipping) {
                 if ($defaultShipping->getId() == $customerAddress->getId()) {
                     $result = $this->contactHelper->UpdateAccount($customerAddress);
-                    if ($result) {
-                        // Magento have already generated a success message so do nothing
-                    } else {
+                    if (empty($result)) {
                         $this->messageManager->addErrorMessage(
                             __('Something went wrong, Please try again later.')
                         );

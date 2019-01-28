@@ -15,19 +15,19 @@ class AccountEditObserver implements ObserverInterface
     private $contactHelper;
 
     /** @var \Magento\Framework\Message\ManagerInterface $messageManager */
-    protected $messageManager;
+    private $messageManager;
 
     /** @var \Psr\Log\LoggerInterface $logger */
-    protected $logger;
+    private $logger;
 
     /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
-    protected $customerSession;
+    private $customerSession;
 
     /** @var \Magento\Framework\App\ActionFlag */
-    protected $actionFlag;
+    private $actionFlag;
 
     /** @var \Magento\Framework\App\Response\RedirectInterface */
-    protected $redirectInterface;
+    private $redirectInterface;
 
     /**
      * AccountEditObserver constructor.
@@ -59,7 +59,7 @@ class AccountEditObserver implements ObserverInterface
      * Customer Update Password through Omni End Point, currently we are only working on
      * changing customer password and is not focusing on changing the customer account information.
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this|void
+     * @return $this
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
@@ -72,7 +72,7 @@ class AccountEditObserver implements ObserverInterface
             if ($customer_edit_post['password'] == $customer_edit_post['password_confirmation']) {
                 $result = null;
                 $result = $this->contactHelper->changePassword($customer, $customer_edit_post);
-                if ($result) {
+                if (!empty($result)) {
                     $this->messageManager->addSuccessMessage(
                         __('Your password has been updated.')
                     );

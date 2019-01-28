@@ -3,8 +3,5 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\Customer\Api\CustomerRepositoryInterface"
                 type="Magento\Customer\Model\ResourceModel\CustomerRepository"/>
-    <!-- right now, am not really sure weather its functional or not, as by default magento already handle this type od exceptions. -->
-    <!--    <preference for="Magento\Customer\Model\Customer\Attribute\Backend\Password"
-                    type="Ls\Customer\Model\Customer\Attribute\Backend\Password"/>-->
 </config>
 

@@ -20,12 +20,12 @@ class Offers extends \Magento\Framework\View\Element\Template
     /**
      * @var \Magento\Framework\Filesystem\Io\File
      */
-    protected $file;
+    public $file;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    public $storeManager;
 
     /**
      * Offers constructor.
@@ -40,14 +40,12 @@ class Offers extends \Magento\Framework\View\Element\Template
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         LoyaltyHelper $loyaltyHelper,
-        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Filesystem\Io\File $file,
         StoreManagerInterface $storeManager,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->loyaltyHelper = $loyaltyHelper;
-        $this->logger = $logger;
         $this->file = $file;
         $this->storeManager = $storeManager;
     }
@@ -114,7 +112,7 @@ class Offers extends \Magento\Framework\View\Element\Template
             }
             return $images;
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->_logger->error($e->getMessage());
         }
     }
 

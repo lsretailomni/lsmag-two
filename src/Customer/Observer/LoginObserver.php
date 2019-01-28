@@ -7,8 +7,6 @@ use Zend_Validate;
 use Zend_Validate_EmailAddress;
 use Ls\Omni\Helper\ContactHelper;
 use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Core\Model\LSR;
-use Magento\Customer\Api\CustomerMetadataInterface;
 
 /**
  * Class LoginObserver
@@ -20,99 +18,56 @@ class LoginObserver implements ObserverInterface
     /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var \Magento\Framework\Api\FilterBuilder */
-    protected $filterBuilder;
-
-    /** @var \Magento\Framework\Api\SearchCriteriaBuilder */
-    protected $searchCriteriaBuilder;
-
-    /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
-    protected $customerRepository;
-
     /** @var \Magento\Framework\Message\ManagerInterface */
-    protected $messageManager;
-
-    /** @var \Magento\Framework\Registry */
-    protected $registry;
+    private $messageManager;
 
     /** @var \Psr\Log\LoggerInterface */
-    protected $logger;
+    private $logger;
 
     /** @var \Magento\Customer\Model\Session\Proxy */
-    protected $customerSession;
+    private $customerSession;
 
     /** @var \Magento\Framework\App\Response\RedirectInterface */
-    protected $redirectInterface;
+    private $redirectInterface;
 
     /** @var \Magento\Framework\App\ActionFlag */
-    protected $actionFlag;
+    private $actionFlag;
 
     /** @var \Magento\Store\Model\StoreManagerInterface */
-    protected $storeManager;
-
-    /** @var \Magento\Customer\Model\ResourceModel\Customer */
-    protected $customerResourceModel;
-
-    /** @var \Magento\Checkout\Model\Session\Proxy */
-    protected $checkoutSession;
-
-    /** @var  \Ls\Omni\Helper\BasketHelper */
-    protected $basketHelper;
+    private $storeManager;
 
     /** @var \Magento\Customer\Model\CustomerFactory */
-    protected $customerFactory;
+    private $customerFactory;
 
     /**
      * LoginObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Magento\Framework\Registry $registry
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Framework\App\Response\RedirectInterface $redirectInterface
      * @param \Magento\Framework\App\ActionFlag $actionFlag
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
      */
-
     public function __construct(
         ContactHelper $contactHelper,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Framework\Message\ManagerInterface $messageManager,
-        \Magento\Framework\Registry $registry,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Ls\Omni\Helper\BasketHelper $basketHelper
+        \Magento\Customer\Model\CustomerFactory $customerFactory
     ) {
         $this->contactHelper = $contactHelper;
-        $this->filterBuilder = $filterBuilder;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->customerResourceModel = $customerResourceModel;
         $this->messageManager = $messageManager;
-        $this->registry = $registry;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->redirectInterface = $redirectInterface;
         $this->actionFlag = $actionFlag;
         $this->storeManager = $storeManager;
         $this->customerFactory = $customerFactory;
-        $this->checkoutSession = $checkoutSession;
-        $this->basketHelper = $basketHelper;
-        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -147,40 +102,18 @@ class LoginObserver implements ObserverInterface
                     && !empty($search->getEmail());
 
                 if (!$found) {
-                    $this->messageManager->addErrorMessage(
-                        __('Sorry. No account found with the provided email address')
-                    );
-                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()->getResponse()->setRedirect(
-                        $this->redirectInterface->getRefererUrl()
-                    );
-                    return $this;
+                    $errorMessage   =   'Sorry. No account found with the provided email address';
+                    return $this->handleErrorMessage($observer, $errorMessage);
                 }
                 $email = $search->getEmail();
             }
 
             if ($is_email) {
-                $filters = [
-                    $this->filterBuilder
-                        ->setField('email')
-                        ->setConditionType('eq')
-                        ->setValue($email)
-                        ->create()
-                ];
-                $this->searchCriteriaBuilder->addFilters($filters);
-                $searchCriteria = $this->searchCriteriaBuilder->create();
-                $searchResults = $this->customerRepository->getList($searchCriteria);
+                $searchResults      =   $this->contactHelper->searchCustomerByEmail($email);
 
                 if ($searchResults->getTotalCount() == 0) {
-                    $this->messageManager->addErrorMessage(
-                        __('Unfortunately email login is only available for members registered in Magento')
-                    );
-                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()->getResponse()->setRedirect(
-                        $this->redirectInterface->getRefererUrl()
-                    );
-
-                    return $this;
+                    $errorMessage   =   'Unfortunately email login is only available for members registered in Magento';
+                    return $this->handleErrorMessage($observer, $errorMessage);
                 } else {
                     $customerObj = null;
                     foreach ($searchResults->getItems() as $match) {
@@ -196,116 +129,19 @@ class LoginObserver implements ObserverInterface
             $result = $this->contactHelper->login($username, $login['password']);
 
             if ($result == false) {
-                $this->messageManager->addErrorMessage(
-                    __('Invalid Omni login or Omni password')
-                );
-                $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                $observer->getControllerAction()
-                    ->getResponse()
-                    ->setRedirect($this->redirectInterface->getRefererUrl());
-                return $this;
+                $errorMessage   =   'Invalid Omni login or Omni password';
+                return $this->handleErrorMessage($observer, $errorMessage);
             }
 
             if ($result instanceof Entity\MemberContact) {
-                $filters = [
-                    $this->filterBuilder
-                        ->setField('email')
-                        ->setConditionType('eq')
-                        ->setValue($result->getEmail())
-                        ->create()
-                ];
-                $this->searchCriteriaBuilder->addFilters($filters);
-                $searchCriteria = $this->searchCriteriaBuilder->create();
-                $searchResults = $this->customerRepository->getList($searchCriteria);
+                $this->contactHelper->processCustomerLogin($result, $login, $is_email);
 
-                $customer = null;
-                if ($searchResults->getTotalCount() == 0) {
-                    $customer = $this->contactHelper->customer($result, $login['password']);
-                } else {
-                    foreach ($searchResults->getItems() as $match) {
-                        $customer = $this->customerRepository->getById($match->getId());
-                        break;
-                    }
-                }
-
-                $customer_email = $customer->getEmail();
-
-                $customer = $this->customerFactory->create()
-                    ->setWebsiteId($websiteId)
-                    ->loadByEmail($customer_email);
-                $card = $result->getCard();
-
-                if ($customer->getData('lsr_id') === null) {
-                    $customer->setData('lsr_id', $result->getId());
-                }
-                if (!$is_email && empty($customer->getData('lsr_username'))) {
-                    $customer->setData('lsr_username', $username);
-                }
-                if ($customer->getData('lsr_cardid') === null) {
-                    $customer->setData('lsr_cardid', $card->getId());
-                }
-                $token = $result->getLoggedOnToDevice()
-                    ->getSecurityToken();
-
-                $customer->setData('lsr_token', $token);
-                $customer->setData('attribute_set_id', CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
-
-                if ($result->getAccount()->getScheme()->getId()) {
-                    $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
-                        $result->getAccount()->getScheme()->getId()
-                    );
-                    $customer->setGroupId($customerGroupId);
-                }
-
-                $this->customerResourceModel->save($customer);
-                $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
-                $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
-                $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $result->getId());
-                if ($card instanceof Entity\Card && $card->getId() !== null) {
-                    $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $card->getId());
-                }
-
-                $this->customerSession->setCustomerAsLoggedIn($customer);
-
-                /** @var Entity\OneList $oneListBasket */
-                $oneListBasket = $result->getBasket();
-
-                $quote = $this->checkoutSession->getQuote();
-
-                if (!is_array($oneListBasket) &&
-                    $oneListBasket instanceof Entity\OneList &&
-                    $oneListBasket->getId() != '') {
-                    // If customer has previously one list created then get
-                    // that and sync the current information with that.
-                    // delete onelist in session if any for the guest user.
-                    if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                        $this->basketHelper->delete($this->customerSession->getData(LSR::SESSION_CART_ONELIST));
-                    }
-
-                    // store the onelist returned from Omni into Magento session.
-                    $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $oneListBasket);
-
-                    // update items from quote to basket.
-                    $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
-
-                    // update the onelist to Omni.
-                    $this->basketHelper->update($oneList);
-                } elseif ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                    // if customer already has onelist created then update the list to get the information with user.
-                    $oneListBasket = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-
-                    $oneListBasket->setCardId($card->getId())
-                        ->setContactId($result->getId())
-                        ->setDescription('OneList Magento')
-                        ->setIsDefaultList(true)
-                        ->setListType(Entity\Enum\ListType::BASKET);
-                    $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
-                    $this->basketHelper->update($oneList);
-                } elseif (!empty($quote->getAllItems())) {
-                    $oneList = $this->basketHelper->get();
-                    $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-                    $this->basketHelper->update($oneList);
-                }
+                /** Update Basket to Omni */
+                $this->contactHelper->updateBasketAfterLogin(
+                    $result->getBasket(),
+                    $result->getId(),
+                    $result->getCard()->getId()
+                );
             } else {
                 $this->customerSession->addError(
                     __('The service is currently unavailable. Please try again later.')
@@ -314,6 +150,23 @@ class LoginObserver implements ObserverInterface
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
+        return $this;
+    }
+
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     * @param string $errorMessage
+     * @return $this
+     */
+    private function handleErrorMessage(\Magento\Framework\Event\Observer $observer, $errorMessage = '')
+    {
+        $this->messageManager->addErrorMessage(
+            __($errorMessage)
+        );
+        $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+        $observer->getControllerAction()->getResponse()->setRedirect(
+            $this->redirectInterface->getRefererUrl()
+        );
         return $this;
     }
 }
