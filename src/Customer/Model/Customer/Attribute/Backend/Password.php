@@ -28,13 +28,6 @@ class Password extends \Magento\Customer\Model\Customer\Attribute\Backend\Passwo
     public $string;
 
     /**
-     * Magento string lib
-     *
-     * @var \Magento\Framework\Stdlib\StringUtils
-     */
-    public $scopeConfig;
-
-    /**
      * Password constructor.
      * @param \Magento\Framework\Stdlib\StringUtils $string
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -45,8 +38,8 @@ class Password extends \Magento\Customer\Model\Customer\Attribute\Backend\Passwo
     ) {
         $this->string = $string;
         $this->scopeConfig = $scopeConfig;
+        parent::__construct($string);
     }
-
     /**
      * @param \Magento\Framework\DataObject $object
      * @throws LocalizedException
