@@ -15,46 +15,40 @@ class ResetPasswordObserver implements ObserverInterface
     private $contactHelper;
 
     /** @var \Magento\Framework\Message\ManagerInterface $messageManager */
-    protected $messageManager;
-
-    /** @var \Magento\Framework\Registry $registry */
-    protected $registry;
+    private $messageManager;
 
     /** @var \Psr\Log\LoggerInterface $logger */
-    protected $logger;
+    private $logger;
 
     /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
-    protected $customerSession;
+    private $customerSession;
 
     /** @var \Magento\Framework\App\ActionFlag */
-    protected $actionFlag;
+    private $actionFlag;
 
     /** @var \Magento\Framework\App\Response\RedirectInterface */
-    protected $redirectInterface;
+    private $redirectInterface;
 
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
-    protected $customerRepository;
+    private $customerRepository;
 
     /** @var \Magento\Store\Model\StoreManagerInterface */
-    protected $storeManager;
+    private $storeManager;
 
     /**
      * ResetPasswordObserver constructor.
      * @param ContactHelper $contactHelper
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Magento\Framework\Registry $registry
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Framework\App\Response\RedirectInterface $redirectInterface
      * @param \Magento\Framework\App\ActionFlag $actionFlag
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerFactory
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
-
     public function __construct(
         ContactHelper $contactHelper,
         \Magento\Framework\Message\ManagerInterface $messageManager,
-        \Magento\Framework\Registry $registry,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
@@ -64,7 +58,6 @@ class ResetPasswordObserver implements ObserverInterface
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
-        $this->registry = $registry;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->redirectInterface = $redirectInterface;
@@ -78,7 +71,7 @@ class ResetPasswordObserver implements ObserverInterface
      * All failed case validation and success message will be handled by magento resetPasswordPost.php class.
      * We are only suppose to do a post dispatch event to update the password.
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this|void
+     * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -99,9 +92,7 @@ class ResetPasswordObserver implements ObserverInterface
                 $customer = $this->customerRepository->getById($post_param['id']);
                 $customer->setWebsiteId($websiteId);
                 $result = $this->contactHelper->resetPassword($customer, $post_param);
-                if ($result) {
-                    // Magento have already generated a success message so do nothing
-                } else {
+                if (!$result) {
                     $this->messageManager->addErrorMessage(
                         __('Something went wrong, Please try again later.')
                     );
@@ -114,5 +105,6 @@ class ResetPasswordObserver implements ObserverInterface
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
+        return $this;
     }
 }

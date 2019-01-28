@@ -16,54 +16,35 @@ class RegisterObserver implements ObserverInterface
     /** @var ContactHelper $contactHelper */
     private $contactHelper;
 
-    /** @var \Magento\Framework\Api\FilterBuilder $filterBuilder */
-    protected $filterBuilder;
-
-    /** @var \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder */
-    protected $searchCriteriaBuilder;
-
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
-    protected $customerRepository;
-
-    /** @var \Magento\Framework\Message\ManagerInterface $messageManager */
-    protected $messageManager;
+    private $customerRepository;
 
     /** @var \Magento\Framework\Registry $registry */
-    protected $registry;
+    private $registry;
 
     /** @var \Psr\Log\LoggerInterface $logger */
-    protected $logger;
+    private $logger;
 
     /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
-    protected $customerSession;
+    private $customerSession;
 
     /**
      * RegisterObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magento\Framework\Registry $registry
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      */
-
     public function __construct(
         ContactHelper $contactHelper,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Registry $registry,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession
     ) {
         $this->contactHelper = $contactHelper;
-        $this->filterBuilder = $filterBuilder;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerRepository = $customerRepository;
-        $this->messageManager = $messageManager;
         $this->registry = $registry;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
@@ -71,8 +52,7 @@ class RegisterObserver implements ObserverInterface
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this|void
-     * @throws \Exception
+     * @return $this
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {

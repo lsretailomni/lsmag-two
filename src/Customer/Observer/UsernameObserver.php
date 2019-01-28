@@ -15,19 +15,19 @@ class UsernameObserver implements ObserverInterface
     private $contactHelper;
 
     /** @var \Magento\Framework\Message\ManagerInterface  */
-    protected $messageManager;
+    private $messageManager;
 
     /** @var \Psr\Log\LoggerInterface  */
-    protected $logger;
+    private $logger;
 
     /** @var \Magento\Customer\Model\Session\Proxy  */
-    protected $customerSession;
+    private $customerSession;
 
     /** @var \Magento\Framework\App\Response\RedirectInterface  */
-    protected $redirectInterface;
+    private $redirectInterface;
 
     /** @var \Magento\Framework\App\ActionFlag  */
-    protected $actionFlag;
+    private $actionFlag;
 
     /**
      * UsernameObserver constructor.

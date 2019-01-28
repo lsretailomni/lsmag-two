@@ -14,26 +14,20 @@ class CheckoutRegisterObserver implements ObserverInterface
     /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var \Psr\Log\LoggerInterface */
-    protected $logger;
-
-    /** @var \Magento\Customer\Model\Session $customerSession */
-    protected $customerSession;
-
     /** @var \Magento\Checkout\Model\Session\Proxy */
-    protected $checkoutSession;
+    private $checkoutSession;
 
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
-    protected $orderRepository;
+    private $orderRepository;
 
     /** @var \Magento\Customer\Model\CustomerFactory */
-    protected $customerFactory;
+    private $customerFactory;
 
     /** @var \Magento\Store\Model\StoreManagerInterface */
-    protected $storeManager;
+    private $storeManager;
 
     /** @var \Magento\Customer\Model\ResourceModel\Customer */
-    protected $customerResourceModel;
+    private $customerResourceModel;
 
     /**
      * CheckoutRegisterObserver constructor.
@@ -49,8 +43,6 @@ class CheckoutRegisterObserver implements ObserverInterface
 
     public function __construct(
         ContactHelper $contactHelper,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
@@ -58,8 +50,6 @@ class CheckoutRegisterObserver implements ObserverInterface
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
     ) {
         $this->contactHelper = $contactHelper;
-        $this->logger = $logger;
-        $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->orderRepository = $orderRepository;
         $this->customerFactory = $customerFactory;
@@ -72,8 +62,11 @@ class CheckoutRegisterObserver implements ObserverInterface
      * @throws \Exception
      * @throws \Magento\Framework\Exception\LocalizedException
      */
+    // @codingStandardsIgnoreStart
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
+
+
         $orderId = $this->checkoutSession->getLastOrderId();
         $order = $this->orderRepository->get($orderId);
         if ($order->getCustomerId()) {
@@ -108,4 +101,5 @@ class CheckoutRegisterObserver implements ObserverInterface
             }
         }
     }
+    // @codingStandardsIgnoreEnd
 }

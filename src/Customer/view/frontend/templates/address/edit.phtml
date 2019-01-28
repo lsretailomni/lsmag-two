@@ -1,9 +1,15 @@
 <?php
 /** @var \Magento\Customer\Block\Address\Edit $block */
 ?>
-<?php $_company = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class) ?>
-<?php $_telephone = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class) ?>
-<?php $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class) ?>
+<?php
+/** @var \Magento\Customer\Block\Widget\Company  $_company */
+$_company = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class);
+/** @var \Magento\Customer\Block\Widget\Telephone  $_telephone */
+$_telephone = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class);
+/** @var \Magento\Customer\Block\Widget\Fax  $_fax */
+$_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class);
+
+?>
 <form class="form-address-edit"
       action="<?= $block->escapeUrl($block->getSaveUrl()) ?>"
       method="post"

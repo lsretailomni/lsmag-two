@@ -29,9 +29,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Customer\Model\CustomerFactory */
     public $customerFactory;
 
-    /**
-     * @var \Magento\Customer\Model\Session\Proxy
-     */
+    /** @var \Magento\Customer\Model\Session\Proxy  */
     public $customerSession;
 
     /** @var null */
@@ -48,6 +46,18 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /** @var \Magento\Customer\Api\Data\GroupInterfaceFactory */
     public $groupInterfaceFactory;
+
+    /** @var  \Ls\Omni\Helper\BasketHelper */
+    public $basketHelper;
+
+    /** @var \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel */
+    public $customerResourceModel;
+
+    /** @var \Magento\Framework\Registry */
+    public $registry;
+
+    /** @var \Magento\Checkout\Model\Session\Proxy */
+    public $checkoutSession;
 
     /**
      * ContactHelper constructor.
@@ -74,7 +84,11 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Directory\Model\CountryFactory $countryFactory,
         \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupColl,
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
-        \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
+        \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory,
+        \Ls\Omni\Helper\BasketHelper $basketHelper,
+        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
+        \Magento\Framework\Registry $registry
     ) {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -86,6 +100,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerGroupColl = $customerGroupColl;
         $this->groupRepository = $groupRepository;
         $this->groupInterfaceFactory = $groupInterfaceFactory;
+        $this->basketHelper = $basketHelper;
+        $this->customerResourceModel = $customerResourceModel;
+        $this->registry = $registry;
+        $this->checkoutSession = $checkoutSession;
         parent::__construct(
             $context
         );
@@ -525,5 +543,144 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             // Default Tax Class ID for retail customers, please check tax_class table of magento2 database.
             ->setTaxClassId(3);
         $this->groupRepository->save($group);
+    }
+
+    /**
+     * @param Entity\OneList $oneListBasket
+     * @param $contactId
+     * @param $cardId
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function updateBasketAfterLogin(Entity\OneList $oneListBasket, $contactId, $cardId)
+    {
+        $quote  =   $this->checkoutSession->getQuote();
+        if (!is_array($oneListBasket) &&
+            $oneListBasket instanceof Entity\OneList && $oneListBasket->getId() != '') {
+            // If customer has previously one list created then get
+            // that and sync the current information with that
+            // store the onelist returned from Omni into Magento session.
+            $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $oneListBasket);
+
+            // update items from quote to basket.
+            $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
+
+            // update the onelist to Omni.
+            $this->basketHelper->update($oneList);
+        } elseif ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+            // if customer already has onelist created then update
+            // the list to get the information with user.
+            $oneListBasket = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
+
+            //Update onelist in Omni with user data.
+            $oneListBasket->setCardId($cardId)
+                ->setContactId($contactId)
+                ->setDescription('OneList Magento')
+                ->setIsDefaultList(true)
+                ->setListType(Entity\Enum\ListType::BASKET);
+            // update items from quote to basket.
+            $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
+            // update the onelist to Omni.
+            $this->basketHelper->update($oneList);
+        } elseif (!empty($quote->getAllItems())) {
+            // get the onelist or if not exist then create new one with empty data of customer.
+            $oneList = $this->basketHelper->get();
+            $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
+            $this->basketHelper->update($oneList);
+        }
+    }
+
+    /**
+     * @param Entity\MemberContact $result
+     * @param $credentials
+     * @param $is_email
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\State\InvalidTransitionException
+     */
+    public function processCustomerLogin(Entity\MemberContact $result, $credentials, $is_email)
+    {
+        $filters = [
+            $this->filterBuilder
+                ->setField('email')
+                ->setConditionType('eq')
+                ->setValue($result->getEmail())
+                ->create()
+        ];
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        $searchResults = $this->customerRepository->getList($searchCriteria);
+        $customer = null;
+        if ($searchResults->getTotalCount() == 0) {
+            $customer = $this->customer($result, $credentials['password']);
+        } else {
+            foreach ($searchResults->getItems() as $match) {
+                $customer = $this->customerRepository->getById($match->getId());
+                break;
+            }
+        }
+        $customer_email = $customer->getEmail();
+        $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
+        /** @var \Magento\Customer\Model\Customer $customer */
+        $customer = $this->customerFactory->create()
+            ->setWebsiteId($websiteId)
+            ->loadByEmail($customer_email);
+        $card = $result->getCard();
+        if ($customer->getData('lsr_id') === null) {
+            $customer->setData('lsr_id', $result->getId());
+        }
+        if (!$is_email && empty($customer->getData('lsr_username'))) {
+            $customer->setData('lsr_username', $credentials['username']);
+        }
+        if ($customer->getData('lsr_cardid') === null) {
+            $customer->setData('lsr_cardid', $card->getId());
+        }
+        $token = $result->getLoggedOnToDevice()->getSecurityToken();
+
+        $customer->setData('lsr_token', $token);
+        $customer->setData(
+            'attribute_set_id',
+            \Magento\Customer\Api\CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER
+        );
+
+        if ($result->getAccount()->getScheme()->getId()) {
+            $customerGroupId = $this->getCustomerGroupIdByName(
+                $result->getAccount()->getScheme()->getId()
+            );
+            $customer->setGroupId($customerGroupId);
+        }
+
+        $this->customerResourceModel->save($customer);
+        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $result->getId());
+
+        $card = $result->getCard();
+        if ($card instanceof Entity\Card && $card->getId() !== null) {
+            $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $card->getId());
+        }
+
+        $this->customerSession->setCustomerAsLoggedIn($customer);
+    }
+
+    /**
+     * @param $email
+     * @return \Magento\Customer\Api\Data\CustomerSearchResultsInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function searchCustomerByEmail($email)
+    {
+        $filters = [
+            $this->filterBuilder
+                ->setField('email')
+                ->setConditionType('eq')
+                ->setValue($email)
+                ->create()
+        ];
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        return $this->customerRepository->getList($searchCriteria);
     }
 }
