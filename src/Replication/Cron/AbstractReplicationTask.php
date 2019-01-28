@@ -160,7 +160,9 @@ abstract class AbstractReplicationTask
             $this->recordsRemaining = $remaining;
             $traversable = $this->getIterator($result);
             if ($traversable != null) {
-                if (!empty($traversable)) {
+                // @codingStandardsIgnoreStart
+                if (count($traversable) > 0) {
+                    // @codingStandardsIgnoreEnd
                     foreach ($traversable as $source) {
                         $this->saveSource($properties, $source);
                     }
