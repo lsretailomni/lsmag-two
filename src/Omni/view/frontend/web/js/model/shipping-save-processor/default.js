@@ -40,8 +40,8 @@ define(
                         shipping_method_code: quote.shippingMethod().method_code,
                         shipping_carrier_code: quote.shippingMethod().carrier_code,
                         extension_attributes:{
-                            pickup_store: $('#pickup-store').val(),
-                            pickup_date: $('#pickup-date').val()
+                            pickup_store: $('#pickup-store').val()
+                            // pickup_date: $('#pickup-date').val()
                         }
                     }
                 };
