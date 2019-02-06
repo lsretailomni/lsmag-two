@@ -80,6 +80,17 @@ class InstallSchema implements InstallSchemaInterface
             ]
         );
 
+        $installer->getConnection()->addColumn(
+            $installer->getTable('sales_order'),
+            'document_id',
+            [
+                'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'length' => 255,
+                'nullable' => true,
+                'comment' =>'Document Id'
+            ]
+        );
+
         $installer->endSetup();
     }
 }
