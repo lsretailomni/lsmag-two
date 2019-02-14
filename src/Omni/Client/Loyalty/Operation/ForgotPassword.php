@@ -7,15 +7,15 @@
 
 namespace Ls\Omni\Client\Loyalty\Operation;
 
-use Ls\Omni\Client\RequestInterface;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Client\AbstractOperation;
-use Ls\Omni\Service\Service as OmniService;
-use Ls\Omni\Service\ServiceType;
-use Ls\Omni\Service\Soap\Client as OmniClient;
-use Ls\Omni\Client\Loyalty\ClassMap;
-use Ls\Omni\Client\Loyalty\Entity\ForgotPassword as ForgotPasswordRequest;
-use Ls\Omni\Client\Loyalty\Entity\ForgotPasswordResponse as ForgotPasswordResponse;
+use \Ls\Omni\Client\RequestInterface;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\AbstractOperation;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Omni\Client\Loyalty\ClassMap;
+use \Ls\Omni\Client\Loyalty\Entity\ForgotPassword as ForgotPasswordRequest;
+use \Ls\Omni\Client\Loyalty\Entity\ForgotPasswordResponse as ForgotPasswordResponse;
 
 class ForgotPassword extends AbstractOperation
 {

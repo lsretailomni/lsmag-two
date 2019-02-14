@@ -7,7 +7,7 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\RequestInterface;
+use \Ls\Omni\Client\RequestInterface;
 
 class StoresGetAll implements RequestInterface
 {

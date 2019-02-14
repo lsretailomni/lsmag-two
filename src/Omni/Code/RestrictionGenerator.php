@@ -3,8 +3,8 @@
 namespace Ls\Omni\Code;
 
 use CaseHelper\CaseHelperFactory;
-use Ls\Omni\Service\Metadata;
-use Ls\Omni\Service\Soap\Restriction;
+use \Ls\Omni\Service\Metadata;
+use \Ls\Omni\Service\Soap\Restriction;
 use MyCLabs\Enum\Enum;
 use Zend\Code\Generator\DocBlock\Tag;
 use Zend\Code\Generator\DocBlockGenerator;

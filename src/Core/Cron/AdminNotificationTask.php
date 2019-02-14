@@ -1,7 +1,7 @@
 <?php
 namespace Ls\Core\Cron;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Notification\NotifierInterface as NotifierPool;
 

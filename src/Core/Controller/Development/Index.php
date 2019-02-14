@@ -8,7 +8,7 @@
 
 namespace Ls\Core\Controller\Development;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 

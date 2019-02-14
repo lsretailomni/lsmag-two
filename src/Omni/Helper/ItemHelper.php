@@ -2,11 +2,11 @@
 
 namespace Ls\Omni\Helper;
 
-use Ls\Replication\Model\ReplBarcodeRepository;
+use \Ls\Replication\Model\ReplBarcodeRepository;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\App\Helper\Context;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 
 /**

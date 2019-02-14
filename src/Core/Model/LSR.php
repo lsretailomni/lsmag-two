@@ -2,7 +2,7 @@
 
 namespace Ls\Core\Model;
 
-use Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Cache\TypeListInterface;
 use SoapClient;

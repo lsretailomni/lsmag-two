@@ -7,8 +7,8 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\StoreServiceType;
-use Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\StoreServiceType;
+use \Ls\Omni\Exception\InvalidEnumException;
 
 class StoreServices
 {

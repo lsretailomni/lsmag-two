@@ -3,7 +3,7 @@
 namespace Ls\Core\Block;
 
 use Magento\Framework\View\Element\Template\Context;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class InvalidNotice

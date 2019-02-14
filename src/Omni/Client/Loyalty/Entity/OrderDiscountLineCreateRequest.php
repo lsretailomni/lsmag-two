@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\DiscountType;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\Loyalty\Entity\Enum\PeriodicDiscType;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\DiscountType;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\PeriodicDiscType;
 
 class OrderDiscountLineCreateRequest
 {

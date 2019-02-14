@@ -2,12 +2,12 @@
 
 namespace Ls\Omni\Client;
 
-use Ls\Omni\Exception\TokenNotFoundException;
-use Ls\Omni\Exception\NavException;
-use Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
-use Ls\Omni\Service\ServiceType;
-use Ls\Omni\Service\Soap\Client as OmniClient;
-use Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\TokenNotFoundException;
+use \Ls\Omni\Exception\NavException;
+use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class AbstractOperation

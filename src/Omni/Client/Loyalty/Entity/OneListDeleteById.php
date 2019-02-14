@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\ListType;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\RequestInterface;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\ListType;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\RequestInterface;
 
 class OneListDeleteById implements RequestInterface
 {

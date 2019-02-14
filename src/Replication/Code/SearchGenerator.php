@@ -3,9 +3,9 @@
 
 namespace Ls\Replication\Code;
 
-use Ls\Core\Code\AbstractGenerator;
-use Ls\Omni\Service\Soap\ReplicationOperation;
-use Ls\Replication\Model\Anchor;
+use \Ls\Core\Code\AbstractGenerator;
+use \Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Replication\Model\Anchor;
 use Magento\Framework\Api\SearchResults;
 
 /**

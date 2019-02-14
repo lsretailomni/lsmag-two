@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\EntryStatus;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\Loyalty\Entity\Enum\LineType;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\EntryStatus;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\LineType;
 
 class BasketLineCalcResponse
 {

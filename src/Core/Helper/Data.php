@@ -2,7 +2,7 @@
 
 namespace Ls\Core\Helper;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\ObjectManagerInterface;

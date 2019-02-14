@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\ItemNumberType;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\Loyalty\Entity\Enum\SourceType;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\ItemNumberType;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\SourceType;
 
 class Order
 {

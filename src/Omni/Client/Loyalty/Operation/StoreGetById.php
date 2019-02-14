@@ -7,15 +7,15 @@
 
 namespace Ls\Omni\Client\Loyalty\Operation;
 
-use Ls\Omni\Client\RequestInterface;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Client\AbstractOperation;
-use Ls\Omni\Service\Service as OmniService;
-use Ls\Omni\Service\ServiceType;
-use Ls\Omni\Service\Soap\Client as OmniClient;
-use Ls\Omni\Client\Loyalty\ClassMap;
-use Ls\Omni\Client\Loyalty\Entity\StoreGetById as StoreGetByIdRequest;
-use Ls\Omni\Client\Loyalty\Entity\StoreGetByIdResponse as StoreGetByIdResponse;
+use \Ls\Omni\Client\RequestInterface;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\AbstractOperation;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Omni\Client\Loyalty\ClassMap;
+use \Ls\Omni\Client\Loyalty\Entity\StoreGetById as StoreGetByIdRequest;
+use \Ls\Omni\Client\Loyalty\Entity\StoreGetByIdResponse as StoreGetByIdResponse;
 
 class StoreGetById extends AbstractOperation
 {

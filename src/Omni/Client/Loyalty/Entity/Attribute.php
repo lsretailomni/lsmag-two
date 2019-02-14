@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\AttributeLinkType;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\Loyalty\Entity\Enum\AttributeValueType;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\AttributeLinkType;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\AttributeValueType;
 
 class Attribute
 {

@@ -7,10 +7,10 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\PushApplication;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\Loyalty\Entity\Enum\PushPlatform;
-use Ls\Omni\Client\Loyalty\Entity\Enum\PushStatus;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\PushApplication;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\PushPlatform;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\PushStatus;
 
 class PushNotificationRequest
 {

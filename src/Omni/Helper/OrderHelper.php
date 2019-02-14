@@ -2,10 +2,10 @@
 
 namespace Ls\Omni\Helper;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\Enum;
-use Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum;
+use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Sales\Model;

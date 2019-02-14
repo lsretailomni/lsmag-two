@@ -2,10 +2,10 @@
 
 namespace Ls\Replication\Helper;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
 use Magento\Framework\Api\FilterBuilder;

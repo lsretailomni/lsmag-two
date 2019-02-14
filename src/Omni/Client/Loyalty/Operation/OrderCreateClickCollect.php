@@ -7,15 +7,15 @@
 
 namespace Ls\Omni\Client\Loyalty\Operation;
 
-use Ls\Omni\Client\RequestInterface;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Client\AbstractOperation;
-use Ls\Omni\Service\Service as OmniService;
-use Ls\Omni\Service\ServiceType;
-use Ls\Omni\Service\Soap\Client as OmniClient;
-use Ls\Omni\Client\Loyalty\ClassMap;
-use Ls\Omni\Client\Loyalty\Entity\OrderCreateClickCollect as OrderCreateClickCollectRequest;
-use Ls\Omni\Client\Loyalty\Entity\OrderCreateClickCollectResponse as OrderCreateClickCollectResponse;
+use \Ls\Omni\Client\RequestInterface;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\AbstractOperation;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Omni\Client\Loyalty\ClassMap;
+use \Ls\Omni\Client\Loyalty\Entity\OrderCreateClickCollect as OrderCreateClickCollectRequest;
+use \Ls\Omni\Client\Loyalty\Entity\OrderCreateClickCollectResponse as OrderCreateClickCollectResponse;
 
 class OrderCreateClickCollect extends AbstractOperation
 {

@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\DocumentType;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\DocumentType;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\ResponseInterface;
 
 class BasketPostSaleResponse implements ResponseInterface
 {

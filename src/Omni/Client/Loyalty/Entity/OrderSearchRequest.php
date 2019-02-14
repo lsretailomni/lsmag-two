@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\OrderQueueStatusFilterType;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\Loyalty\Entity\Enum\OrderQueueType;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\OrderQueueStatusFilterType;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\OrderQueueType;
 
 class OrderSearchRequest
 {

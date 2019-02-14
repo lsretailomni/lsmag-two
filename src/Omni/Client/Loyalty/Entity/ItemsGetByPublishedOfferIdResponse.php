@@ -7,7 +7,7 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\ResponseInterface;
 
 class ItemsGetByPublishedOfferIdResponse implements ResponseInterface
 {

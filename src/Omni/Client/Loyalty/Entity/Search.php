@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\SearchType;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\RequestInterface;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\SearchType;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\RequestInterface;
 
 class Search implements RequestInterface
 {

@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Loyalty\Entity;
 
-use Ls\Omni\Client\Loyalty\Entity\Enum\ActivityLogSolution;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Client\Loyalty\Entity\Enum\ActivityLogType;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\ActivityLogSolution;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Loyalty\Entity\Enum\ActivityLogType;
 
 class ActivityLog
 {
