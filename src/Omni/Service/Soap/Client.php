@@ -3,8 +3,8 @@
 namespace Ls\Omni\Service\Soap;
 
 use DOMDocument;
-use Ls\Omni\Service\Metadata;
-use Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Metadata;
+use \Ls\Omni\Service\ServiceType;
 use Zend\Http\ClientStatic;
 use Zend\Soap\Client as ZendSoapClient;
 use Zend\Uri\Uri;

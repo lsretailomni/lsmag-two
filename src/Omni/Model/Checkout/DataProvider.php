@@ -6,7 +6,7 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 
 /**
  * Class DataProvider

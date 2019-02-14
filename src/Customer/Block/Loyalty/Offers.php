@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Block\Loyalty;
 
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**

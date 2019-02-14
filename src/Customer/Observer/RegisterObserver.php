@@ -3,9 +3,9 @@
 namespace Ls\Customer\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
-use Ls\Omni\Helper\ContactHelper;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class RegisterObserver
