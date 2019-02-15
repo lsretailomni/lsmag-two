@@ -3,14 +3,14 @@
 namespace Ls\Omni\Code;
 
 use Exception;
-use Ls\Omni\Client\AbstractOperation;
-use Ls\Omni\Client\RequestInterface;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Service\Metadata;
-use Ls\Omni\Service\Service;
-use Ls\Omni\Service\ServiceType;
-use Ls\Omni\Service\Soap\Client;
-use Ls\Omni\Service\Soap\Operation;
+use \Ls\Omni\Client\AbstractOperation;
+use \Ls\Omni\Client\RequestInterface;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Service\Metadata;
+use \Ls\Omni\Service\Service;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client;
+use \Ls\Omni\Service\Soap\Operation;
 use Zend\Code\Generator\DocBlock\Tag;
 use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;

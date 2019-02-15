@@ -1,12 +1,12 @@
 <?php
 namespace Ls\Omni\Observer;
 
-use Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Event\ObserverInterface;
-use Ls\Omni\Helper\ContactHelper;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class OrderObserver

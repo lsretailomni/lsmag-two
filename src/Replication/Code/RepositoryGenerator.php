@@ -4,8 +4,8 @@
 namespace Ls\Replication\Code;
 
 use Exception;
-use Ls\Core\Code\AbstractGenerator;
-use Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Core\Code\AbstractGenerator;
+use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\CouldNotDeleteException;

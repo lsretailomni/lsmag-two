@@ -3,9 +3,9 @@
 namespace Ls\Omni\Helper;
 
 use Magento\Framework\App\Helper\Context;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 
 /**
  * Class StockHelper

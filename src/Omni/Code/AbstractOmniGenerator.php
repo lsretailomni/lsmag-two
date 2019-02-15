@@ -3,9 +3,9 @@
 namespace Ls\Omni\Code;
 
 use CaseHelper\CaseHelperInterface;
-use Ls\Core\Code\AbstractGenerator as CoreGenerator;
-use Ls\Omni\Service\Metadata;
-use Ls\Omni\Service\ServiceType;
+use \Ls\Core\Code\AbstractGenerator as CoreGenerator;
+use \Ls\Omni\Service\Metadata;
+use \Ls\Omni\Service\ServiceType;
 
 /**
  * Class AbstractOmniGenerator

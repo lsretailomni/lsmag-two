@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Model;
 
-use Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Controller\Cart\CouponPost;
 
 /**

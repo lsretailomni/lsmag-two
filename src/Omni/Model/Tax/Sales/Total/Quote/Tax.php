@@ -6,7 +6,7 @@ use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
 use Magento\Customer\Api\Data\RegionInterfaceFactory as CustomerAddressRegionFactory;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote\Address;
-use Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\BasketHelper;
 
 class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
 {

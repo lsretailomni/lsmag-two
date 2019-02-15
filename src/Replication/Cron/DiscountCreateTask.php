@@ -2,14 +2,14 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\LSR;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
 use Magento\CatalogRule\Model\RuleFactory;
 use Magento\CatalogRule\Model\Rule\Job;
-use Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
-use Ls\Replication\Api\ReplDiscountRepositoryInterface;
+use \Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
+use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**

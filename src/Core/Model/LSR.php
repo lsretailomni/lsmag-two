@@ -2,7 +2,7 @@
 
 namespace Ls\Core\Model;
 
-use Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Cache\TypeListInterface;
 use SoapClient;
@@ -128,7 +128,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CLICKCOLLECT_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
     const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
     const MSG_NOT_AVAILABLE_NOTICE_TITLE = "Notice";
-    const MSG_NOT_AVAILABLE_NOTICE_CONTENT = "This item may not be available using click and collect.";
+    const MSG_NOT_AVAILABLE_NOTICE_CONTENT = "This item is only available online.";
     // CUSTOM CONFIGURATION PATHS
     const CONFIG_REPLICATION_JOBS = 'ls_mag/replication/jobs';
     const CONFIG_CONFIGDATA_WATCHES = 'ls_mag/configdata/watches';

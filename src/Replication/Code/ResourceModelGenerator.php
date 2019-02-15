@@ -3,9 +3,9 @@
 
 namespace Ls\Replication\Code;
 
-use Ls\Core\Code\AbstractGenerator;
-use Ls\Omni\Service\Soap\ReplicationOperation;
-use Ls\Replication\Model\ResourceModel\Anchor;
+use \Ls\Core\Code\AbstractGenerator;
+use \Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Replication\Model\ResourceModel\Anchor;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use ReflectionClass;
 use Zend\Code\Generator\MethodGenerator;

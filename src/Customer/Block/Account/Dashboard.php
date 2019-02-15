@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Block\Account;
 
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 
 /**
  * Class Dashboard

@@ -3,7 +3,7 @@
 
 namespace Ls\Replication\Code;
 
-use Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Zend\Code\Generator\GeneratorInterface;
 
 /**

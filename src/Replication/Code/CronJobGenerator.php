@@ -3,17 +3,17 @@
 
 namespace Ls\Replication\Code;
 
-use Ls\Core\Code\AbstractGenerator;
-use Ls\Core\Helper\Data as LsHelper;
-use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Service\Soap\ReplicationOperation;
-use Ls\Replication\Cron\AbstractReplicationTask;
+use \Ls\Core\Code\AbstractGenerator;
+use \Ls\Core\Helper\Data as LsHelper;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
+use \Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Replication\Cron\AbstractReplicationTask;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Psr\Log\LoggerInterface;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Magento\Config\Model\ResourceModel\Config;
-use Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Class CronJobGenerator

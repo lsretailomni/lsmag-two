@@ -3,9 +3,9 @@
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
 use Magento\Framework\Option\ArrayInterface;
-use Ls\Replication\Model\ReplHierarchyRepository;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Core\Model\LSR;
+use \Ls\Replication\Model\ReplHierarchyRepository;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class HierarchyCode
