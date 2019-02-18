@@ -12,7 +12,7 @@
         <block  class="Ls\Omni\Block\Product\Recommend"
                 name="ls.omni.product.recommendation"
                 template="Ls_Omni::checkout/cart/recommendation.phtml"
-                after="-" />
+                after="checkout.cart" />
     </referenceContainer>
     </body>
 </page>
