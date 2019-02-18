@@ -67,6 +67,9 @@ class Recommend extends \Magento\Catalog\Block\Product\View
         );
     }
 
+    /**
+     * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
+     */
     public function getProductRecommendation()
     {
         // only process if LS Recommend is enabled in general and on product page.
@@ -78,14 +81,22 @@ class Recommend extends \Magento\Catalog\Block\Product\View
         }
         $currentProduct = $this->getProduct();
         if (!$currentProduct->getId()) {
+            // not on product page.
+
             return $response;
         }
+
+        $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($currentProduct->getSku());
+
         // this is the recommended products we received from NAV so now we need to get the actual products from that.
-        $recommendedProducts = $this->LSRecommend->getProductRecommendation();
+
         // check to see if we get correct response not full of errors.
 
         if ($recommendedProducts instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem) {
             return $this->LSRecommend->parseProductRecommendation($recommendedProducts);
         }
+        return $response;
     }
+
+
 }

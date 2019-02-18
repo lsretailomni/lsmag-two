@@ -15,6 +15,12 @@
                 name="ls.omni.product.notification"
                 template="Ls_Omni::product/view/notification.phtml"
                 before="product.info.main" />
+        <!-- For LS Recommendation. -->
+        <block  class="Ls\Omni\Block\Product\View\Recommend"
+                name="ls.omni.product.recommendation"
+                template="Ls_Omni::product/recommendation.phtml"
+                after="product.info.main" />
+
     </referenceContainer>
         <referenceBlock name="product.info.addtocart">
             <action method="setTemplate">
