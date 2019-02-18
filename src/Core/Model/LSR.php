@@ -217,6 +217,13 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Store Hours Format
     const STORE_HOURS_TIME_FORMAT = 'h:i A';
 
+    //LS Recommendatin.
+    const LS_RECOMMEND_ACTIVE = 'ls_mag/ls_recommend/active';
+    const LS_RECOMMEND_SHOW_ON_PRODUCT = 'ls_mag/ls_recommend/product';
+    const LS_RECOMMEND_SHOW_ON_CART = 'ls_mag/ls_recommend/cart';
+    const LS_RECOMMEND_SHOW_ON_CHECKOUT = 'ls_mag/ls_recommend/checkout';
+    const LS_RECOMMEND_SHOW_ON_HOME = 'ls_mag/ls_recommend/home';
+    const LS_RECOMMEND_PRODUCT_COUNT = 'ls_mag/ls_recommend/productcount';
     public $scopeConfig;
 
     /** @var TypeListInterface */
@@ -242,6 +249,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Note : Incase of notDefault we have to pass the StoreID
+     * in the variable of notDefault variable.
      * @param $path
      * @param bool $notDefault
      * @return string
