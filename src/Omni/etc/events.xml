@@ -19,4 +19,7 @@
     <event name="sales_order_place_after">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
     </event>
+    <event name="checkout_onepage_controller_success_action">
+        <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderSuccessObserver"/>
+    </event>
 </config>
