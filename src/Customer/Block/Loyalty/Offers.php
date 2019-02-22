@@ -2,8 +2,11 @@
 
 namespace Ls\Customer\Block\Loyalty;
 
+use Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * Class Offers
@@ -28,26 +31,41 @@ class Offers extends \Magento\Framework\View\Element\Template
     public $storeManager;
 
     /**
+     * @var Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    public $scopeConfig;
+
+    /**
+     * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     */
+    public $timeZoneInterface;
+
+
+    /**
      * Offers constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param LoyaltyHelper $loyaltyHelper
-     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Filesystem\Io\File $file
      * @param StoreManagerInterface $storeManager
+     * @param ScopeConfigInterface $scopeConfig
+     * @param TimezoneInterface $timeZoneInterface
      * @param array $data
      */
-
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         LoyaltyHelper $loyaltyHelper,
         \Magento\Framework\Filesystem\Io\File $file,
         StoreManagerInterface $storeManager,
+        ScopeConfigInterface $scopeConfig,
+        TimezoneInterface $timeZoneInterface,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->loyaltyHelper = $loyaltyHelper;
         $this->file = $file;
         $this->storeManager = $storeManager;
+        $this->scopeConfig = $scopeConfig;
+        $this->timeZoneInterface = $timeZoneInterface;
     }
 
     /**
@@ -57,6 +75,7 @@ class Offers extends \Magento\Framework\View\Element\Template
     {
         $result = $this->loyaltyHelper->getOffers()
             ->getPublishedOffer();
+
         return $result;
     }
 
@@ -84,8 +103,9 @@ class Offers extends \Magento\Framework\View\Element\Template
             $index++;
             $img_size = $img->getImgSize();
             if ($img_size->getWidth() == 0 || $img_size->getHeight() == 0) {
-                $img_size->setWidth(100);
-                $img_size->setHeight(100);
+                $imageSize = $this->getImageWidthandHeight();
+                $img_size->setWidth($imageSize[0]);
+                $img_size->setHeight($imageSize[1]);
             }
 
             $result = $this->loyaltyHelper->getImageById($img->getId(), $img_size);
@@ -107,9 +127,11 @@ class Offers extends \Magento\Framework\View\Element\Template
                     fwrite($image_file, base64_decode($base64));
                     fclose($image_file);
                 }
+
                 // @codingStandardsIgnoreEnd
                 $images[] = "{$output_file}";
             }
+
             return $images;
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -122,7 +144,7 @@ class Offers extends \Magento\Framework\View\Element\Template
     public function getMediaPathtoStore()
     {
         return $this->getMediaDirectory()
-                ->getAbsolutePath() . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
+                ->getAbsolutePath()."ls".DIRECTORY_SEPARATOR."offers".DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -132,6 +154,48 @@ class Offers extends \Magento\Framework\View\Element\Template
     {
         return $this->storeManager->getStore()
                 ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
-            . DIRECTORY_SEPARATOR . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
+            .DIRECTORY_SEPARATOR."ls".DIRECTORY_SEPARATOR."offers".DIRECTORY_SEPARATOR;
     }
+
+    /**
+     * @return array
+     */
+    public function getImageWidthandHeight()
+    {
+        $size = array();
+        try {
+            $size[] = $this->scopeConfig->getValue(
+                LSR::SC_LOYALTY_PAGE_IMAGE_WIDTH,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
+            $size[] = $this->scopeConfig->getValue(
+                LSR::SC_LOYALTY_PAGE_IMAGE_HEIGHT,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
+
+            return $size;
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @param $date
+     * @return string
+     */
+    public function getOfferExpiryDate($date)
+    {
+        try {
+            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            ));
+
+            return $offerExpiryDate;
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+    }
+
+
 }

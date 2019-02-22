@@ -1,7 +1,7 @@
 <?php
 
 /** @var \Ls\Customer\Block\Loyalty\Offers $this */
-$type = 'Club';
+$type = 'Coupon';
 
 /** @var \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer[] $offers */
 $offers = $this->getOffers();
@@ -15,7 +15,7 @@ $c = 0;
         <ul class=" coupons-grid">
             <?php foreach ($offers as $offer) : ?>
                 <?php
-                if ($offer->getType() != $type) {
+                if ($offer->getCode() != $type) {
                     continue;
                 }
                 $c++;
@@ -29,7 +29,7 @@ $c = 0;
                             // @codingStandardsIgnoreEnd
                             ?>
                             <img id="coupon-collection-image-<?php echo $c ?>"
-                                 src="<?php echo $this->getMediaPathToLoad() .
+                                 src="<?php echo $this->getMediaPathToLoad().
                                      $images[0] ?>" alt="<?php echo $offer->getDescription() ?> ">
                         <?php endif; ?>
                     </div>
@@ -38,10 +38,13 @@ $c = 0;
                             <h3><?php echo $offer->getDescription(); ?></h3>
                         </div>
                         <div class="code">
-                            <span><?php echo $offer->getId(); ?></span>
+                            <span><b><?php echo __("Code: "); ?></b><?php echo $offer->getOfferId(); ?></span>
+                        </div>
+                        <div class="date">
+                            <span><b><?php echo __("Expiry: "); ?></b><?php echo $this->getOfferExpiryDate($offer->getExpirationDate()); ?></span>
                         </div>
                         <div class="coupon-description">
-                            <?php echo $offer->getDetails(); ?>
+                            <p><?php echo $offer->getDetails(); ?></p>
                             </br>
                         </div>
                     </div>
