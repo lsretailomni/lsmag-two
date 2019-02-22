@@ -106,6 +106,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_SHOW_NOTIFICATIONS = 'ls_mag/loyalty/show_notifications';
     const SC_LOYALTY_SHOW_NOTIFICATIONS_TOP = 'ls_mag/loyalty/show_notifications_top';
     const SC_LOYALTY_SHOW_NOTIFICATIONS_LEFT = 'ls_mag/loyalty/show_notifications_left';
+    const SC_LOYALTY_PAGE_IMAGE_WIDTH = 'ls_mag/loyalty/set_image_size_width_for_loyalty_page';
+    const SC_LOYALTY_PAGE_IMAGE_HEIGHT = 'ls_mag/loyalty/set_image_size_height_for_loyalty_page';
+    const SC_LOYALTY_EXPIRY_DATE_FORMAT      = 'ls_mag/loyalty/loyalty_expiry_date_format';
+
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
     const SC_CART_PRODUCT_AVAILABILITY = 'ls_mag/one_list/product_availability';

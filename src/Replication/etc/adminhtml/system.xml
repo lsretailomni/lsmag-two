@@ -312,6 +312,19 @@
                     <label>Show Coupons</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+
+                <field id="set_image_size_width_for_loyalty_page" translate="label" type="text"  sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Loyalty Page Image Width</label>
+                </field>
+                <field id="set_image_size_height_for_loyalty_page" translate="label" type="text"  sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Loyalty Page Image Height</label>
+                </field>
+                <field id="loyalty_expiry_date_format" translate="label" type="text"  sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Expiry Date Format</label>
+                </field>
                 <!-- Commenting the unnecessary configuration for now starts
                 -->
 
