@@ -3,8 +3,8 @@
 
 namespace Ls\Replication\Code;
 
-use Ls\Core\Code\AbstractGenerator;
-use Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Core\Code\AbstractGenerator;
+use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Api\SearchResultsInterface;
 use Zend\Code\Generator\ParameterGenerator;
 

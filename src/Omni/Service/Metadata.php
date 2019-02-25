@@ -6,17 +6,17 @@ use DOMDocument;
 use DOMElement;
 use DOMNodeList;
 use DOMXPath;
-use Ls\Omni\Code\AbstractOmniGenerator;
-use Ls\Omni\Service\Soap\Client;
-use Ls\Omni\Service\Soap\ComplexType;
-use Ls\Omni\Service\Soap\ComplexTypeDefinition;
-use Ls\Omni\Service\Soap\Element;
-use Ls\Omni\Service\Soap\Entity;
-use Ls\Omni\Service\Soap\Operation;
-use Ls\Omni\Service\Soap\ReplicationOperation;
-use Ls\Omni\Service\Soap\Restriction;
-use Ls\Omni\Service\Soap\RestrictionDefinition;
-use Ls\Omni\Service\Soap\SoapType;
+use \Ls\Omni\Code\AbstractOmniGenerator;
+use \Ls\Omni\Service\Soap\Client;
+use \Ls\Omni\Service\Soap\ComplexType;
+use \Ls\Omni\Service\Soap\ComplexTypeDefinition;
+use \Ls\Omni\Service\Soap\Element;
+use \Ls\Omni\Service\Soap\Entity;
+use \Ls\Omni\Service\Soap\Operation;
+use \Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Omni\Service\Soap\Restriction;
+use \Ls\Omni\Service\Soap\RestrictionDefinition;
+use \Ls\Omni\Service\Soap\SoapType;
 use ReflectionClass;
 
 /**

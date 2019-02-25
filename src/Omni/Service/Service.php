@@ -4,7 +4,7 @@ namespace Ls\Omni\Service;
 
 use Zend\Uri\Uri;
 use Zend\Uri\UriFactory;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class Service

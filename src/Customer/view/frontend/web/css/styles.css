@@ -6,67 +6,87 @@
 **/
 /* Coupons ================================================================================= */
 
-.coupons-grid li.item {
-    float: left;
-    min-height: 460px;
-    list-style: none;
+.coupons-grid {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+}
 
+.coupons-grid li.item {
+    flex: 25%;
+    max-width: 25%;
+    padding: 0px 25px;
+    list-style: none;
+    float: left;
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    border: 0;
+    font-weight: 400;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .coupons-grid li.last {
-    width: 250px !important;
+}
+
+.coupons-view h2 {
+    margin-left:60px;
 }
 
 .coupons-grid li img {
-    max-width: 250px;
-    min-width: 250px;
-    max-height: 200px;
+    margin-top: 8px;
+    vertical-align: middle;
 }
 
 .coupons-grid li div.item-img-cont {
-    max-width: 250px;
-    min-width: 250px;
-    min-height: 200px;
-    max-height: 200px;
+
 }
 
 .coupons-grid li div.title {
-    max-width: 250px;
-    min-width: 250px;
-    min-height: 60px;
-    max-height: 60px;
+
 
 }
 
 .coupon-info div.code {
-    bottom: 0px;
-    min-height: 45px;
-    width: 100%;
-    margin: 0 32%;
 }
 
 .coupon-info div.coupon-description {
-    padding-top: 10px;
-    bottom: 0px;
-    min-height: 45px;
-    width: 100%;
-    line-height: 1.8em;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .coupon-info div span {
-    background: #3399cc;
     display: inline-block;
-    padding: 7px 15px;
     border: 0;
-    color: #FFFFFF;
     font-size: 13px;
     font-weight: normal;
-    line-height: 19px;
     text-align: center;
     text-transform: uppercase;
     vertical-align: middle;
     white-space: nowrap;
 }
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 800px) {
+    .coupons-grid li.item {
+        flex: 50%;
+        max-width: 50%;
+    }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+    .coupons-grid li.item {
+        flex: 100%;
+        max-width: 100%;
+    }
+}
+
+
+
+
 
 /* Notifications ============================================================================= */
 

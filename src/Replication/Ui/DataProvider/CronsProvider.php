@@ -8,7 +8,7 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\Xml\Parser;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class ProductDataProvider

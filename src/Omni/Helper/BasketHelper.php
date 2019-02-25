@@ -3,8 +3,8 @@
 namespace Ls\Omni\Helper;
 
 use Magento\Framework\App\Helper\Context;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Checkout\Model\Cart;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -12,7 +12,7 @@ use Magento\Catalog\Model\ProductFactory;
 use Magento\Quote\Model\Quote;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\Framework\Registry;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\Session\SessionManagerInterface;
 
 /**

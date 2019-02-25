@@ -5,10 +5,10 @@ namespace Ls\Omni\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreManagerInterface;
-use Ls\Replication\Api\ReplStoreRepositoryInterface;
+use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
-use Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
+use \Ls\Core\Model\LSR;
 use \Magento\Framework\Session\SessionManagerInterface;
 
 /**

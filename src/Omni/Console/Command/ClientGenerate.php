@@ -1,13 +1,13 @@
 <?php
 namespace Ls\Omni\Console\Command;
 
-use Ls\Omni\Code\ClassMapGenerator;
-use Ls\Omni\Code\EntityGenerator;
-use Ls\Omni\Code\OperationGenerator;
-use Ls\Omni\Code\RestrictionGenerator;
-use Ls\Omni\Console\Command;
-use Ls\Omni\Service\Service;
-use Ls\Omni\Service\Soap\Client;
+use \Ls\Omni\Code\ClassMapGenerator;
+use \Ls\Omni\Code\EntityGenerator;
+use \Ls\Omni\Code\OperationGenerator;
+use \Ls\Omni\Code\RestrictionGenerator;
+use \Ls\Omni\Console\Command;
+use \Ls\Omni\Service\Service;
+use \Ls\Omni\Service\Soap\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Console;
 
-use Ls\Omni\Exception\InvalidServiceTypeException;
-use Ls\Omni\Service\Service;
-use Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Exception\InvalidServiceTypeException;
+use \Ls\Omni\Service\Service;
+use \Ls\Omni\Service\ServiceType;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

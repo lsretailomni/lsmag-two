@@ -2,8 +2,8 @@
 
 namespace Ls\Replication\Setup;
 
-use Ls\Replication\Setup\UpgradeSchema\AbstractUpgradeSchema;
-use Ls\Replication\Setup\UpgradeSchema\UpgradeSchemaBlockInterface;
+use \Ls\Replication\Setup\UpgradeSchema\AbstractUpgradeSchema;
+use \Ls\Replication\Setup\UpgradeSchema\UpgradeSchemaBlockInterface;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;

@@ -6,7 +6,8 @@ var config = {
            'lsomni/stores-provider' : 'Ls_Omni/js/model/stores-provider',
            'lsomni/map' : 'Ls_Omni/js/view/map',
            'lsomni/stock':'Ls_Omni/js/view/product',
-           'Magento_Checkout/js/model/shipping-save-processor/default': 'Ls_Omni/js/model/shipping-save-processor/default'
+           'Magento_Checkout/js/model/shipping-save-processor/default': 'Ls_Omni/js/model/shipping-save-processor/default',
+           'OwlCarousel': 'Ls_Omni/js/owl-carousel'
        }
     },
     config: {
@@ -15,5 +16,8 @@ var config = {
                 'Ls_Omni/js/view/plugin/shipping': true
             }
         }
+    },
+    shim: {
+        'Ls_Omni/js/owl.carousel.min': ['jquery', 'jquery/ui']
     }
 };

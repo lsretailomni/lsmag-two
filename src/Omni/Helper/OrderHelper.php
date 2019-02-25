@@ -2,10 +2,10 @@
 
 namespace Ls\Omni\Helper;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\Enum;
-use Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum;
+use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Sales\Model;
@@ -82,7 +82,7 @@ class OrderHelper extends AbstractHelper
             $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         } else {
             $customerEmail = $order->getCustomerEmail();
-            $customerName = $order->getShippingAddress()->getFirstname() . " " .
+            $customerName = $order->getShippingAddress()->getFirstname()." ".
                 $order->getShippingAddress()->getLastname();
             $mobileNumber = $order->getShippingAddress()->getTelephone();
             $contactId = $cardId = "";
@@ -106,7 +106,7 @@ class OrderHelper extends AbstractHelper
         $this->populateOrderAndDiscountCollection($lines, $order, $orderLinesArray, $discountArray);
         $orderLinesArrayObject->setOrderLine($orderLinesArray);
         $discountArrayObject->setOrderDiscountLine($discountArray);
-        /** @var Entity\ArrayOfOrderPayment  $orderPaymentArrayObject */
+        /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
         $orderPaymentArrayObject = $this->setOrderPayments($order);
         $entity->setOrderDiscountLines($discountArrayObject);
         $entity->setOrderLines($orderLinesArrayObject);
@@ -136,6 +136,7 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreLine
         $request = new Entity\OrderCreate();
         $request->setRequest($entity);
+
         return $request;
     }
 
@@ -148,10 +149,10 @@ class OrderHelper extends AbstractHelper
      */
     public function populateOrderAndDiscountCollection($lines, $order, & $orderLinesArray, & $discountArray)
     {
-    /*
-    * When there is only one item in the $lines,
-     * it does not return in the form of array, it returns in the form of object.
-    */
+        /*
+        * When there is only one item in the $lines,
+         * it does not return in the form of array, it returns in the form of object.
+        */
         $shipmentFeeId = 66010;
         if (!is_array($lines) and $lines instanceof Entity\BasketLineCalcResponse) {
             /** @var Entity\BasketLineCalcResponse $line */
@@ -231,7 +232,7 @@ class OrderHelper extends AbstractHelper
     {
         $lineDiscounts = $line->getBasketLineDiscResponses();
         $discounts = [];
-        if (!($lineDiscounts->getBasketLineDiscResponse()==null)) {
+        if (!($lineDiscounts->getBasketLineDiscResponse() == null)) {
             /** @var Entity\BasketLineDiscResponse[] $discounts */
             $discounts = $lineDiscounts->getBasketLineDiscResponse();
         }
@@ -269,6 +270,7 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreLine
         $operation = new Operation\OrderCreate();
         $response = $operation->execute($request);
+
         // @codingStandardsIgnoreLine
         return $response ? $response->getResult() : $response;
     }
@@ -289,7 +291,7 @@ class OrderHelper extends AbstractHelper
                 break;
             }
             // @codingStandardsIgnoreLine
-            $method = "setAddress" . strval($i + 1);
+            $method = "setAddress".strval($i + 1);
             $omniAddress->$method($street);
         }
         $omniAddress
@@ -297,6 +299,7 @@ class OrderHelper extends AbstractHelper
             ->setCountry($magentoAddress->getCountryId())
             ->setStateProvinceRegion($magentoAddress->getRegion())
             ->setPostCode($magentoAddress->getPostcode());
+
         return $omniAddress;
     }
 
@@ -307,6 +310,11 @@ class OrderHelper extends AbstractHelper
      */
     public function setOrderPayments(Model\Order $order)
     {
+
+        $transId = $order->getPayment()->getCcTransId();
+        $ccType = $order->getPayment()->getCcType();
+        $cardNumber = $order->getPayment()->getCcLast4();
+
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
         $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
@@ -315,13 +323,22 @@ class OrderHelper extends AbstractHelper
         //default values for all payment typoes.
         $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
             ->setCurrencyFactor($order->getBaseToGlobalRate())
-            ->setFinalizedAmount($order->getGrandTotal())
+            ->setFinalizedAmount(0)
             ->setLineNumber('1')
             ->setOrderId($order->getIncrementId())
             ->setPreApprovedAmount($order->getGrandTotal());
 
-        // For Cash On Delivery and Cheque use Tender Type as 1
-        $orderPayment->setTenderType('0');
+
+        // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
+        if ($ccType != "" and $ccType != null) {
+            $orderPayment->setTenderType('1');
+            $orderPayment->setCardType($ccType);
+            $orderPayment->setCardNumber($cardNumber);
+            $orderPayment->setAuthorisationCode($transId);
+        } else {
+            $orderPayment->setTenderType('0');
+        }
+
         // @codingStandardsIgnoreLine
         /*
          * Not Supporting at the moment, so all payment methods will be offline,
@@ -332,6 +349,7 @@ class OrderHelper extends AbstractHelper
          *
          */
         $orderPaymentArray[] = $orderPayment;
-         return   $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
+
+        return $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
     }
 }
