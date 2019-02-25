@@ -34,10 +34,10 @@ class ShippingInformationManagement
         \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
     ) {
         $extAttributes = $addressInformation->getExtensionAttributes();
-        $pickupDate = $extAttributes->getPickupDate();
+//        $pickupDate = $extAttributes->getPickupDate();
         $pickupStore = $extAttributes->getPickupStore();
         $quote = $this->quoteRepository->getActive($cartId);
-        $quote->setPickupDate($pickupDate);
+//        $quote->setPickupDate($pickupDate);
         $quote->setPickupStore($pickupStore);
     }
 }
