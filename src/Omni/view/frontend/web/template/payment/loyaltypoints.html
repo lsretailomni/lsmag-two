@@ -1,44 +1,58 @@
-
-<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
-    <div class="payment-method-title field choice">
-        <input type="radio"
-               name="payment[method]"
-               class="radio"
-               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
-        <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span>
-            <strong data-bind="text: getPointValue()"></strong>
-            <strong id="somethingas"></strong>
-
-        </label>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="payment-option _collapsible opc-payment-additional loyaltypoints"
+     data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
+    <div class="payment-option-title field choice" data-role="title">
+        <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
+            <!-- ko i18n: 'Apply Loyalty Points'--><!-- /ko -->
+        </span>
     </div>
-    <div class="payment-method-content">
+    <div class="payment-option-content" data-role="content">
         <!-- ko foreach: getRegion('messages') -->
         <!-- ko template: getTemplate() --><!-- /ko -->
         <!--/ko-->
-        <div class="payment-method-billing-address">
-            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
-            <!--/ko-->
-        </div>
-        <div class="checkout-agreements-block">
-            <!-- ko foreach: $parent.getRegion('before-place-order') -->
-                <!-- ko template: getTemplate() --><!-- /ko -->
-            <!--/ko-->
-        </div>
-        <div class="actions-toolbar">
-            <div class="primary">
-                <button class="action primary checkout"
-                        type="submit"
-                        data-bind="
-                        click: placeOrder,
-                        attr: {title: $t('Place Order')},
-                        css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked())
-                        "
-                        disabled>
-                    <span data-bind="i18n: 'Place Order'"></span>
-                </button>
+        <form class="form form-discount" id="loyalty-form">
+            <div class="loyalty-points-label">
+                <label>
+                    <span data-bind="html: balanceFormatted"></span>
+                </label>
             </div>
-        </div>
+            <div class="payment-option-inner">
+                <div class="field">
+                    <label class="label" for="loyalty-points">
+                        <span data-bind="i18n: 'Enter discount code'"></span>
+                    </label>
+                    <div class="control">
+                        <input class="input-text"
+                               type="text"
+                               id="loyalty-points"
+                               name="loyalty_points"
+                               data-validate="{'required-entry':true}"
+                               data-bind="value: loyaltyPoints, attr:{placeholder: $t('Enter points to redeem')} " />
+                    </div>
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <!-- ko ifnot: isApplied() -->
+                    <button class="action action-apply" type="submit" data-bind="'value': $t('Redeem'), click: applyPoints">
+                        <span><!-- ko i18n: 'Redeem'--><!-- /ko --></span>
+                    </button>
+                    <!-- /ko -->
+                    <!-- ko if: isApplied() -->
+                    <button class="action action-apply" type="submit" data-bind="'value': $t('Update'), click: applyPoints">
+                        <span><!-- ko i18n: 'Update'--><!-- /ko --></span>
+                    </button>
+                    <button class="action action-cancel" type="submit" data-bind="'value': $t('Cancel'), click: cancelPoints">
+                        <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
+                    </button>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </form>
     </div>
 </div>

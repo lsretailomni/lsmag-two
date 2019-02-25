@@ -1,0 +1,15 @@
+.cart-discount .title strong{
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #1979c3;
+}
+.cart-discount .loyalty{
+    width: 50%;
+    margin-bottom: 15px;
+}
+.cart-discount .loyalty .loyalty-points-label{
+    padding: 5px 0px;
+}
+.cart-discount .block:nth-child(2){
+    float: left !important;
+}

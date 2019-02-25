@@ -1,0 +1,17 @@
+<!-- ko if: getEarning() -->
+<tr class="totals sub">
+    <th class="mark" scope="row" data-bind="text: getEarning().title"></th>
+    <td class="amount">
+        <span class="price" data-bind="html: getEarningValue(), style: {fontWeight: 'bold'}"></span>
+    </td>
+</tr>
+<!-- /ko -->
+
+<!-- ko if: getSpending() -->
+<tr class="totals sub">
+    <th class="mark" scope="row" data-bind="text: getSpending().title"></th>
+    <td class="amount">
+        <span class="price" data-bind="html: getSpendingValue(), style: {fontWeight: 'bold'}"></span>
+    </td>
+</tr>
+<!-- /ko -->

@@ -196,6 +196,21 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $response ? $response->getResult() : $response;
     }
 
+
+    /**
+     * @return int
+     */
+    public function getMemberPoints()
+    {
+        /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $memberProfile */
+        $memberProfile = $this->getMemberInfo();
+        if ($memberProfile != null) {
+            $points = $memberProfile->getAccount()->getPointBalance();
+            return $points;
+        }
+        return 0;
+    }
+
     /*
      * Convert Point Rate into Values
      */
@@ -237,5 +252,14 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getMediaPathtoStore()
     {
         return $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
+    }
+
+    /**
+     * @param null $storeId
+     * @return bool
+     */
+    public function isEnabledSpending($storeId = null)
+    {
+        return false;
     }
 }

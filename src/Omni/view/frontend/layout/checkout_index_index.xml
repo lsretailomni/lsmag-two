@@ -18,7 +18,6 @@
                             <item name="children" xsi:type="array">
                                 <item name="steps" xsi:type="array">
                                     <item name="children" xsi:type="array">
-                                        <!-- For click and Collect -->
                                         <item name="shipping-step" xsi:type="array">
                                             <item name="children" xsi:type="array">
                                                 <item name="shippingAddress" xsi:type="array">
@@ -36,22 +35,44 @@
                                                 </item>
                                             </item>
                                         </item>
-                                        <!-- For Loyalty Payment -->
                                         <item name="billing-step" xsi:type="array">
                                             <item name="children" xsi:type="array">
                                                 <item name="payment" xsi:type="array">
                                                     <item name="children" xsi:type="array">
-                                                        <item name="renders" xsi:type="array">
-                                                            <!-- merge payment method renders here -->
+                                                        <item name="afterMethods" xsi:type="array">
+                                                            <item name="displayArea" xsi:type="string">afterMethods</item>
                                                             <item name="children" xsi:type="array">
-                                                                <item name="omni-payments" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Ls_Omni/js/view/payment/omni-payments</item>
-                                                                    <item name="methods" xsi:type="array">
-                                                                        <item name="loyaltypoints" xsi:type="array">
-                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">false</item>
-                                                                        </item>
-
+                                                                <item name="loyalty-points" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">
+                                                                        Ls_Omni/js/view/loyalty-points
                                                                     </item>
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="componentDisabled" xsi:type="helper"
+                                                                              helper="Ls\Omni\Helper\LoyaltyHelper::isEnabledSpending"/>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="summary" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="totals" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="loyalty_points_label" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Ls_Omni/js/view/totals/label</item>
+                                                            <item name="sortOrder" xsi:type="string">0</item>
+                                                        </item>
+                                                        <item name="before_grandtotal" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="loyalty_points_discount" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Ls_Omni/js/view/totals/discount</item>
                                                                 </item>
                                                             </item>
                                                         </item>

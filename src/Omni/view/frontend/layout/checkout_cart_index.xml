@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Ls_Omni::css/loyalty_points.css"/>
+    </head>
+    <body>
+        <referenceContainer name="cart.discount">
+            <block class="Ls\Omni\Block\Cart\Loyaltypoints" name="checkout.cart.loyaltypoints" as="loyaltypoints"
+                   template="Ls_Omni::cart/loyalty-points.phtml" before="-"/>
+        </referenceContainer>
+        <move element="cart.discount" destination="checkout.cart.container" after="-" />
+        <referenceBlock name="checkout.cart.totals">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="block-totals" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="loyalty_points_label" xsi:type="array">
+                                    <item name="component" xsi:type="string">Ls_Omni/js/view/totals/label</item>
+                                    <item name="sortOrder" xsi:type="string">0</item>
+                                </item>
+                                <item name="before_grandtotal" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="loyalty_points_discount" xsi:type="array">
+                                            <item name="component" xsi:type="string">Ls_Omni/js/view/totals/discount</item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

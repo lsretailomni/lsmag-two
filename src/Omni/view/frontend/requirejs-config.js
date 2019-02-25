@@ -1,13 +1,13 @@
-
 var config = {
     map: {
-       '*': {
-           'lsomni/map-loader' : 'Ls_Omni/js/map-loader',
-           'lsomni/stores-provider' : 'Ls_Omni/js/model/stores-provider',
-           'lsomni/map' : 'Ls_Omni/js/view/map',
-           'lsomni/stock':'Ls_Omni/js/view/product',
-           'Magento_Checkout/js/model/shipping-save-processor/default': 'Ls_Omni/js/model/shipping-save-processor/default'
-       }
+        '*': {
+            'lsomni/map-loader': 'Ls_Omni/js/map-loader',
+            'lsomni/stores-provider': 'Ls_Omni/js/model/stores-provider',
+            'lsomni/map': 'Ls_Omni/js/view/map',
+            'lsomni/stock': 'Ls_Omni/js/view/product',
+            'Magento_Checkout/js/model/shipping-save-processor/default': 'Ls_Omni/js/model/shipping-save-processor/default',
+            loyaltyPoints: 'Ls_Omni/js/loyalty-points',
+        }
     },
     config: {
         mixins: {

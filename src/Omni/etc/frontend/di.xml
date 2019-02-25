@@ -3,11 +3,8 @@
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
-                <!-- For Loyalty Payment method -->
-                <item name="offline_payment_loyaltypoints_config_provider" xsi:type="object">Ls\Omni\Model\LoyaltypointsConfigProvider</item>
                 <!-- For Click and Collect -->
                 <item name="clickandcollect_config_provider" xsi:type="object">Ls\Omni\Model\Checkout\DataProvider</item>
-
             </argument>
         </arguments>
     </type>
