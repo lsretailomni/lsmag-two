@@ -89,7 +89,7 @@ class Store extends \Magento\Framework\App\Action\Action
                     $childProductSku
                 );
                 $actualQty = ceil($response->getInventoryResponse()->getQtyActualInventory());
-                if ($actualQty) {
+                if ($actualQty > 0) {
                     $stockCollection[] = [
                         "name" => $item->getName(),
                         "status" => "1",
