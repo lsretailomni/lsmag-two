@@ -123,7 +123,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // CLICK & COLLECT
     const SC_CLICKCOLLECT_ACTIVE = 'carriers/clickcollect/active';
     const SC_CLICKCOLLECT_MAP = 'carriers/clickcollect/map';
-    const SC_CLICKCOLLECT_GOOGLE_APIKEY = 'carriers/clickcollect/api_key';
     const SC_CLICKCOLLECT_HERE_APP_ID = 'carriers/clickcollect/app_id';
     const SC_CLICKCOLLECT_HERE_APP_CODE = 'carriers/clickcollect/app_code';
     const SC_CLICKCOLLECT_STOCKLEVEL_STORES = 'ls_mag/clickcollectsetup/showstockforstores';
