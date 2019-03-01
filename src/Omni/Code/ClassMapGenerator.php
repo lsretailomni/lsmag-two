@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Code;
 
-use Ls\Omni\Service\Metadata;
+use \Ls\Omni\Service\Metadata;
 use Zend\Code\Generator\MethodGenerator;
 
 /**

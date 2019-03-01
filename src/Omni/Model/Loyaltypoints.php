@@ -3,7 +3,7 @@
 namespace Ls\Omni\Model;
 
 use Magento\Framework\DataObject;
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 
 /**
  * Class Loyaltypoints

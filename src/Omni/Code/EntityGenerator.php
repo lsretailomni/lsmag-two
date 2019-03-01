@@ -4,12 +4,12 @@ namespace Ls\Omni\Code;
 
 use ArrayIterator;
 use IteratorAggregate;
-use Ls\Omni\Client\RequestInterface;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Service\Metadata;
-use Ls\Omni\Service\Soap\Entity;
-use Ls\Omni\Service\Soap\SoapType;
+use \Ls\Omni\Client\RequestInterface;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Service\Metadata;
+use \Ls\Omni\Service\Soap\Entity;
+use \Ls\Omni\Service\Soap\SoapType;
 use Zend\Code\Generator\DocBlock\Tag;
 use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;

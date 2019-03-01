@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Helper;
 
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class ContactHelper

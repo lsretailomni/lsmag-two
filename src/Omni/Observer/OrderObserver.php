@@ -1,12 +1,12 @@
 <?php
 namespace Ls\Omni\Observer;
 
-use Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Event\ObserverInterface;
-use Ls\Omni\Helper\ContactHelper;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class OrderObserver
@@ -73,9 +73,9 @@ class OrderObserver implements ObserverInterface
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $order = $observer->getEvent()->getData('order');
-        /** @var Entity\BasketCalcResponse $basketCalculation */
-        $basketCalculation = $this->basketHelper->getOneListCalculation();
-        $request = $this->orderHelper->prepareOrder($order, $basketCalculation);
+        /** @var Entity\Order $oneListCalculation */
+        $oneListCalculation = $this->basketHelper->getOneListCalculation();
+        $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
         $response = $this->orderHelper->placeOrder($request);
         if ($response) {
             //delete from Omni.

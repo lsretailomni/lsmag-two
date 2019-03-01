@@ -5,7 +5,7 @@ namespace Ls\Replication\Ui\Component\Listing\Column;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
-use Ls\Replication\Block\Adminhtml\Grid\Renderer\Action\UrlBuilder;
+use \Ls\Replication\Block\Adminhtml\Grid\Renderer\Action\UrlBuilder;
 use Magento\Framework\UrlInterface;
 
 /**

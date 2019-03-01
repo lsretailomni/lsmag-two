@@ -2,7 +2,7 @@
 
 namespace Ls\Core\Model;
 
-use Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Cache\TypeListInterface;
 use SoapClient;
@@ -13,6 +13,7 @@ use SoapClient;
  */
 class LSR
 {
+    const LSR_SHIPMENT_ITEM_ID = 66010;
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
 Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';
@@ -106,6 +107,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_SHOW_NOTIFICATIONS = 'ls_mag/loyalty/show_notifications';
     const SC_LOYALTY_SHOW_NOTIFICATIONS_TOP = 'ls_mag/loyalty/show_notifications_top';
     const SC_LOYALTY_SHOW_NOTIFICATIONS_LEFT = 'ls_mag/loyalty/show_notifications_left';
+    const SC_LOYALTY_PAGE_IMAGE_WIDTH = 'ls_mag/loyalty/set_image_size_width_for_loyalty_page';
+    const SC_LOYALTY_PAGE_IMAGE_HEIGHT = 'ls_mag/loyalty/set_image_size_height_for_loyalty_page';
+    const SC_LOYALTY_EXPIRY_DATE_FORMAT      = 'ls_mag/loyalty/loyalty_expiry_date_format';
+
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
     const SC_CART_PRODUCT_AVAILABILITY = 'ls_mag/one_list/product_availability';
@@ -119,7 +124,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // CLICK & COLLECT
     const SC_CLICKCOLLECT_ACTIVE = 'carriers/clickcollect/active';
     const SC_CLICKCOLLECT_MAP = 'carriers/clickcollect/map';
-    const SC_CLICKCOLLECT_GOOGLE_APIKEY = 'carriers/clickcollect/api_key';
     const SC_CLICKCOLLECT_HERE_APP_ID = 'carriers/clickcollect/app_id';
     const SC_CLICKCOLLECT_HERE_APP_CODE = 'carriers/clickcollect/app_code';
     const SC_CLICKCOLLECT_STOCKLEVEL_STORES = 'ls_mag/clickcollectsetup/showstockforstores';
@@ -217,6 +221,13 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Store Hours Format
     const STORE_HOURS_TIME_FORMAT = 'h:i A';
 
+    //LS Recommendatin.
+    const LS_RECOMMEND_ACTIVE = 'ls_mag/ls_recommend/active';
+    const LS_RECOMMEND_SHOW_ON_PRODUCT = 'ls_mag/ls_recommend/product';
+    const LS_RECOMMEND_SHOW_ON_CART = 'ls_mag/ls_recommend/cart';
+    const LS_RECOMMEND_SHOW_ON_CHECKOUT = 'ls_mag/ls_recommend/checkout';
+    const LS_RECOMMEND_SHOW_ON_HOME = 'ls_mag/ls_recommend/home';
+    const LS_RECOMMEND_PRODUCT_COUNT = 'ls_mag/ls_recommend/productcount';
     public $scopeConfig;
 
     /** @var TypeListInterface */
@@ -242,6 +253,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Note : Incase of notDefault we have to pass the StoreID
+     * in the variable of notDefault variable.
      * @param $path
      * @param bool $notDefault
      * @return string

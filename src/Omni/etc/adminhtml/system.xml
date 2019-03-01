@@ -102,13 +102,13 @@
                     </depends>
                 </field>
 
-                <field id="validate" translate="label" type="button" sortOrder="10" showInDefault="1"
+<!--                <field id="validate" translate="label" type="button" sortOrder="10" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Validate LS Recommend Server</label>
                     <comment>Test if LS Recommend is setup on NAV Server.</comment>
                     <button_label>Validate</button_label>
                     <button_url>admin/ls_repl/validate/lsrecommend</button_url>
-                </field>
+                </field>-->
             </group>
 
 

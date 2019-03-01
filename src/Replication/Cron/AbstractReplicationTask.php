@@ -3,14 +3,14 @@
 namespace Ls\Replication\Cron;
 
 use IteratorAggregate;
-use Ls\Core\Helper\Data as LsHelper;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Omni\Client\OperationInterface;
+use \Ls\Core\Helper\Data as LsHelper;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Omni\Client\OperationInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use Magento\Config\Model\ResourceModel\Config;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class AbstractReplicationTask
@@ -111,7 +111,7 @@ abstract class AbstractReplicationTask
         Config $resouce_config,
         LoggerInterface $logger,
         LsHelper $helper,
-        ReplicationHelper $repHelper
+        \Ls\Replication\Helper\ReplicationHelper $repHelper
     ) {
         $this->scope_config = $scope_config;
         $this->resource_config = $resouce_config;

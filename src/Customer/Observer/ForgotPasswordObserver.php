@@ -5,7 +5,7 @@ namespace Ls\Customer\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Zend_Validate;
 use Zend_Validate_EmailAddress;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\CustomerMetadataInterface;
 
 /**

@@ -2,7 +2,7 @@
 namespace Ls\Omni\Service\Soap;
 
 use Composer\Autoload\ClassLoader;
-use Ls\Core\Code\AbstractGenerator;
+use \Ls\Core\Code\AbstractGenerator;
 use ReflectionClass;
 
 /**

@@ -1,7 +1,7 @@
 <?php
 namespace Ls\Omni\Client;
 
-use Ls\Omni\Service\Soap\Client;
+use \Ls\Omni\Service\Soap\Client;
 
 /**
  * Interface OperationInterface

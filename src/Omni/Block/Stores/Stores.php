@@ -2,10 +2,10 @@
 
 namespace Ls\Omni\Block\Stores;
 
-use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
-use Ls\Omni\Helper\Data;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Result\PageFactory;
 use \Magento\Framework\Session\SessionManagerInterface;
@@ -103,7 +103,7 @@ class Stores extends Template
     {
         try {
             return $this->scopeConfig->getValue(
-                LSR::SC_CLICKCOLLECT_GOOGLE_APIKEY,
+                LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             );
         } catch (\Exception $e) {

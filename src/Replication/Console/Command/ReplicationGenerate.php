@@ -4,29 +4,29 @@
 namespace Ls\Replication\Console\Command;
 
 use Composer\Autoload\ClassLoader;
-use Ls\Omni\Console\Command as OmniCommand;
-use Ls\Omni\Service\Metadata as ServiceMetadata;
-use Ls\Omni\Service\Service;
-use Ls\Omni\Service\ServiceType;
-use Ls\Omni\Service\Soap\Client;
-use Ls\Omni\Service\Soap\Operation;
-use Ls\Replication\Code\CronJobConfigGenerator;
-use Ls\Replication\Code\CronJobGenerator;
-use Ls\Replication\Code\CronTabGenerator;
-use Ls\Replication\Code\ModelGenerator;
-use Ls\Replication\Code\ModelInterfaceGenerator;
-use Ls\Replication\Code\RepositoryGenerator;
-use Ls\Replication\Code\RepositoryInterfaceGenerator;
-use Ls\Replication\Code\ResourceCollectionGenerator;
-use Ls\Replication\Code\ResourceModelGenerator;
-use Ls\Replication\Code\SchemaUpdateGenerator;
-use Ls\Replication\Code\SearchGenerator;
-use Ls\Replication\Code\SearchInterfaceGenerator;
-use Ls\Replication\Code\SystemConfigGenerator;
+use \Ls\Omni\Console\Command as OmniCommand;
+use \Ls\Omni\Service\Metadata as ServiceMetadata;
+use \Ls\Omni\Service\Service;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client;
+use \Ls\Omni\Service\Soap\Operation;
+use \Ls\Replication\Code\CronJobConfigGenerator;
+use \Ls\Replication\Code\CronJobGenerator;
+use \Ls\Replication\Code\CronTabGenerator;
+use \Ls\Replication\Code\ModelGenerator;
+use \Ls\Replication\Code\ModelInterfaceGenerator;
+use \Ls\Replication\Code\RepositoryGenerator;
+use \Ls\Replication\Code\RepositoryInterfaceGenerator;
+use \Ls\Replication\Code\ResourceCollectionGenerator;
+use \Ls\Replication\Code\ResourceModelGenerator;
+use \Ls\Replication\Code\SchemaUpdateGenerator;
+use \Ls\Replication\Code\SearchGenerator;
+use \Ls\Replication\Code\SearchInterfaceGenerator;
+use \Ls\Replication\Code\SystemConfigGenerator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Ls\Core\Code\AbstractGenerator;
+use \Ls\Core\Code\AbstractGenerator;
 
 /**
  * Class ReplicationGenerate

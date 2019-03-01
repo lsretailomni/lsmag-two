@@ -3,8 +3,8 @@
 
 namespace Ls\Replication\Code;
 
-use Ls\Core\Code\AbstractGenerator;
-use Ls\Omni\Service;
+use \Ls\Core\Code\AbstractGenerator;
+use \Ls\Omni\Service;
 
 /**
  * Class CronTabGenerator

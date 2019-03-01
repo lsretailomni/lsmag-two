@@ -1,8 +1,8 @@
 <?php
 namespace Ls\Omni\Console\Command;
 
-use Ls\Omni\Client\OperationInterface;
-use Ls\Omni\Console\Command;
+use \Ls\Omni\Client\OperationInterface;
+use \Ls\Omni\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

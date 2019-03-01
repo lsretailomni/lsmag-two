@@ -4,8 +4,8 @@
 namespace Ls\Replication\Code;
 
 use Composer\Autoload\ClassLoader;
-use Ls\Core\Code\AbstractGenerator;
-use Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Core\Code\AbstractGenerator;
+use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Symfony\Component\Filesystem\Filesystem;
 use Zend\Code\Generator\MethodGenerator;

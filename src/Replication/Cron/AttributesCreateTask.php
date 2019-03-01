@@ -2,16 +2,16 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Replication\Api\ReplAttributeRepositoryInterface;
-use Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
-use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
+use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Eav\Model\Entity;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 use Psr\Log\LoggerInterface;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class AttributesCreateTask

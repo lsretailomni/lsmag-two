@@ -2,8 +2,8 @@
 
 namespace Ls\Omni\Model;
 
-use Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Client\Ecommerce\Entity;
 use Magento\Quote\Model\Quote\Address\Total\Collector;
 use Magento\Quote\Model\Quote\Address\Total\CollectorFactory;
 

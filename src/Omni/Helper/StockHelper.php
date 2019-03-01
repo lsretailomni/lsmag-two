@@ -3,9 +3,9 @@
 namespace Ls\Omni\Helper;
 
 use Magento\Framework\App\Helper\Context;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 
 /**
  * Class StockHelper
@@ -88,12 +88,10 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             if (strpos($simpleProductSku, '-') !== false) {
                 $parentProductSku = explode('-', $simpleProductSku)[0];
                 $simpleProductSku = explode('-', $simpleProductSku)[1];
-                $itemStock->setItemId($parentProductSku)->
-                setVariantId($simpleProductSku);
             }
-        } else {
-            $itemStock->setItemId($parentProductSku);
         }
+        $itemStock->setItemId($parentProductSku)->
+        setVariantId($simpleProductSku);
         try {
             $response = $request->execute($itemStock);
         } catch (\Exception $e) {

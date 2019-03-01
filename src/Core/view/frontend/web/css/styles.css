@@ -5,3 +5,9 @@
     padding:10px;
     color: #fff;
 }
+
+.product-items .owl-carousel .product-item.product-slider {
+
+    width: 100%;
+
+}

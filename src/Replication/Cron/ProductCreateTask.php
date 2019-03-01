@@ -2,23 +2,23 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommPrices;
-use Ls\Replication\Model\ReplImageLink;
-use Ls\Replication\Model\ReplImageLinkRepository;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommPrices;
+use \Ls\Replication\Model\ReplImageLink;
+use \Ls\Replication\Model\ReplImageLinkRepository;
 use Magento\Eav\Model\Config;
 use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
 use Magento\CatalogInventory\Model\Stock\Item;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable\Attribute;
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
-use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
-use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
-use Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use \Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
+use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
@@ -28,10 +28,10 @@ use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Psr\Log\LoggerInterface;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
 
 /**

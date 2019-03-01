@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Observer;
 
-use Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Event\ObserverInterface;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Helper\ContactHelper;
 
 /**
  * Class CartObserver
