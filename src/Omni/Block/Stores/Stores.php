@@ -103,7 +103,7 @@ class Stores extends Template
     {
         try {
             return $this->scopeConfig->getValue(
-                LSR::SC_CLICKCOLLECT_GOOGLE_APIKEY,
+                LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             );
         } catch (\Exception $e) {

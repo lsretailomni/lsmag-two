@@ -88,12 +88,10 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             if (strpos($simpleProductSku, '-') !== false) {
                 $parentProductSku = explode('-', $simpleProductSku)[0];
                 $simpleProductSku = explode('-', $simpleProductSku)[1];
-                $itemStock->setItemId($parentProductSku)->
-                setVariantId($simpleProductSku);
             }
-        } else {
-            $itemStock->setItemId($parentProductSku);
         }
+        $itemStock->setItemId($parentProductSku)->
+        setVariantId($simpleProductSku);
         try {
             $response = $request->execute($itemStock);
         } catch (\Exception $e) {
