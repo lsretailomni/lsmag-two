@@ -147,7 +147,6 @@ class OrderHelper extends AbstractHelper
     {
         $orderLine->setPrice($order->getShippingAmount())
             ->setNetPrice($order->getBaseShippingAmount())
-            ->setLineType(Enum\LineType::SHIPPING)
             ->setQuantity(1)
             ->setDiscountAmount($order->getShippingDiscountAmount());
     }
