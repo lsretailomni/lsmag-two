@@ -13,6 +13,7 @@ use SoapClient;
  */
 class LSR
 {
+    const LSR_SHIPMENT_ITEM_ID = 66010;
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
 Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';

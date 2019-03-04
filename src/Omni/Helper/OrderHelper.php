@@ -47,32 +47,26 @@ class OrderHelper extends AbstractHelper
 
     /**
      * @param $orderId
-     * @param Entity\BasketCalcResponse $basketCalcResponse
+     * @param Entity\Order $oneListCalculateResponse
      * @throws \Ls\Omni\Exception\InvalidEnumException
      */
-    public function placeOrderById($orderId, Entity\BasketCalcResponse $basketCalcResponse)
+    public function placeOrderById($orderId, Entity\Order $oneListCalculateResponse)
     {
         $this->placeOrder(
-            $this->prepareOrder($this->order->load($orderId), $basketCalcResponse)
+            $this->prepareOrder($this->order->load($orderId), $oneListCalculateResponse)
         );
     }
 
     /**
      * @param Model\Order $order
-     * @param Entity\BasketCalcResponse $basketCalcResponse
+     * @param Entity\Order $oneListCalculateResponse
      * @return Entity\OrderCreate
      * @throws \Ls\Omni\Exception\InvalidEnumException
      */
-    public function prepareOrder(Model\Order $order, Entity\BasketCalcResponse $basketCalcResponse)
+    public function prepareOrder(Model\Order $order, Entity\Order $oneListCalculateResponse)
     {
-        // @codingStandardsIgnoreStart
-        //$isInline = LSR::getStoreConfig( LSR::SC_CART_SALESORDER_INLINE ) == LSR_Core_Model_System_Source_Process_Type::ON_DEMAND;
         $isInline = true;
         $storeId = $this->basketHelper->getDefaultWebStore();
-        #$shipmentFee = $this->getShipmentFeeProdut();
-        #$shipmentFeeId = $shipmentFee->getData('lsr_id');
-        //TODO get this dynamic.
-        // @codingStandardsIgnoreEnd
         $anonymousOrder = false;
         if ($this->customerSession->isLoggedIn()) {
             $customerEmail = $this->customerSession->getCustomer()->getData('email');
@@ -82,8 +76,7 @@ class OrderHelper extends AbstractHelper
             $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         } else {
             $customerEmail = $order->getCustomerEmail();
-            $customerName = $order->getShippingAddress()->getFirstname()." ".
-                $order->getShippingAddress()->getLastname();
+            $customerName = $order->getShippingAddress()->getFirstname() . " " . $order->getShippingAddress()->getLastname();
             $mobileNumber = $order->getShippingAddress()->getTelephone();
             $contactId = $cardId = "";
             $anonymousOrder = true;
@@ -91,27 +84,9 @@ class OrderHelper extends AbstractHelper
         $shippingMethod = $order->getShippingMethod(true);
         //TODO work on condition
         $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
-        // @codingStandardsIgnoreLine
-        $entity = new Entity\Order();
-        /** @var Entity\OrderLine[] $orderLinesArray */
-        $orderLinesArray = [];
-        // @codingStandardsIgnoreLine
-        $orderLinesArrayObject = new Entity\ArrayOfOrderLine();
-        /** @var Entity\OrderDiscountLine[] $discountArray */
-        $discountArray = [];
-        // @codingStandardsIgnoreLine
-        $discountArrayObject = new Entity\ArrayOfOrderDiscountLine();
-        /** @var Entity\BasketLineCalcResponse[] $lines */
-        $lines = $basketCalcResponse->getBasketLineCalcResponses()->getBasketLineCalcResponse();
-        $this->populateOrderAndDiscountCollection($lines, $order, $orderLinesArray, $discountArray);
-        $orderLinesArrayObject->setOrderLine($orderLinesArray);
-        $discountArrayObject->setOrderDiscountLine($discountArray);
         /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
         $orderPaymentArrayObject = $this->setOrderPayments($order);
-        $entity->setOrderDiscountLines($discountArrayObject);
-        $entity->setOrderLines($orderLinesArrayObject);
-        $entity->setOrderPayments($orderPaymentArrayObject);
-        $entity
+        $oneListCalculateResponse
             ->setContactId($contactId)
             ->setCardId($cardId)
             ->setEmail($customerEmail)
@@ -126,137 +101,54 @@ class OrderHelper extends AbstractHelper
             ->setClickAndCollectOrder($isClickCollect)
             ->setSourceType(Enum\SourceType::E_COMMERCE)
             ->setStoreId($storeId);
-        $entity->setPaymentStatus('PreApproved');
-        $entity->setShippingStatus('NotYetShipped');
+        $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
         //For click and collect.
         if ($isClickCollect) {
-            $entity->setCollectLocation($order->getPickupStore());
-            $entity->setShipClickAndCollect(false);
+            $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
+            $oneListCalculateResponse->setShipClickAndCollect(false);
+        } else {
+            $orderLines = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            $this->updateShippingAmount($orderLines, $order);
         }
         // @codingStandardsIgnoreLine
         $request = new Entity\OrderCreate();
-        $request->setRequest($entity);
-
+        $request->setRequest($oneListCalculateResponse);
         return $request;
     }
 
     /**
-     * @param $lines
+     * @param $orderLines
      * @param $order
-     * @param $orderLinesArray
-     * @param $discountArray
-     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
-    public function populateOrderAndDiscountCollection($lines, $order, & $orderLinesArray, & $discountArray)
+    public function updateShippingAmount($orderLines, $order)
     {
-        /*
-        * When there is only one item in the $lines,
-         * it does not return in the form of array, it returns in the form of object.
-        */
-        $shipmentFeeId = 66010;
-        if (!is_array($lines) and $lines instanceof Entity\BasketLineCalcResponse) {
-            /** @var Entity\BasketLineCalcResponse $line */
-            $line = $lines;
-            // adjust price of shipping item if it is one
-            if ($line->getItemId() == $shipmentFeeId && $order->getShippingAmount() > 0) {
-                $this->setSpecialPropertiesForShipmentLine($line, $order);
+        $shipmentFeeId = LSR::LSR_SHIPMENT_ITEM_ID;
+        if (!is_array($orderLines)) {
+            /** @var Entity\OrderLine $orderLine */
+            $orderLine = $orderLines;
+            if ($orderLine->getItemId() == $shipmentFeeId && $order->getShippingAmount() > 0) {
+                $this->setSpecialPropertiesForShipmentLine($orderLine, $order);
             }
-            if ($line->getPrice() > 0) {
-                // avoid getting those enttries which does not have any  amount.
-                $this->getOrderLineCollectionElement($line, $orderLinesArray);
-                $this->populateDiscountArrayForEachLine($line, $discountArray);
-            }
-        } elseif (is_array($lines)) {
-            foreach ($lines as $line) {
-                /** @var Entity\BasketLineCalcResponse $line */
-                if (!$line->getItemId()) {
-                    continue;
-                }
-                // adjust price of shipping item if it is one
-
-                if ($line->getItemId() == $shipmentFeeId && $order->getShippingAmount() > 0) {
-                    $this->setSpecialPropertiesForShipmentLine($line, $order);
-                }
-
-                if ($line->getPrice() > 0) {
-                    // avoid getting those enttries which does not have any  amount.
-                    $this->getOrderLineCollectionElement($line, $orderLinesArray);
-                    $this->populateDiscountArrayForEachLine($line, $discountArray);
+        } elseif (is_array($orderLines)) {
+            /** @var Entity\OrderLine $orderLine */
+            foreach ($orderLines as $orderLine) {
+                if ($orderLine->getItemId() == $shipmentFeeId && $order->getShippingAmount() > 0) {
+                    $this->setSpecialPropertiesForShipmentLine($orderLine, $order);
                 }
             }
         }
     }
 
-    /**omnipassword
+    /**
      * @param $line
      * @param $order
      */
-    public function setSpecialPropertiesForShipmentLine(&$line, $order)
+    public function setSpecialPropertiesForShipmentLine(&$orderLine, $order)
     {
-        $line->setPrice($order->getShippingAmount())
+        $orderLine->setPrice($order->getShippingAmount())
             ->setNetPrice($order->getBaseShippingAmount())
-            ->setLineType(Enum\LineType::SHIPPING)
             ->setQuantity(1)
             ->setDiscountAmount($order->getShippingDiscountAmount());
-    }
-
-    /**
-     * @param $line
-     * @param $orderLinesArray
-     */
-    public function getOrderLineCollectionElement($line, & $orderLinesArray)
-    {
-        // @codingStandardsIgnoreStart
-        $line = (new Entity\OrderLine())
-            ->setItemId($line->getItemId())
-            ->setQuantity($line->getQuantity())
-            ->setPrice($line->getPrice())
-            ->setDiscountAmount($line->getDiscountAmount())
-            ->setDiscountPercent($line->getDiscountPercent())
-            ->setNetAmount($line->getNetAmount())
-            ->setNetPrice($line->getNetPrice())
-            ->setUomId($line->getUom())
-            ->setVariantId($line->getVariantId())
-            ->setTaxAmount($line->getTAXAmount())
-            ->setLineNumber($line->getLineNumber());
-        $orderLinesArray[] = $line;
-        // @codingStandardsIgnoreEnd
-    }
-
-    /**
-     * @param $line
-     * @param $discountArray
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     */
-    public function populateDiscountArrayForEachLine($line, & $discountArray)
-    {
-        $lineDiscounts = $line->getBasketLineDiscResponses();
-        $discounts = [];
-        if (!($lineDiscounts->getBasketLineDiscResponse() == null)) {
-            /** @var Entity\BasketLineDiscResponse[] $discounts */
-            $discounts = $lineDiscounts->getBasketLineDiscResponse();
-        }
-        if (!empty($discounts)) {
-            /** @var Entity\BasketLineCalcResponse $discount */
-            foreach ($discounts as $discount) {
-                // not actually needed
-                // @codingStandardsIgnoreStart
-                // 'qty' => $discount->getQuantity(),
-                # store information from current discount
-                // @codingStandardsIgnoreLine
-                $discountArray[] = (new Entity\OrderDiscountLine())
-                    ->setDescription($discount->getDescription())
-                    ->setDiscountAmount($discount->getDiscountAmount())
-                    ->setDiscountPercent($discount->getDiscountPercent())
-                    ->setDiscountType($discount->getDiscountType())
-                    ->setLineNumber($discount->getLineNumber())
-                    ->setNo($discount->getNo())
-                    ->setOfferNumber($discount->getOfferNumber())
-                    ->setPeriodicDiscGroup($discount->getPeriodicDiscGroup())
-                    ->setPeriodicDiscType($discount->getPeriodicDiscType());
-            }
-            // @codingStandardsIgnoreEnd
-        }
     }
 
     /**
@@ -291,7 +183,7 @@ class OrderHelper extends AbstractHelper
                 break;
             }
             // @codingStandardsIgnoreLine
-            $method = "setAddress".strval($i + 1);
+            $method = "setAddress" . strval($i + 1);
             $omniAddress->$method($street);
         }
         $omniAddress

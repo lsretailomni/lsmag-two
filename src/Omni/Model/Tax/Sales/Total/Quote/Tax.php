@@ -67,8 +67,8 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
     ) {
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
-            $total->setTaxAmount($basketData->getTotalTaxAmount());
-            $discountAmount = -$basketData->getTotalDiscAmount();
+            //$total->setTaxAmount($basketData->getTotalTaxAmount());
+            $discountAmount = -$basketData->getTotalDiscount();
             $total->setDiscountAmount($discountAmount);
             $total->addTotalAmount('discount', $discountAmount);
         }
