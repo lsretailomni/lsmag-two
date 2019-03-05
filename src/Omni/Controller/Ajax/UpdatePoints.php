@@ -3,8 +3,8 @@
 namespace Ls\Omni\Controller\Ajax;
 
 use Magento\Framework\App\Action\Context;
-use Ls\Omni\Helper\LoyaltyHelper;
-use Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class UpdatePoints
@@ -71,10 +71,21 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
+        $httpBadRequestCode = 400;
+        /** @var \Magento\Framework\Controller\Result\Raw $resultRaw */
+        $resultRaw = $this->resultRawFactory->create();
+        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+            return $resultRaw->setHttpResponseCode($httpBadRequestCode);
+        }
+
         /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultJsonFactory->create();
         if (!$this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID)) {
-            return $resultJson->setData('');
+            $response = [
+                'error' => 'true',
+                'message' => __('Customer session not found.')
+            ];
+            return $resultJson->setData($response);
         }
         $base_currency = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
         $post = $this->getRequest()->getContent();

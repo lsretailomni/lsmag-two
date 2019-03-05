@@ -6,7 +6,7 @@ use Magento\Checkout\Api\Data\TotalsInformationInterface;
 use Magento\Checkout\Model\Session;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
-use Ls\Omni\Api\PointsManagementInterface;
+use \Ls\Omni\Api\PointsManagementInterface;
 
 /**
  * Class PointsManagement

@@ -220,17 +220,23 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getPointRate()
     {
+        $pointsRate = $this->customerSession->getPointsRate();
+        if (isset($pointsRate)) {
+            return $pointsRate;
+        }
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\GetPointRate();
         $entity = new Entity\GetPointRate();
         // @codingStandardsIgnoreEnd
         try {
-            $response = $request->execute($entity);
+            $responseData = $request->execute($entity);
+            $response = $responseData ? $responseData->getResult() : $response;
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getResult() : $response;
+        $this->customerSession->setPointsRate($response);
+        return $response;
     }
 
     /**
