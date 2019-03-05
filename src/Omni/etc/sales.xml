@@ -3,6 +3,7 @@
         <group name="totals">
             <item name="ls_points_spent" instance="Ls\Omni\Model\Total\Quote\PointsSpent" sort_order="400"/>
             <item name="ls_points_earn" instance="Ls\Omni\Model\Total\Quote\PointsEarned" sort_order="500"/>
+            <item name="ls_points_discount" instance="Ls\Omni\Model\Total\Quote\PointsDiscount" sort_order="600"/>
         </group>
     </section>
 </config>

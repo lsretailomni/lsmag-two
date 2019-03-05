@@ -1,4 +1,3 @@
-
 define([
         'Magento_Checkout/js/view/summary/abstract-total',
         'Magento_Checkout/js/model/totals'
@@ -14,7 +13,7 @@ define([
              * @returns {*}
              */
             getTotal: function () {
-                return totals.getSegment('loyalty_points_discount');
+                return totals.getSegment('ls_points_discount');
             },
 
             /**
@@ -22,7 +21,7 @@ define([
              * @returns {*|String}
              */
             getValue: function () {
-                return this.getFormattedPrice(this.getTotal().value);
+                return '-' + this.getFormattedPrice(this.getTotal().value);
             }
         });
     }

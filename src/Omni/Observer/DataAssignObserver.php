@@ -18,12 +18,13 @@ class DataAssignObserver implements ObserverInterface
     {
         $quote = $observer->getQuote();
         $order = $observer->getOrder();
-        
+
         $order->setPickupDate($quote->getPickupDate());
-        
         if ($quote->getPickupStore()) {
             $order->setPickupStore($quote->getPickupStore());
         }
+        $order->setLsPointsSpent($quote->getLsPointsSpent());
+        $order->setLsPointsEarn($quote->getLsPointsEarn());
         return $this;
     }
 }

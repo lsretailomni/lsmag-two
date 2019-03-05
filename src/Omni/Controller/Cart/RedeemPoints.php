@@ -73,14 +73,15 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             $cartQuote = $this->cart->getQuote();
             $itemsCount = $cartQuote->getItemsCount();
             $isPointValid = $this->isPointsAreValid($loyaltyPoints);
-            if ($itemsCount && $isPointValid) {
+            $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($cartQuote->getBaseGrandTotal(), $loyaltyPoints);
+            if ($itemsCount && $isPointValid && $isPointsLimitValid) {
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
                 $cartQuote->setLsPointsSpent($loyaltyPoints)->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($loyaltyPoints) {
                 if ($itemsCount) {
-                    if ($isPointValid) {
+                    if ($isPointValid && $isPointsLimitValid) {
                         $this->_checkoutSession->getQuote()->setLsPointsSpent($loyaltyPoints)->save();
                         $this->messageManager->addSuccess(
                             __(

@@ -13,13 +13,13 @@ use Ls\Core\Model\LSR;
 class UpdatePoints extends \Magento\Framework\App\Action\Action
 {
 
-    /** @var \Magento\Framework\Controller\Result\JsonFactory  */
+    /** @var \Magento\Framework\Controller\Result\JsonFactory */
     public $resultJsonFactory;
 
-    /** @var \Magento\Framework\Controller\Result\RawFactory  */
+    /** @var \Magento\Framework\Controller\Result\RawFactory */
     public $resultRawFactory;
 
-    /** @var LoyaltyHelper  */
+    /** @var LoyaltyHelper */
     private $loyaltyHelper;
 
     /**
@@ -82,11 +82,23 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         try {
             $cartId = $this->checkoutSession->getQuoteId();
             $quote = $this->cartRepository->get($cartId);
-            $quote->setLsPointsSpent($postData->loyaltyPoints);
-            $this->validateQuote($quote);
-            $quote->collectTotals();
-            $this->cartRepository->save($quote);
-            $response = ['success' => 'true'];
+            $loyalPoints = (int)$postData->loyaltyPoints;
+            $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($quote->getBaseGrandTotal(), $loyalPoints);
+            if ($isPointsLimitValid) {
+                $quote->setLsPointsSpent($loyalPoints);
+                $this->validateQuote($quote);
+                $quote->collectTotals();
+                $this->cartRepository->save($quote);
+                $response = ['success' => 'true'];
+            } else {
+                $response = [
+                    'error' => 'true',
+                    'message' => __(
+                        'The loyalty points "%1" are not valid.',
+                        $loyalPoints
+                    )
+                ];
+            }
         } catch (\Exception $e) {
             $response = ['error' => 'true', 'message' => $e->getMessage()];
         }

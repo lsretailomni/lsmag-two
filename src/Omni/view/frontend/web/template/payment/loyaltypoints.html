@@ -31,23 +31,26 @@
                                type="text"
                                id="loyalty-points"
                                name="loyalty_points"
-                               data-validate="{'required-entry':true}"
-                               data-bind="value: loyaltyPoints, attr:{placeholder: $t('Enter points to redeem')} " />
+                               data-validate="{'required-entry':true, 'validate-not-negative-number':true}"
+                               data-bind="value: loyaltyPoints, attr:{placeholder: $t('Enter points to redeem')} "/>
                     </div>
                 </div>
             </div>
             <div class="actions-toolbar">
                 <div class="primary">
                     <!-- ko ifnot: isApplied() -->
-                    <button class="action action-apply" type="submit" data-bind="'value': $t('Redeem'), click: applyPoints">
+                    <button class="action action-apply" type="submit"
+                            data-bind="'value': $t('Redeem'), click: applyPoints">
                         <span><!-- ko i18n: 'Redeem'--><!-- /ko --></span>
                     </button>
                     <!-- /ko -->
                     <!-- ko if: isApplied() -->
-                    <button class="action action-apply" type="submit" data-bind="'value': $t('Update'), click: applyPoints">
+                    <button class="action action-apply" type="submit"
+                            data-bind="'value': $t('Update'), click: applyPoints">
                         <span><!-- ko i18n: 'Update'--><!-- /ko --></span>
                     </button>
-                    <button class="action action-cancel" type="submit" data-bind="'value': $t('Cancel'), click: cancelPoints">
+                    <button class="action action-cancel" type="submit"
+                            data-bind="'value': $t('Cancel'), click: cancelPoints">
                         <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
                     </button>
                     <!-- /ko -->

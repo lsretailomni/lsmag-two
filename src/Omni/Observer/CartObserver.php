@@ -3,6 +3,7 @@
 namespace Ls\Omni\Observer;
 
 use \Ls\Omni\Helper\BasketHelper;
+use Magento\Eav\Model\Entity;
 use Magento\Framework\Event\ObserverInterface;
 use \Ls\Omni\Helper\ContactHelper;
 
@@ -76,8 +77,9 @@ class CartObserver implements ObserverInterface
             //TODO if there is any no items, i-e when user only has one item and s/he prefer to remove from cart, then dont calculate basket functionality below.
             // add items from the quote to the oneList and return the updated onelist
             $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-            // update the onelist to Omni.
-            $this->basketHelper->update($oneList);
+            /** @var \Ls\Omni\Client\Ecommerce\Entity\Order $basketData */
+            $basketData = $this->basketHelper->update($oneList);
+            $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
         }
         return $this;
     }

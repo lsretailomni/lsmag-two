@@ -158,7 +158,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $pointrate = $this->getPointRate();
 
         // check if we have something in there.
-        if ($memberProfile!=null and $pointrate!=null) {
+        if ($memberProfile != null and $pointrate != null) {
             $points = $memberProfile->getAccount()->getPointBalance();
             $value = $points * $pointrate;
             return $value;
@@ -255,11 +255,20 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param null $storeId
+     * Check the discount is not crossing the grand total amount
+     * @param $grandTotal
+     * @param $loyaltyPoints
      * @return bool
      */
-    public function isEnabledSpending($storeId = null)
+    public function isPointsLimitValid($grandTotal, $loyaltyPoints)
     {
-        return false;
+        $pointrate = $this->getPointRate();
+        $requiredAmount = $pointrate * $loyaltyPoints;
+        if ($requiredAmount <= $grandTotal) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

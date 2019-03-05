@@ -15,7 +15,7 @@ define([
         isApplied;
 
     if (totals) {
-        loyaltyPoints(totals.getSegment('ls_points_spent').value);
+        loyaltyPoints(totals.getSegment('ls_points_spent').value || 0);
     }
     isApplied = ko.observable(loyaltyPoints() != null);
 

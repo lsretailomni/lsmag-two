@@ -2,7 +2,7 @@ define([
     'jquery',
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/error-processor',
-    'Magento_SalesRule/js/model/payment/discount-messages',
+    'Ls_Omni/js/model/payment/loyalty-points-messages',
     'mage/storage',
     'Magento_Checkout/js/action/get-payment-information',
     'Magento_Checkout/js/model/totals',
@@ -23,8 +23,9 @@ define([
 
         return storage.post(
             url,
-            {'loyaltyPoints': 0},
-            true
+            JSON.stringify({'loyaltyPoints': 0}),
+            true,
+            'application/json'
         ).done(function () {
             var deferred = $.Deferred();
 

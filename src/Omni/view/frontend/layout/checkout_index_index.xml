@@ -46,9 +46,12 @@
                                                                     <item name="component" xsi:type="string">
                                                                         Ls_Omni/js/view/loyalty-points
                                                                     </item>
-                                                                    <item name="config" xsi:type="array">
-                                                                        <item name="componentDisabled" xsi:type="helper"
-                                                                              helper="Ls\Omni\Helper\LoyaltyHelper::isEnabledSpending"/>
+                                                                    <item name="children" xsi:type="array">
+                                                                        <item name="errors" xsi:type="array">
+                                                                            <item name="sortOrder" xsi:type="string">0</item>
+                                                                            <item name="component" xsi:type="string">Ls_Omni/js/view/payment/loyalty-points-messages</item>
+                                                                            <item name="displayArea" xsi:type="string">messages</item>
+                                                                        </item>
                                                                     </item>
                                                                 </item>
                                                             </item>
@@ -71,9 +74,16 @@
                                                         </item>
                                                         <item name="before_grandtotal" xsi:type="array">
                                                             <item name="children" xsi:type="array">
-                                                                <item name="loyalty_points_discount" xsi:type="array">
+                                                                <item name="ls_points_discount" xsi:type="array">
                                                                     <item name="component" xsi:type="string">Ls_Omni/js/view/totals/discount</item>
                                                                 </item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="grand-total" xsi:type="array">
+                                                            <item name="component"  xsi:type="string">Magento_Checkout/js/view/summary/grand-total</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Order Balance</item>
+                                                                <item name="template" xsi:type="string">Magento_Checkout/cart/totals/grand-total</item>
                                                             </item>
                                                         </item>
                                                     </item>

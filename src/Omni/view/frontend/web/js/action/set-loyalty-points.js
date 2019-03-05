@@ -3,7 +3,7 @@ define([
     'jquery',
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/error-processor',
-    'Magento_SalesRule/js/model/payment/discount-messages',
+    'Ls_Omni/js/model/payment/loyalty-points-messages',
     'mage/storage',
     'mage/translate',
     'Magento_Checkout/js/action/get-payment-information',
@@ -28,7 +28,7 @@ define([
             'application/json'
         ).done(function (response) {
             var deferred;
-            if (response) {
+            if (response.success) {
                 deferred = $.Deferred();
                 isApplied(true);
                 totals.isLoading(true);
@@ -39,6 +39,12 @@ define([
                 });
                 messageContainer.addSuccessMessage({
                     'message': message
+                });
+            } else {
+                fullScreenLoader.stopLoader();
+                totals.isLoading(false);
+                messageContainer.addErrorMessage({
+                    'message': response.message
                 });
             }
         }).fail(function (response) {

@@ -22,13 +22,11 @@ class PointsSpent extends AbstractTotal
     {
         $totals = [];
         $spent = $quote->getLsPointsSpent();
-        if ($spent > 0.001) {
-            $totals[] = [
-                'code' => $this->getCode(),
-                'title' => __('You are using'),
-                'value' => $spent,
-            ];
-        }
+        $totals[] = [
+            'code' => $this->getCode(),
+            'title' => __('You are using'),
+            'value' => $spent,
+        ];
         return $totals;
     }
 }

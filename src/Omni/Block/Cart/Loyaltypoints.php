@@ -40,7 +40,7 @@ class Loyaltypoints extends \Magento\Checkout\Block\Cart\AbstractCart
      */
     public function getMemberPoints()
     {
-        $this->loyaltyHelper->getMemberPoints();
+        return $this->loyaltyHelper->getMemberPoints();
     }
 
     /**

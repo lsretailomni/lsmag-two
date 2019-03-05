@@ -16,7 +16,7 @@ define(
              * @returns {*}
              */
             getEarning: function () {
-                return totals.getSegment('ls_points_earn');
+                return totals.getSegment('ls_points_earn') || 0;
             },
 
             /**
@@ -34,7 +34,7 @@ define(
              * @returns {*}
              */
             getSpending: function () {
-                return totals.getSegment('ls_points_spent');
+                return totals.getSegment('ls_points_spent') || 0;
             },
 
             /**
