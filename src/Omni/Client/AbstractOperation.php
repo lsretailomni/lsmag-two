@@ -15,7 +15,7 @@ use \Ls\Core\Model\LSR;
  */
 abstract class AbstractOperation implements OperationInterface
 {
-    /** @var string  */
+    /** @var string */
     private static $header = 'LSRETAIL-TOKEN';
 
     /** @var  ServiceType */
@@ -27,16 +27,16 @@ abstract class AbstractOperation implements OperationInterface
     /** @var $service_type ServiceType */
     public $logger;
 
-    /** @var \Zend\Log\Writer\Stream  */
+    /** @var \Zend\Log\Writer\Stream */
     public $writer;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var \Psr\Log\LoggerInterface */
     public $magentoLogger;
 
     /** @var $objectManager \Magento\Framework\App\ObjectManager */
     public $objectManager;
 
-    /*** @var Zend\Log\Writer\Stream  */
+    /*** @var Zend\Log\Writer\Stream */
     public $zendWriter;
 
     /**
@@ -47,7 +47,7 @@ abstract class AbstractOperation implements OperationInterface
     {
         $this->service_type = $service_type;
         //@codingStandardsIgnoreStart
-        $this->writer = new \Zend\Log\Writer\Stream(BP . '/var/log/omniclient.log');
+        $this->writer = new \Zend\Log\Writer\Stream(BP.'/var/log/omniclient.log');
         $this->logger = new \Zend\Log\Logger();
         $this->logger->addWriter($this->writer);
         $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -82,6 +82,7 @@ abstract class AbstractOperation implements OperationInterface
     public function setToken($token)
     {
         $this->token = $token;
+
         return $this;
     }
 
@@ -104,9 +105,15 @@ abstract class AbstractOperation implements OperationInterface
         } catch (\SoapFault $e) {
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);
-            $response = null;
+            if ($e->faultcode == 's:TransactionCalc' && $operation_name == 'OneListCalculate' && $e->getMessage() != "") {
+                $this->debugLog($operation_name);
+                return $e->getMessage();
+            } else {
+                $response = null;
+            }
         }
         $this->debugLog($operation_name);
+
         return $response;
     }
 
@@ -127,7 +134,8 @@ abstract class AbstractOperation implements OperationInterface
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $dom->loadXML($xmlString);
-        return "\n" . $dom->saveXML();
+
+        return "\n".$dom->saveXML();
     }
 
     /**
@@ -136,13 +144,13 @@ abstract class AbstractOperation implements OperationInterface
     private function debugLog($operation_name)
     {
         //@codingStandardsIgnoreStart
-        $lsr=$this->objectManager->get("\Ls\Core\Model\LSR");
+        $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
         //@codingStandardsIgnoreEnd
-        $isEnable=$lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
+        $isEnable = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
         if ($isEnable) {
-            $this->logger->debug("==== REQUEST == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
+            $this->logger->debug("==== REQUEST == ".date("Y-m-d H:i:s O")." == ".$operation_name." ====");
             $this->logger->debug($this->formatXML($this->getClient()->getLastRequest()));
-            $this->logger->debug("==== RESPONSE == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
+            $this->logger->debug("==== RESPONSE == ".date("Y-m-d H:i:s O")." == ".$operation_name." ====");
             $this->logger->debug($this->formatXML($this->getClient()->getLastResponse()));
         }
     }
@@ -158,6 +166,7 @@ abstract class AbstractOperation implements OperationInterface
         if (strpos($exception->getMessage(), "Object reference not set to an instance of an object") !== -1) {
             $navException = new NavObjectReferenceNotAnInstanceException($exception->getMessage(), 1, $exception);
         }
+
         //@codingStandardsIgnoreEnd
         return $navException;
     }

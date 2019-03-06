@@ -38,12 +38,6 @@ class SetCouponData
 
     public function aroundExecute(CouponPost $subject, callable $proceed)
     {
-
-        $couponCode = $subject->getRequest()->getParam('remove') == 1
-            ? ''
-            : trim($subject->getRequest()->getParam('coupon_code'));
-        $this->basketHelper->setCouponCode($couponCode);
-
         // redirect to basket
         $redirect = $this->redirectFactory->create();
         return $redirect->setUrl($this->url->getUrl('checkout/cart/index'));

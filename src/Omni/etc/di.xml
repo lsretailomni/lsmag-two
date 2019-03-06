@@ -31,4 +31,9 @@
     <plugin name="loyalty_point_add_quote_data" type="Ls\Omni\Plugin\Quote\CartTotalRepository"/>
   </type>
   <preference for="Ls\Omni\Api\PointsManagementInterface" type="Ls\Omni\Model\Api\PointsManagement"/>
+    <!-- For Coupon Code Overwrite -->
+  <type name="Magento\Quote\Model\CouponManagement">
+    <plugin name="checkout_coupon_apply"
+            type="Ls\Omni\Plugin\Checkout\Model\CouponInformationManagement"/>
+  </type>
 </config>
