@@ -72,6 +72,16 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $session;
 
     /**
+     * @var $quoteRepository
+     */
+    public $quoteRepository;
+
+    /**
+     * @var $couponCode
+     */
+    public $couponCode;
+
+    /**
      * BasketHelper constructor.
      * @param Context $context
      * @param Cart $cart
@@ -100,7 +110,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         ItemHelper $itemHelper,
         Registry $registry,
         LSR $Lsr,
-        SessionManagerInterface $session
+        SessionManagerInterface $session,
+        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
     ) {
         parent::__construct($context);
         $this->cart = $cart;
@@ -115,6 +126,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->registry = $registry;
         $this->lsr = $Lsr;
         $this->session = $session;
+        $this->quoteRepository = $quoteRepository;
     }
 
     /**
@@ -249,7 +261,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         //Custom Shipment Line
         /** @var Entity\LoyItem $shipmentItem */
         // @codingStandardsIgnoreLine
-        $shipmentItem =(new Entity\LoyItem())
+        $shipmentItem = (new Entity\LoyItem())
             ->setId($shipmentFeeId);
         /** @var Entity\OneListItem $shipmentLine */
         // @codingStandardsIgnoreLine
@@ -263,6 +275,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         $oneList->setItems($items)
             ->setPublishedOffers($this->_offers());
+
         return $oneList;
     }
 
@@ -273,6 +286,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         // @codingStandardsIgnoreLine
         $offers = new Entity\ArrayOfOneListPublishedOffer();
+
         return $offers;
     }
 
@@ -386,11 +400,16 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         $this->saveToOmni($oneList);
         $basketData = $this->calculate($oneList);
-        $this->setOneListCalculation($basketData);
-        if (isset($basketData)) {
-            $this->unSetBasketSessionValue();
-            $this->setBasketSessionValue($basketData);
+        if (is_object($basketData)) {
+            $this->setOneListCalculation($basketData);
+            if (isset($basketData)) {
+                $this->unSetBasketSessionValue();
+                $this->setBasketSessionValue($basketData);
+            }
+        } else {
+            return $basketData;
         }
+
         return $basketData;
     }
 
@@ -454,6 +473,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($this->store_id == null) {
             $this->store_id = $this->lsr->getDefaultWebStore();
         }
+
         return $this->store_id;
     }
 
@@ -480,8 +500,10 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $response = $operation->execute($request);
         if ($response) {
             $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $response->getOneListSaveResult());
+
             return $response->getOneListSaveResult();
         }
+
         return false;
     }
 
@@ -517,6 +539,18 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setItems($listItems)
                 ->setStoreId($storeId);
             /** @var Entity\OneListCalculate $entity */
+
+            if ($this->couponCode != "" and $this->couponCode != null) {
+                $offer = new Entity\OneListPublishedOffer();
+                $offers = new Entity\ArrayOfOneListPublishedOffer();
+                $offers->setOneListPublishedOffer($offer);
+                $offer->setId($this->getCouponCode());
+                $offer->setType("Coupon");
+                $oneListRequest->setPublishedOffers($offers);
+            } else {
+                $oneListRequest->setPublishedOffers($this->_offers());
+            }
+
             $entity = new Entity\OneListCalculate();
             $entity->setOneList($oneListRequest);
             $request = new Operation\OneListCalculate();
@@ -528,15 +562,22 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (($response == null)) {
             // @codingStandardsIgnoreLine
             $oneListCalResponse = new Entity\OneListCalculateResponse();
+
             return $oneListCalResponse->getResult();
         }
         if (property_exists($response, "OneListCalculateResult")) {
             // @codingStandardsIgnoreLine
             $this->setOneListCalculation($response->getResult());
+
             return $response->getResult();
         }
-        $this->setOneListCalculation($response->getResult());
-        return $response->getResult();
+        if (is_object($response)) {
+            $this->setOneListCalculation($response->getResult());
+
+            return $response->getResult();
+        } else {
+            return $response;
+        }
     }
 
     /**
@@ -544,12 +585,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getCouponCode()
     {
-        $quote = $this->checkoutSession->getQuote();
-        $quoteCoupon = $quote->getCouponCode();
-        if (!($quoteCoupon == null)) {
-            return $quoteCoupon;
-        }
-        return null;
+        return $this->couponCode;
     }
 
     /**
@@ -572,10 +608,12 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $oneListCalc = $this->checkoutSession->getOneListCalculation();
         if ($oneListCalc == null) {
             $this->calculate($this->get());
+
             // calculate updates the session, so we fetch again
             return $this->checkoutSession->getOneListCalculation();
             // @codingStandardsIgnoreEnd
         }
+
         return $oneListCalc;
     }
 
@@ -608,6 +646,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             try {
                 if ($loginContact->getBasket() instanceof Entity\OneList) {
                     $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $loginContact->getBasket());
+
                     return $loginContact->getBasket();
                 } else {
                     if ($loginContact->getBasket() instanceof Entity\ArrayOfOneList) {
@@ -616,6 +655,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                             $list->getListType() == Entity\Enum\ListType::BASKET;
                             if ($list->getIsDefaultList()) {
                                 $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $list);
+
                                 return $list;
                             }
                         }
@@ -699,6 +739,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setItems(new Entity\ArrayOfOneListItem())
             ->setPublishedOffers($this->_offers())
             ->setStoreId($store_id);
+
         return $this->saveToOmni($list);
         // @codingStandardsIgnoreEnd
     }
@@ -718,13 +759,47 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function setCouponCode($couponCode)
     {
-        $quote = $this->checkoutSession->getQuote();
-        $quote->setCouponCode($couponCode);
-        $quote->save();
-        // update BasketCalculation with new coupon
-        $this->calculate(
+        $status = "";
+        $couponCode = trim($couponCode);
+        if ($couponCode == "") {
+            $this->couponCode = '';
+            $this->update(
+                $this->get()
+            );
+            $this->setCouponQuote($this->couponCode);
+
+            return $status = '';
+        }
+        $this->couponCode = $couponCode;
+        $status = $this->update(
             $this->get()
         );
+        if (!is_object($status)) {
+            $this->couponCode = '';
+            $this->update(
+                $this->get()
+            );
+            $this->setCouponQuote($this->couponCode);
+
+            return $status;
+        } else {
+            $status = "success";
+            $this->setCouponQuote($this->couponCode);
+
+            return $status;
+        }
+    }
+
+    /**
+     * @param $couponCode
+     */
+    public function setCouponQuote($couponCode)
+    {
+        $quote = $this->checkoutSession->getQuote();
+        $quote->getShippingAddress()->setCollectShippingRates(true);
+        $quote->setCouponCode($couponCode)->collectTotals();
+        $quote->setCouponCode($couponCode);
+        $this->quoteRepository->save($quote);
     }
 
     /**
