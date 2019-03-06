@@ -7,16 +7,23 @@ use Magento\Customer\Api\Data\RegionInterfaceFactory as CustomerAddressRegionFac
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote\Address;
 use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 
 class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
 {
 
-    /** @var BasketHelper */
+    /**
+     * @var BasketHelper
+     */
     protected $basketHelper;
 
     /**
-     * Class constructor
-     *
+     * @var LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
+    /**
+     * Tax constructor.
      * @param \Magento\Tax\Model\Config $taxConfig
      * @param \Magento\Tax\Api\TaxCalculationInterface $taxCalculationService
      * @param \Magento\Tax\Api\Data\QuoteDetailsInterfaceFactory $quoteDetailsDataObjectFactory
@@ -25,6 +32,8 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
      * @param CustomerAddressFactory $customerAddressFactory
      * @param CustomerAddressRegionFactory $customerAddressRegionFactory
      * @param \Magento\Tax\Helper\Data $taxData
+     * @param BasketHelper $basketHelper
+     * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
         \Magento\Tax\Model\Config $taxConfig,
@@ -35,10 +44,12 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         CustomerAddressFactory $customerAddressFactory,
         CustomerAddressRegionFactory $customerAddressRegionFactory,
         \Magento\Tax\Helper\Data $taxData,
-        BasketHelper $basketHelper
+        BasketHelper $basketHelper,
+        LoyaltyHelper $loyaltyHelper
     ) {
         $this->setCode('tax');
         $this->basketHelper = $basketHelper;
+        $this->loyaltyHelper = $loyaltyHelper;
         parent::__construct(
             $taxConfig,
             $taxCalculationService,
@@ -67,10 +78,15 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
     ) {
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
-            //$total->setTaxAmount($basketData->getTotalTaxAmount());
-            $discountAmount = -$basketData->getTotalDiscount();
+            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            if ($pointDiscount > 0.001) {
+                $quote->setLsPointsDiscount($pointDiscount);
+            }
+            $total->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
+            $discountAmount = -$basketData->getTotalDiscount() - $pointDiscount;
             $total->setDiscountAmount($discountAmount);
             $total->addTotalAmount('discount', $discountAmount);
+            //$total->addTotalAmount('ls_points_discount', $pointDiscount);
         }
         return $this;
     }

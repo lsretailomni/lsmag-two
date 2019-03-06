@@ -15,14 +15,6 @@
             type="Ls\Omni\Model\SetCouponData"
             sortOrder="1" />
   </type>
-  <!-- For loyalty Points Payment Method -->
-  <type name="Magento\Config\Model\Config\TypePool">
-    <arguments>
-      <argument name="sensitive" xsi:type="array">
-        <item name="payment/loyaltypoints/mailing_address" xsi:type="string">1</item>
-      </argument>
-    </arguments>
-  </type>
   <!-- For Click and Collect -->
   <type name="Magento\Checkout\Model\ShippingInformationManagement">
     <plugin name="savePickupInfoToQuote"
@@ -35,4 +27,8 @@
     <plugin name="shippingAddress" type="Ls\Omni\Plugin\Checkout\Block\Checkout\AttributeMerger\StreetPlugin"/>
   </type>
   <preference for="Magento\Catalog\Block\Product\View" type="Ls\Omni\Block\Product\View\View" />
+  <type name="Magento\Quote\Api\CartTotalRepositoryInterface">
+    <plugin name="loyalty_point_add_quote_data" type="Ls\Omni\Plugin\Quote\CartTotalRepository"/>
+  </type>
+  <preference for="Ls\Omni\Api\PointsManagementInterface" type="Ls\Omni\Model\Api\PointsManagement"/>
 </config>

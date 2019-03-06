@@ -8,7 +8,7 @@ namespace Ls\Omni\Plugin\Checkout\Model;
  */
 class ShippingInformationManagement
 {
-    /** @var \Magento\Quote\Model\QuoteRepository  */
+    /** @var \Magento\Quote\Model\QuoteRepository */
     public $quoteRepository;
 
     /**

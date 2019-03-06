@@ -1,4 +1,3 @@
-
 var config = {
     map: {
        '*': {
@@ -7,7 +6,8 @@ var config = {
            'lsomni/map' : 'Ls_Omni/js/view/map',
            'lsomni/stock':'Ls_Omni/js/view/product',
            'Magento_Checkout/js/model/shipping-save-processor/default': 'Ls_Omni/js/model/shipping-save-processor/default',
-           'OwlCarousel': 'Ls_Omni/js/owl-carousel'
+           'OwlCarousel': 'Ls_Omni/js/owl-carousel',
+           'loyaltyPoints': 'Ls_Omni/js/loyalty-points',
        }
     },
     config: {

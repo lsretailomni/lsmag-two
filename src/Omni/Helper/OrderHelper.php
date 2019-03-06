@@ -31,17 +31,20 @@ class OrderHelper extends AbstractHelper
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
+     * @param LoyaltyHelper $loyaltyHelper
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      */
     public function __construct(
         Context $context,
         Model\Order $order,
         BasketHelper $basketHelper,
+        LoyaltyHelper $loyaltyHelper,
         \Magento\Customer\Model\Session\Proxy $customerSession
     ) {
         parent::__construct($context);
         $this->order = $order;
         $this->basketHelper = $basketHelper;
+        $this->loyaltyHelper = $loyaltyHelper;
         $this->customerSession = $customerSession;
     }
 
@@ -85,7 +88,8 @@ class OrderHelper extends AbstractHelper
         //TODO work on condition
         $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
         /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-        $orderPaymentArrayObject = $this->setOrderPayments($order);
+        $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
+        $pointDiscount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
         $oneListCalculateResponse
             ->setContactId($contactId)
             ->setCardId($cardId)
@@ -198,11 +202,11 @@ class OrderHelper extends AbstractHelper
     /**
      * Please use this funciton to put all condition for different Order Payments:
      * @param Model\Order $order
+     * @param $cardId
      * @return Entity\ArrayOfOrderPayment
      */
-    public function setOrderPayments(Model\Order $order)
+    public function setOrderPayments(Model\Order $order, $cardId)
     {
-
         $transId = $order->getPayment()->getCcTransId();
         $ccType = $order->getPayment()->getCcType();
         $cardNumber = $order->getPayment()->getCcLast4();
@@ -241,6 +245,23 @@ class OrderHelper extends AbstractHelper
          *
          */
         $orderPaymentArray[] = $orderPayment;
+
+        if ($order->getLsPointsSpent()) {
+            $pointRate = $this->loyaltyHelper->getPointRate();
+            $pointDiscount = $order->getLsPointsSpent() * $pointRate;
+            $orderPaymentLoyalty = new Entity\OrderPayment();
+            // @codingStandardsIgnoreEnd
+            //default values for all payment typoes.
+            $orderPaymentLoyalty->setCurrencyCode('LOY')
+                ->setCurrencyFactor($pointRate)
+                ->setFinalizedAmount('0')
+                ->setLineNumber('2')
+                ->setCardNumber($cardId)
+                ->setOrderId($order->getIncrementId())
+                ->setPreApprovedAmount($pointDiscount)
+                ->setTenderType('3');
+            $orderPaymentArray[] = $orderPaymentLoyalty;
+        }
 
         return $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
     }

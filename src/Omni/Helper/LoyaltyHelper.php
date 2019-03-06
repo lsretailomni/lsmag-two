@@ -158,7 +158,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $pointrate = $this->getPointRate();
 
         // check if we have something in there.
-        if ($memberProfile!=null and $pointrate!=null) {
+        if ($memberProfile != null and $pointrate != null) {
             $points = $memberProfile->getAccount()->getPointBalance();
             $value = $points * $pointrate;
             return $value;
@@ -196,6 +196,21 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $response ? $response->getResult() : $response;
     }
 
+
+    /**
+     * @return int
+     */
+    public function getMemberPoints()
+    {
+        /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $memberProfile */
+        $memberProfile = $this->getMemberInfo();
+        if ($memberProfile != null) {
+            $points = $memberProfile->getAccount()->getPointBalance();
+            return $points;
+        }
+        return 0;
+    }
+
     /*
      * Convert Point Rate into Values
      */
@@ -205,17 +220,23 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getPointRate()
     {
+        $pointsRate = $this->customerSession->getPointsRate();
+        if (isset($pointsRate)) {
+            return $pointsRate;
+        }
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\GetPointRate();
         $entity = new Entity\GetPointRate();
         // @codingStandardsIgnoreEnd
         try {
-            $response = $request->execute($entity);
+            $responseData = $request->execute($entity);
+            $response = $responseData ? $responseData->getResult() : $response;
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getResult() : $response;
+        $this->customerSession->setPointsRate($response);
+        return $response;
     }
 
     /**
@@ -237,5 +258,23 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getMediaPathtoStore()
     {
         return $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
+    }
+
+    /**
+     * Check the discount is not crossing the grand total amount
+     * @param $grandTotal
+     * @param $loyaltyPoints
+     * @return bool
+     */
+    public function isPointsLimitValid($grandTotal, $loyaltyPoints)
+    {
+        $pointrate = $this->getPointRate();
+        $requiredAmount = $pointrate * $loyaltyPoints;
+        if ($requiredAmount <= $grandTotal) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
