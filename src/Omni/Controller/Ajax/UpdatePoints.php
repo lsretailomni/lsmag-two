@@ -90,10 +90,20 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         $base_currency = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
         $post = $this->getRequest()->getContent();
         $postData = json_decode($post);
+        $loyalPoints = (int)$postData->loyaltyPoints;
+        if (!is_numeric($loyalPoints) || $loyalPoints < 0) {
+            $response = [
+                    'error' => 'true',
+                    'message' => __(
+                        'The loyalty points "%1" are not valid.',
+                        $loyalPoints
+                    )
+                ];
+            return $resultJson->setData($response);
+        }
         try {
             $cartId = $this->checkoutSession->getQuoteId();
-            $quote = $this->cartRepository->get($cartId);
-            $loyalPoints = (int)$postData->loyaltyPoints;
+            $quote = $this->cartRepository->get($cartId);            
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($quote->getBaseGrandTotal(), $loyalPoints);
             if ($isPointsLimitValid) {
                 $quote->setLsPointsSpent($loyalPoints);

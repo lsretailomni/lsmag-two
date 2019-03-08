@@ -65,7 +65,13 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             ? 0
             : trim($this->getRequest()->getParam('loyalty_points'));
 
-        if (!is_numeric($loyaltyPoints)) {
+        if (!is_numeric($loyaltyPoints) || $loyaltyPoints < 0) {
+            $this->messageManager->addError(
+                            __(
+                                'The loyalty points "%1" are not valid.',
+                                $loyaltyPoints
+                            )
+                        );
             return $this->_goBack();
         }
 
