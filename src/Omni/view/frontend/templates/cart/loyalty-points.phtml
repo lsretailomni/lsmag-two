@@ -30,7 +30,7 @@
                 <input type="hidden" name="remove-points" id="remove-points" value="0"/>
                 <div class="field">
                     <div class="control">
-                        <input type="text" class="input-text" id="loyalty_points" name="loyalty_points"
+                        <input type="number" min="0" class="input-text" id="loyalty_points" name="loyalty_points"
                                value="<?= $block->getLsPointsSpent() ?>"
                                placeholder="Enter points to redeem"/>
                     </div>
