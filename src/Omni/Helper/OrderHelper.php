@@ -223,8 +223,6 @@ class OrderHelper extends AbstractHelper
             ->setLineNumber('1')
             ->setOrderId($order->getIncrementId())
             ->setPreApprovedAmount($order->getGrandTotal());
-
-
         // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
         if ($ccType != "" and $ccType != null) {
             $orderPayment->setTenderType('1');
@@ -248,7 +246,7 @@ class OrderHelper extends AbstractHelper
 
         if ($order->getLsPointsSpent()) {
             $pointRate = $this->loyaltyHelper->getPointRate();
-            $pointDiscount = $order->getLsPointsSpent() * $pointRate;
+            // @codingStandardsIgnoreStart
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
@@ -258,7 +256,7 @@ class OrderHelper extends AbstractHelper
                 ->setLineNumber('2')
                 ->setCardNumber($cardId)
                 ->setOrderId($order->getIncrementId())
-                ->setPreApprovedAmount($pointDiscount)
+                ->setPreApprovedAmount($order->getLsPointsSpent())
                 ->setTenderType('3');
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
