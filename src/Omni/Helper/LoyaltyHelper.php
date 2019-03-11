@@ -43,6 +43,11 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $filesystem;
 
     /**
+     * @var $checkoutSession
+     */
+    public $checkoutSession;
+
+    /**
      * LoyaltyHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
@@ -51,6 +56,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Framework\Filesystem $Filesystem
      */
 
@@ -62,6 +68,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Filesystem $Filesystem
     ) {
         $this->filterBuilder = $filterBuilder;
@@ -70,6 +77,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerRepository = $customerRepository;
         $this->customerFactory = $customerFactory;
         $this->customerSession = $customerSession;
+        $this->checkoutSession = $checkoutSession;
         $this->filesystem = $Filesystem;
 
         parent::__construct(
@@ -196,16 +204,19 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $response ? $response->getResult() : $response;
     }
 
-
     /**
      * @return int
      */
     public function getMemberPoints()
     {
-        /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $memberProfile */
+        $points = $this->checkoutSession->getMemberPoints();
+        if (isset($points)) {
+            return $points;
+        }
         $memberProfile = $this->getMemberInfo();
         if ($memberProfile != null) {
             $points = $memberProfile->getAccount()->getPointBalance();
+            $this->checkoutSession->setMemberPoints($points);
             return $points;
         }
         return 0;
@@ -275,6 +286,5 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } else {
             return false;
         }
-
     }
 }
