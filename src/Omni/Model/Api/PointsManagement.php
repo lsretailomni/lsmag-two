@@ -3,7 +3,7 @@
 namespace Ls\Omni\Model\Api;
 
 use Magento\Checkout\Api\Data\TotalsInformationInterface;
-use Magento\Checkout\Model\Session;
+use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
 use \Ls\Omni\Api\PointsManagementInterface;
@@ -36,12 +36,12 @@ class PointsManagement implements PointsManagementInterface
      * PointsManagement constructor.
      * @param CartRepositoryInterface $cartRepository
      * @param CartTotalRepositoryInterface $cartTotalRepository
-     * @param Session $checkoutSession
+     * @param CheckoutSession $checkoutSession
      */
     public function __construct(
         CartRepositoryInterface $cartRepository,
         CartTotalRepositoryInterface $cartTotalRepository,
-        Session $checkoutSession
+        CheckoutSession $checkoutSession
     ) {
         $this->cartRepository = $cartRepository;
         $this->cartTotalRepository = $cartTotalRepository;
