@@ -246,17 +246,18 @@ class OrderHelper extends AbstractHelper
 
         if ($order->getLsPointsSpent()) {
             $pointRate = $this->loyaltyHelper->getPointRate();
+            $loyaltyPreapproved = $order->getLsPointsSpent() * $pointRate;
             // @codingStandardsIgnoreStart
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
             $orderPaymentLoyalty->setCurrencyCode('LOY')
-                ->setCurrencyFactor($pointRate)
+                ->setCurrencyFactor('1')
                 ->setFinalizedAmount('0')
                 ->setLineNumber('2')
                 ->setCardNumber($cardId)
                 ->setOrderId($order->getIncrementId())
-                ->setPreApprovedAmount($order->getLsPointsSpent())
+                ->setPreApprovedAmount($loyaltyPreapproved)
                 ->setTenderType('3');
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
