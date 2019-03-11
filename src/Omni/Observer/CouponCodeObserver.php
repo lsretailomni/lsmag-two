@@ -67,7 +67,7 @@ class CouponCodeObserver implements ObserverInterface
             ));
         } else {
             if($status==""){
-               $status= __("Coupon Code has issue");
+               $status= __("Coupon Code is not valid for these item(s)");
             }
             $this->messageManager->addErrorMessage($status);
         }
