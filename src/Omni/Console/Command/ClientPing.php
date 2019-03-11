@@ -38,6 +38,6 @@ class ClientPing extends Command
         // @codingStandardsIgnoreLine
         $ping = new $class();
         $pong = $ping->execute();
-        $this->output->writeln($pong);
+        $this->output->writeln($pong->getResult());
     }
 }
