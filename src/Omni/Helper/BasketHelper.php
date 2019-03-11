@@ -782,10 +782,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->setCouponQuote($this->couponCode);
 
             return $status;
-        } else {
+        } else if(!empty($status->getOrderDiscountLines()->getOrderDiscountLine())) {
             $status = "success";
             $this->setCouponQuote($this->couponCode);
-
             return $status;
         }
     }

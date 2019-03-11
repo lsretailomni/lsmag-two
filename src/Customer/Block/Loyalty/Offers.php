@@ -175,7 +175,7 @@ class Offers extends \Magento\Framework\View\Element\Template
 
             return $size;
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->_logger->error($e->getMessage());
         }
     }
 
@@ -193,7 +193,7 @@ class Offers extends \Magento\Framework\View\Element\Template
 
             return $offerExpiryDate;
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->_logger->error($e->getMessage());
         }
     }
 
