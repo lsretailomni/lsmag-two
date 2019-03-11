@@ -15,7 +15,7 @@ use \Ls\Core\Model\LSR;
 class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
-    /** @var \Magento\Checkout\Model\Session  */
+    /** @var \Magento\Checkout\Model\Session\Proxy  */
     public $checkoutSession;
 
     /** @var \Magento\Customer\Model\Session\Proxy  */

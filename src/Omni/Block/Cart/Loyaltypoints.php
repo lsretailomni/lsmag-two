@@ -18,16 +18,16 @@ class Loyaltypoints extends \Magento\Checkout\Block\Cart\AbstractCart
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param array $data
      * @codeCoverageIgnore
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);

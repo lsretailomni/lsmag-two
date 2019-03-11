@@ -28,7 +28,7 @@ class AccountAddressObserver implements ObserverInterface
      * @param ContactHelper $contactHelper
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      */
     public function __construct(
         ContactHelper $contactHelper,
