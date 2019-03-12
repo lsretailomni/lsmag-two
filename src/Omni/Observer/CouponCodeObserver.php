@@ -22,10 +22,10 @@ class CouponCodeObserver implements ObserverInterface
     private $messageManager;
 
     /** @var  \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory */
-    public $redirectFactory;
+    private $redirectFactory;
 
     /** @var \Magento\Framework\UrlInterface */
-    public $url;
+    private $url;
 
     /**
      * CouponCodeObserver constructor.
@@ -52,6 +52,7 @@ class CouponCodeObserver implements ObserverInterface
     /**
      * @param \Magento\Framework\Event\Observer $observer
      * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
@@ -70,12 +71,11 @@ class CouponCodeObserver implements ObserverInterface
                 ));
             } else {
                 if ($status == "") {
-                    $status = __(LSR::LS_COUPON_CODE_ERROR_MESSAGE);
+                    $message=LSR::LS_COUPON_CODE_ERROR_MESSAGE;
+                    $status = __($message);
                 }
                 $this->messageManager->addErrorMessage($status);
             }
         }
-
     }
-
 }
