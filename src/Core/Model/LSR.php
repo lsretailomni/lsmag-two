@@ -228,6 +228,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_RECOMMEND_SHOW_ON_CHECKOUT = 'ls_mag/ls_recommend/checkout';
     const LS_RECOMMEND_SHOW_ON_HOME = 'ls_mag/ls_recommend/home';
     const LS_RECOMMEND_PRODUCT_COUNT = 'ls_mag/ls_recommend/productcount';
+
+    //Coupon Code Message
+    const LS_COUPON_CODE_ERROR_MESSAGE = 'Coupon Code is not valid for these item(s)';
+
     public $scopeConfig;
 
     /** @var TypeListInterface */

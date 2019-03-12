@@ -4,6 +4,7 @@ namespace Ls\Omni\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class DataAssignObserver
@@ -67,7 +68,7 @@ class CouponCodeObserver implements ObserverInterface
             ));
         } else {
             if($status==""){
-               $status= __("Coupon Code is not valid for these item(s)");
+               $status= __(LSR::LS_COUPON_CODE_ERROR_MESSAGE);
             }
             $this->messageManager->addErrorMessage($status);
         }

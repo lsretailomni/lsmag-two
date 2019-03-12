@@ -787,6 +787,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->setCouponQuote($this->couponCode);
             return $status;
         }
+        else {
+            return LSR::LS_COUPON_CODE_ERROR_MESSAGE;
+        }
     }
 
     /**
