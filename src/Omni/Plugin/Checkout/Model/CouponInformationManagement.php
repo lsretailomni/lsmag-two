@@ -7,9 +7,10 @@ use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Core\Model\LSR;
 
 /**
- * Class ShippingInformationManagement
+ * Class CouponInformationManagement
  * @package Ls\Omni\Plugin\Checkout\Model
  */
 class CouponInformationManagement
@@ -17,13 +18,14 @@ class CouponInformationManagement
     /** @var \Magento\Quote\Model\QuoteRepository */
     public $quoteRepository;
 
+    /** @var \Ls\Omni\Helper\BasketHelper; */
     public $basketHelper;
 
     /**
-     * ShippingInformationManagement constructor.
+     * CouponInformationManagement constructor.
      * @param \Magento\Quote\Model\QuoteRepository $quoteRepository
+     * @param BasketHelper $basketHelper
      */
-
     public function __construct(
         \Magento\Quote\Model\QuoteRepository $quoteRepository,
         BasketHelper $basketHelper
@@ -32,6 +34,15 @@ class CouponInformationManagement
         $this->basketHelper = $basketHelper;
     }
 
+    /**
+     * @param \Magento\Quote\Model\CouponManagement $subject
+     * @param $proceed
+     * @param $cartId
+     * @param $couponCode
+     * @throws CouldNotSaveException
+     * @throws NoSuchEntityException
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     */
     public function aroundSet(\Magento\Quote\Model\CouponManagement $subject,$proceed,$cartId,$couponCode)
     {
         $couponCode = trim($couponCode);
@@ -51,6 +62,12 @@ class CouponInformationManagement
         }
     }
 
+    /**
+     * @param \Magento\Quote\Model\CouponManagement $subject
+     * @param $cartId
+     * @throws CouldNotDeleteException
+     * @throws NoSuchEntityException
+     */
     public function beforeRemove(\Magento\Quote\Model\CouponManagement $subject, $cartId)
     {
         /** @var  \Magento\Quote\Model\Quote $quote */
