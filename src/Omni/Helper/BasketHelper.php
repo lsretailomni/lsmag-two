@@ -754,8 +754,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $couponCode
-     * @throws \Exception
+     * @return Entity\OneListCalculateResponse|null|string
      * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function setCouponCode($couponCode)
     {
@@ -782,12 +783,12 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->setCouponQuote($this->couponCode);
 
             return $status;
-        } else if(!empty($status->getOrderDiscountLines()->getOrderDiscountLine())) {
+        } elseif (!empty($status->getOrderDiscountLines()->getOrderDiscountLine())) {
             $status = "success";
             $this->setCouponQuote($this->couponCode);
+
             return $status;
-        }
-        else {
+        } else {
             return LSR::LS_COUPON_CODE_ERROR_MESSAGE;
         }
     }
