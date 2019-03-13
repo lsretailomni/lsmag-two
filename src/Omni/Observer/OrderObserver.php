@@ -67,7 +67,7 @@ class OrderObserver implements ObserverInterface
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this|void
+     * @return $this
      * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -79,9 +79,7 @@ class OrderObserver implements ObserverInterface
         $response = $this->orderHelper->placeOrder($request);
         if ($response) {
             //delete from Omni.
-            if ($this->checkoutSession->getData('member_points')) {
-                $this->checkoutSession->unsetData('member_points');
-            }
+            $this->checkoutSession->unsetData('member_points');
             if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                 $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
                 //TODO error which Hjalti highlighted. when there is only one item in the cart and customer remove that.
