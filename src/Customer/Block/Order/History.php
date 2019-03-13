@@ -1,14 +1,19 @@
 <?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace Ls\Customer\Block\Order;
 
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrder;
-use Magento\Framework\View\Element\Template\Context;
-use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
-use Magento\Customer\Model\Session;
-use Magento\Sales\Model\Order\Config;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 
-class Recent extends \Magento\Sales\Block\Order\Recent
+/**
+ * Sales order history block
+ *
+ * @api
+ * @since 100.0.2
+ */
+class History extends \Magento\Sales\Block\Order\History
 {
     /**
      * @var \Ls\Omni\Helper\OrderHelper
@@ -21,20 +26,20 @@ class Recent extends \Magento\Sales\Block\Order\Recent
     public $priceCurrency;
 
     /**
-     * Recent constructor.
-     * @param Context $context
-     * @param CollectionFactory $orderCollectionFactory
-     * @param Session $customerSession
-     * @param Config $orderConfig
+     * History constructor.
+     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Sales\Model\Order\Config $orderConfig
      * @param \Ls\Omni\Helper\OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        CollectionFactory $orderCollectionFactory,
-        Session $customerSession,
-        Config $orderConfig,
+        \Magento\Framework\View\Element\Template\Context $context,
+        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Sales\Model\Order\Config $orderConfig,
         \Ls\Omni\Helper\OrderHelper $orderHelper,
         PriceCurrencyInterface $priceCurrency,
         array $data = []
@@ -50,17 +55,13 @@ class Recent extends \Magento\Sales\Block\Order\Recent
     public function getOrderHistory()
     {
         $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
-        if(!is_array($response)){
-            $obj = $response;
-            $response = array($obj);
-        }
         return $response;
     }
 
     /**
      * Function getFormatedPrice
      *
-     * @param $amount
+     * @param float $price
      *
      * @return string
      */

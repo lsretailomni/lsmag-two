@@ -32,18 +32,25 @@
                         <th scope="col" class="col candc"><?= /* @escapeNotVerified */ __('Click & Collect') ?></th>
                         <th scope="col" class="col shipping"><?= /* @escapeNotVerified */ __('Ship To') ?></th>
                         <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Order Total') ?></th>
+                        <th scope="col" class="col loyaltypointsused"><?= /* @escapeNotVerified */ __('Points Used') ?></th>
+                        <th scope="col" class="col loyaltypointsrewarded"><?= /* @escapeNotVerified */ __('Points Rewarded') ?></th>
                         <th scope="col" class="col status"><?= /* @escapeNotVerified */ __('Status') ?></th>
 <!--                        <th scope="col" class="col actions">--><?//= /* @escapeNotVerified */ __('Action') ?><!--</th>-->
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($_orders as $_order): ?>
+                    <?php foreach ($_orders as $i => $_order):
+                        if($i > 4){
+                            break;
+                        }?>
                         <tr>
                             <td data-th="<?= $block->escapeHtml(__('Order #')) ?>" class="col id"><?= /* @escapeNotVerified */ $_order->getDocumentId() ?></td>
-                            <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= /* @escapeNotVerified */ $_order->getDocumentRegTime()?></td>
+                            <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->getFormatedDate($_order->getDocumentRegTime())?></td>
                             <td data-th="<?= $block->escapeHtml(__('Click & Collect')) ?>" class="col candc"><?= /* @escapeNotVerified */ $_order->getClickAndCollectOrder() ?  "true" : "false" ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>" class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : '&nbsp;' ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>" class="col total"><?= /* @escapeNotVerified */ $block->getFormatedPrice($_order->getTotalAmount()) ?></td>
+                            <td data-th="<?= $block->escapeHtml(__('Points Used')) ?>" class="col loyaltypointsused"><?= /* @escapeNotVerified */ $block->getFormatedLoyaltyPoints($_order->getPointsUsedInOrder()) ?></td>
+                            <td data-th="<?= $block->escapeHtml(__('Points Rewarded')) ?>" class="col loyaltypointsrewarded"><?= /* @escapeNotVerified */ $block->getFormatedLoyaltyPoints($_order->getPointsRewarded()) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= /* @escapeNotVerified */ $_order->getOrderStatus() ?></td>
 <!--                            <td data-th="--><?//= $block->escapeHtml(__('Actions')) ?><!--" class="col actions">-->
 <!--                                <a href="--><?//= /* @escapeNotVerified */ $block->getViewUrl($_order) ?><!--" class="action view">-->

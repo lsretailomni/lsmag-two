@@ -272,7 +272,7 @@ class OrderHelper extends AbstractHelper
         $request = new Operation\OrderHistoryByContactId();
         $orderHistory = new Entity\OrderHistoryByContactId();
         // @codingStandardsIgnoreEnd
-        $orderHistory->setContactId($contactId)->setIncludeLines(false)->setIncludeTransactions(false);
+        $orderHistory->setContactId($contactId)->setIncludeLines(true)->setIncludeTransactions(true);
         try {
             $response = $request->execute($orderHistory);
         } catch (\Exception $e) {
