@@ -269,4 +269,21 @@ class OrderHelper extends AbstractHelper
 
         return $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
     }
+
+    public function getCurrentCustomerOrderHistory()
+    {
+        $response = null;
+        $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+        // @codingStandardsIgnoreStart
+        $request = new Operation\OrderHistoryByContactId();
+        $orderHistory = new Entity\OrderHistoryByContactId();
+        // @codingStandardsIgnoreEnd
+        $orderHistory->setContactId($contactId)->setIncludeLines(true)->setIncludeTransactions(true);
+        try {
+            $response = $request->execute($orderHistory);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getOrderHistoryByContactIdResult() : $response;
+    }
 }
