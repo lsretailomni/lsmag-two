@@ -43,8 +43,17 @@ $c = 0;
                         </div>
                         <div class="coupon-description">
                             <p><?php echo $offer->getDetails(); ?></p>
-                            </br>
                         </div>
+                        <?php
+                        $offerProductCategory = $this->getOfferProductCategoryLink($offer->getOfferLines()->getPublishedOfferLine());
+                        if (!empty($offerProductCategory)) { ?>
+                            <p>
+                                <a class="action subscribe primary"
+                                   href="<?php echo $offerProductCategory[0]; ?>"><?php echo __($offerProductCategory[1]); ?></a>
+                            </p>
+                            <?php
+                        }
+                        ?>
                     </div>
                 </li>
             <?php endforeach; ?>
