@@ -150,7 +150,7 @@ class ReplImage
                 throw new InvalidEnumException();
         }
         $this->LocationType = $LocationType->getValue();
-        
+
         return $this;
     }
 

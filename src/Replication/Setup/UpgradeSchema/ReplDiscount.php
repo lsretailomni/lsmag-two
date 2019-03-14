@@ -19,9 +19,9 @@ class ReplDiscount
     {
         $table_name = $setup->getTable( 'ls_replication_repl_discount' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_discount_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -49,7 +49,7 @@ class ReplDiscount
         	$table->addColumn( 'UnitOfMeasureId' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'ValidationPeriodId' , Table::TYPE_INTEGER, '' );
         	$table->addColumn( 'VariantId' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

@@ -82,7 +82,7 @@ class NotificationsUpdateStatus implements RequestInterface
                 throw new InvalidEnumException();
         }
         $this->notificationStatus = $notificationStatus->getValue();
-        
+
         return $this;
     }
 

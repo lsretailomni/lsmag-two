@@ -19,9 +19,9 @@ class ReplDiscountValidation
     {
         $table_name = $setup->getTable( 'ls_replication_repl_discount_validation' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_discount_validation_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -66,7 +66,7 @@ class ReplDiscountValidation
         	$table->addColumn( 'WednesdayEndAfterMidnight' , Table::TYPE_BOOLEAN, '' );
         	$table->addColumn( 'WednesdayStart' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'WednesdayWithinBounds' , Table::TYPE_BOOLEAN, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

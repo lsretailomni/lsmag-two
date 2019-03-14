@@ -233,7 +233,7 @@ class OrderLine extends Entity
                 throw new InvalidEnumException();
         }
         $this->LineType = $LineType->getValue();
-        
+
         return $this;
     }
 

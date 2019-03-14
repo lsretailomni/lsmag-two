@@ -395,7 +395,7 @@ class MemberContact extends Entity
                 throw new InvalidEnumException();
         }
         $this->Gender = $Gender->getValue();
-        
+
         return $this;
     }
 
@@ -477,7 +477,7 @@ class MemberContact extends Entity
                 throw new InvalidEnumException();
         }
         $this->MaritalStatus = $MaritalStatus->getValue();
-        
+
         return $this;
     }
 

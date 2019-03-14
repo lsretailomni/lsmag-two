@@ -19,9 +19,9 @@ class LoyItem
     {
         $table_name = $setup->getTable( 'ls_replication_loy_item' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'loy_item_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -46,7 +46,7 @@ class LoyItem
         	$table->addColumn( 'UnitVolume' , Table::TYPE_FLOAT, '' );
         	$table->addColumn( 'UnitsPerParcel' , Table::TYPE_FLOAT, '' );
         	$table->addColumn( 'nav_id' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

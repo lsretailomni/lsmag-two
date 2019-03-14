@@ -78,7 +78,7 @@ class BasketCalcRequest extends Entity
                 throw new InvalidEnumException();
         }
         $this->CalcType = $CalcType->getValue();
-        
+
         return $this;
     }
 

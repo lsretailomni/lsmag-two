@@ -19,9 +19,9 @@ class ReplAttributeValue
     {
         $table_name = $setup->getTable( 'ls_replication_repl_attribute_value' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_attribute_value_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -38,7 +38,7 @@ class ReplAttributeValue
         	$table->addColumn( 'NumbericValue' , Table::TYPE_FLOAT, '' );
         	$table->addColumn( 'Sequence' , Table::TYPE_INTEGER, '' );
         	$table->addColumn( 'Value' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

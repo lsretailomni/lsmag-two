@@ -19,9 +19,9 @@ class ReplImage
     {
         $table_name = $setup->getTable( 'ls_replication_repl_image' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_image_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -35,7 +35,7 @@ class ReplImage
         	$table->addColumn( 'IsDeleted' , Table::TYPE_BOOLEAN, '' );
         	$table->addColumn( 'Location' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'LocationType' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

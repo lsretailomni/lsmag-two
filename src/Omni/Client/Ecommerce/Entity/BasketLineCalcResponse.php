@@ -328,7 +328,7 @@ class BasketLineCalcResponse
                 throw new InvalidEnumException();
         }
         $this->EntryStatus = $EntryStatus->getValue();
-        
+
         return $this;
     }
 
@@ -410,7 +410,7 @@ class BasketLineCalcResponse
                 throw new InvalidEnumException();
         }
         $this->LineType = $LineType->getValue();
-        
+
         return $this;
     }
 

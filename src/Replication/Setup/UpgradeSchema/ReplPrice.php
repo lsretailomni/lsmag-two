@@ -19,9 +19,9 @@ class ReplPrice
     {
         $table_name = $setup->getTable( 'ls_replication_repl_price' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_price_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -49,7 +49,7 @@ class ReplPrice
         	$table->addColumn( 'UnitPriceInclVat' , Table::TYPE_FLOAT, '' );
         	$table->addColumn( 'VATPostGroup' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'VariantId' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

@@ -19,9 +19,9 @@ class ReplItemCategory
     {
         $table_name = $setup->getTable( 'ls_replication_repl_item_category' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_item_category_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -32,7 +32,7 @@ class ReplItemCategory
         	$table->addColumn( 'Description' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'nav_id' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'IsDeleted' , Table::TYPE_BOOLEAN, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

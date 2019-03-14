@@ -101,7 +101,7 @@ class OrderLineAvailability
                 throw new InvalidEnumException();
         }
         $this->LineType = $LineType->getValue();
-        
+
         return $this;
     }
 

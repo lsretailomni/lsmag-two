@@ -19,9 +19,9 @@ class ReplDataTranslation
     {
         $table_name = $setup->getTable( 'ls_replication_repl_data_translation' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_data_translation_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -34,7 +34,7 @@ class ReplDataTranslation
         	$table->addColumn( 'LanguageCode' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'Text' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'TranslationId' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

@@ -516,7 +516,7 @@ class Order extends Entity
                 throw new InvalidEnumException();
         }
         $this->OrderStatus = $OrderStatus->getValue();
-        
+
         return $this;
     }
 
@@ -544,7 +544,7 @@ class Order extends Entity
                 throw new InvalidEnumException();
         }
         $this->PaymentStatus = $PaymentStatus->getValue();
-        
+
         return $this;
     }
 
@@ -842,7 +842,7 @@ class Order extends Entity
                 throw new InvalidEnumException();
         }
         $this->ShippingStatus = $ShippingStatus->getValue();
-        
+
         return $this;
     }
 
@@ -870,7 +870,7 @@ class Order extends Entity
                 throw new InvalidEnumException();
         }
         $this->SourceType = $SourceType->getValue();
-        
+
         return $this;
     }
 

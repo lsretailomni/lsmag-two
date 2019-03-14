@@ -46,7 +46,7 @@ class ContactSearch implements RequestInterface
                 throw new InvalidEnumException();
         }
         $this->searchType = $searchType->getValue();
-        
+
         return $this;
     }
 

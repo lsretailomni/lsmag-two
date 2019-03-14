@@ -104,7 +104,7 @@ class ReplHierarchy
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

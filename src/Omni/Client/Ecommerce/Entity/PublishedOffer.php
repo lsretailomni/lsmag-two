@@ -140,7 +140,7 @@ class PublishedOffer extends Entity
                 throw new InvalidEnumException();
         }
         $this->Code = $Code->getValue();
-        
+
         return $this;
     }
 
@@ -258,7 +258,7 @@ class PublishedOffer extends Entity
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

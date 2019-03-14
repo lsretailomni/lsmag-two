@@ -19,9 +19,9 @@ class ReplCurrency
     {
         $table_name = $setup->getTable( 'ls_replication_repl_currency' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_currency_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -39,7 +39,7 @@ class ReplCurrency
         	$table->addColumn( 'RoundOfTypeAmount' , Table::TYPE_INTEGER, '' );
         	$table->addColumn( 'RoundOfTypeSales' , Table::TYPE_INTEGER, '' );
         	$table->addColumn( 'Symbol' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

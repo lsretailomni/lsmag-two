@@ -19,9 +19,9 @@ class ReplStoreTenderType
     {
         $table_name = $setup->getTable( 'ls_replication_repl_store_tender_type' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_store_tender_type_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -48,7 +48,7 @@ class ReplStoreTenderType
         	$table->addColumn( 'TenderFunction' , Table::TYPE_INTEGER, '' );
         	$table->addColumn( 'TenderTypeId' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'ValidOnMobilePOS' , Table::TYPE_INTEGER, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

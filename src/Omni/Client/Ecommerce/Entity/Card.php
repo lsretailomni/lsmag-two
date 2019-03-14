@@ -173,7 +173,7 @@ class Card extends Entity
                 throw new InvalidEnumException();
         }
         $this->Status = $Status->getValue();
-        
+
         return $this;
     }
 

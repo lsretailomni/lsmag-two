@@ -19,9 +19,9 @@ class ReplStore
     {
         $table_name = $setup->getTable( 'ls_replication_repl_store' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_store_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -49,7 +49,7 @@ class ReplStore
         	$table->addColumn( 'TaxGroup' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'UserDefaultCustomerAccount' , Table::TYPE_INTEGER, '' );
         	$table->addColumn( 'ZipCode' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

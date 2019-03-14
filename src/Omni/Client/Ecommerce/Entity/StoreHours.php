@@ -161,7 +161,7 @@ class StoreHours
                 throw new InvalidEnumException();
         }
         $this->StoreHourtype = $StoreHourtype->getValue();
-        
+
         return $this;
     }
 
@@ -207,7 +207,7 @@ class StoreHours
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

@@ -19,9 +19,9 @@ class ReplCustomer
     {
         $table_name = $setup->getTable( 'ls_replication_repl_customer' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_customer_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -58,7 +58,7 @@ class ReplCustomer
         	$table->addColumn( 'URL' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'UserName' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'ZipCode' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

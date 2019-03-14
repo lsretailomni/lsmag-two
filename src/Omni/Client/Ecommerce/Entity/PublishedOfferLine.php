@@ -118,7 +118,7 @@ class PublishedOfferLine extends Entity
                 throw new InvalidEnumException();
         }
         $this->DiscountType = $DiscountType->getValue();
-        
+
         return $this;
     }
 
@@ -182,7 +182,7 @@ class PublishedOfferLine extends Entity
                 throw new InvalidEnumException();
         }
         $this->LineType = $LineType->getValue();
-        
+
         return $this;
     }
 
@@ -264,7 +264,7 @@ class PublishedOfferLine extends Entity
                 throw new InvalidEnumException();
         }
         $this->VariantType = $VariantType->getValue();
-        
+
         return $this;
     }
 

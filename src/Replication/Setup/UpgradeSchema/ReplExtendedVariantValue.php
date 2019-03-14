@@ -19,9 +19,9 @@ class ReplExtendedVariantValue
     {
         $table_name = $setup->getTable( 'ls_replication_repl_extended_variant_value' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_extended_variant_value_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -37,7 +37,7 @@ class ReplExtendedVariantValue
         	$table->addColumn( 'LogicalOrder' , Table::TYPE_INTEGER, '' );
         	$table->addColumn( 'Timestamp' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'Value' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }
