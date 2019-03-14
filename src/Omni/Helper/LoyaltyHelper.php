@@ -287,4 +287,23 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
     }
+
+    /**
+     * Check user have enough points or not
+     * @param $loyaltyPoints
+     * @return bool
+     */
+    public function isPointsAreValid($loyaltyPoints)
+    {
+        /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $memberProfile */
+        $memberProfile = $this->getMemberInfo();
+        if ($memberProfile != null) {
+            $points = $memberProfile->getAccount()->getPointBalance();
+            if ($points >= $loyaltyPoints) {
+                return true;
+            }
+        }else {
+            return false;
+        }
+    }
 }

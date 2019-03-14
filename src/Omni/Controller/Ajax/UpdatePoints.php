@@ -90,13 +90,14 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         $base_currency = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
         $post = $this->getRequest()->getContent();
         $postData = json_decode($post);
-        $loyalPoints = (int)$postData->loyaltyPoints;
-        if (!is_numeric($loyalPoints) || $loyalPoints < 0) {
+        $loyaltyPoints = (int)$postData->loyaltyPoints;
+        $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
+        if (!is_numeric($loyaltyPoints) || $loyaltyPoints < 0 || !$isPointValid) {
             $response = [
                     'error' => 'true',
                     'message' => __(
                         'The loyalty points "%1" are not valid.',
-                        $loyalPoints
+                        $loyaltyPoints
                     )
                 ];
             return $resultJson->setData($response);
@@ -104,9 +105,9 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         try {
             $cartId = $this->checkoutSession->getQuoteId();
             $quote = $this->cartRepository->get($cartId);            
-            $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($quote->getBaseGrandTotal(), $loyalPoints);
+            $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($quote->getBaseGrandTotal(), $loyaltyPoints);
             if ($isPointsLimitValid) {
-                $quote->setLsPointsSpent($loyalPoints);
+                $quote->setLsPointsSpent($loyaltyPoints);
                 $this->validateQuote($quote);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);
@@ -116,7 +117,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
                     'error' => 'true',
                     'message' => __(
                         'The loyalty points "%1" are not valid.',
-                        $loyalPoints
+                        $loyaltyPoints
                     )
                 ];
             }
