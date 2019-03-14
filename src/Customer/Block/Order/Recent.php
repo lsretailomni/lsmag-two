@@ -50,7 +50,7 @@ class Recent extends \Magento\Sales\Block\Order\Recent
     public function getOrderHistory()
     {
         $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
-        if(!is_array($response)){
+        if (!is_array($response)) {
             $obj = $response;
             $response = array($obj);
         }
