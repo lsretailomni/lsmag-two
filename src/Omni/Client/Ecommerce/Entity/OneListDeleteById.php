@@ -59,7 +59,7 @@ class OneListDeleteById implements RequestInterface
                 throw new InvalidEnumException();
         }
         $this->listType = $listType->getValue();
-        
+
         return $this;
     }
 

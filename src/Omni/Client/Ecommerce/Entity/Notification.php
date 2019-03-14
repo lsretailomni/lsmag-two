@@ -184,7 +184,7 @@ class Notification extends Entity
                 throw new InvalidEnumException();
         }
         $this->NotificationTextType = $NotificationTextType->getValue();
-        
+
         return $this;
     }
 
@@ -230,7 +230,7 @@ class Notification extends Entity
                 throw new InvalidEnumException();
         }
         $this->Status = $Status->getValue();
-        
+
         return $this;
     }
 

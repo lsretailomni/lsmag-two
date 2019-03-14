@@ -37,6 +37,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->storeCollectionFactory = $storeCollectionFactory;
         parent::__construct($context);
     }
+
     /**
      * getItemStockInStore
      * @param $storeId
@@ -67,6 +68,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $response ? $response->getItemsInStockGetResult() : $response;
     }
+
     /**
      * getAllStoresItemInStock
      * @param $simpleProductId
@@ -100,6 +102,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $response ?
             $response->getStoresGetbyItemInStockResult() : $response;
     }
+
     /**
      * getAllStoresFromReplTable
      * @param $storesNavIds
@@ -107,12 +110,46 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAllStoresFromReplTable($storesNavIds)
     {
+        $stores = $this->storeCollectionFactory
+            ->create()
+            ->addFieldToFilter('ClickAndCollect', 1)
+            ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
+            ->toArray();
+        return \Zend_Json::encode($stores);
+    }
 
-            $stores = $this->storeCollectionFactory
-                ->create()
-                ->addFieldToFilter('ClickAndCollect', 1)
-                ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
-                ->toArray();
-            return \Zend_Json::encode($stores);
+    /**
+     * @param $storeId
+     * @param $variants
+     * @return mixed
+     */
+    public function getItemsInStore(
+        $storeId,
+        $variants
+    ) {
+        $response = array();
+        // @codingStandardsIgnoreStart
+        $request = new Operation\ItemsInStoreGet();
+        $itemsInStore = new Entity\ItemsInStoreGet();
+        // @codingStandardsIgnoreEnd
+        $items = array();
+        foreach ($variants as $variant) {
+            $inventoryReq = new Entity\InventoryRequest();
+            $inventoryReq->setItemId($variant['ItemId'])->setVariantId($variant['VariantId']);
+            $items[] = $inventoryReq;
+        }
+        $itemsInStore->setStoreId($storeId);
+        $itemsInStore->setItems($items);
+        try {
+            $response = $request->execute($itemsInStore);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        $inventoryResponseArray = $response ? $response->getItemsInStoreGetResult() : $response;
+        foreach ($inventoryResponseArray as $inventoryResponse) {
+            $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
+            $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
+        }
+        return $variants;
     }
 }

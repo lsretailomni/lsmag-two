@@ -173,7 +173,7 @@ class ReplHierarchyLeaf
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

@@ -217,7 +217,7 @@ class RetailAttribute
                 throw new InvalidEnumException();
         }
         $this->LinkType = $LinkType->getValue();
-        
+
         return $this;
     }
 
@@ -299,7 +299,7 @@ class RetailAttribute
                 throw new InvalidEnumException();
         }
         $this->ValueType = $ValueType->getValue();
-        
+
         return $this;
     }
 

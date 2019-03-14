@@ -265,7 +265,7 @@ class Address
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

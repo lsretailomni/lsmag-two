@@ -81,7 +81,7 @@ class OneListPublishedOffer extends Entity
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

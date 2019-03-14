@@ -19,9 +19,9 @@ class ReplImageLink
     {
         $table_name = $setup->getTable( 'ls_replication_repl_image_link' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_image_link_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -35,7 +35,7 @@ class ReplImageLink
         	$table->addColumn( 'IsDeleted' , Table::TYPE_BOOLEAN, '' );
         	$table->addColumn( 'KeyValue' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'TableName' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

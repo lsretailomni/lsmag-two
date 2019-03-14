@@ -19,9 +19,9 @@ class ReplItem
     {
         $table_name = $setup->getTable( 'ls_replication_repl_item' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_item_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -63,7 +63,7 @@ class ReplItem
         	$table->addColumn( 'VendorId' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'VendorItemId' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'ZeroPriceValId' , Table::TYPE_INTEGER, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

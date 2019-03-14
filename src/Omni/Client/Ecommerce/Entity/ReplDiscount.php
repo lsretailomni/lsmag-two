@@ -221,7 +221,7 @@ class ReplDiscount
                 throw new InvalidEnumException();
         }
         $this->DiscountValueType = $DiscountValueType->getValue();
-        
+
         return $this;
     }
 
@@ -429,7 +429,7 @@ class ReplDiscount
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

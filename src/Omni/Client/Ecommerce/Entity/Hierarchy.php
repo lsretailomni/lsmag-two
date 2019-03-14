@@ -104,7 +104,7 @@ class Hierarchy extends Entity
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

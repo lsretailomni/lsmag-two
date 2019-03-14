@@ -73,7 +73,7 @@ class Profile extends Entity
                 throw new InvalidEnumException();
         }
         $this->DataType = $DataType->getValue();
-        
+
         return $this;
     }
 

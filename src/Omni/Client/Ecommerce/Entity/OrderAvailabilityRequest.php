@@ -86,7 +86,7 @@ class OrderAvailabilityRequest extends Entity
                 throw new InvalidEnumException();
         }
         $this->SourceType = $SourceType->getValue();
-        
+
         return $this;
     }
 

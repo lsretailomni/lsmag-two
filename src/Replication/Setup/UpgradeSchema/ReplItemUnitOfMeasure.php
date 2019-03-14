@@ -19,9 +19,9 @@ class ReplItemUnitOfMeasure
     {
         $table_name = $setup->getTable( 'ls_replication_repl_item_unit_of_measure' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_item_unit_of_measure_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -38,7 +38,7 @@ class ReplItemUnitOfMeasure
         	$table->addColumn( 'Selection' , Table::TYPE_INTEGER, '' );
         	$table->addColumn( 'StoreId' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'UnitOfMeasure' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

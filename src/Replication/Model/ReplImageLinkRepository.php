@@ -86,7 +86,7 @@ class ReplImageLinkRepository implements ReplImageLinkRepositoryInterface
         }
         $results->setItems( $objects );
         $results->setItems( $objects );
-        
+
         return $results;
     }
 
@@ -97,7 +97,7 @@ class ReplImageLinkRepository implements ReplImageLinkRepositoryInterface
         } catch ( Exception $e ) {
             throw new CouldNotSaveException( new Phrase( $e->getMessage() ) );
         }
-        
+
         return $object;
     }
 
@@ -108,7 +108,7 @@ class ReplImageLinkRepository implements ReplImageLinkRepositoryInterface
         if ( ! $object->getId() ) {
             throw new NoSuchEntityException( new Phrase( "Object with id '$id' does not exist." ) );
         }
-        
+
         return $object;
     }
 
@@ -119,7 +119,7 @@ class ReplImageLinkRepository implements ReplImageLinkRepositoryInterface
         } catch ( Exception $e) {
             throw new CouldNotDeleteException( new Phrase( $e->getMessage() ) );
         }
-        
+
         return TRUE;
     }
 

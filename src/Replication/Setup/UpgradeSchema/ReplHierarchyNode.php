@@ -19,9 +19,9 @@ class ReplHierarchyNode
     {
         $table_name = $setup->getTable( 'ls_replication_repl_hierarchy_node' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_hierarchy_node_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -38,7 +38,7 @@ class ReplHierarchyNode
         	$table->addColumn( 'IsDeleted' , Table::TYPE_BOOLEAN, '' );
         	$table->addColumn( 'ParentNode' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'PresentationOrder' , Table::TYPE_INTEGER, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

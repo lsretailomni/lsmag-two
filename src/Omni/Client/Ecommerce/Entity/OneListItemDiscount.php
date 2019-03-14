@@ -135,7 +135,7 @@ class OneListItemDiscount extends Entity
                 throw new InvalidEnumException();
         }
         $this->DiscountType = $DiscountType->getValue();
-        
+
         return $this;
     }
 
@@ -235,7 +235,7 @@ class OneListItemDiscount extends Entity
                 throw new InvalidEnumException();
         }
         $this->PeriodicDiscType = $PeriodicDiscType->getValue();
-        
+
         return $this;
     }
 

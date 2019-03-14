@@ -19,9 +19,9 @@ class ReplItemVariantRegistration
     {
         $table_name = $setup->getTable( 'ls_replication_repl_item_variant_registration' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_item_variant_registration_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -39,7 +39,7 @@ class ReplItemVariantRegistration
         	$table->addColumn( 'VariantDimension5' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'VariantDimension6' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'VariantId' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

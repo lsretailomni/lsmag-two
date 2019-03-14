@@ -201,7 +201,7 @@ class ImageView extends Entity
                 throw new InvalidEnumException();
         }
         $this->LocationType = $LocationType->getValue();
-        
+
         return $this;
     }
 

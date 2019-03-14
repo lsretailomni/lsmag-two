@@ -372,7 +372,7 @@ class LoyTransaction extends Entity
                 throw new InvalidEnumException();
         }
         $this->DocumentType = $DocumentType->getValue();
-        
+
         return $this;
     }
 
@@ -436,7 +436,7 @@ class LoyTransaction extends Entity
                 throw new InvalidEnumException();
         }
         $this->Platform = $Platform->getValue();
-        
+
         return $this;
     }
 

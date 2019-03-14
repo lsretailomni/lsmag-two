@@ -19,9 +19,9 @@ class ReplVendor
     {
         $table_name = $setup->getTable( 'ls_replication_repl_vendor' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_vendor_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -41,7 +41,7 @@ class ReplVendor
         	$table->addColumn( 'PictureId' , Table::TYPE_INTEGER, '' );
         	$table->addColumn( 'Published' , Table::TYPE_BOOLEAN, '' );
         	$table->addColumn( 'UpdatedOnUtc' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

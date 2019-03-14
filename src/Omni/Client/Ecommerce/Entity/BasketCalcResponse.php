@@ -254,7 +254,7 @@ class BasketCalcResponse extends Entity implements ResponseInterface
                 throw new InvalidEnumException();
         }
         $this->EntryStatus = $EntryStatus->getValue();
-        
+
         return $this;
     }
 

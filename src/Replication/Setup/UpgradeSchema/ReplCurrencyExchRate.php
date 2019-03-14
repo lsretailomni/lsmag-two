@@ -19,9 +19,9 @@ class ReplCurrencyExchRate
     {
         $table_name = $setup->getTable( 'ls_replication_repl_currency_exch_rate' ); 
         if ( ! $setup->tableExists( $table_name ) ) {
-        
+
         	$table = $setup->getConnection()->newTable( $table_name );
-        
+
         	$table->addColumn( 'repl_currency_exch_rate_id', Table::TYPE_INTEGER, NULL, 
         	                    [ 'identity' => TRUE, 'primary' => TRUE,
         	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
@@ -34,7 +34,7 @@ class ReplCurrencyExchRate
         	$table->addColumn( 'IsDeleted' , Table::TYPE_BOOLEAN, '' );
         	$table->addColumn( 'RelationalCurrencyCode' , Table::TYPE_TEXT, '' );
         	$table->addColumn( 'StartingDate' , Table::TYPE_TEXT, '' );
-        
+
         	$setup->getConnection()->createTable( $table );
         }
     }

@@ -41,7 +41,7 @@ class AppSettingsGetByKey implements RequestInterface
                 throw new InvalidEnumException();
         }
         $this->key = $key->getValue();
-        
+
         return $this;
     }
 

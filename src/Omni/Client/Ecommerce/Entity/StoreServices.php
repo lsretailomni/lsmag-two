@@ -81,7 +81,7 @@ class StoreServices
                 throw new InvalidEnumException();
         }
         $this->StoreServiceType = $StoreServiceType->getValue();
-        
+
         return $this;
     }
 

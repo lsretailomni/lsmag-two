@@ -15,13 +15,13 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\ReplicateTaxSetup as ReplicateTaxSetupRequest;
-use Ls\Omni\Client\Ecommerce\Entity\ReplicateTaxSetupResponse as ReplicateTaxSetupResponse;
+use Ls\Omni\Client\Ecommerce\Entity\ReplEcommInventoryStatus as ReplEcommInventoryStatusRequest;
+use Ls\Omni\Client\Ecommerce\Entity\ReplEcommInventoryStatusResponse as ReplEcommInventoryStatusResponse;
 
-class ReplicateTaxSetup extends AbstractOperation
+class ReplEcommInventoryStatus extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPLICATE_TAX_SETUP';
+    const OPERATION_NAME = 'REPL_ECOMM_INVENTORY_STATUS';
 
     const SERVICE_TYPE = 'ecommerce';
 
@@ -31,12 +31,12 @@ class ReplicateTaxSetup extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property ReplicateTaxSetupRequest $request
+     * @property ReplEcommInventoryStatusRequest $request
      */
     protected $request = null;
 
     /**
-     * @property ReplicateTaxSetupResponse $response
+     * @property ReplEcommInventoryStatusResponse $response
      */
     protected $response = null;
 
@@ -65,24 +65,24 @@ class ReplicateTaxSetup extends AbstractOperation
     }
 
     /**
-     * @param ReplicateTaxSetupRequest $request
-     * @return ResponseInterface|ReplicateTaxSetupResponse
+     * @param ReplEcommInventoryStatusRequest $request
+     * @return ResponseInterface|ReplEcommInventoryStatusResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'ReplicateTaxSetup' );
+        return $this->makeRequest( 'ReplEcommInventoryStatus' );
     }
 
     /**
-     * @return ReplicateTaxSetupRequest
+     * @return ReplEcommInventoryStatusRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new ReplicateTaxSetupRequest();
+            $this->request = new ReplEcommInventoryStatusRequest();
         }
         return $this->request;
     }
@@ -119,7 +119,7 @@ class ReplicateTaxSetup extends AbstractOperation
     }
 
     /**
-     * @param ReplicateTaxSetupRequest $request
+     * @param ReplEcommInventoryStatusRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -129,7 +129,7 @@ class ReplicateTaxSetup extends AbstractOperation
     }
 
     /**
-     * @return ReplicateTaxSetupRequest
+     * @return ReplEcommInventoryStatusRequest
      */
     public function getRequest()
     {
@@ -137,7 +137,7 @@ class ReplicateTaxSetup extends AbstractOperation
     }
 
     /**
-     * @param ReplicateTaxSetupResponse $response
+     * @param ReplEcommInventoryStatusResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -147,7 +147,7 @@ class ReplicateTaxSetup extends AbstractOperation
     }
 
     /**
-     * @return ReplicateTaxSetupResponse
+     * @return ReplEcommInventoryStatusResponse
      */
     public function getResponse()
     {

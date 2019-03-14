@@ -321,7 +321,7 @@ class ProactiveDiscount
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

@@ -36,7 +36,7 @@ class PingStatusResponse implements ResponseInterface
                 throw new InvalidEnumException();
         }
         $this->PingStatusResult = $PingStatusResult->getValue();
-        
+
         return $this;
     }
 

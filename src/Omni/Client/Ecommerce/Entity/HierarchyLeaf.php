@@ -35,7 +35,7 @@ class HierarchyLeaf extends HierarchyPoint
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
-        
+
         return $this;
     }
 

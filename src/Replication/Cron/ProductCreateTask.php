@@ -31,6 +31,7 @@ use Magento\Framework\Api\Search\FilterGroupBuilder;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Psr\Log\LoggerInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Omni\Helper\StockHelper;
 use \Ls\Core\Model\LSR;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
 
@@ -121,6 +122,9 @@ class ProductCreateTask
     /** @var Cron Checking */
     public $cronStatus = false;
 
+    /** @var \Ls\Omni\Helper\StockHelper */
+    public $stockHelper;
+
     /**
      * ProductCreateTask constructor.
      * @param Factory $factory
@@ -179,7 +183,8 @@ class ProductCreateTask
         ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
         LoggerInterface $logger,
         LSR $LSR,
-        ConfigurableProTypeModel $configurableProTypeModel
+        ConfigurableProTypeModel $configurableProTypeModel,
+        StockHelper $stockHelper
     ) {
         $this->factory = $factory;
         $this->item = $item;
@@ -209,6 +214,7 @@ class ProductCreateTask
         $this->replAttributeValueRepositoryInterface = $replAttributeValueRepositoryInterface;
         $this->lsr = $LSR;
         $this->configurableProTypeModel = $configurableProTypeModel;
+        $this->stockHelper = $stockHelper;
     }
 
     /**
@@ -236,7 +242,7 @@ class ProductCreateTask
             $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $productBatchSize);
             /** @var \Ls\Replication\Model\ReplItemSearchResults $items */
             $items = $this->itemRepository->getList($criteria);
-
+            $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             /** @var \Ls\Replication\Model\ReplItem $item */
             foreach ($items->getItems() as $item) {
                 try {
@@ -286,11 +292,15 @@ class ProductCreateTask
                     if (isset($itemBarcodes[$item->getNavId()])) {
                         $product->setCustomAttribute("barcode", $itemBarcodes[$item->getNavId()]);
                     }
-                    $product->setStockData([
-                        'use_config_manage_stock' => 1,
-                        'is_in_stock' => 1,
-                        'qty' => 100
-                    ]);
+                    $response = $this->stockHelper->getItemStockInStore($storeId, $item->getNavId(), "");
+                    if (isset($response)) {
+                        $itemStock = ceil($response->getInventoryResponse()->getQtyActualInventory());
+                        $product->setStockData([
+                            'use_config_manage_stock' => 1,
+                            'is_in_stock' => 1,
+                            'qty' => $itemStock
+                        ]);
+                    }
                     $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
                     if ($productImages) {
                         $this->logger->debug('Found images for the item ' . $item->getNavId());
@@ -876,7 +886,7 @@ class ProductCreateTask
                         $this->productRepository->save($productData);
                         // @codingStandardsIgnoreEnd
                         // Adding items into an array whose images are processed.
-                        $processedItems[]   = $image->getKeyValue();
+                        $processedItems[] = $image->getKeyValue();
                     }
                 } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
@@ -979,6 +989,8 @@ class ProductCreateTask
             $attributesIds[] = $attribute->getId();
         }
 
+        $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+        $variantsInventory = $this->getVariantsInventory($storeId, $variants);
         /** @var \Ls\Replication\Model\ReplItemVariantRegistration $value */
         foreach ($variants as $value) {
             $sku = $value->getItemId() . '-' . $value->getVariantId();
@@ -1054,11 +1066,15 @@ class ProductCreateTask
                 if (isset($itemBarcodes[$sku])) {
                     $productV->setCustomAttribute("barcode", $itemBarcodes[$sku]);
                 }
+                $itemStock = 0;
+                if (isset($variantsInventory[$sku]['Quantity'])) {
+                    $itemStock = $variantsInventory[$sku]['Quantity'];
+                }
                 $productV->setStockData([
                     'use_config_manage_stock' => 1,
                     'is_in_stock' => 1,
                     'is_qty_decimal' => 0,
-                    'qty' => 100
+                    'qty' => $itemStock
                 ]);
                 /** @var \Magento\Catalog\Api\Data\ProductInterface $productSaved */
                 // @codingStandardsIgnoreStart
@@ -1093,5 +1109,25 @@ class ProductCreateTask
         $configProduct->setCanSaveConfigurableAttributes(true);
         $configProduct->setAssociatedProductIds($associatedProductIds); // Setting Associated Products
         $configProduct->save();
+    }
+
+    /**
+     * @param $storeId
+     * @param $variants
+     * @return array|mixed
+     */
+    public function getVariantsInventory($storeId, $variants)
+    {
+        if (empty($variants)) {
+            return array();
+        }
+        $variantsInventory = array();
+        foreach ($variants as $value) {
+            $sku = $value->getItemId() . '-' . $value->getVariantId();
+            $variantsInventory[$sku]['ItemId'] = $value->getItemId();
+            $variantsInventory[$sku]['VariantId'] = $value->getVariantId();
+        }
+        $variantsInventory = $this->stockHelper->getItemsInStore($storeId, $variants);
+        return $variantsInventory;
     }
 }

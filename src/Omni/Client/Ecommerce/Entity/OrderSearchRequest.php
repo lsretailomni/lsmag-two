@@ -143,7 +143,7 @@ class OrderSearchRequest
                 throw new InvalidEnumException();
         }
         $this->OrderStatusFilter = $OrderStatusFilter->getValue();
-        
+
         return $this;
     }
 
@@ -171,7 +171,7 @@ class OrderSearchRequest
                 throw new InvalidEnumException();
         }
         $this->OrderType = $OrderType->getValue();
-        
+
         return $this;
     }
 

@@ -90,7 +90,7 @@ class Currency extends Entity
                 throw new InvalidEnumException();
         }
         $this->AmountRoundingMethod = $AmountRoundingMethod->getValue();
-        
+
         return $this;
     }
 
@@ -262,7 +262,7 @@ class Currency extends Entity
                 throw new InvalidEnumException();
         }
         $this->SaleRoundingMethod = $SaleRoundingMethod->getValue();
-        
+
         return $this;
     }
 
