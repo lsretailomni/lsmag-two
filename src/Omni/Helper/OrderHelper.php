@@ -112,6 +112,8 @@ class OrderHelper extends AbstractHelper
             $oneListCalculateResponse->setShipClickAndCollect(false);
         }
         $orderLines = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+        //For click and collect we need to remove shipment charge orderline
+        //For flat shipment it will set the correct shipment value into the order
         $this->updateShippingAmount($orderLines, $order);
         // @codingStandardsIgnoreLine
         $request = new Entity\OrderCreate();
