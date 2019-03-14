@@ -79,7 +79,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
         try {
             $cartQuote = $this->cart->getQuote();
             $itemsCount = $cartQuote->getItemsCount();
-            $isPointValid = $this->isPointsAreValid($loyaltyPoints);
+            $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($cartQuote->getBaseGrandTotal(), $loyaltyPoints);
             if ($itemsCount && $isPointValid && $isPointsLimitValid) {
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
@@ -121,21 +121,4 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
         return $this->_goBack();
     }
 
-    /**
-     * @param $loyaltyPoints
-     * @return bool
-     */
-    public function isPointsAreValid($loyaltyPoints)
-    {
-        /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $memberProfile */
-        $memberProfile = $this->loyaltyHelper->getMemberInfo();
-        if ($memberProfile != null) {
-            $points = $memberProfile->getAccount()->getPointBalance();
-            if ($points >= $loyaltyPoints) {
-                return true;
-            }
-        }else {
-            return false;
-        }
-    }
 }

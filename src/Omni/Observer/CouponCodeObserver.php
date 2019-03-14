@@ -4,9 +4,10 @@ namespace Ls\Omni\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Core\Model\LSR;
 
 /**
- * Class DataAssignObserver
+ * Class CouponCodeObserver
  * @package Ls\Omni\Observer
  */
 class CouponCodeObserver implements ObserverInterface
@@ -21,16 +22,18 @@ class CouponCodeObserver implements ObserverInterface
     private $messageManager;
 
     /** @var  \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory */
-    public $redirectFactory;
+    private $redirectFactory;
 
-    /** @var \Magento\Framework\UrlInterface  */
-    public $url;
+    /** @var \Magento\Framework\UrlInterface */
+    private $url;
 
     /**
      * CouponCodeObserver constructor.
      * @param BasketHelper $basketHelper
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
+     * @param \Magento\Framework\UrlInterface $url
      */
     public function __construct(
         BasketHelper $basketHelper,
@@ -48,7 +51,8 @@ class CouponCodeObserver implements ObserverInterface
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this|void
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
@@ -59,19 +63,19 @@ class CouponCodeObserver implements ObserverInterface
         if ($controller->getRequest()->getParam('remove') == 1) {
             $this->basketHelper->setCouponCode('');
             $this->messageManager->addSuccessMessage(__("Coupon Code Successfully Removed"));
-        }
-        else if ($status == "success") {
-            $this->messageManager->addSuccessMessage(__(
-                'You used coupon code "%1".',
-                $couponCode
-            ));
         } else {
-            if($status==""){
-               $status= __("Coupon Code is not valid for these item(s)");
+            if ($status == "success") {
+                $this->messageManager->addSuccessMessage(__(
+                    'You used coupon code "%1".',
+                    $couponCode
+                ));
+            } else {
+                if ($status == "") {
+                    $message=LSR::LS_COUPON_CODE_ERROR_MESSAGE;
+                    $status = __($message);
+                }
+                $this->messageManager->addErrorMessage($status);
             }
-            $this->messageManager->addErrorMessage($status);
         }
-
     }
-
 }
