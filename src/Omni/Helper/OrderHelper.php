@@ -110,12 +110,12 @@ class OrderHelper extends AbstractHelper
         if ($isClickCollect) {
             $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
             $oneListCalculateResponse->setShipClickAndCollect(false);
-        } else {
-            $orderLines = $oneListCalculateResponse->getOrderLines()->getOrderLine();
-            $this->updateShippingAmount($orderLines, $order);
         }
+        $orderLines = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+        $this->updateShippingAmount($orderLines, $order);
         // @codingStandardsIgnoreLine
         $request = new Entity\OrderCreate();
+        $oneListCalculateResponse->setOrderLines($orderLines);
         $request->setRequest($oneListCalculateResponse);
         return $request;
     }
@@ -124,7 +124,7 @@ class OrderHelper extends AbstractHelper
      * @param $orderLines
      * @param $order
      */
-    public function updateShippingAmount($orderLines, $order)
+    public function updateShippingAmount(&$orderLines, $order)
     {
         $shipmentFeeId = LSR::LSR_SHIPMENT_ITEM_ID;
         if (!is_array($orderLines)) {
@@ -135,9 +135,13 @@ class OrderHelper extends AbstractHelper
             }
         } elseif (is_array($orderLines)) {
             /** @var Entity\OrderLine $orderLine */
-            foreach ($orderLines as $orderLine) {
-                if ($orderLine->getItemId() == $shipmentFeeId && $order->getShippingAmount() > 0) {
-                    $this->setSpecialPropertiesForShipmentLine($orderLine, $order);
+            foreach ($orderLines as $key => $orderLine) {
+                if ($orderLine->getItemId() == $shipmentFeeId) {
+                    if ($order->getShippingAmount() > 0) {
+                        $this->setSpecialPropertiesForShipmentLine($orderLine, $order);
+                    } else {
+                        unset($orderLines[$key]);
+                    }
                 }
             }
         }
