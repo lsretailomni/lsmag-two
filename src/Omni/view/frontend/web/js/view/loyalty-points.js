@@ -15,7 +15,9 @@ define([
         isApplied;
 
     if (totals) {
-        loyaltyPoints(totals.getSegment('ls_points_spent').value || 0);
+        var pointSpent = totals.getSegment('ls_points_spent');
+        if (pointSpent)
+            loyaltyPoints(pointSpent.value);
     }
     isApplied = ko.observable(loyaltyPoints() != null);
 
@@ -66,7 +68,10 @@ define([
             var form = '#loyalty-form';
 
             return $(form).validation() && $(form).validation('isValid');
-        }
+        },
 
+        isDisplayed: function () {
+            return points.balance > 0;
+        }
     });
 });

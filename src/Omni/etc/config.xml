@@ -10,18 +10,6 @@
                 <timeout>120</timeout>
             </service>
         </ls_mag>
-        <!-- On basic level - creation of custom payment method for loyalty profile -->
-        <payment>
-            <loyaltypoints>
-                <active>0</active>
-                <model>Ls\Omni\Model\Loyaltypoints</model>
-                <order_status>pending</order_status>
-                <title>Loyalty Points</title>
-                <allowspecific>0</allowspecific>
-                <group>offline</group>
-            </loyaltypoints>
-        </payment>
-        <!-- End of creation of custom payment method. -->
         <!-- For Click and Collect -->
         <omni_clickandcollect>
             <general>
