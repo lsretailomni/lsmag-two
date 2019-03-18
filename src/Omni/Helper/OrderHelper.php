@@ -24,6 +24,11 @@ class OrderHelper extends AbstractHelper
     public $basketHelper;
 
     /**
+     * @var LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
+    /**
      * @var \Magento\Customer\Model\Session\Proxy
      */
     public $customerSession;
