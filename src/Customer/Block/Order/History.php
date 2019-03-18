@@ -1,17 +1,11 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 namespace Ls\Customer\Block\Order;
 
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 
 /**
- * Sales order history block
- *
- * @api
- * @since 100.0.2
+ * Class History
+ * @package Ls\Customer\Block\Order
  */
 class History extends \Magento\Sales\Block\Order\History
 {
@@ -59,43 +53,44 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
-     * Function getFormatedPrice
-     *
-     * @param float $price
-     *
-     * @return string
+     * @param $amount
+     * @return float
      */
-    public function getFormatedPrice($amount)
+    public function getFormattedPrice($amount)
     {
         $price = $this->priceCurrency->format($amount, false, 2);
         return $price;
     }
 
     /**
-     * Function getFormatedLoyaltyPoints
-     *
      * @param $points
-     *
      * @return string
      */
-    public function getFormatedLoyaltyPoints($points)
+    public function getFormattedLoyaltyPoints($points)
     {
         $points = number_format((float)$points, 2, '.', '');
         return $points;
     }
+
     /**
-     * Function getFormatedDate
-     *
      * @param $date
-     *
      * @return string
      */
-    public function getFormatedDate($date)
+    public function getFormattedDate($date)
     {
         // @codingStandardsIgnoreStart
-        $formatedDate = new \DateTime($date);
+        $formattedDate = new \DateTime($date);
         // @codingStandardsIgnoreEnd
-        $result = $formatedDate->format('d/m/y');
+        $result = $formattedDate->format('d/m/y');
         return $result;
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getViewUrl($order)
+    {
+        return $this->getUrl('customer/order/view', ['order_id' => $order->getDocumentId()]);
     }
 }

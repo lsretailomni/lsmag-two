@@ -1,0 +1,17 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var  $block \Ls\Customer\Block\Order\View **/?>
+<div class="order-details-items ordered">
+    <?php $_order = $block->getOrder() ?>
+    <div class="order-title">
+        <strong><?= /* @escapeNotVerified */ __('Items Ordered') ?></strong>
+    </div>
+    <?= $block->getChildHtml('custom_order_items') ?>
+</div>

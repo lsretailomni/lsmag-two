@@ -8,6 +8,10 @@ use Magento\Customer\Model\Session;
 use Magento\Sales\Model\Order\Config;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 
+/**
+ * Class Recent
+ * @package Ls\Customer\Block\Order
+ */
 class Recent extends \Magento\Sales\Block\Order\Recent
 {
     /**
@@ -52,7 +56,9 @@ class Recent extends \Magento\Sales\Block\Order\Recent
         $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
         if (!is_array($response)) {
             $obj = $response;
+            // @codingStandardsIgnoreStart
             $response = array($obj);
+            // @codingStandardsIgnoreEnd
         }
         return $response;
     }
@@ -64,7 +70,7 @@ class Recent extends \Magento\Sales\Block\Order\Recent
      *
      * @return string
      */
-    public function getFormatedPrice($amount)
+    public function getFormattedPrice($amount)
     {
         $price = $this->priceCurrency->format($amount, false, 2);
         return $price;
@@ -77,7 +83,7 @@ class Recent extends \Magento\Sales\Block\Order\Recent
      *
      * @return string
      */
-    public function getFormatedLoyaltyPoints($points)
+    public function getFormattedLoyaltyPoints($points)
     {
         $points = number_format((float)$points, 2, '.', '');
         return $points;
@@ -89,12 +95,21 @@ class Recent extends \Magento\Sales\Block\Order\Recent
      *
      * @return string
      */
-    public function getFormatedDate($date)
+    public function getFormattedDate($date)
     {
         // @codingStandardsIgnoreStart
-        $formatedDate = new \DateTime($date);
+        $formattedDate = new \DateTime($date);
         // @codingStandardsIgnoreEnd
-        $result = $formatedDate->format('d/m/y');
+        $result = $formattedDate->format('d/m/y');
         return $result;
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getViewUrl($order)
+    {
+        return $this->getUrl('customer/order/view', ['order_id' => $order->getDocumentId()]);
     }
 }
