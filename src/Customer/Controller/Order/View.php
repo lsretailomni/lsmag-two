@@ -5,6 +5,7 @@ namespace Ls\Customer\Controller\Order;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use \Magento\Framework\App\Request\Http;
+use Magento\Framework\Controller\ResultFactory;
 
 /**
  * Class View
@@ -12,6 +13,15 @@ use \Magento\Framework\App\Request\Http;
  */
 class View extends \Magento\Framework\App\Action\Action
 {
+    /**
+     * @var
+     */
+    public $messageManager;
+
+    /**
+     * @var ResultFactory
+     */
+    public $resultRedirect;
     /** @var PageFactory */
     public $resultPageFactory;
 
@@ -37,14 +47,20 @@ class View extends \Magento\Framework\App\Action\Action
      * @param Http $request
      * @param \Ls\Omni\Helper\OrderHelper $orderHelper
      * @param \Magento\Framework\Registry $registry
+     * @param ResultFactory $result
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         Http $request,
         \Ls\Omni\Helper\OrderHelper $orderHelper,
-        \Magento\Framework\Registry $registry
+        \Magento\Framework\Registry $registry,
+        ResultFactory $result,
+        \Magento\Framework\Message\ManagerInterface $messageManager
     ) {
+        $this->resultRedirect = $result;
+        $this->messageManager = $messageManager;
         $this->request = $request;
         $this->registry = $registry;
         $this->orderHelper = $orderHelper;
@@ -57,8 +73,20 @@ class View extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        $orderId = $this->request->getParam('order_id');
-        $this->setCurrentOrderInRegistry($orderId);
+        $response = null;
+        if ($this->request->getParam('order_id')) {
+            $orderId = $this->request->getParam('order_id');
+            $response = $this->setCurrentOrderInRegistry($orderId);
+            if ($response === null) {
+                $message = __('This order id is not corresponded to any order');
+                $this->messageManager->addErrorMessage($message);
+            }
+        }
+        if ($response === null) {
+            $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
+            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            return $resultRedirect;
+        }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         return $resultPage;
@@ -66,11 +94,15 @@ class View extends \Magento\Framework\App\Action\Action
 
     /**
      * @param $orderId
+     * @return \Ls\Omni\Client\Ecommerce\Entity\Order|\Ls\Omni\Client\Ecommerce\Entity\OrderGetByIdResponse|\Ls\Omni\Client\ResponseInterface|null
      */
     public function setCurrentOrderInRegistry($orderId)
     {
         $response = $this->orderHelper->getOrderDetailsAgainstId($orderId);
-        $this->setOrderInRegistry($response);
+        if ($response) {
+            $this->setOrderInRegistry($response);
+        }
+        return $response;
     }
 
     /**

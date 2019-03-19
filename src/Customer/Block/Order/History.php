@@ -44,11 +44,22 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
-     * @return \Ls\Omni\Client\Ecommerce\Entity\Order[]
+     * @return array|\Ls\Omni\Client\Ecommerce\Entity\Order[]|null
      */
     public function getOrderHistory()
     {
-        $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
+        $response = null;
+        try {
+            $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        if (!is_array($response)) {
+            $obj = $response;
+            // @codingStandardsIgnoreStart
+            $response = array($obj);
+            // @codingStandardsIgnoreEnd
+        }
         return $response;
     }
 
@@ -60,16 +71,6 @@ class History extends \Magento\Sales\Block\Order\History
     {
         $price = $this->priceCurrency->format($amount, false, 2);
         return $price;
-    }
-
-    /**
-     * @param $points
-     * @return string
-     */
-    public function getFormattedLoyaltyPoints($points)
-    {
-        $points = number_format((float)$points, 2, '.', '');
-        return $points;
     }
 
     /**

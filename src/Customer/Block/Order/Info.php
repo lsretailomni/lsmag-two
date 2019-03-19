@@ -166,4 +166,13 @@ class Info extends \Magento\Framework\View\Element\Template
         }
         return implode(', ', $methods);
     }
+    /**
+     * @param $points
+     * @return string
+     */
+    public function getFormattedLoyaltyPoints($points)
+    {
+        $points = number_format((float)$points, 2, '.', '');
+        return $points;
+    }
 }
