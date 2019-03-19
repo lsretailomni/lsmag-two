@@ -12,17 +12,22 @@
 <div class="block block-order-details-view-loyalty">
     <div class="block-title">
         <strong><?= /* @escapeNotVerified */
-            __('Loyalty Information') ?></strong>
+            __('Useful Information') ?></strong>
     </div>
     <div class="block-content">
         <div class="custom-box">
             <strong class="box-title"><span><?= /* @escapeNotVerified */
-                    __('Loyalty Points Redeemed') ?></span></strong>
+                    __('Click & Collect:') ?></span></strong>
+            <span><?= $_order->getClickAndCollectOrder() ? 'Yes' : 'No'; ?></span>
+        </div>
+        <div class="custom-box">
+            <strong class="box-title"><span><?= /* @escapeNotVerified */
+                    __('Loyalty Points Redeemed:') ?></span></strong>
             <span><?= $block->getFormattedLoyaltyPoints($_order->getPointsUsedInOrder()); ?></span>
         </div>
         <div class="custom-box">
             <strong class="box-title"><span><?= /* @escapeNotVerified */
-                    __('Loyalty Points Rewarded') ?></span></strong>
+                    __('Loyalty Points Rewarded:') ?></span></strong>
             <span><?= $block->getFormattedLoyaltyPoints($_order->getPointsRewarded()); ?></span>
         </div>
     </div>
