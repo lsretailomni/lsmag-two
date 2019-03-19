@@ -20,35 +20,47 @@ $c = 0;
                 }
                 $c++;
                 $images = $this->fetchImages($offer);
-                ?>
-                <li class="item <?php echo($total == $c ? ' last' : '') ?> col-sm-4 col-md-4 col-lg-4">
-                    <div class="item-img-cont">
-                        <?php
-                        // @codingStandardsIgnoreStart
-                        if (count($images) && !empty($images[0])) :
-                            // @codingStandardsIgnoreEnd
+                $offerProductCategory = $this->getOfferProductCategoryLink($offer->getOfferLines()->getPublishedOfferLine());
+                if (!empty($offerProductCategory)) {
+                    ?>
+                    <li class="item <?php echo($total == $c ? ' last' : '') ?> col-sm-4 col-md-4 col-lg-4">
+                        <div class="item-img-cont">
+                            <?php
+                            // @codingStandardsIgnoreStart
+                            if (count($images) && !empty($images[0])) :
+                                // @codingStandardsIgnoreEnd
+                                ?>
+                                <img id="coupon-collection-image-<?php echo $c ?>"
+                                     src="<?php echo $this->getMediaPathToLoad().
+                                         $images[0] ?>" alt="<?php echo $offer->getDescription() ?> ">
+                            <?php endif; ?>
+                        </div>
+                        <div class="coupon-info">
+                            <div class="title">
+                                <h3><?php echo $offer->getDescription(); ?></h3>
+                            </div>
+                            <div class="code">
+                                <span><b><?php echo __("Code: "); ?></b><?php echo $offer->getOfferId(); ?></span>
+                            </div>
+                            <div class="date">
+                                <span><b><?php echo __("Expiry: "); ?></b><?php echo $this->getOfferExpiryDate($offer->getExpirationDate()); ?></span>
+                            </div>
+                            <div class="coupon-description">
+                                <p><?php echo $offer->getDetails(); ?></p>
+                            </div>
+                            <?php
+                            $offerProductCategory = $this->getOfferProductCategoryLink($offer->getOfferLines()->getPublishedOfferLine());
+                            if (!empty($offerProductCategory)) { ?>
+                                <p>
+                                    <a class="action subscribe primary"
+                                       href="<?php echo $offerProductCategory[0]; ?>"><?php echo __($offerProductCategory[1]); ?></a>
+                                </p>
+                                <?php
+                            }
                             ?>
-                            <img id="coupon-collection-image-<?php echo $c ?>"
-                                 src="<?php echo $this->getMediaPathToLoad().
-                                     $images[0] ?>" alt="<?php echo $offer->getDescription() ?> ">
-                        <?php endif; ?>
-                    </div>
-                    <div class="coupon-info">
-                        <div class="title">
-                            <h3><?php echo $offer->getDescription(); ?></h3>
                         </div>
-                        <div class="code">
-                            <span><b><?php echo __("Code: "); ?></b><?php echo $offer->getOfferId(); ?></span>
-                        </div>
-                        <div class="date">
-                            <span><b><?php echo __("Expiry: "); ?></b><?php echo $this->getOfferExpiryDate($offer->getExpirationDate()); ?></span>
-                        </div>
-                        <div class="coupon-description">
-                            <p><?php echo $offer->getDetails(); ?></p>
-                            </br>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                <?php } ?>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>

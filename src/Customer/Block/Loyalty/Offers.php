@@ -7,6 +7,9 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Catalog\Model\ProductRepository;
+use Magento\Catalog\Model\CategoryRepository;
+use \Magento\Catalog\Helper\Category as CategoryHelper;
 
 /**
  * Class Offers
@@ -40,6 +43,14 @@ class Offers extends \Magento\Framework\View\Element\Template
      */
     public $timeZoneInterface;
 
+    /** @var ProductRepositoryInterface */
+    public $productRepository;
+
+    /** @var CategoryRepositoryInterface */
+    public $categoryRepository;
+
+    /** @var CategoryHelper */
+    public $categoryHelper;
 
     /**
      * Offers constructor.
@@ -49,6 +60,9 @@ class Offers extends \Magento\Framework\View\Element\Template
      * @param StoreManagerInterface $storeManager
      * @param ScopeConfigInterface $scopeConfig
      * @param TimezoneInterface $timeZoneInterface
+     * @param ProductRepository $productRepository
+     * @param CategoryRepository $categoryRepository
+     * @param CategoryHelper $categoryHelper
      * @param array $data
      */
     public function __construct(
@@ -58,6 +72,9 @@ class Offers extends \Magento\Framework\View\Element\Template
         StoreManagerInterface $storeManager,
         ScopeConfigInterface $scopeConfig,
         TimezoneInterface $timeZoneInterface,
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
+        CategoryHelper $categoryHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -66,6 +83,9 @@ class Offers extends \Magento\Framework\View\Element\Template
         $this->storeManager = $storeManager;
         $this->scopeConfig = $scopeConfig;
         $this->timeZoneInterface = $timeZoneInterface;
+        $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->categoryHelper = $categoryHelper;
     }
 
     /**
@@ -140,6 +160,7 @@ class Offers extends \Magento\Framework\View\Element\Template
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\ValidatorException
      */
     public function getMediaPathtoStore()
     {
@@ -149,6 +170,7 @@ class Offers extends \Magento\Framework\View\Element\Template
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getMediaPathToLoad()
     {
@@ -162,7 +184,7 @@ class Offers extends \Magento\Framework\View\Element\Template
      */
     public function getImageWidthandHeight()
     {
-        $size = array();
+        $size = [];
         try {
             $size[] = $this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_PAGE_IMAGE_WIDTH,
@@ -197,5 +219,54 @@ class Offers extends \Magento\Framework\View\Element\Template
         }
     }
 
-
+    /**
+     * @param $offerLines
+     * @return array|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getOfferProductCategoryLink($offerLines)
+    {
+        $url = '';
+        $text = '';
+        if (count($offerLines) == 1) {
+            try {
+                $product = $this->productRepository->get($offerLines->getId());
+                $url = $product->getProductUrl();
+                $text = __("Go To Product");
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                return null;
+            }
+        } else {
+            $categoryIds = [];
+            $count = 0;
+            foreach ($offerLines as $offerLine) {
+                if ($offerLine->getLineType() == "Item") {
+                    try {
+                        $catIds = $this->productRepository->get($offerLine->getId())->getCategoryIds();
+                    } catch (\Exception $e) {
+                        return null;
+                    }
+                    if (!empty($catIds)) {
+                        if ($count == 0) {
+                            $categoryIds = $catIds;
+                        } else {
+                            $categoryIds = array_intersect($catIds, $categoryIds);
+                        }
+                        $count++;
+                    }
+                }
+            }
+            if (!empty($categoryIds)) {
+                $categoryIds = array_values($categoryIds);
+                $category = $this->categoryRepository->get($categoryIds[count($categoryIds)-1]);
+                $url = $this->categoryHelper->getCategoryUrl($category);
+                $text = __("Go To Category");
+            }
+        }
+        if ($url != "" && $text != "") {
+            return [$url, $text];
+        } else {
+            return null;
+        }
+    }
 }
