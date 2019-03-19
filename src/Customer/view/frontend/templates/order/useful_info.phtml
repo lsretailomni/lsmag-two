@@ -1,0 +1,29 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Ls\Customer\Block\Order\Info */ ?>
+<?php $_order = $block->getOrder() ?>
+<div class="block block-order-details-view-loyalty">
+    <div class="block-title">
+        <strong><?= /* @escapeNotVerified */
+            __('Loyalty Information') ?></strong>
+    </div>
+    <div class="block-content">
+        <div class="custom-box">
+            <strong class="box-title"><span><?= /* @escapeNotVerified */
+                    __('Loyalty Points Redeemed') ?></span></strong>
+            <span><?= $block->getFormattedLoyaltyPoints($_order->getPointsUsedInOrder()); ?></span>
+        </div>
+        <div class="custom-box">
+            <strong class="box-title"><span><?= /* @escapeNotVerified */
+                    __('Loyalty Points Rewarded') ?></span></strong>
+            <span><?= $block->getFormattedLoyaltyPoints($_order->getPointsRewarded()); ?></span>
+        </div>
+    </div>
+</div>

@@ -18,7 +18,8 @@
                     </block>
                 </block>
             </block>
-            <block class="Ls\Customer\Block\Order\Info" as="info" name="sales.order.info" after="custom_order_view"/>
+            <block class="Ls\Customer\Block\Order\Info" name="custom.order.info" template="Ls_Customer::order/useful_info.phtml" after="custom_order_view"/>
+            <block class="Ls\Customer\Block\Order\Info" as="info" name="sales.order.info" after="custom.order.info"/>
         </referenceContainer>
     </body>
 </page>

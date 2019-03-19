@@ -1,7 +1,6 @@
 <?php
 namespace Ls\Customer\Block\Order;
 
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrder;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Customer\Model\Session;
@@ -49,11 +48,16 @@ class Recent extends \Magento\Sales\Block\Order\Recent
     }
 
     /**
-     * @return \Ls\Omni\Client\Ecommerce\Entity\Order[]
+     * @return array|\Ls\Omni\Client\Ecommerce\Entity\Order[]|null
      */
     public function getOrderHistory()
     {
-        $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
+        $response = null;
+        try {
+            $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
         if (!is_array($response)) {
             $obj = $response;
             // @codingStandardsIgnoreStart
@@ -76,18 +80,6 @@ class Recent extends \Magento\Sales\Block\Order\Recent
         return $price;
     }
 
-    /**
-     * Function getFormatedLoyaltyPoints
-     *
-     * @param $points
-     *
-     * @return string
-     */
-    public function getFormattedLoyaltyPoints($points)
-    {
-        $points = number_format((float)$points, 2, '.', '');
-        return $points;
-    }
     /**
      * Function getFormatedDate
      *
