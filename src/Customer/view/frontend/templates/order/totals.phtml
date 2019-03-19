@@ -1,0 +1,44 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var $block \Ls\Customer\Block\Order\Totals
+ */
+?>
+<tr class="subtotal">
+    <th colspan="4" class="mark" scope="row">
+        <?= $block->escapeHtml('Subtotal') ?>
+    </th>
+    <td class="amount" data-th="<?= $block->escapeHtml('Subtotal') ?>">
+        <span class="price"><?= $block->getFormattedPrice($block->getSubtotal());?></span>
+    </td>
+</tr>
+<tr class="shipping">
+    <th colspan="4" class="mark" scope="row">
+        <?= $block->escapeHtml('Shipment & Handling') ?>
+    </th>
+    <td class="amount" data-th="<?= $block->escapeHtml('Shipment & Handling') ?>">
+        <span class="price"><?= $block->getFormattedPrice($block->getShipmentChargeLineFee()); ?></span>
+    </td>
+</tr>
+<tr class="totals-tax">
+    <th colspan="4" class="mark" scope="row">
+        <?= $block->escapeHtml('Tax') ?>
+    </th>
+    <td class="amount" data-th="<?= $block->escapeHtml('Tax') ?>">
+        <span class="price"><?= $block->getFormattedPrice($block->getTotalTax());?></span>
+    </td>
+</tr>
+<tr class="grand_total">
+    <th colspan="4" class="mark" scope="row">
+        <strong><?= $block->escapeHtml('Total') ?> </strong>
+    </th>
+    <td class="amount" data-th="<?= $block->escapeHtml('Total') ?>">
+        <strong><span class="price"><?= $block->getFormattedPrice($block->getGrandTotal());?></span></strong>
+    </td>
+</tr>

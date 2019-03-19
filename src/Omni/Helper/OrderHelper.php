@@ -19,8 +19,15 @@ class OrderHelper extends AbstractHelper
 
     /** @var Model\Order $order */
     public $order;
+
     /** @var \Ls\Omni\Helper\BasketHelper $basketHelper */
     public $basketHelper;
+
+    /**
+     * @var LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
     /**
      * @var \Magento\Customer\Model\Session\Proxy
      */
@@ -79,7 +86,8 @@ class OrderHelper extends AbstractHelper
             $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         } else {
             $customerEmail = $order->getCustomerEmail();
-            $customerName = $order->getShippingAddress()->getFirstname() . " " . $order->getShippingAddress()->getLastname();
+            $customerName = $order->getShippingAddress()->getFirstname() .
+                " " . $order->getShippingAddress()->getLastname();
             $mobileNumber = $order->getShippingAddress()->getTelephone();
             $contactId = $cardId = "";
             $anonymousOrder = true;
@@ -268,5 +276,45 @@ class OrderHelper extends AbstractHelper
         }
 
         return $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
+    }
+
+    /**
+     * @return Entity\ArrayOfOrder|Entity\OrderHistoryByContactIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     */
+    public function getCurrentCustomerOrderHistory()
+    {
+        $response = null;
+        $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+        // @codingStandardsIgnoreStart
+        $request = new Operation\OrderHistoryByContactId();
+        $orderHistory = new Entity\OrderHistoryByContactId();
+        // @codingStandardsIgnoreEnd
+        $orderHistory->setContactId($contactId)->setIncludeLines(true)->setIncludeTransactions(true);
+        try {
+            $response = $request->execute($orderHistory);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getOrderHistoryByContactIdResult() : $response;
+    }
+
+    /**
+     * @param $orderId
+     * @return Entity\Order|Entity\OrderGetByIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     */
+    public function getOrderDetailsAgainstId($orderId)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request = new Operation\OrderGetById();
+        $order = new Entity\OrderGetById();
+        $order->setId($orderId)->setIncludeLines(true);
+        // @codingStandardsIgnoreEnd
+        try {
+            $response = $request->execute($order);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getOrderGetByIdResult() : $response;
     }
 }

@@ -1,0 +1,35 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Ls\Customer\Block\Order\Items $block */
+?>
+<div class="table-wrapper order-items">
+    <table class="data table table-order-items" id="my-orders-table" summary="<?= /* @escapeNotVerified */ __('Items Ordered') ?>">
+        <caption class="table-caption"><?= /* @escapeNotVerified */ __('Items Ordered') ?></caption>
+        <thead>
+        <tr>
+            <th class="col name"><?= /* @escapeNotVerified */ __('Product Name') ?></th>
+            <th class="col sku"><?= /* @escapeNotVerified */ __('SKU') ?></th>
+            <th class="col price"><?= /* @escapeNotVerified */ __('Price') ?></th>
+            <th class="col qty"><?= /* @escapeNotVerified */ __('Qty') ?></th>
+            <th class="col subtotal"><?= /* @escapeNotVerified */ __('Subtotal') ?></th>
+        </tr>
+        </thead>
+        <?php $items = $block->getItems(); ?>
+        <?php $giftMessage = ''?>
+        <?php foreach ($items as $item):
+            ?>
+            <tbody>
+            <?php echo $block->getCustomItemRenderer($item); ?>
+            </tbody>
+        <?php endforeach; ?>
+        <tfoot>
+        <?= $block->getChildHtml('custom_order_totals') ?>
+        </tfoot>
+    </table>
+</div>
