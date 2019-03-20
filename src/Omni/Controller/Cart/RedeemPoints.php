@@ -12,10 +12,10 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
      *
      * @var \Magento\Quote\Api\CartRepositoryInterface
      */
-    protected $quoteRepository;
+    public $quoteRepository;
 
     /**
-     * @var LoyaltyHelper
+     * @var \Ls\Omni\Helper\LoyaltyHelper
      */
     public $loyaltyHelper;
 
@@ -66,12 +66,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             : trim($this->getRequest()->getParam('loyalty_points'));
 
         if (!is_numeric($loyaltyPoints) || $loyaltyPoints < 0) {
-            $this->messageManager->addError(
-                            __(
-                                'The loyalty points "%1" are not valid.',
-                                $loyaltyPoints
-                            )
-                        );
+            $this->messageManager->addErrorMessage(__('The loyalty points "%1" are not valid.', $loyaltyPoints));
             return $this->_goBack();
         }
 
@@ -80,7 +75,10 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             $cartQuote = $this->cart->getQuote();
             $itemsCount = $cartQuote->getItemsCount();
             $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
-            $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($cartQuote->getBaseGrandTotal(), $loyaltyPoints);
+            $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid(
+                $cartQuote->getBaseGrandTotal(),
+                $loyaltyPoints
+            );
             if ($itemsCount && $isPointValid && $isPointsLimitValid) {
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
                 $cartQuote->setLsPointsSpent($loyaltyPoints)->collectTotals();
@@ -90,14 +88,14 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
                 if ($itemsCount) {
                     if ($isPointValid && $isPointsLimitValid) {
                         $this->_checkoutSession->getQuote()->setLsPointsSpent($loyaltyPoints)->save();
-                        $this->messageManager->addSuccess(
+                        $this->messageManager->addSuccessMessage(
                             __(
                                 'You have redeemed "%1" loyalty points.',
                                 $loyaltyPoints
                             )
                         );
                     } else {
-                        $this->messageManager->addError(
+                        $this->messageManager->addErrorMessage(
                             __(
                                 'The loyalty points "%1" are not valid.',
                                 $loyaltyPoints
@@ -105,18 +103,17 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
                         );
                     }
                 } else {
-                    $this->messageManager->addError(
+                    $this->messageManager->addErrorMessage(
                         __(
                             "The loyalty points can't be redeemed."
                         )
                     );
                 }
             } else {
-                $this->messageManager->addSuccess(__('You have successfully canceled the points redemption.'));
+                $this->messageManager->addSuccessMessage(__('You have successfully canceled the points redemption.'));
             }
         } catch (\Exception $e) {
-            $this->messageManager->addError(__('We cannot redeem the points.'));
-            $this->_objectManager->get(\Psr\Log\LoggerInterface::class)->critical($e);
+            $this->messageManager->addErrorMessage(__('We cannot redeem the points.'));
         }
         return $this->_goBack();
     }

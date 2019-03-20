@@ -38,18 +38,17 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
     public $cartRepository;
 
     /**
-     * Points constructor.
+     * UpdatePoints constructor.
      * @param Context $context
-     * @param \Magento\Framework\Json\Helper\Data $helper
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param LoyaltyHelper $loyaltyHelper
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\Json\Helper\Data $helper,
+        Context $context,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
@@ -104,7 +103,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         }
         try {
             $cartId = $this->checkoutSession->getQuoteId();
-            $quote = $this->cartRepository->get($cartId);            
+            $quote = $this->cartRepository->get($cartId);
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($quote->getBaseGrandTotal(), $loyaltyPoints);
             if ($isPointsLimitValid) {
                 $quote->setLsPointsSpent($loyaltyPoints);
@@ -126,7 +125,6 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         }
         return $resultJson->setData($response);
     }
-
 
     /**
      * @param \Magento\Quote\Model\Quote $quote

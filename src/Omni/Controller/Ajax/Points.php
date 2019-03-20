@@ -35,7 +35,6 @@ class Points extends \Magento\Framework\App\Action\Action
     /**
      * Points constructor.
      * @param Context $context
-     * @param \Magento\Framework\Json\Helper\Data $helper
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
@@ -43,8 +42,7 @@ class Points extends \Magento\Framework\App\Action\Action
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\Json\Helper\Data $helper,
+        Context $context,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,

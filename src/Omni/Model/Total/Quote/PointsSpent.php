@@ -22,7 +22,7 @@ class PointsSpent extends AbstractTotal
     {
         $totals = [];
         $spent = $quote->getLsPointsSpent();
-        if($spent > 0) {
+        if ($spent > 0) {
             $totals[] = [
                 'code' => $this->getCode(),
                 'title' => __('You are using'),
