@@ -16,9 +16,6 @@ class RegisterObserver implements ObserverInterface
     /** @var ContactHelper $contactHelper */
     private $contactHelper;
 
-    /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
-    private $customerRepository;
-
     /** @var \Magento\Framework\Registry $registry */
     private $registry;
 
@@ -29,25 +26,30 @@ class RegisterObserver implements ObserverInterface
     private $customerSession;
 
     /**
+     * @var \Magento\Customer\Model\ResourceModel\Customer
+     */
+    private $customerResourceModel;
+
+    /**
      * RegisterObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\Registry $registry
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
      */
     public function __construct(
         ContactHelper $contactHelper,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Framework\Registry $registry,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
     ) {
         $this->contactHelper = $contactHelper;
-        $this->customerRepository = $customerRepository;
         $this->registry = $registry;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
+        $this->customerResourceModel = $customerResourceModel;
     }
 
     /**
@@ -82,7 +84,7 @@ class RegisterObserver implements ObserverInterface
                         );
                         $customer->setGroupId($customerGroupId);
                     }
-                    $this->customerRepository->save($customer->getDataModel());
+                    $this->customerResourceModel->save($customer);
                     $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $contact);
                     $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
                     $session->setData(LSR::SESSION_CUSTOMER_LSRID, $contact->getId());

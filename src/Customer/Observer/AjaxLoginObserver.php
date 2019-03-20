@@ -41,6 +41,11 @@ class AjaxLoginObserver implements ObserverInterface
     private $resultJsonFactory;
 
     /**
+     * @var \Magento\Framework\Registry
+     */
+    private $registry;
+
+    /**
      * AjaxLoginObserver constructor.
      * @param ContactHelper $contactHelper
      * @param \Magento\Framework\Registry $registry
@@ -48,7 +53,6 @@ class AjaxLoginObserver implements ObserverInterface
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Framework\Json\Helper\Data $jsonhelper
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Framework\App\ActionFlag $actionFlag
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
@@ -60,7 +64,6 @@ class AjaxLoginObserver implements ObserverInterface
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\Json\Helper\Data $jsonhelper,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-        \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\CustomerFactory $customerFactory
@@ -70,7 +73,6 @@ class AjaxLoginObserver implements ObserverInterface
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->resultRawFactory = $resultRawFactory;
         $this->jsonhelper = $jsonhelper;
         $this->actionFlag = $actionFlag;
         $this->storeManage = $storeManager;
@@ -79,22 +81,15 @@ class AjaxLoginObserver implements ObserverInterface
 
     /**
      * @param Observer $observer
-     * @return $this|\Magento\Framework\Controller\Result\Json
-     * @throws \Exception
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Zend_Validate_Exception
+     * @return $this|AjaxLoginObserver|\Magento\Framework\Controller\Result\Json
      */
-
     public function execute(Observer $observer)
     {
         try {
             /** @var $request \Magento\Framework\App\RequestInterface */
             $request = $observer->getEvent()->getRequest();
-
             /** @var \Magento\Framework\Controller\Result\Json $resultJson */
             $resultJson = $this->resultJsonFactory->create();
-
             // check if we have a data in request and request is Ajax.
             if ($request && $request->isXmlHttpRequest()) {
                 $credentials = $this->jsonhelper->jsonDecode($request->getContent());
@@ -108,16 +103,15 @@ class AjaxLoginObserver implements ObserverInterface
                         && ($search instanceof Entity\MemberContact)
                         && !empty($search->getEmail());
                     if (!$found) {
-                        $message   =   'Sorry. No account found with the provided email address';
+                        $message = __('Sorry. No account found with the provided email address');
                         return $this->generateMessage($observer, $message, true);
                     }
                     $email = $search->getEmail();
                 }
-
                 if ($is_email) {
-                    $searchResults      =   $this->contactHelper->searchCustomerByEmail($email);
+                    $searchResults = $this->contactHelper->searchCustomerByEmail($email);
                     if ($searchResults->getTotalCount() == 0) {
-                        $message   =   'Unfortunately email login is only available for members registered in Magento';
+                        $message = __('Unfortunately email login is only available for members registered in Magento');
                         return $this->generateMessage($observer, $message, true);
                     } else {
                         $customerObj = null;
@@ -129,11 +123,9 @@ class AjaxLoginObserver implements ObserverInterface
                         $username = $customerObj->getData('lsr_username');
                     }
                 }
-
                 $result = $this->contactHelper->login($username, $credentials['password']);
-
                 if ($result == false) {
-                    $message   =   'Invalid Omni login or Omni password';
+                    $message = __('Invalid Omni login or Omni password');
                     return $this->generateMessage($observer, $message, true);
                 }
                 $response = [
@@ -141,21 +133,21 @@ class AjaxLoginObserver implements ObserverInterface
                     'message' => __('Omni login successful.')
                 ];
                 if ($result instanceof Entity\MemberContact) {
-                    // Process Customer Login in Omni
+                    /**
+                     * Fetch customer related info from omni and create user in magento
+                     */
                     $this->contactHelper->processCustomerLogin($result, $credentials, $is_email);
-
                     /** Update Basket to Omni */
                     $this->contactHelper->updateBasketAfterLogin(
                         $result->getBasket(),
                         $result->getId(),
                         $result->getCard()->getId()
                     );
-
                     $this->customerSession->regenerateId();
                     $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
                     return $resultJson->setData($response);
                 } else {
-                    $message   =   'The service is currently unavailable. Please try again later.';
+                    $message = __('The service is currently unavailable. Please try again later.');
                     return $this->generateMessage($observer, $message, true);
                 }
             }

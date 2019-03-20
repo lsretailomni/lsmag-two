@@ -61,7 +61,7 @@ class UsernameObserver implements ObserverInterface
      * so we need to check if the username field which is coming with the form is already exist or not.
      * If exist redirect back to registration with error message that username already exist.
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this|void
+     * @return $this
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {

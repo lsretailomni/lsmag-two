@@ -72,7 +72,6 @@ class ResetPasswordObserver implements ObserverInterface
      * We are only suppose to do a post dispatch event to update the password.
      * @param \Magento\Framework\Event\Observer $observer
      * @return $this
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
@@ -80,7 +79,6 @@ class ResetPasswordObserver implements ObserverInterface
             /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
             $controller_action = $observer->getData('controller_action');
             $post_param = $controller_action->getRequest()->getParams();
-
             /**
              * only have to continue if actual event does not throws any error
              * from Magento/Customer/Controller/Account/ResetPasswordPost.php

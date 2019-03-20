@@ -32,8 +32,6 @@ class CheckoutRegisterObserver implements ObserverInterface
     /**
      * CheckoutRegisterObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
