@@ -1,51 +1,55 @@
 <?php
 // @codingStandardsIgnoreFile
 ?>
-<div class="loyalty" id="block-loyalty">
-    <div class="title" data-role="loyalty-title">
-        <strong id="block-loyalty-heading" role="heading" aria-level="2"><?= /* @escapeNotVerified */
-            __('Apply Loyalty Points') ?></strong>
-    </div>
-    <div class="content" data-role="loyalty-content" aria-labelledby="block-loyalty-heading">
-        <form id="loyalty-points-form"
-              action="<?= /* @escapeNotVerified */
-              $block->getUrl('omni/cart/RedeemPoints') ?>"
-              method="post"
-              data-mage-init='{"loyaltyPoints":{"loyaltyPointsSelector": "#loyalty_points",
+<?php
+$availablePoints = (int)$block->getMemberPoints();
+if ($availablePoints > 0) { ?>
+    <div class="loyalty" id="block-loyalty">
+        <div class="title" data-role="loyalty-title">
+            <strong id="block-loyalty-heading" role="heading" aria-level="2"><?= /* @escapeNotVerified */
+                __('Apply Loyalty Points') ?></strong>
+        </div>
+        <div class="content" data-role="loyalty-content" aria-labelledby="block-loyalty-heading">
+            <form id="loyalty-points-form"
+                  action="<?= /* @escapeNotVerified */
+                  $block->getUrl('omni/cart/RedeemPoints') ?>"
+                  method="post"
+                  data-mage-init='{"loyaltyPoints":{"loyaltyPointsSelector": "#loyalty_points",
                                                "removePointsSelector": "#remove-points",
                                                "applyButton": "input.action.apply",
                                                "cancelButton": "input.action.cancel"}}'>
-            <div class="loyalty-points-label">
-                <label>
+                <div class="loyalty-points-label">
+                    <label>
                     <span>
                         <?= /* @escapeNotVerified */
                         __('You have %1 loyalty points. Each of 10 Points gets %2 discount.',
-                            '<strong>' . $block->getMemberPoints() . '</strong>',
+                            '<strong>' . $availablePoints . '</strong>',
                             '<strong>' . $block->getBaseCurrencyCode() . ' ' . round($block->getPointsRate() * 10,
                                 2) . '</strong>') ?>
                     </span>
-                </label>
-            </div>
-            <div class="fieldset">
-                <input type="hidden" name="remove-points" id="remove-points" value="0"/>
-                <div class="field">
-                    <div class="control">
-                        <input type="number" min="0" class="input-text" id="loyalty_points" name="loyalty_points"
-                               value="<?= $block->getLsPointsSpent() ?>"
-                               placeholder="Enter points to redeem"/>
+                    </label>
+                </div>
+                <div class="fieldset">
+                    <input type="hidden" name="remove-points" id="remove-points" value="0"/>
+                    <div class="field">
+                        <div class="control">
+                            <input type="number" min="0" class="input-text" id="loyalty_points" name="loyalty_points"
+                                   value="<?= $block->getLsPointsSpent() ?>"
+                                   placeholder="Enter points to redeem"/>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <div class="primary">
+                            <?php if (empty($block->getLsPointsSpent())): ?>
+                                <input class="action apply primary" type="submit" value="<?= __('Redeem') ?>"></input>
+                            <?php else: ?>
+                                <input class="action apply primary" type="submit" value="<?= __('Update') ?>"></input>
+                                <input type="submit" class="action cancel primary" value="<?= __('Cancel') ?>"></input>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-                <div class="actions">
-                    <div class="primary">
-                        <?php if (empty($block->getLsPointsSpent())): ?>
-                            <input class="action apply primary" type="submit" value="<?= __('Redeem') ?>"></input>
-                        <?php else: ?>
-                            <input class="action apply primary" type="submit" value="<?= __('Update') ?>"></input>
-                            <input type="submit" class="action cancel primary" value="<?= __('Cancel') ?>"></input>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
+<?php } ?>

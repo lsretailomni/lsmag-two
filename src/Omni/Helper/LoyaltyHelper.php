@@ -158,9 +158,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function convertPointsIntoValues()
     {
-
         $points = $pointrate = $value = 0;
-
         /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $memberProfile */
         $memberProfile = $this->getMemberInfo();
         $pointrate = $this->getPointRate();
@@ -304,7 +302,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
             if ($points >= $loyaltyPoints) {
                 return true;
             }
-        }else {
+        } else {
             return false;
         }
     }
