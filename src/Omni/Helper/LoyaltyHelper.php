@@ -213,11 +213,13 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (isset($points)) {
             return $points;
         }
-        $memberProfile = $this->getMemberInfo();
-        if ($memberProfile != null) {
-            $points = $memberProfile->getAccount()->getPointBalance();
-            $this->checkoutSession->setMemberPoints($points);
-            return $points;
+        if ($this->customerSession->isLoggedIn()) {
+            $memberProfile = $this->getMemberInfo();
+            if ($memberProfile != null) {
+                $points = $memberProfile->getAccount()->getPointBalance();
+                $this->checkoutSession->setMemberPoints($points);
+                return $points;
+            }
         }
         return 0;
     }
