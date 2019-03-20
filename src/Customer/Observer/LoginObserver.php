@@ -80,17 +80,13 @@ class LoginObserver implements ObserverInterface
      * If input is email but the account does not exist in Magento then
      * we need to throw an error that "Email login is only available for users registered in Magento".
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Zend_Validate_Exception
+     * @return $this|LoginObserver
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         try {
             /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
             $controller_action = $observer->getData('controller_action');
-
             $login = $controller_action->getRequest()->getPost('login');
             $email = $username = $login['username'];
             $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
@@ -100,19 +96,16 @@ class LoginObserver implements ObserverInterface
                 $found = $search !== null
                     && ($search instanceof Entity\MemberContact)
                     && !empty($search->getEmail());
-
                 if (!$found) {
-                    $errorMessage   =   'Sorry. No account found with the provided email address';
+                    $errorMessage = __('Sorry. No account found with the provided email address');
                     return $this->handleErrorMessage($observer, $errorMessage);
                 }
                 $email = $search->getEmail();
             }
-
             if ($is_email) {
-                $searchResults      =   $this->contactHelper->searchCustomerByEmail($email);
-
+                $searchResults = $this->contactHelper->searchCustomerByEmail($email);
                 if ($searchResults->getTotalCount() == 0) {
-                    $errorMessage   =   'Unfortunately email login is only available for members registered in Magento';
+                    $errorMessage = __('Unfortunately email login is only available for members registered in Magento');
                     return $this->handleErrorMessage($observer, $errorMessage);
                 } else {
                     $customerObj = null;
@@ -124,16 +117,16 @@ class LoginObserver implements ObserverInterface
                     $username = $customerObj->getData('lsr_username');
                 }
             }
-
             /** @var  Entity\MemberContact $result */
             $result = $this->contactHelper->login($username, $login['password']);
-
             if ($result == false) {
-                $errorMessage   =   'Invalid Omni login or Omni password';
+                $errorMessage = __('Invalid Omni login or Omni password');
                 return $this->handleErrorMessage($observer, $errorMessage);
             }
-
             if ($result instanceof Entity\MemberContact) {
+                /**
+                 * Fetch customer related info from omni and create user in magento
+                 */
                 $this->contactHelper->processCustomerLogin($result, $login, $is_email);
 
                 /** Update Basket to Omni */

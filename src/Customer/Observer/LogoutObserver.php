@@ -23,7 +23,6 @@ class LogoutObserver implements ObserverInterface
     /**
      * LogoutObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      */

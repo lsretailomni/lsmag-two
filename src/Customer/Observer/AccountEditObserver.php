@@ -67,7 +67,6 @@ class AccountEditObserver implements ObserverInterface
         $controller_action = $observer->getData('controller_action');
         $customer_edit_post = $controller_action->getRequest()->getParams();
         $customer = $this->customerSession->getCustomer();
-
         if (isset($customer_edit_post['change_password']) && $customer_edit_post['change_password']) {
             if ($customer_edit_post['password'] == $customer_edit_post['password_confirmation']) {
                 $result = null;

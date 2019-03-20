@@ -80,10 +80,7 @@ class ForgotPasswordObserver implements ObserverInterface
      * Check if email is belongs to any account on Omni, i
      * f yes then generate the resetpasswordcode and store it in customer account.
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this
-     * @throws \Exception
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @return $this|ForgotPasswordObserver
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
@@ -98,7 +95,7 @@ class ForgotPasswordObserver implements ObserverInterface
             if ($email) {
                 if (!Zend_Validate::is($email, Zend_Validate_EmailAddress::class)) {
                     $this->customerSession->setForgottenEmail($email);
-                    $errorMessage   =   'Please correct the email address.';
+                    $errorMessage = __('Please correct the email address.');
                     return $this->handleErrorMessage($observer, $errorMessage);
                 }
                 $result = $this->contactHelper->forgotPassword($email);
@@ -112,7 +109,7 @@ class ForgotPasswordObserver implements ObserverInterface
                     $this->customerResourceModel->save($customer);
                 } else {
                     $this->customerSession->setForgottenEmail($email);
-                    $errorMessage   =   'There is no account found with the provided email address.';
+                    $errorMessage = __('There is no account found with the provided email address.');
                     return $this->handleErrorMessage($observer, $errorMessage);
                 }
             }
