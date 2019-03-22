@@ -8,11 +8,9 @@
         <referenceContainer name="content">
             <block class="Ls\Customer\Block\Account\Dashboard" name="ls_customer_account_club"
                    template="Ls_Customer::club.phtml" cacheable="false"/>
+            <block class="Ls\Customer\Block\Order\Recent" name="ls_customer_order_recent"
+                   template="Ls_Customer::order/recent.phtml" cacheable="false" after="ls_customer_account_club"/>
         </referenceContainer>
-        <referenceBlock name="customer_account_dashboard_top">
-            <action method="setTemplate">
-                <argument name="template" xsi:type="string">Ls_Customer::order/recent.phtml</argument>
-            </action>
-        </referenceBlock>
+        <referenceBlock name="customer_account_dashboard_top" remove="true"/>
     </body>
 </page>

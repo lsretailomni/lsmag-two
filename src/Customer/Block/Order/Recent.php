@@ -2,16 +2,14 @@
 namespace Ls\Customer\Block\Order;
 
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
-use Magento\Customer\Model\Session;
-use Magento\Sales\Model\Order\Config;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
+use \Ls\Omni\Helper\OrderHelper;
 
 /**
  * Class Recent
  * @package Ls\Customer\Block\Order
  */
-class Recent extends \Magento\Sales\Block\Order\Recent
+class Recent extends \Magento\Framework\View\Element\Template
 {
     /**
      * @var \Ls\Omni\Helper\OrderHelper
@@ -26,25 +24,19 @@ class Recent extends \Magento\Sales\Block\Order\Recent
     /**
      * Recent constructor.
      * @param Context $context
-     * @param CollectionFactory $orderCollectionFactory
-     * @param Session $customerSession
-     * @param Config $orderConfig
-     * @param \Ls\Omni\Helper\OrderHelper $orderHelper
+     * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param array $data
      */
     public function __construct(
         Context $context,
-        CollectionFactory $orderCollectionFactory,
-        Session $customerSession,
-        Config $orderConfig,
-        \Ls\Omni\Helper\OrderHelper $orderHelper,
+        OrderHelper $orderHelper,
         PriceCurrencyInterface $priceCurrency,
         array $data = []
     ) {
+        parent::__construct($context, $data);
         $this->orderHelper = $orderHelper;
         $this->priceCurrency = $priceCurrency;
-        parent::__construct($context, $orderCollectionFactory, $customerSession, $orderConfig, $data);
     }
 
     /**

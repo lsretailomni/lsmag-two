@@ -4,8 +4,6 @@
     <preference for="Magento\Customer\Api\CustomerRepositoryInterface"
                 type="Magento\Customer\Model\ResourceModel\CustomerRepository"/>
 
-    <preference for="Magento\Sales\Block\Order\Recent"
-                type="Ls\Customer\Block\Order\Recent"/>
     <preference for="Magento\Sales\Block\Order\History"
                 type="Ls\Customer\Block\Order\History"/>
 </config>
