@@ -14,7 +14,7 @@
         <strong><?= /* @escapeNotVerified */ __('Order Information') ?></strong>
     </div>
     <div class="block-content">
-        <? if(!$block->getOrder()->getClickAndCollectOrder()){?>
+        <?php if(!$block->getOrder()->getClickAndCollectOrder()){?>
         <div class="box box-order-shipping-address">
             <strong class="box-title"><span><?= /* @escapeNotVerified */ __('Shipping Address') ?></span></strong>
             <div class="box-content">
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <? if(!$block->getOrder()->getClickAndCollectOrder()){?>
+        <?php if(!$block->getOrder()->getClickAndCollectOrder()){?>
             <div class="box box-order-billing-address">
                 <strong class="box-title"><span><?= /* @escapeNotVerified */ __('Billing Address') ?></span></strong>
                 <div class="box-content">
