@@ -51,7 +51,8 @@ class CartObserver implements ObserverInterface
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession
-    ) {
+    )
+    {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
         $this->logger = $logger;
@@ -70,6 +71,7 @@ class CartObserver implements ObserverInterface
         if ($this->watchNextSave) {
             /** @var \Magento\Quote\Model\Quote $quote */
             $quote = $this->checkoutSession->getQuote();
+            $couponCode = $this->checkoutSession->getCouponCode();
             // This will create one list if not created and will return onelist if its already created.
             /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList|null $oneList */
             $oneList = $this->basketHelper->get();
@@ -79,6 +81,10 @@ class CartObserver implements ObserverInterface
             $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
             /** @var \Ls\Omni\Client\Ecommerce\Entity\Order $basketData */
             $basketData = $this->basketHelper->update($oneList);
+            $status = $this->basketHelper->setCouponCode($couponCode);
+            if (!is_object($status)) {
+                $this->basketHelper->unsetCouponCode('');
+            }
             $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
         }
         return $this;

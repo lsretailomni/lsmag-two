@@ -112,7 +112,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         LSR $Lsr,
         SessionManagerInterface $session,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
-    ) {
+    )
+    {
         parent::__construct($context);
         $this->cart = $cart;
         $this->productRepository = $productRepository;
@@ -208,6 +209,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
         $quoteItems = $quote->getAllVisibleItems();
+        if (count($quoteItems) == 0) {
+            $this->unsetCouponCode("");
+        }
 
         /** @var Entity\ArrayOfOneListItem $items */
         // @codingStandardsIgnoreLine
@@ -540,7 +544,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setStoreId($storeId);
             /** @var Entity\OneListCalculate $entity */
 
-            if ($this->couponCode != "" and $this->couponCode != null) {
+            if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
                 $offer = new Entity\OneListPublishedOffer();
                 $offers = new Entity\ArrayOfOneListPublishedOffer();
                 $offers->setOneListPublishedOffer($offer);
@@ -581,11 +585,26 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return String
+     * @return mixed
      */
     public function getCouponCode()
     {
-        return $this->couponCode;
+        $quoteCoupon = $this->checkoutSession->getCouponCode();
+        if (!($quoteCoupon == null)) {
+            $this->couponCode = $quoteCoupon;
+            $this->setCouponQuote($quoteCoupon);
+            return $quoteCoupon;
+        } else {
+            return $this->couponCode;
+        }
+    }
+
+    /**
+     * @param $couponCode
+     */
+    public function unsetCouponCode($couponCode)
+    {
+        $this->checkoutSession->setCouponCode($couponCode);
     }
 
     /**
@@ -767,7 +786,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->update(
                 $this->get()
             );
-            $this->setCouponQuote($this->couponCode);
+            $this->setCouponQuote("");
 
             return $status = '';
         }
@@ -789,6 +808,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             return $status;
         } else {
+            $this->setCouponQuote("");
             return LSR::LS_COUPON_CODE_ERROR_MESSAGE;
         }
     }
@@ -799,9 +819,14 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function setCouponQuote($couponCode)
     {
         $quote = $this->checkoutSession->getQuote();
-        $quote->getShippingAddress()->setCollectShippingRates(true);
-        $quote->setCouponCode($couponCode)->collectTotals();
-        $quote->setCouponCode($couponCode);
+        if (!empty($quote->getId())) {
+            $quote->getShippingAddress()->setCollectShippingRates(true);
+            $quote->setCouponCode($couponCode)->setTotalsCollectedFlag(false)->collectTotals();
+            $quote->setCouponCode($couponCode);
+            $this->checkoutSession->setCouponCode($couponCode);
+        } else {
+            $this->checkoutSession->setCouponCode("");
+        }
         $this->quoteRepository->save($quote);
     }
 
