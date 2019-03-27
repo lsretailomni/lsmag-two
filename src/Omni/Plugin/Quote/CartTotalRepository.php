@@ -6,7 +6,8 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
 use Magento\Quote\Api\Data\TotalsExtensionFactory;
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\BasketHelper;
 
 /**
  * Class CartTotalRepository
@@ -24,17 +25,27 @@ class CartTotalRepository
     /**
      * @var TotalsExtensionFactory
      */
-    protected $totalExtensionFactory;
+    private $totalExtensionFactory;
 
     /**
      * @var RequestInterface
      */
-    protected $request;
+    private $request;
 
     /**
      * @var LoyaltyHelper
      */
-    protected $loyaltyHelper;
+    private $loyaltyHelper;
+
+    /**
+     * @var \Magento\SalesRule\Model\Coupon
+     */
+    private $coupon;
+
+    /**
+     * @var Ls\Omni\Helper\BasketHelper
+     */
+    private $basketHelper;
 
     /**
      * CartTotalRepository constructor.
@@ -47,12 +58,17 @@ class CartTotalRepository
         CartRepositoryInterface $quoteRepository,
         TotalsExtensionFactory $totalExtensionFactory,
         RequestInterface $request,
-        LoyaltyHelper $helper
-    ) {
+        LoyaltyHelper $helper,
+        \Magento\SalesRule\Model\Coupon $coupon,
+        BasketHelper $basketHelper
+    )
+    {
         $this->quoteRepository = $quoteRepository;
         $this->totalExtensionFactory = $totalExtensionFactory;
         $this->request = $request;
         $this->loyaltyHelper = $helper;
+        $this->coupon = $coupon;
+        $this->basketHelper = $basketHelper;
     }
 
     /**
@@ -75,7 +91,10 @@ class CartTotalRepository
             'rateLabel' => $quote->getBaseCurrencyCode() . ' ' . round($this->loyaltyHelper->getPointRate() * 10, 2),
             'balance' => $this->loyaltyHelper->getMemberPoints(),
         ];
-
+        if (empty($quote->getCouponCode())) {
+            $couponCode = $this->basketHelper->checkoutSession->getCouponCode();
+            $this->basketHelper->setCouponQuote($couponCode);
+        }
         /** @var \Magento\Quote\Api\Data\TotalsExtensionInterface $totalsExtension */
         $totalsExtension = $quoteTotals->getExtensionAttributes() ?: $this->totalExtensionFactory->create();
         $totalsExtension->setLoyaltyPoints($pointsConfig);
