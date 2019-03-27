@@ -5,7 +5,7 @@
     </head>
     <body>
         <referenceContainer name="header.container">
-            <block class="Ls\Core\Block\InvalidNotice" name="invalid_notice" before="header.panel.wrapper" template="default.phtml" cacheable="false"/>
+            <block class="Ls\Core\Block\InvalidNotice" name="invalid_notice" before="header.panel.wrapper" template="default.phtml"/>
         </referenceContainer>
     </body>
 </page>

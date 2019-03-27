@@ -7,7 +7,7 @@
             <block class="Ls\Customer\Block\Order\Info" name="custom.order.date" template="Ls_Customer::order/order_date.phtml"/>
         </referenceContainer>
         <referenceContainer name="content">
-            <block class="Ls\Customer\Block\Order\View" name="custom_order_view" cacheable="false">
+            <block class="Ls\Customer\Block\Order\View" name="custom_order_view">
                 <block class="Ls\Customer\Block\Order\Items" name="custom_order_items" template="Ls_Customer::order/items.phtml">
                     <block class="Ls\Customer\Block\Order\Item\Renderer" name="custom_order_item_renderer" />
                     <block class="Ls\Customer\Block\Order\Totals" name="custom_order_totals" template="Ls_Customer::order/totals.phtml">

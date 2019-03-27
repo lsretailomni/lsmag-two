@@ -1,16 +1,15 @@
 {
   "name": "lsretail/lsmag-two",
-  "description": "LS NAV Magento 2 Integration",
+  "description": "LS Ecommerce - Magento Integration",
   "type": "magento2-module",
   "license": "proprietary",
   "version": "1.0.0",
   "authors": [
     {
-      "name": "LS Retail",
+      "name": "LS Retail Ecommerce Team",
       "email": "lsomnikl@lsretail.com"
     }
   ],
-  "minimum-stability": "alpha",
   "require": {
     "myclabs/php-enum": "^1.5",
     "sabre/xml": "^1.5",

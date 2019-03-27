@@ -10,7 +10,7 @@
         </referenceBlock>
         <referenceContainer name="content">
             <block class="Ls\Customer\Block\Loyalty\Offers" name="ls_customer_loyalty_offers"
-                   template="Ls_Customer::loyalty/offers.phtml" cacheable="false"/>
+                   template="Ls_Customer::loyalty/offers.phtml"/>
         </referenceContainer>
     </body>
 </page>
