@@ -1,13 +1,13 @@
-# LS Magento 2 Development Guide (Beta)
+# LS Ecommerce - Magento Integration
 
 ## Compatibility
 1. Magento Open Source 2.2.6 or later
-2. LS Central 11.x
-3. LS Omni Server 3.1.x | 3.2.x | 3.3.x or later
+2. LS Central 13.x
+3. LS Omni Server 3.5 or later
 
 ## Installation:
 
-1. Navigate to your magento2 installation directory and run `composer require "lsretail/lsmag-two:dev-Release/1.0"`
+1. Navigate to your magento2 installation directory and run `composer require "lsretail/lsmag-two"`
 2. Run `composer update` to install all the dependencies it needs.
 3. Once done, you will see the list of our LS retail modules in disable section once you triggered the  `php bin/magento module:status` command from your Magento 2 CLI and lsretail folder in the vendor directory.
 4. To enable all our modules, run command from command line, `php bin/magento module:enable Ls_Core Ls_Omni Ls_Customer Ls_Replication`
@@ -23,6 +23,3 @@ followed by `php bin/magento setup:upgrade ` and  `php bin/magento setup:di:
 12. If your server is setup for cron, then you will see all the new crons created in the `cron_schedule` table if not, it means your server is not setup to schedule cron, to trigger the cron manually,run `php bin/magento cron:run from command line. 
 13. To Trigger the cron manually from admin panel, navigate to LS Retail -> Cron Listing from the left menu and click on the cron which needs to be run.
 14. To see if the data is replicated in the Magento completely or not, you can navigate to any Replication job from `LS Retail -> Replication` Status and there we can see the status with `Processed` or `Not Processed` in the grid.
-
-
- 

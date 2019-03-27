@@ -40,6 +40,11 @@ class OrderObserver implements ObserverInterface
     private $watchNextSave = false;
 
     /**
+     * @var \Magento\Sales\Model\ResourceModel\Order
+     */
+    private $orderResourceModel;
+
+    /**
      * OrderObserver constructor.
      * @param ContactHelper $contactHelper
      * @param BasketHelper $basketHelper
@@ -47,6 +52,7 @@ class OrderObserver implements ObserverInterface
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param \Magento\Sales\Model\ResourceModel\Order $orderResourceModel
      */
 
     public function __construct(
@@ -55,7 +61,8 @@ class OrderObserver implements ObserverInterface
         OrderHelper $orderHelper,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
+        \Magento\Sales\Model\ResourceModel\Order $orderResourceModel
     ) {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
@@ -63,12 +70,14 @@ class OrderObserver implements ObserverInterface
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
+        $this->orderResourceModel = $orderResourceModel;
     }
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
-     * @return $this
+     * @return $this|void
      * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
@@ -77,23 +86,29 @@ class OrderObserver implements ObserverInterface
         $oneListCalculation = $this->basketHelper->getOneListCalculation();
         $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
         $response = $this->orderHelper->placeOrder($request);
-        if ($response) {
-            //delete from Omni.
-            $this->checkoutSession->unsetData('member_points');
-            if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-                //TODO error which Hjalti highlighted. when there is only one item in the cart and customer remove that.
-                $success = $this->basketHelper->delete($onelist);
-                $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
-                // delete checkout session data.
-                $this->basketHelper->unSetOneListCalculation();
-                $this->basketHelper->unsetCouponCode('');
+        try {
+            if ($response) {
+                //delete from Omni.
+                $documentId = $response->getDocumentId();
+                $order->setDocumentId($documentId);
+                $this->orderResourceModel->save($order);
+                $this->checkoutSession->unsetData('member_points');
+                if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+                    $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
+                    //TODO error which Hjalti highlighted. when there is only one item in the cart and customer remove that.
+                    $success = $this->basketHelper->delete($onelist);
+                    $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
+                    // delete checkout session data.
+                    $this->basketHelper->unSetOneListCalculation();
+                }
+            } else {
+                // TODO: error handling
+                $this->logger->critical(
+                    __('Something trrible happen while placing order')
+                );
             }
-        } else {
-            // TODO: error handling
-            $this->logger->critical(
-                __('Something trrible happen while placing order')
-            );
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
         }
 
         return $this;
