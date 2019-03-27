@@ -4,7 +4,6 @@
   "type": "magento2-module",
   "license": "proprietary",
   "version": "1.0.1",
-  "minimum-stability": "stable",
   "authors": [
     {
       "name": "LS Retail Ecommerce Team",
