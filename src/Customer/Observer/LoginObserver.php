@@ -39,6 +39,9 @@ class LoginObserver implements ObserverInterface
     /** @var \Magento\Customer\Model\CustomerFactory */
     private $customerFactory;
 
+    /** @var \Ls\Core\Model\LSR @var  */
+    private $lsr;
+
     /**
      * LoginObserver constructor.
      * @param ContactHelper $contactHelper
@@ -58,7 +61,8 @@ class LoginObserver implements ObserverInterface
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Customer\Model\CustomerFactory $customerFactory
+        \Magento\Customer\Model\CustomerFactory $customerFactory,
+        \Ls\Core\Model\LSR $LSR
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
@@ -68,6 +72,7 @@ class LoginObserver implements ObserverInterface
         $this->actionFlag = $actionFlag;
         $this->storeManager = $storeManager;
         $this->customerFactory = $customerFactory;
+        $this->lsr  =   $LSR;
     }
 
     /**
@@ -84,64 +89,69 @@ class LoginObserver implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        try {
-            /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
-            $controller_action = $observer->getData('controller_action');
-            $login = $controller_action->getRequest()->getPost('login');
-            $email = $username = $login['username'];
-            $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-            $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
-            if ($is_email) {
-                $search = $this->contactHelper->search($username);
-                $found = $search !== null
-                    && ($search instanceof Entity\MemberContact)
-                    && !empty($search->getEmail());
-                if (!$found) {
-                    $errorMessage = __('Sorry. No account found with the provided email address');
-                    return $this->handleErrorMessage($observer, $errorMessage);
-                }
-                $email = $search->getEmail();
-            }
-            if ($is_email) {
-                $searchResults = $this->contactHelper->searchCustomerByEmail($email);
-                if ($searchResults->getTotalCount() == 0) {
-                    $errorMessage = __('Unfortunately email login is only available for members registered in Magento');
-                    return $this->handleErrorMessage($observer, $errorMessage);
-                } else {
-                    $customerObj = null;
-                    foreach ($searchResults->getItems() as $match) {
-                        $customerObj = $this->customerFactory->create()->setWebsiteId($websiteId)
-                            ->loadByEmail($email);
-                        break;
+        /*
+         * Adding condition to only process if LSR is enabled.
+         */
+        if ($this->lsr->isLSR()) {
+            try {
+                /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
+                $controller_action = $observer->getData('controller_action');
+                $login = $controller_action->getRequest()->getPost('login');
+                $email = $username = $login['username'];
+                $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
+                $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
+                if ($is_email) {
+                    $search = $this->contactHelper->search($username);
+                    $found = $search !== null
+                        && ($search instanceof Entity\MemberContact)
+                        && !empty($search->getEmail());
+                    if (!$found) {
+                        $errorMessage = __('Sorry. No account found with the provided email address');
+                        return $this->handleErrorMessage($observer, $errorMessage);
                     }
-                    $username = $customerObj->getData('lsr_username');
+                    $email = $search->getEmail();
                 }
-            }
-            /** @var  Entity\MemberContact $result */
-            $result = $this->contactHelper->login($username, $login['password']);
-            if ($result == false) {
-                $errorMessage = __('Invalid Omni login or Omni password');
-                return $this->handleErrorMessage($observer, $errorMessage);
-            }
-            if ($result instanceof Entity\MemberContact) {
-                /**
-                 * Fetch customer related info from omni and create user in magento
-                 */
-                $this->contactHelper->processCustomerLogin($result, $login, $is_email);
+                if ($is_email) {
+                    $searchResults = $this->contactHelper->searchCustomerByEmail($email);
+                    if ($searchResults->getTotalCount() == 0) {
+                        $errorMessage = __('Unfortunately email login is only available for members registered in Magento');
+                        return $this->handleErrorMessage($observer, $errorMessage);
+                    } else {
+                        $customerObj = null;
+                        foreach ($searchResults->getItems() as $match) {
+                            $customerObj = $this->customerFactory->create()->setWebsiteId($websiteId)
+                                ->loadByEmail($email);
+                            break;
+                        }
+                        $username = $customerObj->getData('lsr_username');
+                    }
+                }
+                /** @var  Entity\MemberContact $result */
+                $result = $this->contactHelper->login($username, $login['password']);
+                if ($result == false) {
+                    $errorMessage = __('Invalid Omni login or Omni password');
+                    return $this->handleErrorMessage($observer, $errorMessage);
+                }
+                if ($result instanceof Entity\MemberContact) {
+                    /**
+                     * Fetch customer related info from omni and create user in magento
+                     */
+                    $this->contactHelper->processCustomerLogin($result, $login, $is_email);
 
-                /** Update Basket to Omni */
-                $this->contactHelper->updateBasketAfterLogin(
-                    $result->getBasket(),
-                    $result->getId(),
-                    $result->getCard()->getId()
-                );
-            } else {
-                $this->customerSession->addError(
-                    __('The service is currently unavailable. Please try again later.')
-                );
+                    /** Update Basket to Omni */
+                    $this->contactHelper->updateBasketAfterLogin(
+                        $result->getBasket(),
+                        $result->getId(),
+                        $result->getCard()->getId()
+                    );
+                } else {
+                    $this->customerSession->addError(
+                        __('The service is currently unavailable. Please try again later.')
+                    );
+                }
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
             }
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
         }
         return $this;
     }

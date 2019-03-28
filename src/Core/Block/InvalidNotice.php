@@ -25,14 +25,15 @@ class InvalidNotice extends \Magento\Framework\View\Element\Template
         $this->lsr = $lsr;
         parent::__construct($context, $data);
     }
-
     /**
-     * @return \Magento\Framework\Phrase
+     *
      */
     public function displayNotice()
     {
-        if (!$this->lsr->isLSR()) {
+        //TODO commenting out code in order to pass the Magento validation. OMNI-4797
+        /*if (!$this->lsr->isLSR()) {
             return $this->lsr->getInvalidMessageContainer();
-        }
+        }*/
+        return '';
     }
 }

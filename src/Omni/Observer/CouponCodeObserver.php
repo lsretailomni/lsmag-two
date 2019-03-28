@@ -27,6 +27,9 @@ class CouponCodeObserver implements ObserverInterface
     /** @var \Magento\Framework\UrlInterface */
     private $url;
 
+    /** @var \Ls\Core\Model\LSR @var  */
+    private $lsr;
+
     /**
      * CouponCodeObserver constructor.
      * @param BasketHelper $basketHelper
@@ -40,42 +43,51 @@ class CouponCodeObserver implements ObserverInterface
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
-        \Magento\Framework\UrlInterface $url
+        \Magento\Framework\UrlInterface $url,
+        \Ls\Core\Model\LSR $LSR
     ) {
         $this->basketHelper = $basketHelper;
         $this->logger = $logger;
         $this->messageManager = $messageManager;
         $this->redirectFactory = $redirectFactory;
         $this->url = $url;
+        $this->lsr  =   $LSR;
     }
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
+     * @return $this|void
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $controller = $observer->getControllerAction();
-        $couponCode = $controller->getRequest()->getParam('coupon_code');
-        $couponCode = trim($couponCode);
-        $status = $this->basketHelper->setCouponCode($couponCode);
-        if ($controller->getRequest()->getParam('remove') == 1) {
-            $this->basketHelper->setCouponCode('');
-            $this->messageManager->addSuccessMessage(__("Coupon Code Successfully Removed"));
-        } else {
-            if ($status == "success") {
-                $this->messageManager->addSuccessMessage(__(
-                    'You used coupon code "%1".',
-                    $couponCode
-                ));
+        /*
+         * Adding condition to only process if LSR is enabled.
+         */
+        if ($this->lsr->isLSR()) {
+            $controller = $observer->getControllerAction();
+            $couponCode = $controller->getRequest()->getParam('coupon_code');
+            $couponCode = trim($couponCode);
+            $status = $this->basketHelper->setCouponCode($couponCode);
+            if ($controller->getRequest()->getParam('remove') == 1) {
+                $this->basketHelper->setCouponCode('');
+                $this->messageManager->addSuccessMessage(__("Coupon Code Successfully Removed"));
             } else {
-                if ($status == "") {
-                    $message=LSR::LS_COUPON_CODE_ERROR_MESSAGE;
-                    $status = __($message);
+                if ($status == "success") {
+                    $this->messageManager->addSuccessMessage(__(
+                        'You used coupon code "%1".',
+                        $couponCode
+                    ));
+                } else {
+                    if ($status == "") {
+                        $message = LSR::LS_COUPON_CODE_ERROR_MESSAGE;
+                        $status = __($message);
+                    }
+                    $this->messageManager->addErrorMessage($status);
                 }
-                $this->messageManager->addErrorMessage($status);
             }
         }
+        return $this;
     }
 }

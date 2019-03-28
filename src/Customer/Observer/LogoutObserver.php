@@ -20,6 +20,9 @@ class LogoutObserver implements ObserverInterface
     /** @var \Magento\Customer\Model\Session\Proxy  */
     private $customerSession;
 
+    /** @var \Ls\Core\Model\LSR @var  */
+    private $lsr;
+
     /**
      * LogoutObserver constructor.
      * @param ContactHelper $contactHelper
@@ -29,11 +32,13 @@ class LogoutObserver implements ObserverInterface
     public function __construct(
         ContactHelper $contactHelper,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Ls\Core\Model\LSR $LSR
     ) {
         $this->contactHelper = $contactHelper;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
+        $this->lsr  =   $LSR;
     }
 
     /**
@@ -43,11 +48,16 @@ class LogoutObserver implements ObserverInterface
     // @codingStandardsIgnoreStart
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $result = $this->contactHelper->logout();
-        if (!$result) {
-            $this->logger->debug('Something went wrong while logging out from Omni');
+        /*
+         * Adding condition to only process if LSR is enabled.
+         */
+        if ($this->lsr->isLSR()) {
+            $result = $this->contactHelper->logout();
+            if (!$result) {
+                $this->logger->debug('Something went wrong while logging out from Omni');
+            }
+            $this->customerSession->destroy();
         }
-        $this->customerSession->destroy();
         return $this;
     }
     // @codingStandardsIgnoreEnd

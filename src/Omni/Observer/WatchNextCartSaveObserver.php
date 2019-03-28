@@ -11,7 +11,7 @@ use Magento\Framework\Event\Observer;
 class WatchNextCartSaveObserver implements ObserverInterface
 {
     /** @var CartObserver  */
-    protected $cartObserver;
+    private $cartObserver;
 
     public function __construct(CartObserver $cartObserver)
     {

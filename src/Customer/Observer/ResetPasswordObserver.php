@@ -35,6 +35,9 @@ class ResetPasswordObserver implements ObserverInterface
     /** @var \Magento\Store\Model\StoreManagerInterface */
     private $storeManager;
 
+    /** @var \Ls\Core\Model\LSR @var  */
+    private $lsr;
+
     /**
      * ResetPasswordObserver constructor.
      * @param ContactHelper $contactHelper
@@ -54,7 +57,8 @@ class ResetPasswordObserver implements ObserverInterface
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Ls\Core\Model\LSR $LSR
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
@@ -64,6 +68,7 @@ class ResetPasswordObserver implements ObserverInterface
         $this->actionFlag = $actionFlag;
         $this->customerRepository = $customerRepository;
         $this->storeManager = $storeManager;
+        $this->lsr  =   $LSR;
     }
 
     /**
@@ -75,33 +80,39 @@ class ResetPasswordObserver implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        try {
-            /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
-            $controller_action = $observer->getData('controller_action');
-            $post_param = $controller_action->getRequest()->getParams();
-            /**
-             * only have to continue if actual event does not throws any error
-             * from Magento/Customer/Controller/Account/ResetPasswordPost.php
-             * If its failed then getRpToken() must return some response, but if it success, then it will return null
-             */
-            $isFailed = $this->customerSession->getRpToken();
-            if (!$isFailed) {
-                $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                $customer = $this->customerRepository->getById($post_param['id']);
-                $customer->setWebsiteId($websiteId);
-                $result = $this->contactHelper->resetPassword($customer, $post_param);
-                if (!$result) {
-                    $this->messageManager->addErrorMessage(
-                        __('Something went wrong, Please try again later.')
-                    );
-                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()->getResponse()
-                        ->setRedirect($this->redirectInterface->getRefererUrl());
+        /*
+         * Adding condition to only process if LSR is enabled.
+         */
+        if ($this->lsr->isLSR()) {
+            try {
+                /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
+                $controller_action = $observer->getData('controller_action');
+                $post_param = $controller_action->getRequest()->getParams();
+                /**
+                 * only have to continue if actual event does not throws any error
+                 * from Magento/Customer/Controller/Account/ResetPasswordPost.php
+                 * If its failed then getRpToken() must return some response,
+                 * but if it success, then it will return null
+                 */
+                $isFailed = $this->customerSession->getRpToken();
+                if (!$isFailed) {
+                    $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
+                    $customer = $this->customerRepository->getById($post_param['id']);
+                    $customer->setWebsiteId($websiteId);
+                    $result = $this->contactHelper->resetPassword($customer, $post_param);
+                    if (!$result) {
+                        $this->messageManager->addErrorMessage(
+                            __('Something went wrong, Please try again later.')
+                        );
+                        $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                        $observer->getControllerAction()->getResponse()
+                            ->setRedirect($this->redirectInterface->getRefererUrl());
+                    }
                 }
+                return $this;
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
             }
-            return $this;
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
         }
         return $this;
     }

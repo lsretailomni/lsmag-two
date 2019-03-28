@@ -29,6 +29,9 @@ class AccountEditObserver implements ObserverInterface
     /** @var \Magento\Framework\App\Response\RedirectInterface */
     private $redirectInterface;
 
+    /** @var \Ls\Core\Model\LSR @var  */
+    private $lsr;
+
     /**
      * AccountEditObserver constructor.
      * @param ContactHelper $contactHelper
@@ -45,7 +48,8 @@ class AccountEditObserver implements ObserverInterface
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
-        \Magento\Framework\App\ActionFlag $actionFlag
+        \Magento\Framework\App\ActionFlag $actionFlag,
+        \Ls\Core\Model\LSR $LSR
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
@@ -53,6 +57,7 @@ class AccountEditObserver implements ObserverInterface
         $this->customerSession = $customerSession;
         $this->redirectInterface = $redirectInterface;
         $this->actionFlag = $actionFlag;
+        $this->lsr  =   $LSR;
     }
 
     /**
@@ -64,32 +69,38 @@ class AccountEditObserver implements ObserverInterface
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
-        $controller_action = $observer->getData('controller_action');
-        $customer_edit_post = $controller_action->getRequest()->getParams();
-        $customer = $this->customerSession->getCustomer();
-        if (isset($customer_edit_post['change_password']) && $customer_edit_post['change_password']) {
-            if ($customer_edit_post['password'] == $customer_edit_post['password_confirmation']) {
-                $result = null;
-                $result = $this->contactHelper->changePassword($customer, $customer_edit_post);
-                if (!empty($result)) {
-                    $this->messageManager->addSuccessMessage(
-                        __('Your password has been updated.')
-                    );
+
+        /*
+         * Adding condition to only process if LSR is enabled.
+         */
+        if ($this->lsr->isLSR()) {
+            $controller_action = $observer->getData('controller_action');
+            $customer_edit_post = $controller_action->getRequest()->getParams();
+            $customer = $this->customerSession->getCustomer();
+            if (isset($customer_edit_post['change_password']) && $customer_edit_post['change_password']) {
+                if ($customer_edit_post['password'] == $customer_edit_post['password_confirmation']) {
+                    $result = null;
+                    $result = $this->contactHelper->changePassword($customer, $customer_edit_post);
+                    if (!empty($result)) {
+                        $this->messageManager->addSuccessMessage(
+                            __('Your password has been updated.')
+                        );
+                    } else {
+                        $this->messageManager->addErrorMessage(
+                            __('You have entered an invalid current password.')
+                        );
+                        $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                        $observer->getControllerAction()->getResponse()
+                            ->setRedirect($this->redirectInterface->getRefererUrl());
+                    }
                 } else {
                     $this->messageManager->addErrorMessage(
-                        __('You have entered an invalid current password.')
+                        __('Confirm password did not match.')
                     );
                     $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
                     $observer->getControllerAction()->getResponse()
                         ->setRedirect($this->redirectInterface->getRefererUrl());
                 }
-            } else {
-                $this->messageManager->addErrorMessage(
-                    __('Confirm password did not match.')
-                );
-                $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                $observer->getControllerAction()->getResponse()
-                    ->setRedirect($this->redirectInterface->getRefererUrl());
             }
         }
         return $this;

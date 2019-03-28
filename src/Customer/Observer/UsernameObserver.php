@@ -29,6 +29,9 @@ class UsernameObserver implements ObserverInterface
     /** @var \Magento\Framework\App\ActionFlag  */
     private $actionFlag;
 
+    /** @var \Ls\Core\Model\LSR @var  */
+    private $lsr;
+
     /**
      * UsernameObserver constructor.
      * @param ContactHelper $contactHelper
@@ -44,7 +47,8 @@ class UsernameObserver implements ObserverInterface
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
-        \Magento\Framework\App\ActionFlag $actionFlag
+        \Magento\Framework\App\ActionFlag $actionFlag,
+        \Ls\Core\Model\LSR $LSR
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
@@ -52,6 +56,7 @@ class UsernameObserver implements ObserverInterface
         $this->customerSession = $customerSession;
         $this->redirectInterface = $redirectInterface;
         $this->actionFlag = $actionFlag;
+        $this->lsr  =   $LSR;
     }
 
     /**
@@ -65,23 +70,29 @@ class UsernameObserver implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        try {
-            /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
-            $controller_action = $observer->getData('controller_action');
-            $parameters = $controller_action->getRequest()->getParams();
-            $this->customerSession->setLsrUsername($parameters['lsr_username']);
-            if ($this->contactHelper->isUsernameExist($parameters['lsr_username'])) {
-                $this->messageManager->addErrorMessage(
-                    __('Username already exist, please try another one.')
-                );
-                $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
-                $observer->getControllerAction()
-                    ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
-                $this->customerSession->setCustomerFormData($parameters);
+        /*
+         * Adding condition to only process if LSR is enabled.
+         */
+        if ($this->lsr->isLSR()) {
+            try {
+                /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
+                $controller_action = $observer->getData('controller_action');
+                $parameters = $controller_action->getRequest()->getParams();
+                $this->customerSession->setLsrUsername($parameters['lsr_username']);
+                if ($this->contactHelper->isUsernameExist($parameters['lsr_username'])) {
+                    $this->messageManager->addErrorMessage(
+                        __('Username already exist, please try another one.')
+                    );
+                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                    $observer->getControllerAction()
+                        ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
+                    $this->customerSession->setCustomerFormData($parameters);
+                }
+                return $this;
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
             }
-            return $this;
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
         }
+        return $this;
     }
 }

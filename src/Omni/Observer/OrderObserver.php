@@ -26,23 +26,20 @@ class OrderObserver implements ObserverInterface
     /** @var \Psr\Log\LoggerInterface  */
     private $logger;
 
-    /**
-     * @var \Magento\Customer\Model\Session\Proxy
-     */
+    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
     private $customerSession;
 
-    /**
-     * @var \Magento\Checkout\Model\Session\Proxy
-     */
+    /** @var \Magento\Checkout\Model\Session\Proxy $checkoutSession */
     private $checkoutSession;
 
     /** @var bool  */
     private $watchNextSave = false;
 
-    /**
-     * @var \Magento\Sales\Model\ResourceModel\Order
-     */
+    /** @var \Magento\Sales\Model\ResourceModel\Order $orderResourceModel */
     private $orderResourceModel;
+
+    /** @var \Ls\Core\Model\LSR @var  */
+    private $lsr;
 
     /**
      * OrderObserver constructor.
@@ -62,7 +59,8 @@ class OrderObserver implements ObserverInterface
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Sales\Model\ResourceModel\Order $orderResourceModel
+        \Magento\Sales\Model\ResourceModel\Order $orderResourceModel,
+        \Ls\Core\Model\LSR $LSR
     ) {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
@@ -71,6 +69,7 @@ class OrderObserver implements ObserverInterface
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
+        $this->lsr  =   $LSR;
     }
 
     /**
@@ -81,36 +80,41 @@ class OrderObserver implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $order = $observer->getEvent()->getData('order');
-        /** @var Entity\Order $oneListCalculation */
-        $oneListCalculation = $this->basketHelper->getOneListCalculation();
-        $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-        $response = $this->orderHelper->placeOrder($request);
-        try {
-            if ($response) {
-                //delete from Omni.
-                $documentId = $response->getDocumentId();
-                $order->setDocumentId($documentId);
-                $this->orderResourceModel->save($order);
-                $this->checkoutSession->unsetData('member_points');
-                if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                    $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-                    //TODO error which Hjalti highlighted. when there is only one item in the cart and customer remove that.
-                    $success = $this->basketHelper->delete($onelist);
-                    $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
-                    // delete checkout session data.
-                    $this->basketHelper->unSetOneListCalculation();
+        /*
+         * Adding condition to only process if LSR is enabled.
+         */
+        if ($this->lsr->isLSR()) {
+            $order = $observer->getEvent()->getData('order');
+            /** @var Entity\Order $oneListCalculation */
+            $oneListCalculation = $this->basketHelper->getOneListCalculation();
+            $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+            $response = $this->orderHelper->placeOrder($request);
+            try {
+                if ($response) {
+                    //delete from Omni.
+                    $documentId = $response->getDocumentId();
+                    $order->setDocumentId($documentId);
+                    $this->orderResourceModel->save($order);
+                    $this->checkoutSession->unsetData('member_points');
+                    if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+                        $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
+                        //TODO error which Hjalti highlighted.
+                        // when there is only one item in the cart and customer remove that.
+                        $success = $this->basketHelper->delete($onelist);
+                        $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
+                        // delete checkout session data.
+                        $this->basketHelper->unSetOneListCalculation();
+                    }
+                } else {
+                    // TODO: error handling
+                    $this->logger->critical(
+                        __('Something trrible happen while placing order')
+                    );
                 }
-            } else {
-                // TODO: error handling
-                $this->logger->critical(
-                    __('Something trrible happen while placing order')
-                );
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
             }
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
         }
-
         return $this;
     }
 }
