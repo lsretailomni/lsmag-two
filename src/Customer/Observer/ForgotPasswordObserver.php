@@ -41,6 +41,9 @@ class ForgotPasswordObserver implements ObserverInterface
     /** @var \Magento\Customer\Model\ResourceModel\Customer */
     private $customerResourceModel;
 
+    /** @var \Ls\Core\Model\LSR @var  */
+    private $lsr;
+
     /**
      * ForgotPasswordObserver constructor.
      * @param ContactHelper $contactHelper
@@ -63,7 +66,8 @@ class ForgotPasswordObserver implements ObserverInterface
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
+        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
+        \Ls\Core\Model\LSR $LSR
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
@@ -74,6 +78,7 @@ class ForgotPasswordObserver implements ObserverInterface
         $this->customerFactory = $customerFactory;
         $this->storeManager = $storeManager;
         $this->customerResourceModel = $customerResourceModel;
+        $this->lsr  =   $LSR;
     }
 
     /**
@@ -84,37 +89,42 @@ class ForgotPasswordObserver implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        try {
-            /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
-            $controller_action = $observer->getData('controller_action');
-            $post_param = $controller_action->getRequest()->getParams();
-            $email = false;
-            if (isset($post_param['email']) and $post_param['email'] != '') {
-                $email = $post_param['email'];
-            }
-            if ($email) {
-                if (!Zend_Validate::is($email, Zend_Validate_EmailAddress::class)) {
-                    $this->customerSession->setForgottenEmail($email);
-                    $errorMessage = __('Please correct the email address.');
-                    return $this->handleErrorMessage($observer, $errorMessage);
+        /*
+         * Adding condition to only process if LSR is enabled.
+         */
+        if ($this->lsr->isLSR()) {
+            try {
+                /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
+                $controller_action = $observer->getData('controller_action');
+                $post_param = $controller_action->getRequest()->getParams();
+                $email = false;
+                if (isset($post_param['email']) and $post_param['email'] != '') {
+                    $email = $post_param['email'];
                 }
-                $result = $this->contactHelper->forgotPassword($email);
-                if ($result) {
-                    $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                    $customer = $this->customerFactory->create()
-                        ->setWebsiteId($websiteId)
-                        ->loadByEmail($email);
-                    $customer->setData('attribute_set_id', CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
-                    $customer->setData('lsr_resetcode', $result);
-                    $this->customerResourceModel->save($customer);
-                } else {
-                    $this->customerSession->setForgottenEmail($email);
-                    $errorMessage = __('There is no account found with the provided email address.');
-                    return $this->handleErrorMessage($observer, $errorMessage);
+                if ($email) {
+                    if (!Zend_Validate::is($email, Zend_Validate_EmailAddress::class)) {
+                        $this->customerSession->setForgottenEmail($email);
+                        $errorMessage = __('Please correct the email address.');
+                        return $this->handleErrorMessage($observer, $errorMessage);
+                    }
+                    $result = $this->contactHelper->forgotPassword($email);
+                    if ($result) {
+                        $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
+                        $customer = $this->customerFactory->create()
+                            ->setWebsiteId($websiteId)
+                            ->loadByEmail($email);
+                        $customer->setData('attribute_set_id', CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
+                        $customer->setData('lsr_resetcode', $result);
+                        $this->customerResourceModel->save($customer);
+                    } else {
+                        $this->customerSession->setForgottenEmail($email);
+                        $errorMessage = __('There is no account found with the provided email address.');
+                        return $this->handleErrorMessage($observer, $errorMessage);
+                    }
                 }
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
             }
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
         }
         return $this;
     }
