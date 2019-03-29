@@ -108,6 +108,13 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public function getViewUrl($order)
     {
-        return $this->getUrl('customer/order/view', ['order_id' => $order->getDocumentId()]);
+        /*
+        * Adding condition to only process if LSR is enabled.
+        */
+        if ($this->lsr->isLSR()) {
+            return $this->getUrl('customer/order/view', ['order_id' => $order->getDocumentId()]);
+        }
+        return parent::getViewUrl($order);
+
     }
 }
