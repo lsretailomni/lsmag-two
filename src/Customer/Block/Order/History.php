@@ -19,6 +19,9 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public $priceCurrency;
 
+    /** @var \Ls\Core\Model\LSR @var  */
+    public $lsr;
+
     /**
      * History constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
@@ -36,31 +39,44 @@ class History extends \Magento\Sales\Block\Order\History
         \Magento\Sales\Model\Order\Config $orderConfig,
         \Ls\Omni\Helper\OrderHelper $orderHelper,
         PriceCurrencyInterface $priceCurrency,
+        \Ls\Core\Model\LSR $LSR,
         array $data = []
     ) {
         $this->orderHelper = $orderHelper;
         $this->priceCurrency = $priceCurrency;
+        $this->lsr  =   $LSR;
         parent::__construct($context, $orderCollectionFactory, $customerSession, $orderConfig, $data);
     }
 
     /**
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\Order[]|null
+     * @return array|bool|\Ls\Omni\Client\Ecommerce\Entity\Order[]|\Magento\Sales\Model\ResourceModel\Order\Collection|null
      */
     public function getOrderHistory()
     {
-        $response = null;
-        try {
-            $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
-        } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
+
+        /*
+        * Adding condition to only process if LSR is enabled.
+        */
+        if ($this->lsr->isLSR()) {
+            $response = null;
+
+            if ($this->orderHelper->getCurrentCustomerOrderHistory()) {
+                try {
+                    $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
+                } catch (\Exception $e) {
+                    $this->_logger->error($e->getMessage());
+                }
+                if (!is_array($response)) {
+                    $obj = $response;
+                    // @codingStandardsIgnoreStart
+                    $response = array($obj);
+                    // @codingStandardsIgnoreEnd
+                }
+            }
+            return $response;
         }
-        if (!is_array($response)) {
-            $obj = $response;
-            // @codingStandardsIgnoreStart
-            $response = array($obj);
-            // @codingStandardsIgnoreEnd
-        }
-        return $response;
+        return parent::getOrders();
+
     }
 
     /**
