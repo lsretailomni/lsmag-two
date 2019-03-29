@@ -43,7 +43,6 @@ class Info extends \Magento\Framework\View\Element\Template
         array $data = []
     ) {
         $this->coreRegistry = $registry;
-        $this->_isScopePrivate = true;
         $this->countryFactory = $countryFactory;
         parent::__construct($context, $data);
     }
@@ -174,5 +173,13 @@ class Info extends \Magento\Framework\View\Element\Template
     {
         $points = number_format((float)$points, 2, '.', '');
         return $points;
+    }
+
+    /**
+     * @return bool|int|null
+     */
+    public function getCacheLifetime()
+    {
+        return false;
     }
 }

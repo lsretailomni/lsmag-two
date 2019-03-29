@@ -5,6 +5,7 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Controller\AbstractController\OrderLoaderInterface;
+use Magento\Framework\Controller\ResultFactory;
 
 class View extends \Magento\Sales\Controller\Order\View
 {
@@ -40,15 +41,24 @@ class View extends \Magento\Sales\Controller\Order\View
     }
 
     /**
-     * @return \Magento\Framework\Controller\ResultInterface|void
+     * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
-        if ($this->request->getParam('order_id')) {
-            $orderId = $this->request->getParam('order_id');
-            $order = $this->getOrder($orderId);
-        } else {
-            parent::execute();
+        try {
+            if ($this->request->getParam('order_id')) {
+                $orderId = $this->request->getParam('order_id');
+                $order = $this->getOrder($orderId);
+                $documentId = $order->getDocumentId();
+            }
+            if (empty($documentId)) {
+                return parent::execute();
+            }
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $resultRedirect->setPath('customer/order/view/order_id/'.$documentId);
+            return $resultRedirect;
+        } catch (\Exception $e) {
+            return parent::execute();
         }
     }
 
