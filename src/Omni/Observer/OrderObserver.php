@@ -92,6 +92,7 @@ class OrderObserver implements ObserverInterface
                 $documentId = $response->getDocumentId();
                 $order->setDocumentId($documentId);
                 $this->orderResourceModel->save($order);
+                $this->checkoutSession->setLastDocumentId($documentId);
                 $this->checkoutSession->unsetData('member_points');
                 if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                     $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
