@@ -20,7 +20,7 @@
             <block class="Ls\Omni\Block\Product\View\Recommend"
                    name="ls.omni.product.recommendation"
                    template="Ls_Omni::product/recommendation.phtml"
-                   after="product.info.main"/>
+                   after="product.info.main" ifconfig="ls_mag/ls_recommend/product" />
         </referenceContainer>
         <referenceBlock name="product.info.addtocart">
             <action method="setTemplate">

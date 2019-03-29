@@ -5,7 +5,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Ls\Omni\Block\Stores\Stores" name="ls.omni.stores" template="Ls_Omni::stores/stores.phtml" />
+            <block class="Ls\Omni\Block\Stores\Stores" name="ls.omni.stores" template="Ls_Omni::stores/stores.phtml" ifconfig="ls_mag/service/replicate_hierarchy_code" />
         </referenceContainer>
     </body>
 </page>
