@@ -43,7 +43,7 @@ class DeleteDatabtn extends \Magento\Config\Block\System\Config\Form\Field
         $this->addData(
             [
                 'button_label' => __($buttonLabel),
-                'button_url' => $this->getBaseUrl() . $buttonUrl,
+                'button_url' => $this->getUrl($buttonUrl),
                 'html_id' => $element->getHtmlId(),
             ]
         );
