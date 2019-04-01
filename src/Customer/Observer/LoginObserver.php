@@ -106,30 +106,15 @@ class LoginObserver implements ObserverInterface
                         && ($search instanceof Entity\MemberContact)
                         && !empty($search->getEmail());
                     if (!$found) {
-                        $errorMessage = __('Sorry. No account found with the provided email address');
+                        $errorMessage = __('Sorry! No account found with the provided email address.');
                         return $this->handleErrorMessage($observer, $errorMessage);
                     }
-                    $email = $search->getEmail();
-                }
-                if ($is_email) {
-                    $searchResults = $this->contactHelper->searchCustomerByEmail($email);
-                    if ($searchResults->getTotalCount() == 0) {
-                        $errorMessage = __('Unfortunately email login is only available for members registered in Magento');
-                        return $this->handleErrorMessage($observer, $errorMessage);
-                    } else {
-                        $customerObj = null;
-                        foreach ($searchResults->getItems() as $match) {
-                            $customerObj = $this->customerFactory->create()->setWebsiteId($websiteId)
-                                ->loadByEmail($email);
-                            break;
-                        }
-                        $username = $customerObj->getData('lsr_username');
-                    }
+                    $username = $search->getUserName();
                 }
                 /** @var  Entity\MemberContact $result */
                 $result = $this->contactHelper->login($username, $login['password']);
                 if ($result == false) {
-                    $errorMessage = __('Invalid Omni login or Omni password');
+                    $errorMessage = __('Invalid LS Central login or password.');
                     return $this->handleErrorMessage($observer, $errorMessage);
                 }
                 if ($result instanceof Entity\MemberContact) {
