@@ -42,7 +42,6 @@ class Renderer extends \Magento\Framework\View\Element\Template
     ) {
         $this->priceCurrency = $priceCurrency;
         parent::__construct($context, $data);
-        $this->_isScopePrivate = true;
     }
 
     /**

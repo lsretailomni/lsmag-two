@@ -43,7 +43,6 @@ class Info extends \Magento\Framework\View\Element\Template
         array $data = []
     ) {
         $this->coreRegistry = $registry;
-        $this->_isScopePrivate = true;
         $this->countryFactory = $countryFactory;
         parent::__construct($context, $data);
     }
