@@ -15,7 +15,12 @@
 <?= $block->getChildHtml('info') ?>
 <?php if ($_orders && count($_orders)): ?>
      <?php
-     if($_orders instanceof \Ls\Omni\Client\Ecommerce\Entity\Order){ ?>
+
+    /** We need to identify if the order object is from the omni or from the default magento.
+     *  so the current $_orders return type in the form of array so intead of looping through all the values,
+     *  Best way to do is to get the first entry object and see if its instance of Omni Object.
+     */
+     if($_orders[0] instanceof \Ls\Omni\Client\Ecommerce\Entity\Order){ ?>
 
         <div class="table-wrapper orders-history">
         <table class="data table table-order-items history" id="my-orders-table">
