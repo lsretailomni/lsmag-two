@@ -39,11 +39,10 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getItemStockInStore
      * @param $storeId
      * @param $parentProductId
      * @param $childProductId
-     * @return \Ls\Omni\Client\Ecommerce\Entity\ArrayOfInventoryResponse|\Ls\Omni\Client\Ecommerce\Entity\ItemsInStockGetResponse|\Ls\Omni\Client\ResponseInterface
+     * @return Entity\ArrayOfInventoryResponse|null
      */
     public function getItemStockInStore(
         $storeId,
@@ -66,15 +65,17 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getItemsInStockGetResult() : $response;
+        if ($response && !is_array($response->getItemsInStockGetResult()->getInventoryResponse())) {
+            return $response->getItemsInStockGetResult();
+        }
+        return null;
     }
 
     /**
-     * getAllStoresItemInStock
      * @param $simpleProductId
      * @param $parentProductSku
-     * @return \Ls\Omni\Client\Ecommerce\Entity\ArrayOfInventoryResponse|\Ls\Omni\Client\Ecommerce\Entity\ItemsInStockGetResponse|\Ls\Omni\Client\ResponseInterface
-     * @throws null
+     * @return Entity\ArrayOfStore|Entity\StoresGetbyItemInStockResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getAllStoresItemInStock($simpleProductId, $parentProductSku)
     {
@@ -146,8 +147,8 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         $inventoryResponseArray = $response ? $response->getItemsInStoreGetResult() : $response;
-        if (is_array($inventoryResponseArray)) {
-            foreach ($inventoryResponseArray as $inventoryResponse) {
+        if (is_array($inventoryResponseArray->getInventoryResponse())) {
+            foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
                 $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
                 $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
             }
