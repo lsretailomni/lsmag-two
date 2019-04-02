@@ -360,7 +360,7 @@
                     <label>Delete Orders</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
-                    <button_url>admin/ls_repl/deletion/order</button_url>
+                    <button_url>ls_repl/deletion/order</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
                 <field id="customers" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1"
@@ -368,7 +368,7 @@
                     <label>Delete Customers</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
-                    <button_url>admin/ls_repl/deletion/customer</button_url>
+                    <button_url>ls_repl/deletion/customer</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
                 <field id="products" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1"
@@ -376,7 +376,7 @@
                     <label>Delete Products</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
-                    <button_url>admin/ls_repl/deletion/product</button_url>
+                    <button_url>ls_repl/deletion/product</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
                 <field id="categories" translate="label" type="button" sortOrder="10" showInDefault="1"
@@ -384,7 +384,7 @@
                     <label>Delete Categories</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
-                    <button_url>admin/ls_repl/deletion/category</button_url>
+                    <button_url>ls_repl/deletion/category</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
                 <field id="attributes" translate="label" type="button" sortOrder="10" showInDefault="1"
@@ -392,7 +392,15 @@
                     <label>Delete Attributes</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
-                    <button_url>admin/ls_repl/deletion/attribute</button_url>
+                    <button_url>ls_repl/deletion/attribute</button_url>
+                    <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
+                </field>
+                <field id="ls_tables" translate="label" type="button" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Truncate all ls_ tables</label>
+                    <comment>You cannot recover from this action</comment>
+                    <button_label>Truncate !</button_label>
+                    <button_url>ls_repl/deletion/lstables</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
             </group>
