@@ -82,7 +82,7 @@ class Lstables extends Action
         // @codingStandardsIgnoreStart
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
-        foreach ($this->customer_tables as $lsTables) {
+        foreach ($this->lsTables as $lsTables) {
             $tableName = $connection->getTableName($lsTables);
             $query = "TRUNCATE TABLE " . $tableName;
             try {
