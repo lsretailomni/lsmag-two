@@ -39,11 +39,10 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getItemStockInStore
      * @param $storeId
      * @param $parentProductId
      * @param $childProductId
-     * @return \Ls\Omni\Client\Ecommerce\Entity\ArrayOfInventoryResponse|\Ls\Omni\Client\Ecommerce\Entity\ItemsInStockGetResponse|\Ls\Omni\Client\ResponseInterface
+     * @return Entity\ArrayOfInventoryResponse|null
      */
     public function getItemStockInStore(
         $storeId,
@@ -66,7 +65,10 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getItemsInStockGetResult() : $response;
+        if ($response && !is_array($response->getItemsInStockGetResult()->getInventoryResponse())) {
+            return $response->getItemsInStockGetResult();
+        }
+        return null;
     }
 
     /**

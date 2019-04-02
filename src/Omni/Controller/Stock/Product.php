@@ -59,12 +59,14 @@ class Product extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         $result = $this->resultJsonFactory->create();
+        // @codingStandardsIgnoreStart
         $notAvailableNoticeTitle = __(
             \Ls\Core\Model\LSR::MSG_NOT_AVAILABLE_NOTICE_TITLE
         );
         $notAvailableNoticeContent = __(
             \Ls\Core\Model\LSR::MSG_NOT_AVAILABLE_NOTICE_CONTENT
         );
+        // @codingStandardsIgnoreEnd
         if ($this->getRequest()->isAjax()) {
             $storesNavId = [];
             $productSku = $this->request->getParam('sku');
