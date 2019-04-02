@@ -3,8 +3,11 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\Customer\Api\CustomerRepositoryInterface"
                 type="Magento\Customer\Model\ResourceModel\CustomerRepository"/>
-
     <preference for="Magento\Sales\Block\Order\History"
                 type="Ls\Customer\Block\Order\History"/>
+    <preference for="Magento\Checkout\Block\Onepage\Success"
+                type="Ls\Customer\Block\Onepage\Success"/>
+    <preference for="Magento\Sales\Controller\Order\View"
+                type="Ls\Customer\Controller\Sales\Order\View"/>
 </config>
 
