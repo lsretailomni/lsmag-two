@@ -2,9 +2,7 @@
 
 namespace Ls\Replication\Cron;
 
-use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommPrices;
 use \Ls\Replication\Model\ReplImageLink;
-use \Ls\Replication\Model\ReplImageLinkRepository;
 use Magento\Eav\Model\Config;
 use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
 use Magento\CatalogInventory\Model\Stock\Item;
@@ -126,11 +124,21 @@ class ProductCreateTask
     public $stockHelper;
 
     /**
+     * @var ReplItemVariantRegistrationRepository
+     */
+    public $replItemVariantRegistrationRepository;
+
+    /**
+     * @var ConfigurableProTypeModel
+     */
+    public $configurableProTypeModel;
+
+    /**
      * ProductCreateTask constructor.
      * @param Factory $factory
      * @param Item $item
      * @param Config $eavConfig
-     * @param Configurable $configurable
+     * @param ConfigurableProTypeModel $configurable
      * @param Attribute $attribute
      * @param ProductInterfaceFactory $productInterfaceFactory
      * @param ProductRepositoryInterface $productRepository
@@ -154,6 +162,8 @@ class ProductCreateTask
      * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
      * @param LoggerInterface $logger
      * @param LSR $LSR
+     * @param ConfigurableProTypeModel $configurableProTypeModel
+     * @param StockHelper $stockHelper
      */
     public function __construct(
         Factory $factory,
@@ -220,6 +230,7 @@ class ProductCreateTask
     /**
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\StateException
      */
     public function execute()
@@ -307,7 +318,6 @@ class ProductCreateTask
                         $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
                     $this->logger->debug('trying to save product ' . $item->getNavId());
-
                     /** @var \Magento\Catalog\Api\ProductRepositoryInterface $productSaved */
                     $product = $this->getProductAttributes($product, $item);
                     // @codingStandardsIgnoreStart
@@ -347,6 +357,10 @@ class ProductCreateTask
 
     /**
      * @return array
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\StateException
      */
     public function executeManually()
     {
@@ -539,7 +553,9 @@ class ProductCreateTask
      */
     private function getProductVarients($itemid)
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemid)->create();
+        $this->searchCriteriaBuilder->addFilter('ItemId', $itemid);
+        $this->searchCriteriaBuilder->addFilter('IsDeleted', '0');
+        $searchCriteria = $this->searchCriteriaBuilder->create();
         $variants = $this->replItemVariantRegistrationRepository->getList($searchCriteria)->getItems();
         return $variants;
     }
@@ -584,10 +600,10 @@ class ProductCreateTask
     }
 
     /**
-     *
-     * @param type $code
-     * @param type $value
-     * @return type
+     * @param $code
+     * @param $value
+     * @return null|string
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function _getOptionIDByCode($code, $value)
     {
@@ -597,16 +613,15 @@ class ProductCreateTask
     }
 
     /**
-     *
-     * @param type $itemId
-     * @return type
-     * @throws \Exception
+     * @param $itemId
+     * @return array
      */
     public function _getAttributesCodes($itemId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)->create();
         $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
         /** @var \Ls\Replication\Model\ReplExtendedVariantValue $valueCode */
+        $finalCodes = [];
         foreach ($attributeCodes as $valueCode) {
             $formattedCode = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
             $finalCodes[$valueCode->getDimensions()] = $formattedCode;
@@ -984,7 +999,6 @@ class ProductCreateTask
         foreach ($attributesCode as $value) {
             /** @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute\Interceptor $attribute */
             $attribute = $this->eavConfig->getAttribute('catalog_product', $value);
-            $this->logger->debug('Class for Attribute is ' . get_class($attribute));
             $attributeOptions[$attribute->getId()] = $attribute->getSource()->getAllOptions();
             $attributesIds[] = $attribute->getId();
         }
@@ -1119,9 +1133,9 @@ class ProductCreateTask
     public function getVariantsInventory($storeId, $variants)
     {
         if (empty($variants)) {
-            return array();
+            return [];
         }
-        $variantsInventory = array();
+        $variantsInventory = [];
         foreach ($variants as $value) {
             $sku = $value->getItemId() . '-' . $value->getVariantId();
             $variantsInventory[$sku]['ItemId'] = $value->getItemId();
