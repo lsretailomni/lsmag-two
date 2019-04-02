@@ -20,6 +20,8 @@ class View extends \Magento\Sales\Controller\Order\View
      */
     public $orderRepository;
 
+    /** @var \Psr\Log\LoggerInterface  */
+    public $logger;
     /**
      * View constructor.
      * @param Http $request
@@ -33,10 +35,12 @@ class View extends \Magento\Sales\Controller\Order\View
         Action\Context $context,
         OrderLoaderInterface $orderLoader,
         PageFactory $resultPageFactory,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
     ) {
         parent::__construct($context, $orderLoader, $resultPageFactory);
         $this->request = $request;
+        $this->logger = $logger;
         $this->orderRepository = $orderRepository;
     }
 
@@ -58,6 +62,7 @@ class View extends \Magento\Sales\Controller\Order\View
             $resultRedirect->setPath('customer/order/view/order_id/'.$documentId);
             return $resultRedirect;
         } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
             return parent::execute();
         }
     }
