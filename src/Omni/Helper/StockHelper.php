@@ -127,17 +127,17 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $storeId,
         $variants
     ) {
-        $response = array();
+        $response = [];
+        $items = [];
         // @codingStandardsIgnoreStart
         $request = new Operation\ItemsInStoreGet();
         $itemsInStore = new Entity\ItemsInStoreGet();
-        // @codingStandardsIgnoreEnd
-        $items = array();
         foreach ($variants as $variant) {
             $inventoryReq = new Entity\InventoryRequest();
             $inventoryReq->setItemId($variant['ItemId'])->setVariantId($variant['VariantId']);
             $items[] = $inventoryReq;
         }
+        // @codingStandardsIgnoreEnd
         $itemsInStore->setStoreId($storeId);
         $itemsInStore->setItems($items);
         try {
@@ -146,9 +146,11 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         $inventoryResponseArray = $response ? $response->getItemsInStoreGetResult() : $response;
-        foreach ($inventoryResponseArray as $inventoryResponse) {
-            $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
-            $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
+        if (is_array($inventoryResponseArray)) {
+            foreach ($inventoryResponseArray as $inventoryResponse) {
+                $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
+                $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
+            }
         }
         return $variants;
     }
