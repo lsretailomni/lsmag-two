@@ -72,11 +72,10 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getAllStoresItemInStock
      * @param $simpleProductId
      * @param $parentProductSku
-     * @return \Ls\Omni\Client\Ecommerce\Entity\ArrayOfInventoryResponse|\Ls\Omni\Client\Ecommerce\Entity\ItemsInStockGetResponse|\Ls\Omni\Client\ResponseInterface
-     * @throws null
+     * @return Entity\ArrayOfStore|Entity\StoresGetbyItemInStockResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getAllStoresItemInStock($simpleProductId, $parentProductSku)
     {
@@ -148,8 +147,8 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         $inventoryResponseArray = $response ? $response->getItemsInStoreGetResult() : $response;
-        if (is_array($inventoryResponseArray)) {
-            foreach ($inventoryResponseArray as $inventoryResponse) {
+        if (is_array($inventoryResponseArray->getInventoryResponse())) {
+            foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
                 $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
                 $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
             }
