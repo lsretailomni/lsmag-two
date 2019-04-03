@@ -88,6 +88,18 @@ class CartObserver implements ObserverInterface
                 if (!is_object($status)) {
                     $this->basketHelper->unsetCouponCode('');
                 }
+                $itemlist = $quote->getAllVisibleItems();
+                $counter = 0;
+                foreach ($itemlist as $item) {
+                    $orderLines = $basketData->getOrderLines()->getOrderLine();
+                    if (is_array($orderLines)) {
+                        if ($orderLines[$counter]->getDiscountAmount() != "0.00") {
+                            $item->setCustomPrice($orderLines[$counter]->getAmount());
+                            $item->setDiscountPercent($orderLines[$counter]->getDiscountPercent());
+                        }
+                        $counter++;
+                    }
+                }
                 $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
             }
         }

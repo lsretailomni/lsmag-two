@@ -232,6 +232,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Coupon Code Message
     const LS_COUPON_CODE_ERROR_MESSAGE = 'Coupon Code is not valid for these item(s)';
 
+    //LS Discount Message
+    const LS_DISCOUNT_PRICE_PERCENTAGE_TEXT = "Saved";
+
     public $scopeConfig;
 
     /** @var TypeListInterface */
