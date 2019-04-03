@@ -1,10 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
@@ -12,7 +6,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Ls\Omni\Block\Product\View\Loyalty"
+            <block class="Magento\Customer\Block\Account\Customer"
                    name="ls.omni.product.notification"
                    template="Ls_Omni::product/view/notification.phtml"
                    before="product.info.main"/>
