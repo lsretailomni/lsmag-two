@@ -6,7 +6,7 @@ use Magento\Framework\App\Helper\Context;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
-
+use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
 /**
  * Class StockHelper
  * @package Ls\Omni\Helper
@@ -147,10 +147,17 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         $inventoryResponseArray = $response ? $response->getItemsInStoreGetResult() : $response;
-        if (is_array($inventoryResponseArray->getInventoryResponse())) {
-            foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
-                $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
-                $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
+        if ($inventoryResponseArray && $inventoryResponseArray->getInventoryResponse()) {
+            if (!is_array($inventoryResponseArray->getInventoryResponse()) &&
+                $inventoryResponseArray->getInventoryResponse() instanceof InventoryResponse) {
+                $tmp = [$inventoryResponseArray->getInventoryResponse()];
+                $inventoryResponseArray->setInventoryResponse($tmp);
+            }
+            if (is_array($inventoryResponseArray->getInventoryResponse())) {
+                foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
+                    $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
+                    $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
+                }
             }
         }
         return $variants;
