@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="checkout_item_price_renderers"/>
+    <head>
+        <css src="Ls_Omni::css/lsdiscountprices.css"/>
+    </head>
+    <body>
+        <referenceBlock name="checkout.cart.item.renderers.override">
+            <block class="Ls\Omni\Block\Cart\Item\Renderer" as="configurable"
+                   template="Ls_Omni::cart/item/default.phtml">
+                <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions"
+                       name="checkout.cart.item.renderers.override.configurable.actions" as="actions">
+                    <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions\Edit"
+                           name="checkout.cart.item.renderers.override.configurable.actions.edit"
+                           template="Magento_Checkout::cart/item/renderer/actions/edit.phtml"/>
+                    <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions\Remove"
+                           name="checkout.cart.item.renderers.override.configurable.actions.remove"
+                           template="Magento_Checkout::cart/item/renderer/actions/remove.phtml"/>
+                </block>
+            </block>
+            <block class="Ls\Omni\Block\Cart\Item\Renderer" as="default" template="Ls_Omni::cart/item/default.phtml">
+                <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions"
+                       name="checkout.cart.item.renderers.override.default.actions" as="actions">
+                    <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions\Edit"
+                           name="checkout.cart.item.renderers.override.default.actions.edit"
+                           template="Magento_Checkout::cart/item/renderer/actions/edit.phtml"/>
+                    <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions\Remove"
+                           name="checkout.cart.item.renderers.override.default.actions.remove"
+                           template="Magento_Checkout::cart/item/renderer/actions/remove.phtml"/>
+                </block>
+            </block>
+            <block class="Ls\Omni\Block\Cart\Item\Renderer" as="simple" template="Ls_Omni::cart/item/default.phtml">
+                <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions"
+                       name="checkout.cart.item.renderers.override.default.actions" as="actions">
+                    <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions\Edit"
+                           name="checkout.cart.item.renderers.override.default.actions.edit"
+                           template="Magento_Checkout::cart/item/renderer/actions/edit.phtml"/>
+                    <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions\Remove"
+                           name="checkout.cart.item.renderers.override.default.actions.remove"
+                           template="Magento_Checkout::cart/item/renderer/actions/remove.phtml"/>
+                </block>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

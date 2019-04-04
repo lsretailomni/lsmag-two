@@ -5,9 +5,11 @@
  * See COPYING.txt for license details.
  */
 -->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <css src="Ls_Omni::css/mc_clickandcollect.css"/>
+        <css src="Ls_Omni::css/lsdiscountprices.css"/>
     </head>
     <body>
         <referenceBlock name="checkout.root">
@@ -24,10 +26,14 @@
                                                     <item name="children" xsi:type="array">
                                                         <item name="shippingAdditional" xsi:type="array">
                                                             <item name="component" xsi:type="string">uiComponent</item>
-                                                            <item name="displayArea" xsi:type="string">shippingAdditional</item>
+                                                            <item name="displayArea" xsi:type="string">
+                                                                shippingAdditional
+                                                            </item>
                                                             <item name="children" xsi:type="array">
                                                                 <item name="select_store" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Ls_Omni/js/view/checkout/shipping/select-store</item>
+                                                                    <item name="component" xsi:type="string">
+                                                                        Ls_Omni/js/view/checkout/shipping/select-store
+                                                                    </item>
                                                                 </item>
                                                             </item>
                                                         </item>
@@ -40,7 +46,8 @@
                                                 <item name="payment" xsi:type="array">
                                                     <item name="children" xsi:type="array">
                                                         <item name="afterMethods" xsi:type="array">
-                                                            <item name="displayArea" xsi:type="string">afterMethods</item>
+                                                            <item name="displayArea" xsi:type="string">afterMethods
+                                                            </item>
                                                             <item name="children" xsi:type="array">
                                                                 <item name="loyalty-points" xsi:type="array">
                                                                     <item name="component" xsi:type="string">
@@ -48,9 +55,14 @@
                                                                     </item>
                                                                     <item name="children" xsi:type="array">
                                                                         <item name="errors" xsi:type="array">
-                                                                            <item name="sortOrder" xsi:type="string">0</item>
-                                                                            <item name="component" xsi:type="string">Ls_Omni/js/view/payment/loyalty-points-messages</item>
-                                                                            <item name="displayArea" xsi:type="string">messages</item>
+                                                                            <item name="sortOrder" xsi:type="string">0
+                                                                            </item>
+                                                                            <item name="component" xsi:type="string">
+                                                                                Ls_Omni/js/view/payment/loyalty-points-messages
+                                                                            </item>
+                                                                            <item name="displayArea" xsi:type="string">
+                                                                                messages
+                                                                            </item>
                                                                         </item>
                                                                     </item>
                                                                 </item>
@@ -66,24 +78,64 @@
                                     <item name="children" xsi:type="array">
                                         <item name="summary" xsi:type="array">
                                             <item name="children" xsi:type="array">
+                                                <item name="cart_items" xsi:type="array">
+                                                    <item name="component" xsi:type="string">
+                                                        Magento_Checkout/js/view/summary/cart-items
+                                                    </item>
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="details" xsi:type="array">
+                                                            <item name="component" xsi:type="string">
+                                                                Ls_Omni/js/view/summary/item/details
+                                                            </item>
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="thumbnail" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">
+                                                                        Magento_Checkout/js/view/summary/item/details/thumbnail
+                                                                    </item>
+                                                                    <item name="displayArea" xsi:type="string">
+                                                                        before_details
+                                                                    </item>
+                                                                </item>
+                                                                <item name="subtotal" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">
+                                                                        Magento_Checkout/js/view/summary/item/details/subtotal
+                                                                    </item>
+                                                                    <item name="displayArea" xsi:type="string">
+                                                                        after_details
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
                                                 <item name="totals" xsi:type="array">
                                                     <item name="children" xsi:type="array">
                                                         <item name="loyalty_points_label" xsi:type="array">
-                                                            <item name="component" xsi:type="string">Ls_Omni/js/view/totals/label</item>
+                                                            <item name="component" xsi:type="string">
+                                                                Ls_Omni/js/view/totals/label
+                                                            </item>
                                                             <item name="sortOrder" xsi:type="string">0</item>
                                                         </item>
                                                         <item name="before_grandtotal" xsi:type="array">
                                                             <item name="children" xsi:type="array">
                                                                 <item name="ls_points_discount" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Ls_Omni/js/view/totals/discount</item>
+                                                                    <item name="component" xsi:type="string">
+                                                                        Ls_Omni/js/view/totals/discount
+                                                                    </item>
                                                                 </item>
                                                             </item>
                                                         </item>
                                                         <item name="grand-total" xsi:type="array">
-                                                            <item name="component"  xsi:type="string">Magento_Checkout/js/view/summary/grand-total</item>
+                                                            <item name="component" xsi:type="string">
+                                                                Magento_Checkout/js/view/summary/grand-total
+                                                            </item>
                                                             <item name="config" xsi:type="array">
-                                                                <item name="title" xsi:type="string" translate="true">Order Balance</item>
-                                                                <item name="template" xsi:type="string">Magento_Checkout/cart/totals/grand-total</item>
+                                                                <item name="title" xsi:type="string" translate="true">
+                                                                    Order Balance
+                                                                </item>
+                                                                <item name="template" xsi:type="string">
+                                                                    Magento_Checkout/cart/totals/grand-total
+                                                                </item>
                                                             </item>
                                                         </item>
                                                     </item>

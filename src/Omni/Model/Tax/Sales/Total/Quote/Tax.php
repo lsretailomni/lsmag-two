@@ -46,7 +46,8 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         \Magento\Tax\Helper\Data $taxData,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper
-    ) {
+    )
+    {
         $this->setCode('tax');
         $this->basketHelper = $basketHelper;
         $this->loyaltyHelper = $loyaltyHelper;
@@ -75,19 +76,36 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         \Magento\Quote\Model\Quote $quote,
         \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
         \Magento\Quote\Model\Quote\Address\Total $total
-    ) {
+    )
+    {
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
-            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-            if ($pointDiscount > 0.001) {
-                $quote->setLsPointsDiscount($pointDiscount);
-            }
             $total->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
-            $discountAmount = -$basketData->getTotalDiscount() - $pointDiscount;
-            $total->setDiscountAmount($discountAmount);
-            $total->addTotalAmount('discount', $discountAmount);
-            //$total->addTotalAmount('ls_points_discount', $pointDiscount);
         }
+
         return $this;
+    }
+
+    /**
+     * @param \Magento\Quote\Model\Quote $quote
+     * @param \Magento\Quote\Model\Quote\Address\Total $total
+     *
+     * @return array|null
+     */
+    public function fetch(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total)
+    {
+        $basketData = $this->basketHelper->getBasketSessionValue();
+        if (!empty($basketData)) {
+            $taxAmount = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
+        } else {
+            $taxAmount = 0;
+        }
+        $result = null;
+        $result = [
+            'code' => $this->getCode(),
+            'title' => __('Tax (Inclusive Total)'),
+            'value' => $taxAmount,
+        ];
+        return $result;
     }
 }

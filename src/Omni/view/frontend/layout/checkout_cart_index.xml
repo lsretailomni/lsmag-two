@@ -3,6 +3,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <css src="Ls_Omni::css/loyalty_points.css"/>
+        <css src="Ls_Omni::css/lsdiscountprices.css"/>
     </head>
     <body>
         <referenceContainer name="content">
@@ -46,6 +47,13 @@
                         </item>
                     </item>
                 </argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.form">
+            <block class="Magento\Framework\View\Element\RendererList" name="checkout.cart.item.renderers.override"
+                   as="renderer.list.custom"/>
+            <arguments>
+                <argument name="renderer_list_name" xsi:type="string">checkout.cart.item.renderers.override</argument>
             </arguments>
         </referenceBlock>
     </body>
