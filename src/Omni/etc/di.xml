@@ -36,4 +36,10 @@
     <plugin name="checkout_coupon_apply"
             type="Ls\Omni\Plugin\Checkout\Model\CouponInformationManagement"/>
   </type>
+  <preference for="Magento\Checkout\CustomerData\DefaultItem" type="Ls\Omni\CustomerData\DefaultItem"/>
+  <type name="Magento\Checkout\Model\DefaultConfigProvider">
+    <plugin name="checkout_summary_price_modification" type="Ls\Omni\Plugin\Checkout\Model\DefaultConfigProvider" />
+  </type>
+  <!-- To Override Discount Calculator -->
+  <preference for="Magento\SalesRule\Model\Quote\Discount" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Discount" />
 </config>

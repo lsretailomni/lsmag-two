@@ -165,4 +165,16 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         return $response;
     }
+
+    /**
+     * @param $originalPrice
+     * @param $discountPrice
+     * @return float|int
+     */
+    public function getDiscountPercentage($originalPrice, $discountPrice)
+    {
+        $percentage = ($discountPrice - $originalPrice) / ($originalPrice);
+        $discountPercentage = abs($percentage * 100);
+        return round($discountPercentage, 2);
+    }
 }

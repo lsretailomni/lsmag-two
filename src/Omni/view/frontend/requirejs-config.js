@@ -8,6 +8,7 @@ var config = {
            'Magento_Checkout/js/model/shipping-save-processor/default': 'Ls_Omni/js/model/shipping-save-processor/default',
            'OwlCarousel': 'Ls_Omni/js/owl-carousel',
            'loyaltyPoints': 'Ls_Omni/js/loyalty-points',
+           'Magento_Checkout/template/minicart/item/default.html': 'Ls_Omni/template/minicart/item/default.html'
        }
     },
     config: {
