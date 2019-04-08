@@ -3,7 +3,6 @@
 namespace Ls\Omni\Observer;
 
 use \Ls\Omni\Helper\BasketHelper;
-use Magento\Eav\Model\Entity;
 use Magento\Framework\Event\ObserverInterface;
 use \Ls\Omni\Helper\ContactHelper;
 
@@ -22,7 +21,7 @@ class CartObserver implements ObserverInterface
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
 
-    /** @var \Magento\Customer\Model\Session\Proxy  $customerSession */
+    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
     private $customerSession;
 
     /** @var \Magento\Checkout\Model\Session\Proxy $checkoutSession */
@@ -31,7 +30,7 @@ class CartObserver implements ObserverInterface
     /** @var bool */
     private $watchNextSave = false;
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var \Ls\Core\Model\LSR @var */
     private $lsr;
 
     /**
@@ -49,13 +48,14 @@ class CartObserver implements ObserverInterface
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Ls\Core\Model\LSR $LSR
-    ) {
+    )
+    {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
     }
 
     /**
@@ -92,17 +92,26 @@ class CartObserver implements ObserverInterface
                 $counter = 0;
                 foreach ($itemlist as $item) {
                     $orderLines = $basketData->getOrderLines()->getOrderLine();
+                    $itemSku = explode("-", $item->getSku());
+                    if (count($itemSku) < 2) {
+                        $itemSku[1] = null;
+                    }
                     if (is_array($orderLines)) {
-                        if ($orderLines[$counter]->getDiscountAmount() != "0.00") {
-                            $item->setCustomPrice($orderLines[$counter]->getAmount());
-                            $item->setDiscountPercent($orderLines[$counter]->getDiscountPercent());
+                        foreach ($orderLines as $line) {
+                            if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
+                                if ($orderLines[$counter]->getDiscountAmount() != "0.00") {
+                                    $item->setCustomPrice($orderLines[$counter]->getAmount());
+                                    $item->setDiscountPercent($orderLines[$counter]->getDiscountPercent());
+                                }
+                                $counter++;
+                            }
                         }
-                        $counter++;
                     }
                 }
                 $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
             }
         }
+
         return $this;
     }
 
