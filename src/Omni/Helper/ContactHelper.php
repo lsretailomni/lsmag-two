@@ -26,10 +26,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     public $customerRepository;
 
+    /** @var \Magento\Customer\Model\AddressFactory */
+    public $addressFactory;
+
     /** @var \Magento\Customer\Model\CustomerFactory */
     public $customerFactory;
 
-    /** @var \Magento\Customer\Model\Session\Proxy  */
+    /** @var \Magento\Customer\Model\Session\Proxy */
     public $customerSession;
 
     /** @var null */
@@ -66,12 +69,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Customer\Model\AddressFactory $addressFactory
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Directory\Model\CountryFactory $countryFactory
      * @param \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupColl
      * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      * @param \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
+     * @param \Magento\Directory\Model\Country $country
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -79,6 +84,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Customer\Model\AddressFactory $addressFactory,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Directory\Model\CountryFactory $countryFactory,
@@ -88,12 +94,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Ls\Omni\Helper\BasketHelper $basketHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Framework\Registry $registry
+        \Magento\Framework\Registry $registry,
+        \Magento\Directory\Model\Country $country
     ) {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeManager = $storeManager;
         $this->customerRepository = $customerRepository;
+        $this->addressFactory = $addressFactory;
         $this->customerFactory = $customerFactory;
         $this->customerSession = $customerSession;
         $this->countryFactory = $countryFactory;
@@ -104,6 +112,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerResourceModel = $customerResourceModel;
         $this->registry = $registry;
         $this->checkoutSession = $checkoutSession;
+        $this->_country = $country;
         parent::__construct(
             $context
         );
@@ -122,11 +131,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         // load customer data from magento customer database based on lsr_username if we didn't get an email
         if (!$is_email) {
-            $filters = [$this->filterBuilder
-                ->setField('lsr_username')
-                ->setConditionType('like')
-                ->setValue($email)
-                ->create()];
+            $filters = [
+                $this->filterBuilder
+                    ->setField('lsr_username')
+                    ->setConditionType('like')
+                    ->setValue($email)
+                    ->create()
+            ];
             $this->searchCriteriaBuilder->addFilters($filters);
             $searchCriteria = $this->searchCriteriaBuilder->create();
             $searchResults = $this->customerRepository->getList($searchCriteria);
@@ -218,7 +229,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $contact
+     * @param Entity\MemberContact $contact
      * @param $password
      * @return \Magento\Customer\Model\Customer
      * @throws \Exception
@@ -236,7 +247,52 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setData('firstname', $contact->getFirstName())
             ->setData('lastname', $contact->getLastName());
         $customer->save();
+        // Save Address
+        $addressArray = $contact->getAddresses();
+        if (!empty($addressArray)) {
+            $addressInfo = $addressArray->getAddress();
+            if ($addressInfo instanceof Entity\Address) {
+                $address = $this->addressFactory->create();
+                $address->setCustomerId($customer->getId())
+                    ->setFirstname($contact->getFirstName())
+                    ->setLastname($contact->getLastName())
+                    ->setCountryId($addressInfo->getCountry())
+                    ->setPostcode($addressInfo->getPostCode())
+                    ->setRegion($addressInfo->getStateProvinceRegion())
+                    ->setCity($addressInfo->getCity())
+                    ->setTelephone($contact->getMobilePhone())
+                    ->setStreet([$addressInfo->getAddress1(), $addressInfo->getAddress2()])
+                    ->setIsDefaultBilling('1')
+                    ->setIsDefaultShipping('1')
+                    ->setSaveInAddressBook('1');
+                try {
+                    $address->save();
+                } catch (\Exception $e) {
+                    $this->_logger->error($e->getMessage());
+                }
+            }
+        }
         return $customer;
+    }
+
+    /**
+     * Return the Country name by Country Id
+     * default Conntry Id = US
+     * @param $countryName
+     * @return mixed
+     */
+    public function getCountryId($countryName)
+    {
+        $countryName = ucwords(strtolower($countryName));
+        $countryId = 'US';
+        $countryCollection = $this->_country->getCollection();
+        foreach ($countryCollection as $country) {
+            if ($countryName == $country->getName()) {
+                $countryId = $country->getCountryId();
+                break;
+            }
+        }
+        return $countryId;
     }
 
     /**
@@ -278,11 +334,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function isUsernameExist($username)
     {
         // Creating search filter to apply for.
-        $filters = [$this->filterBuilder
-            ->setField('lsr_username')
-            ->setConditionType('like')
-            ->setValue($username)
-            ->create()];
+        $filters = [
+            $this->filterBuilder
+                ->setField('lsr_username')
+                ->setConditionType('like')
+                ->setValue($username)
+                ->create()
+        ];
         // generating where statement to apply for.
         $searchCriteria = $this->searchCriteriaBuilder->addFilters($filters)->create();
 
@@ -455,9 +513,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $address->setAddress1($street);
                 $address->setAddress2('');
             }
-            $countryname = $this->getCountryname($customerAddress->getCountryId());
+            //$countryname = $this->getCountryname($customerAddress->getCountryId());
             $address->setCity($customerAddress->getCity())
-                ->setCountry($countryname)
+                ->setCountry($customerAddress->getCountryId())
                 ->setPostCode($customerAddress->getPostcode())
                 ->setType(Entity\Enum\AddressType::RESIDENTIAL);
             $customerAddress->getRegion() ? $address->setStateProvinceRegion($customerAddress->getRegion())
@@ -504,7 +562,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getCustomerGroupIdByName($groupname = '')
     {
 
-        if ($groupname==null or $groupname == '') {
+        if ($groupname == null or $groupname == '') {
             return false;
         }
 
@@ -554,7 +612,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function updateBasketAfterLogin(Entity\OneList $oneListBasket, $contactId, $cardId)
     {
-        $quote  =   $this->checkoutSession->getQuote();
+        $quote = $this->checkoutSession->getQuote();
         if (!is_array($oneListBasket) &&
             $oneListBasket instanceof Entity\OneList && $oneListBasket->getId() != '') {
             // If customer has previously one list created then get
@@ -651,7 +709,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             );
             $customer->setGroupId($customerGroupId);
         }
-
         $this->customerResourceModel->save($customer);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
