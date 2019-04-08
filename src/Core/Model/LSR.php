@@ -221,7 +221,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Store Hours Format
     const STORE_HOURS_TIME_FORMAT = 'h:i A';
 
-    //LS Recommendatin.
+    //LS Recommendation.
     const LS_RECOMMEND_ACTIVE = 'ls_mag/ls_recommend/active';
     const LS_RECOMMEND_SHOW_ON_PRODUCT = 'ls_mag/ls_recommend/product';
     const LS_RECOMMEND_SHOW_ON_CART = 'ls_mag/ls_recommend/cart';
@@ -235,6 +235,14 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //LS Discount Message
     const LS_DISCOUNT_PRICE_PERCENTAGE_TEXT = "Saved";
 
+    //LS New account reset password default password
+    const LS_RESETPASSWORD_DEFAULT = "Admin123@";
+
+    //LS reset password email of the current customer
+    const REGISTRY_CURRENT_RESETPASSWORD_EMAIL = 'reset-password-email';
+    /**
+     * @var ScopeConfigInterface
+     */
     public $scopeConfig;
 
     /** @var TypeListInterface */
