@@ -5,8 +5,9 @@ namespace Ls\Customer\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Zend_Validate;
 use Zend_Validate_EmailAddress;
-use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\CustomerMetadataInterface;
+use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class ForgotPasswordObserver
@@ -55,8 +56,8 @@ class ForgotPasswordObserver implements ObserverInterface
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
+     * @param LSR $LSR
      */
-
     public function __construct(
         ContactHelper $contactHelper,
         \Magento\Framework\Message\ManagerInterface $messageManager,
@@ -67,7 +68,7 @@ class ForgotPasswordObserver implements ObserverInterface
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
-        \Ls\Core\Model\LSR $LSR
+        LSR $LSR
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
@@ -113,6 +114,13 @@ class ForgotPasswordObserver implements ObserverInterface
                         $customer = $this->customerFactory->create()
                             ->setWebsiteId($websiteId)
                             ->loadByEmail($email);
+                        if (!$customer->getId()) {
+                            $search = $this->contactHelper->search($email);
+                            $customer = $this->contactHelper->createNewCustomerAgainstProvidedInformation(
+                                $search,
+                                LSR::LS_RESETPASSWORD_DEFAULT
+                            );
+                        }
                         $customer->setData('attribute_set_id', CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
                         $customer->setData('lsr_resetcode', $result);
                         $this->customerResourceModel->save($customer);

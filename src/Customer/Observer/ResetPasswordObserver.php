@@ -3,7 +3,9 @@
 namespace Ls\Customer\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Registry;
 use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class ResetPasswordObserver
@@ -38,6 +40,12 @@ class ResetPasswordObserver implements ObserverInterface
     /** @var \Ls\Core\Model\LSR @var  */
     private $lsr;
 
+    /** @var \Magento\Framework\Registry */
+    private $registry;
+
+    /** @var \Magento\Customer\Model\CustomerFactory */
+    private $customerFactory;
+
     /**
      * ResetPasswordObserver constructor.
      * @param ContactHelper $contactHelper
@@ -46,8 +54,10 @@ class ResetPasswordObserver implements ObserverInterface
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Framework\App\Response\RedirectInterface $redirectInterface
      * @param \Magento\Framework\App\ActionFlag $actionFlag
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param LSR $LSR
+     * @param Registry $registry
      */
     public function __construct(
         ContactHelper $contactHelper,
@@ -56,9 +66,10 @@ class ResetPasswordObserver implements ObserverInterface
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
         \Magento\Framework\App\ActionFlag $actionFlag,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Ls\Core\Model\LSR $LSR
+        \Magento\Customer\Model\CustomerFactory $customerFactory,
+        LSR $LSR,
+        Registry $registry
     ) {
         $this->contactHelper = $contactHelper;
         $this->messageManager = $messageManager;
@@ -66,9 +77,10 @@ class ResetPasswordObserver implements ObserverInterface
         $this->customerSession = $customerSession;
         $this->redirectInterface = $redirectInterface;
         $this->actionFlag = $actionFlag;
-        $this->customerRepository = $customerRepository;
         $this->storeManager = $storeManager;
         $this->lsr  =   $LSR;
+        $this->registry = $registry;
+        $this->customerFactory = $customerFactory;
     }
 
     /**
@@ -97,9 +109,13 @@ class ResetPasswordObserver implements ObserverInterface
                 $isFailed = $this->customerSession->getRpToken();
                 if (!$isFailed) {
                     $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                    $customer = $this->customerRepository->getById($post_param['id']);
-                    $customer->setWebsiteId($websiteId);
-                    $result = $this->contactHelper->resetPassword($customer, $post_param);
+                    $email = $this->registry->registry(LSR::REGISTRY_CURRENT_RESETPASSWORD_EMAIL);
+                    if ($email) {
+                        $customer = $this->customerFactory->create()
+                            ->setWebsiteId($websiteId)
+                            ->loadByEmail($email);
+                        $result = $this->contactHelper->resetPassword($customer, $post_param);
+                    }
                     if (!$result) {
                         $this->messageManager->addErrorMessage(
                             __('Something went wrong, Please try again later.')
