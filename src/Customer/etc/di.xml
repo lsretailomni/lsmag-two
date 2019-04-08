@@ -9,5 +9,7 @@
                 type="Ls\Customer\Block\Onepage\Success"/>
     <preference for="Magento\Sales\Controller\Order\View"
                 type="Ls\Customer\Controller\Sales\Order\View"/>
+    <preference for="Magento\Customer\Model\AccountManagement"
+                type="Ls\Customer\Model\AccountManagement"/>
 </config>
 
