@@ -26,11 +26,17 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     public $customerRepository;
 
-    /** @var \Magento\Customer\Model\AddressFactory */
+    /** @var \Magento\Customer\Api\Data\AddressInterfaceFactory */
     public $addressFactory;
+
+    /** @var \Magento\Customer\Api\Data\RegionInterfaceFactory */
+    public $regionFactory;
 
     /** @var \Magento\Customer\Model\CustomerFactory */
     public $customerFactory;
+
+    /** @var \Magento\Customer\Api\AddressRepositoryInterface */
+    public $addressRepository;
 
     /** @var \Magento\Customer\Model\Session\Proxy */
     public $customerSession;
@@ -62,6 +68,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Checkout\Model\Session\Proxy */
     public $checkoutSession;
 
+    /** @var \Magento\Directory\Model\Country */
+    public $country;
+
     /**
      * ContactHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
@@ -69,7 +78,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Customer\Model\AddressFactory $addressFactory
+     * @param \Magento\Customer\Api\Data\AddressInterfaceFactory $addressFactory
+     * @param \Magento\Customer\Api\Data\RegionInterfaceFactory $regionFactory
+     * @param \Magento\Customer\Api\AddressRepositoryInterface $addressRepository
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Directory\Model\CountryFactory $countryFactory
@@ -84,7 +95,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Customer\Model\AddressFactory $addressFactory,
+        \Magento\Customer\Api\Data\AddressInterfaceFactory $addressFactory,
+        \Magento\Customer\Api\Data\RegionInterfaceFactory $regionFactory,
+        \Magento\Customer\Api\AddressRepositoryInterface $addressRepository,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Directory\Model\CountryFactory $countryFactory,
@@ -102,6 +115,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->storeManager = $storeManager;
         $this->customerRepository = $customerRepository;
         $this->addressFactory = $addressFactory;
+        $this->addressRepository = $addressRepository;
+        $this->regionFactory = $regionFactory;
         $this->customerFactory = $customerFactory;
         $this->customerSession = $customerSession;
         $this->countryFactory = $countryFactory;
@@ -112,7 +127,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerResourceModel = $customerResourceModel;
         $this->registry = $registry;
         $this->checkoutSession = $checkoutSession;
-        $this->_country = $country;
+        $this->country = $country;
         parent::__construct(
             $context
         );
@@ -256,17 +271,20 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $address->setCustomerId($customer->getId())
                     ->setFirstname($contact->getFirstName())
                     ->setLastname($contact->getLastName())
-                    ->setCountryId($addressInfo->getCountry())
+                    ->setCountryId($this->getCountryId($addressInfo->getCountry()))
                     ->setPostcode($addressInfo->getPostCode())
-                    ->setRegion($addressInfo->getStateProvinceRegion())
                     ->setCity($addressInfo->getCity())
                     ->setTelephone($contact->getMobilePhone())
                     ->setStreet([$addressInfo->getAddress1(), $addressInfo->getAddress2()])
                     ->setIsDefaultBilling('1')
-                    ->setIsDefaultShipping('1')
-                    ->setSaveInAddressBook('1');
+                    ->setIsDefaultShipping('1');
+                $regionName = $addressInfo->getStateProvinceRegion();
+                if (isset($regionName)) {
+                    $region = $this->regionFactory->create();
+                    $address->setRegion($region->setRegion($regionName));
+                }
                 try {
-                    $address->save();
+                    $this->addressRepository->save($address);
                 } catch (\Exception $e) {
                     $this->_logger->error($e->getMessage());
                 }
@@ -277,15 +295,18 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Return the Country name by Country Id
-     * default Conntry Id = US
+     * default Country Id = US
      * @param $countryName
      * @return mixed
      */
     public function getCountryId($countryName)
     {
+        if (strlen($countryName) == 2) {
+            return $countryName;
+        }
         $countryName = ucwords(strtolower($countryName));
         $countryId = 'US';
-        $countryCollection = $this->_country->getCollection();
+        $countryCollection = $this->country->getCollection();
         foreach ($countryCollection as $country) {
             if ($countryName == $country->getName()) {
                 $countryId = $country->getCountryId();
