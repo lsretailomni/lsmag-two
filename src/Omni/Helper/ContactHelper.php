@@ -5,6 +5,9 @@ namespace Ls\Omni\Helper;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Core\Model\LSR;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\State\ExpiredException;
 
 /**
  * Class ContactHelper
@@ -87,6 +90,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupColl
      * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      * @param \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
+     * @param BasketHelper $basketHelper
+     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param \Magento\Framework\Registry $registry
      * @param \Magento\Directory\Model\Country $country
      */
     public function __construct(
@@ -104,7 +111,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupColl,
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
         \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory,
-        \Ls\Omni\Helper\BasketHelper $basketHelper,
+        BasketHelper $basketHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Registry $registry,
@@ -250,7 +257,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @throws \Exception
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function customer($contact, $password)
+    public function createNewCustomerAgainstProvidedInformation($contact, $password)
     {
         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
         $customer = $this->customerFactory->create();
@@ -261,7 +268,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setData('lsr_username', $contact->getUserName())
             ->setData('firstname', $contact->getFirstName())
             ->setData('lastname', $contact->getLastName());
-        $customer->save();
+        $this->customerResourceModel->save($customer);
         // Save Address
         $addressArray = $contact->getAddresses();
         if (!empty($addressArray)) {
@@ -322,7 +329,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function contact(\Magento\Customer\Model\Customer $customer)
     {
-
         $response = null;
         // @codingStandardsIgnoreStart
         $alternate_id = 'LSM' . str_pad(md5(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
@@ -432,17 +438,16 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param $customer_post
      * @return bool|Entity\ResetPasswordResponse|\Ls\Omni\Client\ResponseInterface|null
      */
-    public function resetPassword(\Magento\Customer\Api\Data\CustomerInterface $customer, $customer_post)
+    public function resetPassword($customer, $customer_post)
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\ResetPassword();
-        $request->setToken($customer->getCustomAttribute('lsr_token')->getValue());
         $resetpassword = new Entity\ResetPassword();
         // @codingStandardsIgnoreEnd
-
-        $resetpassword->setUserName($customer->getCustomAttribute('lsr_username')->getValue())
-            ->setResetCode($customer->getCustomAttribute('lsr_resetcode')->getValue())
+        $request->setToken($customer->getData('lsr_token'));
+        $resetpassword->setUserName($customer->getData('lsr_username'))
+            ->setResetCode($customer->getData('lsr_resetcode'))
             ->setNewPassword($customer_post['password']);
 
         try {
@@ -693,7 +698,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $searchResults = $this->customerRepository->getList($searchCriteria);
         $customer = null;
         if ($searchResults->getTotalCount() == 0) {
-            $customer = $this->customer($result, $credentials['password']);
+            $customer = $this->createNewCustomerAgainstProvidedInformation($result, $credentials['password']);
         } else {
             foreach ($searchResults->getItems() as $match) {
                 $customer = $this->customerRepository->getById($match->getId());
@@ -760,5 +765,43 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->searchCriteriaBuilder->addFilters($filters);
         $searchCriteria = $this->searchCriteriaBuilder->create();
         return $this->customerRepository->getList($searchCriteria);
+    }
+
+    /**
+     * Returns customer against the provided rptoken
+     * @param string $rpToken
+     * @return CustomerInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function matchCustomerByRpToken(string $rpToken): CustomerInterface
+    {
+
+        $this->searchCriteriaBuilder->addFilter(
+            'rp_token',
+            $rpToken
+        );
+        $this->searchCriteriaBuilder->setPageSize(1);
+        $found = $this->customerRepository->getList(
+            $this->searchCriteriaBuilder->create()
+        );
+
+        if ($found->getTotalCount() > 1) {
+            // @codingStandardsIgnoreStart
+            //Failed to generated unique RP token
+            throw new ExpiredException(
+                new \Magento\Framework\Phrase('Reset password token expired.')
+            );
+            // @codingStandardsIgnoreEnd
+        }
+        if ($found->getTotalCount() === 0) {
+            //Customer with such token not found.
+            throw NoSuchEntityException::singleField(
+                'rp_token',
+                $rpToken
+            );
+        }
+
+        //Unique customer found.
+        return $found->getItems()[0];
     }
 }
