@@ -74,6 +74,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Directory\Model\Country */
     public $country;
 
+    /** @var \Magento\Directory\Model\RegionFactory */
+    public $region;
+
     /**
      * ContactHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
@@ -95,6 +98,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Directory\Model\Country $country
+     * @param \Magento\Directory\Model\RegionFactory $region
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -115,7 +119,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Registry $registry,
-        \Magento\Directory\Model\Country $country
+        \Magento\Directory\Model\Country $country,
+        \Magento\Directory\Model\RegionFactory $region
     ) {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -135,6 +140,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->registry = $registry;
         $this->checkoutSession = $checkoutSession;
         $this->country = $country;
+        $this->region = $region;
         parent::__construct(
             $context
         );
@@ -287,8 +293,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                     ->setIsDefaultShipping('1');
                 $regionName = $addressInfo->getStateProvinceRegion();
                 if (isset($regionName)) {
-                    $region = $this->regionFactory->create();
-                    $address->setRegion($region->setRegion($regionName));
+                    $regionDataFactory = $this->regionFactory->create();
+                    $address->setRegion($regionDataFactory->setRegion($regionName));
+                    $regionFactory = $this->region->create();
+                    $regionId = $regionFactory->loadByName($regionName, $addressInfo->getCountry());
+                    if (!empty($regionId->getId())) {
+                        $address->setRegionId($regionId->getId());
+                    }
                 }
                 try {
                     $this->addressRepository->save($address);
