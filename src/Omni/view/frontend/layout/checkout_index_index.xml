@@ -127,14 +127,14 @@
                                                         </item>
                                                         <item name="grand-total" xsi:type="array">
                                                             <item name="component" xsi:type="string">
-                                                                Magento_Checkout/js/view/summary/grand-total
+                                                                Magento_Tax/js/view/checkout/cart/totals/grand-total
                                                             </item>
                                                             <item name="config" xsi:type="array">
                                                                 <item name="title" xsi:type="string" translate="true">
                                                                     Order Balance
                                                                 </item>
                                                                 <item name="template" xsi:type="string">
-                                                                    Magento_Checkout/cart/totals/grand-total
+                                                                    Magento_Tax/checkout/cart/totals/grand-total
                                                                 </item>
                                                             </item>
                                                         </item>

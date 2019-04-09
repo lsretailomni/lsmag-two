@@ -50,12 +50,12 @@ class Cart
         if ($grandTotalAmount != null && $grandTotalAmount > 0) {
             if (isset($totals['discount'])) {
                 $discount = abs($totals['discount']->getValue());
+                $totalAmount = $grandTotalAmount + $discount;
+                $result['subtotalAmount'] = $totalAmount;
+                $result['subtotal'] = isset($totalAmount)
+                    ? $this->checkoutHelper->formatPrice($totalAmount)
+                    : 0;
             }
-            $totalAmount = $grandTotalAmount + $discount;
-            $result['subtotalAmount'] = $totalAmount;
-            $result['subtotal'] = isset($totalAmount)
-                ? $this->checkoutHelper->formatPrice($totalAmount)
-                : 0;
         }
         return $result;
     }
