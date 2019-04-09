@@ -40,6 +40,9 @@
   <type name="Magento\Checkout\Model\DefaultConfigProvider">
     <plugin name="checkout_summary_price_modification" type="Ls\Omni\Plugin\Checkout\Model\DefaultConfigProvider" />
   </type>
+  <type name="Magento\Checkout\CustomerData\Cart">
+    <plugin name="subtotal_modification" type="Ls\Omni\Plugin\Checkout\CustomerData\Cart"/>
+  </type>
   <!-- To Override Discount Calculator -->
   <preference for="Magento\SalesRule\Model\Quote\Discount" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Discount" />
 </config>
