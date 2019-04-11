@@ -70,6 +70,7 @@ abstract class AbstractReplicationTask
         ],
         "ls_mag/replication/repl_loy_vendor_item_mapping" => ["NavManufacturerId", "NavProductId"],
         "ls_mag/replication/repl_price" => ["ItemId", "VariantId", "StoreId", "QtyPerUnitOfMeasure", "UnitOfMeasure"],
+        "ls_mag/replication/repl_inv_status" => ["ItemId", "VariantId", "StoreId"],
         "ls_mag/replication/repl_product_group" => ["nav_id"],
         "ls_mag/replication/repl_shipping_agent" => ["Name"],
         "ls_mag/replication/repl_store" => ["nav_id"],

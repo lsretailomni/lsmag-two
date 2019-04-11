@@ -299,9 +299,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $items */
         $items = $this->replImageLinkRepositoryInterface->getList($criteria);
-        $this->_logger->debug('trying to find item for ' . $nav_id . ' with type ' . $type);
         if ($items->getTotalCount() > 0) {
-            $this->_logger->debug('Found items for ' . $nav_id . ' with type ' . $type);
             return $items->getItems();
         }
         return false;

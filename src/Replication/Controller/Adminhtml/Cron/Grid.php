@@ -1,16 +1,11 @@
 <?php
-/**
- * LSRetail
- * @package     Ls_Replication
- * @copyright   Copyright (c) 2018 LSRetail
- */
 
 namespace Ls\Replication\Controller\Adminhtml\Cron;
 
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action;
-use \Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\ObjectManagerInterface;
 
 /**

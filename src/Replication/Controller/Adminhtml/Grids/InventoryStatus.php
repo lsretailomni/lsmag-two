@@ -3,10 +3,10 @@
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
 /**
- * Class ItemVariantRegistration
+ * Class InventoryStatus
  * @package Ls\Replication\Controller\Adminhtml\Grids
  */
-class ItemVariantRegistration extends \Magento\Backend\App\Action
+class InventoryStatus extends \Magento\Backend\App\Action
 {
     /**
      * @var \Magento\Framework\View\Result\PageFactory
@@ -36,7 +36,7 @@ class ItemVariantRegistration extends \Magento\Backend\App\Action
     {
         $resultPage = $this->resultPageFactory->create();
         //Set the header title of grid
-        $resultPage->getConfig()->getTitle()->prepend(__('Item Variant Registration Replication'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Inventory Status Replication'));
         return $resultPage;
     }
 }

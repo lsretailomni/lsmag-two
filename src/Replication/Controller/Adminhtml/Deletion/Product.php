@@ -18,6 +18,16 @@ class Product extends Action
     /** @var ResourceConnection */
     public $resource;
 
+    /** @var array List of ls tables required in products */
+    public $ls_tables = [
+        "ls_replication_repl_item",
+        "ls_replication_repl_item_variant_registration",
+        "ls_replication_repl_price",
+        "ls_replication_repl_barcode",
+        "ls_replication_repl_inv_status",
+        "ls_replication_repl_hierarchy_leaf"
+    ];
+
     /** @var array List of all the Catalog Product tables */
     public $catalog_products_tables = [
         "catalog_product_bundle_option",
@@ -117,7 +127,7 @@ class Product extends Action
     ];
 
     // @codingStandardsIgnoreStart
-    /** @var array  */
+    /** @var array */
     protected $_publicActions = ['product'];
     // @codingStandardsIgnoreEnd
 
@@ -157,6 +167,16 @@ class Product extends Action
         }
         $tableURLRewrite = $connection->getTableName('url_rewrite');
         $connection->query("DELETE FROM " . $tableURLRewrite . " WHERE entity_type = 'product';");
+        // Update all dependent ls tables to not processed
+        foreach ($this->ls_tables as $lsTable) {
+            $lsTableName = $connection->getTableName($lsTable);
+            $lsQuery = "UPDATE " . $lsTableName . " SET processed = 0;";
+            try {
+                $connection->query($lsQuery);
+            } catch (\Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
+        }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));

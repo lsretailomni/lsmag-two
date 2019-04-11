@@ -13,6 +13,7 @@ use SoapClient;
  */
 class LSR
 {
+    // DEFAULT SHIPMENT ITEM ID
     const LSR_SHIPMENT_ITEM_ID = 66010;
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
 Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
@@ -20,12 +21,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const APP_NAME = 'ls-mag';
     const APP_VERSION = '1.0.0';
     const CRON_STATUS_PATH_PREFIX = 'ls_mag/replication/status_';
+
     // DEFAULT IMAGE SIZE
     const DEFAULT_IMAGE_WIDTH = 500;
     const DEFAULT_IMAGE_HEIGHT = 500;
+
     // DEFAULT ITEM IMAGE SIZE
     const DEFAULT_ITEM_IMAGE_HEIGHT = 0;
     const DEFAULT_ITEM_IMAGE_WIDTH = 0;
+
     // CACHE PATHS
     const CACHE_OMNICLIENT_OPERATIONDATA_PREFIX = 'lsr-oc-od-{@1}';
     const CACHE_OMNISERVICEABSTRACT_OPTIONS_PREFIX = 'lsr-osa-o-{@1}';
@@ -46,9 +50,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const CACHE_NAV_PROFILE = 'lsr-n-p';
     const CACHE_CUSTOMER_SYNCHRONIZE_SESSID_PREFIX = 'lsr-c-s-sid-{@1}';
     const CACHE_OMNICLIENT_TOKENIZED_OPERATION_PREFIX = 'lsr-oc-t-o-{@1}';
+
     // STORE CONFIGURATION PATHS
     // SYSTEM CONFIG
     const SC_SYSTEM_SYMLINK = 'dev/template/allow_symlink';
+
     // SERVICE
     const SC_SERVICE_ENABLE = 'ls_mag/service/enabled';
     const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
@@ -56,6 +62,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_DEBUG = 'ls_mag/service/debug';
     const SC_SERVICE_TOKENIZED = 'ls_mag/service/tokenized_operations';
     const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
+
     // REPLICATION
     const SC_REPLICATION_GETCATEGORIES = 'ls_mag/replication/replicate_category';
     const SC_REPLICATION_HIERARCHY_CODE = 'ls_mag/service/replicate_hierarchy_code';
@@ -96,6 +103,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_ENHANCEMENT_INVENTORY_ACTIVE_TO = 'ls_mag/cron_enhancement/inventory_active_to';
     const SC_ENHANCEMENT_STORE_INVENTORY_CALCULATION = 'ls_mag/cron_enhancement/invetory_per_store';
     const SC_ENHANCEMENT_STORE_UPDATE_INVENTORY_WHEN_ZERO = 'ls_mag/cron_enhancement/if_zero';
+
     // LOYALTY
     const SC_LOYALTY_SHOW_OFFERS = 'ls_mag/loyalty/enable_loyalty_offers';
     const SC_LOYALTY_OFFERS_USE_STATIC_BLOCK = 'ls_mag/loyalty/use_static_block';
@@ -109,7 +117,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_SHOW_NOTIFICATIONS_LEFT = 'ls_mag/loyalty/show_notifications_left';
     const SC_LOYALTY_PAGE_IMAGE_WIDTH = 'ls_mag/loyalty/set_image_size_width_for_loyalty_page';
     const SC_LOYALTY_PAGE_IMAGE_HEIGHT = 'ls_mag/loyalty/set_image_size_height_for_loyalty_page';
-    const SC_LOYALTY_EXPIRY_DATE_FORMAT      = 'ls_mag/loyalty/loyalty_expiry_date_format';
+    const SC_LOYALTY_EXPIRY_DATE_FORMAT = 'ls_mag/loyalty/loyalty_expiry_date_format';
 
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
@@ -121,6 +129,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CART_SPECIAL_ORDER_RETRIES = 'ls_mag/one_list/special_order_create_retries';
     const SC_CART_ORDER_RETRIES = 'ls_mag/one_list/sales_order_create_retries';
     const SC_CART_SHIPMENT_FEE = 'ls_mag/one_list/shipment_fee';
+
     // CLICK & COLLECT
     const SC_CLICKCOLLECT_ACTIVE = 'carriers/clickcollect/active';
     const SC_CLICKCOLLECT_MAP = 'carriers/clickcollect/map';
@@ -133,9 +142,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
     const MSG_NOT_AVAILABLE_NOTICE_TITLE = "Notice";
     const MSG_NOT_AVAILABLE_NOTICE_CONTENT = "This item is only available online.";
+
     // CUSTOM CONFIGURATION PATHS
     const CONFIG_REPLICATION_JOBS = 'ls_mag/replication/jobs';
     const CONFIG_CONFIGDATA_WATCHES = 'ls_mag/configdata/watches';
+
     // REGISTRY PATHS
     const REGISTRY_LOYALTY_LOGINRESULT = 'lsr-l-lr';
     const REGISTRY_LOYALTY_WATCHNEXTSAVE = 'lsr-l-cwns';
@@ -146,6 +157,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const REGISTRY_CURRENT_STORE = 'lsr-c-s';
     const REGISTRY_WEBSITE = 'lsr-w';
     const REGISTRY_CURRENT_JSON_PAYLOAD = 'lsr-c-j-p';
+
     // SESSION KEYS
     const SESSION_CUSTOMER_SECURITYTOKEN = 'lsr-s-c-st';
     const SESSION_CUSTOMER_CARDID = 'lsr-s-c-cid';
@@ -170,6 +182,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const W_STORE_REPLICATION_PREFIX = 'lsr_replication_store_{@1}';
     const W_STORE_ENHANCEMENT_PREFIX = 'lsr_enhancement_store_{@1}';
     const W_STORE_ENHANCEMENT_JOB_PREFIX = 'lsr_enhancement_store_{@1}_{@2}';
+
     // JOBS
     const JOB_CUSTOMER_SYNCHRONIZE = 'lsr_customer_synchronize';
     const JOB_SALESORDER_CREATE = 'lsr_order_create';
@@ -177,17 +190,20 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const JOB_CLICKCOLLECT_CREATE = 'lsr_clickcollect_create';
     const JOB_HEARTBEAT = 'lsr_heartbeat';
     const JOB_SALES_ORDER_SYNCHRONIZE = 'lsr_sos';
+
     // CONFIGURATION WATCHER KEYS
     const CW_BEFORE = 'before';
     const CW_AFTER = 'after';
     const CW_PATH = 'path';
     const CW_WEBSITE = 'website';
     const CW_STORE = 'store';
+
     // SESSION MESSAGE SEVERITY
     const SEVERITY_NOTICE = 'notice';
     const SEVERITY_ERROR = 'error';
     const SEVERITY_WARNING = 'warning';
     const SEVERITY_SUCCESS = 'success';
+
     // ATTRIBUTE CODES
     const ATTRIBUTE_ORDER_STORE = 'store_id';
     const ATTRIBUTE_ORDER_NAVSTORE = 'lsr_clickcollect_navstore';
@@ -209,6 +225,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const ATTRIBUTE_TAX_REFUNDED = 'lsr_tax_refunded';
     const ATTRIBUTE_BASE_TAX_REFUNDED = 'lsr_base_tax_refunded';
     const ATTRIBUTE_COUPON_CODE = 'lsr_coupon_code';
+
     // ORDER STATES
     const ORDER_STATE_NA = 'NOT_AVAILABLE';
     const ORDER_STATE_NC = 'NOT_CREATED';
@@ -218,6 +235,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const ORDER_STATE_OPEN = 'OPEN';
     const ORDER_STATE_PAID = 'PAID';
     const ORDER_STATE_COMPLETE = 'COMPLETE';
+
     //Store Hours Format
     const STORE_HOURS_TIME_FORMAT = 'h:i A';
 
@@ -240,6 +258,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //LS reset password email of the current customer
     const REGISTRY_CURRENT_RESETPASSWORD_EMAIL = 'reset-password-email';
+
     /**
      * @var ScopeConfigInterface
      */
