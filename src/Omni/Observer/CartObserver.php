@@ -64,6 +64,7 @@ class CartObserver implements ObserverInterface
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
+    // @codingStandardsIgnoreLine
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         /*
@@ -89,24 +90,50 @@ class CartObserver implements ObserverInterface
                     $this->basketHelper->unsetCouponCode('');
                 }
                 $itemlist = $quote->getAllVisibleItems();
-                $counter = 0;
-                foreach ($itemlist as $item) {
-                    $orderLines = $basketData->getOrderLines()->getOrderLine();
-                    $itemSku = explode("-", $item->getSku());
-                    if (count($itemSku) < 2) {
-                        $itemSku[1] = null;
-                    }
-                    if (is_array($orderLines)) {
-                        foreach ($orderLines as $line) {
-                            if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
-                                if ($orderLines[$counter]->getDiscountAmount() != "0.00") {
-                                    $item->setCustomPrice($orderLines[$counter]->getAmount());
-                                    $item->setDiscountPercent($orderLines[$counter]->getDiscountPercent());
+                $oldItemVariant = [];
+                try {
+                    foreach ($itemlist as $item) {
+                        $orderLines = $basketData->getOrderLines()->getOrderLine();
+                        $itemSku = explode("-", $item->getSku());
+                        // @codingStandardsIgnoreLine
+                        if (count($itemSku) < 2) {
+                            $itemSku[1] = null;
+                        }
+                        if (is_array($orderLines)) {
+                            foreach ($orderLines as $line) {
+                                if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
+                                    if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
+                                        // @codingStandardsIgnoreLine
+                                        $item->setCustomPrice($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount());
+                                        $item->setDiscountAmount(
+                                        // @codingStandardsIgnoreLine
+                                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount()
+                                        );
+                                    } else {
+                                        if ($line->getDiscountAmount() > 0) {
+                                            $item->setCustomPrice($line->getAmount());
+                                            $item->setDiscountAmount($line->getDiscountAmount());
+                                        }
+                                    }
+                                    // @codingStandardsIgnoreStart
+                                    if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
+                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] =
+                                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount();
+                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()] ['Discount'] =
+                                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount();
+                                    } else {
+
+                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] = $line->getAmount();
+                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] = $line->getDiscountAmount();
+                                    }
+                                    // @codingStandardsIgnoreEnd
                                 }
-                                $counter++;
                             }
                         }
                     }
+                } catch
+                (\Exception $e) {
+                    $this->logger->error($e->getMessage());
                 }
                 $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
             }
@@ -115,7 +142,8 @@ class CartObserver implements ObserverInterface
         return $this;
     }
 
-    public function watchNextSave($value = true)
+    public
+    function watchNextSave($value = true)
     {
         $this->watchNextSave = $value;
     }
