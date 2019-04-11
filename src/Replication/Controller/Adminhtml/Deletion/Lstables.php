@@ -38,6 +38,7 @@ class Lstables extends Action
         "ls_replication_repl_extended_variant_value",
         "ls_replication_repl_image",
         "ls_replication_repl_image_link",
+        "ls_replication_repl_inv_status",
         "ls_replication_repl_item",
         "ls_replication_repl_item_category",
         "ls_replication_repl_item_unit_of_measure",
@@ -84,9 +85,8 @@ class Lstables extends Action
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->lsTables as $lsTables) {
             $tableName = $connection->getTableName($lsTables);
-            $query = "TRUNCATE TABLE " . $tableName;
             try {
-                $connection->query($query);
+                $connection->truncateTable($tableName);
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }

@@ -158,9 +158,8 @@ class Product extends Action
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->catalog_products_tables as $catalogTable) {
             $tableName = $connection->getTableName($catalogTable);
-            $query = "TRUNCATE TABLE " . $tableName;
             try {
-                $connection->query($query);
+                $connection->truncateTable($tableName);
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
