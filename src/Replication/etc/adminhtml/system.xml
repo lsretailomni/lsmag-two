@@ -373,7 +373,7 @@
                 </field>
                 <field id="products" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="1"
                        showInStore="1">
-                    <label>Delete Products</label>
+                    <label>Delete Products &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/product</button_url>
@@ -381,7 +381,7 @@
                 </field>
                 <field id="categories" translate="label" type="button" sortOrder="10" showInDefault="1"
                        showInWebsite="1" showInStore="1">
-                    <label>Delete Categories</label>
+                    <label>Delete Categories &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/category</button_url>
@@ -389,7 +389,7 @@
                 </field>
                 <field id="attributes" translate="label" type="button" sortOrder="10" showInDefault="1"
                        showInWebsite="1" showInStore="1">
-                    <label>Delete Attributes</label>
+                    <label>Delete Attributes &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/attribute</button_url>

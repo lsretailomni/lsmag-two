@@ -7,6 +7,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\App\ResourceConnection;
 
 /**
  * Class CategoryDeletion
@@ -23,6 +24,9 @@ class Category extends Action
     /** @var CategoryFactory $categoryFactory */
     public $categoryFactory;
 
+    /** @var ResourceConnection */
+    public $resource;
+
     // @codingStandardsIgnoreStart
     /** @var array  */
     protected $_publicActions = ['category'];
@@ -33,16 +37,20 @@ class Category extends Action
      * @param CategoryFactory $categoryFactory Category Factory
      * @param Registry $registry Magento Registry
      * @param LoggerInterface $logger
+     * @param Context $context
+     * @param ResourceConnection $resource
      */
     public function __construct(
         CategoryFactory $categoryFactory,
         Registry $registry,
         LoggerInterface $logger,
-        Context $context
+        Context $context,
+        ResourceConnection $resource
     ) {
         $this->categoryFactory = $categoryFactory;
         $this->registry = $registry;
         $this->logger = $logger;
+        $this->resource = $resource;
         parent::__construct($context);
     }
 
@@ -65,6 +73,14 @@ class Category extends Action
                     $this->logger->debug($e->getMessage());
                 }
             }
+        }
+        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        $lsTableName = $connection->getTableName('ls_replication_repl_hierarchy_node');
+        $lsQuery = "UPDATE " . $lsTableName . " SET processed = 0;";
+        try {
+            $connection->query($lsQuery);
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
         $this->messageManager->addSuccessMessage(__('Categories deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
