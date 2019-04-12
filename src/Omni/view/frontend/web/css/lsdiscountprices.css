@@ -6,9 +6,10 @@
     text-align: left;
 }
 
-.lsdiscountpercentage {
+.lsdiscountamount {
     color: red;
     font-size: 13px;
+    font-weight: bold;
 }
 
 .lsoriginalprice {
