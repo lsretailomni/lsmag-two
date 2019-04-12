@@ -26,6 +26,7 @@ abstract class AbstractReplicationTask
         'ls_mag/replication/repl_country_code',
         'ls_mag/replication/repl_shipping_agent',
         'ls_mag/replication/repl_store_tender_type',
+        'ls_mag/replication/repl_inv_status'
     ];
 
     /** @var array Config path which needed web store id instead of empty */
