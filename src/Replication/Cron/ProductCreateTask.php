@@ -315,7 +315,7 @@ class ProductCreateTask
                     $itemStock = $this->getInventoryStatus($item->getNavId(), $storeId);
                     $product->setStockData([
                         'use_config_manage_stock' => 1,
-                        'is_in_stock' => 1,
+                        'is_in_stock' => ($itemStock > 0) ? 1 : 0,
                         'qty' => $itemStock
                     ]);
                     $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
@@ -1088,7 +1088,7 @@ class ProductCreateTask
                 $itemStock = $this->getInventoryStatus($value->getItemId(), $storeId, $value->getVariantId());
                 $productV->setStockData([
                     'use_config_manage_stock' => 1,
-                    'is_in_stock' => 1,
+                    'is_in_stock' => ($itemStock > 0) ? 1 : 0,
                     'is_qty_decimal' => 0,
                     'qty' => $itemStock
                 ]);
@@ -1135,7 +1135,7 @@ class ProductCreateTask
      */
     public function getInventoryStatus($itemId, $storeId, $variantId = null)
     {
-        $qyt = 0;
+        $qty = 0;
         try {
             $filters = [
                 ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
@@ -1152,7 +1152,7 @@ class ProductCreateTask
             $inventoryStatus = $this->replInvStatusRepository->getList($searchCriteria)->getItems();
             /** @var \Ls\Replication\Model\ReplInvStatus $invStatus */
             foreach ($inventoryStatus as $invStatus) {
-                $qyt = $invStatus->getQuantity();
+                $qty = $invStatus->getQuantity();
                 $invStatus->setData('is_updated', '0');
                 $invStatus->setData('processed', '1');
                 $this->replInvStatusRepository->save($invStatus);
@@ -1160,6 +1160,6 @@ class ProductCreateTask
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-        return $qyt;
+        return $qty;
     }
 }
