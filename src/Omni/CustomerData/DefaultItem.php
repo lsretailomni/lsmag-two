@@ -98,24 +98,24 @@ class DefaultItem extends \Magento\Checkout\CustomerData\DefaultItem
      */
     public function doGetItemData()
     {
-        $discountPercentageTextMessage = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
-        $orginalPrice = '';
-        if ($this->item->getCalculationPrice() == $this->item->getCustomPrice()) {
-            $orginalPrice = $this->item->getProduct()->getPrice() * $this->item->getQty();
-            $percentageDiscount = ($this->item->getDiscountPercent() > 0 && $this->item->getDiscountPercent() != null) ?
-                round($this->item->getDiscountPercent(), 2) :
-                $this->itemHelper->getDiscountPercentage($orginalPrice, $this->item->getCustomPrice());
+        $discountAmountTextMessage = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
+        $originalPrice = '';
+        if ($this->item->getCalculationPrice() == $this->item->getCustomPrice() && $this->item->getCustomPrice()>0) {
+            $originalPrice = $this->item->getProduct()->getPrice() * $this->item->getQty();
+            $discountAmount = ($this->item->getDiscountAmount() > 0 && $this->item->getDiscountPercent() != null) ?
+                $this->checkoutHelper->formatPrice($this->item->getDiscountAmount()) : '';
         } else {
-            $orginalPrice = '';
-            $percentageDiscount = '';
+            $originalPrice = '';
+            $discountAmount = '';
+            $this->item->setConvertedPrice($this->item->getProduct()->getPrice() * $this->item->getQty());
         }
-
         $itemsData = parent::doGetItemData($this->item);
+
         return \array_merge(
-            ['lsPriceOriginal' => ($orginalPrice != "") ?
-                $this->checkoutHelper->formatPrice($orginalPrice) : $orginalPrice,
-                'lsDiscountPercentage' => ($percentageDiscount != "") ?
-                    '( ' . __($discountPercentageTextMessage) . ' ' . $percentageDiscount . '% )' : $percentageDiscount
+            ['lsPriceOriginal' => ($originalPrice != "") ?
+                $this->checkoutHelper->formatPrice($originalPrice) : $originalPrice,
+                'lsDiscountAmount' => ($discountAmount != "") ?
+                    '( ' . __($discountAmountTextMessage) . ' ' . $discountAmount . ' )' : $discountAmount
             ],
             $itemsData
         );

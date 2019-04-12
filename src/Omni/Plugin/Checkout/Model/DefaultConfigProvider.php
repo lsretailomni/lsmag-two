@@ -61,18 +61,19 @@ class DefaultConfigProvider
         $items = $result['totalsData']['items'];
         foreach ($items as $index => $item) {
             $quoteItem = $this->checkoutSession->getQuote()->getItemById($item['item_id']);
-            $originalPrice= $quoteItem->getProduct()->getPrice()*$quoteItem->getQty();
+            $originalPrice = $quoteItem->getProduct()->getPrice() * $quoteItem->getQty();
             if ($quoteItem->getCustomPrice() > 0) {
                 $result['quoteItemData'][$index]['discountprice'] =
                     $this->pricingHelper->currency($quoteItem->getCustomPrice(), true, false);
-                $discountPercent = $quoteItem->getDiscountPercent();
-                $result['quoteItemData'][$index]['discountpercentage'] =
-                    ($discountPercent > 0 && $discountPercent != null) ? round($discountPercent, 2) :
-                        $this->itemHelper->getDiscountPercentage(
-                            $originalPrice,
-                            $quoteItem->getCustomPrice()
-                        );
-                $result['quoteItemData'][$index]['discountpercentagetext'] = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
+                $discountAmount = $quoteItem->getDiscountAmount();
+                $result['quoteItemData'][$index]['discountamount'] =
+                    ($discountAmount > 0 && $discountAmount != null) ?
+                        $this->pricingHelper->currency(
+                            $discountAmount,
+                            true,
+                            false
+                        ) : '';
+                $result['quoteItemData'][$index]['discountamounttext'] = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
             } else {
                 $result['quoteItemData'][$index]['discountprice'] = '';
             }
