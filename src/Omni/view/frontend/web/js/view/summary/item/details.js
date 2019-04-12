@@ -26,7 +26,7 @@ define(
             },
             getDiscountAmount: function (quoteItem) {
                 var item = this.getItem(quoteItem.item_id);
-                return '( '+ $t(item.discountamounttext)+' '+item.discountamount+' )';
+                return '('+ $t(item.discountamounttext)+' '+item.discountamount+')';
             },
             getItem: function (item_id) {
                 var itemElement = null;
