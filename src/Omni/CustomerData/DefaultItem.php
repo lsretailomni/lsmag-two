@@ -115,7 +115,7 @@ class DefaultItem extends \Magento\Checkout\CustomerData\DefaultItem
             ['lsPriceOriginal' => ($originalPrice != "") ?
                 $this->checkoutHelper->formatPrice($originalPrice) : $originalPrice,
                 'lsDiscountAmount' => ($discountAmount != "") ?
-                    '( ' . __($discountAmountTextMessage) . ' ' . $discountAmount . ' )' : $discountAmount
+                    '(' . __($discountAmountTextMessage) . ' ' . $discountAmount . ')' : $discountAmount
             ],
             $itemsData
         );
