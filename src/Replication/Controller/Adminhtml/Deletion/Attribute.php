@@ -57,7 +57,7 @@ class Attribute extends Action
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         $tableName = $connection->getTableName('eav_attribute');
-        $query = "DELETE FROM " . $tableName ." WHERE attribute_code LIKE 'ls_%'";
+        $query = "DELETE FROM " . $tableName ." WHERE attribute_code LIKE 'ls\_%'";
         try {
             $connection->query($query);
         } catch (\Exception $e) {
