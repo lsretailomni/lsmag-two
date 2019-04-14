@@ -62,14 +62,14 @@ class Grid extends Action
                 if (!empty($info)) {
                     $executeMoreData = '';
                     if ($info[0] > 0) {
-                        $executeMoreData=$this->_url->getUrl(
+                        $executeMoreData = $this->_url->getUrl(
                             self::URL_PATH_EXECUTE,
                             ['joburl' => $jobUrl, 'jobname' => $jobName]
                         );
                     }
                     $this->messageManager->addComplexSuccessMessage(
                         'cronlinkmessage',
-                        ['url'=>$executeMoreData,'jobName'=>$jobName,'remaining'=>$info[0]]
+                        ['url' => $executeMoreData, 'jobName' => $jobName, 'remaining' => $info[0]]
                     );
                 }
                 $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);

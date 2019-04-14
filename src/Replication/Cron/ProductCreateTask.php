@@ -352,6 +352,7 @@ class ProductCreateTask
                 $this->updateAndAddNewImageOnly();
                 $this->updateBarcodeOnly();
                 $this->updatePriceOnly();
+                $this->updateInventoryOnly();
             }
             $this->logger->debug('End ProductCreateTask');
         } else {
@@ -983,6 +984,44 @@ class ProductCreateTask
             }
         }
     }
+
+
+    /**
+     * Update the inventory of the items & item variants
+     */
+    public function updateInventoryOnly()
+    {
+        $filters = [];
+        $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
+        /** @var \Ls\Replication\Model\ReplInvStatusSearchResults $replInvStatusArray */
+        $replInvStatusArray = $this->replInvStatusRepository->getList($criteria);
+        /** @var \Ls\Replication\Model\ReplInvStatus $replInvStatus */
+        foreach ($replInvStatusArray->getItems() as $replInvStatus) {
+            try {
+                if (!$replInvStatus->getVariantId()) {
+                    $sku = $replInvStatus->getItemId();
+                } else {
+                    $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
+                }
+                $productData = $this->productRepository->get($sku);
+                if (isset($productData)) {
+                    $productData->setStockData([
+                        'is_in_stock' => ($replInvStatus->getQuantity() > 0) ? 1 : 0,
+                        'qty' => $replInvStatus->getQuantity()
+                    ]);
+                    // @codingStandardsIgnoreStart
+                    $this->productRepository->save($productData);
+                    $replInvStatus->setData('is_updated', '0');
+                    $replInvStatus->setData('processed', '1');
+                    $this->replInvStatusRepository->save($replInvStatus);
+                    // @codingStandardsIgnoreEnd
+                }
+            } catch (\Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
+        }
+    }
+
 
     /** For product variants, get image from item_image_link with type item variant
      * @param $configProduct
