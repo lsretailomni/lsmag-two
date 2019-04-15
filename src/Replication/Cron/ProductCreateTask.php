@@ -927,26 +927,28 @@ class ProductCreateTask
             $criteria = $this->replicationHelper->buildCriteriaForNewItems();
             /** @var \Ls\Replication\Model\ReplBarcodeSearchResults $replBarcodes */
             $replBarcodes = $this->replBarcodeRepository->getList($criteria);
-            /** @var \Ls\Replication\Model\ReplBarcode $replBarcode */
-            foreach ($replBarcodes->getItems() as $replBarcode) {
-                try {
-                    if (!$replBarcode->getVariantId()) {
-                        $sku = $replBarcode->getItemId();
-                    } else {
-                        $sku = $replBarcode->getItemId() . '-' . $replBarcode->getVariantId();
+            if ($replBarcodes->getTotalCount() > 0) {
+                /** @var \Ls\Replication\Model\ReplBarcode $replBarcode */
+                foreach ($replBarcodes->getItems() as $replBarcode) {
+                    try {
+                        if (!$replBarcode->getVariantId()) {
+                            $sku = $replBarcode->getItemId();
+                        } else {
+                            $sku = $replBarcode->getItemId() . '-' . $replBarcode->getVariantId();
+                        }
+                        $productData = $this->productRepository->get($sku);
+                        if (isset($productData)) {
+                            $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
+                            // @codingStandardsIgnoreStart
+                            $this->productRepository->save($productData);
+                            $replBarcode->setData('is_updated', '0');
+                            $replBarcode->setData('processed', '1');
+                            $this->replBarcodeRepository->save($replBarcode);
+                            // @codingStandardsIgnoreEnd
+                        }
+                    } catch (\Exception $e) {
+                        $this->logger->debug($e->getMessage());
                     }
-                    $productData = $this->productRepository->get($sku);
-                    if (isset($productData)) {
-                        $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
-                        // @codingStandardsIgnoreStart
-                        $this->productRepository->save($productData);
-                        $replBarcode->setData('is_updated', '0');
-                        $replBarcode->setData('processed', '1');
-                        $this->replBarcodeRepository->save($replBarcode);
-                        // @codingStandardsIgnoreEnd
-                    }
-                } catch (\Exception $e) {
-                    $this->logger->debug($e->getMessage());
                 }
             }
         }
@@ -961,26 +963,28 @@ class ProductCreateTask
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         /** @var \Ls\Replication\Model\ReplPriceSearchResults $replPrices */
         $replPrices = $this->replPriceRepository->getList($criteria);
-        /** @var \Ls\Replication\Model\ReplPrice $replPrice */
-        foreach ($replPrices->getItems() as $replPrice) {
-            try {
-                if (!$replPrice->getVariantId()) {
-                    $sku = $replPrice->getItemId();
-                } else {
-                    $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
+        if ($replPrices->getTotalCount() > 0) {
+            /** @var \Ls\Replication\Model\ReplPrice $replPrice */
+            foreach ($replPrices->getItems() as $replPrice) {
+                try {
+                    if (!$replPrice->getVariantId()) {
+                        $sku = $replPrice->getItemId();
+                    } else {
+                        $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
+                    }
+                    $productData = $this->productRepository->get($sku);
+                    if (isset($productData)) {
+                        $productData->setPrice($replPrice->getUnitPrice());
+                        // @codingStandardsIgnoreStart
+                        $this->productRepository->save($productData);
+                        $replPrice->setData('is_updated', '0');
+                        $replPrice->setData('processed', '1');
+                        $this->replPriceRepository->save($replPrice);
+                        // @codingStandardsIgnoreEnd
+                    }
+                } catch (\Exception $e) {
+                    $this->logger->debug($e->getMessage());
                 }
-                $productData = $this->productRepository->get($sku);
-                if (isset($productData)) {
-                    $productData->setPrice($replPrice->getUnitPrice());
-                    // @codingStandardsIgnoreStart
-                    $this->productRepository->save($productData);
-                    $replPrice->setData('is_updated', '0');
-                    $replPrice->setData('processed', '1');
-                    $this->replPriceRepository->save($replPrice);
-                    // @codingStandardsIgnoreEnd
-                }
-            } catch (\Exception $e) {
-                $this->logger->debug($e->getMessage());
             }
         }
     }
@@ -995,29 +999,31 @@ class ProductCreateTask
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         /** @var \Ls\Replication\Model\ReplInvStatusSearchResults $replInvStatusArray */
         $replInvStatusArray = $this->replInvStatusRepository->getList($criteria);
-        /** @var \Ls\Replication\Model\ReplInvStatus $replInvStatus */
-        foreach ($replInvStatusArray->getItems() as $replInvStatus) {
-            try {
-                if (!$replInvStatus->getVariantId()) {
-                    $sku = $replInvStatus->getItemId();
-                } else {
-                    $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
+        if ($replInvStatusArray->getTotalCount() > 0) {
+            /** @var \Ls\Replication\Model\ReplInvStatus $replInvStatus */
+            foreach ($replInvStatusArray->getItems() as $replInvStatus) {
+                try {
+                    if (!$replInvStatus->getVariantId()) {
+                        $sku = $replInvStatus->getItemId();
+                    } else {
+                        $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
+                    }
+                    $productData = $this->productRepository->get($sku);
+                    if (isset($productData)) {
+                        $productData->setStockData([
+                            'is_in_stock' => ($replInvStatus->getQuantity() > 0) ? 1 : 0,
+                            'qty' => $replInvStatus->getQuantity()
+                        ]);
+                        // @codingStandardsIgnoreStart
+                        $this->productRepository->save($productData);
+                        $replInvStatus->setData('is_updated', '0');
+                        $replInvStatus->setData('processed', '1');
+                        $this->replInvStatusRepository->save($replInvStatus);
+                        // @codingStandardsIgnoreEnd
+                    }
+                } catch (\Exception $e) {
+                    $this->logger->debug($e->getMessage());
                 }
-                $productData = $this->productRepository->get($sku);
-                if (isset($productData)) {
-                    $productData->setStockData([
-                        'is_in_stock' => ($replInvStatus->getQuantity() > 0) ? 1 : 0,
-                        'qty' => $replInvStatus->getQuantity()
-                    ]);
-                    // @codingStandardsIgnoreStart
-                    $this->productRepository->save($productData);
-                    $replInvStatus->setData('is_updated', '0');
-                    $replInvStatus->setData('processed', '1');
-                    $this->replInvStatusRepository->save($replInvStatus);
-                    // @codingStandardsIgnoreEnd
-                }
-            } catch (\Exception $e) {
-                $this->logger->debug($e->getMessage());
             }
         }
     }
