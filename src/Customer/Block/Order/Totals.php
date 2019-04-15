@@ -88,6 +88,15 @@ class Totals extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * @return mixed
+     */
+    public function getTotalDiscount()
+    {
+        $total = $this->getOrder()->getTotalDiscount();
+        return $total;
+    }
+
+    /**
      * @return float|int
      */
     public function getShipmentChargeLineFee()
@@ -109,7 +118,8 @@ class Totals extends \Magento\Framework\View\Element\Template
     {
         $shipmentFee = $this->getShipmentChargeLineFee();
         $grandTotal = $this->getGrandTotal();
-        $fee =  (float)$grandTotal - (float)$shipmentFee;
+        $discount = $this->getTotalDiscount();
+        $fee =  (float)$grandTotal + $discount - (float)$shipmentFee;
         return $fee;
     }
 }

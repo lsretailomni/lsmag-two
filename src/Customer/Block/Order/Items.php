@@ -1,7 +1,9 @@
 <?php
+
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
+use \Ls\omni\Helper\ItemHelper;
 
 /**
  * Class Items
@@ -26,7 +28,8 @@ class Items extends \Magento\Sales\Block\Items\AbstractItems
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\Registry $registry,
         array $data = []
-    ) {
+    )
+    {
         $this->coreRegistry = $registry;
         parent::__construct($context, $data);
     }
@@ -37,6 +40,7 @@ class Items extends \Magento\Sales\Block\Items\AbstractItems
     public function getItems()
     {
         $orderLines = $this->getOrder()->getOrderLines()->getOrderLine();
+        $this->getChildBlock("custom_order_item_renderer")->setData("order", $this->getOrder());
         if (!is_array($orderLines)) {
             $tmp = $orderLines;
             // @codingStandardsIgnoreStart
@@ -68,4 +72,5 @@ class Items extends \Magento\Sales\Block\Items\AbstractItems
         $html = $this->getChildBlock("custom_order_item_renderer")->setData("item", $item)->toHtml();
         return $html;
     }
+
 }
