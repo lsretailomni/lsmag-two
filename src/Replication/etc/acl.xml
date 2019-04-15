@@ -9,6 +9,10 @@
                               sortOrder="10">
                         <resource id="Ls_Replication::item_grid" title="Item Replication" translate="title"
                                   sortOrder="10"/>
+                        <resource id="Ls_Replication::item_price_grid" title="Price Replication" translate="title"
+                                  sortOrder="10"/>
+                        <resource id="Ls_Replication::item_inventory_grid" title="Inventory Status Replication" translate="title"
+                                  sortOrder="10"/>
                         <resource id="Ls_Replication::barcode_grid" title="Barcode Replication" translate="title"
                                   sortOrder="10"/>
                         <resource id="Ls_Replication::extendedvariantvalue_grid"

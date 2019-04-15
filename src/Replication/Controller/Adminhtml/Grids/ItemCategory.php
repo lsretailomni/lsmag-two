@@ -1,13 +1,9 @@
 <?php
-/**
- * LSRetail
- * @package     Ls_Replication
- * @copyright   Copyright (c) 2018 LSRetail
- */
+
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
 /**
- * Class Index
+ * Class ItemCategory
  * @package Webworks\Inquiry\Controller\Adminhtml\Inquiries
  */
 class ItemCategory extends \Magento\Backend\App\Action

@@ -39,6 +39,8 @@
     <preference for="Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface"
                 type="Ls\Replication\Model\ReplItemVariantRegistrationRepository"/>
     <preference for="Ls\Replication\Api\ReplPriceRepositoryInterface" type="Ls\Replication\Model\ReplPriceRepository"/>
+    <preference for="Ls\Replication\Api\ReplInvStatusRepositoryInterface"
+                type="Ls\Replication\Model\ReplInvStatusRepository"/>
     <preference for="Ls\Replication\Api\ReplProductGroupRepositoryInterface"
                 type="Ls\Replication\Model\ReplProductGroupRepository"/>
     <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface" type="Ls\Replication\Model\ReplStoreRepository"/>
@@ -62,6 +64,7 @@
     <preference for="Ls\Replication\Api\Data\ReplItemVariantRegistrationInterface"
                 type="Ls\Replication\Model\ReplItemVariantRegistration"/>
     <preference for="Ls\Replication\Api\Data\ReplPriceInterface" type="Ls\Replication\Model\ReplPrice"/>
+    <preference for="Ls\Replication\Api\Data\ReplInvStatusInterface" type="Ls\Replication\Model\ReplInvStatus"/>
     <preference for="Ls\Replication\Api\Data\ReplProductGroupInterface" type="Ls\Replication\Model\ReplProductGroup"/>
     <preference for="Ls\Replication\Api\Data\ReplStoreInterface" type="Ls\Replication\Model\ReplStore"/>
     <!--Replication API Search Results Inferfaces-->
@@ -95,6 +98,8 @@
                 type="Ls\Replication\Model\ReplItemVariantRegistrationSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplPriceSearchResultsInterface"
                 type="Ls\Replication\Model\ReplPriceSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplInvStatusSearchResultsInterface"
+                type="Ls\Replication\Model\ReplInvStatusSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplProductGroupSearchResultsInterface"
                 type="Ls\Replication\Model\ReplProductGroupSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplStoreSearchResultsInterface"
@@ -107,6 +112,9 @@
                 </item>
                 <item name="ls_repl_grids_item_price_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplPrice\Grid\Collection
+                </item>
+                <item name="ls_repl_grids_inventory_status_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplInvStatus\Grid\Collection
                 </item>
                 <item name="ls_repl_grids_barcode_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplBarcode\Grid\Collection

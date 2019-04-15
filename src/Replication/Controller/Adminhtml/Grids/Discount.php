@@ -1,9 +1,5 @@
 <?php
-/**
- * LSRetail
- * @package     Ls_Replication
- * @copyright   Copyright (c) 2018 LSRetail
- */
+
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
 /**

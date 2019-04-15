@@ -74,9 +74,8 @@ class Customer extends Action
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->customer_tables as $customerTable) {
             $tableName = $connection->getTableName($customerTable);
-            $query = "TRUNCATE TABLE " . $tableName;
             try {
-                $connection->query($query);
+                $connection->truncateTable($tableName);
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
