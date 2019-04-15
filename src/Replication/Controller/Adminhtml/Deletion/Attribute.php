@@ -27,7 +27,6 @@ class Attribute extends Action
     public $ls_tables = [
         "ls_replication_repl_attribute",
         "ls_replication_repl_attribute_option_value",
-        "ls_replication_repl_attribute_value",
         "ls_replication_repl_extended_variant_value"
     ];
 
