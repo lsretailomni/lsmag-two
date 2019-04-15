@@ -8,6 +8,7 @@ use Magento\Framework\App\Helper\Context;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class ItemHelper
@@ -41,7 +42,8 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         SearchCriteriaBuilder $searchCriteriaBuilder,
         ReplBarcodeRepository $barcodeRepository,
         ProductRepository $productRepository
-    ) {
+    )
+    {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->barcodeRepository = $barcodeRepository;
@@ -66,7 +68,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         /** @var \Ls\Omni\Client\Ecommerce\Entity\ItemGetByIdResponse $response */
         $response = $request->execute($entity);
 
-        if ($response && !($response->getItemGetByIdResult()==null)) {
+        if ($response && !($response->getItemGetByIdResult() == null)) {
             $item = $response->getItemGetByIdResult();
             $result = $item;
         }
@@ -135,7 +137,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getItemVariant(Entity\LoyItem $item, $variant_id = null)
     {
         $variant = null;
-        if (($variant_id==null)) {
+        if (($variant_id == null)) {
             return $variant;
         }
         /** @var \Ls\Omni\Client\Ecommerce\Entity\VariantRegistration $row */
@@ -164,5 +166,67 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->setImages($variant->getImages());
 
         return $response;
+    }
+
+    /**
+     * @param $item
+     * @param $orderData
+     * @return array|null
+     */
+    // @codingStandardsIgnoreLine
+    public function getOrderDiscountLinesForItem($item, $orderData, $type = 1)
+    {
+        try {
+            $discountInfo = [];
+            $customPrice = 0;
+            if ($type == 2) {
+                $itemSku = $item->getItemId();
+                $itemSku = explode("-", $itemSku);
+                if (count($itemSku) < 2) {
+                    $itemSku[1] = $item->getVariantId();
+                }
+                $customPrice = $item->getDiscountAmount();
+            } else {
+                $itemSku = $item->getSku();
+                $itemSku = explode("-", $itemSku);
+                if (count($itemSku) < 2) {
+                    $itemSku[1] = '';
+                }
+                $customPrice = $item->getCustomPrice();
+            }
+            $check = false;
+
+            $basketData = $orderData;
+            $discountText = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
+
+            foreach ($basketData->getOrderLines() as $basket) {
+                if ($basket->getItemId() == $itemSku[0] && $basket->getVariantId() == $itemSku[1]) {
+                    if ($customPrice > 0 && $customPrice != null) {
+                        if (is_array($basketData->getOrderDiscountLines()->getOrderDiscountLine())) {
+                            // @codingStandardsIgnoreLine
+                            foreach ($basketData->getOrderDiscountLines()->getOrderDiscountLine() as $orderDiscountLine) {
+                                if ($basket->getLineNumber() == $orderDiscountLine->getLineNumber()) {
+                                    if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
+                                        $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
+                                    }
+                                }
+                            }
+                        } else {
+                            // @codingStandardsIgnoreLine
+                            $discountInfo[] = $basketData->getOrderDiscountLines()->getOrderDiscountLine()->getDescription();
+                        }
+
+                        $check = true;
+                    }
+                }
+            }
+            if ($check == true) {
+                return [implode($discountInfo), $discountText];
+            } else {
+                return null;
+            }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
     }
 }

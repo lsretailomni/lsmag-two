@@ -12,12 +12,22 @@
 ?>
 <tr class="subtotal">
     <th colspan="4" class="mark" scope="row">
-        <?= $block->escapeHtml('Subtotal') ?>
+        <?= $block->escapeHtml('Subtotal (Inc.Tax)') ?>
     </th>
-    <td class="amount" data-th="<?= $block->escapeHtml('Subtotal') ?>">
-        <span class="price"><?= $block->getFormattedPrice($block->getSubtotal());?></span>
+    <td class="amount" data-th="<?= $block->escapeHtml('Subtotal (Inc.Tax)') ?>">
+        <span class="price"><?= $block->getFormattedPrice($block->getSubtotal()); ?></span>
     </td>
 </tr>
+<?php if (!empty($block->getTotalDiscount()) && $block->getTotalDiscount() > 0) { ?>
+    <tr class="discount">
+        <th colspan="4" class="mark" scope="row">
+            <?= $block->escapeHtml('Total Discount') ?>
+        </th>
+        <td class="amount" data-th="<?= $block->escapeHtml('Total Discount') ?>">
+            <span class="price">-<?= $block->getFormattedPrice($block->getTotalDiscount()); ?></span>
+        </td>
+    </tr>
+<?php } ?>
 <tr class="shipping">
     <th colspan="4" class="mark" scope="row">
         <?= $block->escapeHtml('Shipment & Handling') ?>
@@ -31,7 +41,7 @@
         <?= $block->escapeHtml('Tax') ?>
     </th>
     <td class="amount" data-th="<?= $block->escapeHtml('Tax') ?>">
-        <span class="price"><?= $block->getFormattedPrice($block->getTotalTax());?></span>
+        <span class="price"><?= $block->getFormattedPrice($block->getTotalTax()); ?></span>
     </td>
 </tr>
 <tr class="grand_total">
@@ -39,6 +49,6 @@
         <strong><?= $block->escapeHtml('Total') ?> </strong>
     </th>
     <td class="amount" data-th="<?= $block->escapeHtml('Total') ?>">
-        <strong><span class="price"><?= $block->getFormattedPrice($block->getGrandTotal());?></span></strong>
+        <strong><span class="price"><?= $block->getFormattedPrice($block->getGrandTotal()); ?></span></strong>
     </td>
 </tr>

@@ -8,18 +8,45 @@
 
 /** @var  $block \Ls\Customer\Block\Order\Item\Renderer */
 $_item = $block->getItem();
+$discountInfo = $block->getItemDiscountLines();
+$sku = $block->getSku();
+if (!empty($_item->getVariantId())) {
+    $sku = $sku . "-" . $_item->getVariantId();
+}
 ?>
-<tr id="order-item-row-<?= /* @escapeNotVerified */ $_item->getItemId() ?>">
+<tr id="order-item-row-<?= /* @escapeNotVerified */
+$_item->getItemId() ?>">
     <td class="col name" data-th="<?= $block->escapeHtml(__('Product Name')) ?>">
-        <strong class="product name product-item-name"><?= $block->escapeHtml($_item->getItemDescription()) ?></strong></td>
-    <td class="col sku" data-th="<?= $block->escapeHtml(__('SKU')) ?>"><?= /* @escapeNotVerified */ $block->getSku() ?></td>
+        <strong class="product name product-item-name"><?= $block->escapeHtml($_item->getItemDescription()) ?></strong>
+        <?php if (!empty($_item->getVariantDescription())) { ?>
+            <p><?= $_item->getVariantDescription() ?></p>
+            <?php
+        }
+        ?>
+        <?php if (!empty($discountInfo)) { ?>
+            <p><strong><?= $discountInfo[0]; ?></strong></p>
+            <?php
+        }
+        ?>
+    </td>
+    <td class="col sku" data-th="<?= $block->escapeHtml(__('SKU')) ?>"><?= /* @escapeNotVerified */
+        $sku ?></td>
     <td class="col price" data-th="<?= $block->escapeHtml(__('Price')) ?>">
-        <?= $block->getFormattedPrice($_item->getPrice()); ?>
+        <?php if (!empty($_item->getDiscountAmount()) && $_item->getDiscountAmount() > 0) { ?>
+            <?= $block->getFormattedPrice($_item->getAmount()); ?>
+            <div class="lsdiscountprice2">
+                <strike><?= $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()); ?></strike></div>
+            <div class="lsdiscountamount">
+                <?= '(' . __($block->getDiscountLabel()) . ' ' . $block->priceCurrency->format($_item->getDiscountAmount()) . ')'; ?>
+            </div>
+        <?php } else { ?>
+            <?= $block->getFormattedPrice($_item->getPrice()); ?>
+        <?php } ?>
     </td>
     <td class="col qty" data-th="<?= $block->escapeHtml(__('Qty')) ?>">
-        <?= $block->getFormattedQty($_item->getQuantity());?>
+        <?= $block->getFormattedQty($_item->getQuantity()); ?>
     </td>
     <td class="col subtotal" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>">
-        <?= $block->getFormattedPrice($_item->getAmount());?>
+        <?= $block->getFormattedPrice($_item->getAmount()); ?>
     </td>
 </tr>

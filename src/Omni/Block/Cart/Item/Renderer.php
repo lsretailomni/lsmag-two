@@ -151,48 +151,14 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
 
     /**
      * @param $item
-     * @return array
+     * @return array|null
      */
-    // @codingStandardsIgnoreLine
     public function getOneListCalculateData($item)
     {
         try {
-            $discountInfo = [];
-            $itemSku = $item->getSku();
-            $check = false;
-            $itemSku = explode("-", $itemSku);
-            if (count($itemSku) < 2) {
-                $itemSku[1] = '';
-            }
             $basketData = $this->basketHelper->getBasketSessionValue();
-            $discountText = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
-
-            foreach ($basketData->getOrderLines() as $basket) {
-                if ($basket->getItemId() == $itemSku[0] && $basket->getVariantId() == $itemSku[1]) {
-                    if ($item->getCustomPrice() > 0 && $item->getCustomPrice() != null) {
-                        if (is_array($basketData->getOrderDiscountLines()->getOrderDiscountLine())) {
-                            // @codingStandardsIgnoreLine
-                            foreach ($basketData->getOrderDiscountLines()->getOrderDiscountLine() as $orderDiscountLine) {
-                                if ($basket->getLineNumber() == $orderDiscountLine->getLineNumber()) {
-                                    if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
-                                        $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
-                                    }
-                                }
-                            }
-                        } else {
-                            // @codingStandardsIgnoreLine
-                            $discountInfo[] = $basketData->getOrderDiscountLines()->getOrderDiscountLine()->getDescription();
-                        }
-
-                        $check=true;
-                    }
-                }
-            }
-            if ($check == true) {
-                return [implode($discountInfo), $discountText];
-            } else {
-                return null;
-            }
+            $result = $this->itemHelper->getOrderDiscountLinesForItem($item, $basketData);
+            return $result;
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
