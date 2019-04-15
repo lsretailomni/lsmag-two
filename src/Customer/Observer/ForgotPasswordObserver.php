@@ -125,7 +125,7 @@ class ForgotPasswordObserver implements ObserverInterface
                             $this->customerResourceModel->save($customer);
                         } else {
                             $this->customerSession->setForgottenEmail($email);
-                            $errorMessage = __('There is no account found with the provided email address.');
+                            $errorMessage = __('There is no account found with the provided email/username.');
                             return $this->handleErrorMessage($observer, $errorMessage);
                         }
                     }
