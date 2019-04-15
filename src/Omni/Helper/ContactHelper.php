@@ -8,7 +8,8 @@ use \Ls\Core\Model\LSR;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\ExpiredException;
-
+use Zend_Validate;
+use Zend_Validate_EmailAddress;
 /**
  * Class ContactHelper
  * @package Ls\Omni\Helper
@@ -209,6 +210,44 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return $contact_pos;
         } else {
             return null;
+        }
+    }
+
+    /**
+     * @param $param
+     * @return Entity\ArrayOfMemberContact|Entity\MemberContact[]|null
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Zend_Validate_Exception
+     */
+    public function searchWithUsernameOrEmail($param)
+    {
+        /** @var Operation\ContactGetById $request */
+        // @codingStandardsIgnoreStart
+        if (!Zend_Validate::is($param, Zend_Validate_EmailAddress::class)) {
+            $request = new Operation\ContactSearch();
+            /** @var Entity\ContactSearch $search */
+            $search = new Entity\ContactSearch();
+            // @codingStandardsIgnoreEnd
+            $search->setSearch($param);
+            $search->setMaxNumberOfRowsReturned(1);
+            // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
+            $search->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
+            try {
+                $response = $request->execute($search);
+                $contact_pos = $response->getContactSearchResult();
+            } catch (\Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
+                return $contact_pos->getMemberContact();
+            } elseif ($contact_pos instanceof Entity\MemberContact) {
+                return $contact_pos;
+            } else {
+                return null;
+            }
+        } else {
+            return $this->search($param);
         }
     }
 

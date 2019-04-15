@@ -3,8 +3,6 @@
 namespace Ls\Customer\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
-use Zend_Validate;
-use Zend_Validate_EmailAddress;
 use Magento\Customer\Api\CustomerMetadataInterface;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Core\Model\LSR;
@@ -103,31 +101,33 @@ class ForgotPasswordObserver implements ObserverInterface
                     $email = $post_param['email'];
                 }
                 if ($email) {
-                    if (!Zend_Validate::is($email, Zend_Validate_EmailAddress::class)) {
-                        $this->customerSession->setForgottenEmail($email);
-                        $errorMessage = __('Please correct the email address.');
-                        return $this->handleErrorMessage($observer, $errorMessage);
-                    }
                     $result = $this->contactHelper->forgotPassword($email);
                     if ($result) {
                         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                        $customer = $this->customerFactory->create()
-                            ->setWebsiteId($websiteId)
-                            ->loadByEmail($email);
-                        if (!$customer->getId()) {
-                            $search = $this->contactHelper->search($email);
-                            $customer = $this->contactHelper->createNewCustomerAgainstProvidedInformation(
-                                $search,
-                                LSR::LS_RESETPASSWORD_DEFAULT
+                        $search = $this->contactHelper->searchWithUsernameOrEmail($email);
+                        if ($search) {
+                            $email = $search->getEmail();
+                            $controller_action->getRequest()->setPostValue('email', $email);
+                            $customer = $this->customerFactory->create()
+                                ->setWebsiteId($websiteId)
+                                ->loadByEmail($email);
+                            if (!$customer->getId()) {
+                                $customer = $this->contactHelper->createNewCustomerAgainstProvidedInformation(
+                                    $search,
+                                    LSR::LS_RESETPASSWORD_DEFAULT
+                                );
+                            }
+                            $customer->setData(
+                                'attribute_set_id',
+                                CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER
                             );
+                            $customer->setData('lsr_resetcode', $result);
+                            $this->customerResourceModel->save($customer);
+                        } else {
+                            $this->customerSession->setForgottenEmail($email);
+                            $errorMessage = __('There is no account found with the provided email/username.');
+                            return $this->handleErrorMessage($observer, $errorMessage);
                         }
-                        $customer->setData('attribute_set_id', CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
-                        $customer->setData('lsr_resetcode', $result);
-                        $this->customerResourceModel->save($customer);
-                    } else {
-                        $this->customerSession->setForgottenEmail($email);
-                        $errorMessage = __('There is no account found with the provided email address.');
-                        return $this->handleErrorMessage($observer, $errorMessage);
                     }
                 }
             } catch (\Exception $e) {

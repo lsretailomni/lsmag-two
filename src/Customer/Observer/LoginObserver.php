@@ -52,6 +52,7 @@ class LoginObserver implements ObserverInterface
      * @param \Magento\Framework\App\ActionFlag $actionFlag
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param \Ls\Core\Model\LSR $LSR
      */
     public function __construct(
         ContactHelper $contactHelper,
