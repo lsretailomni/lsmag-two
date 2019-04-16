@@ -11,5 +11,8 @@
                 type="Ls\Customer\Controller\Sales\Order\View"/>
     <preference for="Magento\Customer\Model\AccountManagement"
                 type="Ls\Customer\Model\AccountManagement"/>
+
+    <preference for="Magento\Customer\Controller\Account\ForgotPasswordPost"
+                type="Ls\Customer\Controller\Account\ForgotPasswordPost"/>
 </config>
 

@@ -35,9 +35,9 @@
         <observer name="ls_account_edit_observer" instance="Ls\Customer\Observer\AccountEditObserver"/>
     </event>
     <!-- For Customer Password Reset Code Generator Through Omni -->
-    <event name="controller_action_predispatch_customer_account_forgotpasswordpost">
+<!--    <event name="controller_action_predispatch_customer_account_forgotpasswordpost">
         <observer name="ls_forgot_password_observer" instance="Ls\Customer\Observer\ForgotPasswordObserver"/>
-    </event>
+    </event>-->
     <!-- To Reset Customer Password on Omni -->
     <event name="controller_action_postdispatch_customer_account_resetpasswordpost">
         <observer name="ls_reset_password_observer" instance="Ls\Customer\Observer\ResetPasswordObserver"/>
