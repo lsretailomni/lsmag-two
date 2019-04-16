@@ -94,7 +94,7 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
                         $customer->setData('lsr_resetcode', $result);
                         $this->customerResourceModel->save($customer);
                         $this->customerAccountManagement->initiatePasswordReset(
-                            $email,
+                            $search->getEmail(),
                             AccountManagement::EMAIL_RESET
                         );
                     } else {
