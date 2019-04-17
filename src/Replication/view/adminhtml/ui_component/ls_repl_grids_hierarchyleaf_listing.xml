@@ -106,15 +106,6 @@
 
     <columns name="ls_repl_grids_hierarchyleaf_columns">
         <!--The list of columns-->
-        <actionsColumn name="scroll" class="Ls\Replication\Ui\Component\Listing\Column\ScrollActions">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="label" xsi:type="string" translate="true">Scroll</item>
-                    <item name="sortOrder" xsi:type="number">0</item>
-                </item>
-            </argument>
-        </actionsColumn>
         <column name="nav_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
