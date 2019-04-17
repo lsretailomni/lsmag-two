@@ -107,7 +107,7 @@
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="label" xsi:type="string" translate="true">Scroll</item>
-                    <item name="sortOrder" xsi:type="number">0</item>
+                    <item name="draggable" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </actionsColumn>
