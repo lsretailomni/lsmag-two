@@ -2,11 +2,11 @@
 /** @var \Magento\Customer\Block\Address\Edit $block */
 ?>
 <?php
-/** @var \Magento\Customer\Block\Widget\Company  $_company */
+/** @var \Magento\Customer\Block\Widget\Company $_company */
 $_company = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class);
-/** @var \Magento\Customer\Block\Widget\Telephone  $_telephone */
+/** @var \Magento\Customer\Block\Widget\Telephone $_telephone */
 $_telephone = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class);
-/** @var \Magento\Customer\Block\Widget\Fax  $_fax */
+/** @var \Magento\Customer\Block\Widget\Fax $_fax */
 $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class);
 
 ?>
@@ -51,7 +51,7 @@ $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::cla
                        name="street[]" data-validate='{"required":true,"maxlength":50}'
                        value="<?= $block->escapeHtmlAttr($block->getStreetLine(1)) ?>"
                        title="<?= /* @noEscape */
-                        $block->getAttributeData()->getFrontendLabel('street') ?>"
+                       $block->getAttributeData()->getFrontendLabel('street') ?>"
                        id="street_1"
                        class="input-text <?= $block->escapeHtmlAttr($_streetValidationClass) ?>"/>
                 <div class="nested">
@@ -67,7 +67,7 @@ $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::cla
                                        value="<?= $block->escapeHtmlAttr($block->getStreetLine($_i + 1)) ?>"
                                        title="<?= $block->escapeHtmlAttr(__('Street Address %1', $_i + 1)) ?>"
                                        id="street_<?= /* @noEscape */
-                                        $_i + 1 ?>"
+                                       $_i + 1 ?>"
                                        class="input-text <?= $block->escapeHtmlAttr($_streetValidationClass) ?>">
                             </div>
                         </div>
@@ -87,7 +87,7 @@ $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::cla
                            name="vat_id"
                            value="<?= $block->escapeHtmlAttr($block->getAddress()->getVatId()) ?>"
                            title="<?= /* @noEscape */
-                            $block->getAttributeData()->getFrontendLabel('vat_id') ?>"
+                           $block->getAttributeData()->getFrontendLabel('vat_id') ?>"
                            class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('vat_id')) ?>"
                            id="vat_id">
                 </div>
@@ -97,7 +97,7 @@ $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::cla
             <label class="label" for="city"><span><?= /* @noEscape */
                     $block->getAttributeData()->getFrontendLabel('city') ?></span></label>
             <div class="control">
-                <input type="text"
+                <input type="text" maxlength="30" data-validate='{"maxlength":30}'
                        name="city"
                        value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>"
                        title="<?= $block->escapeHtmlAttr(__('City')) ?>"
@@ -115,15 +115,15 @@ $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::cla
                         title="<?= /* @noEscape */
                         $block->getAttributeData()->getFrontendLabel('region') ?>"
                         class="validate-select" <?= /* @noEscape */
-                        !$block->getConfig('general/region/display_all') ? ' disabled="disabled"' : '' ?>>
+                !$block->getConfig('general/region/display_all') ? ' disabled="disabled"' : '' ?>>
                     <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
                 </select>
-                <input type="text"
+                <input type="text" maxlength="30" data-validate='{"maxlength":30}'
                        id="region"
                        name="region"
                        value="<?= $block->escapeHtmlAttr($block->getRegion()) ?>"
                        title="<?= /* @noEscape */
-                        $block->getAttributeData()->getFrontendLabel('region') ?>"
+                       $block->getAttributeData()->getFrontendLabel('region') ?>"
                        class="input-text validate-not-number-first <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region')) ?>"<?= !$block->getConfig('general/region/display_all') ? ' disabled="disabled"' : '' ?>/>
             </div>
         </div>
@@ -137,7 +137,7 @@ $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::cla
                        name="postcode"
                        value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>"
                        title="<?= /* @noEscape */
-                        $block->getAttributeData()->getFrontendLabel('postcode') ?>"
+                       $block->getAttributeData()->getFrontendLabel('postcode') ?>"
                        id="zip"
                        class="input-text validate-zip-international <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('postcode')) ?>">
             </div>
@@ -204,18 +204,17 @@ $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::cla
         "#country": {
             "regionUpdater": {
                 "optionalRegionAllowed": <?= /* @noEscape */
-                $block->getConfig('general/region/display_all') ? 'true' : 'false' ?>,
+    $block->getConfig('general/region/display_all') ? 'true' : 'false' ?>,
                 "regionListId": "#region_id",
                 "regionInputId": "#region",
                 "postcodeId": "#zip",
                 "form": "#form-validate",
                 "regionJson": <?= /* @noEscape */
-                $this->helper(\Magento\Directory\Helper\Data::class)->getRegionJson() ?>,
+    $this->helper(\Magento\Directory\Helper\Data::class)->getRegionJson() ?>,
                 "defaultRegion": "<?= (int)$block->getRegionId() ?>",
                 "countriesWithOptionalZip": <?= /* @noEscape */
-                $this->helper(\Magento\Directory\Helper\Data::class)->getCountriesWithOptionalZip(true) ?>
+    $this->helper(\Magento\Directory\Helper\Data::class)->getCountriesWithOptionalZip(true) ?>
             }
         }
     }
-
 </script>
