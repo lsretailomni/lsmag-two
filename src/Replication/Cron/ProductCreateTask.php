@@ -2,21 +2,21 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Helper\LoyaltyHelper;
-use Ls\Omni\Helper\StockHelper;
-use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
-use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
-use Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
-use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
-use Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Model\ReplImageLink;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\StockHelper;
+use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
+use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
+use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ReplImageLink;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
