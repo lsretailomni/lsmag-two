@@ -97,7 +97,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <span class="cart-price">
                         <?php echo $block->priceCurrency->format($_item->getCustomPrice(), true); ?><br/>
                         <div class="lsdiscountprice2">
-                            <strike> <?php echo $block->priceCurrency->format($_item->getPrice() * (int)$block->getQty(), true); ?>
+                            <strike> <?php echo $block->priceCurrency->format($_item->getProduct()->getPrice() * (int)$block->getQty(), true); ?>
                             </strike>
                         </div>
                     </span>
