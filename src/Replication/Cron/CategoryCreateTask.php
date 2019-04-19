@@ -14,7 +14,6 @@ use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Framework\Filesystem\Io\File;
-use Magento\Setup\Console\Style\MagentoStyleInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -77,6 +76,9 @@ class CategoryCreateTask
      * @param LoyaltyHelper $loyaltyHelper
      * @param File $file
      * @param ReplicationHelper $replicationHelper
+     * @param LSR $LSR
+     * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         CategoryFactory $categoryFactory,
@@ -436,8 +438,8 @@ class CategoryCreateTask
     }
 
     /**
-     * @param string
-     * @return \Ls\Omni\Client\Ecommerce\Entity\ImageGetByIdResponse|NULL
+     * @param string $imageId
+     * @return string
      */
     public function getImage($imageId = '')
     {
