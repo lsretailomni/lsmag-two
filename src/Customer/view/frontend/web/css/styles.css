@@ -15,8 +15,8 @@
 }
 
 .coupons-grid li.item {
-    flex: 25%;
-    max-width: 25%;
+    flex:auto;
+    max-width:min-content;
     padding: 0px 25px;
     list-style: none;
     float: left;
