@@ -89,11 +89,12 @@ class CartObserver implements ObserverInterface
                 if (!is_object($status)) {
                     $this->basketHelper->unsetCouponCode('');
                 }
+
                 $itemlist = $quote->getAllVisibleItems();
-                $oldItemVariant = [];
                 try {
                     foreach ($itemlist as $item) {
                         $orderLines = $basketData->getOrderLines()->getOrderLine();
+                        $oldItemVariant = [];
                         $itemSku = explode("-", $item->getSku());
                         // @codingStandardsIgnoreLine
                         if (count($itemSku) < 2) {
@@ -115,19 +116,19 @@ class CartObserver implements ObserverInterface
                                             $item->setDiscountAmount($line->getDiscountAmount());
                                         }
                                     }
-                                    // @codingStandardsIgnoreStart
-                                    if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
-                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] =
-                                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount();
-                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()] ['Discount'] =
-                                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount();
-                                    } else {
-
-                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] = $line->getAmount();
-                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] = $line->getDiscountAmount();
-                                    }
-                                    // @codingStandardsIgnoreEnd
                                 }
+                                // @codingStandardsIgnoreStart
+                                if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
+                                    $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] =
+                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount();
+                                    $oldItemVariant[$line->getItemId()][$line->getVariantId()] ['Discount'] =
+                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount();
+                                } else {
+
+                                    $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] = $line->getAmount();
+                                    $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] = $line->getDiscountAmount();
+                                }
+                                // @codingStandardsIgnoreEnd
                             }
                         }
                     }
@@ -135,6 +136,7 @@ class CartObserver implements ObserverInterface
                 (\Exception $e) {
                     $this->logger->error($e->getMessage());
                 }
+
                 $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
             }
         }
