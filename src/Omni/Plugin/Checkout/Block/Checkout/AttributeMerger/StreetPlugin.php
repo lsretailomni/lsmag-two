@@ -20,7 +20,7 @@ class StreetPlugin
             $result['street']['children'][1]['placeholder'] = __('Street Name/Landmark');
             $result['street']['children'][0]['validation'] = [
                 'required-entry' => true,
-                'min_text_len​gth' => 1,
+                'min_text_length' => 1,
                 'max_text_length' => 50
             ];
             $result['street']['children'][1]['validation'] = [
