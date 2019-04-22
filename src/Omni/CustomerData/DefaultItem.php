@@ -99,6 +99,9 @@ class DefaultItem extends \Magento\Checkout\CustomerData\DefaultItem
     public function doGetItemData()
     {
         $discountAmountTextMessage = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
+        if ($this->item->getPrice() <= 0) {
+            $this->basketHelper->cart->save();
+        }
         $originalPrice = '';
         if ($this->item->getCalculationPrice() == $this->item->getCustomPrice() && $this->item->getCustomPrice() > 0) {
             $originalPrice = $this->item->getProduct()->getPrice() * $this->item->getQty();

@@ -94,6 +94,7 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
             $proActiveDiscount = $this->getProactiveDiscount($quote);
             $total->addTotalAmount('discount', $discountAmount);
             $total->addTotalAmount('subtotal', $proActiveDiscount);
+            $this->checkoutSession->setProActiveCheck(0);
         }
         return $this;
     }
@@ -120,6 +121,7 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
             $proActiveDiscount = $this->getProactiveDiscount($quote);
             $total->addTotalAmount('discount', $amount);
             $total->addTotalAmount('subtotal', $proActiveDiscount);
+            $this->checkoutSession->setProActiveCheck(0);
 
         }
 
@@ -138,9 +140,6 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
                 $proActiveDiscount += (
                         $item->getProduct()->getPrice() - $item->getProduct()->getFinalPrice()
                     ) * $item->getQty();
-            }
-            if ($item->getPrice() <= 0 && $item->getCustomPrice() <= 0) {
-                $this->basketHelper->cart->save();
             }
         }
         if ($proActiveDiscount > 0) {
