@@ -78,7 +78,7 @@ $_isLSR = true;
                     <label for="telephone" class="label"><span><?php /* @escapeNotVerified */
                             echo __('Phone Number') ?></span></label>
                     <div class="control">
-                        <input type="text" name="telephone" id="telephone"
+                        <input type="text" name="telephone" id="telephone" maxlength="30" data-validate='{"maxlength":30}'
                                value="<?php echo $block->escapeHtml($block->getFormData()->getTelephone()) ?>"
                                title="<?php /* @escapeNotVerified */
                                echo __('Phone Number') ?>"
@@ -171,7 +171,7 @@ $_isLSR = true;
                                value="<?php echo $block->escapeHtml($block->getFormData()->getPostcode()) ?>"
                                title="<?php /* @escapeNotVerified */
                                echo __('Zip/Postal Code') ?>"
-                               id="zip"
+                               id="zip" maxlength="20" data-validate='{"required":true,"maxlength":20,"validate-number":true}'
                                class="input-text validate-zip-international <?php /* @escapeNotVerified */
                                echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('postcode') ?>">
                     </div>

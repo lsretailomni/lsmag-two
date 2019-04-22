@@ -11,8 +11,15 @@
                 type="Ls\Customer\Controller\Sales\Order\View"/>
     <preference for="Magento\Customer\Model\AccountManagement"
                 type="Ls\Customer\Model\AccountManagement"/>
-
     <preference for="Magento\Customer\Controller\Account\ForgotPasswordPost"
                 type="Ls\Customer\Controller\Account\ForgotPasswordPost"/>
+    <type name="Magento\Customer\Block\Widget\Telephone">
+        <plugin name="module_customer_block_widget_telephone_override_template"
+                type="Ls\Customer\Plugin\Customer\Block\Widget\Telephone"/>
+    </type>
+    <type name="Magento\Customer\Block\Widget\Name">
+        <plugin name="module_customer_block_widget_name_override_template"
+                type="Ls\Customer\Plugin\Customer\Block\Widget\Name"/>
+    </type>
 </config>
 

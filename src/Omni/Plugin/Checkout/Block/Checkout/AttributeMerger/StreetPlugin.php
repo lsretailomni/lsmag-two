@@ -38,6 +38,18 @@ class StreetPlugin
                 'required-entry' => true,
                 'max_text_length' => 30
             ];
+            $result['firstname']['validation'] = [
+                'required-entry' => true,
+                'max_text_length' => 30
+            ];
+            $result['lastname']['validation'] = [
+                'required-entry' => true,
+                'max_text_length' => 30
+            ];
+            $result['postcode']['validation'] = [
+                'required-entry' => true,
+                'max_text_length' => 20
+            ];
         }
         return $result;
     }

@@ -49,7 +49,7 @@ $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::cla
             </label>
             <div class="control">
                 <input type="text"
-                       name="street[]" data-validate='{"required":true,"maxlength":50}'
+                       name="street[]" maxlength="50" data-validate='{"required":true,"maxlength":50}'
                        value="<?= $block->escapeHtmlAttr($block->getStreetLine(1)) ?>"
                        title="<?= /* @noEscape */
                        $block->getAttributeData()->getFrontendLabel('street') ?>"
@@ -139,7 +139,7 @@ $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::cla
                        value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>"
                        title="<?= /* @noEscape */
                        $block->getAttributeData()->getFrontendLabel('postcode') ?>"
-                       id="zip"
+                       id="zip" maxlength="20" data-validate='{"required":true,"maxlength":20,"validate-number":true}'
                        class="input-text validate-zip-international <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('postcode')) ?>">
             </div>
         </div>
