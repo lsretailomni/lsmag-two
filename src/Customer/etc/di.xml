@@ -21,7 +21,7 @@
         <plugin name="module_customer_block_widget_name_override_template"
                 type="Ls\Customer\Plugin\Customer\Block\Widget\Name"/>
     </type>
-    <type name="Ls\Customer\Controller\Order">
+    <type name="Ls\Customer\Controller\Order\View">
         <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
 </config>
