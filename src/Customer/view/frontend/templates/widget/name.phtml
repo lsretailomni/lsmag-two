@@ -60,7 +60,7 @@ $suffix = $block->showSuffix();
                     <label class="label"
                            for="<?= $block->escapeHtmlAttr($block->getFieldId('firstname')) ?>"><span><?= $block->escapeHtml($block->getStoreLabel('firstname')) ?></span></label>
                     <div class="control">
-                        <input maxlength="30" data-validate='{"required":true,"maxlength":30}'
+                        <input maxlength="24" data-validate='{"required":true,"maxlength":30}'
                                type="text" id="<?= $block->escapeHtmlAttr($block->getFieldId('firstname')) ?>"
                                name="<?= $block->escapeHtmlAttr($block->getFieldName('firstname')) ?>"
                                value="<?= $block->escapeHtmlAttr($block->getObject()->getFirstname()) ?>"
@@ -86,7 +86,7 @@ $suffix = $block->showSuffix();
                     <label class="label"
                            for="<?= $block->escapeHtmlAttr($block->getFieldId('lastname')) ?>"><span><?= $block->escapeHtml($block->getStoreLabel('lastname')) ?></span></label>
                     <div class="control">
-                        <input maxlength="30" data-validate='{"required":true,"maxlength":30}'
+                        <input maxlength="24" data-validate='{"required":true,"maxlength":30}'
                                type="text" id="<?= $block->escapeHtmlAttr($block->getFieldId('lastname')) ?>"
                                name="<?= $block->escapeHtmlAttr($block->getFieldName('lastname')) ?>"
                                value="<?= $block->escapeHtmlAttr($block->getObject()->getLastname()) ?>"
