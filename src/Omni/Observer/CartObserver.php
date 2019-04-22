@@ -48,8 +48,7 @@ class CartObserver implements ObserverInterface
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Ls\Core\Model\LSR $LSR
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
         $this->logger = $logger;
@@ -142,8 +141,7 @@ class CartObserver implements ObserverInterface
         return $this;
     }
 
-    public
-    function watchNextSave($value = true)
+    public function watchNextSave($value = true)
     {
         $this->watchNextSave = $value;
     }
