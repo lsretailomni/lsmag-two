@@ -78,7 +78,8 @@ $_isLSR = true;
                     <label for="telephone" class="label"><span><?php /* @escapeNotVerified */
                             echo __('Phone Number') ?></span></label>
                     <div class="control">
-                        <input type="text" name="telephone" id="telephone" maxlength="30" data-validate='{"maxlength":30}'
+                        <input type="text" name="telephone" id="telephone" maxlength="30"
+                               data-validate='{"maxlength":30}'
                                value="<?php echo $block->escapeHtml($block->getFormData()->getTelephone()) ?>"
                                title="<?php /* @escapeNotVerified */
                                echo __('Phone Number') ?>"
@@ -171,7 +172,8 @@ $_isLSR = true;
                                value="<?php echo $block->escapeHtml($block->getFormData()->getPostcode()) ?>"
                                title="<?php /* @escapeNotVerified */
                                echo __('Zip/Postal Code') ?>"
-                               id="zip" maxlength="20" data-validate='{"required":true,"maxlength":20,"validate-number":true}'
+                               id="zip" maxlength="20"
+                               data-validate='{"required":true,"maxlength":20,"validate-number":true}'
                                class="input-text validate-zip-international <?php /* @escapeNotVerified */
                                echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('postcode') ?>">
                     </div>
@@ -211,7 +213,7 @@ $_isLSR = true;
                                title="<?php /* @escapeNotVerified */
                                echo __('Username') ?>"
                                class="input-text"
-                               data-validate="{'maxlength:50', required:true}">
+                               data-validate="{'maxlength':50, required:true, 'validateUsername':true}">
                     </div>
                 </div>
             <?php endif; ?>
@@ -225,7 +227,7 @@ $_isLSR = true;
                            echo __('Email') ?>"
                            class="input-text"
                            maxlength="80"
-                           data-validate="{required:true, 'maxlength:80', 'validate-email':true}">
+                           data-validate="{required:true, 'maxlength':80, 'validate-email':true}">
                 </div>
             </div>
             <div class="field password required" data-mage-init='{"passwordStrengthIndicator": {}}'>
@@ -278,9 +280,12 @@ $_isLSR = true;
         </div>
     </form>
     <script>
-        require([
+        requirejs([
             'jquery',
-            'mage/mage'
+            'jquery/ui',
+            'jquery/validate',
+            'mage/translate',
+            'mage/mage',
         ], function ($) {
 
             var dataForm = $('#form-validate');
@@ -299,12 +304,18 @@ $_isLSR = true;
                         error.insertAfter(element);
                     }
                 },
-                ignore: ':hidden:not(' + ignore + ')'
+                ignore: ':hidden:not(' + ignore + ')',
                 <?php else : ?>
-                ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+                ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden',
                 <?php endif ?>
             }).find('input:text').attr('autocomplete', 'off');
-
+            $.validator.addMethod(
+                'validateUsername',
+                function (value) {
+                    return value.match(/^[a-zA-Z0-9-_@.]+$/);
+                },
+                $.mage.__('Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.')
+            );
         });
     </script>
 <?php if ($block->getShowAddressFields()) : ?>

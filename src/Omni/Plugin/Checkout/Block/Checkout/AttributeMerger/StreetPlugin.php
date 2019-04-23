@@ -28,29 +28,29 @@ class StreetPlugin
                 'min_text_length' => 1,
                 'max_text_length' => 50
             ];
-            $result['city']['validation'] = [
-                'max_text_length' => 30
-            ];
-            $result['region']['validation'] = [
-                'max_text_length' => 30
-            ];
-            $result['telephone']['validation'] = [
-                'required-entry' => true,
-                'max_text_length' => 30
-            ];
-            $result['firstname']['validation'] = [
-                'required-entry' => true,
-                'max_text_length' => 24
-            ];
-            $result['lastname']['validation'] = [
-                'required-entry' => true,
-                'max_text_length' => 24
-            ];
-            $result['postcode']['validation'] = [
-                'required-entry' => true,
-                'max_text_length' => 20
-            ];
         }
+        $result['city']['validation'] = [
+            'max_text_length' => 30
+        ];
+        $result['region']['validation'] = [
+            'max_text_length' => 30
+        ];
+        $result['telephone']['validation'] = [
+            'required-entry' => true,
+            'max_text_length' => 30
+        ];
+        $result['firstname']['validation'] = [
+            'required-entry' => true,
+            'max_text_length' => 24
+        ];
+        $result['lastname']['validation'] = [
+            'required-entry' => true,
+            'max_text_length' => 24
+        ];
+        $result['postcode']['validation'] = [
+            'required-entry' => true,
+            'max_text_length' => 20
+        ];
         return $result;
     }
 }
