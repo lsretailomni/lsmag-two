@@ -23,6 +23,11 @@
     <event name="controller_action_predispatch_checkout_cart_couponPost">
         <observer name="coupon_code" instance="Ls\Omni\Observer\CouponCodeObserver"/>
     </event>
+
+    <!-- When edit item on product page -->
+    <event name="controller_action_predispatch_checkout_cart_updateitemoptions">
+        <observer name="coupon_code" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
+    </event>
     <!--<event name="checkout_onepage_controller_success_action">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderSuccessObserver"/>
     </event>-->
