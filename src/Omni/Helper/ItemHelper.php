@@ -4,6 +4,7 @@ namespace Ls\Omni\Helper;
 
 use \Ls\Replication\Model\ReplBarcodeRepository;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Framework\App\Helper\Context;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
@@ -26,6 +27,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var ProductRepository */
     public $productRepository;
 
+    /** @var CartRepositoryInterface * */
+    public $quoteRepository;
+
     /** @var array */
     private $hashCache = [];
 
@@ -41,13 +45,15 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         Context $context,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         ReplBarcodeRepository $barcodeRepository,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        CartRepositoryInterface $quoteRepository
     )
     {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->barcodeRepository = $barcodeRepository;
         $this->productRepository = $productRepository;
+        $this->quoteRepository = $quoteRepository;
     }
 
     /**
@@ -224,6 +230,65 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 return [implode($discountInfo), $discountText];
             } else {
                 return null;
+            }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @param $quote
+     * @param $basketData
+     */
+    // @codingStandardsIgnoreLine
+    public function setDiscountedPricesForItems($quote, $basketData)
+    {
+        try {
+            $itemlist = $quote->getAllVisibleItems();
+            foreach ($itemlist as $item) {
+                $orderLines = $basketData->getOrderLines()->getOrderLine();
+                $oldItemVariant = [];
+                $itemSku = explode("-", $item->getSku());
+                // @codingStandardsIgnoreLine
+                if (count($itemSku) < 2) {
+                    $itemSku[1] = null;
+                }
+                if (is_array($orderLines)) {
+                    foreach ($orderLines as $line) {
+                        if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
+                            if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
+                                // @codingStandardsIgnoreLine
+                                $item->setCustomPrice($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount());
+                                $item->setDiscountAmount(
+                                // @codingStandardsIgnoreLine
+                                    $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount()
+                                );
+                            } else {
+                                if ($line->getDiscountAmount() > 0) {
+                                    $item->setCustomPrice($line->getAmount());
+                                    $item->setDiscountAmount($line->getDiscountAmount());
+                                }
+                            }
+                        }
+                        // @codingStandardsIgnoreStart
+                        if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] =
+                                $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount();
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] ['Discount'] =
+                                $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount();
+                        } else {
+
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] = $line->getAmount();
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] = $line->getDiscountAmount();
+                        }
+                        // @codingStandardsIgnoreEnd
+                    }
+                }
+            }
+
+            if ($quote->getId()) {
+                $quote = $this->quoteRepository->get($quote->getId());
+                $this->quoteRepository->save($quote->collectTotals());
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
