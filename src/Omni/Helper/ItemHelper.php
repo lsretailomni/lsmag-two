@@ -284,6 +284,8 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                         // @codingStandardsIgnoreEnd
                     }
                 }
+                // @codingStandardsIgnoreLine
+                $item->save();
             }
 
             if ($quote->getId()) {
