@@ -1193,12 +1193,14 @@ class ProductCreateTask
             $inventoryStatus = [];
             /** @var ReplInvStatusRepository $inventoryStatus */
             $inventoryStatus = $this->replInvStatusRepository->getList($searchCriteria)->getItems();
-            $inventoryStatus = reset($inventoryStatus);
-            /** @var \Ls\Replication\Model\ReplInvStatus $invStatus */
-            $qty = $inventoryStatus->getQuantity();
-            $inventoryStatus->setData('is_updated', '0');
-            $inventoryStatus->setData('processed', '1');
-            $this->replInvStatusRepository->save($inventoryStatus);
+            if (!empty($inventoryStatus)) {
+                $inventoryStatus = reset($inventoryStatus);
+                /** @var \Ls\Replication\Model\ReplInvStatus $invStatus */
+                $qty = $inventoryStatus->getQuantity();
+                $inventoryStatus->setData('is_updated', '0');
+                $inventoryStatus->setData('processed', '1');
+                $this->replInvStatusRepository->save($inventoryStatus);
+            }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }

@@ -2,8 +2,8 @@
 
 ## Compatibility
 1. Magento Open Source 2.2.6 or later
-2. LS Central 13.x
-3. LS Omni Server 3.5 or later
+2. LS Central 13.05 or later
+3. LS Omni Server 3.7 or later
 
 ## Installation:
 

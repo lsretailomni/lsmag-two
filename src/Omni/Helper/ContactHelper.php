@@ -5,11 +5,13 @@ namespace Ls\Omni\Helper;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ItemHelper;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\ExpiredException;
 use Zend_Validate;
 use Zend_Validate_EmailAddress;
+
 /**
  * Class ContactHelper
  * @package Ls\Omni\Helper
@@ -78,6 +80,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Directory\Model\RegionFactory */
     public $region;
 
+    /** @var ItemHelper * */
+    public $itemHelper;
+
     /**
      * ContactHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
@@ -117,12 +122,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
         \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory,
         BasketHelper $basketHelper,
+        ItemHelper $itemHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Registry $registry,
         \Magento\Directory\Model\Country $country,
         \Magento\Directory\Model\RegionFactory $region
-    ) {
+    )
+    {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeManager = $storeManager;
@@ -137,6 +144,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->groupRepository = $groupRepository;
         $this->groupInterfaceFactory = $groupInterfaceFactory;
         $this->basketHelper = $basketHelper;
+        $this->itemHelper = $itemHelper;
         $this->customerResourceModel = $customerResourceModel;
         $this->registry = $registry;
         $this->checkoutSession = $checkoutSession;
@@ -701,6 +709,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             // update the onelist to Omni.
             $this->basketHelper->update($oneList);
+            $this->itemHelper->setDiscountedPricesForItems(
+                $quote,
+                $this->basketHelper->getBasketSessionValue()
+            );
         } elseif ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
             // if customer already has onelist created then update
             // the list to get the information with user.
@@ -716,11 +728,20 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
             // update the onelist to Omni.
             $this->basketHelper->update($oneList);
+            $this->itemHelper->setDiscountedPricesForItems(
+                $quote,
+                $this->basketHelper->getBasketSessionValue()
+            );
+
         } elseif (!empty($quote->getAllItems())) {
             // get the onelist or if not exist then create new one with empty data of customer.
             $oneList = $this->basketHelper->get();
             $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
             $this->basketHelper->update($oneList);
+            $this->itemHelper->setDiscountedPricesForItems(
+                $quote,
+                $this->basketHelper->getBasketSessionValue()
+            );
         }
     }
 
