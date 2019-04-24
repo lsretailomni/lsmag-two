@@ -2,37 +2,37 @@
 
 namespace Ls\Replication\Cron;
 
-use \Ls\Replication\Model\ReplImageLink;
-use Magento\Eav\Model\Config;
-use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
-use Magento\CatalogInventory\Model\Stock\Item;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable\Attribute;
-use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\StockHelper;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use \Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
-use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
-use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use \Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
-use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
+use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ReplImageLink;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
-use Magento\Framework\Api\ImageContentFactory;
-use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\Api\FilterBuilder;
-use Magento\Framework\Api\Search\FilterGroupBuilder;
-use \Ls\Omni\Helper\LoyaltyHelper;
-use Psr\Log\LoggerInterface;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Omni\Helper\StockHelper;
-use \Ls\Core\Model\LSR;
+use Magento\CatalogInventory\Model\Stock\Item;
+use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable\Attribute;
+use Magento\Eav\Model\Config;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\ImageContentFactory;
+use Magento\Framework\Api\Search\FilterGroupBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class ProductCreateTask
@@ -989,7 +989,6 @@ class ProductCreateTask
         }
     }
 
-
     /**
      * Update the inventory of the items & item variants
      */
@@ -1027,7 +1026,6 @@ class ProductCreateTask
             }
         }
     }
-
 
     /** For product variants, get image from item_image_link with type item variant
      * @param $configProduct
@@ -1195,12 +1193,13 @@ class ProductCreateTask
             $inventoryStatus = [];
             /** @var ReplInvStatusRepository $inventoryStatus */
             $inventoryStatus = $this->replInvStatusRepository->getList($searchCriteria)->getItems();
-            /** @var \Ls\Replication\Model\ReplInvStatus $invStatus */
-            foreach ($inventoryStatus as $invStatus) {
-                $qty = $invStatus->getQuantity();
-                $invStatus->setData('is_updated', '0');
-                $invStatus->setData('processed', '1');
-                $this->replInvStatusRepository->save($invStatus);
+            if (!empty($inventoryStatus)) {
+                $inventoryStatus = reset($inventoryStatus);
+                /** @var \Ls\Replication\Model\ReplInvStatus $invStatus */
+                $qty = $inventoryStatus->getQuantity();
+                $inventoryStatus->setData('is_updated', '0');
+                $inventoryStatus->setData('processed', '1');
+                $this->replInvStatusRepository->save($inventoryStatus);
             }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());

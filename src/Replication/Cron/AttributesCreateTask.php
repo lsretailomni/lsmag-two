@@ -2,16 +2,16 @@
 
 namespace Ls\Replication\Cron;
 
-use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
+use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
+use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Helper\ReplicationHelper;
+use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Eav\Model\Entity;
-use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 use Psr\Log\LoggerInterface;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Core\Model\LSR;
 
 /**
  * Class AttributesCreateTask
@@ -286,8 +286,6 @@ class AttributesCreateTask
                     'is_filterable' => 1,
                     'is_filterable_in_search' => 1,
                     'backend_type' => 'varchar',
-                    'is_filterable_in_search' => 1,
-                    'used_in_product_listing' => 1,
                     'is_used_in_grid' => 1,
                     'is_visible_in_grid' => 1,
                     'is_filterable_in_grid' => 1,
