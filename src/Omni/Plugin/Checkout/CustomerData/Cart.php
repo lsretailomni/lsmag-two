@@ -46,11 +46,12 @@ class Cart
     {
 
         $totals = $this->checkoutSession->getQuote()->getTotals();
+        $proActiveDiscount=$this->checkoutSession->getProActiveDiscount();
         $grandTotalAmount = $totals['grand_total']->getValue();
         if ($grandTotalAmount != null && $grandTotalAmount > 0) {
             if (isset($totals['discount'])) {
                 $discount = abs($totals['discount']->getValue());
-                $totalAmount = $grandTotalAmount + $discount;
+                $totalAmount = $grandTotalAmount + $discount-$proActiveDiscount;
                 $result['subtotalAmount'] = $totalAmount;
                 $result['subtotal'] = isset($totalAmount)
                     ? $this->checkoutHelper->formatPrice($totalAmount)

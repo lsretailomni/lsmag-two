@@ -156,6 +156,9 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
     public function getOneListCalculateData($item)
     {
         try {
+            if ($item->getPrice() <= 0) {
+                $this->basketHelper->cart->save();
+            }
             $basketData = $this->basketHelper->getBasketSessionValue();
             $result = $this->itemHelper->getOrderDiscountLinesForItem($item, $basketData);
             return $result;

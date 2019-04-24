@@ -5,6 +5,7 @@ namespace Ls\Omni\Observer;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Event\ObserverInterface;
 use \Ls\Omni\Helper\ContactHelper;
+use \LS\Omni\Helper\ItemHelper;
 
 /**
  * Class CartObserver
@@ -17,6 +18,9 @@ class CartObserver implements ObserverInterface
 
     /** @var BasketHelper */
     private $basketHelper;
+
+    /** @var ItemHelper */
+    private $itemHelper;
 
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
@@ -37,21 +41,24 @@ class CartObserver implements ObserverInterface
      * CartObserver constructor.
      * @param ContactHelper $contactHelper
      * @param BasketHelper $basketHelper
+     * @param ItemHelper $itemHelper
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param \Ls\Core\Model\LSR $LSR
      */
     public function __construct(
         ContactHelper $contactHelper,
         BasketHelper $basketHelper,
+        ItemHelper $itemHelper,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Ls\Core\Model\LSR $LSR
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
+        $this->itemHelper = $itemHelper;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
@@ -89,52 +96,8 @@ class CartObserver implements ObserverInterface
                 if (!is_object($status)) {
                     $this->basketHelper->unsetCouponCode('');
                 }
-                $itemlist = $quote->getAllVisibleItems();
-                $oldItemVariant = [];
-                try {
-                    foreach ($itemlist as $item) {
-                        $orderLines = $basketData->getOrderLines()->getOrderLine();
-                        $itemSku = explode("-", $item->getSku());
-                        // @codingStandardsIgnoreLine
-                        if (count($itemSku) < 2) {
-                            $itemSku[1] = null;
-                        }
-                        if (is_array($orderLines)) {
-                            foreach ($orderLines as $line) {
-                                if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
-                                    if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
-                                        // @codingStandardsIgnoreLine
-                                        $item->setCustomPrice($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount());
-                                        $item->setDiscountAmount(
-                                        // @codingStandardsIgnoreLine
-                                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount()
-                                        );
-                                    } else {
-                                        if ($line->getDiscountAmount() > 0) {
-                                            $item->setCustomPrice($line->getAmount());
-                                            $item->setDiscountAmount($line->getDiscountAmount());
-                                        }
-                                    }
-                                    // @codingStandardsIgnoreStart
-                                    if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
-                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] =
-                                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount();
-                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()] ['Discount'] =
-                                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount();
-                                    } else {
 
-                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] = $line->getAmount();
-                                        $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] = $line->getDiscountAmount();
-                                    }
-                                    // @codingStandardsIgnoreEnd
-                                }
-                            }
-                        }
-                    }
-                } catch
-                (\Exception $e) {
-                    $this->logger->error($e->getMessage());
-                }
+                $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
                 $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
             }
         }

@@ -41,11 +41,18 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
      */
     public $loyaltyHelper;
 
+    /** @var \Magento\Checkout\Model\Session\Proxy $checkoutSession */
+    public $checkoutSession;
+
     /**
+     * Discount constructor.
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\SalesRule\Model\Validator $validator
      * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
+     * @param BasketHelper $basketHelper
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      */
     public function __construct(
         \Magento\Framework\Event\ManagerInterface $eventManager,
@@ -53,15 +60,18 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         \Magento\SalesRule\Model\Validator $validator,
         \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
         BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper
-    ) {
+        LoyaltyHelper $loyaltyHelper,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession
+    )
+    {
         $this->setCode('discount');
         $this->eventManager = $eventManager;
         $this->calculator = $validator;
         $this->storeManager = $storeManager;
         $this->priceCurrency = $priceCurrency;
-        $this->basketHelper =  $basketHelper;
+        $this->basketHelper = $basketHelper;
         $this->loyaltyHelper = $loyaltyHelper;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -77,17 +87,14 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         \Magento\Quote\Model\Quote $quote,
         \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
         \Magento\Quote\Model\Quote\Address\Total $total
-    ) {
-
-        $basketData = $this->basketHelper->getBasketSessionValue();
-        if (isset($basketData)) {
-            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-            if ($pointDiscount > 0.001) {
-                $quote->setLsPointsDiscount($pointDiscount);
-            }
-
-            $discountAmount = -$basketData->getTotalDiscount() - $pointDiscount;
+    )
+    {
+        $discountAmount = $this->getTotalDiscount($quote);
+        if ($discountAmount < 0) {
+            $proActiveDiscount = $this->getProactiveDiscount($quote);
             $total->addTotalAmount('discount', $discountAmount);
+            $total->addTotalAmount('subtotal', $proActiveDiscount);
+            $this->checkoutSession->setProActiveCheck(0);
         }
         return $this;
     }
@@ -103,7 +110,52 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
     public function fetch(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total)
     {
         $result = null;
-        $amount=0;
+        $amount = $this->getTotalDiscount($quote);
+        if ($amount < 0) {
+            $result = [
+                'code' => $this->getCode(),
+                'title' => __('Discount'),
+                'value' => $amount
+            ];
+
+            $proActiveDiscount = $this->getProactiveDiscount($quote);
+            $total->addTotalAmount('discount', $amount);
+            $total->addTotalAmount('subtotal', $proActiveDiscount);
+            $this->checkoutSession->setProActiveCheck(0);
+
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param $quote
+     * @return float|int
+     */
+    public function getProactiveDiscount($quote)
+    {
+        $proActiveDiscount = 0;
+        foreach ($quote->getAllVisibleItems() as $item) {
+            if ($item->getProduct()->getFinalPrice() < $item->getProduct()->getPrice()) {
+                $proActiveDiscount += (
+                        $item->getProduct()->getPrice() - $item->getProduct()->getFinalPrice()
+                    ) * $item->getQty();
+            }
+        }
+        if ($proActiveDiscount > 0) {
+            $this->checkoutSession->setProActiveDiscount($proActiveDiscount);
+        }
+        return $proActiveDiscount;
+    }
+
+    /**
+     * @param $quote
+     * @return float|int
+     */
+    public function getTotalDiscount($quote)
+    {
+        $amount = 0;
+        $this->checkoutSession->setProActiveDiscount(0);
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
@@ -112,15 +164,6 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
             }
             $amount = -$basketData->getTotalDiscount() - $pointDiscount;
         }
-
-        if ($amount != 0) {
-            $result = [
-                'code' => $this->getCode(),
-                'title' => __('Discount'),
-                'value' => $amount
-            ];
-            $total->addTotalAmount('discount', $amount);
-        }
-        return $result;
+        return $amount;
     }
 }
