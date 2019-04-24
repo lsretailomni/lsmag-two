@@ -16,6 +16,14 @@
     font-weight: bold;
 }
 
+.minicart-items .product-item-details .lsdiscountamount .price {
+    color: red;
+}
+
+.minicart-items .product-item-details .lsdiscountprice .price {
+    color: #9e9e9e;
+}
+
 .lsoriginalprice {
     font-weight: bold;
 
