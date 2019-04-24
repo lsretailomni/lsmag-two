@@ -68,7 +68,7 @@ class AccountAddressObserver implements ObserverInterface
             ) {
                 $defaultShipping = $customerAddress->getCustomer()->getDefaultShippingAddress();
                 if ($customerAddress->getData('is_default_shipping')) {
-                    $result = $this->contactHelper->UpdateAccount($customerAddress);
+                    $result = $this->contactHelper->updateAccount($customerAddress);
                     if (empty($result)) {
                         //Generate Message only when Variable is either empty, null, 0 or undefined.
                         $this->messageManager->addErrorMessage(
@@ -77,7 +77,7 @@ class AccountAddressObserver implements ObserverInterface
                     }
                 } elseif ($defaultShipping) {
                     if ($defaultShipping->getId() == $customerAddress->getId()) {
-                        $result = $this->contactHelper->UpdateAccount($customerAddress);
+                        $result = $this->contactHelper->updateAccount($customerAddress);
                         if (empty($result)) {
                             $this->messageManager->addErrorMessage(
                                 __('Something went wrong, Please try again later.')
