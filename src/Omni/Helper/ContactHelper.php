@@ -597,12 +597,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $address->setAddress1($street);
                 $address->setAddress2('');
             }
-            //$countryname = $this->getCountryname($customerAddress->getCountryId());
+            $region = substr($customerAddress->getRegion(), 0, 30);
             $address->setCity($customerAddress->getCity())
                 ->setCountry($customerAddress->getCountryId())
                 ->setPostCode($customerAddress->getPostcode())
+                ->setPhoneNumber($customerAddress->getTelephone())
                 ->setType(Entity\Enum\AddressType::RESIDENTIAL);
-            $customerAddress->getRegion() ? $address->setStateProvinceRegion($customerAddress->getRegion())
+            $region ? $address->setStateProvinceRegion($region)
                 : $address->setStateProvinceRegion('');
             return $address;
         } else {
