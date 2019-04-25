@@ -8,9 +8,10 @@ use Magento\Framework\App\ResourceConnection;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class Customer Deletion
+ * Magento uses Catalog Price Rule for discounts replication
+ * Class Discount Deletion
  */
-class Customer extends Action
+class Discount extends Action
 {
     /** @var LoggerInterface */
     public $logger;
@@ -18,37 +19,26 @@ class Customer extends Action
     /** @var ResourceConnection */
     public $resource;
 
-    /** @var array List of all the Customer tables */
-    public $customer_tables = [
-        "customer_address_entity",
-        "customer_address_entity_datetime",
-        "customer_address_entity_decimal",
-        "customer_address_entity_int",
-        "customer_address_entity_text",
-        "customer_address_entity_varchar",
-        "customer_entity",
-        "customer_entity_datetime",
-        "customer_entity_decimal",
-        "customer_entity_int",
-        "customer_entity_text",
-        "customer_entity_varchar",
-        "customer_grid_flat",
-        "customer_log",
-        "customer_log",
-        "customer_visitor",
-        "persistent_session",
-        "wishlist",
-        "wishlist_item",
-        "wishlist_item_option",
+    /** @var array List of all the Discount tables */
+    public $discount_tables = [
+        "catalogrule",
+        "catalogrule_customer_group",
+        "catalogrule_group_website",
+        "catalogrule_group_website_replica",
+        "catalogrule_product_price",
+        "catalogrule_product_price_replica",
+        "catalogrule_product",
+        "catalogrule_product_replica",
+        "catalogrule_website"
     ];
 
     // @codingStandardsIgnoreStart
     /** @var array  */
-    protected $_publicActions = ['customer'];
+    protected $_publicActions = ['discount'];
     // @codingStandardsIgnoreEnd
 
     /**
-     * Customer Deletion constructor.
+     * Discount Deletion constructor.
      * @param ResourceConnection $resource
      * @param LoggerInterface $logger
      */
@@ -63,7 +53,7 @@ class Customer extends Action
     }
 
     /**
-     * Remove customers
+     * Remove discounts
      *
      * @return void
      */
@@ -72,17 +62,25 @@ class Customer extends Action
         // @codingStandardsIgnoreStart
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
-        foreach ($this->customer_tables as $customerTable) {
-            $tableName = $connection->getTableName($customerTable);
+        foreach ($this->discount_tables as $discountTable) {
+            $tableName = $connection->getTableName($discountTable);
             try {
                 $connection->truncateTable($tableName);
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }
+        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        $lsTableName = $connection->getTableName('ls_replication_repl_discount');
+        $lsQuery = "UPDATE " . $lsTableName . " SET processed = 0;";
+        try {
+            $connection->query($lsQuery);
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
-        $this->messageManager->addSuccessMessage(__('Customers deleted successfully.'));
+        $this->messageManager->addSuccessMessage(__('Discounts deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
 }
