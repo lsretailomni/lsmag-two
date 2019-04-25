@@ -78,17 +78,14 @@ class OrderHelper extends AbstractHelper
         $isInline = true;
         $storeId = $this->basketHelper->getDefaultWebStore();
         $anonymousOrder = false;
+        $customerEmail = $order->getCustomerEmail();
+        $customerName = $order->getShippingAddress()->getFirstname() .
+            " " . $order->getShippingAddress()->getLastname();
+        $mobileNumber = $order->getShippingAddress()->getTelephone();
         if ($this->customerSession->isLoggedIn()) {
-            $customerEmail = $this->customerSession->getCustomer()->getData('email');
-            $customerName = $order->getCustomerName();
-            $mobileNumber = $order->getShippingAddress()->getTelephone();
             $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
             $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         } else {
-            $customerEmail = $order->getCustomerEmail();
-            $customerName = $order->getShippingAddress()->getFirstname() .
-                " " . $order->getShippingAddress()->getLastname();
-            $mobileNumber = $order->getShippingAddress()->getTelephone();
             $contactId = $cardId = "";
             $anonymousOrder = true;
         }
@@ -204,10 +201,11 @@ class OrderHelper extends AbstractHelper
             $method = "setAddress" . strval($i + 1);
             $omniAddress->$method($street);
         }
+        $region = substr($magentoAddress->getRegion(), 0, 30);
         $omniAddress
             ->setCity($magentoAddress->getCity())
             ->setCountry($magentoAddress->getCountryId())
-            ->setStateProvinceRegion($magentoAddress->getRegion())
+            ->setStateProvinceRegion($region)
             ->setPostCode($magentoAddress->getPostcode());
 
         return $omniAddress;
