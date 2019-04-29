@@ -46,7 +46,7 @@
                 <span><?= /* @escapeNotVerified */ __('Payment Method') ?></span>
             </strong>
             <div class="box-content">
-                <?= $block->escapeHtml($block->getPaymentDescription())  ?>
+                <?= $block->escapeHtml($block->getPaymentDescription()[0])  ?>
             </div>
         </div>
     </div>

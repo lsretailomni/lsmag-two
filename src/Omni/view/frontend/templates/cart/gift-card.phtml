@@ -1,0 +1,47 @@
+<?php
+// @codingStandardsIgnoreFile
+if($block->getGiftCardActive()) {
+?>
+    <div class="giftcard" id="block-giftcard" data-collapsible="true" role="tablist">
+        <div class="title" data-role="title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">
+            <strong id="block-giftcard-heading" role="heading" aria-level="2"><?= /* @escapeNotVerified */
+                __('Apply Gift Card') ?></strong>
+        </div>
+        <div class="content" data-role="giftcard-content" aria-labelledby="block-giftcard-heading" role="tabpanel" aria-hidden="false">
+            <form id="giftcard-form"
+                  action="<?= /* @escapeNotVerified */
+                  $block->getUrl('omni/cart/GiftCardUsed') ?>"
+                  method="post"
+                  data-mage-init='{"giftCard":{"GiftcardSelector": "#removegiftcard",
+                                               "removeGiftCardSelector": "#removegiftcard",
+                                               "applyGiftCardButton": "input.action.applygiftcard",
+                                               "cancelGiftCardButton": "input.action.cancelgiftcard"}}'>
+                <div class="fieldset">
+                    <input type="hidden" name="removegiftcard" id="removegiftcard" value="0"/>
+                    <div class="field">
+                        <div class="control">
+                            <input type="text"  class="input-text" id="giftcardno" name="giftcardno"
+                                   placeholder="Enter Gift Card No" value="<?= $block->getGiftCardNo() ?>" required="required" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input type="number" min="0" class="input-text" id="giftcardamount" name="giftcardamount"
+                                   placeholder="Amount to Use" value="<?= $block->getGiftCardAmountUsed() ?>" required="required" />
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <div class="primary">
+                            <?php if (empty($block->getGiftCardAmountUsed())): ?>
+                                <input class="action applygiftcard primary" type="submit" value="<?= __('Apply') ?>"></input>
+                            <?php else: ?>
+                                <input class="action applygiftcard primary" type="submit" value="<?= __('Update') ?>"></input>
+                                <input type="submit" class="action cancelgiftcard primary" value="<?= __('Cancel') ?>"></input>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php } ?>

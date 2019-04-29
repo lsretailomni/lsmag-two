@@ -47,7 +47,8 @@ class OrderHelper extends AbstractHelper
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
         \Magento\Customer\Model\Session\Proxy $customerSession
-    ) {
+    )
+    {
         parent::__construct($context);
         $this->order = $order;
         $this->basketHelper = $basketHelper;
@@ -273,6 +274,23 @@ class OrderHelper extends AbstractHelper
                 ->setPreApprovedAmount($order->getLsPointsSpent())
                 ->setTenderType('3');
             $orderPaymentArray[] = $orderPaymentLoyalty;
+        }
+
+        if ($order->getLsGiftCardAmountUsed()) {
+
+            // @codingStandardsIgnoreStart
+            $orderPaymentGiftCard = new Entity\OrderPayment();
+            // @codingStandardsIgnoreEnd
+            //default values for all payment typoes.
+            $orderPaymentGiftCard
+                ->setCurrencyFactor(1)
+                ->setFinalizedAmount('0')
+                ->setLineNumber('3')
+                ->setCardNumber($order->getLsGiftCardNo())
+                ->setOrderId($order->getIncrementId())
+                ->setPreApprovedAmount($order->getLsGiftCardAmountUsed())
+                ->setTenderType('4');
+            $orderPaymentArray[] = $orderPaymentGiftCard;
         }
 
         return $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
