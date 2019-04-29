@@ -2,10 +2,9 @@
 
 namespace Ls\Omni\Helper;
 
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\ItemHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\ExpiredException;
@@ -84,6 +83,25 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $itemHelper;
 
     /**
+     * @var \Magento\Wishlist\Model\Wishlist
+     */
+    public $wishlist;
+
+    /**
+     * @var \Magento\Wishlist\Model\Wishlist
+     */
+    public $wishlistFactory;
+    /**
+     * @var \Magento\Wishlist\Model\Wishlist
+     */
+    public $wishlistResourceModel;
+
+    /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
+    public $productRepository;
+
+    /**
      * ContactHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
@@ -100,11 +118,16 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      * @param \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
      * @param BasketHelper $basketHelper
+     * @param \Ls\Omni\Helper\ItemHelper $itemHelper
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Directory\Model\Country $country
      * @param \Magento\Directory\Model\RegionFactory $region
+     * @param \Magento\Wishlist\Model\Wishlist $wishlist
+     * @param \Magento\Wishlist\Model\ResourceModel\Wishlist $wishlistResourceModel
+     * @param \Magento\Wishlist\Model\WishlistFactory $wishlistFactory
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -127,9 +150,12 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Registry $registry,
         \Magento\Directory\Model\Country $country,
-        \Magento\Directory\Model\RegionFactory $region
-    )
-    {
+        \Magento\Directory\Model\RegionFactory $region,
+        \Magento\Wishlist\Model\Wishlist $wishlist,
+        \Magento\Wishlist\Model\ResourceModel\Wishlist $wishlistResourceModel,
+        \Magento\Wishlist\Model\WishlistFactory $wishlistFactory,
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+    ) {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeManager = $storeManager;
@@ -150,6 +176,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->checkoutSession = $checkoutSession;
         $this->country = $country;
         $this->region = $region;
+        $this->wishlist = $wishlist;
+        $this->wishlistResourceModel = $wishlistResourceModel;
+        $this->wishlistFactory = $wishlistFactory;
+        $this->productRepository = $productRepository;
         parent::__construct(
             $context
         );
@@ -520,6 +550,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param null $customerAddress
      * @return Entity\ContactUpdateResponse|Entity\MemberContact|\Ls\Omni\Client\ResponseInterface|null
+     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function updateAccount($customerAddress = null)
     {
@@ -733,7 +764,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $quote,
                 $this->basketHelper->getBasketSessionValue()
             );
-
         } elseif (!empty($quote->getAllItems())) {
             // get the onelist or if not exist then create new one with empty data of customer.
             $oneList = $this->basketHelper->get();
@@ -746,6 +776,68 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+    /**
+     * @param Entity\OneList $oneListWishlist
+     * @throws \Exception
+     */
+    public function updateWishlistAfterLogin(Entity\OneList $oneListWishlist)
+    {
+        // @codingStandardsIgnoreStart
+        $customerId = $this->customerSession->getCustomer()->getId();
+        $wishlist = $this->wishlist->loadByCustomerId($customerId);
+        $this->removeWishlist($wishlist);
+        $wishlist = $this->wishlistFactory->create();
+        $wishlist->loadByCustomerId($customerId, true);
+        $itemsCollection = $oneListWishlist->getItems()->getOneListItem();
+        if (!is_array($itemsCollection)) {
+            $itemsCollection = [$itemsCollection];
+        }
+        try {
+            foreach ($itemsCollection as $item) {
+                $buyRequest = [];
+                $sku = $item->getItem()->getId();
+                $product = $this->productRepository->get($sku);
+                $qty = $item->getQuantity();
+                $buyRequest['qty'] = $qty;
+                if ($item->getVariantReg()) {
+                    $simSku = $sku . '-' . $item->getVariantReg()->getId();
+                    $simProuduct = $this->productRepository->get($simSku);
+                    $optionsData = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+                    $buyRequest['super_attribute'] = [];
+                    foreach ($optionsData as $key => $option) {
+                        $code = $option['attribute_code'];
+                        $value = $simProuduct->getData($code);
+                        $buyRequest['super_attribute'][$key] = $value;
+                    }
+                }
+                $wishlist->addNewItem($product, $buyRequest);
+                $this->wishlistResourceModel->save($wishlist);
+            }
+
+            if (!is_array($oneListWishlist) &&
+                $oneListWishlist instanceof Entity\OneList) {
+                $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $oneListWishlist);
+            }
+        } catch (\Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+        // @codingStandardsIgnoreEnd
+    }
+
+    /**
+     * @param $wishlist
+     */
+    public function removeWishlist(&$wishlist)
+    {
+        // @codingStandardsIgnoreStart
+        try {
+            $wishlist->delete();
+        } catch (\Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+
+        // @codingStandardsIgnoreEnd
+    }
     /**
      * @param Entity\MemberContact $result
      * @param $credentials

@@ -12,6 +12,25 @@
     <event name="checkout_cart_save_after">
         <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
     </event>
+    <!-- For Wishlist  -->
+    <event name="controller_action_postdispatch_wishlist_index_add">
+        <observer name="WishlistAddObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
+    </event>
+    <event name="controller_action_postdispatch_wishlist_index_update">
+        <observer name="WishlistUpdateObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
+    </event>
+    <event name="controller_action_postdispatch_wishlist_index_updateItemOptions">
+        <observer name="WishlistUpdateItemOptionsObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
+    </event>
+    <event name="controller_action_postdispatch_wishlist_index_remove">
+        <observer name="WishlistRemoveObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
+    </event>
+    <event name="controller_action_postdispatch_wishlist_index_cart">
+        <observer name="WishlistSaveObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
+    </event>
+    <event name="controller_action_postdispatch_wishlist_index_allcart">
+        <observer name="WishlistSaveObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
+    </event>
     <!-- For click and collect  -->
     <event name="sales_model_service_quote_submit_before">
         <observer name="copy_pickup_info_from_quote_to_order" instance="Ls\Omni\Observer\DataAssignObserver"/>

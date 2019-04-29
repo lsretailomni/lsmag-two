@@ -105,8 +105,7 @@ class CartObserver implements ObserverInterface
         return $this;
     }
 
-    public
-    function watchNextSave($value = true)
+    public function watchNextSave($value = true)
     {
         $this->watchNextSave = $value;
     }
