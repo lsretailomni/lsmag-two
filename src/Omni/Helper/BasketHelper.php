@@ -2,17 +2,17 @@
 
 namespace Ls\Omni\Helper;
 
-use Magento\Framework\App\Helper\Context;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use Magento\Checkout\Model\Cart;
-use Magento\Catalog\Model\ProductRepository;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Catalog\Model\ProductFactory;
-use Magento\Quote\Model\Quote;
+use Magento\Catalog\Model\ProductRepository;
+use Magento\Checkout\Model\Cart;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Registry;
-use \Ls\Core\Model\LSR;
 use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Quote\Model\Quote;
 
 /**
  * Class BasketHelper
@@ -91,6 +91,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Registry $registry
      * @param LSR $Lsr
      * @param SessionManagerInterface $session
+     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
      */
     public function __construct(
         Context $context,
@@ -276,6 +277,62 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * @param Entity\OneList $oneList
+     * @param $wishlistItems
+     * @return Entity\OneList
+     */
+    public function addProductToExistingWishlist(Entity\OneList $oneList, $wishlistItems)
+    {
+        /** @var Entity\ArrayOfOneListItem $items */
+        // @codingStandardsIgnoreLine
+        $items = new Entity\ArrayOfOneListItem();
+        $itemsArray = [];
+        foreach ($wishlistItems as $item) {
+            if ($item->getOptionByCode('simple_product')) {
+                $product = $item->getOptionByCode('simple_product')->getProduct();
+            } else {
+                $product = $item->getProduct();
+            }
+
+            $qty = $item->getData('qty');
+            // initialize the default null value
+            $variant = $barcode = null;
+
+            $sku = $product->getSku();
+
+            $barcode = $product->getData('barcode');
+
+            $parts = explode('-', $sku);
+            // first element is lsr_id
+            $lsr_id = array_shift($parts);
+            // second element, if it exists, is variant id
+            // @codingStandardsIgnoreLine
+            $variant_id = count($parts) ? array_shift($parts) : null;
+
+            /** @var \Ls\Omni\Client\Ecommerce\Entity\LoyItem $item */
+            $item = $this->itemHelper->get($lsr_id);
+
+            if (!($variant_id == null)) {
+                /** @var Entity\VariantRegistration|null $variant */
+                $variant = $this->itemHelper->getItemVariant($item, $variant_id);
+            }
+        /** @var Entity\UnitOfMeasure|null $uom */
+            $uom = $this->itemHelper->uom($item);
+        // @codingStandardsIgnoreLine
+            $list_item = (new Entity\OneListItem())
+                ->setQuantity($qty)
+                ->setItem($item)
+                ->setId('')
+                ->setBarcodeId($barcode)
+                ->setVariantReg($variant)
+                ->setUnitOfMeasure($uom);
+            array_push($itemsArray, $list_item);
+        }
+        $items->setOneListItem($itemsArray);
+        $oneList->setItems($items);
+        return $oneList;
+    }
+    /**
      * @return Entity\ArrayOfOneListPublishedOffer
      */
     private function _offers()
@@ -332,6 +389,16 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $basketData;
     }
 
+    /**
+     * @param Entity\OneList $oneList
+     * @return bool|Entity\OneList
+     */
+    // @codingStandardsIgnoreLine
+    public function updateWishlistAtOmni(Entity\OneList $oneList)
+    {
+        $response = $this->saveWishlistToOmni($oneList);
+        return $response;
+    }
     /**
      * @param Entity\OneList $oneList
      * @return bool|Entity\ArrayOfOrderLineAvailability|Entity\OrderAvailabilityCheckResponse|\Ls\Omni\Client\ResponseInterface
@@ -425,6 +492,33 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return false;
     }
 
+    /**
+     * @param Entity\OneList $list
+     * @return bool|Entity\OneList
+     */
+    public function saveWishlistToOmni(Entity\OneList $list)
+    {
+        /** @var Operation\OneListSave $operation */
+        // @codingStandardsIgnoreLine
+        $operation = new Operation\OneListSave();
+
+        $list->setStoreId($this->getDefaultWebStore());
+
+        /** @var Entity\OneListSave $request */
+        // @codingStandardsIgnoreLine
+        $request = (new Entity\OneListSave())
+            ->setOneList($list)
+            ->setCalculate(true);
+
+        /** @var Entity\OneListSaveResponse $response */
+        $response = $operation->execute($request);
+        if ($response) {
+            $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $response->getOneListSaveResult());
+            return $response->getOneListSaveResult();
+        }
+
+        return false;
+    }
     /**
      * @param Entity\OneList $oneList
      * @return Entity\OneListCalculateResponse|null
@@ -596,6 +690,18 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         /** If no list found from customer session or registered user then get from omni */
         if ($list == null) {
             return $this->fetchFromOmni();
+        }
+        return null;
+    }
+
+    /**
+     * @return Entity\OneList|mixed|null
+     */
+    public function fetchCurrentCustomerWishlist()
+    {
+        //check if onelist is created and stored in session. if it is, than return it.
+        if ($this->customerSession->getData(LSR::SESSION_CART_WISHLIST)) {
+            return $this->customerSession->getData(LSR::SESSION_CART_WISHLIST);
         }
         return null;
     }

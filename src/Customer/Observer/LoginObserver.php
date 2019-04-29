@@ -130,6 +130,10 @@ class LoginObserver implements ObserverInterface
                         $result->getId(),
                         $result->getCard()->getId()
                     );
+
+                    $this->contactHelper->updateWishlistAfterLogin(
+                        $result->getWishList()
+                    );
                 } else {
                     $this->customerSession->addError(
                         __('The service is currently unavailable. Please try again later.')
