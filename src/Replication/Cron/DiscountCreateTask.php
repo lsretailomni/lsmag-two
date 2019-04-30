@@ -13,14 +13,14 @@ use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class DiscountCreateTask
- * @package Ls\Replication\Cron
- * This cron will create catalog rules in order to integrate the preactive
+ * This cron will create catalog rules in order to integrate the pre-active
  * discounts which are independent of any Member Limitation
  * One Sales Rule  = All discounts based on Published Offer.
- * Condition will be to have any of the value equal to the SKUS found in it.
+ * Condition will be to have any of the value equal to the SKUs found in it.
  * Priority will be same for published offer as it was created in Nav.
  *
+ * Class DiscountCreateTask
+ * @package Ls\Replication\Cron
  */
 class DiscountCreateTask
 {
@@ -52,7 +52,6 @@ class DiscountCreateTask
     /**
      * @var LoggerInterface
      */
-
     public $logger;
 
     /**
@@ -104,6 +103,10 @@ class DiscountCreateTask
 
     /**
      * Discount Creation
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\State\InvalidTransitionException
      */
     public function execute()
     {
@@ -144,12 +147,9 @@ class DiscountCreateTask
 
                         /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
                         foreach ($replDiscounts->getItems() as $replDiscount) {
+                            $customerGroupId = $this->contactHelper->getCustomerGroupIdByName($replDiscount->getLoyaltySchemeCode());
                             // To check if discounts groups are specific for any Member Scheme.
-                            if (!$useAllGroupIds &&
-                                !in_array($this->contactHelper
-                                    ->getCustomerGroupIdByName($replDiscount->getLoyaltySchemeCode()),
-                                    $customerGroupIds)
-                            ) {
+                            if (!$useAllGroupIds && !in_array($customerGroupId, $customerGroupIds)) {
                                 $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
                                     $replDiscount->getLoyaltySchemeCode()
                                 );
@@ -167,6 +167,7 @@ class DiscountCreateTask
                             // @codingStandardsIgnoreEnd
                         }
                         if (!empty($skuArray)) {
+                            $skuArray = array_unique($skuArray);
                             $this->addSalesRule($item, $skuArray, $customerGroupIds);
                         }
                         $this->jobApply->applyAll();
@@ -208,8 +209,7 @@ class DiscountCreateTask
         if ($replDiscount instanceof \Ls\Replication\Model\ReplDiscount) {
             $websiteIds = $this->replicationHelper->getAllWebsitesIds();
             $rule = $this->ruleFactory->create();
-
-            // create root conditions to match with all child conditions
+            // Create root conditions to match with all child conditions
             $conditions["1"] =
                 [
                     "type" => "Magento\CatalogRule\Model\Rule\Condition\Combine",
@@ -237,11 +237,9 @@ class DiscountCreateTask
             if (strtolower($replDiscount->getToDate()) != strtolower('1753-01-01T00:00:00')) {
                 $rule->setToDate($replDiscount->getToDate());
             }
-            $rule->setSimpleAction('by_percent')//THis is fixed from Omni so we dont have to change
-            ->setDiscountAmount($replDiscount->getDiscountValue())
+            $rule->setSimpleAction('by_percent')
+                ->setDiscountAmount($replDiscount->getDiscountValue())
                 ->setStopRulesProcessing(1)
-                // NAV only allow one preactive discount at the time,
-                // so yes we dont need this dynamic from Nav.
                 ->setSortOrder($replDiscount->getPriorityNo());
 
             /**
@@ -276,7 +274,6 @@ class DiscountCreateTask
      */
     public function getUniquePublishedOffers()
     {
-
         $publishedOfferIds = [];
         /** @var  \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection $collection */
         $collection = $this->replDiscountCollection->create();
