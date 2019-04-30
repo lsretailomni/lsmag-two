@@ -10,6 +10,7 @@
     <head>
         <css src="Ls_Omni::css/mc_clickandcollect.css"/>
         <css src="Ls_Omni::css/lsdiscountprices.css"/>
+        <css src="Ls_Omni::css/gift_card.css"/>
     </head>
     <body>
         <referenceBlock name="checkout.root">
@@ -66,6 +67,23 @@
                                                                         </item>
                                                                     </item>
                                                                 </item>
+                                                                <item name="gift-card" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">
+                                                                        Ls_Omni/js/view/gift-card
+                                                                    </item>
+                                                                    <item name="children" xsi:type="array">
+                                                                        <item name="errors" xsi:type="array">
+                                                                            <item name="sortOrder" xsi:type="string">0
+                                                                            </item>
+                                                                            <item name="component" xsi:type="string">
+                                                                                Ls_Omni/js/view/payment/gift-card-messages
+                                                                            </item>
+                                                                            <item name="displayArea" xsi:type="string">
+                                                                                messages
+                                                                            </item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
                                                             </item>
                                                         </item>
                                                     </item>
@@ -111,10 +129,21 @@
                                                 <item name="totals" xsi:type="array">
                                                     <item name="children" xsi:type="array">
                                                         <item name="subtotal" xsi:type="array">
-                                                            <item name="component"  xsi:type="string">Magento_Checkout/js/view/summary/subtotal</item>
-                                                            <item name="config" xsi:type="array">
-                                                                <item name="title" xsi:type="string" translate="true">Subtotal (Inc.Tax)</item>
+                                                            <item name="component" xsi:type="string">
+                                                                Magento_Checkout/js/view/summary/subtotal
                                                             </item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">
+                                                                    Subtotal (Inc.Tax)
+                                                                </item>
+                                                                <item name="sortOrder" xsi:type="string">0</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="ls_gift_card_amount_used" xsi:type="array">
+                                                            <item name="component" xsi:type="string">
+                                                                Ls_Omni/js/view/totals/giftcard-discount
+                                                            </item>
+                                                            <item name="sortOrder" xsi:type="string">1</item>
                                                         </item>
                                                         <item name="loyalty_points_label" xsi:type="array">
                                                             <item name="component" xsi:type="string">

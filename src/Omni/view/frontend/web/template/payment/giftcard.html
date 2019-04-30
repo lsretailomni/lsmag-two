@@ -1,0 +1,56 @@
+<div class="payment-option _collapsible opc-payment-additional giftcard"
+     data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
+    <div class="payment-option-title field choice" data-role="title">
+        <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
+            <!-- ko i18n: 'Apply Gift Card'--><!-- /ko -->
+        </span>
+    </div>
+    <div class="payment-option-content" data-role="content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <form class="form form-discount" id="gift-card">
+            <div class="payment-option-inner">
+                <div class="field">
+                    <label class="label">
+                        <span data-bind="i18n: 'Enter Gift Card'"></span>
+                    </label>
+                    <div class="control">
+                        <input class="input-text"
+                               type="text"
+                               id="gift_card_no"
+                               name="gift_card_no"
+                               data-validate="{'required-entry':true}"
+                               data-bind="value: giftCardNo, attr:{placeholder: $t('Enter Gift Card Number')} "/>
+                        <input class="input-text"
+                               type="number"
+                               id="gift_card_amount"
+                               name="gift_card_amount"
+                               data-validate="{'required-entry':true, 'required-number':true, 'validate-not-negative-number':true}"
+                               data-bind="value: giftCardAmount, attr:{placeholder: $t('Enter Gift Card Amount')} "/>
+                    </div>
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <!-- ko ifnot: isGiftCardApplied() -->
+                    <button class="action action-apply" type="submit"
+                            data-bind="'value': $t('Apply'), click: applyGiftCard">
+                        <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
+                    </button>
+                    <!-- /ko -->
+                    <!-- ko if: isGiftCardApplied() -->
+                    <button class="action action-apply" type="submit"
+                            data-bind="'value': $t('Update'), click: applyGiftCard">
+                        <span><!-- ko i18n: 'Update'--><!-- /ko --></span>
+                    </button>
+                    <button class="action action-cancel" type="submit"
+                            data-bind="'value': $t('Cancel'), click: cancelGiftCard">
+                        <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
+                    </button>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

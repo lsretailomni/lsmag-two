@@ -1,48 +1,59 @@
 <?xml version="1.0"?>
 <config
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-  <type name="Magento\Framework\Console\CommandList">
-    <arguments>
-      <argument name="commands" xsi:type="array">
-        <item name="ls_omni_client_generate" xsi:type="object">Ls\Omni\Console\Command\ClientGenerate</item>
-        <item name="ls_omni_client_ping" xsi:type="object">Ls\Omni\Console\Command\ClientPing</item>
-        <item name="ls_omni_client_wsdl" xsi:type="object">Ls\Omni\Console\Command\ClientWsdl</item>
-      </argument>
-    </arguments>
-  </type>
-  <type name="Magento\Checkout\Controller\Cart\CouponPost">
-    <plugin name="SetCouponData"
-            type="Ls\Omni\Model\SetCouponData"
-            sortOrder="1" />
-  </type>
-  <!-- For Click and Collect -->
-  <type name="Magento\Checkout\Model\ShippingInformationManagement">
-    <plugin name="savePickupInfoToQuote"
-            type="Ls\Omni\Plugin\Checkout\Model\ShippingInformationManagement" />
-  </type>
-  <!-- To Override Tax Calculator -->
-  <preference for="Magento\Tax\Model\Sales\Total\Quote\Tax" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Tax" />
-  <!-- For Street Fields Overwrite -->
-  <type name="Magento\Checkout\Block\Checkout\AttributeMerger">
-    <plugin name="shippingAddress" type="Ls\Omni\Plugin\Checkout\Block\Checkout\AttributeMerger\StreetPlugin"/>
-  </type>
-  <preference for="Magento\Catalog\Block\Product\View" type="Ls\Omni\Block\Product\View\View" />
-  <type name="Magento\Quote\Api\CartTotalRepositoryInterface">
-    <plugin name="loyalty_point_add_quote_data" type="Ls\Omni\Plugin\Quote\CartTotalRepository"/>
-  </type>
-  <preference for="Ls\Omni\Api\PointsManagementInterface" type="Ls\Omni\Model\Api\PointsManagement"/>
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="ls_omni_client_generate" xsi:type="object">Ls\Omni\Console\Command\ClientGenerate</item>
+                <item name="ls_omni_client_ping" xsi:type="object">Ls\Omni\Console\Command\ClientPing</item>
+                <item name="ls_omni_client_wsdl" xsi:type="object">Ls\Omni\Console\Command\ClientWsdl</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\CouponPost">
+        <plugin name="SetCouponData"
+                type="Ls\Omni\Model\SetCouponData"
+                sortOrder="1"/>
+    </type>
+    <!-- For Click and Collect -->
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="savePickupInfoToQuote"
+                type="Ls\Omni\Plugin\Checkout\Model\ShippingInformationManagement"/>
+    </type>
+    <!-- To Override Tax Calculator -->
+    <preference for="Magento\Tax\Model\Sales\Total\Quote\Tax" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Tax"/>
+    <!-- For Street Fields Overwrite -->
+    <type name="Magento\Checkout\Block\Checkout\AttributeMerger">
+        <plugin name="shippingAddress" type="Ls\Omni\Plugin\Checkout\Block\Checkout\AttributeMerger\StreetPlugin"/>
+    </type>
+    <preference for="Magento\Catalog\Block\Product\View" type="Ls\Omni\Block\Product\View\View"/>
+    <type name="Magento\Quote\Api\CartTotalRepositoryInterface">
+        <plugin name="loyalty_point_add_quote_data" type="Ls\Omni\Plugin\Quote\CartTotalRepository"/>
+    </type>
+    <preference for="Ls\Omni\Api\PointsManagementInterface" type="Ls\Omni\Model\Api\PointsManagement"/>
     <!-- For Coupon Code Overwrite -->
-  <type name="Magento\Quote\Model\CouponManagement">
-    <plugin name="checkout_coupon_apply"
-            type="Ls\Omni\Plugin\Checkout\Model\CouponInformationManagement"/>
-  </type>
-  <preference for="Magento\Checkout\CustomerData\DefaultItem" type="Ls\Omni\CustomerData\DefaultItem"/>
-  <type name="Magento\Checkout\Model\DefaultConfigProvider">
-    <plugin name="checkout_summary_price_modification" type="Ls\Omni\Plugin\Checkout\Model\DefaultConfigProvider" />
-  </type>
-  <type name="Magento\Checkout\CustomerData\Cart">
-    <plugin name="subtotal_modification" type="Ls\Omni\Plugin\Checkout\CustomerData\Cart"/>
-  </type>
-  <!-- To Override Discount Calculator -->
-  <preference for="Magento\SalesRule\Model\Quote\Discount" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Discount" />
+    <type name="Magento\Quote\Model\CouponManagement">
+        <plugin name="checkout_coupon_apply"
+                type="Ls\Omni\Plugin\Checkout\Model\CouponInformationManagement"/>
+    </type>
+    <preference for="Magento\Checkout\CustomerData\DefaultItem" type="Ls\Omni\CustomerData\DefaultItem"/>
+    <type name="Magento\Checkout\Model\DefaultConfigProvider">
+        <plugin name="checkout_summary_price_modification" type="Ls\Omni\Plugin\Checkout\Model\DefaultConfigProvider"/>
+    </type>
+    <type name="Magento\Checkout\CustomerData\Cart">
+        <plugin name="subtotal_modification" type="Ls\Omni\Plugin\Checkout\CustomerData\Cart"/>
+    </type>
+    <!-- To Override Discount Calculator -->
+    <preference for="Magento\SalesRule\Model\Quote\Discount" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Discount"/>
+    <!-- Passing additional configuration to checkout page -->
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="additional_provider" xsi:type="object">
+                    Ls_Omni\Plugin\Checkout\Model\AdditionalCheckOutParameter
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>
