@@ -1,3 +1,4 @@
+<!-- ko if: isDisplay() -->
 <div class="payment-option _collapsible opc-payment-additional giftcard"
      data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
     <div class="payment-option-title field choice" data-role="title">
@@ -21,7 +22,7 @@
                                id="gift_card_no"
                                name="gift_card_no"
                                data-validate="{'required-entry':true}"
-                               data-bind="value: giftCardNo, attr:{placeholder: $t('Enter Gift Card Number')} "/>
+                               data-bind="value: giftCardNo, attr:{placeholder: $t('Enter Gift Card Code')} "/>
                         <input class="input-text"
                                type="number"
                                id="gift_card_amount"
@@ -54,3 +55,4 @@
         </form>
     </div>
 </div>
+<!-- /ko -->

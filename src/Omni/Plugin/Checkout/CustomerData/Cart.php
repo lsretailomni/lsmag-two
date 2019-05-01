@@ -3,6 +3,7 @@
 namespace Ls\Omni\Plugin\Checkout\CustomerData;
 
 use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
+use \Ls\Omni\Helper\Data;
 
 /**
  * Class Cart
@@ -26,15 +27,22 @@ class Cart
      */
     public $checkoutHelper;
 
+    /**
+     * @var Data
+     */
+    public $data;
+
     public function __construct(
         CheckoutSession $checkoutSession,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
-        \Magento\Checkout\Helper\Data $checkoutHelper
+        \Magento\Checkout\Helper\Data $checkoutHelper,
+        Data $data
     )
     {
         $this->checkoutSession = $checkoutSession;
         $this->quoteRepository = $quoteRepository;
         $this->checkoutHelper = $checkoutHelper;
+        $this->data = $data;
     }
 
     /**
@@ -44,19 +52,15 @@ class Cart
      */
     public function afterGetSectionData(\Magento\Checkout\CustomerData\Cart $subject, array $result)
     {
-
-        $totals = $this->checkoutSession->getQuote()->getTotals();
-        $proActiveDiscount=$this->checkoutSession->getProActiveDiscount();
-        $grandTotalAmount = $totals['grand_total']->getValue();
-        if ($grandTotalAmount != null && $grandTotalAmount > 0) {
-            if (isset($totals['discount'])) {
-                $discount = abs($totals['discount']->getValue());
-                $totalAmount = $grandTotalAmount + $discount-$proActiveDiscount;
-                $result['subtotalAmount'] = $totalAmount;
-                $result['subtotal'] = isset($totalAmount)
-                    ? $this->checkoutHelper->formatPrice($totalAmount)
-                    : 0;
-            }
+        $quote = $this->checkoutSession->getQuote();
+        $grandTotalAmount = $this->data->getOrderBalance(
+            $quote->getLsGiftCardAmountUsed(),
+            $quote->getLsPointsSpent());
+        if ($grandTotalAmount > 0) {
+            $result['subtotalAmount'] = $grandTotalAmount;
+            $result['subtotal'] = isset($grandTotalAmount)
+                ? $this->checkoutHelper->formatPrice($grandTotalAmount)
+                : 0;
         }
         return $result;
     }

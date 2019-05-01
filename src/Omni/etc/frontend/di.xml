@@ -3,7 +3,7 @@
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
-                <!-- For Click and Collect -->
+                <!-- For Click and Collect and gift card enable/disable on checkout -->
                 <item name="clickandcollect_config_provider" xsi:type="object">Ls\Omni\Model\Checkout\DataProvider</item>
             </argument>
         </arguments>
