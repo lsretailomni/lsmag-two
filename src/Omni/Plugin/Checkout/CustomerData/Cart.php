@@ -55,7 +55,8 @@ class Cart
         $quote = $this->checkoutSession->getQuote();
         $grandTotalAmount = $this->data->getOrderBalance(
             $quote->getLsGiftCardAmountUsed(),
-            $quote->getLsPointsSpent());
+            $quote->getLsPointsSpent()
+        );
         if ($grandTotalAmount > 0) {
             $result['subtotalAmount'] = $grandTotalAmount;
             $result['subtotal'] = isset($grandTotalAmount)

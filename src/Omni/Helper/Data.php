@@ -154,9 +154,15 @@ class Data extends AbstractHelper
      */
     public function getOrderBalance($giftCardAmount, $loyaltyPoints)
     {
-        $loyaltyAmount= $this->loyaltyHelper->getPointRate()*$loyaltyPoints;
-        $basketData=$this->basketHelper->getBasketSessionValue();
-        $totalAmount = $basketData->getTotalAmount();
-        return $totalAmount - $giftCardAmount - $loyaltyAmount;
+        try {
+            $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+            $basketData = $this->basketHelper->getBasketSessionValue();
+            if (!empty($basketData)) {
+                $totalAmount = $basketData->getTotalAmount();
+                return $totalAmount - $giftCardAmount - $loyaltyAmount;
+            }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
     }
 }
