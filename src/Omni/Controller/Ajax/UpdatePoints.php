@@ -4,6 +4,7 @@ namespace Ls\Omni\Controller\Ajax;
 
 use Magento\Framework\App\Action\Context;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\Data;
 use \Ls\Core\Model\LSR;
 
 /**
@@ -38,6 +39,11 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
     public $cartRepository;
 
     /**
+     * @var Data
+     */
+    public $data;
+
+    /**
      * UpdatePoints constructor.
      * @param Context $context
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
@@ -55,7 +61,8 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         LoyaltyHelper $loyaltyHelper,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository
-    ) {
+    )
+    {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory = $resultRawFactory;
@@ -93,18 +100,22 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
         if (!is_numeric($loyaltyPoints) || $loyaltyPoints < 0 || !$isPointValid) {
             $response = [
-                    'error' => 'true',
-                    'message' => __(
-                        'The loyalty points "%1" are not valid.',
-                        $loyaltyPoints
-                    )
-                ];
+                'error' => 'true',
+                'message' => __(
+                    'The loyalty points "%1" are not valid.',
+                    $loyaltyPoints
+                )
+            ];
             return $resultJson->setData($response);
         }
         try {
             $cartId = $this->checkoutSession->getQuoteId();
             $quote = $this->cartRepository->get($cartId);
-            $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($quote->getBaseGrandTotal(), $loyaltyPoints);
+            $orderBalance = $this->data->getOrderBalance(
+                $quote->getLsGiftCardAmountUsed(),
+                $quote->getLsPointsSpent()
+            );
+            $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($orderBalance, $loyaltyPoints);
             if ($isPointsLimitValid) {
                 $quote->setLsPointsSpent($loyaltyPoints);
                 $this->validateQuote($quote);

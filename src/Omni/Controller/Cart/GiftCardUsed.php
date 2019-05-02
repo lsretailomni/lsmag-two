@@ -25,6 +25,11 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     public $priceHelper;
 
     /**
+     * @var Ls\Omni\Helper\Data
+     */
+    public $data;
+
+    /**
      * GiftCardUsed constructor.
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -35,6 +40,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
      * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
      * @param \Ls\Omni\Helper\GiftCardHelper $giftCardHelper
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
+     * @param \Ls\Omni\Helper\Data $data
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -45,7 +51,8 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
         \Magento\Checkout\Model\Cart $cart,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Ls\Omni\Helper\GiftCardHelper $giftCardHelper,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper
+        \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        \Ls\Omni\Helper\Data $data
     )
     {
         parent::__construct(
@@ -59,6 +66,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
         $this->quoteRepository = $quoteRepository;
         $this->giftCardHelper = $giftCardHelper;
         $this->priceHelper = $priceHelper;
+        $this->data = $data;
     }
 
     /**
@@ -105,7 +113,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             }
 
             if (empty($giftCardResponse)) {
-                $this->messageManager->addErrorMessage(__('The gift card number %1 is not valid.', $giftCardNo));
+                $this->messageManager->addErrorMessage(__('The gift card code %1 is not valid.', $giftCardNo));
                 $this->_checkoutSession->getQuote()->setLsGiftCardAmountUsed(0)->save();
                 $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();
                 return $this->_goBack();
@@ -113,17 +121,21 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
 
             $cartQuote = $this->cart->getQuote();
             $itemsCount = $cartQuote->getItemsCount();
+            $orderBalance =$this->data->getOrderBalance(
+                $cartQuote->getLsGiftCardAmountUsed(),
+                $cartQuote->getLsPointsSpent()
+            );
 
             $isGiftCardAmountValid = $this->giftCardHelper->isGiftCardAmountValid(
-                $cartQuote->getBaseGrandTotal(),
+                $orderBalance,
                 $giftCardAmount,
                 $giftCardBalanceAmount
             );
 
             if ($isGiftCardAmountValid == false) {
                 $this->messageManager->addErrorMessage(__(
-                        'The gift card amount ' . $this->priceHelper->currency($giftCardAmount, true, false) . ' is greater than gift card balance amount (%1) or order total .'
-                        , $giftCardBalanceAmount)
+                        'The applied amount ' . $this->priceHelper->currency($giftCardAmount, true, false) . ' is greater than gift card balance amount (%1) or order balance.'
+                        , $this->priceHelper->currency($giftCardBalanceAmount, true, false))
                 );
                 $this->_checkoutSession->getQuote()->setLsGiftCardAmountUsed(0)->save();
                 $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();

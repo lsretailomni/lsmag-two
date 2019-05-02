@@ -4,6 +4,7 @@ namespace Ls\Omni\Controller\Ajax;
 
 use Magento\Framework\App\Action\Context;
 use \Ls\Omni\Helper\GiftCardHelper;
+use \Ls\Omni\Helper\Data;
 use \Ls\Core\Model\LSR;
 
 /**
@@ -43,6 +44,11 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
     public $priceHelper;
 
     /**
+     * @var Data
+     */
+    public $data;
+
+    /**
      * UpdateGiftCard constructor.
      * @param Context $context
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
@@ -52,6 +58,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
+     * @param Data $data
      */
     public function __construct(
         Context $context,
@@ -61,7 +68,8 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
         GiftCardHelper $giftCardHelper,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper
+        \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        \Ls\Omni\Helper\Data $data
     )
     {
         parent::__construct($context);
@@ -72,6 +80,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
         $this->customerSession = $customerSession;
         $this->cartRepository = $cartRepository;
         $this->priceHelper = $priceHelper;
+        $this->data = $data;
     }
 
     /**
@@ -125,14 +134,19 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
             $response = [
                 'error' => 'true',
                 'message' => __(
-                    'The gift card number %1 is not valid.', $giftCardNo
+                    'The gift card code %1 is not valid.', $giftCardNo
                 )
             ];
             return $resultJson->setData($response);
         }
 
+        $orderBalance = $this->data->getOrderBalance(
+            $quote->getLsGiftCardAmountUsed(),
+            $quote->getLsPointsSpent()
+        );
+
         $isGiftCardAmountValid = $this->giftCardHelper->isGiftCardAmountValid(
-            $quote->getBaseGrandTotal(),
+            $orderBalance,
             $giftCardAmount,
             $giftCardBalanceAmount
         );
@@ -141,8 +155,8 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
             $response = [
                 'error' => 'true',
                 'message' => __(
-                    'The gift card amount ' . $this->priceHelper->currency($giftCardAmount, true, false) .
-                    ' is greater than gift card balance amount (%1) or order total .',
+                    'The applied amount ' . $this->priceHelper->currency($giftCardAmount, true, false) .
+                    ' is greater than gift card balance amount (%1) or order balance .',
                     $this->priceHelper->currency($giftCardBalanceAmount, true, false)
                 )
             ];
