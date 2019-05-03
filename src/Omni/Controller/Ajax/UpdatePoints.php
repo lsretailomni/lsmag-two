@@ -113,7 +113,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
             $quote = $this->cartRepository->get($cartId);
             $orderBalance = $this->data->getOrderBalance(
                 $quote->getLsGiftCardAmountUsed(),
-                $quote->getLsPointsSpent()
+                0
             );
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($orderBalance, $loyaltyPoints);
             if ($isPointsLimitValid) {
