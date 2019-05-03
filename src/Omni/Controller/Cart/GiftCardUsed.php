@@ -85,14 +85,9 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             : trim($this->getRequest()->getParam('giftcardamount'));
 
         $giftCardAmount = (float)$giftCardAmount;
-        if ($giftCardAmount == 0) {
-            $giftCardNo = null;
-        }
         try {
             if (!is_numeric($giftCardAmount) || $giftCardAmount < 0) {
                 $this->messageManager->addErrorMessage(__('The gift card Amount "%1" is not valid.', $this->priceHelper->currency($giftCardAmount, true, false)));
-                $this->_checkoutSession->getQuote()->setLsGiftCardAmountUsed(0)->save();
-                $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();
                 return $this->_goBack();
             }
             if ($giftCardNo != null) {
@@ -105,17 +100,8 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 }
             }
 
-            if ($giftCardNo == null && $giftCardAmount == 0) {
-                $this->messageManager->addSuccessMessage(__('You have successfully cancelled the gift card.'));
-                $this->_checkoutSession->getQuote()->setLsGiftCardAmountUsed(0)->save();
-                $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();
-                return $this->_goBack();
-            }
-
             if (empty($giftCardResponse)) {
                 $this->messageManager->addErrorMessage(__('The gift card code %1 is not valid.', $giftCardNo));
-                $this->_checkoutSession->getQuote()->setLsGiftCardAmountUsed(0)->save();
-                $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();
                 return $this->_goBack();
             }
 
@@ -137,8 +123,6 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                         'The applied amount ' . $this->priceHelper->currency($giftCardAmount, true, false) . ' is greater than gift card balance amount (%1) or order balance.'
                         , $this->priceHelper->currency($giftCardBalanceAmount, true, false))
                 );
-                $this->_checkoutSession->getQuote()->setLsGiftCardAmountUsed(0)->save();
-                $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();
                 return $this->_goBack();
             }
             if ($itemsCount && !empty($giftCardResponse) && $isGiftCardAmountValid) {
@@ -147,7 +131,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
-            if ($giftCardNo) {
+            if ($giftCardAmount) {
                 if ($itemsCount) {
                     if (!empty($giftCardResponse) && $isGiftCardAmountValid) {
                         $this->_checkoutSession->getQuote()->setLsGiftCardAmountUsed($giftCardAmount)->save();
@@ -174,6 +158,9 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                     );
                 }
             } else {
+                if($giftCardAmount==0){
+                    $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();
+                }
                 $this->messageManager->addSuccessMessage(__('You have successfully cancelled the gift card.'));
             }
         } catch (\Exception $e) {
