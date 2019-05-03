@@ -38,6 +38,7 @@ class RegisterObserver implements ObserverInterface
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
+     * @param LSR $LSR
      */
     public function __construct(
         ContactHelper $contactHelper,
@@ -45,7 +46,7 @@ class RegisterObserver implements ObserverInterface
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
-        \Ls\Core\Model\LSR $LSR
+        LSR $LSR
     ) {
         $this->contactHelper = $contactHelper;
         $this->registry = $registry;
@@ -110,6 +111,9 @@ class RegisterObserver implements ObserverInterface
                     } else {
                         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
+                        $this->contactHelper->updateWishlistAfterLogin(
+                            $loginResult->getWishList()
+                        );
                     }
                 }
             } catch (\Exception $e) {
