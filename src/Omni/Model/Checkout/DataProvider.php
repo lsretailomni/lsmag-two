@@ -7,6 +7,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Omni\Helper\GiftCardHelper;
 
 /**
  * Class DataProvider
@@ -14,19 +15,22 @@ use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
  */
 class DataProvider implements ConfigProviderInterface
 {
-    const XPATH_MAPS_API_KEY        = 'omni_clickandcollect/general/maps_api_key';
-    const XPATH_DEFAULT_LATITUDE    = 'omni_clickandcollect/general/default_latitude';
-    const XPATH_DEFAULT_LONGITUDE   = 'omni_clickandcollect/general/default_longitude';
-    const XPATH_DEFAULT_ZOOM        = 'omni_clickandcollect/general/default_zoom';
+    const XPATH_MAPS_API_KEY = 'omni_clickandcollect/general/maps_api_key';
+    const XPATH_DEFAULT_LATITUDE = 'omni_clickandcollect/general/default_latitude';
+    const XPATH_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
+    const XPATH_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
 
-    /** @var StoreManagerInterface  */
+    /** @var StoreManagerInterface */
     public $storeManager;
 
-    /** @var CollectionFactory  */
+    /** @var CollectionFactory */
     public $storeCollectionFactory;
 
-    /** @var ScopeConfigInterface  */
+    /** @var ScopeConfigInterface */
     public $scopeConfig;
+
+    /** @var GiftCardHelper */
+    public $giftCardHelper;
 
     /**
      * DataProvider constructor.
@@ -37,15 +41,19 @@ class DataProvider implements ConfigProviderInterface
     public function __construct(
         StoreManagerInterface $storeManager,
         CollectionFactory $storeCollectionFactory,
-        ScopeConfigInterface $scopeConfig
-    ) {
+        ScopeConfigInterface $scopeConfig,
+        GiftCardHelper $giftCardHelper
+    )
+    {
         $this->storeManager = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->scopeConfig = $scopeConfig;
+        $this->giftCardHelper = $giftCardHelper;
     }
 
     /**
      * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getConfig()
     {
@@ -66,15 +74,15 @@ class DataProvider implements ConfigProviderInterface
         $config = [
             'shipping' => [
                 'select_store' => [
-                    'maps_api_key'   => $mapsApiKey,
-                    'lat'   => (float)$defaultLatitude,
-                    'lng'   => (float)$defaultLongitude,
-                    'zoom'  => (int)$defaultZoom,
+                    'maps_api_key' => $mapsApiKey,
+                    'lat' => (float)$defaultLatitude,
+                    'lng' => (float)$defaultLongitude,
+                    'zoom' => (int)$defaultZoom,
                     'stores' => $this->getStores()
                 ]
             ]
         ];
-
+        $config['gift_card_enable'] = $this->giftCardHelper->isGiftCardEnableOnCheckOut();
         return $config;
     }
 

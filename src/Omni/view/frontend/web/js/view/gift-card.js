@@ -80,7 +80,11 @@ define([
          * Enable or disable GiftCard
          */
         isDisplay: function () {
-            return window.checkoutConfig.gift_card_enable;
+           if(window.checkoutConfig.gift_card_enable=="1"){
+               return true;
+           } else {
+               return false;
+           }
 
         }
     });

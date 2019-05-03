@@ -46,14 +46,4 @@
     </type>
     <!-- To Override Discount Calculator -->
     <preference for="Magento\SalesRule\Model\Quote\Discount" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Discount"/>
-    <!-- Passing additional configuration to checkout page -->
-    <type name="Magento\Checkout\Model\CompositeConfigProvider">
-        <arguments>
-            <argument name="configProviders" xsi:type="array">
-                <item name="additional_provider" xsi:type="object">
-                    Ls_Omni\Plugin\Checkout\Model\AdditionalCheckOutParameter
-                </item>
-            </argument>
-        </arguments>
-    </type>
 </config>

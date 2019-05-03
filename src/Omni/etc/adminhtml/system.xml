@@ -31,32 +31,6 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Debug Mode for Omni Client</comment>
                 </field>
-                <!-- Commenting the unnecessary configuration for now starts
-                -->
-                <!--<field id="advanced" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"-->
-                <!--showInStore="1">-->
-                <!--<label>Advanced Settings</label>-->
-                <!--<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>-->
-                <!--<comment>Enable Advanced Settings</comment>-->
-                <!--</field>-->
-                <!--<field id="tokenized_operations" translate="label" type="multiselect" sortOrder="10" showInDefault="1"-->
-                <!--showInWebsite="1" showInStore="1">-->
-                <!--<label>Tokenized Operations</label>-->
-                <!--<comment>Omni Service operations that need an authentication token</comment>-->
-                <!--<depends>-->
-                <!--<field id="*/*/advanced">1</field>-->
-                <!--</depends>-->
-                <!--</field>-->
-                <!--<field id="timeout" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"-->
-                <!--showInStore="1">-->
-                <!--<label>Timeout</label>-->
-                <!--<comment>Timeout in seconds for the connection to Omni Service</comment>-->
-                <!--<depends>-->
-                <!--<field id="*/*/advanced">1</field>-->
-                <!--</depends>-->
-                <!--</field>-->
-                <!-- Commenting the unnecessary configuration for now ends
-                -->
             </group>
             <group id="ls_recommend" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
                    showInStore="1">
@@ -108,14 +82,6 @@
                         <field id="*/*/active">1</field>
                     </depends>
                 </field>
-
-                <!--                <field id="validate" translate="label" type="button" sortOrder="10" showInDefault="1"
-                                       showInWebsite="1" showInStore="1">
-                                    <label>Validate LS Recommend Server</label>
-                                    <comment>Test if LS Recommend is setup on NAV Server.</comment>
-                                    <button_label>Validate</button_label>
-                                    <button_url>admin/ls_repl/validate/lsrecommend</button_url>
-                                </field>-->
             </group>
 
             <group id="ls_giftcard" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"

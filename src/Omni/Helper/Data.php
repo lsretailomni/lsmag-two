@@ -9,6 +9,8 @@ use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\BasketHelper;
 use \Magento\Framework\Session\SessionManagerInterface;
 
 /**
@@ -35,6 +37,17 @@ class Data extends AbstractHelper
     public $session;
 
     /**
+     * @var Loyalty Helper
+     */
+    public $loyaltyHelper;
+
+
+    /**
+     * @var Basket Helper
+     */
+    public $basketHelper;
+
+    /**
      * Data constructor.
      * @param Context $context
      * @param StoreManagerInterface $store_manager
@@ -46,12 +59,18 @@ class Data extends AbstractHelper
         StoreManagerInterface $store_manager,
         ReplStoreRepositoryInterface $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        SessionManagerInterface $session
-    ) {
+        SessionManagerInterface $session,
+        LoyaltyHelper $loyaltyHelper,
+        BasketHelper $basketHelper
+    )
+    {
         $this->storeManager = $store_manager;
         $this->storeRepository = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->session = $session;
+        $this->loyaltyHelper = $loyaltyHelper;
+        $this->basketHelper = $basketHelper;
+
         $this->config = $context->getScopeConfig();
         parent::__construct($context);
     }
@@ -125,5 +144,25 @@ class Data extends AbstractHelper
     {
         $this->session->start();
         return $this->session->unsMessage();
+    }
+
+    /**
+     * @param $baseSubTotal
+     * @param $giftCardAmount
+     * @param $loyaltyAmount
+     * @return mixed
+     */
+    public function getOrderBalance($giftCardAmount, $loyaltyPoints)
+    {
+        try {
+            $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+            $basketData = $this->basketHelper->getBasketSessionValue();
+            if (!empty($basketData)) {
+                $totalAmount = $basketData->getTotalAmount();
+                return $totalAmount - $giftCardAmount - $loyaltyAmount;
+            }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
     }
 }
