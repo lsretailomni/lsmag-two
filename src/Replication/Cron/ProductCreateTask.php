@@ -678,8 +678,8 @@ class ProductCreateTask
     }
 
     /**
-     * Item Price
      * @param $itemId
+     * @param null $variantId
      * @return mixed
      */
     public function getItemPrice($itemId, $variantId = null)
@@ -690,6 +690,9 @@ class ProductCreateTask
             ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
             ['field' => 'QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq'],
         ];
+        if ($variantId) {
+            $filters[] = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
+        }
         $items = [];
         $searchCriteria = $this->replicationHelper->buildCriteriaForArray($filters, 1);
         /** @var ReplPriceRepository $items */
