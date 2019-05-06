@@ -138,7 +138,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                         $this->_checkoutSession->getQuote()->setLsGiftCardNo($giftCardNo)->save();
                         $this->messageManager->addSuccessMessage(
                             __(
-                                'You have used "%1" amount from gift card',
+                                'You have used "%1" amount from gift card.',
                                 $this->priceHelper->currency($giftCardAmount, true, false)
                             )
                         );

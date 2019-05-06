@@ -260,22 +260,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             $itemsArray[] = $list_item;
         }
-
-        //Custom Shipment Line
-        $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
-        if ($shippingAmount > 0) {
-            /** @var Entity\LoyItem $shipmentItem */
-            // @codingStandardsIgnoreLine
-            $shipmentItem = (new Entity\LoyItem())
-                ->setId($shipmentFeeId);
-            /** @var Entity\OneListItem $shipmentLine */
-            // @codingStandardsIgnoreLine
-            $shipmentLine = (new Entity\OneListItem())
-                ->setId('')
-                ->setItem($shipmentItem)
-                ->setQuantity(1);
-            array_push($itemsArray, $shipmentLine);
-        }
         $items->setOneListItem($itemsArray);
 
         $oneList->setItems($items)

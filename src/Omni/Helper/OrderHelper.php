@@ -47,8 +47,7 @@ class OrderHelper extends AbstractHelper
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
         \Magento\Customer\Model\Session\Proxy $customerSession
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->order = $order;
         $this->basketHelper = $basketHelper;
@@ -121,12 +120,17 @@ class OrderHelper extends AbstractHelper
             $oneListCalculateResponse->setShipClickAndCollect(false);
         }
         $orderLines = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+        if (!is_array($orderLines)) {
+            $orderLinesArray[] = $orderLines;
+        } else {
+            $orderLinesArray = $orderLines;
+        }
         //For click and collect we need to remove shipment charge orderline
         //For flat shipment it will set the correct shipment value into the order
-        $this->updateShippingAmount($orderLines, $order);
+        $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
         // @codingStandardsIgnoreLine
         $request = new Entity\OrderCreate();
-        $oneListCalculateResponse->setOrderLines($orderLines);
+        $oneListCalculateResponse->setOrderLines($orderLinesArray);
         $request->setRequest($oneListCalculateResponse);
         return $request;
     }
@@ -135,27 +139,24 @@ class OrderHelper extends AbstractHelper
      * @param $orderLines
      * @param $order
      */
-    public function updateShippingAmount(&$orderLines, $order)
+    public function updateShippingAmount($orderLines, $order)
     {
         $shipmentFeeId = LSR::LSR_SHIPMENT_ITEM_ID;
-        if (!is_array($orderLines)) {
-            /** @var Entity\OrderLine $orderLine */
-            $orderLine = $orderLines;
-            if ($orderLine->getItemId() == $shipmentFeeId && $order->getShippingAmount() > 0) {
-                $this->setSpecialPropertiesForShipmentLine($orderLine, $order);
-            }
-        } elseif (is_array($orderLines)) {
-            /** @var Entity\OrderLine $orderLine */
-            foreach ($orderLines as $key => $orderLine) {
-                if ($orderLine->getItemId() == $shipmentFeeId) {
-                    if ($order->getShippingAmount() > 0) {
-                        $this->setSpecialPropertiesForShipmentLine($orderLine, $order);
-                    } else {
-                        unset($orderLines[$key]);
-                    }
-                }
-            }
+        if ($order->getShippingAmount() > 0) {
+            // @codingStandardsIgnoreLine
+            $shipmentOrderLine = new Entity\OrderLine();
+            $shipmentOrderLine->setPrice($order->getShippingAmount())
+                ->setNetPrice($order->getBaseShippingAmount())
+                ->setNetAmount($order->getBaseShippingAmount())
+                ->setAmount($order->getBaseShippingAmount())
+                ->setItemId($shipmentFeeId)
+                ->setLineType(Entity\Enum\LineType::ITEM)
+                ->setQuantity(1)
+                ->setQuantityToInvoice(1)
+                ->setDiscountAmount($order->getShippingDiscountAmount());
+            array_push($orderLines, $shipmentOrderLine);
         }
+        return $orderLines;
     }
 
     /**

@@ -17,7 +17,7 @@ define([
     return function (gift_card_no,gift_card_amount,isGiftCardApplied) {
         var quoteId = quote.getQuoteId(),
             url = 'omni/ajax/updateGiftCard',
-            message = $t('Gift card successfullly applied');
+            message = $t('Gift card code successfully applied.');
 
         fullScreenLoader.startLoader();
 
