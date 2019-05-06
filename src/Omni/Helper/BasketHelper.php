@@ -254,20 +254,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             $itemsArray[] = $list_item;
         }
-
-        //Custom Shipment Line
-        /** @var Entity\LoyItem $shipmentItem */
-        // @codingStandardsIgnoreLine
-        $shipmentItem = (new Entity\LoyItem())
-            ->setId($shipmentFeeId);
-        /** @var Entity\OneListItem $shipmentLine */
-        // @codingStandardsIgnoreLine
-        $shipmentLine = (new Entity\OneListItem())
-            ->setId('')
-            ->setItem($shipmentItem)
-            ->setQuantity(1);
-        array_push($itemsArray, $shipmentLine);
-
         $items->setOneListItem($itemsArray);
 
         $oneList->setItems($items)
@@ -542,6 +528,13 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             /** @var Entity\OneListItem || Entity\OneListItem[] $listItems */
             $listItems = $oneListItems->getOneListItem();
 
+            if (!is_array($listItems)) {
+                /** @var Entity\ArrayOfOneListItem $items */
+                // @codingStandardsIgnoreLine
+                $items = new Entity\ArrayOfOneListItem();
+                $items->setOneListItem($listItems);
+                $listItems = $items;
+            }
             // @codingStandardsIgnoreStart
             /** @var Entity\OneList $oneListRequest */
             $oneListRequest = (new Entity\OneList())

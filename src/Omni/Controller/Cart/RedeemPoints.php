@@ -84,7 +84,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
             $orderBalance =$this->data->getOrderBalance(
                 $cartQuote->getLsGiftCardAmountUsed(),
-                $cartQuote->getLsPointsSpent()
+                0
             );
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid(
                 $orderBalance,

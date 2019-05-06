@@ -141,7 +141,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
         }
 
         $orderBalance = $this->data->getOrderBalance(
-            $quote->getLsGiftCardAmountUsed(),
+            0,
             $quote->getLsPointsSpent()
         );
 
