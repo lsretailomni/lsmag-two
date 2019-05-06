@@ -243,7 +243,7 @@ class ProductCreateTask
     public function execute()
     {
         $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
-        $fullReplicationBarcodsStatus = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS);
+        $fullReplicationBarcodeStatus = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS);
         $fullReplicationPriceStatus = $this->lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS);
         $fullReplicationInvStatus = $this->lsr->getStoreConfig(ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS);
         $cronCategoryCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
@@ -253,16 +253,16 @@ class ProductCreateTask
             $cronAttributeCheck == 1 &&
             $cronAttributeVariantCheck == 1 &&
             $fullReplicationImageLinkStatus == 1 &&
-            $fullReplicationBarcodsStatus == 1 &&
+            $fullReplicationBarcodeStatus == 1 &&
             $fullReplicationPriceStatus == 1 &&
             $fullReplicationInvStatus == 1) {
             $this->logger->debug('Running ProductCreateTask');
+            $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             $productBatchSize = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE);
             /** @var \Magento\Framework\Api\SearchCriteria $criteria */
             $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $productBatchSize);
             /** @var \Ls\Replication\Model\ReplItemSearchResults $items */
             $items = $this->itemRepository->getList($criteria);
-            $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             /** @var \Ls\Replication\Model\ReplItem $item */
             foreach ($items->getItems() as $item) {
                 try {
@@ -351,8 +351,8 @@ class ProductCreateTask
                 // This will update all the latest images for the product including new
                 $this->updateAndAddNewImageOnly();
                 $this->updateBarcodeOnly();
-                $this->updatePriceOnly();
-                $this->updateInventoryOnly();
+                $this->updatePriceOnly($storeId);
+                $this->updateInventoryOnly($storeId);
             }
             $this->logger->debug('End ProductCreateTask');
         } else {
@@ -960,9 +960,11 @@ class ProductCreateTask
     /**
      * Update the modified price of the items & item variants
      */
-    public function updatePriceOnly()
+    public function updatePriceOnly($storeId)
     {
-        $filters = [];
+        $filters = [
+            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq']
+        ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         /** @var \Ls\Replication\Model\ReplPriceSearchResults $replPrices */
         $replPrices = $this->replPriceRepository->getList($criteria);
@@ -995,9 +997,11 @@ class ProductCreateTask
     /**
      * Update the inventory of the items & item variants
      */
-    public function updateInventoryOnly()
+    public function updateInventoryOnly($storeId)
     {
-        $filters = [];
+        $filters = [
+            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq']
+        ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         /** @var \Ls\Replication\Model\ReplInvStatusSearchResults $replInvStatusArray */
         $replInvStatusArray = $this->replInvStatusRepository->getList($criteria);
