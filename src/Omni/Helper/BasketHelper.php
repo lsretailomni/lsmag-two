@@ -279,7 +279,13 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             } else {
                 $product = $item->getProduct();
             }
+            $sku = $product->getSku();
+            $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
 
+            $productList = $this->productRepository->getList($searchCriteria)->getItems();
+
+            /** @var \Magento\Catalog\Model\Product\Interceptor $product */
+            $product = array_pop($productList);
             $qty = $item->getData('qty');
             // initialize the default null value
             $variant = $barcode = null;

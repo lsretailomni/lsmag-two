@@ -810,8 +810,12 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                         $buyRequest['super_attribute'][$key] = $value;
                     }
                 }
-                $wishlist->addNewItem($product, $buyRequest);
+                $result = $wishlist->addNewItem($product, $buyRequest);
                 $this->wishlistResourceModel->save($wishlist);
+                $this->_eventManager->dispatch(
+                    'wishlist_add_product',
+                    ['wishlist' => $wishlist, 'product' => $product, 'item' => $result]
+                );
             }
 
             if (!is_array($oneListWishlist) &&
