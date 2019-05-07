@@ -3,7 +3,7 @@
 namespace Ls\Omni\Controller\Ajax;
 
 use Magento\Framework\App\Action\Context;
-use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Core\Model\LSR;
 
@@ -11,7 +11,7 @@ use \Ls\Core\Model\LSR;
  * Class UpdatePoints
  * @package Ls\Omni\Controller\Ajax
  */
-class UpdatePoints extends \Magento\Framework\App\Action\Action
+class UpdateGiftCard extends \Magento\Framework\App\Action\Action
 {
 
     /** @var \Magento\Framework\Controller\Result\JsonFactory */
@@ -20,8 +20,8 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
     /** @var \Magento\Framework\Controller\Result\RawFactory */
     public $resultRawFactory;
 
-    /** @var LoyaltyHelper */
-    private $loyaltyHelper;
+    /** @var GiftCardHelper */
+    private $giftCardHelper;
 
     /**
      * @var \Magento\Checkout\Model\Session\Proxy
@@ -39,41 +39,54 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
     public $cartRepository;
 
     /**
+     * @var priceHelper
+     */
+    public $priceHelper;
+
+    /**
      * @var Data
      */
     public $data;
 
     /**
-     * UpdatePoints constructor.
+     * UpdateGiftCard constructor.
      * @param Context $context
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param LoyaltyHelper $loyaltyHelper
+     * @param GiftCardHelper $giftCardHelper
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
+     * @param Data $data
      */
     public function __construct(
         Context $context,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        LoyaltyHelper $loyaltyHelper,
+        GiftCardHelper $giftCardHelper,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+        \Magento\Quote\Api\CartRepositoryInterface $cartRepository,
+        \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        \Ls\Omni\Helper\Data $data
     )
     {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory = $resultRawFactory;
-        $this->loyaltyHelper = $loyaltyHelper;
+        $this->giftCardHelper = $giftCardHelper;
         $this->checkoutSession = $checkoutSession;
         $this->customerSession = $customerSession;
         $this->cartRepository = $cartRepository;
+        $this->priceHelper = $priceHelper;
+        $this->data = $data;
     }
 
     /**
-     * @return $this|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\Result\Raw|\Magento\Framework\Controller\ResultInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute()
     {
@@ -86,38 +99,74 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
 
         /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultJsonFactory->create();
-        if (!$this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID)) {
-            $response = [
-                'error' => 'true',
-                'message' => __('Customer session not found.')
-            ];
-            return $resultJson->setData($response);
-        }
         $base_currency = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
         $post = $this->getRequest()->getContent();
         $postData = json_decode($post);
-        $loyaltyPoints = (int)$postData->loyaltyPoints;
-        $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
-        if (!is_numeric($loyaltyPoints) || $loyaltyPoints < 0 || !$isPointValid) {
+        $giftCardNo = $postData->gift_card_no;
+        $giftCardAmount = $postData->gift_card_amount;
+        $giftCardBalanceAmount = 0;
+        $cartId = $this->checkoutSession->getQuoteId();
+        $quote = $this->cartRepository->get($cartId);
+        if ($giftCardNo != null && $giftCardAmount != 0) {
+            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo);
+
+            if (is_object($giftCardResponse)) {
+                $giftCardBalanceAmount = $giftCardResponse->getBalance();
+            } else {
+                $giftCardBalanceAmount = $giftCardResponse;
+            }
+        } else {
+            $response = [
+                'success' => 'true',
+                'message' => __(
+                    'You have successfully cancelled the gift card.'
+                )
+            ];
+            $quote->setLsGiftCardNo($giftCardNo);
+            $quote->setLsGiftCardAmountUsed($giftCardAmount);
+            $this->validateQuote($quote);
+            $quote->collectTotals();
+            $this->cartRepository->save($quote);
+            return $resultJson->setData($response);
+        }
+
+        if (empty($giftCardResponse)) {
             $response = [
                 'error' => 'true',
                 'message' => __(
-                    'The loyalty points "%1" are not valid.',
-                    $loyaltyPoints
+                    'The gift card code %1 is not valid.', $giftCardNo
+                )
+            ];
+            return $resultJson->setData($response);
+        }
+
+        $orderBalance = $this->data->getOrderBalance(
+            0,
+            $quote->getLsPointsSpent()
+        );
+
+        $isGiftCardAmountValid = $this->giftCardHelper->isGiftCardAmountValid(
+            $orderBalance,
+            $giftCardAmount,
+            $giftCardBalanceAmount
+        );
+
+        if (!is_numeric($giftCardAmount) || $giftCardAmount < 0 || !$isGiftCardAmountValid) {
+            $response = [
+                'error' => 'true',
+                'message' => __(
+                    'The applied amount ' . $this->priceHelper->currency($giftCardAmount, true, false) .
+                    ' is greater than gift card balance amount (%1) or order balance .',
+                    $this->priceHelper->currency($giftCardBalanceAmount, true, false)
                 )
             ];
             return $resultJson->setData($response);
         }
         try {
-            $cartId = $this->checkoutSession->getQuoteId();
-            $quote = $this->cartRepository->get($cartId);
-            $orderBalance = $this->data->getOrderBalance(
-                $quote->getLsGiftCardAmountUsed(),
-                0
-            );
-            $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($orderBalance, $loyaltyPoints);
-            if ($isPointsLimitValid) {
-                $quote->setLsPointsSpent($loyaltyPoints);
+
+            if ($isGiftCardAmountValid) {
+                $quote->setLsGiftCardNo($giftCardNo);
+                $quote->setLsGiftCardAmountUsed($giftCardAmount);
                 $this->validateQuote($quote);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);
@@ -126,8 +175,8 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
                 $response = [
                     'error' => 'true',
                     'message' => __(
-                        'The loyalty points "%1" are not valid.',
-                        $loyaltyPoints
+                        'The gift card amount "%1" is not valid.',
+                        $this->priceHelper->currency($giftCardAmount, true, false)
                     )
                 ];
             }

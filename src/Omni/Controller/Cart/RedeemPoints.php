@@ -20,6 +20,11 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
     public $loyaltyHelper;
 
     /**
+     * @var Ls\Omni\Helper\Data
+     */
+    public $data;
+
+    /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
@@ -38,7 +43,8 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
         \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator,
         \Magento\Checkout\Model\Cart $cart,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
-        \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
+        \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper,
+        \Ls\Omni\Helper\Data $data
     ) {
         parent::__construct(
             $context,
@@ -50,6 +56,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
         );
         $this->quoteRepository = $quoteRepository;
         $this->loyaltyHelper = $loyaltyHelper;
+        $this->data = $data;
     }
 
     /**
@@ -75,8 +82,12 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             $cartQuote = $this->cart->getQuote();
             $itemsCount = $cartQuote->getItemsCount();
             $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
+            $orderBalance =$this->data->getOrderBalance(
+                $cartQuote->getLsGiftCardAmountUsed(),
+                0
+            );
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid(
-                $cartQuote->getBaseGrandTotal(),
+                $orderBalance,
                 $loyaltyPoints
             );
             if ($itemsCount && $isPointValid && $isPointsLimitValid) {

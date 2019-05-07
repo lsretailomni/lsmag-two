@@ -16,6 +16,11 @@ class Info extends \Magento\Framework\View\Element\Template
     public $countryFactory;
 
     /**
+     * @var priceHelper
+     */
+    public $priceHelper;
+
+    /**
      * @var string
      */
     // @codingStandardsIgnoreStart
@@ -40,10 +45,12 @@ class Info extends \Magento\Framework\View\Element\Template
         TemplateContext $context,
         Registry $registry,
         \Magento\Directory\Model\CountryFactory $countryFactory,
+        \Magento\Framework\Pricing\Helper\Data $priceHelper,
         array $data = []
     ) {
         $this->coreRegistry = $registry;
         $this->countryFactory = $countryFactory;
+        $this->priceHelper = $priceHelper;
         parent::__construct($context, $data);
     }
 
@@ -136,7 +143,7 @@ class Info extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getPaymentDescription()
     {
@@ -147,6 +154,7 @@ class Info extends \Magento\Framework\View\Element\Template
             $paymentLines = array($singleLine);
         }
         $methods = array();
+        $giftCardInfo = array();
         // @codingStandardsIgnoreEnd
         foreach ($paymentLines as $line) {
             if ($line->getTenderType() == '0') {
@@ -159,11 +167,13 @@ class Info extends \Magento\Framework\View\Element\Template
                 $methods[] = __('Loyalty Points');
             } elseif ($line->getTenderType() == '4') {
                 $methods[] = __('Gift Card');
+                $giftCardInfo[0]= $line->getCardNumber();
+                $giftCardInfo[1]= $line->getPreApprovedAmount();
             } else {
                 $methods[] = __('Unknown');
             }
         }
-        return implode(', ', $methods);
+        return[implode(', ', $methods),$giftCardInfo];
     }
     /**
      * @param $points
@@ -173,5 +183,14 @@ class Info extends \Magento\Framework\View\Element\Template
     {
         $points = number_format((float)$points, 2, '.', '');
         return $points;
+    }
+
+    /**
+     * @param $points
+     * @return string
+     */
+    public function getGiftCardFormattedPrice($giftCardAmount)
+    {
+        return $this->priceHelper->currency($giftCardAmount, true, false);
     }
 }

@@ -41,6 +41,27 @@ class UpgradeSchema implements UpgradeSchemaInterface
             );
         }
 
+        $columnsUpdateType = [
+            ['table' => 'quote', 'column' => 'ls_gift_card_no','datatype' => Table::TYPE_TEXT,'default'=>''],
+            ['table' => 'quote', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,'default'=>0],
+            ['table' => 'sales_order', 'column' => 'ls_gift_card_no','datatype' => Table::TYPE_TEXT,'default'=>''],
+            ['table' => 'sales_order', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,
+                'default'=>0]
+        ];
+        foreach ($columnsUpdateType as $item) {
+            $setup->getConnection()->addColumn(
+                $setup->getTable($item['table']),
+                $item['column'],
+                [
+                    'type' =>  $item['datatype'],
+                    'visible' => false,
+                    'nullable' => true,
+                    'default' =>  $item['default'],
+                    'comment' => 'Ls Gift Card'
+                ]
+            );
+        }
+
         $setup->endSetup();
     }
 

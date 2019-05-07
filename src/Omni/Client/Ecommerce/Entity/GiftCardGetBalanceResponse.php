@@ -14,12 +14,12 @@ class GiftCardGetBalanceResponse implements ResponseInterface
 {
 
     /**
-     * @property float $GiftCardGetBalanceResult
+     * @property GiftCard $GiftCardGetBalanceResult
      */
     protected $GiftCardGetBalanceResult = null;
 
     /**
-     * @param float $GiftCardGetBalanceResult
+     * @param GiftCard $GiftCardGetBalanceResult
      * @return $this
      */
     public function setGiftCardGetBalanceResult($GiftCardGetBalanceResult)
@@ -29,7 +29,7 @@ class GiftCardGetBalanceResponse implements ResponseInterface
     }
 
     /**
-     * @return float
+     * @return GiftCard
      */
     public function getGiftCardGetBalanceResult()
     {
@@ -37,7 +37,7 @@ class GiftCardGetBalanceResponse implements ResponseInterface
     }
 
     /**
-     * @return float
+     * @return GiftCard
      */
     public function getResult()
     {

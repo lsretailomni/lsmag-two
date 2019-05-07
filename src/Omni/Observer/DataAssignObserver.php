@@ -44,6 +44,9 @@ class DataAssignObserver implements ObserverInterface
             }
             $order->setLsPointsSpent($quote->getLsPointsSpent());
             $order->setLsPointsEarn($quote->getLsPointsEarn());
+
+            $order->setLsGiftCardAmountUsed($quote->getLsGiftCardAmountUsed());
+            $order->setLsGiftCardNo($quote->getLsGiftCardNo());
         }
         return $this;
     }

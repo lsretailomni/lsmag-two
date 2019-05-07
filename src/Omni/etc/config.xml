@@ -9,6 +9,10 @@
                 <advanced>0</advanced>
                 <timeout>120</timeout>
             </service>
+		<ls_giftcard>
+                <cart>1</cart>
+                <checkout>1</checkout>
+        </ls_giftcard>
         </ls_mag>
         <!-- For Click and Collect -->
         <omni_clickandcollect>

@@ -159,10 +159,11 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $giftCardAmount= $quote->getLsGiftCardAmountUsed();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);
             }
-            $amount = -$basketData->getTotalDiscount() - $pointDiscount;
+            $amount = -$basketData->getTotalDiscount() - $pointDiscount - $giftCardAmount;
         }
         return $amount;
     }

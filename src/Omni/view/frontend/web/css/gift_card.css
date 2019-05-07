@@ -1,0 +1,22 @@
+.giftcard .fieldset:last-child {
+    margin-bottom: auto;
+}
+
+#giftcard-form .fieldset > .field, .fieldset > .fields > .field {
+    padding: 2px;
+}
+
+#giftcard-form .action.primary {
+    vertical-align: inherit;
+}
+
+.giftcard {
+    margin-bottom: 30px;
+}
+
+.giftcard .content {
+    margin-top: 10px;
+}
+.giftcard #gift_card_amount {
+    margin-top: 10px;
+}
