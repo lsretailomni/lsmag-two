@@ -59,6 +59,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         LoyaltyHelper $loyaltyHelper,
+        Data $data,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository
     )
@@ -70,6 +71,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         $this->checkoutSession = $checkoutSession;
         $this->customerSession = $customerSession;
         $this->cartRepository = $cartRepository;
+        $this->data=$data;
     }
 
     /**

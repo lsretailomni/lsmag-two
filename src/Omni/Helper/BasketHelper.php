@@ -578,6 +578,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @return mixed
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getCouponCode()
     {
