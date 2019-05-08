@@ -95,6 +95,8 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
             $total->addTotalAmount('discount', $discountAmount);
             $total->addTotalAmount('subtotal', $proActiveDiscount);
             $this->checkoutSession->setProActiveCheck(0);
+        } else {
+            $total->addTotalAmount('discount', $discountAmount);
         }
         return $this;
     }
@@ -122,7 +124,8 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
             $total->addTotalAmount('discount', $amount);
             $total->addTotalAmount('subtotal', $proActiveDiscount);
             $this->checkoutSession->setProActiveCheck(0);
-
+        } else {
+            $total->addTotalAmount('discount', $amount);
         }
 
         return $result;
@@ -159,7 +162,7 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-            $giftCardAmount= $quote->getLsGiftCardAmountUsed();
+            $giftCardAmount = $quote->getLsGiftCardAmountUsed();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);
             }
