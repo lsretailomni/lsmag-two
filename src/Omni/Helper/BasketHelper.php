@@ -2,18 +2,17 @@
 
 namespace Ls\Omni\Helper;
 
-use Magento\Framework\App\Helper\Context;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use Magento\Checkout\Model\Cart;
-use Magento\Catalog\Model\ProductRepository;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Catalog\Model\ProductFactory;
-use Magento\Quote\Model\Quote;
-use Magento\CatalogInventory\Model\Stock\StockItemRepository;
+use Magento\Catalog\Model\ProductRepository;
+use Magento\Checkout\Model\Cart;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Registry;
-use \Ls\Core\Model\LSR;
 use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Quote\Model\Quote;
 
 /**
  * Class BasketHelper
@@ -47,9 +46,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /** @var ProductFactory $productFactory */
     public $productFactory;
-
-    /** @var StockItemRepository $stockItemRepository */
-    public $stockItemRepository;
 
     /** @var ItemHelper $itemHelper */
     public $itemHelper;
@@ -91,11 +87,11 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable
      * @param ProductFactory $productFactory
-     * @param StockItemRepository $stockItemRepository
      * @param ItemHelper $itemHelper
      * @param Registry $registry
      * @param LSR $Lsr
      * @param SessionManagerInterface $session
+     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
      */
     public function __construct(
         Context $context,
@@ -106,7 +102,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
         ProductFactory $productFactory,
-        StockItemRepository $stockItemRepository,
         ItemHelper $itemHelper,
         Registry $registry,
         LSR $Lsr,
@@ -121,7 +116,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
         $this->productFactory = $productFactory;
-        $this->stockItemRepository = $stockItemRepository;
         $this->itemHelper = $itemHelper;
         $this->registry = $registry;
         $this->lsr = $Lsr;
@@ -269,6 +263,68 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * @param Entity\OneList $oneList
+     * @param $wishlistItems
+     * @return Entity\OneList
+     */
+    public function addProductToExistingWishlist(Entity\OneList $oneList, $wishlistItems)
+    {
+        /** @var Entity\ArrayOfOneListItem $items */
+        // @codingStandardsIgnoreLine
+        $items = new Entity\ArrayOfOneListItem();
+        $itemsArray = [];
+        foreach ($wishlistItems as $item) {
+            if ($item->getOptionByCode('simple_product')) {
+                $product = $item->getOptionByCode('simple_product')->getProduct();
+            } else {
+                $product = $item->getProduct();
+            }
+            $sku = $product->getSku();
+            $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
+
+            $productList = $this->productRepository->getList($searchCriteria)->getItems();
+
+            /** @var \Magento\Catalog\Model\Product\Interceptor $product */
+            $product = array_pop($productList);
+            $qty = $item->getData('qty');
+            // initialize the default null value
+            $variant = $barcode = null;
+
+            $sku = $product->getSku();
+
+            $barcode = $product->getData('barcode');
+
+            $parts = explode('-', $sku);
+            // first element is lsr_id
+            $lsr_id = array_shift($parts);
+            // second element, if it exists, is variant id
+            // @codingStandardsIgnoreLine
+            $variant_id = count($parts) ? array_shift($parts) : null;
+
+            /** @var \Ls\Omni\Client\Ecommerce\Entity\LoyItem $item */
+            $item = $this->itemHelper->get($lsr_id);
+
+            if (!($variant_id == null)) {
+                /** @var Entity\VariantRegistration|null $variant */
+                $variant = $this->itemHelper->getItemVariant($item, $variant_id);
+            }
+        /** @var Entity\UnitOfMeasure|null $uom */
+            $uom = $this->itemHelper->uom($item);
+        // @codingStandardsIgnoreLine
+            $list_item = (new Entity\OneListItem())
+                ->setQuantity($qty)
+                ->setItem($item)
+                ->setId('')
+                ->setBarcodeId($barcode)
+                ->setVariantReg($variant)
+                ->setUnitOfMeasure($uom);
+            array_push($itemsArray, $list_item);
+        }
+        $items->setOneListItem($itemsArray);
+        $oneList->setItems($items);
+        return $oneList;
+    }
+    /**
      * @return Entity\ArrayOfOneListPublishedOffer
      */
     private function _offers()
@@ -310,83 +366,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     // @codingStandardsIgnoreLine
     public function update(Entity\OneList $oneList)
     {
-        $check_inventory = false;
-        $update_inventory = false;
-
-        if ($check_inventory) {
-            /** @var Entity\ArrayOfOrderLineAvailability $availability */
-            $availability = $this->availability($oneList);
-            /** @var OrderLineAvailability[] $availabilityLines */
-            if ($availability && $availabilityLines = $availability->getOrderLineAvailability()) {
-                $quote = $this->checkoutSession->getQuote();
-                /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
-                $quoteItems = $quote->getAllVisibleItems();
-
-                foreach ($availabilityLines as $availabilityLine) {
-                    $productLsrId = $availabilityLine->getItemId();
-                    if ($availabilityLine->getVariantId() !== "") {
-                        # build LSR Id
-                        $productLsrId = join(
-                            '-',
-                            [$availabilityLine->getItemId(), $availabilityLine->getVariantId()]
-                        );
-                    }
-
-                    $stock = (int)($availabilityLine->getQuantity());
-                    // @codingStandardsIgnoreStart
-                    $searchCriteria = $this->searchCriteriaBuilder->addFilter('lsr_id', $productLsrId,
-                        'like')->create();
-                    // @codingStandardsIgnoreEnd
-                    $productList = $this->productRepository->getList($searchCriteria);
-
-                    /** @var \Magento\Catalog\Model\Product $product */
-                    $product = $productList[0];
-
-                    if ($product->getId()) {
-                        $stockItem = $this->stockItemRepository->get($product->getId());
-
-                        if (!$stockItem->getId()) {
-                            $stockItem->setData('product_id', $product->getId());
-                            $stockItem->setData('stock_id', 1);
-                        }
-
-                        $isInStock = $stock > 0 ? 1 : 0;
-                        $stockItem
-                            ->setData('is_in_stock', $isInStock)
-                            ->setData('manage_stock', 0)
-                            ->setData('qty', $stock);
-                        // @codingStandardsIgnoreLine
-                        $stockItem->save();
-
-                        if (!$isInStock && $update_inventory) {
-
-                            /** @var \Magento\Quote\Model\Quote\Item $quoteItem */
-                            foreach ($quoteItems as $quoteItem) {
-                                $isConfigurable = $quoteItem->getData('product_type') ==
-                                    \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE;
-                                if ($isConfigurable) {
-                                    /** @var Quote\Item $childQuoteItem */ // not sure
-                                    $childQuoteItem = array_pop($quoteItem->getChildren());
-                                    if ($product->getId() == $childQuoteItem->getProduct()->getId()) {
-                                        $this->cart->removeItem($quoteItem->getData('item_id'));
-                                        // check if this is necessary
-                                        // @codingStandardsIgnoreLine
-                                        $this->cart->save();
-                                    }
-                                } else {
-                                    if ($product->getId() == $quoteItem->getProduct()->getId()) {
-                                        $this->cart->removeItem($quoteItem->getData('item_id'));
-                                        // check if this is necessary
-                                        // @codingStandardsIgnoreLine
-                                        $this->cart->save();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         $this->saveToOmni($oneList);
         $basketData = $this->calculate($oneList);
         if (is_object($basketData)) {
@@ -402,6 +381,16 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $basketData;
     }
 
+    /**
+     * @param Entity\OneList $oneList
+     * @return bool|Entity\OneList
+     */
+    // @codingStandardsIgnoreLine
+    public function updateWishlistAtOmni(Entity\OneList $oneList)
+    {
+        $response = $this->saveWishlistToOmni($oneList);
+        return $response;
+    }
     /**
      * @param Entity\OneList $oneList
      * @return bool|Entity\ArrayOfOrderLineAvailability|Entity\OrderAvailabilityCheckResponse|\Ls\Omni\Client\ResponseInterface
@@ -489,13 +478,39 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $response = $operation->execute($request);
         if ($response) {
             $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $response->getOneListSaveResult());
-
             return $response->getOneListSaveResult();
         }
 
         return false;
     }
 
+    /**
+     * @param Entity\OneList $list
+     * @return bool|Entity\OneList
+     */
+    public function saveWishlistToOmni(Entity\OneList $list)
+    {
+        /** @var Operation\OneListSave $operation */
+        // @codingStandardsIgnoreLine
+        $operation = new Operation\OneListSave();
+
+        $list->setStoreId($this->getDefaultWebStore());
+
+        /** @var Entity\OneListSave $request */
+        // @codingStandardsIgnoreLine
+        $request = (new Entity\OneListSave())
+            ->setOneList($list)
+            ->setCalculate(true);
+
+        /** @var Entity\OneListSaveResponse $response */
+        $response = $operation->execute($request);
+        if ($response) {
+            $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $response->getOneListSaveResult());
+            return $response->getOneListSaveResult();
+        }
+
+        return false;
+    }
     /**
      * @param Entity\OneList $oneList
      * @return Entity\OneListCalculateResponse|null
@@ -534,8 +549,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setListType(Entity\Enum\ListType::BASKET)
                 ->setItems($listItems)
                 ->setStoreId($storeId);
-            /** @var Entity\OneListCalculate $entity */
 
+            /** @var Entity\OneListCalculate $entity */
             if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
                 $offer = new Entity\OneListPublishedOffer();
                 $offers = new Entity\ArrayOfOneListPublishedOffer();
@@ -564,12 +579,10 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (property_exists($response, "OneListCalculateResult")) {
             // @codingStandardsIgnoreLine
             $this->setOneListCalculation($response->getResult());
-
             return $response->getResult();
         }
         if (is_object($response)) {
             $this->setOneListCalculation($response->getResult());
-
             return $response->getResult();
         } else {
             return $response;
@@ -657,16 +670,12 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             try {
                 if ($loginContact->getBasket() instanceof Entity\OneList) {
                     $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $loginContact->getBasket());
-
                     return $loginContact->getBasket();
                 } else {
                     if ($loginContact->getBasket() instanceof Entity\ArrayOfOneList) {
                         foreach ($loginContact->getBasket()->getIterator() as $list) {
-                            // @codingStandardsIgnoreLine
-                            $list->getListType() == Entity\Enum\ListType::BASKET;
                             if ($list->getIsDefaultList()) {
                                 $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $list);
-
                                 return $list;
                             }
                         }
@@ -681,7 +690,18 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($list == null) {
             return $this->fetchFromOmni();
         }
+        return null;
+    }
 
+    /**
+     * @return Entity\OneList|mixed|null
+     */
+    public function fetchCurrentCustomerWishlist()
+    {
+        //check if onelist is created and stored in session. if it is, than return it.
+        if ($this->customerSession->getData(LSR::SESSION_CART_WISHLIST)) {
+            return $this->customerSession->getData(LSR::SESSION_CART_WISHLIST);
+        }
         return null;
     }
 

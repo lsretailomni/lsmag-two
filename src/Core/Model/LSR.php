@@ -167,6 +167,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SESSION_CHECKOUT_AVAILABILITY = 'lsr-s-l-ba';
     const SESSION_CHECKOUT_COUPON = 'lsr-s-l-c';
     const SESSION_CART_ONELIST = 'lsr-s-c-onelist';
+    const SESSION_CART_WISHLIST = 'lsr-s-c-wishlist';
 
     // WORKFLOW
     const W_TYPE = 'T';
