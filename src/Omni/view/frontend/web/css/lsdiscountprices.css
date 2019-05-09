@@ -29,3 +29,11 @@
 
 
 }
+
+.cart-totals .discount.coupon {
+    display: inline-block;
+}
+
+.opc-block-summary .discount.coupon {
+    display: inline-block;
+}

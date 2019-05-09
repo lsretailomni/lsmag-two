@@ -92,6 +92,7 @@ class History extends \Magento\Sales\Block\Order\History
     /**
      * @param $date
      * @return string
+     * @throws \Exception
      */
     public function getFormattedDate($date)
     {

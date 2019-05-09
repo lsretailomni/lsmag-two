@@ -10,6 +10,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use \Ls\Core\Model\LSR;
+use Magento\Checkout\Model\Cart;
 
 /**
  * Class ItemHelper
@@ -30,6 +31,14 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var CartRepositoryInterface * */
     public $quoteRepository;
 
+    /**
+     * @var \Magento\Checkout\Model\Session\Proxy
+     */
+    public $checkoutSession;
+
+    /** @var Cart $cart */
+    public $cart;
+
     /** @var array */
     private $hashCache = [];
 
@@ -46,7 +55,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         SearchCriteriaBuilder $searchCriteriaBuilder,
         ReplBarcodeRepository $barcodeRepository,
         ProductRepository $productRepository,
-        CartRepositoryInterface $quoteRepository
+        CartRepositoryInterface $quoteRepository,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
+        Cart $cart
     )
     {
         parent::__construct($context);
@@ -54,6 +65,8 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->barcodeRepository = $barcodeRepository;
         $this->productRepository = $productRepository;
         $this->quoteRepository = $quoteRepository;
+        $this->checkoutSession = $checkoutSession;
+        $this->cart = $cart;
     }
 
     /**
@@ -250,7 +263,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function setDiscountedPricesForItems($quote, $basketData)
     {
         try {
-            $itemlist = $quote->getAllVisibleItems();
+            $itemlist = $this->cart->getQuote()->getAllVisibleItems();
             foreach ($itemlist as $item) {
                 $orderLines = $basketData->getOrderLines()->getOrderLine();
                 $oldItemVariant = [];
@@ -306,8 +319,12 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
             if ($quote->getId()) {
-                $quote = $this->quoteRepository->get($quote->getId());
-                $this->quoteRepository->save($quote->collectTotals());
+                $cartQuote = $this->cart->getQuote();
+                $couponCode=$this->checkoutSession->getCouponCode();
+                $cartQuote->setCouponCode($couponCode);
+                $this->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
+                $cartQuote->collectTotals();
+                $this->quoteRepository->save($cartQuote);
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());

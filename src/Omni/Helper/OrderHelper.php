@@ -34,25 +34,33 @@ class OrderHelper extends AbstractHelper
     public $customerSession;
 
     /**
+     * @var \Magento\Checkout\Model\Session\Proxy
+     */
+    public $checkoutSession;
+
+    /**
      * OrderHelper constructor.
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      */
     public function __construct(
         Context $context,
         Model\Order $order,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Customer\Model\Session\Proxy $customerSession
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession
     ) {
         parent::__construct($context);
         $this->order = $order;
         $this->basketHelper = $basketHelper;
         $this->loyaltyHelper = $loyaltyHelper;
         $this->customerSession = $customerSession;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -98,6 +106,7 @@ class OrderHelper extends AbstractHelper
         /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
         $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
         $pointDiscount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+        $order->setCouponCode($this->checkoutSession->getCouponCode());
         $oneListCalculateResponse
             ->setContactId($contactId)
             ->setCardId($cardId)
@@ -138,6 +147,8 @@ class OrderHelper extends AbstractHelper
     /**
      * @param $orderLines
      * @param $order
+     * @return mixed
+     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function updateShippingAmount($orderLines, $order)
     {

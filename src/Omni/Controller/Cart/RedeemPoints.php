@@ -93,6 +93,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             if ($itemsCount && $isPointValid && $isPointsLimitValid) {
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
                 $cartQuote->setLsPointsSpent($loyaltyPoints)->collectTotals();
+                $cartQuote->setCouponCode($this->_checkoutSession->getCouponCode())->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($loyaltyPoints) {
