@@ -120,6 +120,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($orderBalance, $loyaltyPoints);
             if ($isPointsLimitValid) {
                 $quote->setLsPointsSpent($loyaltyPoints);
+                $quote->setCouponCode($this->checkoutSession->getCouponCode());
                 $this->validateQuote($quote);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);
