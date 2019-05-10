@@ -59,6 +59,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         LoyaltyHelper $loyaltyHelper,
+        Data $data,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository
     )
@@ -70,6 +71,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         $this->checkoutSession = $checkoutSession;
         $this->customerSession = $customerSession;
         $this->cartRepository = $cartRepository;
+        $this->data=$data;
     }
 
     /**
@@ -118,6 +120,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($orderBalance, $loyaltyPoints);
             if ($isPointsLimitValid) {
                 $quote->setLsPointsSpent($loyaltyPoints);
+                $quote->setCouponCode($this->checkoutSession->getCouponCode());
                 $this->validateQuote($quote);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);

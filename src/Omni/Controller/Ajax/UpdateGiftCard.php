@@ -124,6 +124,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
             ];
             $quote->setLsGiftCardNo($giftCardNo);
             $quote->setLsGiftCardAmountUsed($giftCardAmount);
+            $quote->setCouponCode($this->checkoutSession->getCouponCode());
             $this->validateQuote($quote);
             $quote->collectTotals();
             $this->cartRepository->save($quote);

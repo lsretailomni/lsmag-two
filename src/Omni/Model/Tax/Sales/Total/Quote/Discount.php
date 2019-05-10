@@ -95,26 +95,28 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
             $total->addTotalAmount('discount', $discountAmount);
             $total->addTotalAmount('subtotal', $proActiveDiscount);
             $this->checkoutSession->setProActiveCheck(0);
+        } else {
+            $total->addTotalAmount('discount', $discountAmount);
+            $quote->getBillingAddress()->setDiscountAmount(0)->save();
         }
         return $this;
     }
 
     /**
-     * Add discount total information to address
-     *
      * @param \Magento\Quote\Model\Quote $quote
      * @param \Magento\Quote\Model\Quote\Address\Total $total
      * @return array|null
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @throws \Exception
      */
     public function fetch(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total)
     {
         $result = null;
         $amount = $this->getTotalDiscount($quote);
+        $title = __('Discount');
         if ($amount < 0) {
             $result = [
                 'code' => $this->getCode(),
-                'title' => __('Discount'),
+                'title' => $title,
                 'value' => $amount
             ];
 
@@ -122,10 +124,30 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
             $total->addTotalAmount('discount', $amount);
             $total->addTotalAmount('subtotal', $proActiveDiscount);
             $this->checkoutSession->setProActiveCheck(0);
-
+        } else {
+            $total->addTotalAmount('discount', $amount);
+            $quote->getBillingAddress()->setDiscountAmount(0)->save();
         }
 
         return $result;
+    }
+
+    /**
+     * @param \Magento\Quote\Model\Quote\Address\Total $total
+     */
+    public function clearValues(\Magento\Quote\Model\Quote\Address\Total $total)
+    {
+        $total->setTotalAmount('subtotal', 0);
+        $total->setBaseTotalAmount('subtotal', 0);
+        $total->setTotalAmount('tax', 0);
+        $total->setBaseTotalAmount('tax', 0);
+        $total->setTotalAmount('discount_tax_compensation', 0);
+        $total->setBaseTotalAmount('discount_tax_compensation', 0);
+        $total->setTotalAmount('shipping_discount_tax_compensation', 0);
+        $total->setBaseTotalAmount('shipping_discount_tax_compensation', 0);
+        $total->setSubtotalInclTax(0);
+        $total->setBaseSubtotalInclTax(0);
+        $total->addTotalAmount('discount', 0);
     }
 
     /**
@@ -159,7 +181,7 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-            $giftCardAmount= $quote->getLsGiftCardAmountUsed();
+            $giftCardAmount = $quote->getLsGiftCardAmountUsed();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);
             }

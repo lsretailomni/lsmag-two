@@ -91,13 +91,42 @@ class CartTotalRepository
             'rateLabel' => $quote->getBaseCurrencyCode() . ' ' . round($this->loyaltyHelper->getPointRate() * 10, 2),
             'balance' => $this->loyaltyHelper->getMemberPoints(),
         ];
-        if (empty($quote->getCouponCode())) {
-            $couponCode = $this->basketHelper->checkoutSession->getCouponCode();
-            $this->basketHelper->setCouponQuote($couponCode);
-        }
+
         /** @var \Magento\Quote\Api\Data\TotalsExtensionInterface $totalsExtension */
         $totalsExtension = $quoteTotals->getExtensionAttributes() ?: $this->totalExtensionFactory->create();
         $totalsExtension->setLoyaltyPoints($pointsConfig);
+        $couponCode = $this->basketHelper->checkoutSession->getCouponCode();
+        if (!empty($couponCode)) {
+            $quoteTotals->setCouponCode($couponCode);
+            $totalsExtension->setCouponLabel('(' . $couponCode . ')');
+            // @codingStandardsIgnoreLine
+            $this->basketHelper->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
+        }
+
+        $amount = 0;
+        $basketData = $this->basketHelper->getBasketSessionValue();
+        if (isset($basketData)) {
+            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+            if ($pointDiscount > 0.001) {
+                $quote->setLsPointsDiscount($pointDiscount);
+            }
+
+            $amount = -$basketData->getTotalDiscount() - $pointDiscount - $giftCardAmount;
+            if ($amount <= 0) {
+                $quote->getShippingAddress()->setDiscountAmount($basketData->getTotalAmount());
+                $quote->getShippingAddress()->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
+                $quote->getShippingAddress()->setGrandTotal($basketData->getTotalAmount());
+                $quote->collectTotals();
+                $this->quoteRepository->save($quote);
+                $this->basketHelper->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
+                $quoteTotals->setDiscountAmount($amount);
+                $quoteTotals->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
+                $quoteTotals->setBaseTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
+                $quoteTotals->setGrandTotal($basketData->getTotalAmount());
+                $quoteTotals->setBaseGrandTotal($basketData->getTotalAmount());
+            }
+        }
         $quoteTotals->setExtensionAttributes($totalsExtension);
         return $quoteTotals;
     }

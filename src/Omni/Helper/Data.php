@@ -41,17 +41,36 @@ class Data extends AbstractHelper
      */
     public $loyaltyHelper;
 
-
     /**
      * @var Basket Helper
      */
     public $basketHelper;
+
+    /** @var \Magento\Framework\Message\ManagerInterface */
+    public $messageManager;
+
+    /**
+     * @var Price Helper
+     */
+    public $priceHelper;
+
+    /**
+     * @var CartRepositoryInterface
+     */
+    public $cartRepository;
 
     /**
      * Data constructor.
      * @param Context $context
      * @param StoreManagerInterface $store_manager
      * @param ReplStoreRepositoryInterface $storeRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param SessionManagerInterface $session
+     * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
+     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
+     * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
      */
 
     public function __construct(
@@ -61,7 +80,10 @@ class Data extends AbstractHelper
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SessionManagerInterface $session,
         LoyaltyHelper $loyaltyHelper,
-        BasketHelper $basketHelper
+        BasketHelper $basketHelper,
+        \Magento\Framework\Message\ManagerInterface $messageManager,
+        \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        \Magento\Quote\Api\CartRepositoryInterface $cartRepository
     )
     {
         $this->storeManager = $store_manager;
@@ -70,6 +92,9 @@ class Data extends AbstractHelper
         $this->session = $session;
         $this->loyaltyHelper = $loyaltyHelper;
         $this->basketHelper = $basketHelper;
+        $this->messageManager = $messageManager;
+        $this->priceHelper = $priceHelper;
+        $this->cartRepository = $cartRepository;
 
         $this->config = $context->getScopeConfig();
         parent::__construct($context);
@@ -160,6 +185,60 @@ class Data extends AbstractHelper
             if (!empty($basketData)) {
                 $totalAmount = $basketData->getTotalAmount();
                 return $totalAmount - $giftCardAmount - $loyaltyAmount;
+            }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @param $giftCardNo
+     * @param $giftCardAmount
+     * @param $loyaltyPoints
+     */
+    public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints)
+    {
+        try {
+            $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+            $basketData = $this->basketHelper->getBasketSessionValue();
+            $cartId = $this->basketHelper->checkoutSession->getQuoteId();
+            $quote = $this->cartRepository->get($cartId);
+            if (!empty($basketData)) {
+                $totalAmount = $basketData->getTotalAmount();
+                $combinedTotalLoyalGiftCard = $giftCardAmount + $loyaltyAmount;
+                if ($loyaltyAmount > $totalAmount) {
+                    $quote->setLsPointsSpent(0);
+                    $this->cartRepository->save($quote);
+                    $this->messageManager->addErrorMessage(
+                        __(
+                            'The loyalty points "%1" are not valid.',
+                            $loyaltyPoints
+                        )
+                    );
+                } else if ($giftCardAmount > $totalAmount) {
+                    $quote->setLsGiftCardAmountUsed(0);
+                    $quote->setLsGiftCardNo(null);
+                    $quote->collectTotals();
+                    $this->cartRepository->save($quote);
+                    $this->messageManager->addErrorMessage(
+                        __(
+                            'The gift card amount "%1" is not valid.',
+                            $this->priceHelper->currency($giftCardAmount, true, false)
+                        )
+                    );
+                } else if ($combinedTotalLoyalGiftCard > $totalAmount) {
+                    $quote->setLsPointsSpent(0);
+                    $quote->setLsGiftCardAmountUsed(0);
+                    $quote->setLsGiftCardNo(null);
+                    $quote->collectTotals();
+                    $this->cartRepository->save($quote);
+                    $this->messageManager->addErrorMessage(
+                        __(
+                            'The gift card amount "%1" and loyalty points ' . $loyaltyPoints . ' are not valid.',
+                            $this->priceHelper->currency($giftCardAmount, true, false)
+                        )
+                    );
+                }
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
