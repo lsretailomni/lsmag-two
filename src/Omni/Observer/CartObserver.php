@@ -89,12 +89,6 @@ class CartObserver implements ObserverInterface
                 /** @var \Magento\Quote\Model\Quote $quote */
                 $quote = $this->checkoutSession->getQuote();
                 $couponCode = $this->checkoutSession->getCouponCode();
-                if (!empty($couponCode)) {
-                    $status = $this->basketHelper->setCouponCode($couponCode);
-                    if (!is_object($status)) {
-                        $this->checkoutSession->setCouponCode('');
-                    }
-                }
                 // This will create one list if not created and will return onelist if its already created.
                 /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList|null $oneList */
                 $oneList = $this->basketHelper->get();
@@ -102,11 +96,18 @@ class CartObserver implements ObserverInterface
                 // then dont calculate basket functionality below.
                 // add items from the quote to the oneList and return the updated onelist
                 $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
+                if (!empty($couponCode)) {
+                    $status = $this->basketHelper->setCouponCode($couponCode);
+                    if (!is_object($status)) {
+                        $this->checkoutSession->setCouponCode('');
+                    }
+                }
                 /** @var \Ls\Omni\Client\Ecommerce\Entity\Order $basketData */
                 $basketData = $this->basketHelper->update($oneList);
                 $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
-                $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
-
+                if(!empty($basketData)) {
+                    $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
+                }
                 if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||
                     $this->checkoutSession->getQuote()->getLsPointsSpent() > 0) {
                     $this->data->orderBalanceCheck(
