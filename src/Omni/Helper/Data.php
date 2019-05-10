@@ -211,7 +211,7 @@ class Data extends AbstractHelper
                     $this->cartRepository->save($quote);
                     $this->messageManager->addErrorMessage(
                         __(
-                            'The loyalty points "%1" is not valid.',
+                            'The loyalty points "%1" are not valid.',
                             $loyaltyPoints
                         )
                     );
@@ -234,7 +234,7 @@ class Data extends AbstractHelper
                     $this->cartRepository->save($quote);
                     $this->messageManager->addErrorMessage(
                         __(
-                            'The gift card amount "%1" and loyalty points ' . $loyaltyPoints . ' is not valid.',
+                            'The gift card amount "%1" and loyalty points ' . $loyaltyPoints . ' are not valid.',
                             $this->priceHelper->currency($giftCardAmount, true, false)
                         )
                     );

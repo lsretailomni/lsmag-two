@@ -72,7 +72,7 @@ class CouponCodeObserver implements ObserverInterface
             $status = $this->basketHelper->setCouponCode($couponCode);
             if ($controller->getRequest()->getParam('remove') == 1) {
                 $this->basketHelper->setCouponCode('');
-                $this->messageManager->addSuccessMessage(__("Coupon Code Successfully Removed"));
+                $this->messageManager->addSuccessMessage(__("Coupon code successfully removed."));
             } else {
                 if ($status == "success") {
                     $this->messageManager->addSuccessMessage(__(
