@@ -17,6 +17,19 @@
 .giftcard .content {
     margin-top: 10px;
 }
+
 .giftcard #gift_card_amount {
     margin-top: 10px;
+}
+
+.giftcardinfo p {
+    font-size: 1.5rem;
+}
+
+#gift-card-balance .action {
+    margin-top: 10px;
+}
+
+#gift-card-balance .error-messages {
+    margin-bottom: 10px;
 }
