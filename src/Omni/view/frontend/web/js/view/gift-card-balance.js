@@ -35,6 +35,12 @@ define([
         },
         getErrorMessages: function () {
             return errorMessages;
+        },
+        cancelGiftCardBalance: function () {
+            $('#gift_card_code').val('');
+            giftCardBalance(null);
+            giftCardExpiryDate(null);
+            errorMessages(null);
         }
     });
 });

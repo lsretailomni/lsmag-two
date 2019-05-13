@@ -10,6 +10,12 @@
                     <argument name="path" xsi:type="string" translate="true">omni/stores</argument>
                 </arguments>
             </block>
+            <block class="Magento\Framework\View\Element\Html\Link" name="omni.giftcardbalance" before="-" ifconfig="ls_mag/service/replicate_hierarchy_code">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Check Gift Card Balance</argument>
+                    <argument name="path" xsi:type="string" translate="true">omni/giftcardbalance</argument>
+                </arguments>
+            </block>
         </referenceBlock>
     </body>
 </page>
