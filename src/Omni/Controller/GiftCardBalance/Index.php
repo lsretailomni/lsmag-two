@@ -17,13 +17,11 @@ class Index extends \Magento\Framework\App\Action\Action
      * Index constructor.
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Ls\Replication\Model\ReplStore $replStore
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory
     ) {
-
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
@@ -33,6 +31,8 @@ class Index extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        return $this->resultPageFactory->create();
+        $page=$this->resultPageFactory->create();
+        $page->getConfig()->getTitle()->set(__('Check Your Gift Card Balance'));
+        return $page;
     }
 }
