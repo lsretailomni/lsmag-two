@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css type="text/html" src="Ls_Omni::css/gift_card.css"/>
+        <css type="text/html" src="Ls_Omni::css/lsstores.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Ls\Omni\Block\GiftCardBalance\GiftCardBalance" before="-" cacheable="false"
+                   template="giftcardbalance/giftcardbalance.phtml">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="gift-card-balance" xsi:type="array">
+                                <item name="component" xsi:type="string">Ls_Omni/js/view/gift-card-balance</item>
+                                <item name="config" xsi:type="array">
+                                    <item name="template" xsi:type="string">Ls_Omni/gift-card-balance</item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

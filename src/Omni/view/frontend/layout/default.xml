@@ -4,10 +4,16 @@
     <body>
         <!-- Adding Stores page Link to Footer Menu -->
         <referenceBlock name="footer_links">
-            <block class="Magento\Framework\View\Element\Html\Link" name="omni.stores" before="-" ifconfig="ls_mag/service/replicate_hierarchy_code">
+            <block class="Magento\Framework\View\Element\Html\Link" name="omni.stores" before="-" ifconfig="ls_mag/service/base_url">
                 <arguments>
                     <argument name="label" xsi:type="string" translate="true">Stores</argument>
                     <argument name="path" xsi:type="string" translate="true">omni/stores</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Html\Link" name="omni.giftcardbalance" before="-" ifconfig="ls_mag/service/base_url">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Check Gift Card Balance</argument>
+                    <argument name="path" xsi:type="string" translate="true">omni/giftcardbalance</argument>
                 </arguments>
             </block>
         </referenceBlock>
