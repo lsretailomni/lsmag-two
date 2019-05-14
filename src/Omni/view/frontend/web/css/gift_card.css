@@ -29,9 +29,6 @@
 #gift-card-balance .action {
     margin-top: 10px;
 }
-.omni-giftcardbalance-index .page-main > .page-title-wrapper .page-title {
-    display:none;
-}
 
 #gift-card-balance .error-messages {
     margin-bottom: 10px;
