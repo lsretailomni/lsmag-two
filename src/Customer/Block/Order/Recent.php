@@ -45,16 +45,19 @@ class Recent extends \Magento\Framework\View\Element\Template
     public function getOrderHistory()
     {
         $response = null;
-        try {
-            $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
-        } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (!is_array($response)) {
-            $obj = $response;
-            // @codingStandardsIgnoreStart
-            $response = array($obj);
-            // @codingStandardsIgnoreEnd
+        $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
+        if ($orders) {
+            try {
+                $response = $orders->getOrder();
+            } catch (\Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if ($response && !is_array($response)) {
+                $obj = $response;
+                // @codingStandardsIgnoreStart
+                $response = array($obj);
+                // @codingStandardsIgnoreEnd
+            }
         }
         return $response;
     }
