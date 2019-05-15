@@ -44,7 +44,7 @@ class Recent extends \Magento\Framework\View\Element\Template
      */
     public function getOrderHistory()
     {
-        $response = null;
+        $response = [];
         $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
         if ($orders) {
             try {

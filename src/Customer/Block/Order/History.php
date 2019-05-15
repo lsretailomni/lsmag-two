@@ -57,7 +57,7 @@ class History extends \Magento\Sales\Block\Order\History
         * Adding condition to only process if LSR is enabled.
         */
         if ($this->lsr->isLSR()) {
-            $response = null;
+            $response = [];
             $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
             if ($orders) {
                 try {
