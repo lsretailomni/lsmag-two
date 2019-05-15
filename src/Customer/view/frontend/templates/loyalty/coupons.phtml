@@ -30,7 +30,7 @@ $c = 0;
                                 // @codingStandardsIgnoreEnd
                                 ?>
                                 <img id="coupon-collection-image-<?php echo $c ?>"
-                                     src="<?php echo $this->getMediaPathToLoad().
+                                     src="<?php echo $this->getMediaPathToLoad() .
                                          $images[0] ?>" alt="<?php echo $offer->getDescription() ?> ">
                             <?php endif; ?>
                         </div>
@@ -47,16 +47,10 @@ $c = 0;
                             <div class="coupon-description">
                                 <p><?php echo $offer->getDetails(); ?></p>
                             </div>
-                            <?php
-                            $offerProductCategory = $this->getOfferProductCategoryLink($offer->getOfferLines()->getPublishedOfferLine());
-                            if (!empty($offerProductCategory)) { ?>
-                                <p>
-                                    <a class="action subscribe primary"
-                                       href="<?php echo $offerProductCategory[0]; ?>"><?php echo __($offerProductCategory[1]); ?></a>
-                                </p>
-                                <?php
-                            }
-                            ?>
+                            <p>
+                                <a class="action subscribe primary"
+                                   href="<?php echo $offerProductCategory[0]; ?>"><?php echo __($offerProductCategory[1]); ?></a>
+                            </p>
                         </div>
                     </li>
                 <?php } ?>
