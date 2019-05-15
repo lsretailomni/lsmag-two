@@ -54,9 +54,7 @@ class Recent extends \Magento\Framework\View\Element\Template
             }
             if ($response && !is_array($response)) {
                 $obj = $response;
-                // @codingStandardsIgnoreStart
-                $response = array($obj);
-                // @codingStandardsIgnoreEnd
+                $response = [$obj];
             }
         }
         return $response;

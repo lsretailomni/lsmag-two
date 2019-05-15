@@ -67,9 +67,7 @@ class History extends \Magento\Sales\Block\Order\History
                 }
                 if ($response && !is_array($response)) {
                     $obj = $response;
-                    // @codingStandardsIgnoreStart
-                    $response = array($obj);
-                    // @codingStandardsIgnoreEnd
+                    $response = [$obj];
                 }
             }
             return $response;
@@ -114,6 +112,5 @@ class History extends \Magento\Sales\Block\Order\History
             return $this->getUrl('customer/order/view', ['order_id' => $order->getDocumentId()]);
         }
         return parent::getViewUrl($order);
-
     }
 }
