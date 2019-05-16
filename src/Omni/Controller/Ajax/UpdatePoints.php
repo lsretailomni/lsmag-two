@@ -21,7 +21,12 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
     public $resultRawFactory;
 
     /** @var LoyaltyHelper */
-    private $loyaltyHelper;
+    public $loyaltyHelper;
+
+    /**
+     * @var \Ls\Omni\Helper\BasketHelper
+     */
+    public $basketHelper;
 
     /**
      * @var \Magento\Checkout\Model\Session\Proxy
@@ -50,6 +55,8 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param LoyaltyHelper $loyaltyHelper
+     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
+     * @param Data $data
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
      */
@@ -59,6 +66,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         LoyaltyHelper $loyaltyHelper,
+        \Ls\Omni\Helper\BasketHelper $basketHelper,
         Data $data,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository
@@ -71,6 +79,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         $this->checkoutSession = $checkoutSession;
         $this->customerSession = $customerSession;
         $this->cartRepository = $cartRepository;
+        $this->basketHelper = $basketHelper;
         $this->data=$data;
     }
 
@@ -115,7 +124,8 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
             $quote = $this->cartRepository->get($cartId);
             $orderBalance = $this->data->getOrderBalance(
                 $quote->getLsGiftCardAmountUsed(),
-                0
+                0,
+                $this->basketHelper->getBasketSessionValue()
             );
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($orderBalance, $loyaltyPoints);
             if ($isPointsLimitValid) {

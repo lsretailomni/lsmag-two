@@ -21,7 +21,12 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
     public $resultRawFactory;
 
     /** @var GiftCardHelper */
-    private $giftCardHelper;
+    public $giftCardHelper;
+
+    /**
+     * @var \Ls\Omni\Helper\BasketHelper
+     */
+    public $basketHelper;
 
     /**
      * @var \Magento\Checkout\Model\Session\Proxy
@@ -55,6 +60,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param GiftCardHelper $giftCardHelper
+     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
@@ -66,6 +72,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         GiftCardHelper $giftCardHelper,
+        \Ls\Omni\Helper\BasketHelper $basketHelper,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
@@ -76,6 +83,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory = $resultRawFactory;
         $this->giftCardHelper = $giftCardHelper;
+        $this->basketHelper = $basketHelper;
         $this->checkoutSession = $checkoutSession;
         $this->customerSession = $customerSession;
         $this->cartRepository = $cartRepository;
@@ -143,7 +151,8 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
 
         $orderBalance = $this->data->getOrderBalance(
             0,
-            $quote->getLsPointsSpent()
+            $quote->getLsPointsSpent(),
+            $this->basketHelper->getBasketSessionValue()
         );
 
         $isGiftCardAmountValid = $this->giftCardHelper->isGiftCardAmountValid(

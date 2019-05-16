@@ -3,6 +3,7 @@
 namespace Ls\Omni\Helper;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Catalog\Model\ProductFactory;
@@ -79,6 +80,12 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
 
     /**
+     * @var $data
+     */
+    public $data;
+
+
+    /**
      * BasketHelper constructor.
      * @param Context $context
      * @param Cart $cart
@@ -91,6 +98,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param ItemHelper $itemHelper
      * @param Registry $registry
      * @param LSR $Lsr
+     * @param \Ls\Omni\Helper\Data $data
      * @param SessionManagerInterface $session
      * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
      */
@@ -106,6 +114,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         ItemHelper $itemHelper,
         Registry $registry,
         LSR $Lsr,
+        Data $data,
         SessionManagerInterface $session,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
     )
@@ -121,6 +130,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->itemHelper = $itemHelper;
         $this->registry = $registry;
         $this->lsr = $Lsr;
+        $this->data = $data;
         $this->session = $session;
         $this->quoteRepository = $quoteRepository;
     }
@@ -310,9 +320,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 /** @var Entity\VariantRegistration|null $variant */
                 $variant = $this->itemHelper->getItemVariant($item, $variant_id);
             }
-        /** @var Entity\UnitOfMeasure|null $uom */
+            /** @var Entity\UnitOfMeasure|null $uom */
             $uom = $this->itemHelper->uom($item);
-        // @codingStandardsIgnoreLine
+            // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
                 ->setQuantity($qty)
                 ->setItem($item)
@@ -326,6 +336,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $oneList->setItems($items);
         return $oneList;
     }
+
     /**
      * @return Entity\ArrayOfOneListPublishedOffer
      */
@@ -393,6 +404,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $response = $this->saveWishlistToOmni($oneList);
         return $response;
     }
+
     /**
      * @param Entity\OneList $oneList
      * @return bool|Entity\ArrayOfOrderLineAvailability|Entity\OrderAvailabilityCheckResponse|\Ls\Omni\Client\ResponseInterface
@@ -812,7 +824,15 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $status = $this->update(
             $this->get()
         );
-        if (!is_object($status)) {
+
+        $checkCouponAmount = $this->data->orderBalanceCheck(
+            $this->checkoutSession->getQuote()->getLsGiftCardNo(),
+            $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
+            $this->checkoutSession->getQuote()->getLsPointsSpent(),
+            $status
+        );
+
+        if (!is_object($status) && $checkCouponAmount) {
             $this->couponCode = '';
             $this->update(
                 $this->get()
@@ -839,6 +859,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             if (is_object($status)) {
                 $status = LSR::LS_COUPON_CODE_ERROR_MESSAGE;
             }
+
             return $status;
         } else {
             $this->setCouponQuote("");
