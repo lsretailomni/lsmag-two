@@ -307,6 +307,7 @@ class AttributesCreateTask
             $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
             $newoptionsArray = [];
             if (empty($existingOptions)) {
+                sort($value);
                 $this->eavSetupFactory->create()
                     ->addAttributeOption(
                         [
@@ -321,6 +322,7 @@ class AttributesCreateTask
                     }
                 }
                 if (!empty($newoptionsArray)) {
+                    sort($newoptionsArray);
                     $this->eavSetupFactory->create()
                         ->addAttributeOption(
                             [

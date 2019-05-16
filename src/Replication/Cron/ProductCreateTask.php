@@ -32,6 +32,8 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SortOrderBuilder;
+use Magento\Framework\Api\SortOrder;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -100,6 +102,11 @@ class ProductCreateTask
     /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
+    /**
+     * @var SortOrderBuilder
+     */
+    public $sortOrder;
+
     /** @var FilterBuilder */
     public $filterBuilder;
 
@@ -159,6 +166,7 @@ class ProductCreateTask
      * @param ReplPriceRepository $replPriceRepository
      * @param ReplInvStatusRepository $replInvStatusRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param SortOrderBuilder $sortOrderBuilder
      * @param FilterBuilder $filterBuilder
      * @param FilterGroupBuilder $filterGroupBuilder
      * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
@@ -191,6 +199,7 @@ class ProductCreateTask
         ReplPriceRepository $replPriceRepository,
         ReplInvStatusRepository $replInvStatusRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
+        SortOrder $sortOrder,
         FilterBuilder $filterBuilder,
         FilterGroupBuilder $filterGroupBuilder,
         ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
@@ -222,6 +231,7 @@ class ProductCreateTask
         $this->replPriceRepository = $replPriceRepository;
         $this->replInvStatusRepository = $replInvStatusRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->sortOrder = $sortOrder;
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
         $this->logger = $logger;
@@ -626,6 +636,8 @@ class ProductCreateTask
     public function _getAttributesCodes($itemId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)->create();
+        $sortOrder = $this->sortOrder->setField('Dimensions')->setDirection(SortOrder::SORT_ASC);
+        $searchCriteria->setSortOrders([$sortOrder]);
         $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
         /** @var \Ls\Replication\Model\ReplExtendedVariantValue $valueCode */
         $finalCodes = [];
