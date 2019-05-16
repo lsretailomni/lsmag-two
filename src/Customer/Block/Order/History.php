@@ -53,30 +53,26 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public function getOrderHistory()
     {
-
         /*
         * Adding condition to only process if LSR is enabled.
         */
         if ($this->lsr->isLSR()) {
-            $response = null;
-
-            if ($this->orderHelper->getCurrentCustomerOrderHistory()) {
+            $response = [];
+            $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
+            if ($orders) {
                 try {
-                    $response = $this->orderHelper->getCurrentCustomerOrderHistory()->getOrder();
+                    $response = $orders->getOrder();
                 } catch (\Exception $e) {
                     $this->_logger->error($e->getMessage());
                 }
-                if (!is_array($response)) {
+                if ($response && !is_array($response)) {
                     $obj = $response;
-                    // @codingStandardsIgnoreStart
-                    $response = array($obj);
-                    // @codingStandardsIgnoreEnd
+                    $response = [$obj];
                 }
             }
             return $response;
         }
         return parent::getOrders();
-
     }
 
     /**
@@ -116,6 +112,5 @@ class History extends \Magento\Sales\Block\Order\History
             return $this->getUrl('customer/order/view', ['order_id' => $order->getDocumentId()]);
         }
         return parent::getViewUrl($order);
-
     }
 }
