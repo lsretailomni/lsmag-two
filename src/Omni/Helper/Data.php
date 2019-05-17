@@ -9,6 +9,7 @@ use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use \Magento\Framework\Session\SessionManagerInterface;
 
 /**
@@ -48,6 +49,11 @@ class Data extends AbstractHelper
     public $priceHelper;
 
     /**
+     * @var Loyalty Helper
+     */
+    public $loyaltyHelper;
+
+    /**
      * @var CartRepositoryInterface
      */
     public $cartRepository;
@@ -74,6 +80,7 @@ class Data extends AbstractHelper
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        LoyaltyHelper $loyaltyHelper,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository
     )
     {
@@ -85,6 +92,7 @@ class Data extends AbstractHelper
         $this->messageManager = $messageManager;
         $this->priceHelper = $priceHelper;
         $this->cartRepository = $cartRepository;
+        $this->loyaltyHelper = $loyaltyHelper;
 
         $this->config = $context->getScopeConfig();
         parent::__construct($context);
