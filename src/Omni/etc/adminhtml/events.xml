@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="core_layout_render_element">
-        <observer name="ls_clickandcollect_add_pickup_info_to_order_page" instance="Ls\Omni\Observer\Adminhtml\BlockObserver" />
+        <observer name="ls_clickandcollect_add_pickup_info_to_order_page"
+                  instance="Ls\Omni\Observer\Adminhtml\BlockObserver"/>
     </event>
 </config>

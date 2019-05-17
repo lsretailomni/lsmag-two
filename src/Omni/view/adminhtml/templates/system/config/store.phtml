@@ -1,0 +1,41 @@
+<script>
+    require([
+        'jquery',
+        'prototype',
+        'mage/validation',
+        'mage/translate'
+    ], function ($, prototype, validate, $t) {
+        function fetchStores() {
+            let baseUrl = $('#ls_mag_service_base_url').val();
+            $('#ls_mag_service_base_url').validation();
+            if(!$('#ls_mag_service_base_url').validation('isValid')){
+                return false;
+            }
+            $.ajax({
+                url: '<?php echo $block->getAjaxUrl() ?>',
+                type: 'POST',
+                showLoader: true,
+                dataType: 'json',
+                data: {baseUrl: baseUrl},
+                complete: function (response) {
+                    stores = response.responseJSON.store;
+                    $("#ls_mag_service_selected_store option").remove();
+                    $.each(stores, function (i, store) {
+                        $('#ls_mag_service_selected_store').append($('<option>', {
+                            value: store.value,
+                            text: store.label
+                        }));
+                    });
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('Error happens. Try again.');
+                }
+            });
+        }
+
+        $('#validate_base_url').click(function () {
+            fetchStores();
+        });
+    });
+</script>
+<?php echo $block->getButtonHtml(); ?>

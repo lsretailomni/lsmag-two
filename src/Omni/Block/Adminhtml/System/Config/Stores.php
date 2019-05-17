@@ -1,0 +1,115 @@
+<?php
+
+namespace Ls\Omni\Block\Adminhtml\System\Config;
+
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Store;
+use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
+use Magento\Backend\Block\Template\Context;
+
+/**
+ * Class Stores
+ * @package Ls\Omni\Block\Adminhtml\System\Config
+ */
+class Stores extends \Magento\Config\Block\System\Config\Form\Field
+{
+    /**
+     * @var Ls\Core\Model\LSR
+     */
+    public $lsr;
+
+    /**
+     * @var string
+     */
+    // @codingStandardsIgnoreLine
+    protected $_template = 'Ls_Omni::system/config/store.phtml';
+
+    /**
+     * @param Context $context
+     * @param array $data
+     */
+    public function __construct(
+        Context $context,
+        LSR $lsr,
+        array $data = []
+    ) {
+        $this->lsr = $lsr;
+        parent::__construct($context, $data);
+    }
+
+    /**
+     * Unset some non-related element parameters
+     *
+     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @return string
+     */
+    public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    {
+        $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
+        return parent::render($element);
+    }
+
+    /**
+     * Get the button and scripts contents
+     *
+     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @return string
+     */
+    public function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    {
+        return $this->_toHtml();
+    }
+
+    public function getAjaxUrl()
+    {
+        return $this->getUrl('omni/system_config/loadStore');
+    }
+
+    public function getButtonHtml()
+    {
+        $button = $this->getLayout()->createBlock(
+            'Magento\Backend\Block\Widget\Button'
+        )->setData(
+            [
+                'id' => 'validate_base_url',
+                'label' => __('Validate Base URL'),
+            ]
+        );
+        return $button->toHtml();
+    }
+
+    public function toOptionArray()
+    {
+        $option_array = [['value' => '', 'label' => __('Please select your web store')]];
+        if (!empty($this->getNavStores())) {
+            foreach ($this->getNavStores() as $nav_store) {
+                $option_array[] = ['value' => $nav_store->getId(), 'label' => $nav_store->getDescription()];
+            }
+        }
+        return $option_array;
+    }
+
+    /**
+     * @return Store[]
+     */
+    public function getNavStores()
+    {
+        if ($this->lsr->validateBaseUrl()) {
+            $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
+            if (!empty($baseUrl)) {
+                // @codingStandardsIgnoreLine
+                $getStores = new StoresGetAll();
+                $result = $getStores->execute();
+                if ($result != null) {
+                    $result = $result->getResult();
+                }
+                if (!is_array($result)) {
+                    return $resultArray[] = $result;
+                } else {
+                    return $result;
+                }
+            }
+        }
+        return [];
+    }
+}
