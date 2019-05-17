@@ -68,6 +68,7 @@ class Data extends AbstractHelper
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
+     * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
      * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
      */
 

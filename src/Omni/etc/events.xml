@@ -47,11 +47,6 @@
     <event name="controller_action_predispatch_checkout_cart_updateitemoptions">
         <observer name="coupon_code" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
     </event>
-
-    <event name="payment_method_is_active">
-        <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods" />
-    </event>
-
     <!--<event name="checkout_onepage_controller_success_action">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderSuccessObserver"/>
     </event>-->
