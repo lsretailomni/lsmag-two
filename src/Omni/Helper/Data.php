@@ -196,17 +196,17 @@ class Data extends AbstractHelper
      * @param $basketData
      * @return bool
      */
-    public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints,$basketData)
+    public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData)
     {
         try {
             $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
             $cartId = $this->checkoutSession->getQuoteId();
             $quote = $this->cartRepository->get($cartId);
-            if (!empty($basketData)) {
+            if (!empty($basketData) && is_object($basketData)) {
                 $totalAmount = $basketData->getTotalAmount();
                 $discountAmount = $basketData->getTotalDiscount();
                 $combinedTotalLoyalGiftCard = $giftCardAmount + $loyaltyAmount;
-                $combinedDiscountPaymentamount= $discountAmount +$combinedTotalLoyalGiftCard;
+                $combinedDiscountPaymentamount = $discountAmount + $combinedTotalLoyalGiftCard;
                 if ($loyaltyAmount > $totalAmount) {
                     $quote->setLsPointsSpent(0);
                     $this->cartRepository->save($quote);
@@ -241,13 +241,15 @@ class Data extends AbstractHelper
                     );
                 } else if ($combinedDiscountPaymentamount > $totalAmount) {
                     return false;
-                }
-                else {
+                } else {
                     return true;
                 }
+            } else {
+                return true;
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
+
 }
