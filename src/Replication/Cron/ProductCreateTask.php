@@ -299,7 +299,7 @@ class ProductCreateTask
             $this->logger->debug('ENV Variables Values before:' . $val1 . ' ' . $val2);
             // @codingStandardsIgnoreStart
             @ini_set('max_execution_time', 0);
-            @ini_set('memory_limit', 0);
+            @ini_set('memory_limit', -1);
             // @codingStandardsIgnoreEnd
             $val1 = ini_get('max_execution_time');
             $val2 = ini_get('memory_limit');
