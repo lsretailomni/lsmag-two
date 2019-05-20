@@ -65,6 +65,11 @@ class Stores extends \Magento\Config\Block\System\Config\Form\Field
         return $this->getUrl('omni/system_config/loadStore');
     }
 
+    public function getAjaxHierarchyUrl()
+    {
+        return $this->getUrl('omni/system_config/loadHierarchy');
+    }
+
     public function getButtonHtml()
     {
         $button = $this->getLayout()->createBlock(
@@ -77,39 +82,5 @@ class Stores extends \Magento\Config\Block\System\Config\Form\Field
         );
         return $button->toHtml();
     }
-
-    public function toOptionArray()
-    {
-        $option_array = [['value' => '', 'label' => __('Please select your web store')]];
-        if (!empty($this->getNavStores())) {
-            foreach ($this->getNavStores() as $nav_store) {
-                $option_array[] = ['value' => $nav_store->getId(), 'label' => $nav_store->getDescription()];
-            }
-        }
-        return $option_array;
-    }
-
-    /**
-     * @return Store[]
-     */
-    public function getNavStores()
-    {
-        if ($this->lsr->validateBaseUrl()) {
-            $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
-            if (!empty($baseUrl)) {
-                // @codingStandardsIgnoreLine
-                $getStores = new StoresGetAll();
-                $result = $getStores->execute();
-                if ($result != null) {
-                    $result = $result->getResult();
-                }
-                if (!is_array($result)) {
-                    return $resultArray[] = $result;
-                } else {
-                    return $result;
-                }
-            }
-        }
-        return [];
-    }
+    
 }
