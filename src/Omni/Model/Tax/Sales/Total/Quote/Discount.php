@@ -90,13 +90,16 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
     )
     {
         $discountAmount = $this->getTotalDiscount($quote);
+        $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
         if ($discountAmount < 0) {
             $proActiveDiscount = $this->getProactiveDiscount($quote);
             $total->addTotalAmount('discount', $discountAmount);
             $total->addTotalAmount('subtotal', $proActiveDiscount);
+            $total->addTotalAmount('grand_total', $paymentDiscount);
             $this->checkoutSession->setProActiveCheck(0);
         } else {
             $total->addTotalAmount('discount', $discountAmount);
+            $total->addTotalAmount('grand_total', $paymentDiscount);
             $quote->getBillingAddress()->setDiscountAmount(0)->save();
         }
         return $this;
@@ -121,11 +124,14 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
             ];
 
             $proActiveDiscount = $this->getProactiveDiscount($quote);
+            $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
             $total->addTotalAmount('discount', $amount);
             $total->addTotalAmount('subtotal', $proActiveDiscount);
+            $total->addTotalAmount('grand_total', $paymentDiscount);
             $this->checkoutSession->setProActiveCheck(0);
         } else {
             $total->addTotalAmount('discount', $amount);
+            $total->addTotalAmount('grand_total', 0);
             $quote->getBillingAddress()->setDiscountAmount(0)->save();
         }
 
@@ -180,12 +186,27 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         $this->checkoutSession->setProActiveDiscount(0);
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
+            $amount = -$basketData->getTotalDiscount();
+        }
+        return $amount;
+    }
+
+    /**
+     * @param $quote
+     * @return float|int
+     */
+    public function getGiftCardLoyaltyDiscount($quote)
+    {
+        $amount = 0;
+        $this->checkoutSession->setProActiveDiscount(0);
+        $basketData = $this->basketHelper->getBasketSessionValue();
+        if (isset($basketData)) {
             $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $giftCardAmount = $quote->getLsGiftCardAmountUsed();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);
             }
-            $amount = -$basketData->getTotalDiscount() - $pointDiscount - $giftCardAmount;
+            $amount = -$pointDiscount - $giftCardAmount;
         }
         return $amount;
     }

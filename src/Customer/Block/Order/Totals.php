@@ -1,8 +1,10 @@
 <?php
+
 namespace Ls\Customer\Block\Order;
 
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\LoyaltyHelper;
 
 /**
  * Class Totals
@@ -21,19 +23,38 @@ class Totals extends \Magento\Framework\View\Element\Template
     public $priceCurrency;
 
     /**
+     * @var priceHelper
+     */
+    public $loyaltyHelper;
+
+    /**
+     * @var GiftCardAmount
+     */
+    public $giftCardAmount = 0;
+
+    /**
+     * @var LoyaltyAmount
+     */
+    public $loyaltyPointAmount = 0;
+
+    /**
      * Totals constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param PriceCurrencyInterface $priceCurrency
+     * @param LoyaltyHelper $loyaltyHelper
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\Registry $registry,
         PriceCurrencyInterface $priceCurrency,
+        LoyaltyHelper $loyaltyHelper,
         array $data = []
-    ) {
+    )
+    {
         $this->priceCurrency = $priceCurrency;
+        $this->loyaltyHelper = $loyaltyHelper;
         $this->coreRegistry = $registry;
         parent::__construct($context, $data);
     }
@@ -79,11 +100,22 @@ class Totals extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getGrandTotal()
     {
         $total = $this->getOrder()->getTotalAmount();
+
+        return $total;
+    }
+
+    /**
+     * @return float|GiftCardAmount|LoyaltyAmount
+     */
+    public function getTotalAmount()
+    {
+        $total = $this->getGrandTotal() - $this->giftCardAmount - $this->loyaltyPointAmount;
+
         return $total;
     }
 
@@ -116,10 +148,58 @@ class Totals extends \Magento\Framework\View\Element\Template
      */
     public function getSubtotal()
     {
+        $this->getLoyaltyGiftCardInfo();
         $shipmentFee = $this->getShipmentChargeLineFee();
         $grandTotal = $this->getGrandTotal();
         $discount = $this->getTotalDiscount();
-        $fee =  (float)$grandTotal + $discount - (float)$shipmentFee;
+        $fee = (float)$grandTotal + $discount - (float)$shipmentFee;
         return $fee;
     }
+
+    /**
+     * @return array
+     */
+    public function getLoyaltyGiftCardInfo()
+    {
+        // @codingStandardsIgnoreStart
+        $paymentLines = $this->getOrder()->getOrderPayments()->getOrderPayment();
+        if (!is_array($paymentLines)) {
+            $singleLine = $paymentLines;
+            $paymentLines = array($singleLine);
+        }
+        $methods = array();
+        $giftCardInfo = array();
+        $loyaltyInfo = array();
+        // @codingStandardsIgnoreEnd
+        foreach ($paymentLines as $line) {
+            if ($line->getTenderType() == '0') {
+                $methods[] = __('Cash');
+            } elseif ($line->getTenderType() == '1') {
+                $methods[] = __('Card');
+            } elseif ($line->getTenderType() == '2') {
+                $methods[] = __('Coupon');
+            } elseif ($line->getTenderType() == '3') {
+                $methods[] = __('Loyalty Points');
+                $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getPreApprovedAmount());
+            } elseif ($line->getTenderType() == '4') {
+                $methods[] = __('Gift Card');
+                $this->giftCardAmount = $line->getPreApprovedAmount();
+            } else {
+                $methods[] = __('Unknown');
+            }
+        }
+        return [implode(', ', $methods), $giftCardInfo, $loyaltyInfo];
+    }
+
+    /**
+     * @param $loyaltyAmount
+     * @return float|int
+     */
+    public function convertLoyaltyPointsToAmount($loyaltyPoints)
+    {
+
+        $points = number_format((float)$loyaltyPoints, 2, '.', '');
+        return $points * $this->loyaltyHelper->getPointRate();
+    }
+
 }

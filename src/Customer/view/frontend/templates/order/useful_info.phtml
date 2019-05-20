@@ -22,22 +22,14 @@
         </div>
         <div class="custom-box">
             <strong class="box-title"><span><?= /* @escapeNotVerified */
-                    __('Loyalty Points Redeemed:') ?></span></strong>
-            <span><?= $block->getFormattedLoyaltyPoints($_order->getPointsUsedInOrder()); ?></span>
-        </div>
-        <div class="custom-box">
-            <strong class="box-title"><span><?= /* @escapeNotVerified */
                     __('Loyalty Points Rewarded:') ?></span></strong>
             <span><?= $block->getFormattedLoyaltyPoints($_order->getPointsRewarded()); ?></span>
         </div>
         <?php if(!empty($block->getPaymentDescription()[1])){ ?>
         <div class="custom-box">
             <strong class="box-title"><span><?= /* @escapeNotVerified */
-                    __('Gift Card No:') ?></span></strong>
-            <span><?= $block->getPaymentDescription()[1][0]; ?></span><br/>
-            <strong class="box-title"><span><?= /* @escapeNotVerified */
-                    __('Gift Card Amount Used:') ?></span></strong>
-            <span><?= $block->getGiftCardFormattedPrice($block->getPaymentDescription()[1][1]); ?></span>
+                    __('Gift Card Code:') ?></span></strong>
+            <span><?= $block->getPaymentDescription()[1][0]; ?></span>
         </div>
         <?php } ?>
     </div>

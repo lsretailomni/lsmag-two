@@ -20,6 +20,11 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     public $giftCardHelper;
 
     /**
+     * @var \Ls\Omni\Helper\BasketHelper
+     */
+    public $basketHelper;
+
+    /**
      * @var Price Helper
      */
     public $priceHelper;
@@ -39,6 +44,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
      * @param \Magento\Checkout\Model\Cart $cart
      * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
      * @param \Ls\Omni\Helper\GiftCardHelper $giftCardHelper
+     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param \Ls\Omni\Helper\Data $data
      */
@@ -51,6 +57,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
         \Magento\Checkout\Model\Cart $cart,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Ls\Omni\Helper\GiftCardHelper $giftCardHelper,
+        \Ls\Omni\Helper\BasketHelper $basketHelper,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         \Ls\Omni\Helper\Data $data
     )
@@ -66,6 +73,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
         $this->quoteRepository = $quoteRepository;
         $this->giftCardHelper = $giftCardHelper;
         $this->priceHelper = $priceHelper;
+        $this->basketHelper = $basketHelper;
         $this->data = $data;
     }
 
@@ -109,7 +117,8 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             $itemsCount = $cartQuote->getItemsCount();
             $orderBalance =$this->data->getOrderBalance(
                 0,
-                $cartQuote->getLsPointsSpent()
+                $cartQuote->getLsPointsSpent(),
+                $this->basketHelper->getBasketSessionValue()
             );
 
             $isGiftCardAmountValid = $this->giftCardHelper->isGiftCardAmountValid(

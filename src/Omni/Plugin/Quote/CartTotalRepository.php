@@ -98,7 +98,6 @@ class CartTotalRepository
         $couponCode = $this->basketHelper->checkoutSession->getCouponCode();
         if (!empty($couponCode)) {
             $quoteTotals->setCouponCode($couponCode);
-            $totalsExtension->setCouponLabel('(' . $couponCode . ')');
             // @codingStandardsIgnoreLine
             $this->basketHelper->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
         }
@@ -112,19 +111,20 @@ class CartTotalRepository
                 $quote->setLsPointsDiscount($pointDiscount);
             }
 
-            $amount = -$basketData->getTotalDiscount() - $pointDiscount - $giftCardAmount;
+            $amount = -$basketData->getTotalDiscount();
             if ($amount <= 0) {
                 $quote->getShippingAddress()->setDiscountAmount($basketData->getTotalAmount());
                 $quote->getShippingAddress()->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
                 $quote->getShippingAddress()->setGrandTotal($basketData->getTotalAmount());
                 $quote->collectTotals();
                 $this->quoteRepository->save($quote);
+                // @codingStandardsIgnoreLine
                 $this->basketHelper->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
                 $quoteTotals->setDiscountAmount($amount);
                 $quoteTotals->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
                 $quoteTotals->setBaseTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
-                $quoteTotals->setGrandTotal($basketData->getTotalAmount());
-                $quoteTotals->setBaseGrandTotal($basketData->getTotalAmount());
+                $quoteTotals->setGrandTotal($basketData->getTotalAmount()- $pointDiscount - $giftCardAmount);
+                $quoteTotals->setBaseGrandTotal($basketData->getTotalAmount()- $pointDiscount - $giftCardAmount);
             }
         }
         $quoteTotals->setExtensionAttributes($totalsExtension);
