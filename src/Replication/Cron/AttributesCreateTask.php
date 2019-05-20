@@ -68,6 +68,16 @@ class AttributesCreateTask
     public $attributeManagement;
 
     /**
+     * @var AttributeFactory
+     */
+    public $eavAttributeFactory;
+
+    /**
+     * @var Entity
+     */
+    public $eavEntity;
+
+    /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ProductAttributeRepositoryInterface $productAttributeRepository
@@ -100,8 +110,8 @@ class AttributesCreateTask
         $this->productAttributeRepository = $productAttributeRepository;
         $this->eavSetupFactory = $eavSetupFactory;
         $this->logger = $logger;
-        $this->_eavAttributeFactory = $eavAttributeFactory;
-        $this->_eavEntity = $eav_entity;
+        $this->eavAttributeFactory = $eavAttributeFactory;
+        $this->eavEntity = $eav_entity;
         $this->replAttributeRepositoryInterface = $replAttributeRepositoryInterface;
         $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
         $this->eavConfig = $eavConfig;
@@ -144,9 +154,7 @@ class AttributesCreateTask
     }
 
     /**
-     * @throws \Exception
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * Process Attributes
      */
     public function processAttributes()
     {
@@ -155,33 +163,36 @@ class AttributesCreateTask
          * Getting Data only for those which are not yet processed OR is modified.
          * Technical Structure :- where processed = 0 || is_updated = 1
          */
+        try {
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems();
 
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+            /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
+            $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
 
-        /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
-        $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
+            /** @var defualt attribute set if for catalog_product $defaultAttributeSetId */
+            $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
 
-        /** @var defualt attribute set if for catalog_product $defaultAttributeSetId */
-        $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
+            /** @var default group if of general tab for specific product attribute set $defaultGroupId */
+            $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
 
-        /** @var default group if of general tab for specific product attribute set $defaultGroupId */
-        $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
-
-        /** @var \Ls\Replication\Model\ReplAttribute $replAttribute */
-        foreach ($replAttributes->getItems() as $replAttribute) {
-            $this->createAttributeByObject($replAttribute, $defaultAttributeSetId, $defaultGroupId);
-            if ($replAttribute->getValueType() == '5' || $replAttribute->getValueType() == '7') {
-                $this->addAttributeOptions($replAttribute->getCode());
+            /** @var \Ls\Replication\Model\ReplAttribute $replAttribute */
+            foreach ($replAttributes->getItems() as $replAttribute) {
+                $this->createAttributeByObject($replAttribute, $defaultAttributeSetId, $defaultGroupId);
+                if ($replAttribute->getValueType() == '5' || $replAttribute->getValueType() == '7') {
+                    $this->addAttributeOptions($replAttribute->getCode());
+                }
+                $replAttribute->setData('processed', '1');
+                $replAttribute->setData('is_updated', '0');
+                // @codingStandardsIgnoreStart
+                $this->replAttributeRepositoryInterface->save($replAttribute);
+                // @codingStandardsIgnoreEnd
             }
-            $replAttribute->setData('processed', '1');
-            $replAttribute->setData('is_updated', '0');
-            // @codingStandardsIgnoreStart
-            $this->replAttributeRepositoryInterface->save($replAttribute);
-            // @codingStandardsIgnoreEnd
-        }
-        $attributesRemovalCounter = $this->caterAttributesRemoval();
-        if (count($replAttributes->getItems()) == 0 && $attributesRemovalCounter == 0) {
-            $this->successCronAttribute = true;
+            $attributesRemovalCounter = $this->caterAttributesRemoval();
+            if (count($replAttributes->getItems()) == 0 && $attributesRemovalCounter == 0) {
+                $this->successCronAttribute = true;
+            }
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
     }
 
@@ -294,7 +305,7 @@ class AttributesCreateTask
                 ];
                 try {
                     // @codingStandardsIgnoreStart
-                    $this->_eavAttributeFactory->create()
+                    $this->eavAttributeFactory->create()
                         ->addData($attributeData)
                         ->setEntityTypeId($this->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY))
                         ->save();
@@ -322,7 +333,6 @@ class AttributesCreateTask
                     }
                 }
                 if (!empty($newoptionsArray)) {
-                    sort($newoptionsArray);
                     $this->eavSetupFactory->create()
                         ->addAttributeOption(
                             [
@@ -330,11 +340,41 @@ class AttributesCreateTask
                                 'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
                             ]
                         );
+                    $this->updateOptions($formattedCode);
                 }
             }
         }
     }
 
+    /**
+     * @param $formattedCode
+     * update the order of the options in ascending order
+     */
+    public function updateOptions($formattedCode)
+    {
+        try {
+            $attribute = $this->eavAttributeFactory->create();
+            $attribute = $attribute->loadByCode(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
+            $options = $attribute->getOptions();
+            $labels = [];
+            foreach ($options as $index => $option) {
+                if (!empty($option->getValue())) {
+                    $labels[$option->getValue()] = $option->getLabel();
+                } else {
+                    unset($options[$index]);
+                }
+            }
+            asort($labels);
+            foreach ($options as &$option) {
+                $sortOrder = array_search($option->getValue(), array_keys($labels));
+                $option->setSortOrder($sortOrder);
+            }
+            $attribute->setOptions($options);
+            $this->productAttributeRepository->save($attribute);
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
+    }
     /**
      * @param \Ls\Replication\Model\ReplAttribute $replAttribute
      * @param $attributeSetId
@@ -376,7 +416,7 @@ class AttributesCreateTask
             ];
 
             try {
-                $this->_eavAttributeFactory->create()
+                $this->eavAttributeFactory->create()
                     ->addData($attributeData)
                     ->setEntityTypeId($this->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY))
                     ->save();
@@ -393,7 +433,7 @@ class AttributesCreateTask
      */
     public function getEntityTypeId($type = \Magento\Catalog\Model\Product::ENTITY)
     {
-        return $this->_eavEntity->setType($type)->getTypeId();
+        return $this->eavEntity->setType($type)->getTypeId();
     }
 
     /**
