@@ -1,9 +1,10 @@
 <script>
     require([
         'jquery',
+        'prototype',
         'mage/validation',
         'mage/translate'
-    ], function ($, $t) {
+    ], function ($, p, v, $t) {
         function fetchStores() {
             let baseUrl = $('#ls_mag_service_base_url').val();
             $('#ls_mag_service_base_url').validation();
@@ -25,6 +26,7 @@
                             text: store.label
                         }));
                     });
+                    alert($t(response.responseJSON.pong));
                 },
                 error: function (xhr, status, errorThrown) {
                     console.log('Error happens. Please try again.');
