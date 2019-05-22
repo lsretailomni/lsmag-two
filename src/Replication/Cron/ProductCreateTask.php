@@ -360,6 +360,8 @@ class ProductCreateTask
                     } else {
                         $product->setPrice($item->getUnitPrice());
                     }
+
+
                     $product->setAttributeSetId(4);
                     $product->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
                     $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE);
@@ -1135,6 +1137,10 @@ class ProductCreateTask
                     $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
                     if (isset($itemPrice)) {
                         $productData->setPrice($itemPrice->getUnitPrice());
+                    }else{
+                        // Just incase if we dont have variant specific price then we have to use the default price.
+                        $itemPrice = $this->getItemPrice($value->getItemId());
+                        $productData->setPrice($itemPrice->getUnitPrice());
                     }
                     $productImages = $this->replicationHelper->getImageLinksByType(
                         $value->getItemId() . ',' . $value->getVariantId(),
@@ -1171,7 +1177,9 @@ class ProductCreateTask
                 if (isset($itemPrice)) {
                     $productV->setPrice($itemPrice->getUnitPrice());
                 } else {
-                    $productV->setPrice($item->getUnitPrice());
+                    // Just incase if we dont have price for Variant then in that case we are using the price of main product.
+                    $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
+                    $productV->setPrice($itemPrice->getUnitPrice());
                 }
                 $productV->setAttributeSetId(4);
                 $productV->setWebsiteIds([1]);
