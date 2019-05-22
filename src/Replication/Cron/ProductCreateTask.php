@@ -361,7 +361,6 @@ class ProductCreateTask
                         $product->setPrice($item->getUnitPrice());
                     }
 
-
                     $product->setAttributeSetId(4);
                     $product->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
                     $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE);
@@ -501,7 +500,7 @@ class ProductCreateTask
                     ->setName($image->getImageId() . ".jpg")
                     ->setType($this->getMimeType($result->getImage()));
                 $this->attributeMediaGalleryEntry->setMediaType("image")
-                    ->setLabel("Product Image")
+                    ->setLabel(($image->getDescription()) ? $image->getDescription() : "Product Image")
                     ->setPosition($i)
                     ->setDisabled(false)
                     ->setTypes(
@@ -885,7 +884,7 @@ class ProductCreateTask
     public function getConfAssoProductId($product, $nameValueList)
     {
         //get configurable products attributes array with all values
-        // with lable (supper attribute which use for configuration)
+        // with label (super attribute which use for configuration)
         $assPro = null;
         $optionsData = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
         $superAttrList = [];
@@ -914,7 +913,7 @@ class ProductCreateTask
         if (count($attributeValues) == count($nameValueList)) {
             // pass this prepared array with $product
             $assPro = $this->configurableProTypeModel->getProductByAttributes($attributeValues, $product);
-            // it return complete product accoring to attribute values which you pass
+            // it return complete product according to attribute values which you pass
         }
         return $assPro;
     }
@@ -924,19 +923,15 @@ class ProductCreateTask
      */
     public function updateAndAddNewImageOnly()
     {
-        //
         $filters = [
             ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
 
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 2000);
-
         /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $images */
         $images = $this->replImageLinkRepositoryInterface->getList($criteria);
-
         $processedItems = [];
-
         if ($images->getTotalCount() > 0) {
             /** @var \Ls\Replication\Model\ReplImage $image */
             foreach ($images->getItems() as $image) {
@@ -1137,8 +1132,8 @@ class ProductCreateTask
                     $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
                     if (isset($itemPrice)) {
                         $productData->setPrice($itemPrice->getUnitPrice());
-                    }else{
-                        // Just incase if we dont have variant specific price then we have to use the default price.
+                    } else {
+                        // Just in-case if we don't have variant specific price then we have to use the default price.
                         $itemPrice = $this->getItemPrice($value->getItemId());
                         $productData->setPrice($itemPrice->getUnitPrice());
                     }
@@ -1177,8 +1172,9 @@ class ProductCreateTask
                 if (isset($itemPrice)) {
                     $productV->setPrice($itemPrice->getUnitPrice());
                 } else {
-                    // Just incase if we dont have price for Variant then in that case we are using the price of main product.
-                    $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
+                    // Just in-case if we don't have price for Variant then in that case,
+                    // we are using the price of main product.
+                    $itemPrice = $this->getItemPrice($value->getItemId());
                     $productV->setPrice($itemPrice->getUnitPrice());
                 }
                 $productV->setAttributeSetId(4);

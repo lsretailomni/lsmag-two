@@ -26,7 +26,8 @@ class Product extends Action
         "ls_replication_repl_barcode",
         "ls_replication_repl_inv_status",
         "ls_replication_repl_hierarchy_leaf",
-        "ls_replication_repl_attribute_value"
+        "ls_replication_repl_attribute_value",
+        "ls_replication_repl_image_link"
     ];
 
     /** @var array List of all the Catalog Product tables */
