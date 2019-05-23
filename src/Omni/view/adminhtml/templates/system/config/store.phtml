@@ -1,0 +1,79 @@
+<script>
+    require([
+        'jquery',
+        'prototype',
+        'mage/validation',
+        'mage/translate'
+    ], function ($, p, v, $t) {
+        function fetchStores() {
+            let baseUrl = $('#ls_mag_service_base_url').val();
+            $('#ls_mag_service_base_url').validation();
+            if (!$('#ls_mag_service_base_url').validation('isValid')) {
+                return false;
+            }
+            $.ajax({
+                url: '<?php echo $block->getAjaxUrl(); ?>',
+                type: 'POST',
+                showLoader: true,
+                dataType: 'json',
+                data: {baseUrl: baseUrl},
+                complete: function (response) {
+                    stores = response.responseJSON.store;
+                    $("#ls_mag_service_selected_store option").remove();
+                    $.each(stores, function (i, store) {
+                        $('#ls_mag_service_selected_store').append($('<option>', {
+                            value: store.value,
+                            text: store.label
+                        }));
+                    });
+                    alert($t(response.responseJSON.pong));
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('Error happens. Please try again.');
+                }
+            });
+        }
+
+        function fetchHierarchy() {
+            let baseUrl = $('#ls_mag_service_base_url').val();
+            $('#ls_mag_service_base_url').validation();
+            if (!$('#ls_mag_service_base_url').validation('isValid')) {
+                return false;
+            }
+            let storeId = $('#ls_mag_service_selected_store').val();
+            $.ajax({
+                url: '<?php echo $block->getAjaxHierarchyUrl(); ?>',
+                type: 'POST',
+                showLoader: true,
+                dataType: 'json',
+                data: {baseUrl: baseUrl, storeId: storeId},
+                complete: function (response) {
+                    hierarchies = response.responseJSON.hierarchy;
+                    $("#ls_mag_service_replicate_hierarchy_code option").remove();
+                    $.each(hierarchies, function (i, hierarchy) {
+                        $('#ls_mag_service_replicate_hierarchy_code').append($('<option>', {
+                            value: hierarchy.value,
+                            text: hierarchy.label
+                        }));
+                    });
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('Error happens. Please try again.');
+                }
+            });
+        }
+
+        $('#ls_mag_service_selected_store').on('change', function () {
+            let storeId = $('#ls_mag_service_selected_store').val();
+            if (storeId == "") {
+                return false;
+            }
+            fetchHierarchy();
+        });
+
+        $('#validate_base_url').click(function () {
+            fetchStores();
+        });
+    });
+</script>
+<?php echo $block->getButtonHtml(); ?>
