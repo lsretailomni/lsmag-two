@@ -37,8 +37,9 @@ class LoadHierarchy extends Action
     public $logger;
 
     /**
-     * LoadStore constructor.
+     * LoadHierarchy constructor.
      * @param Context $context
+     * @param JsonFactory $resultJsonFactory
      * @param LSR $lsr
      * @param LoggerInterface $logger
      */
@@ -121,5 +122,3 @@ class LoadHierarchy extends Action
         return $this->_authorization->isAllowed('Ls_Omni::config');
     }
 }
-
-?>

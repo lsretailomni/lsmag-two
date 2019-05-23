@@ -52,6 +52,7 @@ class LoadStore extends Action
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
+     * @param WriterInterface $configWriter
      * @param LSR $lsr
      * @param LoggerInterface $logger
      */
@@ -152,5 +153,3 @@ class LoadStore extends Action
         return $this->_authorization->isAllowed('Ls_Omni::config');
     }
 }
-
-?>

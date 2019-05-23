@@ -60,16 +60,26 @@ class Stores extends \Magento\Config\Block\System\Config\Form\Field
         return $this->_toHtml();
     }
 
+    /**
+     * @return string
+     */
     public function getAjaxUrl()
     {
         return $this->getUrl('omni/system_config/loadStore');
     }
 
+    /**
+     * @return string
+     */
     public function getAjaxHierarchyUrl()
     {
         return $this->getUrl('omni/system_config/loadHierarchy');
     }
 
+    /**
+     * @return mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getButtonHtml()
     {
         $button = $this->getLayout()->createBlock(
