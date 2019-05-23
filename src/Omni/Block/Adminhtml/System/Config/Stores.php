@@ -3,8 +3,6 @@
 namespace Ls\Omni\Block\Adminhtml\System\Config;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Store;
-use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use Magento\Backend\Block\Template\Context;
 
 /**
@@ -14,7 +12,7 @@ use Magento\Backend\Block\Template\Context;
 class Stores extends \Magento\Config\Block\System\Config\Form\Field
 {
     /**
-     * @var Ls\Core\Model\LSR
+     * @var \Ls\Core\Model\LSR
      */
     public $lsr;
 
@@ -25,7 +23,9 @@ class Stores extends \Magento\Config\Block\System\Config\Form\Field
     protected $_template = 'Ls_Omni::system/config/store.phtml';
 
     /**
+     * Stores constructor.
      * @param Context $context
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
