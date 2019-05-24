@@ -1,6 +1,8 @@
 <?php
+
 namespace Ls\Customer\Block\Order;
 
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 
 /**
@@ -19,8 +21,18 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public $priceCurrency;
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var \Ls\Core\Model\LSR @var */
     public $lsr;
+
+    /**
+     * @var Order Repository
+     */
+    public $orderRepository;
+
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    public $searchCriteriaBuilder;
 
     /**
      * History constructor.
@@ -30,6 +42,9 @@ class History extends \Magento\Sales\Block\Order\History
      * @param \Magento\Sales\Model\Order\Config $orderConfig
      * @param \Ls\Omni\Helper\OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
+     * @param \Ls\Core\Model\LSR $LSR
+     * @param \Magento\Sales\Model\OrderRepository $orderRepository
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param array $data
      */
     public function __construct(
@@ -40,11 +55,16 @@ class History extends \Magento\Sales\Block\Order\History
         \Ls\Omni\Helper\OrderHelper $orderHelper,
         PriceCurrencyInterface $priceCurrency,
         \Ls\Core\Model\LSR $LSR,
+        \Magento\Sales\Model\OrderRepository $orderRepository,
+        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         array $data = []
-    ) {
+    )
+    {
         $this->orderHelper = $orderHelper;
         $this->priceCurrency = $priceCurrency;
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
+        $this->orderRepository = $orderRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         parent::__construct($context, $orderCollectionFactory, $customerSession, $orderConfig, $data);
     }
 
@@ -117,5 +137,39 @@ class History extends \Magento\Sales\Block\Order\History
         }
         return parent::getViewUrl($order);
 
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getReorderUrl($order)
+    {
+        try {
+            if ($order->getDocumentId()!=null) {
+                return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
+            } else {
+                return parent::getReorderUrl($order);
+            }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @param $documentId
+     * @return \Magento\Sales\Api\Data\OrderInterface[]
+     */
+    public function getOrderByDocumentId($documentId)
+    {
+        $customerId = $this->_customerSession->getCustomerId();
+        $order = $this->orderRepository->getList(
+            $this->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
+        )->getItems();
+        foreach ($order as $ord) {
+            if ($ord->getCustomerId() == $customerId) {
+                return $ord;
+            }
+        }
     }
 }
