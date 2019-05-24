@@ -36,8 +36,13 @@ $c = 0;
                             <div class="title">
                                 <h3><?php echo $offer->getDescription(); ?></h3>
                             </div>
+                            <?php if($offer->getCode()=='Coupon') { ?>
+                                <div class="code">
+                                    <span><b><?php echo __("Code: "); ?></b><?php echo $offer->getOfferId(); ?></span>
+                                </div>
+                            <?php } ?>
                             <div class="code">
-                                <span><b><?php echo __("Code: "); ?></b><?php echo $offer->getOfferId(); ?></span>
+                                <span><b><?php echo __("Offer Type: "); ?></b><?php echo $offer->getCode(); ?></span>
                             </div>
                             <div class="date">
                                 <span><b><?php echo __("Expiry: "); ?></b><?php echo $this->getOfferExpiryDate($offer->getExpirationDate()); ?></span>

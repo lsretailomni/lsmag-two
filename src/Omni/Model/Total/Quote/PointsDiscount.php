@@ -42,7 +42,7 @@ class PointsDiscount extends AbstractTotal
         if ($pointDiscount > 0.001) {
             $totals[] = [
                 'code' => $this->getCode(),
-                'title' => __('Loyalty Points Discount'),
+                'title' => __('Loyalty Points Redeemed'),
                 'value' => $pointDiscount,
             ];
         }

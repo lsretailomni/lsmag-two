@@ -20,11 +20,17 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
     public $loyaltyHelper;
 
     /**
+     * @var \Ls\Omni\Helper\BasketHelper
+     */
+    public $basketHelper;
+
+    /**
      * @var Ls\Omni\Helper\Data
      */
     public $data;
 
     /**
+     * RedeemPoints constructor.
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
@@ -33,7 +39,8 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
      * @param \Magento\Checkout\Model\Cart $cart
      * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
      * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
-     * @codeCoverageIgnore
+     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
+     * @param \Ls\Omni\Helper\Data $data
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -44,6 +51,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
         \Magento\Checkout\Model\Cart $cart,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper,
+        \Ls\Omni\Helper\BasketHelper $basketHelper,
         \Ls\Omni\Helper\Data $data
     ) {
         parent::__construct(
@@ -56,6 +64,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
         );
         $this->quoteRepository = $quoteRepository;
         $this->loyaltyHelper = $loyaltyHelper;
+        $this->basketHelper = $basketHelper;
         $this->data = $data;
     }
 
@@ -84,7 +93,8 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
             $orderBalance =$this->data->getOrderBalance(
                 $cartQuote->getLsGiftCardAmountUsed(),
-                0
+                0,
+                $this->basketHelper->getBasketSessionValue()
             );
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid(
                 $orderBalance,

@@ -18,6 +18,28 @@
         <span class="price"><?= $block->getFormattedPrice($block->getSubtotal()); ?></span>
     </td>
 </tr>
+<?php if (!empty($block->giftCardAmount>0)) { ?>
+    <tr class="discount">
+        <th colspan="4" class="mark" scope="row">
+            <?= $block->escapeHtml('Gift Card Redeemed') ?>
+        </th>
+        <td class="amount" data-th="<?= $block->escapeHtml('Gift Card Redeemed') ?>">
+            <span class="price">-<?= $block->getFormattedPrice($block->giftCardAmount); ?></span>
+        </td>
+    </tr>
+<?php } ?>
+
+<?php if (!empty($block->loyaltyPointAmount>0)) { ?>
+    <tr class="discount">
+        <th colspan="4" class="mark" scope="row">
+            <?= $block->escapeHtml('Loyalty Points Redeemed') ?>
+        </th>
+        <td class="amount" data-th="<?= $block->escapeHtml('Loyalty Points Redeemed') ?>">
+            <span class="price">-<?= $block->getFormattedPrice($block->loyaltyPointAmount); ?></span>
+        </td>
+    </tr>
+<?php } ?>
+
 <?php if (!empty($block->getTotalDiscount()) && $block->getTotalDiscount() > 0) { ?>
     <tr class="discount">
         <th colspan="4" class="mark" scope="row">
@@ -49,6 +71,6 @@
         <strong><?= $block->escapeHtml('Total') ?> </strong>
     </th>
     <td class="amount" data-th="<?= $block->escapeHtml('Total') ?>">
-        <strong><span class="price"><?= $block->getFormattedPrice($block->getGrandTotal()); ?></span></strong>
+        <strong><span class="price"><?= $block->getFormattedPrice($block->getTotalAmount()); ?></span></strong>
     </td>
 </tr>

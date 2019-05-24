@@ -10,7 +10,6 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Omni\Helper\BasketHelper;
 use \Magento\Framework\Session\SessionManagerInterface;
 
 /**
@@ -37,14 +36,9 @@ class Data extends AbstractHelper
     public $session;
 
     /**
-     * @var Loyalty Helper
+     * @var \Magento\Checkout\Model\Session\Proxy
      */
-    public $loyaltyHelper;
-
-    /**
-     * @var Basket Helper
-     */
-    public $basketHelper;
+    public $checkoutSession;
 
     /** @var \Magento\Framework\Message\ManagerInterface */
     public $messageManager;
@@ -53,6 +47,11 @@ class Data extends AbstractHelper
      * @var Price Helper
      */
     public $priceHelper;
+
+    /**
+     * @var Loyalty Helper
+     */
+    public $loyaltyHelper;
 
     /**
      * @var CartRepositoryInterface
@@ -66,10 +65,10 @@ class Data extends AbstractHelper
      * @param ReplStoreRepositoryInterface $storeRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SessionManagerInterface $session
-     * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
-     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
+     * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
      * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
      */
 
@@ -79,10 +78,10 @@ class Data extends AbstractHelper
         ReplStoreRepositoryInterface $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SessionManagerInterface $session,
-        LoyaltyHelper $loyaltyHelper,
-        BasketHelper $basketHelper,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        LoyaltyHelper $loyaltyHelper,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository
     )
     {
@@ -90,11 +89,11 @@ class Data extends AbstractHelper
         $this->storeRepository = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->session = $session;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->basketHelper = $basketHelper;
+        $this->checkoutSession = $checkoutSession;
         $this->messageManager = $messageManager;
         $this->priceHelper = $priceHelper;
         $this->cartRepository = $cartRepository;
+        $this->loyaltyHelper = $loyaltyHelper;
 
         $this->config = $context->getScopeConfig();
         parent::__construct($context);
@@ -172,16 +171,15 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @param $baseSubTotal
      * @param $giftCardAmount
-     * @param $loyaltyAmount
-     * @return mixed
+     * @param $loyaltyPoints
+     * @param $basketData
+     * @return float|int
      */
-    public function getOrderBalance($giftCardAmount, $loyaltyPoints)
+    public function getOrderBalance($giftCardAmount, $loyaltyPoints, $basketData)
     {
         try {
             $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
-            $basketData = $this->basketHelper->getBasketSessionValue();
             if (!empty($basketData)) {
                 $totalAmount = $basketData->getTotalAmount();
                 return $totalAmount - $giftCardAmount - $loyaltyAmount;
@@ -195,17 +193,20 @@ class Data extends AbstractHelper
      * @param $giftCardNo
      * @param $giftCardAmount
      * @param $loyaltyPoints
+     * @param $basketData
+     * @return bool
      */
-    public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints)
+    public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData)
     {
         try {
             $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
-            $basketData = $this->basketHelper->getBasketSessionValue();
-            $cartId = $this->basketHelper->checkoutSession->getQuoteId();
+            $cartId = $this->checkoutSession->getQuoteId();
             $quote = $this->cartRepository->get($cartId);
-            if (!empty($basketData)) {
+            if (!empty($basketData) && is_object($basketData)) {
                 $totalAmount = $basketData->getTotalAmount();
+                $discountAmount = $basketData->getTotalDiscount();
                 $combinedTotalLoyalGiftCard = $giftCardAmount + $loyaltyAmount;
+                $combinedDiscountPaymentamount = $discountAmount + $combinedTotalLoyalGiftCard;
                 if ($loyaltyAmount > $totalAmount) {
                     $quote->setLsPointsSpent(0);
                     $this->cartRepository->save($quote);
@@ -238,10 +239,17 @@ class Data extends AbstractHelper
                             $this->priceHelper->currency($giftCardAmount, true, false)
                         )
                     );
+                } else if ($combinedDiscountPaymentamount > $totalAmount) {
+                    return false;
+                } else {
+                    return true;
                 }
+            } else {
+                return true;
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
+
 }
