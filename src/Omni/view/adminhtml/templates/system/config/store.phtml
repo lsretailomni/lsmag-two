@@ -19,11 +19,19 @@
                 data: {baseUrl: baseUrl},
                 complete: function (response) {
                     stores = response.responseJSON.store;
+                    hierarchy = response.responseJSON.hierarchy;
                     $("#ls_mag_service_selected_store option").remove();
+                    $("#ls_mag_service_replicate_hierarchy_code option").remove();
                     $.each(stores, function (i, store) {
                         $('#ls_mag_service_selected_store').append($('<option>', {
                             value: store.value,
                             text: store.label
+                        }));
+                    });
+                    $.each(hierarchy, function (i, val) {
+                        $('#ls_mag_service_replicate_hierarchy_code').append($('<option>', {
+                            value: val.value,
+                            text: val.label
                         }));
                     });
                     alert($t(response.responseJSON.pong));

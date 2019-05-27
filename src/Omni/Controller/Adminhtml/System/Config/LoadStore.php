@@ -80,22 +80,30 @@ class LoadStore extends Action
     public function execute()
     {
         $pong = 'Omni Ping failed. Please try with valid service base URL.';
-        $option_array = [['value' => '', 'label' => __('Please select your web store')]];
+        $hierarchyPlaceholder = [
+            ['value' => '', 'label' => __('No hierarchy code found for the selected store')]
+        ];
+        $option_array = [];
         try {
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $stores = $this->getStores($baseUrl);
             if (!empty($stores)) {
+                $option_array = [['value' => '', 'label' => __('Please select your web store')]];
                 $pong = $this->omniPing($baseUrl);
                 foreach ($stores as $store) {
                     $option_array[] = ['value' => $store->getId(), 'label' => $store->getDescription()];
                 }
+            } else {
+                $option_array = [['value' => '', 'label' => __('No store found for entered omni api url')]];
             }
         } catch (\Exception $e) {
             $this->logger->critical($e);
         }
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
-        return $result->setData(['success' => true, 'store' => $option_array, 'pong' => $pong]);
+        return $result->setData(
+            ['success' => true, 'store' => $option_array, 'pong' => $pong, 'hierarchy' => $hierarchyPlaceholder]
+        );
     }
 
     /**
