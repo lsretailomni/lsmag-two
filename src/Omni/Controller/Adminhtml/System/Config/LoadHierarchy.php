@@ -62,6 +62,7 @@ class LoadHierarchy extends Action
      */
     public function execute()
     {
+        $option_array = [];
         try {
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $storeId = $this->getRequest()->getParam('storeId');
