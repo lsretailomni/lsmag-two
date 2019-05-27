@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Omni\Model\System\Backend;
 
 use Magento\Framework\App\Cache\TypeListInterface;
@@ -20,13 +21,13 @@ class BaseUrl extends Value
     public $logger;
 
     /**
-     * @param Context               $context
-     * @param Registry              $registry
-     * @param ScopeConfigInterface  $config
-     * @param TypeListInterface     $cacheTypeList
+     * @param Context $context
+     * @param Registry $registry
+     * @param ScopeConfigInterface $config
+     * @param TypeListInterface $cacheTypeList
      * @param AbstractResource|null $resource
-     * @param AbstractDb|null       $resourceCollection
-     * @param array                 $data
+     * @param AbstractDb|null $resourceCollection
+     * @param array $data
      */
     public function __construct(
         Context $context,
@@ -35,11 +36,12 @@ class BaseUrl extends Value
         TypeListInterface $cacheTypeList,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
-        array $data = [ ]
+        array $data = []
     ) {
         $this->logger = $context->getLogger();
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
     }
+
     // @codingStandardsIgnoreStart
     public function beforeSave()
     {

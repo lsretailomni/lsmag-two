@@ -320,6 +320,32 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Validate Omni Base URL
+     * @return bool
+     */
+    public function validateBaseUrl($baseUrl = null)
+    {
+        if ($baseUrl == null) {
+            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
+        }
+        if (empty($baseUrl)) {
+            return false;
+        } else {
+            try {
+                $url = join('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
+                // @codingStandardsIgnoreStart
+                $soapClient = new SoapClient($url . '?singlewsdl');
+                // @codingStandardsIgnoreEnd
+                if ($soapClient) {
+                    return true;
+                }
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
+    }
+
+    /**
      * @return bool
      */
     public function isLSR()

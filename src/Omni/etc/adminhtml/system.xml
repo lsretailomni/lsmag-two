@@ -8,24 +8,34 @@
             <group id="service" translate="label" type="text" sortOrder="10"
                    showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Configuration</label>
-                <field id="base_url" translate="label" type="text" sortOrder="10"
+                <field id="base_url" translate="label comment" type="text" sortOrder="10"
                        showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Service Base URL</label>
+                    <validate>required-entry validate-url</validate>
                     <comment>http://lsretail.cloudapp.net/lsomniservice</comment>
                 </field>
-                <field id="selected_store" translate="label" type="select" sortOrder="10" showInDefault="1"
+                <field id="validate_base_url" translate="label comment" type="button" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Ls\Omni\Block\Adminhtml\System\Config\Stores</frontend_model>
+                    <comment>Please validate your base url by clicking on button above</comment>
+                </field>
+                <field id="selected_store" translate="label comment" type="select" sortOrder="10" showInDefault="1"
                        showInWebsite="1" showInStore="1">
-                    <label>Selected Store</label>
+                    <label>Select Store</label>
+                    <validate>required-entry</validate>
                     <source_model>Ls\Omni\Model\System\Source\NavStore</source_model>
                     <comment>Choose the web store</comment>
                 </field>
-                <field id="replicate_hierarchy_code" translate="label" type="select" sortOrder="10" showInDefault="1"
+                <field id="replicate_hierarchy_code" translate="label comment" type="select" sortOrder="10"
+                       showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Select Hierarchy Code</label>
+                    <validate>required-entry</validate>
                     <comment>Required to get heirarchy node and leaf from omni</comment>
                     <source_model>Ls\Replication\Block\Adminhtml\System\Config\HierarchyCode</source_model>
                 </field>
-                <field id="debug" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                <field id="debug" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1"
                        showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -48,7 +58,6 @@
                         <field id="*/*/active">1</field>
                     </depends>
                 </field>
-
                 <field id="cart" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1"
                        showInStore="1">
                     <label>Show on Cart Page</label>
@@ -65,7 +74,6 @@
                         <field id="*/*/active">1</field>
                     </depends>
                 </field>
-
                 <field id="home" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1"
                        showInStore="1">
                     <label>Show on Home Page</label>
@@ -74,7 +82,6 @@
                         <field id="*/*/active">1</field>
                     </depends>
                 </field>
-
                 <field id="productcount" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1"
                        showInStore="1">
                     <label>Product Count</label>
@@ -83,7 +90,6 @@
                     </depends>
                 </field>
             </group>
-
             <group id="ls_giftcard" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Gift Card</label>
@@ -100,8 +106,6 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-
-
         </section>
         <!-- For shipment Method -->
         <section id="carriers" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
@@ -179,10 +183,5 @@
                 </field>
             </group>
         </section>
-
-
     </system>
-
 </config>
-
-

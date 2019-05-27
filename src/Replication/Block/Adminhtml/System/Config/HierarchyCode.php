@@ -42,7 +42,10 @@ class HierarchyCode implements ArrayInterface
      */
     public function toOptionArray()
     {
-        $hierarchyCodes = [];
+        $hierarchyCodes[] = [
+            'value' => '',
+            'label' => __('Please select your hierarchy code')
+        ];
         if ($this->lsr->isLSR()) {
             /**
              * We want to populate all the Hierarchy codes first even though if the replication is not done.
@@ -85,10 +88,6 @@ class HierarchyCode implements ArrayInterface
             }
         } else {
             $this->replicationHelper->getLogger()->debug('Store not set');
-            $hierarchyCodes[] = [
-                'value' => '',
-                'label' => __('Please select the Store First')
-            ];
         }
         return $hierarchyCodes;
     }
