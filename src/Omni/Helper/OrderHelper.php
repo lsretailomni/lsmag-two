@@ -345,4 +345,18 @@ class OrderHelper extends AbstractHelper
         }
         return $response ? $response->getOrderGetByIdResult() : $response;
     }
+
+    /**
+     * @param $order
+     * @return bool
+     */
+    public function isAuthorizedForOrder($order)
+    {
+        $loggedInCustomerEmail = $this->customerSession->getCustomerData()->getEmail();
+        $orderEmail = $order->getEmail();
+        if ($loggedInCustomerEmail == $orderEmail) {
+            return true;
+        }
+        return false;
+    }
 }
