@@ -20,6 +20,7 @@
                 complete: function (response) {
                     stores = response.responseJSON.store;
                     $("#ls_mag_service_selected_store option").remove();
+                    $("#ls_mag_service_replicate_hierarchy_code option").remove();
                     $.each(stores, function (i, store) {
                         $('#ls_mag_service_selected_store').append($('<option>', {
                             value: store.value,

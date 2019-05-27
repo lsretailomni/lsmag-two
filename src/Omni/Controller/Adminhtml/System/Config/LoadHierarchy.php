@@ -62,15 +62,17 @@ class LoadHierarchy extends Action
      */
     public function execute()
     {
-        $option_array = [['value' => '', 'label' => __('Please select your hierarchy code')]];
         try {
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $storeId = $this->getRequest()->getParam('storeId');
             $hierarchies = $this->getHierarchy($baseUrl, $storeId);
             if (!empty($hierarchies)) {
+                $option_array = [['value' => '', 'label' => __('Please select your hierarchy code')]];
                 foreach ($hierarchies as $hierarchy) {
                     $option_array[] = ['value' => $hierarchy->getId(), 'label' => $hierarchy->getDescription()];
                 }
+            } else {
+                $option_array = [['value' => '', 'label' => __('No hierarchy code found for the selected store')]];
             }
         } catch (\Exception $e) {
             $this->logger->critical($e);
