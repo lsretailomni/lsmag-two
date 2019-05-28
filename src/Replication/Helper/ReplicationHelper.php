@@ -65,7 +65,10 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\Filesystem $Filesystem
      * @param Config $eavConfig
+     * @param WriterInterface $configWriter
      * @param Set $attributeSet
+     * @param TypeListInterface $cacheTypeList
+     * @param LSR $LSR
      */
 
     public function __construct(
@@ -101,6 +104,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param string $filtername
      * @param string $filtervalue
+     * @param string $conditionType
+     * @param int $pagesize
+     * @param bool $excludeDeleted
      * @return \Magento\Framework\Api\SearchCriteria
      */
     public function buildCriteriaForNewItems(
@@ -145,8 +151,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param string $filtername
-     * @param string $filtervalue
+     * @param string $item_id
+     * @param int $pagesize
+     * @param bool $excludeDeleted
      * @return \Magento\Framework\Api\SearchCriteria
      */
     public function buildCriteriaForProductAttributes($item_id = '', $pagesize = 100, $excludeDeleted = true)
@@ -228,9 +235,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             }
         }
         if ($excludeDeleted) {
-            $criteria->addFilter('IsDeleted', 0, 'eq');
+            $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
         }
-        $criteria->addFilter('is_updated', 1, 'eq');
+        $criteria->addFilter('main_table.is_updated', 1, 'eq');
         $criteria->setPageSize($pagesize);
         return $criteria->create();
     }
@@ -270,6 +277,43 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         $searchCriteria->setPageSize($pagesize);
         return $searchCriteria->create();
+    }
+
+    /**
+     * Create Build Criteria with Array of filters as a parameters
+     * @param array $filters
+     * @param int $pagesize
+     * @param boolean $excludeDeleted
+     * @return \Magento\Framework\Api\SearchCriteria
+     */
+    public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, $excludeDeleted = true)
+    {
+        $attr_processed = $this->filterBuilder->setField('main_table.processed')
+            ->setValue('0')
+            ->setConditionType('eq')
+            ->create();
+        // is_updated = 1 which means may be processed already but is updated on omni end
+        $attr_is_updated = $this->filterBuilder->setField('main_table.is_updated')
+            ->setValue('1')
+            ->setConditionType('eq')
+            ->create();
+        // building OR condition between the above two criteria
+        $filterOr = $this->filterGroupBuilder
+            ->addFilter($attr_processed)
+            ->addFilter($attr_is_updated)
+            ->create();
+        // adding criteria into where clause.
+        $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+            }
+        }
+        if ($excludeDeleted) {
+            $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
+        }
+        $criteria->setPageSize($pagesize);
+        return $criteria->create();
     }
 
     /**

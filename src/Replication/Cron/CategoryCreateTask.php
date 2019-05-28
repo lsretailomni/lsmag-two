@@ -488,7 +488,7 @@ class CategoryCreateTask
     public function updateImagesOnly()
     {
         $filters = [
-            ['field' => 'TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq']
+            ['field' => 'main_table.TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $images = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();

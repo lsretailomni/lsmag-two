@@ -228,7 +228,7 @@ class Offers extends \Magento\Framework\View\Element\Template
     {
         $url = '';
         $text = '';
-        if (count($offerLines) == 1) {
+        if (!is_array($offerLines)) {
             try {
                 $product = $this->productRepository->get($offerLines->getId());
                 $url = $product->getProductUrl();
