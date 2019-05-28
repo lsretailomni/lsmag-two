@@ -3,9 +3,9 @@
 namespace Ls\Customer\Controller\Order;
 
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
-use \Magento\Framework\App\Request\Http;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class View
@@ -14,7 +14,7 @@ use Magento\Framework\Controller\ResultFactory;
 class View extends \Magento\Framework\App\Action\Action
 {
     /**
-     * @var
+     * @var \Magento\Framework\Message\ManagerInterface
      */
     public $messageManager;
 
@@ -22,6 +22,7 @@ class View extends \Magento\Framework\App\Action\Action
      * @var ResultFactory
      */
     public $resultRedirect;
+
     /** @var PageFactory */
     public $resultPageFactory;
 
@@ -80,12 +81,14 @@ class View extends \Magento\Framework\App\Action\Action
             if ($response === null) {
                 $message = __('This order id is not corresponded to any order');
                 $this->messageManager->addErrorMessage($message);
+                return $this->_redirect('sales/order/history/');
+            } else {
+                if (!$this->orderHelper->isAuthorizedForOrder($response)) {
+                    $message = __('You are not authorized to view this order');
+                    $this->messageManager->addErrorMessage($message);
+                    return $this->_redirect('sales/order/history/');
+                }
             }
-        }
-        if ($response === null) {
-            $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            return $resultRedirect;
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
