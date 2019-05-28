@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+/** @var  $block \Ls\Customer\Block\Order\Info */
 ?>
 <div class="actions">
     <?php $_order = $block->getOrder();
@@ -24,8 +25,8 @@
                 __('Print Order') ?></span>
         </a>
         <?= $block->getChildHtml() ?>
-    <?php } else { ?>
-        <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($_order->getEntityId())) : ?>
+    <?php } else if(!empty($_order->getEntityId())) { ?>
+        <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($_order->getId())) : ?>
             <a href="#" data-post='<?php /* @escapeNotVerified */
             echo
             $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
