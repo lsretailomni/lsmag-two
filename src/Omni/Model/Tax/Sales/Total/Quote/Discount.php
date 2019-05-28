@@ -5,6 +5,10 @@ namespace Ls\Omni\Model\Tax\Sales\Total\Quote;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 
+/**
+ * Class Discount
+ * @package Ls\Omni\Model\Tax\Sales\Total\Quote
+ */
 class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
 {
     /**
@@ -75,13 +79,11 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
     }
 
     /**
-     * Collect address discount amount
-     *
      * @param \Magento\Quote\Model\Quote $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      * @param \Magento\Quote\Model\Quote\Address\Total $total
-     * @return $this
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @return $this|\Magento\Quote\Model\Quote\Address\Total\AbstractTotal
+     * @throws \Exception
      */
     public function collect(
         \Magento\Quote\Model\Quote $quote,
@@ -92,11 +94,8 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         $discountAmount = $this->getTotalDiscount($quote);
         $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
         if ($discountAmount < 0) {
-            $proActiveDiscount = $this->getProactiveDiscount($quote);
             $total->addTotalAmount('discount', $discountAmount);
-            $total->addTotalAmount('subtotal', $proActiveDiscount);
             $total->addTotalAmount('grand_total', $paymentDiscount);
-            $this->checkoutSession->setProActiveCheck(0);
         } else {
             $total->addTotalAmount('discount', $discountAmount);
             $total->addTotalAmount('grand_total', $paymentDiscount);
@@ -123,12 +122,9 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
                 'value' => $amount
             ];
 
-            $proActiveDiscount = $this->getProactiveDiscount($quote);
             $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
             $total->addTotalAmount('discount', $amount);
-            $total->addTotalAmount('subtotal', $proActiveDiscount);
             $total->addTotalAmount('grand_total', $paymentDiscount);
-            $this->checkoutSession->setProActiveCheck(0);
         } else {
             $total->addTotalAmount('discount', $amount);
             $total->addTotalAmount('grand_total', 0);
@@ -160,30 +156,9 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
      * @param $quote
      * @return float|int
      */
-    public function getProactiveDiscount($quote)
-    {
-        $proActiveDiscount = 0;
-        foreach ($quote->getAllVisibleItems() as $item) {
-            if ($item->getProduct()->getFinalPrice() < $item->getProduct()->getPrice()) {
-                $proActiveDiscount += (
-                        $item->getProduct()->getPrice() - $item->getProduct()->getFinalPrice()
-                    ) * $item->getQty();
-            }
-        }
-        if ($proActiveDiscount > 0) {
-            $this->checkoutSession->setProActiveDiscount($proActiveDiscount);
-        }
-        return $proActiveDiscount;
-    }
-
-    /**
-     * @param $quote
-     * @return float|int
-     */
     public function getTotalDiscount($quote)
     {
         $amount = 0;
-        $this->checkoutSession->setProActiveDiscount(0);
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $amount = -$basketData->getTotalDiscount();
@@ -198,7 +173,6 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
     public function getGiftCardLoyaltyDiscount($quote)
     {
         $amount = 0;
-        $this->checkoutSession->setProActiveDiscount(0);
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();

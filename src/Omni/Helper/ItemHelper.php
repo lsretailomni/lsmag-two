@@ -39,6 +39,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var Cart $cart */
     public $cart;
 
+    /** @var itemResourceModel */
+    public $itemResourceModel;
+
     /** @var array */
     private $hashCache = [];
 
@@ -57,6 +60,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         ProductRepository $productRepository,
         CartRepositoryInterface $quoteRepository,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
+        \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel,
         Cart $cart
     )
     {
@@ -67,6 +71,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->quoteRepository = $quoteRepository;
         $this->checkoutSession = $checkoutSession;
         $this->cart = $cart;
+        $this->itemResourceModel = $itemResourceModel;
     }
 
     /**
@@ -282,13 +287,16 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                                 // @codingStandardsIgnoreLine
                                     $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount()
                                 );
+                                $item->setOriginalCustomPrice($item->getOriginalPrice());
                             } else {
                                 if ($line->getDiscountAmount() > 0) {
                                     $item->setCustomPrice($line->getAmount());
                                     $item->setDiscountAmount($line->getDiscountAmount());
+                                    $item->setOriginalCustomPrice($item->getOriginalPrice());
                                 } else {
                                     $item->setCustomPrice(null);
                                     $item->setDiscountAmount(null);
+                                    $item->setOriginalCustomPrice(null);
                                 }
                             }
                         }
@@ -309,18 +317,25 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                     if ($orderLines->getDiscountAmount() > 0) {
                         $item->setCustomPrice($orderLines->getAmount());
                         $item->setDiscountAmount($orderLines->getDiscountAmount());
+                        $item->setOriginalCustomPrice($item->getOriginalPrice());
                     } else {
                         $item->setCustomPrice(null);
                         $item->setDiscountAmount(null);
+                        $item->setOriginalCustomPrice(null);
                     }
                 }
+                $item->getProduct()->setIsSuperMode(true);
+                $item->calcRowTotal();
                 // @codingStandardsIgnoreLine
-                $item->save();
+                $this->itemResourceModel->save($item);
             }
 
             if ($quote->getId()) {
                 $cartQuote = $this->cart->getQuote();
-                $couponCode=$this->checkoutSession->getCouponCode();
+                if (isset($basketData)) {
+                    $cartQuote->getShippingAddress()->setGrandTotal($basketData->getTotalAmount());
+                }
+                $couponCode = $this->checkoutSession->getCouponCode();
                 $cartQuote->setCouponCode($couponCode);
                 $this->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
                 $cartQuote->collectTotals();
