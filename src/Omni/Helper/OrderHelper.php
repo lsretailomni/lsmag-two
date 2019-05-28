@@ -352,9 +352,9 @@ class OrderHelper extends AbstractHelper
      */
     public function isAuthorizedForOrder($order)
     {
-        $loggedInCustomerEmail = $this->customerSession->getCustomerData()->getEmail();
-        $orderEmail = $order->getEmail();
-        if ($loggedInCustomerEmail == $orderEmail) {
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $orderCardId = $order->getCardId();
+        if ($cardId == $orderCardId) {
             return true;
         }
         return false;

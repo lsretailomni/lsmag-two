@@ -84,8 +84,6 @@ class View extends \Magento\Framework\App\Action\Action
                 return $this->_redirect('sales/order/history/');
             } else {
                 if (!$this->orderHelper->isAuthorizedForOrder($response)) {
-                    $message = __('You are not authorized to view this order');
-                    $this->messageManager->addErrorMessage($message);
                     return $this->_redirect('sales/order/history/');
                 }
             }
