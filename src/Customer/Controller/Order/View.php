@@ -78,14 +78,8 @@ class View extends \Magento\Framework\App\Action\Action
         if ($this->request->getParam('order_id')) {
             $orderId = $this->request->getParam('order_id');
             $response = $this->setCurrentOrderInRegistry($orderId);
-            if ($response === null) {
-                $message = __('This order id is not corresponded to any order');
-                $this->messageManager->addErrorMessage($message);
+            if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
-            } else {
-                if (!$this->orderHelper->isAuthorizedForOrder($response)) {
-                    return $this->_redirect('sales/order/history/');
-                }
             }
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
