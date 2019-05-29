@@ -21,6 +21,21 @@ class Info extends \Magento\Framework\View\Element\Template
     public $priceHelper;
 
     /**
+     * @var Order Repository
+     */
+    public $orderRepository;
+
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    public $searchCriteriaBuilder;
+
+    /**
+     * @var CustomerSession
+     */
+    public $customerSession;
+
+    /**
      * @var string
      */
     // @codingStandardsIgnoreStart
@@ -34,6 +49,11 @@ class Info extends \Magento\Framework\View\Element\Template
      */
     public $coreRegistry = null;
 
+     /**
+      * @var \Magento\Framework\App\Http\Context
+      */
+    public $httpContext;
+
     /**
      * Info constructor.
      * @param TemplateContext $context
@@ -46,11 +66,19 @@ class Info extends \Magento\Framework\View\Element\Template
         Registry $registry,
         \Magento\Directory\Model\CountryFactory $countryFactory,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        \Magento\Sales\Model\OrderRepository $orderRepository,
+        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Framework\App\Http\Context $httpContext,
         array $data = []
     ) {
         $this->coreRegistry = $registry;
         $this->countryFactory = $countryFactory;
         $this->priceHelper = $priceHelper;
+        $this->orderRepository = $orderRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->customerSession = $customerSession;
+        $this->httpContext = $httpContext;
         parent::__construct($context, $data);
     }
 
@@ -192,5 +220,50 @@ class Info extends \Magento\Framework\View\Element\Template
     public function getGiftCardFormattedPrice($giftCardAmount)
     {
         return $this->priceHelper->currency($giftCardAmount, true, false);
+    }
+
+    /**
+     * Get url for printing order
+     *
+     * @param \Magento\Sales\Model\Order $order
+     * @return string
+     */
+    public function getPrintUrl($order)
+    {
+        if ($order->getDocumentId()!=null) {
+            return $this->getUrl('sales/order/print', ['order_id' => $order->getEntityId()]);
+        }
+    }
+
+    /**
+     * @param $order
+     * @return string
+     */
+    public function getReorderUrl($order)
+    {
+        try {
+            if ($order->getDocumentId()!=null) {
+                return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
+            }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @param $documentId
+     * @return \Magento\Sales\Api\Data\OrderInterface[]
+     */
+    public function getOrderByDocumentId($documentId)
+    {
+        $customerId = $this->customerSession->getCustomerId();
+        $order = $this->orderRepository->getList(
+            $this->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
+        )->getItems();
+        foreach ($order as $ord) {
+            if ($ord->getCustomerId() == $customerId) {
+                return $ord;
+            }
+        }
     }
 }

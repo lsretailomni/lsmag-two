@@ -1,0 +1,29 @@
+<?php
+// @codingStandardsIgnoreFile
+/** @var  $block \Ls\Customer\Block\Order\Info */
+?>
+<div class="actions">
+    <?php $_order = $block->getOrder();
+    $magOrder = $block->getOrderByDocumentId($_order->getDocumentId());
+    if (!empty($magOrder)) {
+        ?>
+        <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getEntityId())) : ?>
+            <a href="#" data-post='<?php /* @escapeNotVerified */
+            echo
+            $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+                ->getPostData($block->getReorderUrl($magOrder))
+            ?>' class="action order">
+                <span><?= /* @escapeNotVerified */
+                    __('Reorder') ?></span>
+            </a>
+        <?php endif ?>
+        <a class="action print"
+           href="<?= /* @escapeNotVerified */
+           $block->getPrintUrl($magOrder) ?>"
+           onclick="this.target='_blank';">
+            <span><?= /* @escapeNotVerified */
+                __('Print Order') ?></span>
+        </a>
+        <?= $block->getChildHtml() ?>
+    <?php } ?>
+</div>
