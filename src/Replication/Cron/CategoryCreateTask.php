@@ -458,7 +458,8 @@ class CategoryCreateTask
                 $this->file->mkdir($offerpath, 0775);
             }
             $format = strtolower($result->getFormat());
-            $output_file = "{$imageId}.$format";
+            $imageName = $this->oSlug($imageId);
+            $output_file = "{$imageName}.$format";
             $file = "{$offerpath}{$output_file}";
             if (!$this->file->fileExists($file)) {
                 $base64 = $result->getImage();
