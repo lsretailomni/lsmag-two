@@ -1,0 +1,41 @@
+<div class="proactive-discounts-container">
+    <?php
+    $discounts = $block->getProactiveDiscounts();
+    if (!empty($discounts)) {
+        ?>
+        <div class="discount-dropdown-label">
+            <span><?php echo __("Store Promotions:"); ?></span>
+        </div>
+        <div class="discount-dropdown">
+            <div data-block="dropdown" class="dropdown-wrapper">
+                <button type="button" class="action primary" data-trigger="trigger">
+                    <span data-bind="i18n: 'Find Discounts'"></span>
+                    <i class="arrow down"></i>
+                </button>
+            </div>
+            <div class="block block-dropdown"
+                 data-mage-init='{
+        "dropdownDialog": {
+            "appendTo": "[data-block=dropdown]",
+            "triggerTarget":"[data-trigger=trigger]",
+            "timeout": 2000,
+            "closeOnMouseLeave": false,
+            "closeOnEscape": true,
+            "autoOpen": false,
+            "triggerClass": "active",
+            "parentClass": "active",
+            "buttons": []
+        }
+     }'>
+                <?php
+                foreach ($discounts as $discount) {
+                    echo "<div class='dropdown-content-wrapper'>
+                " . $block->getFormattedDescription($discount) . "
+            </div>";
+                }
+                ?>
+
+            </div>
+        </div>
+    <?php } ?>
+</div>

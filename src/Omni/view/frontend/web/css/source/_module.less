@@ -2,3 +2,76 @@
 @import 'module/_owl.carousel.less';
 @import 'module/_owl.theme.less';
 @import 'module/_owl.transitions.less';
+
+@color_1: #666666;
+
+.dropdown-wrapper {
+  display: inline-block;
+  position: relative;
+  float: right;
+  .block-dropdown {
+    margin: 0;
+    padding: 10px;
+    list-style: none none;
+    background: #ffffff;
+    border: 1px solid #bbbbbb;
+    min-width: 100%;
+    width: 320px;
+    z-index: 101;
+    box-sizing: border-box;
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+  }
+  i {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    margin-left: 5px;
+  }
+  i.arrow {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+}
+.dropdown-wrapper.active {
+  overflow: visible;
+  .block-dropdown {
+    display: block;
+  }
+  i.arrow {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+}
+.proactive-discounts-container {
+  width: 100%;
+  float:left;
+  margin-bottom: 10px;
+  .discount-dropdown-label {
+    float: left;
+    width: 30%;
+    span {
+      color: @color_1;
+      font-weight: 600;
+      letter-spacing: .05em;
+      line-height: 2;
+    }
+  }
+  .discount-dropdown {
+    float: right;
+    width: 60%;
+  }
+  .block-dropdown {
+    .dropdown-content-wrapper {
+      &+.dropdown-content-wrapper {
+        border-top: 1px solid black;
+        margin-top: 10px;
+        padding-top: 10px;
+      }
+    }
+  }
+}
