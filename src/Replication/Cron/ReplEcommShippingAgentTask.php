@@ -28,6 +28,8 @@ class ReplEcommShippingAgentTask extends AbstractReplicationTask
 
     const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_shipping_agent';
 
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_shipping_agent';
+
     /**
      * @property ReplShippingAgentRepository $repository
      */
@@ -124,6 +126,11 @@ class ReplEcommShippingAgentTask extends AbstractReplicationTask
     public function getConfigPathStatus()
     {
         return self::CONFIG_PATH_STATUS;
+    }
+
+    public function getConfigPathLastExecute()
+    {
+        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getMainEntity()

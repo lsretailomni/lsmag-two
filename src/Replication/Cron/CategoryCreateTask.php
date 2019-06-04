@@ -22,6 +22,9 @@ use Psr\Log\LoggerInterface;
  */
 class CategoryCreateTask
 {
+
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_category';
+
     /** @var CategoryFactory */
     public $categoryFactory;
 
@@ -115,6 +118,7 @@ class CategoryCreateTask
      */
     public function execute()
     {
+        $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
         $this->logger->debug("Running CategoryCreateTask");
         // for defning category images to the product group
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);

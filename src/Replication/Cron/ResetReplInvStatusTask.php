@@ -13,6 +13,8 @@ use Psr\Log\LoggerInterface;
  */
 class ResetReplInvStatusTask
 {
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_inv_status_reset';
+
     /** @var ReplicationHelper */
     public $replicationHelper;
 
@@ -44,6 +46,7 @@ class ResetReplInvStatusTask
     public function execute()
     {
         if ($this->lsr->isLSR()) {
+            $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
             $this->replicationHelper->updateCronStatus(false, ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS);
         }
     }

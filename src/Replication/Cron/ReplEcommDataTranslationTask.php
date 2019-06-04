@@ -28,6 +28,8 @@ class ReplEcommDataTranslationTask extends AbstractReplicationTask
 
     const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_data_translation';
 
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_data_translation';
+
     /**
      * @property ReplDataTranslationRepository $repository
      */
@@ -124,6 +126,11 @@ class ReplEcommDataTranslationTask extends AbstractReplicationTask
     public function getConfigPathStatus()
     {
         return self::CONFIG_PATH_STATUS;
+    }
+
+    public function getConfigPathLastExecute()
+    {
+        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getMainEntity()
