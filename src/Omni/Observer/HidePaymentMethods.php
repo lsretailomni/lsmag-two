@@ -68,10 +68,14 @@ class HidePaymentMethods implements ObserverInterface
                 $orderTotal = $orderTotal + $shippingAmount;
                 $method_instance = $observer->getEvent()->getMethodInstance()->getCode();
                 $result = $observer->getEvent()->getResult();
-                if ($method_instance == "ls_payment_method_pay_at_store") {
-                    if ($shippingMethod == "clickandcollect_clickandcollect") {
+                if ($shippingMethod == "clickandcollect_clickandcollect") {
+                    if ($method_instance == "ls_payment_method_pay_at_store") {
                         $result->setData('is_available', true);
                     } else {
+                        $result->setData('is_available', false);
+                    }
+                } else {
+                    if ($method_instance == "ls_payment_method_pay_at_store") {
                         $result->setData('is_available', false);
                     }
                 }

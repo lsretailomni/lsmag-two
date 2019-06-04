@@ -3,6 +3,7 @@
         <input type="radio"
                name="payment[method]"
                class="radio"
+               checked="checked"
                data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()" />
         <label data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
