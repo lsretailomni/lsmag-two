@@ -5,6 +5,8 @@
             <argument name="configProviders" xsi:type="array">
                 <!-- For Click and Collect and gift card enable/disable on checkout -->
                 <item name="clickandcollect_config_provider" xsi:type="object">Ls\Omni\Model\Checkout\DataProvider</item>
+                <!-- For Payment Method Pay at Store -->
+                <item name="paystore_config_provider" xsi:type="object">Ls\Omni\Model\PayStoreConfigProvider</item>
             </argument>
         </arguments>
     </type>
