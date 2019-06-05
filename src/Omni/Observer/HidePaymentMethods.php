@@ -10,7 +10,7 @@ use \Ls\Omni\Helper\Data;
 
 /**
  * Class HidePaymentMethods
- * @package Evermore\Payment\Observer
+ * @package Ls\Omni\Observer
  */
 class HidePaymentMethods implements ObserverInterface
 {
@@ -58,6 +58,7 @@ class HidePaymentMethods implements ObserverInterface
             $basketData = $this->basketHelper->getBasketSessionValue();
             $quote = $this->basketHelper->checkoutSession->getQuote();
             $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
+            $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
             if (!empty($basketData)) {
                 $orderTotal = $this->data->getOrderBalance(
                     $quote->getLsGiftCardAmountUsed(),
@@ -65,9 +66,20 @@ class HidePaymentMethods implements ObserverInterface
                     $basketData
                 );
                 $orderTotal = $orderTotal + $shippingAmount;
+                $method_instance = $observer->getEvent()->getMethodInstance()->getCode();
+                $result = $observer->getEvent()->getResult();
+                if ($shippingMethod == "clickandcollect_clickandcollect") {
+                    if ($method_instance == "ls_payment_method_pay_at_store") {
+                        $result->setData('is_available', true);
+                    } else {
+                        $result->setData('is_available', false);
+                    }
+                } else {
+                    if ($method_instance == "ls_payment_method_pay_at_store") {
+                        $result->setData('is_available', false);
+                    }
+                }
                 if ($orderTotal <= 0) {
-                    $method_instance = $observer->getEvent()->getMethodInstance()->getCode();
-                    $result = $observer->getEvent()->getResult();
                     if ($method_instance == 'free') {
                         $quote->setBaseGrandTotal(0);
                         $quote->setGrandTotal(0);

@@ -46,6 +46,19 @@
                                             <item name="children" xsi:type="array">
                                                 <item name="payment" xsi:type="array">
                                                     <item name="children" xsi:type="array">
+                                                        <item name="renders" xsi:type="array">
+                                                            <!-- merge payment method renders here -->
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="payatstore" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Ls_Omni/js/view/payment/pay-store</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="ls_payment_method_pay_at_store" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
                                                         <item name="afterMethods" xsi:type="array">
                                                             <item name="displayArea" xsi:type="string">afterMethods
                                                             </item>
