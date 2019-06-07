@@ -107,7 +107,10 @@ define([
 
             (function (marker, store) {
                 google.maps.event.addListener(marker, 'click', function (e) {
-                    infoWindow.setContent('<div class="infowindow"><h3>' + store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street + ', ' + store.City + '</div>');
+                    if (store.State == null) {
+                        store.State = "";
+                    }
+                    infoWindow.setContent('<div class="infowindow"><h3>' + store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street +', '+ store.City+' '+ store.State +' '+ store.ZipCode+' '+ store.Country+' </div>');
                     infoWindow.open(map, marker);
                 });
             })(marker, store);
