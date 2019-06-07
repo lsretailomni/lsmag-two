@@ -115,16 +115,18 @@ class CartTotalRepository
             if ($amount <= 0) {
                 $quote->getShippingAddress()->setDiscountAmount($basketData->getTotalAmount());
                 $quote->getShippingAddress()->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
-                $quote->getShippingAddress()->setGrandTotal($basketData->getTotalAmount());
+                $quote->getShippingAddress()->setSubtotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
+                $quote->getShippingAddress()->setBaseSubtotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
                 $quote->collectTotals();
                 $this->quoteRepository->save($quote);
                 // @codingStandardsIgnoreLine
                 $this->basketHelper->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
-                $quoteTotals->setDiscountAmount($amount);
                 $quoteTotals->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
                 $quoteTotals->setBaseTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
-                $quoteTotals->setGrandTotal($basketData->getTotalAmount()- $pointDiscount - $giftCardAmount);
-                $quoteTotals->setBaseGrandTotal($basketData->getTotalAmount()- $pointDiscount - $giftCardAmount);
+                $quoteTotals->setBaseDiscountAmount($amount);
+                $quoteTotals->setSubtotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
+                $quoteTotals->setBaseSubtotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
+                $quoteTotals->setDiscountAmount($amount);
             }
         }
         $quoteTotals->setExtensionAttributes($totalsExtension);
