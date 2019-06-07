@@ -8,4 +8,8 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="sr-customer-app-action-dispatchController-context-plugin" type="Ls\Omni\Plugin\App\Action\Context" sortOrder="15"/>
+    </type>
+    <preference for="Magento\Checkout\Block\Cart\Coupon" type="Ls\Omni\Block\Cart\Coupon"/>
 </config>

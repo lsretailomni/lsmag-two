@@ -340,4 +340,52 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $response ? $response->getDiscountsGetResult()->getProactiveDiscount() : $response;
     }
+
+    /**
+     * @param $itemId
+     * @param $storeId
+     * @param $cardId
+     * @return Entity\PublishedOffer[]|Entity\PublishedOffersGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     */
+    public function getPublishedOffers($itemId, $storeId, $cardId)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request = new Operation\PublishedOffersGet();
+        $entity = new Entity\PublishedOffersGet();
+        // @codingStandardsIgnoreEnd
+        $entity->setStoreId($storeId)->setItemId($itemId)->setStoreId($storeId)->setCardId($cardId);
+        try {
+            $response = $request->execute($entity);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getPublishedOffersGetResult()->getPublishedOffer() : $response;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAvailableCouponsForLoggedInCustomers()
+    {
+        $memberInfo = $this->getMemberInfo();
+        $publishedOffersObj = $memberInfo->getPublishedOffers();
+        $itemsInCart = $this->checkoutSession->getQuote()->getAllItems();
+        $coupons = [];
+        foreach ($itemsInCart as &$item) {
+            $item = $item->getSku();
+        }
+        if ($publishedOffersObj) {
+            $publishedOffers = $publishedOffersObj->getPublishedOffer();
+            foreach ($publishedOffers as $each) {
+                if ($each->getCode() == "Coupon" && $each->getOfferLines()) {
+                    $itemId = $each->getOfferLines()->getPublishedOfferLine()->getId();
+                    if (in_array($itemId, $itemsInCart)) {
+                        $coupons[] = $each;
+                    }
+                }
+            }
+        }
+        return $coupons;
+    }
 }
