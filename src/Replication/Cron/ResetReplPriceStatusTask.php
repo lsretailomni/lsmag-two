@@ -12,6 +12,9 @@ use Psr\Log\LoggerInterface;
  */
 class ResetReplPriceStatusTask
 {
+
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_price_status_reset';
+
     /** @var ReplicationHelper */
     public $replicationHelper;
 
@@ -43,6 +46,7 @@ class ResetReplPriceStatusTask
     public function execute()
     {
         if ($this->lsr->isLSR()) {
+            $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
             $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH_STATUS);
             $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH);
         }

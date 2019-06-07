@@ -28,6 +28,8 @@ class ReplEcommVendorItemMappingTask extends AbstractReplicationTask
 
     const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_loy_vendor_item_mapping';
 
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_loy_vendor_item_mapping';
+
     /**
      * @property ReplLoyVendorItemMappingRepository $repository
      */
@@ -124,6 +126,11 @@ class ReplEcommVendorItemMappingTask extends AbstractReplicationTask
     public function getConfigPathStatus()
     {
         return self::CONFIG_PATH_STATUS;
+    }
+
+    public function getConfigPathLastExecute()
+    {
+        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getMainEntity()

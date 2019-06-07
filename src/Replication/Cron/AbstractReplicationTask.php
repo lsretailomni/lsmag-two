@@ -129,6 +129,7 @@ abstract class AbstractReplicationTask
     {
         $lsr = $this->getLsrModel();
         if ($lsr->isLSR()) {
+            $this->rep_helper->updateConfigValue(date('d M,Y h:i:s A'), $this->getConfigPathLastExecute());
             $properties = $this->getProperties();
             $last_key = $this->getLastKey();
             $remaining = INF;
@@ -471,6 +472,11 @@ abstract class AbstractReplicationTask
      * @return string
      */
     abstract public function getConfigPathStatus();
+
+    /**
+     * @return string
+     */
+    abstract public function getConfigPathLastExecute();
 
     /**
      * @param $last_key

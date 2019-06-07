@@ -119,12 +119,18 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 if ($cronName == 'repl_discount_create') {
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DISCOUNT);
                 }
+                $lastExecute = $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName);
+                $statusStr = ($fullReplicationStatus == 1) ?
+                    '<div class="flag-green custom-grid-flag">Complete</div>' :
+                    '<div class="flag-yellow custom-grid-flag">Pending</div>';
+                if (strpos($cronName, '_reset') !== false) {
+                    $statusStr = '';
+                }
                 $items[] = [
                     'id' => $counter,
-                    'fullreplicationstatus' => ($fullReplicationStatus == 1) ?
-                        '<div class="flag-green custom-grid-flag">Complete</div>' :
-                        '<div class="flag-yellow custom-grid-flag">Pending</div>',
+                    'fullreplicationstatus' => $statusStr,
                     'label' => $cronName,
+                    'lastexecuted' => $lastExecute,
                     'value' => $joblist['_attribute']['instance'],
                     'condition' => $condition
                 ];
@@ -132,8 +138,8 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
             }
         }
         // @codingStandardsIgnoreStart
-        $pagesize = intval($this->request->getParam('paging')['pageSize']);
-        $pageCurrent = intval($this->request->getParam('paging')['current']);
+        $pagesize = (int)$this->request->getParam('paging')['pageSize'];
+        $pageCurrent = (int)$this->request->getParam('paging')['current'];
         // @codingStandardsIgnoreEnd
         $pageoffset = ($pageCurrent - 1) * $pagesize;
 

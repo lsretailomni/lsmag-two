@@ -411,7 +411,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAllWebsitesIds()
     {
-
         $websiteIds = [];
         $websites = $this->storeManager->getWebsites();
         /** @var \Magento\Store\Model\Website\Interceptor $website */
@@ -446,6 +445,22 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->flushConfig();
     }
 
+
+    /**
+     * Update the config value
+     * @param $value
+     * @param $path
+     */
+    public function updateConfigValue($value, $path)
+    {
+        $this->configWriter->save(
+            $path,
+            $value,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+            0
+        );
+    }
+
     /**
      * @return \Psr\Log\LoggerInterface
      */
@@ -456,14 +471,12 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Trigger the disposable Hierarchy replication job to get Hierarchy based on stores.
+     * @return array|Entity\ReplEcommHierarchyResponse|Entity\ReplHierarchyResponse|\Ls\Omni\Client\ResponseInterface
      */
     public function getHierarchyByStore()
     {
-
         $response = [];
-
         $store_id = $this->lsr->getDefaultWebStore();
-
         // @codingStandardsIgnoreStart
         /** @var Entity\ReplEcommHierarchy $hierarchy */
         $hierarchy = new Entity\ReplEcommHierarchy();

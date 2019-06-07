@@ -47,6 +47,9 @@ use Psr\Log\LoggerInterface;
  */
 class ProductCreateTask
 {
+
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_products';
+
     /** @var Factory */
     public $factory;
 
@@ -289,6 +292,7 @@ class ProductCreateTask
      */
     public function execute()
     {
+        $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
         $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
         $fullReplicationBarcodeStatus = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS);
         $fullReplicationPriceStatus = $this->lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS);

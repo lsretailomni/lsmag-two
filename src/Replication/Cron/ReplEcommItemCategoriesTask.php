@@ -28,6 +28,8 @@ class ReplEcommItemCategoriesTask extends AbstractReplicationTask
 
     const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_item_category';
 
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_category';
+
     /**
      * @property ReplItemCategoryRepository $repository
      */
@@ -124,6 +126,11 @@ class ReplEcommItemCategoriesTask extends AbstractReplicationTask
     public function getConfigPathStatus()
     {
         return self::CONFIG_PATH_STATUS;
+    }
+
+    public function getConfigPathLastExecute()
+    {
+        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getMainEntity()

@@ -28,6 +28,8 @@ class ReplEcommStoreTenderTypesTask extends AbstractReplicationTask
 
     const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_store_tender_type';
 
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_store_tender_type';
+
     /**
      * @property ReplStoreTenderTypeRepository $repository
      */
@@ -124,6 +126,11 @@ class ReplEcommStoreTenderTypesTask extends AbstractReplicationTask
     public function getConfigPathStatus()
     {
         return self::CONFIG_PATH_STATUS;
+    }
+
+    public function getConfigPathLastExecute()
+    {
+        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getMainEntity()

@@ -28,6 +28,8 @@ class ReplEcommUnitOfMeasuresTask extends AbstractReplicationTask
 
     const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_unit_of_measure';
 
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_unit_of_measure';
+
     /**
      * @property ReplUnitOfMeasureRepository $repository
      */
@@ -124,6 +126,11 @@ class ReplEcommUnitOfMeasuresTask extends AbstractReplicationTask
     public function getConfigPathStatus()
     {
         return self::CONFIG_PATH_STATUS;
+    }
+
+    public function getConfigPathLastExecute()
+    {
+        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getMainEntity()
