@@ -20,6 +20,8 @@ use Psr\Log\LoggerInterface;
 class AttributesCreateTask
 {
 
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_attributes';
+
     /**
      * @var ReplExtendedVariantValueRepository
      */
@@ -126,6 +128,7 @@ class AttributesCreateTask
      */
     public function execute()
     {
+        $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
         // Process display only attributes which are going to be used for product specification
         $this->processAttributes();
         // Process variants attributes which are going to be used for configurable product

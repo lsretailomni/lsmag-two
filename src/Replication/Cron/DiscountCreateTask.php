@@ -24,6 +24,9 @@ use Psr\Log\LoggerInterface;
  */
 class DiscountCreateTask
 {
+
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
+
     /**
      * @var CatalogRuleRepositoryInterface
      */
@@ -116,6 +119,7 @@ class DiscountCreateTask
          * And the web store is being set in the Magento.
          * And we need to apply only those rules which are associated to the store assigned to it.
          */
+        $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
         $CronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
         if ($CronProductCheck == 1) {
             if ($this->lsr->isLSR()) {

@@ -324,7 +324,6 @@ class ClassMap
         		'AttributeOptionValue' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\AttributeOptionValue',
         		'ArrayOfPrice' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfPrice',
         		'Price' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Price',
-        		'GiftCard' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GiftCard',
         		'ArrayOfNotification' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfNotification',
         		'Notification' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Notification',
         		'ArrayOfOneList' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfOneList',

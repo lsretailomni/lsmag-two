@@ -59,6 +59,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addConstant('JOB_CODE', $this->operation->getJobId());
         $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$this->operation->getTableName()}");
         $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$this->operation->getTableName()}");
+        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
 
         $this->createProperty('repository', $this->operation->getRepositoryName());
         $this->createProperty('factory', $this->operation->getFactoryName());
@@ -72,6 +73,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addMethodFromGenerator($this->getMakeRequest());
         $this->class->addMethodFromGenerator($this->getConfigPath());
         $this->class->addMethodFromGenerator($this->getConfigPathStatus());
+        $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
         $this->class->addMethodFromGenerator($this->getMainEntity());
 
         $content = $this->file->generate();
@@ -189,6 +191,19 @@ CODE
             ->setVisibility(MethodGenerator::FLAG_PROTECTED);
         $config_path->setBody(<<<CODE
 return self::CONFIG_PATH_STATUS;
+CODE
+        );
+
+        return $config_path;
+    }
+
+    private function getConfigPathLastExecute()
+    {
+        $config_path = new MethodGenerator();
+        $config_path->setName('getConfigPathLastExecute')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
+        $config_path->setBody(<<<CODE
+return self::CONFIG_PATH_LAST_EXECUTE;
 CODE
         );
 
