@@ -48,6 +48,11 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $checkoutSession;
 
     /**
+     * @var \Magento\Customer\Api\GroupRepositoryInterface
+     */
+    public $groupRepository;
+
+    /**
      * LoyaltyHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
@@ -58,6 +63,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Framework\Filesystem $Filesystem
+     * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      */
 
     public function __construct(
@@ -69,7 +75,8 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Framework\Filesystem $Filesystem
+        \Magento\Framework\Filesystem $Filesystem,
+        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
     ) {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -79,7 +86,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->filesystem = $Filesystem;
-
+        $this->groupRepository = $groupRepository;
         parent::__construct(
             $context
         );
@@ -305,5 +312,80 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param $itemId
+     * @param $storeId
+     * @return Entity\DiscountsGetResponse|Entity\ProactiveDiscount[]|\Ls\Omni\Client\ResponseInterface|null
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getProactiveDiscounts($itemId, $storeId)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request = new Operation\DiscountsGet();
+        $entity = new Entity\DiscountsGet();
+        $string = new Entity\ArrayOfstring();
+        // @codingStandardsIgnoreEnd
+        $customerGroupId = $this->customerSession->getCustomerGroupId();
+        $group = $this->groupRepository->getById($customerGroupId)->getCode();
+        $string->setString([$itemId]);
+        $entity->setStoreId($storeId)->setItemiIds($string)->setLoyaltySchemeCode($group);
+        try {
+            $response = $request->execute($entity);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getDiscountsGetResult()->getProactiveDiscount() : $response;
+    }
+
+    /**
+     * @param $itemId
+     * @param $storeId
+     * @param $cardId
+     * @return Entity\PublishedOffer[]|Entity\PublishedOffersGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     */
+    public function getPublishedOffers($itemId, $storeId, $cardId)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request = new Operation\PublishedOffersGet();
+        $entity = new Entity\PublishedOffersGet();
+        // @codingStandardsIgnoreEnd
+        $entity->setStoreId($storeId)->setItemId($itemId)->setStoreId($storeId)->setCardId($cardId);
+        try {
+            $response = $request->execute($entity);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getPublishedOffersGetResult()->getPublishedOffer() : $response;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAvailableCouponsForLoggedInCustomers()
+    {
+        $memberInfo = $this->getMemberInfo();
+        $publishedOffersObj = $memberInfo->getPublishedOffers();
+        $itemsInCart = $this->checkoutSession->getQuote()->getAllItems();
+        $coupons = [];
+        foreach ($itemsInCart as &$item) {
+            $item = $item->getSku();
+        }
+        if ($publishedOffersObj) {
+            $publishedOffers = $publishedOffersObj->getPublishedOffer();
+            foreach ($publishedOffers as $each) {
+                if ($each->getCode() == "Coupon" && $each->getOfferLines()) {
+                    $itemId = $each->getOfferLines()->getPublishedOfferLine()->getId();
+                    if (in_array($itemId, $itemsInCart)) {
+                        $coupons[] = $each;
+                    }
+                }
+            }
+        }
+        return $coupons;
     }
 }
