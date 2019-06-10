@@ -5,6 +5,7 @@
         <sequence>
             <module name="Magento_Checkout"/>
             <module name="Magento_Tax"/>
+            <module name="Magento_SalesRule"/>
         </sequence>
     </module>
 </config>

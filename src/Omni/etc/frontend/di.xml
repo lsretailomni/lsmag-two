@@ -5,6 +5,8 @@
             <argument name="configProviders" xsi:type="array">
                 <!-- For Click and Collect and gift card enable/disable on checkout -->
                 <item name="clickandcollect_config_provider" xsi:type="object">Ls\Omni\Model\Checkout\DataProvider</item>
+                <!-- In order to get all the available coupons in the window.checkoutConfig -->
+                <item name="custom-coupons" xsi:type="object">Ls\Omni\Model\Checkout\CouponsProvider</item>
             </argument>
         </arguments>
     </type>
