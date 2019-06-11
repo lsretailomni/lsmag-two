@@ -36,5 +36,15 @@
                 </specificerrmsg>
             </clickandcollect>
         </carriers>
+        <payment>
+            <ls_payment_method_pay_at_store>
+                <title>Pay at the Store</title>
+                <active>1</active>
+                <order_status>pending_payment</order_status>
+                <model>Ls\Omni\Model\Payment\PayStore</model>
+                <group>offline</group>
+                <sort_order>-1</sort_order>
+            </ls_payment_method_pay_at_store>
+        </payment>
     </default>
 </config>
