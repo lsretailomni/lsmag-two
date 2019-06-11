@@ -127,6 +127,8 @@ class CartTotalRepository
                 $quoteTotals->setSubtotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
                 $quoteTotals->setBaseSubtotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
                 $quoteTotals->setDiscountAmount($amount);
+                $quoteTotals->setGrandTotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
+                $quoteTotals->setBaseGrandTotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
             }
         }
         $quoteTotals->setExtensionAttributes($totalsExtension);
