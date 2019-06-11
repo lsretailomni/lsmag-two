@@ -9,9 +9,10 @@ define([
     'uiComponent',
     'Magento_Checkout/js/model/quote',
     'Ls_Omni/js/model/coupons',
+    'Magento_Customer/js/model/customer',
     'Magento_SalesRule/js/action/set-coupon-code',
     'Magento_SalesRule/js/action/cancel-coupon'
-], function ($, ko, Component, quote, coupons, setCouponCodeAction, cancelCouponAction) {
+], function ($, ko, Component, quote, coupons, customer, setCouponCodeAction, cancelCouponAction) {
     'use strict';
 
     var totals = quote.getTotals(),
@@ -75,6 +76,10 @@ define([
             ele.parent().addClass('active');
             $("#discount-code").val(selected_value).change();
             return true;
+        },
+        checkCustomerLoggedIn: function() {
+            var check = customer.isLoggedIn;
+            return check;
         }
     });
 });

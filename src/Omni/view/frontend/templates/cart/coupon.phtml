@@ -2,9 +2,9 @@
 /** @var \Ls\Omni\Block\Cart\Coupon $block */
 
 // @codingStandardsIgnoreFile
-$loggedIn = false;
 $availableCoupons = [];
-if (empty($block->getCouponCode())){
+$loggedIn = $block->isCustomerLoggedIn();
+if (empty($block->getCouponCode()) && $loggedIn){
     $loggedIn = $block->isCustomerLoggedIn();
     $availableCoupons = $block->getAvailableCoupons();
 }
