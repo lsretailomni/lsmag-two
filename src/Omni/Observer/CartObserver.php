@@ -102,10 +102,19 @@ class CartObserver implements ObserverInterface
                         $this->checkoutSession->setCouponCode('');
                     }
                 }
+                if (count($quote->getAllItems()) == 0) {
+                    $quote->setLsGiftCardAmountUsed(0);
+                    $quote->setLsGiftCardNo(null);
+                    $quote->setLsPointsSpent(0);
+                    $quote->setLsPointsEarn(0);
+                    $quote->setGrandTotal(0);
+                    $quote->setBaseGrandTotal(0);
+                    $this->basketHelper->quoteRepository->save($quote);
+                }
                 /** @var \Ls\Omni\Client\Ecommerce\Entity\Order $basketData */
                 $basketData = $this->basketHelper->update($oneList);
                 $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
-                if(!empty($basketData)) {
+                if (!empty($basketData)) {
                     $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
                 }
                 if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||
