@@ -77,5 +77,10 @@
                 <argument name="renderer_list_name" xsi:type="string">checkout.cart.item.renderers.override</argument>
             </arguments>
         </referenceBlock>
+        <referenceBlock name="checkout.cart.coupon">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Omni::cart/coupon.phtml</argument>
+            </action>
+        </referenceBlock>
     </body>
 </page>
