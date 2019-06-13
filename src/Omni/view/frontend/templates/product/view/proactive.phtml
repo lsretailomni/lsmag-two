@@ -2,7 +2,7 @@
 /** @var \Ls\Omni\Block\Product\View\Discount\Proactive $block */
 // @codingStandardsIgnoreFile
 ?>
-<div class="proactive-discounts-container">
+<div class="proactive-discounts-container" style="display:none">
     <?php
     $discounts = $block->getProactiveDiscounts();
     $coupons = $block->getCoupons();
@@ -51,3 +51,18 @@
         </div>
     <?php } ?>
 </div>
+
+<script type="text/javascript">
+    require(['jquery', 'mage/gallery/gallery'], function($, gallery){
+        var gallery = $('[data-gallery-role=gallery-placeholder]');
+        var discounts = $('.catalog-product-view .proactive-discounts-container');
+        if (gallery.length > 0) {
+            gallery.on('gallery:loaded', function () {
+                discounts.show();
+            });
+        } else {
+            discounts.show();
+        }
+
+    });
+</script>

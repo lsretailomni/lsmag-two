@@ -1,13 +1,17 @@
 <?php
+$class = "";
 // @codingStandardsIgnoreFile
 if($block->getGiftCardActive()) {
+    if (!empty($block->getGiftCardAmountUsed())) {
+        $class = "applied";
+    }
 ?>
-    <div class="giftcard" id="block-giftcard" data-collapsible="true" role="tablist">
-        <div class="title" data-role="title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">
+    <div class="giftcard block" id="block-giftcard" data-mage-init='{"collapsible":{"openedState": "active", "saveState": false}}'>
+        <div class="title" data-role="title">
             <strong id="block-giftcard-heading" role="heading" aria-level="2"><?= /* @escapeNotVerified */
                 __('Apply Gift Card') ?></strong>
         </div>
-        <div class="content" data-role="giftcard-content" aria-labelledby="block-giftcard-heading" role="tabpanel" aria-hidden="false">
+        <div class="content" data-role="content" aria-labelledby="block-giftcard-heading">
             <form id="giftcard-form"
                   action="<?= /* @escapeNotVerified */
                   $block->getUrl('omni/cart/GiftCardUsed') ?>"
@@ -16,9 +20,9 @@ if($block->getGiftCardActive()) {
                                                "removeGiftCardSelector": "#removegiftcard",
                                                "applyGiftCardButton": "input.action.applygiftcard",
                                                "cancelGiftCardButton": "input.action.cancelgiftcard"}}'>
-                <div class="fieldset">
+                <div class="fieldset <?php echo $class?>">
                     <input type="hidden" name="removegiftcard" id="removegiftcard" value="0"/>
-                    <div class="field">
+                    <div class="field gift-card-code-field">
                         <div class="control">
                             <input type="text"  class="input-text" id="giftcardno" name="giftcardno"
                                    placeholder="Enter Gift Card Code" value="<?= $block->getGiftCardNo() ?>" required="required" />
@@ -30,7 +34,7 @@ if($block->getGiftCardActive()) {
                                    placeholder="Amount to Use" value="<?= $block->getGiftCardAmountUsed() ?>" required="required" />
                         </div>
                     </div>
-                    <div class="actions">
+                    <div class="actions actions-toolbar">
                         <div class="primary">
                             <?php if (empty($block->getGiftCardAmountUsed())): ?>
                                 <input class="action applygiftcard primary" type="submit" value="<?= __('Apply') ?>"></input>
