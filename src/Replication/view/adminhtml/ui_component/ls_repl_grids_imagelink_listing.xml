@@ -80,7 +80,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsProvider" xsi:type="string">
-                        ls_repl_grids_hierarchynode_listing.ls_repl_grids_hierarchynode_listing.ls_repl_grids_hierarchynode_columns
+                        ls_repl_grids_imagelink_listing.ls_repl_grids_imagelink_listing.ls_repl_grids_imagelink_columns
                     </item>
                     <item name="storageConfig" xsi:type="array">
                         <item name="provider" xsi:type="string">
@@ -94,7 +94,7 @@
                         </item>
                         <item name="imports" xsi:type="array">
                             <item name="visible" xsi:type="string">
-                                ls_repl_grids_imagelink_listing.ls_repl_grids_imagelink_listing.ls_repl_grids_imagelink_columns..${ $.index }:visible
+                                ls_repl_grids_imagelink_listing.ls_repl_grids_imagelink_listing.ls_repl_grids_imagelink_columns.${ $.index }:visible
                             </item>
                         </item>
                     </item>
