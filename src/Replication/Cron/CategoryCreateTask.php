@@ -8,6 +8,8 @@ use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLea
 use \Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNodeRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplHierarchyNode\CollectionFactory as ReplHierarchyNodeCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -68,6 +70,21 @@ class CategoryCreateTask
     public $categoryLinkRepositoryInterface;
 
     /**
+     * @var ReplHierarchyLeafCollectionFactory
+     */
+    public $replHierarchyLeafCollectionFactory;
+
+    /**
+     * @var ReplHierarchyNodeCollectionFactory
+     */
+    public $replHierarchyNodeCollectionFactory;
+
+    /**
+     * @var \Magento\Eav\Model\ResourceModel\Entity\Attribute
+     */
+    public $eavAttribute;
+
+    /**
      * CategoryCreateTask constructor.
      * @param CategoryFactory $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
@@ -82,6 +99,9 @@ class CategoryCreateTask
      * @param LSR $LSR
      * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
      * @param ProductRepositoryInterface $productRepository
+     * @param ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
+     * @param ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory
+     * @param \Magento\Eav\Model\ResourceModel\Entity\Attribute $eavAttribute
      */
     public function __construct(
         CategoryFactory $categoryFactory,
@@ -96,7 +116,10 @@ class CategoryCreateTask
         ReplicationHelper $replicationHelper,
         LSR $LSR,
         CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
+        ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory,
+        \Magento\Eav\Model\ResourceModel\Entity\Attribute $eavAttribute
     ) {
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
@@ -111,6 +134,9 @@ class CategoryCreateTask
         $this->lsr = $LSR;
         $this->categoryLinkRepositoryInterface = $categoryLinkRepositoryInterface;
         $this->productRepository = $productRepository;
+        $this->replHierarchyLeafCollectionFactory = $replHierarchyLeafCollectionFactory;
+        $this->replHierarchyNodeCollectionFactory = $replHierarchyCollectionFactory;
+        $this->eavAttribute = $eavAttribute;
     }
 
     /**
@@ -140,8 +166,8 @@ class CategoryCreateTask
             $hierarchyCodeSpecificFilter,
             $mediaAttribute
         );
-        $hierarchyNodeDeletedCounter = $this->caterHierarchyNodeRemoval($hierarchyCodeSpecificFilter);
-        $hierarchyLeafDeletedCounter = $this->caterHierarchyLeafRemoval($hierarchyCodeSpecificFilter);
+        $hierarchyNodeDeletedCounter = $this->caterHierarchyNodeRemoval($hierarchyCode);
+        $hierarchyLeafDeletedCounter = $this->caterHierarchyLeafRemoval($hierarchyCode);
         if ($mainCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
             $subCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
             $hierarchyNodeDeletedCounter == 0 &&
@@ -310,15 +336,24 @@ class CategoryCreateTask
      * @param $hierarchyCodeSpecificFilter
      * @return int
      */
-    public function caterHierarchyNodeRemoval($hierarchyCodeSpecificFilter)
+    public function caterHierarchyNodeRemoval($hierarchyCode)
     {
-        $filters = [
-            $hierarchyCodeSpecificFilter
+        $attribute_id = $this->eavAttribute->getIdByCode(\Magento\Catalog\Model\Category::ENTITY, 'nav_id');
+        $filters =  [
+            ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq']
         ];
-        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters, 100);
-        $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
+        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
+        $collection = $this->replHierarchyNodeCollectionFactory->create();
+        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'nav_id',
+            'catalog_category_entity_varchar',
+            'value'
+        );
         /** @var \Ls\Replication\Model\ReplHierarchyNode $hierarchyNode */
-        foreach ($replHierarchyNodeRepository->getItems() as $hierarchyNode) {
+        foreach ($collection as $hierarchyNode) {
             try {
                 if (!empty($hierarchyNode->getNavId())) {
                     $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
@@ -327,34 +362,39 @@ class CategoryCreateTask
                         // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($categoryExistData);
                         // @codingStandardsIgnoreEnd
+                        $hierarchyNode->setData('is_processed', '1');
+                        $hierarchyNode->setData('IsDeleted', '0');
+                        $hierarchyNode->setData('is_updated', '0');
+                        // @codingStandardsIgnoreStart
+                        $this->replHierarchyNodeRepository->save($hierarchyNode);
+                        // @codingStandardsIgnoreEnd
                     }
                 }
-                $hierarchyNode->setData('is_processed', '1');
-                $hierarchyNode->setData('IsDeleted', '0');
-                $hierarchyNode->setData('is_updated', '0');
-                // @codingStandardsIgnoreStart
-                $this->replHierarchyNodeRepository->save($hierarchyNode);
-                // @codingStandardsIgnoreEnd
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }
-        return count($replHierarchyNodeRepository->getItems());
+        return count($collection);
     }
 
     /**
-     * @param $hierarchyCodeSpecificFilter
+     * @param $hierarchyCode
      * @return int
      */
-    public function caterHierarchyLeafRemoval($hierarchyCodeSpecificFilter)
+    public function caterHierarchyLeafRemoval($hierarchyCode)
     {
-        $filters = [
-            $hierarchyCodeSpecificFilter
-        ];
-        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters, 100);
-        $replHierarchyLeafRepository = $this->replHierarchyLeafRepository->getList($criteria);
+        $filters =  [['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']];
+        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
+        $collection = $this->replHierarchyLeafCollectionFactory->create();
+        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'nav_id',
+            'catalog_product_entity',
+            'sku'
+        );
         /** @var \Ls\Replication\Model\ReplHierarchyLeaf $hierarchyLeaf */
-        foreach ($replHierarchyLeafRepository->getItems() as $hierarchyLeaf) {
+        foreach ($collection as $hierarchyLeaf) {
             try {
                 $sku = $hierarchyLeaf->getNavId();
                 $product = $this->productRepository->get($sku);
@@ -376,13 +416,11 @@ class CategoryCreateTask
                 $this->logger->debug($e->getMessage());
             }
         }
-        return count($replHierarchyLeafRepository->getItems());
+        return count($collection);
     }
 
     /**
      * @return array
-     * @throws \Magento\Framework\Exception\CouldNotSaveException
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function executeManually()
     {

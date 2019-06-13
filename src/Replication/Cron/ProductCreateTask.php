@@ -35,8 +35,6 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Api\SortOrder;
 use Psr\Log\LoggerInterface;
@@ -168,11 +166,6 @@ class ProductCreateTask
     public $replHierarchyLeafCollectionFactory;
 
     /**
-     * @var \Magento\Framework\App\ResourceConnection
-     */
-    public $resource;
-
-    /**
      * ProductCreateTask constructor.
      * @param Factory $factory
      * @param Item $item
@@ -208,7 +201,6 @@ class ProductCreateTask
      * @param ReplInvStatusCollectionFactory $replInvStatusCollectionFactory
      * @param ReplPriceCollectionFactory $replPriceCollectionFactory
      * @param ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
-     * @param ResourceConnection $resource
      */
     public function __construct(
         Factory $factory,
@@ -244,8 +236,7 @@ class ProductCreateTask
         StockHelper $stockHelper,
         ReplInvStatusCollectionFactory $replInvStatusCollectionFactory,
         ReplPriceCollectionFactory $replPriceCollectionFactory,
-        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
-        ResourceConnection $resource
+        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
     ) {
         $this->factory = $factory;
         $this->item = $item;
@@ -281,7 +272,6 @@ class ProductCreateTask
         $this->replInvStatusCollectionFactory = $replInvStatusCollectionFactory;
         $this->replPriceCollectionFactory = $replPriceCollectionFactory;
         $this->replHierarchyLeafCollectionFactory = $replHierarchyLeafCollectionFactory;
-        $this->resource = $resource;
     }
 
     /**
@@ -562,7 +552,13 @@ class ProductCreateTask
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyLeafSearchResults $replHierarchyLeafRepository */
         $collection = $this->replHierarchyLeafCollectionFactory->create();
-        $this->setCollectionPropertiesPlusJoin($collection, $criteria, 'nav_id');
+        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'nav_id',
+            'ls_replication_repl_item',
+            'nav_id'
+        );
         foreach ($collection as $hierarchyLeaf) {
             try {
                 $categoryArray = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
@@ -1028,7 +1024,13 @@ class ProductCreateTask
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $collection = $this->replPriceCollectionFactory->create();
-        $this->setCollectionPropertiesPlusJoin($collection, $criteria, 'ItemId');
+        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'ItemId',
+            'ls_replication_repl_item',
+            'nav_id'
+        );
         if ($collection->getSize() > 0) {
             /** @var \Ls\Replication\Model\ReplPrice $replPrice */
             foreach ($collection as $replPrice) {
@@ -1066,7 +1068,13 @@ class ProductCreateTask
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $collection = $this->replInvStatusCollectionFactory->create();
-        $this->setCollectionPropertiesPlusJoin($collection, $criteria, 'ItemId');
+        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'ItemId',
+            'ls_replication_repl_item',
+            'nav_id'
+        );
         if ($collection->getSize() > 0) {
             /** @var \Ls\Replication\Model\ReplInvStatus $replInvStatus */
             foreach ($collection as $replInvStatus) {
@@ -1281,50 +1289,5 @@ class ProductCreateTask
             $this->logger->debug($e->getMessage());
         }
         return $qty;
-    }
-
-    /**
-     * @param $collection
-     * @param SearchCriteriaInterface $criteria
-     * @param $mainTableColumnName
-     */
-    public function setCollectionPropertiesPlusJoin(
-        &$collection,
-        SearchCriteriaInterface $criteria,
-        $mainTableColumnName
-    ) {
-        foreach ($criteria->getFilterGroups() as $filter_group) {
-            $fields = [];
-            $conditions = [];
-            foreach ($filter_group->getFilters() as $filter) {
-                $condition = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
-                $fields[] = $filter->getField();
-                $conditions[] = [$condition => $filter->getValue()];
-            }
-            if ($fields) {
-                $collection->addFieldToFilter($fields, $conditions);
-            }
-        }
-        $sort_orders = $criteria->getSortOrders();
-        if ($sort_orders) {
-            /** @var SortOrder $sort_order */
-            foreach ($sort_orders as $sort_order) {
-                $collection->addOrder(
-                    $sort_order->getField(),
-                    ($sort_order->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
-                );
-            }
-        }
-        $second_table_name = $this->resource->getTableName('ls_replication_repl_item');
-        // @codingStandardsIgnoreStart
-        // In order to only select those records whose items are available
-        $collection->getSelect()->joinInner(
-            array('second' => $second_table_name),
-            'main_table.' . $mainTableColumnName . ' = second.nav_id',
-            []
-        );
-        // @codingStandardsIgnoreEnd
-        $collection->setCurPage($criteria->getCurrentPage());
-        $collection->setPageSize($criteria->getPageSize());
     }
 }
