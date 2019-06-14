@@ -179,6 +179,9 @@
         .action.apply.primary{
           margin-right: 5px;
         }
+        .apply,.cancel{
+          border-radius:3px;
+        }
       }
     }
     .field{
@@ -212,6 +215,9 @@
         width:100%;
         .action.applygiftcard.primary{
           margin-right: 5px;
+        }
+        .applygiftcard,.cancelgiftcard{
+          border-radius:3px;
         }
       }
     }
@@ -280,8 +286,10 @@
         .actions-toolbar{
           width:100%;
           display:block;
-          input{
-            border-radius:3px;
+          > .primary {
+            .apply,.cancel{
+              border-radius:3px;
+            }
           }
         }
       }

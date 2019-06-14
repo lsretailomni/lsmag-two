@@ -10,7 +10,6 @@
     <head>
         <css src="Ls_Omni::css/mc_clickandcollect.css"/>
         <css src="Ls_Omni::css/lsdiscountprices.css"/>
-        <css src="Ls_Omni::css/gift_card.css"/>
     </head>
     <body>
         <referenceBlock name="checkout.root">
