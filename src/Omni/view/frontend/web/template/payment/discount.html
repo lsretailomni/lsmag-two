@@ -54,8 +54,8 @@
             <form id="my_radio_box">
                 <fieldset id="group1">
                     <!-- ko foreach: getCoupons() -->
-                    <div class='coupon-major'>
-                        <input type='radio' data-bind='click: $parent.selection, value:$data.discount_code'
+                    <div class='coupon-major' data-bind='click: $parent.selection'>
+                        <input type='radio' data-bind='value:$data.discount_code'
                                name='group1'>
                         <div class="coupon-description-wrapper" data-bind="html: $data.description"></div>
                     </div>

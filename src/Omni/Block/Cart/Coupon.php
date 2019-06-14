@@ -77,7 +77,7 @@ class Coupon extends \Magento\Checkout\Block\Cart\Coupon
             "<span class='coupon-code'>".$coupon->getOfferId()."</span><br/>".
             "<span class='coupon-description'>".$coupon->getDescription().
             "</span><br/><span class='coupon-detail'>".$coupon->getDetails()."</span><br/>
-            <span class='coupon-expiry'>".__("Valid till").
+            <span class='coupon-expiry'>".__("Valid till")."&nbsp".
             $this->getFormattedOfferExpiryDate($coupon->getExpirationDate())."</span></div>";
         return $description;
     }

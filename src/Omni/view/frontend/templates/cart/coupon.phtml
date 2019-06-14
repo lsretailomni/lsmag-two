@@ -72,6 +72,10 @@ if (empty($block->getCouponCode()) && $loggedIn){
                 ele.parent().addClass('active');
                 $("#coupon_code").val(selected_value);
             });
+            $(document).on("click", ".available-coupons .coupon-major", function(){
+                $(this).find('input').attr('checked', 'checked');
+                $('#my_radio_box').change();
+            });
         });
     });
 </script>

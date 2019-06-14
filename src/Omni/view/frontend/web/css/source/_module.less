@@ -9,6 +9,10 @@
   display: inline-block;
   position: relative;
   float: right;
+  .action.primary{
+    line-height: 2.2rem;
+    padding: 14px 17px;
+  }
   .block-dropdown {
     margin: 0;
     padding: 10px;
@@ -24,8 +28,10 @@
     top: 100%;
     right: 0px;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+    min-height: 50px;
+    overflow-y: auto;
+    overflow-x: hidden;
     max-height: 330px;
-    overflow:scroll;
   }
   i {
     border: solid white;
@@ -56,6 +62,7 @@
   .discount-dropdown-label {
     float: left;
     width: 30%;
+    line-height: 3;
     span {
       color: @color_1;
       font-weight: 600;
@@ -89,6 +96,7 @@
 .checkout-cart-index,.checkout-index-index{
   .available-coupons{
     padding-top:20px;
+    cursor: pointer;
     h2{
       width:100%;
       text-align:center;
@@ -103,7 +111,8 @@
         -webkit-border-radius: 75px;
         width: 100px;
         font-size: 15px;
-        padding: 2px;
+        padding: 5px;
+        font-weight: bold;
       }
     }
     .coupon-major{
@@ -133,6 +142,149 @@
       border:unset;
       margin:unset;
       padding:unset;
+    }
+  }
+}
+
+.checkout-cart-index{
+  .cart-discount{
+    .actions-toolbar{
+      .action.primary{
+        &:hover {
+          background: @color-blue2;
+          border: 1px solid @color-blue2;
+          color: #ffffff;
+        }
+        background: @color-blue1;
+        border: 1px solid @color-blue1;
+        box-shadow: unset !important;
+        color:#ffffff;
+        line-height: 1.6rem;
+      }
+    }
+    .block{
+      clear:both;
+      float:left !important;
+      margin-bottom: 30px;
+      width:60% !important;
+    }
+  }
+}
+#loyalty-points-form{
+  .applied{
+    .actions-toolbar{
+      width:40%;
+      > .primary{
+        width:100%;
+        .action.apply.primary{
+          margin-right: 5px;
+        }
+      }
+    }
+    .field{
+      width:60%;
+    }
+
+  }
+}
+.giftcard {
+  margin-bottom: 30px;
+  .fieldset {
+    &:last-child {
+      margin-bottom: auto;
+    }
+  }
+  .content {
+    margin-top: 10px;
+  }
+  #gift_card_amount {
+    margin-top: 10px;
+  }
+}
+#giftcard-form {
+  .gift-card-code-field{
+    padding-right: 2px;
+  }
+  .applied{
+    .actions-toolbar{
+      width:40%;
+      > .primary{
+        width:100%;
+        .action.applygiftcard.primary{
+          margin-right: 5px;
+        }
+      }
+    }
+    .field{
+      width:30%;
+    }
+  }
+}
+.giftcardinfo {
+  p {
+    font-size: 1.5rem;
+  }
+}
+#gift-card-balance {
+  .action {
+    margin-top: 10px;
+  }
+  .error-messages {
+    margin-bottom: 10px;
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .proactive-discounts-container {
+    .discount-dropdown-label{
+      display:none;
+    }
+    .discount-dropdown{
+      width:100%;
+      .dropdown-wrapper{
+        width:100%;
+        button{
+          width:100%;
+          font-size:18px;
+        }
+      }
+    }
+  }
+  .checkout-cart-index {
+    .cart-discount {
+      .block{
+        width:100% !important;
+      }
+    }
+    #giftcard-form{
+      .applied{
+        .field{
+          width:100%;
+          display:block;
+        }
+        .actions-toolbar{
+          width:100%;
+          display:block;
+          input{
+            border-radius:3px;
+          }
+        }
+      }
+    }
+    #loyalty-points-form{
+      .applied{
+        .field{
+          width:100%;
+          display:block;
+        }
+        .actions-toolbar{
+          width:100%;
+          display:block;
+          input{
+            border-radius:3px;
+          }
+        }
+      }
     }
   }
 }

@@ -70,6 +70,7 @@ define([
         },
 
         selection: function (data, event) {
+            $(event.currentTarget).find('input').attr('checked', 'checked');
             var selected_value = $("input[name='group1']:checked").val();
             var ele = $("input[name='group1']:checked");
             ele.parent().siblings().removeClass('active');
