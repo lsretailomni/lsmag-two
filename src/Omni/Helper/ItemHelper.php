@@ -11,6 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use \Ls\Core\Model\LSR;
 use Magento\Checkout\Model\Cart;
+use \Ls\Omni\Helper\LoyaltyHelper;
 
 /**
  * Class ItemHelper
@@ -42,6 +43,11 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var itemResourceModel */
     public $itemResourceModel;
 
+    /**
+     * @var LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
     /** @var array */
     private $hashCache = [];
 
@@ -51,8 +57,12 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param ReplBarcodeRepository $barcodeRepository
      * @param ProductRepository $productRepository
+     * @param CartRepositoryInterface $quoteRepository
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel
+     * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
+     * @param Cart $cart
      */
-
     public function __construct(
         Context $context,
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -61,6 +71,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         CartRepositoryInterface $quoteRepository,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel,
+        LoyaltyHelper $loyaltyHelper,
         Cart $cart
     )
     {
@@ -70,8 +81,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->productRepository = $productRepository;
         $this->quoteRepository = $quoteRepository;
         $this->checkoutSession = $checkoutSession;
-        $this->cart = $cart;
         $this->itemResourceModel = $itemResourceModel;
+        $this->loyaltyHelper = $loyaltyHelper;
+        $this->cart = $cart;
     }
 
     /**
@@ -287,12 +299,12 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                                 // @codingStandardsIgnoreLine
                                     $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount()
                                 );
-                                $item->setOriginalCustomPrice($item->getOriginalPrice());
+                                $item->setOriginalCustomPrice($line->getPrice());
                             } else {
                                 if ($line->getDiscountAmount() > 0) {
                                     $item->setCustomPrice($line->getAmount());
                                     $item->setDiscountAmount($line->getDiscountAmount());
-                                    $item->setOriginalCustomPrice($item->getOriginalPrice());
+                                    $item->setOriginalCustomPrice($line->getPrice());
                                 } else {
                                     $item->setCustomPrice(null);
                                     $item->setDiscountAmount(null);
@@ -317,7 +329,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                     if ($orderLines->getDiscountAmount() > 0) {
                         $item->setCustomPrice($orderLines->getAmount());
                         $item->setDiscountAmount($orderLines->getDiscountAmount());
-                        $item->setOriginalCustomPrice($item->getOriginalPrice());
+                        $item->setOriginalCustomPrice($orderLines->getPrice());
                     } else {
                         $item->setCustomPrice(null);
                         $item->setDiscountAmount(null);
@@ -333,7 +345,11 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
             if ($quote->getId()) {
                 $cartQuote = $this->cart->getQuote();
                 if (isset($basketData)) {
-                    $cartQuote->getShippingAddress()->setGrandTotal($basketData->getTotalAmount());
+                    $pointDiscount = $cartQuote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+                    $giftCardAmount = $cartQuote->getLsGiftCardAmountUsed();
+                    $cartQuote->getShippingAddress()->setGrandTotal(
+                        $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
+                    );
                 }
                 $couponCode = $this->checkoutSession->getCouponCode();
                 $cartQuote->setCouponCode($couponCode);
