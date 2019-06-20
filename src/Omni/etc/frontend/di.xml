@@ -7,7 +7,14 @@
                 <item name="clickandcollect_config_provider" xsi:type="object">Ls\Omni\Model\Checkout\DataProvider</item>
                 <!-- For Payment Method Pay at Store -->
                 <item name="paystore_config_provider" xsi:type="object">Ls\Omni\Model\PayStoreConfigProvider</item>
+                <!-- In order to get all the available coupons in the window.checkoutConfig -->
+                <item name="custom-coupons" xsi:type="object">Ls\Omni\Model\Checkout\CouponsProvider</item>
+
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="sr-customer-app-action-dispatchController-context-plugin" type="Ls\Omni\Plugin\App\Action\Context" sortOrder="15"/>
+    </type>
+    <preference for="Magento\Checkout\Block\Cart\Coupon" type="Ls\Omni\Block\Cart\Coupon"/>
 </config>

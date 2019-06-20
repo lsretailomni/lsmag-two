@@ -2,8 +2,335 @@
 @import 'module/_owl.carousel.less';
 @import 'module/_owl.theme.less';
 @import 'module/_owl.transitions.less';
-
+@color_1: #666666;
 #lsRecommendation .loader{
   width: 100%;
   text-align: center;
+}
+.dropdown-wrapper {
+  display: inline-block;
+  position: relative;
+  float: right;
+  .action.primary{
+    line-height: 2.2rem;
+  }
+  .block-dropdown {
+    margin: 0;
+    padding: 10px;
+    list-style: none none;
+    background: #ffffff;
+    border: 1px solid #bbbbbb;
+    min-width: 100%;
+    width: 320px;
+    z-index: 101;
+    box-sizing: border-box;
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+    min-height: 50px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 330px;
+  }
+  i {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    margin-left: 5px;
+  }
+  i.arrow {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+}
+.dropdown-wrapper.active {
+  overflow: visible;
+  .block-dropdown {
+    display: block;
+  }
+  i.arrow {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+}
+.proactive-discounts-container {
+  width: 100%;
+  float:left;
+  margin-bottom: 10px;
+  .discount-dropdown-label {
+    float: left;
+    width: 30%;
+    line-height: 3;
+    span {
+      color: @color_1;
+      font-weight: 600;
+      letter-spacing: .05em;
+      line-height: 2;
+    }
+  }
+  .discount-dropdown {
+    float: right;
+    width: 60%;
+  }
+  .block-dropdown {
+    .dropdown-content-wrapper {
+      &+.dropdown-content-wrapper {
+        border-top: 1px solid black;
+        margin-top: 10px;
+        padding-top: 10px;
+      }
+      .coupon-description, .discount-description, .discount-label{
+        font-weight: bold;
+      }
+      .discount-label{
+        padding-right:5px;
+      }
+      .coupon-description, .discount-description {
+        color: #C41F3F;
+      }
+    }
+  }
+}
+.checkout-cart-index,.checkout-index-index{
+  .available-coupons{
+    padding-top:20px;
+    cursor: pointer;
+    h2{
+      width:100%;
+      text-align:center;
+      border-bottom: 1px solid #000;
+      line-height:0.1em;
+      margin:10px 0 20px;
+      span{
+        background: #fff;
+        border: 1px solid black;
+        height: 100px;
+        -moz-border-radius: 75px;
+        -webkit-border-radius: 75px;
+        width: 100px;
+        font-size: 15px;
+        padding: 5px;
+        font-weight: bold;
+        color:black;
+      }
+    }
+    .coupon-major{
+      input{
+        width:10px;
+      }
+      .coupon-description-wrapper{
+        .coupon-code{
+          font-weight: bold;
+          border: 1px dashed;
+          padding: 2px;
+        }
+        width: 90%;
+        display: inline-block;
+        vertical-align: top;
+        color:black;
+      }
+      padding: 10px;
+    }
+    .coupon-major.active{
+      background: #1979c30f;
+      .coupon-description-wrapper{
+        color: #1979c3;
+      }
+    }
+    fieldset{
+      border:unset;
+      margin:unset;
+      padding:unset;
+    }
+  }
+}
+
+.checkout-cart-index{
+  .cart-discount{
+    input[type="text"], input[type="number"], input[type="submit"] {
+      font-size: 13px;
+      height: 38px;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .actions-toolbar{
+      display: table-cell;
+      .action.primary{
+        &:hover {
+          background:@button__hover__background;
+          border:@button__hover__border;
+          color:@button__hover__color;
+        }
+        background:@button__background;
+        border:@button__border;
+        color:@button__color;
+        line-height: 1.6rem;
+        height: 38px;
+      }
+    }
+    .block{
+      clear:both;
+      float:left !important;
+      margin-bottom: 30px;
+      width: 80% !important;
+    }
+    #discount-coupon-form {
+      .field {
+        .input-text {
+          border-top-right-radius: unset;
+          border-bottom-right-radius: unset;
+        }
+      }
+    }
+  }
+}
+#loyalty-points-form{
+  .applied{
+    .actions-toolbar{
+      width:40%;
+      > .primary{
+        width:100%;
+        .action.apply.primary{
+          margin-right: 5px;
+        }
+        .apply,.cancel{
+          border-radius:3px;
+        }
+      }
+    }
+    .field{
+      width:60%;
+      input {
+        border-top-right-radius: unset;
+        border-bottom-right-radius: unset;
+      }
+    }
+
+  }
+  .field{
+    input {
+      border-top-right-radius: unset;
+      border-bottom-right-radius: unset;
+    }
+  }
+}
+.giftcard {
+  margin-bottom: 30px;
+  .fieldset {
+    &:last-child {
+      margin-bottom: auto;
+    }
+  }
+  .content {
+    margin-top: 10px;
+  }
+  #gift_card_amount {
+    margin-top: 10px;
+  }
+}
+#giftcard-form {
+  .gift-card-code-field{
+    padding-right: 2px;
+  }
+  .applied{
+    .actions-toolbar{
+      width:40%;
+      > .primary{
+        width:100%;
+        .action.applygiftcard.primary{
+          margin-right: 5px;
+        }
+        .applygiftcard,.cancelgiftcard{
+          border-radius:3px;
+        }
+      }
+    }
+    .field{
+      width:30%;
+    }
+  }
+  .gift-card-amount-field {
+    input {
+      border-top-right-radius: unset;
+      border-bottom-right-radius: unset;
+    }
+  }
+}
+.giftcardinfo {
+  p {
+    font-size: 1.5rem;
+  }
+}
+#gift-card-balance {
+  .action {
+    margin-top: 10px;
+  }
+  .error-messages {
+    margin-bottom: 10px;
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .proactive-discounts-container {
+    .discount-dropdown-label{
+      display:none;
+    }
+    .discount-dropdown{
+      width:100%;
+      .dropdown-wrapper{
+        width:100%;
+        button{
+          width:100%;
+        }
+      }
+    }
+  }
+  .checkout-cart-index {
+    .cart-discount {
+      .block{
+        width:100% !important;
+      }
+    }
+    #giftcard-form{
+      .applied{
+        .field{
+          width:100%;
+          display:block;
+          input{
+            border-radius: 6px;
+          }
+        }
+        .actions-toolbar{
+          width:100%;
+          display:block;
+          input{
+            border-radius:3px;
+          }
+        }
+      }
+    }
+    #loyalty-points-form{
+      .applied{
+        .field{
+          width:100%;
+          display:block;
+          input{
+            border-radius: 6px;
+          }
+        }
+        .actions-toolbar{
+          width:100%;
+          display:block;
+          > .primary {
+            .apply,.cancel{
+              border-radius:3px;
+            }
+          }
+        }
+      }
+    }
+  }
 }
