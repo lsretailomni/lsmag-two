@@ -2,8 +2,6 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <css src="Ls_Omni::css/loyalty_points.css"/>
-        <css src="Ls_Omni::css/gift_card.css"/>
         <css src="Ls_Omni::css/lsdiscountprices.css"/>
     </head>
     <body>
@@ -76,6 +74,11 @@
             <arguments>
                 <argument name="renderer_list_name" xsi:type="string">checkout.cart.item.renderers.override</argument>
             </arguments>
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.coupon">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Omni::cart/coupon.phtml</argument>
+            </action>
         </referenceBlock>
     </body>
 </page>
