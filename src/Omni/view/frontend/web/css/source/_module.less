@@ -11,7 +11,6 @@
   float: right;
   .action.primary{
     line-height: 2.2rem;
-    padding: 14px 17px;
   }
   .block-dropdown {
     margin: 0;
@@ -88,7 +87,7 @@
         padding-right:5px;
       }
       .coupon-description, .discount-description {
-        color:red;
+        color: #C41F3F;
       }
     }
   }
@@ -113,6 +112,7 @@
         font-size: 15px;
         padding: 5px;
         font-weight: bold;
+        color:black;
       }
     }
     .coupon-major{
@@ -148,25 +148,39 @@
 
 .checkout-cart-index{
   .cart-discount{
+    input[type="text"], input[type="number"], input[type="submit"] {
+      font-size: 13px;
+      height: 38px;
+      padding: 10px;
+      border-radius: 6px;
+    }
     .actions-toolbar{
       .action.primary{
         &:hover {
-          background: @color-blue2;
-          border: 1px solid @color-blue2;
-          color: #ffffff;
+          background:@button__hover__background;
+          border:@button__hover__border;
+          color:@button__hover__color;
         }
-        background: @color-blue1;
-        border: 1px solid @color-blue1;
-        box-shadow: unset !important;
-        color:#ffffff;
+        background:@button__background;
+        border:@button__border;
+        color:@button__color;
         line-height: 1.6rem;
+        height: 38px;
       }
     }
     .block{
       clear:both;
       float:left !important;
       margin-bottom: 30px;
-      width:60% !important;
+      width: 80% !important;
+    }
+    #discount-coupon-form {
+      .field {
+        .input-text {
+          border-top-right-radius: unset;
+          border-bottom-right-radius: unset;
+        }
+      }
     }
   }
 }
@@ -186,8 +200,18 @@
     }
     .field{
       width:60%;
+      input {
+        border-top-right-radius: unset;
+        border-bottom-right-radius: unset;
+      }
     }
 
+  }
+  .field{
+    input {
+      border-top-right-radius: unset;
+      border-bottom-right-radius: unset;
+    }
   }
 }
 .giftcard {
@@ -225,6 +249,12 @@
       width:30%;
     }
   }
+  .gift-card-amount-field {
+    input {
+      border-top-right-radius: unset;
+      border-bottom-right-radius: unset;
+    }
+  }
 }
 .giftcardinfo {
   p {
@@ -251,7 +281,6 @@
         width:100%;
         button{
           width:100%;
-          font-size:18px;
         }
       }
     }
@@ -267,6 +296,9 @@
         .field{
           width:100%;
           display:block;
+          input{
+            border-radius: 6px;
+          }
         }
         .actions-toolbar{
           width:100%;
@@ -282,6 +314,9 @@
         .field{
           width:100%;
           display:block;
+          input{
+            border-radius: 6px;
+          }
         }
         .actions-toolbar{
           width:100%;
