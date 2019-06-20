@@ -74,7 +74,7 @@ class Store extends \Magento\Framework\App\Action\Action
                 "Please check other stores or remove
                  the not available item(s) from your "
             );
-            foreach ($items as $item) {
+            foreach ($items as &$item) {
                 $sku = $item->getSku();
                 $parentProductSku = $childProductSku = "";
                 if (strpos($sku, '-') !== false) {
@@ -83,34 +83,32 @@ class Store extends \Magento\Framework\App\Action\Action
                 } else {
                     $parentProductSku = $sku;
                 }
-                $response = $this->stockHelper->getItemStockInStore(
-                    $selectedStore,
-                    $parentProductSku,
-                    $childProductSku
-                );
-                if (isset($response)) {
-                    $actualQty = ceil($response->getInventoryResponse()->getQtyActualInventory());
-                } else {
-                    $actualQty = 0;
-                }
-
-                if ($actualQty > 0) {
-                    $stockCollection[] = [
-                        "name" => $item->getName(),
-                        "status" => "1",
-                        "display" => __("This item is available")
-                    ];
-                } else {
-                    $stockCollection[] = [
-                        "name" => $item->getName(),
-                        "status" => "0",
-                        "display" => __("This item is not available")
-                    ];
-                }
+                $stockCollection[$sku]["name"] = $item->getName();
+                $item = ["parent" => $parentProductSku, "child" => $childProductSku];
             }
-            $result = $result->setData(
-                ["remarks" => $notAvailableNotice, "stocks" => $stockCollection]
-            );
+            $response = $this->stockHelper->getAllItemsStockInSingleStore($selectedStore, $items);
+            if ($response) {
+                if (!is_array($response->getInventoryResponse())) {
+                    $response = [$response->getInventoryResponse()];
+                } else {
+                    $response = $response->getInventoryResponse();
+                }
+                foreach ($response as $item) {
+                    $actualQty = ceil($item->getQtyActualInventory());
+                    $sku = $item->getItemId() .
+                        (($item->getVariantId()) ? '-' . $item->getVariantId() : '');
+                    if ($actualQty > 0) {
+                        $stockCollection[$sku]["status"] = "1";
+                        $stockCollection[$sku]["display"] = __("This item is available");
+                    } else {
+                        $stockCollection[$sku]["status"] = "0";
+                        $stockCollection[$sku]["display"] = __("This item is not available");
+                    }
+                }
+                $result = $result->setData(
+                    ["remarks" => $notAvailableNotice, "stocks" => $stockCollection]
+                );
+            }
         }
         return $result;
     }

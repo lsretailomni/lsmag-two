@@ -97,15 +97,16 @@ define([
                     },
                     success: function (data) {
                         $(".stock-remarks ul").html("");
-                        $(".stock-remarks strong").html("");
-                        for(var i = 0;i < data.stocks.length;i++){
-                            if(data.stocks[i].status === "0" && flag === "1"){
+                        $(".stock-remarks > strong").remove();
+                        for(var i in data.stocks){
+                            var o = data.stocks[i];
+                            if(o.status === "0" && flag === "1"){
                                 flag = "0";
                             }
-                            if(data.stocks[i].status === "0" ){
-                                $(".stock-remarks ul").append("<li><strong>" + data.stocks[i].name + ":</strong> <span style='color:red'>"+ data.stocks[i].display +"</span></li>")
+                            if(o.status === "0" ){
+                                $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:red'>"+ o.display +"</span></li>")
                             }else{
-                                $(".stock-remarks ul").append("<li><strong>" + data.stocks[i].name + ":</strong> <span style='color:green'>"+ data.stocks[i].display +"</span></li>")
+                                $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:green'>"+ o.display +"</span></li>")
                             }
 
                         }
