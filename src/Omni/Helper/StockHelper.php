@@ -7,6 +7,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
+
 /**
  * Class StockHelper
  * @package Ls\Omni\Helper
