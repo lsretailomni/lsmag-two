@@ -1,22 +1,19 @@
 <?php
-
-
 namespace Ls\Omni\Block\Product\View;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use \Ls\Omni\Helper\LSRecommend as LSRecommendHelper;
 
 /**
- * Class View
+ * Class Recommend
  * @package Ls\Omni\Block\Product\View
  */
-
 class Recommend extends \Magento\Catalog\Block\Product\View
 {
-    /** @var \Ls\Core\Model\LSR  */
+    /** @var \Ls\Core\Model\LSR */
     public $lsr;
 
-    /** @var LSRecommendHelper  */
+    /** @var LSRecommendHelper */
     public $LSRecommend;
 
     /**
@@ -68,35 +65,43 @@ class Recommend extends \Magento\Catalog\Block\Product\View
     }
 
     /**
+     * @return string
+     */
+    public function getAjaxUrl()
+    {
+        return $this->getUrl('omni/ajax/recommendation');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProductBySku()
+    {
+        $currentProduct = $this->getProduct();
+        if (empty($currentProduct) || !$currentProduct->getId()) {
+            return null;
+        }
+        return $currentProduct->getSku();
+    }
+
+    /**
+     * @param $productId
      * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
      */
-    public function getProductRecommendation()
+    public function getProductRecommendation($productId)
     {
-        // only process if LS Recommend is enabled in general and on product page.
-
         $response = null;
-
-        if (!$this->LSRecommend->isLsRecommendEnable() || !$this->LSRecommend->isLsRecommendEnableOnProductPage()) {
+        if (empty($productId)
+            || !$this->LSRecommend->isLsRecommendEnable()
+            || !$this->LSRecommend->isLsRecommendEnableOnProductPage()
+        ) {
             return $response;
         }
-        $currentProduct = $this->getProduct();
-        if (!$currentProduct->getId()) {
-            // not on product page.
-
-            return $response;
-        }
-
-        $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($currentProduct->getSku());
-
-        // this is the recommended products we received from NAV so now we need to get the actual products from that.
-
-        // check to see if we get correct response not full of errors.
-
+        $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productId);
         if ($recommendedProducts instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem) {
             return $this->LSRecommend->parseProductRecommendation($recommendedProducts);
         }
         return $response;
     }
-
 
 }

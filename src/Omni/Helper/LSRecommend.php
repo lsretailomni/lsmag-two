@@ -15,10 +15,10 @@ use \Ls\Core\Model\LSR;
 class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
-    /** @var \Magento\Checkout\Model\Session\Proxy  */
+    /** @var \Magento\Checkout\Model\Session\Proxy */
     public $checkoutSession;
 
-    /** @var \Magento\Customer\Model\Session\Proxy  */
+    /** @var \Magento\Customer\Model\Session\Proxy */
     public $customerSession;
 
     /** @var \Magento\Framework\Api\SearchCriteriaBuilder */
@@ -54,7 +54,7 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerSession = $customerSession;
         $this->lsr = $Lsr;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->productRepository    =   $productRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -103,22 +103,22 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
     public function getProductRecommendationfromOmni($product_ids)
     {
 
-        if(is_null($product_ids) || empty($product_ids) || $product_ids == ''){
+        if (is_null($product_ids) || empty($product_ids) || $product_ids == '') {
             return null;
         }
-        $store_Id   =   $this->lsr->getDefaultWebStore();
+        $store_Id = $this->lsr->getDefaultWebStore();
         $response = null;
         // @codingStandardsIgnoreStart
-        /** @var Operation\RecommendedItemsGet  $request */
+        /** @var Operation\RecommendedItemsGet $request */
         $request = new Operation\RecommendedItemsGet();
 
-        /** @var Entity\RecommendedItemsGet  $entity */
+        /** @var Entity\RecommendedItemsGet $entity */
         $entity = new Entity\RecommendedItemsGet();
 
         //TODO work with UserID.
         $entity->setItems($product_ids)
-                ->setStoreId($store_Id)
-                ->setUserId('');
+            ->setStoreId($store_Id)
+            ->setUserId('');
 
         try {
             $response = $request->execute($entity);
@@ -160,10 +160,10 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
         \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem $recommendedProducts
     ) {
 
-        $productIds     =   [];
+        $productIds = [];
         /** @var  Entity\RecommendedItem $recommendedItem */
         foreach ($recommendedProducts as $recommendedItem) {
-            $productIds[]     =   $recommendedItem->getId();
+            $productIds[] = $recommendedItem->getId();
         }
         return $productIds;
     }
@@ -189,28 +189,20 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @return null|string
      */
-
     public function getProductSkusFromQuote()
     {
-        // only process if there are items in the quote.
-
-        /** @var \Magento\Quote\Model\Quote  $quote */
-        $itemsSkus  =   null;
-        $quote =    $this->checkoutSession->getQuote();
+        /** @var \Magento\Quote\Model\Quote $quote */
+        $itemsSkus = null;
+        $quote = $this->checkoutSession->getQuote();
         if ($quote->hasItems()) {
-            $quoteItems  =   $this->checkoutSession->getQuote()->getAllVisibleItems();
+            $quoteItems = $this->checkoutSession->getQuote()->getAllVisibleItems();
             /** @var \Magento\Quote\Model\Quote\Item $quoteItem */
             //resetting back to null.
             $itemsSkus = '';
             foreach ($quoteItems as $quoteItem) {
-                /**
-                 * need to check if sku contain '-' in it,
-                 * this is possibily the case when the variant is added, so we need to remove it.
-                 * */
-
-                $skuArray       =   explode('-', $quoteItem->getSku());
-                $sku    =   array_shift($skuArray);
-                $itemsSkus  .= $sku.',';
+                $skuArray = explode('-', $quoteItem->getSku());
+                $sku = array_shift($skuArray);
+                $itemsSkus .= $sku . ',';
             }
         }
         return $itemsSkus;
