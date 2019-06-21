@@ -148,6 +148,55 @@
   }
 }
 
+.checkout-index-index {
+  .cnc-stores-container {
+    float: left;
+    width:100%;
+    .cnc-stores-map {
+      float: left;
+    }
+    .cnc-stores-dropdown {
+      float: right;
+    }
+    .block-dropdown {
+      padding:unset;
+      .dropdown-content-wrapper {
+        display: block;
+        padding:5px;
+        cursor:pointer;
+        text-decoration: none;
+        &:hover {
+          background:#e8e8e8;
+        }
+      }
+    }
+  }
+.check-store-availability{
+  font-size: 10px;
+  width: 120px;
+  padding: 2px 0px;
+  margin-right: 5px;
+}
+  .apply-store{
+    font-size: 10px;
+    width: 120px;
+    padding: 2px 0px;
+    margin-right: 5px;
+  }
+  .stock-remarks{
+    .custom-loader{
+      text-align:center;
+    }
+    ul{
+    list-style: none;
+      padding:0;
+      margin-bottom: 10px;
+    }
+  }
+  .double-btn-container{
+    text-align: center;
+  }
+}
 .checkout-cart-index{
   .cart-discount{
     input[type="text"], input[type="number"], input[type="submit"] {
@@ -328,6 +377,32 @@
             .apply,.cancel{
               border-radius:3px;
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+  .checkout-index-index{
+    .cnc-stores-container{
+      .cnc-stores-map, .cnc-stores-dropdown {
+        float: left;
+        width: 100%;
+      }
+      .cnc-stores-map{
+        a{
+          width:100%;
+          text-align:center;
+        }
+      }
+      .cnc-stores-dropdown{
+        .dropdown-wrapper{
+          float:left;
+          width:100%;
+          button{
+            width:100%;
           }
         }
       }
