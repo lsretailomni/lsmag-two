@@ -173,7 +173,7 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
                             );
                             $lineBlock['lines'][] = [
                                 [
-                                    'text' => "GiftCard Redeemed " . '(' . $order->getLsGiftCardNo() . '):' . "",
+                                    'text' =>  __("GiftCard Redeemed ") . '(' . $order->getLsGiftCardNo() . '):' . "",
                                     'feed' => 475,
                                     'align' => 'right',
                                     'font_size' => $totalData['font_size'],
