@@ -17,6 +17,8 @@ class EmailModification implements ObserverInterface
     {
         $transportObject = $observer->getEvent()->getData('transportObject');
         $order = $transportObject->getData('order');
-        $order->setIncrementId($order->getDocumentId());
+        if (!empty($order->getDocumentId())) {
+            $order->setIncrementId($order->getDocumentId());
+        }
     }
 }
