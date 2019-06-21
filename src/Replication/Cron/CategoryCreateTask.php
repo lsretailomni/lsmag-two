@@ -241,6 +241,7 @@ class CategoryCreateTask
                         }
                         // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($categoryExistData);
+                        $hierarchyNode->setData('processed', '1');
                         $hierarchyNode->setData('is_updated', '0');
                         $this->replHierarchyNodeRepository->save($hierarchyNode);
                         // @codingStandardsIgnoreEnd
@@ -319,6 +320,7 @@ class CategoryCreateTask
                         }
                         // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($subCategoryExistData);
+                        $hierarchyNodeSub->setData('processed', '1');
                         $hierarchyNodeSub->setData('is_updated', '0');
                         $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
                         // @codingStandardsIgnoreEnd
@@ -427,7 +429,6 @@ class CategoryCreateTask
         $this->execute();
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         $filters = [
-            ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
