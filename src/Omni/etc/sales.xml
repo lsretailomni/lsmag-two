@@ -8,4 +8,14 @@
             <item name="ls_gift_card_no" instance="Ls\Omni\Model\Total\Quote\GiftCardNo" sort_order="800"/>
         </group>
     </section>
+    <section name="order_invoice">
+        <group name="totals">
+            <item name="GiftCardLoyaltyPoints" instance="Ls\Omni\Model\Invoice\Total\GiftCardLoyaltyPoints" sort_order="160"/>
+        </group>
+    </section>
+    <section name="order_creditmemo">
+        <group name="totals">
+            <item name="GiftCardLoyaltyPoints" instance="Ls\Omni\Model\Creditmemo\Total\GiftCardLoyaltyPoints" sort_order="160"/>
+        </group>
+    </section>
 </config>
