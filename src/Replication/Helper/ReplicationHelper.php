@@ -14,6 +14,8 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Api\SearchCriteriaInterface;
 
 /**
  * Class ReplicationHelper
@@ -56,6 +58,11 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $lsr;
 
     /**
+     * @var \Magento\Framework\App\ResourceConnection
+     */
+    public $resource;
+
+    /**
      * ReplicationHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -69,8 +76,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Set $attributeSet
      * @param TypeListInterface $cacheTypeList
      * @param LSR $LSR
+     * @param ResourceConnection $resource
      */
-
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -83,7 +90,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         WriterInterface $configWriter,
         Set $attributeSet,
         TypeListInterface $cacheTypeList,
-        LSR $LSR
+        LSR $LSR,
+        ResourceConnection $resource
     ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
@@ -96,6 +104,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->attributeSet = $attributeSet;
         $this->cacheTypeList = $cacheTypeList;
         $this->lsr = $LSR;
+        $this->resource = $resource;
         parent::__construct(
             $context
         );
@@ -261,6 +270,24 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return $criteria->create();
     }
 
+    /**
+     * Create Build Criteria with Array of filters as a parameters and return Updated Only
+     * @param array $filters
+     * @param int $pagesize
+     * @return \Magento\Framework\Api\SearchCriteria
+     */
+    public function buildCriteriaGetDeletedOnlyWithAlias(array $filters, $pagesize = 100)
+    {
+        $criteria = $this->searchCriteriaBuilder;
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+            }
+        }
+        $criteria->addFilter('main_table.IsDeleted', 1, 'eq');
+        $criteria->setPageSize($pagesize);
+        return $criteria->create();
+    }
     /**
      * Create Build Exit Criteria with Array of filters as a parameters
      * @param array $filters
@@ -445,7 +472,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->flushConfig();
     }
 
-
     /**
      * Update the config value
      * @param $value
@@ -503,5 +529,55 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
+    }
+
+    /**
+     * @param $collection
+     * @param SearchCriteriaInterface $criteria
+     * @param $primaryTableColumnName
+     * @param $secondaryTableName
+     * @param $secondaryTableColumnName
+     */
+    public function setCollectionPropertiesPlusJoin(
+        &$collection,
+        SearchCriteriaInterface $criteria,
+        $primaryTableColumnName,
+        $secondaryTableName,
+        $secondaryTableColumnName
+    ) {
+        foreach ($criteria->getFilterGroups() as $filter_group) {
+            $fields = [];
+            $conditions = [];
+            foreach ($filter_group->getFilters() as $filter) {
+                $condition = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
+                $fields[] = $filter->getField();
+                $conditions[] = [$condition => $filter->getValue()];
+            }
+            if ($fields) {
+                $collection->addFieldToFilter($fields, $conditions);
+            }
+        }
+        $sort_orders = $criteria->getSortOrders();
+        if ($sort_orders) {
+            /** @var SortOrder $sort_order */
+            foreach ($sort_orders as $sort_order) {
+                $collection->addOrder(
+                    $sort_order->getField(),
+                    ($sort_order->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
+                );
+            }
+        }
+        $second_table_name = $this->resource->getTableName($secondaryTableName);
+        // @codingStandardsIgnoreStart
+        // In order to only select those records whose items are available
+        $collection->getSelect()->joinInner(
+            array('second' => $second_table_name),
+            'main_table.' . $primaryTableColumnName . ' = second.'.$secondaryTableColumnName,
+            []
+        );
+        $collection->getSelect()->group("main_table.".$primaryTableColumnName);
+        // @codingStandardsIgnoreEnd
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
     }
 }
