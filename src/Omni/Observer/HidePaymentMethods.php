@@ -83,6 +83,8 @@ class HidePaymentMethods implements ObserverInterface
                     if ($method_instance == 'free') {
                         $quote->setBaseGrandTotal(0);
                         $quote->setGrandTotal(0);
+                        $quote->getShippingAddress()->setTaxAmount(0);
+                        $quote->getShippingAddress()->setBaseTaxAmount(0);
                         $this->quoteResourceModel->save($quote);
                         $result->setData('is_available', true);
                     } else {

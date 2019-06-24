@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceContainer name="order_totals">
+        <block class="Ls\Omni\Block\Adminhtml\Sales\Totals" name="giftcardloyalty"/>
+    </referenceContainer>
+    <referenceBlock name="order_info">
+        <block class="Magento\Sales\Block\Adminhtml\Order\View\Info" name="order_additional_info" template="Ls_Omni::order/view/additional-info.phtml" after="-" />
+    </referenceBlock>
+</page>

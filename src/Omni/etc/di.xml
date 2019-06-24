@@ -46,4 +46,8 @@
     </type>
     <!-- To Override Discount Calculator -->
     <preference for="Magento\SalesRule\Model\Quote\Discount" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Discount"/>
+    <!-- To Override Invoice Pdf -->
+    <preference for="Magento\Sales\Model\Order\Pdf\Items\Invoice\DefaultInvoice"
+                type="Ls\Omni\Model\Order\Pdf\Items\Invoice\DefaultInvoice"/>
+    <preference for="Magento\Sales\Model\Order\Pdf\Invoice" type="Ls\Omni\Model\Order\Pdf\Invoice" />
 </config>
