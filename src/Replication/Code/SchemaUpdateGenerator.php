@@ -64,9 +64,7 @@ class SchemaUpdateGenerator extends AbstractGenerator
      */
     public function generate()
     {
-
         $entity_name = $this->case_helper->toPascalCase($this->reflected_entity->getShortName());
-
         $upgrade_method = new MethodGenerator();
         $upgrade_method->setName("upgrade");
         $upgrade_method->setParameters([
@@ -74,16 +72,12 @@ class SchemaUpdateGenerator extends AbstractGenerator
             new ParameterGenerator('context', ModuleContextInterface::class, null)
         ]);
         $upgrade_method->setBody($this->getMethodBody());
-
         $this->class->setNamespaceName($this->reflected_upgrade->getNamespaceName() . '\\UpgradeSchema');
-
         $this->class->addUse(SchemaSetupInterface::class);
         $this->class->addUse(ModuleContextInterface::class);
         $this->class->addUse(Table::class);
-
         $this->class->setName("$entity_name");
         $this->class->addMethodFromGenerator($upgrade_method);
-
         $content = $this->file->generate();
         $content = str_replace(
             'implements Ls\\Replication\\Setup\\UpgradeSchema\\UpgradeSchemaBlockInterface',
@@ -105,7 +99,6 @@ class SchemaUpdateGenerator extends AbstractGenerator
             'ModuleContextInterface $context',
             $content
         );
-
         return $content;
     }
 
@@ -114,7 +107,6 @@ class SchemaUpdateGenerator extends AbstractGenerator
      */
     public function getMethodBody()
     {
-
         $restrictions = $this->metadata->getRestrictions();
         $property_types = [];
         $simple_types = ['boolean', 'string', 'int', 'float'];
@@ -136,17 +128,15 @@ class SchemaUpdateGenerator extends AbstractGenerator
         $table_idx_name = $this->getTableFieldId();
         $method_body = <<<CODE
 \$table_name = \$setup->getTable( 'ls_replication_$table_name' ); 
-if ( ! \$setup->tableExists( \$table_name ) ) {
-
+if(!\$setup->tableExists(\$table_name)) {
 \t\$table = \$setup->getConnection()->newTable( \$table_name );
-
-\t\$table->addColumn( '$table_idx_name', Table::TYPE_INTEGER, NULL, 
+\t\$table->addColumn('$table_idx_name', Table::TYPE_INTEGER, NULL, 
 \t                    [ 'identity' => TRUE, 'primary' => TRUE,
-\t                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ] );
-\t\$table->addColumn( 'scope', Table::TYPE_TEXT, 8);
-\t\$table->addColumn( 'scope_id', Table::TYPE_INTEGER, 11);
-\t\$table->addColumn( 'processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ],'flag to check if data is already coped into magento 0 means needs to be copied into Magento tables, 1 means already copied' );
-\t\$table->addColumn( 'is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ],'flag to check if data is already updated from Omni into magento 0 means already updated, 1 means  needs to be updated into Magento tables' );
+\t                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ]);
+\t\$table->addColumn('scope', Table::TYPE_TEXT, 8);
+\t\$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
+\t\$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
+\t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
 
 CODE;
         foreach ($property_types as $raw_name => $type) {
@@ -172,11 +162,12 @@ CODE;
             if ($name == 'Id') {
                 $name = 'nav_id';
             }
-            $method_body .= "\t\$table->addColumn( '$name' , $field_type, '$size' );\n";
+            $method_body .= "\t\$table->addColumn('$name' , $field_type, '$size');\n";
         }
 
         $method_body .= <<<CODE
-
+\t\$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
+\t\$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
 \t\$setup->getConnection()->createTable( \$table );
 }
 CODE;
@@ -190,7 +181,6 @@ CODE;
     public function getTableName()
     {
         return $this->operation->getTableName();
-
         return "ls_replication_$table_name";
     }
 
@@ -199,20 +189,16 @@ CODE;
      */
     public function getTableFieldId()
     {
-
         return $this->operation->getTableColumnId();
     }
 
     public function getPath()
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-
         /** @var  \Magento\Framework\Module\Dir\Reader $dirReader */
         $dirReader = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
-
         $basepath = $dirReader->getModuleDir('', 'Ls_Replication');
         $upgrade_path = $basepath . "/Setup/UpgradeSchema";
-
         $entity_name = ucfirst($this->reflected_entity->getShortName());
         $upgrade_path = str_replace('UpgradeSchema', "UpgradeSchema/$entity_name", $upgrade_path);
         $upgrade_path .= '.php';
