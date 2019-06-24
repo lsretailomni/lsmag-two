@@ -21,8 +21,7 @@ class Totals extends \Magento\Framework\View\Element\AbstractBlock
         \Magento\Framework\View\Element\Template\Context $context,
         LoyaltyHelper $loyaltyHelper,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $data);
         $this->loyaltyHelper = $loyaltyHelper;
     }
