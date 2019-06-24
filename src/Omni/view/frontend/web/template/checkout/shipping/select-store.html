@@ -1,11 +1,44 @@
 
 <div data-bind="visible: isClickAndCollect()">
-	<p><a data-bind="click: showMap, visible: isSelectStoreVisible()" href="#">Select store by map</a></p>
+	<div class="cnc-stores-container">
+		<p>Select a store to check items availability</p>
+		<div class="cnc-stores-map">
+			<p class="select-store-map-label"><a class="action primary" data-bind="click: showMap, visible: isSelectStoreVisible()" href="#"><span data-bind="i18n: 'Select Store by map '"></span></a></p>
+		</div>
+		<div class="cnc-stores-dropdown">
+			<div data-block="dropdown" class="dropdown-wrapper">
+				<button type="button" class="action primary" data-trigger="trigger">
+					<span data-bind="i18n: 'Search for a Store '"></span>
+					<i class="arrow down"></i>
+				</button>
+			</div>
+			<div class="block block-dropdown" data-bind='mageInit: {
+        "dropdownDialog": {
+            "appendTo": "[data-block=dropdown]",
+            "triggerTarget":"[data-trigger=trigger]",
+            "timeout": 2000,
+            "closeOnMouseLeave": false,
+            "closeOnEscape": true,
+            "autoOpen": false,
+            "triggerClass": "active",
+            "parentClass": "active",
+            "buttons": []
+        }
+     }'>
+				<input type="text" placeholder="Search.." id="myInput" data-bind="valueUpdate: 'afterkeydown', event: { keyup : check }">
+				<!-- ko foreach: getStores() -->
+				<a class='dropdown-content-wrapper' data-bind="html: $data.Name, click: $parent.clicked.bind($data)" ></a>
+				<!--/ko-->
+			</div>
+		</div>
+	</div>
 	<!--<label class="label">Pick Up Date</label>-->
 	<!--<div class="control">-->
-	    <!--<input class="input-text" type="text" data-bind="datetimepicker: true"  name="pickup_date" id="pickup-date" readonly="true"/>-->
+	<!--<input class="input-text" type="text" data-bind="datetimepicker: true"  name="pickup_date" id="pickup-date" readonly="true"/>-->
 	<!--</div>-->
 	<input type="hidden" id="pickup-store" name="pickup_store" value="" />
 	<p id="selected-store-msg">You have selected to pick up your order in <span></span> store.</p>
 	<div id="map-canvas"></div>
+	<div id="popup-modal" style="display:none;">
+	</div>
 </div>

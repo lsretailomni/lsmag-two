@@ -9,11 +9,11 @@ define([
     'lsomni/map-loader',
     'lsomni/map',
     'mage/url'
-], function (Component, ko, $, $t, modal, quote, MapLoader, map,url) {
+], function (Component, ko, $, $t, modal, quote, MapLoader, map, url) {
     'use strict';
 
-    var popUp = null;
-
+    var popUp1 = null;
+    var popUp2 = null;
     return Component.extend({
         defaults: {
             template: 'Ls_Omni/checkout/shipping/select-store'
@@ -78,6 +78,9 @@ define([
                     .find('span')
                     .text( $(this).data('name') );
                 self.isMapVisible(false);
+                if(popUp2){
+                    popUp2.closeModal();
+                }
             });
 
             $('body').on('click', '.check-store-availability', function() {
@@ -97,15 +100,16 @@ define([
                     },
                     success: function (data) {
                         $(".stock-remarks ul").html("");
-                        $(".stock-remarks strong").html("");
-                        for(var i = 0;i < data.stocks.length;i++){
-                            if(data.stocks[i].status === "0" && flag === "1"){
+                        $(".stock-remarks > strong").remove();
+                        for(var i in data.stocks){
+                            var o = data.stocks[i];
+                            if(o.status === "0" && flag === "1"){
                                 flag = "0";
                             }
-                            if(data.stocks[i].status === "0" ){
-                                $(".stock-remarks ul").append("<li><strong>" + data.stocks[i].name + ":</strong> <span style='color:red'>"+ data.stocks[i].display +"</span></li>")
+                            if(o.status === "0" ){
+                                $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:red'>"+ o.display +"</span></li>")
                             }else{
-                                $(".stock-remarks ul").append("<li><strong>" + data.stocks[i].name + ":</strong> <span style='color:green'>"+ data.stocks[i].display +"</span></li>")
+                                $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:green'>"+ o.display +"</span></li>")
                             }
 
                         }
@@ -135,11 +139,11 @@ define([
             var self = this,
                 buttons;
 
-            if (!popUp) {
+            if (!popUp1) {
                 MapLoader.done($.proxy(map.initMap, this)).fail(function() {
                     console.error("ERROR: Google maps library failed to load");
                 });
-                popUp = modal({
+                popUp1 = modal({
                 	'responsive': true,
                 	'innerScroll': true,
                     'buttons': [],
@@ -150,7 +154,41 @@ define([
             		}
                 }, $('#map-canvas'));
             }
-            return popUp;
+            return popUp1;
+        },
+        getStores: function(){
+            var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
+            return stores.items;
+        },
+        check : function(data, event){
+            console.log(event);
+            var a="", query="", txtValue="";
+            query = $(event.currentTarget).val().toUpperCase();
+            a = $(".cnc-stores-dropdown .block-dropdown a");
+            for (var i = 0; i < a.length; i++) {
+                txtValue = a[i].textContent || a[i].innerText;
+                if (txtValue.toUpperCase().startsWith(query)) {
+                    a[i].style.display = "";
+                } else {
+                    a[i].style.display = "none";
+                }
+            }
+        },
+        clicked : function(store){
+            if (!popUp2) {
+                var options = {
+                    type: 'popup',
+                    responsive: true,
+                    innerScroll: true,
+                    title: 'Click & Collect Store',
+                    buttons: [],
+                };
+                popUp2 = modal(options, $('#popup-modal'));
+            }
+            $("#popup-modal").html("").append('<div class="infowindow"><h3>' + store.Name + '</h3><strong>Address: </strong>' + store.Street + ', ' + store.City + ' ' + store.State + ' ' + store.ZipCode + ' ' + store.Country + '<br /><br /><div class="double-btn-container"><button data-id="'
+                + store.nav_id + '" class="check-store-availability">Check Availability</button><button disabled data-id="'
+                + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button></div><br /><div class="stock-remarks"><div class="custom-loader"></div><ul></ul></div></div>');
+            $("#popup-modal").modal("openModal");
         }
     });
 });

@@ -7,6 +7,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
+
 /**
  * Class StockHelper
  * @package Ls\Omni\Helper
@@ -69,6 +70,40 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return $response->getItemsInStockGetResult();
         }
         return null;
+    }
+
+    /**
+     * @param $storeId
+     * @param $items
+     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStoreGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     */
+    public function getAllItemsStockInSingleStore(
+        $storeId,
+        $items
+    ) {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request = new Operation\ItemsInStoreGet();
+        $itemStock = new Entity\ItemsInStoreGet();
+        $invertoryRequestParent = new Entity\ArrayOfInventoryRequest();
+        $inventoryRequestCollection = [];
+
+        foreach ($items as $item) {
+            $inventoryRequest = new Entity\InventoryRequest();
+            $inventoryRequest->setItemId($item["parent"]);
+            $inventoryRequest->setVariantId($item["child"]);
+            $inventoryRequestCollection[] = $inventoryRequest;
+        }
+        // @codingStandardsIgnoreEnd
+        $invertoryRequestParent->setInventoryRequest($inventoryRequestCollection);
+        $itemStock->setItems($invertoryRequestParent)->setStoreId($storeId);
+        try {
+            $response = $request->execute($itemStock);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ?
+            $response->getItemsInStoreGetResult() : $response;
     }
 
     /**
