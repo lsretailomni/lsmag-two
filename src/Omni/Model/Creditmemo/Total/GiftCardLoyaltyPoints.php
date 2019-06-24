@@ -3,7 +3,7 @@
 namespace Ls\Omni\Model\Creditmemo\Total;
 
 use Magento\Sales\Model\Order\Creditmemo\Total\AbstractTotal;
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 
 /**
  * Class GiftCardLoyaltyPoints

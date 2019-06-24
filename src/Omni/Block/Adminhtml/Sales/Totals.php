@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Block\Adminhtml\Sales;
 
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 
 /**
  * Class Totals

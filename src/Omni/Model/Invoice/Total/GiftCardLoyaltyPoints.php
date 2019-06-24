@@ -3,7 +3,7 @@
 namespace Ls\Omni\Model\Invoice\Total;
 
 use Magento\Sales\Model\Order\Invoice\Total\AbstractTotal;
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 
 /**
  * Class GiftCardLoyaltyPoints
