@@ -131,7 +131,6 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="filter" xsi:type="string">text</item>
                     <item name="sortOrder" xsi:type="number">4</item>
                     <item name="label" xsi:type="string" translate="true">Flat to Magento</item>
                 </item>
@@ -141,13 +140,11 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="filter" xsi:type="string">text</item>
                     <item name="sortOrder" xsi:type="number">5</item>
                     <item name="label" xsi:type="string" translate="true">Omni to Flat</item>
                 </item>
             </argument>
         </column>
-
         <column name="DefaultValue">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -159,7 +156,6 @@
                 </item>
             </argument>
         </column>
-
         <column name="ValueType">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -167,10 +163,23 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Value Type</item>
-                    <item name="sortOrder" xsi:type="number">9</item>
+                    <item name="sortOrder" xsi:type="number">8</item>
                 </item>
             </argument>
         </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Created Date</label>
+            </settings>
+        </column>
+        <column name="updated_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Updated Date</label>
+            </settings>
+        </column>
     </columns>
-
 </listing>
