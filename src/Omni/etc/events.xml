@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="checkout_cart_product_add_after">
-        <observer name="WatchNextCartSaveObserver" instance="Ls\Omni\Observer\WatchNextCartSaveObserver" />
+        <observer name="WatchNextCartSaveObserver" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
     </event>
     <event name="checkout_cart_update_items_after">
         <observer name="WatchNextCartSaveObserver" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
@@ -38,7 +39,7 @@
     <event name="sales_order_place_after">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
     </event>
-	 <!-- For Coupon Code -->
+    <!-- For Coupon Code -->
     <event name="controller_action_predispatch_checkout_cart_couponPost">
         <observer name="coupon_code" instance="Ls\Omni\Observer\CouponCodeObserver"/>
     </event>
@@ -49,17 +50,17 @@
     </event>
     <!-- hiding payment method on order total zero -->
     <event name="payment_method_is_active">
-        <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods" />
+        <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
     </event>
     <!-- for changing increment_id to document_id in emails -->
     <event name="email_order_set_template_vars_before">
-            <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification" />
+        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification"/>
     </event>
     <event name="email_invoice_set_template_vars_before">
-        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification" />
+        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification"/>
     </event>
     <event name="email_shipment_set_template_vars_before">
-        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification" />
+        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification"/>
     </event>
     <!--<event name="checkout_onepage_controller_success_action">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderSuccessObserver"/>

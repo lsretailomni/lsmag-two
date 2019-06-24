@@ -69,8 +69,7 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
         LoyaltyHelper $loyaltyHelper,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         array $data = []
-    )
-    {
+    ) {
         $this->storeManager = $storeManager;
         $this->localeResolver = $localeResolver;
         $this->loyaltyHelper = $loyaltyHelper;
@@ -173,7 +172,7 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
                             );
                             $lineBlock['lines'][] = [
                                 [
-                                    'text' =>  __("GiftCard Redeemed ") . '(' . $order->getLsGiftCardNo() . '):' . "",
+                                    'text' => __("GiftCard Redeemed ") . '(' . $order->getLsGiftCardNo() . '):' . "",
                                     'feed' => 475,
                                     'align' => 'right',
                                     'font_size' => $totalData['font_size'],

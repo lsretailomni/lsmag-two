@@ -17,11 +17,18 @@ class GiftCardLoyaltyPoints extends AbstractTotal
      */
     public $loyaltyHelper;
 
+    /**
+     * GiftCardLoyaltyPoints constructor.
+     * @param LoyaltyHelper $loyaltyHelper
+     */
     public function __construct(
-        LoyaltyHelper $loyaltyHelper
-    )
-    {
+        LoyaltyHelper $loyaltyHelper,
+        array $data = []
+    ) {
         $this->loyaltyHelper = $loyaltyHelper;
+        parent::__construct(
+            $data
+        );
     }
 
     /**
@@ -46,7 +53,7 @@ class GiftCardLoyaltyPoints extends AbstractTotal
         $giftCardNo = $invoice->getOrder()->getLsGiftCardNo();
         $invoice->setLsGiftCardNo($giftCardNo);
 
-        $pointsSpent=$pointsSpent*$this->loyaltyHelper->getPointRate();
+        $pointsSpent = $pointsSpent * $this->loyaltyHelper->getPointRate();
 
         $invoice->setGrandTotal($invoice->getGrandTotal() - $giftCardAmount - $pointsSpent);
         $invoice->setBaseGrandTotal($invoice->getBaseGrandTotal() - $giftCardAmount - $pointsSpent);
