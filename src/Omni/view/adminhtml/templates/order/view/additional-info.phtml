@@ -1,0 +1,30 @@
+<?php
+/**
+* @var \Magento\Sales\Block\Adminhtml\Order\View\Info $block
+*/
+$order = $block->getOrder();
+?>
+        <?php if (!empty($order->getDocumentId())):?>
+            <tr>
+                <th><?= $block->escapeHtml(__('Ls Central Order Reference ID:')) ?></th>
+                <td><?= $block->escapeHtml($order->getDocumentId()) ?></td>
+            </tr>
+        <?php endif;?>
+        <?php if ($order->getLsPointsEarn()>0):?>
+        <tr>
+            <th><?= $block->escapeHtml(__('Loyalty Points Earn')) ?></th>
+            <td><span id="order_status"><?= $block->escapeHtml($order->getLsPointsEarn()) ?></span></td>
+        </tr>
+        <?php endif;?>
+        <?php if (!empty($order->getCouponCode())):?>
+            <tr>
+                <th><?= $block->escapeHtml(__('Coupon Code Redeemed')) ?></th>
+                <td><span id="order_status"><?= $block->escapeHtml($order->getCouponCode()) ?></span></td>
+            </tr>
+        <?php endif;?>
+        <?php if (!empty($order->getLsGiftCardNo())):?>
+            <tr>
+                <th><?= $block->escapeHtml(__('Gift Card Code')) ?></th>
+                <td><span id="order_status"><?= $block->escapeHtml($order->getLsGiftCardNo()) ?></span></td>
+            </tr>
+        <?php endif;?>

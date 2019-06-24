@@ -51,6 +51,16 @@
     <event name="payment_method_is_active">
         <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods" />
     </event>
+    <!-- for changing increment_id to document_id in emails -->
+    <event name="email_order_set_template_vars_before">
+            <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification" />
+    </event>
+    <event name="email_invoice_set_template_vars_before">
+        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification" />
+    </event>
+    <event name="email_shipment_set_template_vars_before">
+        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification" />
+    </event>
     <!--<event name="checkout_onepage_controller_success_action">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderSuccessObserver"/>
     </event>-->
