@@ -26,6 +26,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
             ['table' => 'quote', 'column' => 'ls_points_spent'],
             ['table' => 'sales_order', 'column' => 'ls_points_earn'],
             ['table' => 'sales_order', 'column' => 'ls_points_spent'],
+            ['table' => 'sales_invoice', 'column' => 'ls_points_earn'],
+            ['table' => 'sales_invoice', 'column' => 'ls_points_spent'],
+            ['table' => 'sales_creditmemo', 'column' => 'ls_points_earn'],
+            ['table' => 'sales_creditmemo', 'column' => 'ls_points_spent']
         ];
         foreach ($columnsUpdateType as $item) {
             $setup->getConnection()->addColumn(
@@ -46,6 +50,12 @@ class UpgradeSchema implements UpgradeSchemaInterface
             ['table' => 'quote', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,'default'=>0],
             ['table' => 'sales_order', 'column' => 'ls_gift_card_no','datatype' => Table::TYPE_TEXT,'default'=>''],
             ['table' => 'sales_order', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,
+                'default'=>0],
+            ['table' => 'sales_invoice', 'column' => 'ls_gift_card_no','datatype' => Table::TYPE_TEXT,'default'=>''],
+            ['table' => 'sales_invoice', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,
+                'default'=>0],
+            ['table' => 'sales_creditmemo', 'column' => 'ls_gift_card_no','datatype' => Table::TYPE_TEXT,'default'=>''],
+            ['table' => 'sales_creditmemo', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,
                 'default'=>0]
         ];
         foreach ($columnsUpdateType as $item) {
