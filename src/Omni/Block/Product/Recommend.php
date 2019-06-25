@@ -48,9 +48,6 @@ class Recommend extends \Magento\Catalog\Block\Product\AbstractProduct
     public function getProductRecommendationforCart()
     {
         $response = null;
-        if (!$this->LSRecommend->isLsRecommendEnable() || !$this->LSRecommend->isLsRecommendEnableOnCartPage()) {
-            return $response;
-        }
         $productSkus = $this->LSRecommend->getProductSkusFromQuote();
         $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productSkus);
         if ($recommendedProducts instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem) {
