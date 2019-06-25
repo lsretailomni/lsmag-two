@@ -31,6 +31,18 @@ class Recommend extends \Magento\Catalog\Block\Product\AbstractProduct
     }
 
     /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        if ($this->LSRecommend->isLsRecommendEnable() && $this->LSRecommend->isLsRecommendEnableOnCartPage()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
      */
     public function getProductRecommendationforCart()

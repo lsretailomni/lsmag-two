@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Omni\Block\Product\View;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -85,16 +86,25 @@ class Recommend extends \Magento\Catalog\Block\Product\View
     }
 
     /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        if ($this->LSRecommend->isLsRecommendEnable() && $this->LSRecommend->isLsRecommendEnableOnProductPage()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * @param $productId
      * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
      */
     public function getProductRecommendation($productId)
     {
         $response = null;
-        if (empty($productId)
-            || !$this->LSRecommend->isLsRecommendEnable()
-            || !$this->LSRecommend->isLsRecommendEnableOnProductPage()
-        ) {
+        if (empty($productId)) {
             return $response;
         }
         $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productId);
