@@ -21,18 +21,25 @@ class Totals extends \Magento\Framework\View\Element\Template
     public $currency;
 
     /**
-     * @var Ls\Omni\Helper\LoyaltyHelper
+     * @var LoyaltyHelper
      */
     public $loyaltyHelper;
 
+    /**
+     * Totals constructor.
+     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param \Ls\Omni\Helper\OrderHelper $orderHelper
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param \Magento\Directory\Model\Currency $currency
+     * @param array $data
+     */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Ls\Omni\Helper\OrderHelper $orderHelper,
         LoyaltyHelper $loyaltyHelper,
         \Magento\Directory\Model\Currency $currency,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $data);
         $this->orderHelper = $orderHelper;
         $this->loyaltyHelper = $loyaltyHelper;
@@ -57,7 +64,6 @@ class Totals extends \Magento\Framework\View\Element\Template
         return $this->getParentBlock()->setOrder($order);
     }
 
-
     /**
      * @return mixed
      */
@@ -74,11 +80,17 @@ class Totals extends \Magento\Framework\View\Element\Template
         return $this->currency->getCurrencySymbol();
     }
 
+    /**
+     * @return mixed
+     */
     public function getInvoice()
     {
         return $this->getParentBlock()->getInvoice();
     }
 
+    /**
+     * @return mixed
+     */
     public function getCreditmemo()
     {
         return $this->getParentBlock()->getCreditmemo();
@@ -91,15 +103,15 @@ class Totals extends \Magento\Framework\View\Element\Template
      */
     public function initTotals()
     {
-         $this->getParentBlock();
-         $order=$this->getOrder();
-         $order->setIncrementId($order->getDocumentId());
-         $this->setOrder($order);
-         $order2=$this->getOrder();
-         $this->getInvoice();
-         $this->getCreditmemo();
-         $this->getSource();
-        if ($this->getSource()->getLsPointsSpent()>0) {
+        $this->getParentBlock();
+        $order = $this->getOrder();
+        $order->setIncrementId($order->getDocumentId());
+        $this->setOrder($order);
+        $order2 = $this->getOrder();
+        $this->getInvoice();
+        $this->getCreditmemo();
+        $this->getSource();
+        if ($this->getSource()->getLsPointsSpent() > 0) {
             $loyaltyAmount = $this->getSource()->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             // @codingStandardsIgnoreLine
             $loyaltyPoints = new \Magento\Framework\DataObject(
@@ -111,7 +123,7 @@ class Totals extends \Magento\Framework\View\Element\Template
             );
             $this->getParentBlock()->addTotalBefore($loyaltyPoints, 'discount');
         }
-        if ($this->getSource()->getLsGiftCardAmountUsed()>0) {
+        if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
             // @codingStandardsIgnoreLine
             $giftCardAmount = new \Magento\Framework\DataObject(
                 [

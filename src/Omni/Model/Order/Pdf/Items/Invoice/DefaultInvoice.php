@@ -71,7 +71,7 @@ class DefaultInvoice extends \Magento\Sales\Model\Order\Pdf\Items\Invoice\Defaul
         $page = $this->getPage();
         $lines = [];
         $id = $item->getProductid();
-        $product=$this->productRepository->getById($id);
+        $product = $this->productRepository->getById($id);
         $PcbMaster = $product->getData('pcb_master');
 
         // draw Product name
@@ -174,7 +174,7 @@ class DefaultInvoice extends \Magento\Sales\Model\Order\Pdf\Items\Invoice\Defaul
             $prices = [
                 [
                     'label' => __('Excl. Tax') . ':',
-                    'price' => $order->formatPriceTxt($item->getBasePrice()-$item->getDiscountAmount()),
+                    'price' => $order->formatPriceTxt($item->getBasePrice() - $item->getDiscountAmount()),
                     'discountAmount' => $order->formatPriceTxt($item->getDiscountAmount()),
                     'subtotal' => $order->formatPriceTxt($item->getRowTotal()),
                 ],
@@ -198,7 +198,7 @@ class DefaultInvoice extends \Magento\Sales\Model\Order\Pdf\Items\Invoice\Defaul
                 [
                     'price' => $order->formatPriceTxt($item->getBasePrice()),
                     'discountAmount' => $order->formatPriceTxt($item->getDiscountAmount()),
-                    'subtotal' => $order->formatPriceTxt($item->getRowTotal()-$item->getDiscountAmount()),
+                    'subtotal' => $order->formatPriceTxt($item->getRowTotal() - $item->getDiscountAmount()),
                 ],
             ];
         }

@@ -49,5 +49,5 @@
     <!-- To Override Invoice Pdf -->
     <preference for="Magento\Sales\Model\Order\Pdf\Items\Invoice\DefaultInvoice"
                 type="Ls\Omni\Model\Order\Pdf\Items\Invoice\DefaultInvoice"/>
-    <preference for="Magento\Sales\Model\Order\Pdf\Invoice" type="Ls\Omni\Model\Order\Pdf\Invoice" />
+    <preference for="Magento\Sales\Model\Order\Pdf\Invoice" type="Ls\Omni\Model\Order\Pdf\Invoice"/>
 </config>
