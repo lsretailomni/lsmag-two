@@ -31,14 +31,23 @@ class Recommend extends \Magento\Catalog\Block\Product\AbstractProduct
     }
 
     /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        if ($this->LSRecommend->isLsRecommendEnable() && $this->LSRecommend->isLsRecommendEnableOnCartPage()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
      */
     public function getProductRecommendationforCart()
     {
         $response = null;
-        if (!$this->LSRecommend->isLsRecommendEnable() || !$this->LSRecommend->isLsRecommendEnableOnCartPage()) {
-            return $response;
-        }
         $productSkus = $this->LSRecommend->getProductSkusFromQuote();
         $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productSkus);
         if ($recommendedProducts instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem) {
