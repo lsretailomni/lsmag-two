@@ -557,7 +557,6 @@ class ProductCreateTask
      */
     private function assignProductToCategory()
     {
-        $this->logger->debug(__METHOD__);
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
             $this->logger->debug('Hierarchy Code not defined in the configuration.');
@@ -590,7 +589,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$hierarchyLeaf->getNavId());
+                $this->logger->debug("Problem with sku: ".$hierarchyLeaf->getNavId()." in ".__METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -795,7 +794,6 @@ class ProductCreateTask
      */
     public function updateVariantsOnly()
     {
-        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull']
         ];
@@ -815,7 +813,7 @@ class ProductCreateTask
                     $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $variants);
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$item);
+                $this->logger->debug("Problem with sku: ".$item." in ".__METHOD__);
                 $this->logger->debug($e->getMessage());
                 return;
             }
@@ -827,7 +825,6 @@ class ProductCreateTask
      */
     public function caterItemsRemoval()
     {
-        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'nav_id', 'value' => true, 'condition_type' => 'notnull']
         ];
@@ -848,7 +845,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$sku);
+                $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -859,7 +856,6 @@ class ProductCreateTask
      */
     public function caterVariantsRemoval()
     {
-        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull']
         ];
@@ -903,7 +899,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$itemId);
+                $this->logger->debug("Problem with sku: ".$itemId." in ".__METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -956,7 +952,6 @@ class ProductCreateTask
      */
     public function updateAndAddNewImageOnly()
     {
-        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
@@ -1005,7 +1000,7 @@ class ProductCreateTask
                         $processedItems[] = $image->getKeyValue();
                     }
                 } catch (\Exception $e) {
-                    $this->logger->debug("Problem with sku: ".$item);
+                    $this->logger->debug("Problem with sku: ".$item." in ".__METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1017,7 +1012,6 @@ class ProductCreateTask
      */
     public function updateBarcodeOnly()
     {
-        $this->logger->debug(__METHOD__);
         $cronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
         if ($cronProductCheck == 1) {
             $criteria = $this->replicationHelper->buildCriteriaForNewItems();
@@ -1043,7 +1037,7 @@ class ProductCreateTask
                             // @codingStandardsIgnoreEnd
                         }
                     } catch (\Exception $e) {
-                        $this->logger->debug("Problem with sku: ".$sku);
+                        $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
                         $this->logger->debug($e->getMessage());
                     }
                 }
@@ -1057,7 +1051,6 @@ class ProductCreateTask
      */
     public function updatePriceOnly($storeId)
     {
-        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
         ];
@@ -1090,7 +1083,7 @@ class ProductCreateTask
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
-                    $this->logger->debug("Problem with sku: ".$sku);
+                    $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1103,7 +1096,6 @@ class ProductCreateTask
      */
     public function updateInventoryOnly($storeId)
     {
-        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
         ];
@@ -1137,7 +1129,7 @@ class ProductCreateTask
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
-                    $this->logger->debug("Problem with sku: ".$sku);
+                    $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
