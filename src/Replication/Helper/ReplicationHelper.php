@@ -230,6 +230,27 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Create Build Criteria with Array of filters as a parameters
+     * @param array $filters
+     * @param int $pagesize
+     * @param boolean $excludeDeleted
+     * @return \Magento\Framework\Api\SearchCriteria
+     */
+    public function buildCriteriaForDirect(array $filters, $pagesize = 100, $excludeDeleted = true)
+    {
+        $criteria = $this->searchCriteriaBuilder->setFilterGroups([]);
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+            }
+        }
+        if ($excludeDeleted) {
+            $criteria->addFilter('IsDeleted', 0, 'eq');
+        }
+        $criteria->setPageSize($pagesize);
+        return $criteria->create();
+    }
+    /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
      * @param array $filters
      * @param int $pagesize
@@ -575,9 +596,12 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             'main_table.' . $primaryTableColumnName . ' = second.'.$secondaryTableColumnName,
             []
         );
-        $collection->getSelect()->group("main_table.".$primaryTableColumnName);
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
+        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/templog.log');
+        $logger = new \Zend\Log\Logger();
+        $logger->addWriter($writer);
+        $logger->info('query:'.$collection->getSelect());
     }
 }
