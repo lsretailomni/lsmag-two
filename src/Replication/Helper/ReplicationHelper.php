@@ -599,9 +599,5 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/templog.log');
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info('query:'.$collection->getSelect());
     }
 }
