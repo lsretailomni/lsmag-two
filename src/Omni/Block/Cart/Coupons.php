@@ -11,7 +11,7 @@ use Magento\Store\Model\StoreManagerInterface;
 /**
  * @api
  */
-class Coupon extends \Magento\Checkout\Block\Cart\Coupon
+class Coupons extends \Magento\Checkout\Block\Cart\Coupon
 {
 
     /**
@@ -98,5 +98,8 @@ class Coupon extends \Magento\Checkout\Block\Cart\Coupon
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+    }
+    public function getAjaxUrl(){
+
     }
 }
