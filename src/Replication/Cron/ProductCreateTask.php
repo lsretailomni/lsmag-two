@@ -38,6 +38,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Api\SortOrder;
 use Psr\Log\LoggerInterface;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 
 /**
  * Class ProductCreateTask
@@ -166,6 +167,16 @@ class ProductCreateTask
     public $replHierarchyLeafCollectionFactory;
 
     /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product
+     */
+    public $productResourceModel;
+
+    /**
+     * @var StockRegistryInterface
+     */
+    public $stockRegistry;
+
+    /**
      * ProductCreateTask constructor.
      * @param Factory $factory
      * @param Item $item
@@ -201,6 +212,8 @@ class ProductCreateTask
      * @param ReplInvStatusCollectionFactory $replInvStatusCollectionFactory
      * @param ReplPriceCollectionFactory $replPriceCollectionFactory
      * @param ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Product $productResourceModel
+     * @param StockRegistryInterface $stockRegistry
      */
     public function __construct(
         Factory $factory,
@@ -236,7 +249,9 @@ class ProductCreateTask
         StockHelper $stockHelper,
         ReplInvStatusCollectionFactory $replInvStatusCollectionFactory,
         ReplPriceCollectionFactory $replPriceCollectionFactory,
-        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
+        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
+        \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
+        StockRegistryInterface $stockRegistry
     ) {
         $this->factory = $factory;
         $this->item = $item;
@@ -272,6 +287,8 @@ class ProductCreateTask
         $this->replInvStatusCollectionFactory = $replInvStatusCollectionFactory;
         $this->replPriceCollectionFactory = $replPriceCollectionFactory;
         $this->replHierarchyLeafCollectionFactory = $replHierarchyLeafCollectionFactory;
+        $this->productResourceModel = $productResourceModel;
+        $this->stockRegistry = $stockRegistry;
     }
 
     /**
@@ -541,6 +558,7 @@ class ProductCreateTask
      */
     private function assignProductToCategory()
     {
+        $this->logger->debug(__METHOD__);
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
             $this->logger->debug('Hierarchy Code not defined in the configuration.');
@@ -573,6 +591,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
+                $this->logger->debug("Problem with sku: ".$hierarchyLeaf->getNavId());
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -754,13 +773,22 @@ class ProductCreateTask
         if ($variantId) {
             $filters[] = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
         }
-        $items = [];
-        $searchCriteria = $this->replicationHelper->buildCriteriaForArray($filters, 1);
+        $item = null;
+        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
         /** @var ReplPriceRepository $items */
-        $items = $this->replPriceRepository->getList($searchCriteria)->getItems();
-        foreach ($items as $item) {
-            return $item;
+        try {
+            $items = $this->replPriceRepository->getList($searchCriteria)->getItems();
+            if (!empty($items)) {
+                $item = reset($items);
+                /** @var \Ls\Replication\Model\ReplInvStatus $invStatus */
+                $item->setData('is_updated', '0');
+                $item->setData('processed', '1');
+                $this->replPriceRepository->save($item);
+            }
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
+        return $item;
     }
 
     /**
@@ -768,6 +796,7 @@ class ProductCreateTask
      */
     public function updateVariantsOnly()
     {
+        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull']
         ];
@@ -787,6 +816,7 @@ class ProductCreateTask
                     $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $variants);
                 }
             } catch (\Exception $e) {
+                $this->logger->debug("Problem with sku: ".$item);
                 $this->logger->debug($e->getMessage());
                 return;
             }
@@ -798,6 +828,7 @@ class ProductCreateTask
      */
     public function caterItemsRemoval()
     {
+        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'nav_id', 'value' => true, 'condition_type' => 'notnull']
         ];
@@ -818,6 +849,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
+                $this->logger->debug("Problem with sku: ".$sku);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -828,6 +860,7 @@ class ProductCreateTask
      */
     public function caterVariantsRemoval()
     {
+        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull']
         ];
@@ -871,6 +904,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
+                $this->logger->debug("Problem with sku: ".$itemId);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -923,6 +957,7 @@ class ProductCreateTask
      */
     public function updateAndAddNewImageOnly()
     {
+        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
@@ -971,6 +1006,7 @@ class ProductCreateTask
                         $processedItems[] = $image->getKeyValue();
                     }
                 } catch (\Exception $e) {
+                    $this->logger->debug("Problem with sku: ".$item);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -982,6 +1018,7 @@ class ProductCreateTask
      */
     public function updateBarcodeOnly()
     {
+        $this->logger->debug(__METHOD__);
         $cronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
         if ($cronProductCheck == 1) {
             $criteria = $this->replicationHelper->buildCriteriaForNewItems();
@@ -998,15 +1035,16 @@ class ProductCreateTask
                         }
                         $productData = $this->productRepository->get($sku);
                         if (isset($productData)) {
-                            $productData->setCustomAttribute("barcode", $replBarcode->getNavId());
+                            $productData->setBarcode($replBarcode->getNavId());
                             // @codingStandardsIgnoreStart
-                            $this->productRepository->save($productData);
+                            $this->productResourceModel->saveAttribute($productData, 'barcode');
                             $replBarcode->setData('is_updated', '0');
                             $replBarcode->setData('processed', '1');
                             $this->replBarcodeRepository->save($replBarcode);
                             // @codingStandardsIgnoreEnd
                         }
                     } catch (\Exception $e) {
+                        $this->logger->debug("Problem with sku: ".$sku);
                         $this->logger->debug($e->getMessage());
                     }
                 }
@@ -1020,6 +1058,7 @@ class ProductCreateTask
      */
     public function updatePriceOnly($storeId)
     {
+        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
         ];
@@ -1045,13 +1084,14 @@ class ProductCreateTask
                     if (isset($productData)) {
                         $productData->setPrice($replPrice->getUnitPrice());
                         // @codingStandardsIgnoreStart
-                        $this->productRepository->save($productData);
+                        $this->productResourceModel->saveAttribute($productData, 'price');
                         $replPrice->setData('is_updated', '0');
                         $replPrice->setData('processed', '1');
                         $this->replPriceRepository->save($replPrice);
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
+                    $this->logger->debug("Problem with sku: ".$sku);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1064,6 +1104,7 @@ class ProductCreateTask
      */
     public function updateInventoryOnly($storeId)
     {
+        $this->logger->debug(__METHOD__);
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
         ];
@@ -1085,20 +1126,19 @@ class ProductCreateTask
                     } else {
                         $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
                     }
-                    $productData = $this->productRepository->get($sku);
-                    if (isset($productData)) {
-                        $productData->setStockData([
-                            'is_in_stock' => ($replInvStatus->getQuantity() > 0) ? 1 : 0,
-                            'qty' => $replInvStatus->getQuantity()
-                        ]);
+                    $stockItem = $this->stockRegistry->getStockItemBySku($sku);
+                    if (isset($stockItem)) {
                         // @codingStandardsIgnoreStart
-                        $this->productRepository->save($productData);
+                        $stockItem->setQty($replInvStatus->getQuantity());
+                        $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
+                        $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
                         $replInvStatus->setData('is_updated', '0');
                         $replInvStatus->setData('processed', '1');
                         $this->replInvStatusRepository->save($replInvStatus);
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
+                    $this->logger->debug("Problem with sku: ".$sku);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1119,7 +1159,6 @@ class ProductCreateTask
     {
         // get those attribute codes which are assigned to product.
         $attributesCode = $this->_getAttributesCodes($item->getNavId());
-        $this->logger->debug('Attribute code array');
         $attributesIds = [];
         $associatedProductIds = [];
         $configurableProductsData = [];
@@ -1137,29 +1176,23 @@ class ProductCreateTask
             try {
                 $productData = $this->productRepository->get($sku);
                 try {
-                    $productData->setName($value->getDescription());
-                    $productData->setMetaTitle($value->getDescription());
-                    $productData->setDescription($value->getDetails());
+                    $name = $this->getNameForVariant($value, $item);
+                    $productData->setName($name);
+                    $productData->setMetaTitle($name);
+                    $productData->setDescription($item->getDetails());
                     $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute("uom", $value->getBaseUnitOfMeasure());
-                    $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
-                    if (isset($itemPrice)) {
-                        $productData->setPrice($itemPrice->getUnitPrice());
-                    } else {
-                        // Just in-case if we don't have variant specific price then we have to use the default price.
-                        $itemPrice = $this->getItemPrice($value->getItemId());
-                        $productData->setPrice($itemPrice->getUnitPrice());
-                    }
                     $productImages = $this->replicationHelper->getImageLinksByType(
                         $value->getItemId() . ',' . $value->getVariantId(),
                         'Item Variant'
                     );
                     if ($productImages) {
+                        $this->logger->debug('Found images for the simple product: ' .$sku);
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
                     $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
                     // @codingStandardsIgnoreStart
-                    $productData->save();
+                    $this->productRepository->save($productData);
                     $value->setData('processed', '1');
                     $value->setData('is_updated', '0');
                     $this->replItemVariantRegistrationRepository->save($value);
@@ -1168,18 +1201,17 @@ class ProductCreateTask
                     $this->logger->debug($e->getMessage());
                 }
             } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-                // check which attributes are available to be set as variant option.
+                $productV = $this->productFactory->create();
                 $d1 = (($value->getVariantDimension1()) ? $value->getVariantDimension1() : '');
                 $d2 = (($value->getVariantDimension2()) ? $value->getVariantDimension2() : '');
                 $d3 = (($value->getVariantDimension3()) ? $value->getVariantDimension3() : '');
                 $d4 = (($value->getVariantDimension4()) ? $value->getVariantDimension4() : '');
                 $d5 = (($value->getVariantDimension5()) ? $value->getVariantDimension5() : '');
                 $d6 = (($value->getVariantDimension6()) ? $value->getVariantDimension6() : '');
-
-                /** @var \Magento\Catalog\Api\Data\ProductInterface $productV */
-                $productV = $this->productFactory->create();
-                $dMerged = (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : '');
-                $productV->setName($item->getDescription() . $dMerged);
+                $name = $this->getNameForVariant($value, $item);
+                $productV->setName($name);
+                $productV->setMetaTitle($name);
+                $productV->setDescription($item->getDetails());
                 $productV->setSku($sku);
                 $productV->setWeight($item->getGrossWeight());
                 $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
@@ -1189,7 +1221,9 @@ class ProductCreateTask
                     // Just in-case if we don't have price for Variant then in that case,
                     // we are using the price of main product.
                     $itemPrice = $this->getItemPrice($value->getItemId());
-                    $productV->setPrice($itemPrice->getUnitPrice());
+                    if (isset($itemPrice)) {
+                        $productV->setPrice($itemPrice->getUnitPrice());
+                    }
                 }
                 $productV->setAttributeSetId(4);
                 $productV->setWebsiteIds([1]);
@@ -1292,5 +1326,28 @@ class ProductCreateTask
             $this->logger->debug($e->getMessage());
         }
         return $qty;
+    }
+
+    /**
+     * @param $value
+     * @param $item
+     * @return string
+     */
+    public function getNameForVariant(
+        \Ls\Replication\Model\ReplItemVariantRegistration $value,
+        \Ls\Replication\Model\ReplItem $item
+    ) {
+        $d1 = (($value->getVariantDimension1()) ? $value->getVariantDimension1() : '');
+        $d2 = (($value->getVariantDimension2()) ? $value->getVariantDimension2() : '');
+        $d3 = (($value->getVariantDimension3()) ? $value->getVariantDimension3() : '');
+        $d4 = (($value->getVariantDimension4()) ? $value->getVariantDimension4() : '');
+        $d5 = (($value->getVariantDimension5()) ? $value->getVariantDimension5() : '');
+        $d6 = (($value->getVariantDimension6()) ? $value->getVariantDimension6() : '');
+
+        /** @var \Magento\Catalog\Api\Data\ProductInterface $productV */
+        $dMerged = (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : '').
+            (($d4) ? '-' . $d4 : ''). (($d5) ? '-' . $d5 : ''). (($d6) ? '-' . $d6 : '');
+        $name = $item->getDescription() . $dMerged;
+        return $name;
     }
 }
