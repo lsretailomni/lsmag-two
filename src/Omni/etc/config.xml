@@ -21,7 +21,7 @@
                 <default_longitude>-0.04615</default_longitude>
                 <default_zoom>6</default_zoom>
                 <!-- This needs to be replaced on Production-->
-                <maps_api_key>AIzaSyCcd1UZ_3NDFZD_8g8375EqAGM5x6_rIqc</maps_api_key>
+                <maps_api_key></maps_api_key>
             </general>
         </omni_clickandcollect>
         <carriers>
