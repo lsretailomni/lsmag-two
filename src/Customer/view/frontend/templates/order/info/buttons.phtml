@@ -4,7 +4,7 @@
 ?>
 <div class="actions">
     <?php $_order = $block->getOrder();
-    $magOrder = $block->getOrderByDocumentId($_order->getDocumentId());
+    $magOrder = $block->getMagOrder();
     if (!empty($magOrder)) {
         ?>
         <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getEntityId())) : ?>

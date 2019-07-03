@@ -64,6 +64,22 @@ class Items extends \Magento\Sales\Block\Items\AbstractItems
     }
 
     /**
+     * @return mixed
+     */
+    public function getMagOrder()
+    {
+        return $this->coreRegistry->registry('current_mag_order');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShipmentOption()
+    {
+        return $this->coreRegistry->registry('current_shipment_option');
+    }
+
+    /**
      * @param $item
      * @return string
      */

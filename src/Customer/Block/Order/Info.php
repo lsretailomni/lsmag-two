@@ -1,6 +1,8 @@
 <?php
+
 namespace Ls\Customer\Block\Order;
 
+use Ls\Omni\Client\Ecommerce\Entity\Order;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context as TemplateContext;
 
@@ -36,6 +38,11 @@ class Info extends \Magento\Framework\View\Element\Template
     public $customerSession;
 
     /**
+     * @var \Ls\Omni\Helper\OrderHelper
+     */
+    public $orderHelper;
+
+    /**
      * @var string
      */
     // @codingStandardsIgnoreStart
@@ -49,9 +56,9 @@ class Info extends \Magento\Framework\View\Element\Template
      */
     public $coreRegistry = null;
 
-     /**
-      * @var \Magento\Framework\App\Http\Context
-      */
+    /**
+     * @var \Magento\Framework\App\Http\Context
+     */
     public $httpContext;
 
     /**
@@ -67,15 +74,18 @@ class Info extends \Magento\Framework\View\Element\Template
         \Magento\Directory\Model\CountryFactory $countryFactory,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         \Magento\Sales\Model\OrderRepository $orderRepository,
+        \Ls\Omni\Helper\OrderHelper $orderHelper,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Http\Context $httpContext,
         array $data = []
-    ) {
+    )
+    {
         $this->coreRegistry = $registry;
         $this->countryFactory = $countryFactory;
         $this->priceHelper = $priceHelper;
         $this->orderRepository = $orderRepository;
+        $this->orderHelper = $orderHelper;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerSession = $customerSession;
         $this->httpContext = $httpContext;
@@ -195,14 +205,15 @@ class Info extends \Magento\Framework\View\Element\Template
                 $methods[] = __('Loyalty Points');
             } elseif ($line->getTenderType() == '4') {
                 $methods[] = __('Gift Card');
-                $giftCardInfo[0]= $line->getCardNumber();
-                $giftCardInfo[1]= $line->getPreApprovedAmount();
+                $giftCardInfo[0] = $line->getCardNumber();
+                $giftCardInfo[1] = $line->getPreApprovedAmount();
             } else {
                 $methods[] = __('Unknown');
             }
         }
-        return[implode(', ', $methods),$giftCardInfo];
+        return [implode(', ', $methods), $giftCardInfo];
     }
+
     /**
      * @param $points
      * @return string
@@ -230,8 +241,8 @@ class Info extends \Magento\Framework\View\Element\Template
      */
     public function getPrintUrl($order)
     {
-        if ($order->getDocumentId()!=null) {
-            return $this->getUrl('sales/order/print', ['order_id' => $order->getEntityId()]);
+        if ($order->getDocumentId() != null) {
+            return $this->getUrl('customer/order/print', ['order_id' => $order->getDocumentId()]);
         }
     }
 
@@ -242,7 +253,7 @@ class Info extends \Magento\Framework\View\Element\Template
     public function getReorderUrl($order)
     {
         try {
-            if ($order->getDocumentId()!=null) {
+            if ($order->getDocumentId() != null) {
                 return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
             }
         } catch (\Exception $e) {
@@ -251,19 +262,12 @@ class Info extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param $documentId
-     * @return \Magento\Sales\Api\Data\OrderInterface[]
+     * @return mixed
      */
-    public function getOrderByDocumentId($documentId)
+    public function getMagOrder()
     {
-        $customerId = $this->customerSession->getCustomerId();
-        $order = $this->orderRepository->getList(
-            $this->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
-        )->getItems();
-        foreach ($order as $ord) {
-            if ($ord->getCustomerId() == $customerId) {
-                return $ord;
-            }
-        }
+        return $this->coreRegistry->registry('current_mag_order');
     }
+
+
 }

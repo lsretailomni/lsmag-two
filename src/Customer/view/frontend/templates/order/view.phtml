@@ -7,11 +7,81 @@
 // @codingStandardsIgnoreFile
 
 ?>
-<?php /** @var  $block \Ls\Customer\Block\Order\View **/?>
-<div class="order-details-items ordered">
-    <?php $_order = $block->getOrder() ?>
+<?php /** @var  $block \Ls\Customer\Block\Order\View * */ ?>
+<?php if (!empty($block->getInvoiceId())) {
+    $class = "invoice";
+    $title = "Invoice # " . $block->getInvoiceId();
+} else if (!empty($block->getShipmentId())) {
+    $class = "shipments";
+    $title = "Shipment # " . $block->getShipmentId();
+} else {
+    $title = "Items Ordered";
+    $class = "ordered";
+}
+?>
+<div class="order-details-items <?php echo $class; ?>">
+    <?php $_order = $block->getOrder();
+    $magOrder = $block->getMagOrder();
+    ?>
     <div class="order-title">
-        <strong><?= /* @escapeNotVerified */ __('Items Ordered') ?></strong>
+        <strong><?= /* @escapeNotVerified */
+            __($title) ?></strong>
+        <?php if ($block->getInvoiceOption()) { ?>
+            <a href="<?= /* @escapeNotVerified */
+            $block->getPrintAllInvoicesUrl($magOrder) ?>"
+               target="_blank"
+               class="action print">
+                <span><?= /* @escapeNotVerified */
+                    __('Print Invoice') ?></span>
+            </a>
+        <?php } else if ($block->getShipmentId()) { ?>
+            <?php if ($block->getShipmentOption()) : ?>
+                <a href="<?= /* @escapeNotVerified */
+                $block->getPrintAllShipmentUrl($magOrder) ?>"
+                   target="_blank"
+                   class="action print">
+                <span><?= /* @escapeNotVerified */
+                    __('Print Shipment') ?></span>
+                </a>
+            <?php endif; ?>
+            <?php foreach ($magOrder->getShipmentsCollection() as $_shipment) { ?>
+                <?php if ($block->getShipmentOption()) : ?>
+                    <a href="#"
+                       data-mage-init='{"popupWindow": {"windowURL":"<?= /* @escapeNotVerified */
+                       $this->helper('Magento\Shipping\Helper\Data')->getTrackingPopupUrlBySalesModel($_shipment) ?>","windowName":"trackshipment","width":800,"height":600,"top":0,"left":0,"resizable":1,"scrollbars":1}}'
+                       title="<?= /* @escapeNotVerified */
+                       __('Track this shipment') ?>"
+                       class="action track">
+                        <span><?= /* @escapeNotVerified */
+                            __('Track this shipment') ?></span>
+                    </a>
+                <?php endif; ?>
+                <?php $tracks = $_shipment->getTracksCollection(); ?>
+                <?php if ($tracks->count()) { ?>
+                    <dl class="order-tracking" id="my-tracking-table-<?= /* @escapeNotVerified */
+                    $_shipment->getId() ?>">
+                        <dt class="tracking-title"><?= /* @escapeNotVerified */
+                            __('Tracking Number(s):') ?></dt>
+                        <dd class="tracking-content">
+                            <?php
+                            $i = 1;
+                            $_size = $tracks->count();
+                            foreach ($tracks as $track): ?>
+                                <?php echo $track->getTitle();?>
+                                <?php if ($track->isCustom()): ?><?= $block->escapeHtml($track->getNumber()) ?><?php else: ?>
+                                <a
+                                        href="#"
+                                        data-mage-init='{"popupWindow": {"windowURL":"<?= /* @escapeNotVerified */
+                                        $this->helper('Magento\Shipping\Helper\Data')->getTrackingPopupUrlBySalesModel($track) ?>","windowName":"trackorder","width":800,"height":600,"left":0,"top":0,"resizable":1,"scrollbars":1}}'
+                                ><span><?= $block->escapeHtml($track->getNumber()) ?></span>
+                                    </a><?php endif; ?><?php if ($i != $_size): ?> , <?php endif; ?>
+                                <?php $i++;
+                            endforeach; ?>
+                        </dd>
+                    </dl>
+                <?php }
+            }
+        } ?>
     </div>
     <?= $block->getChildHtml('custom_order_items') ?>
 </div>
