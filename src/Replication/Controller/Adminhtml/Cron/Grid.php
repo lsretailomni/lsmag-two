@@ -7,6 +7,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\ObjectManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Grid
@@ -23,29 +24,30 @@ class Grid extends Action
     /** @var ObjectManagerInterface */
     public $objectManager;
 
+    /** @var LoggerInterface */
+    public $logger;
+
     /**
      * Grid constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param ObjectManagerInterface $objectManager
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
-        ObjectManagerInterface $objectManager
+        ObjectManagerInterface $objectManager,
+        LoggerInterface $logger
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->objectManager = $objectManager;
+        $this->logger = $logger;
         parent::__construct($context);
     }
 
     /**
-     * Execute action based on request and return result
-     *
-     * Note: Request will be added as operation argument in future
-     *
-     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
-     * @throws \Magento\Framework\Exception\NotFoundException
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
      */
     public function execute()
     {
@@ -79,6 +81,7 @@ class Grid extends Action
                 return $resultPage;
             }
         } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
     }
 }
