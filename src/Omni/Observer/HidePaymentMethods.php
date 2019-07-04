@@ -2,11 +2,11 @@
 
 namespace Ls\Omni\Observer;
 
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\Data;
 
 /**
  * Class HidePaymentMethods
@@ -26,27 +26,32 @@ class HidePaymentMethods implements ObserverInterface
     private $data;
 
     /**
-     * @var quoteResourceModel
+     * @var \Magento\Quote\Model\ResourceModel\Quote
      */
     private $quoteResourceModel;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * HidePaymentMethods constructor.
      * @param BasketHelper $basketHelper
      * @param Data $data
      * @param LoggerInterface $logger
+     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      */
     public function __construct(
         BasketHelper $basketHelper,
         Data $data,
         LoggerInterface $logger,
         \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
-    )
-    {
+    ) {
         $this->basketHelper = $basketHelper;
         $this->quoteResourceModel = $quoteResourceModel;
         $this->data = $data;
-        $this->_logger = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -93,7 +98,7 @@ class HidePaymentMethods implements ObserverInterface
                 }
             }
         } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
     }
 }
