@@ -6,6 +6,7 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
 use Psr\Log\LoggerInterface;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class Lstables
@@ -53,6 +54,9 @@ class Lstables extends Action
         "ls_replication_repl_vendor"
     ];
 
+    /** @var LSR */
+    public $lsr;
+
     // @codingStandardsIgnoreStart
     /** @var array */
     protected $_publicActions = ['ls_tables'];
@@ -61,15 +65,18 @@ class Lstables extends Action
     /**
      * Lstables constructor.
      * @param ResourceConnection $resource
+     * @param LSR $LSR
      * @param LoggerInterface $logger
      */
     public function __construct(
         ResourceConnection $resource,
         LoggerInterface $logger,
+        LSR $LSR,
         Context $context
     ) {
         $this->resource = $resource;
         $this->logger = $logger;
+        $this->lsr = $LSR;
         parent::__construct($context);
     }
 
@@ -94,6 +101,7 @@ class Lstables extends Action
         $coreConfigTableName = $connection->getTableName('core_config_data');
         $connection->query('DELETE FROM ' . $coreConfigTableName . ' WHERE path LIKE "ls_mag/replication/%";');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
+        $this->lsr->flushConfig();
         // @codingStandardsIgnoreEnd
         $this->messageManager->addSuccessMessage(__('All ls_ tables truncated successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
