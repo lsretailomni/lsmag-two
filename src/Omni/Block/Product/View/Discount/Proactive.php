@@ -109,14 +109,14 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     }
 
     /**
+     * @param $sku
      * @return array|\Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse|\Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount[]|\Ls\Omni\Client\ResponseInterface|null
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getProactiveDiscounts()
+    public function getProactiveDiscounts($sku)
     {
-        $currentProduct = $this->getProduct();
-        $itemId = $currentProduct->getSku();
+        $itemId = $sku;
         $storeId = $this->lsr->getDefaultWebStore();
         if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $storeId)) {
             if (!is_array($response)) {
@@ -129,13 +129,13 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     }
 
     /**
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @param $sku
+     * @return array|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer[]|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetResponse|\Ls\Omni\Client\ResponseInterface|null
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getCoupons()
+    public function getCoupons($sku)
     {
-        $currentProduct = $this->getProduct();
-        $itemId = $currentProduct->getSku();
+        $itemId = $sku;
         $storeId = $this->lsr->getDefaultWebStore();
         if ($this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_ID)) {
             $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
@@ -155,13 +155,14 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     }
 
     /**
+     * @param $itemId
      * @param \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount $discount
      * @return array|string
      */
-    public function getFormattedDescriptionDiscount(\Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount $discount)
-    {
-        $currentProduct = $this->getProduct();
-        $itemId = $currentProduct->getSku();
+    public function getFormattedDescriptionDiscount(
+        $itemId,
+        \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount $discount
+    ) {
         $description = [];
         if ($discount->getDescription()) {
             $description[] = "<span class='discount-description'>" . $discount->getDescription() . "</span>";
@@ -191,7 +192,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             $itemIds = array_unique($itemIds);
             $itemIds = array_diff($itemIds, [$itemId]);
             foreach ($itemIds as &$sku) {
-                $url = $this->getProductBySku($sku);
+                $url = $this->getProductUrlBySku($sku);
                 if (!empty($url)) {
                     $sku = "<a href = '".$url."' target='_blank'>".$sku.'</a>';
                 }
@@ -234,7 +235,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
      * @param $sku
      * @return string
      */
-    public function getProductBySku($sku)
+    public function getProductUrlBySku($sku)
     {
         $url = "";
         try {
@@ -263,5 +264,25 @@ class Proactive extends \Magento\Catalog\Block\Product\View
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getAjaxUrl()
+    {
+        return $this->getUrl('omni/ajax/ProactiveDiscountsAndCoupons');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProductSku()
+    {
+        $currentProduct = $this->getProduct();
+        if (empty($currentProduct) || !$currentProduct->getId()) {
+            return null;
+        }
+        return $currentProduct->getSku();
     }
 }

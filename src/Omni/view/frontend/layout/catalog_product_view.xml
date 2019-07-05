@@ -29,7 +29,7 @@
         <referenceContainer name="product.info.extrahint">
             <block class="Ls\Omni\Block\Product\View\Discount\Proactive"
                    name="ls.omni.product.discount.proactive"
-                   template="Ls_Omni::product/view/proactive.phtml"
+                   template="Ls_Omni::product/proactive.phtml"
                    after="product.info.social"/>
         </referenceContainer>
     </body>
