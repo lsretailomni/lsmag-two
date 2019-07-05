@@ -84,20 +84,25 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
     protected function _toHtml()
     {
         $order=$this->getMagOrder();
-        if($this->getKey()=="Invoices" && !($order->hasInvoices())){
-            return '';
-        }
+        if(!empty($order)) {
+            if ($this->getKey() == "Invoices" && !($order->hasInvoices())) {
+                return '';
+            }
 
-        if($this->getKey()=="Shipments" && !($order->hasShipments())){
-            return '';
-        }
+            if ($this->getKey() == "Shipments" && !($order->hasShipments())) {
+                return '';
+            }
 
-        if ($this->hasKey()
-            && method_exists($this->getOrder(), 'has' . $this->getKey())
-            && !$this->getOrder()->{'has' . $this->getKey()}()
-        ) {
+            if ($this->hasKey()
+                && method_exists($this->getOrder(), 'has' . $this->getKey())
+                && !$this->getOrder()->{'has' . $this->getKey()}()
+            ) {
+                return '';
+            }
+            return parent::_toHtml();
+        }
+        else {
             return '';
         }
-        return parent::_toHtml();
     }
 }

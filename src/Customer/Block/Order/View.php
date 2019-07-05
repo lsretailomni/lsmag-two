@@ -97,6 +97,14 @@ class View extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * @param $order
+     */
+    public function HideShippingLinks()
+    {
+        return $this->coreRegistry->registry('hide_shipping_links');
+    }
+
+    /**
      * @param object $order
      * @return string
      */

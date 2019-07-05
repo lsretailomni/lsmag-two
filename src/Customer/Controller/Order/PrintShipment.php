@@ -80,7 +80,8 @@ class PrintShipment extends \Magento\Framework\App\Action\Action
             $response = $this->setCurrentOrderInRegistry($orderId);
             $this->setCurrentMagOrderInRegistry($orderId);
             $this->setShipmentId();
-            $this->registry->register('current_shipment_option',false);
+            $this->registry->register('current_shipment_option',true);
+            $this->registry->register('hide_shipping_links',false);
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
@@ -110,6 +111,14 @@ class PrintShipment extends \Magento\Framework\App\Action\Action
     public function setOrderInRegistry($order)
     {
         $this->registry->register('current_order', $order);
+    }
+
+    /**
+     * @param $order
+     */
+    public function HideShippingLinks()
+    {
+        return $this->registry->registry('hide_shipping_links');
     }
 
     /**
