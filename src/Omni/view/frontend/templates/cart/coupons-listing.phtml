@@ -1,3 +1,13 @@
+<?php
+// @codingStandardsIgnoreFile
+$availableCoupons = [];
+$loggedIn = $block->isCustomerLoggedIn();
+if (empty($block->getCouponCode()) && $loggedIn){
+    $loggedIn = $block->isCustomerLoggedIn();
+    $availableCoupons = $block->getAvailableCoupons();
+}
+?>
+
 <?php if ($loggedIn && !empty($availableCoupons) && empty($block->getCouponCode())) { ?>
     <div class="available-coupons">
     <h2><span>OR</span></h2>

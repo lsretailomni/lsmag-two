@@ -63,7 +63,7 @@ class Coupons extends Action
         $resultPage = $this->resultPageFactory->create();
         $block = $resultPage->getLayout()
             ->createBlock('Ls\Omni\Block\Cart\Coupons')
-            ->setTemplate('Ls_Omni::checkout/cart/view/recommendation.phtml')
+            ->setTemplate('Ls_Omni::cart/coupons-listing.phtml')
             ->toHtml();
         $result->setData(['output' => $block]);
         return $result;

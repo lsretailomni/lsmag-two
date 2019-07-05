@@ -99,7 +99,12 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
             $this->_logger->error($e->getMessage());
         }
     }
-    public function getAjaxUrl(){
 
+    /**
+     * @return string
+     */
+    public function getAjaxUrl()
+    {
+        return $this->getUrl('omni/ajax/coupons');
     }
 }

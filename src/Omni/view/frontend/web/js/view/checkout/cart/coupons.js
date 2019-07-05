@@ -11,11 +11,11 @@ define([
         $(document).ready(function () {
             setTimeout(function () {
                 $.ajax({
-                    context: '#lsRecommendation',
+                    context: '#ls-coupons',
                     url: ajaxUrl,
                     type: "POST"
                 }).done(function (data) {
-                    $('#lsRecommendation').html(data.output);
+                    $('#ls-coupons').html(data.output);
                     return true;
                 });
             }, 2000);
