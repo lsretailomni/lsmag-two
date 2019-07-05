@@ -397,7 +397,7 @@ class ProductCreateTask
                     $product = $this->getProductAttributes($product, $item);
                     // @codingStandardsIgnoreStart
                     $productSaved = $this->productRepository->save($product);
-                    $variants = $this->getProductVarients($item->getNavId());
+                    $variants = $this->getNewOrUpdatedProductVariants(-1);
                     if (!empty($variants)) {
                         $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
                     }
@@ -630,28 +630,18 @@ class ProductCreateTask
     }
 
     /**
-     * Return all Variants
-     * @param type $itemid
-     * @return type
-     */
-    private function getProductVarients($itemid)
-    {
-        $this->searchCriteriaBuilder->addFilter('ItemId', $itemid);
-        $this->searchCriteriaBuilder->addFilter('IsDeleted', '0');
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        $variants = $this->replItemVariantRegistrationRepository->getList($searchCriteria)->getItems();
-        return $variants;
-    }
-
-    /**
      * Return all updated variants only
      * @param type $filters
      * @return type
      */
-    private function getUpdatedProductVariants($filters)
+    private function getNewOrUpdatedProductVariants($pagesize = 100)
     {
+        $filters = [
+            ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'VariantId', 'value' => true, 'condition_type' => 'notnull']
+        ];
         /** @var \Magento\Framework\Api\SearchCriteria $criteria */
-        $criteria = $this->replicationHelper->buildCriteriaForArray($filters);
+        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, $pagesize);
         $variants = $this->replItemVariantRegistrationRepository->getList($criteria)->getItems();
         return $variants;
     }
@@ -794,10 +784,7 @@ class ProductCreateTask
      */
     public function updateVariantsOnly()
     {
-        $filters = [
-            ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull']
-        ];
-        $variants = $this->getUpdatedProductVariants($filters);
+        $variants = $this->getNewOrUpdatedProductVariants();
         if (!empty($variants)) {
             try {
                 foreach ($variants as $variant) {
@@ -1209,10 +1196,7 @@ class ProductCreateTask
                 } else {
                     // Just in-case if we don't have price for Variant then in that case,
                     // we are using the price of main product.
-                    $itemPrice = $this->getItemPrice($value->getItemId());
-                    if (isset($itemPrice)) {
-                        $productV->setPrice($itemPrice->getUnitPrice());
-                    }
+                    $productV->setPrice($configProduct->getPrice());
                 }
                 $productV->setAttributeSetId(4);
                 $productV->setWebsiteIds([1]);
