@@ -198,7 +198,7 @@ class Info extends \Magento\Framework\View\Element\Template
                 $giftCardInfo[0]= $line->getCardNumber();
                 $giftCardInfo[1]= $line->getPreApprovedAmount();
             } else {
-                $methods[] = __('Unknown');
+                $methods[] = __('Pay At Store');
             }
         }
         return[implode(', ', $methods),$giftCardInfo];

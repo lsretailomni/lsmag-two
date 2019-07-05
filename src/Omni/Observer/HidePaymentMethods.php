@@ -69,6 +69,7 @@ class HidePaymentMethods implements ObserverInterface
             $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
             $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
             $paymentOption = $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION);
+            $paymentOptionArray = explode(',', $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION));
             if (!empty($basketData)) {
                 $orderTotal = $this->data->getOrderBalance(
                     $quote->getLsGiftCardAmountUsed(),
@@ -79,14 +80,10 @@ class HidePaymentMethods implements ObserverInterface
                 $method_instance = $observer->getEvent()->getMethodInstance()->getCode();
                 $result = $observer->getEvent()->getResult();
                 if ($shippingMethod == "clickandcollect_clickandcollect") {
-                    if ($method_instance == "ls_payment_method_pay_at_store") {
+                    if (in_array($method_instance, $paymentOptionArray)) {
                         $result->setData('is_available', true);
                     } else {
-                        if ($paymentOption == 1) {
-                            $result->setData('is_available', true);
-                        } else {
-                            $result->setData('is_available', false);
-                        }
+                        $result->setData('is_available', false);
                     }
                 } else {
                     if ($method_instance == "ls_payment_method_pay_at_store") {
