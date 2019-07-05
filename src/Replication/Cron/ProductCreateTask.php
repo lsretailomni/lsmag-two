@@ -1140,6 +1140,7 @@ class ProductCreateTask
                     $productData->setName($value->getDescription());
                     $productData->setMetaTitle($value->getDescription());
                     $productData->setDescription($value->getDetails());
+                    $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute("uom", $value->getBaseUnitOfMeasure());
                     $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
                     if (isset($itemPrice)) {
@@ -1180,6 +1181,7 @@ class ProductCreateTask
                 $dMerged = (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : '');
                 $productV->setName($item->getDescription() . $dMerged);
                 $productV->setSku($sku);
+                $productV->setWeight($item->getGrossWeight());
                 $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
                 if (isset($itemPrice)) {
                     $productV->setPrice($itemPrice->getUnitPrice());
