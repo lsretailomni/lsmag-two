@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+/** @var \Ls\Omni\Block\Cart\Coupons $block */
 $availableCoupons = [];
 $loggedIn = $block->isCustomerLoggedIn();
 if (empty($block->getCouponCode()) && $loggedIn){

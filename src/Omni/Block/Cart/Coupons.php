@@ -88,16 +88,16 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
      */
     public function getFormattedOfferExpiryDate($date)
     {
+        $offerExpiryDate = "";
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             ));
-
-            return $offerExpiryDate;
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+        return $offerExpiryDate;
     }
 
     /**
