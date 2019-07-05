@@ -81,6 +81,7 @@ class Shipment extends \Magento\Framework\App\Action\Action
             $this->setCurrentMagOrderInRegistry($orderId);
             $this->setShipmentId();
             $this->setPrintShipmentOption();
+            $this->registry->register('hide_shipping_links',true);
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
