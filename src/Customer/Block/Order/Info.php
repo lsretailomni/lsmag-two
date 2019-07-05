@@ -79,8 +79,7 @@ class Info extends \Magento\Framework\View\Element\Template
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Framework\App\Http\Context $httpContext,
         array $data = []
-    )
-    {
+    ) {
         $this->coreRegistry = $registry;
         $this->countryFactory = $countryFactory;
         $this->priceHelper = $priceHelper;

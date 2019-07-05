@@ -59,8 +59,7 @@ class Shipment extends \Magento\Framework\App\Action\Action
         \Magento\Framework\Registry $registry,
         ResultFactory $result,
         \Magento\Framework\Message\ManagerInterface $messageManager
-    )
-    {
+    ) {
         $this->resultRedirect = $result;
         $this->messageManager = $messageManager;
         $this->request = $request;

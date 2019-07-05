@@ -28,8 +28,7 @@ class Items extends \Magento\Sales\Block\Items\AbstractItems
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\Registry $registry,
         array $data = []
-    )
-    {
+    ) {
         $this->coreRegistry = $registry;
         parent::__construct($context, $data);
     }

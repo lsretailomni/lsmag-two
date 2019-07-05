@@ -58,8 +58,7 @@ class History extends \Magento\Sales\Block\Order\History
         \Magento\Sales\Model\OrderRepository $orderRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         array $data = []
-    )
-    {
+    ) {
         $this->orderHelper = $orderHelper;
         $this->priceCurrency = $priceCurrency;
         $this->lsr = $LSR;
