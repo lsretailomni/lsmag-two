@@ -142,6 +142,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
     const MSG_NOT_AVAILABLE_NOTICE_TITLE = "Notice";
     const MSG_NOT_AVAILABLE_NOTICE_CONTENT = "This item is only available online.";
+    const SC_PAYMENT_OPTION = 'carriers/clickandcollect/payment_option';
 
     // CUSTOM CONFIGURATION PATHS
     const CONFIG_REPLICATION_JOBS = 'ls_mag/replication/jobs';
