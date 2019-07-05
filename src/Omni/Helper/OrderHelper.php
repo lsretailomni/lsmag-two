@@ -39,6 +39,11 @@ class OrderHelper extends AbstractHelper
     public $checkoutSession;
 
     /**
+     * @var Order Repository
+     */
+    public $orderRepository;
+
+    /**
      * OrderHelper constructor.
      * @param Context $context
      * @param Model\Order $order
@@ -52,6 +57,7 @@ class OrderHelper extends AbstractHelper
         Model\Order $order,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
+        \Magento\Sales\Model\OrderRepository $orderRepository,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession
     ) {
@@ -59,6 +65,7 @@ class OrderHelper extends AbstractHelper
         $this->order = $order;
         $this->basketHelper = $basketHelper;
         $this->loyaltyHelper = $loyaltyHelper;
+        $this->orderRepository = $orderRepository;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
     }
@@ -358,5 +365,22 @@ class OrderHelper extends AbstractHelper
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param $documentId
+     * @return \Magento\Sales\Api\Data\OrderInterface[]
+     */
+    public function getOrderByDocumentId($documentId)
+    {
+        $customerId = $this->customerSession->getCustomerId();
+        $order = $this->orderRepository->getList(
+            $this->basketHelper->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
+        )->getItems();
+        foreach ($order as $ord) {
+            if ($ord->getCustomerId() == $customerId) {
+                return $ord;
+            }
+        }
     }
 }

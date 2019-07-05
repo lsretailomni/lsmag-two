@@ -8,10 +8,10 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class View
+ * Class Index
  * @package Ls\Customer\Controller\Order
  */
-class View extends \Magento\Framework\App\Action\Action
+class PrintAction extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var \Magento\Framework\Message\ManagerInterface
@@ -78,11 +78,10 @@ class View extends \Magento\Framework\App\Action\Action
         if ($this->request->getParam('order_id')) {
             $orderId = $this->request->getParam('order_id');
             $response = $this->setCurrentOrderInRegistry($orderId);
+            $this->registry->register('current_invoice_option',false);
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
-            $this->setCurrentMagOrderInRegistry($orderId);
-            $this->registry->register('current_invoice_option',false);
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -103,17 +102,6 @@ class View extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @return void
-     */
-    // @codingStandardsIgnoreStart
-    protected function _prepareLayout()
-    {
-
-        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getDocumentId()));
-    }
-    // @codingStandardsIgnoreEnd
-
-    /**
      * @param $order
      */
     public function setOrderInRegistry($order)
@@ -129,5 +117,4 @@ class View extends \Magento\Framework\App\Action\Action
         $order=$this->orderHelper->getOrderByDocumentId($orderId);
         $this->registry->register('current_mag_order', $order);
     }
-
 }

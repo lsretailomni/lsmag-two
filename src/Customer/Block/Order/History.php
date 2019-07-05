@@ -58,8 +58,7 @@ class History extends \Magento\Sales\Block\Order\History
         \Magento\Sales\Model\OrderRepository $orderRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         array $data = []
-    )
-    {
+    ) {
         $this->orderHelper = $orderHelper;
         $this->priceCurrency = $priceCurrency;
         $this->lsr = $LSR;
@@ -157,14 +156,34 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public function getOrderByDocumentId($documentId)
     {
-        $customerId = $this->_customerSession->getCustomerId();
-        $order = $this->orderRepository->getList(
-            $this->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
-        )->getItems();
-        foreach ($order as $ord) {
-            if ($ord->getCustomerId() == $customerId) {
-                return $ord;
-            }
-        }
+        return $this->orderHelper->getOrderByDocumentId($documentId);
     }
+    /**
+     * @param object $invoice
+     * @return string
+     */
+    public function getPrintInvoiceUrl($invoice)
+    {
+        return $this->getUrl('*/*/printInvoice', ['invoice_id' => $invoice->getId()]);
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getPrintAllInvoicesUrl($order)
+    {
+        return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
+    }
+
+    /**
+     * Retrieve invoice model instance
+     *
+     * @return \Magento\Sales\Model\Order\Invoice
+     */
+    public function getInvoice()
+    {
+        return $this->_coreRegistry->registry('current_invoice');
+    }
+
 }

@@ -36,15 +36,6 @@ class View extends \Magento\Framework\View\Element\Template
         parent::__construct($context, $data);
     }
 
-    /**
-     * @return void
-     */
-    // @codingStandardsIgnoreStart
-    protected function _prepareLayout()
-    {
-        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getDocumentId()));
-    }
-    // @codingStandardsIgnoreEnd
 
     /**
      * @return string
@@ -62,5 +53,83 @@ class View extends \Magento\Framework\View\Element\Template
     public function getOrder()
     {
         return $this->coreRegistry->registry('current_order');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMagOrder()
+    {
+        return $this->coreRegistry->registry('current_mag_order');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInvoiceId()
+    {
+        return $this->coreRegistry->registry('current_invoice_id');
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getInvoiceOption()
+    {
+        return $this->coreRegistry->registry('current_invoice_option');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShipmentId()
+    {
+        return $this->coreRegistry->registry('current_shipment_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShipmentOption()
+    {
+        return $this->coreRegistry->registry('current_shipment_option');
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getPrintAllInvoicesUrl($order)
+    {
+        return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
+    }
+
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getPrintAllShipmentUrl($order)
+    {
+        return $this->getUrl('*/*/printShipment', ['order_id' => $order->getDocumentId()]);
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getInvoiceUrl($order)
+    {
+        return $this->getUrl('*/*/invoice', ['order_id' => $this->getOrder()->getDocumentId()]);
+    }
+
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getShipmentUrl($order)
+    {
+        return $this->getUrl('*/*/shipment', ['order_id' => $this->getOrder()->getDocumentId()]);
     }
 }
