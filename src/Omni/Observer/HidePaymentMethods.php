@@ -7,6 +7,7 @@ use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class HidePaymentMethods
@@ -31,20 +32,28 @@ class HidePaymentMethods implements ObserverInterface
     private $quoteResourceModel;
 
     /**
+     * @var  \Ls\Core\Model\LSR
+     */
+    private $lsr;
+
+    /**
      * HidePaymentMethods constructor.
      * @param BasketHelper $basketHelper
      * @param Data $data
      * @param LoggerInterface $logger
+     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
+     * @param LSR $lsr
      */
     public function __construct(
         BasketHelper $basketHelper,
         Data $data,
         LoggerInterface $logger,
-        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
-    )
-    {
+        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel,
+        LSR $lsr
+    ) {
         $this->basketHelper = $basketHelper;
         $this->quoteResourceModel = $quoteResourceModel;
+        $this->lsr = $lsr;
         $this->data = $data;
         $this->_logger = $logger;
     }
@@ -59,6 +68,7 @@ class HidePaymentMethods implements ObserverInterface
             $quote = $this->basketHelper->checkoutSession->getQuote();
             $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
             $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
+            $paymentOption = $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION);
             if (!empty($basketData)) {
                 $orderTotal = $this->data->getOrderBalance(
                     $quote->getLsGiftCardAmountUsed(),
@@ -72,7 +82,11 @@ class HidePaymentMethods implements ObserverInterface
                     if ($method_instance == "ls_payment_method_pay_at_store") {
                         $result->setData('is_available', true);
                     } else {
-                        $result->setData('is_available', false);
+                        if ($paymentOption == 1) {
+                            $result->setData('is_available', true);
+                        } else {
+                            $result->setData('is_available', false);
+                        }
                     }
                 } else {
                     if ($method_instance == "ls_payment_method_pay_at_store") {
