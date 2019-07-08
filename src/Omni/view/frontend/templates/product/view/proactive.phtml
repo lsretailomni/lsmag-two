@@ -1,11 +1,13 @@
 <?php
 /** @var \Ls\Omni\Block\Product\View\Discount\Proactive $block */
 // @codingStandardsIgnoreFile
+$productData = $block->getData();
+$productSku = $productData['data']['productSku'];
 ?>
-<div class="proactive-discounts-container" style="display:none">
+<div class="proactive-discounts-container">
     <?php
-    $discounts = $block->getProactiveDiscounts();
-    $coupons = $block->getCoupons();
+    $discounts = $block->getProactiveDiscounts($productSku);
+    $coupons = $block->getCoupons($productSku);
     if (!empty($discounts) || !empty($coupons)) {
         ?>
         <div class="discount-dropdown-label">
@@ -14,7 +16,7 @@
         <div class="discount-dropdown">
             <div data-block="dropdown" class="dropdown-wrapper">
                 <button type="button" class="action primary" data-trigger="trigger">
-                    <span data-bind="i18n: 'Find Discounts'"></span>
+                    <span><?php echo __('Find Discounts');?></span>
                     <i class="arrow down"></i>
                 </button>
             </div>
@@ -42,7 +44,7 @@
                 }
                 foreach ($discounts as $discount) {
                     echo "<div class='dropdown-content-wrapper content-discount'>
-                " . $block->getFormattedDescriptionDiscount($discount) . "
+                " . $block->getFormattedDescriptionDiscount($productSku, $discount) . "
             </div>";
                 }
                 ?>
@@ -51,18 +53,3 @@
         </div>
     <?php } ?>
 </div>
-
-<script type="text/javascript">
-    require(['jquery', 'mage/gallery/gallery'], function($, gallery){
-        var gallery = $('[data-gallery-role=gallery-placeholder]');
-        var discounts = $('.catalog-product-view .proactive-discounts-container');
-        if (gallery.length > 0) {
-            gallery.on('gallery:loaded', function () {
-                discounts.show();
-            });
-        } else {
-            discounts.show();
-        }
-
-    });
-</script>
