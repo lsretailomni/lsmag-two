@@ -39,10 +39,10 @@ class PaymentOption implements \Magento\Framework\Option\ArrayInterface
      */
     public function toOptionArray()
     {
-        $payments = $this->_paymentModelConfig->getActiveMethods();
+        $payments = $this->paymentModelConfig->getActiveMethods();
         $methods = [];
         foreach ($payments as $paymentCode => $paymentModel) {
-            $paymentTitle = $this->_appConfigScopeConfigInterface->getValue('payment/' . $paymentCode . '/title');
+            $paymentTitle = $this->appConfigScopeConfigInterface->getValue('payment/' . $paymentCode . '/title');
             if ($paymentCode != "free") {
                 $methods[$paymentCode] =[
                     'label' => $paymentTitle,

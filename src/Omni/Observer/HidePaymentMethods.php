@@ -27,7 +27,12 @@ class HidePaymentMethods implements ObserverInterface
     private $data;
 
     /**
-     * @var quoteResourceModel
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var \Magento\Quote\Model\ResourceModel\Quote
      */
     private $quoteResourceModel;
 
@@ -55,7 +60,7 @@ class HidePaymentMethods implements ObserverInterface
         $this->quoteResourceModel = $quoteResourceModel;
         $this->lsr = $lsr;
         $this->data = $data;
-        $this->_logger = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -68,7 +73,6 @@ class HidePaymentMethods implements ObserverInterface
             $quote = $this->basketHelper->checkoutSession->getQuote();
             $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
             $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
-            $paymentOption = $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION);
             $paymentOptionArray = explode(',', $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION));
             if (!empty($basketData)) {
                 $orderTotal = $this->data->getOrderBalance(
@@ -104,7 +108,7 @@ class HidePaymentMethods implements ObserverInterface
                 }
             }
         } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
     }
 }
