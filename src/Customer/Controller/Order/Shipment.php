@@ -78,14 +78,13 @@ class Shipment extends \Magento\Framework\App\Action\Action
         if ($this->request->getParam('order_id')) {
             $orderId = $this->request->getParam('order_id');
             $response = $this->setCurrentOrderInRegistry($orderId);
-            $this->setCurrentMagOrderInRegistry($orderId);
-            $this->setShipmentId();
-            $this->setPrintShipmentOption();
-            $this->registry->register('hide_shipping_links',true);
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
-
+            $this->setCurrentMagOrderInRegistry($orderId);
+            $this->setShipmentId();
+            $this->setPrintShipmentOption();
+            $this->registry->register('hide_shipping_links', true);
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -122,7 +121,6 @@ class Shipment extends \Magento\Framework\App\Action\Action
         $this->registry->register('current_mag_order', $order);
     }
 
-
     /**
      * @param $orderId
      */
@@ -130,7 +128,7 @@ class Shipment extends \Magento\Framework\App\Action\Action
     {
         $order = $this->registry->registry('current_mag_order');
         foreach ($order->getShipmentsCollection() as $shipment) {
-            $this->registry->register('current_shipment_id',$shipment->getIncrementId());
+            $this->registry->register('current_shipment_id', $shipment->getIncrementId());
         }
     }
 
@@ -140,7 +138,7 @@ class Shipment extends \Magento\Framework\App\Action\Action
     public function setPrintShipmentOption()
     {
         $order = $this->registry->registry('current_mag_order');
-        if(!empty($order)) {
+        if (!empty($order)) {
             if (!empty($order->getShipmentsCollection())) {
                 $this->registry->register('current_shipment_option', true);
             } else {

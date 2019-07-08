@@ -82,7 +82,7 @@ class View extends \Magento\Framework\App\Action\Action
                 return $this->_redirect('sales/order/history/');
             }
             $this->setCurrentMagOrderInRegistry($orderId);
-            $this->registry->register('current_invoice_option',false);
+            $this->registry->register('current_invoice_option', false);
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -126,7 +126,7 @@ class View extends \Magento\Framework\App\Action\Action
      */
     public function setCurrentMagOrderInRegistry($orderId)
     {
-        $order=$this->orderHelper->getOrderByDocumentId($orderId);
+        $order = $this->orderHelper->getOrderByDocumentId($orderId);
         $this->registry->register('current_mag_order', $order);
     }
 
