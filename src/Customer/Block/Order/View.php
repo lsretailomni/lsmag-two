@@ -36,7 +36,6 @@ class View extends \Magento\Framework\View\Element\Template
         parent::__construct($context, $data);
     }
 
-
     /**
      * @return string
      */
@@ -71,7 +70,6 @@ class View extends \Magento\Framework\View\Element\Template
         return $this->coreRegistry->registry('current_invoice_id');
     }
 
-
     /**
      * @return mixed
      */
@@ -97,9 +95,9 @@ class View extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param $order
+     * @return mixed
      */
-    public function HideShippingLinks()
+    public function hideShippingLinks()
     {
         return $this->coreRegistry->registry('hide_shipping_links');
     }
@@ -113,7 +111,6 @@ class View extends \Magento\Framework\View\Element\Template
         return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
     }
 
-
     /**
      * @param object $order
      * @return string
@@ -124,7 +121,7 @@ class View extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param object $order
+     * @param $order
      * @return string
      */
     public function getInvoiceUrl($order)

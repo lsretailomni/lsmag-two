@@ -78,10 +78,10 @@ class PrintAction extends \Magento\Framework\App\Action\Action
         if ($this->request->getParam('order_id')) {
             $orderId = $this->request->getParam('order_id');
             $response = $this->setCurrentOrderInRegistry($orderId);
-            $this->registry->register('current_invoice_option',false);
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
+            $this->registry->register('current_invoice_option', false);
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -114,7 +114,7 @@ class PrintAction extends \Magento\Framework\App\Action\Action
      */
     public function setCurrentMagOrderInRegistry($orderId)
     {
-        $order=$this->orderHelper->getOrderByDocumentId($orderId);
+        $order = $this->orderHelper->getOrderByDocumentId($orderId);
         $this->registry->register('current_mag_order', $order);
     }
 }

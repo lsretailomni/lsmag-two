@@ -59,7 +59,7 @@ class Invoice extends \Magento\Framework\App\Action\Action
         \Magento\Framework\Registry $registry,
         ResultFactory $result,
         \Magento\Framework\Message\ManagerInterface $messageManager
-    ){
+    ) {
         $this->resultRedirect = $result;
         $this->messageManager = $messageManager;
         $this->request = $request;
@@ -78,13 +78,12 @@ class Invoice extends \Magento\Framework\App\Action\Action
         if ($this->request->getParam('order_id')) {
             $orderId = $this->request->getParam('order_id');
             $response = $this->setCurrentOrderInRegistry($orderId);
-            $this->setCurrentMagOrderInRegistry($orderId);
-            $this->setInvoiceId();
-            $this->setPrintInvoiceOption();
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
-
+            $this->setCurrentMagOrderInRegistry($orderId);
+            $this->setInvoiceId();
+            $this->setPrintInvoiceOption();
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -121,7 +120,6 @@ class Invoice extends \Magento\Framework\App\Action\Action
         $this->registry->register('current_mag_order', $order);
     }
 
-
     /**
      * @param $orderId
      */
@@ -129,7 +127,7 @@ class Invoice extends \Magento\Framework\App\Action\Action
     {
         $order = $this->registry->registry('current_mag_order');
         foreach ($order->getInvoiceCollection() as $invoice) {
-            $this->registry->register('current_invoice_id',$invoice->getIncrementId());
+            $this->registry->register('current_invoice_id', $invoice->getIncrementId());
         }
     }
 
@@ -139,7 +137,7 @@ class Invoice extends \Magento\Framework\App\Action\Action
     public function setPrintInvoiceOption()
     {
         $order = $this->registry->registry('current_mag_order');
-        if(!empty($order)) {
+        if (!empty($order)) {
             if (!empty($order->getInvoiceCollection())) {
                 $this->registry->register('current_invoice_option', true);
             } else {

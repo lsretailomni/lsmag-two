@@ -35,7 +35,7 @@
                     __('Print Invoice') ?></span>
             </a>
         <?php } else if ($block->getShipmentId()) { ?>
-            <?php if ($block->getShipmentOption() && $block->HideShippingLinks()) : ?>
+            <?php if ($block->getShipmentOption() && $block->hideShippingLinks()) : ?>
                 <a href="<?= /* @escapeNotVerified */
                 $block->getPrintAllShipmentUrl($magOrder) ?>"
                    target="_blank"
@@ -45,7 +45,7 @@
                 </a>
             <?php endif; ?>
             <?php foreach ($magOrder->getShipmentsCollection() as $_shipment) { ?>
-                <?php if ($block->getShipmentOption() && $block->HideShippingLinks()) : ?>
+                <?php if ($block->getShipmentOption() && $block->hideShippingLinks()) : ?>
                     <a href="#"
                        data-mage-init='{"popupWindow": {"windowURL":"<?= /* @escapeNotVerified */
                        $this->helper('Magento\Shipping\Helper\Data')->getTrackingPopupUrlBySalesModel($_shipment) ?>","windowName":"trackshipment","width":800,"height":600,"top":0,"left":0,"resizable":1,"scrollbars":1}}'
