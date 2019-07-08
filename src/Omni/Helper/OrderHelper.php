@@ -264,7 +264,6 @@ class OrderHelper extends AbstractHelper
             $orderPaymentArray[] = $orderPayment;
         }
 
-
         // @codingStandardsIgnoreLine
         /*
          * Not Supporting at the moment, so all payment methods will be offline,
@@ -274,7 +273,6 @@ class OrderHelper extends AbstractHelper
         }
          *
          */
-
 
         if ($order->getLsPointsSpent()) {
             $pointRate = $this->loyaltyHelper->getPointRate();
@@ -292,9 +290,7 @@ class OrderHelper extends AbstractHelper
                 ->setTenderType('3');
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
-
         if ($order->getLsGiftCardAmountUsed()) {
-
             // @codingStandardsIgnoreStart
             $orderPaymentGiftCard = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd

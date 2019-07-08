@@ -6,7 +6,7 @@ use \Magento\Framework\App\Config\ScopeConfigInterface;
 use \Magento\Payment\Model\Config;
 
 /**
- * Class Paymethods
+ * Class PaymentOption
  * @package Ls\Omni\Model\System\Source
  */
 class PaymentOption implements \Magento\Framework\Option\ArrayInterface
@@ -14,24 +14,24 @@ class PaymentOption implements \Magento\Framework\Option\ArrayInterface
     /**
      * @var ScopeConfigInterface
      */
-    public $_appConfigScopeConfigInterface;
+    public $appConfigScopeConfigInterface;
 
     /**
      * @var Config
      */
-    public $_paymentModelConfig;
+    public $paymentModelConfig;
 
     /**
-     * Paymethods constructor.
+     * PaymentOption constructor.
      * @param ScopeConfigInterface $appConfigScopeConfigInterface
      * @param Config $paymentModelConfig
      */
     public function __construct(
         ScopeConfigInterface $appConfigScopeConfigInterface,
         Config $paymentModelConfig
-    ){
-        $this->_appConfigScopeConfigInterface = $appConfigScopeConfigInterface;
-        $this->_paymentModelConfig = $paymentModelConfig;
+    ) {
+        $this->appConfigScopeConfigInterface = $appConfigScopeConfigInterface;
+        $this->paymentModelConfig = $paymentModelConfig;
     }
 
     /**
@@ -40,14 +40,14 @@ class PaymentOption implements \Magento\Framework\Option\ArrayInterface
     public function toOptionArray()
     {
         $payments = $this->_paymentModelConfig->getActiveMethods();
-        $methods = array();
+        $methods = [];
         foreach ($payments as $paymentCode => $paymentModel) {
             $paymentTitle = $this->_appConfigScopeConfigInterface->getValue('payment/' . $paymentCode . '/title');
-            if($paymentCode!="free") {
-                $methods[$paymentCode] = array(
+            if ($paymentCode != "free") {
+                $methods[$paymentCode] =[
                     'label' => $paymentTitle,
                     'value' => $paymentCode
-                );
+                ];
             }
         }
         return $methods;
