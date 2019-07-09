@@ -5,13 +5,13 @@ if ($block->isEnabled()) {
     $ajaxUrl = $block->getAjaxUrl();
     ?>
     <div id="lsRecommendation">
-        <div class="loader">
+        <div class="ls-loader">
             <img src="<?= /* @escapeNotVerified */
             $block->getViewFileUrl('images/loader-1.gif') ?>"
                  alt="<?= /* @escapeNotVerified */
                  __('Loading...') ?>">
             <br/>
-            <div><?php echo __('Loading LS Recommendation...'); ?></div>
+            <div><?php echo __('Loading recommended products for you...'); ?></div>
         </div>
     </div>
     <script type="text/x-magento-init">
