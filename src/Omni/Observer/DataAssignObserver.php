@@ -22,7 +22,7 @@ class DataAssignObserver implements ObserverInterface
     public function __construct(
         \Ls\Core\Model\LSR $LSR
     ) {
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
     }
 
     /**
