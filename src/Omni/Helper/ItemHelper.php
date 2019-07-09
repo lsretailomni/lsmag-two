@@ -2,16 +2,15 @@
 
 namespace Ls\Omni\Helper;
 
-use \Ls\Replication\Model\ReplBarcodeRepository;
-use Magento\Catalog\Model\ProductRepository;
-use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Framework\App\Helper\Context;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use Magento\Framework\Api\SearchCriteriaBuilder;
-use \Ls\Core\Model\LSR;
+use \Ls\Replication\Model\ReplBarcodeRepository;
+use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
-use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Helper\Context;
+use Magento\Quote\Api\CartRepositoryInterface;
 
 /**
  * Class ItemHelper
@@ -73,8 +72,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel,
         LoyaltyHelper $loyaltyHelper,
         Cart $cart
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->barcodeRepository = $barcodeRepository;
@@ -93,7 +91,6 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function get($id, $lite = false)
     {
-
         $result = false;
         // @codingStandardsIgnoreStart
         $entity = new Entity\ItemGetById();
@@ -116,7 +113,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param Entity\LoyItem $item
-     * @return $this
+     * @return Entity\LoyItem
      */
     public function lite(Entity\LoyItem $item)
     {
@@ -176,8 +173,12 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (($variant_id == null)) {
             return $variant;
         }
+        $variants = $item->getVariantsRegistration()->getVariantRegistration();
+        if (!is_array($variants)) {
+            $variants = [$item->getVariantsRegistration()->getVariantRegistration()];
+        }
         /** @var \Ls\Omni\Client\Ecommerce\Entity\VariantRegistration $row */
-        foreach ($item->getVariantsRegistration()->getVariantRegistration() as $row) {
+        foreach ($variants as $row) {
             if ($row->getId() == $variant_id) {
                 $variant = $row;
                 break;

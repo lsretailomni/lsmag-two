@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
-use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\BasketHelper;
+use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class CouponCodeObserver
@@ -37,6 +37,7 @@ class CouponCodeObserver implements ObserverInterface
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
      * @param \Magento\Framework\UrlInterface $url
+     * @param LSR $LSR
      */
     public function __construct(
         BasketHelper $basketHelper,
@@ -44,14 +45,14 @@ class CouponCodeObserver implements ObserverInterface
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
         \Magento\Framework\UrlInterface $url,
-        \Ls\Core\Model\LSR $LSR
+        LSR $LSR
     ) {
         $this->basketHelper = $basketHelper;
         $this->logger = $logger;
         $this->messageManager = $messageManager;
         $this->redirectFactory = $redirectFactory;
         $this->url = $url;
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
     }
 
     /**
