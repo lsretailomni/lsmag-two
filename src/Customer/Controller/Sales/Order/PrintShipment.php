@@ -1,11 +1,13 @@
 <?php
 namespace Ls\Customer\Controller\Sales\Order;
 
+use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Controller\AbstractController\OrderLoaderInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Sales\Controller\AbstractController\OrderViewAuthorizationInterface;
 
 class PrintShipment extends \Magento\Sales\Controller\Order\PrintShipment
 {
@@ -22,23 +24,18 @@ class PrintShipment extends \Magento\Sales\Controller\Order\PrintShipment
 
     /** @var \Psr\Log\LoggerInterface  */
     public $logger;
-    /**
-     * View constructor.
-     * @param Http $request
-     * @param Action\Context $context
-     * @param OrderLoaderInterface $orderLoader
-     * @param PageFactory $resultPageFactory
-     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
-     */
+
+
     public function __construct(
         Http $request,
-        Action\Context $context,
-        OrderLoaderInterface $orderLoader,
+        Context $context,
+        OrderViewAuthorizationInterface $orderAuthorization,
+        \Magento\Framework\Registry $registry,
         PageFactory $resultPageFactory,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
     ) {
-        parent::__construct($context, $orderLoader, $resultPageFactory);
+        parent::__construct($context, $orderAuthorization, $registry, $resultPageFactory);
         $this->request = $request;
         $this->logger = $logger;
         $this->orderRepository = $orderRepository;
