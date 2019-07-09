@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Block\Order;
 
-use Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context as TemplateContext;
 
@@ -18,7 +18,7 @@ class Info extends \Magento\Framework\View\Element\Template
     public $countryFactory;
 
     /**
-     * @var priceHelper
+     * @var \Magento\Framework\Pricing\Helper\Data
      */
     public $priceHelper;
 
@@ -28,12 +28,12 @@ class Info extends \Magento\Framework\View\Element\Template
     public $orderRepository;
 
     /**
-     * @var SearchCriteriaBuilder
+     * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
     public $searchCriteriaBuilder;
 
     /**
-     * @var CustomerSession
+     * @var \Magento\Customer\Model\Session\Proxy
      */
     public $customerSession;
 
@@ -68,6 +68,7 @@ class Info extends \Magento\Framework\View\Element\Template
      * @param \Magento\Directory\Model\CountryFactory $countryFactory
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param \Magento\Sales\Model\OrderRepository $orderRepository
+     * @param \Ls\Omni\Helper\OrderHelper $orderHelper
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Framework\App\Http\Context $httpContext
@@ -275,6 +276,4 @@ class Info extends \Magento\Framework\View\Element\Template
     {
         return $this->coreRegistry->registry('current_mag_order');
     }
-
-
 }

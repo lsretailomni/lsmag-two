@@ -3,7 +3,6 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
-use \Ls\omni\Helper\ItemHelper;
 
 /**
  * Class Items
@@ -87,5 +86,4 @@ class Items extends \Magento\Sales\Block\Items\AbstractItems
         $html = $this->getChildBlock("custom_order_item_renderer")->setData("item", $item)->toHtml();
         return $html;
     }
-
 }

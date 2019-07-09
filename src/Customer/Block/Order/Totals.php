@@ -23,17 +23,17 @@ class Totals extends \Magento\Framework\View\Element\Template
     public $priceCurrency;
 
     /**
-     * @var priceHelper
+     * @var LoyaltyHelper
      */
     public $loyaltyHelper;
 
     /**
-     * @var GiftCardAmount
+     * @var int
      */
     public $giftCardAmount = 0;
 
     /**
-     * @var LoyaltyAmount
+     * @var int
      */
     public $loyaltyPointAmount = 0;
 
@@ -200,5 +200,4 @@ class Totals extends \Magento\Framework\View\Element\Template
         $points = number_format((float)$loyaltyPoints, 2, '.', '');
         return $points * $this->loyaltyHelper->getPointRate();
     }
-
 }
