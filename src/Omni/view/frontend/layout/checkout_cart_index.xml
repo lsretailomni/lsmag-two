@@ -77,7 +77,7 @@
         </referenceBlock>
         <referenceBlock name="checkout.cart.coupon">
             <action method="setTemplate">
-                <argument name="template" xsi:type="string">Ls_Omni::cart/coupon.phtml</argument>
+                <argument name="template" xsi:type="string">Ls_Omni::cart/coupons.phtml</argument>
             </action>
         </referenceBlock>
     </body>

@@ -1,0 +1,23 @@
+<?php
+// @codingStandardsIgnoreFile
+/** @var \Ls\Omni\Block\Cart\Coupons $block */
+$availableCoupons = [];
+$loggedIn = $block->isCustomerLoggedIn();
+if (empty($block->getCouponCode()) && $loggedIn){
+    $loggedIn = $block->isCustomerLoggedIn();
+    $availableCoupons = $block->getAvailableCoupons();
+}
+?>
+
+<?php if ($loggedIn && !empty($availableCoupons) && empty($block->getCouponCode())) { ?>
+    <div class="available-coupons">
+    <h2><span>OR</span></h2>
+    <form id="my_radio_box">
+    <fieldset id="group1">
+
+    <?php foreach ($availableCoupons as $each) {
+        echo " <div class='coupon-major'><input type='radio' value='" . $each->getOfferId() .
+            "' name='group1'>" . $block->getFormattedDescription($each) . '</div>';
+        ?>
+    <?php }
+}?>
