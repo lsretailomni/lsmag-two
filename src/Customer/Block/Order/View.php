@@ -119,22 +119,4 @@ class View extends \Magento\Framework\View\Element\Template
     {
         return $this->getUrl('*/*/printShipment', ['order_id' => $order->getDocumentId()]);
     }
-
-    /**
-     * @param $order
-     * @return string
-     */
-    public function getInvoiceUrl($order)
-    {
-        return $this->getUrl('*/*/invoice', ['order_id' => $this->getOrder()->getDocumentId()]);
-    }
-
-    /**
-     * @param object $order
-     * @return string
-     */
-    public function getShipmentUrl($order)
-    {
-        return $this->getUrl('*/*/shipment', ['order_id' => $this->getOrder()->getDocumentId()]);
-    }
 }
