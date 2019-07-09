@@ -111,6 +111,10 @@
                        showInStore="1">
                     <label>Method Name</label>
                 </field>
+                <field id="payment_option" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1">
+                    <label>Payment Method</label>
+                    <source_model>Ls\Omni\Model\System\Source\PaymentOption</source_model>
+                </field>
                 <field id="price" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Shipping Cost</label>

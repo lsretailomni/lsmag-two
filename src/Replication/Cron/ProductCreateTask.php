@@ -339,6 +339,7 @@ class ProductCreateTask
                         $productData->setName($item->getDescription());
                         $productData->setMetaTitle($item->getDescription());
                         $productData->setDescription($item->getDetails());
+                        $productData->setWeight($item->getGrossWeight());
                         $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                         $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
                         if ($productImages) {
@@ -363,7 +364,7 @@ class ProductCreateTask
                     $product->setSku($item->getNavId());
                     $product->setUrlKey($this->oSlug($item->getDescription() . '-' . $item->getNavId()));
                     $product->setVisibility(\Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH);
-                    $product->setWeight(10);
+                    $product->setWeight($item->getGrossWeight());
                     $product->setDescription($item->getDetails());
                     $itemPrice = $this->getItemPrice($item->getNavId());
                     if (isset($itemPrice)) {
@@ -1158,6 +1159,7 @@ class ProductCreateTask
                     $productData->setName($name);
                     $productData->setMetaTitle($name);
                     $productData->setDescription($item->getDetails());
+                    $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute("uom", $value->getBaseUnitOfMeasure());
                     $productImages = $this->replicationHelper->getImageLinksByType(
                         $value->getItemId() . ',' . $value->getVariantId(),
@@ -1190,6 +1192,7 @@ class ProductCreateTask
                 $productV->setMetaTitle($name);
                 $productV->setDescription($item->getDetails());
                 $productV->setSku($sku);
+                $productV->setWeight($item->getGrossWeight());
                 $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId());
                 if (isset($itemPrice)) {
                     $productV->setPrice($itemPrice->getUnitPrice());

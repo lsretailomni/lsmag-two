@@ -63,4 +63,16 @@ class Recommend extends \Magento\Catalog\Block\Product\AbstractProduct
     {
         return $this->getUrl('omni/ajax/RecommendationCart');
     }
+
+    /**
+     * @return bool
+     */
+    public function checkCartItems()
+    {
+        if ($this->_cartHelper->getItemsCount() === 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

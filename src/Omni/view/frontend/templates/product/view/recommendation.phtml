@@ -1,7 +1,7 @@
 <?php
 /** @var \Ls\Omni\Block\Product\View\Recommend $block */
 $mode = 'grid';
-$title = __('LS Recommendation');
+$title = __('Recommended Products for you');
 $productData = $block->getData();
 $productId = $productData['data']['productSku'];
 if ($items = $block->getProductRecommendation($productId)) : ?>

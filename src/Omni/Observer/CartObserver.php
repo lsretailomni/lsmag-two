@@ -3,10 +3,10 @@
 namespace Ls\Omni\Observer;
 
 use \Ls\Omni\Helper\BasketHelper;
-use Magento\Framework\Event\ObserverInterface;
 use \Ls\Omni\Helper\ContactHelper;
-use \LS\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data;
+use \LS\Omni\Helper\ItemHelper;
+use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class CartObserver
@@ -50,6 +50,7 @@ class CartObserver implements ObserverInterface
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Ls\Core\Model\LSR $LSR
+     * @param Data $data
      */
     public function __construct(
         ContactHelper $contactHelper,
@@ -60,8 +61,7 @@ class CartObserver implements ObserverInterface
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Ls\Core\Model\LSR $LSR,
         Data $data
-    )
-    {
+    ) {
         $this->contactHelper = $contactHelper;
         $this->basketHelper = $basketHelper;
         $this->itemHelper = $itemHelper;
@@ -132,6 +132,9 @@ class CartObserver implements ObserverInterface
         return $this;
     }
 
+    /**
+     * @param bool $value
+     */
     public function watchNextSave($value = true)
     {
         $this->watchNextSave = $value;
