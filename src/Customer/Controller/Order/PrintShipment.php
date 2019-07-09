@@ -8,10 +8,10 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class View
+ * Class PrintShipment
  * @package Ls\Customer\Controller\Order
  */
-class View extends \Magento\Framework\App\Action\Action
+class PrintShipment extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var \Magento\Framework\Message\ManagerInterface
@@ -82,7 +82,9 @@ class View extends \Magento\Framework\App\Action\Action
                 return $this->_redirect('sales/order/history/');
             }
             $this->setCurrentMagOrderInRegistry($orderId);
-            $this->registry->register('current_invoice_option', false);
+            $this->setShipmentId();
+            $this->registry->register('current_shipment_option', true);
+            $this->registry->register('hide_shipping_links', false);
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -103,17 +105,6 @@ class View extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @return void
-     */
-    // @codingStandardsIgnoreStart
-    protected function _prepareLayout()
-    {
-
-        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getDocumentId()));
-    }
-    // @codingStandardsIgnoreEnd
-
-    /**
      * @param $order
      */
     public function setOrderInRegistry($order)
@@ -122,12 +113,32 @@ class View extends \Magento\Framework\App\Action\Action
     }
 
     /**
+     * @return mixed
+     */
+    public function hideShippingLinks()
+    {
+        return $this->registry->registry('hide_shipping_links');
+    }
+
+    /**
      * @param $orderId
      */
     public function setCurrentMagOrderInRegistry($orderId)
     {
         $order = $this->orderHelper->getOrderByDocumentId($orderId);
+        $this->registry->unregister('current_mag_order');
         $this->registry->register('current_mag_order', $order);
+    }
+
+    /**
+     * @param $orderId
+     */
+    public function setShipmentId()
+    {
+        $order = $this->registry->registry('current_mag_order');
+        foreach ($order->getShipmentsCollection() as $shipment) {
+            $this->registry->register('current_shipment_id', $shipment->getIncrementId());
+        }
     }
 
 }

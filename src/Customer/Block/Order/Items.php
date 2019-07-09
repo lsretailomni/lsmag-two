@@ -28,8 +28,7 @@ class Items extends \Magento\Sales\Block\Items\AbstractItems
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\Registry $registry,
         array $data = []
-    )
-    {
+    ) {
         $this->coreRegistry = $registry;
         parent::__construct($context, $data);
     }
@@ -61,6 +60,22 @@ class Items extends \Magento\Sales\Block\Items\AbstractItems
     public function getOrder()
     {
         return $this->coreRegistry->registry('current_order');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMagOrder()
+    {
+        return $this->coreRegistry->registry('current_mag_order');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShipmentOption()
+    {
+        return $this->coreRegistry->registry('current_shipment_option');
     }
 
     /**

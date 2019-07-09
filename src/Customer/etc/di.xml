@@ -9,6 +9,20 @@
                 type="Ls\Customer\Block\Onepage\Success"/>
     <preference for="Magento\Sales\Controller\Order\View"
                 type="Ls\Customer\Controller\Sales\Order\View"/>
+    <preference for="Magento\Sales\Controller\Order\PrintAction"
+                type="Ls\Customer\Controller\Sales\Order\PrintAction"/>
+    <preference for="Magento\Sales\Controller\Order\Invoice"
+                type="Ls\Customer\Controller\Sales\Order\Invoice"/>
+    <preference for="Magento\Sales\Controller\Order\PrintInvoice"
+                type="Ls\Customer\Controller\Sales\Order\PrintInvoice"/>
+    <preference for="Magento\Sales\Controller\Order\PrintShipment"
+                type="Ls\Customer\Controller\Sales\Order\PrintShipment"/>
+    <preference for="Magento\Sales\Controller\Order\Shipment"
+                type="Ls\Customer\Controller\Sales\Order\Shipment"/>
+    <preference for="Magento\Sales\Controller\Order\View"
+                type="Ls\Customer\Controller\Sales\Order\View"/>
+    <preference for="Magento\Sales\Controller\Order\View"
+                type="Ls\Customer\Controller\Sales\Order\View"/>
     <preference for="Magento\Customer\Model\AccountManagement"
                 type="Ls\Customer\Model\AccountManagement"/>
     <preference for="Magento\Customer\Controller\Account\ForgotPasswordPost"
@@ -22,6 +36,21 @@
                 type="Ls\Customer\Plugin\Customer\Block\Widget\Name"/>
     </type>
     <type name="Ls\Customer\Controller\Order\View">
+        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+    </type>
+    <type name="Ls\Customer\Controller\Order\Invoice">
+        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+    </type>
+    <type name="Ls\Customer\Controller\Order\PrintAction">
+        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+    </type>
+    <type name="Ls\Customer\Controller\Order\PrintInvoice">
+        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+    </type>
+    <type name="Ls\Customer\Controller\Order\PrintShipment">
+        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+    </type>
+    <type name="Ls\Customer\Controller\Order\Shipment">
         <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
 </config>

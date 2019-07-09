@@ -8,10 +8,10 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class View
+ * Class Shipment
  * @package Ls\Customer\Controller\Order
  */
-class View extends \Magento\Framework\App\Action\Action
+class Shipment extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var \Magento\Framework\Message\ManagerInterface
@@ -82,7 +82,9 @@ class View extends \Magento\Framework\App\Action\Action
                 return $this->_redirect('sales/order/history/');
             }
             $this->setCurrentMagOrderInRegistry($orderId);
-            $this->registry->register('current_invoice_option', false);
+            $this->setShipmentId();
+            $this->setPrintShipmentOption();
+            $this->registry->register('hide_shipping_links', true);
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -103,17 +105,6 @@ class View extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @return void
-     */
-    // @codingStandardsIgnoreStart
-    protected function _prepareLayout()
-    {
-
-        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getDocumentId()));
-    }
-    // @codingStandardsIgnoreEnd
-
-    /**
      * @param $order
      */
     public function setOrderInRegistry($order)
@@ -130,4 +121,29 @@ class View extends \Magento\Framework\App\Action\Action
         $this->registry->register('current_mag_order', $order);
     }
 
+    /**
+     * @param $orderId
+     */
+    public function setShipmentId()
+    {
+        $order = $this->registry->registry('current_mag_order');
+        foreach ($order->getShipmentsCollection() as $shipment) {
+            $this->registry->register('current_shipment_id', $shipment->getIncrementId());
+        }
+    }
+
+    /**
+     *  Print Invoice Option
+     */
+    public function setPrintShipmentOption()
+    {
+        $order = $this->registry->registry('current_mag_order');
+        if (!empty($order)) {
+            if (!empty($order->getShipmentsCollection())) {
+                $this->registry->register('current_shipment_option', true);
+            } else {
+                $this->registry->register('current_shipment_option', false);
+            }
+        }
+    }
 }

@@ -8,10 +8,10 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class View
+ * Class Invoice
  * @package Ls\Customer\Controller\Order
  */
-class View extends \Magento\Framework\App\Action\Action
+class Invoice extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var \Magento\Framework\Message\ManagerInterface
@@ -42,7 +42,7 @@ class View extends \Magento\Framework\App\Action\Action
     public $registry;
 
     /**
-     * View constructor.
+     * Invoice constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param Http $request
@@ -82,7 +82,8 @@ class View extends \Magento\Framework\App\Action\Action
                 return $this->_redirect('sales/order/history/');
             }
             $this->setCurrentMagOrderInRegistry($orderId);
-            $this->registry->register('current_invoice_option', false);
+            $this->setInvoiceId();
+            $this->setPrintInvoiceOption();
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -103,17 +104,6 @@ class View extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @return void
-     */
-    // @codingStandardsIgnoreStart
-    protected function _prepareLayout()
-    {
-
-        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getDocumentId()));
-    }
-    // @codingStandardsIgnoreEnd
-
-    /**
      * @param $order
      */
     public function setOrderInRegistry($order)
@@ -130,4 +120,29 @@ class View extends \Magento\Framework\App\Action\Action
         $this->registry->register('current_mag_order', $order);
     }
 
+    /**
+     * @param $orderId
+     */
+    public function setInvoiceId()
+    {
+        $order = $this->registry->registry('current_mag_order');
+        foreach ($order->getInvoiceCollection() as $invoice) {
+            $this->registry->register('current_invoice_id', $invoice->getIncrementId());
+        }
+    }
+
+    /**
+     *  Print Invoice Option
+     */
+    public function setPrintInvoiceOption()
+    {
+        $order = $this->registry->registry('current_mag_order');
+        if (!empty($order)) {
+            if (!empty($order->getInvoiceCollection())) {
+                $this->registry->register('current_invoice_option', true);
+            } else {
+                $this->registry->register('current_invoice_option', false);
+            }
+        }
+    }
 }

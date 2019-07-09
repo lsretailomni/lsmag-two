@@ -32,15 +32,12 @@
                 <?= $block->escapeHtml($block->getShippingDescription()) ?>
             </div>
         </div>
-
-        <?php if(!$block->getOrder()->getClickAndCollectOrder()){?>
-            <div class="box box-order-billing-address">
+        <div class="box box-order-billing-address">
                 <strong class="box-title"><span><?= /* @escapeNotVerified */ __('Billing Address') ?></span></strong>
                 <div class="box-content">
                     <address><?= /* @escapeNotVerified */ $block->getFormattedAddress() ?></address>
                 </div>
-            </div>
-        <?php } ?>
+        </div>
         <div class="box box-order-billing-method">
             <strong class="box-title">
                 <span><?= /* @escapeNotVerified */ __('Payment Method') ?></span>

@@ -22,11 +22,6 @@ class Recent extends \Magento\Framework\View\Element\Template
     public $priceCurrency;
 
     /**
-     * @var Order Repository
-     */
-    public $orderRepository;
-
-    /**
      * @var SearchCriteriaBuilder
      */
     public $searchCriteriaBuilder;
@@ -57,7 +52,6 @@ class Recent extends \Magento\Framework\View\Element\Template
         parent::__construct($context, $data);
         $this->orderHelper = $orderHelper;
         $this->priceCurrency = $priceCurrency;
-        $this->orderRepository = $orderRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerSession = $customerSession;
     }
@@ -142,14 +136,6 @@ class Recent extends \Magento\Framework\View\Element\Template
      */
     public function getOrderByDocumentId($documentId)
     {
-        $customerId = $this->customerSession->getCustomerId();
-        $order = $this->orderRepository->getList(
-            $this->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
-        )->getItems();
-        foreach ($order as $ord) {
-            if ($ord->getCustomerId() == $customerId) {
-                return $ord;
-            }
-        }
+       return $this->orderHelper->getOrderByDocumentId($documentId);
     }
 }

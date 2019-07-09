@@ -1,17 +1,10 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <update handle="customer_account"/>
-    <update handle="customer_order_info_links"/>
-	 <head>
-        <css src="Ls_Omni::css/lsdiscountprices.css"/>
-    </head>
+    <update handle="print" />
     <body>
         <referenceContainer name="page.main.title">
             <block class="Ls\Customer\Block\Order\Info" name="custom.order.status" template="Ls_Customer::order/order_status.phtml"/>
             <block class="Ls\Customer\Block\Order\Info" name="custom.order.date" template="Ls_Customer::order/order_date.phtml"/>
-            <container name="order.actions.container" htmlTag="div" htmlClass="actions-toolbar order-actions-toolbar">
-                <block class="Ls\Customer\Block\Order\Info" as="buttons" name="sales.order.info.buttons" template="Ls_Customer::order/info/buttons.phtml" cacheable="false"/>
-            </container>
         </referenceContainer>
         <referenceContainer name="content">
             <block class="Ls\Customer\Block\Order\View" name="sales.order.view" cacheable="false" after="sales.order.info.links">

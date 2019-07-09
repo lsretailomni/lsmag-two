@@ -1,0 +1,29 @@
+<?php
+/** @var \Ls\Customer\Block\Order\Items $block */
+?>
+<?php $_item = $block->getItem() ?>
+<?php $_order = $block->getMagOrder() ?>
+<?php
+$sku = $block->getSku();
+if (!empty($_item->getVariantId())) {
+$sku = $sku . "-" . $_item->getVariantId();
+}
+?>
+<tr id="order-item-row-<?= /* @escapeNotVerified */ $_item->getId() ?>">
+    <td class="col name" data-th="<?= $block->escapeHtml(__('Product Name')) ?>">
+        <strong class="product name product-item-name"><?= $block->escapeHtml($_item->getItemDescription()) ?></strong>
+        <?php if (!empty($_item->getVariantDescription())) { ?>
+            <p><?= $_item->getVariantDescription() ?></p>
+            <?php
+        }
+        ?>
+        <?php if (!empty($discountInfo)) { ?>
+            <p><strong><?= $discountInfo[0]; ?></strong></p>
+            <?php
+        }
+        ?>
+    </td>
+    <td class="col sku" data-th="<?= $block->escapeHtml(__('SKU')) ?>"><?= /* @escapeNotVerified */
+        $sku ?></td>
+    <td class="col qty" data-th="<?= $block->escapeHtml(__('Qty Shipped')) ?>"><?= /* @escapeNotVerified */ $_item->getQuantity()*1 ?></td>
+</tr>

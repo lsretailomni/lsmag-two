@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Html\Links" as="links" name="sales.order.info.links" before="-">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">items order-links</argument>
+                </arguments>
+                <block class="Ls\Customer\Block\Order\Link" name="sales.order.info.links.information">
+                    <arguments>
+                        <argument name="path" xsi:type="string">customer/order/view</argument>
+                        <argument name="label" xsi:type="string" translate="true">Items Ordered</argument>
+                    </arguments>
+                </block>
+                <block class="Ls\Customer\Block\Order\Link" name="sales.order.info.links.invoice">
+                    <arguments>
+                        <argument name="key" xsi:type="string">Invoices</argument>
+                        <argument name="path" xsi:type="string">customer/order/invoice</argument>
+                        <argument name="label" xsi:type="string" translate="true">Invoices</argument>
+                    </arguments>
+                </block>
+                <block class="Ls\Customer\Block\Order\Link" name="sales.order.info.links.shipment">
+                    <arguments>
+                        <argument name="key" xsi:type="string">Shipments</argument>
+                        <argument name="path" xsi:type="string">customer/order/shipment</argument>
+                        <argument name="label" xsi:type="string" translate="true">Order Shipments</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

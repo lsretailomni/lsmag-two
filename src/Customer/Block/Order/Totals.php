@@ -51,8 +51,7 @@ class Totals extends \Magento\Framework\View\Element\Template
         PriceCurrencyInterface $priceCurrency,
         LoyaltyHelper $loyaltyHelper,
         array $data = []
-    )
-    {
+    ) {
         $this->priceCurrency = $priceCurrency;
         $this->loyaltyHelper = $loyaltyHelper;
         $this->coreRegistry = $registry;
