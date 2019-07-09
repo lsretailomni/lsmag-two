@@ -51,8 +51,7 @@ class Totals extends \Magento\Framework\View\Element\Template
         PriceCurrencyInterface $priceCurrency,
         LoyaltyHelper $loyaltyHelper,
         array $data = []
-    )
-    {
+    ){
         $this->priceCurrency = $priceCurrency;
         $this->loyaltyHelper = $loyaltyHelper;
         $this->coreRegistry = $registry;
@@ -187,9 +186,6 @@ class Totals extends \Magento\Framework\View\Element\Template
             } else {
                 $methods[] = __('Unknown');
             }
-        }
-        if(empty($paymentLines)){
-            $methods[] = __('Pay At Store');
         }
         return [implode(', ', $methods), $giftCardInfo, $loyaltyInfo];
     }

@@ -59,6 +59,11 @@ class Info extends \Magento\Framework\View\Element\Template
      * @param TemplateContext $context
      * @param Registry $registry
      * @param \Magento\Directory\Model\CountryFactory $countryFactory
+     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
+     * @param \Magento\Sales\Model\OrderRepository $orderRepository
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Framework\App\Http\Context $httpContext
      * @param array $data
      */
     public function __construct(
