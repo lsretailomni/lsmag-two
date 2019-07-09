@@ -185,8 +185,11 @@ class Totals extends \Magento\Framework\View\Element\Template
                 $methods[] = __('Gift Card');
                 $this->giftCardAmount = $line->getPreApprovedAmount();
             } else {
-                $methods[] = __('Pay At Store');
+                $methods[] = __('Unknown');
             }
+        }
+        if(empty($paymentLines)){
+            $methods[] = __('Pay At Store');
         }
         return [implode(', ', $methods), $giftCardInfo, $loyaltyInfo];
     }
