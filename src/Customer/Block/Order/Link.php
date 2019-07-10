@@ -18,8 +18,10 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
     public $orderHelper;
 
     /**
+     * Link constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\App\DefaultPathInterface $defaultPath
+     * @param \Ls\Omni\Helper\OrderHelper $orderHelper
      * @param \Magento\Framework\Registry $registry
      * @param array $data
      */
@@ -55,7 +57,6 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
         return $this->_registry->registry('current_mag_order');
     }
 
-
     /**
      * @inheritdoc
      *
@@ -72,9 +73,8 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
      */
     public function getOrderByDocumentId($documentId)
     {
-        $this->orderHelper->getOrderByDocumentId($documentId);
+        return $this->orderHelper->getOrderByDocumentId($documentId);
     }
-
 
     /**
      * @inheritdoc
@@ -84,7 +84,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
     protected function _toHtml()
     {
         $order=$this->getMagOrder();
-        if(!empty($order)) {
+        if (!empty($order)) {
             if ($this->getKey() == "Invoices" && !($order->hasInvoices())) {
                 return '';
             }
@@ -100,8 +100,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
                 return '';
             }
             return parent::_toHtml();
-        }
-        else {
+        } else {
             return '';
         }
     }

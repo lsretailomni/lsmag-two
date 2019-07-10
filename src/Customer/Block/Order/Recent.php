@@ -1,9 +1,9 @@
 <?php
 namespace Ls\Customer\Block\Order;
 
-use Magento\Framework\View\Element\Template\Context;
-use Magento\Framework\Pricing\PriceCurrencyInterface;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Recent
@@ -22,12 +22,12 @@ class Recent extends \Magento\Framework\View\Element\Template
     public $priceCurrency;
 
     /**
-     * @var SearchCriteriaBuilder
+     * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
     public $searchCriteriaBuilder;
 
     /**
-     * @var CustomerSession
+     * @var \Magento\Customer\Model\Session\Proxy
      */
     public $customerSession;
 
@@ -36,15 +36,14 @@ class Recent extends \Magento\Framework\View\Element\Template
      * @param Context $context
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
-     * @param \Magento\Sales\Model\OrderRepository $orderRepository
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param array $data
      */
     public function __construct(
         Context $context,
         OrderHelper $orderHelper,
         PriceCurrencyInterface $priceCurrency,
-        \Magento\Sales\Model\OrderRepository $orderRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         array $data = []
@@ -136,6 +135,6 @@ class Recent extends \Magento\Framework\View\Element\Template
      */
     public function getOrderByDocumentId($documentId)
     {
-       return $this->orderHelper->getOrderByDocumentId($documentId);
+        return $this->orderHelper->getOrderByDocumentId($documentId);
     }
 }
