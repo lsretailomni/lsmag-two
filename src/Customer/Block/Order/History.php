@@ -175,15 +175,4 @@ class History extends \Magento\Sales\Block\Order\History
     {
         return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
     }
-
-    /**
-     * Retrieve invoice model instance
-     *
-     * @return \Magento\Sales\Model\Order\Invoice
-     */
-    public function getInvoice()
-    {
-        return $this->_coreRegistry->registry('current_invoice');
-    }
-
 }

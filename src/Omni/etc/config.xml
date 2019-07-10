@@ -28,7 +28,7 @@
             <clickandcollect>
                 <active>1</active>
                 <sallowspecific>0</sallowspecific>
-                <payment_option>0</payment_option>
+                <payment_option>ls_payment_method_pay_at_store</payment_option>
                 <price>0</price>
                 <model>Ls\Omni\Model\Carrier\Clickandcollect</model>
                 <name>Fixed</name>
