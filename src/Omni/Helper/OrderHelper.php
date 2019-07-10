@@ -246,23 +246,29 @@ class OrderHelper extends AbstractHelper
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
         $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
-        $orderPayment = new Entity\OrderPayment();
         // @codingStandardsIgnoreEnd
-        //default values for all payment typoes.
-        $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-            ->setCurrencyFactor($order->getBaseToGlobalRate())
-            ->setFinalizedAmount(0)
-            ->setLineNumber('1')
-            ->setOrderId($order->getIncrementId())
-            ->setPreApprovedAmount($order->getGrandTotal());
-        // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
-        if ($ccType != "" and $ccType != null) {
-            $orderPayment->setTenderType('1');
-            $orderPayment->setCardType($ccType);
-            $orderPayment->setCardNumber($cardNumber);
-            $orderPayment->setAuthorisationCode($transId);
-        } else {
-            $orderPayment->setTenderType('0');
+
+        if ($order->getPayment()->getMethodInstance()->getCode() != "ls_payment_method_pay_at_store") {
+            // @codingStandardsIgnoreStart
+            $orderPayment = new Entity\OrderPayment();
+            // @codingStandardsIgnoreEnd
+            //default values for all payment typoes.
+            $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
+                ->setCurrencyFactor($order->getBaseToGlobalRate())
+                ->setFinalizedAmount(0)
+                ->setLineNumber('1')
+                ->setOrderId($order->getIncrementId())
+                ->setPreApprovedAmount($order->getGrandTotal());
+            // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
+            if ($ccType != "" and $ccType != null) {
+                $orderPayment->setTenderType('1');
+                $orderPayment->setCardType($ccType);
+                $orderPayment->setCardNumber($cardNumber);
+                $orderPayment->setAuthorisationCode($transId);
+            } else {
+                $orderPayment->setTenderType('0');
+            }
+            $orderPaymentArray[] = $orderPayment;
         }
 
         // @codingStandardsIgnoreLine
@@ -274,7 +280,6 @@ class OrderHelper extends AbstractHelper
         }
          *
          */
-        $orderPaymentArray[] = $orderPayment;
 
         if ($order->getLsPointsSpent()) {
             $pointRate = $this->loyaltyHelper->getPointRate();
@@ -292,9 +297,7 @@ class OrderHelper extends AbstractHelper
                 ->setTenderType('3');
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
-
         if ($order->getLsGiftCardAmountUsed()) {
-
             // @codingStandardsIgnoreStart
             $orderPaymentGiftCard = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
