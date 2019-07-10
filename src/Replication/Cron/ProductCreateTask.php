@@ -398,7 +398,7 @@ class ProductCreateTask
                     $product = $this->getProductAttributes($product, $item);
                     // @codingStandardsIgnoreStart
                     $productSaved = $this->productRepository->save($product);
-                    $variants = $this->getNewOrUpdatedProductVariants(-1);
+                    $variants = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                     if (!empty($variants)) {
                         $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
                     }
@@ -631,16 +631,18 @@ class ProductCreateTask
     }
 
     /**
-     * Return all updated variants only
-     * @param type $filters
-     * @return type
+     * @param int $pagesize
+     * @param null $itemId
+     * @return mixed
      */
-    private function getNewOrUpdatedProductVariants($pagesize = 100)
+    private function getNewOrUpdatedProductVariants($pagesize = 100, $itemId = null)
     {
-        $filters = [
-            ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'VariantId', 'value' => true, 'condition_type' => 'notnull']
-        ];
+        $filters = [['field' => 'VariantId', 'value' => true, 'condition_type' => 'notnull']];
+        if (isset($itemId)) {
+            $filters[] = ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'];
+        } else {
+            $filters[] = ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull'];
+        }
         /** @var \Magento\Framework\Api\SearchCriteria $criteria */
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, $pagesize);
         $variants = $this->replItemVariantRegistrationRepository->getList($criteria)->getItems();
