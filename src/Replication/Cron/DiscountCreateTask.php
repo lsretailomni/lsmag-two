@@ -5,6 +5,7 @@ namespace Ls\Replication\Cron;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
 use Magento\CatalogRule\Model\RuleFactory;
 use Magento\CatalogRule\Model\Rule\Job;
@@ -129,7 +130,8 @@ class DiscountCreateTask
                     /** @var \Ls\Replication\Model\ReplDiscount $item */
                     foreach ($publishedOfferCollection as $item) {
                         $filters = [
-                            ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq']
+                            ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
+                            ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                         ];
 
                         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
@@ -151,7 +153,9 @@ class DiscountCreateTask
 
                         /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
                         foreach ($replDiscounts->getItems() as $replDiscount) {
-                            $customerGroupId = $this->contactHelper->getCustomerGroupIdByName($replDiscount->getLoyaltySchemeCode());
+                            $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
+                                $replDiscount->getLoyaltySchemeCode()
+                            );
                             // To check if discounts groups are specific for any Member Scheme.
                             if (!$useAllGroupIds && !in_array($customerGroupId, $customerGroupIds)) {
                                 $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
@@ -187,13 +191,17 @@ class DiscountCreateTask
                 }
             }
         } else {
-            $this->logger->debug("Discount Replication cron fails because product 
-            replication cron not executed successfully.");
+            $this->logger->debug('Discount Replication cron fails because product 
+            replication cron not executed successfully.');
         }
     }
 
     /**
      * @return array
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\State\InvalidTransitionException
      */
     public function executeManually()
     {

@@ -19,10 +19,10 @@ use \Ls\Core\Model\LSR;
 abstract class AbstractReplicationTask
 {
     /** @var array */
-    static private $bypass_methods = ['getMaxKey', 'getLastKey', 'getRecordsRemaining'];
+    private static $bypass_methods = ['getMaxKey', 'getLastKey', 'getRecordsRemaining'];
 
     /** @var array All those config path don't have no lastkey means always zero as LastKey */
-    static private $no_lastkey_config_path = [
+    private static $no_lastkey_config_path = [
         'ls_mag/replication/repl_country_code',
         'ls_mag/replication/repl_shipping_agent',
         'ls_mag/replication/repl_store_tender_type',
@@ -30,7 +30,7 @@ abstract class AbstractReplicationTask
     ];
 
     /** @var array Config path which needed web store id instead of empty */
-    static private $store_id_needed = [
+    private static $store_id_needed = [
         'ls_mag/replication/repl_hierarchy',
         'ls_mag/replication/repl_hierarchy_node',
         'ls_mag/replication/repl_hierarchy_leaf',
@@ -39,7 +39,7 @@ abstract class AbstractReplicationTask
     ];
 
     /** @var array List of Replication Tables with unique field */
-    static private $jobCodeUniqueFieldArray = [
+    private static $jobCodeUniqueFieldArray = [
         "ls_mag/replication/repl_attribute" => ["Code"],
         "ls_mag/replication/repl_attribute_option_value" => ["Code", "Sequence", "Value"],
         "ls_mag/replication/repl_attribute_value" => ["Code", "LinkField1", "LinkField2", "LinkField3", "Value"],
@@ -51,7 +51,13 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_data_translation" => ["TranslationId"],
         "ls_mag/replication/repl_discount" => ["ItemId", "LoyaltySchemeCode", "OfferNo", "StoreId"],
         "ls_mag/replication/repl_discount_validation" => ["nav_id"],
-        "ls_mag/replication/repl_extended_variant_value" => ["Code", "FrameworkCode", "ItemId", "Value"],
+        "ls_mag/replication/repl_extended_variant_value" => [
+            "Code",
+            "FrameworkCode",
+            "ItemId",
+            "Value",
+            "MinimumQuantity"
+        ],
         "ls_mag/replication/repl_hierarchy" => ["nav_id"],
         "ls_mag/replication/repl_hierarchy_leaf" => ["nav_id", "NodeId"],
         "ls_mag/replication/repl_hierarchy_node" => ["nav_id"],
@@ -279,7 +285,7 @@ abstract class AbstractReplicationTask
             $entity->setScope('default')->setScopeId(0);
         }
         foreach ($properties as $property) {
-            if ($property == 'nav_id') {
+            if ($property === 'nav_id') {
                 $set_method = 'setNavId';
                 $get_method = 'getId';
             } else {
