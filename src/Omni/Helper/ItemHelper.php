@@ -51,6 +51,11 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     private $hashCache = [];
 
     /**
+     * @var \Magento\Quote\Model\ResourceModel\Quote
+     */
+    public $quoteResourceModel;
+
+    /**
      * ItemHelper constructor.
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -59,8 +64,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param CartRepositoryInterface $quoteRepository
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel
-     * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
+     * @param LoyaltyHelper $loyaltyHelper
      * @param Cart $cart
+     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      */
     public function __construct(
         Context $context,
@@ -71,7 +77,8 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel,
         LoyaltyHelper $loyaltyHelper,
-        Cart $cart
+        Cart $cart,
+        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
     ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -82,6 +89,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->itemResourceModel = $itemResourceModel;
         $this->loyaltyHelper = $loyaltyHelper;
         $this->cart = $cart;
+        $this->quoteResourceModel = $quoteResourceModel;
     }
 
     /**
@@ -354,9 +362,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 $couponCode = $this->checkoutSession->getCouponCode();
                 $cartQuote->setCouponCode($couponCode);
-                $this->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
+                $cartQuote->getShippingAddress()->setCouponCode($couponCode);
                 $cartQuote->collectTotals();
-                $this->quoteRepository->save($cartQuote);
+                $this->quoteResourceModel->save($cartQuote);
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
