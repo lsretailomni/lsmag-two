@@ -8,6 +8,7 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use \Ls\Omni\Helper\GiftCardHelper;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class DataProvider
@@ -83,6 +84,7 @@ class DataProvider implements ConfigProviderInterface
             ]
         ];
         $config['gift_card_enable'] = $this->giftCardHelper->isGiftCardEnableOnCheckOut();
+        $config['coupons_display'] = $this->isCouponsDisplayEnabled();
         return $config;
     }
 
@@ -102,5 +104,13 @@ class DataProvider implements ConfigProviderInterface
             ->addFieldToFilter('ClickAndCollect', 1)
             ->toArray();
         return \Zend_Json::encode($stores);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isCouponsDisplayEnabled()
+    {
+        return $this->scopeConfig->getValue(LSR::LS_COUPON_SHOW_ON_CART_CHECKOUT);
     }
 }

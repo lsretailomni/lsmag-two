@@ -1,8 +1,11 @@
 <?php
+
 namespace Ls\Omni\Block\Product\View\Discount;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -21,6 +24,11 @@ class Proactive extends \Magento\Catalog\Block\Product\View
      * @var LoyaltyHelper
      */
     public $loyaltyHelper;
+
+    /**
+     * @var \Ls\Omni\Helper\ItemHelper
+     */
+    public $itemHelper;
 
     /**
      * @var
@@ -49,6 +57,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
      * Proactive constructor.
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
+     * @param ItemHelper $itemHelper
      * @param \Magento\Catalog\Block\Product\Context $context
      * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
      * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
@@ -69,6 +78,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     public function __construct(
         LSR $lsr,
         LoyaltyHelper $loyaltyHelper,
+        ItemHelper $itemHelper,
         \Magento\Catalog\Block\Product\Context $context,
         \Magento\Framework\Url\EncoderInterface $urlEncoder,
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
@@ -101,6 +111,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
         );
         $this->lsr = $lsr;
         $this->loyaltyHelper = $loyaltyHelper;
+        $this->itemHelper = $itemHelper;
         $this->httpContext = $httpContext;
         $this->customerFactory = $customerFactory;
         $this->storeManager = $storeManager;
@@ -159,15 +170,17 @@ class Proactive extends \Magento\Catalog\Block\Product\View
      * @param \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount $discount
      * @return array|string
      */
+    // @codingStandardsIgnoreLine
     public function getFormattedDescriptionDiscount(
         $itemId,
         \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount $discount
     ) {
         $description = [];
+        $discountText = "";
         if ($discount->getDescription()) {
             $description[] = "<span class='discount-description'>" . $discount->getDescription() . "</span>";
         }
-        if (floatval($discount->getMinimumQuantity()) > 0) {
+        if (floatval($discount->getMinimumQuantity()) > 0 && $discount->getType() == ProactiveDiscountType::MULTIBUY) {
             $description[] = "
                 <span class='discount-min-qty-label discount-label'>" . __("Minimum Qty :") . "</span>
                 <span class='discount-min-qty-value discount-value'>" .
@@ -178,11 +191,10 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                     ''
                 ) . "</span>";
         }
+
         if (floatval($discount->getPercentage()) > 0) {
-            $description[] = "
-                <span class='discount-percentage-discount-label discount-label'>" . __("Percentage Discount :") . "</span> 
-                <span class='discount-percentage-discount-value discount-value'>" .
-                number_format((float)$discount->getPercentage(), 2, '.', '') . "%</span>";
+            $discountPercentage = number_format((float)$discount->getPercentage(), 2, '.', '');
+            $discountText = __("Avail %1 Off ", $discountPercentage . "%") . "";
         }
         if ($discount->getItemIds()) {
             $itemIds = $discount->getItemIds()->getString();
@@ -191,14 +203,68 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             }
             $itemIds = array_unique($itemIds);
             $itemIds = array_diff($itemIds, [$itemId]);
-            foreach ($itemIds as &$sku) {
-                $url = $this->getProductUrlBySku($sku);
-                if (!empty($url)) {
-                    $sku = "<a href = '".$url."' target='_blank'>".$sku.'</a>';
+            $counter = 0;
+            $popupLink = "";
+            $popupHtml = "";
+            $productData = [];
+            $productHtml = "";
+            foreach ($itemIds as $sku) {
+                if ($this->getMixandMatchProductLimit() == $counter) {
+                    break;
                 }
+                $priceHtml = "";
+                if ($counter == 0) {
+                    $popupLink = "<a style='cursor:pointer' 
+                    class='ls-click-product-promotion' data-id='" . $discount->getId() . "'>"
+                        . __('Click Here to see the items.') . "</a>";
+                    $popupHtml = "<div class='ls-discounts-popup-model'
+                    id='ls-popup-model-" . $discount->getId() . "' style='display:none;'>";
+                }
+
+                $productInfo = $this->itemHelper->getProductInfoBySku($sku);
+                $productHtml = "";
+                if (!empty($productInfo)) {
+                    $imageHtml = parent::getImage(
+                        $productInfo,
+                        'product_small_image'
+                    )
+                        ->toHtml();
+                    if (!empty($productInfo->getFinalPrice())) {
+                        $priceHtml = parent::getProductPrice($productInfo);
+                    }
+                    if (!empty($productInfo->getProductUrl())) {
+                        if (!empty($productInfo->getName())) {
+                            $productName = $productInfo->getName();
+                            if ($counter == 0) {
+                                $productHtml = $popupHtml;
+                            }
+                            $productHtml .= "<div class='item-popup'>";
+                            $productHtml .= "<a  href = '" . $productInfo->getProductUrl() . "' class='product-link'
+                             target='_blank'>" . $imageHtml .
+                                "<div class='title'>" . $productName . "</div>";
+                            $productHtml .= $priceHtml;
+                            $productHtml .= "</a></div>";
+                            $productData[] = $productHtml;
+                        }
+                    }
+                }
+
+                $counter++;
             }
-            $description[] = "<span class='discount-other-items-label discount-label'>" . __("Other Items :") .
-                "</span><span class='discount-other-items-value discount-value'>" . implode(", ", $itemIds) . "</span>";
+            $sku .= "</div>";
+            if (!empty($discountText)) {
+                $discountText .= __("if Buy with any of these items: " . $popupLink);
+            } else {
+                $discountText .= __("Items: " . $popupLink);
+            }
+            if ($this->getMixandMatchProductLimit() != 0) {
+                $description[] = $discountText;
+                $description[] = '</div>' . implode(" ", $productData);
+            }
+        } else {
+            if (!empty($discountText)) {
+                $description[] = $discountText . "</span>";
+            }
         }
         $description = implode("<br/>", $description);
         return $description;
@@ -230,22 +296,6 @@ class Proactive extends \Magento\Catalog\Block\Product\View
         }
         $description = implode("<br/>", $description);
         return $description;
-    }
-    /**
-     * @param $sku
-     * @return string
-     */
-    public function getProductUrlBySku($sku)
-    {
-        $url = "";
-        try {
-            $product = $this->productRepository->get($sku);
-            $url = $product->getProductUrl();
-        } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
-        }
-
-        return $url;
     }
 
     /**
@@ -284,5 +334,21 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             return null;
         }
         return $currentProduct->getSku();
+    }
+
+    /**
+     * @return string
+     */
+    public function isDiscountEnable()
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_SHOW_ON_PRODUCT);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMixandMatchProductLimit()
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT);
     }
 }

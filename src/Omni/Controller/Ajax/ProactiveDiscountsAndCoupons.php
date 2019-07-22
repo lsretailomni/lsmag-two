@@ -58,6 +58,7 @@ class ProactiveDiscountsAndCoupons extends Action
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
+
         $result = $this->resultJsonFactory->create();
         $resultPage = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');

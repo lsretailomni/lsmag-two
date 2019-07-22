@@ -43,6 +43,7 @@ $productSku = $productData['data']['productSku'];
                     }
                 }
                 foreach ($discounts as $discount) {
+
                     echo "<div class='dropdown-content-wrapper content-discount'>
                 " . $block->getFormattedDescriptionDiscount($productSku, $discount) . "
             </div>";
@@ -53,3 +54,26 @@ $productSku = $productData['data']['productSku'];
         </div>
     <?php } ?>
 </div>
+<script type="text/javascript">
+    require(['jquery','Magento_Ui/js/modal/modal'], function($,modal){
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: $.mage.__('Products'),
+                buttons: [{
+                    text: $.mage.__('Close'),
+                    class: '',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }]
+            };
+
+            $(".ls-click-product-promotion").on('click', function () {
+                var id = $(this).attr("data-id");
+                var popup = modal(options, $("#ls-popup-model-" + id));
+                $("#ls-popup-model-" + id).modal("openModal");
+            });
+    });
+</script>
