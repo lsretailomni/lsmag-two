@@ -4,7 +4,6 @@ namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Model\ReplInvStatusRepository;
 use Psr\Log\LoggerInterface;
 
 /**
