@@ -267,6 +267,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
+    const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
     /**
      * @var ScopeConfigInterface
      */

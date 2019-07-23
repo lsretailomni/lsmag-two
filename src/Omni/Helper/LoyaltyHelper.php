@@ -6,6 +6,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\CacheHelper;
+use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
@@ -173,6 +174,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
                 ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()],
+                [Type::CACHE_TAG],
                 172800
             );
         }
