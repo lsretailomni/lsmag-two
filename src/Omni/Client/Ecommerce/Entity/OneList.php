@@ -60,6 +60,11 @@ class OneList extends Entity
     protected $ListType = null;
 
     /**
+     * @property float $PointAmount
+     */
+    protected $PointAmount = null;
+
+    /**
      * @property float $ShippingAmount
      */
     protected $ShippingAmount = null;
@@ -249,7 +254,7 @@ class OneList extends Entity
                 throw new InvalidEnumException();
         }
         $this->ListType = $ListType->getValue();
-
+        
         return $this;
     }
 
@@ -259,6 +264,24 @@ class OneList extends Entity
     public function getListType()
     {
         return $this->ListType;
+    }
+
+    /**
+     * @param float $PointAmount
+     * @return $this
+     */
+    public function setPointAmount($PointAmount)
+    {
+        $this->PointAmount = $PointAmount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPointAmount()
+    {
+        return $this->PointAmount;
     }
 
     /**
