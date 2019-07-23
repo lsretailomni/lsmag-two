@@ -3,6 +3,7 @@
 namespace Ls\Omni\Helper;
 
 use Magento\Framework\App\Helper\Context;
+use \Ls\Omni\Model\Cache\Type;
 
 /**
  * Class CacheHelper
@@ -11,18 +12,18 @@ use Magento\Framework\App\Helper\Context;
 class CacheHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
-     * @var \Magento\Framework\App\CacheInterface
+     * @var Type
      */
     public $cache;
 
     /**
      * CacheHelper constructor.
      * @param Context $context
-     * @param \Magento\Framework\App\CacheInterface $cache
+     * @param Type $cache
      */
     public function __construct(
         Context $context,
-        \Magento\Framework\App\CacheInterface $cache
+        Type $cache
     ) {
         parent::__construct($context);
         $this->cache = $cache;
@@ -45,15 +46,16 @@ class CacheHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $cacheId
      * @param $content
+     * @param $tag
      * @param null $lifetime
      */
-    public function persistContentInCache($cacheId, $content, $lifetime = null)
+    public function persistContentInCache($cacheId, $content, $tag, $lifetime = null)
     {
         $serializedContent = json_encode($content);
         $this->cache->save(
             $serializedContent,
             $cacheId,
-            [],
+            $tag,
             $lifetime
         );
     }
