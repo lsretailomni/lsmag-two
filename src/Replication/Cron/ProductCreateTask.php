@@ -319,7 +319,7 @@ class ProductCreateTask
             $val2 = ini_get('memory_limit');
             $this->logger->debug('ENV Variables Values before:' . $val1 . ' ' . $val2);
             // @codingStandardsIgnoreStart
-            @ini_set('max_execution_time', 0);
+            @ini_set('max_execution_time', 3600);
             @ini_set('memory_limit', -1);
             // @codingStandardsIgnoreEnd
             $val1 = ini_get('max_execution_time');
@@ -507,9 +507,9 @@ class ProductCreateTask
                 $i++;
                 /** @var \Magento\Framework\Api\ImageContent $imageContent */
                 $imageContent = $this->imageContent->create()
-                    ->setBase64EncodedData($result->getImage())
-                    ->setName($this->oSlug($image->getImageId()) . '.jpg')
-                    ->setType($this->getMimeType($result->getImage()));
+                    ->setBase64EncodedData($result["image"])
+                    ->setName($this->oSlug($image->getImageId()) . strtolower($result["format"]))
+                    ->setType($this->getMimeType($result["image"]));
                 $this->attributeMediaGalleryEntry->setMediaType('image')
                     ->setLabel(($image->getDescription()) ? $image->getDescription() : 'Product Image')
                     ->setPosition($i)
@@ -1168,7 +1168,7 @@ class ProductCreateTask
                         'Item Variant'
                     );
                     if ($productImages) {
-                        $this->logger->debug('Found images for the simple product: ' .$sku);
+                        $this->logger->debug('Found images for the simple product ' .$sku);
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
                     $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
@@ -1219,7 +1219,7 @@ class ProductCreateTask
                 $productImages = $this->replicationHelper
                     ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
                 if ($productImages) {
-                    $this->logger->debug('Found images for the item ' . $item->getNavId());
+                    $this->logger->debug('Found images for the simple product ' .$sku);
                     $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                 }
 

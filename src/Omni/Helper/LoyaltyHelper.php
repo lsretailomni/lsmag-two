@@ -5,6 +5,8 @@ namespace Ls\Omni\Helper;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\CacheHelper;
+use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
@@ -53,6 +55,11 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $groupRepository;
 
     /**
+     * @var \Ls\Omni\Helper\CacheHelper
+     */
+    public $cacheHelper;
+
+    /**
      * LoyaltyHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
@@ -64,8 +71,8 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Framework\Filesystem $Filesystem
      * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
+     * @param \Ls\Omni\Helper\CacheHelper $cacheHelper
      */
-
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
@@ -76,7 +83,8 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Filesystem $Filesystem,
-        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
+        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
+        CacheHelper $cacheHelper
     ) {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -87,6 +95,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->checkoutSession = $checkoutSession;
         $this->filesystem = $Filesystem;
         $this->groupRepository = $groupRepository;
+        $this->cacheHelper = $cacheHelper;
         parent::__construct(
             $context
         );
@@ -115,7 +124,6 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getOffers()
     {
-
         $response = null;
         $customer = $this->customerSession->getCustomer();
         // @codingStandardsIgnoreLine
@@ -136,13 +144,18 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param null $image_id
      * @param null $image_size
-     * @return Entity\ImageGetByIdResponse|Entity\ImageView|\Ls\Omni\Client\ResponseInterface|null
+     * @return array|bool|Entity\ImageGetByIdResponse|\Ls\Omni\Client\ResponseInterface|null
      */
     public function getImageById($image_id = null, $image_size = null)
     {
-
         $response = null;
         if ($image_id == null || $image_size == null) {
+            return $response;
+        }
+        $cacheId = LSR::IMAGE_CACHE.$image_id;
+        $response = $this->cacheHelper->getCachedContent($cacheId);
+        if ($response) {
+            $this->_logger->debug("Found image from cache ".$cacheId);
             return $response;
         }
         // @codingStandardsIgnoreStart
@@ -157,7 +170,16 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getResult() : $response;
+        if ($response->getResult()->getImage()) {
+            $this->cacheHelper->persistContentInCache(
+                $cacheId,
+                ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()],
+                [Type::CACHE_TAG],
+                172800
+            );
+        }
+        return $response->getResult()->getImage() ?
+            ["image"=>$response->getResult()->getImage(), "format"=> $response->getResult()->getFormat()]: $response;
     }
 
     /**

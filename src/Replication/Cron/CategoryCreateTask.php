@@ -493,19 +493,19 @@ class CategoryCreateTask
         /** @var \Ls\Omni\Client\Ecommerce\Entity\ImageSize $imageSizeObject */
         $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
         $result = $this->loyaltyHelper->getImageById($imageId, $imageSizeObject);
-        if ($result instanceof \Ls\Omni\Client\Ecommerce\Entity\ImageView) {
+        if ($result) {
             //check if directory exists or not and if it has the proper permission or not
             $offerpath = $this->getMediaPathtoStore();
             // @codingStandardsIgnoreStart
             if (!is_dir($offerpath)) {
                 $this->file->mkdir($offerpath, 0775);
             }
-            $format = strtolower($result->getFormat());
+            $format = strtolower($result["format"]);
             $imageName = $this->oSlug($imageId);
             $output_file = "{$imageName}.$format";
             $file = "{$offerpath}{$output_file}";
             if (!$this->file->fileExists($file)) {
-                $base64 = $result->getImage();
+                $base64 = $result["image"];
                 $image_file = fopen($file, 'wb');
                 fwrite($image_file, base64_decode($base64));
                 fclose($image_file);
