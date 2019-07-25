@@ -7,7 +7,6 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\RedirectFactory;
-use Magento\Framework\Serialize\SerializerInterface;
 use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Core\Model\LSR;
@@ -35,11 +34,6 @@ class Recommendation extends Action
     public $resultRedirectFactory;
 
     /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    /**
      * @var \Ls\Omni\Helper\CacheHelper
      */
     public $cacheHelper;
@@ -50,7 +44,6 @@ class Recommendation extends Action
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
-     * @param SerializerInterface $serializer
      * @param CacheHelper $cacheHelper
      */
     public function __construct(
@@ -58,13 +51,11 @@ class Recommendation extends Action
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
         RedirectFactory $resultRedirectFactory,
-        SerializerInterface $serializer,
         CacheHelper $cacheHelper
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
-        $this->serializer = $serializer;
         $this->cacheHelper = $cacheHelper;
         parent::__construct($context);
     }
