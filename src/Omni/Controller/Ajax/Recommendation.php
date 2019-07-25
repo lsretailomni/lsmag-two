@@ -76,7 +76,7 @@ class Recommendation extends Action
         $data = ['productSku' => $currentProductSku];
         $cacheKey = LSR::PRODUCT_RECOMMENDATION_BLOCK_CACHE . $currentProductSku;
         $block = $this->cacheHelper->getCachedContent($cacheKey);
-        if (!$block) {
+        if ($block === false) {
             $block = $resultPage->getLayout()
                 ->createBlock('Ls\Omni\Block\Product\View\Recommend')
                 ->setTemplate('Ls_Omni::product/view/recommendation.phtml')
