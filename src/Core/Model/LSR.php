@@ -265,6 +265,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //LS reset password email of the current customer
     const REGISTRY_CURRENT_RESETPASSWORD_EMAIL = 'reset-password-email';
 
+    //Cache
+    const IMAGE_CACHE = 'LS_IMAGE_';
+    const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
     /**
      * @var ScopeConfigInterface
      */
