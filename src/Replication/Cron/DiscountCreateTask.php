@@ -138,6 +138,7 @@ class DiscountCreateTask
                 $store_id = $this->lsr->getDefaultWebStore();
                 $publishedOfferCollection = $this->getUniquePublishedOffers();
                 if (!empty($publishedOfferCollection)) {
+                    $reindexRules = false;
                     /** @var \Ls\Replication\Model\ReplDiscount $item */
                     foreach ($publishedOfferCollection as $item) {
                         $filters = [
@@ -190,9 +191,12 @@ class DiscountCreateTask
                         if (!empty($skuArray)) {
                             $skuArray = array_unique($skuArray);
                             $this->addSalesRule($item, $skuArray, $customerGroupIds);
+                            $reindexRules = true;
                         }
                     }
-                    $this->jobApply->applyAll();
+                    if ($reindexRules) {
+                        $this->jobApply->applyAll();
+                    }
                     $filtersStatus = [
                         ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                     ];
@@ -354,7 +358,7 @@ class DiscountCreateTask
      * Delete offer by name
      * @param $name
      */
-    public function deleteOfferByName($name): void
+    public function deleteOfferByName($name)
     {
         $ruleCollection = $this->ruleCollectionFactory->create();
         $ruleCollection->addFieldToFilter('name', $name);
