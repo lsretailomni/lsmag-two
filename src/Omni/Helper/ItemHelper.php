@@ -11,7 +11,6 @@ use Magento\Checkout\Model\Cart;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\Context;
 use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Catalog\Helper\Product;
 
 /**
  * Class ItemHelper
@@ -52,11 +51,6 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     private $hashCache = [];
 
     /**
-     * @var Magento\Catalog\Helper\Product
-     */
-    private $productHelper;
-
-    /**
      * ItemHelper constructor.
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -67,7 +61,6 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel
      * @param LoyaltyHelper $loyaltyHelper
      * @param Cart $cart
-     * @param Product $productHelper
      */
     public function __construct(
         Context $context,
@@ -78,8 +71,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel,
         LoyaltyHelper $loyaltyHelper,
-        Cart $cart,
-        Product $productHelper
+        Cart $cart
     ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -90,7 +82,6 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->itemResourceModel = $itemResourceModel;
         $this->loyaltyHelper = $loyaltyHelper;
         $this->cart = $cart;
-        $this->productHelper = $productHelper;
     }
 
     /**
@@ -380,7 +371,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $productData = [];
         try {
-            $criteria = $this->searchCriteriaBuilder->addFilter('sku',implode(",",$items),'in')->create();
+            $criteria = $this->searchCriteriaBuilder->addFilter('sku', implode(",", $items), 'in')->create();
             $product = $this->productRepository->getList($criteria);
             return $product->getItems();
         } catch (\Exception $e) {
