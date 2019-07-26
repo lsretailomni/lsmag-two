@@ -17,9 +17,9 @@ class ArrayOfProactiveDiscount implements IteratorAggregate
     /**
      * @property ProactiveDiscount[] $ProactiveDiscount
      */
-    protected $ProactiveDiscount = array(
+    protected $ProactiveDiscount = [
         
-    );
+    ];
 
     /**
      * @param ProactiveDiscount[] $ProactiveDiscount

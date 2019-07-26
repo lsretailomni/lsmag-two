@@ -17,9 +17,9 @@ class ArrayOfOneListItemDiscount implements IteratorAggregate
     /**
      * @property OneListItemDiscount[] $OneListItemDiscount
      */
-    protected $OneListItemDiscount = array(
+    protected $OneListItemDiscount = [
         
-    );
+    ];
 
     /**
      * @param OneListItemDiscount[] $OneListItemDiscount

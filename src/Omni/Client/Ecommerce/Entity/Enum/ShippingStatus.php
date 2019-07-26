@@ -11,7 +11,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity\Enum;
 use MyCLabs\Enum\Enum;
 
 /**
- * @$method static ShippingStatus UNKNOWN()
  * @$method static ShippingStatus SHIPPIG_NOT_REQUIRED()
  * @$method static ShippingStatus NOT_YET_SHIPPED()
  * @$method static ShippingStatus PARTIALLY_SHIPPED()
@@ -20,8 +19,6 @@ use MyCLabs\Enum\Enum;
  */
 class ShippingStatus extends Enum
 {
-
-    const UNKNOWN = 'Unknown';
 
     const SHIPPIG_NOT_REQUIRED = 'ShippigNotRequired';
 

@@ -19,16 +19,6 @@ class ForgotPassword implements RequestInterface
     protected $userNameOrEmail = null;
 
     /**
-     * @property string $emailSubject
-     */
-    protected $emailSubject = null;
-
-    /**
-     * @property string $emailBody
-     */
-    protected $emailBody = null;
-
-    /**
      * @param string $userNameOrEmail
      * @return $this
      */
@@ -44,42 +34,6 @@ class ForgotPassword implements RequestInterface
     public function getUserNameOrEmail()
     {
         return $this->userNameOrEmail;
-    }
-
-    /**
-     * @param string $emailSubject
-     * @return $this
-     */
-    public function setEmailSubject($emailSubject)
-    {
-        $this->emailSubject = $emailSubject;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmailSubject()
-    {
-        return $this->emailSubject;
-    }
-
-    /**
-     * @param string $emailBody
-     * @return $this
-     */
-    public function setEmailBody($emailBody)
-    {
-        $this->emailBody = $emailBody;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmailBody()
-    {
-        return $this->emailBody;
     }
 
 

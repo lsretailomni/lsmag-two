@@ -21,6 +21,11 @@ class MemberContact extends Entity
     protected $Addresses = null;
 
     /**
+     * @property ArrayOfCard $Cards
+     */
+    protected $Cards = null;
+
+    /**
      * @property ArrayOfNotification $Notifications
      */
     protected $Notifications = null;
@@ -36,9 +41,9 @@ class MemberContact extends Entity
     protected $PublishedOffers = null;
 
     /**
-     * @property ArrayOfLoyTransaction $Transactions
+     * @property ArrayOfSalesEntry $SalesEntries
      */
-    protected $Transactions = null;
+    protected $SalesEntries = null;
 
     /**
      * @property Account $Account
@@ -59,11 +64,6 @@ class MemberContact extends Entity
      * @property string $BirthDay
      */
     protected $BirthDay = null;
-
-    /**
-     * @property Card $Card
-     */
-    protected $Card = null;
 
     /**
      * @property string $Email
@@ -164,6 +164,24 @@ class MemberContact extends Entity
     }
 
     /**
+     * @param ArrayOfCard $Cards
+     * @return $this
+     */
+    public function setCards($Cards)
+    {
+        $this->Cards = $Cards;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfCard
+     */
+    public function getCards()
+    {
+        return $this->Cards;
+    }
+
+    /**
      * @param ArrayOfNotification $Notifications
      * @return $this
      */
@@ -218,21 +236,21 @@ class MemberContact extends Entity
     }
 
     /**
-     * @param ArrayOfLoyTransaction $Transactions
+     * @param ArrayOfSalesEntry $SalesEntries
      * @return $this
      */
-    public function setTransactions($Transactions)
+    public function setSalesEntries($SalesEntries)
     {
-        $this->Transactions = $Transactions;
+        $this->SalesEntries = $SalesEntries;
         return $this;
     }
 
     /**
-     * @return ArrayOfLoyTransaction
+     * @return ArrayOfSalesEntry
      */
-    public function getTransactions()
+    public function getSalesEntries()
     {
-        return $this->Transactions;
+        return $this->SalesEntries;
     }
 
     /**
@@ -305,24 +323,6 @@ class MemberContact extends Entity
     public function getBirthDay()
     {
         return $this->BirthDay;
-    }
-
-    /**
-     * @param Card $Card
-     * @return $this
-     */
-    public function setCard($Card)
-    {
-        $this->Card = $Card;
-        return $this;
-    }
-
-    /**
-     * @return Card
-     */
-    public function getCard()
-    {
-        return $this->Card;
     }
 
     /**

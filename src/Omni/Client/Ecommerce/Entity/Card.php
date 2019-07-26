@@ -45,6 +45,11 @@ class Card extends Entity
     protected $LinkedToAccount = null;
 
     /**
+     * @property string $LoginId
+     */
+    protected $LoginId = null;
+
+    /**
      * @property CardStatus $Status
      */
     protected $Status = null;
@@ -155,6 +160,24 @@ class Card extends Entity
     public function getLinkedToAccount()
     {
         return $this->LinkedToAccount;
+    }
+
+    /**
+     * @param string $LoginId
+     * @return $this
+     */
+    public function setLoginId($LoginId)
+    {
+        $this->LoginId = $LoginId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLoginId()
+    {
+        return $this->LoginId;
     }
 
     /**

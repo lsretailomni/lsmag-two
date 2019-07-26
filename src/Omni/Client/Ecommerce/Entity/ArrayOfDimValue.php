@@ -17,9 +17,9 @@ class ArrayOfDimValue implements IteratorAggregate
     /**
      * @property DimValue[] $DimValue
      */
-    protected $DimValue = array(
+    protected $DimValue = [
         
-    );
+    ];
 
     /**
      * @param DimValue[] $DimValue

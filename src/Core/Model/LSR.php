@@ -278,9 +278,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /** @var array End Points */
     public $endpoints = [
-        ServiceType::ECOMMERCE => 'ecommerceservice.svc',
-        ServiceType::LOYALTY => 'loyservice.svc',
-        ServiceType::GENERAL => 'service.svc',
+        ServiceType::ECOMMERCE => 'UCService.svc'
     ];
 
     /**
@@ -363,7 +361,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             try {
                 $url = join('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
                 // @codingStandardsIgnoreStart
-                $soapClient = new SoapClient($url . '?singlewsdl');
+                $soapClient = new SoapClient($url . '?singlewsdl', array('features' => SOAP_SINGLE_ELEMENT_ARRAYS));
                 // @codingStandardsIgnoreEnd
                 if ($soapClient) {
                     return true;

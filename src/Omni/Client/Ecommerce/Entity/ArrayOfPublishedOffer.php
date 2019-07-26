@@ -17,9 +17,9 @@ class ArrayOfPublishedOffer implements IteratorAggregate
     /**
      * @property PublishedOffer[] $PublishedOffer
      */
-    protected $PublishedOffer = array(
+    protected $PublishedOffer = [
         
-    );
+    ];
 
     /**
      * @param PublishedOffer[] $PublishedOffer

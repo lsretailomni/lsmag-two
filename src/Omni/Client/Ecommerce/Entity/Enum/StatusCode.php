@@ -32,7 +32,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode MISSING_FIRST_NAME()
  * @$method static StatusCode MISSING_ITEM_ID()
  * @$method static StatusCode MISSING_STORE_ID()
- * @$method static StatusCode APP_SETTINGS_NOT_FOUND()
+ * @$method static StatusCode TENANT_CONFIG_NOT_FOUND()
  * @$method static StatusCode ORDER_QUEUE_ID_NOT_FOUND()
  * @$method static StatusCode CONFIG_NOT_FOUND()
  * @$method static StatusCode ONE_ACCOUNT_INVALID()
@@ -49,6 +49,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode SECURITY_TOKEN_INVALID()
  * @$method static StatusCode ACCESS_NOT_ALLOWED()
  * @$method static StatusCode USER_NOT_LOGGED_IN()
+ * @$method static StatusCode L_S_KEY_INVALID()
  * @$method static StatusCode PRIMARY_KEY_DUPLICATION()
  * @$method static StatusCode COMMUNICATION_FAILURE()
  * @$method static StatusCode GENERAL_ERROR_CODE()
@@ -188,7 +189,7 @@ class StatusCode extends Enum
 
     const MISSING_STORE_ID = 'MissingStoreId';
 
-    const APP_SETTINGS_NOT_FOUND = 'AppSettingsNotFound';
+    const TENANT_CONFIG_NOT_FOUND = 'TenantConfigNotFound';
 
     const ORDER_QUEUE_ID_NOT_FOUND = 'OrderQueueIdNotFound';
 
@@ -221,6 +222,8 @@ class StatusCode extends Enum
     const ACCESS_NOT_ALLOWED = 'AccessNotAllowed';
 
     const USER_NOT_LOGGED_IN = 'UserNotLoggedIn';
+
+    const L_S_KEY_INVALID = 'LSKeyInvalid';
 
     const PRIMARY_KEY_DUPLICATION = 'PrimaryKeyDuplication';
 
