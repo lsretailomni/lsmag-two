@@ -141,6 +141,7 @@ class DiscountCreateTask
                     /** @var \Ls\Replication\Model\ReplDiscount $item */
                     foreach ($publishedOfferCollection as $item) {
                         $filters = [
+                            ['field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'],
                             ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
                             ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                         ];
@@ -190,8 +191,8 @@ class DiscountCreateTask
                             $skuArray = array_unique($skuArray);
                             $this->addSalesRule($item, $skuArray, $customerGroupIds);
                         }
-                        $this->jobApply->applyAll();
                     }
+                    $this->jobApply->applyAll();
                     $filtersStatus = [
                         ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                     ];
