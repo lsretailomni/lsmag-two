@@ -3,12 +3,12 @@
 // @codingStandardsIgnoreFile
 $productData = $block->getData();
 $productSku = $productData['data']['productSku'];
+$coupons = $productData['data']['coupons'];
 ?>
 <div class="proactive-discounts-container">
     <?php
     $discounts = $block->getProactiveDiscounts($productSku);
-    $coupons = $block->getCoupons($productSku);
-    if (!empty($discounts) || !empty($coupons)) {
+    if (!empty($discounts)) {
         ?>
         <div class="discount-dropdown-label">
             <span><?php echo __("Promotions:"); ?></span>
@@ -35,13 +35,7 @@ $productSku = $productData['data']['productSku'];
         }
      }'>
                 <?php
-                foreach ($coupons as $coupon) {
-                    if ($coupon->getCode() == 'Coupon') {
-                        echo "<div class='dropdown-content-wrapper content-coupon'>
-                " . $block->getFormattedDescriptionCoupon($coupon) . "
-            </div>";
-                    }
-                }
+                echo $coupons;
                 foreach ($discounts as $discount) {
 
                     echo "<div class='dropdown-content-wrapper content-discount'>
@@ -60,7 +54,7 @@ $productSku = $productData['data']['productSku'];
                 type: 'popup',
                 responsive: true,
                 innerScroll: true,
-                title: $.mage.__('Products'),
+                title: $.mage.__('Items'),
                 buttons: [{
                     text: $.mage.__('Close'),
                     class: '',

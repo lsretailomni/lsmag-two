@@ -206,22 +206,23 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             $counter = 0;
             $popupLink = "";
             $popupHtml = "";
-            $productData = [];
+            $productsData = [];
             $productHtml = "";
-            foreach ($itemIds as $sku) {
+            if(!empty($itemIds)){
+                $productsData = $this->itemHelper->getProductsInfoBySku($itemIds);
+            }
+            foreach ($productsData as $productInfo) {
                 if ($this->getMixandMatchProductLimit() == $counter) {
                     break;
                 }
                 $priceHtml = "";
                 if ($counter == 0) {
-                    $popupLink = "<a style='cursor:pointer' 
-                    class='ls-click-product-promotion' data-id='" . $discount->getId() . "'>"
-                        . __('Click Here to see the items.') . "</a>";
+                    $popupLink = "<a style='cursor:pointer' class='ls-click-product-promotion'
+                     data-id='" . $discount->getId() . "'>"
+                        . __('Click Here to see the items') . "</a>";
                     $popupHtml = "<div class='ls-discounts-popup-model'
                     id='ls-popup-model-" . $discount->getId() . "' style='display:none;'>";
                 }
-
-                $productInfo = $this->itemHelper->getProductInfoBySku($sku);
                 $productHtml = "";
                 if (!empty($productInfo)) {
                     $imageHtml = parent::getImage(
@@ -242,8 +243,8 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                             $productHtml .= "<a  href = '" . $productInfo->getProductUrl() . "' class='product-link'
                              target='_blank'>" . $imageHtml .
                                 "<div class='title'>" . $productName . "</div>";
-                            $productHtml .= $priceHtml;
-                            $productHtml .= "</a></div>";
+                            $productHtml .= "</a>";
+                            $productHtml .= $priceHtml."</div>";
                             $productData[] = $productHtml;
                         }
                     }
@@ -251,15 +252,15 @@ class Proactive extends \Magento\Catalog\Block\Product\View
 
                 $counter++;
             }
-            $sku .= "</div>";
             if (!empty($discountText)) {
                 $discountText .= __("if Buy with any of these items: " . $popupLink);
             } else {
-                $discountText .= __("Items: " . $popupLink);
+                $discountText .= $popupLink;
             }
             if ($this->getMixandMatchProductLimit() != 0) {
                 $description[] = $discountText;
-                $description[] = '</div>' . implode(" ", $productData);
+                $description[] = implode(" ", $productData);
+                $description[] = "</div>";
             }
         } else {
             if (!empty($discountText)) {

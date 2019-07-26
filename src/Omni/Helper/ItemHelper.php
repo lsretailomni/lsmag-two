@@ -373,15 +373,16 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $sku
-     * @return array|\Magento\Catalog\Api\Data\ProductInterface|\Magento\Catalog\Model\Product|mixed|null
+     * @param $items
+     * @return array|\Magento\Catalog\Api\Data\ProductSearchResultsInterface
      */
-    public function getProductInfoBySku($sku)
+    public function getProductsInfoBySku($items)
     {
         $productData = [];
         try {
-            $product = $this->productRepository->get($sku);
-            return $product;
+            $criteria = $this->searchCriteriaBuilder->addFilter('sku',implode(",",$items),'in')->create();
+            $product = $this->productRepository->getList($criteria);
+            return $product->getItems();
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
