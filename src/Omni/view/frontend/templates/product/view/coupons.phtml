@@ -6,7 +6,7 @@ $productSku = $productData['data']['productSku'];
 ?>
     <?php
     $coupons = $block->getCoupons($productSku);
-    if (!empty($discounts) || !empty($coupons)) {
+    if (!empty($coupons)) {
         ?>
         <?php
         foreach ($coupons as $coupon) {

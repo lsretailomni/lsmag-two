@@ -8,7 +8,7 @@ $coupons = $productData['data']['coupons'];
 <div class="proactive-discounts-container">
     <?php
     $discounts = $block->getProactiveDiscounts($productSku);
-    if (!empty($discounts)) {
+    if (!empty($discounts) || !(trim($coupons) == '') ) {
         ?>
         <div class="discount-dropdown-label">
             <span><?php echo __("Promotions:"); ?></span>
