@@ -162,7 +162,12 @@ class DiscountCreateTask
                         }
                         if ($replDiscounts->getItems()) {
                             /** We check if offer exist */
-                            $this->deleteOfferByName($item->getOfferNo());
+                            $deleteStatus = $this->deleteOfferByName($item->getOfferNo());
+                            if ($deleteStatus) {
+                                $criteriaAfterDelete = $this->replicationHelper->buildCriteriaForArray($filters, 100);
+                                /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+                                $replDiscounts = $this->replDiscountRepository->getList($criteriaAfterDelete);
+                            }
                         }
                         /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
                         foreach ($replDiscounts->getItems() as $replDiscount) {
@@ -357,6 +362,7 @@ class DiscountCreateTask
     /**
      * Delete offer by name
      * @param $name
+     * @return bool
      */
     public function deleteOfferByName($name)
     {
@@ -380,9 +386,11 @@ class DiscountCreateTask
                     $this->replDiscountRepository->save($replDiscount);
                     // @codingStandardsIgnoreEnd
                 }
+                return true;
             }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }
+        return false;
     }
 }
