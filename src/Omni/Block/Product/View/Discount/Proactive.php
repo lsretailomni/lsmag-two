@@ -208,7 +208,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             $popupHtml = "";
             $productsData = [];
             $productHtml = "";
-            if(!empty($itemIds)){
+            if (!empty($itemIds)) {
                 $productsData = $this->itemHelper->getProductsInfoBySku($itemIds);
             }
             foreach ($productsData as $productInfo) {
@@ -244,7 +244,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                              target='_blank'>" . $imageHtml .
                                 "<div class='title'>" . $productName . "</div>";
                             $productHtml .= "</a>";
-                            $productHtml .= $priceHtml."</div>";
+                            $productHtml .= $priceHtml . "</div>";
                             $productData[] = $productHtml;
                         }
                     }
@@ -305,6 +305,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
      */
     public function getFormattedOfferExpiryDate($date)
     {
+        $offerExpiryDate=null;
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
@@ -315,6 +316,8 @@ class Proactive extends \Magento\Catalog\Block\Product\View
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+
+        return null;
     }
 
     /**
