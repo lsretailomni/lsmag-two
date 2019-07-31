@@ -227,7 +227,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                 if (!empty($productInfo)) {
                     $imageHtml = parent::getImage(
                         $productInfo,
-                        'product_small_image'
+                        'product_base_image'
                     )
                         ->toHtml();
                     if (!empty($productInfo->getFinalPrice())) {
