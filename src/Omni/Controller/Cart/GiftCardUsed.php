@@ -60,8 +60,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
         \Ls\Omni\Helper\BasketHelper $basketHelper,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         \Ls\Omni\Helper\Data $data
-    )
-    {
+    ) {
         parent::__construct(
             $context,
             $scopeConfig,
@@ -128,9 +127,26 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             );
 
             if ($isGiftCardAmountValid == false) {
-                $this->messageManager->addErrorMessage(__(
-                        'The applied amount ' . $this->priceHelper->currency($giftCardAmount, true, false) . ' is greater than gift card balance amount (%1) or order balance.'
-                        , $this->priceHelper->currency($giftCardBalanceAmount, true, false))
+                $this->messageManager->addErrorMessage(
+                    __(
+                        'The applied amount ' . $this->priceHelper->currency(
+                            $giftCardAmount,
+                            true,
+                            false
+                        ).
+                        ' is greater than gift card balance amount (%1)
+                        or it is greater than order balance (Excl. Shipping Amount) (%2).',
+                        $this->priceHelper->currency(
+                            $giftCardBalanceAmount,
+                            true,
+                            false
+                        ),
+                        $this->priceHelper->currency(
+                            $orderBalance,
+                            true,
+                            false
+                        )
+                    )
                 );
                 return $this->_goBack();
             }

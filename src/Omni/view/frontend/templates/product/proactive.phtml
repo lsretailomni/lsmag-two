@@ -1,3 +1,12 @@
+<?php
+/** @var \Ls\Omni\Block\Product\View\Discount\Proactive $block */
+$currentProductSku = $block->getProductSku();
+$ajaxUrl = $block->getAjaxUrl();
+$isEnabled = $block->isDiscountEnable();
+
+if($isEnabled) {
+?>
+
 <div id="ls-discounts">
     <div class="loader">
         <img src="<?= /* @escapeNotVerified */
@@ -8,11 +17,6 @@
         <div><?php echo __('Loading Product Discounts...'); ?></div>
     </div>
 </div>
-<?php
-/** @var \Ls\Omni\Block\Product\View\Discount\Proactive $block */
-$currentProductSku = $block->getProductSku();
-$ajaxUrl = $block->getAjaxUrl();
-?>
 <script type="text/x-magento-init">
         {
             "*": {
@@ -23,3 +27,4 @@ $ajaxUrl = $block->getAjaxUrl();
             }
         }
 </script>
+<?php }

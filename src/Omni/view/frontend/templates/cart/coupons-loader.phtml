@@ -1,6 +1,8 @@
 <?php
 // @codingStandardsIgnoreFile
 /** @var \Ls\Omni\Block\Cart\Coupons $block */
+$enabled= $block->isCouponEnable();
+if($enabled) {
 ?>
 <div id="ls-coupons">
     <div class="loader">
@@ -24,3 +26,4 @@ $ajaxUrl = $block->getAjaxUrl();
             }
         }
 </script>
+<?php }

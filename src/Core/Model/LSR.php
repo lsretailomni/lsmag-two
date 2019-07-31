@@ -253,6 +253,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
 
+    //Discount and Coupon Management
+    const LS_DISCOUNT_SHOW_ON_PRODUCT = 'ls_mag/ls_discounts/discount';
+    const LS_COUPON_SHOW_ON_CART_CHECKOUT = 'ls_mag/ls_discounts/coupon';
+    const LS_DISCOUNT_MIXANDMATCH_LIMIT = 'ls_mag/ls_discounts/discount_mixandmatch_limit';
+
     //Coupon Code Message
     const LS_COUPON_CODE_ERROR_MESSAGE = 'Coupon Code is not valid for these item(s)';
 

@@ -59,7 +59,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param CartRepositoryInterface $quoteRepository
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel
-     * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
+     * @param LoyaltyHelper $loyaltyHelper
      * @param Cart $cart
      */
     public function __construct(
@@ -361,5 +361,22 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+    }
+
+    /**
+     * @param $items
+     * @return array|\Magento\Catalog\Api\Data\ProductSearchResultsInterface
+     */
+    public function getProductsInfoBySku($items)
+    {
+        $productData = [];
+        try {
+            $criteria = $this->searchCriteriaBuilder->addFilter('sku', implode(",", $items), 'in')->create();
+            $product = $this->productRepository->getList($criteria);
+            return $product->getItems();
+        } catch (\Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+        return $productData;
     }
 }
