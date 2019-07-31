@@ -483,15 +483,27 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Update the config status and clean cache for config
      * @param $data
      * @param $path
+     * @param bool $store_id
      */
-    public function updateCronStatus($data, $path)
+    public function updateCronStatus($data, $path, $store_id = false)
     {
-        $this->configWriter->save(
-            $path,
-            ($data) ? 1 : 0,
-            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-            0
-        );
+        /**
+         * Added the conditon to update config value based on specific store id.
+         */
+        if ($store_id) {
+            $this->configWriter->save(
+                $path,
+                ($data) ? 1 : 0,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id
+            );
+        } else {
+            $this->configWriter->save(
+                $path,
+                ($data) ? 1 : 0,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                0
+            );
+        }
         $this->flushConfig();
     }
 
@@ -499,15 +511,28 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Update the config value
      * @param $value
      * @param $path
+     * @param bool $store_id
      */
-    public function updateConfigValue($value, $path)
+    public function updateConfigValue($value, $path, $store_id = false)
     {
-        $this->configWriter->save(
-            $path,
-            $value,
-            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-            0
-        );
+
+        /**
+         * Added the conditon to update config value based on specific store id.
+         */
+        if ($store_id) {
+            $this->configWriter->save(
+                $path,
+                $value,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id
+            );
+        } else {
+            $this->configWriter->save(
+                $path,
+                $value,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                0
+            );
+        }
     }
 
     /**

@@ -307,10 +307,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @param bool $notDefault
      * @return string
      */
-    public function getStoreConfig($path, $notDefault = false)
+    public function getStoreConfig($path, $store_id = false)
     {
-        if ($notDefault) {
-            $sc = $this->scopeConfig->getValue($path, $notDefault);
+        if ($store_id) {
+            $sc = $this->scopeConfig->getValue($path,\Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id);
         } else {
             $sc = $this->scopeConfig->getValue(
                 $path,
@@ -357,11 +357,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * @return bool
      */
-    public function isLSR()
+    public function isLSR($store_id = false)
     {
-        //TODO integrate multiple store.
-        $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
-        $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE);
+
+        $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL,$store_id);
+        $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE,$store_id);
         if (empty($baseUrl) || empty($store)) {
             return false;
         } else {
