@@ -290,7 +290,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $cacheId,
                 $response->getResult(),
                 [Type::CACHE_TAG],
-                7200
+                86400
             );
             return $response->getResult();
         }
