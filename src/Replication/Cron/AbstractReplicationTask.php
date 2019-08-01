@@ -463,20 +463,20 @@ abstract class AbstractReplicationTask
     /**
      * @param int $status
      */
-    public function saveReplicationStatus($status = 0)
+    public function saveReplicationStatus($status = 0,$store_id = false)
     {
 
         if ($store_id) {
             $this->resource_config->saveConfig(
                 $this->getConfigPathStatus(),
-                $last_key,
+                $status,
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id
             );
 
         } else {
             $this->resource_config->saveConfig(
                 $this->getConfigPathStatus(),
-                $last_key,
+                $status,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 0
             );
