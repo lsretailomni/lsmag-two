@@ -60,6 +60,11 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $cacheHelper;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * LoyaltyHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
@@ -72,6 +77,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Framework\Filesystem $Filesystem
      * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      * @param \Ls\Omni\Helper\CacheHelper $cacheHelper
+     * @param LSR $lsr
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -84,7 +90,8 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Filesystem $Filesystem,
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
-        CacheHelper $cacheHelper
+        CacheHelper $cacheHelper,
+        LSR $lsr
     ) {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -96,6 +103,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->filesystem = $Filesystem;
         $this->groupRepository = $groupRepository;
         $this->cacheHelper = $cacheHelper;
+        $this->lsr = $lsr;
         parent::__construct(
             $context
         );
@@ -260,9 +268,12 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getPointRate()
     {
-        $pointsRate = $this->customerSession->getPointsRate();
-        if (isset($pointsRate)) {
-            return $pointsRate;
+        $storeId = $this->lsr->getDefaultWebStore();
+        $cacheId = LSR::POINTRATE.$storeId;
+        $response = $this->cacheHelper->getCachedContent($cacheId);
+        if ($response) {
+            $this->_logger->debug("Found point rate from cache ".$cacheId);
+            return $response;
         }
         $response = null;
         // @codingStandardsIgnoreStart
@@ -270,12 +281,19 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity = new Entity\GetPointRate();
         // @codingStandardsIgnoreEnd
         try {
-            $responseData = $request->execute($entity);
-            $response = $responseData ? $responseData->getResult() : $response;
+            $response = $request->execute($entity);
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        $this->customerSession->setPointsRate($response);
+        if ($response->getResult()) {
+            $this->cacheHelper->persistContentInCache(
+                $cacheId,
+                $response->getResult(),
+                [Type::CACHE_TAG],
+                7200
+            );
+            return $response->getResult();
+        }
         return $response;
     }
 
@@ -339,7 +357,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $itemId
      * @param $storeId
-     * @return Entity\DiscountsGetResponse|Entity\ProactiveDiscount[]|\Ls\Omni\Client\ResponseInterface|null
+     * @return bool|Entity\DiscountsGetResponse|Entity\ProactiveDiscount[]|\Ls\Omni\Client\ResponseInterface|null
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
@@ -352,6 +370,12 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $string = new Entity\ArrayOfstring();
         // @codingStandardsIgnoreEnd
         $customerGroupId = $this->customerSession->getCustomerGroupId();
+        $cacheId = LSR::PROACTIVE_DISCOUNTS.$itemId."_".$customerGroupId."_".$storeId;
+        $response = $this->cacheHelper->getCachedContent($cacheId);
+        if ($response) {
+            $this->_logger->debug("Found proactive discounts from cache ".$cacheId);
+            return $response;
+        }
         $group = $this->groupRepository->getById($customerGroupId)->getCode();
         $string->setString([$itemId]);
         $entity->setStoreId($storeId)->setItemiIds($string)->setLoyaltySchemeCode($group);
@@ -360,14 +384,23 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getDiscountsGetResult()->getProactiveDiscount() : $response;
+        if ($response->getDiscountsGetResult()->getProactiveDiscount()) {
+            $this->cacheHelper->persistContentInCache(
+                $cacheId,
+                $response->getDiscountsGetResult()->getProactiveDiscount(),
+                [Type::CACHE_TAG],
+                7200
+            );
+            return $response->getDiscountsGetResult()->getProactiveDiscount();
+        }
+        return $response;
     }
 
     /**
      * @param $itemId
      * @param $storeId
      * @param $cardId
-     * @return Entity\PublishedOffer[]|Entity\PublishedOffersGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return bool|Entity\PublishedOffer[]|Entity\PublishedOffersGetResponse|\Ls\Omni\Client\ResponseInterface|null
      */
     public function getPublishedOffers($itemId, $storeId, $cardId)
     {
@@ -376,13 +409,28 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $request = new Operation\PublishedOffersGet();
         $entity = new Entity\PublishedOffersGet();
         // @codingStandardsIgnoreEnd
+        $cacheId = LSR::COUPONS.$itemId."_".$cardId."_".$storeId;
+        $response = $this->cacheHelper->getCachedContent($cacheId);
+        if ($response) {
+            $this->_logger->debug("Found coupons from cache ".$cacheId);
+            return $response;
+        }
         $entity->setStoreId($storeId)->setItemId($itemId)->setStoreId($storeId)->setCardId($cardId);
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getPublishedOffersGetResult()->getPublishedOffer() : $response;
+        if ($response->getPublishedOffersGetResult()->getPublishedOffer()) {
+            $this->cacheHelper->persistContentInCache(
+                $cacheId,
+                $response->getPublishedOffersGetResult()->getPublishedOffer(),
+                [Type::CACHE_TAG],
+                7200
+            );
+            return $response->getPublishedOffersGetResult()->getPublishedOffer();
+        }
+        return $response;
     }
 
     /**
