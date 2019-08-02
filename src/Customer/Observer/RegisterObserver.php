@@ -81,10 +81,10 @@ class RegisterObserver implements ObserverInterface
                     if (is_object($contact) && $contact->getId()) {
                         $token = $contact->getLoggedOnToDevice()->getSecurityToken();
                         /** @var Entity\Card $card */
-                        $card = $contact->getCard();
+                        $basket = $contact->getBasket();
                         $customer->setData('lsr_id', $contact->getId());
                         $customer->setData('lsr_token', $token);
-                        $customer->setData('lsr_cardid', $card->getId());
+                        $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
 
                         if ($contact->getAccount()->getScheme()->getId()) {
                             $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
@@ -96,8 +96,8 @@ class RegisterObserver implements ObserverInterface
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $contact);
                         $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
                         $session->setData(LSR::SESSION_CUSTOMER_LSRID, $contact->getId());
-                        if ($card !== null) {
-                            $session->setData(LSR::SESSION_CUSTOMER_CARDID, $card->getId());
+                        if ($basket !== null) {
+                            $session->setData(LSR::SESSION_CUSTOMER_CARDID, $basket->getCardId());
                         }
                     }
 

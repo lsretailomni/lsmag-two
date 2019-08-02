@@ -152,7 +152,7 @@ class AjaxLoginObserver implements ObserverInterface
                         $this->contactHelper->updateBasketAfterLogin(
                             $result->getBasket(),
                             $result->getId(),
-                            $result->getCard()->getId()
+                            $result->getCards()->getCard()[0]->getId()
                         );
                         $this->customerSession->regenerateId();
                         $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);

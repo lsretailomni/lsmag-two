@@ -136,6 +136,21 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode H_M_P_MENU_NOT_ENABLED()
  * @$method static StatusCode H_M_P_MENU_NO_DYNAMIC_CONTENT_FOUND_TODAY()
  * @$method static StatusCode VENDOR_NOT_FOUND()
+ * @$method static StatusCode DOCUMENT_ERROR()
+ * @$method static StatusCode TEMPLATE_NOT_FOUND()
+ * @$method static StatusCode DOCUMENT_NOT_FOUND()
+ * @$method static StatusCode MISSING_UNIT_CONVERSION()
+ * @$method static StatusCode NO_LINES_TO_POST()
+ * @$method static StatusCode ALREADY_POSTED()
+ * @$method static StatusCode ALREADY_PROCESSING()
+ * @$method static StatusCode INVALID_RECEIVING_QTY()
+ * @$method static StatusCode NO_VENDOR_ITEMS()
+ * @$method static StatusCode TRANSFER_ORDER_NOT_FOUND()
+ * @$method static StatusCode TRANSFER_ORDER_PROCESSING()
+ * @$method static StatusCode TRANSFER_ORDER_RECEIVED()
+ * @$method static StatusCode TRANSFER_ORDER_FETCHED()
+ * @$method static StatusCode TRANSFER_ORDER_SENT()
+ * @$method static StatusCode TRANSFER_ORDER_REJECTED()
  * @$method static StatusCode UNKNOWN_USER()
  * @$method static StatusCode NAV_W_S_ERROR()
  * @$method static StatusCode TRANSACTION_POST()
@@ -396,6 +411,36 @@ class StatusCode extends Enum
     const H_M_P_MENU_NO_DYNAMIC_CONTENT_FOUND_TODAY = 'HMPMenuNoDynamicContentFoundToday';
 
     const VENDOR_NOT_FOUND = 'VendorNotFound';
+
+    const DOCUMENT_ERROR = 'DocumentError';
+
+    const TEMPLATE_NOT_FOUND = 'TemplateNotFound';
+
+    const DOCUMENT_NOT_FOUND = 'DocumentNotFound';
+
+    const MISSING_UNIT_CONVERSION = 'MissingUnitConversion';
+
+    const NO_LINES_TO_POST = 'NoLinesToPost';
+
+    const ALREADY_POSTED = 'AlreadyPosted';
+
+    const ALREADY_PROCESSING = 'AlreadyProcessing';
+
+    const INVALID_RECEIVING_QTY = 'InvalidReceivingQty';
+
+    const NO_VENDOR_ITEMS = 'NoVendorItems';
+
+    const TRANSFER_ORDER_NOT_FOUND = 'TransferOrderNotFound';
+
+    const TRANSFER_ORDER_PROCESSING = 'TransferOrderProcessing';
+
+    const TRANSFER_ORDER_RECEIVED = 'TransferOrderReceived';
+
+    const TRANSFER_ORDER_FETCHED = 'TransferOrderFetched';
+
+    const TRANSFER_ORDER_SENT = 'TransferOrderSent';
+
+    const TRANSFER_ORDER_REJECTED = 'TransferOrderRejected';
 
     const UNKNOWN_USER = 'UnknownUser';
 

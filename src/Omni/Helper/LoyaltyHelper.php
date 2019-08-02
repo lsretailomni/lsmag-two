@@ -204,25 +204,23 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return Entity\ContactGetByIdResponse|Entity\MemberContact|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\ContactGetByCardIdResponse|Entity\MemberContact|\Ls\Omni\Client\ResponseInterface|null
      */
     public function getMemberInfo()
     {
-
         $response = null;
         $customer = $this->customerSession->getCustomer();
-        $lsrId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-        // if not set in seesion then get it from customer database.
-        if (!$lsrId) {
-            $lsrId = $customer->getData('lsr_id');
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        // if not set in session then get it from customer database.
+        if (!$cardId) {
+            $cardId = $customer->getData('lsr_cardid');
         }
         // @codingStandardsIgnoreLine
-        $request = new Operation\ContactGetById();
+        $request = new Operation\ContactGetByCardId();
         $request->setToken($customer->getData('lsr_token'));
         // @codingStandardsIgnoreLine
-        $entity = new Entity\ContactGetById();
-        $entity->setContactId($lsrId);
-
+        $entity = new Entity\ContactGetByCardId();
+        $entity->setCardId($cardId);
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {
@@ -367,22 +365,22 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param $itemId
      * @param $storeId
      * @param $cardId
-     * @return Entity\PublishedOffer[]|Entity\PublishedOffersGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\PublishedOffer[]|Entity\PublishedOffersGetByCardId|\Ls\Omni\Client\ResponseInterface|null
      */
     public function getPublishedOffers($itemId, $storeId, $cardId)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\PublishedOffersGet();
-        $entity = new Entity\PublishedOffersGet();
+        $request = new Operation\PublishedOffersGetByCardId();
+        $entity = new Entity\PublishedOffersGetByCardId();
         // @codingStandardsIgnoreEnd
-        $entity->setStoreId($storeId)->setItemId($itemId)->setStoreId($storeId)->setCardId($cardId);
+        $entity->setItemId($itemId)->setCardId($cardId);
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getPublishedOffersGetResult()->getPublishedOffer() : $response;
+        return $response ? $response->getPublishedOffersGetByCardIdResult(): $response;
     }
 
     /**
@@ -401,7 +399,8 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $publishedOffers = $publishedOffersObj->getPublishedOffer();
             foreach ($publishedOffers as $each) {
                 if ($each->getCode() == "Coupon" && $each->getOfferLines()) {
-                    $itemId = $each->getOfferLines()->getPublishedOfferLine()->getId();
+                    $getPublishedOfferLineArray = $each->getOfferLines()->getPublishedOfferLine();
+                    $itemId = $getPublishedOfferLineArray[0]->getId();
                     if (in_array($itemId, $itemsInCart)) {
                         $coupons[] = $each;
                     }

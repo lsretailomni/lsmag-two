@@ -158,14 +158,14 @@ class Info extends \Magento\Framework\View\Element\Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getDocumentId()));
+        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getId()));
     }
     // @codingStandardsIgnoreEnd
 
     /**
      * Retrieve current order model instance
      *
-     * @return \Ls\Omni\Client\Ecommerce\Entity\Order
+     * @return \Ls\Omni\Client\Ecommerce\Entity\SalesEntry
      */
     public function getOrder()
     {
@@ -191,11 +191,7 @@ class Info extends \Magento\Framework\View\Element\Template
     public function getPaymentDescription()
     {
         // @codingStandardsIgnoreStart
-        $paymentLines = $this->getOrder()->getOrderPayments()->getOrderPayment();
-        if (!is_array($paymentLines)) {
-            $singleLine = $paymentLines;
-            $paymentLines = array($singleLine);
-        }
+        $paymentLines = $this->getOrder()->getPayments();
         $methods = array();
         $giftCardInfo = array();
         // @codingStandardsIgnoreEnd
@@ -210,8 +206,9 @@ class Info extends \Magento\Framework\View\Element\Template
                 $methods[] = __('Loyalty Points');
             } elseif ($line->getTenderType() == '4') {
                 $methods[] = __('Gift Card');
-                $giftCardInfo[0] = $line->getCardNumber();
-                $giftCardInfo[1] = $line->getPreApprovedAmount();
+                //TODO Need to change Card Code
+                $giftCardInfo[0] = $line->getTenderType();
+                $giftCardInfo[1] = $line->getAmount();
             } else {
                 $methods[] = __('Unknown');
             }
@@ -249,8 +246,8 @@ class Info extends \Magento\Framework\View\Element\Template
      */
     public function getPrintUrl($order)
     {
-        if ($order->getDocumentId() != null) {
-            return $this->getUrl('customer/order/print', ['order_id' => $order->getDocumentId()]);
+        if ($order->getId() != null) {
+            return $this->getUrl('customer/order/print', ['order_id' => $order->getId()]);
         }
     }
 

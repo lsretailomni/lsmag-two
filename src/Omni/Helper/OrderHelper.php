@@ -317,43 +317,43 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @return Entity\ArrayOfOrder|Entity\OrderHistoryByContactIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\SalesEntriesGetByCardIdResponse|\Ls\Omni\Client\ResponseInterface|null
      */
     public function getCurrentCustomerOrderHistory()
     {
         $response = null;
-        $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         // @codingStandardsIgnoreStart
-        $request = new Operation\OrderHistoryByContactId();
-        $orderHistory = new Entity\OrderHistoryByContactId();
+        $request = new Operation\SalesEntriesGetByCardId();
+        $orderHistory = new Entity\SalesEntriesGetByCardId();
         // @codingStandardsIgnoreEnd
-        $orderHistory->setContactId($contactId)->setIncludeLines(true)->setIncludeTransactions(true);
+        $orderHistory->setCardId($cardId);
         try {
             $response = $request->execute($orderHistory);
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getOrderHistoryByContactIdResult() : $response;
+        return $response ? $response->getSalesEntriesGetByCardIdResult() : $response;
     }
 
     /**
      * @param $orderId
-     * @return Entity\Order|Entity\OrderGetByIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\SalesEntryGetResponse|\Ls\Omni\Client\ResponseInterface|null
      */
     public function getOrderDetailsAgainstId($orderId)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\OrderGetById();
-        $order = new Entity\OrderGetById();
-        $order->setId($orderId)->setIncludeLines(true);
+        $request = new Operation\SalesEntryGet();
+        $order = new Entity\SalesEntryGet();
+        $order->setEntryId($orderId);
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($order);
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getOrderGetByIdResult() : $response;
+        return $response ? $response->getSalesEntryGetResult() : $response;
     }
 
     /**

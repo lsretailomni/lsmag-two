@@ -47,7 +47,7 @@ class View extends \Magento\Framework\View\Element\Template
     /**
      * Retrieve current order model instance
      *
-     * @return \Ls\Omni\Client\Ecommerce\Entity\Order
+     * @return \Ls\Omni\Client\Ecommerce\Entity\SalesEntry
      */
     public function getOrder()
     {
@@ -108,7 +108,7 @@ class View extends \Magento\Framework\View\Element\Template
      */
     public function getPrintAllInvoicesUrl($order)
     {
-        return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
+        return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getId()]);
     }
 
     /**
@@ -117,6 +117,6 @@ class View extends \Magento\Framework\View\Element\Template
      */
     public function getPrintAllShipmentUrl($order)
     {
-        return $this->getUrl('*/*/printShipment', ['order_id' => $order->getDocumentId()]);
+        return $this->getUrl('*/*/printShipment', ['order_id' => $order->getId()]);
     }
 }

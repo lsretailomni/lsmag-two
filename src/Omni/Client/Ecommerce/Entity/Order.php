@@ -32,11 +32,6 @@ class Order extends Entity
     protected $OrderPayments = null;
 
     /**
-     * @property boolean $AnonymousOrder
-     */
-    protected $AnonymousOrder = null;
-
-    /**
      * @property string $CardId
      */
     protected $CardId = null;
@@ -253,24 +248,6 @@ class Order extends Entity
     public function getOrderPayments()
     {
         return $this->OrderPayments;
-    }
-
-    /**
-     * @param boolean $AnonymousOrder
-     * @return $this
-     */
-    public function setAnonymousOrder($AnonymousOrder)
-    {
-        $this->AnonymousOrder = $AnonymousOrder;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getAnonymousOrder()
-    {
-        return $this->AnonymousOrder;
     }
 
     /**

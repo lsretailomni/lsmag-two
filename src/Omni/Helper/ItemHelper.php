@@ -215,7 +215,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $item
-     * @param $orderData
+     * @param \Ls\Omni\Client\Ecommerce\Entity\SalesEntry $orderData
      * @return array|null
      */
     // @codingStandardsIgnoreLine
@@ -240,41 +240,30 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $customPrice = $item->getCustomPrice();
             }
             $check = false;
-            $basketData = null;
-
+            $basketData = [];
             $discountText = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
-
-            if (is_array($orderData->getOrderLines()->getOrderLine())) {
-                $basketData = $orderData->getOrderLines()->getOrderLine();
-            } else {
-                // @codingStandardsIgnoreLine
-                $basketData[] = $orderData->getOrderLines()->getOrderLine();
+            if (isset($orderData)) {
+                $basketData = $orderData->getLines();
             }
             foreach ($basketData as $basket) {
                 if ($basket->getItemId() == $itemSku[0] && $basket->getVariantId() == $itemSku[1]) {
                     if ($customPrice > 0 && $customPrice != null) {
-                        if (is_array($orderData->getOrderDiscountLines()->getOrderDiscountLine())) {
-                            // @codingStandardsIgnoreLine
-                            foreach ($orderData->getOrderDiscountLines()->getOrderDiscountLine() as $orderDiscountLine) {
-                                if ($basket->getLineNumber() == $orderDiscountLine->getLineNumber()) {
-                                    if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
-                                        $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
-                                    }
+                        // @codingStandardsIgnoreLine
+                        foreach ($orderData->getDiscountLines() as $orderDiscountLine) {
+                            if ($basket->getLineNumber() == $orderDiscountLine->getLineNumber()) {
+                                if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
+                                    $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
                                 }
                             }
-                        } else {
-                            // @codingStandardsIgnoreLine
-                            $discountInfo[] = $orderData->getOrderDiscountLines()->getOrderDiscountLine()->getDescription();
+                            $check = true;
                         }
-
-                        $check = true;
                     }
                 }
-            }
-            if ($check == true) {
-                return [implode($discountInfo), $discountText];
-            } else {
-                return null;
+                if ($check == true) {
+                    return [implode($discountInfo), $discountText];
+                } else {
+                    return null;
+                }
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -291,6 +280,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             $itemlist = $this->cart->getQuote()->getAllVisibleItems();
             foreach ($itemlist as $item) {
+                if (empty($basketData)) {
+                    continue;
+                }
                 $orderLines = $basketData->getOrderLines()->getOrderLine();
                 $oldItemVariant = [];
                 $itemSku = explode("-", $item->getSku());

@@ -128,7 +128,7 @@ class LoginObserver implements ObserverInterface
                     $this->contactHelper->updateBasketAfterLogin(
                         $result->getBasket(),
                         $result->getId(),
-                        $result->getCard()->getId()
+                        $result->getCards()->getCard()[0]->getId()
                     );
 
                     $this->contactHelper->updateWishlistAfterLogin(

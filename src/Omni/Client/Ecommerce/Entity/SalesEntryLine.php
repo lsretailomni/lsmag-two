@@ -40,6 +40,11 @@ class SalesEntryLine extends Entity
     protected $ItemId = null;
 
     /**
+     * @property string $ItemImageId
+     */
+    protected $ItemImageId = null;
+
+    /**
      * @property int $LineNumber
      */
     protected $LineNumber = null;
@@ -177,6 +182,24 @@ class SalesEntryLine extends Entity
     public function getItemId()
     {
         return $this->ItemId;
+    }
+
+    /**
+     * @param string $ItemImageId
+     * @return $this
+     */
+    public function setItemImageId($ItemImageId)
+    {
+        $this->ItemImageId = $ItemImageId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemImageId()
+    {
+        return $this->ItemImageId;
     }
 
     /**

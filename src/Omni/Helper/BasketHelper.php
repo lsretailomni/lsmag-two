@@ -412,8 +412,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param Entity\OneList $oneList
-     * @return bool|Entity\ArrayOfOrderLineAvailability|Entity\OrderAvailabilityCheckResponse|\Ls\Omni\Client\ResponseInterface
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @return bool|Entity\OrderAvailabilityResponse|Entity\OrderCheckAvailabilityResponse|\Ls\Omni\Client\ResponseInterface
      */
     public function availability(Entity\OneList $oneList)
     {
@@ -452,14 +451,14 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setSourceType(Entity\Enum\SourceType::STANDARD)
                 ->setItemNumberType(Entity\Enum\ItemNumberType::ITEM_NO)
                 ->setOrderLineAvailabilityRequests($lines);
-            $entity = new Entity\OrderAvailabilityCheck();
+            $entity = new Entity\OrderCheckAvailability();
             $entity->setRequest($request);
-            $operation = new Operation\OrderAvailabilityCheck();
+            $operation = new Operation\OrderCheckAvailability();
             // @codingStandardsIgnoreEnd
             $response = $operation->execute($entity);
         }
 
-        return $response ? $response->getOrderAvailabilityCheckResult() : $response;
+        return $response ? $response->getOrderCheckAvailabilityResult() : $response;
     }
 
     /**
@@ -564,7 +563,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             // @codingStandardsIgnoreStart
             /** @var Entity\OneList $oneListRequest */
             $oneListRequest = (new Entity\OneList())
-                ->setContactId($contactId)
                 ->setCardId($cardId)
                 ->setListType(Entity\Enum\ListType::BASKET)
                 ->setItems($listItems)
@@ -746,24 +744,21 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         /**
          * If its a logged in user then we need to fetch already created one list.
          */
-
-        if ($contactId != '') {
-            /** @var Operation\OneListGetByContactId $request */
+        if ($cardId != '') {
+            /** @var Operation\OneListGetByCardId $request */
             // @codingStandardsIgnoreLine
-            $request = new Operation\OneListGetByContactId();
-
-            /** @var Entity\OneListGetByContactId $entity */
+            $request = new Operation\OneListGetByCardId();
+            /** @var Entity\OneListGetByCardId $entity */
             // @codingStandardsIgnoreLine
-            $entity = new Entity\OneListGetByContactId();
-
-            $entity->setContactId($contactId)
+            $entity = new Entity\OneListGetByCardId();
+            $entity->setCardId($cardId)
                 ->setListType(Entity\Enum\ListType::BASKET)
                 ->setIncludeLines(true);
 
-            /** @var Entity\OneListGetByContactIdResponse $response */
+            /** @var Entity\OneListGetByCardIdResponse $response */
             $response = $request->execute($entity);
 
-            $lists = $response->getOneListGetByContactIdResult()->getOneList();
+            $lists = $response->getOneListGetByCardIdResult()->getOneList();
             // if we have a list or an array, return it
             if (!empty($lists)) {
                 if ($lists instanceof Entity\OneList) {
@@ -784,7 +779,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         /** @var Entity\OneList $list */
         // @codingStandardsIgnoreStart
         $list = (new Entity\OneList())
-            ->setContactId($contactId)
             ->setCardId($cardId)
             ->setDescription('OneList Magento')
             ->setIsDefaultList(true)
