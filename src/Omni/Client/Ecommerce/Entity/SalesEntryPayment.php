@@ -17,9 +17,19 @@ class SalesEntryPayment
     protected $Amount = null;
 
     /**
+     * @property string $CardNo
+     */
+    protected $CardNo = null;
+
+    /**
      * @property string $CurrencyCode
      */
     protected $CurrencyCode = null;
+
+    /**
+     * @property float $CurrencyFactor
+     */
+    protected $CurrencyFactor = null;
 
     /**
      * @property int $LineNumber
@@ -50,6 +60,24 @@ class SalesEntryPayment
     }
 
     /**
+     * @param string $CardNo
+     * @return $this
+     */
+    public function setCardNo($CardNo)
+    {
+        $this->CardNo = $CardNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardNo()
+    {
+        return $this->CardNo;
+    }
+
+    /**
      * @param string $CurrencyCode
      * @return $this
      */
@@ -65,6 +93,24 @@ class SalesEntryPayment
     public function getCurrencyCode()
     {
         return $this->CurrencyCode;
+    }
+
+    /**
+     * @param float $CurrencyFactor
+     * @return $this
+     */
+    public function setCurrencyFactor($CurrencyFactor)
+    {
+        $this->CurrencyFactor = $CurrencyFactor;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrencyFactor()
+    {
+        return $this->CurrencyFactor;
     }
 
     /**

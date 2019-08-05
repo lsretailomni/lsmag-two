@@ -215,7 +215,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $item
-     * @param \Ls\Omni\Client\Ecommerce\Entity\SalesEntry $orderData
+     * @param \Ls\Omni\Client\Ecommerce\Entity\Order|\Ls\Omni\Client\Ecommerce\Entity\SalesEntry $orderData
      * @return array|null
      */
     // @codingStandardsIgnoreLine
@@ -242,14 +242,18 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $check = false;
             $basketData = [];
             $discountText = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
-            if (isset($orderData)) {
+            if ($orderData instanceof Entity\SalesEntry) {
                 $basketData = $orderData->getLines();
+                $discountsLines = $orderData->getDiscountLines();
+            } elseif ($orderData instanceof Entity\Order) {
+                $basketData = $orderData->getOrderLines()->getOrderLine();
+                $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
             }
             foreach ($basketData as $basket) {
                 if ($basket->getItemId() == $itemSku[0] && $basket->getVariantId() == $itemSku[1]) {
                     if ($customPrice > 0 && $customPrice != null) {
                         // @codingStandardsIgnoreLine
-                        foreach ($orderData->getDiscountLines() as $orderDiscountLine) {
+                        foreach ($discountsLines as $orderDiscountLine) {
                             if ($basket->getLineNumber() == $orderDiscountLine->getLineNumber()) {
                                 if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
                                     $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
@@ -272,17 +276,13 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $quote
-     * @param $basketData
+     * @param \Ls\Omni\Client\Ecommerce\Entity\Order $basketData
      */
-    // @codingStandardsIgnoreLine
     public function setDiscountedPricesForItems($quote, $basketData)
     {
         try {
             $itemlist = $this->cart->getQuote()->getAllVisibleItems();
             foreach ($itemlist as $item) {
-                if (empty($basketData)) {
-                    continue;
-                }
                 $orderLines = $basketData->getOrderLines()->getOrderLine();
                 $oldItemVariant = [];
                 $itemSku = explode("-", $item->getSku());

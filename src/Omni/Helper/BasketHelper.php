@@ -591,7 +591,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (($response == null)) {
             // @codingStandardsIgnoreLine
             $oneListCalResponse = new Entity\OneListCalculateResponse();
-
             return $oneListCalResponse->getResult();
         }
         if (property_exists($response, "OneListCalculateResult")) {

@@ -132,7 +132,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         // @codingStandardsIgnoreLine
         $entity = new Entity\PublishedOffersGetByCardId();
         $entity->setCardId($customer->getData('lsr_cardid'));
-
+        $entity->setItemId('');
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {

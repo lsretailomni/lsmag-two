@@ -32,6 +32,11 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     protected $BlockDiscount = null;
 
     /**
+     * @property int $BlockDistribution
+     */
+    protected $BlockDistribution = null;
+
+    /**
      * @property int $BlockManualPriceChange
      */
     protected $BlockManualPriceChange = null;
@@ -259,6 +264,26 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     public function getBlockDiscount()
     {
         return $this->getData( 'BlockDiscount' );
+    }
+
+    /**
+     * @param int $BlockDistribution
+     * @return $this
+     */
+    public function setBlockDistribution($BlockDistribution)
+    {
+        $this->setData( 'BlockDistribution', $BlockDistribution );
+        $this->BlockDistribution = $BlockDistribution;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlockDistribution()
+    {
+        return $this->getData( 'BlockDistribution' );
     }
 
     /**
