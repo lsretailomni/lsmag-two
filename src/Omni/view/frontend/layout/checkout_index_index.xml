@@ -155,9 +155,7 @@
                                                                 Magento_Checkout/js/view/summary/subtotal
                                                             </item>
                                                             <item name="config" xsi:type="array">
-                                                                <item name="title" xsi:type="string" translate="true">
-                                                                    Subtotal (Inc.Tax)
-                                                                </item>
+                                                                <item name="title" xsi:type="string" translate="true">Subtotal (Inc.Tax)</item>
                                                                 <item name="sortOrder" xsi:type="string">0</item>
                                                             </item>
                                                         </item>
@@ -184,9 +182,7 @@
                                                                 Magento_Tax/js/view/checkout/cart/totals/grand-total
                                                             </item>
                                                             <item name="config" xsi:type="array">
-                                                                <item name="title" xsi:type="string" translate="true">
-                                                                    Order Balance
-                                                                </item>
+                                                                <item name="title" xsi:type="string" translate="true">Order Balance</item>
                                                                 <item name="template" xsi:type="string">
                                                                     Magento_Tax/checkout/cart/totals/grand-total
                                                                 </item>

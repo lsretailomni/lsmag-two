@@ -134,8 +134,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                             true,
                             false
                         ).
-                        ' is greater than gift card balance amount (%1)
-                        or it is greater than order balance (Excl. Shipping Amount) (%2).',
+                        ' is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).',
                         $this->priceHelper->currency(
                             $giftCardBalanceAmount,
                             true,
