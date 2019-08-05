@@ -239,16 +239,17 @@ class OrderHelper extends AbstractHelper
      */
     public function setOrderPayments(Model\Order $order, $cardId)
     {
-        $transId = $order->getPayment()->getCcTransId();
+        $transId = $order->getPayment()->getLastTransId();
         $ccType = $order->getPayment()->getCcType();
         $cardNumber = $order->getPayment()->getCcLast4();
+        $paymentMethod = $order->getPayment()->getMethodInstance();
 
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
         $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
         // @codingStandardsIgnoreEnd
 
-        if ($order->getPayment()->getMethodInstance()->getCode() != "ls_payment_method_pay_at_store") {
+        if ($paymentMethod->isOffline()==false) {
             // @codingStandardsIgnoreStart
             $orderPayment = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
@@ -260,15 +261,11 @@ class OrderHelper extends AbstractHelper
                 ->setOrderId($order->getIncrementId())
                 ->setPreApprovedAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
-            if ($ccType != "" and $ccType != null) {
                 $orderPayment->setTenderType('1');
                 $orderPayment->setCardType($ccType);
                 $orderPayment->setCardNumber($cardNumber);
                 $orderPayment->setAuthorisationCode($transId);
-            } else {
-                $orderPayment->setTenderType('0');
-            }
-            $orderPaymentArray[] = $orderPayment;
+                $orderPaymentArray[] = $orderPayment;
         }
 
         // @codingStandardsIgnoreLine
@@ -376,6 +373,7 @@ class OrderHelper extends AbstractHelper
      */
     public function getOrderByDocumentId($documentId)
     {
+        $order= null;
         $customerId = $this->customerSession->getCustomerId();
         $order = $this->orderRepository->getList(
             $this->basketHelper->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
@@ -385,5 +383,6 @@ class OrderHelper extends AbstractHelper
                 return $ord;
             }
         }
+        return $order;
     }
 }
