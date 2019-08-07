@@ -126,7 +126,8 @@ abstract class AbstractReplicationTask
         LoggerInterface $logger,
         LsHelper $helper,
         \Ls\Replication\Helper\ReplicationHelper $repHelper
-    ) {
+    )
+    {
         $this->scope_config = $scope_config;
         $this->resource_config = $resouce_config;
         $this->logger = $logger;
@@ -182,9 +183,9 @@ abstract class AbstractReplicationTask
                         $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
                     }
 
-                    $baseUrl    =   $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL,$store->getId());
+                    $baseUrl = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store->getId());
 
-                    $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID,$baseUrl);
+                    $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID, $baseUrl);
 
                     /**
                      * getting the client from here.
@@ -203,7 +204,8 @@ abstract class AbstractReplicationTask
                             foreach ($traversable as $source) {
 
                                 //TODO need to understand this before we modify it.
-                                $this->saveSource($properties, $source);
+                                //$source->setData('scope_id', $store->getId());
+                                $this->saveSource($properties, $source,$store->getId());
                             }
                             $this->updateSuccessStatus($store->getId());
                         } else {
@@ -244,7 +246,7 @@ abstract class AbstractReplicationTask
                     }
                     $this->rep_helper->flushConfig();
                 } else {
-                    $this->logger->debug("LS Retail validation failed for store id .".$store->getId());
+                    $this->logger->debug("LS Retail validation failed for store id ." . $store->getId());
                 }
             }
 
@@ -305,7 +307,7 @@ abstract class AbstractReplicationTask
      * @param $properties
      * @param $source
      */
-    public function saveSource($properties, $source)
+    public function saveSource($properties, $source, $scope_id)
     {
         $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
@@ -316,7 +318,7 @@ abstract class AbstractReplicationTask
             $entity->setIsUpdated(1);
         } else {
             $entity = $this->getFactory()->create();
-            $entity->setScope('store')->setScopeId(0);
+            $entity->setScope('store')->setScopeId($scope_id);
         }
         foreach ($properties as $property) {
             if ($property == 'nav_id') {
@@ -471,7 +473,7 @@ abstract class AbstractReplicationTask
     /**
      * @param int $status
      */
-    public function saveReplicationStatus($status = 0,$store_id = false)
+    public function saveReplicationStatus($status = 0, $store_id = false)
     {
 
         if ($store_id) {
