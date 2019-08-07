@@ -22,13 +22,19 @@ class NavStore implements ArrayInterface
      */
     public $lsr;
 
+    /** @var \Magento\Framework\App\RequestInterface  */
+    public $request;
+
     /**
      * NavStore constructor.
      * @param LSR $lsr
      */
-    public function __construct(LSR $lsr)
+    public function __construct(
+        LSR $lsr,
+        \Magento\Framework\App\RequestInterface $request)
     {
         $this->lsr = $lsr;
+        $this->request = $request;
     }
 
     public function toOptionArray()
@@ -47,11 +53,14 @@ class NavStore implements ArrayInterface
      */
     public function getNavStores()
     {
-        if ($this->lsr->validateBaseUrl()) {
-            $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
-            if (!empty($baseUrl)) {
+
+        // get current Website Id.
+        $websiteId = (int) $this->request->getParam('website');
+        $baseUrl = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL,$websiteId);
+
+        if ($this->lsr->validateBaseUrl($baseUrl)) {
                 // @codingStandardsIgnoreLine
-                $get_nav_stores = new StoresGetAll();
+                $get_nav_stores = new StoresGetAll($baseUrl);
                 $result = $get_nav_stores->execute();
 
                 if ($result != null) {
@@ -62,7 +71,6 @@ class NavStore implements ArrayInterface
                 } else {
                     return $result;
                 }
-            }
         }
         return [];
     }

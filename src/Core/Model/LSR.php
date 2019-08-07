@@ -295,7 +295,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         TypeListInterface $cacheTypeList
-    ) {
+    )
+    {
         $this->scopeConfig = $scopeConfig;
         $this->cacheTypeList = $cacheTypeList;
     }
@@ -310,7 +311,27 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStoreConfig($path, $store_id = false)
     {
         if ($store_id) {
-            $sc = $this->scopeConfig->getValue($path,\Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id);
+            $sc = $this->scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id);
+        } else {
+            $sc = $this->scopeConfig->getValue(
+                $path,
+                \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
+        }
+        return $sc;
+    }
+
+    /**
+     * This needs to be used only for Websites Scope.
+     * in the variable of notDefault variable.
+     * @param $path
+     * @param bool $website_id
+     * @return mixed
+     */
+    public function getWebsiteConfig($path, $website_id = false)
+    {
+        if ($website_id) {
+            $sc = $this->scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE, $website_id);
         } else {
             $sc = $this->scopeConfig->getValue(
                 $path,
@@ -357,11 +378,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * @return bool
      */
-    public function isLSR($store_id = false)
+    public function isLSR($store_id = false, $scope = false)
     {
 
-        $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL,$store_id);
-        $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE,$store_id);
+        if ($scope == 'website') {
+            $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
+            $store = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
+        } else {
+            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
+            $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
+
+        }
         if (empty($baseUrl) || empty($store)) {
             return false;
         } else {
@@ -378,6 +405,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             }
         }
     }
+
 
     /**
      * @return string

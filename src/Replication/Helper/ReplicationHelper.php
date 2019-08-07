@@ -92,7 +92,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         TypeListInterface $cacheTypeList,
         LSR $LSR,
         ResourceConnection $resource
-    ) {
+    )
+    {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
@@ -124,7 +125,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $conditionType = 'eq',
         $pagesize = 100,
         $excludeDeleted = true
-    ) {
+    )
+    {
         // creating search criteria for two fields
         // processed = 0 which means not yet processed
         $attr_processed = $this->filterBuilder->setField('processed')
@@ -252,6 +254,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $criteria->setPageSize($pagesize);
         return $criteria->create();
     }
+
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
      * @param array $filters
@@ -311,6 +314,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $criteria->setPageSize($pagesize);
         return $criteria->create();
     }
+
     /**
      * Create Build Exit Criteria with Array of filters as a parameters
      * @param array $filters
@@ -544,13 +548,16 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Note :  this website Id is the Id of scope website in the Magento system. and Store Id is the NAV Store Id stored in the core_config_data
      * Trigger the disposable Hierarchy replication job to get Hierarchy based on stores.
      * @return array|Entity\ReplEcommHierarchyResponse|Entity\ReplHierarchyResponse|\Ls\Omni\Client\ResponseInterface
      */
-    public function getHierarchyByStore()
+    public function getHierarchyByStore($website_id = '')
     {
         $response = [];
-        $store_id = $this->lsr->getDefaultWebStore();
+
+        $store_id = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $website_id);
+        $base_url = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $website_id);
         // @codingStandardsIgnoreStart
         /** @var Entity\ReplEcommHierarchy $hierarchy */
         $hierarchy = new Entity\ReplEcommHierarchy();
@@ -559,7 +566,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $request = new Entity\ReplRequest();
 
         /** @var Operation\ReplEcommHierarchy $operation */
-        $operation = new Operation\ReplEcommHierarchy();
+        $operation = new Operation\ReplEcommHierarchy($base_url);
         // @codingStandardsIgnoreEnd
 
         $request->setStoreId($store_id)
@@ -592,7 +599,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $primaryTableColumnName,
         $secondaryTableName,
         $secondaryTableColumnName
-    ) {
+    )
+    {
         foreach ($criteria->getFilterGroups() as $filter_group) {
             $fields = [];
             $conditions = [];
@@ -620,7 +628,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         // In order to only select those records whose items are available
         $collection->getSelect()->joinInner(
             array('second' => $second_table_name),
-            'main_table.' . $primaryTableColumnName . ' = second.'.$secondaryTableColumnName,
+            'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
             []
         );
         // @codingStandardsIgnoreEnd

@@ -107,9 +107,9 @@ class ReplEcommImagesTask extends AbstractReplicationTask
         $this->data_interface = $data_interface;
     }
 
-    public function makeRequest($last_key, $full_replication = false, $batchsize = 100, $storeId = '')
+    public function makeRequest($last_key, $full_replication = false, $batchsize = 100, $storeId = '', $baseUrl = '')
     {
-        $request = new ReplEcommImages();
+        $request = new ReplEcommImages($baseUrl);
         $request->getOperationInput()
                  ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchsize)
                                                         ->setFullReplication($full_replication)

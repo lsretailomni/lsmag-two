@@ -181,7 +181,15 @@ abstract class AbstractReplicationTask
                     } else {
                         $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
                     }
-                    $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
+
+                    $baseUrl    =   $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL,$store->getId());
+
+                    $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID,$baseUrl);
+
+                    /**
+                     * getting the client from here.
+                     *
+                     */
                     $response = $request->execute();
                     $result = $response->getResult();
                     $last_key = $result->getLastKey();

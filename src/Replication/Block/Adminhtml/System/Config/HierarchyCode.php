@@ -22,6 +22,9 @@ class HierarchyCode implements ArrayInterface
     /** @var LSR */
     public $lsr;
 
+    /** @var \Magento\Framework\App\RequestInterface  */
+    public $request;
+
     /**
      * HierarchyCode constructor.
      * @param ReplHierarchyRepository $replHierarchyRepository
@@ -30,11 +33,13 @@ class HierarchyCode implements ArrayInterface
     public function __construct(
         ReplHierarchyRepository $replHierarchyRepository,
         ReplicationHelper $replicationHelper,
-        LSR $lsr
+        LSR $lsr,
+        \Magento\Framework\App\RequestInterface $request
     ) {
         $this->replHierarchyRepository = $replHierarchyRepository;
         $this->replicationHelper = $replicationHelper;
         $this->lsr = $lsr;
+        $this->request = $request;
     }
 
     /**
@@ -46,7 +51,12 @@ class HierarchyCode implements ArrayInterface
             'value' => '',
             'label' => __('Please select your hierarchy code')
         ];
-        if ($this->lsr->isLSR()) {
+
+
+        // get current Website Id.
+        $websiteId = (int) $this->request->getParam('website');
+
+        if ($this->lsr->isLSR($websiteId,'website')) {
             /**
              * We want to populate all the Hierarchy codes first even though if the replication is not done.
              */
@@ -64,7 +74,7 @@ class HierarchyCode implements ArrayInterface
                     ];
                 }
             } else {
-                $hierarchyData = $this->replicationHelper->getHierarchyByStore();
+                $hierarchyData = $this->replicationHelper->getHierarchyByStore($websiteId);
                 if ($hierarchyData) {
                     $data = $hierarchyData->getHierarchies()->getReplHierarchy();
                     if (is_array($data)) {
