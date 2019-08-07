@@ -93,11 +93,11 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
     public function getFormattedDescription(\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon)
     {
         $description = "<div class='coupon-description-wrapper'>".
-            "<span class='coupon-code'>".$coupon->getOfferId()."</span><br/>".
-            "<span class='coupon-description'>".$coupon->getDescription().
-            "</span><br/><span class='coupon-detail'>".$coupon->getDetails()."</span><br/>
-            <span class='coupon-expiry'>".__("Valid till")."&nbsp".
-            $this->getFormattedOfferExpiryDate($coupon->getExpirationDate())."</span></div>";
+            (($coupon->getOfferId()) ? "<span class='coupon-code'>".$coupon->getOfferId()."</span><br/>" : "").
+            (($coupon->getDescription()) ? "<span class='coupon-description'>".$coupon->getDescription()."</span><br/>" : "").
+            (($coupon->getDetails()) ? "<span class='coupon-detail'>".$coupon->getDetails()."</span><br/>" : "").
+            (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>".__("Valid till")."&nbsp". $this->getFormattedOfferExpiryDate($coupon->getExpirationDate())."</span>" : "") .
+            "</div>";
         return $description;
     }
 

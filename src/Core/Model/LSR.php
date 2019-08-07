@@ -273,6 +273,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
     const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
+    const POINTRATE = 'LS_PointsRate_';
+    const PROACTIVE_DISCOUNTS = 'LS_Proactive_';
+    const COUPONS = 'LS_Coupons_';
     /**
      * @var ScopeConfigInterface
      */

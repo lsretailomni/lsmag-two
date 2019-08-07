@@ -37,7 +37,7 @@ class CacheHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $cachedContent = $this->cache->load($cacheId);
         if ($cachedContent) {
-            return json_decode($cachedContent, true);
+            return unserialize($cachedContent);
         }
 
         return false;
@@ -51,7 +51,7 @@ class CacheHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function persistContentInCache($cacheId, $content, $tag, $lifetime = null)
     {
-        $serializedContent = json_encode($content);
+        $serializedContent = serialize($content);
         $this->cache->save(
             $serializedContent,
             $cacheId,
