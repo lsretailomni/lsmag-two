@@ -392,8 +392,13 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 7200
             );
             return $response->getDiscountsGetResult()->getProactiveDiscount();
+        } else {
+            if (!empty($response)) {
+                return $response->getDiscountsGetResult()->getProactiveDiscount();
+            } else {
+                return $response;
+            }
         }
-        return $response;
     }
 
     /**
@@ -429,8 +434,13 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 7200
             );
             return $response->getPublishedOffersGetResult()->getPublishedOffer();
+        } else {
+            if (!empty($response)) {
+                return $response->getPublishedOffersGetResult()->getPublishedOffer();
+            } else {
+                return $response;
+            }
         }
-        return $response;
     }
 
     /**
