@@ -259,8 +259,8 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             }
             if ($this->getMixandMatchProductLimit() != 0) {
                 $description[] = $discountText;
-                $description[] = implode(" ", $productData);
                 if (!empty($productsData)) {
+                    $description[] = implode(" ", $productData);
                     $description[] = "</div>";
                 }
             }
