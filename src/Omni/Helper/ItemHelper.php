@@ -246,7 +246,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $basketData = $orderData->getLines();
                 $discountsLines = $orderData->getDiscountLines();
             } elseif ($orderData instanceof Entity\Order) {
-                $basketData = $orderData->getOrderLines()->getOrderLine();
+                $basketData = $orderData->getOrderLines();
                 $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
             }
             foreach ($basketData as $basket) {

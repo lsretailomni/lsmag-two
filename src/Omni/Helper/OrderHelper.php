@@ -90,62 +90,56 @@ class OrderHelper extends AbstractHelper
      */
     public function prepareOrder(Model\Order $order, Entity\Order $oneListCalculateResponse)
     {
-        $isInline = true;
-        $storeId = $this->basketHelper->getDefaultWebStore();
-        $anonymousOrder = false;
-        $customerEmail = $order->getCustomerEmail();
-        $customerName = $order->getShippingAddress()->getFirstname() .
-            " " . $order->getShippingAddress()->getLastname();
-        $mobileNumber = $order->getShippingAddress()->getTelephone();
-        if ($this->customerSession->isLoggedIn()) {
-            $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-            $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
-        } else {
-            $contactId = $cardId = "";
-            $anonymousOrder = true;
+        try {
+            $isInline = true;
+            $storeId = $this->basketHelper->getDefaultWebStore();
+            $customerEmail = $order->getCustomerEmail();
+            $customerName = $order->getShippingAddress()->getFirstname() .
+                " " . $order->getShippingAddress()->getLastname();
+            $mobileNumber = $order->getShippingAddress()->getTelephone();
+            if ($this->customerSession->isLoggedIn()) {
+                $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+                $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+            } else {
+                $contactId = $cardId = "";
+            }
+            $shippingMethod = $order->getShippingMethod(true);
+            //TODO work on condition
+            $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
+            /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
+            $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
+            $pointDiscount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $order->setCouponCode($this->checkoutSession->getCouponCode());
+            $oneListCalculateResponse
+                ->setContactId($contactId)
+                ->setCardId($cardId)
+                ->setEmail($customerEmail)
+                ->setShipToEmail($customerEmail)
+                ->setContactName($customerName)
+                ->setShipToName($customerName)
+                ->setMobileNumber($mobileNumber)
+                ->setShipToPhoneNumber($mobileNumber)
+                ->setContactAddress($this->convertAddress($order->getBillingAddress()))
+                ->setShipToAddress($this->convertAddress($order->getShippingAddress()))
+                ->setClickAndCollectOrder($isClickCollect)
+                ->setStoreId($storeId);
+            $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
+            //For click and collect.
+            if ($isClickCollect) {
+                $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
+            }
+            $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            //For click and collect we need to remove shipment charge orderline
+            //For flat shipment it will set the correct shipment value into the order
+            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
+            // @codingStandardsIgnoreLine
+            $request = new Entity\OrderCreate();
+            $oneListCalculateResponse->setOrderLines($orderLinesArray);
+            $request->setRequest($oneListCalculateResponse);
+            return $request;
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
         }
-        $shippingMethod = $order->getShippingMethod(true);
-        //TODO work on condition
-        $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
-        /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-        $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
-        $pointDiscount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-        $order->setCouponCode($this->checkoutSession->getCouponCode());
-        $oneListCalculateResponse
-            ->setContactId($contactId)
-            ->setCardId($cardId)
-            ->setEmail($customerEmail)
-            ->setShipToEmail($customerEmail)
-            ->setContactName($customerName)
-            ->setShipToName($customerName)
-            ->setMobileNumber($mobileNumber)
-            ->setShipToPhoneNumber($mobileNumber)
-            ->setContactAddress($this->convertAddress($order->getBillingAddress()))
-            ->setShipToAddress($this->convertAddress($order->getShippingAddress()))
-            ->setAnonymousOrder($anonymousOrder)
-            ->setClickAndCollectOrder($isClickCollect)
-            ->setSourceType(Enum\SourceType::E_COMMERCE)
-            ->setStoreId($storeId);
-        $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
-        //For click and collect.
-        if ($isClickCollect) {
-            $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
-            $oneListCalculateResponse->setShipClickAndCollect(false);
-        }
-        $orderLines = $oneListCalculateResponse->getOrderLines()->getOrderLine();
-        if (!is_array($orderLines)) {
-            $orderLinesArray[] = $orderLines;
-        } else {
-            $orderLinesArray = $orderLines;
-        }
-        //For click and collect we need to remove shipment charge orderline
-        //For flat shipment it will set the correct shipment value into the order
-        $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
-        // @codingStandardsIgnoreLine
-        $request = new Entity\OrderCreate();
-        $oneListCalculateResponse->setOrderLines($orderLinesArray);
-        $request->setRequest($oneListCalculateResponse);
-        return $request;
     }
 
     /**
