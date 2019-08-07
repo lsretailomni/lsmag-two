@@ -14,7 +14,7 @@
 "No store found for entered omni api url","No store found for entered omni api url"
 "The gift card code %1 is not valid.","The gift card code %1 is not valid."
 "You have successfully cancelled the gift card.","You have successfully cancelled the gift card."
-"The applied amount ' . . ' is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).","The applied amount ' . . ' is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2)."
+"The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).","The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2)."
 "The gift card amount ""%1"" is not valid.","The gift card amount ""%1"" is not valid."
 "Totals calculation is not applicable to empty cart.","Totals calculation is not applicable to empty cart."
 "Customer session not found.","Customer session not found."
@@ -31,7 +31,7 @@
 "This item is available","This item is available"
 "This item is not available","This item is not available"
 "Reset password token expired.","Reset password token expired."
-"The gift card amount ""%1"" and loyalty points ' . . ' are not valid.","The gift card amount ""%1"" and loyalty points ' . . ' are not valid."
+"The gift card amount ""%1"" and loyalty points  ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points  ""%2"" are not valid."
 Products,Products
 SKU,SKU
 Qty,Qty
