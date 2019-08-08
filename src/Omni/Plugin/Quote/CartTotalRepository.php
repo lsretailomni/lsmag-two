@@ -43,9 +43,14 @@ class CartTotalRepository
     private $coupon;
 
     /**
-     * @var Ls\Omni\Helper\BasketHelper
+     * @var \Ls\Omni\Helper\BasketHelper
      */
     private $basketHelper;
+
+    /**
+     * @var \Magento\Quote\Model\ResourceModel\Quote
+     */
+    private $quoteResourceModel;
 
     /**
      * CartTotalRepository constructor.
@@ -53,6 +58,9 @@ class CartTotalRepository
      * @param TotalsExtensionFactory $totalExtensionFactory
      * @param RequestInterface $request
      * @param LoyaltyHelper $helper
+     * @param \Magento\SalesRule\Model\Coupon $coupon
+     * @param BasketHelper $basketHelper
+     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      */
     public function __construct(
         CartRepositoryInterface $quoteRepository,
@@ -60,22 +68,25 @@ class CartTotalRepository
         RequestInterface $request,
         LoyaltyHelper $helper,
         \Magento\SalesRule\Model\Coupon $coupon,
-        BasketHelper $basketHelper
-    )
-    {
+        BasketHelper $basketHelper,
+        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
+    ) {
         $this->quoteRepository = $quoteRepository;
         $this->totalExtensionFactory = $totalExtensionFactory;
         $this->request = $request;
         $this->loyaltyHelper = $helper;
         $this->coupon = $coupon;
         $this->basketHelper = $basketHelper;
+        $this->quoteResourceModel = $quoteResourceModel;
     }
 
     /**
+     * Setting couponcode, giftcard, subtotal, tax, discount in the quote and persisting it
      * @param CartTotalRepositoryInterface $subject
      * @param \Closure $proceed
      * @param $cartId
-     * @return mixed
+     * @return \Magento\Quote\Api\Data\TotalsInterface
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function aroundGet(CartTotalRepositoryInterface $subject, \Closure $proceed, $cartId)
@@ -84,7 +95,7 @@ class CartTotalRepository
         $quoteTotals = $proceed($cartId);
 
         /** @var \Magento\Quote\Model\Quote $quote */
-        $quote = $this->quoteRepository->getActive($cartId);
+        $quote = $this->quoteRepository->get($cartId);
         $storeId = $quote->getStoreId();
 
         $pointsConfig = [
@@ -96,12 +107,6 @@ class CartTotalRepository
         $totalsExtension = $quoteTotals->getExtensionAttributes() ?: $this->totalExtensionFactory->create();
         $totalsExtension->setLoyaltyPoints($pointsConfig);
         $couponCode = $this->basketHelper->checkoutSession->getCouponCode();
-        if (!empty($couponCode)) {
-            $quoteTotals->setCouponCode($couponCode);
-            // @codingStandardsIgnoreLine
-            $this->basketHelper->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
-        }
-
         $amount = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
@@ -113,14 +118,22 @@ class CartTotalRepository
 
             $amount = -$basketData->getTotalDiscount();
             if ($amount <= 0) {
-                $quote->getShippingAddress()->setDiscountAmount($basketData->getTotalAmount());
-                $quote->getShippingAddress()->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
-                $quote->getShippingAddress()->setSubtotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
-                $quote->getShippingAddress()->setBaseSubtotal($basketData->getTotalAmount() + $basketData->getTotalDiscount());
+                if (!empty($couponCode)) {
+                    $quoteTotals->setCouponCode($couponCode);
+                    $quote->setCouponCode($couponCode);
+                    $quote->getShippingAddress()->setCouponCode($couponCode);
+                }
+                $quote->getShippingAddress()->setTaxAmount(
+                    $basketData->getTotalAmount() - $basketData->getTotalNetAmount()
+                );
+                $quote->getShippingAddress()->setSubtotal(
+                    $basketData->getTotalAmount() + $basketData->getTotalDiscount()
+                );
+                $quote->getShippingAddress()->setBaseSubtotal(
+                    $basketData->getTotalAmount() + $basketData->getTotalDiscount()
+                );
                 $quote->collectTotals();
-                $this->quoteRepository->save($quote);
-                // @codingStandardsIgnoreLine
-                $this->basketHelper->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
+                $this->quoteResourceModel->save($quote);
                 $quoteTotals->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
                 $quoteTotals->setBaseTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
                 $quoteTotals->setBaseDiscountAmount($amount);

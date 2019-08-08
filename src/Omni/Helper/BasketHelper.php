@@ -78,12 +78,15 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public $couponCode;
 
-
     /**
      * @var $data
      */
     public $data;
 
+    /**
+     * @var \Magento\Quote\Model\ResourceModel\Quote
+     */
+    public $quoteResourceModel;
 
     /**
      * BasketHelper constructor.
@@ -101,6 +104,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Ls\Omni\Helper\Data $data
      * @param SessionManagerInterface $session
      * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      */
     public function __construct(
         Context $context,
@@ -116,9 +120,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         LSR $Lsr,
         Data $data,
         SessionManagerInterface $session,
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
-    )
-    {
+        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
+        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
+    ) {
         parent::__construct($context);
         $this->cart = $cart;
         $this->productRepository = $productRepository;
@@ -133,6 +137,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->data = $data;
         $this->session = $session;
         $this->quoteRepository = $quoteRepository;
+        $this->quoteResourceModel = $quoteResourceModel;
     }
 
     /**
@@ -816,7 +821,10 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->update(
                 $this->get()
             );
-            $this->itemHelper->setDiscountedPricesForItems($this->checkoutSession->getQuote(), $this->getBasketSessionValue());
+            $this->itemHelper->setDiscountedPricesForItems(
+                $this->checkoutSession->getQuote(),
+                $this->getBasketSessionValue()
+            );
 
             return $status = '';
         }
@@ -845,14 +853,20 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 foreach ($status->getOrderDiscountLines()->getOrderDiscountLine() as $orderDiscountLine) {
                     if ($orderDiscountLine->getDiscountType() == 'Coupon') {
                         $status = "success";
-                        $this->itemHelper->setDiscountedPricesForItems($this->checkoutSession->getQuote(), $this->getBasketSessionValue());
+                        $this->itemHelper->setDiscountedPricesForItems(
+                            $this->checkoutSession->getQuote(),
+                            $this->getBasketSessionValue()
+                        );
                         $this->setCouponQuote($this->couponCode);
                     }
                 }
             } else {
                 if ($status->getOrderDiscountLines()->getOrderDiscountLine()->getDiscountType() == 'Coupon') {
                     $status = "success";
-                    $this->itemHelper->setDiscountedPricesForItems($this->checkoutSession->getQuote(), $this->getBasketSessionValue());
+                    $this->itemHelper->setDiscountedPricesForItems(
+                        $this->checkoutSession->getQuote(),
+                        $this->getBasketSessionValue()
+                    );
                     $this->setCouponQuote($this->couponCode);
                 }
             }
@@ -876,11 +890,11 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $cartQuote = $this->cart->getQuote();
         if (!empty($cartQuote->getId())) {
             $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-            $cartQuote->setCouponCode($couponCode)->collectTotals();
+            $cartQuote->setCouponCode($couponCode);
+            $cartQuote->collectTotals();
         }
-        $this->quoteRepository->save($cartQuote);
+        $this->quoteResourceModel->save($cartQuote);
         $this->checkoutSession->setCouponCode($couponCode);
-        $this->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
     }
 
     /**
