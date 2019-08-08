@@ -94,7 +94,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 $condition = __("Omni to Flat");
                 $path = $this->lsr::CRON_STATUS_PATH_PREFIX;
             } else {
-                $condition = __("");
+                $condition = "";
             }
             foreach ($cronlist['_value']['job'] as $joblist) {
                 $fullReplicationStatus = 0;

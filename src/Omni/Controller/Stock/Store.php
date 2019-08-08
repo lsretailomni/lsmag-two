@@ -70,10 +70,7 @@ class Store extends \Magento\Framework\App\Action\Action
             $selectedStore = $this->request->getParam('storeid');
             $items = $this->session->getQuote()->getAllVisibleItems();
             $stockCollection = [];
-            $notAvailableNotice = __(
-                "Please check other stores or remove
-                 the not available item(s) from your "
-            );
+            $notAvailableNotice = __("Please check other stores or remove the not available item(s) from your ");
             foreach ($items as &$item) {
                 $sku = $item->getSku();
                 $parentProductSku = $childProductSku = "";

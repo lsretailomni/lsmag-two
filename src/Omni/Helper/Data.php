@@ -44,17 +44,17 @@ class Data extends AbstractHelper
     public $messageManager;
 
     /**
-     * @var Price Helper
+     * @var \Magento\Framework\Pricing\Helper\Data
      */
     public $priceHelper;
 
     /**
-     * @var Loyalty Helper
+     * @var \Ls\Omni\Helper\LoyaltyHelper
      */
     public $loyaltyHelper;
 
     /**
-     * @var CartRepositoryInterface
+     * @var \Magento\Quote\Api\CartRepositoryInterface
      */
     public $cartRepository;
 
@@ -83,8 +83,7 @@ class Data extends AbstractHelper
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         LoyaltyHelper $loyaltyHelper,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository
-    )
-    {
+    ) {
         $this->storeManager = $store_manager;
         $this->storeRepository = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -119,6 +118,7 @@ class Data extends AbstractHelper
      */
     public function getStoreHours($storeId)
     {
+        $storeHours=null;
         try {
             // @codingStandardsIgnoreLine
             $request = new StoreGetById();
@@ -141,6 +141,8 @@ class Data extends AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+
+        return $storeHours;
     }
 
     /**
@@ -178,6 +180,7 @@ class Data extends AbstractHelper
      */
     public function getOrderBalance($giftCardAmount, $loyaltyPoints, $basketData)
     {
+        $loyaltyAmount=0;
         try {
             $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
             if (!empty($basketData)) {
@@ -187,6 +190,7 @@ class Data extends AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+        return $loyaltyAmount;
     }
 
     /**
@@ -216,7 +220,7 @@ class Data extends AbstractHelper
                             $loyaltyPoints
                         )
                     );
-                } else if ($giftCardAmount > $totalAmount) {
+                } elseif ($giftCardAmount > $totalAmount) {
                     $quote->setLsGiftCardAmountUsed(0);
                     $quote->setLsGiftCardNo(null);
                     $quote->collectTotals();
@@ -227,7 +231,7 @@ class Data extends AbstractHelper
                             $this->priceHelper->currency($giftCardAmount, true, false)
                         )
                     );
-                } else if ($combinedTotalLoyalGiftCard > $totalAmount) {
+                } elseif ($combinedTotalLoyalGiftCard > $totalAmount) {
                     $quote->setLsPointsSpent(0);
                     $quote->setLsGiftCardAmountUsed(0);
                     $quote->setLsGiftCardNo(null);
@@ -235,11 +239,16 @@ class Data extends AbstractHelper
                     $this->cartRepository->save($quote);
                     $this->messageManager->addErrorMessage(
                         __(
-                            'The gift card amount "%1" and loyalty points ' . $loyaltyPoints . ' are not valid.',
-                            $this->priceHelper->currency($giftCardAmount, true, false)
+                            'The gift card amount "%1" and loyalty points  "%2" are not valid.',
+                            $this->priceHelper->currency(
+                                $giftCardAmount,
+                                true,
+                                false,
+                                $loyaltyPoints
+                            )
                         )
                     );
-                } else if ($combinedDiscountPaymentamount > $totalAmount) {
+                } elseif ($combinedDiscountPaymentamount > $totalAmount) {
                     return false;
                 } else {
                     return true;
@@ -250,6 +259,6 @@ class Data extends AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+        return true;
     }
-
 }

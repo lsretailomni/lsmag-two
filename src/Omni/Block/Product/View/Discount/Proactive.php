@@ -253,7 +253,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                 $counter++;
             }
             if (!empty($discountText)) {
-                $discountText .= __("if Buy with any of these items: " . $popupLink);
+                $discountText .= __("if Buy with any of these items: ") . $popupLink;
             } else {
                 $discountText .= $popupLink;
             }
