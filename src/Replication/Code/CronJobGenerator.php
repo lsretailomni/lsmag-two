@@ -157,8 +157,10 @@ CODE
         $make_request->setParameters([new ParameterGenerator('batchsize', null, 100)]);
         // setting storeid for those which requorire
         $make_request->setParameters([new ParameterGenerator('storeId', null, '')]);
+        $make_request->setParameters([new ParameterGenerator('baseUrl', null, '')]);
+
         $make_request->setBody(<<<CODE
-\$request = new {$this->operation->getName()}();
+\$request = new {$this->operation->getName()}(\$baseUrl);
 \$request->getOperationInput()
          ->setReplRequest( ( new ReplRequest() )->setBatchSize(\$batchsize)
                                                 ->setFullReplication(\$full_replication)

@@ -139,88 +139,110 @@ abstract class AbstractReplicationTask
      */
     public function execute()
     {
-        $lsr = $this->getLsrModel();
-        if ($lsr->isLSR()) {
-            $this->rep_helper->updateConfigValue(date('d M,Y h:i:s A'), $this->getConfigPathLastExecute());
-            $properties = $this->getProperties();
-            $last_key = $this->getLastKey();
-            $remaining = INF;
-            $fullReplication = 1;
-            $isFirstTime = $this->isFirstTime();
-            if (isset($isFirstTime) && $isFirstTime == 1) {
-                $fullReplication = 0;
-                if ($this->isLastKeyAlwaysZero()) {
-                    return;
-                }
-            }
-            $batchSize = 100;
-            $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE);
-            if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
-                $batchSize = $isBatchSizeSet;
-            }
-            $isAllStoresItemsSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_ALL_STORES_ITEMS);
-            if ($isAllStoresItemsSet) {
-                $webStoreID = '';
-                if (in_array($this->getConfigPath(), self::$store_id_needed)) {
-                    $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
-                }
-            } else {
-                $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
-            }
-            $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
-            $response = $request->execute();
-            $result = $response->getResult();
-            $last_key = $result->getLastKey();
-            $remaining = $result->getRecordsRemaining();
-            $this->recordsRemaining = $remaining;
-            $traversable = $this->getIterator($result);
-            if ($traversable != null) {
-                // @codingStandardsIgnoreStart
-                if (count($traversable) > 0) {
-                    // @codingStandardsIgnoreEnd
-                    foreach ($traversable as $source) {
-                        $this->saveSource($properties, $source);
+        /**
+         * Get all the available stores config in the Magento system
+         */
+        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+        $stores = $this->getAllStores();
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                $lsr = $this->getLsrModel();
+                // Need to check if is_lsr is enabled on each store and only process the relevent store.
+                if ($lsr->isLSR($store->getId())) {
+                    $this->rep_helper->updateConfigValue(
+                        date('d M,Y h:i:s A'),
+                        $this->getConfigPathLastExecute(),
+                        $store->getId()
+                    );
+                    $properties = $this->getProperties();
+                    $last_key = $this->getLastKey($store->getId());
+                    $remaining = INF;
+                    $fullReplication = 1;
+                    $isFirstTime = $this->isFirstTime($store->getId());
+                    if (isset($isFirstTime) && $isFirstTime == 1) {
+                        $fullReplication = 0;
+                        if ($this->isLastKeyAlwaysZero()) {
+                            return;
+                        }
                     }
-                    $this->updateSuccessStatus();
-                } else {
-                    $arrayTraversable = (array)$traversable;
-                    if (!empty($arrayTraversable)) {
-                        $singleObject = (object)$traversable->getArrayCopy();
-                        $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
-                        $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $singleObject, true);
-                        if (!empty($entityArray)) {
-                            foreach ($entityArray as $value) {
-                                $entity = $value;
+                    $batchSize = 100;
+                    $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, $store->getId());
+                    if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
+                        $batchSize = $isBatchSizeSet;
+                    }
+                    $isAllStoresItemsSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_ALL_STORES_ITEMS, $store->getId());
+                    if ($isAllStoresItemsSet) {
+                        $webStoreID = '';
+                        if (in_array($this->getConfigPath(), self::$store_id_needed)) {
+                            $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
+                        }
+                    } else {
+                        $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
+                    }
+
+                    $baseUrl = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store->getId());
+                    $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID, $baseUrl);
+                    $response = $request->execute();
+                    $result = $response->getResult();
+                    $last_key = $result->getLastKey();
+                    $remaining = $result->getRecordsRemaining();
+                    $this->recordsRemaining = $remaining;
+                    $traversable = $this->getIterator($result);
+                    if ($traversable != null) {
+                        // @codingStandardsIgnoreStart
+                        if (count($traversable) > 0) {
+                            // @codingStandardsIgnoreEnd
+                            foreach ($traversable as $source) {
+                                //TODO need to understand this before we modify it.
+                                //$source->setData('scope_id', $store->getId());
+                                $this->saveSource($properties, $source, $store->getId());
                             }
-                            $entity->setIsUpdated(1);
+                            $this->updateSuccessStatus($store->getId());
                         } else {
-                            $entity = $this->getFactory()->create();
-                            $entity->setScope('default')->setScopeId(0);
-                        }
-                        foreach ($singleObject as $keyprop => $valueprop) {
-                            if ($keyprop == 'Id') {
-                                $set_method = 'setNavId';
-                            } else {
-                                $set_method = "set$keyprop";
+                            $arrayTraversable = (array)$traversable;
+                            if (!empty($arrayTraversable)) {
+                                $singleObject = (object)$traversable->getArrayCopy();
+                                $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+                                $entityArray = $this->checkEntityExistByAttributes(
+                                    $uniqueAttributes,
+                                    $singleObject,
+                                    true
+                                );
+                                if (!empty($entityArray)) {
+                                    foreach ($entityArray as $value) {
+                                        $entity = $value;
+                                    }
+                                    $entity->setIsUpdated(1);
+                                } else {
+                                    $entity = $this->getFactory()->create();
+                                    $entity->setScope('default')->setScopeId(0);
+                                }
+                                foreach ($singleObject as $keyprop => $valueprop) {
+                                    if ($keyprop == 'Id') {
+                                        $set_method = 'setNavId';
+                                    } else {
+                                        $set_method = "set$keyprop";
+                                    }
+                                    $entity->{$set_method}($valueprop);
+                                }
+                                try {
+                                    $this->getRepository()->save($entity);
+                                } catch (\Exception $e) {
+                                    $this->logger->debug($e->getMessage());
+                                }
+                                $this->updateSuccessStatus($store->getId());
                             }
-                            $entity->{$set_method}($valueprop);
                         }
-                        try {
-                            $this->getRepository()->save($entity);
-                        } catch (\Exception $e) {
-                            $this->logger->debug($e->getMessage());
+                        $this->persistLastKey($last_key, $store->getId());
+                        if ($remaining == 0) {
+                            $this->saveReplicationStatus(1);
                         }
-                        $this->updateSuccessStatus();
                     }
-                }
-                $this->persistLastKey($last_key);
-                if ($remaining == 0) {
-                    $this->saveReplicationStatus(1);
+                    $this->rep_helper->flushConfig();
+                } else {
+                    $this->logger->debug("LS Retail validation failed for store id ." . $store->getId());
                 }
             }
-            $this->rep_helper->flushConfig();
-        } else {
-            $this->logger->debug("LS Retail validation failed.");
         }
     }
 
@@ -236,19 +258,24 @@ abstract class AbstractReplicationTask
 
     /**
      * Update the Custom Replication Success Status
+     * @param bool $store_id
      */
-    public function updateSuccessStatus()
+    public function updateSuccessStatus($store_id = false)
     {
         $confPath = $this->getConfigPath();
-        if ($confPath == "ls_mag/replication/repl_attribute") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-        } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
-        } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY);
-        } elseif ($confPath == "ls_mag/replication/repl_item" ||
-            $confPath == "ls_mag/replication/repl_hierarchy_leaf") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT);
+        if ($confPath === "ls_mag/replication/repl_attribute") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE, ($store_id) ? $store_id : false);
+        } elseif ($confPath === "ls_mag/replication/repl_extended_variant_value") {
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                ($store_id) ? $store_id : false
+            );
+        } elseif ($confPath === "ls_mag/replication/repl_hierarchy_node") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY, ($store_id) ? $store_id : false);
+        } elseif ($confPath === "ls_mag/replication/repl_item" ||
+            $confPath === "ls_mag/replication/repl_hierarchy_leaf") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT, ($store_id) ? $store_id : false);
         }
     }
 
@@ -277,7 +304,7 @@ abstract class AbstractReplicationTask
      * @param $properties
      * @param $source
      */
-    public function saveSource($properties, $source)
+    public function saveSource($properties, $source, $scope_id)
     {
         $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
@@ -288,10 +315,10 @@ abstract class AbstractReplicationTask
             $entity->setIsUpdated(1);
         } else {
             $entity = $this->getFactory()->create();
-            $entity->setScope('default')->setScopeId(0);
+            $entity->setScope('store')->setScopeId($scope_id);
         }
         foreach ($properties as $property) {
-            if ($property === 'nav_id') {
+            if ($property == 'nav_id') {
                 $set_method = 'setNavId';
                 $get_method = 'getId';
             } else {
@@ -336,7 +363,7 @@ abstract class AbstractReplicationTask
      */
     public function checkEntityExistByAttributes($uniqueAttributes, $source, $notAnArraysObject = false)
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $objectManager = $this->getObjectManager();
         // @codingStandardsIgnoreStart
         $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
         // @codingStandardsIgnoreEnd
@@ -396,43 +423,82 @@ abstract class AbstractReplicationTask
     /**
      * @return string
      */
-    public function getLastKey()
+    public function getLastKey($store_id = false)
     {
-        return $this->scope_config->getValue($this->getConfigPath(), ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        if ($store_id) {
+            return $this->scope_config->getValue(
+                $this->getConfigPath(),
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                $store_id
+            );
+        } else {
+            return $this->scope_config->getValue($this->getConfigPath(), ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        }
     }
 
     /**
      * @return string
      */
-    public function isFirstTime()
+    public function isFirstTime($store_id = false)
     {
-        return $this->scope_config->getValue($this->getConfigPathStatus(), ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        if ($store_id) {
+            return $this->scope_config->getValue(
+                $this->getConfigPathStatus(),
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                $store_id
+            );
+        } else {
+            return $this->scope_config->getValue(
+                $this->getConfigPathStatus(),
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
+        }
     }
 
     /**
-     * @param  string
+     * @param string
      */
-    public function persistLastKey($last_key)
+    public function persistLastKey($last_key, $store_id = false)
     {
-        $this->resource_config->saveConfig(
-            $this->getConfigPath(),
-            $last_key,
-            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-            0
-        );
+
+        if ($store_id) {
+            $this->resource_config->saveConfig(
+                $this->getConfigPath(),
+                $last_key,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                $store_id
+            );
+        } else {
+            $this->resource_config->saveConfig(
+                $this->getConfigPath(),
+                $last_key,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                0
+            );
+        }
     }
 
     /**
      * @param int $status
      */
-    public function saveReplicationStatus($status = 0)
+    public function saveReplicationStatus($status = 0, $store_id = false)
     {
-        $this->resource_config->saveConfig(
-            $this->getConfigPathStatus(),
-            $status,
-            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-            0
-        );
+
+        if ($store_id) {
+            $this->resource_config->saveConfig(
+                $this->getConfigPathStatus(),
+                $status,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                $store_id
+            );
+        } else {
+            $this->resource_config->saveConfig(
+                $this->getConfigPathStatus(),
+                $status,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                0
+            );
+        }
     }
 
     /**
@@ -469,10 +535,27 @@ abstract class AbstractReplicationTask
      */
     public function getLsrModel()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $objectManager = $this->getObjectManager();
         // @codingStandardsIgnoreStart
         return $objectManager->get('\Ls\Core\Model\LSR');
         // @codingStandardsIgnoreEnd
+    }
+
+    /**
+     * Better to use this function when we need Object Manger in order to Organize all code in single place.
+     * @return \Magento\Framework\App\ObjectManager
+     */
+    public function getObjectManager()
+    {
+        return \Magento\Framework\App\ObjectManager::getInstance();
+    }
+
+    /**
+     * @return \Magento\Store\Api\Data\StoreInterface[]
+     */
+    public function getAllStores()
+    {
+        return $this->getObjectManager()->get('\Magento\Store\Model\StoreManagerInterface')->getStores();
     }
 
     /**

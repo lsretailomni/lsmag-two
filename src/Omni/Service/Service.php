@@ -48,9 +48,9 @@ class Service
         $base_url = self::DEFAULT_BASE_URL,
         $wsdl = true
     ) {
-        if ($base_url==null) {
+       if ($base_url==null) {
             // @codingStandardsIgnoreLine
-            $base_url = (new self)->getOmniBaseUrl();
+           $base_url = (new self)->getOmniBaseUrl();
         }
         $url = join('/', [$base_url, static::$endpoints[$type->getValue()]]);
         if ($wsdl) {
@@ -63,10 +63,17 @@ class Service
      * @return string
      * Use this in combination with \Ls\Core\Model\LSR::isLSR funciton
      */
-    public function getOmniBaseUrl()
+    public function getOmniBaseUrl($magentoStoreId = '')
     {
+        /**
+         * Returning null in order to bypass the first request.
+         */
+/*        if($magentoStoreId == ''){
+            return null;
+        }*/
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         // @codingStandardsIgnoreLine
+        /** @var \Ls\Core\Model\LSR $lsr */
         $lsr = $objectManager->create('Ls\Core\Model\LSR');
         return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
     }
