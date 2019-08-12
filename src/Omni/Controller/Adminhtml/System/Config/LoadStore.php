@@ -141,7 +141,7 @@ class LoadStore extends Action
      * @param $baseUrl
      * @return mixed
      */
-    public function omniPing($baseUrl)
+    public function omniPing($baseUrl,$lsKey)
     {
         //@codingStandardsIgnoreStart
         $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
@@ -150,6 +150,7 @@ class LoadStore extends Action
         $ping = new Ping();
         //@codingStandardsIgnoreEnd
         $ping->setClient($client);
+        $ping->setToken($lsKey);
         $client->setClassmap($ping->getClassMap());
         $result = $ping->execute();
         $pong = $result->getResult();
