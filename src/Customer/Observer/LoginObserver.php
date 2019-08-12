@@ -39,7 +39,7 @@ class LoginObserver implements ObserverInterface
     /** @var \Magento\Customer\Model\CustomerFactory */
     private $customerFactory;
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var \Ls\Core\Model\LSR @var */
     private $lsr;
 
     /**
@@ -73,7 +73,7 @@ class LoginObserver implements ObserverInterface
         $this->actionFlag = $actionFlag;
         $this->storeManager = $storeManager;
         $this->customerFactory = $customerFactory;
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
     }
 
     /**
@@ -119,21 +119,24 @@ class LoginObserver implements ObserverInterface
                     return $this->handleErrorMessage($observer, $errorMessage);
                 }
                 if ($result instanceof Entity\MemberContact) {
-                    /**
-                     * Fetch customer related info from omni and create user in magento
-                     */
                     $this->contactHelper->processCustomerLogin($result, $login, $is_email);
-
-                    /** Update Basket to Omni */
-                    $this->contactHelper->updateBasketAfterLogin(
-                        $result->getBasket(),
-                        $result->getId(),
-                        $result->getCards()->getCard()[0]->getId()
-                    );
-
-                    $this->contactHelper->updateWishlistAfterLogin(
-                        $result->getWishList()
-                    );
+                    $oneListBasket = $this->contactHelper->getOneListTypeObject($result->getOneLists()->getOneList(),
+                        Entity\Enum\ListType::BASKET);
+                    if ($oneListBasket) {
+                        /** Update Basket to Omni */
+                        $this->contactHelper->updateBasketAfterLogin(
+                            $oneListBasket,
+                            $result->getId(),
+                            $result->getCards()->getCard()[0]->getId()
+                        );
+                    }
+                    $oneListWish = $this->contactHelper->getOneListTypeObject($result->getOneLists()->getOneList(),
+                        Entity\Enum\ListType::WISH);
+                    if ($oneListWish) {
+                        $this->contactHelper->updateWishlistAfterLogin(
+                            $oneListWish
+                        );
+                    }
                 } else {
                     $this->customerSession->addError(
                         __('The service is currently unavailable. Please try again later.')

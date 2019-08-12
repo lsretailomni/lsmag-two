@@ -31,6 +31,11 @@ class MemberContact extends Entity
     protected $Notifications = null;
 
     /**
+     * @property ArrayOfOneList $OneLists
+     */
+    protected $OneLists = null;
+
+    /**
      * @property ArrayOfProfile $Profiles
      */
     protected $Profiles = null;
@@ -54,11 +59,6 @@ class MemberContact extends Entity
      * @property string $AlternateId
      */
     protected $AlternateId = null;
-
-    /**
-     * @property OneList $Basket
-     */
-    protected $Basket = null;
 
     /**
      * @property string $BirthDay
@@ -131,19 +131,9 @@ class MemberContact extends Entity
     protected $Phone = null;
 
     /**
-     * @property int $RV
-     */
-    protected $RV = null;
-
-    /**
      * @property string $UserName
      */
     protected $UserName = null;
-
-    /**
-     * @property OneList $WishList
-     */
-    protected $WishList = null;
 
     /**
      * @param ArrayOfAddress $Addresses
@@ -197,6 +187,24 @@ class MemberContact extends Entity
     public function getNotifications()
     {
         return $this->Notifications;
+    }
+
+    /**
+     * @param ArrayOfOneList $OneLists
+     * @return $this
+     */
+    public function setOneLists($OneLists)
+    {
+        $this->OneLists = $OneLists;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfOneList
+     */
+    public function getOneLists()
+    {
+        return $this->OneLists;
     }
 
     /**
@@ -287,24 +295,6 @@ class MemberContact extends Entity
     public function getAlternateId()
     {
         return $this->AlternateId;
-    }
-
-    /**
-     * @param OneList $Basket
-     * @return $this
-     */
-    public function setBasket($Basket)
-    {
-        $this->Basket = $Basket;
-        return $this;
-    }
-
-    /**
-     * @return OneList
-     */
-    public function getBasket()
-    {
-        return $this->Basket;
     }
 
     /**
@@ -580,24 +570,6 @@ class MemberContact extends Entity
     }
 
     /**
-     * @param int $RV
-     * @return $this
-     */
-    public function setRV($RV)
-    {
-        $this->RV = $RV;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRV()
-    {
-        return $this->RV;
-    }
-
-    /**
      * @param string $UserName
      * @return $this
      */
@@ -613,24 +585,6 @@ class MemberContact extends Entity
     public function getUserName()
     {
         return $this->UserName;
-    }
-
-    /**
-     * @param OneList $WishList
-     * @return $this
-     */
-    public function setWishList($WishList)
-    {
-        $this->WishList = $WishList;
-        return $this;
-    }
-
-    /**
-     * @return OneList
-     */
-    public function getWishList()
-    {
-        return $this->WishList;
     }
 
 

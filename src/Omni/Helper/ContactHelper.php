@@ -601,7 +601,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param null $card
      * @return Entity\Card|null
      */
-    private function setCard($cardId = null){
+    private function setCard($cardId = null)
+    {
         // @codingStandardsIgnoreLine
         $card = new Entity\Card();
         $card->setId($cardId);
@@ -975,8 +976,24 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $rpToken
             );
         }
-
-        //Unique customer found.
         return $found->getItems()[0];
+    }
+
+    /**
+     * @param $arrayOneLists
+     * @param $type
+     * @return Entity\OneList|null
+     */
+    public function getOneListTypeObject($arrayOneLists, $type)
+    {
+        if (is_array($arrayOneLists)) {
+            /** @var Entity\OneList $oneList */
+            foreach ($arrayOneLists as $oneList) {
+                if ($oneList->getListType() == $type) {
+                    return $oneList;
+                }
+            }
+        }
+        return null;
     }
 }

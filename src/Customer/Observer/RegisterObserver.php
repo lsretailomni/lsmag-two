@@ -28,7 +28,7 @@ class RegisterObserver implements ObserverInterface
     /** @var \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel */
     private $customerResourceModel;
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var \Ls\Core\Model\LSR @var */
     private $lsr;
 
     /**
@@ -53,7 +53,7 @@ class RegisterObserver implements ObserverInterface
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->customerResourceModel = $customerResourceModel;
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
     }
 
     /**
@@ -111,9 +111,13 @@ class RegisterObserver implements ObserverInterface
                     } else {
                         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
-                        $this->contactHelper->updateWishlistAfterLogin(
-                            $loginResult->getWishList()
-                        );
+                        $oneListWish = $this->contactHelper->getOneListTypeObject($loginResult->getOneLists()->getOneList(),
+                            Entity\Enum\ListType::WISH);
+                        if ($oneListWish) {
+                            $this->contactHelper->updateWishlistAfterLogin(
+                                $oneListWish
+                            );
+                        }
                     }
                 }
             } catch (\Exception $e) {

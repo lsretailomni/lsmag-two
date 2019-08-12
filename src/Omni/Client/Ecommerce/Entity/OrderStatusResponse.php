@@ -12,6 +12,21 @@ class OrderStatusResponse
 {
 
     /**
+     * @property int $CustomerOrderPaymentStatus
+     */
+    protected $CustomerOrderPaymentStatus = null;
+
+    /**
+     * @property int $CustomerOrderShippingStatus
+     */
+    protected $CustomerOrderShippingStatus = null;
+
+    /**
+     * @property int $CustomerOrderStatus
+     */
+    protected $CustomerOrderStatus = null;
+
+    /**
      * @property string $DocumentNo
      */
     protected $DocumentNo = null;
@@ -22,19 +37,58 @@ class OrderStatusResponse
     protected $DocumentType = null;
 
     /**
-     * @property string $WebOrderPaymentStatus
+     * @param int $CustomerOrderPaymentStatus
+     * @return $this
      */
-    protected $WebOrderPaymentStatus = null;
+    public function setCustomerOrderPaymentStatus($CustomerOrderPaymentStatus)
+    {
+        $this->CustomerOrderPaymentStatus = $CustomerOrderPaymentStatus;
+        return $this;
+    }
 
     /**
-     * @property string $WebOrderShippingStatus
+     * @return int
      */
-    protected $WebOrderShippingStatus = null;
+    public function getCustomerOrderPaymentStatus()
+    {
+        return $this->CustomerOrderPaymentStatus;
+    }
 
     /**
-     * @property string $WebOrderStatus
+     * @param int $CustomerOrderShippingStatus
+     * @return $this
      */
-    protected $WebOrderStatus = null;
+    public function setCustomerOrderShippingStatus($CustomerOrderShippingStatus)
+    {
+        $this->CustomerOrderShippingStatus = $CustomerOrderShippingStatus;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCustomerOrderShippingStatus()
+    {
+        return $this->CustomerOrderShippingStatus;
+    }
+
+    /**
+     * @param int $CustomerOrderStatus
+     * @return $this
+     */
+    public function setCustomerOrderStatus($CustomerOrderStatus)
+    {
+        $this->CustomerOrderStatus = $CustomerOrderStatus;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCustomerOrderStatus()
+    {
+        return $this->CustomerOrderStatus;
+    }
 
     /**
      * @param string $DocumentNo
@@ -70,60 +124,6 @@ class OrderStatusResponse
     public function getDocumentType()
     {
         return $this->DocumentType;
-    }
-
-    /**
-     * @param string $WebOrderPaymentStatus
-     * @return $this
-     */
-    public function setWebOrderPaymentStatus($WebOrderPaymentStatus)
-    {
-        $this->WebOrderPaymentStatus = $WebOrderPaymentStatus;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWebOrderPaymentStatus()
-    {
-        return $this->WebOrderPaymentStatus;
-    }
-
-    /**
-     * @param string $WebOrderShippingStatus
-     * @return $this
-     */
-    public function setWebOrderShippingStatus($WebOrderShippingStatus)
-    {
-        $this->WebOrderShippingStatus = $WebOrderShippingStatus;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWebOrderShippingStatus()
-    {
-        return $this->WebOrderShippingStatus;
-    }
-
-    /**
-     * @param string $WebOrderStatus
-     * @return $this
-     */
-    public function setWebOrderStatus($WebOrderStatus)
-    {
-        $this->WebOrderStatus = $WebOrderStatus;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWebOrderStatus()
-    {
-        return $this->WebOrderStatus;
     }
 
 

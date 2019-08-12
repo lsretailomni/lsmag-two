@@ -721,7 +721,18 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($this->customerSession->getData(LSR::SESSION_CART_WISHLIST)) {
             return $this->customerSession->getData(LSR::SESSION_CART_WISHLIST);
         }
-        return null;
+        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
+            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
+
+        $store_id = $this->getDefaultWebStore();
+        $wishlist = (new Entity\OneList())
+            ->setCardId($cardId)
+            ->setDescription('List ' . $cardId)
+            ->setIsDefaultList(true)
+            ->setListType(Entity\Enum\ListType::WISH)
+            ->setItems(new Entity\ArrayOfOneListItem())
+            ->setStoreId($store_id);
+        return $wishlist;
     }
 
     /**
