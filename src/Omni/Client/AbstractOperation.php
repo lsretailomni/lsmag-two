@@ -16,7 +16,7 @@ use \Ls\Core\Model\LSR;
 abstract class AbstractOperation implements OperationInterface
 {
     /** @var string */
-    private static $header = 'LSRETAIL-TOKEN';
+    private static $header = 'LSRETAIL-KEY';
 
     /** @var  ServiceType */
     public $service_type;
@@ -97,6 +97,10 @@ abstract class AbstractOperation implements OperationInterface
         $request_input = $this->getOperationInput();
         $client = $this->getClient();
         $header = self::$header;
+        if(empty($this->token)) {
+            $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
+            $this->setToken($lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY));
+        }
         //@codingStandardsIgnoreStart
         $client->setStreamContext(stream_context_create(['http' => ['header' => "$header: {$this->token}"]]));
         //@codingStandardsIgnoreEnd
