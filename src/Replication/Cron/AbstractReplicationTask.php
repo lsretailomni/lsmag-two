@@ -197,8 +197,10 @@ abstract class AbstractReplicationTask
                             // @codingStandardsIgnoreEnd
                             foreach ($traversable as $source) {
                                 //TODO need to understand this before we modify it.
-                                //$source->setData('scope_id', $store->getId());
-                                $this->saveSource($properties, $source, $store->getId());
+                                $source->setScope('store')
+                                    ->setScope_id($store->getId());
+
+                                $this->saveSource($properties, $source);
                             }
                             $this->updateSuccessStatus($store->getId());
                         } else {
@@ -206,6 +208,8 @@ abstract class AbstractReplicationTask
                             if (!empty($arrayTraversable)) {
                                 $singleObject = (object)$traversable->getArrayCopy();
                                 $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+                                $singleObject->scope_id = $store->getId();
+
                                 $entityArray = $this->checkEntityExistByAttributes(
                                     $uniqueAttributes,
                                     $singleObject,
@@ -218,7 +222,6 @@ abstract class AbstractReplicationTask
                                     $entity->setIsUpdated(1);
                                 } else {
                                     $entity = $this->getFactory()->create();
-                                    $entity->setScope('store')->setScopeId($store->getId());
                                 }
                                 foreach ($singleObject as $keyprop => $valueprop) {
                                     if ($keyprop == 'Id') {
@@ -228,6 +231,7 @@ abstract class AbstractReplicationTask
                                     }
                                     $entity->{$set_method}($valueprop);
                                 }
+                                $entity->setScope('store')->setScopeId($store->getId());
                                 try {
                                     $this->getRepository()->save($entity);
                                 } catch (\Exception $e) {
@@ -307,7 +311,7 @@ abstract class AbstractReplicationTask
      * @param $properties
      * @param $source
      */
-    public function saveSource($properties, $source, $scope_id)
+    public function saveSource($properties, $source)
     {
         $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
@@ -318,13 +322,15 @@ abstract class AbstractReplicationTask
             $entity->setIsUpdated(1);
         } else {
             $entity = $this->getFactory()->create();
-            $entity->setScope('store')->setScopeId($scope_id);
         }
         foreach ($properties as $property) {
             if ($property == 'nav_id') {
                 $set_method = 'setNavId';
                 $get_method = 'getId';
-            } else {
+            }elseif ($property == 'scope_id') {
+                $set_method = 'setScopeId';
+                $get_method = 'getScope_id';
+            }else {
                 $set_method = "set$property";
                 $get_method = "get$property";
             }
@@ -382,12 +388,15 @@ abstract class AbstractReplicationTask
                 foreach ($source as $keyprop => $valueprop) {
                     if ($get_method == 'get' . $keyprop) {
                         $sourceValue = $valueprop;
-                        break;
+                        if($sourceValue != ''){
+                            break;
+                        }
                     }
                 }
             } else {
                 $sourceValue = $source->{$get_method}();
             }
+
             if ($sourceValue == "") {
                 $criteria->addFilter($attribute, true, 'null');
             } else {
