@@ -90,26 +90,17 @@ class EntityGenerator extends AbstractOmniGenerator
 
         /**
          * Some dirty code to add scopeId and Scope functions directly in the array.
-         * and bypass unnecessory functions in there.
+         * and bypass un-necessary functions in there.
          */
-
         $lowerString = strtolower($this->entity->getName());
-
-
         if (!$is_array &&
             substr($lowerString, 0, 4) == 'repl' &&
             strpos($lowerString, 'replecom') === false &&
             strpos($lowerString, 'response') === false &&
             $lowerString != 'replrequest') {
-            //echo $lowerString;
-            //var_dump($typeDefinitionArray); exit;
-
             $typeDefinitionArray ['scope'] = new ComplexTypeDefinition('scope', 'string', '0');
             $typeDefinitionArray ['scope_id'] = new ComplexTypeDefinition('scope_id', 'int', '0');
-
-
         }
-
 
         // TRAVERSE THE COMPLEX TYPE DISCOVERED BY THE WSDL PROCESSOR
         // OUR ENTITIES HAVE A NASTY MERGE SO THEM CAN WORK ON OVERLAPPING SCHEMA DEFINITIONS
@@ -123,12 +114,14 @@ class EntityGenerator extends AbstractOmniGenerator
                     $this->class->addUse(self::fqn($entity_namespace, 'Enum', $field_data_type));
                 }
                 $this->class->addPropertyFromGenerator(PropertyGenerator::fromArray(
-                    ['name' => $field_name,
+                    [
+                        'name' => $field_name,
                         'defaultvalue' => $is_array ? [] : null,
                         'docblock' => DocBlockGenerator::fromArray(
                             ['tags' => [new Tag\PropertyTag($field_name, [$field_data_type])]]
                         ),
-                        'flags' => [PropertyGenerator::FLAG_PROTECTED]]
+                        'flags' => [PropertyGenerator::FLAG_PROTECTED]
+                    ]
                 ));
 
                 $set_method_name = "set{$field_name_capitalized}";
@@ -139,8 +132,12 @@ class EntityGenerator extends AbstractOmniGenerator
                     $set_method->setName($set_method_name);
                     $set_method->setParameter(ParameterGenerator::fromArray(['name' => $field_name]));
                     $set_method->setDocBlock(
-                        DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag($field_name, [$field_data_type]),
-                            new Tag\ReturnTag(['$this',])]])
+                        DocBlockGenerator::fromArray([
+                            'tags' => [
+                                new Tag\ParamTag($field_name, [$field_data_type]),
+                                new Tag\ReturnTag(['$this',])
+                            ]
+                        ])
                     );
                     $set_method->setBody(<<<CODE
 \$this->$field_name = \$$field_name;
@@ -149,12 +146,16 @@ CODE
                     );
                     if ($field_is_restriction) {
                         $set_method->setDocBlock(
-                            DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag(
-                                $field_name,
-                                [$field_data_type, 'string']
-                            ),
-                                new Tag\ReturnTag(['$this']),
-                                new Tag\ThrowsTag(['InvalidEnumException'])]])
+                            DocBlockGenerator::fromArray([
+                                'tags' => [
+                                    new Tag\ParamTag(
+                                        $field_name,
+                                        [$field_data_type, 'string']
+                                    ),
+                                    new Tag\ReturnTag(['$this']),
+                                    new Tag\ThrowsTag(['InvalidEnumException'])
+                                ]
+                            ])
                         );
                         $this->class->addUse(InvalidEnumException::class);
                         $set_method->setBody(<<<CODE
@@ -252,8 +253,10 @@ CODE
 
 
         $content = str_replace('implements \\IteratorAggregate', 'implements IteratorAggregate', $content);
-        $content = str_replace('implements Ls\\Omni\\Client\\RequestInterface', 'implements RequestInterface', $content);
-        $content = str_replace('implements Ls\\Omni\\Client\\ResponseInterface', 'implements ResponseInterface', $content);
+        $content = str_replace('implements Ls\\Omni\\Client\\RequestInterface', 'implements RequestInterface',
+            $content);
+        $content = str_replace('implements Ls\\Omni\\Client\\ResponseInterface', 'implements ResponseInterface',
+            $content);
 
         return $content;
     }
