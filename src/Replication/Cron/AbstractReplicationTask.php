@@ -40,38 +40,40 @@ abstract class AbstractReplicationTask
 
     /** @var array List of Replication Tables with unique field */
     private static $jobCodeUniqueFieldArray = [
-        "ls_mag/replication/repl_attribute" => ["Code"],
-        "ls_mag/replication/repl_attribute_option_value" => ["Code", "Sequence", "Value"],
-        "ls_mag/replication/repl_attribute_value" => ["Code", "LinkField1", "LinkField2", "LinkField3", "Value"],
-        "ls_mag/replication/repl_barcode" => ["nav_id"],
-        "ls_mag/replication/repl_country_code" => ["Name"],
-        "ls_mag/replication/repl_currency" => ["CurrencyCode"],
-        "ls_mag/replication/repl_currency_exch_rate" => ["CurrencyCode"],
-        "ls_mag/replication/repl_customer" => ["AccountNumber"],
-        "ls_mag/replication/repl_data_translation" => ["TranslationId"],
+        "ls_mag/replication/repl_attribute" => ["Code","scope_id"],
+        "ls_mag/replication/repl_attribute_option_value" => ["Code", "Sequence", "Value","scope_id"],
+        "ls_mag/replication/repl_attribute_value" => ["Code", "LinkField1", "LinkField2", "LinkField3", "Value","scope_id"],
+        "ls_mag/replication/repl_barcode" => ["nav_id","scope_id"],
+        "ls_mag/replication/repl_country_code" => ["Name","scope_id"],
+        "ls_mag/replication/repl_currency" => ["CurrencyCode","scope_id"],
+        "ls_mag/replication/repl_currency_exch_rate" => ["CurrencyCode","scope_id"],
+        "ls_mag/replication/repl_customer" => ["AccountNumber","scope_id"],
+        "ls_mag/replication/repl_data_translation" => ["TranslationId","scope_id"],
         "ls_mag/replication/repl_discount" => [
             "ItemId",
             "LoyaltySchemeCode",
             "OfferNo",
             "StoreId",
             "DiscountValue",
+            "scope_id",
             "MinimumQuantity"
         ],
-        "ls_mag/replication/repl_discount_validation" => ["nav_id"],
+        "ls_mag/replication/repl_discount_validation" => ["nav_id","scope_id"],
         "ls_mag/replication/repl_extended_variant_value" => [
             "Code",
             "FrameworkCode",
             "ItemId",
-            "Value"
+            "Value",
+            "scope_id"
         ],
-        "ls_mag/replication/repl_hierarchy" => ["nav_id"],
-        "ls_mag/replication/repl_hierarchy_leaf" => ["nav_id", "NodeId"],
-        "ls_mag/replication/repl_hierarchy_node" => ["nav_id"],
-        "ls_mag/replication/repl_image" => ["nav_id"],
-        "ls_mag/replication/repl_image_link" => ["ImageId", "KeyValue"],
-        "ls_mag/replication/repl_item" => ["nav_id"],
-        "ls_mag/replication/repl_item_category" => ["nav_id"],
-        "ls_mag/replication/repl_item_unit_of_measure" => ["Code", "ItemId"],
+        "ls_mag/replication/repl_hierarchy" => ["nav_id","scope_id"],
+        "ls_mag/replication/repl_hierarchy_leaf" => ["nav_id", "NodeId","scope_id"],
+        "ls_mag/replication/repl_hierarchy_node" => ["nav_id","scope_id"],
+        "ls_mag/replication/repl_image" => ["nav_id","scope_id"],
+        "ls_mag/replication/repl_image_link" => ["ImageId", "KeyValue","scope_id"],
+        "ls_mag/replication/repl_item" => ["nav_id","scope_id"],
+        "ls_mag/replication/repl_item_category" => ["nav_id","scope_id"],
+        "ls_mag/replication/repl_item_unit_of_measure" => ["Code", "ItemId","scope_id"],
         "ls_mag/replication/repl_item_variant_registration" => [
             "ItemId",
             "VariantDimension1",
@@ -79,18 +81,19 @@ abstract class AbstractReplicationTask
             "VariantDimension3",
             "VariantDimension4",
             "VariantDimension5",
-            "VariantDimension6"
+            "VariantDimension6",
+            "scope_id"
         ],
-        "ls_mag/replication/repl_loy_vendor_item_mapping" => ["NavManufacturerId", "NavProductId"],
-        "ls_mag/replication/repl_price" => ["ItemId", "VariantId", "StoreId", "QtyPerUnitOfMeasure", "UnitOfMeasure"],
-        "ls_mag/replication/repl_inv_status" => ["ItemId", "VariantId", "StoreId"],
-        "ls_mag/replication/repl_product_group" => ["nav_id"],
-        "ls_mag/replication/repl_shipping_agent" => ["Name"],
-        "ls_mag/replication/repl_store" => ["nav_id"],
-        "ls_mag/replication/repl_store_tender_type" => ["StoreID", "TenderTypeId"],
-        "ls_mag/replication/repl_unit_of_measure" => ["nav_id"],
-        "ls_mag/replication/repl_vendor" => ["Name"],
-        "ls_mag/replication/loy_item" => ["nav_id"]
+        "ls_mag/replication/repl_loy_vendor_item_mapping" => ["NavManufacturerId", "NavProductId","scope_id"],
+        "ls_mag/replication/repl_price" => ["ItemId", "VariantId", "StoreId", "QtyPerUnitOfMeasure", "UnitOfMeasure","scope_id"],
+        "ls_mag/replication/repl_inv_status" => ["ItemId", "VariantId", "StoreId","scope_id"],
+        "ls_mag/replication/repl_product_group" => ["nav_id","scope_id"],
+        "ls_mag/replication/repl_shipping_agent" => ["Name","scope_id"],
+        "ls_mag/replication/repl_store" => ["nav_id","scope_id"],
+        "ls_mag/replication/repl_store_tender_type" => ["StoreID", "TenderTypeId","scope_id"],
+        "ls_mag/replication/repl_unit_of_measure" => ["nav_id","scope_id"],
+        "ls_mag/replication/repl_vendor" => ["Name","scope_id"],
+        "ls_mag/replication/loy_item" => ["nav_id","scope_id"]
     ];
 
     /** @var LoggerInterface */
@@ -215,7 +218,7 @@ abstract class AbstractReplicationTask
                                     $entity->setIsUpdated(1);
                                 } else {
                                     $entity = $this->getFactory()->create();
-                                    $entity->setScope('default')->setScopeId(0);
+                                    $entity->setScope('store')->setScopeId($store->getId());
                                 }
                                 foreach ($singleObject as $keyprop => $valueprop) {
                                     if ($keyprop == 'Id') {
@@ -368,6 +371,8 @@ abstract class AbstractReplicationTask
         $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
         // @codingStandardsIgnoreEnd
         foreach ($uniqueAttributes as $attribute) {
+
+
             if ($attribute == 'nav_id') {
                 $get_method = 'getId';
             } else {

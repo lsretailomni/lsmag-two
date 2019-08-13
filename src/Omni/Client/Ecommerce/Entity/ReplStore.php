@@ -112,6 +112,16 @@ class ReplStore
     protected $ZipCode = null;
 
     /**
+     * @property string $scope
+     */
+    protected $scope = null;
+
+    /**
+     * @property int $scope_id
+     */
+    protected $scope_id = null;
+
+    /**
      * @param string $City
      * @return $this
      */
@@ -469,6 +479,42 @@ class ReplStore
     public function getZipCode()
     {
         return $this->ZipCode;
+    }
+
+    /**
+     * @param string $scope
+     * @return $this
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * @param int $scope_id
+     * @return $this
+     */
+    public function setScope_id($scope_id)
+    {
+        $this->scope_id = $scope_id;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScope_id()
+    {
+        return $this->scope_id;
     }
 
 

@@ -15,6 +15,7 @@ use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
+use \Ls\Omni\Service\Soap\ComplexTypeDefinition;
 
 /**
  * Class EntityGenerator
@@ -23,7 +24,7 @@ use Zend\Code\Generator\PropertyGenerator;
 class EntityGenerator extends AbstractOmniGenerator
 {
 
-    /** @var array  */
+    /** @var array */
     public $equivalences = [
         'decimal' => 'float',
         'long' => 'int',
@@ -67,7 +68,7 @@ class EntityGenerator extends AbstractOmniGenerator
 
         $type = $element->getType();
 
-        $type = $types[ $type ];
+        $type = $types[$type];
 
         $is_array = $type->getSoapType() == SoapType::ARRAY_OF();
 
@@ -87,6 +88,29 @@ class EntityGenerator extends AbstractOmniGenerator
             }
         }
 
+        /**
+         * Some dirty code to add scopeId and Scope functions directly in the array.
+         * and bypass unnecessory functions in there.
+         */
+
+        $lowerString = strtolower($this->entity->getName());
+
+
+        if (!$is_array &&
+            substr($lowerString, 0, 4) == 'repl' &&
+            strpos($lowerString, 'replecom') === false &&
+            strpos($lowerString, 'response') === false &&
+            $lowerString != 'replrequest') {
+            //echo $lowerString;
+            //var_dump($typeDefinitionArray); exit;
+
+            $typeDefinitionArray ['scope'] = new ComplexTypeDefinition('scope', 'string', '0');
+            $typeDefinitionArray ['scope_id'] = new ComplexTypeDefinition('scope_id', 'int', '0');
+
+
+        }
+
+
         // TRAVERSE THE COMPLEX TYPE DISCOVERED BY THE WSDL PROCESSOR
         // OUR ENTITIES HAVE A NASTY MERGE SO THEM CAN WORK ON OVERLAPPING SCHEMA DEFINITIONS
         if ($typeDefinitionArray != null) {
@@ -104,7 +128,7 @@ class EntityGenerator extends AbstractOmniGenerator
                         'docblock' => DocBlockGenerator::fromArray(
                             ['tags' => [new Tag\PropertyTag($field_name, [$field_data_type])]]
                         ),
-                    'flags' => [PropertyGenerator::FLAG_PROTECTED]]
+                        'flags' => [PropertyGenerator::FLAG_PROTECTED]]
                 ));
 
                 $set_method_name = "set{$field_name_capitalized}";
@@ -116,7 +140,7 @@ class EntityGenerator extends AbstractOmniGenerator
                     $set_method->setParameter(ParameterGenerator::fromArray(['name' => $field_name]));
                     $set_method->setDocBlock(
                         DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag($field_name, [$field_data_type]),
-                        new Tag\ReturnTag(['$this',])]])
+                            new Tag\ReturnTag(['$this',])]])
                     );
                     $set_method->setBody(<<<CODE
 \$this->$field_name = \$$field_name;
@@ -130,7 +154,7 @@ CODE
                                 [$field_data_type, 'string']
                             ),
                                 new Tag\ReturnTag(['$this']),
-                            new Tag\ThrowsTag(['InvalidEnumException'])]])
+                                new Tag\ThrowsTag(['InvalidEnumException'])]])
                         );
                         $this->class->addUse(InvalidEnumException::class);
                         $set_method->setBody(<<<CODE
@@ -188,12 +212,12 @@ CODE
         // ADD REQUEST INTERFACE
         if ($element->isRequest()) {
             $this->class->addUse(RequestInterface::class);
-            $this->class->setImplementedInterfaces([ RequestInterface::class ]);
+            $this->class->setImplementedInterfaces([RequestInterface::class]);
         }
         // ADD RESPONSE INTERFACE
         if ($element->isResponse()) {
             $this->class->addUse(ResponseInterface::class);
-            $this->class->setImplementedInterfaces([ ResponseInterface::class ]);
+            $this->class->setImplementedInterfaces([ResponseInterface::class]);
             foreach ($type->getDefinition() as $field_name => $field_type) {
                 $field_data_type = $this->normalizeDataType($field_type->getDataType());
                 $method_name = "getResult";
@@ -201,9 +225,9 @@ CODE
                 if (!$this->class->hasMethod($method_name)) {
                     $method = new MethodGenerator();
                     $method->setName($method_name)
-                           ->setDocBlock(
-                               DocBlockGenerator::fromArray([ 'tags' => [ new Tag\ReturnTag([ $field_data_type ]) ] ])
-                           );
+                        ->setDocBlock(
+                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$field_data_type])]])
+                        );
                     $method->setBody(<<<CODE
 return \$this->$field_name;
 CODE
@@ -216,14 +240,14 @@ CODE
 
         if ($type->getBase()) {
             // for internal development only.
-            $this->class->setExtendedClass("meannothing".$type->getBase());
+            $this->class->setExtendedClass("meannothing" . $type->getBase());
         }
 
         $content = $this->file->generate();
 
         // Zend add / in the start of base class which we dont need. so replace this with blah.
         if ($type->getBase()) {
-            $content = str_replace("\\meannothing".$type->getBase(), $type->getBase(), $content);
+            $content = str_replace("\\meannothing" . $type->getBase(), $type->getBase(), $content);
         }
 
 
@@ -241,6 +265,6 @@ CODE
      */
     protected function normalizeDataType($data_type)
     {
-        return array_key_exists($data_type, $this->equivalences) ? $this->equivalences[ $data_type ] : $data_type;
+        return array_key_exists($data_type, $this->equivalences) ? $this->equivalences[$data_type] : $data_type;
     }
 }
