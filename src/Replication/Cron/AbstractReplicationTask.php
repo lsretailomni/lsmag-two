@@ -212,7 +212,7 @@ abstract class AbstractReplicationTask
                             foreach ($traversable as $source) {
                                 //TODO need to understand this before we modify it.
                                 $source->setScope('store')
-                                    ->setScope_id($store->getId());
+                                    ->setScopeId($store->getId());
 
                                 $this->saveSource($properties, $source);
                             }
@@ -342,8 +342,11 @@ abstract class AbstractReplicationTask
                 $set_method = 'setNavId';
                 $get_method = 'getId';
             } else {
-                $set_method = "set$property";
-                $get_method = "get$property";
+                $field_name_optimized = str_replace('_', ' ', $property);
+                $field_name_capitalized = ucwords($field_name_optimized);
+                $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
+                $set_method = "set$field_name_capitalized";
+                $get_method = "get$field_name_capitalized";
             }
             if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
                 $entity->{$set_method}($source->{$get_method}());
@@ -388,11 +391,18 @@ abstract class AbstractReplicationTask
         $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
         // @codingStandardsIgnoreEnd
         foreach ($uniqueAttributes as $attribute) {
+
+            $field_name_optimized = str_replace('_', ' ', $attribute);
+            $field_name_capitalized = ucwords($field_name_optimized);
+            $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
+
             if ($attribute == 'nav_id') {
                 $get_method = 'getId';
             } else {
-                $get_method = "get$attribute";
+                $get_method = "get$field_name_capitalized";
             }
+
+
             if ($notAnArraysObject) {
                 foreach ($source as $keyprop => $valueprop) {
                     if ($get_method == 'get' . $keyprop) {
