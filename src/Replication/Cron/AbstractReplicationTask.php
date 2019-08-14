@@ -143,7 +143,8 @@ abstract class AbstractReplicationTask
         LoggerInterface $logger,
         LsHelper $helper,
         \Ls\Replication\Helper\ReplicationHelper $repHelper
-    ) {
+    )
+    {
         $this->scope_config = $scope_config;
         $this->resource_config = $resouce_config;
         $this->logger = $logger;
@@ -340,7 +341,7 @@ abstract class AbstractReplicationTask
             if ($property == 'nav_id') {
                 $set_method = 'setNavId';
                 $get_method = 'getId';
-            }else {
+            } else {
                 $set_method = "set$property";
                 $get_method = "get$property";
             }
@@ -374,29 +375,29 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * Check the Entity exist or notattribute";
-            }
-            * @param $uniqueAttributes
-            * @param $source
-            * @param $notAnArraysObject
-            * @return bool | array
+     * Check the Entity exist or not
+     * @param $uniqueAttributes
+     * @param $source
+     * @param $notAnArraysObject
+     * @return bool | array
      */
     public function checkEntityExistByAttributes($uniqueAttributes, $source, $notAnArraysObject = false)
-            {
-                $objectManager = $this->getObjectManager();
-                // @codingStandardsIgnoreStart
-                $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
-                // @codingStandardsIgnoreEnd
-                foreach ($uniqueAttributes as $attribute) {
-                    if ($attribute == 'nav_id') {
-                        $get_method = 'getId';
-                    } else {
-                        $get_method = "get$
+    {
+        $objectManager = $this->getObjectManager();
+        // @codingStandardsIgnoreStart
+        $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
+        // @codingStandardsIgnoreEnd
+        foreach ($uniqueAttributes as $attribute) {
+            if ($attribute == 'nav_id') {
+                $get_method = 'getId';
+            } else {
+                $get_method = "get$attribute";
+            }
             if ($notAnArraysObject) {
                 foreach ($source as $keyprop => $valueprop) {
                     if ($get_method == 'get' . $keyprop) {
                         $sourceValue = $valueprop;
-                        if($sourceValue != ''){
+                        if ($sourceValue != '') {
                             break;
                         }
                     }
