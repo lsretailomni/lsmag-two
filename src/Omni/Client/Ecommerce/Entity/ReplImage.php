@@ -194,7 +194,7 @@ class ReplImage
      * @param int $scope_id
      * @return $this
      */
-    public function setScope_id($scope_id)
+    public function setScopeId($scope_id)
     {
         $this->scope_id = $scope_id;
         return $this;
@@ -203,7 +203,7 @@ class ReplImage
     /**
      * @return int
      */
-    public function getScope_id()
+    public function getScopeId()
     {
         return $this->scope_id;
     }

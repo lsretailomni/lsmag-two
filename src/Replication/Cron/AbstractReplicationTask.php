@@ -340,9 +340,6 @@ abstract class AbstractReplicationTask
             if ($property == 'nav_id') {
                 $set_method = 'setNavId';
                 $get_method = 'getId';
-            }elseif ($property == 'scope_id') {
-                $set_method = 'setScopeId';
-                $get_method = 'getScope_id';
             }else {
                 $set_method = "set$property";
                 $get_method = "get$property";
@@ -377,24 +374,24 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * Check the Entity exist or not
-     * @param $uniqueAttributes
-     * @param $source
-     * @param $notAnArraysObject
-     * @return bool | array
+     * Check the Entity exist or notattribute";
+            }
+            * @param $uniqueAttributes
+            * @param $source
+            * @param $notAnArraysObject
+            * @return bool | array
      */
     public function checkEntityExistByAttributes($uniqueAttributes, $source, $notAnArraysObject = false)
-    {
-        $objectManager = $this->getObjectManager();
-        // @codingStandardsIgnoreStart
-        $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
-        // @codingStandardsIgnoreEnd
-        foreach ($uniqueAttributes as $attribute) {
-            if ($attribute == 'nav_id') {
-                $get_method = 'getId';
-            } else {
-                $get_method = "get$attribute";
-            }
+            {
+                $objectManager = $this->getObjectManager();
+                // @codingStandardsIgnoreStart
+                $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
+                // @codingStandardsIgnoreEnd
+                foreach ($uniqueAttributes as $attribute) {
+                    if ($attribute == 'nav_id') {
+                        $get_method = 'getId';
+                    } else {
+                        $get_method = "get$
             if ($notAnArraysObject) {
                 foreach ($source as $keyprop => $valueprop) {
                     if ($get_method == 'get' . $keyprop) {

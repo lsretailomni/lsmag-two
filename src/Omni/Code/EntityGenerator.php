@@ -107,7 +107,18 @@ class EntityGenerator extends AbstractOmniGenerator
         if ($typeDefinitionArray != null) {
             foreach ($typeDefinitionArray as $field_name => $field_type) {
                 $field_data_type = $this->normalizeDataType($field_type->getDataType()) . ($is_array ? '[]' : '');
-                $field_name_capitalized = ucfirst($field_name);
+
+                /**
+                 * To convert functions from scope_id into ScopeId;
+                 */
+                $field_name_optimized = str_replace('_', ' ', $field_name);
+                $field_name_capitalized = ucwords($field_name_optimized);
+                $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
+
+                /**
+                 * End of customization for scope_id into ScopeId
+                 */
+
 
                 $field_is_restriction = array_key_exists($field_data_type, $this->metadata->getRestrictions());
                 if ($field_is_restriction) {
