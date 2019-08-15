@@ -211,7 +211,7 @@ abstract class AbstractReplicationTask
                             // @codingStandardsIgnoreEnd
                             foreach ($traversable as $source) {
                                 //TODO need to understand this before we modify it.
-                                $source->setScope('store')
+                                $source->setScope(\Magento\Store\Model\ScopeInterface::SCOPE_STORES)
                                     ->setScopeId($store->getId());
 
                                 $this->saveSource($properties, $source);
@@ -245,7 +245,7 @@ abstract class AbstractReplicationTask
                                     }
                                     $entity->{$set_method}($valueprop);
                                 }
-                                $entity->setScope('store')->setScopeId($store->getId());
+                                $entity->setScope(\Magento\Store\Model\ScopeInterface::SCOPE_STORES)->setScopeId($store->getId());
                                 try {
                                     $this->getRepository()->save($entity);
                                 } catch (\Exception $e) {
