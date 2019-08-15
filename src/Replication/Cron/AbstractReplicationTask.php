@@ -77,7 +77,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_hierarchy_leaf" => ["nav_id", "NodeId", "scope_id"],
         "ls_mag/replication/repl_hierarchy_node" => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_image" => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_image_link" => ["ImageId", "KeyValue", "scope_id"],
+        "ls_mag/replication/repl_image_link" => ["ImageId", "KeyValue", "TableName", "scope_id"],
         "ls_mag/replication/repl_item" => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_item_category" => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_item_unit_of_measure" => ["Code", "ItemId", "scope_id"],
