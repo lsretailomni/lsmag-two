@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Ls\Webhooks\Api\OrderStatusInterface" type="Ls\Webhooks\Model\OrderStatus" />
+    <preference for="Ls\Webhooks\Api\OrderPaymentInterface" type="Ls\Webhooks\Model\OrderPayment" />
+</config>

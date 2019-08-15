@@ -20,13 +20,15 @@
       "Ls\\Core\\": "src/Core/",
       "Ls\\Omni\\": "src/Omni/",
       "Ls\\Replication\\": "src/Replication/",
-      "Ls\\Customer\\": "src/Customer/"
+      "Ls\\Customer\\": "src/Customer/",
+	  "Ls\\Webhooks\\": "src/Webhooks/"
     },
     "files": [
       "src/Core/registration.php",
       "src/Omni/registration.php",
       "src/Replication/registration.php",
-      "src/Customer/registration.php"
+      "src/Customer/registration.php",
+	  "src/Webhooks/registration.php"
     ]
   },
   "archive": {
