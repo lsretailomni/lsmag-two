@@ -19,15 +19,22 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
     public $lsr;
 
     /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
      * @param \Magento\Framework\UrlInterface $urlBuilder
      * @param \Ls\Core\Model\LSR $lsr
      */
     public function __construct(
         \Magento\Framework\UrlInterface $urlBuilder,
-        \Ls\Core\Model\LSR $lsr
+        \Ls\Core\Model\LSR $lsr,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->urlBuilder = $urlBuilder;
         $this->lsr = $lsr;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -37,10 +44,25 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
      */
     public function isDisplayed()
     {
-        if ($this->lsr->isLSR()) {
-            return false;
+
+        /**
+         * The Idea is for Multi Store, if any of the store has isLSR setup? then in that case we dont need to thorw this error.
+         */
+
+        $displayNotice = true;
+
+        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+        $stores = $this->storeManager->getStores();
+        if (!empty($stores)) {
+            /** @var \Magento\Store\Api\Data\StoreInterface $store */
+            foreach ($stores as $store) {
+                if ($this->lsr->isLSR($store->getId())) {
+                    $displayNotice = false;
+                    break;
+                }
+            }
         }
-        return true;
+        return $displayNotice;
     }
 
     //@codeCoverageIgnoreStart
