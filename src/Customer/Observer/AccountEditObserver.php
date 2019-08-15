@@ -73,7 +73,7 @@ class AccountEditObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $controller_action = $observer->getData('controller_action');
             $customer_edit_post = $controller_action->getRequest()->getParams();
             $customer = $this->customerSession->getCustomer();

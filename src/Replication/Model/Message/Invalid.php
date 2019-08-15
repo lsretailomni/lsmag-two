@@ -24,14 +24,17 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
     public $storeManager;
 
     /**
+     * Invalid constructor.
      * @param \Magento\Framework\UrlInterface $urlBuilder
      * @param \Ls\Core\Model\LSR $lsr
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         \Magento\Framework\UrlInterface $urlBuilder,
         \Ls\Core\Model\LSR $lsr,
         \Magento\Store\Model\StoreManagerInterface $storeManager
-    ) {
+    )
+    {
         $this->urlBuilder = $urlBuilder;
         $this->lsr = $lsr;
         $this->storeManager = $storeManager;

@@ -17,7 +17,9 @@ class InvalidNotice extends \Magento\Framework\View\Element\Template
     public $lsr;
 
     /**
+     * InvalidNotice constructor.
      * @param Context $context
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(Context $context, LSR $lsr, array $data = [])
@@ -25,6 +27,7 @@ class InvalidNotice extends \Magento\Framework\View\Element\Template
         $this->lsr = $lsr;
         parent::__construct($context, $data);
     }
+
     /**
      *
      */

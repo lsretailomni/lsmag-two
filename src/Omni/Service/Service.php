@@ -66,20 +66,18 @@ class Service
     public function getOmniBaseUrl($magentoStoreId = '')
     {
 
+        /** @var \Magento\Framework\App\ObjectManager  $objectManager */
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
-        /**
-         * Returning null in order to bypass the first request.
-         */
-        if($magentoStoreId == ''){
-            // get storeId from default loaded store.
-            /** @var \Magento\Store\Model\StoreManagerInterface  $storeManager */
-            $storeManager   =   $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
-            $magentoStoreId =   $storeManager->getStore()->getId();
-        }
-        // @codingStandardsIgnoreLine
         /** @var \Ls\Core\Model\LSR $lsr */
         $lsr = $objectManager->create('Ls\Core\Model\LSR');
+
+        if($magentoStoreId == ''){
+            // get storeId from default loaded store.
+            $magentoStoreId = $lsr->getCurrentStoreId();
+        }
+        // @codingStandardsIgnoreLine
+
         return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL,$magentoStoreId);
     }
 }

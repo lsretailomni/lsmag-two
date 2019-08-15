@@ -84,7 +84,7 @@ class CartObserver implements ObserverInterface
         /*
           * Adding condition to only process if LSR is enabled.
           */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($this->watchNextSave) {
                 /** @var \Magento\Quote\Model\Quote $quote */
                 $quote = $this->checkoutSession->getQuote();

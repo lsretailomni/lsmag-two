@@ -37,6 +37,7 @@ class AdminNotificationTask
      * @param LoggerInterface $logger
      * @param LSR $LSR
      * @param NotifierPool $notifierPool
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         LoggerInterface $logger,
