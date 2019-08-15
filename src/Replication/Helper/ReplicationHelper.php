@@ -498,7 +498,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->configWriter->save(
                 $path,
                 ($data) ? 1 : 0,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES, $store_id
             );
         } else {
             $this->configWriter->save(
@@ -527,7 +527,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->configWriter->save(
                 $path,
                 $value,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES, $store_id
             );
         } else {
             $this->configWriter->save(

@@ -40,38 +40,47 @@ abstract class AbstractReplicationTask
 
     /** @var array List of Replication Tables with unique field */
     private static $jobCodeUniqueFieldArray = [
-        "ls_mag/replication/repl_attribute" => ["Code"],
-        "ls_mag/replication/repl_attribute_option_value" => ["Code", "Sequence", "Value"],
-        "ls_mag/replication/repl_attribute_value" => ["Code", "LinkField1", "LinkField2", "LinkField3", "Value"],
-        "ls_mag/replication/repl_barcode" => ["nav_id"],
-        "ls_mag/replication/repl_country_code" => ["Name"],
-        "ls_mag/replication/repl_currency" => ["CurrencyCode"],
-        "ls_mag/replication/repl_currency_exch_rate" => ["CurrencyCode"],
-        "ls_mag/replication/repl_customer" => ["AccountNumber"],
-        "ls_mag/replication/repl_data_translation" => ["TranslationId"],
+        "ls_mag/replication/repl_attribute" => ["Code", "scope_id"],
+        "ls_mag/replication/repl_attribute_option_value" => ["Code", "Sequence", "Value", "scope_id"],
+        "ls_mag/replication/repl_attribute_value" => [
+            "Code",
+            "LinkField1",
+            "LinkField2",
+            "LinkField3",
+            "Value",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_barcode" => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_country_code" => ["Name", "scope_id"],
+        "ls_mag/replication/repl_currency" => ["CurrencyCode", "scope_id"],
+        "ls_mag/replication/repl_currency_exch_rate" => ["CurrencyCode", "scope_id"],
+        "ls_mag/replication/repl_customer" => ["AccountNumber", "scope_id"],
+        "ls_mag/replication/repl_data_translation" => ["TranslationId", "scope_id"],
         "ls_mag/replication/repl_discount" => [
             "ItemId",
             "LoyaltySchemeCode",
             "OfferNo",
             "StoreId",
             "DiscountValue",
+            "scope_id",
             "MinimumQuantity"
         ],
-        "ls_mag/replication/repl_discount_validation" => ["nav_id"],
+        "ls_mag/replication/repl_discount_validation" => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_extended_variant_value" => [
             "Code",
             "FrameworkCode",
             "ItemId",
-            "Value"
+            "Value",
+            "scope_id"
         ],
-        "ls_mag/replication/repl_hierarchy" => ["nav_id"],
-        "ls_mag/replication/repl_hierarchy_leaf" => ["nav_id", "NodeId"],
-        "ls_mag/replication/repl_hierarchy_node" => ["nav_id"],
-        "ls_mag/replication/repl_image" => ["nav_id"],
-        "ls_mag/replication/repl_image_link" => ["ImageId", "KeyValue"],
-        "ls_mag/replication/repl_item" => ["nav_id"],
-        "ls_mag/replication/repl_item_category" => ["nav_id"],
-        "ls_mag/replication/repl_item_unit_of_measure" => ["Code", "ItemId"],
+        "ls_mag/replication/repl_hierarchy" => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_leaf" => ["nav_id", "NodeId", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_node" => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_image" => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_image_link" => ["ImageId", "KeyValue", "TableName", "scope_id"],
+        "ls_mag/replication/repl_item" => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_item_category" => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_item_unit_of_measure" => ["Code", "ItemId", "scope_id"],
         "ls_mag/replication/repl_item_variant_registration" => [
             "ItemId",
             "VariantDimension1",
@@ -79,18 +88,26 @@ abstract class AbstractReplicationTask
             "VariantDimension3",
             "VariantDimension4",
             "VariantDimension5",
-            "VariantDimension6"
+            "VariantDimension6",
+            "scope_id"
         ],
-        "ls_mag/replication/repl_loy_vendor_item_mapping" => ["NavManufacturerId", "NavProductId"],
-        "ls_mag/replication/repl_price" => ["ItemId", "VariantId", "StoreId", "QtyPerUnitOfMeasure", "UnitOfMeasure"],
-        "ls_mag/replication/repl_inv_status" => ["ItemId", "VariantId", "StoreId"],
-        "ls_mag/replication/repl_product_group" => ["nav_id"],
-        "ls_mag/replication/repl_shipping_agent" => ["Name"],
-        "ls_mag/replication/repl_store" => ["nav_id"],
-        "ls_mag/replication/repl_store_tender_type" => ["StoreID", "TenderTypeId"],
-        "ls_mag/replication/repl_unit_of_measure" => ["nav_id"],
-        "ls_mag/replication/repl_vendor" => ["Name"],
-        "ls_mag/replication/loy_item" => ["nav_id"]
+        "ls_mag/replication/repl_loy_vendor_item_mapping" => ["NavManufacturerId", "NavProductId", "scope_id"],
+        "ls_mag/replication/repl_price" => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
+            "QtyPerUnitOfMeasure",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_inv_status" => ["ItemId", "VariantId", "StoreId", "scope_id"],
+        "ls_mag/replication/repl_product_group" => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_shipping_agent" => ["Name", "scope_id"],
+        "ls_mag/replication/repl_store" => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_store_tender_type" => ["StoreID", "TenderTypeId", "scope_id"],
+        "ls_mag/replication/repl_unit_of_measure" => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_vendor" => ["Name", "scope_id"],
+        "ls_mag/replication/loy_item" => ["nav_id", "scope_id"]
     ];
 
     /** @var LoggerInterface */
@@ -126,7 +143,8 @@ abstract class AbstractReplicationTask
         LoggerInterface $logger,
         LsHelper $helper,
         \Ls\Replication\Helper\ReplicationHelper $repHelper
-    ) {
+    )
+    {
         $this->scope_config = $scope_config;
         $this->resource_config = $resouce_config;
         $this->logger = $logger;
@@ -179,7 +197,6 @@ abstract class AbstractReplicationTask
                     } else {
                         $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
                     }
-
                     $baseUrl = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store->getId());
                     $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID, $baseUrl);
                     $response = $request->execute();
@@ -194,8 +211,10 @@ abstract class AbstractReplicationTask
                             // @codingStandardsIgnoreEnd
                             foreach ($traversable as $source) {
                                 //TODO need to understand this before we modify it.
-                                //$source->setData('scope_id', $store->getId());
-                                $this->saveSource($properties, $source, $store->getId());
+                                $source->setScope(\Magento\Store\Model\ScopeInterface::SCOPE_STORES)
+                                    ->setScopeId($store->getId());
+
+                                $this->saveSource($properties, $source);
                             }
                             $this->updateSuccessStatus($store->getId());
                         } else {
@@ -203,6 +222,8 @@ abstract class AbstractReplicationTask
                             if (!empty($arrayTraversable)) {
                                 $singleObject = (object)$traversable->getArrayCopy();
                                 $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+                                $singleObject->scope_id = $store->getId();
+
                                 $entityArray = $this->checkEntityExistByAttributes(
                                     $uniqueAttributes,
                                     $singleObject,
@@ -215,7 +236,6 @@ abstract class AbstractReplicationTask
                                     $entity->setIsUpdated(1);
                                 } else {
                                     $entity = $this->getFactory()->create();
-                                    $entity->setScope('default')->setScopeId(0);
                                 }
                                 foreach ($singleObject as $keyprop => $valueprop) {
                                     if ($keyprop == 'Id') {
@@ -225,6 +245,7 @@ abstract class AbstractReplicationTask
                                     }
                                     $entity->{$set_method}($valueprop);
                                 }
+                                $entity->setScope(\Magento\Store\Model\ScopeInterface::SCOPE_STORES)->setScopeId($store->getId());
                                 try {
                                     $this->getRepository()->save($entity);
                                 } catch (\Exception $e) {
@@ -235,12 +256,12 @@ abstract class AbstractReplicationTask
                         }
                         $this->persistLastKey($last_key, $store->getId());
                         if ($remaining == 0) {
-                            $this->saveReplicationStatus(1);
+                            $this->saveReplicationStatus(1, $store->getId());
                         }
                     }
                     $this->rep_helper->flushConfig();
                 } else {
-                    $this->logger->debug("LS Retail validation failed for store id ." . $store->getId());
+                    $this->logger->debug("LS Retail validation failed for store id " . $store->getId());
                 }
             }
         }
@@ -304,7 +325,7 @@ abstract class AbstractReplicationTask
      * @param $properties
      * @param $source
      */
-    public function saveSource($properties, $source, $scope_id)
+    public function saveSource($properties, $source)
     {
         $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
@@ -315,15 +336,17 @@ abstract class AbstractReplicationTask
             $entity->setIsUpdated(1);
         } else {
             $entity = $this->getFactory()->create();
-            $entity->setScope('store')->setScopeId($scope_id);
         }
         foreach ($properties as $property) {
             if ($property == 'nav_id') {
                 $set_method = 'setNavId';
                 $get_method = 'getId';
             } else {
-                $set_method = "set$property";
-                $get_method = "get$property";
+                $field_name_optimized = str_replace('_', ' ', $property);
+                $field_name_capitalized = ucwords($field_name_optimized);
+                $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
+                $set_method = "set$field_name_capitalized";
+                $get_method = "get$field_name_capitalized";
             }
             if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
                 $entity->{$set_method}($source->{$get_method}());
@@ -368,21 +391,31 @@ abstract class AbstractReplicationTask
         $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
         // @codingStandardsIgnoreEnd
         foreach ($uniqueAttributes as $attribute) {
+
+            $field_name_optimized = str_replace('_', ' ', $attribute);
+            $field_name_capitalized = ucwords($field_name_optimized);
+            $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
+
             if ($attribute == 'nav_id') {
                 $get_method = 'getId';
             } else {
-                $get_method = "get$attribute";
+                $get_method = "get$field_name_capitalized";
             }
+
+
             if ($notAnArraysObject) {
                 foreach ($source as $keyprop => $valueprop) {
                     if ($get_method == 'get' . $keyprop) {
                         $sourceValue = $valueprop;
-                        break;
+                        if ($sourceValue != '') {
+                            break;
+                        }
                     }
                 }
             } else {
                 $sourceValue = $source->{$get_method}();
             }
+
             if ($sourceValue == "") {
                 $criteria->addFilter($attribute, true, 'null');
             } else {
@@ -428,7 +461,7 @@ abstract class AbstractReplicationTask
         if ($store_id) {
             return $this->scope_config->getValue(
                 $this->getConfigPath(),
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
                 $store_id
             );
         } else {
@@ -444,7 +477,7 @@ abstract class AbstractReplicationTask
         if ($store_id) {
             return $this->scope_config->getValue(
                 $this->getConfigPathStatus(),
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
                 $store_id
             );
         } else {
@@ -465,7 +498,7 @@ abstract class AbstractReplicationTask
             $this->resource_config->saveConfig(
                 $this->getConfigPath(),
                 $last_key,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
                 $store_id
             );
         } else {
@@ -488,7 +521,7 @@ abstract class AbstractReplicationTask
             $this->resource_config->saveConfig(
                 $this->getConfigPathStatus(),
                 $status,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
                 $store_id
             );
         } else {
