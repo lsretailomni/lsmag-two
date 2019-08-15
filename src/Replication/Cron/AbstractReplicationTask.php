@@ -461,7 +461,7 @@ abstract class AbstractReplicationTask
         if ($store_id) {
             return $this->scope_config->getValue(
                 $this->getConfigPath(),
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
                 $store_id
             );
         } else {
@@ -477,7 +477,7 @@ abstract class AbstractReplicationTask
         if ($store_id) {
             return $this->scope_config->getValue(
                 $this->getConfigPathStatus(),
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
                 $store_id
             );
         } else {
@@ -498,7 +498,7 @@ abstract class AbstractReplicationTask
             $this->resource_config->saveConfig(
                 $this->getConfigPath(),
                 $last_key,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
                 $store_id
             );
         } else {
@@ -521,7 +521,7 @@ abstract class AbstractReplicationTask
             $this->resource_config->saveConfig(
                 $this->getConfigPathStatus(),
                 $status,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
                 $store_id
             );
         } else {
