@@ -256,7 +256,7 @@ abstract class AbstractReplicationTask
                         }
                         $this->persistLastKey($last_key, $store->getId());
                         if ($remaining == 0) {
-                            $this->saveReplicationStatus(1);
+                            $this->saveReplicationStatus(1, $store->getId());
                         }
                     }
                     $this->rep_helper->flushConfig();
