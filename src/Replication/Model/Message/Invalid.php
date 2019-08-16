@@ -33,8 +33,7 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
         \Magento\Framework\UrlInterface $urlBuilder,
         \Ls\Core\Model\LSR $lsr,
         \Magento\Store\Model\StoreManagerInterface $storeManager
-    )
-    {
+    ) {
         $this->urlBuilder = $urlBuilder;
         $this->lsr = $lsr;
         $this->storeManager = $storeManager;
@@ -49,9 +48,9 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
     {
 
         /**
-         * The Idea is for Multi Store, if any of the store has isLSR setup? then in that case we dont need to thorw this error.
+         * The Idea is for Multi Store, if any of the store has isLSR setup?
+         * then in that case we dont need to throw this error.
          */
-
         $displayNotice = true;
 
         /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */

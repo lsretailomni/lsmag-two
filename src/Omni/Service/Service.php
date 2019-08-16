@@ -18,7 +18,7 @@ class Service
     /** @var  LSR $_lsr */
     public $lsr;
 
-    /** @var null|string  */
+    /** @var null|string */
     public $baseurl = null;
 
     static public $endpoints = [
@@ -48,9 +48,9 @@ class Service
         $base_url = self::DEFAULT_BASE_URL,
         $wsdl = true
     ) {
-       if ($base_url==null) {
+        if ($base_url == null) {
             // @codingStandardsIgnoreLine
-           $base_url = (new self)->getOmniBaseUrl();
+            $base_url = (new self)->getOmniBaseUrl();
         }
         $url = join('/', [$base_url, static::$endpoints[$type->getValue()]]);
         if ($wsdl) {
@@ -65,19 +65,16 @@ class Service
      */
     public function getOmniBaseUrl($magentoStoreId = '')
     {
-
-        /** @var \Magento\Framework\App\ObjectManager  $objectManager */
+        /** @var \Magento\Framework\App\ObjectManager $objectManager */
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
         /** @var \Ls\Core\Model\LSR $lsr */
+        // @codingStandardsIgnoreLine
         $lsr = $objectManager->create('Ls\Core\Model\LSR');
-
-        if($magentoStoreId == ''){
+        if ($magentoStoreId == '') {
             // get storeId from default loaded store.
             $magentoStoreId = $lsr->getCurrentStoreId();
         }
-        // @codingStandardsIgnoreLine
-
-        return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL,$magentoStoreId);
+        return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $magentoStoreId);
     }
 }
