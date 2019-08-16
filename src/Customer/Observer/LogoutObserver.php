@@ -51,7 +51,7 @@ class LogoutObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $result = $this->contactHelper->logout();
             if (!$result) {
                 $this->logger->debug('Something went wrong while logging out from Omni');

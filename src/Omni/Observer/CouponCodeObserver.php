@@ -66,7 +66,7 @@ class CouponCodeObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $controller = $observer->getControllerAction();
             $couponCode = $controller->getRequest()->getParam('coupon_code');
             $couponCode = trim($couponCode);

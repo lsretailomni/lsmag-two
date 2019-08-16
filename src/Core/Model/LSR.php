@@ -289,16 +289,25 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     ];
 
     /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
+     * @param TypeListInterface $cacheTypeList
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        TypeListInterface $cacheTypeList
+        TypeListInterface $cacheTypeList,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     )
     {
         $this->scopeConfig = $scopeConfig;
         $this->cacheTypeList = $cacheTypeList;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -485,5 +494,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             SCOPE_TYPE_DEFAULT
         );
         return $configValue;
+    }
+
+    /**
+     * This can be used on all frontend areas to dynamically fetch the current storeId.
+     * Try not to use it on backend.
+     * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getCurrentStoreId()
+    {
+        return $this->storeManager->getStore()->getId();
     }
 }

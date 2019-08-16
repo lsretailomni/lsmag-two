@@ -62,7 +62,7 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
             $email = (string)$this->getRequest()->getPost('email');

@@ -93,7 +93,7 @@ class LoginObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
                 /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
                 $controller_action = $observer->getData('controller_action');

@@ -84,7 +84,7 @@ class OrderObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $order = $observer->getEvent()->getData('order');
             /** @var Entity\Order $oneListCalculation */
             $oneListCalculation = $this->basketHelper->getOneListCalculation();
