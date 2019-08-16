@@ -263,11 +263,11 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                         }
                     }
                 }
-                if ($check == true) {
-                    return [implode($discountInfo), $discountText];
-                } else {
-                    return null;
-                }
+            }
+            if ($check == true) {
+                return [implode($discountInfo), $discountText];
+            } else {
+                return null;
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
