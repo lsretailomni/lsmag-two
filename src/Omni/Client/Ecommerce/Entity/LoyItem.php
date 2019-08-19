@@ -112,6 +112,16 @@ class LoyItem extends Entity
     protected $SeasonCode = null;
 
     /**
+     * @property UnitOfMeasure $SelectedUnitOfMeasure
+     */
+    protected $SelectedUnitOfMeasure = null;
+
+    /**
+     * @property VariantRegistration $SelectedVariant
+     */
+    protected $SelectedVariant = null;
+
+    /**
      * @property float $UnitVolume
      */
     protected $UnitVolume = null;
@@ -479,6 +489,42 @@ class LoyItem extends Entity
     public function getSeasonCode()
     {
         return $this->SeasonCode;
+    }
+
+    /**
+     * @param UnitOfMeasure $SelectedUnitOfMeasure
+     * @return $this
+     */
+    public function setSelectedUnitOfMeasure($SelectedUnitOfMeasure)
+    {
+        $this->SelectedUnitOfMeasure = $SelectedUnitOfMeasure;
+        return $this;
+    }
+
+    /**
+     * @return UnitOfMeasure
+     */
+    public function getSelectedUnitOfMeasure()
+    {
+        return $this->SelectedUnitOfMeasure;
+    }
+
+    /**
+     * @param VariantRegistration $SelectedVariant
+     * @return $this
+     */
+    public function setSelectedVariant($SelectedVariant)
+    {
+        $this->SelectedVariant = $SelectedVariant;
+        return $this;
+    }
+
+    /**
+     * @return VariantRegistration
+     */
+    public function getSelectedVariant()
+    {
+        return $this->SelectedVariant;
     }
 
     /**

@@ -48,16 +48,7 @@ class LogoutObserver implements ObserverInterface
     // @codingStandardsIgnoreStart
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        /*
-         * Adding condition to only process if LSR is enabled.
-         */
-        if ($this->lsr->isLSR()) {
-            $result = $this->contactHelper->logout();
-            if (!$result) {
-                $this->logger->debug('Something went wrong while logging out from Omni');
-            }
-            $this->customerSession->destroy();
-        }
+        $this->customerSession->destroy();
         return $this;
     }
     // @codingStandardsIgnoreEnd

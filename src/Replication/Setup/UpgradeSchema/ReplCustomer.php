@@ -29,7 +29,6 @@ class ReplCustomer
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
         	$table->addColumn('AccountNumber' , Table::TYPE_TEXT, '');
         	$table->addColumn('Blocked' , Table::TYPE_INTEGER, '');
-        	$table->addColumn('CardId' , Table::TYPE_TEXT, '');
         	$table->addColumn('CellularPhone' , Table::TYPE_TEXT, '');
         	$table->addColumn('City' , Table::TYPE_TEXT, '');
         	$table->addColumn('ClubCode' , Table::TYPE_TEXT, '');

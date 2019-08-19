@@ -17,9 +17,9 @@ class ArrayOfReplItemVariantRegistration implements IteratorAggregate
     /**
      * @property ReplItemVariantRegistration[] $ReplItemVariantRegistration
      */
-    protected $ReplItemVariantRegistration = array(
+    protected $ReplItemVariantRegistration = [
         
-    );
+    ];
 
     /**
      * @param ReplItemVariantRegistration[] $ReplItemVariantRegistration

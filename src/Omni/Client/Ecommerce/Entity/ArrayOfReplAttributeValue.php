@@ -17,9 +17,9 @@ class ArrayOfReplAttributeValue implements IteratorAggregate
     /**
      * @property ReplAttributeValue[] $ReplAttributeValue
      */
-    protected $ReplAttributeValue = array(
+    protected $ReplAttributeValue = [
         
-    );
+    ];
 
     /**
      * @param ReplAttributeValue[] $ReplAttributeValue

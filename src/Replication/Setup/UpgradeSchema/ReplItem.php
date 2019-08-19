@@ -29,6 +29,7 @@ class ReplItem
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
         	$table->addColumn('BaseUnitOfMeasure' , Table::TYPE_TEXT, '');
         	$table->addColumn('BlockDiscount' , Table::TYPE_INTEGER, '');
+        	$table->addColumn('BlockDistribution' , Table::TYPE_INTEGER, '');
         	$table->addColumn('BlockManualPriceChange' , Table::TYPE_INTEGER, '');
         	$table->addColumn('BlockNegativeAdjustment' , Table::TYPE_INTEGER, '');
         	$table->addColumn('BlockPositiveAdjustment' , Table::TYPE_INTEGER, '');

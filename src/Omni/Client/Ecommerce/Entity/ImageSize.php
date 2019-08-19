@@ -17,6 +17,11 @@ class ImageSize
     protected $Height = null;
 
     /**
+     * @property boolean $UseMinHorVerSize
+     */
+    protected $UseMinHorVerSize = null;
+
+    /**
      * @property int $Width
      */
     protected $Width = null;
@@ -37,6 +42,24 @@ class ImageSize
     public function getHeight()
     {
         return $this->Height;
+    }
+
+    /**
+     * @param boolean $UseMinHorVerSize
+     * @return $this
+     */
+    public function setUseMinHorVerSize($UseMinHorVerSize)
+    {
+        $this->UseMinHorVerSize = $UseMinHorVerSize;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseMinHorVerSize()
+    {
+        return $this->UseMinHorVerSize;
     }
 
     /**

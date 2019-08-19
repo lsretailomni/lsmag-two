@@ -58,6 +58,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // SERVICE
     const SC_SERVICE_ENABLE = 'ls_mag/service/enabled';
     const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
+    const SC_SERVICE_LS_KEY = 'ls_mag/service/ls_key';
     const SC_SERVICE_STORE = 'ls_mag/service/selected_store';
     const SC_SERVICE_DEBUG = 'ls_mag/service/debug';
     const SC_SERVICE_TOKENIZED = 'ls_mag/service/tokenized_operations';
@@ -286,9 +287,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /** @var array End Points */
     public $endpoints = [
-        ServiceType::ECOMMERCE => 'ecommerceservice.svc',
-        ServiceType::LOYALTY => 'loyservice.svc',
-        ServiceType::GENERAL => 'service.svc',
+        ServiceType::ECOMMERCE => 'UCService.svc'
     ];
 
     /**
@@ -371,7 +370,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             try {
                 $url = join('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
                 // @codingStandardsIgnoreStart
-                $soapClient = new SoapClient($url . '?singlewsdl');
+                $soapClient = new SoapClient($url . '?singlewsdl', array('features' => SOAP_SINGLE_ELEMENT_ARRAYS));
                 // @codingStandardsIgnoreEnd
                 if ($soapClient) {
                     return true;

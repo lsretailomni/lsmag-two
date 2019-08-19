@@ -17,9 +17,9 @@ class ArrayOfReplVendor implements IteratorAggregate
     /**
      * @property ReplVendor[] $ReplVendor
      */
-    protected $ReplVendor = array(
+    protected $ReplVendor = [
         
-    );
+    ];
 
     /**
      * @param ReplVendor[] $ReplVendor

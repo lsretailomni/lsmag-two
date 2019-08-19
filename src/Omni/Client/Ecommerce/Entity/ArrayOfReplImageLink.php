@@ -17,9 +17,9 @@ class ArrayOfReplImageLink implements IteratorAggregate
     /**
      * @property ReplImageLink[] $ReplImageLink
      */
-    protected $ReplImageLink = array(
+    protected $ReplImageLink = [
         
-    );
+    ];
 
     /**
      * @param ReplImageLink[] $ReplImageLink

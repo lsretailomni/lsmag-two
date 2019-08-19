@@ -17,9 +17,9 @@ class ArrayOfScheme implements IteratorAggregate
     /**
      * @property Scheme[] $Scheme
      */
-    protected $Scheme = array(
+    protected $Scheme = [
         
-    );
+    ];
 
     /**
      * @param Scheme[] $Scheme

@@ -30,11 +30,6 @@ class OneList extends Entity
     protected $CardId = null;
 
     /**
-     * @property string $ContactId
-     */
-    protected $ContactId = null;
-
-    /**
      * @property string $CreateDate
      */
     protected $CreateDate = null;
@@ -146,24 +141,6 @@ class OneList extends Entity
     public function getCardId()
     {
         return $this->CardId;
-    }
-
-    /**
-     * @param string $ContactId
-     * @return $this
-     */
-    public function setContactId($ContactId)
-    {
-        $this->ContactId = $ContactId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContactId()
-    {
-        return $this->ContactId;
     }
 
     /**

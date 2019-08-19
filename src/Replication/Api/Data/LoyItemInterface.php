@@ -232,6 +232,28 @@ interface LoyItemInterface
     public function getSeasonCode();
 
     /**
+     * @param UnitOfMeasure $SelectedUnitOfMeasure
+     * @return $this
+     */
+    public function setSelectedUnitOfMeasure($SelectedUnitOfMeasure);
+
+    /**
+     * @return UnitOfMeasure
+     */
+    public function getSelectedUnitOfMeasure();
+
+    /**
+     * @param VariantRegistration $SelectedVariant
+     * @return $this
+     */
+    public function setSelectedVariant($SelectedVariant);
+
+    /**
+     * @return VariantRegistration
+     */
+    public function getSelectedVariant();
+
+    /**
      * @param float $UnitVolume
      * @return $this
      */

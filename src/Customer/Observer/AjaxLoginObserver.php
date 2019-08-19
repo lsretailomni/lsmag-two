@@ -40,7 +40,7 @@ class AjaxLoginObserver implements ObserverInterface
     /** @var \Magento\Framework\Controller\Result\JsonFactory */
     private $resultJsonFactory;
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var \Ls\Core\Model\LSR @var */
     private $lsr;
 
     /**
@@ -81,7 +81,7 @@ class AjaxLoginObserver implements ObserverInterface
         $this->actionFlag = $actionFlag;
         $this->storeManage = $storeManager;
         $this->customerFactory = $customerFactory;
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
     }
 
     /**
@@ -148,12 +148,16 @@ class AjaxLoginObserver implements ObserverInterface
                          * Fetch customer related info from omni and create user in magento
                          */
                         $this->contactHelper->processCustomerLogin($result, $credentials, $is_email);
-                        /** Update Basket to Omni */
-                        $this->contactHelper->updateBasketAfterLogin(
-                            $result->getBasket(),
-                            $result->getId(),
-                            $result->getCard()->getId()
-                        );
+                        $oneListBasket = $this->contactHelper->getOneListTypeObject($result->getOneLists()->getOneList(),
+                            Entity\Enum\ListType::BASKET);
+                        if ($oneListBasket) {
+                            /** Update Basket to Omni */
+                            $this->contactHelper->updateBasketAfterLogin(
+                                $oneListBasket,
+                                $result->getId(),
+                                $result->getCards()->getCard()[0]->getId()
+                            );
+                        }
                         $this->customerSession->regenerateId();
                         $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
                         return $resultJson->setData($response);

@@ -182,36 +182,6 @@ abstract class AbstractReplicationTask
                         $this->saveSource($properties, $source);
                     }
                     $this->updateSuccessStatus();
-                } else {
-                    $arrayTraversable = (array)$traversable;
-                    if (!empty($arrayTraversable)) {
-                        $singleObject = (object)$traversable->getArrayCopy();
-                        $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
-                        $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $singleObject, true);
-                        if (!empty($entityArray)) {
-                            foreach ($entityArray as $value) {
-                                $entity = $value;
-                            }
-                            $entity->setIsUpdated(1);
-                        } else {
-                            $entity = $this->getFactory()->create();
-                            $entity->setScope('default')->setScopeId(0);
-                        }
-                        foreach ($singleObject as $keyprop => $valueprop) {
-                            if ($keyprop == 'Id') {
-                                $set_method = 'setNavId';
-                            } else {
-                                $set_method = "set$keyprop";
-                            }
-                            $entity->{$set_method}($valueprop);
-                        }
-                        try {
-                            $this->getRepository()->save($entity);
-                        } catch (\Exception $e) {
-                            $this->logger->debug($e->getMessage());
-                        }
-                        $this->updateSuccessStatus();
-                    }
                 }
                 $this->persistLastKey($last_key);
                 if ($remaining == 0) {

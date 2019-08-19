@@ -22,6 +22,11 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     protected $_eventPrefix = 'ls_replication_repl_customer';
 
     /**
+     * @property ArrayOfCard $Cards
+     */
+    protected $Cards = null;
+
+    /**
      * @property string $AccountNumber
      */
     protected $AccountNumber = null;
@@ -30,11 +35,6 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
      * @property int $Blocked
      */
     protected $Blocked = null;
-
-    /**
-     * @property string $CardId
-     */
-    protected $CardId = null;
 
     /**
      * @property string $CellularPhone
@@ -197,6 +197,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     }
 
     /**
+     * @param ArrayOfCard $Cards
+     * @return $this
+     */
+    public function setCards($Cards)
+    {
+        $this->setData( 'Cards', $Cards );
+        $this->Cards = $Cards;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfCard
+     */
+    public function getCards()
+    {
+        return $this->getData( 'Cards' );
+    }
+
+    /**
      * @param string $AccountNumber
      * @return $this
      */
@@ -234,26 +254,6 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     public function getBlocked()
     {
         return $this->getData( 'Blocked' );
-    }
-
-    /**
-     * @param string $CardId
-     * @return $this
-     */
-    public function setCardId($CardId)
-    {
-        $this->setData( 'CardId', $CardId );
-        $this->CardId = $CardId;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCardId()
-    {
-        return $this->getData( 'CardId' );
     }
 
     /**

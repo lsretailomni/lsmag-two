@@ -17,9 +17,9 @@ class ArrayOfReplExtendedVariantValue implements IteratorAggregate
     /**
      * @property ReplExtendedVariantValue[] $ReplExtendedVariantValue
      */
-    protected $ReplExtendedVariantValue = array(
+    protected $ReplExtendedVariantValue = [
         
-    );
+    ];
 
     /**
      * @param ReplExtendedVariantValue[] $ReplExtendedVariantValue

@@ -17,9 +17,9 @@ class ArrayOfImageView implements IteratorAggregate
     /**
      * @property ImageView[] $ImageView
      */
-    protected $ImageView = array(
+    protected $ImageView = [
         
-    );
+    ];
 
     /**
      * @param ImageView[] $ImageView

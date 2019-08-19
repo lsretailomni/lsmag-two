@@ -17,9 +17,9 @@ class ArrayOfOrderLineAvailabilityResponse implements IteratorAggregate
     /**
      * @property OrderLineAvailabilityResponse[] $OrderLineAvailabilityResponse
      */
-    protected $OrderLineAvailabilityResponse = array(
+    protected $OrderLineAvailabilityResponse = [
         
-    );
+    ];
 
     /**
      * @param OrderLineAvailabilityResponse[] $OrderLineAvailabilityResponse

@@ -8,10 +8,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderStatus;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentStatus;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\SourceType;
 use Ls\Omni\Exception\InvalidEnumException;
 
 class Order extends Entity
@@ -31,11 +30,6 @@ class Order extends Entity
      * @property ArrayOfOrderPayment $OrderPayments
      */
     protected $OrderPayments = null;
-
-    /**
-     * @property boolean $AnonymousOrder
-     */
-    protected $AnonymousOrder = null;
 
     /**
      * @property string $CardId
@@ -98,7 +92,7 @@ class Order extends Entity
     protected $MobileNumber = null;
 
     /**
-     * @property OrderStatus $OrderStatus
+     * @property SalesEntryStatus $OrderStatus
      */
     protected $OrderStatus = null;
 
@@ -148,11 +142,6 @@ class Order extends Entity
     protected $ReceiptNo = null;
 
     /**
-     * @property boolean $ShipClickAndCollect
-     */
-    protected $ShipClickAndCollect = null;
-
-    /**
      * @property Address $ShipToAddress
      */
     protected $ShipToAddress = null;
@@ -186,11 +175,6 @@ class Order extends Entity
      * @property ShippingStatus $ShippingStatus
      */
     protected $ShippingStatus = null;
-
-    /**
-     * @property SourceType $SourceType
-     */
-    protected $SourceType = null;
 
     /**
      * @property string $StoreId
@@ -264,24 +248,6 @@ class Order extends Entity
     public function getOrderPayments()
     {
         return $this->OrderPayments;
-    }
-
-    /**
-     * @param boolean $AnonymousOrder
-     * @return $this
-     */
-    public function setAnonymousOrder($AnonymousOrder)
-    {
-        $this->AnonymousOrder = $AnonymousOrder;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getAnonymousOrder()
-    {
-        return $this->AnonymousOrder;
     }
 
     /**
@@ -501,18 +467,18 @@ class Order extends Entity
     }
 
     /**
-     * @param OrderStatus|string $OrderStatus
+     * @param SalesEntryStatus|string $OrderStatus
      * @return $this
      * @throws InvalidEnumException
      */
     public function setOrderStatus($OrderStatus)
     {
-        if ( ! $OrderStatus instanceof OrderStatus ) {
-            if ( OrderStatus::isValid( $OrderStatus ) ) 
-                $OrderStatus = new OrderStatus( $OrderStatus );
-            elseif ( OrderStatus::isValidKey( $OrderStatus ) ) 
-                $OrderStatus = new OrderStatus( constant( "OrderStatus::$OrderStatus" ) );
-            elseif ( ! $OrderStatus instanceof OrderStatus )
+        if ( ! $OrderStatus instanceof SalesEntryStatus ) {
+            if ( SalesEntryStatus::isValid( $OrderStatus ) ) 
+                $OrderStatus = new SalesEntryStatus( $OrderStatus );
+            elseif ( SalesEntryStatus::isValidKey( $OrderStatus ) ) 
+                $OrderStatus = new SalesEntryStatus( constant( "SalesEntryStatus::$OrderStatus" ) );
+            elseif ( ! $OrderStatus instanceof SalesEntryStatus )
                 throw new InvalidEnumException();
         }
         $this->OrderStatus = $OrderStatus->getValue();
@@ -521,7 +487,7 @@ class Order extends Entity
     }
 
     /**
-     * @return OrderStatus
+     * @return SalesEntryStatus
      */
     public function getOrderStatus()
     {
@@ -701,24 +667,6 @@ class Order extends Entity
     }
 
     /**
-     * @param boolean $ShipClickAndCollect
-     * @return $this
-     */
-    public function setShipClickAndCollect($ShipClickAndCollect)
-    {
-        $this->ShipClickAndCollect = $ShipClickAndCollect;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getShipClickAndCollect()
-    {
-        return $this->ShipClickAndCollect;
-    }
-
-    /**
      * @param Address $ShipToAddress
      * @return $this
      */
@@ -852,34 +800,6 @@ class Order extends Entity
     public function getShippingStatus()
     {
         return $this->ShippingStatus;
-    }
-
-    /**
-     * @param SourceType|string $SourceType
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setSourceType($SourceType)
-    {
-        if ( ! $SourceType instanceof SourceType ) {
-            if ( SourceType::isValid( $SourceType ) ) 
-                $SourceType = new SourceType( $SourceType );
-            elseif ( SourceType::isValidKey( $SourceType ) ) 
-                $SourceType = new SourceType( constant( "SourceType::$SourceType" ) );
-            elseif ( ! $SourceType instanceof SourceType )
-                throw new InvalidEnumException();
-        }
-        $this->SourceType = $SourceType->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return SourceType
-     */
-    public function getSourceType()
-    {
-        return $this->SourceType;
     }
 
     /**

@@ -56,7 +56,7 @@ class Recent extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\Order[]|null
+     * @return array|\Ls\Omni\Client\Ecommerce\Entity\SalesEntry[]|null
      */
     public function getOrderHistory()
     {
@@ -64,13 +64,9 @@ class Recent extends \Magento\Framework\View\Element\Template
         $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
         if ($orders) {
             try {
-                $response = $orders->getOrder();
+                $response = $orders->getSalesEntry();
             } catch (\Exception $e) {
                 $this->_logger->error($e->getMessage());
-            }
-            if ($response && !is_array($response)) {
-                $obj = $response;
-                $response = [$obj];
             }
         }
         return $response;
@@ -109,7 +105,7 @@ class Recent extends \Magento\Framework\View\Element\Template
      */
     public function getViewUrl($order)
     {
-        return $this->getUrl('customer/order/view', ['order_id' => $order->getDocumentId()]);
+        return $this->getUrl('customer/order/view', ['order_id' => $order->getId()]);
     }
 
     /**

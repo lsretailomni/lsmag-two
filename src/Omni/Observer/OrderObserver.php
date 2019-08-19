@@ -93,23 +93,21 @@ class OrderObserver implements ObserverInterface
             try {
                 if ($response) {
                     //delete from Omni.
-                    $documentId = $response->getDocumentId();
+                    $documentId = $response->getId();
                     $order->setDocumentId($documentId);
                     $this->orderResourceModel->save($order);
                     $this->checkoutSession->setLastDocumentId($documentId);
                     $this->checkoutSession->unsetData('member_points');
                     if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                         $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-                        //TODO error which Hjalti highlighted. when there is only one item in the cart and customer remove that.
                         $success = $this->basketHelper->delete($onelist);
                         $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
-                        // delete checkout session data.
                         $this->basketHelper->unSetOneListCalculation();
                     }
                 } else {
                     // TODO: error handling
                     $this->logger->critical(
-                        __('Something trrible happen while placing order')
+                        __('Something terrible happened while placing the order.')
                     );
                 }
             } catch (\Exception $e) {

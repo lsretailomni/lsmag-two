@@ -12,6 +12,11 @@ class ReplCustomer
 {
 
     /**
+     * @property ArrayOfCard $Cards
+     */
+    protected $Cards = null;
+
+    /**
      * @property string $AccountNumber
      */
     protected $AccountNumber = null;
@@ -20,11 +25,6 @@ class ReplCustomer
      * @property int $Blocked
      */
     protected $Blocked = null;
-
-    /**
-     * @property string $CardId
-     */
-    protected $CardId = null;
 
     /**
      * @property string $CellularPhone
@@ -157,6 +157,24 @@ class ReplCustomer
     protected $ZipCode = null;
 
     /**
+     * @param ArrayOfCard $Cards
+     * @return $this
+     */
+    public function setCards($Cards)
+    {
+        $this->Cards = $Cards;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfCard
+     */
+    public function getCards()
+    {
+        return $this->Cards;
+    }
+
+    /**
      * @param string $AccountNumber
      * @return $this
      */
@@ -190,24 +208,6 @@ class ReplCustomer
     public function getBlocked()
     {
         return $this->Blocked;
-    }
-
-    /**
-     * @param string $CardId
-     * @return $this
-     */
-    public function setCardId($CardId)
-    {
-        $this->CardId = $CardId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCardId()
-    {
-        return $this->CardId;
     }
 
     /**
