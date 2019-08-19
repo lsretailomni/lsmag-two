@@ -14,6 +14,21 @@ class OrderStatus implements OrderStatusInterface
     const ERROR = "ERROR";
 
     /**
+     * @var \Ls\Webhooks\Logger\Logger
+     */
+    public $logger;
+
+    /**
+     * OrderStatus constructor.
+     * @param \Ls\Webhooks\Logger\Logger $logger
+     */
+    public function __construct(
+        \Ls\Webhooks\Logger\Logger $logger
+    ) {
+        $this->logger = $logger;
+    }
+
+    /**
      * set order status Api.
      *
      * @api
@@ -27,22 +42,18 @@ class OrderStatus implements OrderStatusInterface
      */
     public function set($document_id, $status)
     {
-
         try {
-            // @codingStandardsIgnoreStart
-            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/orderstatus.log');
-            $logger = new \Zend\Log\Logger();
-            // @codingStandardsIgnoreEnd
-            $logger->addWriter($writer);
             $data=[
                 "document_id"   => $document_id,
                 "status"        => $status
             ];
-            $logger->info($data);
+            $this->logger->info("OrderStatus", $data);
             return self::SUCCESS;
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            $this->logger->error($e->getMessage());
             return self::ERROR;
         } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
             return self::ERROR;
         }
     }

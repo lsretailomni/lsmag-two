@@ -3,7 +3,6 @@
 namespace Ls\WebHooks\Model;
 
 use \Ls\Webhooks\Api\OrderPaymentInterface;
-use \Ls\Omni\Helper\OrderHelper;
 
 /**
  * Class OrderPayment
@@ -13,6 +12,21 @@ class OrderPayment implements OrderPaymentInterface
 {
     const SUCCESS = "OK";
     const ERROR = "ERROR";
+
+    /**
+     * @var \Ls\Webhooks\Logger\Logger
+     */
+    public $logger;
+
+    /**
+     * OrderPayment constructor.
+     * @param \Ls\Webhooks\Logger\Logger $logger
+     */
+    public function __construct(
+        \Ls\Webhooks\Logger\Logger $logger
+    ) {
+        $this->logger = $logger;
+    }
 
     /**
      * set order status Api.
@@ -28,24 +42,20 @@ class OrderPayment implements OrderPaymentInterface
      */
     public function set($document_id, $status, $token, $amount)
     {
-
         try {
-            // @codingStandardsIgnoreStart
-            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/orderpayment.log');
-            $logger = new \Zend\Log\Logger();
-            // @codingStandardsIgnoreEnd
-            $logger->addWriter($writer);
             $data=[
                 "document_id"   => $document_id,
                 "status"        => $status,
                 "token"         => $token,
                 "amount"        => $amount
             ];
-            $logger->info($data);
+            $this->logger->info("OrderPayment", $data);
             return self::SUCCESS;
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            $this->logger->error($e->getMessage());
             return self::ERROR;
         } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
             return self::ERROR;
         }
     }
