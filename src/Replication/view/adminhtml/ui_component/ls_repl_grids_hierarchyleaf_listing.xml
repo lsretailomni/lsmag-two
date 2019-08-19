@@ -78,34 +78,28 @@
             </argument>
         </paging>
         <filters name="listing_filters">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="columnsProvider" xsi:type="string">
-                        ls_repl_grids_hierarchyleaf_listing.ls_repl_grids_hierarchyleaf_listing.ls_repl_grids_hierarchyleaf_columns
-                    </item>
-                    <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">
-                            ls_repl_grids_hierarchyleaf_listing.ls_repl_grids_hierarchyleaf_listing.listing_top.bookmarks
-                        </item>
-                        <item name="namespace" xsi:type="string">current.filters</item>
-                    </item>
-                    <item name="childDefaults" xsi:type="array">
-                        <item name="provider" xsi:type="string">
-                            ls_repl_grids_hierarchyleaf_listing.ls_repl_grids_hierarchyleaf_listing.listing_top.listing_filters
-                        </item>
-                        <item name="imports" xsi:type="array">
-                            <item name="visible" xsi:type="string">
-                                ls_repl_grids_hierarchyleaf_listing.ls_repl_grids_hierarchyleaf_listing.ls_repl_grids_hierarchyleaf_columns..${ $.index }:visible
-                            </item>
-                        </item>
-                    </item>
-                </item>
-            </argument>
+            <filterSelect name="scope_id" provider="${ $.parentName }">
+                <settings>
+                    <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                    <caption translate="true">All Store Views</caption>
+                    <label translate="true">Store View</label>
+                    <dataScope>scope_id</dataScope>
+                </settings>
+            </filterSelect>
         </filters>
     </listingToolbar>
 
     <columns name="ls_repl_grids_hierarchyleaf_columns">
         <!--The list of columns-->
+        <column name="scope_id" class="Ls\Replication\Ui\Component\Listing\Column\Stores">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">1</item>
+                    <item name="label" xsi:type="string" translate="true">Store</item>
+                </item>
+            </argument>
+        </column>
         <column name="nav_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -113,7 +107,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Nav ID</item>
-                    <item name="sortOrder" xsi:type="number">1</item>
+                    <item name="sortOrder" xsi:type="number">2</item>
                 </item>
             </argument>
         </column>
@@ -124,7 +118,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Description</item>
-                    <item name="sortOrder" xsi:type="number">2</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
                 </item>
             </argument>
         </column>
