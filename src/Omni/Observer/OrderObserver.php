@@ -112,7 +112,7 @@ class OrderObserver implements ObserverInterface
                 try {
                     if ($response) {
                         //delete from Omni.
-                        $documentId = $response->getDocumentId();
+                        $documentId = $response->getId();
                         $order->setDocumentId($documentId);
                         $this->orderResourceModel->save($order);
                         $this->checkoutSession->setLastDocumentId($documentId);
