@@ -12,6 +12,11 @@ class ReplCustomer
 {
 
     /**
+     * @property ArrayOfCard $Cards
+     */
+    protected $Cards = null;
+
+    /**
      * @property string $AccountNumber
      */
     protected $AccountNumber = null;
@@ -20,11 +25,6 @@ class ReplCustomer
      * @property int $Blocked
      */
     protected $Blocked = null;
-
-    /**
-     * @property string $CardId
-     */
-    protected $CardId = null;
 
     /**
      * @property string $CellularPhone
@@ -157,14 +157,22 @@ class ReplCustomer
     protected $ZipCode = null;
 
     /**
-     * @property string $scope
+     * @param ArrayOfCard $Cards
+     * @return $this
      */
-    protected $scope = null;
+    public function setCards($Cards)
+    {
+        $this->Cards = $Cards;
+        return $this;
+    }
 
     /**
-     * @property int $scope_id
+     * @return ArrayOfCard
      */
-    protected $scope_id = null;
+    public function getCards()
+    {
+        return $this->Cards;
+    }
 
     /**
      * @param string $AccountNumber
@@ -200,24 +208,6 @@ class ReplCustomer
     public function getBlocked()
     {
         return $this->Blocked;
-    }
-
-    /**
-     * @param string $CardId
-     * @return $this
-     */
-    public function setCardId($CardId)
-    {
-        $this->CardId = $CardId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCardId()
-    {
-        return $this->CardId;
     }
 
     /**
@@ -686,42 +676,6 @@ class ReplCustomer
     public function getZipCode()
     {
         return $this->ZipCode;
-    }
-
-    /**
-     * @param string $scope
-     * @return $this
-     */
-    public function setScope($scope)
-    {
-        $this->scope = $scope;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
-     * @param int $scope_id
-     * @return $this
-     */
-    public function setScopeId($scope_id)
-    {
-        $this->scope_id = $scope_id;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getScopeId()
-    {
-        return $this->scope_id;
     }
 
 

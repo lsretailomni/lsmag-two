@@ -55,11 +55,6 @@ class ImageView extends Entity
     protected $LocationType = null;
 
     /**
-     * @property string $ObjectId
-     */
-    protected $ObjectId = null;
-
-    /**
      * @param string $AvgColor
      * @return $this
      */
@@ -211,24 +206,6 @@ class ImageView extends Entity
     public function getLocationType()
     {
         return $this->LocationType;
-    }
-
-    /**
-     * @param string $ObjectId
-     * @return $this
-     */
-    public function setObjectId($ObjectId)
-    {
-        $this->ObjectId = $ObjectId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getObjectId()
-    {
-        return $this->ObjectId;
     }
 
 

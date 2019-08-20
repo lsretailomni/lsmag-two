@@ -32,7 +32,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode MISSING_FIRST_NAME()
  * @$method static StatusCode MISSING_ITEM_ID()
  * @$method static StatusCode MISSING_STORE_ID()
- * @$method static StatusCode APP_SETTINGS_NOT_FOUND()
+ * @$method static StatusCode TENANT_CONFIG_NOT_FOUND()
  * @$method static StatusCode ORDER_QUEUE_ID_NOT_FOUND()
  * @$method static StatusCode CONFIG_NOT_FOUND()
  * @$method static StatusCode ONE_ACCOUNT_INVALID()
@@ -49,6 +49,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode SECURITY_TOKEN_INVALID()
  * @$method static StatusCode ACCESS_NOT_ALLOWED()
  * @$method static StatusCode USER_NOT_LOGGED_IN()
+ * @$method static StatusCode L_S_KEY_INVALID()
  * @$method static StatusCode PRIMARY_KEY_DUPLICATION()
  * @$method static StatusCode COMMUNICATION_FAILURE()
  * @$method static StatusCode GENERAL_ERROR_CODE()
@@ -135,6 +136,21 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode H_M_P_MENU_NOT_ENABLED()
  * @$method static StatusCode H_M_P_MENU_NO_DYNAMIC_CONTENT_FOUND_TODAY()
  * @$method static StatusCode VENDOR_NOT_FOUND()
+ * @$method static StatusCode DOCUMENT_ERROR()
+ * @$method static StatusCode TEMPLATE_NOT_FOUND()
+ * @$method static StatusCode DOCUMENT_NOT_FOUND()
+ * @$method static StatusCode MISSING_UNIT_CONVERSION()
+ * @$method static StatusCode NO_LINES_TO_POST()
+ * @$method static StatusCode ALREADY_POSTED()
+ * @$method static StatusCode ALREADY_PROCESSING()
+ * @$method static StatusCode INVALID_RECEIVING_QTY()
+ * @$method static StatusCode NO_VENDOR_ITEMS()
+ * @$method static StatusCode TRANSFER_ORDER_NOT_FOUND()
+ * @$method static StatusCode TRANSFER_ORDER_PROCESSING()
+ * @$method static StatusCode TRANSFER_ORDER_RECEIVED()
+ * @$method static StatusCode TRANSFER_ORDER_FETCHED()
+ * @$method static StatusCode TRANSFER_ORDER_SENT()
+ * @$method static StatusCode TRANSFER_ORDER_REJECTED()
  * @$method static StatusCode UNKNOWN_USER()
  * @$method static StatusCode NAV_W_S_ERROR()
  * @$method static StatusCode TRANSACTION_POST()
@@ -188,7 +204,7 @@ class StatusCode extends Enum
 
     const MISSING_STORE_ID = 'MissingStoreId';
 
-    const APP_SETTINGS_NOT_FOUND = 'AppSettingsNotFound';
+    const TENANT_CONFIG_NOT_FOUND = 'TenantConfigNotFound';
 
     const ORDER_QUEUE_ID_NOT_FOUND = 'OrderQueueIdNotFound';
 
@@ -221,6 +237,8 @@ class StatusCode extends Enum
     const ACCESS_NOT_ALLOWED = 'AccessNotAllowed';
 
     const USER_NOT_LOGGED_IN = 'UserNotLoggedIn';
+
+    const L_S_KEY_INVALID = 'LSKeyInvalid';
 
     const PRIMARY_KEY_DUPLICATION = 'PrimaryKeyDuplication';
 
@@ -393,6 +411,36 @@ class StatusCode extends Enum
     const H_M_P_MENU_NO_DYNAMIC_CONTENT_FOUND_TODAY = 'HMPMenuNoDynamicContentFoundToday';
 
     const VENDOR_NOT_FOUND = 'VendorNotFound';
+
+    const DOCUMENT_ERROR = 'DocumentError';
+
+    const TEMPLATE_NOT_FOUND = 'TemplateNotFound';
+
+    const DOCUMENT_NOT_FOUND = 'DocumentNotFound';
+
+    const MISSING_UNIT_CONVERSION = 'MissingUnitConversion';
+
+    const NO_LINES_TO_POST = 'NoLinesToPost';
+
+    const ALREADY_POSTED = 'AlreadyPosted';
+
+    const ALREADY_PROCESSING = 'AlreadyProcessing';
+
+    const INVALID_RECEIVING_QTY = 'InvalidReceivingQty';
+
+    const NO_VENDOR_ITEMS = 'NoVendorItems';
+
+    const TRANSFER_ORDER_NOT_FOUND = 'TransferOrderNotFound';
+
+    const TRANSFER_ORDER_PROCESSING = 'TransferOrderProcessing';
+
+    const TRANSFER_ORDER_RECEIVED = 'TransferOrderReceived';
+
+    const TRANSFER_ORDER_FETCHED = 'TransferOrderFetched';
+
+    const TRANSFER_ORDER_SENT = 'TransferOrderSent';
+
+    const TRANSFER_ORDER_REJECTED = 'TransferOrderRejected';
 
     const UNKNOWN_USER = 'UnknownUser';
 

@@ -1,0 +1,122 @@
+Loyalty,Loyalty
+"Go To Product","Go To Product"
+"Go To Category","Go To Category"
+"Order # %1","Order # %1"
+"Click and Collect","Click and Collect"
+"Flat Rate - Fixed","Flat Rate - Fixed"
+Cash,Cash
+Card,Card
+Coupon,Coupon
+"Loyalty Points","Loyalty Points"
+"Gift Card","Gift Card"
+Unknown,Unknown
+"Pay At Store","Pay At Store"
+"There is no account found with the provided email/username.","There is no account found with the provided email/username."
+"We're unable to send the password reset email.","We're unable to send the password reset email."
+"Please enter your email.","Please enter your email."
+Coupons,Coupons
+"General Offers","General Offers"
+"Loyalty Offers","Loyalty Offers"
+"Member Offers","Member Offers"
+"Point Offers","Point Offers"
+"Something went wrong, Please try again later.","Something went wrong, Please try again later."
+"Your password has been updated.","Your password has been updated."
+"You have entered an invalid current password.","You have entered an invalid current password."
+"Confirm password did not match.","Confirm password did not match."
+"Sorry. No account found with the provided email address","Sorry. No account found with the provided email address"
+"Unfortunately email login is only available for members registered in Magento","Unfortunately email login is only available for members registered in Magento"
+"Invalid Omni login or Omni password","Invalid Omni login or Omni password"
+"Omni login successful.","Omni login successful."
+"The service is currently unavailable. Please try again later.","The service is currently unavailable. Please try again later."
+"Sorry! No account found with the provided email address.","Sorry! No account found with the provided email address."
+"Invalid LS Central login or password.","Invalid LS Central login or password."
+"Username already exist, please try another one.","Username already exist, please try another one."
+"* Required Fields","* Required Fields"
+"Contact Information","Contact Information"
+Address,Address
+"Street Address %1","Street Address %1"
+City,City
+"Please select a region, state or province.","Please select a region, state or province."
+"It's a default billing address.","It's a default billing address."
+"Use as my default billing address","Use as my default billing address"
+"It's a default shipping address.","It's a default shipping address."
+"Use as my default shipping address","Use as my default shipping address"
+"Save Address","Save Address"
+"Go back","Go back"
+"Member Information","Member Information"
+"Club Name:","Club Name:"
+"Loyalty Points Earned:","Loyalty Points Earned:"
+"Loyalty Level:","Loyalty Level:"
+"Next Level","Next Level"
+Level:,Level:
+"Points Needed:","Points Needed:"
+"Benefits of Next Level:","Benefits of Next Level:"
+"You are at the top level.","You are at the top level."
+"Please enter your email address below to receive a password reset link.","Please enter your email address below to receive a password reset link."
+Username/Email,Username/Email
+"Reset My Password","Reset My Password"
+"Registered Customers","Registered Customers"
+"If you have an account, sign in with your email address.","If you have an account, sign in with your email address."
+Email,Email
+Password,Password
+"Sign In","Sign In"
+"Forgot Your Password?","Forgot Your Password?"
+"Personal Information","Personal Information"
+"Sign Up for Newsletter","Sign Up for Newsletter"
+"Address Information","Address Information"
+Company,Company
+"Phone Number","Phone Number"
+"Street Address","Street Address"
+State/Province,State/Province
+"Zip/Postal Code","Zip/Postal Code"
+Country,Country
+"Sign-in Information","Sign-in Information"
+Username,Username
+"Password Strength","Password Strength"
+"No Password","No Password"
+"Confirm Password","Confirm Password"
+"Create an Account","Create an Account"
+Back,Back
+"Code: ","Code: "
+"Offer Type: ","Offer Type: "
+"Expiry: ","Expiry: "
+"No offers","No offers"
+Orders,Orders
+"Order #","Order #"
+Date,Date
+"Ship To","Ship To"
+Total,Total
+Status,Status
+Action,Action
+Actions,Actions
+"View Order","View Order"
+Reorder,Reorder
+"You have placed no orders.","You have placed no orders."
+"Order Information","Order Information"
+"Shipping Address","Shipping Address"
+"Shipping Method","Shipping Method"
+"Billing Address","Billing Address"
+"Payment Method","Payment Method"
+"Print Order","Print Order"
+"Product Name","Product Name"
+SKU,SKU
+Price,Price
+Qty,Qty
+Subtotal,Subtotal
+"Items Ordered","Items Ordered"
+"<span class=""label"">Order Date:</span> %1","<span class=""label"">Order Date:</span> %1"
+"Recent Orders","Recent Orders"
+"View All","View All"
+"Qty Shipped","Qty Shipped"
+"Useful Information","Useful Information"
+"Click & Collect:","Click & Collect:"
+"Loyalty Points Rewarded:","Loyalty Points Rewarded:"
+"Gift Card Code:","Gift Card Code:"
+"Print Invoice","Print Invoice"
+"Print Shipment","Print Shipment"
+"Track this shipment","Track this shipment"
+"Tracking Number(s):","Tracking Number(s):"
+Name,Name
+"Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.","Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @."
+Invoices,Invoices
+"Order Shipments","Order Shipments"

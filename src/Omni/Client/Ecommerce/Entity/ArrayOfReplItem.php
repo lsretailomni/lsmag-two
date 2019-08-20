@@ -17,9 +17,9 @@ class ArrayOfReplItem implements IteratorAggregate
     /**
      * @property ReplItem[] $ReplItem
      */
-    protected $ReplItem = array(
+    protected $ReplItem = [
         
-    );
+    ];
 
     /**
      * @param ReplItem[] $ReplItem

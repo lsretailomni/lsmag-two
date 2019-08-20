@@ -17,9 +17,9 @@ class ArrayOfReplItemCategory implements IteratorAggregate
     /**
      * @property ReplItemCategory[] $ReplItemCategory
      */
-    protected $ReplItemCategory = array(
+    protected $ReplItemCategory = [
         
-    );
+    ];
 
     /**
      * @param ReplItemCategory[] $ReplItemCategory

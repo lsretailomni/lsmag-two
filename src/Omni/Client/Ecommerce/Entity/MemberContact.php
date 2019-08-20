@@ -21,9 +21,19 @@ class MemberContact extends Entity
     protected $Addresses = null;
 
     /**
+     * @property ArrayOfCard $Cards
+     */
+    protected $Cards = null;
+
+    /**
      * @property ArrayOfNotification $Notifications
      */
     protected $Notifications = null;
+
+    /**
+     * @property ArrayOfOneList $OneLists
+     */
+    protected $OneLists = null;
 
     /**
      * @property ArrayOfProfile $Profiles
@@ -36,9 +46,9 @@ class MemberContact extends Entity
     protected $PublishedOffers = null;
 
     /**
-     * @property ArrayOfLoyTransaction $Transactions
+     * @property ArrayOfSalesEntry $SalesEntries
      */
-    protected $Transactions = null;
+    protected $SalesEntries = null;
 
     /**
      * @property Account $Account
@@ -51,19 +61,9 @@ class MemberContact extends Entity
     protected $AlternateId = null;
 
     /**
-     * @property OneList $Basket
-     */
-    protected $Basket = null;
-
-    /**
      * @property string $BirthDay
      */
     protected $BirthDay = null;
-
-    /**
-     * @property Card $Card
-     */
-    protected $Card = null;
 
     /**
      * @property string $Email
@@ -131,19 +131,9 @@ class MemberContact extends Entity
     protected $Phone = null;
 
     /**
-     * @property int $RV
-     */
-    protected $RV = null;
-
-    /**
      * @property string $UserName
      */
     protected $UserName = null;
-
-    /**
-     * @property OneList $WishList
-     */
-    protected $WishList = null;
 
     /**
      * @param ArrayOfAddress $Addresses
@@ -164,6 +154,24 @@ class MemberContact extends Entity
     }
 
     /**
+     * @param ArrayOfCard $Cards
+     * @return $this
+     */
+    public function setCards($Cards)
+    {
+        $this->Cards = $Cards;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfCard
+     */
+    public function getCards()
+    {
+        return $this->Cards;
+    }
+
+    /**
      * @param ArrayOfNotification $Notifications
      * @return $this
      */
@@ -179,6 +187,24 @@ class MemberContact extends Entity
     public function getNotifications()
     {
         return $this->Notifications;
+    }
+
+    /**
+     * @param ArrayOfOneList $OneLists
+     * @return $this
+     */
+    public function setOneLists($OneLists)
+    {
+        $this->OneLists = $OneLists;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfOneList
+     */
+    public function getOneLists()
+    {
+        return $this->OneLists;
     }
 
     /**
@@ -218,21 +244,21 @@ class MemberContact extends Entity
     }
 
     /**
-     * @param ArrayOfLoyTransaction $Transactions
+     * @param ArrayOfSalesEntry $SalesEntries
      * @return $this
      */
-    public function setTransactions($Transactions)
+    public function setSalesEntries($SalesEntries)
     {
-        $this->Transactions = $Transactions;
+        $this->SalesEntries = $SalesEntries;
         return $this;
     }
 
     /**
-     * @return ArrayOfLoyTransaction
+     * @return ArrayOfSalesEntry
      */
-    public function getTransactions()
+    public function getSalesEntries()
     {
-        return $this->Transactions;
+        return $this->SalesEntries;
     }
 
     /**
@@ -272,24 +298,6 @@ class MemberContact extends Entity
     }
 
     /**
-     * @param OneList $Basket
-     * @return $this
-     */
-    public function setBasket($Basket)
-    {
-        $this->Basket = $Basket;
-        return $this;
-    }
-
-    /**
-     * @return OneList
-     */
-    public function getBasket()
-    {
-        return $this->Basket;
-    }
-
-    /**
      * @param string $BirthDay
      * @return $this
      */
@@ -305,24 +313,6 @@ class MemberContact extends Entity
     public function getBirthDay()
     {
         return $this->BirthDay;
-    }
-
-    /**
-     * @param Card $Card
-     * @return $this
-     */
-    public function setCard($Card)
-    {
-        $this->Card = $Card;
-        return $this;
-    }
-
-    /**
-     * @return Card
-     */
-    public function getCard()
-    {
-        return $this->Card;
     }
 
     /**
@@ -580,24 +570,6 @@ class MemberContact extends Entity
     }
 
     /**
-     * @param int $RV
-     * @return $this
-     */
-    public function setRV($RV)
-    {
-        $this->RV = $RV;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRV()
-    {
-        return $this->RV;
-    }
-
-    /**
      * @param string $UserName
      * @return $this
      */
@@ -613,24 +585,6 @@ class MemberContact extends Entity
     public function getUserName()
     {
         return $this->UserName;
-    }
-
-    /**
-     * @param OneList $WishList
-     * @return $this
-     */
-    public function setWishList($WishList)
-    {
-        $this->WishList = $WishList;
-        return $this;
-    }
-
-    /**
-     * @return OneList
-     */
-    public function getWishList()
-    {
-        return $this->WishList;
     }
 
 

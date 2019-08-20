@@ -17,9 +17,9 @@ class ArrayOfInventoryResponse implements IteratorAggregate
     /**
      * @property InventoryResponse[] $InventoryResponse
      */
-    protected $InventoryResponse = array(
+    protected $InventoryResponse = [
         
-    );
+    ];
 
     /**
      * @param InventoryResponse[] $InventoryResponse

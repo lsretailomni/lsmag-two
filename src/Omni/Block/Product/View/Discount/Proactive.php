@@ -141,7 +141,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
 
     /**
      * @param $sku
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer[]|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return array|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer[]|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse|\Ls\Omni\Client\ResponseInterface|null
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getCoupons($sku)
@@ -154,10 +154,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
             $cardId = $customer->getData('lsr_cardid');
             if ($response = $this->loyaltyHelper->getPublishedOffers($itemId, $storeId, $cardId)) {
-                if (!is_array($response)) {
-                    $response = [$response];
-                }
-                return $response;
+                return $response->getPublishedOffer();
             } else {
                 return [];
             }
@@ -253,14 +250,14 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                 $counter++;
             }
             if (!empty($discountText)) {
-                $discountText .= __("if Buy with any of these items: " . $popupLink);
+                $discountText .= __("if Buy with any of these items: ") . $popupLink;
             } else {
                 $discountText .= $popupLink;
             }
             if ($this->getMixandMatchProductLimit() != 0) {
                 $description[] = $discountText;
-                $description[] = implode(" ", $productData);
                 if (!empty($productsData)) {
+                    $description[] = implode(" ", $productData);
                     $description[] = "</div>";
                 }
             }

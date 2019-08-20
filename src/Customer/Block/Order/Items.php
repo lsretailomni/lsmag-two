@@ -37,14 +37,8 @@ class Items extends \Magento\Sales\Block\Items\AbstractItems
      */
     public function getItems()
     {
-        $orderLines = $this->getOrder()->getOrderLines()->getOrderLine();
+        $orderLines = $this->getOrder()->getLines()->getSalesEntryLine();
         $this->getChildBlock("custom_order_item_renderer")->setData("order", $this->getOrder());
-        if (!is_array($orderLines)) {
-            $tmp = $orderLines;
-            // @codingStandardsIgnoreStart
-            $orderLines = array($tmp);
-            // @codingStandardsIgnoreEnd
-        }
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == LSR::LSR_SHIPMENT_ITEM_ID) {
                 unset($orderLines[$key]);

@@ -51,6 +51,11 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     private $hashCache = [];
 
     /**
+     * @var \Magento\Quote\Model\ResourceModel\Quote
+     */
+    public $quoteResourceModel;
+
+    /**
      * ItemHelper constructor.
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -61,6 +66,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel
      * @param LoyaltyHelper $loyaltyHelper
      * @param Cart $cart
+     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      */
     public function __construct(
         Context $context,
@@ -71,7 +77,8 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel,
         LoyaltyHelper $loyaltyHelper,
-        Cart $cart
+        Cart $cart,
+        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
     ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -82,6 +89,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->itemResourceModel = $itemResourceModel;
         $this->loyaltyHelper = $loyaltyHelper;
         $this->cart = $cart;
+        $this->quoteResourceModel = $quoteResourceModel;
     }
 
     /**
@@ -207,7 +215,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $item
-     * @param $orderData
+     * @param \Ls\Omni\Client\Ecommerce\Entity\Order|\Ls\Omni\Client\Ecommerce\Entity\SalesEntry $orderData
      * @return array|null
      */
     // @codingStandardsIgnoreLine
@@ -232,34 +240,27 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $customPrice = $item->getCustomPrice();
             }
             $check = false;
-            $basketData = null;
-
+            $basketData = [];
             $discountText = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
-
-            if (is_array($orderData->getOrderLines()->getOrderLine())) {
-                $basketData = $orderData->getOrderLines()->getOrderLine();
-            } else {
-                // @codingStandardsIgnoreLine
-                $basketData[] = $orderData->getOrderLines()->getOrderLine();
+            if ($orderData instanceof Entity\SalesEntry) {
+                $basketData = $orderData->getLines();
+                $discountsLines = $orderData->getDiscountLines();
+            } elseif ($orderData instanceof Entity\Order) {
+                $basketData = $orderData->getOrderLines();
+                $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
             }
             foreach ($basketData as $basket) {
                 if ($basket->getItemId() == $itemSku[0] && $basket->getVariantId() == $itemSku[1]) {
                     if ($customPrice > 0 && $customPrice != null) {
-                        if (is_array($orderData->getOrderDiscountLines()->getOrderDiscountLine())) {
-                            // @codingStandardsIgnoreLine
-                            foreach ($orderData->getOrderDiscountLines()->getOrderDiscountLine() as $orderDiscountLine) {
-                                if ($basket->getLineNumber() == $orderDiscountLine->getLineNumber()) {
-                                    if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
-                                        $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
-                                    }
+                        // @codingStandardsIgnoreLine
+                        foreach ($discountsLines as $orderDiscountLine) {
+                            if ($basket->getLineNumber() == $orderDiscountLine->getLineNumber()) {
+                                if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
+                                    $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
                                 }
                             }
-                        } else {
-                            // @codingStandardsIgnoreLine
-                            $discountInfo[] = $orderData->getOrderDiscountLines()->getOrderDiscountLine()->getDescription();
+                            $check = true;
                         }
-
-                        $check = true;
                     }
                 }
             }
@@ -275,9 +276,8 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $quote
-     * @param $basketData
+     * @param \Ls\Omni\Client\Ecommerce\Entity\Order $basketData
      */
-    // @codingStandardsIgnoreLine
     public function setDiscountedPricesForItems($quote, $basketData)
     {
         try {
@@ -354,9 +354,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 $couponCode = $this->checkoutSession->getCouponCode();
                 $cartQuote->setCouponCode($couponCode);
-                $this->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
+                $cartQuote->getShippingAddress()->setCouponCode($couponCode);
                 $cartQuote->collectTotals();
-                $this->quoteRepository->save($cartQuote);
+                $this->quoteResourceModel->save($cartQuote);
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());

@@ -61,7 +61,7 @@ class Totals extends \Magento\Framework\View\Element\Template
     /**
      * Retrieve current order model instance
      *
-     * @return \Ls\Omni\Client\Ecommerce\Entity\Order
+     * @return \Ls\Omni\Client\Ecommerce\Entity\SalesEntry
      */
     public function getOrder()
     {
@@ -132,7 +132,7 @@ class Totals extends \Magento\Framework\View\Element\Template
      */
     public function getShipmentChargeLineFee()
     {
-        $orderLines = $this->getOrder()->getOrderLines()->getOrderLine();
+        $orderLines = $this->getOrder()->getLines();
         $fee = 0;
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == LSR::LSR_SHIPMENT_ITEM_ID) {
@@ -161,11 +161,7 @@ class Totals extends \Magento\Framework\View\Element\Template
     public function getLoyaltyGiftCardInfo()
     {
         // @codingStandardsIgnoreStart
-        $paymentLines = $this->getOrder()->getOrderPayments()->getOrderPayment();
-        if (!is_array($paymentLines)) {
-            $singleLine = $paymentLines;
-            $paymentLines = array($singleLine);
-        }
+        $paymentLines = $this->getOrder()->getPayments();
         $methods = array();
         $giftCardInfo = array();
         $loyaltyInfo = array();
@@ -179,10 +175,10 @@ class Totals extends \Magento\Framework\View\Element\Template
                 $methods[] = __('Coupon');
             } elseif ($line->getTenderType() == '3') {
                 $methods[] = __('Loyalty Points');
-                $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getPreApprovedAmount());
+                $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getAmount());
             } elseif ($line->getTenderType() == '4') {
                 $methods[] = __('Gift Card');
-                $this->giftCardAmount = $line->getPreApprovedAmount();
+                $this->giftCardAmount = $line->getAmount();
             } else {
                 $methods[] = __('Unknown');
             }

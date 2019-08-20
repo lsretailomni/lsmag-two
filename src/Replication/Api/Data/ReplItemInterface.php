@@ -34,6 +34,17 @@ interface ReplItemInterface
     public function getBlockDiscount();
 
     /**
+     * @param int $BlockDistribution
+     * @return $this
+     */
+    public function setBlockDistribution($BlockDistribution);
+
+    /**
+     * @return int
+     */
+    public function getBlockDistribution();
+
+    /**
      * @param int $BlockManualPriceChange
      * @return $this
      */

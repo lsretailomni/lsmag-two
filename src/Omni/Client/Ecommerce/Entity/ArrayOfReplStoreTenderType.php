@@ -17,9 +17,9 @@ class ArrayOfReplStoreTenderType implements IteratorAggregate
     /**
      * @property ReplStoreTenderType[] $ReplStoreTenderType
      */
-    protected $ReplStoreTenderType = array(
+    protected $ReplStoreTenderType = [
         
-    );
+    ];
 
     /**
      * @param ReplStoreTenderType[] $ReplStoreTenderType

@@ -17,9 +17,9 @@ class ArrayOfMemberContact implements IteratorAggregate
     /**
      * @property MemberContact[] $MemberContact
      */
-    protected $MemberContact = array(
+    protected $MemberContact = [
         
-    );
+    ];
 
     /**
      * @param MemberContact[] $MemberContact

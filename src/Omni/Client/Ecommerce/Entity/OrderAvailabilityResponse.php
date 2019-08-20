@@ -17,11 +17,6 @@ class OrderAvailabilityResponse
     protected $Lines = null;
 
     /**
-     * @property string $OrderId
-     */
-    protected $OrderId = null;
-
-    /**
      * @property string $PreferredSourcingLocation
      */
     protected $PreferredSourcingLocation = null;
@@ -42,24 +37,6 @@ class OrderAvailabilityResponse
     public function getLines()
     {
         return $this->Lines;
-    }
-
-    /**
-     * @param string $OrderId
-     * @return $this
-     */
-    public function setOrderId($OrderId)
-    {
-        $this->OrderId = $OrderId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOrderId()
-    {
-        return $this->OrderId;
     }
 
     /**

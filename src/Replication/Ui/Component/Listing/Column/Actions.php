@@ -63,7 +63,7 @@ class Actions extends Column
                         ),
                         'label' => __('Execute'),
                         'confirm' => [
-                            'title' => __('Want to process ${ $.$data.label } Cron?'),
+                            'title' => __('Want to process %1 Cron?','${ $.$data.label }'),
                             'message' => __('It will take some time to process. Please don\'t close this window.')
                         ]
                     ];

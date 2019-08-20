@@ -14,26 +14,26 @@ class OrderStatusCheck implements RequestInterface
 {
 
     /**
-     * @property string $transactionId
+     * @property string $orderId
      */
-    protected $transactionId = null;
+    protected $orderId = null;
 
     /**
-     * @param string $transactionId
+     * @param string $orderId
      * @return $this
      */
-    public function setTransactionId($transactionId)
+    public function setOrderId($orderId)
     {
-        $this->transactionId = $transactionId;
+        $this->orderId = $orderId;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getTransactionId()
+    public function getOrderId()
     {
-        return $this->transactionId;
+        return $this->orderId;
     }
 
 

@@ -93,10 +93,8 @@ class Offers extends \Magento\Framework\View\Element\Template
      */
     public function getOffers()
     {
-        $result = $this->loyaltyHelper->getOffers()
-            ->getPublishedOffer();
-
-        return $result;
+        $result = $this->loyaltyHelper->getOffers();
+        return ($result) ? $result->getPublishedOffer() : '';
     }
 
     /**
@@ -130,19 +128,19 @@ class Offers extends \Magento\Framework\View\Element\Template
 
             $result = $this->loyaltyHelper->getImageById($img->getId(), $img_size);
 
-            if ($result instanceof \Ls\Omni\Client\Ecommerce\Entity\ImageView) {
+            if ($result) {
                 $offerpath = $this->getMediaPathtoStore();
                 // @codingStandardsIgnoreStart
                 if (!is_dir($offerpath)) {
                     $this->file->mkdir($offerpath, 0775);
                 }
-                $format = strtolower($result->getFormat());
+                $format = strtolower($result["format"]);
                 $id = $img->getId();
                 $output_file = "{$id}-{$index}.$format";
                 $file = "{$offerpath}{$output_file}";
 
                 if (!$this->file->fileExists($file)) {
-                    $base64 = $result->getImage();
+                    $base64 = $result["image"];
                     $image_file = fopen($file, 'wb');
                     fwrite($image_file, base64_decode($base64));
                     fclose($image_file);
@@ -165,7 +163,7 @@ class Offers extends \Magento\Framework\View\Element\Template
     public function getMediaPathtoStore()
     {
         return $this->getMediaDirectory()
-                ->getAbsolutePath()."ls".DIRECTORY_SEPARATOR."offers".DIRECTORY_SEPARATOR;
+                ->getAbsolutePath() . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -176,7 +174,7 @@ class Offers extends \Magento\Framework\View\Element\Template
     {
         return $this->storeManager->getStore()
                 ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
-            .DIRECTORY_SEPARATOR."ls".DIRECTORY_SEPARATOR."offers".DIRECTORY_SEPARATOR;
+            . DIRECTORY_SEPARATOR . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -258,7 +256,7 @@ class Offers extends \Magento\Framework\View\Element\Template
             }
             if (!empty($categoryIds)) {
                 $categoryIds = array_values($categoryIds);
-                $category = $this->categoryRepository->get($categoryIds[count($categoryIds)-1]);
+                $category = $this->categoryRepository->get($categoryIds[count($categoryIds) - 1]);
                 $url = $this->categoryHelper->getCategoryUrl($category);
                 $text = __("Go To Category");
             }

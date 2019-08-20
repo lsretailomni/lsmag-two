@@ -22,6 +22,11 @@ class ReplItem
     protected $BlockDiscount = null;
 
     /**
+     * @property int $BlockDistribution
+     */
+    protected $BlockDistribution = null;
+
+    /**
      * @property int $BlockManualPriceChange
      */
     protected $BlockManualPriceChange = null;
@@ -225,6 +230,24 @@ class ReplItem
     public function getBlockDiscount()
     {
         return $this->BlockDiscount;
+    }
+
+    /**
+     * @param int $BlockDistribution
+     * @return $this
+     */
+    public function setBlockDistribution($BlockDistribution)
+    {
+        $this->BlockDistribution = $BlockDistribution;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlockDistribution()
+    {
+        return $this->BlockDistribution;
     }
 
     /**

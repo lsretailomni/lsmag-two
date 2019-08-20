@@ -90,62 +90,56 @@ class OrderHelper extends AbstractHelper
      */
     public function prepareOrder(Model\Order $order, Entity\Order $oneListCalculateResponse)
     {
-        $isInline = true;
-        $storeId = $this->basketHelper->getDefaultWebStore();
-        $anonymousOrder = false;
-        $customerEmail = $order->getCustomerEmail();
-        $customerName = $order->getShippingAddress()->getFirstname() .
-            " " . $order->getShippingAddress()->getLastname();
-        $mobileNumber = $order->getShippingAddress()->getTelephone();
-        if ($this->customerSession->isLoggedIn()) {
-            $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-            $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
-        } else {
-            $contactId = $cardId = "";
-            $anonymousOrder = true;
+        try {
+            $isInline = true;
+            $storeId = $this->basketHelper->getDefaultWebStore();
+            $customerEmail = $order->getCustomerEmail();
+            $customerName = $order->getShippingAddress()->getFirstname() .
+                " " . $order->getShippingAddress()->getLastname();
+            $mobileNumber = $order->getShippingAddress()->getTelephone();
+            if ($this->customerSession->isLoggedIn()) {
+                $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+                $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+            } else {
+                $contactId = $cardId = "";
+            }
+            $shippingMethod = $order->getShippingMethod(true);
+            //TODO work on condition
+            $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
+            /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
+            $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
+            $pointDiscount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $order->setCouponCode($this->checkoutSession->getCouponCode());
+            $oneListCalculateResponse
+                ->setContactId($contactId)
+                ->setCardId($cardId)
+                ->setEmail($customerEmail)
+                ->setShipToEmail($customerEmail)
+                ->setContactName($customerName)
+                ->setShipToName($customerName)
+                ->setMobileNumber($mobileNumber)
+                ->setShipToPhoneNumber($mobileNumber)
+                ->setContactAddress($this->convertAddress($order->getBillingAddress()))
+                ->setShipToAddress($this->convertAddress($order->getShippingAddress()))
+                ->setClickAndCollectOrder($isClickCollect)
+                ->setStoreId($storeId);
+            $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
+            //For click and collect.
+            if ($isClickCollect) {
+                $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
+            }
+            $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            //For click and collect we need to remove shipment charge orderline
+            //For flat shipment it will set the correct shipment value into the order
+            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
+            // @codingStandardsIgnoreLine
+            $request = new Entity\OrderCreate();
+            $oneListCalculateResponse->setOrderLines($orderLinesArray);
+            $request->setRequest($oneListCalculateResponse);
+            return $request;
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
         }
-        $shippingMethod = $order->getShippingMethod(true);
-        //TODO work on condition
-        $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
-        /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-        $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
-        $pointDiscount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-        $order->setCouponCode($this->checkoutSession->getCouponCode());
-        $oneListCalculateResponse
-            ->setContactId($contactId)
-            ->setCardId($cardId)
-            ->setEmail($customerEmail)
-            ->setShipToEmail($customerEmail)
-            ->setContactName($customerName)
-            ->setShipToName($customerName)
-            ->setMobileNumber($mobileNumber)
-            ->setShipToPhoneNumber($mobileNumber)
-            ->setContactAddress($this->convertAddress($order->getBillingAddress()))
-            ->setShipToAddress($this->convertAddress($order->getShippingAddress()))
-            ->setAnonymousOrder($anonymousOrder)
-            ->setClickAndCollectOrder($isClickCollect)
-            ->setSourceType(Enum\SourceType::E_COMMERCE)
-            ->setStoreId($storeId);
-        $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
-        //For click and collect.
-        if ($isClickCollect) {
-            $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
-            $oneListCalculateResponse->setShipClickAndCollect(false);
-        }
-        $orderLines = $oneListCalculateResponse->getOrderLines()->getOrderLine();
-        if (!is_array($orderLines)) {
-            $orderLinesArray[] = $orderLines;
-        } else {
-            $orderLinesArray = $orderLines;
-        }
-        //For click and collect we need to remove shipment charge orderline
-        //For flat shipment it will set the correct shipment value into the order
-        $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
-        // @codingStandardsIgnoreLine
-        $request = new Entity\OrderCreate();
-        $oneListCalculateResponse->setOrderLines($orderLinesArray);
-        $request->setRequest($oneListCalculateResponse);
-        return $request;
     }
 
     /**
@@ -239,16 +233,17 @@ class OrderHelper extends AbstractHelper
      */
     public function setOrderPayments(Model\Order $order, $cardId)
     {
-        $transId = $order->getPayment()->getCcTransId();
+        $transId = $order->getPayment()->getLastTransId();
         $ccType = $order->getPayment()->getCcType();
         $cardNumber = $order->getPayment()->getCcLast4();
+        $paymentMethod = $order->getPayment()->getMethodInstance();
 
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
         $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
         // @codingStandardsIgnoreEnd
 
-        if ($order->getPayment()->getMethodInstance()->getCode() != "ls_payment_method_pay_at_store") {
+        if ($paymentMethod->isOffline() == false) {
             // @codingStandardsIgnoreStart
             $orderPayment = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
@@ -260,14 +255,10 @@ class OrderHelper extends AbstractHelper
                 ->setOrderId($order->getIncrementId())
                 ->setPreApprovedAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
-            if ($ccType != "" and $ccType != null) {
-                $orderPayment->setTenderType('1');
-                $orderPayment->setCardType($ccType);
-                $orderPayment->setCardNumber($cardNumber);
-                $orderPayment->setAuthorisationCode($transId);
-            } else {
-                $orderPayment->setTenderType('0');
-            }
+            $orderPayment->setTenderType('1');
+            $orderPayment->setCardType($ccType);
+            $orderPayment->setCardNumber($cardNumber);
+            $orderPayment->setAuthorisationCode($transId);
             $orderPaymentArray[] = $orderPayment;
         }
 
@@ -317,43 +308,43 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @return Entity\ArrayOfOrder|Entity\OrderHistoryByContactIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\SalesEntriesGetByCardIdResponse|\Ls\Omni\Client\ResponseInterface|null
      */
     public function getCurrentCustomerOrderHistory()
     {
         $response = null;
-        $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         // @codingStandardsIgnoreStart
-        $request = new Operation\OrderHistoryByContactId();
-        $orderHistory = new Entity\OrderHistoryByContactId();
+        $request = new Operation\SalesEntriesGetByCardId();
+        $orderHistory = new Entity\SalesEntriesGetByCardId();
         // @codingStandardsIgnoreEnd
-        $orderHistory->setContactId($contactId)->setIncludeLines(true)->setIncludeTransactions(true);
+        $orderHistory->setCardId($cardId);
         try {
             $response = $request->execute($orderHistory);
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getOrderHistoryByContactIdResult() : $response;
+        return $response ? $response->getSalesEntriesGetByCardIdResult() : $response;
     }
 
     /**
      * @param $orderId
-     * @return Entity\Order|Entity\OrderGetByIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\SalesEntryGetResponse|\Ls\Omni\Client\ResponseInterface|null
      */
     public function getOrderDetailsAgainstId($orderId)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\OrderGetById();
-        $order = new Entity\OrderGetById();
-        $order->setId($orderId)->setIncludeLines(true);
+        $request = new Operation\SalesEntryGet();
+        $order = new Entity\SalesEntryGet();
+        $order->setEntryId($orderId);
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($order);
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getOrderGetByIdResult() : $response;
+        return $response ? $response->getSalesEntryGetResult() : $response;
     }
 
     /**
@@ -376,14 +367,19 @@ class OrderHelper extends AbstractHelper
      */
     public function getOrderByDocumentId($documentId)
     {
-        $customerId = $this->customerSession->getCustomerId();
-        $order = $this->orderRepository->getList(
-            $this->basketHelper->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
-        )->getItems();
-        foreach ($order as $ord) {
-            if ($ord->getCustomerId() == $customerId) {
-                return $ord;
+        try {
+            $order = [];
+            $customerId = $this->customerSession->getCustomerId();
+            $order = $this->orderRepository->getList(
+                $this->basketHelper->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
+            )->getItems();
+            foreach ($order as $ord) {
+                if ($ord->getCustomerId() == $customerId) {
+                    return $ord;
+                }
             }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
         }
     }
 }

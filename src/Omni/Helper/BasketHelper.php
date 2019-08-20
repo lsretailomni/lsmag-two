@@ -78,12 +78,15 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public $couponCode;
 
-
     /**
      * @var $data
      */
     public $data;
 
+    /**
+     * @var \Magento\Quote\Model\ResourceModel\Quote
+     */
+    public $quoteResourceModel;
 
     /**
      * BasketHelper constructor.
@@ -101,6 +104,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Ls\Omni\Helper\Data $data
      * @param SessionManagerInterface $session
      * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      */
     public function __construct(
         Context $context,
@@ -116,9 +120,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         LSR $Lsr,
         Data $data,
         SessionManagerInterface $session,
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
-    )
-    {
+        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
+        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
+    ) {
         parent::__construct($context);
         $this->cart = $cart;
         $this->productRepository = $productRepository;
@@ -133,6 +137,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->data = $data;
         $this->session = $session;
         $this->quoteRepository = $quoteRepository;
+        $this->quoteResourceModel = $quoteResourceModel;
     }
 
     /**
@@ -407,8 +412,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param Entity\OneList $oneList
-     * @return bool|Entity\ArrayOfOrderLineAvailability|Entity\OrderAvailabilityCheckResponse|\Ls\Omni\Client\ResponseInterface
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @return bool|Entity\OrderAvailabilityResponse|Entity\OrderCheckAvailabilityResponse|\Ls\Omni\Client\ResponseInterface
      */
     public function availability(Entity\OneList $oneList)
     {
@@ -447,14 +451,14 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setSourceType(Entity\Enum\SourceType::STANDARD)
                 ->setItemNumberType(Entity\Enum\ItemNumberType::ITEM_NO)
                 ->setOrderLineAvailabilityRequests($lines);
-            $entity = new Entity\OrderAvailabilityCheck();
+            $entity = new Entity\OrderCheckAvailability();
             $entity->setRequest($request);
-            $operation = new Operation\OrderAvailabilityCheck();
+            $operation = new Operation\OrderCheckAvailability();
             // @codingStandardsIgnoreEnd
             $response = $operation->execute($entity);
         }
 
-        return $response ? $response->getOrderAvailabilityCheckResult() : $response;
+        return $response ? $response->getOrderCheckAvailabilityResult() : $response;
     }
 
     /**
@@ -559,7 +563,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             // @codingStandardsIgnoreStart
             /** @var Entity\OneList $oneListRequest */
             $oneListRequest = (new Entity\OneList())
-                ->setContactId($contactId)
                 ->setCardId($cardId)
                 ->setListType(Entity\Enum\ListType::BASKET)
                 ->setItems($listItems)
@@ -588,7 +591,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (($response == null)) {
             // @codingStandardsIgnoreLine
             $oneListCalResponse = new Entity\OneListCalculateResponse();
-
             return $oneListCalResponse->getResult();
         }
         if (property_exists($response, "OneListCalculateResult")) {
@@ -719,7 +721,18 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($this->customerSession->getData(LSR::SESSION_CART_WISHLIST)) {
             return $this->customerSession->getData(LSR::SESSION_CART_WISHLIST);
         }
-        return null;
+        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
+            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
+
+        $store_id = $this->getDefaultWebStore();
+        $wishlist = (new Entity\OneList())
+            ->setCardId($cardId)
+            ->setDescription('List ' . $cardId)
+            ->setIsDefaultList(true)
+            ->setListType(Entity\Enum\ListType::WISH)
+            ->setItems(new Entity\ArrayOfOneListItem())
+            ->setStoreId($store_id);
+        return $wishlist;
     }
 
     /**
@@ -741,24 +754,21 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         /**
          * If its a logged in user then we need to fetch already created one list.
          */
-
-        if ($contactId != '') {
-            /** @var Operation\OneListGetByContactId $request */
+        if ($cardId != '') {
+            /** @var Operation\OneListGetByCardId $request */
             // @codingStandardsIgnoreLine
-            $request = new Operation\OneListGetByContactId();
-
-            /** @var Entity\OneListGetByContactId $entity */
+            $request = new Operation\OneListGetByCardId();
+            /** @var Entity\OneListGetByCardId $entity */
             // @codingStandardsIgnoreLine
-            $entity = new Entity\OneListGetByContactId();
-
-            $entity->setContactId($contactId)
+            $entity = new Entity\OneListGetByCardId();
+            $entity->setCardId($cardId)
                 ->setListType(Entity\Enum\ListType::BASKET)
                 ->setIncludeLines(true);
 
-            /** @var Entity\OneListGetByContactIdResponse $response */
+            /** @var Entity\OneListGetByCardIdResponse $response */
             $response = $request->execute($entity);
 
-            $lists = $response->getOneListGetByContactIdResult()->getOneList();
+            $lists = $response->getOneListGetByCardIdResult()->getOneList();
             // if we have a list or an array, return it
             if (!empty($lists)) {
                 if ($lists instanceof Entity\OneList) {
@@ -779,7 +789,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         /** @var Entity\OneList $list */
         // @codingStandardsIgnoreStart
         $list = (new Entity\OneList())
-            ->setContactId($contactId)
             ->setCardId($cardId)
             ->setDescription('OneList Magento')
             ->setIsDefaultList(true)
@@ -816,7 +825,10 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->update(
                 $this->get()
             );
-            $this->itemHelper->setDiscountedPricesForItems($this->checkoutSession->getQuote(), $this->getBasketSessionValue());
+            $this->itemHelper->setDiscountedPricesForItems(
+                $this->checkoutSession->getQuote(),
+                $this->getBasketSessionValue()
+            );
 
             return $status = '';
         }
@@ -845,14 +857,20 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 foreach ($status->getOrderDiscountLines()->getOrderDiscountLine() as $orderDiscountLine) {
                     if ($orderDiscountLine->getDiscountType() == 'Coupon') {
                         $status = "success";
-                        $this->itemHelper->setDiscountedPricesForItems($this->checkoutSession->getQuote(), $this->getBasketSessionValue());
+                        $this->itemHelper->setDiscountedPricesForItems(
+                            $this->checkoutSession->getQuote(),
+                            $this->getBasketSessionValue()
+                        );
                         $this->setCouponQuote($this->couponCode);
                     }
                 }
             } else {
                 if ($status->getOrderDiscountLines()->getOrderDiscountLine()->getDiscountType() == 'Coupon') {
                     $status = "success";
-                    $this->itemHelper->setDiscountedPricesForItems($this->checkoutSession->getQuote(), $this->getBasketSessionValue());
+                    $this->itemHelper->setDiscountedPricesForItems(
+                        $this->checkoutSession->getQuote(),
+                        $this->getBasketSessionValue()
+                    );
                     $this->setCouponQuote($this->couponCode);
                 }
             }
@@ -876,11 +894,11 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $cartQuote = $this->cart->getQuote();
         if (!empty($cartQuote->getId())) {
             $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-            $cartQuote->setCouponCode($couponCode)->collectTotals();
+            $cartQuote->setCouponCode($couponCode);
+            $cartQuote->collectTotals();
         }
-        $this->quoteRepository->save($cartQuote);
+        $this->quoteResourceModel->save($cartQuote);
         $this->checkoutSession->setCouponCode($couponCode);
-        $this->checkoutSession->getQuote()->setCouponCode($couponCode)->save();
     }
 
     /**

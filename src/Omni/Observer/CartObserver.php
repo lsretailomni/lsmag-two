@@ -86,49 +86,52 @@ class CartObserver implements ObserverInterface
           */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($this->watchNextSave) {
-                /** @var \Magento\Quote\Model\Quote $quote */
-                $quote = $this->checkoutSession->getQuote();
-                $couponCode = $this->checkoutSession->getCouponCode();
-                // This will create one list if not created and will return onelist if its already created.
-                /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList|null $oneList */
-                $oneList = $this->basketHelper->get();
-                //TODO if there is any no items, i-e when user only has one item and s/he prefer to remove from cart,
-                // then dont calculate basket functionality below.
-                // add items from the quote to the oneList and return the updated onelist
-                $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-                if (!empty($couponCode)) {
-                    $status = $this->basketHelper->setCouponCode($couponCode);
-                    if (!is_object($status)) {
-                        $this->checkoutSession->setCouponCode('');
+                try {
+                    /** @var \Magento\Quote\Model\Quote $quote */
+                    $quote = $this->checkoutSession->getQuote();
+                    $couponCode = $this->checkoutSession->getCouponCode();
+                    // This will create one list if not created and will return onelist if its already created.
+                    /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList|null $oneList */
+                    $oneList = $this->basketHelper->get();
+                    //TODO if there is any no items, i-e when user only has one item and s/he prefer to remove from cart,
+                    // then dont calculate basket functionality below.
+                    // add items from the quote to the oneList and return the updated onelist
+                    $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
+                    if (!empty($couponCode)) {
+                        $status = $this->basketHelper->setCouponCode($couponCode);
+                        if (!is_object($status)) {
+                            $this->checkoutSession->setCouponCode('');
+                        }
                     }
-                }
-                if (count($quote->getAllItems()) == 0) {
-                    $quote->setLsGiftCardAmountUsed(0);
-                    $quote->setLsGiftCardNo(null);
-                    $quote->setLsPointsSpent(0);
-                    $quote->setLsPointsEarn(0);
-                    $quote->setGrandTotal(0);
-                    $quote->setBaseGrandTotal(0);
-                    $this->basketHelper->quoteRepository->save($quote);
-                }
-                /** @var \Ls\Omni\Client\Ecommerce\Entity\Order $basketData */
-                $basketData = $this->basketHelper->update($oneList);
-                $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
-                if (!empty($basketData)) {
-                    $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
-                }
-                if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||
-                    $this->checkoutSession->getQuote()->getLsPointsSpent() > 0) {
-                    $this->data->orderBalanceCheck(
-                        $this->checkoutSession->getQuote()->getLsGiftCardNo(),
-                        $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
-                        $this->checkoutSession->getQuote()->getLsPointsSpent(),
-                        $basketData
-                    );
+                    if (count($quote->getAllItems()) == 0) {
+                        $quote->setLsGiftCardAmountUsed(0);
+                        $quote->setLsGiftCardNo(null);
+                        $quote->setLsPointsSpent(0);
+                        $quote->setLsPointsEarn(0);
+                        $quote->setGrandTotal(0);
+                        $quote->setBaseGrandTotal(0);
+                        $this->basketHelper->quoteRepository->save($quote);
+                    }
+                    /** @var \Ls\Omni\Client\Ecommerce\Entity\Order $basketData */
+                    $basketData = $this->basketHelper->update($oneList);
+                    $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
+                    if (!empty($basketData)) {
+                        $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
+                    }
+                    if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||
+                        $this->checkoutSession->getQuote()->getLsPointsSpent() > 0) {
+                        $this->data->orderBalanceCheck(
+                            $this->checkoutSession->getQuote()->getLsGiftCardNo(),
+                            $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
+                            $this->checkoutSession->getQuote()->getLsPointsSpent(),
+                            $basketData
+                        );
+                    }
+                } catch (\Exception $e) {
+                    $this->logger->error($e->getMessage());
                 }
             }
         }
-
         return $this;
     }
 

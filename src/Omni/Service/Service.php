@@ -22,9 +22,7 @@ class Service
     public $baseurl = null;
 
     static public $endpoints = [
-        ServiceType::ECOMMERCE => 'ecommerceservice.svc',
-        ServiceType::LOYALTY => 'loyservice.svc',
-        ServiceType::GENERAL => 'service.svc',
+        ServiceType::ECOMMERCE => 'UCService.svc'
     ];
 
     /**
