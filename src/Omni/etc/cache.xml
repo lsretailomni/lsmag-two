@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Cache/etc/cache.xsd">
+    <type name="ls_ecommerce" translate="label,description" instance="Ls\Omni\Model\Cache\Type">
+        <label>LS eCommerce Cache</label>
+        <description>LS eCommerce cache for storing the response objects</description>
+    </type>
+</config>

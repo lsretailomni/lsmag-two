@@ -122,6 +122,16 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     protected $SeasonCode = null;
 
     /**
+     * @property UnitOfMeasure $SelectedUnitOfMeasure
+     */
+    protected $SelectedUnitOfMeasure = null;
+
+    /**
+     * @property VariantRegistration $SelectedVariant
+     */
+    protected $SelectedVariant = null;
+
+    /**
      * @property float $UnitVolume
      */
     protected $UnitVolume = null;
@@ -564,6 +574,46 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     public function getSeasonCode()
     {
         return $this->getData( 'SeasonCode' );
+    }
+
+    /**
+     * @param UnitOfMeasure $SelectedUnitOfMeasure
+     * @return $this
+     */
+    public function setSelectedUnitOfMeasure($SelectedUnitOfMeasure)
+    {
+        $this->setData( 'SelectedUnitOfMeasure', $SelectedUnitOfMeasure );
+        $this->SelectedUnitOfMeasure = $SelectedUnitOfMeasure;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return UnitOfMeasure
+     */
+    public function getSelectedUnitOfMeasure()
+    {
+        return $this->getData( 'SelectedUnitOfMeasure' );
+    }
+
+    /**
+     * @param VariantRegistration $SelectedVariant
+     * @return $this
+     */
+    public function setSelectedVariant($SelectedVariant)
+    {
+        $this->setData( 'SelectedVariant', $SelectedVariant );
+        $this->SelectedVariant = $SelectedVariant;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return VariantRegistration
+     */
+    public function getSelectedVariant()
+    {
+        return $this->getData( 'SelectedVariant' );
     }
 
     /**

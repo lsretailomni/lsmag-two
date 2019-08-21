@@ -32,6 +32,23 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
      */
     public $scopeConfig;
 
+    /**
+     * @var \Ls\Core\Model\LSR
+     */
+    public $lsr;
+
+    /**
+     * Coupons constructor.
+     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param StoreManagerInterface $storeManager
+     * @param TimezoneInterface $timeZoneInterface
+     * @param ScopeConfigInterface $scopeConfig
+     * @param LSR $lsr
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param array $data
+     */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Customer\Model\Session\Proxy $customerSession,
@@ -39,6 +56,7 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
         StoreManagerInterface $storeManager,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
+        LSR $lsr,
         LoyaltyHelper $loyaltyHelper,
         array $data = []
     ) {
@@ -48,6 +66,7 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
         $this->storeManager = $storeManager;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig = $scopeConfig;
+        $this->lsr = $lsr;
     }
 
     /**
@@ -74,11 +93,11 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
     public function getFormattedDescription(\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon)
     {
         $description = "<div class='coupon-description-wrapper'>".
-            "<span class='coupon-code'>".$coupon->getOfferId()."</span><br/>".
-            "<span class='coupon-description'>".$coupon->getDescription().
-            "</span><br/><span class='coupon-detail'>".$coupon->getDetails()."</span><br/>
-            <span class='coupon-expiry'>".__("Valid till")."&nbsp".
-            $this->getFormattedOfferExpiryDate($coupon->getExpirationDate())."</span></div>";
+            (($coupon->getOfferId()) ? "<span class='coupon-code'>".$coupon->getOfferId()."</span><br/>" : "").
+            (($coupon->getDescription()) ? "<span class='coupon-description'>".$coupon->getDescription()."</span><br/>" : "").
+            (($coupon->getDetails()) ? "<span class='coupon-detail'>".$coupon->getDetails()."</span><br/>" : "").
+            (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>".__("Valid till")."&nbsp". $this->getFormattedOfferExpiryDate($coupon->getExpirationDate())."</span>" : "") .
+            "</div>";
         return $description;
     }
 
@@ -106,5 +125,13 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
     public function getAjaxUrl()
     {
         return $this->getUrl('omni/ajax/coupons');
+    }
+
+    /**
+     * @return string
+     */
+    public function isCouponEnable()
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_COUPON_SHOW_ON_CART_CHECKOUT);
     }
 }

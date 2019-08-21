@@ -11,15 +11,12 @@ namespace Ls\Omni\Client\Ecommerce\Entity\Enum;
 use MyCLabs\Enum\Enum;
 
 /**
- * @$method static PaymentStatus UNKNOWN()
  * @$method static PaymentStatus PRE_APPROVED()
  * @$method static PaymentStatus APPROVED()
  * @$method static PaymentStatus POSTED()
  */
 class PaymentStatus extends Enum
 {
-
-    const UNKNOWN = 'Unknown';
 
     const PRE_APPROVED = 'PreApproved';
 

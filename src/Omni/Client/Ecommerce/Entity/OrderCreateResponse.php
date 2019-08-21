@@ -14,12 +14,12 @@ class OrderCreateResponse implements ResponseInterface
 {
 
     /**
-     * @property Order $OrderCreateResult
+     * @property SalesEntry $OrderCreateResult
      */
     protected $OrderCreateResult = null;
 
     /**
-     * @param Order $OrderCreateResult
+     * @param SalesEntry $OrderCreateResult
      * @return $this
      */
     public function setOrderCreateResult($OrderCreateResult)
@@ -29,7 +29,7 @@ class OrderCreateResponse implements ResponseInterface
     }
 
     /**
-     * @return Order
+     * @return SalesEntry
      */
     public function getOrderCreateResult()
     {
@@ -37,7 +37,7 @@ class OrderCreateResponse implements ResponseInterface
     }
 
     /**
-     * @return Order
+     * @return SalesEntry
      */
     public function getResult()
     {

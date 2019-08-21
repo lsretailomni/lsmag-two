@@ -58,6 +58,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // SERVICE
     const SC_SERVICE_ENABLE = 'ls_mag/service/enabled';
     const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
+    const SC_SERVICE_LS_KEY = 'ls_mag/service/ls_key';
     const SC_SERVICE_STORE = 'ls_mag/service/selected_store';
     const SC_SERVICE_DEBUG = 'ls_mag/service/debug';
     const SC_SERVICE_TOKENIZED = 'ls_mag/service/tokenized_operations';
@@ -253,6 +254,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
 
+    //Discount and Coupon Management
+    const LS_DISCOUNT_SHOW_ON_PRODUCT = 'ls_mag/ls_discounts/discount';
+    const LS_COUPON_SHOW_ON_CART_CHECKOUT = 'ls_mag/ls_discounts/coupon';
+    const LS_DISCOUNT_MIXANDMATCH_LIMIT = 'ls_mag/ls_discounts/discount_mixandmatch_limit';
+
     //Coupon Code Message
     const LS_COUPON_CODE_ERROR_MESSAGE = 'Coupon Code is not valid for these item(s)';
 
@@ -265,6 +271,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //LS reset password email of the current customer
     const REGISTRY_CURRENT_RESETPASSWORD_EMAIL = 'reset-password-email';
 
+    //Cache
+    const IMAGE_CACHE = 'LS_IMAGE_';
+    const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
+    const POINTRATE = 'LS_PointsRate_';
+    const PROACTIVE_DISCOUNTS = 'LS_Proactive_';
+    const COUPONS = 'LS_Coupons_';
     /**
      * @var ScopeConfigInterface
      */
@@ -275,9 +287,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /** @var array End Points */
     public $endpoints = [
-        ServiceType::ECOMMERCE => 'ecommerceservice.svc',
-        ServiceType::LOYALTY => 'loyservice.svc',
-        ServiceType::GENERAL => 'service.svc',
+        ServiceType::ECOMMERCE => 'UCService.svc'
     ];
 
     /**
@@ -360,7 +370,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             try {
                 $url = join('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
                 // @codingStandardsIgnoreStart
-                $soapClient = new SoapClient($url . '?singlewsdl');
+                $soapClient = new SoapClient($url . '?singlewsdl', array('features' => SOAP_SINGLE_ELEMENT_ARRAYS));
                 // @codingStandardsIgnoreEnd
                 if ($soapClient) {
                     return true;

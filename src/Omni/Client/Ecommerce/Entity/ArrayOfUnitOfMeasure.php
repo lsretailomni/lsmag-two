@@ -17,9 +17,9 @@ class ArrayOfUnitOfMeasure implements IteratorAggregate
     /**
      * @property UnitOfMeasure[] $UnitOfMeasure
      */
-    protected $UnitOfMeasure = array(
+    protected $UnitOfMeasure = [
         
-    );
+    ];
 
     /**
      * @param UnitOfMeasure[] $UnitOfMeasure

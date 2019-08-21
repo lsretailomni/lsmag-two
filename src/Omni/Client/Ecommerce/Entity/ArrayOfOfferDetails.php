@@ -17,9 +17,9 @@ class ArrayOfOfferDetails implements IteratorAggregate
     /**
      * @property OfferDetails[] $OfferDetails
      */
-    protected $OfferDetails = array(
+    protected $OfferDetails = [
         
-    );
+    ];
 
     /**
      * @param OfferDetails[] $OfferDetails

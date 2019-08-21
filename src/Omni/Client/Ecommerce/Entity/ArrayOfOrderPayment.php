@@ -17,9 +17,9 @@ class ArrayOfOrderPayment implements IteratorAggregate
     /**
      * @property OrderPayment[] $OrderPayment
      */
-    protected $OrderPayment = array(
+    protected $OrderPayment = [
         
-    );
+    ];
 
     /**
      * @param OrderPayment[] $OrderPayment

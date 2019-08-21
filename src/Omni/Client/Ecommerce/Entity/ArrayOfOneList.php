@@ -17,9 +17,9 @@ class ArrayOfOneList implements IteratorAggregate
     /**
      * @property OneList[] $OneList
      */
-    protected $OneList = array(
+    protected $OneList = [
         
-    );
+    ];
 
     /**
      * @param OneList[] $OneList

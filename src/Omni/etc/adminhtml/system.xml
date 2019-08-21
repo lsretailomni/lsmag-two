@@ -8,11 +8,16 @@
             <group id="service" translate="label" type="text" sortOrder="10"
                    showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Configuration</label>
-                <field id="base_url" translate="label comment" type="text" sortOrder="10"
+                <field id="base_url" translate="label" type="text" sortOrder="10"
                        showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Service Base URL</label>
                     <validate>required-entry validate-url</validate>
                     <comment>http://lsretail.cloudapp.net/lsomniservice</comment>
+                </field>
+                <field id="ls_key" translate="label" type="text" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>LS Key</label>
+                    <comment>For Multi Tenant Web Services</comment>
                 </field>
                 <field id="validate_base_url" translate="label comment" type="button" sortOrder="10"
                        showInDefault="1" showInWebsite="1" showInStore="1">
@@ -89,6 +94,26 @@
                        showInWebsite="1" showInStore="1">
                     <label>Show on Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="ls_discounts" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Discount and Coupon Management</label>
+                <field id="discount" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Show Promotions on Product Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="coupon" translate="label" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show Coupons on Cart/Checkout Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="discount_mixandmatch_limit" translate="label" type="text" sortOrder="4" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Discount Popup Mix and Match Products Limit</label>
+                    <comment>This will display the number of mix and match discounts product on promotions in product page.Set value to -1 to display all products.</comment>
                 </field>
             </group>
         </section>

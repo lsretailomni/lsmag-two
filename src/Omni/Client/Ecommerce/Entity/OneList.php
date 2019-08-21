@@ -30,11 +30,6 @@ class OneList extends Entity
     protected $CardId = null;
 
     /**
-     * @property string $ContactId
-     */
-    protected $ContactId = null;
-
-    /**
      * @property string $CreateDate
      */
     protected $CreateDate = null;
@@ -58,6 +53,11 @@ class OneList extends Entity
      * @property ListType $ListType
      */
     protected $ListType = null;
+
+    /**
+     * @property float $PointAmount
+     */
+    protected $PointAmount = null;
 
     /**
      * @property float $ShippingAmount
@@ -141,24 +141,6 @@ class OneList extends Entity
     public function getCardId()
     {
         return $this->CardId;
-    }
-
-    /**
-     * @param string $ContactId
-     * @return $this
-     */
-    public function setContactId($ContactId)
-    {
-        $this->ContactId = $ContactId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContactId()
-    {
-        return $this->ContactId;
     }
 
     /**
@@ -249,7 +231,7 @@ class OneList extends Entity
                 throw new InvalidEnumException();
         }
         $this->ListType = $ListType->getValue();
-
+        
         return $this;
     }
 
@@ -259,6 +241,24 @@ class OneList extends Entity
     public function getListType()
     {
         return $this->ListType;
+    }
+
+    /**
+     * @param float $PointAmount
+     * @return $this
+     */
+    public function setPointAmount($PointAmount)
+    {
+        $this->PointAmount = $PointAmount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPointAmount()
+    {
+        return $this->PointAmount;
     }
 
     /**

@@ -9,10 +9,15 @@
                 <advanced>0</advanced>
                 <timeout>120</timeout>
             </service>
-		<ls_giftcard>
+            <ls_giftcard>
                 <cart>1</cart>
                 <checkout>1</checkout>
-        </ls_giftcard>
+            </ls_giftcard>
+            <ls_discounts>
+                <discount>1</discount>
+                <coupon>1</coupon>
+                <discount_mixandmatch_limit>15</discount_mixandmatch_limit>
+            </ls_discounts>
         </ls_mag>
         <!-- For Click and Collect -->
         <omni_clickandcollect>

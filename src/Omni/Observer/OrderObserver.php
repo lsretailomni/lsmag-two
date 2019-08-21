@@ -90,9 +90,30 @@ class OrderObserver implements ObserverInterface
             $success = false;
             $order = $observer->getEvent()->getData('order');
             $oneListCalculation = $this->basketHelper->getOneListCalculation();
-            if (empty($order)) {
-                $orderIds = $observer->getEvent()->getOrderIds();
-                $order = $this->orderHelper->orderRepository->get($orderIds[0]);
+            $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+            $response = $this->orderHelper->placeOrder($request);
+            try {
+                if ($response) {
+                    //delete from Omni.
+                    $documentId = $response->getId();
+                    $order->setDocumentId($documentId);
+                    $this->orderResourceModel->save($order);
+                    $this->checkoutSession->setLastDocumentId($documentId);
+                    $this->checkoutSession->unsetData('member_points');
+                    if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+                        $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
+                        $success = $this->basketHelper->delete($onelist);
+                        $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
+                        $this->basketHelper->unSetOneListCalculation();
+                    }
+                } else {
+                    // TODO: error handling
+                    $this->logger->critical(
+                        __('Something terrible happened while placing the order.')
+                    );
+                }
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
             }
             //checking for Adyen payment gateway
             $adyen_response = $observer->getEvent()->getData('adyen_response');

@@ -66,7 +66,8 @@ class LoadHierarchy extends Action
         try {
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $storeId = $this->getRequest()->getParam('storeId');
-            $hierarchies = $this->getHierarchy($baseUrl, $storeId);
+            $lsKey   = $this->getRequest()->getParam('lsKey');
+            $hierarchies = $this->getHierarchy($baseUrl, $storeId,$lsKey);
             if (!empty($hierarchies)) {
                 $option_array = [['value' => '', 'label' => __('Please select your hierarchy code')]];
                 foreach ($hierarchies as $hierarchy) {
@@ -86,9 +87,10 @@ class LoadHierarchy extends Action
     /**
      * @param $baseUrl
      * @param $storeId
+     * @param $lsKey
      * @return array|\Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyResponse|\Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy[]|\Ls\Omni\Client\ResponseInterface
      */
-    public function getHierarchy($baseUrl, $storeId)
+    public function getHierarchy($baseUrl, $storeId, $lsKey)
     {
         if ($this->lsr->validateBaseUrl($baseUrl) && $storeId != "") {
             //@codingStandardsIgnoreStart
@@ -97,6 +99,7 @@ class LoadHierarchy extends Action
             $client = new OmniClient($url, $service_type);
             $request = new ReplEcommHierarchy();
             $request->setClient($client);
+            $request->setToken($lsKey);
             $client->setClassmap($request->getClassMap());
             $request->getOperationInput()->setReplRequest((new ReplRequest())->setBatchSize(100)
                 ->setFullReplication(1)

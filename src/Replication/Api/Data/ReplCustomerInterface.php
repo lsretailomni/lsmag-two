@@ -12,6 +12,17 @@ interface ReplCustomerInterface
 {
 
     /**
+     * @param ArrayOfCard $Cards
+     * @return $this
+     */
+    public function setCards($Cards);
+
+    /**
+     * @return ArrayOfCard
+     */
+    public function getCards();
+
+    /**
      * @param string $AccountNumber
      * @return $this
      */
@@ -32,17 +43,6 @@ interface ReplCustomerInterface
      * @return int
      */
     public function getBlocked();
-
-    /**
-     * @param string $CardId
-     * @return $this
-     */
-    public function setCardId($CardId);
-
-    /**
-     * @return string
-     */
-    public function getCardId();
 
     /**
      * @param string $CellularPhone

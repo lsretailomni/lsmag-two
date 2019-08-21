@@ -312,28 +312,6 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return bool|Entity\LogoutResponse|\Ls\Omni\Client\ResponseInterface|null
-     */
-    public function logout()
-    {
-        $customer = $this->customerSession->getCustomer();
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $request = new Operation\Logout();
-        $request->setToken($customer->getData('lsr_token'));
-        $logout = new Entity\Logout();
-        // @codingStandardsIgnoreEnd
-        $logout->setUserName($customer->getData('lsr_username'))
-            ->setDeviceId(null);
-        try {
-            $response = $request->execute($logout);
-        } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        return $response ? $response->getLogoutResult() : $response;
-    }
-
-    /**
      * @param Entity\MemberContact $contact
      * @param $password
      * @return \Magento\Customer\Model\Customer
@@ -574,6 +552,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setMobilePhone($customerAddress->getTelephone())
                 ->setMiddleName('  ')
                 ->setId($customer->getData('lsr_id'))
+                ->setCards($this->setCards($this->setCard($customer->getData('lsr_cardid'))))
                 ->setAddresses($this->setAddresses($this->setAddress($customerAddress)));
             $entity->setContact($memberContact);
             try {
@@ -582,6 +561,22 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->_logger->error($e->getMessage());
             }
             return $response ? $response->getResult() : $response;
+        }
+    }
+
+    /**
+     * @param null $card
+     * @return Entity\ArrayOfCard|null
+     */
+    public function setCards($card = null)
+    {
+        // @codingStandardsIgnoreLine
+        $cards = new Entity\ArrayOfCard();
+        if ($card instanceof Entity\Card) {
+            $cards->setCard($card);
+            return $cards;
+        } else {
+            return null;
         }
     }
 
@@ -600,6 +595,18 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param null $card
+     * @return Entity\Card|null
+     */
+    private function setCard($cardId = null)
+    {
+        // @codingStandardsIgnoreLine
+        $card = new Entity\Card();
+        $card->setId($cardId);
+        return $card;
     }
 
     /**
@@ -842,6 +849,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         // @codingStandardsIgnoreEnd
     }
+
     /**
      * @param Entity\MemberContact $result
      * @param $credentials
@@ -879,7 +887,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $customer = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
-        $card = $result->getCard();
+        $cards = $result->getCards()->getCard();
+        $cardId = $cards[0]->getId();
         if ($customer->getData('lsr_id') === null) {
             $customer->setData('lsr_id', $result->getId());
         }
@@ -887,7 +896,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $customer->setData('lsr_username', $credentials['username']);
         }
         if ($customer->getData('lsr_cardid') === null) {
-            $customer->setData('lsr_cardid', $card->getId());
+            $customer->setData('lsr_cardid', $cardId);
         }
         $token = $result->getLoggedOnToDevice()->getSecurityToken();
 
@@ -908,9 +917,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $result->getId());
 
-        $card = $result->getCard();
-        if ($card instanceof Entity\Card && $card->getId() !== null) {
-            $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $card->getId());
+        if ($cardId !== null) {
+            $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $cardId);
         }
 
         $this->customerSession->setCustomerAsLoggedIn($customer);
@@ -968,8 +976,24 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $rpToken
             );
         }
-
-        //Unique customer found.
         return $found->getItems()[0];
+    }
+
+    /**
+     * @param $arrayOneLists
+     * @param $type
+     * @return Entity\OneList|null
+     */
+    public function getOneListTypeObject($arrayOneLists, $type)
+    {
+        if (is_array($arrayOneLists)) {
+            /** @var Entity\OneList $oneList */
+            foreach ($arrayOneLists as $oneList) {
+                if ($oneList->getListType() == $type) {
+                    return $oneList;
+                }
+            }
+        }
+        return null;
     }
 }

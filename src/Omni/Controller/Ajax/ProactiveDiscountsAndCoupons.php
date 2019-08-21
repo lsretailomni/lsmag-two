@@ -58,10 +58,17 @@ class ProactiveDiscountsAndCoupons extends Action
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
+
         $result = $this->resultJsonFactory->create();
         $resultPage = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');
         $data = ['productSku' => $currentProductSku];
+        $blockCoupons = $resultPage->getLayout()
+            ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
+            ->setTemplate('Ls_Omni::product/view/coupons.phtml')
+            ->setData('data', $data)
+            ->toHtml();
+        $data =array_merge($data, ['coupons'=>$blockCoupons]);
         $block = $resultPage->getLayout()
             ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
             ->setTemplate('Ls_Omni::product/view/proactive.phtml')

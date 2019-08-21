@@ -20,12 +20,12 @@ class CouponsProvider implements ConfigProviderInterface
     public $storeManager;
 
     /**
-     * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
      */
     public $timeZoneInterface;
 
     /**
-     * @var Magento\Framework\App\Config\ScopeConfigInterface
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     public $scopeConfig;
 
@@ -101,11 +101,10 @@ class CouponsProvider implements ConfigProviderInterface
      */
     public function getFormattedDescription(\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon)
     {
-        $description = "<span class='coupon-code'>" . $coupon->getOfferId() . "</span><br/>" .
-            "<span class='coupon-description'>" . $coupon->getDescription() .
-            "</span><br/><span class='coupon-detail'>" . $coupon->getDetails() . "</span><br/>
-            <span class='coupon-expiry'>" . __("Valid till") ."&nbsp;".
-            $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>";
+        $description = (($coupon->getOfferId()) ? "<span class='coupon-code'>".$coupon->getOfferId()."</span><br/>" : "").
+            (($coupon->getDescription()) ? "<span class='coupon-description'>".$coupon->getDescription()."</span><br/>" : "").
+            (($coupon->getDetails()) ? "<span class='coupon-detail'>".$coupon->getDetails()."</span><br/>" : "").
+            (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>".__("Valid till")."&nbsp". $this->getFormattedOfferExpiryDate($coupon->getExpirationDate())."</span>" : "");
         return $description;
     }
 
@@ -115,15 +114,15 @@ class CouponsProvider implements ConfigProviderInterface
      */
     public function getFormattedOfferExpiryDate($date)
     {
+        $offerExpiryDate = "";
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             ));
-
-            return $offerExpiryDate;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
+        return $offerExpiryDate;
     }
 }

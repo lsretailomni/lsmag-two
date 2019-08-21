@@ -17,9 +17,9 @@ class ArrayOfHierarchyAttribute implements IteratorAggregate
     /**
      * @property HierarchyAttribute[] $HierarchyAttribute
      */
-    protected $HierarchyAttribute = array(
+    protected $HierarchyAttribute = [
         
-    );
+    ];
 
     /**
      * @param HierarchyAttribute[] $HierarchyAttribute

@@ -81,6 +81,15 @@ define([
         checkCustomerLoggedIn: function() {
             var check = customer.isLoggedIn;
             return check;
+        },
+
+        isDisplay: function () {
+            if(window.checkoutConfig.coupons_display=="1"){
+                return true;
+            } else {
+                return false;
+            }
+
         }
     });
 });
