@@ -107,7 +107,7 @@ class AjaxLoginObserver implements ObserverInterface
                     $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
                     // CASE FOR EMAIL LOGIN := TRANSLATION TO USERNAME
                     if ($is_email) {
-                        $search = $this->contactHelper->search($username);
+                        $search = $this->contactHelper->search($username)[0];
                         $found = $search !== null
                             && ($search instanceof Entity\MemberContact)
                             && !empty($search->getEmail());
