@@ -81,7 +81,8 @@ class RegisterObserver implements ObserverInterface
                     if (is_object($contact) && $contact->getId()) {
                         $token = $contact->getLoggedOnToDevice()->getSecurityToken();
                         /** @var Entity\Card $card */
-                        $basket = $contact->getBasket();
+                        $basket = $this->contactHelper->getOneListTypeObject($contact->getOneLists()->getOneList(),
+                            Entity\Enum\ListType::BASKET);
                         $customer->setData('lsr_id', $contact->getId());
                         $customer->setData('lsr_token', $token);
                         $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
