@@ -228,11 +228,9 @@ class Offers extends \Magento\Framework\View\Element\Template
         $text = '';
         if (count($offerLines) == 1) {
             try {
-                if ($offerLine[0]->getLineType() == "Item") {
                     $product = $this->productRepository->get($offerLines[0]->getId());
                     $url = $product->getProductUrl();
                     $text = __("Go To Product");
-                }
             } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
                 return null;
             }
