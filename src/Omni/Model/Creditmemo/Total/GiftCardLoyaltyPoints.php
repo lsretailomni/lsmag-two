@@ -54,9 +54,12 @@ class GiftCardLoyaltyPoints extends AbstractTotal
         $creditmemo->setLsGiftCardNo($giftCardNo);
 
         $pointsSpent *= $this->loyaltyHelper->getPointRate();
-
-        $creditmemo->setGrandTotal($creditmemo->getGrandTotal() - $giftCardAmount - $pointsSpent);
-        $creditmemo->setBaseGrandTotal($creditmemo->getBaseGrandTotal() - $giftCardAmount - $pointsSpent);
+        $grandTotalAmount=$creditmemo->getOrder()->getGrandTotal()
+            - $creditmemo->getOrder()->getShippingAmount() - $creditmemo->getOrder()->getTaxAmount();
+        $baseGrandTotalAmount = $creditmemo->getOrder()->getBaseGrandTotal()
+            - $creditmemo->getOrder()->getShippingAmount() - $creditmemo->getOrder()->getTaxAmount();
+        $creditmemo->setGrandTotal($grandTotalAmount);
+        $creditmemo->setBaseGrandTotal($baseGrandTotalAmount);
 
         return $this;
     }

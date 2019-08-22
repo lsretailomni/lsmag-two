@@ -64,7 +64,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
      */
     public function getHref()
     {
-        return $this->getUrl($this->getPath(), ['order_id' => $this->getOrder()->getDocumentId()]);
+        return $this->getUrl($this->getPath(), ['order_id' => $this->getOrder()->getId()]);
     }
 
     /**

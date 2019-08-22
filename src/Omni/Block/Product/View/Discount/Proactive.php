@@ -147,17 +147,21 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     public function getCoupons($sku)
     {
         $itemId = $sku;
-        $storeId = $this->lsr->getDefaultWebStore();
-        if ($this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_ID)) {
-            $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-            $email = $this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_EMAIL);
-            $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
-            $cardId = $customer->getData('lsr_cardid');
-            if ($response = $this->loyaltyHelper->getPublishedOffers($itemId, $storeId, $cardId)) {
-                return $response->getPublishedOffer();
-            } else {
-                return [];
+        try {
+            $storeId = $this->lsr->getDefaultWebStore();
+            if ($this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_ID)) {
+                $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
+                $email = $this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_EMAIL);
+                $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
+                $cardId = $customer->getData('lsr_cardid');
+                if ($response = $this->loyaltyHelper->getPublishedOffers($itemId, $storeId, $cardId)) {
+                    return $response;
+                } else {
+                    return [];
+                }
             }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
         }
         return [];
     }
@@ -304,7 +308,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
      */
     public function getFormattedOfferExpiryDate($date)
     {
-        $offerExpiryDate=null;
+        $offerExpiryDate = null;
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
