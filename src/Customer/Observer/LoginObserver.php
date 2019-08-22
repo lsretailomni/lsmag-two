@@ -102,7 +102,7 @@ class LoginObserver implements ObserverInterface
                 $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
                 $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
                 if ($is_email) {
-                    $search = $this->contactHelper->search($username)[0];
+                    $search = $this->contactHelper->search($username);
                     $found = $search !== null
                         && ($search instanceof Entity\MemberContact)
                         && !empty($search->getEmail());
