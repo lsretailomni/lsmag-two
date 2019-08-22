@@ -13,7 +13,7 @@ class GiftCardLoyaltyPoints extends AbstractTotal
 {
 
     /**
-     * @var Ls\Omni\Helper\LoyaltyHelper
+     * @var \Ls\Omni\Helper\LoyaltyHelper
      */
     public $loyaltyHelper;
 
@@ -54,9 +54,10 @@ class GiftCardLoyaltyPoints extends AbstractTotal
         $invoice->setLsGiftCardNo($giftCardNo);
 
         $pointsSpent = $pointsSpent * $this->loyaltyHelper->getPointRate();
-
-        $invoice->setGrandTotal($invoice->getGrandTotal() - $giftCardAmount - $pointsSpent);
-        $invoice->setBaseGrandTotal($invoice->getBaseGrandTotal() - $giftCardAmount - $pointsSpent);
+        $grandTotalAmount=$invoice->getOrder()->getGrandTotal() - $invoice->getOrder()->getTaxAmount();
+        $baseGrandTotalAmount = $invoice->getOrder()->getBaseGrandTotal() - $invoice->getOrder()->getTaxAmount();
+        $invoice->setGrandTotal($grandTotalAmount);
+        $invoice->setBaseGrandTotal($baseGrandTotalAmount);
 
         return $this;
     }
