@@ -306,6 +306,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                                     $item->setCustomPrice($line->getAmount());
                                     $item->setDiscountAmount($line->getDiscountAmount());
                                     $item->setOriginalCustomPrice($line->getPrice());
+                                } elseif ($line->getAmount()!=$item->getProduct()->getPrice()) {
+                                    $item->setCustomPrice($line->getAmount());
+                                    $item->setOriginalCustomPrice($line->getPrice());
                                 } else {
                                     $item->setCustomPrice(null);
                                     $item->setDiscountAmount(null);
