@@ -3,6 +3,9 @@
 namespace Ls\Customer\Block\Loyalty;
 
 use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferType;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -229,12 +232,12 @@ class Offers extends \Magento\Framework\View\Element\Template
         $text = '';
         if (count($offerLines) == 1) {
             try {
-                if ($offerLines[0]->getLineType() == "Item") {
+                if ($offerLines[0]->getLineType() == OfferDiscountLineType::ITEM) {
                     $product = $this->productRepository->get($offerLines[0]->getId());
                     $url = $product->getProductUrl();
                     $text = __("Go To Product");
                 }
-                if ($offerLines[0]->getLineType() == "ProductGroup") {
+                if ($offerLines[0]->getLineType() == OfferDiscountLineType::PRODUCT_GROUP) {
                     return ["", ""];
                 }
             } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
@@ -244,7 +247,7 @@ class Offers extends \Magento\Framework\View\Element\Template
             $categoryIds = [];
             $count = 0;
             foreach ($offerLines as $offerLine) {
-                if ($offerLine->getLineType() == "Item") {
+                if ($offerLine->getLineType() == LineType::ITEM) {
                     try {
                         $catIds = $this->productRepository->get($offerLine->getId())->getCategoryIds();
                     } catch (\Exception $e) {
