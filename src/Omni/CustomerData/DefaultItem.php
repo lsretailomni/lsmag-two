@@ -78,8 +78,7 @@ class DefaultItem extends \Magento\Checkout\CustomerData\DefaultItem
         ItemResolverInterface $itemResolver,
         BasketHelper $basketHelper,
         ItemHelper $itemHelper
-    )
-    {
+    ) {
         $this->basketHelper = $basketHelper;
         $this->itemHelper = $itemHelper;
         parent::__construct(
@@ -103,7 +102,8 @@ class DefaultItem extends \Magento\Checkout\CustomerData\DefaultItem
             $this->basketHelper->cart->save();
         }
         $originalPrice = '';
-        if ($this->item->getCalculationPrice() == $this->item->getCustomPrice() && $this->item->getCustomPrice() > 0) {
+        if ($this->item->getCalculationPrice() == $this->item->getCustomPrice() && $this->item->getCustomPrice() > 0 &&
+            $this->item->getDiscountAmount() > 0 ) {
             $originalPrice = $this->item->getProduct()->getPrice() * $this->item->getQty();
             $discountAmount = ($this->item->getDiscountAmount() > 0 && $this->item->getDiscountAmount() != null) ?
                 $this->checkoutHelper->formatPrice($this->item->getDiscountAmount()) : '';
@@ -117,7 +117,7 @@ class DefaultItem extends \Magento\Checkout\CustomerData\DefaultItem
         return \array_merge(
             ['lsPriceOriginal' => ($originalPrice != "") ?
                 $this->checkoutHelper->formatPrice($originalPrice) : $originalPrice,
-                'lsDiscountAmount' => ($discountAmount != "") ?
+                'lsDiscountAmount' => ($discountAmount!= "") ?
                     '(' . __($discountAmountTextMessage) . ' ' . $discountAmount . ')' : $discountAmount
             ],
             $itemsData

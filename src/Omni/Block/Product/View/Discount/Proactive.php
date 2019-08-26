@@ -287,16 +287,18 @@ class Proactive extends \Magento\Catalog\Block\Product\View
         if ($coupon->getDetails()) {
             $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . "</span>";
         }
-        if ($coupon->getExpirationDate()) {
-            $description[] = "
+        if ($coupon->getCode()!="Promotion") {
+            if ($coupon->getExpirationDate()) {
+                $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __("Expiry :") . "</span>
         <span class='coupon-expiration-date-value discount-value'>" .
-                $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>";
-        }
-        if ($coupon->getOfferId()) {
-            $description[] = "
+                    $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>";
+            }
+            if ($coupon->getOfferId()) {
+                $description[] = "
         <span class='coupon-offer-id-label discount-label'>" . __("Coupon Code :") . "</span>
         <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . "</span>";
+            }
         }
         $description = implode("<br/>", $description);
         return $description;

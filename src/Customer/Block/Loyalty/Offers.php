@@ -222,15 +222,21 @@ class Offers extends \Magento\Framework\View\Element\Template
      * @return array|null
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
+    // @codingStandardsIgnoreLine
     public function getOfferProductCategoryLink($offerLines)
     {
         $url = '';
         $text = '';
         if (count($offerLines) == 1) {
             try {
+                if ($offerLines[0]->getLineType() == "Item") {
                     $product = $this->productRepository->get($offerLines[0]->getId());
                     $url = $product->getProductUrl();
                     $text = __("Go To Product");
+                }
+                if ($offerLines[0]->getLineType() == "ProductGroup") {
+                    return ["", ""];
+                }
             } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
                 return null;
             }
@@ -259,6 +265,14 @@ class Offers extends \Magento\Framework\View\Element\Template
                 $category = $this->categoryRepository->get($categoryIds[count($categoryIds) - 1]);
                 $url = $this->categoryHelper->getCategoryUrl($category);
                 $text = __("Go To Category");
+            } else {
+                try {
+                    $product = $this->productRepository->get($offerLines[0]->getId());
+                    $url = $product->getProductUrl();
+                    $text = __("Go To Product");
+                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                    return ["", ""];
+                }
             }
         }
         if ($url != "" && $text != "") {
