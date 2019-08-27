@@ -419,22 +419,23 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return $response;
         }
         $entity->setCardId($cardId);
+        $entity->setItemId($itemId);
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if ($response->getPublishedOffersGetResult()->getPublishedOffer()) {
+        if ($response->getPublishedOffersGetByCardIdResult()->getPublishedOffer()) {
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
-                $response->getPublishedOffersGetResult()->getPublishedOffer(),
+                $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer(),
                 [Type::CACHE_TAG],
                 7200
             );
-            return $response->getPublishedOffersGetResult()->getPublishedOffer();
+            return $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer();
         } else {
             if (!empty($response)) {
-                return $response->getPublishedOffersGetResult()->getPublishedOffer();
+                return $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer();
             } else {
                 return $response;
             }

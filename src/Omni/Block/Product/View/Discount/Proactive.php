@@ -3,6 +3,7 @@
 namespace Ls\Omni\Block\Product\View\Discount;
 
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
@@ -147,17 +148,21 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     public function getCoupons($sku)
     {
         $itemId = $sku;
-        $storeId = $this->lsr->getDefaultWebStore();
-        if ($this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_ID)) {
-            $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-            $email = $this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_EMAIL);
-            $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
-            $cardId = $customer->getData('lsr_cardid');
-            if ($response = $this->loyaltyHelper->getPublishedOffers($itemId, $storeId, $cardId)) {
-                return $response->getPublishedOffer();
-            } else {
-                return [];
+        try {
+            $storeId = $this->lsr->getDefaultWebStore();
+            if ($this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_ID)) {
+                $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
+                $email = $this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_EMAIL);
+                $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
+                $cardId = $customer->getData('lsr_cardid');
+                if ($response = $this->loyaltyHelper->getPublishedOffers($itemId, $storeId, $cardId)) {
+                    return $response;
+                } else {
+                    return [];
+                }
             }
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
         }
         return [];
     }
@@ -283,16 +288,18 @@ class Proactive extends \Magento\Catalog\Block\Product\View
         if ($coupon->getDetails()) {
             $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . "</span>";
         }
-        if ($coupon->getExpirationDate()) {
-            $description[] = "
+        if ($coupon->getCode()!=DiscountType::PROMOTION) {
+            if ($coupon->getExpirationDate()) {
+                $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __("Expiry :") . "</span>
         <span class='coupon-expiration-date-value discount-value'>" .
-                $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>";
-        }
-        if ($coupon->getOfferId()) {
-            $description[] = "
+                    $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>";
+            }
+            if ($coupon->getOfferId()) {
+                $description[] = "
         <span class='coupon-offer-id-label discount-label'>" . __("Coupon Code :") . "</span>
         <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . "</span>";
+            }
         }
         $description = implode("<br/>", $description);
         return $description;
@@ -304,7 +311,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
      */
     public function getFormattedOfferExpiryDate($date)
     {
-        $offerExpiryDate=null;
+        $offerExpiryDate = null;
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,

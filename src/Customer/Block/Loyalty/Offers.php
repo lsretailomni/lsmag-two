@@ -3,6 +3,9 @@
 namespace Ls\Customer\Block\Loyalty;
 
 use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferType;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -222,15 +225,21 @@ class Offers extends \Magento\Framework\View\Element\Template
      * @return array|null
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
+    // @codingStandardsIgnoreLine
     public function getOfferProductCategoryLink($offerLines)
     {
         $url = '';
         $text = '';
-        if (!is_array($offerLines)) {
+        if (count($offerLines) == 1) {
             try {
-                $product = $this->productRepository->get($offerLines->getId());
-                $url = $product->getProductUrl();
-                $text = __("Go To Product");
+                if ($offerLines[0]->getLineType() == OfferDiscountLineType::ITEM) {
+                    $product = $this->productRepository->get($offerLines[0]->getId());
+                    $url = $product->getProductUrl();
+                    $text = __("Go To Product");
+                }
+                if ($offerLines[0]->getLineType() == OfferDiscountLineType::PRODUCT_GROUP) {
+                    return ["", ""];
+                }
             } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
                 return null;
             }
@@ -238,7 +247,7 @@ class Offers extends \Magento\Framework\View\Element\Template
             $categoryIds = [];
             $count = 0;
             foreach ($offerLines as $offerLine) {
-                if ($offerLine->getLineType() == "Item") {
+                if ($offerLine->getLineType() == LineType::ITEM) {
                     try {
                         $catIds = $this->productRepository->get($offerLine->getId())->getCategoryIds();
                     } catch (\Exception $e) {
@@ -259,6 +268,14 @@ class Offers extends \Magento\Framework\View\Element\Template
                 $category = $this->categoryRepository->get($categoryIds[count($categoryIds) - 1]);
                 $url = $this->categoryHelper->getCategoryUrl($category);
                 $text = __("Go To Category");
+            } else {
+                try {
+                    $product = $this->productRepository->get($offerLines[0]->getId());
+                    $url = $product->getProductUrl();
+                    $text = __("Go To Product");
+                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                    return ["", ""];
+                }
             }
         }
         if ($url != "" && $text != "") {

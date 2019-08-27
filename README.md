@@ -1,16 +1,16 @@
 # LS Ecommerce - Magento Integration
 
 ## Compatibility
-1. Magento Open Source 2.2.6 or later
+1. Magento Open Source 2.2.8 or later
 2. LS Central 13.05 or later
-3. LS Omni Server 3.7 or later
+3. LS Omni Server 4.0 or later
 
 ## Installation:
 
 1. Navigate to your magento2 installation directory and run `composer require "lsretail/lsmag-two"`
 2. Run `composer update` to install all the dependencies it needs.
 3. Once done, you will see the list of our LS retail modules in disable section once you triggered the  `php bin/magento module:status` command from your Magento 2 CLI and lsretail folder in the vendor directory.
-4. To enable all our modules, run command from command line, `php bin/magento module:enable Ls_Core Ls_Omni Ls_Customer Ls_Replication`
+4. To enable all our modules, run command from command line, `php bin/magento module:enable Ls_Core Ls_Omni Ls_Customer Ls_Replication Ls_Webhooks`
 5. Set the base url of Omni by using this command `php bin/magento config:set ls_mag/service/base_url http://yourOmnihostname/LSOmniService`
 6. Run `php bin/magento omni:client:generate` to generate all the files required for the communication with omni.
 7. Run `php bin/magento replication:generate` to generate all the files required for replication.

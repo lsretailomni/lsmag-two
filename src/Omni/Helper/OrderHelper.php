@@ -381,5 +381,6 @@ class OrderHelper extends AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+        return $order;
     }
 }

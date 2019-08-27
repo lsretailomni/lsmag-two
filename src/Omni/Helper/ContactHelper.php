@@ -243,7 +243,12 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
-            return $contact_pos->getMemberContact();
+            if (is_array($contact_pos->getMemberContact())) {
+                return $contact_pos->getMemberContact()[0];
+            }
+            else {
+                return $contact_pos->getMemberContact();
+            }
         } elseif ($contact_pos instanceof Entity\MemberContact) {
             return $contact_pos;
         } else {
@@ -278,7 +283,12 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->_logger->error($e->getMessage());
             }
             if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
-                return $contact_pos->getMemberContact();
+                if (is_array($contact_pos->getMemberContact())) {
+                    return $contact_pos->getMemberContact()[0];
+                }
+                else {
+                    return $contact_pos->getMemberContact();
+                }
             } elseif ($contact_pos instanceof Entity\MemberContact) {
                 return $contact_pos;
             } else {

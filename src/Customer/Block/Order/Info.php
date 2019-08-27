@@ -206,15 +206,22 @@ class Info extends \Magento\Framework\View\Element\Template
                 $methods[] = __('Loyalty Points');
             } elseif ($line->getTenderType() == '4') {
                 $methods[] = __('Gift Card');
-                //TODO Need to change Card Code
-                $giftCardInfo[0] = $line->getTenderType();
+                $giftCardInfo[0] = $line->getCardNo();
                 $giftCardInfo[1] = $line->getAmount();
             } else {
                 $methods[] = __('Unknown');
             }
         }
-        if(empty($paymentLines)){
-            $methods[] = __('Pay At Store');
+        if(empty($paymentLines->getSalesEntryPayment())){
+            $order = $this->getMagOrder();
+            $paymentMethodName='';
+            if (!empty($order)) {
+                $paymentMethodName = $order->getPayment()->getMethodInstance()->getTitle();
+            }
+            else {
+                $paymentMethodName="Offline";
+            }
+            $methods[] = __($paymentMethodName);
         }
         return[implode(', ', $methods),$giftCardInfo];
     }
