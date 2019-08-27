@@ -151,12 +151,17 @@ class CategoryCreateTask
         /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
         $stores = $this->lsr->getAllStores();
         if (!empty($stores)) {
+            echo "Found stores";
             foreach ($stores as $store) {
+                //setting the store id globally.
+                $this->lsr->setStoreId($store->getId());
+               // echo "Running CategoryCreateTask for Store " . $store->getName();
                 //setting the store in object variable so that it should be easy to retirve from everywhere instead of passing as paramter.
                 $this->store = $store;
 
                 //adding is_lsr check to avoid wasting time for the stores which is not setup
                 if ($this->lsr->isLSR($this->store->getId())) {
+                    echo "Running CategoryCreateTask for Store " . $store->getName();
                     $this->replicationHelper->updateConfigValue(
                         date('d M,Y h:i:s A'),
                         self::CONFIG_PATH_LAST_EXECUTE,
@@ -204,6 +209,8 @@ class CategoryCreateTask
                     $this->logger->debug("CategoryCreateTask Completed for Store " . $store->getName());
 
                 }
+                // unsetting the store id.
+                $this->lsr->setStoreId(null);
             }
 
         }
@@ -337,8 +344,10 @@ class CategoryCreateTask
                 $itemCategoryId = $hierarchyNodeSub->getParentNode();
                 $collection = $this->collectionFactory->create()
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
+                    //->addRootLevelFilter()
+                    ->addPathsFilter('1/'.$this->store->getRootCategoryId().'/')
                     ->setPageSize(1);
-                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId());
+                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(),$this->store);
                 if ($collection->getSize() && !$subCategoryExistData) {
                     /** @var \Magento\Catalog\Model\CategoryFactory $categorysub */
                     $categorysub = $this->categoryFactory->create();
@@ -501,11 +510,10 @@ class CategoryCreateTask
      * @param $string
      * @return string]
      */
-    //TODO integrate existing slug check or check if the url already exist or not.
-    public function oSlug($string)
+    public function oSlug($string, $parent = false)
     {
         // @codingStandardsIgnoreStart
-        return strtolower(trim(preg_replace(
+        $slug = strtolower(trim(preg_replace(
             '~[^0-9a-z]+~i',
             '-',
             html_entity_decode(
@@ -518,6 +526,32 @@ class CategoryCreateTask
                 'UTF-8'
             )
         ), '-'));
+
+
+        if($parent){
+            $slug = strtolower(trim(preg_replace(
+                '~[^0-9a-z]+~i',
+                '-',
+                html_entity_decode(
+                    preg_replace(
+                        '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+                        '$1',
+                        htmlentities($parent, ENT_QUOTES, 'UTF-8')
+                    ),
+                    ENT_QUOTES,
+                    'UTF-8'
+                )
+            ), '-')).'-'.$slug;
+
+        }
+
+        /**
+         * Check if URL key already exist.
+         */
+
+
+
+        return $slug;
         // @codingStandardsIgnoreEnd
     }
 
