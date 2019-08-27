@@ -151,7 +151,6 @@ class CategoryCreateTask
         /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
         $stores = $this->lsr->getAllStores();
         if (!empty($stores)) {
-            echo "Found stores";
             foreach ($stores as $store) {
                 //setting the store id globally.
                 $this->lsr->setStoreId($store->getId());
@@ -161,7 +160,6 @@ class CategoryCreateTask
 
                 //adding is_lsr check to avoid wasting time for the stores which is not setup
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    echo "Running CategoryCreateTask for Store " . $store->getName();
                     $this->replicationHelper->updateConfigValue(
                         date('d M,Y h:i:s A'),
                         self::CONFIG_PATH_LAST_EXECUTE,
@@ -334,7 +332,6 @@ class CategoryCreateTask
             ];
 
         }
-
         $criteriaSub = $this->replicationHelper->buildCriteriaForArray($filtersSub, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyNodeSearchResults $replHierarchyNodeRepositorySub */
         $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
