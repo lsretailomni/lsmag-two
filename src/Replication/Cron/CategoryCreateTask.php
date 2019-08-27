@@ -149,7 +149,7 @@ class CategoryCreateTask
     public function execute()
     {
         /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
-        $stores = $lsr->getAllStores();
+        $stores = $this->lsr->getAllStores();
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 //setting the store in object variable so that it should be easy to retirve from everywhere instead of passing as paramter.
