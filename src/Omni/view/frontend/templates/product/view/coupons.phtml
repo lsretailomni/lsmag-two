@@ -10,7 +10,7 @@ $productSku = $productData['data']['productSku'];
         ?>
         <?php
         foreach ($coupons as $coupon) {
-            if ($coupon->getCode() == 'Coupon') {
+            if ($coupon->getCode() == \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType::COUPON || $coupon->getCode() == \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType::PROMOTION) {
                 echo "<div class='dropdown-content-wrapper content-coupon'>
                 " . $block->getFormattedDescriptionCoupon($coupon) . "
             </div>";
