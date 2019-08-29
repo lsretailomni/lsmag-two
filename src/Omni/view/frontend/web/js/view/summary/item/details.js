@@ -35,7 +35,7 @@ define(
             getItem: function (item_id) {
                 var itemElement = null;
                 _.each(this.quoteItemData, function (element, index) {
-                    if (element.item_id === item_id) {
+                    if (element.item_id == item_id) {
                         itemElement = element;
                     }
                 });
