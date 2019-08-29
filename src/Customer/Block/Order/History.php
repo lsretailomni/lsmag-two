@@ -75,7 +75,7 @@ class History extends \Magento\Sales\Block\Order\History
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $response = [];
             $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
             if ($orders) {
@@ -123,7 +123,7 @@ class History extends \Magento\Sales\Block\Order\History
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             return $this->getUrl('customer/order/view', ['order_id' => $order->getId()]);
         }
         return parent::getViewUrl($order);

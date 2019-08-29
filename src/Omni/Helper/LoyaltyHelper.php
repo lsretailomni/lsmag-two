@@ -160,10 +160,10 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($image_id == null || $image_size == null) {
             return $response;
         }
-        $cacheId = LSR::IMAGE_CACHE.$image_id;
+        $storeId = $this->lsr->getCurrentStoreId();
+        $cacheId = LSR::IMAGE_CACHE . $image_id . "_" . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug("Found image from cache ".$cacheId);
             return $response;
         }
         // @codingStandardsIgnoreStart
@@ -187,7 +187,10 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
             );
         }
         return $response->getResult()->getImage() ?
-            ["image"=>$response->getResult()->getImage(), "format"=> $response->getResult()->getFormat()]: $response;
+            [
+                "image" => $response->getResult()->getImage(),
+                "format" => $response->getResult()->getFormat()
+            ] : $response;
     }
 
     /**
@@ -266,11 +269,10 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getPointRate()
     {
-        $storeId = $this->lsr->getDefaultWebStore();
-        $cacheId = LSR::POINTRATE.$storeId;
+        $storeId = $this->lsr->getCurrentStoreId();
+        $cacheId = LSR::POINTRATE . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug("Found point rate from cache ".$cacheId);
             return $response;
         }
         $response = null;
@@ -354,12 +356,12 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $itemId
-     * @param $storeId
+     * @param $webStore
      * @return bool|Entity\DiscountsGetResponse|Entity\ProactiveDiscount[]|\Ls\Omni\Client\ResponseInterface|null
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getProactiveDiscounts($itemId, $storeId)
+    public function getProactiveDiscounts($itemId, $webStore)
     {
         $response = null;
         // @codingStandardsIgnoreStart
@@ -367,16 +369,17 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity = new Entity\DiscountsGet();
         $string = new Entity\ArrayOfstring();
         // @codingStandardsIgnoreEnd
+        $storeId = $this->lsr->getCurrentStoreId();
         $customerGroupId = $this->customerSession->getCustomerGroupId();
-        $cacheId = LSR::PROACTIVE_DISCOUNTS.$itemId."_".$customerGroupId."_".$storeId;
+        $cacheId = LSR::PROACTIVE_DISCOUNTS . $itemId . "_" . $customerGroupId . "_" . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug("Found proactive discounts from cache ".$cacheId);
+            $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
             return $response;
         }
         $group = $this->groupRepository->getById($customerGroupId)->getCode();
         $string->setString([$itemId]);
-        $entity->setStoreId($storeId)->setItemiIds($string)->setLoyaltySchemeCode($group);
+        $entity->setStoreId($webStore)->setItemiIds($string)->setLoyaltySchemeCode($group);
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {
@@ -412,10 +415,10 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $request = new Operation\PublishedOffersGetByCardId();
         $entity = new Entity\PublishedOffersGetByCardId();
         // @codingStandardsIgnoreEnd
-        $cacheId = LSR::COUPONS.$itemId."_".$cardId."_".$storeId;
+        $cacheId = LSR::COUPONS . $itemId . "_" . $cardId . "_" . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug("Found coupons from cache ".$cacheId);
+            $this->_logger->debug("Found coupons from cache " . $cacheId);
             return $response;
         }
         $entity->setCardId($cardId);

@@ -274,9 +274,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
     const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
-    const POINTRATE = 'LS_PointsRate_';
-    const PROACTIVE_DISCOUNTS = 'LS_Proactive_';
-    const COUPONS = 'LS_Coupons_';
+    const POINTRATE = 'LS_POINTSRATE_';
+    const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
+    const COUPONS = 'LS_COUPONS_';
     /**
      * @var ScopeConfigInterface
      */
@@ -305,8 +305,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         ScopeConfigInterface $scopeConfig,
         TypeListInterface $cacheTypeList,
         \Magento\Store\Model\StoreManagerInterface $storeManager
-    )
-    {
+    ) {
         $this->scopeConfig = $scopeConfig;
         $this->cacheTypeList = $cacheTypeList;
         $this->storeManager = $storeManager;
@@ -426,6 +425,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         return $this->getStoreConfig(
             LSR::SC_SERVICE_STORE,
             \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getActiveWebStore()
+    {
+        return $this->getStoreConfig(
+            LSR::SC_SERVICE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
