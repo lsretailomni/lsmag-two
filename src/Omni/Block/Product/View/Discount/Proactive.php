@@ -3,6 +3,7 @@
 namespace Ls\Omni\Block\Product\View\Discount;
 
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
@@ -287,16 +288,18 @@ class Proactive extends \Magento\Catalog\Block\Product\View
         if ($coupon->getDetails()) {
             $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . "</span>";
         }
-        if ($coupon->getExpirationDate()) {
-            $description[] = "
+        if ($coupon->getCode()!=DiscountType::PROMOTION) {
+            if ($coupon->getExpirationDate()) {
+                $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __("Expiry :") . "</span>
         <span class='coupon-expiration-date-value discount-value'>" .
-                $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>";
-        }
-        if ($coupon->getOfferId()) {
-            $description[] = "
+                    $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>";
+            }
+            if ($coupon->getOfferId()) {
+                $description[] = "
         <span class='coupon-offer-id-label discount-label'>" . __("Coupon Code :") . "</span>
         <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . "</span>";
+            }
         }
         $description = implode("<br/>", $description);
         return $description;

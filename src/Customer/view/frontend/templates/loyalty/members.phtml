@@ -41,19 +41,28 @@ $c = 0;
                                     <span><b><?php echo __("Code: "); ?></b><?php echo $offer->getOfferId(); ?></span>
                                 </div>
                             <?php } ?>
-                            <div class="code">
-                                <span><b><?php echo __("Offer Type: "); ?></b><?php echo $offer->getCode(); ?></span>
-                            </div>
+                            <?php if (!empty($offer->getExpirationDate())) {
+                                $expirtyDate = $this->getOfferExpiryDate($offer->getExpirationDate());
+                                if (!empty($expirtyDate)) {
+                                    ?>
+                                    <div class="date">
+                                        <span><b><?php echo __("Expiry: "); ?></b><?php echo $this->getOfferExpiryDate($offer->getExpirationDate()); ?></span>
+                                    </div>
+                                <?php }
+                            }
+                            ?>
                             <div class="date">
                                 <span><b><?php echo __("Expiry: "); ?></b><?php echo $this->getOfferExpiryDate($offer->getExpirationDate()); ?></span>
                             </div>
                             <div class="coupon-description">
                                 <p><?php echo $offer->getDetails(); ?></p>
                             </div>
-                            <p>
-                                <a class="action subscribe primary"
-                                   href="<?php echo $offerProductCategory[0]; ?>"><?php echo __($offerProductCategory[1]); ?></a>
-                            </p>
+                            <?php if (!empty($offerProductCategory[0]) ){?>
+                                <p>
+                                    <a class="action subscribe primary"
+                                       href="<?php echo $offerProductCategory[0]; ?>"><?php echo __($offerProductCategory[1]); ?></a>
+                                </p>
+                            <?php } ?>
                         </div>
                     </li>
                 <?php } ?>

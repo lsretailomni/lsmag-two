@@ -18,7 +18,9 @@ define(
             },
             getOriginalPrice: function (quoteItem) {
                 var item = this.getItem(quoteItem.item_id);
-                return item.originalprice;
+                if (item.discountamount!=='') {
+                    return item.originalprice;
+                }
             },
             getDiscountPrice: function (quoteItem) {
                 var item = this.getItem(quoteItem.item_id);
@@ -26,12 +28,14 @@ define(
             },
             getDiscountAmount: function (quoteItem) {
                 var item = this.getItem(quoteItem.item_id);
-                return '('+ $t(item.discountamounttext)+' '+item.discountamount+')';
+                if (item.discountamount!=='') {
+                    return '(' + $t(item.discountamounttext) + ' ' + item.discountamount + ')';
+                }
             },
             getItem: function (item_id) {
                 var itemElement = null;
                 _.each(this.quoteItemData, function (element, index) {
-                    if (element.item_id == item_id) {
+                    if (element.item_id === item_id) {
                         itemElement = element;
                     }
                 });

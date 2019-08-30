@@ -62,7 +62,6 @@ $_orders = $block->getOrderHistory();
                             </a>
                             <?php
                             $magOrder = $block->getOrderByDocumentId($_order->getId());
-                            $magOrder = '';
                             if (!empty($magOrder)):
                                 if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getEntityId())) : ?>
                                     <a href="#" data-post='<?php /* @escapeNotVerified */

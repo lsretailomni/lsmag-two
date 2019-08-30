@@ -422,6 +422,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return $response;
         }
         $entity->setCardId($cardId);
+        $entity->setItemId($itemId);
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {
