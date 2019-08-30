@@ -109,9 +109,7 @@ class ProductCreateTask
     /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
-    /**
-     * @var SortOrderBuilder
-     */
+    /** @var SortOrderBuilder */
     public $sortOrder;
 
     /** @var FilterBuilder */
@@ -141,43 +139,31 @@ class ProductCreateTask
     /** @var \Ls\Omni\Helper\StockHelper */
     public $stockHelper;
 
-    /**
-     * @var ReplItemVariantRegistrationRepository
-     */
+    /** @var ReplItemVariantRegistrationRepository */
     public $replItemVariantRegistrationRepository;
 
-    /**
-     * @var ConfigurableProTypeModel
-     */
+    /** @var ConfigurableProTypeModel */
     public $configurableProTypeModel;
 
-    /**
-     * @var ReplInvStatusCollectionFactory
-     */
+    /** @var ReplInvStatusCollectionFactory */
     public $replInvStatusCollectionFactory;
 
-    /**
-     * @var ReplPriceCollectionFactory
-     */
+    /** @var ReplPriceCollectionFactory */
     public $replPriceCollectionFactory;
 
-    /**
-     * @var ReplHierarchyLeafCollectionFactory
-     */
+    /** @var ReplHierarchyLeafCollectionFactory */
     public $replHierarchyLeafCollectionFactory;
 
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product
-     */
+    /** @var \Magento\Catalog\Model\ResourceModel\Product */
     public $productResourceModel;
 
-    /**
-     * @var StockRegistryInterface
-     */
+    /** @var StockRegistryInterface */
     public $stockRegistry;
 
     /** @var \Magento\Store\Api\Data\StoreInterface $store */
     public $store;
+
+    public $webStoreId = false;
 
     /**
      * ProductCreateTask constructor.
@@ -315,14 +301,14 @@ class ProductCreateTask
 
                 //adding is_lsr check to avoid wasting time for the stores which is not setup
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE,$store->getId());
-                    $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS,$store->getId());
-                    $fullReplicationBarcodeStatus = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS,$store->getId());
-                    $fullReplicationPriceStatus = $this->lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS,$store->getId());
-                    $fullReplicationInvStatus = $this->lsr->getStoreConfig(ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS,$store->getId());
-                    $cronCategoryCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY,$store->getId());
-                    $cronAttributeCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE,$store->getId());
-                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,$store->getId());
+                    $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE, $store->getId());
+                    $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS, $store->getId());
+                    $fullReplicationBarcodeStatus = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS, $store->getId());
+                    $fullReplicationPriceStatus = $this->lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS, $store->getId());
+                    $fullReplicationInvStatus = $this->lsr->getStoreConfig(ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS, $store->getId());
+                    $cronCategoryCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY, $store->getId());
+                    $cronAttributeCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE, $store->getId());
+                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT, $store->getId());
                     if ($cronCategoryCheck == 1 &&
                         $cronAttributeCheck == 1 &&
                         $cronAttributeVariantCheck == 1 &&
@@ -330,7 +316,7 @@ class ProductCreateTask
                         $fullReplicationBarcodeStatus == 1 &&
                         $fullReplicationPriceStatus == 1 &&
                         $fullReplicationInvStatus == 1) {
-                        $this->logger->debug('Running ProductCreateTask for store '.$store->getName());
+                        $this->logger->debug('Running ProductCreateTask for store ' . $store->getName());
                         $val1 = ini_get('max_execution_time');
                         $val2 = ini_get('memory_limit');
                         $this->logger->debug('ENV Variables Values before:' . $val1 . ' ' . $val2);
@@ -341,86 +327,44 @@ class ProductCreateTask
                         $val1 = ini_get('max_execution_time');
                         $val2 = ini_get('memory_limit');
                         $this->logger->debug('ENV Variables Values after:' . $val1 . ' ' . $val2);
-                        $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE,$store->getId());
-                        $productBatchSize = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE,$store->getId());
+                        $this->webStoreId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
+                        $productBatchSize = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE, $store->getId());
                         /** @var \Magento\Framework\Api\SearchCriteria $criteria */
-                        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', $productBatchSize,true);
+                        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', $productBatchSize, true);
                         /** @var \Ls\Replication\Model\ReplItemSearchResults $items */
                         $items = $this->itemRepository->getList($criteria);
                         /** @var \Ls\Replication\Model\ReplItem $item */
                         foreach ($items->getItems() as $item) {
                             try {
-                                $productData = $this->productRepository->get($item->getNavId());
+                                /** @var \Magento\Catalog\Model\Product $productData */
+                                $productData = $this->productRepository->get($item->getNavId(), false, $store->getId());
+                                $websitesProduct = $productData->getWebsiteIds();
+
+                                /** Check if Item exist in the website and assign it if it does not exist*/
+                                if (!in_array($store->getWebsiteId(), $websitesProduct)) {
+                                    $websitesProduct[] = $store->getWebsiteId();
+                                    $productData->setWebsiteIds($websitesProduct)
+                                        ->save();
+                                }
                                 try {
-                                    $productData->setName($item->getDescription());
-                                    $productData->setMetaTitle($item->getDescription());
-                                    $productData->setDescription($item->getDetails());
-                                    $productData->setWeight($item->getGrossWeight());
-                                    $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-                                    $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
-                                    if ($productImages) {
-                                        $this->logger->debug('Found images for the item ' . $item->getNavId());
-                                        $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                    }
-                                    $product = $this->getProductAttributes($productData, $item);
-                                    // @codingStandardsIgnoreStart
-                                    $this->productRepository->save($product);
-                                    $item->setData('is_updated', '0');
-                                    $item->setData('processed', '1');
-                                    $this->itemRepository->save($item);
-                                    // @codingStandardsIgnoreEnd
+                                    // Modift product values based on the store.
+
+                                    $this->modifyExistingProduct(
+                                        $productData,
+                                        $item,
+                                        $store
+                                    );
                                 } catch (\Exception $e) {
                                     $this->logger->debug($e->getMessage());
                                 }
                             } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-                                /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
-                                $product = $this->productFactory->create();
-                                $product->setName($item->getDescription());
-                                $product->setMetaTitle($item->getDescription());
-                                $product->setSku($item->getNavId());
-                                $product->setUrlKey($this->oSlug($item->getDescription() . '-' . $item->getNavId()));
-                                $product->setVisibility(\Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH);
-                                $product->setWeight($item->getGrossWeight());
-                                $product->setDescription($item->getDetails());
-                                $itemPrice = $this->getItemPrice($item->getNavId());
-                                if (isset($itemPrice)) {
-                                    $product->setPrice($itemPrice->getUnitPrice());
-                                } else {
-                                    $product->setPrice($item->getUnitPrice());
-                                }
+                                // case when the item does not exist, then we need to add that item into the website.
 
-                                $product->setAttributeSetId(4);
-                                $product->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
-                                $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE);
-                                $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-                                /** @var ReplBarcodeRepository $itemBarcodes */
-                                $itemBarcodes = $this->_getBarcode($item->getNavId());
-                                if (isset($itemBarcodes[$item->getNavId()])) {
-                                    $product->setCustomAttribute('barcode', $itemBarcodes[$item->getNavId()]);
-                                }
-                                $itemStock = $this->getInventoryStatus($item->getNavId(), $storeId);
-                                $product->setStockData([
-                                    'use_config_manage_stock' => 1,
-                                    'is_in_stock' => ($itemStock > 0) ? 1 : 0,
-                                    'qty' => $itemStock
-                                ]);
-                                $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
-                                if ($productImages) {
-                                    $this->logger->debug('Found images for the item ' . $item->getNavId());
-                                    $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                }
-                                $this->logger->debug('trying to save product ' . $item->getNavId());
-                                /** @var \Magento\Catalog\Api\ProductRepositoryInterface $productSaved */
-                                $product = $this->getProductAttributes($product, $item);
-                                // @codingStandardsIgnoreStart
-                                $productSaved = $this->productRepository->save($product);
-                                $variants = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
-                                if (!empty($variants)) {
-                                    $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
-                                }
-                                $item->setData('processed', '1');
-                                $this->itemRepository->save($item);
-                                // @codingStandardsIgnoreEnd
+                                $this->createNewProduct(
+                                    false,
+                                    $item,
+                                    $store
+                                );
                             }
                         }
                         if (count($items->getItems()) == 0) {
@@ -428,7 +372,7 @@ class ProductCreateTask
                             $this->assignProductToCategory();
                             $this->cronStatus = true;
                             $fullReplicationVariantStatus = $this->lsr->getStoreConfig(
-                                ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS,$store->getId()
+                                ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS, $store->getId()
                             );
                             if ($fullReplicationVariantStatus == 1) {
                                 $this->updateVariantsOnly();
@@ -437,15 +381,15 @@ class ProductCreateTask
                             // This will update all the latest images for the product including new
                             $this->updateAndAddNewImageOnly();
                             $this->updateBarcodeOnly();
-                            $this->updatePriceOnly($storeId);
-                            $this->updateInventoryOnly($storeId);
+                            $this->updatePriceOnly($this->webStoreId);
+                            $this->updateInventoryOnly($this->webStoreId);
                         }
                         $this->logger->debug('End ProductCreateTask');
                     } else {
                         $this->logger->debug('Product Replication cron fails because custom category, 
             custom attribute or full image replication cron not executed successfully.');
                     }
-                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT,$store->getId());
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT, $store->getId());
 
                 }
                 // unsetting the store id.
@@ -482,7 +426,7 @@ class ProductCreateTask
         \Ls\Replication\Model\ReplItem $replItem
     )
     {
-        $criteria = $this->replicationHelper->buildCriteriaForProductAttributes($replItem->getNavId(), 100);
+        $criteria = $this->replicationHelper->buildCriteriaForProductAttributes($replItem->getNavId(), 100, true,  $this->store->getId());
         /** @var \Ls\Replication\Model\ReplAttributeValueSearchResults $items */
         $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
         /** @var \Ls\Replication\Model\ReplAttributeValue $item */
@@ -661,7 +605,11 @@ class ProductCreateTask
      */
     private function getNewOrUpdatedProductVariants($pagesize = 100, $itemId = null)
     {
-        $filters = [['field' => 'VariantId', 'value' => true, 'condition_type' => 'notnull']];
+        $filters = [
+            ['field' => 'VariantId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+        ];
+
         if (isset($itemId)) {
             $filters[] = ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'];
         } else {
@@ -718,7 +666,9 @@ class ProductCreateTask
      */
     public function _getAttributesCodes($itemId)
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)->create();
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
+            ->addFilter('scope_id', $this->store->getId(),'eq')
+            ->create();
         $sortOrder = $this->sortOrder->setField('Dimensions')->setDirection(SortOrder::SORT_ASC);
         $searchCriteria->setSortOrders([$sortOrder]);
         $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
@@ -743,7 +693,9 @@ class ProductCreateTask
      */
     public function _getBarcode($itemId)
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)->create();
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
+            ->addFilter('scope_id', $this->store->getId(),'eq')
+            ->create();
         $allBarCodes = [];
         /** @var ReplBarcodeRepository $itemBarcodes */
         $itemBarcodes = $this->replBarcodeRepository->getList($searchCriteria)->getItems();
@@ -779,11 +731,11 @@ class ProductCreateTask
      */
     public function getItemPrice($itemId, $variantId = null)
     {
-        $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
         $filters = [
             ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'StoreId', 'value' => $this->webStoreId, 'condition_type' => 'eq'],
             ['field' => 'QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
         ];
         if ($variantId) {
             $filters[] = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
@@ -1173,15 +1125,22 @@ class ProductCreateTask
             $attributeOptions[$attribute->getId()] = $attribute->getSource()->getAllOptions();
             $attributesIds[] = $attribute->getId();
         }
-
-        $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
         /** @var \Ls\Replication\Model\ReplItemVariantRegistration $value */
         foreach ($variants as $value) {
             $sku = $value->getItemId() . '-' . $value->getVariantId();
             try {
-                $productData = $this->productRepository->get($sku);
+                $productData = $this->productRepository->get($sku, false, $this->store->getId());
+                $websitesProduct = $productData->getWebsiteIds();
+                /** Check if Item exist in the website and assign it if it does not exist*/
+                if (!in_array($this->store->getWebsiteId(), $websitesProduct)) {
+                    $websitesProduct[] = $this->store->getWebsiteId();
+                    $productData->setWebsiteIds($websitesProduct)
+                        ->save();
+                }
+
                 try {
                     $name = $this->getNameForVariant($value, $item);
+                    $productData->setStoreId($this->store->getId());
                     $productData->setName($name);
                     $productData->setMetaTitle($name);
                     $productData->setDescription($item->getDetails());
@@ -1189,7 +1148,8 @@ class ProductCreateTask
                     $productData->setCustomAttribute("uom", $value->getBaseUnitOfMeasure());
                     $productImages = $this->replicationHelper->getImageLinksByType(
                         $value->getItemId() . ',' . $value->getVariantId(),
-                        'Item Variant'
+                        'Item Variant',
+                        $this->store->getId()
                     );
                     if ($productImages) {
                         $this->logger->debug('Found images for the simple product ' . $sku);
@@ -1215,6 +1175,8 @@ class ProductCreateTask
                 $d6 = (($value->getVariantDimension6()) ? $value->getVariantDimension6() : '');
                 $name = $this->getNameForVariant($value, $item);
                 $productV->setName($name);
+                $productV->setStoreId($this->store->getId());
+                $productV->setWebsiteIds([$this->store->getWebsiteId()]);
                 $productV->setMetaTitle($name);
                 $productV->setDescription($item->getDetails());
                 $productV->setSku($sku);
@@ -1241,7 +1203,7 @@ class ProductCreateTask
                     }
                 }
                 $productImages = $this->replicationHelper
-                    ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
+                    ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant', $this->store->getId());
                 if ($productImages) {
                     $this->logger->debug('Found images for the simple product ' . $sku);
                     $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
@@ -1251,7 +1213,7 @@ class ProductCreateTask
                 if (isset($itemBarcodes[$sku])) {
                     $productV->setCustomAttribute('barcode', $itemBarcodes[$sku]);
                 }
-                $itemStock = $this->getInventoryStatus($value->getItemId(), $storeId, $value->getVariantId());
+                $itemStock = $this->getInventoryStatus($value->getItemId(), $this->webStoreId, $value->getVariantId());
                 $productV->setStockData([
                     'use_config_manage_stock' => 1,
                     'is_in_stock' => ($itemStock > 0) ? 1 : 0,
@@ -1312,6 +1274,7 @@ class ProductCreateTask
             } else {
                 $filters[] = ['field' => 'VariantId', 'value' => true, 'condition_type' => 'null'];
             }
+            $filters[] = ['field' => 'scope_id', 'value' => $scope_id, 'condition_type' => 'eq'];
             $searchCriteria = $this->replicationHelper->buildCriteriaForArray($filters, 1);
             $inventoryStatus = [];
             /** @var ReplInvStatusRepository $inventoryStatus */
@@ -1352,5 +1315,106 @@ class ProductCreateTask
             (($d4) ? '-' . $d4 : '') . (($d5) ? '-' . $d5 : '') . (($d6) ? '-' . $d6 : '');
         $name = $item->getDescription() . $dMerged;
         return $name;
+    }
+
+    /**
+     * @param bool $product
+     * @param \Ls\Replication\Model\ReplItem $item
+     * @param \Magento\Store\Api\Data\StoreInterface $store
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\StateException
+     */
+    public function createNewProduct(
+        $product = false,
+        \Ls\Replication\Model\ReplItem $item,
+        \Magento\Store\Api\Data\StoreInterface $store)
+    {
+        if (!$product) {
+            /** @var  \Magento\Catalog\Model\Product $product */
+            $product = $this->productFactory->create();
+        }
+        $product->setStoreId($store->getId());
+        $product->setWebsiteIds([$store->getWebsiteId()]);
+        $product->setName($item->getDescription());
+        $product->setMetaTitle($item->getDescription());
+        $product->setSku($item->getNavId());
+        $product->setUrlKey($this->oSlug($item->getDescription() . '-' . $item->getNavId()));
+        $product->setVisibility(\Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH);
+        $product->setWeight($item->getGrossWeight());
+        $product->setDescription($item->getDetails());
+        $itemPrice = $this->getItemPrice($item->getNavId());
+        if (isset($itemPrice)) {
+            $product->setPrice($itemPrice->getUnitPrice());
+        } else {
+            $product->setPrice($item->getUnitPrice());
+        }
+
+        $product->setAttributeSetId(4);
+        $product->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
+        $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE);
+        $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+        /** @var ReplBarcodeRepository $itemBarcodes */
+        $itemBarcodes = $this->_getBarcode($item->getNavId());
+        if (isset($itemBarcodes[$item->getNavId()])) {
+            $product->setCustomAttribute('barcode', $itemBarcodes[$item->getNavId()]);
+        }
+        $itemStock = $this->getInventoryStatus($item->getNavId(), $this->webStoreId);
+        $product->setStockData([
+            'use_config_manage_stock' => 1,
+            'is_in_stock' => ($itemStock > 0) ? 1 : 0,
+            'qty' => $itemStock
+        ]);
+        $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item', $this->store->getId());
+        if ($productImages) {
+            $this->logger->debug('Found images for the item ' . $item->getNavId());
+            $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
+        }
+        $this->logger->debug('trying to save product ' . $item->getNavId());
+        /** @var \Magento\Catalog\Api\ProductRepositoryInterface $productSaved */
+        $product = $this->getProductAttributes($product, $item);
+        // @codingStandardsIgnoreStart
+        $productSaved = $this->productRepository->save($product);
+        $variants = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
+        if (!empty($variants)) {
+            $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
+        }
+        $item->setData('processed', '1');
+        $this->itemRepository->save($item);
+        // @codingStandardsIgnoreEnd
+    }
+
+    /** Save Existing Item information by Store.
+     * @param \Magento\Catalog\Model\Product $productData
+     * @param \Ls\Replication\Model\ReplItem $item
+     * @param \Magento\Store\Api\Data\StoreInterface $store
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\StateException
+     */
+    public function modifyExistingProduct(\Magento\Catalog\Model\Product $productData,
+                                          \Ls\Replication\Model\ReplItem $item,
+                                          \Magento\Store\Api\Data\StoreInterface $store)
+    {
+        $productData->setStoreId($store->getId());
+        $productData->setName($item->getDescription());
+        $productData->setMetaTitle($item->getDescription());
+        $productData->setDescription($item->getDetails());
+        $productData->setWeight($item->getGrossWeight());
+        $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+        $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item', $this->store->getId());
+        if ($productImages) {
+            $this->logger->debug('Found images for the item ' . $item->getNavId());
+            $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
+        }
+        $product = $this->getProductAttributes($productData, $item);
+        // @codingStandardsIgnoreStart
+        $this->productRepository->save($product);
+        $item->setData('is_updated', '0');
+        $item->setData('processed', '1');
+        $this->itemRepository->save($item);
+        // @codingStandardsIgnoreEnd
     }
 }
