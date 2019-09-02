@@ -518,4 +518,25 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         return $this->storeManager->getStore()->getId();
     }
+
+    /**
+     * Return all the stores we have in Magento.
+     * @return \Magento\Store\Api\Data\StoreInterface[]
+     */
+
+    public function getAllStores(){
+        return $this->storeManager->getStores();
+
+    }
+
+    /**
+     * Set Store ID in Magento Session
+     * @param $store_id
+     */
+
+    public function setStoreId($store_id){
+        $this->storeManager->setCurrentStore($store_id);
+
+    }
+
 }

@@ -167,7 +167,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param bool $excludeDeleted
      * @return \Magento\Framework\Api\SearchCriteria
      */
-    public function buildCriteriaForProductAttributes($item_id = '', $pagesize = 100, $excludeDeleted = true)
+    public function buildCriteriaForProductAttributes($item_id = '', $pagesize = 100, $excludeDeleted = true, $scope_id = false)
     {
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
@@ -185,8 +185,12 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ->create();
         // adding criteria into where clause.
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
+        if($scope_id){
+            $criteria->addFilter('scope_id', $scope_id, 'eq');
+        }
         $criteria->addFilter('LinkType', 0, 'eq');
         $criteria->addFilter('LinkField1', $item_id, 'eq');
+
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
@@ -375,7 +379,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $type
      * @return bool|\Magento\Framework\Api\AbstractExtensibleObject[]
      */
-    public function getImageLinksByType($nav_id = '', $type = 'Item Category')
+    public function getImageLinksByType($nav_id = '', $type = 'Item Category', $store_id = false)
     {
         //first and the most important condition
         if ($nav_id == '' || $nav_id === null) {
@@ -394,6 +398,10 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             0,
             'eq'
         )->create();
+
+        if($store_id){
+            $criteria->addFilter('scope_id',$store_id,'eq');
+        }
 
         /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $items */
         $items = $this->replImageLinkRepositoryInterface->getList($criteria);
