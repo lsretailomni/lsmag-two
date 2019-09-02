@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Customer\Block\Order;
 
 /**
@@ -83,7 +84,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
      */
     protected function _toHtml()
     {
-        $order=$this->getMagOrder();
+        $order = $this->getMagOrder();
         if (!empty($order)) {
             if ($this->getKey() == "Invoices" && !($order->hasInvoices())) {
                 return '';

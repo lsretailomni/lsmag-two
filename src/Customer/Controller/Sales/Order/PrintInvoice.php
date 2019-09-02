@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Customer\Controller\Sales\Order;
 
 use Magento\Framework\App\Action\Context;
@@ -22,7 +23,7 @@ class PrintInvoice extends \Magento\Sales\Controller\Order\PrintInvoice
      */
     public $orderRepository;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var \Psr\Log\LoggerInterface */
     public $logger;
 
     public function __construct(
@@ -56,7 +57,7 @@ class PrintInvoice extends \Magento\Sales\Controller\Order\PrintInvoice
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setPath('customer/order/printinvoice/order_id/'.$documentId);
+            $resultRedirect->setPath('customer/order/printinvoice/order_id/' . $documentId);
             return $resultRedirect;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

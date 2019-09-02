@@ -136,7 +136,7 @@ class History extends \Magento\Sales\Block\Order\History
     public function getReorderUrl($order)
     {
         try {
-            if ($order->getDocumentId()!=null) {
+            if ($order->getDocumentId() != null) {
                 return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
             } else {
                 return parent::getReorderUrl($order);
@@ -154,6 +154,7 @@ class History extends \Magento\Sales\Block\Order\History
     {
         return $this->orderHelper->getOrderByDocumentId($documentId);
     }
+
     /**
      * @param object $invoice
      * @return string
