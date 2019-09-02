@@ -84,6 +84,9 @@ class CategoryCreateTask
      */
     public $eavAttribute;
 
+    /** @var \Magento\Store\Api\Data\StoreInterface $store */
+    public $store;
+
     /**
      * CategoryCreateTask constructor.
      * @param CategoryFactory $categoryFactory
@@ -120,7 +123,8 @@ class CategoryCreateTask
         ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
         ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory,
         \Magento\Eav\Model\ResourceModel\Entity\Attribute $eavAttribute
-    ) {
+    )
+    {
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
         $this->replHierarchyNodeRepository = $replHierarchyNodeRepository;
@@ -144,40 +148,70 @@ class CategoryCreateTask
      */
     public function execute()
     {
-        $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
-        $this->logger->debug("Running CategoryCreateTask");
-        // for defning category images to the product group
-        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
-        if (empty($hierarchyCode)) {
-            $this->logger->debug("Hierarchy Code not defined in the configuration.");
-            return;
+        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+        $stores = $this->lsr->getAllStores();
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                //setting the store id globally.
+                $this->lsr->setStoreId($store->getId());
+               // echo "Running CategoryCreateTask for Store " . $store->getName();
+                //setting the store in object variable so that it should be easy to retirve from everywhere instead of passing as paramter.
+                $this->store = $store;
+
+                //adding is_lsr check to avoid wasting time for the stores which is not setup
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $this->replicationHelper->updateConfigValue(
+                        date('d M,Y h:i:s A'),
+                        self::CONFIG_PATH_LAST_EXECUTE,
+                        $store->getId()
+                    );
+                    $this->logger->debug("Running CategoryCreateTask for Store " . $store->getName());
+                    // for defning category images to the product group
+                    $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $store->getId());
+                    if (empty($hierarchyCode)) {
+                        $this->logger->debug("Hierarchy Code not defined in the configuration" . $store->getName() . ".");
+                        return;
+                    }
+                    $hierarchyCodeSpecificFilter = [
+                        'field' => 'HierarchyCode',
+                        'value' => $hierarchyCode,
+                        'condition_type' => 'eq'
+                    ];
+                    $scopeIdFilter = [
+                        'field' => 'scope_id',
+                        'value' => $store->getId(),
+                        'condition_type' => 'eq'
+                    ];
+                    $mediaAttribute = ['image', 'small_image', 'thumbnail'];
+                    $mainCategoryHierarchyNodeAddOrUpdateCounter = $this->caterMainCategoryHierarchyNodeAddOrUpdate(
+                        $hierarchyCodeSpecificFilter,
+                        $mediaAttribute,
+                        $scopeIdFilter
+                    );
+                    $subCategoryHierarchyNodeAddOrUpdateCounter = $this->caterSubCategoryHierarchyNodeAddOrUpdate(
+                        $hierarchyCodeSpecificFilter,
+                        $mediaAttribute,
+                        $scopeIdFilter
+                    );
+                    $hierarchyNodeDeletedCounter = $this->caterHierarchyNodeRemoval($hierarchyCode);
+                    $hierarchyLeafDeletedCounter = $this->caterHierarchyLeafRemoval($hierarchyCode);
+                    if ($mainCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
+                        $subCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
+                        $hierarchyNodeDeletedCounter == 0 &&
+                        $hierarchyLeafDeletedCounter == 0) {
+                        $this->cronStatus = true;
+                    }
+                    //Update the Modified Images
+                    $this->updateImagesOnly();
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY, $store->getId());
+                    $this->logger->debug("CategoryCreateTask Completed for Store " . $store->getName());
+
+                }
+                // unsetting the store id.
+                $this->lsr->setStoreId(null);
+            }
+
         }
-        $hierarchyCodeSpecificFilter = [
-            'field' => 'HierarchyCode',
-            'value' => $hierarchyCode,
-            'condition_type' => 'eq'
-        ];
-        $mediaAttribute = ['image', 'small_image', 'thumbnail'];
-        $mainCategoryHierarchyNodeAddOrUpdateCounter = $this->caterMainCategoryHierarchyNodeAddOrUpdate(
-            $hierarchyCodeSpecificFilter,
-            $mediaAttribute
-        );
-        $subCategoryHierarchyNodeAddOrUpdateCounter = $this->caterSubCategoryHierarchyNodeAddOrUpdate(
-            $hierarchyCodeSpecificFilter,
-            $mediaAttribute
-        );
-        $hierarchyNodeDeletedCounter = $this->caterHierarchyNodeRemoval($hierarchyCode);
-        $hierarchyLeafDeletedCounter = $this->caterHierarchyLeafRemoval($hierarchyCode);
-        if ($mainCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
-            $subCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
-            $hierarchyNodeDeletedCounter == 0 &&
-            $hierarchyLeafDeletedCounter == 0) {
-            $this->cronStatus = true;
-        }
-        //Update the Modified Images
-        $this->updateImagesOnly();
-        $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY);
-        $this->logger->debug("CategoryCreateTask Completed");
     }
 
     /**
@@ -185,13 +219,28 @@ class CategoryCreateTask
      * @param $mediaAttribute
      * @return int
      */
-    public function caterMainCategoryHierarchyNodeAddOrUpdate($HierarchyCodeSpecificFilter, $mediaAttribute)
+    public function caterMainCategoryHierarchyNodeAddOrUpdate(
+        $HierarchyCodeSpecificFilter,
+        $mediaAttribute,
+        $scopeIdFilter = false
+    )
     {
         $parentNodeNullFilter = ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'];
-        $filters = [
-            $parentNodeNullFilter,
-            $HierarchyCodeSpecificFilter
-        ];
+        if ($scopeIdFilter) {
+            // if the filter is set then add the scopeif into the condition as well.
+            $filters = [
+                $parentNodeNullFilter,
+                $HierarchyCodeSpecificFilter,
+                $scopeIdFilter
+            ];
+        } else {
+            $filters = [
+                $parentNodeNullFilter,
+                $HierarchyCodeSpecificFilter
+            ];
+
+        }
+
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyNodeSearchResults $replHierarchyNodeRepository */
         $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
@@ -201,12 +250,13 @@ class CategoryCreateTask
                 if (empty($hierarchyNode->getNavId())) {
                     continue;
                 }
-                $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
+                //** Adding Filter for Store so that we can search for Store based on Store Root Category. */
+                $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId(), $this->store);
                 if (!$categoryExistData) {
                     /** @var \Magento\Catalog\Model\Category $category */
                     $category = $this->categoryFactory->create();
                     $data = [
-                        'parent_id' => 2,
+                        'parent_id' => $this->store->getRootCategoryId(),
                         'name' => ($hierarchyNode->getDescription()) ?
                             $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
                         'url_key' => $this->oSlug($hierarchyNode->getNavId()),
@@ -260,14 +310,28 @@ class CategoryCreateTask
      * @param $mediaAttribute
      * @return int
      */
-    public function caterSubCategoryHierarchyNodeAddOrUpdate($HierarchyCodeSpecificFilter, $mediaAttribute)
+    public function caterSubCategoryHierarchyNodeAddOrUpdate(
+        $HierarchyCodeSpecificFilter,
+        $mediaAttribute,
+        $scopeIdFilter = false
+    )
     {
         // This is for the child/sub categories apply ParentNode Not Null Criteria
         $parentNodeNotNullFilter = ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'notnull'];
-        $filtersSub = [
-            $parentNodeNotNullFilter,
-            $HierarchyCodeSpecificFilter
-        ];
+        if ($scopeIdFilter) {
+            // if the filter is set then add the scopeif into the condition as well.
+            $filtersSub = [
+                $parentNodeNotNullFilter,
+                $HierarchyCodeSpecificFilter,
+                $scopeIdFilter
+            ];
+        } else {
+            $filtersSub = [
+                $parentNodeNotNullFilter,
+                $HierarchyCodeSpecificFilter
+            ];
+
+        }
         $criteriaSub = $this->replicationHelper->buildCriteriaForArray($filtersSub, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyNodeSearchResults $replHierarchyNodeRepositorySub */
         $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
@@ -277,8 +341,10 @@ class CategoryCreateTask
                 $itemCategoryId = $hierarchyNodeSub->getParentNode();
                 $collection = $this->collectionFactory->create()
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
+                    //->addRootLevelFilter()
+                    ->addPathsFilter('1/'.$this->store->getRootCategoryId().'/')
                     ->setPageSize(1);
-                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId());
+                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(),$this->store);
                 if ($collection->getSize() && !$subCategoryExistData) {
                     /** @var \Magento\Catalog\Model\CategoryFactory $categorysub */
                     $categorysub = $this->categoryFactory->create();
@@ -341,7 +407,7 @@ class CategoryCreateTask
     public function caterHierarchyNodeRemoval($hierarchyCode)
     {
         $attribute_id = $this->eavAttribute->getIdByCode(\Magento\Catalog\Model\Category::ENTITY, 'nav_id');
-        $filters =  [
+        $filters = [
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq']
         ];
@@ -385,7 +451,7 @@ class CategoryCreateTask
      */
     public function caterHierarchyLeafRemoval($hierarchyCode)
     {
-        $filters =  [['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']];
+        $filters = [['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
         $collection = $this->replHierarchyLeafCollectionFactory->create();
         $this->replicationHelper->setCollectionPropertiesPlusJoin(
@@ -441,11 +507,10 @@ class CategoryCreateTask
      * @param $string
      * @return string]
      */
-    //TODO integrate existing slug check or check if the url already exist or not.
-    public function oSlug($string)
+    public function oSlug($string, $parent = false)
     {
         // @codingStandardsIgnoreStart
-        return strtolower(trim(preg_replace(
+        $slug = strtolower(trim(preg_replace(
             '~[^0-9a-z]+~i',
             '-',
             html_entity_decode(
@@ -458,6 +523,32 @@ class CategoryCreateTask
                 'UTF-8'
             )
         ), '-'));
+
+
+        if($parent){
+            $slug = strtolower(trim(preg_replace(
+                '~[^0-9a-z]+~i',
+                '-',
+                html_entity_decode(
+                    preg_replace(
+                        '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+                        '$1',
+                        htmlentities($parent, ENT_QUOTES, 'UTF-8')
+                    ),
+                    ENT_QUOTES,
+                    'UTF-8'
+                )
+            ), '-')).'-'.$slug;
+
+        }
+
+        /**
+         * Check if URL key already exist.
+         */
+
+
+
+        return $slug;
         // @codingStandardsIgnoreEnd
     }
 
@@ -467,11 +558,16 @@ class CategoryCreateTask
      * @return bool|\Magento\Framework\DataObject
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function isCategoryExist($nav_id)
+    public function isCategoryExist($nav_id, $store = false)
     {
         $collection = $this->collectionFactory->create()
-            ->addAttributeToFilter('nav_id', $nav_id)
-            ->setPageSize(1);
+            ->addAttributeToFilter('nav_id', $nav_id);
+
+        if ($store) {
+            $collection->addAttributeToFilter('parent_id', $store->getRootCategoryId());
+
+        }
+        $collection->setPageSize(1);
         if ($collection->getSize()) {
             // @codingStandardsIgnoreStart
             return $collection->getFirstItem();
