@@ -397,14 +397,14 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             'IsDeleted',
             0,
             'eq'
-        )->create();
+        );
 
         if($store_id){
             $criteria->addFilter('scope_id',$store_id,'eq');
         }
 
         /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $items */
-        $items = $this->replImageLinkRepositoryInterface->getList($criteria);
+        $items = $this->replImageLinkRepositoryInterface->getList($criteria->create());
         if ($items->getTotalCount() > 0) {
             return $items->getItems();
         }
