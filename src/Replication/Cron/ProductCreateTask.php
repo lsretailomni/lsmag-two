@@ -163,6 +163,7 @@ class ProductCreateTask
     /** @var \Magento\Store\Api\Data\StoreInterface $store */
     public $store;
 
+    /** @var int|bool  */
     public $webStoreId = false;
 
     /**
@@ -510,7 +511,9 @@ class ProductCreateTask
         $categoryCollection = $this->categoryCollectionFactory->create()->addAttributeToFilter(
             'nav_id',
             $productGroupId
-        )->setPageSize(1);
+        )
+            ->addPathsFilter('1/'.$this->store->getRootCategoryId().'/')
+            ->setPageSize(1);
         if ($categoryCollection->getSize()) {
             // @codingStandardsIgnoreStart
             return [
@@ -526,14 +529,15 @@ class ProductCreateTask
      */
     private function assignProductToCategory()
     {
-        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $this->store->getId());
         if (empty($hierarchyCode)) {
             $this->logger->debug('Hierarchy Code not defined in the configuration.');
             return;
         }
         $filters = [
             ['field' => 'main_table.NodeId', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
+            ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyLeafSearchResults $replHierarchyLeafRepository */
@@ -715,7 +719,9 @@ class ProductCreateTask
      */
     public function _getItem($itemId)
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('nav_id', $itemId)->create();
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('nav_id', $itemId)
+            ->addFilter('scope_id',$this->store->getId(),'eq')
+            ->create();
         $items = [];
         /** @var ReplItemRepository $items */
         $items = $this->itemRepository->getList($searchCriteria)->getItems();
@@ -771,7 +777,7 @@ class ProductCreateTask
                 }
                 $items = array_unique($items);
                 foreach ($items as $item) {
-                    $productData = $this->productRepository->get($item);
+                    $productData = $this->productRepository->get($item, true, $this->store->getId());
                     /** @var ReplBarcodeRepository $itemBarcodes */
                     $itemBarcodes = $this->_getBarcode($item);
                     /** @var ReplItemRepository $itemData */
@@ -792,15 +798,17 @@ class ProductCreateTask
     public function caterItemsRemoval()
     {
         $filters = [
-            ['field' => 'nav_id', 'value' => true, 'condition_type' => 'notnull']
+            ['field' => 'nav_id', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
+
         $items = $this->getDeletedItemsOnly($filters);
 
         if (!empty($items->getItems())) {
             try {
                 foreach ($items->getItems() as $value) {
                     $sku = $value->getNavId();
-                    $productData = $this->productRepository->get($sku);
+                    $productData = $this->productRepository->get($sku, true, $this->store->getId());
                     $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED);
                     // @codingStandardsIgnoreStart
                     $this->productRepository->save($productData);
@@ -823,7 +831,9 @@ class ProductCreateTask
     public function caterVariantsRemoval()
     {
         $filters = [
-            ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull']
+            ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+
         ];
         $variants = $this->getDeletedVariantsOnly($filters);
 
@@ -838,7 +848,7 @@ class ProductCreateTask
                     $d5 = (($value->getVariantDimension5()) ? $value->getVariantDimension5() : '');
                     $d6 = (($value->getVariantDimension6()) ? $value->getVariantDimension6() : '');
                     $itemId = $value->getItemId();
-                    $productData = $this->productRepository->get($itemId);
+                    $productData = $this->productRepository->get($itemId, true, $this->store->getId());
                     $attributeCodes = $this->_getAttributesCodes($productData->getSku());
                     $configurableAttributes = [];
                     foreach ($attributeCodes as $keyCode => $valueCode) {
@@ -920,7 +930,9 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
-            ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
+            ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+
 
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 2000);
@@ -957,7 +969,7 @@ class ProductCreateTask
                         // @codingStandardsIgnoreStart
                         $this->replImageLinkRepositoryInterface->save($image);
                         /* @var ProductRepositoryInterface $productData */
-                        $productData = $this->productRepository->get($item);
+                        $productData = $this->productRepository->get($item,true,$this->store->getId());
                         $galleryImage = $allImages;
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
                         $this->productRepository->save($productData);
@@ -978,9 +990,9 @@ class ProductCreateTask
      */
     public function updateBarcodeOnly()
     {
-        $cronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+        $cronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT, $this->store->getId());
         if ($cronProductCheck == 1) {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $this->store->getId());
             /** @var \Ls\Replication\Model\ReplBarcodeSearchResults $replBarcodes */
             $replBarcodes = $this->replBarcodeRepository->getList($criteria);
             if ($replBarcodes->getTotalCount() > 0) {
@@ -992,7 +1004,7 @@ class ProductCreateTask
                         } else {
                             $sku = $replBarcode->getItemId() . '-' . $replBarcode->getVariantId();
                         }
-                        $productData = $this->productRepository->get($sku);
+                        $productData = $this->productRepository->get($sku, true, $this->store->getId());
                         if (isset($productData)) {
                             $productData->setBarcode($replBarcode->getNavId());
                             // @codingStandardsIgnoreStart
@@ -1018,7 +1030,8 @@ class ProductCreateTask
     public function updatePriceOnly($storeId)
     {
         $filters = [
-            ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
+            ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $collection = $this->replPriceCollectionFactory->create();
@@ -1038,7 +1051,7 @@ class ProductCreateTask
                     } else {
                         $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
                     }
-                    $productData = $this->productRepository->get($sku);
+                    $productData = $this->productRepository->get($sku, true,$this->store->getId());
                     if (isset($productData)) {
                         $productData->setPrice($replPrice->getUnitPrice());
                         // @codingStandardsIgnoreStart
@@ -1063,7 +1076,8 @@ class ProductCreateTask
     public function updateInventoryOnly($storeId)
     {
         $filters = [
-            ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
+            ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $collection = $this->replInvStatusCollectionFactory->create();
@@ -1083,7 +1097,7 @@ class ProductCreateTask
                     } else {
                         $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
                     }
-                    $stockItem = $this->stockRegistry->getStockItemBySku($sku);
+                    $stockItem = $this->stockRegistry->getStockItemBySku($sku, $this->store->getId());
                     if (isset($stockItem)) {
                         // @codingStandardsIgnoreStart
                         $stockItem->setQty($replInvStatus->getQuantity());
@@ -1274,7 +1288,7 @@ class ProductCreateTask
             } else {
                 $filters[] = ['field' => 'VariantId', 'value' => true, 'condition_type' => 'null'];
             }
-            $filters[] = ['field' => 'scope_id', 'value' => $scope_id, 'condition_type' => 'eq'];
+            $filters[] = ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'];
             $searchCriteria = $this->replicationHelper->buildCriteriaForArray($filters, 1);
             $inventoryStatus = [];
             /** @var ReplInvStatusRepository $inventoryStatus */

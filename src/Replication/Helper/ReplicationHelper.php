@@ -385,9 +385,6 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($nav_id == '' || $nav_id === null) {
             return false;
         }
-        if(!$store_id){
-            $this->searchCriteriaBuilder->addFilter('scope_id',$store_id,'eq');
-        }
         $criteria = $this->searchCriteriaBuilder->addFilter(
             'KeyValue',
             $nav_id,
@@ -401,6 +398,10 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             0,
             'eq'
         )->create();
+
+        if($store_id){
+            $criteria->addFilter('scope_id',$store_id,'eq');
+        }
 
         /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $items */
         $items = $this->replImageLinkRepositoryInterface->getList($criteria);
