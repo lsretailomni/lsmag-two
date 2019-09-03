@@ -189,12 +189,13 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
             $quoteItems = $this->checkoutSession->getQuote()->getAllVisibleItems();
             /** @var \Magento\Quote\Model\Quote\Item $quoteItem */
             //resetting back to null.
-            $itemsSkus = '';
+            $itemsSkusArray = array();
             foreach ($quoteItems as $quoteItem) {
                 $skuArray = explode('-', $quoteItem->getSku());
                 $sku = array_shift($skuArray);
-                $itemsSkus .= $sku . ',';
+                $itemsSkusArray[] = $sku;
             }
+            $itemsSkus = implode(',', $itemsSkusArray);
         }
         return $itemsSkus;
     }
