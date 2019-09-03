@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Customer\Controller\Sales\Order;
 
 use Magento\Framework\App\Request\Http;
@@ -20,8 +21,9 @@ class Invoice extends \Magento\Sales\Controller\Order\Invoice
      */
     public $orderRepository;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var \Psr\Log\LoggerInterface */
     public $logger;
+
     /**
      * View constructor.
      * @param Http $request
@@ -59,7 +61,7 @@ class Invoice extends \Magento\Sales\Controller\Order\Invoice
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setPath('customer/order/invoice/order_id/'.$documentId);
+            $resultRedirect->setPath('customer/order/invoice/order_id/' . $documentId);
             return $resultRedirect;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

@@ -75,7 +75,7 @@ class History extends \Magento\Sales\Block\Order\History
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $response = [];
             $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
             if ($orders) {
@@ -123,7 +123,7 @@ class History extends \Magento\Sales\Block\Order\History
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             return $this->getUrl('customer/order/view', ['order_id' => $order->getId()]);
         }
         return parent::getViewUrl($order);
@@ -136,7 +136,7 @@ class History extends \Magento\Sales\Block\Order\History
     public function getReorderUrl($order)
     {
         try {
-            if ($order->getDocumentId()!=null) {
+            if ($order->getDocumentId() != null) {
                 return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
             } else {
                 return parent::getReorderUrl($order);
@@ -154,6 +154,7 @@ class History extends \Magento\Sales\Block\Order\History
     {
         return $this->orderHelper->getOrderByDocumentId($documentId);
     }
+
     /**
      * @param object $invoice
      * @return string

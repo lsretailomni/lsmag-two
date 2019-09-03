@@ -102,11 +102,10 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
     // @codingStandardsIgnoreStart
     public function getProductRecommendationfromOmni($product_ids)
     {
-
         if (is_null($product_ids) || empty($product_ids) || $product_ids == '') {
             return null;
         }
-        $store_Id = $this->lsr->getDefaultWebStore();
+        $webStore = $this->lsr->getActiveWebStore();
         $response = null;
         // @codingStandardsIgnoreStart
         /** @var Operation\RecommendedItemsGet $request */
@@ -117,9 +116,8 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
 
         //TODO work with UserID.
         $entity->setItems($product_ids)
-            ->setStoreId($store_Id)
+            ->setStoreId($webStore)
             ->setUserId('');
-
         try {
             $response = $request->execute($entity);
         } catch (\Exception $e) {
@@ -137,10 +135,6 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
         \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem $recommendedProducts
     ) {
         if ($recommendedProducts instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem) {
-            /**
-             * now we are sure we will get the correct type of
-             * data so that we dont mess up handling LS Recommend errors.
-             */
             if (empty($recommendedProducts)) {
                 return null;
             }
@@ -159,7 +153,6 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
     public function getProductIdsFromLsRecommendObject(
         \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem $recommendedProducts
     ) {
-
         $productIds = [];
         /** @var  Entity\RecommendedItem $recommendedItem */
         foreach ($recommendedProducts as $recommendedItem) {
@@ -177,9 +170,7 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('sku', $productIds, 'in')
             ->create();
-
         $products = $this->productRepository->getList($searchCriteria);
-
         if ($products->getTotalCount() > 0) {
             return $products->getItems();
         }
@@ -198,12 +189,13 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
             $quoteItems = $this->checkoutSession->getQuote()->getAllVisibleItems();
             /** @var \Magento\Quote\Model\Quote\Item $quoteItem */
             //resetting back to null.
-            $itemsSkus = '';
+            $itemsSkusArray = array();
             foreach ($quoteItems as $quoteItem) {
                 $skuArray = explode('-', $quoteItem->getSku());
                 $sku = array_shift($skuArray);
-                $itemsSkus .= $sku . ',';
+                $itemsSkusArray[] = $sku;
             }
+            $itemsSkus = implode(',', $itemsSkusArray);
         }
         return $itemsSkus;
     }

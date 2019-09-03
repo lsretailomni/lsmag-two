@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zeesh
- * Date: 4/16/2019
- * Time: 11:59 AM
- */
 
 namespace Ls\Customer\Controller\Account;
 
@@ -17,7 +11,7 @@ use Magento\Customer\Model\AccountManagement;
 class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPasswordPost
 {
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var \Ls\Core\Model\LSR @var */
     public $lsr;
 
     /** @var ContactHelper $contactHelper */
@@ -43,7 +37,7 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
         ContactHelper $contactHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
     ) {
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
         $this->contactHelper = $contactHelper;
         $this->customerFactory = $customerFactory;
         $this->storeManager = $storeManager;
@@ -56,7 +50,6 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
      * with and without email address.
      * @return \Magento\Framework\Controller\Result\Redirect
      */
-
     public function execute()
     {
         /*
@@ -68,7 +61,7 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
             $email = (string)$this->getRequest()->getPost('email');
             if ($email) {
                 // handling the LS Central Reset Password functionality.
-                /** @var Entity\ForgotPasswordResponse | null  $result */
+                /** @var Entity\ForgotPasswordResponse | null $result */
                 try {
                     // check if omni return the success reponse of reset token
                     $result = $this->contactHelper->forgotPassword($email);
@@ -76,7 +69,7 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
                     $search = $this->contactHelper->searchWithUsernameOrEmail($email);
                     if ($result && $search) {
                         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                            /** @var \Magento\Customer\Model\Customer  $customer */
+                        /** @var \Magento\Customer\Model\Customer $customer */
                         $customer = $this->customerFactory->create()
                             ->setWebsiteId($websiteId)
                             ->loadByEmail($search->getEmail());
