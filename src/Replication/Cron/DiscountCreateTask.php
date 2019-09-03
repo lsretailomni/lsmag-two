@@ -230,7 +230,7 @@ class DiscountCreateTask
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\State\InvalidTransitionException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
         $discountsLeftToProcess = 0;
         $this->execute();

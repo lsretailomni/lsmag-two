@@ -288,10 +288,14 @@ class ProductCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\StateException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
-        $stores = $this->lsr->getAllStores();
+        if (!empty($storeData)) {
+            $stores = [$storeData];
+        } else {
+            /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 //setting the store id globally.
@@ -401,16 +405,17 @@ class ProductCreateTask
     }
 
     /**
+     * @param null $storeData
      * @return array
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      * @throws \Magento\Framework\Exception\InputException
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\StateException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1);
+        $this->execute($storeData);
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $storeData->getId(), 'eq', -1);
         $items = $this->itemRepository->getList($criteria);
         $itemsLeftToProcess = count($items->getItems());
         return [$itemsLeftToProcess];

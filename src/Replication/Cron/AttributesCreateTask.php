@@ -111,8 +111,7 @@ class AttributesCreateTask
         ReplicationHelper $replicationHelper,
         LSR $LSR,
         \Magento\Eav\Api\AttributeManagementInterface $attributeManagement
-    )
-    {
+    ) {
         $this->replExtendedVariantValueRepository = $replExtendedVariantValueRepository;
         $this->productAttributeRepository = $productAttributeRepository;
         $this->eavSetupFactory = $eavSetupFactory;
@@ -131,9 +130,17 @@ class AttributesCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        $stores = $this->lsr->getAllStores();
+        /**
+         * Get all the available stores config in the Magento system
+         */
+        if (!empty($storeData)) {
+            $stores = [$storeData];
+        } else {
+            /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 //setting the store id globally.
@@ -158,22 +165,20 @@ class AttributesCreateTask
                 }
                 // unsetting the store id.
                 $this->lsr->setStoreId(null);
-
-
             }
         }
     }
 
     /**
-     * For Manual Cron
+     * @param null $storeData
      * @return array
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+        $this->execute($storeData);
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $storeData->getId(), 'eq');
         /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
         $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
         $itemsLeftToProcess = count($replAttributes->getItems());
@@ -191,7 +196,7 @@ class AttributesCreateTask
          * Technical Structure :- where processed = 0 || is_updated = 1
          */
         try {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', 1000,true);
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', 1000, true);
 
             /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
             $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
