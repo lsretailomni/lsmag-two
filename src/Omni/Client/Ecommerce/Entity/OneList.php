@@ -231,7 +231,7 @@ class OneList extends Entity
                 throw new InvalidEnumException();
         }
         $this->ListType = $ListType->getValue();
-        
+
         return $this;
     }
 

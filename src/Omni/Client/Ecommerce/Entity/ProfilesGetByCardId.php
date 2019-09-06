@@ -14,26 +14,26 @@ class ProfilesGetByCardId implements RequestInterface
 {
 
     /**
-     * @property string $contactId
+     * @property string $cardId
      */
-    protected $contactId = null;
+    protected $cardId = null;
 
     /**
-     * @param string $contactId
+     * @param string $cardId
      * @return $this
      */
-    public function setContactId($contactId)
+    public function setCardId($cardId)
     {
-        $this->contactId = $contactId;
+        $this->cardId = $cardId;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getContactId()
+    public function getCardId()
     {
-        return $this->contactId;
+        return $this->cardId;
     }
 
 

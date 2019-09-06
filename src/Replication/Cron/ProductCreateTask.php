@@ -590,7 +590,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$hierarchyLeaf->getNavId()." in ".__METHOD__);
+                $this->logger->debug("Problem with sku: " . $hierarchyLeaf->getNavId() . " in " . __METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -694,19 +694,23 @@ class ProductCreateTask
      */
     public function _getAttributesCodes($itemId)
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)->create();
-        $sortOrder = $this->sortOrder->setField('Dimensions')->setDirection(SortOrder::SORT_ASC);
-        $searchCriteria->setSortOrders([$sortOrder]);
-        $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
-        /** @var \Ls\Replication\Model\ReplExtendedVariantValue $valueCode */
         $finalCodes = [];
-        foreach ($attributeCodes as $valueCode) {
-            $formattedCode = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
-            $finalCodes[$valueCode->getDimensions()] = $formattedCode;
-            $valueCode->setData('processed', '1');
-            // @codingStandardsIgnoreStart
-            $this->extendedVariantValueRepository->save($valueCode);
-            // @codingStandardsIgnoreEnd
+        try {
+            $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)->create();
+            $sortOrder = $this->sortOrder->setField('DimensionLogicalOrder')->setDirection(SortOrder::SORT_ASC);
+            $searchCriteria->setSortOrders([$sortOrder]);
+            $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
+            /** @var \Ls\Replication\Model\ReplExtendedVariantValue $valueCode */
+            foreach ($attributeCodes as $valueCode) {
+                $formattedCode = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
+                $finalCodes[$valueCode->getDimensions()] = $formattedCode;
+                $valueCode->setData('processed', '1');
+                // @codingStandardsIgnoreStart
+                $this->extendedVariantValueRepository->save($valueCode);
+                // @codingStandardsIgnoreEnd
+            }
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
         return $finalCodes;
     }
@@ -803,7 +807,7 @@ class ProductCreateTask
                     $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $variants);
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$item." in ".__METHOD__);
+                $this->logger->debug("Problem with sku: " . $item . " in " . __METHOD__);
                 $this->logger->debug($e->getMessage());
                 return;
             }
@@ -835,7 +839,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
+                $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -889,7 +893,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$itemId." in ".__METHOD__);
+                $this->logger->debug("Problem with sku: " . $itemId . " in " . __METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -990,7 +994,7 @@ class ProductCreateTask
                         $processedItems[] = $image->getKeyValue();
                     }
                 } catch (\Exception $e) {
-                    $this->logger->debug("Problem with sku: ".$item." in ".__METHOD__);
+                    $this->logger->debug("Problem with sku: " . $item . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1027,7 +1031,7 @@ class ProductCreateTask
                             // @codingStandardsIgnoreEnd
                         }
                     } catch (\Exception $e) {
-                        $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
+                        $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                         $this->logger->debug($e->getMessage());
                     }
                 }
@@ -1073,7 +1077,7 @@ class ProductCreateTask
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
-                    $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
+                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1119,7 +1123,7 @@ class ProductCreateTask
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
-                    $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
+                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1168,7 +1172,7 @@ class ProductCreateTask
                         'Item Variant'
                     );
                     if ($productImages) {
-                        $this->logger->debug('Found images for the simple product ' .$sku);
+                        $this->logger->debug('Found images for the simple product ' . $sku);
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
                     $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
@@ -1219,7 +1223,7 @@ class ProductCreateTask
                 $productImages = $this->replicationHelper
                     ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
                 if ($productImages) {
-                    $this->logger->debug('Found images for the simple product ' .$sku);
+                    $this->logger->debug('Found images for the simple product ' . $sku);
                     $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                 }
 
@@ -1323,8 +1327,8 @@ class ProductCreateTask
         $d6 = (($value->getVariantDimension6()) ? $value->getVariantDimension6() : '');
 
         /** @var \Magento\Catalog\Api\Data\ProductInterface $productV */
-        $dMerged = (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : '').
-            (($d4) ? '-' . $d4 : ''). (($d5) ? '-' . $d5 : ''). (($d6) ? '-' . $d6 : '');
+        $dMerged = (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : '') .
+            (($d4) ? '-' . $d4 : '') . (($d5) ? '-' . $d5 : '') . (($d6) ? '-' . $d6 : '');
         $name = $item->getDescription() . $dMerged;
         return $name;
     }
