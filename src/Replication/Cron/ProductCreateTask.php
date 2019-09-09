@@ -163,7 +163,7 @@ class ProductCreateTask
     /** @var \Magento\Store\Api\Data\StoreInterface $store */
     public $store;
 
-    /** @var int|bool  */
+    /** @var int|bool */
     public $webStoreId = false;
 
     /**
@@ -390,13 +390,15 @@ class ProductCreateTask
                         $this->logger->debug('Product Replication cron fails because custom category, 
             custom attribute or full image replication cron not executed successfully.');
                     }
-                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT, $store->getId());
-
+                    $this->replicationHelper->updateCronStatus(
+                        $this->cronStatus,
+                        LSR::SC_SUCCESS_CRON_PRODUCT,
+                        $store->getId()
+                    );
                 }
                 // unsetting the store id.
                 $this->lsr->setStoreId(null);
             }
-
         }
     }
 
@@ -425,9 +427,8 @@ class ProductCreateTask
     public function getProductAttributes(
         \Magento\Catalog\Api\Data\ProductInterface $product,
         \Ls\Replication\Model\ReplItem $replItem
-    )
-    {
-        $criteria = $this->replicationHelper->buildCriteriaForProductAttributes($replItem->getNavId(), 100, true,  $this->store->getId());
+    ) {
+        $criteria = $this->replicationHelper->buildCriteriaForProductAttributes($replItem->getNavId(), 100, true, $this->store->getId());
         /** @var \Ls\Replication\Model\ReplAttributeValueSearchResults $items */
         $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
         /** @var \Ls\Replication\Model\ReplAttributeValue $item */
@@ -512,7 +513,7 @@ class ProductCreateTask
             'nav_id',
             $productGroupId
         )
-            ->addPathsFilter('1/'.$this->store->getRootCategoryId().'/')
+            ->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/')
             ->setPageSize(1);
         if ($categoryCollection->getSize()) {
             // @codingStandardsIgnoreStart
@@ -671,7 +672,7 @@ class ProductCreateTask
     public function _getAttributesCodes($itemId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
-            ->addFilter('scope_id', $this->store->getId(),'eq')
+            ->addFilter('scope_id', $this->store->getId(), 'eq')
             ->create();
         $sortOrder = $this->sortOrder->setField('Dimensions')->setDirection(SortOrder::SORT_ASC);
         $searchCriteria->setSortOrders([$sortOrder]);
@@ -698,7 +699,7 @@ class ProductCreateTask
     public function _getBarcode($itemId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
-            ->addFilter('scope_id', $this->store->getId(),'eq')
+            ->addFilter('scope_id', $this->store->getId(), 'eq')
             ->create();
         $allBarCodes = [];
         /** @var ReplBarcodeRepository $itemBarcodes */
@@ -720,7 +721,7 @@ class ProductCreateTask
     public function _getItem($itemId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('nav_id', $itemId)
-            ->addFilter('scope_id',$this->store->getId(),'eq')
+            ->addFilter('scope_id', $this->store->getId(), 'eq')
             ->create();
         $items = [];
         /** @var ReplItemRepository $items */
@@ -969,7 +970,7 @@ class ProductCreateTask
                         // @codingStandardsIgnoreStart
                         $this->replImageLinkRepositoryInterface->save($image);
                         /* @var ProductRepositoryInterface $productData */
-                        $productData = $this->productRepository->get($item,true,$this->store->getId());
+                        $productData = $this->productRepository->get($item, true, $this->store->getId());
                         $galleryImage = $allImages;
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
                         $this->productRepository->save($productData);
@@ -1051,7 +1052,7 @@ class ProductCreateTask
                     } else {
                         $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
                     }
-                    $productData = $this->productRepository->get($sku, true,$this->store->getId());
+                    $productData = $this->productRepository->get($sku, true, $this->store->getId());
                     if (isset($productData)) {
                         $productData->setPrice($replPrice->getUnitPrice());
                         // @codingStandardsIgnoreStart
