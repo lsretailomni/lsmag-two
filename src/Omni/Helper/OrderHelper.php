@@ -314,6 +314,9 @@ class OrderHelper extends AbstractHelper
     {
         $response = null;
         $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        if ($cardId == null) {
+            return $response;
+        }
         // @codingStandardsIgnoreStart
         $request = new Operation\SalesEntriesGetByCardId();
         $orderHistory = new Entity\SalesEntriesGetByCardId();

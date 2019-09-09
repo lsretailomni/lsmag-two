@@ -96,10 +96,8 @@ class RegisterObserver implements ObserverInterface
                         $this->customerResourceModel->save($customer);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $contact);
                         $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
-                        $session->setData(LSR::SESSION_CUSTOMER_LSRID, $contact->getId());
-                        if ($basket !== null) {
-                            $session->setData(LSR::SESSION_CUSTOMER_CARDID, $basket->getCardId());
-                        }
+                        $session->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
+                        $session->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
                     }
 
                     $loginResult = $this->contactHelper->login(
