@@ -545,7 +545,8 @@ class ProductCreateTask
         $filters = [
             ['field' => 'main_table.NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'second.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyLeafSearchResults $replHierarchyLeafRepository */
@@ -1039,7 +1040,8 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'second.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $collection = $this->replPriceCollectionFactory->create();
@@ -1085,7 +1087,8 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'second.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $collection = $this->replInvStatusCollectionFactory->create();
