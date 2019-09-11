@@ -791,7 +791,8 @@ class ProductCreateTask
                     $itemBarcodes = $this->_getBarcode($item);
                     /** @var ReplItemRepository $itemData */
                     $itemData = $this->_getItem($item);
-                    $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $variants);
+                    $subVariants = $this->getNewOrUpdatedProductVariants(100, $itemData->getNavId());
+                    $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $subVariants);
                 }
             } catch (\Exception $e) {
                 $this->logger->debug("Problem with sku: " . $item . " in " . __METHOD__);
@@ -941,8 +942,6 @@ class ProductCreateTask
             ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
             ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
-
-
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 2000);
         /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $images */
