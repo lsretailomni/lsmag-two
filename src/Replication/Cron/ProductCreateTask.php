@@ -558,6 +558,9 @@ class ProductCreateTask
      */
     private function assignProductToCategory()
     {
+        $categoriesArray=[];
+        $navId = [];
+        $hierarchyCollection = [];
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
             $this->logger->debug('Hierarchy Code not defined in the configuration.');
@@ -577,23 +580,56 @@ class ProductCreateTask
             'ls_replication_repl_item',
             'nav_id'
         );
-        foreach ($collection as $hierarchyLeaf) {
-            try {
-                $categoryArray = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
-                if (!empty($categoryArray)) {
-                    // @codingStandardsIgnoreStart
-                    $this->categoryLinkManagement->assignProductToCategories($hierarchyLeaf->getNavId(),
-                        $categoryArray);
-                    $hierarchyLeaf->setData('processed', '1');
-                    $hierarchyLeaf->setData('is_updated', '0');
-                    $this->replHierarchyLeafRepository->save($hierarchyLeaf);
-                    // @codingStandardsIgnoreEnd
+
+        try {
+            $counter=0;
+            foreach ($collection as $hierarchyLeaf) {
+                try {
+                    $product = $this->productRepository->get($hierarchyLeaf->getNavId());
+                    $previousCategoryIds = $product->getCategoryIds();
                 }
-            } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$hierarchyLeaf->getNavId()." in ".__METHOD__);
-                $this->logger->debug($e->getMessage());
+                catch (\Exception $e) {
+                    $this->logger->debug($e->getMessage());
+                }
+
+                $currentCategoryIds=$this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
+
+                        if(!empty($previousCategoryIds)) {
+                            $categoriesArray[$hierarchyLeaf->getNavId()] = array_unique(array_merge($currentCategoryIds, $previousCategoryIds));
+                        }
+                        else {
+                            if(!empty($categoriesArray)) {
+                                $categoriesArray[$hierarchyLeaf->getNavId()] = array_unique(array_merge(
+                                    $currentCategoryIds,
+                                    $categoriesArray[$hierarchyLeaf->getNavId()])
+                                );
+                            }
+                            else {
+                                $categoriesArray[$hierarchyLeaf->getNavId()] = $currentCategoryIds;
+                            }
+                        }
+                        $navId[] = $hierarchyLeaf->getNavId();
+                        $hierarchyCollection[$hierarchyLeaf->getNavId()][] = $hierarchyLeaf;
+            }
+
+            foreach ($categoriesArray as $catArray) {
+                if (!empty($catArray)) {
+                    $this->categoryLinkManagement->assignProductToCategories($navId[$counter],
+                        $catArray);
+                    foreach($hierarchyCollection[$navId[$counter]] as $leaf) {
+                        $leaf->setData('processed', '1');
+                        $leaf->setData('is_updated', '0');
+                        $this->replHierarchyLeafRepository->save($leaf);
+                    }
+                    $counter++;
+                }
             }
         }
+            catch
+                (\Exception $e) {
+                $this->logger->debug("Problem with sku: " . $hierarchyLeaf->getNavId() . " in " . __METHOD__);
+                $this->logger->debug($e->getMessage());
+            }
     }
 
     /**
