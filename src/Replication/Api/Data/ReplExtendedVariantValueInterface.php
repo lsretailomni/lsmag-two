@@ -23,6 +23,17 @@ interface ReplExtendedVariantValueInterface
     public function getCode();
 
     /**
+     * @param int $DimensionLogicalOrder
+     * @return $this
+     */
+    public function setDimensionLogicalOrder($DimensionLogicalOrder);
+
+    /**
+     * @return int
+     */
+    public function getDimensionLogicalOrder();
+
+    /**
      * @param string $Dimensions
      * @return $this
      */

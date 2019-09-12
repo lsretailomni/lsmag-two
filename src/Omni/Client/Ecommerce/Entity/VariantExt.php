@@ -27,6 +27,11 @@ class VariantExt
     protected $Dimension = null;
 
     /**
+     * @property int $DisplayOrder
+     */
+    protected $DisplayOrder = null;
+
+    /**
      * @param ArrayOfDimValue $Values
      * @return $this
      */
@@ -78,6 +83,24 @@ class VariantExt
     public function getDimension()
     {
         return $this->Dimension;
+    }
+
+    /**
+     * @param int $DisplayOrder
+     * @return $this
+     */
+    public function setDisplayOrder($DisplayOrder)
+    {
+        $this->DisplayOrder = $DisplayOrder;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDisplayOrder()
+    {
+        return $this->DisplayOrder;
     }
 
 

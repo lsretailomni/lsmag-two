@@ -74,7 +74,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode INVALID_VARIANT()
  * @$method static StatusCode INVALID_PRICE_CHANGE()
  * @$method static StatusCode PRICE_CHANGE_NOT_ALLOWED()
- * @$method static StatusCode PRICE_TO_HIGH()
+ * @$method static StatusCode PRICE_TOO_HIGH()
  * @$method static StatusCode INVALID_DISC_PERCENT()
  * @$method static StatusCode INC_EXP_NOT_FOUND()
  * @$method static StatusCode TENDER_TYPE_NOT_FOUND()
@@ -151,6 +151,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode TRANSFER_ORDER_FETCHED()
  * @$method static StatusCode TRANSFER_ORDER_SENT()
  * @$method static StatusCode TRANSFER_ORDER_REJECTED()
+ * @$method static StatusCode INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT()
  * @$method static StatusCode UNKNOWN_USER()
  * @$method static StatusCode NAV_W_S_ERROR()
  * @$method static StatusCode TRANSACTION_POST()
@@ -288,7 +289,7 @@ class StatusCode extends Enum
 
     const PRICE_CHANGE_NOT_ALLOWED = 'PriceChangeNotAllowed';
 
-    const PRICE_TO_HIGH = 'PriceToHigh';
+    const PRICE_TOO_HIGH = 'PriceTooHigh';
 
     const INVALID_DISC_PERCENT = 'InvalidDiscPercent';
 
@@ -441,6 +442,8 @@ class StatusCode extends Enum
     const TRANSFER_ORDER_SENT = 'TransferOrderSent';
 
     const TRANSFER_ORDER_REJECTED = 'TransferOrderRejected';
+
+    const INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT = 'InvalidSuspensionWithPartialPayment';
 
     const UNKNOWN_USER = 'UnknownUser';
 
