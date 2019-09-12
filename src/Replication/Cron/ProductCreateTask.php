@@ -580,7 +580,6 @@ class ProductCreateTask
         );
 
         try {
-            $counter = 0;
             foreach ($collection as $hierarchyLeaf) {
                 try {
                     $product = $this->productRepository->get($hierarchyLeaf->getNavId());
@@ -622,7 +621,6 @@ class ProductCreateTask
                         $leaf->setData('is_updated', '0');
                         $this->replHierarchyLeafRepository->save($leaf);
                     }
-                    $counter++;
                 }
             }
         } catch (\Exception $e) {
