@@ -87,6 +87,7 @@ define([
                 var selectedStore = $(this).data('id');
                 var controllerUrl = self.getBaseUrl("omni/stock/store"+"?storeid="+selectedStore);
                 var backUrl = self.getBaseUrl("checkout/cart");
+                var translatedText = $t('cart');
                 var flag = "1";
                 $.ajax({
                     url: controllerUrl,
@@ -101,22 +102,26 @@ define([
                     success: function (data) {
                         $(".stock-remarks ul").html("");
                         $(".stock-remarks > strong").remove();
-                        for(var i in data.stocks){
-                            var o = data.stocks[i];
-                            if(o.status === "0" && flag === "1"){
-                                flag = "0";
-                            }
-                            if(o.status === "0" ){
-                                $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:red'>"+ o.display +"</span></li>")
-                            }else{
-                                $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:green'>"+ o.display +"</span></li>")
-                            }
+                        if (data.stocks) {
+                            for(var i in data.stocks){
+                                var o = data.stocks[i];
+                                if(o.status === "0" && flag === "1"){
+                                    flag = "0";
+                                }
+                                if(o.status === "0" ){
+                                    $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:red'>"+ o.display +"</span></li>")
+                                }else{
+                                    $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:green'>"+ o.display +"</span></li>")
+                                }
 
-                        }
-                        if(flag ==="1"){
-                            $('.apply-store').removeAttr('disabled');
-                        }else{
-                            $(".stock-remarks").append("<strong>"+data.remarks+" <a href='"+backUrl+"'>cart</a></strong>");
+                            }
+                            if(flag ==="1"){
+                                $('.apply-store').removeAttr('disabled');
+                            }else{
+                                $(".stock-remarks").append("<strong>"+data.remarks+" <a href='"+backUrl+"'>"+translatedText+"</a></strong>");
+                            }
+                        } else {
+                            $(".stock-remarks").append("<strong>"+data.remarks+"</strong>");
                         }
                     },
                     error: function(xhr) { // if error occured

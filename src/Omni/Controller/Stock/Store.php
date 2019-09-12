@@ -105,6 +105,11 @@ class Store extends \Magento\Framework\App\Action\Action
                 $result = $result->setData(
                     ["remarks" => $notAvailableNotice, "stocks" => $stockCollection]
                 );
+            } else {
+                $notAvailableNotice = __("Oops! Unable to do stock lookup currently.");
+                $result = $result->setData(
+                    ["remarks" => $notAvailableNotice, "stocks" => null]
+                );
             }
         }
         return $result;
