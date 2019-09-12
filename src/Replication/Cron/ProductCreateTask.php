@@ -558,6 +558,7 @@ class ProductCreateTask
     private function assignProductToCategory()
     {
         $categoriesArray = [];
+        $previousCategoryIds = [];
         $hierarchyCollection = [];
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
@@ -610,13 +611,13 @@ class ProductCreateTask
                 $hierarchyCollection[$hierarchyLeaf->getNavId()][] = $hierarchyLeaf;
             }
 
-            foreach ($categoriesArray as $catkey => $catArray) {
+            foreach ($categoriesArray as $catKey => $catArray) {
                 if (!empty($catArray)) {
                     $this->categoryLinkManagement->assignProductToCategories(
-                        $catkey,
+                        $catKey,
                         $catArray
                     );
-                    foreach ($hierarchyCollection[$catkey] as $leaf) {
+                    foreach ($hierarchyCollection[$catKey] as $leaf) {
                         $leaf->setData('processed', '1');
                         $leaf->setData('is_updated', '0');
                         $this->replHierarchyLeafRepository->save($leaf);
