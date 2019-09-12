@@ -8,6 +8,7 @@ use Magento\Backend\App\Action;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\ObjectManagerInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Store\Model\StoreManagerInterface as StoreManager;
 
 /**
  * Class Grid
@@ -28,21 +29,29 @@ class Grid extends Action
     public $logger;
 
     /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
      * Grid constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param ObjectManagerInterface $objectManager
      * @param LoggerInterface $logger
+     * @param StoreManager $storeManager
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         ObjectManagerInterface $objectManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        StoreManager $storeManager
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->objectManager = $objectManager;
         $this->logger = $logger;
+        $this->storeManager = $storeManager;
         parent::__construct($context);
     }
 
@@ -56,17 +65,25 @@ class Grid extends Action
             $resultPage->getConfig()->getTitle()->prepend(__('Cron Listing '));
             $jobUrl = $this->_request->getParam('joburl');
             $jobName = $this->_request->getParam('jobname');
+            $storeId = $this->_request->getParam('store');
+            $storeData = null;
+            if (empty($storeId)) {
+                $storeId=1;
+            }
             if ($jobUrl != "") {
                 // @codingStandardsIgnoreStart
                 $cron = $this->objectManager->create($jobUrl);
                 // @codingStandardsIgnoreEnd
-                $info = $cron->executeManually();
+                if (!empty($storeId)) {
+                    $storeData=$this->storeManager->getStore($storeId);
+                }
+                $info = $cron->executeManually($storeData);
                 if (!empty($info)) {
                     $executeMoreData = '';
                     if ($info[0] > 0) {
                         $executeMoreData = $this->_url->getUrl(
                             self::URL_PATH_EXECUTE,
-                            ['joburl' => $jobUrl, 'jobname' => $jobName]
+                            ['joburl' => $jobUrl, 'jobname' => $jobName,'store' => $storeId]
                         );
                     }
                     $this->messageManager->addComplexSuccessMessage(
@@ -78,7 +95,7 @@ class Grid extends Action
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
                 return $resultRedirect;
             } else {
-                return $resultPage;
+                    return $resultPage;
             }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());

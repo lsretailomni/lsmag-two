@@ -83,6 +83,8 @@ class AttributesCreateTask
     /** @var \Magento\Store\Api\Data\StoreInterface $store */
     public $store;
 
+    protected $_sdasdl;
+
     /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
@@ -130,9 +132,17 @@ class AttributesCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        $stores = $this->lsr->getAllStores();
+        /**
+         * Get all the available stores config in the Magento system
+         */
+        if (!empty($storeData)) {
+            $stores = [$storeData];
+        } else {
+            /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 //setting the store id globally.
@@ -164,15 +174,15 @@ class AttributesCreateTask
     }
 
     /**
-     * For Manual Cron
+     * @param null $storeData
      * @return array
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+        $this->execute($storeData);
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $storeData->getId(), 'eq');
         /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
         $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
         $itemsLeftToProcess = count($replAttributes->getItems());

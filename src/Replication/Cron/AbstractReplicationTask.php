@@ -143,8 +143,7 @@ abstract class AbstractReplicationTask
         LoggerInterface $logger,
         LsHelper $helper,
         \Ls\Replication\Helper\ReplicationHelper $repHelper
-    )
-    {
+    ) {
         $this->scope_config = $scope_config;
         $this->resource_config = $resouce_config;
         $this->logger = $logger;
@@ -155,13 +154,17 @@ abstract class AbstractReplicationTask
     /**
      * @throws \ReflectionException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
         /**
          * Get all the available stores config in the Magento system
          */
-        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
-        $stores = $this->getAllStores();
+        if (!empty($storeData)) {
+            $stores = [$storeData];
+        } else {
+            /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+            $stores = $this->getAllStores();
+        }
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $lsr = $this->getLsrModel();
@@ -268,12 +271,13 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * @param null $storeData
      * @return array
      * @throws \ReflectionException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
+        $this->execute($storeData);
         return [$this->recordsRemaining];
     }
 

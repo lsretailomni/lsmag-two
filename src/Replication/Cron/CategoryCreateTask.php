@@ -145,10 +145,14 @@ class CategoryCreateTask
     /**
      * execute
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
-        $stores = $this->lsr->getAllStores();
+        if (!empty($storeData)) {
+            $stores = [$storeData];
+        } else {
+            /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 //setting the store id globally.
@@ -483,12 +487,13 @@ class CategoryCreateTask
     }
 
     /**
+     * @param null $storeData
      * @return array
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $this->execute($storeData);
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE,$storeData->getId());
         $filters = [
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
         ];
