@@ -140,7 +140,6 @@ class ProductCreateTask
 
     /** @var \Ls\Omni\Helper\StockHelper */
     public $stockHelper;
-
     /**
      * @var ReplItemVariantRegistrationRepository
      */
@@ -558,8 +557,7 @@ class ProductCreateTask
      */
     private function assignProductToCategory()
     {
-        $categoriesArray=[];
-        $navId = [];
+        $categoriesArray = [];
         $hierarchyCollection = [];
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
@@ -582,41 +580,44 @@ class ProductCreateTask
         );
 
         try {
-            $counter=0;
+            $counter = 0;
             foreach ($collection as $hierarchyLeaf) {
                 try {
                     $product = $this->productRepository->get($hierarchyLeaf->getNavId());
                     $previousCategoryIds = $product->getCategoryIds();
-                }
-                catch (\Exception $e) {
+                } catch (\Exception $e) {
                     $this->logger->debug($e->getMessage());
                 }
 
-                $currentCategoryIds=$this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
+                $currentCategoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
 
-                        if(!empty($previousCategoryIds)) {
-                            $categoriesArray[$hierarchyLeaf->getNavId()] = array_unique(array_merge($currentCategoryIds, $previousCategoryIds));
-                        }
-                        else {
-                            if(!empty($categoriesArray)) {
-                                $categoriesArray[$hierarchyLeaf->getNavId()] = array_unique(array_merge(
-                                    $currentCategoryIds,
-                                    $categoriesArray[$hierarchyLeaf->getNavId()])
-                                );
-                            }
-                            else {
-                                $categoriesArray[$hierarchyLeaf->getNavId()] = $currentCategoryIds;
-                            }
-                        }
-                        $navId[] = $hierarchyLeaf->getNavId();
-                        $hierarchyCollection[$hierarchyLeaf->getNavId()][] = $hierarchyLeaf;
+                if (array_key_exists($hierarchyLeaf->getNavId(), $categoriesArray)) {
+                    $categoriesArray[$hierarchyLeaf->getNavId()] =
+                        array_unique(
+                            array_merge(
+                                $currentCategoryIds,
+                                $categoriesArray[$hierarchyLeaf->getNavId()]
+                            )
+                        );
+                } else {
+                    $categoriesArray[$hierarchyLeaf->getNavId()] =
+                        array_unique(
+                            array_merge(
+                                $currentCategoryIds,
+                                $previousCategoryIds
+                            )
+                        );
+                }
+                $hierarchyCollection[$hierarchyLeaf->getNavId()][] = $hierarchyLeaf;
             }
 
-            foreach ($categoriesArray as $catArray) {
+            foreach ($categoriesArray as $catkey => $catArray) {
                 if (!empty($catArray)) {
-                    $this->categoryLinkManagement->assignProductToCategories($navId[$counter],
-                        $catArray);
-                    foreach($hierarchyCollection[$navId[$counter]] as $leaf) {
+                    $this->categoryLinkManagement->assignProductToCategories(
+                        $catkey,
+                        $catArray
+                    );
+                    foreach ($hierarchyCollection[$catkey] as $leaf) {
                         $leaf->setData('processed', '1');
                         $leaf->setData('is_updated', '0');
                         $this->replHierarchyLeafRepository->save($leaf);
@@ -624,12 +625,9 @@ class ProductCreateTask
                     $counter++;
                 }
             }
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
-            catch
-                (\Exception $e) {
-                $this->logger->debug("Problem with sku: " . $hierarchyLeaf->getNavId() . " in " . __METHOD__);
-                $this->logger->debug($e->getMessage());
-            }
     }
 
     /**
@@ -839,7 +837,7 @@ class ProductCreateTask
                     $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $variants);
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$item." in ".__METHOD__);
+                $this->logger->debug("Problem with sku: " . $item . " in " . __METHOD__);
                 $this->logger->debug($e->getMessage());
                 return;
             }
@@ -871,7 +869,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
+                $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -925,7 +923,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: ".$itemId." in ".__METHOD__);
+                $this->logger->debug("Problem with sku: " . $itemId . " in " . __METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -1026,7 +1024,7 @@ class ProductCreateTask
                         $processedItems[] = $image->getKeyValue();
                     }
                 } catch (\Exception $e) {
-                    $this->logger->debug("Problem with sku: ".$item." in ".__METHOD__);
+                    $this->logger->debug("Problem with sku: " . $item . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1063,7 +1061,7 @@ class ProductCreateTask
                             // @codingStandardsIgnoreEnd
                         }
                     } catch (\Exception $e) {
-                        $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
+                        $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                         $this->logger->debug($e->getMessage());
                     }
                 }
@@ -1109,7 +1107,7 @@ class ProductCreateTask
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
-                    $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
+                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1155,7 +1153,7 @@ class ProductCreateTask
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (\Exception $e) {
-                    $this->logger->debug("Problem with sku: ".$sku." in ".__METHOD__);
+                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1204,7 +1202,7 @@ class ProductCreateTask
                         'Item Variant'
                     );
                     if ($productImages) {
-                        $this->logger->debug('Found images for the simple product ' .$sku);
+                        $this->logger->debug('Found images for the simple product ' . $sku);
                         $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
                     $productData->setStatus(\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
@@ -1255,7 +1253,7 @@ class ProductCreateTask
                 $productImages = $this->replicationHelper
                     ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
                 if ($productImages) {
-                    $this->logger->debug('Found images for the simple product ' .$sku);
+                    $this->logger->debug('Found images for the simple product ' . $sku);
                     $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                 }
 
@@ -1359,8 +1357,8 @@ class ProductCreateTask
         $d6 = (($value->getVariantDimension6()) ? $value->getVariantDimension6() : '');
 
         /** @var \Magento\Catalog\Api\Data\ProductInterface $productV */
-        $dMerged = (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : '').
-            (($d4) ? '-' . $d4 : ''). (($d5) ? '-' . $d5 : ''). (($d6) ? '-' . $d6 : '');
+        $dMerged = (($d1) ? '-' . $d1 : '') . (($d2) ? '-' . $d2 : '') . (($d3) ? '-' . $d3 : '') .
+            (($d4) ? '-' . $d4 : '') . (($d5) ? '-' . $d5 : '') . (($d6) ? '-' . $d6 : '');
         $name = $item->getDescription() . $dMerged;
         return $name;
     }
