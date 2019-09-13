@@ -236,7 +236,6 @@ class OrderHelper extends AbstractHelper
         $transId = $order->getPayment()->getLastTransId();
         $ccType = $order->getPayment()->getCcType();
         $cardNumber = $order->getPayment()->getCcLast4();
-        $paymentMethod = $order->getPayment()->getMethodInstance();
 
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
