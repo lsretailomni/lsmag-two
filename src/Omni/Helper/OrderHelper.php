@@ -242,8 +242,8 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreStart
         $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
         // @codingStandardsIgnoreEnd
-
-        if ($paymentMethod->isOffline() == false) {
+        //TODO change it to $paymentMethod->isOffline() == false when order edit option available for offline payments.
+        if ($order->getPayment()->getMethodInstance()->getCode() != "ls_payment_method_pay_at_store") {
             // @codingStandardsIgnoreStart
             $orderPayment = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
