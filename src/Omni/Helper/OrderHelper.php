@@ -255,10 +255,14 @@ class OrderHelper extends AbstractHelper
                 ->setOrderId($order->getIncrementId())
                 ->setPreApprovedAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
-            $orderPayment->setTenderType('1');
-            $orderPayment->setCardType($ccType);
-            $orderPayment->setCardNumber($cardNumber);
-            $orderPayment->setAuthorisationCode($transId);
+            if (!empty($transId)) {
+                $orderPayment->setTenderType('1');
+                $orderPayment->setCardType($ccType);
+                $orderPayment->setCardNumber($cardNumber);
+                $orderPayment->setAuthorisationCode($transId);
+            } else {
+                $orderPayment->setTenderType('0');
+            }
             $orderPaymentArray[] = $orderPayment;
         }
 
