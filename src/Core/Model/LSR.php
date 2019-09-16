@@ -79,6 +79,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
+    const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_STORE = 'ls_mag/replication/manual_cron_grid_default_store';
 
     // CRON CHECKING
 
@@ -397,7 +398,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         } else {
             $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
             $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
-
         }
         if (empty($baseUrl) || empty($store)) {
             return false;

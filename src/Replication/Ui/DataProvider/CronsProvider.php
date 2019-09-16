@@ -116,9 +116,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $cronsGroupListing = array_reverse($cronsGroupListing);
         $this->lsr->flushConfig();
         $storeId = $this->request->getParam('store');
-        if (empty($storeId)) {
-            $storeId =1;
-        }
         foreach ($cronsGroupListing as $cronlist) {
             $path = '';
             if ($cronlist['_attribute']['id'] == "replication") {

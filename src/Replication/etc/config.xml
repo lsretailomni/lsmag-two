@@ -7,6 +7,7 @@
                 <replicate_all_stores_items>0</replicate_all_stores_items>
                 <default_batch_size>2000</default_batch_size>
                 <product_batch_size>30</product_batch_size>
+                <manual_cron_grid_default_store>1</manual_cron_grid_default_store>
                 <replicate_category>1</replicate_category>
                 <variant_map>1</variant_map>
                 <advanced>0</advanced>
