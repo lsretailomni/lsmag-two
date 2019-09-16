@@ -28,6 +28,7 @@ class ReplExtendedVariantValue
         	$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
         	$table->addColumn('Code' , Table::TYPE_TEXT, '');
+        	$table->addColumn('DimensionLogicalOrder' , Table::TYPE_INTEGER, '');
         	$table->addColumn('Dimensions' , Table::TYPE_TEXT, '');
         	$table->addColumn('FrameworkCode' , Table::TYPE_TEXT, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, '');
