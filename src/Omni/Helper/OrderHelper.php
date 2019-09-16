@@ -236,14 +236,13 @@ class OrderHelper extends AbstractHelper
         $transId = $order->getPayment()->getLastTransId();
         $ccType = $order->getPayment()->getCcType();
         $cardNumber = $order->getPayment()->getCcLast4();
-        $paymentMethod = $order->getPayment()->getMethodInstance();
 
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
         $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
         // @codingStandardsIgnoreEnd
-
-        if ($paymentMethod->isOffline() == false) {
+        //TODO change it to $paymentMethod->isOffline() == false when order edit option available for offline payments.
+        if ($order->getPayment()->getMethodInstance()->getCode() != "ls_payment_method_pay_at_store") {
             // @codingStandardsIgnoreStart
             $orderPayment = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
@@ -255,10 +254,14 @@ class OrderHelper extends AbstractHelper
                 ->setOrderId($order->getIncrementId())
                 ->setPreApprovedAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
-            $orderPayment->setTenderType('1');
-            $orderPayment->setCardType($ccType);
-            $orderPayment->setCardNumber($cardNumber);
-            $orderPayment->setAuthorisationCode($transId);
+            if (!empty($transId)) {
+                $orderPayment->setTenderType('1');
+                $orderPayment->setCardType($ccType);
+                $orderPayment->setCardNumber($cardNumber);
+                $orderPayment->setAuthorisationCode($transId);
+            } else {
+                $orderPayment->setTenderType('0');
+            }
             $orderPaymentArray[] = $orderPayment;
         }
 
