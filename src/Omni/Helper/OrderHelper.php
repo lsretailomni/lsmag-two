@@ -43,6 +43,9 @@ class OrderHelper extends AbstractHelper
      */
     public $orderRepository;
 
+    /** @var  LSR $lsr */
+    public $lsr;
+
     /**
      * OrderHelper constructor.
      * @param Context $context
@@ -51,6 +54,7 @@ class OrderHelper extends AbstractHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param LSR $Lsr
      */
     public function __construct(
         Context $context,
@@ -59,7 +63,8 @@ class OrderHelper extends AbstractHelper
         LoyaltyHelper $loyaltyHelper,
         \Magento\Sales\Model\OrderRepository $orderRepository,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
+        LSR $Lsr
     ) {
         parent::__construct($context);
         $this->order = $order;
@@ -68,6 +73,7 @@ class OrderHelper extends AbstractHelper
         $this->orderRepository = $orderRepository;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
+        $this->lsr = $Lsr;
     }
 
     /**
@@ -382,5 +388,13 @@ class OrderHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return $order;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActiveWebStore()
+    {
+        return $this->lsr->getActiveWebStore();
     }
 }

@@ -123,8 +123,7 @@ class CategoryCreateTask
         ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
         ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory,
         \Magento\Eav\Model\ResourceModel\Entity\Attribute $eavAttribute
-    )
-    {
+    ) {
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
         $this->replHierarchyNodeRepository = $replHierarchyNodeRepository;
@@ -146,18 +145,19 @@ class CategoryCreateTask
     /**
      * execute
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
-        $stores = $this->lsr->getAllStores();
+        if (!empty($storeData)) {
+            $stores = [$storeData];
+        } else {
+            /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 //setting the store id globally.
                 $this->lsr->setStoreId($store->getId());
-               // echo "Running CategoryCreateTask for Store " . $store->getName();
-                //setting the store in object variable so that it should be easy to retirve from everywhere instead of passing as paramter.
                 $this->store = $store;
-
                 //adding is_lsr check to avoid wasting time for the stores which is not setup
                 if ($this->lsr->isLSR($this->store->getId())) {
                     $this->replicationHelper->updateConfigValue(
@@ -203,7 +203,8 @@ class CategoryCreateTask
                     }
                     //Update the Modified Images
                     $this->updateImagesOnly();
-                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY, $store->getId());
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY,
+                        $store->getId());
                     $this->logger->debug("CategoryCreateTask Completed for Store " . $store->getName());
 
                 }
@@ -223,8 +224,7 @@ class CategoryCreateTask
         $HierarchyCodeSpecificFilter,
         $mediaAttribute,
         $scopeIdFilter = false
-    )
-    {
+    ) {
         $parentNodeNullFilter = ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'];
         if ($scopeIdFilter) {
             // if the filter is set then add the scopeif into the condition as well.
@@ -314,8 +314,7 @@ class CategoryCreateTask
         $HierarchyCodeSpecificFilter,
         $mediaAttribute,
         $scopeIdFilter = false
-    )
-    {
+    ) {
         // This is for the child/sub categories apply ParentNode Not Null Criteria
         $parentNodeNotNullFilter = ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'notnull'];
         if ($scopeIdFilter) {
@@ -342,9 +341,9 @@ class CategoryCreateTask
                 $collection = $this->collectionFactory->create()
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
                     //->addRootLevelFilter()
-                    ->addPathsFilter('1/'.$this->store->getRootCategoryId().'/')
+                    ->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/')
                     ->setPageSize(1);
-                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(),$this->store);
+                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(), $this->store);
                 if ($collection->getSize() && !$subCategoryExistData) {
                     /** @var \Magento\Catalog\Model\CategoryFactory $categorysub */
                     $categorysub = $this->categoryFactory->create();
@@ -488,12 +487,13 @@ class CategoryCreateTask
     }
 
     /**
+     * @param null $storeData
      * @return array
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $this->execute($storeData);
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE,$storeData->getId());
         $filters = [
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
         ];
@@ -525,27 +525,26 @@ class CategoryCreateTask
         ), '-'));
 
 
-        if($parent){
+        if ($parent) {
             $slug = strtolower(trim(preg_replace(
-                '~[^0-9a-z]+~i',
-                '-',
-                html_entity_decode(
-                    preg_replace(
-                        '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
-                        '$1',
-                        htmlentities($parent, ENT_QUOTES, 'UTF-8')
-                    ),
-                    ENT_QUOTES,
-                    'UTF-8'
-                )
-            ), '-')).'-'.$slug;
+                    '~[^0-9a-z]+~i',
+                    '-',
+                    html_entity_decode(
+                        preg_replace(
+                            '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+                            '$1',
+                            htmlentities($parent, ENT_QUOTES, 'UTF-8')
+                        ),
+                        ENT_QUOTES,
+                        'UTF-8'
+                    )
+                ), '-')) . '-' . $slug;
 
         }
 
         /**
          * Check if URL key already exist.
          */
-
 
 
         return $slug;

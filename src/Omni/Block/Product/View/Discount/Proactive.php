@@ -129,8 +129,8 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     public function getProactiveDiscounts($sku)
     {
         $itemId = $sku;
-        $storeId = $this->lsr->getDefaultWebStore();
-        if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $storeId)) {
+        $webStore = $this->lsr->getActiveWebStore();
+        if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore)) {
             if (!is_array($response)) {
                 $response = [$response];
             }
@@ -149,7 +149,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     {
         $itemId = $sku;
         try {
-            $storeId = $this->lsr->getDefaultWebStore();
+            $storeId = $this->lsr->getCurrentStoreId();
             if ($this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_ID)) {
                 $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
                 $email = $this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_EMAIL);

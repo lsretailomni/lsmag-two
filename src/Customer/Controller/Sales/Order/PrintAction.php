@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Customer\Controller\Sales\Order;
 
 use Magento\Framework\App\Request\Http;
@@ -20,8 +21,9 @@ class PrintAction extends \Magento\Sales\Controller\Order\PrintAction
      */
     public $orderRepository;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var \Psr\Log\LoggerInterface */
     public $logger;
+
     /**
      * View constructor.
      * @param Http $request
@@ -59,7 +61,7 @@ class PrintAction extends \Magento\Sales\Controller\Order\PrintAction
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setPath('customer/order/print/order_id/'.$documentId);
+            $resultRedirect->setPath('customer/order/print/order_id/' . $documentId);
             return $resultRedirect;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

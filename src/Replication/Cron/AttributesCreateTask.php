@@ -83,6 +83,8 @@ class AttributesCreateTask
     /** @var \Magento\Store\Api\Data\StoreInterface $store */
     public $store;
 
+    protected $_sdasdl;
+
     /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
@@ -111,8 +113,7 @@ class AttributesCreateTask
         ReplicationHelper $replicationHelper,
         LSR $LSR,
         \Magento\Eav\Api\AttributeManagementInterface $attributeManagement
-    )
-    {
+    ) {
         $this->replExtendedVariantValueRepository = $replExtendedVariantValueRepository;
         $this->productAttributeRepository = $productAttributeRepository;
         $this->eavSetupFactory = $eavSetupFactory;
@@ -131,9 +132,17 @@ class AttributesCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        $stores = $this->lsr->getAllStores();
+        /**
+         * Get all the available stores config in the Magento system
+         */
+        if (!empty($storeData)) {
+            $stores = [$storeData];
+        } else {
+            /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 //setting the store id globally.
@@ -144,12 +153,14 @@ class AttributesCreateTask
 
                 //adding is_lsr check to avoid wasting time for the stores which is not setup
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE,$store->getId());
+                    $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE,
+                        $store->getId());
                     // Process display only attributes which are going to be used for product specification
                     $this->processAttributes($store);
                     // Process variants attributes which are going to be used for configurable product
                     $this->processVariantAttributes($store);
-                    $this->replicationHelper->updateCronStatus($this->successCronAttribute, LSR::SC_SUCCESS_CRON_ATTRIBUTE,$store->getId());
+                    $this->replicationHelper->updateCronStatus($this->successCronAttribute,
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTE, $store->getId());
                     $this->replicationHelper->updateCronStatus(
                         $this->successCronAttributeVariant,
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
@@ -158,22 +169,20 @@ class AttributesCreateTask
                 }
                 // unsetting the store id.
                 $this->lsr->setStoreId(null);
-
-
             }
         }
     }
 
     /**
-     * For Manual Cron
+     * @param null $storeData
      * @return array
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+        $this->execute($storeData);
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $storeData->getId(), 'eq');
         /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
         $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
         $itemsLeftToProcess = count($replAttributes->getItems());
@@ -191,7 +200,8 @@ class AttributesCreateTask
          * Technical Structure :- where processed = 0 || is_updated = 1
          */
         try {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', 1000,true);
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', 1000,
+                true);
 
             /** @var \Ls\Replication\Model\ReplAttributeSearchResults $replAttributes */
             $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
@@ -263,6 +273,7 @@ class AttributesCreateTask
     }
 
     /**
+     * @param $store
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
@@ -275,7 +286,7 @@ class AttributesCreateTask
         /** @var default group id of general tab for specific product attribute set $defaultGroupId */
         $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
 
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', 1000,true);
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', 1000, true);
         $variants = $this->replExtendedVariantValueRepository->getList($criteria)->getItems();
         $variantCodes = [];
         /** @var \Ls\Replication\Model\ReplExtendedVariantValue $variant */
@@ -413,8 +424,7 @@ class AttributesCreateTask
         \Ls\Replication\Model\ReplAttribute $replAttribute,
         $attributeSetId,
         $attributeGroupId
-    )
-    {
+    ) {
         $formattedCode = $this->replicationHelper->formatAttributeCode($replAttribute->getCode());
         /** @var \Magento\Eav\Api\Data\AttributeInterface $attribute */
         $attribute = $this->eavConfig->getAttribute(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);

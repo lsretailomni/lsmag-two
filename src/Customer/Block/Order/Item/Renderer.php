@@ -47,8 +47,7 @@ class Renderer extends \Magento\Framework\View\Element\Template
         PriceCurrencyInterface $priceCurrency,
         ItemHelper $itemHelper,
         array $data = []
-    )
-    {
+    ) {
         $this->priceCurrency = $priceCurrency;
         $this->itemHelper = $itemHelper;
         parent::__construct($context, $data);

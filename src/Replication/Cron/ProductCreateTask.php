@@ -242,8 +242,7 @@ class ProductCreateTask
         ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
         StockRegistryInterface $stockRegistry
-    )
-    {
+    ) {
         $this->factory = $factory;
         $this->item = $item;
         $this->eavConfig = $eavConfig;
@@ -288,10 +287,14 @@ class ProductCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\StateException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
-        $stores = $this->lsr->getAllStores();
+        if (!empty($storeData)) {
+            $stores = [$storeData];
+        } else {
+            /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 //setting the store id globally.
@@ -302,14 +305,20 @@ class ProductCreateTask
 
                 //adding is_lsr check to avoid wasting time for the stores which is not setup
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE, $store->getId());
-                    $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS, $store->getId());
-                    $fullReplicationBarcodeStatus = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS, $store->getId());
-                    $fullReplicationPriceStatus = $this->lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS, $store->getId());
-                    $fullReplicationInvStatus = $this->lsr->getStoreConfig(ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS, $store->getId());
+                    $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE,
+                        $store->getId());
+                    $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS,
+                        $store->getId());
+                    $fullReplicationBarcodeStatus = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS,
+                        $store->getId());
+                    $fullReplicationPriceStatus = $this->lsr->getStoreConfig(ReplEcommPricesTask::CONFIG_PATH_STATUS,
+                        $store->getId());
+                    $fullReplicationInvStatus = $this->lsr->getStoreConfig(ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS,
+                        $store->getId());
                     $cronCategoryCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY, $store->getId());
                     $cronAttributeCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE, $store->getId());
-                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT, $store->getId());
+                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                        $store->getId());
                     if ($cronCategoryCheck == 1 &&
                         $cronAttributeCheck == 1 &&
                         $cronAttributeVariantCheck == 1 &&
@@ -329,9 +338,11 @@ class ProductCreateTask
                         $val2 = ini_get('memory_limit');
                         $this->logger->debug('ENV Variables Values after:' . $val1 . ' ' . $val2);
                         $this->webStoreId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
-                        $productBatchSize = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE, $store->getId());
+                        $productBatchSize = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE,
+                            $store->getId());
                         /** @var \Magento\Framework\Api\SearchCriteria $criteria */
-                        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', $productBatchSize, true);
+                        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(),
+                            'eq', $productBatchSize, true);
                         /** @var \Ls\Replication\Model\ReplItemSearchResults $items */
                         $items = $this->itemRepository->getList($criteria);
                         /** @var \Ls\Replication\Model\ReplItem $item */
@@ -390,29 +401,29 @@ class ProductCreateTask
                         $this->logger->debug('Product Replication cron fails because custom category, 
             custom attribute or full image replication cron not executed successfully.');
                     }
-                    $this->replicationHelper->updateCronStatus(
-                        $this->cronStatus,
-                        LSR::SC_SUCCESS_CRON_PRODUCT,
-                        $store->getId()
-                    );
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT,
+                        $store->getId());
+
                 }
                 // unsetting the store id.
                 $this->lsr->setStoreId(null);
             }
+
         }
     }
 
     /**
+     * @param null $storeData
      * @return array
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      * @throws \Magento\Framework\Exception\InputException
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\StateException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1);
+        $this->execute($storeData);
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $storeData->getId(), 'eq', -1);
         $items = $this->itemRepository->getList($criteria);
         $itemsLeftToProcess = count($items->getItems());
         return [$itemsLeftToProcess];
@@ -428,7 +439,8 @@ class ProductCreateTask
         \Magento\Catalog\Api\Data\ProductInterface $product,
         \Ls\Replication\Model\ReplItem $replItem
     ) {
-        $criteria = $this->replicationHelper->buildCriteriaForProductAttributes($replItem->getNavId(), 100, true, $this->store->getId());
+        $criteria = $this->replicationHelper->buildCriteriaForProductAttributes($replItem->getNavId(), 100, true,
+            $this->store->getId());
         /** @var \Ls\Replication\Model\ReplAttributeValueSearchResults $items */
         $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
         /** @var \Ls\Replication\Model\ReplAttributeValue $item */
@@ -530,6 +542,10 @@ class ProductCreateTask
      */
     private function assignProductToCategory()
     {
+
+        $categoriesArray = [];
+        $previousCategoryIds = [];
+        $hierarchyCollection = [];
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $this->store->getId());
         if (empty($hierarchyCode)) {
             $this->logger->debug('Hierarchy Code not defined in the configuration.');
@@ -538,7 +554,8 @@ class ProductCreateTask
         $filters = [
             ['field' => 'main_table.NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'second.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, 100);
         /** @var \Ls\Replication\Model\ReplHierarchyLeafSearchResults $replHierarchyLeafRepository */
@@ -550,22 +567,54 @@ class ProductCreateTask
             'ls_replication_repl_item',
             'nav_id'
         );
-        foreach ($collection as $hierarchyLeaf) {
-            try {
-                $categoryArray = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
-                if (!empty($categoryArray)) {
-                    // @codingStandardsIgnoreStart
-                    $this->categoryLinkManagement->assignProductToCategories($hierarchyLeaf->getNavId(),
-                        $categoryArray);
-                    $hierarchyLeaf->setData('processed', '1');
-                    $hierarchyLeaf->setData('is_updated', '0');
-                    $this->replHierarchyLeafRepository->save($hierarchyLeaf);
-                    // @codingStandardsIgnoreEnd
+
+        try {
+            foreach ($collection as $hierarchyLeaf) {
+                try {
+                    $product = $this->productRepository->get($hierarchyLeaf->getNavId());
+                    $previousCategoryIds = $product->getCategoryIds();
+                } catch (\Exception $e) {
+                    $this->logger->debug($e->getMessage());
                 }
-            } catch (\Exception $e) {
-                $this->logger->debug("Problem with sku: " . $hierarchyLeaf->getNavId() . " in " . __METHOD__);
-                $this->logger->debug($e->getMessage());
+                $currentCategoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
+
+                if (array_key_exists($hierarchyLeaf->getNavId(), $categoriesArray)) {
+                    // when cateory already assigned to the product
+                    $categoriesArray[$hierarchyLeaf->getNavId()] =
+                        array_unique(
+                            array_merge(
+                                $currentCategoryIds,
+                                $categoriesArray[$hierarchyLeaf->getNavId()]
+                            )
+                        );
+                } else {
+                    // WHen category is not yet assgined to item.
+                    $categoriesArray[$hierarchyLeaf->getNavId()] =
+                        array_unique(
+                            array_merge(
+                                $currentCategoryIds,
+                                $previousCategoryIds
+                            )
+                        );
+                }
+                $hierarchyCollection[$hierarchyLeaf->getNavId()][] = $hierarchyLeaf;
             }
+
+            foreach ($categoriesArray as $catKey => $catArray) {
+                if (!empty($catArray)) {
+                    $this->categoryLinkManagement->assignProductToCategories(
+                        $catKey,
+                        $catArray
+                    );
+                    foreach ($hierarchyCollection[$catKey] as $leaf) {
+                        $leaf->setData('processed', '1');
+                        $leaf->setData('is_updated', '0');
+                        $this->replHierarchyLeafRepository->save($leaf);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
     }
 
@@ -671,21 +720,25 @@ class ProductCreateTask
      */
     public function _getAttributesCodes($itemId)
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
-            ->addFilter('scope_id', $this->store->getId(), 'eq')
-            ->create();
-        $sortOrder = $this->sortOrder->setField('Dimensions')->setDirection(SortOrder::SORT_ASC);
-        $searchCriteria->setSortOrders([$sortOrder]);
-        $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
-        /** @var \Ls\Replication\Model\ReplExtendedVariantValue $valueCode */
         $finalCodes = [];
-        foreach ($attributeCodes as $valueCode) {
-            $formattedCode = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
-            $finalCodes[$valueCode->getDimensions()] = $formattedCode;
-            $valueCode->setData('processed', '1');
-            // @codingStandardsIgnoreStart
-            $this->extendedVariantValueRepository->save($valueCode);
-            // @codingStandardsIgnoreEnd
+        try {
+            $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
+                ->addFilter('scope_id', $this->store->getId(), 'eq')
+                ->create();
+            $sortOrder = $this->sortOrder->setField('DimensionLogicalOrder')->setDirection(SortOrder::SORT_ASC);
+            $searchCriteria->setSortOrders([$sortOrder]);
+            $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
+            /** @var \Ls\Replication\Model\ReplExtendedVariantValue $valueCode */
+            foreach ($attributeCodes as $valueCode) {
+                $formattedCode = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
+                $finalCodes[$valueCode->getDimensions()] = $formattedCode;
+                $valueCode->setData('processed', '1');
+                // @codingStandardsIgnoreStart
+                $this->extendedVariantValueRepository->save($valueCode);
+                // @codingStandardsIgnoreEnd
+            }
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
         return $finalCodes;
     }
@@ -783,7 +836,8 @@ class ProductCreateTask
                     $itemBarcodes = $this->_getBarcode($item);
                     /** @var ReplItemRepository $itemData */
                     $itemData = $this->_getItem($item);
-                    $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $variants);
+                    $subVariants = $this->getNewOrUpdatedProductVariants(100, $itemData->getNavId());
+                    $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $subVariants);
                 }
             } catch (\Exception $e) {
                 $this->logger->debug("Problem with sku: " . $item . " in " . __METHOD__);
@@ -1032,7 +1086,8 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'second.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $collection = $this->replPriceCollectionFactory->create();
@@ -1078,7 +1133,8 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'second.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
         $collection = $this->replInvStatusCollectionFactory->create();
@@ -1218,7 +1274,8 @@ class ProductCreateTask
                     }
                 }
                 $productImages = $this->replicationHelper
-                    ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant', $this->store->getId());
+                    ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant',
+                        $this->store->getId());
                 if ($productImages) {
                     $this->logger->debug('Found images for the simple product ' . $sku);
                     $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
@@ -1316,8 +1373,7 @@ class ProductCreateTask
     public function getNameForVariant(
         \Ls\Replication\Model\ReplItemVariantRegistration $value,
         \Ls\Replication\Model\ReplItem $item
-    )
-    {
+    ) {
         $d1 = (($value->getVariantDimension1()) ? $value->getVariantDimension1() : '');
         $d2 = (($value->getVariantDimension2()) ? $value->getVariantDimension2() : '');
         $d3 = (($value->getVariantDimension3()) ? $value->getVariantDimension3() : '');
@@ -1344,8 +1400,8 @@ class ProductCreateTask
     public function createNewProduct(
         $product = false,
         \Ls\Replication\Model\ReplItem $item,
-        \Magento\Store\Api\Data\StoreInterface $store)
-    {
+        \Magento\Store\Api\Data\StoreInterface $store
+    ) {
         if (!$product) {
             /** @var  \Magento\Catalog\Model\Product $product */
             $product = $this->productFactory->create();
@@ -1381,7 +1437,8 @@ class ProductCreateTask
             'is_in_stock' => ($itemStock > 0) ? 1 : 0,
             'qty' => $itemStock
         ]);
-        $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item', $this->store->getId());
+        $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item',
+            $this->store->getId());
         if ($productImages) {
             $this->logger->debug('Found images for the item ' . $item->getNavId());
             $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
@@ -1409,17 +1466,19 @@ class ProductCreateTask
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\StateException
      */
-    public function modifyExistingProduct(\Magento\Catalog\Model\Product $productData,
-                                          \Ls\Replication\Model\ReplItem $item,
-                                          \Magento\Store\Api\Data\StoreInterface $store)
-    {
+    public function modifyExistingProduct(
+        \Magento\Catalog\Model\Product $productData,
+        \Ls\Replication\Model\ReplItem $item,
+        \Magento\Store\Api\Data\StoreInterface $store
+    ) {
         $productData->setStoreId($store->getId());
         $productData->setName($item->getDescription());
         $productData->setMetaTitle($item->getDescription());
         $productData->setDescription($item->getDetails());
         $productData->setWeight($item->getGrossWeight());
         $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-        $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item', $this->store->getId());
+        $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item',
+            $this->store->getId());
         if ($productImages) {
             $this->logger->debug('Found images for the item ' . $item->getNavId());
             $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));

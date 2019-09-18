@@ -467,7 +467,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getDefaultWebStore()
     {
         if ($this->store_id == null) {
-            $this->store_id = $this->lsr->getDefaultWebStore();
+            $this->store_id = $this->lsr->getActiveWebStore();
         }
 
         return $this->store_id;

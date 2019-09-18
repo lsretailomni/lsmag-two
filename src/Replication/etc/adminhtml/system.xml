@@ -22,6 +22,12 @@
                     <label>Product Batch Size</label>
                     <comment>Product batch size can be increase or decrease from here</comment>
                 </field>
+                <field id="manual_cron_grid_default_store" translate="label" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Manual Cron Grid Default Store</label>
+                    <source_model>Ls\Replication\Model\System\Source\MagStore</source_model>
+                    <comment>Select the default store for manual cron grid</comment>
+                </field>
             </group>
             <group id="one_list" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
                    showInStore="1">

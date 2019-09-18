@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Customer\Controller\Sales\Order;
 
 use Magento\Framework\App\Action\Context;
@@ -22,7 +23,7 @@ class PrintShipment extends \Magento\Sales\Controller\Order\PrintShipment
      */
     public $orderRepository;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var \Psr\Log\LoggerInterface */
     public $logger;
 
 
@@ -56,7 +57,7 @@ class PrintShipment extends \Magento\Sales\Controller\Order\PrintShipment
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setPath('customer/order/printshipment/order_id/'.$documentId);
+            $resultRedirect->setPath('customer/order/printshipment/order_id/' . $documentId);
             return $resultRedirect;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

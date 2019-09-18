@@ -12,10 +12,10 @@ use Magento\Customer\Model\Context;
 class Link extends \Magento\Framework\View\Element\Html\Link implements SortLinkInterface
 {
 
-    /** @var string  */
+    /** @var string */
     public $template = 'Ls_Customer::link.phtml';
 
-    /** @var \Magento\Framework\App\Http\Context  */
+    /** @var \Magento\Framework\App\Http\Context */
     public $httpContext;
 
     /**

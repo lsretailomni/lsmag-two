@@ -27,6 +27,11 @@ class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVari
     protected $Code = null;
 
     /**
+     * @property int $DimensionLogicalOrder
+     */
+    protected $DimensionLogicalOrder = null;
+
+    /**
      * @property string $Dimensions
      */
     protected $Dimensions = null;
@@ -109,6 +114,26 @@ class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVari
     public function getCode()
     {
         return $this->getData( 'Code' );
+    }
+
+    /**
+     * @param int $DimensionLogicalOrder
+     * @return $this
+     */
+    public function setDimensionLogicalOrder($DimensionLogicalOrder)
+    {
+        $this->setData( 'DimensionLogicalOrder', $DimensionLogicalOrder );
+        $this->DimensionLogicalOrder = $DimensionLogicalOrder;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDimensionLogicalOrder()
+    {
+        return $this->getData( 'DimensionLogicalOrder' );
     }
 
     /**

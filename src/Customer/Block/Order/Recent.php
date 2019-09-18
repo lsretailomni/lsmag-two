@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Omni\Helper\OrderHelper;
@@ -115,7 +116,7 @@ class Recent extends \Magento\Framework\View\Element\Template
     public function getReorderUrl($order)
     {
         try {
-            if ($order->getDocumentId()!=null) {
+            if ($order->getDocumentId() != null) {
                 return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
             } else {
                 return parent::getReorderUrl($order);

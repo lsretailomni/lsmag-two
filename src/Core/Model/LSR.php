@@ -79,6 +79,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
+    const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_STORE = 'ls_mag/replication/manual_cron_grid_default_store';
 
     // CRON CHECKING
 
@@ -274,9 +275,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
     const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
-    const POINTRATE = 'LS_PointsRate_';
-    const PROACTIVE_DISCOUNTS = 'LS_Proactive_';
-    const COUPONS = 'LS_Coupons_';
+    const POINTRATE = 'LS_POINTSRATE_';
+    const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
+    const COUPONS = 'LS_COUPONS_';
     /**
      * @var ScopeConfigInterface
      */
@@ -305,8 +306,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         ScopeConfigInterface $scopeConfig,
         TypeListInterface $cacheTypeList,
         \Magento\Store\Model\StoreManagerInterface $storeManager
-    )
-    {
+    ) {
         $this->scopeConfig = $scopeConfig;
         $this->cacheTypeList = $cacheTypeList;
         $this->storeManager = $storeManager;
@@ -398,7 +398,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         } else {
             $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
             $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
-
         }
         if (empty($baseUrl) || empty($store)) {
             return false;
@@ -426,6 +425,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         return $this->getStoreConfig(
             LSR::SC_SERVICE_STORE,
             \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getActiveWebStore()
+    {
+        return $this->getStoreConfig(
+            LSR::SC_SERVICE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
