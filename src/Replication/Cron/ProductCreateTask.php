@@ -987,6 +987,8 @@ class ProductCreateTask
             ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
             ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+
+
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 2000);
         /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $images */
