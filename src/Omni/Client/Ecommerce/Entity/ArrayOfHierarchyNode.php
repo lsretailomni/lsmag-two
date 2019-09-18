@@ -17,9 +17,9 @@ class ArrayOfHierarchyNode implements IteratorAggregate
     /**
      * @property HierarchyNode[] $HierarchyNode
      */
-    protected $HierarchyNode = [
+    protected $HierarchyNode = array(
         
-    ];
+    );
 
     /**
      * @param HierarchyNode[] $HierarchyNode

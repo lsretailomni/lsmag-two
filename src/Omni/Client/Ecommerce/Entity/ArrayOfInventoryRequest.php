@@ -17,9 +17,9 @@ class ArrayOfInventoryRequest implements IteratorAggregate
     /**
      * @property InventoryRequest[] $InventoryRequest
      */
-    protected $InventoryRequest = [
+    protected $InventoryRequest = array(
         
-    ];
+    );
 
     /**
      * @param InventoryRequest[] $InventoryRequest

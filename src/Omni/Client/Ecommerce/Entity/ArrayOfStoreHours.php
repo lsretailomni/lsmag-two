@@ -17,9 +17,9 @@ class ArrayOfStoreHours implements IteratorAggregate
     /**
      * @property StoreHours[] $StoreHours
      */
-    protected $StoreHours = [
+    protected $StoreHours = array(
         
-    ];
+    );
 
     /**
      * @param StoreHours[] $StoreHours

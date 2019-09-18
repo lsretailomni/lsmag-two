@@ -8,8 +8,6 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
-use Ls\Omni\Exception\InvalidEnumException;
 use Ls\Omni\Client\RequestInterface;
 
 class OneListGetById implements RequestInterface
@@ -19,11 +17,6 @@ class OneListGetById implements RequestInterface
      * @property string $id
      */
     protected $id = null;
-
-    /**
-     * @property ListType $listType
-     */
-    protected $listType = null;
 
     /**
      * @property boolean $includeLines
@@ -46,34 +39,6 @@ class OneListGetById implements RequestInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param ListType|string $listType
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setListType($listType)
-    {
-        if ( ! $listType instanceof ListType ) {
-            if ( ListType::isValid( $listType ) ) 
-                $listType = new ListType( $listType );
-            elseif ( ListType::isValidKey( $listType ) ) 
-                $listType = new ListType( constant( "ListType::$listType" ) );
-            elseif ( ! $listType instanceof ListType )
-                throw new InvalidEnumException();
-        }
-        $this->listType = $listType->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return ListType
-     */
-    public function getListType()
-    {
-        return $this->listType;
     }
 
     /**

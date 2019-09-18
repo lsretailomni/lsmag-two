@@ -13,6 +13,7 @@ use MyCLabs\Enum\Enum;
 /**
  * @$method static HierarchyType ITEM_DEAL()
  * @$method static HierarchyType STORE_WAREHOUSE_CUSTOMER()
+ * @$method static HierarchyType VENDOR()
  */
 class HierarchyType extends Enum
 {
@@ -20,6 +21,8 @@ class HierarchyType extends Enum
     const ITEM_DEAL = 'ItemDeal';
 
     const STORE_WAREHOUSE_CUSTOMER = 'StoreWarehouseCustomer';
+
+    const VENDOR = 'Vendor';
 
 
 }

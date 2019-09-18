@@ -743,7 +743,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function updateBasketAfterLogin(Entity\OneList $oneListBasket, $contactId, $cardId)
+    public function updateBasketAfterLogin($oneListBasket, $contactId, $cardId)
     {
         $quote = $this->checkoutSession->getQuote();
         if (!is_array($oneListBasket) &&
@@ -769,9 +769,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             //Update onelist in Omni with user data.
             $oneListBasket->setCardId($cardId)
-                ->setContactId($contactId)
                 ->setDescription('OneList Magento')
-                ->setIsDefaultList(true)
                 ->setListType(Entity\Enum\ListType::BASKET);
             // update items from quote to basket.
             $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);

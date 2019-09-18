@@ -17,9 +17,9 @@ class ArrayOfAddress implements IteratorAggregate
     /**
      * @property Address[] $Address
      */
-    protected $Address = [
+    protected $Address = array(
         
-    ];
+    );
 
     /**
      * @param Address[] $Address

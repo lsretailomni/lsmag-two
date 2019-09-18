@@ -17,9 +17,9 @@ class ArrayOfReplInvStatus implements IteratorAggregate
     /**
      * @property ReplInvStatus[] $ReplInvStatus
      */
-    protected $ReplInvStatus = [
+    protected $ReplInvStatus = array(
         
-    ];
+    );
 
     /**
      * @param ReplInvStatus[] $ReplInvStatus

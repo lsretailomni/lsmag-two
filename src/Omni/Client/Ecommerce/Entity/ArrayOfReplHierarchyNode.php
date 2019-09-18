@@ -17,9 +17,9 @@ class ArrayOfReplHierarchyNode implements IteratorAggregate
     /**
      * @property ReplHierarchyNode[] $ReplHierarchyNode
      */
-    protected $ReplHierarchyNode = [
+    protected $ReplHierarchyNode = array(
         
-    ];
+    );
 
     /**
      * @param ReplHierarchyNode[] $ReplHierarchyNode

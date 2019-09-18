@@ -17,9 +17,9 @@ class ArrayOfRecipe implements IteratorAggregate
     /**
      * @property Recipe[] $Recipe
      */
-    protected $Recipe = [
+    protected $Recipe = array(
         
-    ];
+    );
 
     /**
      * @param Recipe[] $Recipe
