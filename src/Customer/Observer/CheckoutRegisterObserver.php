@@ -29,7 +29,7 @@ class CheckoutRegisterObserver implements ObserverInterface
     /** @var \Magento\Customer\Model\ResourceModel\Customer */
     private $customerResourceModel;
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var \Ls\Core\Model\LSR @var */
     private $lsr;
 
     /**
@@ -57,7 +57,7 @@ class CheckoutRegisterObserver implements ObserverInterface
         $this->customerFactory = $customerFactory;
         $this->storeManager = $storeManager;
         $this->customerResourceModel = $customerResourceModel;
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
     }
 
     /**
@@ -68,7 +68,6 @@ class CheckoutRegisterObserver implements ObserverInterface
     // @codingStandardsIgnoreStart
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-
         /*
          * Adding condition to only process if LSR is enabled.
          */

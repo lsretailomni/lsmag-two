@@ -80,13 +80,9 @@ class RegisterObserver implements ObserverInterface
                     $contact = $this->contactHelper->contact($customer);
                     if (is_object($contact) && $contact->getId()) {
                         $token = $contact->getLoggedOnToDevice()->getSecurityToken();
-                        /** @var Entity\Card $card */
-                        $basket = $this->contactHelper->getOneListTypeObject($contact->getOneLists()->getOneList(),
-                            Entity\Enum\ListType::BASKET);
                         $customer->setData('lsr_id', $contact->getId());
                         $customer->setData('lsr_token', $token);
                         $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
-
                         if ($contact->getAccount()->getScheme()->getId()) {
                             $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
                                 $contact->getAccount()->getScheme()->getId()
@@ -96,10 +92,8 @@ class RegisterObserver implements ObserverInterface
                         $this->customerResourceModel->save($customer);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $contact);
                         $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
-                        $session->setData(LSR::SESSION_CUSTOMER_LSRID, $contact->getId());
-                        if ($basket !== null) {
-                            $session->setData(LSR::SESSION_CUSTOMER_CARDID, $basket->getCardId());
-                        }
+                        $session->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
+                        $session->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
                     }
 
                     $loginResult = $this->contactHelper->login(
@@ -112,8 +106,10 @@ class RegisterObserver implements ObserverInterface
                     } else {
                         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
-                        $oneListWish = $this->contactHelper->getOneListTypeObject($loginResult->getOneLists()->getOneList(),
-                            Entity\Enum\ListType::WISH);
+                        $oneListWish = $this->contactHelper->getOneListTypeObject(
+                            $loginResult->getOneLists()->getOneList(),
+                            Entity\Enum\ListType::WISH
+                        );
                         if ($oneListWish) {
                             $this->contactHelper->updateWishlistAfterLogin(
                                 $oneListWish
