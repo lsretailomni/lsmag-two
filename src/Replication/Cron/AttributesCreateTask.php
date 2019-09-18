@@ -83,8 +83,6 @@ class AttributesCreateTask
     /** @var \Magento\Store\Api\Data\StoreInterface $store */
     public $store;
 
-    protected $_sdasdl;
-
     /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
@@ -113,7 +111,8 @@ class AttributesCreateTask
         ReplicationHelper $replicationHelper,
         LSR $LSR,
         \Magento\Eav\Api\AttributeManagementInterface $attributeManagement
-    ) {
+    )
+    {
         $this->replExtendedVariantValueRepository = $replExtendedVariantValueRepository;
         $this->productAttributeRepository = $productAttributeRepository;
         $this->eavSetupFactory = $eavSetupFactory;
@@ -424,7 +423,8 @@ class AttributesCreateTask
         \Ls\Replication\Model\ReplAttribute $replAttribute,
         $attributeSetId,
         $attributeGroupId
-    ) {
+    )
+    {
         $formattedCode = $this->replicationHelper->formatAttributeCode($replAttribute->getCode());
         /** @var \Magento\Eav\Api\Data\AttributeInterface $attribute */
         $attribute = $this->eavConfig->getAttribute(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
@@ -517,7 +517,10 @@ class AttributesCreateTask
             $this->replAttributeOptionValueRepositoryInterface->save($item);
             // @codingStandardsIgnoreEnd
             // if have existing option and current value is a part of existing option then don't do anything
-            if (!empty($existingOptions) and in_array($item->getValue(), $existingOptions)) {
+            if(
+                (!empty($existingOptions) and in_array($item->getValue(), $existingOptions))
+                || in_array($item->getValue(), $optionarray)
+            ) {
                 continue;
             }
             $optionarray[] = $item->getValue();
