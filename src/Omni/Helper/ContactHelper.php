@@ -810,12 +810,12 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             foreach ($itemsCollection as $item) {
                 $buyRequest = [];
-                $sku = $item->getItem()->getId();
+                $sku = $item->getItemId();
                 $product = $this->productRepository->get($sku);
                 $qty = $item->getQuantity();
                 $buyRequest['qty'] = $qty;
-                if ($item->getVariantReg()) {
-                    $simSku = $sku . '-' . $item->getVariantReg()->getId();
+                if ($item->getVariantId()) {
+                    $simSku = $sku . '-' . $item->getVariantId();
                     $simProuduct = $this->productRepository->get($simSku);
                     $optionsData = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
                     $buyRequest['super_attribute'] = [];
