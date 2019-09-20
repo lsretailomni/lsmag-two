@@ -123,7 +123,7 @@ class DiscountCreateTask
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\State\InvalidTransitionException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
         /**
          * Get all Unique Publish offer so that we can create catalog rules based on that.
@@ -131,94 +131,115 @@ class DiscountCreateTask
          * And the web store is being set in the Magento.
          * And we need to apply only those rules which are associated to the store assigned to it.
          */
-        if ($this->lsr->isLSR()) {
-            $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
-            $CronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
-            if ($CronProductCheck == 1) {
-                $webStore = $this->lsr->getActiveWebStore();
-                $publishedOfferCollection = $this->getUniquePublishedOffers();
-                if (!empty($publishedOfferCollection)) {
-                    $reindexRules = false;
-                    /** @var \Ls\Replication\Model\ReplDiscount $item */
-                    foreach ($publishedOfferCollection as $item) {
-                        $filters = [
-                            ['field' => 'StoreId', 'value' => $webStore, 'condition_type' => 'eq'],
-                            ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
-                            ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
-                        ];
+        if (!empty($storeData)) {
+            $stores = [$storeData];
+        } else {
+            /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                //setting the store id globally.
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
+                //adding is_lsr check to avoid wasting time for the stores which is not setup
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
+                    $cronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT, $store->getId());
+                    if ($cronProductCheck == 1) {
+                        $webStore = $this->lsr->getActiveWebStore();
+                        $publishedOfferCollection = $this->getUniquePublishedOffers($store->getId());
+                        if (!empty($publishedOfferCollection)) {
+                            $reindexRules = false;
+                            /** @var \Ls\Replication\Model\ReplDiscount $item */
+                            foreach ($publishedOfferCollection as $item) {
+                                $filters = [
+                                    ['field' => 'StoreId', 'value' => $webStore, 'condition_type' => 'eq'],
+                                    ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
+                                    [
+                                        'field' => 'Type',
+                                        'value' => ReplDiscountType::DISC_OFFER,
+                                        'condition_type' => 'eq'
+                                    ]
+                                ];
 
-                        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
-                        /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
-                        $replDiscounts = $this->replDiscountRepository->getList($criteria);
-                        $skuArray = [];
-                        if ($item->getLoyaltySchemeCode() == '' ||
-                            $item->getLoyaltySchemeCode() == null
-                        ) {
-                            $useAllGroupIds = true;
-                            $customerGroupIds = $this->contactHelper->getAllCustomerGroupIds();
-                        } else {
-                            $useAllGroupIds = false;
-                            $customerGroupIds = [];
-                        }
-                        if ($replDiscounts->getItems()) {
-                            /** We check if offer exist */
-                            $deleteStatus = $this->deleteOfferByName($item->getOfferNo());
-                            if ($deleteStatus) {
-                                $criteriaAfterDelete = $this->replicationHelper->buildCriteriaForArray($filters, 100);
+                                $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
                                 /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
-                                $replDiscounts = $this->replDiscountRepository->getList($criteriaAfterDelete);
+                                $replDiscounts = $this->replDiscountRepository->getList($criteria);
+                                $skuArray = [];
+                                if ($item->getLoyaltySchemeCode() == '' ||
+                                    $item->getLoyaltySchemeCode() == null
+                                ) {
+                                    $useAllGroupIds = true;
+                                    $customerGroupIds = $this->contactHelper->getAllCustomerGroupIds();
+                                } else {
+                                    $useAllGroupIds = false;
+                                    $customerGroupIds = [];
+                                }
+                                if ($replDiscounts->getItems()) {
+                                    /** We check if offer exist */
+                                    $deleteStatus = $this->deleteOfferByName($item->getOfferNo());
+                                    if ($deleteStatus) {
+                                        $criteriaAfterDelete = $this->replicationHelper->buildCriteriaForArray($filters,
+                                            100);
+                                        /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+                                        $replDiscounts = $this->replDiscountRepository->getList($criteriaAfterDelete);
+                                    }
+                                }
+                                /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
+                                foreach ($replDiscounts->getItems() as $replDiscount) {
+                                    $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
+                                        $replDiscount->getLoyaltySchemeCode()
+                                    );
+                                    // To check if discounts groups are specific for any Member Scheme.
+                                    if (!$useAllGroupIds && !in_array($customerGroupId, $customerGroupIds)) {
+                                        $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
+                                            $replDiscount->getLoyaltySchemeCode()
+                                        );
+                                    }
+                                    if ($replDiscount->getVariantId() == '' ||
+                                        $replDiscount->getVariantId() == null
+                                    ) {
+                                        $skuArray[] = $replDiscount->getItemId();
+                                    } else {
+                                        $skuArray[] = $replDiscount->getItemId() . '-' . $replDiscount->getVariantId();
+                                    }
+                                    $replDiscount->setData('processed', '1');
+                                    $replDiscount->setData('is_updated', '0');
+                                    // @codingStandardsIgnoreStart
+                                    $this->replDiscountRepository->save($replDiscount);
+                                    // @codingStandardsIgnoreEnd
+                                }
+                                if (!empty($skuArray)) {
+                                    $skuArray = array_unique($skuArray);
+                                    $this->addSalesRule($item, $skuArray, $customerGroupIds, $store->getWebsiteId());
+                                    $reindexRules = true;
+                                }
                             }
-                        }
-                        /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
-                        foreach ($replDiscounts->getItems() as $replDiscount) {
-                            $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
-                                $replDiscount->getLoyaltySchemeCode()
-                            );
-                            // To check if discounts groups are specific for any Member Scheme.
-                            if (!$useAllGroupIds && !in_array($customerGroupId, $customerGroupIds)) {
-                                $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
-                                    $replDiscount->getLoyaltySchemeCode()
-                                );
+                            if ($reindexRules) {
+                                $this->jobApply->applyAll();
                             }
-                            if ($replDiscount->getVariantId() == '' ||
-                                $replDiscount->getVariantId() == null
-                            ) {
-                                $skuArray[] = $replDiscount->getItemId();
+                            $filtersStatus = [
+                                ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
+                            ];
+                            $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 100);
+                            /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+                            $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
+                            if (count($replDiscountsTotal->getItems()) == 0) {
+                                $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
                             } else {
-                                $skuArray[] = $replDiscount->getItemId() . '-' . $replDiscount->getVariantId();
+                                $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
                             }
-                            $replDiscount->setData('processed', '1');
-                            $replDiscount->setData('is_updated', '0');
-                            // @codingStandardsIgnoreStart
-                            $this->replDiscountRepository->save($replDiscount);
-                            // @codingStandardsIgnoreEnd
                         }
-                        if (!empty($skuArray)) {
-                            $skuArray = array_unique($skuArray);
-                            $this->addSalesRule($item, $skuArray, $customerGroupIds);
-                            $reindexRules = true;
-                        }
-                    }
-                    if ($reindexRules) {
-                        $this->jobApply->applyAll();
-                    }
-                    $filtersStatus = [
-                        ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
-                    ];
-                    $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 100);
-                    /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
-                    $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
-                    if (count($replDiscountsTotal->getItems()) == 0) {
-                        $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
+                        /* Delete the IsDeleted offers */
+                        $this->deleteOffers();
                     } else {
-                        $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
+                        $this->logger->debug('Discount Replication cron fails because product replication cron not executed 
+                successfully.');
                     }
                 }
-                /* Delete the IsDeleted offers */
-                $this->deleteOffers();
-            } else {
-                $this->logger->debug('Discount Replication cron fails because product replication cron not executed 
-                successfully.');
+                // unsetting the store id.
+                $this->lsr->setStoreId(null);
             }
         }
     }
@@ -232,21 +253,31 @@ class DiscountCreateTask
      */
     public function executeManually($storeData = null)
     {
-        $discountsLeftToProcess = 0;
-        $this->execute();
-        return [$discountsLeftToProcess];
+        $this->execute($storeData);
+        $filters = [
+            ['field' => 'scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq'],
+            [
+                'field' => 'Type',
+                'value' => ReplDiscountType::DISC_OFFER,
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1);
+        $items = $this->replDiscountRepository->getList($criteria);
+        $itemsLeftToProcess = count($items->getItems());
+        return [$itemsLeftToProcess];
     }
 
     /**
      * @param \Ls\Replication\Model\ReplDiscount $replDiscount
      * @param array $skuArray
      * @param $customerGroupIds
+     * @param $websiteId
      */
-    public function addSalesRule(\Ls\Replication\Model\ReplDiscount $replDiscount, array $skuArray, $customerGroupIds)
+    public function addSalesRule(\Ls\Replication\Model\ReplDiscount $replDiscount, array $skuArray, $customerGroupIds, $websiteId)
     {
-
         if ($replDiscount instanceof \Ls\Replication\Model\ReplDiscount) {
-            $websiteIds = $this->replicationHelper->getAllWebsitesIds();
+            $websiteIds = [$websiteId];
             $rule = $this->ruleFactory->create();
             // Create root conditions to match with all child conditions
             $conditions["1"] =
@@ -313,13 +344,15 @@ class DiscountCreateTask
     }
 
     /**
+     * @param $storeId
      * @return array|\Ls\Replication\Model\ResourceModel\ReplDiscount\Collection
      */
-    public function getUniquePublishedOffers()
+    public function getUniquePublishedOffers($storeId)
     {
         $publishedOfferIds = [];
         /** @var  \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection $collection */
         $collection = $this->replDiscountCollection->create();
+        $collection->addFieldToFilter('scope_id', $storeId);
         $collection->getSelect()
             ->columns('OfferNo')
             ->group('OfferNo');
@@ -335,7 +368,8 @@ class DiscountCreateTask
     public function deleteOffers()
     {
         $filters = [
-            ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
+            ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters);
         /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
@@ -366,13 +400,16 @@ class DiscountCreateTask
      */
     public function deleteOfferByName($name)
     {
+        $websiteIds = [$this->store->getWebsiteId()];
         $ruleCollection = $this->ruleCollectionFactory->create();
         $ruleCollection->addFieldToFilter('name', $name);
+        $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
         try {
             foreach ($ruleCollection as $rule) {
                 $this->catalogRule->deleteById($rule->getId());
                 $filters = [
                     ['field' => 'OfferNo', 'value' => $name, 'condition_type' => 'eq'],
+                    ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
                     ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                 ];
                 $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, 100);

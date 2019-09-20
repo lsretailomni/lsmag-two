@@ -536,7 +536,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     public function setStoreId($store_id){
         $this->storeManager->setCurrentStore($store_id);
-
     }
 
 }
