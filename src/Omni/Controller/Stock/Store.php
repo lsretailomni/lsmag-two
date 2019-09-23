@@ -91,7 +91,7 @@ class Store extends \Magento\Framework\App\Action\Action
                     $response = $response->getInventoryResponse();
                 }
                 foreach ($response as $item) {
-                    $actualQty = ceil($item->getQtyActualInventory());
+                    $actualQty = ceil($item->getQtyInventory());
                     $sku = $item->getItemId() .
                         (($item->getVariantId()) ? '-' . $item->getVariantId() : '');
                     if ($actualQty > 0) {
