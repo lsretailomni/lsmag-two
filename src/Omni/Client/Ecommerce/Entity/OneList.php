@@ -15,6 +15,11 @@ class OneList extends Entity
 {
 
     /**
+     * @property ArrayOfOneListLink $CardLinks
+     */
+    protected $CardLinks = null;
+
+    /**
      * @property ArrayOfOneListItem $Items
      */
     protected $Items = null;
@@ -35,19 +40,14 @@ class OneList extends Entity
     protected $CreateDate = null;
 
     /**
-     * @property string $CustomerId
-     */
-    protected $CustomerId = null;
-
-    /**
      * @property string $Description
      */
     protected $Description = null;
 
     /**
-     * @property boolean $IsDefaultList
+     * @property int $ExternalType
      */
-    protected $IsDefaultList = null;
+    protected $ExternalType = null;
 
     /**
      * @property ListType $ListType
@@ -88,6 +88,24 @@ class OneList extends Entity
      * @property float $TotalTaxAmount
      */
     protected $TotalTaxAmount = null;
+
+    /**
+     * @param ArrayOfOneListLink $CardLinks
+     * @return $this
+     */
+    public function setCardLinks($CardLinks)
+    {
+        $this->CardLinks = $CardLinks;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfOneListLink
+     */
+    public function getCardLinks()
+    {
+        return $this->CardLinks;
+    }
 
     /**
      * @param ArrayOfOneListItem $Items
@@ -162,24 +180,6 @@ class OneList extends Entity
     }
 
     /**
-     * @param string $CustomerId
-     * @return $this
-     */
-    public function setCustomerId($CustomerId)
-    {
-        $this->CustomerId = $CustomerId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCustomerId()
-    {
-        return $this->CustomerId;
-    }
-
-    /**
      * @param string $Description
      * @return $this
      */
@@ -198,21 +198,21 @@ class OneList extends Entity
     }
 
     /**
-     * @param boolean $IsDefaultList
+     * @param int $ExternalType
      * @return $this
      */
-    public function setIsDefaultList($IsDefaultList)
+    public function setExternalType($ExternalType)
     {
-        $this->IsDefaultList = $IsDefaultList;
+        $this->ExternalType = $ExternalType;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return int
      */
-    public function getIsDefaultList()
+    public function getExternalType()
     {
-        return $this->IsDefaultList;
+        return $this->ExternalType;
     }
 
     /**

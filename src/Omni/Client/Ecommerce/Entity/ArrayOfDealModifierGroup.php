@@ -17,9 +17,9 @@ class ArrayOfDealModifierGroup implements IteratorAggregate
     /**
      * @property DealModifierGroup[] $DealModifierGroup
      */
-    protected $DealModifierGroup = [
+    protected $DealModifierGroup = array(
         
-    ];
+    );
 
     /**
      * @param DealModifierGroup[] $DealModifierGroup

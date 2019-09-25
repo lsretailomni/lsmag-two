@@ -17,9 +17,9 @@ class ArrayOfVariantRegistration implements IteratorAggregate
     /**
      * @property VariantRegistration[] $VariantRegistration
      */
-    protected $VariantRegistration = [
+    protected $VariantRegistration = array(
         
-    ];
+    );
 
     /**
      * @param VariantRegistration[] $VariantRegistration

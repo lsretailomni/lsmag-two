@@ -32,6 +32,11 @@ class OneListItem extends Entity
     protected $CreateDate = null;
 
     /**
+     * @property string $Detail
+     */
+    protected $Detail = null;
+
+    /**
      * @property float $DiscountAmount
      */
     protected $DiscountAmount = null;
@@ -47,9 +52,19 @@ class OneListItem extends Entity
     protected $DisplayOrderId = null;
 
     /**
-     * @property LoyItem $Item
+     * @property ImageView $Image
      */
-    protected $Item = null;
+    protected $Image = null;
+
+    /**
+     * @property string $ItemDescription
+     */
+    protected $ItemDescription = null;
+
+    /**
+     * @property string $ItemId
+     */
+    protected $ItemId = null;
 
     /**
      * @property float $NetAmount
@@ -77,14 +92,29 @@ class OneListItem extends Entity
     protected $TaxAmount = null;
 
     /**
-     * @property UnitOfMeasure $UnitOfMeasure
+     * @property string $UnitOfMeasureDescription
      */
-    protected $UnitOfMeasure = null;
+    protected $UnitOfMeasureDescription = null;
 
     /**
-     * @property VariantRegistration $VariantReg
+     * @property string $UnitOfMeasureId
      */
-    protected $VariantReg = null;
+    protected $UnitOfMeasureId = null;
+
+    /**
+     * @property string $VariantDescription
+     */
+    protected $VariantDescription = null;
+
+    /**
+     * @property string $VariantId
+     */
+    protected $VariantId = null;
+
+    /**
+     * @property VariantRegistration $VariantRegistration
+     */
+    protected $VariantRegistration = null;
 
     /**
      * @param ArrayOfOneListItemDiscount $OnelistItemDiscounts
@@ -159,6 +189,24 @@ class OneListItem extends Entity
     }
 
     /**
+     * @param string $Detail
+     * @return $this
+     */
+    public function setDetail($Detail)
+    {
+        $this->Detail = $Detail;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetail()
+    {
+        return $this->Detail;
+    }
+
+    /**
      * @param float $DiscountAmount
      * @return $this
      */
@@ -213,21 +261,57 @@ class OneListItem extends Entity
     }
 
     /**
-     * @param LoyItem $Item
+     * @param ImageView $Image
      * @return $this
      */
-    public function setItem($Item)
+    public function setImage($Image)
     {
-        $this->Item = $Item;
+        $this->Image = $Image;
         return $this;
     }
 
     /**
-     * @return LoyItem
+     * @return ImageView
      */
-    public function getItem()
+    public function getImage()
     {
-        return $this->Item;
+        return $this->Image;
+    }
+
+    /**
+     * @param string $ItemDescription
+     * @return $this
+     */
+    public function setItemDescription($ItemDescription)
+    {
+        $this->ItemDescription = $ItemDescription;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemDescription()
+    {
+        return $this->ItemDescription;
+    }
+
+    /**
+     * @param string $ItemId
+     * @return $this
+     */
+    public function setItemId($ItemId)
+    {
+        $this->ItemId = $ItemId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemId()
+    {
+        return $this->ItemId;
     }
 
     /**
@@ -321,39 +405,93 @@ class OneListItem extends Entity
     }
 
     /**
-     * @param UnitOfMeasure $UnitOfMeasure
+     * @param string $UnitOfMeasureDescription
      * @return $this
      */
-    public function setUnitOfMeasure($UnitOfMeasure)
+    public function setUnitOfMeasureDescription($UnitOfMeasureDescription)
     {
-        $this->UnitOfMeasure = $UnitOfMeasure;
+        $this->UnitOfMeasureDescription = $UnitOfMeasureDescription;
         return $this;
     }
 
     /**
-     * @return UnitOfMeasure
+     * @return string
      */
-    public function getUnitOfMeasure()
+    public function getUnitOfMeasureDescription()
     {
-        return $this->UnitOfMeasure;
+        return $this->UnitOfMeasureDescription;
     }
 
     /**
-     * @param VariantRegistration $VariantReg
+     * @param string $UnitOfMeasureId
      * @return $this
      */
-    public function setVariantReg($VariantReg)
+    public function setUnitOfMeasureId($UnitOfMeasureId)
     {
-        $this->VariantReg = $VariantReg;
+        $this->UnitOfMeasureId = $UnitOfMeasureId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitOfMeasureId()
+    {
+        return $this->UnitOfMeasureId;
+    }
+
+    /**
+     * @param string $VariantDescription
+     * @return $this
+     */
+    public function setVariantDescription($VariantDescription)
+    {
+        $this->VariantDescription = $VariantDescription;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantDescription()
+    {
+        return $this->VariantDescription;
+    }
+
+    /**
+     * @param string $VariantId
+     * @return $this
+     */
+    public function setVariantId($VariantId)
+    {
+        $this->VariantId = $VariantId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantId()
+    {
+        return $this->VariantId;
+    }
+
+    /**
+     * @param VariantRegistration $VariantRegistration
+     * @return $this
+     */
+    public function setVariantRegistration($VariantRegistration)
+    {
+        $this->VariantRegistration = $VariantRegistration;
         return $this;
     }
 
     /**
      * @return VariantRegistration
      */
-    public function getVariantReg()
+    public function getVariantRegistration()
     {
-        return $this->VariantReg;
+        return $this->VariantRegistration;
     }
 
 

@@ -17,9 +17,9 @@ class ArrayOfReplProductGroup implements IteratorAggregate
     /**
      * @property ReplProductGroup[] $ReplProductGroup
      */
-    protected $ReplProductGroup = [
+    protected $ReplProductGroup = array(
         
-    ];
+    );
 
     /**
      * @param ReplProductGroup[] $ReplProductGroup

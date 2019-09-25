@@ -106,6 +106,15 @@ class RegisterObserver implements ObserverInterface
                     } else {
                         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
+                        $oneListBasket = $this->contactHelper->getOneListTypeObject(
+                            $loginResult->getOneLists()->getOneList(),
+                            Entity\Enum\ListType::BASKET
+                        );
+                        $this->contactHelper->updateBasketAfterLogin(
+                            $oneListBasket,
+                            $customer->getData('lsr_id'),
+                            $customer->getData('lsr_cardid')
+                        );
                         $oneListWish = $this->contactHelper->getOneListTypeObject(
                             $loginResult->getOneLists()->getOneList(),
                             Entity\Enum\ListType::WISH

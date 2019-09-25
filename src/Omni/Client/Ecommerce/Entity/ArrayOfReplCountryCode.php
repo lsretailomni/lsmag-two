@@ -17,9 +17,9 @@ class ArrayOfReplCountryCode implements IteratorAggregate
     /**
      * @property ReplCountryCode[] $ReplCountryCode
      */
-    protected $ReplCountryCode = [
+    protected $ReplCountryCode = array(
         
-    ];
+    );
 
     /**
      * @param ReplCountryCode[] $ReplCountryCode

@@ -107,6 +107,11 @@ class LoyItem extends Entity
     protected $SalesUomId = null;
 
     /**
+     * @property boolean $ScaleItem
+     */
+    protected $ScaleItem = null;
+
+    /**
      * @property string $SeasonCode
      */
     protected $SeasonCode = null;
@@ -471,6 +476,24 @@ class LoyItem extends Entity
     public function getSalesUomId()
     {
         return $this->SalesUomId;
+    }
+
+    /**
+     * @param boolean $ScaleItem
+     * @return $this
+     */
+    public function setScaleItem($ScaleItem)
+    {
+        $this->ScaleItem = $ScaleItem;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getScaleItem()
+    {
+        return $this->ScaleItem;
     }
 
     /**

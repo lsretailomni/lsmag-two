@@ -17,9 +17,9 @@ class ArrayOfLoyItem implements IteratorAggregate
     /**
      * @property LoyItem[] $LoyItem
      */
-    protected $LoyItem = [
+    protected $LoyItem = array(
         
-    ];
+    );
 
     /**
      * @param LoyItem[] $LoyItem

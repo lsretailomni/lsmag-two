@@ -17,9 +17,9 @@ class ArrayOfReplShippingAgent implements IteratorAggregate
     /**
      * @property ReplShippingAgent[] $ReplShippingAgent
      */
-    protected $ReplShippingAgent = [
+    protected $ReplShippingAgent = array(
         
-    ];
+    );
 
     /**
      * @param ReplShippingAgent[] $ReplShippingAgent

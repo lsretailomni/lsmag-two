@@ -221,6 +221,17 @@ interface LoyItemInterface
     public function getSalesUomId();
 
     /**
+     * @param boolean $ScaleItem
+     * @return $this
+     */
+    public function setScaleItem($ScaleItem);
+
+    /**
+     * @return boolean
+     */
+    public function getScaleItem();
+
+    /**
      * @param string $SeasonCode
      * @return $this
      */

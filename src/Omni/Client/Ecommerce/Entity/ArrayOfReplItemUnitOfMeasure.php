@@ -17,9 +17,9 @@ class ArrayOfReplItemUnitOfMeasure implements IteratorAggregate
     /**
      * @property ReplItemUnitOfMeasure[] $ReplItemUnitOfMeasure
      */
-    protected $ReplItemUnitOfMeasure = [
+    protected $ReplItemUnitOfMeasure = array(
         
-    ];
+    );
 
     /**
      * @param ReplItemUnitOfMeasure[] $ReplItemUnitOfMeasure
