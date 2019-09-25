@@ -17,9 +17,9 @@ class ArrayOfItemCategory implements IteratorAggregate
     /**
      * @property ItemCategory[] $ItemCategory
      */
-    protected $ItemCategory = [
+    protected $ItemCategory = array(
         
-    ];
+    );
 
     /**
      * @param ItemCategory[] $ItemCategory

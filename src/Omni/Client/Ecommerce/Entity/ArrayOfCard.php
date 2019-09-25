@@ -17,9 +17,9 @@ class ArrayOfCard implements IteratorAggregate
     /**
      * @property Card[] $Card
      */
-    protected $Card = [
+    protected $Card = array(
         
-    ];
+    );
 
     /**
      * @param Card[] $Card

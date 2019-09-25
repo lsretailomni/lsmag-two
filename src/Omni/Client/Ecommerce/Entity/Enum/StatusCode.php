@@ -51,6 +51,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode USER_NOT_LOGGED_IN()
  * @$method static StatusCode L_S_KEY_INVALID()
  * @$method static StatusCode PRIMARY_KEY_DUPLICATION()
+ * @$method static StatusCode OBJECT_ID_MISSING()
  * @$method static StatusCode COMMUNICATION_FAILURE()
  * @$method static StatusCode GENERAL_ERROR_CODE()
  * @$method static StatusCode MISSING_TENDER_LINES()
@@ -242,6 +243,8 @@ class StatusCode extends Enum
     const L_S_KEY_INVALID = 'LSKeyInvalid';
 
     const PRIMARY_KEY_DUPLICATION = 'PrimaryKeyDuplication';
+
+    const OBJECT_ID_MISSING = 'ObjectIdMissing';
 
     const COMMUNICATION_FAILURE = 'CommunicationFailure';
 

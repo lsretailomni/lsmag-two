@@ -120,8 +120,10 @@ class LoginObserver implements ObserverInterface
                 }
                 if ($result instanceof Entity\MemberContact) {
                     $this->contactHelper->processCustomerLogin($result, $login, $is_email);
-                    $oneListBasket = $this->contactHelper->getOneListTypeObject($result->getOneLists()->getOneList(),
-                        Entity\Enum\ListType::BASKET);
+                    $oneListBasket = $this->contactHelper->getOneListTypeObject(
+                        $result->getOneLists()->getOneList(),
+                        Entity\Enum\ListType::BASKET
+                    );
                     if ($oneListBasket) {
                         /** Update Basket to Omni */
                         $this->contactHelper->updateBasketAfterLogin(
@@ -130,8 +132,10 @@ class LoginObserver implements ObserverInterface
                             $result->getCards()->getCard()[0]->getId()
                         );
                     }
-                    $oneListWish = $this->contactHelper->getOneListTypeObject($result->getOneLists()->getOneList(),
-                        Entity\Enum\ListType::WISH);
+                    $oneListWish = $this->contactHelper->getOneListTypeObject(
+                        $result->getOneLists()->getOneList(),
+                        Entity\Enum\ListType::WISH
+                    );
                     if ($oneListWish) {
                         $this->contactHelper->updateWishlistAfterLogin(
                             $oneListWish

@@ -3,7 +3,6 @@
 namespace Ls\Omni\Helper;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Catalog\Model\ProductFactory;
@@ -215,8 +214,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function setOneListQuote(Quote $quote, Entity\OneList $oneList)
     {
-        $shipmentFeeId = LSR::LSR_SHIPMENT_ITEM_ID;
-
         /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
         $quoteItems = $quote->getAllVisibleItems();
         if (count($quoteItems) == 0) {
@@ -244,30 +241,29 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             $barcode = $product->getData('barcode');
 
+            $uom = $product->getData('uom');
             $parts = explode('-', $sku);
             // first element is lsr_id
             $lsr_id = array_shift($parts);
             // second element, if it exists, is variant id
-            // @codingStandardsIgnoreLine
             $variant_id = count($parts) ? array_shift($parts) : null;
+            /** TODO this will be used for uom prices **/
+            /*
+                        $item = $this->itemHelper->get($lsr_id);
 
-            /** @var \Ls\Omni\Client\Ecommerce\Entity\LoyItem $item */
-            $item = $this->itemHelper->get($lsr_id);
-
-            if (!($variant_id == null)) {
-                /** @var Entity\VariantRegistration|null $variant */
-                $variant = $this->itemHelper->getItemVariant($item, $variant_id);
-            }
-            /** @var Entity\UnitOfMeasure|null $uom */
-            $uom = $this->itemHelper->uom($item);
+                        if (!($variant_id == null)) {
+                            $variant = $this->itemHelper->getItemVariant($item, $variant_id);
+                        }
+                        $uom = $this->itemHelper->uom($item);
+            */
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
                 ->setQuantity($quoteItem->getData('qty'))
-                ->setItem($item)
+                ->setItemId($lsr_id)
                 ->setId('')
                 ->setBarcodeId($barcode)
-                ->setVariantReg($variant)
-                ->setUnitOfMeasure($uom);
+                ->setVariantId($variant_id)
+                ->setUnitOfMeasureId($uom);
 
             $itemsArray[] = $list_item;
         }
@@ -305,37 +301,35 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $product = array_pop($productList);
             $qty = $item->getData('qty');
             // initialize the default null value
-            $variant = $barcode = null;
+            $barcode = $product->getData('barcode');
 
             $sku = $product->getSku();
 
-            $barcode = $product->getData('barcode');
-
+            $uom = $product->getData('uom');
             $parts = explode('-', $sku);
             // first element is lsr_id
             $lsr_id = array_shift($parts);
             // second element, if it exists, is variant id
-            // @codingStandardsIgnoreLine
             $variant_id = count($parts) ? array_shift($parts) : null;
+            /** TODO this will be used for uom prices **/
+            /*
+                        $item = $this->itemHelper->get($lsr_id);
 
-            /** @var \Ls\Omni\Client\Ecommerce\Entity\LoyItem $item */
-            $item = $this->itemHelper->get($lsr_id);
-
-            if (!($variant_id == null)) {
-                /** @var Entity\VariantRegistration|null $variant */
-                $variant = $this->itemHelper->getItemVariant($item, $variant_id);
-            }
-            /** @var Entity\UnitOfMeasure|null $uom */
-            $uom = $this->itemHelper->uom($item);
+                        if (!($variant_id == null)) {
+                            $variant = $this->itemHelper->getItemVariant($item, $variant_id);
+                        }
+                        $uom = $this->itemHelper->uom($item);
+            */
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
                 ->setQuantity($qty)
-                ->setItem($item)
+                ->setItemId($lsr_id)
                 ->setId('')
                 ->setBarcodeId($barcode)
-                ->setVariantReg($variant)
-                ->setUnitOfMeasure($uom);
-            array_push($itemsArray, $list_item);
+                ->setVariantId($variant_id)
+                ->setUnitOfMeasureId($uom);
+
+            $itemsArray[] = $list_item;
         }
         $items->setOneListItem($itemsArray);
         $oneList->setItems($items);
@@ -728,7 +722,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $wishlist = (new Entity\OneList())
             ->setCardId($cardId)
             ->setDescription('List ' . $cardId)
-            ->setIsDefaultList(true)
             ->setListType(Entity\Enum\ListType::WISH)
             ->setItems(new Entity\ArrayOfOneListItem())
             ->setStoreId($store_id);
@@ -791,7 +784,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $list = (new Entity\OneList())
             ->setCardId($cardId)
             ->setDescription('OneList Magento')
-            ->setIsDefaultList(true)
             ->setListType(Entity\Enum\ListType::BASKET)
             ->setItems(new Entity\ArrayOfOneListItem())
             ->setPublishedOffers($this->_offers())

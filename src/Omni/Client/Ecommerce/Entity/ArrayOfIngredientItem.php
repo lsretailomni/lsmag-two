@@ -17,9 +17,9 @@ class ArrayOfIngredientItem implements IteratorAggregate
     /**
      * @property IngredientItem[] $IngredientItem
      */
-    protected $IngredientItem = [
+    protected $IngredientItem = array(
         
-    ];
+    );
 
     /**
      * @param IngredientItem[] $IngredientItem

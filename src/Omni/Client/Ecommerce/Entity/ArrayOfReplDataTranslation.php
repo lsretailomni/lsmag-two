@@ -17,9 +17,9 @@ class ArrayOfReplDataTranslation implements IteratorAggregate
     /**
      * @property ReplDataTranslation[] $ReplDataTranslation
      */
-    protected $ReplDataTranslation = [
+    protected $ReplDataTranslation = array(
         
-    ];
+    );
 
     /**
      * @param ReplDataTranslation[] $ReplDataTranslation

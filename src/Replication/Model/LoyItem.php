@@ -117,6 +117,11 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     protected $SalesUomId = null;
 
     /**
+     * @property boolean $ScaleItem
+     */
+    protected $ScaleItem = null;
+
+    /**
      * @property string $SeasonCode
      */
     protected $SeasonCode = null;
@@ -554,6 +559,26 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     public function getSalesUomId()
     {
         return $this->getData( 'SalesUomId' );
+    }
+
+    /**
+     * @param boolean $ScaleItem
+     * @return $this
+     */
+    public function setScaleItem($ScaleItem)
+    {
+        $this->setData( 'ScaleItem', $ScaleItem );
+        $this->ScaleItem = $ScaleItem;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getScaleItem()
+    {
+        return $this->getData( 'ScaleItem' );
     }
 
     /**
