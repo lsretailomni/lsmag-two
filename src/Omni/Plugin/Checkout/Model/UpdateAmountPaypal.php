@@ -8,11 +8,12 @@ namespace Ls\Omni\Plugin\Checkout\Model;
  */
 class UpdateAmountPaypal
 {
+    const SUBTOTAL = 'subtotal';
+
     /**
      * @var \Magento\Checkout\Model\Session
      */
     public $checkoutSession;
-    const AMOUNT_TAX = 'subtotal';
 
     /**
      * UpdateAmountPaypal constructor.
@@ -45,7 +46,7 @@ class UpdateAmountPaypal
             'paypal_express'];
 
         if (in_array($paymentMethod, $paypalMehodList)) {
-            $result['subtotal'] = $quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount();
+            $result[self::SUBTOTAL] = $quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount();
         }
 
         return $result;
