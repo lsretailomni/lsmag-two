@@ -23,6 +23,7 @@ class GiftCardLoyaltyPoints extends AbstractTotal
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
+        \Magento\Framework\App\State $state,
         array $data = []
     ) {
         $this->loyaltyHelper = $loyaltyHelper;
@@ -53,12 +54,10 @@ class GiftCardLoyaltyPoints extends AbstractTotal
         $giftCardNo = $invoice->getOrder()->getLsGiftCardNo();
         $invoice->setLsGiftCardNo($giftCardNo);
 
-        $pointsSpent = $pointsSpent * $this->loyaltyHelper->getPointRate();
-        $grandTotalAmount=$invoice->getOrder()->getGrandTotal() - $invoice->getOrder()->getTaxAmount();
-        $baseGrandTotalAmount = $invoice->getOrder()->getBaseGrandTotal() - $invoice->getOrder()->getTaxAmount();
+        $grandTotalAmount=$invoice->getOrder()->getGrandTotal();
+        $baseGrandTotalAmount = $invoice->getOrder()->getBaseGrandTotal();
         $invoice->setGrandTotal($grandTotalAmount);
         $invoice->setBaseGrandTotal($baseGrandTotalAmount);
-
         return $this;
     }
 }

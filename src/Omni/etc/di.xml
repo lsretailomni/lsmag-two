@@ -50,4 +50,8 @@
     <preference for="Magento\Sales\Model\Order\Pdf\Items\Invoice\DefaultInvoice"
                 type="Ls\Omni\Model\Order\Pdf\Items\Invoice\DefaultInvoice"/>
     <preference for="Magento\Sales\Model\Order\Pdf\Invoice" type="Ls\Omni\Model\Order\Pdf\Invoice"/>
+    <!-- To Ovveride Subtotal Calculation for Paypal -->
+    <type name="Magento\Paypal\Model\Cart">
+        <plugin name="ls_update_paypal_amount_order" type="Ls\Omni\Plugin\Checkout\Model\UpdateAmountPayPal"/>
+    </type>
 </config>
