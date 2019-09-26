@@ -2,11 +2,10 @@
 
 namespace Ls\Omni\Model\Api;
 
-use Magento\Checkout\Api\Data\TotalsInformationInterface;
+use \Ls\Omni\Api\PointsManagementInterface;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
-use \Ls\Omni\Api\PointsManagementInterface;
 
 /**
  * Class PointsManagement
@@ -28,7 +27,7 @@ class PointsManagement implements PointsManagementInterface
     protected $cartTotalRepository;
 
     /**
-     * @var Session
+     * @var CheckoutSession
      */
     protected $checkoutSession;
 

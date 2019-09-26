@@ -4,7 +4,7 @@ $currentProductSku = $block->getProductSku();
 $ajaxUrl = $block->getAjaxUrl();
 $isEnabled = $block->isDiscountEnable();
 
-if($isEnabled) {
+if ($isEnabled) {
 ?>
 
 <div id="ls-discounts">
@@ -12,7 +12,7 @@ if($isEnabled) {
         <img src="<?= /* @escapeNotVerified */
         $block->getViewFileUrl('images/loader-1.gif') ?>"
              alt="<?= /* @escapeNotVerified */
-             __('Loading...') ?>">
+                __('Loading...') ?>">
         <br/>
         <div><?php echo __('Loading Product Discounts...'); ?></div>
     </div>

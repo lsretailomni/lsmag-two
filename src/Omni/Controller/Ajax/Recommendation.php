@@ -2,14 +2,14 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\CacheHelper;
+use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\RedirectFactory;
-use \Ls\Omni\Helper\CacheHelper;
-use \Ls\Omni\Model\Cache\Type;
-use \Ls\Core\Model\LSR;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Recommendation

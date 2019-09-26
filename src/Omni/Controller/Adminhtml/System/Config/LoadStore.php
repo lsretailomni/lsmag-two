@@ -87,10 +87,10 @@ class LoadStore extends Action
         try {
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $lsKey = $this->getRequest()->getParam('lsKey');
-            $stores = $this->getStores($baseUrl,$lsKey);
+            $stores = $this->getStores($baseUrl, $lsKey);
             if (!empty($stores)) {
                 $option_array = [['value' => '', 'label' => __('Please select your web store')]];
-                $pong = $this->omniPing($baseUrl,$lsKey);
+                $pong = $this->omniPing($baseUrl, $lsKey);
                 foreach ($stores as $store) {
                     $option_array[] = ['value' => $store->getId(), 'label' => $store->getDescription()];
                 }
@@ -112,7 +112,7 @@ class LoadStore extends Action
      * @param $lsKey
      * @return array|\Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore|\Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse|\Ls\Omni\Client\ResponseInterface
      */
-    public function getStores($baseUrl,$lsKey)
+    public function getStores($baseUrl, $lsKey)
     {
         if ($this->lsr->validateBaseUrl($baseUrl)) {
             //@codingStandardsIgnoreStart
@@ -141,7 +141,7 @@ class LoadStore extends Action
      * @param $baseUrl
      * @return mixed
      */
-    public function omniPing($baseUrl,$lsKey)
+    public function omniPing($baseUrl, $lsKey)
     {
         //@codingStandardsIgnoreStart
         $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);

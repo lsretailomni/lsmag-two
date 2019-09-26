@@ -2,10 +2,10 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+use \Ls\Omni\Helper\BasketHelper;
+use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Exception\CouldNotDeleteException;
-use \Ls\Omni\Helper\BasketHelper;
 
 /**
  * Class CouponInformationManagement

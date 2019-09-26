@@ -17,7 +17,6 @@ class Index extends \Magento\Framework\App\Action\Action
      * Index constructor.
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Ls\Replication\Model\ReplStore $replStore
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,

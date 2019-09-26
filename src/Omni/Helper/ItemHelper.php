@@ -39,7 +39,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var Cart $cart */
     public $cart;
 
-    /** @var itemResourceModel */
+    /**
+     * @var \Magento\Quote\Model\ResourceModel\Quote\Item
+     */
     public $itemResourceModel;
 
     /**

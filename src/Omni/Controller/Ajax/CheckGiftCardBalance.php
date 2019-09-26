@@ -2,9 +2,8 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
-use Magento\Framework\App\Action\Context;
 use \Ls\Omni\Helper\GiftCardHelper;
-use \Ls\Omni\Helper\Data;
+use Magento\Framework\App\Action\Context;
 
 /**
  * Class CheckGiftCardBalance
@@ -16,14 +15,16 @@ class CheckGiftCardBalance extends \Magento\Framework\App\Action\Action
     /** @var \Magento\Framework\Controller\Result\JsonFactory */
     public $resultJsonFactory;
 
-    /** @var \Magento\Framework\Controller\Result\RawFactory */
+    /**
+     * @var \Magento\Framework\Controller\Result\RawFactory
+     */
     public $resultRawFactory;
 
     /** @var GiftCardHelper */
     private $giftCardHelper;
 
     /**
-     * @var priceHelper
+     * @var \Magento\Framework\Pricing\Helper\Data
      */
     public $priceHelper;
 
@@ -41,8 +42,7 @@ class CheckGiftCardBalance extends \Magento\Framework\App\Action\Action
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         GiftCardHelper $giftCardHelper,
         \Magento\Framework\Pricing\Helper\Data $priceHelper
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory = $resultRawFactory;
@@ -80,7 +80,8 @@ class CheckGiftCardBalance extends \Magento\Framework\App\Action\Action
                 $response = [
                     'error' => 'true',
                     'message' => __(
-                        'The gift card code %1 is not valid.', $giftCardCode
+                        'The gift card code %1 is not valid.',
+                        $giftCardCode
                     )
                 ];
             } else {
@@ -94,7 +95,8 @@ class CheckGiftCardBalance extends \Magento\Framework\App\Action\Action
             $response = [
                 'error' => 'true',
                 'message' => __(
-                    'The gift card code %1 is not valid.', $giftCardCode
+                    'The gift card code %1 is not valid.',
+                    $giftCardCode
                 )
             ];
             return $resultJson->setData($response);
@@ -102,5 +104,4 @@ class CheckGiftCardBalance extends \Magento\Framework\App\Action\Action
 
         return $resultJson->setData($response);
     }
-
 }

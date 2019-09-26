@@ -2,13 +2,13 @@
 
 namespace Ls\Omni\Block\Stores;
 
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
-use \Ls\Omni\Helper\Data;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\Data;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Result\PageFactory;
-use \Magento\Framework\Session\SessionManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -50,6 +50,7 @@ class Stores extends Template
      * @param ScopeConfigInterface $scopeConfig
      * @param SessionManagerInterface $session
      * @param Data $storeHousHelper
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Template\Context $context,

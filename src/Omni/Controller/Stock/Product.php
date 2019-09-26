@@ -53,8 +53,8 @@ class Product extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * execute
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute()
     {

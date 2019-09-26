@@ -25,7 +25,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
     public $basketHelper;
 
     /**
-     * @var Ls\Omni\Helper\Data
+     * @var \Ls\Omni\Helper\Data
      */
     public $data;
 
@@ -139,5 +139,4 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
         }
         return $this->_goBack();
     }
-
 }

@@ -66,8 +66,7 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession
-    )
-    {
+    ) {
         $this->setCode('discount');
         $this->eventManager = $eventManager;
         $this->calculator = $validator;
@@ -89,8 +88,7 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         \Magento\Quote\Model\Quote $quote,
         \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
         \Magento\Quote\Model\Quote\Address\Total $total
-    )
-    {
+    ) {
         $discountAmount = $this->getTotalDiscount($quote);
         $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
         if ($discountAmount < 0) {

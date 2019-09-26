@@ -21,8 +21,10 @@ if ($items = $block->getProductRecommendation($productId)) : ?>
                             <div class="slider-product-item-info">
                                 <a href="<?php echo $block->getProductUrl($_item) ?>"
                                    class="product photo slider-product-item-photo">
-                                    <?php echo $block->getImage($_item,
-                                        'recently_viewed_products_grid_content_widget')->toHtml(); ?>
+                                    <?php echo $block->getImage(
+                                        $_item,
+                                        'recently_viewed_products_grid_content_widget'
+                                    )->toHtml(); ?>
                                 </a>
                                 <div class="product details slider-product-item-details">
                                     <strong class="product name product-item-name">
@@ -44,8 +46,10 @@ if ($items = $block->getProductRecommendation($productId)) : ?>
                                                 <?php else : ?>
                                                     <?php
                                                     $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
-                                                    $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item),
-                                                        ['product' => $_item->getEntityId()])
+                                                    $postData = $postDataHelper->getPostData(
+                                                        $block->getAddToCartUrl($_item),
+                                                        ['product' => $_item->getEntityId()]
+                                                    )
                                                     ?>
                                                     <button class="action tocart primary mageplaza-product-slider-button"
                                                             data-post='<?php echo $postData; ?>'

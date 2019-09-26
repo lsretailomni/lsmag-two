@@ -2,13 +2,12 @@
 
 namespace Ls\Omni\Block\Cart\Item;
 
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\omni\Helper\ItemHelper;
+use Magento\Catalog\Model\Product\Configuration\Item\ItemResolverInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\View\Element\Message\InterpretationStrategyInterface;
 use Magento\Quote\Model\Quote\Item\AbstractItem;
-use Magento\Catalog\Model\Product\Configuration\Item\ItemResolverInterface;
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Core\Model\LSR;
-use \Ls\omni\Helper\ItemHelper;
 
 /**
  * Class Renderer
@@ -128,14 +127,14 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
         InterpretationStrategyInterface $messageInterpretationStrategy,
         BasketHelper $basketHelper,
         ItemHelper $itemHelper,
-        array $data = [],
-        ItemResolverInterface $itemResolver
-    )
-    {
+        ItemResolverInterface $itemResolver,
+        array $data = []
+    ) {
         $this->basketHelper = $basketHelper;
         $this->itemHelper = $itemHelper;
         $this->productConfig = $productConfig;
-        parent::__construct($context,
+        parent::__construct(
+            $context,
             $productConfig,
             $checkoutSession,
             $imageBuilder,
@@ -174,5 +173,4 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
     {
         return $this->productConfig->getOptions(parent::getItem());
     }
-
 }

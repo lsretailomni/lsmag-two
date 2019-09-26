@@ -2,10 +2,10 @@
 
 namespace Ls\Omni\Model;
 
+use \Ls\Omni\Model\Payment\PayStore;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\Escaper;
 use Magento\Payment\Helper\Data as PaymentHelper;
-use \Ls\Omni\Model\Payment\PayStore;
 
 /**
  * Class PayStoreConfigProvider
@@ -19,7 +19,7 @@ class PayStoreConfigProvider implements ConfigProviderInterface
     public $methodCode = PayStore::CODE;
 
     /**
-     * @var payAtStore
+     * @var \Magento\Payment\Model\MethodInterface
      */
     public $method;
 

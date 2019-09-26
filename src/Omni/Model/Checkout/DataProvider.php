@@ -2,13 +2,13 @@
 
 namespace Ls\Omni\Model\Checkout;
 
-use Magento\Checkout\Model\ConfigProviderInterface;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Store\Model\ScopeInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
-use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\GiftCardHelper;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use Magento\Checkout\Model\ConfigProviderInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class DataProvider
@@ -38,14 +38,14 @@ class DataProvider implements ConfigProviderInterface
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
+     * @param GiftCardHelper $giftCardHelper
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         CollectionFactory $storeCollectionFactory,
         ScopeConfigInterface $scopeConfig,
         GiftCardHelper $giftCardHelper
-    )
-    {
+    ) {
         $this->storeManager = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->scopeConfig = $scopeConfig;

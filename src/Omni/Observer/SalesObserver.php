@@ -2,10 +2,10 @@
 
 namespace Ls\Omni\Observer;
 
-use \Magento\Framework\Event\Observer;
-use \Magento\Framework\Event\ObserverInterface;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class SalesObserver

@@ -37,6 +37,7 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
     public $priceHelper;
 
     /**
+     * Invoice constructor.
      * @param \Magento\Payment\Helper\Data $paymentData
      * @param \Magento\Framework\Stdlib\StringUtils $string
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -49,9 +50,9 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
      * @param \Magento\Sales\Model\Order\Address\Renderer $addressRenderer
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\Locale\ResolverInterface $localeResolver
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param array $data
-     *
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Payment\Helper\Data $paymentData,
@@ -130,6 +131,12 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
         $this->y -= 20;
     }
 
+    /**
+     * @param \Zend_Pdf_Page $page
+     * @param \Magento\Sales\Model\AbstractModel $source
+     * @return \Zend_Pdf_Page
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function insertTotals($page, $source)
     {
         $order = $source->getOrder();
