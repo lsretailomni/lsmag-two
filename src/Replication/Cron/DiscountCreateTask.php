@@ -226,9 +226,17 @@ class DiscountCreateTask
                             /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
                             $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
                             if (count($replDiscountsTotal->getItems()) == 0) {
-                                $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
+                                $this->replicationHelper->updateCronStatus(
+                                    true,
+                                    LSR::SC_SUCCESS_CRON_DISCOUNT,
+                                    $this->store->getId()
+                                );
                             } else {
-                                $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
+                                $this->replicationHelper->updateCronStatus(
+                                    false,
+                                    LSR::SC_SUCCESS_CRON_DISCOUNT,
+                                    $this->store->getId()
+                                );
                             }
                         }
                         /* Delete the IsDeleted offers */
