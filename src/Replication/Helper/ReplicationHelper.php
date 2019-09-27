@@ -453,6 +453,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $code = strtolower(trim($code));
         $code = str_replace(" ", "_", $code);
+        // convert all special characters and replace it wiht _
+        $code = preg_replace('/[^a-zA-Z0-9_.]/', '_', $code);
         return 'ls_' . $code;
     }
 
