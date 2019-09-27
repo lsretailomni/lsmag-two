@@ -8,6 +8,7 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class CouponsProvider implements ConfigProviderInterface
 {
@@ -40,10 +41,26 @@ class CouponsProvider implements ConfigProviderInterface
     public $checkoutSession;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     public $logger;
 
+    /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
+     * CouponsProvider constructor.
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param StoreManagerInterface $storeManager
+     * @param TimezoneInterface $timeZoneInterface
+     * @param ScopeConfigInterface $scopeConfig
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param LoggerInterface $logger
+     * @param LSR $lsr
+     */
     public function __construct(
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
@@ -51,7 +68,8 @@ class CouponsProvider implements ConfigProviderInterface
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
         LoyaltyHelper $loyaltyHelper,
-        \Psr\Log\LoggerInterface $logger
+        LoggerInterface $logger,
+        LSR $lsr
     ) {
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
@@ -60,6 +78,7 @@ class CouponsProvider implements ConfigProviderInterface
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig = $scopeConfig;
         $this->logger = $logger;
+        $this->lsr = $lsr;
     }
 
     public function getConfig()
@@ -118,7 +137,8 @@ class CouponsProvider implements ConfigProviderInterface
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getCurrentStoreId()
             ));
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

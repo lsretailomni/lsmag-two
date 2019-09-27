@@ -9,7 +9,7 @@
                    showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Configuration</label>
                 <field id="base_url" translate="label comment" type="text" sortOrder="10"
-                        showInWebsite="1" showInStore="0">
+                       showInWebsite="1" showInStore="0">
                     <label>Service Base URL</label>
                     <validate>required-entry validate-url</validate>
                     <comment>http://lsretail.cloudapp.net/lsomniservice</comment>
@@ -20,7 +20,7 @@
                     <comment>For Multi Tenant Web Services</comment>
                 </field>
                 <field id="validate_base_url" translate="label comment" type="button" sortOrder="10"
-                        showInWebsite="1" >
+                       showInWebsite="1">
                     <frontend_model>Ls\Omni\Block\Adminhtml\System\Config\Stores</frontend_model>
                     <comment>Please validate your base url by clicking on button above</comment>
                 </field>
@@ -109,10 +109,12 @@
                     <label>Show Coupons on Cart/Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="discount_mixandmatch_limit" translate="label" type="text" sortOrder="4" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="discount_mixandmatch_limit" translate="label" type="text" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Discount Popup Mix and Match Products Limit</label>
-                    <comment>This will display the number of mix and match discounts product on promotions in product page.Set value to -1 to display all products.</comment>
+                    <comment>This will display the number of mix and match discounts product on promotions in product
+                        page. Set value to -1 to display all products.
+                    </comment>
                 </field>
             </group>
         </section>
@@ -135,7 +137,8 @@
                        showInStore="1">
                     <label>Method Name</label>
                 </field>
-                <field id="payment_option" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1">
+                <field id="payment_option" translate="label" type="multiselect" sortOrder="1" showInDefault="1"
+                       showInWebsite="1">
                     <label>Allowed Payment Methods</label>
                     <source_model>Ls\Omni\Model\System\Source\PaymentOption</source_model>
                 </field>
@@ -173,16 +176,20 @@
             </group>
         </section>
         <section id="payment">
-            <group id="ls_payment_method_pay_at_store" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="ls_payment_method_pay_at_store" translate="label comment" type="text" sortOrder="50"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Pay at the Store</label>
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
                     <label>Title</label>
                 </field>
-                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
                 </field>
