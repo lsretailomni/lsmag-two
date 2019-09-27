@@ -56,6 +56,11 @@ class Offers extends \Magento\Framework\View\Element\Template
     public $categoryHelper;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * Offers constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param LoyaltyHelper $loyaltyHelper
@@ -66,6 +71,7 @@ class Offers extends \Magento\Framework\View\Element\Template
      * @param ProductRepository $productRepository
      * @param CategoryRepository $categoryRepository
      * @param CategoryHelper $categoryHelper
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
@@ -78,6 +84,7 @@ class Offers extends \Magento\Framework\View\Element\Template
         ProductRepository $productRepository,
         CategoryRepository $categoryRepository,
         CategoryHelper $categoryHelper,
+        LSR $lsr,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -89,6 +96,7 @@ class Offers extends \Magento\Framework\View\Element\Template
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->categoryHelper = $categoryHelper;
+        $this->lsr = $lsr;
     }
 
     /**
@@ -211,7 +219,8 @@ class Offers extends \Magento\Framework\View\Element\Template
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getCurrentStoreId()
             ));
 
             return $offerExpiryDate;
