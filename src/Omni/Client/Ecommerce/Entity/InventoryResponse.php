@@ -22,29 +22,9 @@ class InventoryResponse
     protected $ItemId = null;
 
     /**
-     * @property float $QtyActualInventory
-     */
-    protected $QtyActualInventory = null;
-
-    /**
-     * @property float $QtyExpectedStock
-     */
-    protected $QtyExpectedStock = null;
-
-    /**
      * @property float $QtyInventory
      */
     protected $QtyInventory = null;
-
-    /**
-     * @property float $QtySoldNotPosted
-     */
-    protected $QtySoldNotPosted = null;
-
-    /**
-     * @property float $ReorderPoint
-     */
-    protected $ReorderPoint = null;
 
     /**
      * @property string $StoreId
@@ -93,42 +73,6 @@ class InventoryResponse
     }
 
     /**
-     * @param float $QtyActualInventory
-     * @return $this
-     */
-    public function setQtyActualInventory($QtyActualInventory)
-    {
-        $this->QtyActualInventory = $QtyActualInventory;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getQtyActualInventory()
-    {
-        return $this->QtyActualInventory;
-    }
-
-    /**
-     * @param float $QtyExpectedStock
-     * @return $this
-     */
-    public function setQtyExpectedStock($QtyExpectedStock)
-    {
-        $this->QtyExpectedStock = $QtyExpectedStock;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getQtyExpectedStock()
-    {
-        return $this->QtyExpectedStock;
-    }
-
-    /**
      * @param float $QtyInventory
      * @return $this
      */
@@ -144,42 +88,6 @@ class InventoryResponse
     public function getQtyInventory()
     {
         return $this->QtyInventory;
-    }
-
-    /**
-     * @param float $QtySoldNotPosted
-     * @return $this
-     */
-    public function setQtySoldNotPosted($QtySoldNotPosted)
-    {
-        $this->QtySoldNotPosted = $QtySoldNotPosted;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getQtySoldNotPosted()
-    {
-        return $this->QtySoldNotPosted;
-    }
-
-    /**
-     * @param float $ReorderPoint
-     * @return $this
-     */
-    public function setReorderPoint($ReorderPoint)
-    {
-        $this->ReorderPoint = $ReorderPoint;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getReorderPoint()
-    {
-        return $this->ReorderPoint;
     }
 
     /**

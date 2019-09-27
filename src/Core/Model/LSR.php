@@ -79,6 +79,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
+    const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_STORE = 'ls_mag/replication/manual_cron_grid_default_store';
 
     // CRON CHECKING
 
@@ -353,19 +354,19 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * Validate Omni Base URL
+     * @param null $baseUrl
      * @return bool
      */
     public function validateBaseUrl($baseUrl = null)
     {
         if ($baseUrl == null) {
-            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
+            $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
         }
         if (empty($baseUrl)) {
             return false;
         } else {
             try {
-                $url = join('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
+                $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
                 // @codingStandardsIgnoreStart
                 $soapClient = new SoapClient($url . '?singlewsdl');
                 // @codingStandardsIgnoreEnd
@@ -383,22 +384,23 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isLSR($store_id = false, $scope = false)
     {
-
         if ($scope == 'website') {
             $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
             $store = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
         } else {
             $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
             $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
-
         }
         if (empty($baseUrl) || empty($store)) {
             return false;
         } else {
             try {
-                $url = join('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
+                $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
                 // @codingStandardsIgnoreStart
-                $soapClient = new SoapClient($url . '?singlewsdl', array('features' => SOAP_SINGLE_ELEMENT_ARRAYS));
+                $soapClient = new SoapClient(
+                    $url . '?singlewsdl',
+                    ['features' => SOAP_SINGLE_ELEMENT_ARRAYS]
+                );
                 // @codingStandardsIgnoreEnd
                 if ($soapClient) {
                     return true;
@@ -416,8 +418,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getDefaultWebStore()
     {
         return $this->getStoreConfig(
-            LSR::SC_SERVICE_STORE,
-            \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            self::SC_SERVICE_STORE,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
     }
 
@@ -452,8 +454,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getGoogleMapsApiKey()
     {
         $configValue = $this->scopeConfig->getValue(
-            LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
-            \Magento\Framework\App\Config\ScopeConfigInterface::
+            self::SC_CLICKCOLLECT_GOOGLE_API_KEY,
+            ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
         return $configValue;
@@ -466,8 +468,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getDefaultLatitude()
     {
         $configValue = $this->scopeConfig->getValue(
-            LSR::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
-            \Magento\Framework\App\Config\ScopeConfigInterface::
+            self::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
+            ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
         return $configValue;
@@ -480,8 +482,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getDefaultLongitude()
     {
         $configValue = $this->scopeConfig->getValue(
-            LSR::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
-            \Magento\Framework\App\Config\ScopeConfigInterface::
+            self::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
+            ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
         return $configValue;
@@ -494,8 +496,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getDefaultZoom()
     {
         $configValue = $this->scopeConfig->getValue(
-            LSR::SC_CLICKCOLLECT_DEFAULT_ZOOM,
-            \Magento\Framework\App\Config\ScopeConfigInterface::
+            self::SC_CLICKCOLLECT_DEFAULT_ZOOM,
+            ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
         return $configValue;
@@ -529,7 +531,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     public function setStoreId($store_id){
         $this->storeManager->setCurrentStore($store_id);
-
     }
 
 }

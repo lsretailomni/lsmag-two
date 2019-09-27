@@ -40,6 +40,7 @@ class LoyItem
         	$table->addColumn('Price' , Table::TYPE_TEXT, '');
         	$table->addColumn('ProductGroupId' , Table::TYPE_TEXT, '');
         	$table->addColumn('SalesUomId' , Table::TYPE_TEXT, '');
+        	$table->addColumn('ScaleItem' , Table::TYPE_BOOLEAN, '');
         	$table->addColumn('SeasonCode' , Table::TYPE_TEXT, '');
         	$table->addColumn('UnitVolume' , Table::TYPE_FLOAT, '');
         	$table->addColumn('UnitsPerParcel' , Table::TYPE_FLOAT, '');

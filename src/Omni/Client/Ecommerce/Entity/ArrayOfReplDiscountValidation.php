@@ -17,9 +17,9 @@ class ArrayOfReplDiscountValidation implements IteratorAggregate
     /**
      * @property ReplDiscountValidation[] $ReplDiscountValidation
      */
-    protected $ReplDiscountValidation = [
+    protected $ReplDiscountValidation = array(
         
-    ];
+    );
 
     /**
      * @param ReplDiscountValidation[] $ReplDiscountValidation

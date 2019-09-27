@@ -500,7 +500,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function updateCronStatus($data, $path, $store_id = false)
     {
         /**
-         * Added the conditon to update config value based on specific store id.
+         * Added the condition to update config value based on specific store id.
          */
         if ($store_id) {
             $this->configWriter->save(
@@ -529,7 +529,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
 
         /**
-         * Added the conditon to update config value based on specific store id.
+         * Added the condition to update config value based on specific store id.
          */
         if ($store_id) {
             $this->configWriter->save(

@@ -212,16 +212,9 @@ class Info extends \Magento\Framework\View\Element\Template
                 $methods[] = __('Unknown');
             }
         }
-        if(empty($paymentLines->getSalesEntryPayment())){
-            $order = $this->getMagOrder();
-            $paymentMethodName='';
-            if (!empty($order)) {
-                $paymentMethodName = $order->getPayment()->getMethodInstance()->getTitle();
-            }
-            else {
-                $paymentMethodName="Offline";
-            }
-            $methods[] = __($paymentMethodName);
+        //TODO when order edit payment available for offline payment we need to change it.
+        if (empty($paymentLines)) {
+            $methods[] = __('Pay At Store');
         }
         return[implode(', ', $methods),$giftCardInfo];
     }

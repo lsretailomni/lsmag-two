@@ -17,6 +17,11 @@ class ReplExtendedVariantValue
     protected $Code = null;
 
     /**
+     * @property int $DimensionLogicalOrder
+     */
+    protected $DimensionLogicalOrder = null;
+
+    /**
      * @property string $Dimensions
      */
     protected $Dimensions = null;
@@ -77,6 +82,24 @@ class ReplExtendedVariantValue
     public function getCode()
     {
         return $this->Code;
+    }
+
+    /**
+     * @param int $DimensionLogicalOrder
+     * @return $this
+     */
+    public function setDimensionLogicalOrder($DimensionLogicalOrder)
+    {
+        $this->DimensionLogicalOrder = $DimensionLogicalOrder;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDimensionLogicalOrder()
+    {
+        return $this->DimensionLogicalOrder;
     }
 
     /**

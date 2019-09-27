@@ -17,9 +17,9 @@ class ArrayOfRecommendedItem implements IteratorAggregate
     /**
      * @property RecommendedItem[] $RecommendedItem
      */
-    protected $RecommendedItem = [
+    protected $RecommendedItem = array(
         
-    ];
+    );
 
     /**
      * @param RecommendedItem[] $RecommendedItem

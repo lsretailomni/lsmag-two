@@ -17,9 +17,9 @@ class ArrayOfProfile implements IteratorAggregate
     /**
      * @property Profile[] $Profile
      */
-    protected $Profile = [
+    protected $Profile = array(
         
-    ];
+    );
 
     /**
      * @param Profile[] $Profile

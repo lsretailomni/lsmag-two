@@ -17,9 +17,9 @@ class ArrayOfHierarchyLeaf implements IteratorAggregate
     /**
      * @property HierarchyLeaf[] $HierarchyLeaf
      */
-    protected $HierarchyLeaf = [
+    protected $HierarchyLeaf = array(
         
-    ];
+    );
 
     /**
      * @param HierarchyLeaf[] $HierarchyLeaf

@@ -17,9 +17,9 @@ class ArrayOfReplTaxSetup implements IteratorAggregate
     /**
      * @property ReplTaxSetup[] $ReplTaxSetup
      */
-    protected $ReplTaxSetup = [
+    protected $ReplTaxSetup = array(
         
-    ];
+    );
 
     /**
      * @param ReplTaxSetup[] $ReplTaxSetup
