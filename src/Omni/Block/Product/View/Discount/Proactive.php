@@ -288,7 +288,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
         if ($coupon->getDetails()) {
             $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . "</span>";
         }
-        if ($coupon->getCode()!=DiscountType::PROMOTION) {
+        if ($coupon->getCode() != DiscountType::PROMOTION) {
             if ($coupon->getExpirationDate()) {
                 $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __("Expiry :") . "</span>
@@ -348,17 +348,25 @@ class Proactive extends \Magento\Catalog\Block\Product\View
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isDiscountEnable()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_SHOW_ON_PRODUCT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_DISCOUNT_SHOW_ON_PRODUCT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getMixandMatchProductLimit()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 }

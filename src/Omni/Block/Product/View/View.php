@@ -108,7 +108,10 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function isEnable()
     {
-        $configValue = $this->lsr->getStoreConfig($this->lsr::SC_CART_PRODUCT_AVAILABILITY);
+        $configValue = $this->lsr->getStoreConfig(
+            $this->lsr::SC_CART_PRODUCT_AVAILABILITY,
+            $this->lsr->getCurrentStoreId()
+        );
         return $configValue;
     }
 }

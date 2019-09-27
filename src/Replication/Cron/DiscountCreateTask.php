@@ -133,7 +133,10 @@ class DiscountCreateTask
          */
         if ($this->lsr->isLSR()) {
             $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
-            $CronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+            $CronProductCheck = $this->lsr->getStoreConfig(
+                LSR::SC_SUCCESS_CRON_PRODUCT,
+                $this->lsr->getCurrentStoreId()
+            );
             if ($CronProductCheck == 1) {
                 $webStore = $this->lsr->getActiveWebStore();
                 $publishedOfferCollection = $this->getUniquePublishedOffers();

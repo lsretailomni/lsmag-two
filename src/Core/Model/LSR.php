@@ -315,7 +315,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * Note : Incase of notDefault we have to pass the StoreID
      * in the variable of notDefault variable.
      * @param $path
-     * @param bool $notDefault
      * @return string
      */
     public function getStoreConfig($path, $store_id = false)
@@ -323,10 +322,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if ($store_id) {
             $sc = $this->scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id);
         } else {
-            $sc = $this->scopeConfig->getValue(
-                $path,
-                \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-            );
+            $sc = $this->scopeConfig->getValue($path);
         }
         return $sc;
     }
@@ -343,10 +339,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if ($website_id) {
             $sc = $this->scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE, $website_id);
         } else {
-            $sc = $this->scopeConfig->getValue(
-                $path,
-                \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-            );
+            $sc = $this->scopeConfig->getValue($path);
         }
         return $sc;
     }

@@ -59,44 +59,62 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-
     public function isLsRecommendEnable()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_RECOMMEND_ACTIVE);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_ACTIVE,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-
     public function isLsRecommendEnableOnProductPage()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_RECOMMEND_SHOW_ON_PRODUCT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_SHOW_ON_PRODUCT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isLsRecommendEnableOnCartPage()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_RECOMMEND_SHOW_ON_CART);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_SHOW_ON_CART,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isLsRecommendEnableOnHomePage()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_RECOMMEND_SHOW_ON_HOME);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_SHOW_ON_HOME,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isLsRecommendEnableOnCheckoutPage()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_RECOMMEND_SHOW_ON_CHECKOUT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_SHOW_ON_CHECKOUT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     // @codingStandardsIgnoreStart
@@ -132,9 +150,9 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
      * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
      */
     public function parseProductRecommendation(
-        \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem $recommendedProducts
+        Entity\ArrayOfRecommendedItem $recommendedProducts
     ) {
-        if ($recommendedProducts instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem) {
+        if ($recommendedProducts instanceof Entity\ArrayOfRecommendedItem) {
             if (empty($recommendedProducts)) {
                 return null;
             }
@@ -151,7 +169,7 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
      */
 
     public function getProductIdsFromLsRecommendObject(
-        \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem $recommendedProducts
+        Entity\ArrayOfRecommendedItem $recommendedProducts
     ) {
         $productIds = [];
         /** @var  Entity\RecommendedItem $recommendedItem */

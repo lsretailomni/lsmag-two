@@ -92,11 +92,11 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
      */
     public function getFormattedDescription(\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon)
     {
-        $description = "<div class='coupon-description-wrapper'>".
-            (($coupon->getOfferId()) ? "<span class='coupon-code'>".$coupon->getOfferId()."</span><br/>" : "").
-            (($coupon->getDescription()) ? "<span class='coupon-description'>".$coupon->getDescription()."</span><br/>" : "").
-            (($coupon->getDetails()) ? "<span class='coupon-detail'>".$coupon->getDetails()."</span><br/>" : "").
-            (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>".__("Valid till")."&nbsp". $this->getFormattedOfferExpiryDate($coupon->getExpirationDate())."</span>" : "") .
+        $description = "<div class='coupon-description-wrapper'>" .
+            (($coupon->getOfferId()) ? "<span class='coupon-code'>" . $coupon->getOfferId() . "</span><br/>" : "") .
+            (($coupon->getDescription()) ? "<span class='coupon-description'>" . $coupon->getDescription() . "</span><br/>" : "") .
+            (($coupon->getDetails()) ? "<span class='coupon-detail'>" . $coupon->getDetails() . "</span><br/>" : "") .
+            (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>" . __("Valid till") . "&nbsp" . $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>" : "") .
             "</div>";
         return $description;
     }
@@ -129,9 +129,13 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isCouponEnable()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_COUPON_SHOW_ON_CART_CHECKOUT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_COUPON_SHOW_ON_CART_CHECKOUT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 }

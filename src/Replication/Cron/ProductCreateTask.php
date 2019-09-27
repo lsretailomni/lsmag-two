@@ -333,9 +333,14 @@ class ProductCreateTask
                         $val1 = ini_get('max_execution_time');
                         $val2 = ini_get('memory_limit');
                         $this->logger->debug('ENV Variables Values after:' . $val1 . ' ' . $val2);
-                        $this->webStoreId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
-                        $productBatchSize = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE,
-                            $store->getId());
+                        $this->webStoreId = $this->lsr->getStoreConfig(
+                            LSR::SC_SERVICE_STORE,
+                            $store->getId()
+                        );
+                        $productBatchSize = $this->lsr->getStoreConfig(
+                            LSR::SC_REPLICATION_PRODUCT_BATCHSIZE,
+                            $store->getId()
+                        );
                         /** @var \Magento\Framework\Api\SearchCriteria $criteria */
                         $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(),
                             'eq', $productBatchSize, true);

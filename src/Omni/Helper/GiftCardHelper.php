@@ -130,28 +130,37 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-
     public function isGiftCardEnable()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_GIFTCARD_ACTIVE);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_GIFTCARD_ACTIVE,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-
     public function isGiftCardEnableOnCartPage()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_GIFTCARD_SHOW_ON_CART);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_GIFTCARD_SHOW_ON_CART,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isGiftCardEnableOnCheckOut()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
-
 }
