@@ -23,7 +23,6 @@ class GiftCardLoyaltyPoints extends AbstractTotal
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Framework\App\State $state,
         array $data = []
     ) {
         $this->loyaltyHelper = $loyaltyHelper;
