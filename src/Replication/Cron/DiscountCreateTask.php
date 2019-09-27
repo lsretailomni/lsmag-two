@@ -147,14 +147,13 @@ class DiscountCreateTask
                     $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
                     $cronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT, $store->getId());
                     if ($cronProductCheck == 1) {
-                        $webStore = $this->lsr->getActiveWebStore();
                         $publishedOfferCollection = $this->getUniquePublishedOffers($store->getId());
                         if (!empty($publishedOfferCollection)) {
                             $reindexRules = false;
                             /** @var \Ls\Replication\Model\ReplDiscount $item */
                             foreach ($publishedOfferCollection as $item) {
                                 $filters = [
-                                    ['field' => 'StoreId', 'value' => $webStore, 'condition_type' => 'eq'],
+                                    ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
                                     ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
                                     [
                                         'field' => 'Type',
