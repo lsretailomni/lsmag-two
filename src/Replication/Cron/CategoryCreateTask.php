@@ -404,8 +404,12 @@ class CategoryCreateTask
                 $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId());
                 if (!empty($categoryExistData)) {
                     $categoryId = $categoryExistData->getEntityId();
+                    $parentCategoryId = $categoryExistData->getParentId();
                     if (in_array($categoryId, $categories)) {
                         $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
+                    }
+                    if (in_array($parentCategoryId, $categories)) {
+                        $this->categoryLinkRepositoryInterface->deleteByIds($parentCategoryId, $sku);
                     }
                 }
                 $hierarchyLeaf->setData('is_processed', '1');
