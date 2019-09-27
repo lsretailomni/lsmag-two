@@ -219,15 +219,24 @@ class DiscountCreateTask
                                 $this->jobApply->applyAll();
                             }
                             $filtersStatus = [
+                                ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
                                 ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                             ];
                             $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 100);
                             /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
                             $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
                             if (count($replDiscountsTotal->getItems()) == 0) {
-                                $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
+                                $this->replicationHelper->updateCronStatus(
+                                    true,
+                                    LSR::SC_SUCCESS_CRON_DISCOUNT,
+                                    $this->store->getId()
+                                );
                             } else {
-                                $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
+                                $this->replicationHelper->updateCronStatus(
+                                    false,
+                                    LSR::SC_SUCCESS_CRON_DISCOUNT,
+                                    $this->store->getId()
+                                );
                             }
                         }
                         /* Delete the IsDeleted offers */
@@ -273,8 +282,12 @@ class DiscountCreateTask
      * @param $customerGroupIds
      * @param $websiteId
      */
-    public function addSalesRule(\Ls\Replication\Model\ReplDiscount $replDiscount, array $skuArray, $customerGroupIds, $websiteId)
-    {
+    public function addSalesRule(
+        \Ls\Replication\Model\ReplDiscount $replDiscount,
+        array $skuArray,
+        $customerGroupIds,
+        $websiteId
+    ) {
         if ($replDiscount instanceof \Ls\Replication\Model\ReplDiscount) {
             $websiteIds = [$websiteId];
             $rule = $this->ruleFactory->create();
