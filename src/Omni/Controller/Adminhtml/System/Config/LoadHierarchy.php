@@ -67,7 +67,7 @@ class LoadHierarchy extends Action
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $storeId = $this->getRequest()->getParam('storeId');
             $lsKey   = $this->getRequest()->getParam('lsKey');
-            $hierarchies = $this->getHierarchy($baseUrl, $storeId,$lsKey);
+            $hierarchies = $this->getHierarchy($baseUrl, $storeId, $lsKey);
             if (!empty($hierarchies)) {
                 $option_array = [['value' => '', 'label' => __('Please select your hierarchy code')]];
                 foreach ($hierarchies as $hierarchy) {

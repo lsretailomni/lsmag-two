@@ -4,7 +4,6 @@ namespace Ls\Omni\Helper;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -39,7 +38,7 @@ class OrderHelper extends AbstractHelper
     public $checkoutSession;
 
     /**
-     * @var Order Repository
+     * @var Model\OrderRepository
      */
     public $orderRepository;
 
@@ -49,6 +48,7 @@ class OrderHelper extends AbstractHelper
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
+     * @param Model\OrderRepository $orderRepository
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      */
@@ -57,7 +57,7 @@ class OrderHelper extends AbstractHelper
         Model\Order $order,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Sales\Model\OrderRepository $orderRepository,
+        Model\OrderRepository $orderRepository,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession
     ) {

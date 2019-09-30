@@ -2,10 +2,9 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
-use Magento\Framework\App\Action\Context;
-use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Omni\Helper\Data;
-use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\GiftCardHelper;
+use Magento\Framework\App\Action\Context;
 
 /**
  * Class UpdatePoints
@@ -44,7 +43,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
     public $cartRepository;
 
     /**
-     * @var priceHelper
+     * @var \Magento\Framework\Pricing\Helper\Data
      */
     public $priceHelper;
 
@@ -76,7 +75,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        \Ls\Omni\Helper\Data $data
+        Data $data
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
@@ -142,7 +141,8 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
             $response = [
                 'error' => 'true',
                 'message' => __(
-                    'The gift card code %1 is not valid.', $giftCardNo
+                    'The gift card code %1 is not valid.',
+                    $giftCardNo
                 )
             ];
             return $resultJson->setData($response);
@@ -164,7 +164,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
             $response = [
                 'error' => 'true',
                 'message' => __(
-                    'The applied amount %3'.
+                    'The applied amount %3' .
                     ' is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).',
                     $this->priceHelper->currency($giftCardBalanceAmount, true, false),
                     $this->priceHelper->currency($orderBalance, true, false),
@@ -174,7 +174,6 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
             return $resultJson->setData($response);
         }
         try {
-
             if ($isGiftCardAmountValid) {
                 $quote->setLsGiftCardNo($giftCardNo);
                 $quote->setLsGiftCardAmountUsed($giftCardAmount);

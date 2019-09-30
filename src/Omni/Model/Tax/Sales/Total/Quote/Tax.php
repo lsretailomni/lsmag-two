@@ -2,12 +2,12 @@
 
 namespace Ls\Omni\Model\Tax\Sales\Total\Quote;
 
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
 use Magento\Customer\Api\Data\RegionInterfaceFactory as CustomerAddressRegionFactory;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote\Address;
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\LoyaltyHelper;
 
 class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
 {
@@ -46,8 +46,7 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         \Magento\Tax\Helper\Data $taxData,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper
-    )
-    {
+    ) {
         $this->setCode('tax');
         $this->basketHelper = $basketHelper;
         $this->loyaltyHelper = $loyaltyHelper;
@@ -65,19 +64,18 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
 
     /**
      * Custom Collect tax totals for quote address
-     *
-     * @param Quote $quote
+     */
+    /**
+     * @param \Magento\Quote\Model\Quote $quote
      * @param ShippingAssignmentInterface $shippingAssignment
      * @param Address\Total $total
-     * @return $this
-     * @throws RemoteServiceUnavailableException
+     * @return $this|\Magento\Tax\Model\Sales\Total\Quote\Tax
      */
     public function collect(
         \Magento\Quote\Model\Quote $quote,
-        \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
-        \Magento\Quote\Model\Quote\Address\Total $total
-    )
-    {
+        ShippingAssignmentInterface $shippingAssignment,
+        Address\Total $total
+    ) {
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $total->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());

@@ -17,11 +17,12 @@ class Loyaltypoints extends \Magento\Checkout\Block\Cart\AbstractCart
     public $loyaltyHelper;
 
     /**
+     * Loyaltypoints constructor.
+     * @param LoyaltyHelper $loyaltyHelper
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param array $data
-     * @codeCoverageIgnore
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
@@ -66,5 +67,4 @@ class Loyaltypoints extends \Magento\Checkout\Block\Cart\AbstractCart
     {
         return $this->getQuote()->getLsPointsSpent();
     }
-
 }

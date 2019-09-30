@@ -23,10 +23,16 @@ class GiftCardBalance extends Template
      * @var Data
      */
     public $giftCardHelper;
+
     /**
      * @var Data
      */
     public $logger;
+
+    /**
+     * @var array
+     */
+    public $layoutProcessors;
 
     /**
      * GiftCardBalance constructor.
@@ -42,8 +48,7 @@ class GiftCardBalance extends Template
         LoggerInterface $logger,
         array $layoutProcessors = [],
         array $data = []
-    )
-    {
+    ) {
 
         $this->giftCardHelper = $giftCardHelper;
         $this->logger = $logger;
@@ -57,7 +62,6 @@ class GiftCardBalance extends Template
     public function getJsLayout()
     {
         foreach ($this->layoutProcessors as $processor) {
-
             $this->jsLayout = $processor->process($this->jsLayout);
         }
         return parent::getJsLayout();

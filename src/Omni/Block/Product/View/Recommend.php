@@ -2,8 +2,8 @@
 
 namespace Ls\Omni\Block\Product\View;
 
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use \Ls\Omni\Helper\LSRecommend as LSRecommendHelper;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 
 /**
  * Class Recommend
@@ -113,5 +113,4 @@ class Recommend extends \Magento\Catalog\Block\Product\View
         }
         return $response;
     }
-
 }

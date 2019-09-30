@@ -12,6 +12,11 @@ class Totals extends \Magento\Framework\View\Element\AbstractBlock
 {
 
     /**
+     * @var LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
+    /**
      * Totals constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param LoyaltyHelper $loyaltyHelper

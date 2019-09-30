@@ -2,10 +2,10 @@
 
 namespace Ls\Omni\Helper;
 
-use Magento\Framework\App\Helper\Context;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Core\Model\LSR;
+use Magento\Framework\App\Helper\Context;
 
 /**
  * All Functionality related to LS Recommend will go here.
@@ -38,7 +38,8 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Context $context
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param Registry $registry
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param LSR $Lsr
      */
     public function __construct(
@@ -134,9 +135,9 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
      * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
      */
     public function parseProductRecommendation(
-        \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem $recommendedProducts
+        Entity\ArrayOfRecommendedItem $recommendedProducts
     ) {
-        if ($recommendedProducts instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem) {
+        if ($recommendedProducts instanceof Entity\ArrayOfRecommendedItem) {
             /**
              * now we are sure we will get the correct type of
              * data so that we dont mess up handling LS Recommend errors.
@@ -157,7 +158,7 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
      */
 
     public function getProductIdsFromLsRecommendObject(
-        \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem $recommendedProducts
+        Entity\ArrayOfRecommendedItem $recommendedProducts
     ) {
 
         $productIds = [];

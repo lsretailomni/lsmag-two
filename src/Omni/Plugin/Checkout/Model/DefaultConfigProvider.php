@@ -2,10 +2,10 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ItemHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Pricing\Helper\Data as PricingHelper;
-use \Ls\Omni\Helper\ItemHelper;
-use \Ls\Core\Model\LSR;
 
 /**
  * Class DefaultConfigProvider
@@ -45,8 +45,7 @@ class DefaultConfigProvider
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         ItemHelper $itemHelper,
         PricingHelper $pricingHelper
-    )
-    {
+    ) {
         $this->checkoutSession = $checkoutSession;
         $this->quoteRepository = $quoteRepository;
         $this->itemHelper = $itemHelper;
@@ -56,8 +55,7 @@ class DefaultConfigProvider
     public function afterGetConfig(
         \Magento\Checkout\Model\DefaultConfigProvider $subject,
         array $result
-    )
-    {
+    ) {
         $items = $result['totalsData']['items'];
         foreach ($items as $index => $item) {
             $quoteItem = $this->checkoutSession->getQuote()->getItemById($item['item_id']);

@@ -30,8 +30,7 @@ class Giftcard extends \Magento\Checkout\Block\Cart\AbstractCart
         \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
         $this->giftCardHelper = $giftCardHelper;
         $this->_isScopePrivate = true;
@@ -70,5 +69,4 @@ class Giftcard extends \Magento\Checkout\Block\Cart\AbstractCart
     {
         return $this->giftCardHelper->isGiftCardEnableOnCartPage();
     }
-
 }

@@ -2,9 +2,7 @@
 
 namespace Ls\Omni\Block\Product;
 
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use \Ls\Omni\Helper\LSRecommend as LSRecommendHelper;
-use Magento\Framework\View\Element\Template;
 
 /**
  * This file will be used for Shopping Cart/Home/Checkout page

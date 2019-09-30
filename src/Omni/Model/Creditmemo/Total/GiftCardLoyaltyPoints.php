@@ -2,8 +2,8 @@
 
 namespace Ls\Omni\Model\Creditmemo\Total;
 
-use Magento\Sales\Model\Order\Creditmemo\Total\AbstractTotal;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Sales\Model\Order\Creditmemo\Total\AbstractTotal;
 
 /**
  * Class GiftCardLoyaltyPoints
@@ -13,13 +13,14 @@ class GiftCardLoyaltyPoints extends AbstractTotal
 {
 
     /**
-     * @var Ls\Omni\Helper\LoyaltyHelper
+     * @var LoyaltyHelper
      */
     public $loyaltyHelper;
 
     /**
      * GiftCardLoyaltyPoints constructor.
      * @param LoyaltyHelper $loyaltyHelper
+     * @param array $data
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,

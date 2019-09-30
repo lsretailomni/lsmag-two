@@ -2,8 +2,8 @@
 
 namespace Ls\Omni\Plugin\Checkout\CustomerData;
 
-use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
 use \Ls\Omni\Helper\Data;
+use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -57,9 +57,7 @@ class Cart
         Data $data,
         \Ls\Omni\Helper\BasketHelper $basketHelper,
         LoggerInterface $logger
-
-    )
-    {
+    ) {
         $this->checkoutSession = $checkoutSession;
         $this->quoteRepository = $quoteRepository;
         $this->checkoutHelper = $checkoutHelper;

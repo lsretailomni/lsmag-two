@@ -2,8 +2,8 @@
 
 namespace Ls\Omni\Model\Invoice\Total;
 
-use Magento\Sales\Model\Order\Invoice\Total\AbstractTotal;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Sales\Model\Order\Invoice\Total\AbstractTotal;
 
 /**
  * Class GiftCardLoyaltyPoints
@@ -20,6 +20,7 @@ class GiftCardLoyaltyPoints extends AbstractTotal
     /**
      * GiftCardLoyaltyPoints constructor.
      * @param LoyaltyHelper $loyaltyHelper
+     * @param array $data
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,

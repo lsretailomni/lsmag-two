@@ -2,10 +2,9 @@
 
 namespace Ls\Omni\Helper;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
@@ -178,16 +177,16 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if ($response->getResult()->getImage()) {
+        if (!empty($response) && !empty($response->getResult())) {
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
                 ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()],
                 [Type::CACHE_TAG],
                 172800
             );
+            return ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()];
         }
-        return $response->getResult()->getImage() ?
-            ["image"=>$response->getResult()->getImage(), "format"=> $response->getResult()->getFormat()]: $response;
+        return $response;
     }
 
     /**
@@ -257,10 +256,6 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         return 0;
     }
 
-    /*
-     * Convert Point Rate into Values
-     */
-
     /**
      * @return float|Entity\GetPointRateResponse|\Ls\Omni\Client\ResponseInterface|null
      */
@@ -283,7 +278,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if ($response->getResult()) {
+        if (!empty($response)) {
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
                 $response->getResult(),
@@ -382,7 +377,8 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if ($response->getDiscountsGetResult()->getProactiveDiscount()) {
+        if (!empty($response) &&
+            !empty($response->getDiscountsGetResult())) {
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
                 $response->getDiscountsGetResult()->getProactiveDiscount(),
@@ -391,11 +387,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
             );
             return $response->getDiscountsGetResult()->getProactiveDiscount();
         } else {
-            if (!empty($response)) {
-                return $response->getDiscountsGetResult()->getProactiveDiscount();
-            } else {
-                return $response;
-            }
+            return $response;
         }
     }
 
@@ -425,7 +417,8 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if ($response->getPublishedOffersGetByCardIdResult()->getPublishedOffer()) {
+        if (!empty($response) &&
+            !empty($response->getPublishedOffersGetByCardIdResult())) {
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
                 $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer(),
@@ -434,11 +427,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
             );
             return $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer();
         } else {
-            if (!empty($response)) {
-                return $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer();
-            } else {
-                return $response;
-            }
+            return $response;
         }
     }
 

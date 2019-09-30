@@ -175,14 +175,13 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
         \Magento\Framework\Api\AttributeValueFactory $customAttributeFactory,
         \Magento\Payment\Helper\Data $paymentData,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\DataObject $dataObject,
+        DataObject $dataObject,
         \Magento\Payment\Model\Method\Logger $logger,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = [],
         DirectoryHelper $directory = null
-    )
-    {
+    ) {
         parent::__construct(
             $context,
             $registry,
@@ -389,7 +388,6 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getCode()
     {
@@ -417,7 +415,6 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
 
     /**
      * @return InfoInterface|mixed
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getInfoInstance()
     {
@@ -461,9 +458,8 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
      * @param InfoInterface $payment
      * @param float $amount
      * @return $this|MethodInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function order(\Magento\Payment\Model\InfoInterface $payment, $amount)
+    public function order(InfoInterface $payment, $amount)
     {
 
         return $this;
@@ -473,9 +469,8 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
      * @param InfoInterface $payment
      * @param float $amount
      * @return $this|MethodInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function authorize(\Magento\Payment\Model\InfoInterface $payment, $amount)
+    public function authorize(InfoInterface $payment, $amount)
     {
         return $this;
     }
@@ -484,9 +479,8 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
      * @param InfoInterface $payment
      * @param float $amount
      * @return $this|MethodInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function capture(\Magento\Payment\Model\InfoInterface $payment, $amount)
+    public function capture(InfoInterface $payment, $amount)
     {
         return $this;
     }
@@ -495,9 +489,8 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
      * @param InfoInterface $payment
      * @param float $amount
      * @return $this|MethodInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function refund(\Magento\Payment\Model\InfoInterface $payment, $amount)
+    public function refund(InfoInterface $payment, $amount)
     {
         return $this;
     }
@@ -506,7 +499,7 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
      * @param InfoInterface $payment
      * @return $this|MethodInterface
      */
-    public function cancel(\Magento\Payment\Model\InfoInterface $payment)
+    public function cancel(InfoInterface $payment)
     {
         return $this;
     }
@@ -514,9 +507,8 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
     /**
      * @param InfoInterface $payment
      * @return $this|MethodInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function void(\Magento\Payment\Model\InfoInterface $payment)
+    public function void(InfoInterface $payment)
     {
         return $this;
     }
@@ -532,7 +524,6 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
     /**
      * @param InfoInterface $payment
      * @return bool|false
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function acceptPayment(InfoInterface $payment)
     {
@@ -543,7 +534,6 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
     /**
      * @param InfoInterface $payment
      * @return bool|false
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function denyPayment(InfoInterface $payment)
     {
@@ -563,7 +553,6 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
      * @param string $field
      * @param null $storeId
      * @return mixed
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getConfigData($field, $storeId = null)
     {
@@ -580,9 +569,8 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
     /**
      * @param DataObject $data
      * @return $this|MethodInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function assignData(\Magento\Framework\DataObject $data)
+    public function assignData(DataObject $data)
     {
         $this->_eventManager->dispatch(
             'payment_method_assign_data',
@@ -626,7 +614,6 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
     /**
      * @param null $storeId
      * @return bool
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function isActive($storeId = null)
     {
@@ -645,11 +632,9 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
 
     /**
      * @return mixed|string
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getConfigPaymentAction()
     {
         return $this->getConfigData('payment_action');
     }
-
 }

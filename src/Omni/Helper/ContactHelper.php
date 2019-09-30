@@ -245,8 +245,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
             if (is_array($contact_pos->getMemberContact())) {
                 return $contact_pos->getMemberContact()[0];
-            }
-            else {
+            } else {
                 return $contact_pos->getMemberContact();
             }
         } elseif ($contact_pos instanceof Entity\MemberContact) {
@@ -285,8 +284,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
                 if (is_array($contact_pos->getMemberContact())) {
                     return $contact_pos->getMemberContact()[0];
-                }
-                else {
+                } else {
                     return $contact_pos->getMemberContact();
                 }
             } elseif ($contact_pos instanceof Entity\MemberContact) {
@@ -914,7 +912,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Customer\Api\CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER
         );
 
-        if ($result->getAccount()->getScheme()->getId()) {
+        if (!empty($result) &&
+            !empty($result->getAccount()) &&
+            !empty($result->getAccount()->getScheme())) {
             $customerGroupId = $this->getCustomerGroupIdByName(
                 $result->getAccount()->getScheme()->getId()
             );

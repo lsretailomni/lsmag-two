@@ -7,7 +7,6 @@ use \Ls\Omni\Client\Ecommerce\Entity\Store;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use Magento\Framework\Option\ArrayInterface;
 
-
 /**
  * Class NavStore
  * @package Ls\Omni\Model\System\Source

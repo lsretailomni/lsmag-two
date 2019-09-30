@@ -2,11 +2,11 @@
 
 namespace Ls\Omni\Helper;
 
-use Magento\Framework\App\Helper\Context;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
-use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
+use Magento\Framework\App\Helper\Context;
 
 /**
  * Class StockHelper
@@ -66,7 +66,9 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if ($response && !is_array($response->getItemsInStockGetResult()->getInventoryResponse())) {
+        if (!empty($response) &&
+            !empty($response->getItemsInStockGetResult()) &&
+            !is_array($response->getItemsInStockGetResult()->getInventoryResponse())) {
             return $response->getItemsInStockGetResult();
         }
         return null;
