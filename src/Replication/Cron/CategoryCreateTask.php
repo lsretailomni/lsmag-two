@@ -405,8 +405,6 @@ class CategoryCreateTask
                 if (!empty($categoryExistData)) {
                     $categoryId = $categoryExistData->getEntityId();
                     $parentCategoryId = $categoryExistData->getParentId();
-                    $childCategories=$this->categoryRepository->get($parentCategoryId)->getChildren();
-                    $childCat=explode(",", $childCategories);
                     if (in_array($categoryId, $categories)) {
                         $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
                         $catIndex = array_search($categoryId, $categories);
@@ -415,6 +413,8 @@ class CategoryCreateTask
                         }
                     }
                     if (in_array($parentCategoryId, $categories)) {
+                        $childCategories=$this->categoryRepository->get($parentCategoryId)->getChildren();
+                        $childCat=explode(",", $childCategories);
                         if (count(array_intersect($childCat, $categories))==0) {
                             $this->categoryLinkRepositoryInterface->deleteByIds($parentCategoryId, $sku);
                         }
