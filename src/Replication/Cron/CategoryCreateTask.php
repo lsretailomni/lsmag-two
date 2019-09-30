@@ -470,11 +470,19 @@ class CategoryCreateTask
                 if (!empty($categoryExistData)) {
                     $categoryId = $categoryExistData->getEntityId();
                     $parentCategoryId = $categoryExistData->getParentId();
+                    $childCategories=$this->categoryRepository->get($parentCategoryId)->getChildren();
+                    $childCat=explode(",", $childCategories);
                     if (in_array($categoryId, $categories)) {
                         $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
+                        $catIndex = array_search($categoryId, $categories);
+                        if ($catIndex !== false) {
+                            unset($categories[$catIndex]);
+                        }
                     }
                     if (in_array($parentCategoryId, $categories)) {
-                        $this->categoryLinkRepositoryInterface->deleteByIds($parentCategoryId, $sku);
+                        if (count(array_intersect($childCat, $categories))==0) {
+                            $this->categoryLinkRepositoryInterface->deleteByIds($parentCategoryId, $sku);
+                        }
                     }
                 }
                 $hierarchyLeaf->setData('is_processed', '1');
