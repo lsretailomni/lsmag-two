@@ -48,7 +48,8 @@ class LogoutObserver implements ObserverInterface
     // @codingStandardsIgnoreStart
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $this->customerSession->destroy();
+        $options=[];
+        $this->customerSession->destroy($options);
         return $this;
     }
     // @codingStandardsIgnoreEnd
