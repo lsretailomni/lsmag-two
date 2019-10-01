@@ -490,7 +490,7 @@ class ProductCreateTask
             /** @var \Ls\Omni\Client\Ecommerce\Entity\ImageSize $imageSizeObject */
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
-            if ($result) {
+            if (!empty($result) && !empty($result["format"]) && !empty($result["image"])) {
                 $i++;
                 /** @var \Magento\Framework\Api\ImageContent $imageContent */
                 $imageContent = $this->imageContent->create()

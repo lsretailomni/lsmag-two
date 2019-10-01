@@ -2,14 +2,14 @@
 /** @var \Ls\Omni\Block\Product\Recommend $block */
 if ($block->isEnabled()) {
     $ajaxUrl = $block->getAjaxUrl();
-    if($block->checkCartItems()){
+    if ($block->checkCartItems()) {
     ?>
     <div id="lsRecommendation">
         <div class="ls-loader">
             <img src="<?= /* @escapeNotVerified */
             $block->getViewFileUrl('images/loader-1.gif') ?>"
                  alt="<?= /* @escapeNotVerified */
-                 __('Loading...') ?>">
+                    __('Loading...') ?>">
             <br/>
             <div><?php echo __('Loading recommended products for you...'); ?></div>
         </div>
@@ -23,4 +23,5 @@ if ($block->isEnabled()) {
             }
         }
     </script>
-<?php } } ?>
+    <?php }
+} ?>

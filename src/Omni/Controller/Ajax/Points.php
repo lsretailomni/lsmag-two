@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
-use Magento\Framework\App\Action\Context;
-use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Framework\App\Action\Context;
 
 /**
  * Class Points

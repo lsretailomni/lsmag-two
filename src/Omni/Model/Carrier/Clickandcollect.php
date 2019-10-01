@@ -1,6 +1,4 @@
 <?php
-
-
 namespace Ls\Omni\Model\Carrier;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;

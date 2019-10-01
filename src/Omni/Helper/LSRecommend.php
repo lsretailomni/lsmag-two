@@ -38,7 +38,8 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Context $context
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param Registry $registry
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param LSR $Lsr
      */
     public function __construct(

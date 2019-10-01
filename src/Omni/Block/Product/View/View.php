@@ -1,6 +1,4 @@
 <?php
-
-
 namespace Ls\Omni\Block\Product\View;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;

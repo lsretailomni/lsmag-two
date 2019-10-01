@@ -21,7 +21,7 @@ class AdditionalCheckOutParameter implements \Magento\Checkout\Model\ConfigProvi
     public function __construct(
         GiftCardHelper $giftCardHelper
     ) {
-        $this->giftCardHelpet = $giftCardHelper;
+        $this->giftCardHelper = $giftCardHelper;
     }
 
     /**

@@ -2,11 +2,10 @@
 
 namespace Ls\Omni\CustomerData;
 
-use Magento\Catalog\Model\Product\Configuration\Item\ItemResolverInterface;
-use Magento\Checkout\CustomerData\AbstractItem;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ItemHelper;
-use \Ls\Core\Model\LSR;
+use Magento\Catalog\Model\Product\Configuration\Item\ItemResolverInterface;
 
 /**
  * Default item
@@ -59,14 +58,16 @@ class DefaultItem extends \Magento\Checkout\CustomerData\DefaultItem
     public $itemHelper;
 
     /**
+     * DefaultItem constructor.
      * @param \Magento\Catalog\Helper\Image $imageHelper
      * @param \Magento\Msrp\Helper\Data $msrpHelper
      * @param \Magento\Framework\UrlInterface $urlBuilder
      * @param \Magento\Catalog\Helper\Product\ConfigurationPool $configurationPool
      * @param \Magento\Checkout\Helper\Data $checkoutHelper
-     * @param \Magento\Framework\Escaper|null $escaper
-     * @param ItemResolverInterface|null $itemResolver
-     * @codeCoverageIgnore
+     * @param \Magento\Framework\Escaper $escaper
+     * @param ItemResolverInterface $itemResolver
+     * @param BasketHelper $basketHelper
+     * @param ItemHelper $itemHelper
      */
     public function __construct(
         \Magento\Catalog\Helper\Image $imageHelper,

@@ -912,7 +912,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Customer\Api\CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER
         );
 
-        if ($result->getAccount()->getScheme()->getId()) {
+        if (!empty($result) &&
+            !empty($result->getAccount()) &&
+            !empty($result->getAccount()->getScheme())) {
             $customerGroupId = $this->getCustomerGroupIdByName(
                 $result->getAccount()->getScheme()->getId()
             );

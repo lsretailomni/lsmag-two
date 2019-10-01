@@ -1,5 +1,4 @@
 <?php
-
 namespace Ls\Omni\Observer;
 
 use Magento\Framework\Event\ObserverInterface;

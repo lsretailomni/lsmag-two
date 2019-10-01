@@ -29,6 +29,5 @@ class GiftCardNo extends AbstractTotal
             ];
         }
         return $totals;
-
     }
 }

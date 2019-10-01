@@ -68,5 +68,4 @@ class WishlistObserver implements ObserverInterface
 
         return $this;
     }
-
 }

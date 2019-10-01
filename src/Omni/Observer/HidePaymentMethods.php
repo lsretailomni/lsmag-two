@@ -2,12 +2,12 @@
 
 namespace Ls\Omni\Observer;
 
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\Data;
-use \Ls\Core\Model\LSR;
 
 /**
  * Class HidePaymentMethods

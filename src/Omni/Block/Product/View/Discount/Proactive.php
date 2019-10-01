@@ -3,10 +3,10 @@
 namespace Ls\Omni\Block\Product\View\Discount;
 
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
-use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
+use \Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;

@@ -2,12 +2,12 @@
 
 namespace Ls\Omni\Plugin\Quote;
 
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\App\RequestInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
 use Magento\Quote\Api\Data\TotalsExtensionFactory;
-use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Omni\Helper\BasketHelper;
 
 /**
  * Class CartTotalRepository

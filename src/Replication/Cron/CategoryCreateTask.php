@@ -600,7 +600,7 @@ class CategoryCreateTask
         /** @var \Ls\Omni\Client\Ecommerce\Entity\ImageSize $imageSizeObject */
         $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
         $result = $this->loyaltyHelper->getImageById($imageId, $imageSizeObject);
-        if ($result) {
+        if (!empty($result) && !empty($result["format"]) && !empty($result["image"])) {
             //check if directory exists or not and if it has the proper permission or not
             $offerpath = $this->getMediaPathtoStore();
             // @codingStandardsIgnoreStart

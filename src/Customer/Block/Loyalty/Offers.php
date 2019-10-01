@@ -139,7 +139,7 @@ class Offers extends \Magento\Framework\View\Element\Template
 
             $result = $this->loyaltyHelper->getImageById($img->getId(), $img_size);
 
-            if ($result) {
+            if (!empty($result) && !empty($result["format"]) && !empty($result["image"])) {
                 $offerpath = $this->getMediaPathtoStore();
                 // @codingStandardsIgnoreStart
                 if (!is_dir($offerpath)) {

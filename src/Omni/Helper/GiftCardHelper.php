@@ -2,10 +2,9 @@
 
 namespace Ls\Omni\Helper;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Core\Model\LSR;
-use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
  * Class GiftCardHelper
@@ -51,7 +50,7 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $lsr;
 
     /**
-     * LoyaltyHelper constructor.
+     * GiftCardHelper constructor.
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
@@ -61,8 +60,8 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Framework\Filesystem $Filesystem
+     * @param LSR $Lsr
      */
-
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
@@ -74,8 +73,7 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Framework\Filesystem $Filesystem,
         LSR $Lsr
-    )
-    {
+    ) {
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeManager = $storeManager;

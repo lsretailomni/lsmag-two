@@ -2,10 +2,10 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
-use Magento\Framework\App\Action\Context;
-use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Omni\Helper\Data;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Framework\App\Action\Context;
 
 /**
  * Class UpdatePoints
@@ -70,8 +70,7 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
         Data $data,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory = $resultRawFactory;

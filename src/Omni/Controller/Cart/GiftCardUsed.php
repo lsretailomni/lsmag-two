@@ -25,12 +25,12 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     public $basketHelper;
 
     /**
-     * @var Price Helper
+     * @var \Magento\Framework\Pricing\Helper\Data
      */
     public $priceHelper;
 
     /**
-     * @var Ls\Omni\Helper\Data
+     * @var \Ls\Omni\Helper\Data
      */
     public $data;
 
@@ -94,7 +94,12 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
         $giftCardAmount = (float)$giftCardAmount;
         try {
             if (!is_numeric($giftCardAmount) || $giftCardAmount < 0) {
-                $this->messageManager->addErrorMessage(__('The gift card Amount "%1" is not valid.', $this->priceHelper->currency($giftCardAmount, true, false)));
+                $this->messageManager->addErrorMessage(
+                    __(
+                        'The gift card Amount "%1" is not valid.',
+                        $this->priceHelper->currency($giftCardAmount, true, false)
+                    )
+                );
                 return $this->_goBack();
             }
             if ($giftCardNo != null) {
@@ -184,7 +189,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                     );
                 }
             } else {
-                if($giftCardAmount==0){
+                if ($giftCardAmount==0) {
                     $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();
                 }
                 $this->messageManager->addSuccessMessage(__('You have successfully cancelled the gift card.'));
@@ -203,5 +208,4 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     {
         return $this->_checkoutSession->getQuote()->getBaseCurrencyCode();
     }
-
 }
