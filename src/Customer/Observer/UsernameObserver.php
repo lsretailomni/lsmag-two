@@ -11,25 +11,25 @@ use \Ls\Omni\Helper\ContactHelper;
  */
 class UsernameObserver implements ObserverInterface
 {
-    /** @var ContactHelper  */
+    /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var \Magento\Framework\Message\ManagerInterface  */
+    /** @var \Magento\Framework\Message\ManagerInterface */
     private $messageManager;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var \Psr\Log\LoggerInterface */
     private $logger;
 
-    /** @var \Magento\Customer\Model\Session\Proxy  */
+    /** @var \Magento\Customer\Model\Session\Proxy */
     private $customerSession;
 
-    /** @var \Magento\Framework\App\Response\RedirectInterface  */
+    /** @var \Magento\Framework\App\Response\RedirectInterface */
     private $redirectInterface;
 
-    /** @var \Magento\Framework\App\ActionFlag  */
+    /** @var \Magento\Framework\App\ActionFlag */
     private $actionFlag;
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var \Ls\Core\Model\LSR @var */
     private $lsr;
 
     /**
@@ -56,7 +56,7 @@ class UsernameObserver implements ObserverInterface
         $this->customerSession = $customerSession;
         $this->redirectInterface = $redirectInterface;
         $this->actionFlag = $actionFlag;
-        $this->lsr  =   $LSR;
+        $this->lsr = $LSR;
     }
 
     /**
@@ -79,7 +79,7 @@ class UsernameObserver implements ObserverInterface
                 $controller_action = $observer->getData('controller_action');
                 $parameters = $controller_action->getRequest()->getParams();
                 $this->customerSession->setLsrUsername($parameters['lsr_username']);
-                if ($this->contactHelper->isUsernameExist($parameters['lsr_username'])) {
+                if ($this->contactHelper->isUsernameExist($parameters['lsr_username']) || $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username'])) {
                     $this->messageManager->addErrorMessage(
                         __('Username already exist, please try another one.')
                     );

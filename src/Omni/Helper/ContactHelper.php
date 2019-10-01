@@ -456,6 +456,37 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
+
+    /**
+     * Check username exist in LS Central or not
+     * @param $username
+     * @return bool
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     */
+    public function isUsernameExistInLsCentral($username)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request = new Operation\ContactSearch();
+        $contactSearch = new Entity\ContactSearch();
+        $contactSearch->setSearchType('UserName');
+        $contactSearch->setSearch($username);
+        try {
+            $response = $request->execute($contactSearch);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        if (!empty($response) && !empty($response->getContactSearchResult())) {
+            foreach ($response->getContactSearchResult() as $contact) {
+                if ($contact->getUserName() === $username) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     /**
      * @param $customer
      * @param $customer_post
