@@ -41,7 +41,7 @@ class Discount extends Action
     ];
 
     // @codingStandardsIgnoreStart
-    /** @var array  */
+    /** @var array */
     protected $_publicActions = ['discount'];
     // @codingStandardsIgnoreEnd
 
