@@ -469,7 +469,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         // @codingStandardsIgnoreStart
         $request = new Operation\ContactSearch();
         $contactSearch = new Entity\ContactSearch();
-        $contactSearch->setSearchType('UserName');
+        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
         $contactSearch->setSearch($username);
         try {
             $response = $request->execute($contactSearch);
