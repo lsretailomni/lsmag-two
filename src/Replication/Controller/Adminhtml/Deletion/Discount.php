@@ -6,6 +6,8 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
 use Psr\Log\LoggerInterface;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Magento uses Catalog Price Rule for discounts replication
@@ -18,6 +20,12 @@ class Discount extends Action
 
     /** @var ResourceConnection */
     public $resource;
+
+    /** @var LSR */
+    public $lsr;
+
+    /** @var ReplicationHelper */
+    public $replicationHelper;
 
     /** @var array List of all the Discount tables */
     public $discount_tables = [
@@ -41,14 +49,20 @@ class Discount extends Action
      * Discount Deletion constructor.
      * @param ResourceConnection $resource
      * @param LoggerInterface $logger
+     * @param LSR $LSR
+     * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         ResourceConnection $resource,
         LoggerInterface $logger,
-        Context $context
+        Context $context,
+        LSR $LSR,
+        ReplicationHelper $replicationHelper
     ) {
         $this->resource = $resource;
         $this->logger = $logger;
+        $this->lsr = $LSR;
+        $this->replicationHelper = $replicationHelper;
         parent::__construct($context);
     }
 
@@ -80,6 +94,10 @@ class Discount extends Action
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_DISCOUNT
+        );
         $this->messageManager->addSuccessMessage(__('Discounts deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }

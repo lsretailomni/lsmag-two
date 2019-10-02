@@ -6,6 +6,8 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
 use Psr\Log\LoggerInterface;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Class Attribute Deletion
@@ -17,6 +19,12 @@ class Attribute extends Action
 
     /** @var ResourceConnection */
     public $resource;
+
+    /** @var LSR */
+    public $lsr;
+
+    /** @var ReplicationHelper */
+    public $replicationHelper;
 
     // @codingStandardsIgnoreStart
     /** @var array */
@@ -31,17 +39,24 @@ class Attribute extends Action
     ];
 
     /**
-     * Order Deletion constructor.
+     * Attribute constructor.
      * @param ResourceConnection $resource
      * @param LoggerInterface $logger
+     * @param Context $context
+     * @param LSR $LSR
+     * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         ResourceConnection $resource,
         LoggerInterface $logger,
-        Context $context
+        Context $context,
+        LSR $LSR,
+        ReplicationHelper $replicationHelper
     ) {
         $this->resource = $resource;
         $this->logger = $logger;
+        $this->lsr = $LSR;
+        $this->replicationHelper = $replicationHelper;
         parent::__construct($context);
     }
 
@@ -54,9 +69,8 @@ class Attribute extends Action
     {
         // @codingStandardsIgnoreStart
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         $tableName = $connection->getTableName('eav_attribute');
-        $query = "DELETE FROM " . $tableName ." WHERE attribute_code LIKE 'ls\_%'";
+        $query = "DELETE FROM " . $tableName . " WHERE attribute_code LIKE 'ls\_%'";
         try {
             $connection->query($query);
         } catch (\Exception $e) {
@@ -72,7 +86,14 @@ class Attribute extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
-        $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_ATTRIBUTE
+        );
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT
+        );
         // @codingStandardsIgnoreEnd
         $this->messageManager->addSuccessMessage(__('LS Attributes deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
