@@ -378,6 +378,7 @@ class AttributesCreateTask
             $this->logger->debug($e->getMessage());
         }
     }
+
     /**
      * @param \Ls\Replication\Model\ReplAttribute $replAttribute
      * @param $attributeSetId
@@ -394,11 +395,12 @@ class AttributesCreateTask
         $attribute = $this->eavConfig->getAttribute(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
         if (!$attribute || !$attribute->getAttributeId()) {
             $valueTypeArray = $this->getValueTypeArray();
+            $frontendInput = $valueTypeArray[$replAttribute->getValueType()];
             $attributeData = [
                 'attribute_code' => $formattedCode,
                 'is_global' => 1,
                 'frontend_label' => $replAttribute->getDescription(),
-                'frontend_input' => $valueTypeArray[$replAttribute->getValueType()],
+                'frontend_input' => $frontendInput,
                 'is_unique' => 0,
                 'apply_to' => 0,
                 'is_required' => 0,
@@ -415,7 +417,9 @@ class AttributesCreateTask
                 'used_for_sort_by' => 1,
                 'backend_type' => 'varchar',
                 'attribute_set_id' => $attributeSetId,
-                'attribute_group_id' => $attributeGroupId
+                'attribute_group_id' => $attributeGroupId,
+                'is_filterable' => ($frontendInput == "select") ? 1 : 0,
+                'is_filterable_in_search' => ($frontendInput == "select") ? 1 : 0
             ];
 
             try {
