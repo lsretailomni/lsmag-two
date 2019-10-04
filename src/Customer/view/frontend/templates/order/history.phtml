@@ -4,7 +4,7 @@
 $_orders = $block->getOrderHistory();
 ?>
 <?= $block->getChildHtml('info') ?>
-<?php if ($_orders && count($_orders)): ?>
+<?php if ($_orders): ?>
     <?php
     if ($_orders instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry) {
         $_orders = $_orders->getSalesEntry();

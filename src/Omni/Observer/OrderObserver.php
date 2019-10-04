@@ -87,6 +87,7 @@ class OrderObserver implements ObserverInterface
          */
         if ($this->lsr->isLSR()) {
             $success = false;
+            $check = false;
             $order = $observer->getEvent()->getData('order');
             $oneListCalculation = $this->basketHelper->getOneListCalculation();
             if (empty($order)) {
@@ -103,9 +104,15 @@ class OrderObserver implements ObserverInterface
                 $this->orderHelper->orderRepository->save($order);
                 $order = $this->orderHelper->orderRepository->get($order->getEntityId());
             }
-            $paymentMethod = $order->getPayment()->getMethodInstance();
-            $transId = $order->getPayment()->getLastTransId();
-            if (($paymentMethod->isOffline() == true || !empty($transId)) && !empty($oneListCalculation)) {
+            if (!empty($order)) {
+                $paymentMethod = $order->getPayment();
+                if (!empty($paymentMethod)) {
+                    $paymentMethod = $order->getPayment()->getMethodInstance();
+                    $transId = $order->getPayment()->getLastTransId();
+                    $check = $paymentMethod->isOffline();
+                }
+            }
+            if (($check == true || !empty($transId)) && !empty($oneListCalculation)) {
                 $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                 $response = $this->orderHelper->placeOrder($request);
                 try {
