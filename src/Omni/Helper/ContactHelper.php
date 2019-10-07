@@ -488,6 +488,35 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
 
     /**
+     * Check email exist in LS Central or not
+     * @param $email
+     * @return bool
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     */
+    public function isEmailExistInLsCentral($email)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request = new Operation\ContactSearch();
+        $contactSearch = new Entity\ContactSearch();
+        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
+        $contactSearch->setSearch($email);
+        try {
+            $response = $request->execute($contactSearch);
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        if (!empty($response) && !empty($response->getContactSearchResult())) {
+            foreach ($response->getContactSearchResult() as $contact) {
+                if ($contact->getEmail() === $email) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param $customer
      * @param $customer_post
      * @return bool|Entity\ChangePasswordResponse|\Ls\Omni\Client\ResponseInterface|null

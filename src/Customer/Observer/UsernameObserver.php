@@ -87,8 +87,18 @@ class UsernameObserver implements ObserverInterface
                     $observer->getControllerAction()
                         ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
                     $this->customerSession->setCustomerFormData($parameters);
+                    return $this;
                 }
-                return $this;
+                if ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
+                    $this->messageManager->addErrorMessage(
+                        __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
+                    );
+                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                    $observer->getControllerAction()
+                        ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
+                    $this->customerSession->setCustomerFormData($parameters);
+                    return $this;
+                }
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
             }

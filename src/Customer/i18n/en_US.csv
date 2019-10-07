@@ -31,6 +31,7 @@ Coupons,Coupons
 "Sorry! No account found with the provided email address.","Sorry! No account found with the provided email address."
 "Invalid LS Central login or password.","Invalid LS Central login or password."
 "Username already exist, please try another one.","Username already exist, please try another one."
+"There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.","There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address."
 "* Required Fields","* Required Fields"
 "Contact Information","Contact Information"
 Address,Address
