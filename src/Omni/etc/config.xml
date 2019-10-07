@@ -52,5 +52,10 @@
                 <sort_order>-1</sort_order>
             </ls_payment_method_pay_at_store>
         </payment>
+        <tax>
+            <calculation>
+                <apply_tax_on>1</apply_tax_on>
+            </calculation>
+        </tax>
     </default>
 </config>
