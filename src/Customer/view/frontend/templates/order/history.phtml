@@ -2,12 +2,15 @@
 // @codingStandardsIgnoreFile
 /** @var  $block \Ls\Customer\Block\Order\History */
 $_orders = $block->getOrderHistory();
+$orderExist = false;
 ?>
 <?= $block->getChildHtml('info') ?>
 <?php if ($_orders): ?>
     <?php
     if ($_orders instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry) {
         $_orders = $_orders->getSalesEntry();
+        if (count($_orders)>0) {
+            $orderExist=true;
         ?>
         <div class="table-wrapper orders-history">
             <table class="data table table-order-items history" id="my-orders-table">
@@ -77,7 +80,9 @@ $_orders = $block->getOrderHistory();
                 </tbody>
             </table>
         </div>
-    <?php } else { ?>
+    <?php } } else {
+        $orderExist= true;
+        ?>
         <div class="table-wrapper orders-history">
             <table class="data table table-order-items history" id="my-orders-table">
                 <caption class="table-caption"><?= /* @escapeNotVerified */
@@ -146,9 +151,10 @@ $_orders = $block->getOrderHistory();
                 </tbody>
             </table>
         </div>
-
-    <?php } ?>
-<?php else: ?>
+    <?php }
+    endif;
+    ?>
+<?php if ($orderExist==false) { ?>
     <div class="message info empty"><span><?= /* @escapeNotVerified */
             __('You have placed no orders.') ?></span></div>
-<?php endif ?>
+<?php } ?>
