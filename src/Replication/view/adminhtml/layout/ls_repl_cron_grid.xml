@@ -2,6 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <attribute name="class" value="ls-repl-cron-grid"/>
         <referenceContainer name="page.main.actions">
             <block class="Magento\Backend\Block\Store\Switcher" name="adminhtml.report.grid.store_switcher" as="store_switcher">
                 <arguments>
@@ -12,9 +13,6 @@
                     <argument name="default_selection_name" xsi:type="string"></argument>
                 </arguments>
             </block>
-        </referenceContainer>
-        <referenceContainer name="content">
-            <uiComponent name="ls_repl_cron_grid_form"/>
         </referenceContainer>
     </body>
 </page>

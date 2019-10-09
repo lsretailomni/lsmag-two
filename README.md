@@ -1,9 +1,9 @@
 # LS Ecommerce - Magento Integration
 
 ## Compatibility
-1. Magento Open Source 2.2.8 or later
-2. LS Central 13.05 or later
-3. LS Omni Server 4.0 or later
+1. Magento Open Source 2.3.1 or later
+2. LS Central 14.01 or later
+3. LS Omni Server 4.1 or later
 
 ## Installation:
 
