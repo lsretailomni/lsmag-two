@@ -12,6 +12,7 @@ use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Eav\Model\Entity;
 use Magento\Eav\Setup\EavSetupFactory;
 use Psr\Log\LoggerInterface;
+use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
 
 /**
  * Class AttributesCreateTask
@@ -244,7 +245,7 @@ class AttributesCreateTask
      */
     public function processVariantAttributes()
     {
-        $this->logger->debug("Running Varients create task...");
+        $this->logger->debug('Running Varients create task...');
         /** @var default attribute set id for catalog_product $defaultAttributeSetId */
         $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
 
@@ -399,7 +400,7 @@ class AttributesCreateTask
             $attributeData = [
                 'attribute_code' => $formattedCode,
                 'is_global' => 1,
-                'frontend_label' => $replAttribute->getDescription(),
+                'frontend_label' => $replAttribute->getDescription() ?: $replAttribute->getCode(),
                 'frontend_input' => $frontendInput,
                 'is_unique' => 0,
                 'apply_to' => 0,
@@ -418,8 +419,9 @@ class AttributesCreateTask
                 'backend_type' => 'varchar',
                 'attribute_set_id' => $attributeSetId,
                 'attribute_group_id' => $attributeGroupId,
-                'is_filterable' => ($frontendInput == "select") ? 1 : 0,
-                'is_filterable_in_search' => ($frontendInput == "select") ? 1 : 0
+                'backend_model' => ArrayBackend::class,
+                'is_filterable' => ($frontendInput === 'multiselect') ? 1 : 0,
+                'is_filterable_in_search' => ($frontendInput === 'multiselect') ? 1 : 0
             ];
 
             try {
@@ -430,7 +432,7 @@ class AttributesCreateTask
             } catch (\Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
-            $this->logger->debug("Successfully created attribute object for " . $formattedCode);
+            $this->logger->debug('Successfully created attribute object for ' . $formattedCode);
         }
     }
 
@@ -514,9 +516,9 @@ class AttributesCreateTask
             '2' => 'price',
             '3' => 'date',
             '4' => 'text',
-            '5' => 'select',
+            '5' => 'multiselect',
             '6' => 'text',
-            '7' => 'select',
+            '7' => 'multiselect',
             '100' => 'text'
         ];
     }
