@@ -6,6 +6,8 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
 use Psr\Log\LoggerInterface;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Class Product Deletion
@@ -17,6 +19,12 @@ class Product extends Action
 
     /** @var ResourceConnection */
     public $resource;
+
+    /** @var LSR */
+    public $lsr;
+
+    /** @var ReplicationHelper */
+    public $replicationHelper;
 
     /** @var array List of ls tables required in products */
     public $ls_tables = [
@@ -137,14 +145,20 @@ class Product extends Action
      * Product Deletion constructor.
      * @param ResourceConnection $resource
      * @param LoggerInterface $logger
+     * @param LSR $LSR
+     * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         ResourceConnection $resource,
         LoggerInterface $logger,
-        Context $context
+        Context $context,
+        LSR $LSR,
+        ReplicationHelper $replicationHelper
     ) {
         $this->resource = $resource;
         $this->logger = $logger;
+        $this->lsr = $LSR;
+        $this->replicationHelper = $replicationHelper;
         parent::__construct($context);
     }
 
@@ -180,6 +194,10 @@ class Product extends Action
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_PRODUCT
+        );
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }

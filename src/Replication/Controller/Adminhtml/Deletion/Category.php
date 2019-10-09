@@ -8,6 +8,8 @@ use Magento\Catalog\Model\CategoryFactory;
 use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\App\ResourceConnection;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Class CategoryDeletion
@@ -27,11 +29,17 @@ class Category extends Action
     /** @var ResourceConnection */
     public $resource;
 
+    /** @var LSR */
+    public $lsr;
+
+    /** @var ReplicationHelper */
+    public $replicationHelper;
+
     // @codingStandardsIgnoreStart
-    /** @var array  */
+    /** @var array */
     protected $_publicActions = ['category'];
     // @codingStandardsIgnoreEnd
-    
+
     /**
      * Category Deletion constructor.
      * @param CategoryFactory $categoryFactory Category Factory
@@ -39,18 +47,24 @@ class Category extends Action
      * @param LoggerInterface $logger
      * @param Context $context
      * @param ResourceConnection $resource
+     * @param LSR $LSR
+     * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         CategoryFactory $categoryFactory,
         Registry $registry,
         LoggerInterface $logger,
         Context $context,
-        ResourceConnection $resource
+        ResourceConnection $resource,
+        LSR $LSR,
+        ReplicationHelper $replicationHelper
     ) {
         $this->categoryFactory = $categoryFactory;
         $this->registry = $registry;
         $this->logger = $logger;
         $this->resource = $resource;
+        $this->lsr = $LSR;
+        $this->replicationHelper = $replicationHelper;
         parent::__construct($context);
     }
 
@@ -82,6 +96,10 @@ class Category extends Action
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_CATEGORY
+        );
         $this->messageManager->addSuccessMessage(__('Categories deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }

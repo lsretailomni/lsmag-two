@@ -43,7 +43,7 @@ class Customer extends Action
     ];
 
     // @codingStandardsIgnoreStart
-    /** @var array  */
+    /** @var array */
     protected $_publicActions = ['customer'];
     // @codingStandardsIgnoreEnd
 
