@@ -108,16 +108,6 @@ class View extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @return void
-     */
-    // @codingStandardsIgnoreStart
-    protected function _prepareLayout()
-    {
-        $this->pageConfig->getTitle()->set(__('Document ID # %1', $this->getOrder()->getDocumentId()));
-    }
-    // @codingStandardsIgnoreEnd
-
-    /**
      * @param $order
      */
     public function setOrderInRegistry($order)

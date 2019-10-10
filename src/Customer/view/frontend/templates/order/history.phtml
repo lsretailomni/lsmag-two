@@ -36,7 +36,7 @@ $orderExist = false;
                 <?php foreach ($_orders as $_order):
                     ?>
                     <tr>
-                        <td data-th="<?= $block->escapeHtml(__('Order #')) ?>"
+                        <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
                             class="col id"><?= /* @escapeNotVerified */
                             $_order->getId() ?></td>
                         <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
@@ -87,7 +87,7 @@ $orderExist = false;
                 <thead>
                 <tr>
                     <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                        __('Document Id #') ?></th>
+                        __('Document ID #') ?></th>
                     <th scope="col" class="col date"><?= /* @escapeNotVerified */
                         __('Date') ?></th>
                     <?= /* @noEscape */
