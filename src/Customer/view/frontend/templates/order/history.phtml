@@ -19,7 +19,7 @@ $orderExist = false;
                 <thead>
                 <tr>
                     <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                        __('Order #') ?></th>
+                        __('Document Id #') ?></th>
                     <th scope="col" class="col date"><?= /* @escapeNotVerified */
                         __('Date') ?></th>
                     <th scope="col" class="col shipping"><?= /* @escapeNotVerified */
@@ -34,9 +34,6 @@ $orderExist = false;
                 </thead>
                 <tbody>
                 <?php foreach ($_orders as $_order):
-                    if ($_order->getIdType() !== \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType::ORDER) {
-                        continue;
-                    }
                     ?>
                     <tr>
                         <td data-th="<?= $block->escapeHtml(__('Order #')) ?>"
@@ -90,7 +87,7 @@ $orderExist = false;
                 <thead>
                 <tr>
                     <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                        __('Order #') ?></th>
+                        __('Document Id #') ?></th>
                     <th scope="col" class="col date"><?= /* @escapeNotVerified */
                         __('Date') ?></th>
                     <?= /* @noEscape */

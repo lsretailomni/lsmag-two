@@ -4,6 +4,7 @@ namespace Ls\Omni\Helper;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -95,13 +96,13 @@ class OrderHelper extends AbstractHelper
             $storeId = $this->basketHelper->getDefaultWebStore();
             $customerEmail = $order->getCustomerEmail();
             $customerName = $order->getShippingAddress()->getFirstname() .
-                " " . $order->getShippingAddress()->getLastname();
+                ' ' . $order->getShippingAddress()->getLastname();
             $mobileNumber = $order->getShippingAddress()->getTelephone();
             if ($this->customerSession->isLoggedIn()) {
                 $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
                 $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
             } else {
-                $contactId = $cardId = "";
+                $contactId = $cardId = '';
             }
             $shippingMethod = $order->getShippingMethod(true);
             //TODO work on condition
@@ -111,6 +112,7 @@ class OrderHelper extends AbstractHelper
             $pointDiscount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $order->setCouponCode($this->checkoutSession->getCouponCode());
             $oneListCalculateResponse
+                ->setId($order->getIncrementId())
                 ->setContactId($contactId)
                 ->setCardId($cardId)
                 ->setEmail($customerEmail)
@@ -212,7 +214,7 @@ class OrderHelper extends AbstractHelper
                 break;
             }
             // @codingStandardsIgnoreLine
-            $method = "setAddress" . strval($i + 1);
+            $method = 'setAddress' . strval($i + 1);
             $omniAddress->$method($street);
         }
         $region = substr($magentoAddress->getRegion(), 0, 30);
@@ -334,16 +336,18 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @param $orderId
-     * @return Entity\SalesEntryGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @param $docId
+     * @param $type
+     * @return Entity\SalesEntry|Entity\SalesEntryGetResponse|\Ls\Omni\Client\ResponseInterface|null
      */
-    public function getOrderDetailsAgainstId($orderId)
+    public function getOrderDetailsAgainstId($docId, $type = DocumentIdType::ORDER)
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\SalesEntryGet();
         $order = new Entity\SalesEntryGet();
-        $order->setEntryId($orderId);
+        $order->setEntryId($docId);
+        $order->setType($type);
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($order);

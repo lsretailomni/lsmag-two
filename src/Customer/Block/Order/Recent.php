@@ -105,7 +105,7 @@ class Recent extends \Magento\Framework\View\Element\Template
      */
     public function getViewUrl($order)
     {
-        return $this->getUrl('customer/order/view', ['order_id' => $order->getId()]);
+        return $this->getUrl('customer/order/view', ['order_id' => $order->getId(), 'type' => $order->getIdType()]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Ls\Customer\Block\Order;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context as TemplateContext;
@@ -112,33 +113,19 @@ class Info extends \Magento\Framework\View\Element\Template
     {
         $order = $this->getOrder();
         $shipToAddress = $order->getShipToAddress();
-        $address = "";
-        $tmp = "";
-        $tmp = $order->getShipToName() ? $order->getShipToName() . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getAddress1() ? $shipToAddress->getAddress1() . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getAddress2() ? $shipToAddress->getAddress2() . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getCity() ? $shipToAddress->getCity() . ", " : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getStateProvinceRegion() ? $shipToAddress->getStateProvinceRegion() . ", " : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getPostCode() ? $shipToAddress->getPostCode() . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $this->getCountryName($shipToAddress->getCountry()) ?
-            $this->getCountryName($shipToAddress->getCountry()) . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $order->getShipToPhoneNumber() ?
-            "<a href='tel:" . $order->getShipToPhoneNumber() . "'>" . $order->getShipToPhoneNumber() . "</a>" : "";
-        $address .= $tmp;
+        $address = '';
+        if (!empty($shipToAddress)) {
+            $address .= $order->getShipToName() ? $order->getShipToName() . '<br/>' : '';
+            $address .= $shipToAddress->getAddress1() ? $shipToAddress->getAddress1() . '<br/>' : '';
+            $address .= $shipToAddress->getAddress2() ? $shipToAddress->getAddress2() . '<br/>' : '';
+            $address .= $shipToAddress->getCity() ? $shipToAddress->getCity() . ', ' : '';
+            $address .= $shipToAddress->getStateProvinceRegion() ? $shipToAddress->getStateProvinceRegion() . ', ' : '';
+            $address .= $shipToAddress->getPostCode() ? $shipToAddress->getPostCode() . '<br/>' : '';
+            $address .= $this->getCountryName($shipToAddress->getCountry()) ?
+                $this->getCountryName($shipToAddress->getCountry()) . '<br/>' : '';
+            $address .= $order->getShipToPhoneNumber() ?
+                "<a href='tel:" . $order->getShipToPhoneNumber() . "'>" . $order->getShipToPhoneNumber() . '</a>' : '';
+        }
         return $address;
     }
 
@@ -158,7 +145,7 @@ class Info extends \Magento\Framework\View\Element\Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getId()));
+        $this->pageConfig->getTitle()->set(__('%1 # %2', $this->getOrder()->getIdType(), $this->getOrder()->getId()));
     }
     // @codingStandardsIgnoreEnd
 
@@ -173,11 +160,15 @@ class Info extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @return \Magento\Framework\Phrase
+     * @return \Magento\Framework\Phrase|string
      */
     public function getShippingDescription()
     {
         $status = $this->getOrder()->getClickAndCollectOrder();
+        $type = $this->getOrder()->getIdType();
+        if ($type !== DocumentIdType::ORDER) {
+            return '';
+        }
         if ($status) {
             return __('Click and Collect');
         } else {
@@ -216,7 +207,7 @@ class Info extends \Magento\Framework\View\Element\Template
         if (empty($paymentLines)) {
             $methods[] = __('Pay At Store');
         }
-        return[implode(', ', $methods),$giftCardInfo];
+        return [implode(', ', $methods), $giftCardInfo];
     }
 
     /**
