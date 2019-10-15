@@ -79,6 +79,9 @@ class View extends \Magento\Framework\App\Action\Action
         if ($this->request->getParam('order_id')) {
             $docId = $this->request->getParam('order_id');
             $type = $this->request->getParam('type');
+            if (empty($type)) {
+                $type = DocumentIdType::ORDER;
+            }
             $response = $this->setCurrentOrderInRegistry($docId, $type);
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
@@ -123,5 +126,4 @@ class View extends \Magento\Framework\App\Action\Action
         $order = $this->orderHelper->getOrderByDocumentId($orderId);
         $this->registry->register('current_mag_order', $order);
     }
-
 }
