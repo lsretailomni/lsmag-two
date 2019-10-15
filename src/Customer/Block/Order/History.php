@@ -124,7 +124,7 @@ class History extends \Magento\Sales\Block\Order\History
         * Adding condition to only process if LSR is enabled.
         */
         if ($this->lsr->isLSR()) {
-            return $this->getUrl('customer/order/view', ['order_id' => $order->getId()]);
+            return $this->getUrl('customer/order/view', ['order_id' => $order->getId(), 'type' => $order->getIdType()]);
         }
         return parent::getViewUrl($order);
     }

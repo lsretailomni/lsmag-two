@@ -1,6 +1,8 @@
 <?php
+
 namespace Ls\Customer\Controller\Sales\Order;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\Action;
 use Magento\Framework\View\Result\PageFactory;
@@ -20,8 +22,9 @@ class View extends \Magento\Sales\Controller\Order\View
      */
     public $orderRepository;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var \Psr\Log\LoggerInterface */
     public $logger;
+
     /**
      * View constructor.
      * @param Http $request
@@ -59,7 +62,7 @@ class View extends \Magento\Sales\Controller\Order\View
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setPath('customer/order/view/order_id/'.$documentId);
+            $resultRedirect->setPath('customer/order/view/order_id/' . $documentId . '/type/' . DocumentIdType::ORDER);
             return $resultRedirect;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

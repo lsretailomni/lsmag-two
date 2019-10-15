@@ -2,6 +2,7 @@
 
 namespace Ls\Customer\Controller\Order;
 
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\ResultFactory;
@@ -76,12 +77,18 @@ class View extends \Magento\Framework\App\Action\Action
     {
         $response = null;
         if ($this->request->getParam('order_id')) {
-            $orderId = $this->request->getParam('order_id');
-            $response = $this->setCurrentOrderInRegistry($orderId);
+            $docId = $this->request->getParam('order_id');
+            $type = $this->request->getParam('type');
+            if (empty($type)) {
+                $type = DocumentIdType::ORDER;
+            }
+            $response = $this->setCurrentOrderInRegistry($docId, $type);
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
-            $this->setCurrentMagOrderInRegistry($orderId);
+            if ($type === DocumentIdType::ORDER) {
+                $this->setCurrentMagOrderInRegistry($docId);
+            }
             $this->registry->register('current_invoice_option', false);
         }
         /** @var \Magento\Framework\View\Result\Page $resultPage */
@@ -90,28 +97,18 @@ class View extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @param $orderId
-     * @return \Ls\Omni\Client\Ecommerce\Entity\Order|\Ls\Omni\Client\Ecommerce\Entity\OrderGetByIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @param $docId
+     * @param $type
+     * @return \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse|\Ls\Omni\Client\ResponseInterface|null
      */
-    public function setCurrentOrderInRegistry($orderId)
+    public function setCurrentOrderInRegistry($docId, $type)
     {
-        $response = $this->orderHelper->getOrderDetailsAgainstId($orderId);
+        $response = $this->orderHelper->getOrderDetailsAgainstId($docId, $type);
         if ($response) {
             $this->setOrderInRegistry($response);
         }
         return $response;
     }
-
-    /**
-     * @return void
-     */
-    // @codingStandardsIgnoreStart
-    protected function _prepareLayout()
-    {
-
-        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getDocumentId()));
-    }
-    // @codingStandardsIgnoreEnd
 
     /**
      * @param $order
@@ -129,5 +126,4 @@ class View extends \Magento\Framework\App\Action\Action
         $order = $this->orderHelper->getOrderByDocumentId($orderId);
         $this->registry->register('current_mag_order', $order);
     }
-
 }

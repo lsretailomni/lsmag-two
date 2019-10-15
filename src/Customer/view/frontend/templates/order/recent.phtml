@@ -33,7 +33,7 @@
                     <thead>
                     <tr>
                         <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                            __('Order #') ?></th>
+                            __('Document ID #') ?></th>
                         <th scope="col" class="col date"><?= /* @escapeNotVerified */
                             __('Date') ?></th>
                         <th scope="col" class="col shipping"><?= /* @escapeNotVerified */
@@ -48,22 +48,19 @@
                     </thead>
                     <tbody>
                     <?php foreach ($_orders as $i => $_order):
-                        if ($_order->getIdType() !== \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType::ORDER) {
-                            continue;
-                        }
                         if ($i > 4) {
                             break;
                         }
                         ?>
                         <tr>
-                            <td data-th="<?= $block->escapeHtml(__('Order #')) ?>"
+                            <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
                                 class="col id"><?= /* @escapeNotVerified */
                                 $_order->getId() ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
                                 class="col date"><?= /* @escapeNotVerified */
                                 $block->getFormattedDate($_order->getDocumentRegTime()) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
-                                class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : '&nbsp;' ?></td>
+                                class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable'); ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Total')) ?>"
                                 class="col total"><?= /* @escapeNotVerified */
                                 $block->getFormattedPrice($_order->getTotalAmount()) ?></td>
