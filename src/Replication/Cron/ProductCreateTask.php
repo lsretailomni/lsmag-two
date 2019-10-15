@@ -464,7 +464,7 @@ class ProductCreateTask
         foreach ($items->getItems() as $item) {
             $formattedCode = $this->replicationHelper->formatAttributeCode($item->getCode());
             $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
-            if ($attribute->getFrontendInput() == 'select') {
+            if ($attribute->getFrontendInput() == 'multiselect') {
                 $value = $this->_getOptionIDByCode($formattedCode, $item->getValue());
             } elseif ($attribute->getFrontendInput() == 'boolean') {
                 if (strtolower($item->getValue()) == 'yes') {

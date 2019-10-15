@@ -211,7 +211,7 @@ class CategoryCreateTask
                             $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
                         'url_key' => $this->oSlug($hierarchyNode->getNavId()),
                         'is_active' => true,
-                        'is_anchor' => false,
+                        'is_anchor' => true,
                         'include_in_menu' => true,
                         'meta_title' => ($hierarchyNode->getDescription()) ?
                             $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
@@ -341,7 +341,7 @@ class CategoryCreateTask
     public function caterHierarchyNodeRemoval($hierarchyCode)
     {
         $attribute_id = $this->eavAttribute->getIdByCode(\Magento\Catalog\Model\Category::ENTITY, 'nav_id');
-        $filters =  [
+        $filters = [
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq']
         ];
@@ -385,7 +385,7 @@ class CategoryCreateTask
      */
     public function caterHierarchyLeafRemoval($hierarchyCode)
     {
-        $filters =  [['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']];
+        $filters = [['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
         $collection = $this->replHierarchyLeafCollectionFactory->create();
         $this->replicationHelper->setCollectionPropertiesPlusJoin(
@@ -413,9 +413,9 @@ class CategoryCreateTask
                         }
                     }
                     if (in_array($parentCategoryId, $categories)) {
-                        $childCategories=$this->categoryRepository->get($parentCategoryId)->getChildren();
-                        $childCat=explode(",", $childCategories);
-                        if (count(array_intersect($childCat, $categories))==0) {
+                        $childCategories = $this->categoryRepository->get($parentCategoryId)->getChildren();
+                        $childCat = explode(",", $childCategories);
+                        if (count(array_intersect($childCat, $categories)) == 0) {
                             $this->categoryLinkRepositoryInterface->deleteByIds($parentCategoryId, $sku);
                         }
                     }
