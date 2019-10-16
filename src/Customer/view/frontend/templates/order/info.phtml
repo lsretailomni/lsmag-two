@@ -51,7 +51,9 @@
                 </div>
             </div>
         <?php
-        } ?>
+        }
+        if (!empty($block->getPaymentDescription()[0])) {
+            ?>
         <div class="box box-order-billing-method">
             <strong class="box-title">
                 <span><?= /* @escapeNotVerified */
@@ -61,5 +63,6 @@
                 <?= $block->escapeHtml($block->getPaymentDescription()[0]) ?>
             </div>
         </div>
+        <?php } ?>
     </div>
 </div>

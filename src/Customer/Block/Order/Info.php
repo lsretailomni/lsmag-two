@@ -204,7 +204,7 @@ class Info extends \Magento\Framework\View\Element\Template
             }
         }
         //TODO when order edit payment available for offline payment we need to change it.
-        if (empty($paymentLines)) {
+        if (empty($paymentLines->getSalesEntryPayment())) {
             $methods[] = __('Pay At Store');
         }
         return [implode(', ', $methods), $giftCardInfo];
