@@ -492,7 +492,7 @@ class ProductCreateTask
     private function getMediaGalleryEntries($productImages)
     {
         $galleryArray = [];
-        $i = 0;
+
         /** @var \Ls\Replication\Model\ReplImageLink $image */
         foreach ($productImages as $image) {
             $imageSize = [
@@ -503,7 +503,6 @@ class ProductCreateTask
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
             if (!empty($result) && !empty($result["format"]) && !empty($result["image"])) {
-                $i++;
                 /** @var \Magento\Framework\Api\ImageContent $imageContent */
                 $imageContent = $this->imageContent->create()
                     ->setBase64EncodedData($result["image"])
@@ -511,7 +510,7 @@ class ProductCreateTask
                     ->setType($this->getMimeType($result["image"]));
                 $this->attributeMediaGalleryEntry->setMediaType('image')
                     ->setLabel(($image->getDescription()) ? $image->getDescription() : 'Product Image')
-                    ->setPosition($i)
+                    ->setPosition($image->getDisplayOrder())
                     ->setDisabled(false)
                     ->setTypes(
                         [
