@@ -2,32 +2,46 @@
 
 namespace Ls\Replication\Helper;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
+use Magento\Framework\Api\AbstractExtensibleObject;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
+use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SortOrder;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Filesystem;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\Website\Interceptor;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class ReplicationHelper
  * @package Ls\Replication\Helper
  */
-class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
+class ReplicationHelper extends AbstractHelper
 {
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     public $storeManager;
 
-    /** @var \Magento\Framework\Filesystem */
+    /** @var Filesystem */
     public $filesystem;
 
     /** @var SearchCriteriaBuilder */
@@ -45,53 +59,64 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var Config */
     public $eavConfig;
 
-    /** @var cron config save */
+    /**
+     * @var WriterInterface
+     */
     public $configWriter;
 
     /** @var Set */
     public $attributeSet;
 
-    /** @var chache type list */
+    /**
+     * @var TypeListInterface
+     */
     public $cacheTypeList;
 
     /** @var LSR */
     public $lsr;
 
     /**
-     * @var \Magento\Framework\App\ResourceConnection
+     * @var ResourceConnection
      */
     public $resource;
 
     /**
+     * @var SortOrder
+     */
+    public $sortOrder;
+
+    /**
      * ReplicationHelper constructor.
-     * @param \Magento\Framework\App\Helper\Context $context
+     * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
      * @param FilterGroupBuilder $filterGroupBuilder
      * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\Filesystem $Filesystem
+     * @param StoreManagerInterface $storeManager
+     * @param Filesystem $Filesystem
      * @param Config $eavConfig
      * @param WriterInterface $configWriter
      * @param Set $attributeSet
      * @param TypeListInterface $cacheTypeList
      * @param LSR $LSR
      * @param ResourceConnection $resource
+     * @param SortOrder $sortOrder
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
+        Context $context,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
         FilterGroupBuilder $filterGroupBuilder,
         ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Filesystem $Filesystem,
+        StoreManagerInterface $storeManager,
+        Filesystem $Filesystem,
         Config $eavConfig,
         WriterInterface $configWriter,
         Set $attributeSet,
         TypeListInterface $cacheTypeList,
         LSR $LSR,
-        ResourceConnection $resource
+        ResourceConnection $resource,
+        SortOrder $sortOrder
     ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
@@ -105,6 +130,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $this->cacheTypeList = $cacheTypeList;
         $this->lsr = $LSR;
         $this->resource = $resource;
+        $this->sortOrder = $sortOrder;
         parent::__construct(
             $context
         );
@@ -116,7 +142,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $conditionType
      * @param int $pagesize
      * @param bool $excludeDeleted
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     public function buildCriteriaForNewItems(
         $filtername = '',
@@ -163,7 +189,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $item_id
      * @param int $pagesize
      * @param bool $excludeDeleted
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     public function buildCriteriaForProductAttributes($item_id = '', $pagesize = 100, $excludeDeleted = true)
     {
@@ -197,7 +223,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param array $filters
      * @param int $pagesize
      * @param boolean $excludeDeleted
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     public function buildCriteriaForArray(array $filters, $pagesize = 100, $excludeDeleted = true)
     {
@@ -236,7 +262,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param array $filters
      * @param int $pagesize
      * @param boolean $excludeDeleted
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     public function buildCriteriaForDirect(array $filters, $pagesize = 100, $excludeDeleted = true)
     {
@@ -256,7 +282,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
      * @param array $filters
      * @param int $pagesize
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     public function buildCriteriaGetUpdatedOnly(array $filters, $pagesize = 100, $excludeDeleted = true)
     {
@@ -278,7 +304,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
      * @param array $filters
      * @param int $pagesize
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     public function buildCriteriaGetDeletedOnly(array $filters, $pagesize = 100)
     {
@@ -297,7 +323,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
      * @param array $filters
      * @param int $pagesize
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     public function buildCriteriaGetDeletedOnlyWithAlias(array $filters, $pagesize = 100)
     {
@@ -315,7 +341,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Create Build Exit Criteria with Array of filters as a parameters
      * @param array $filters
      * @param int $pagesize
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     public function buildExitCriteriaForArray(array $filters, $pagesize = 1)
     {
@@ -334,7 +360,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param array $filters
      * @param int $pagesize
      * @param boolean $excludeDeleted
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, $excludeDeleted = true)
     {
@@ -369,7 +395,8 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param string $nav_id
      * @param string $type
-     * @return bool|\Magento\Framework\Api\AbstractExtensibleObject[]
+     * @return bool|AbstractExtensibleObject[]
+     * @throws InputException
      */
     public function getImageLinksByType($nav_id = '', $type = 'Item Category')
     {
@@ -390,8 +417,9 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
             0,
             'eq'
         )->create();
-
-        /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $items */
+        $sortOrder = $this->sortOrder->setField('DisplayOrder')->setDirection(SortOrder::SORT_ASC);
+        $criteria->setSortOrders([$sortOrder]);
+        /** @var ReplImageLinkSearchResults $items */
         $items = $this->replImageLinkRepositoryInterface->getList($criteria);
         if ($items->getTotalCount() > 0) {
             return $items->getItems();
@@ -401,7 +429,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param string $image_id
-     * @return Entity\ImageStreamGetByIdResponse|\Ls\Omni\Client\ResponseInterface|null|string
+     * @return Entity\ImageStreamGetByIdResponse|ResponseInterface|null|string
      */
     public function imageStreamById($image_id = '')
     {
@@ -416,7 +444,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity->setId($image_id);
         try {
             $response = $request->execute($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -424,7 +452,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @return null|string
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function getDefaultAttributeSetId()
     {
@@ -465,7 +493,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $websiteIds = [];
         $websites = $this->storeManager->getWebsites();
-        /** @var \Magento\Store\Model\Website\Interceptor $website */
+        /** @var Interceptor $website */
         foreach ($websites as $website) {
             $websiteIds[] = $website->getId();
         }
@@ -513,7 +541,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
     public function getLogger()
     {
@@ -522,7 +550,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Trigger the disposable Hierarchy replication job to get Hierarchy based on stores.
-     * @return array|Entity\ReplEcommHierarchyResponse|Entity\ReplHierarchyResponse|\Ls\Omni\Client\ResponseInterface
+     * @return array|Entity\ReplEcommHierarchyResponse|Entity\ReplHierarchyResponse|ResponseInterface
      */
     public function getHierarchyByStore()
     {
@@ -550,7 +578,7 @@ class ReplicationHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $operation->execute($hierarchy->setReplRequest($request));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
