@@ -1491,6 +1491,14 @@ class ProductCreateTask
         $product = $this->getProductAttributes($productData, $item);
         // @codingStandardsIgnoreStart
         $this->productRepository->save($product);
+
+        $variants = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
+        /** @var ReplBarcodeRepository $itemBarcodes */
+        $itemBarcodes = $this->_getBarcode($item->getNavId());
+
+        if (!empty($variants)) {
+            $this->createConfigurableProducts($product, $item, $itemBarcodes, $variants);
+        }
         $item->setData('is_updated', '0');
         $item->setData('processed', '1');
         $this->itemRepository->save($item);

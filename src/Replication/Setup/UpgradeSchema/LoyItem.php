@@ -17,7 +17,7 @@ class LoyItem
 
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
-        $table_name = $setup->getTable( 'ls_replication_loy_item' ); 
+        $table_name = $setup->getTable( 'ls_replication_loy_item' );
         if(!$setup->tableExists($table_name)) {
         	$table = $setup->getConnection()->newTable( $table_name );
         	$table->addColumn('loy_item_id', Table::TYPE_INTEGER, NULL, 
@@ -49,6 +49,8 @@ class LoyItem
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
         }
+
+
     }
 
 

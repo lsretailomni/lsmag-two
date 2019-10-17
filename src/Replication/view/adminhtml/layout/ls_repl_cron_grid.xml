@@ -14,5 +14,8 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceContainer name="content">
+            <uiComponent name="ls_repl_cron_grid_form"/>
+        </referenceContainer>
     </body>
 </page>
