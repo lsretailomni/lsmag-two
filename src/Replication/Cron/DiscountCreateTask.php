@@ -328,16 +328,12 @@ class DiscountCreateTask
      */
     public function getUniquePublishedOffers()
     {
-        $primaryTableColumnName = 'OfferNo';
-        $secondaryTableColumnName = 'OfferNo';
-
         $publishedOfferIds = [];
         /** @var  \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection $collection */
         $collection = $this->replDiscountCollection->create();
         $collection->getSelect()
             ->columns('OfferNo')
             ->group('OfferNo');
-
         if ($collection->getSize() > 0) {
             return $collection;
         }
