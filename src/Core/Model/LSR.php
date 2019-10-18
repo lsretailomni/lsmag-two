@@ -277,6 +277,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const POINTRATE = 'LS_PointsRate_';
     const PROACTIVE_DISCOUNTS = 'LS_Proactive_';
     const COUPONS = 'LS_Coupons_';
+    const STORE = 'LS_STORE_';
     /**
      * @var ScopeConfigInterface
      */
