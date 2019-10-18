@@ -150,7 +150,7 @@ class DiscountCreateTask
                         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
                         /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
                         $replDiscounts = $this->replDiscountRepository->getList($criteria);
-                        $skuArray = [];
+                        $skuAmountArray = [];
                         if ($item->getLoyaltySchemeCode() == '' ||
                             $item->getLoyaltySchemeCode() == null
                         ) {
@@ -174,6 +174,7 @@ class DiscountCreateTask
                             $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
                                 $replDiscount->getLoyaltySchemeCode()
                             );
+
                             // To check if discounts groups are specific for any Member Scheme.
                             if (!$useAllGroupIds && !in_array($customerGroupId, $customerGroupIds)) {
                                 $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
@@ -183,19 +184,26 @@ class DiscountCreateTask
                             if ($replDiscount->getVariantId() == '' ||
                                 $replDiscount->getVariantId() == null
                             ) {
-                                $skuArray[] = $replDiscount->getItemId();
+                                $skuAmountArray[$replDiscount->getItemId()] = $replDiscount->getDiscountValue();
                             } else {
-                                $skuArray[] = $replDiscount->getItemId() . '-' . $replDiscount->getVariantId();
+                                $skuAmountArray[$replDiscount->getItemId() . '-' .
+                                $replDiscount->getVariantId()] = $replDiscount->getDiscountValue();
                             }
+
                             $replDiscount->setData('processed', '1');
                             $replDiscount->setData('is_updated', '0');
                             // @codingStandardsIgnoreStart
                             $this->replDiscountRepository->save($replDiscount);
                             // @codingStandardsIgnoreEnd
                         }
-                        if (!empty($skuArray)) {
-                            $skuArray = array_unique($skuArray);
-                            $this->addSalesRule($item, $skuArray, $customerGroupIds);
+                        if (!empty($skuAmountArray)) {
+                            if (!(count(array_unique($skuAmountArray)) === 1)) {
+                                foreach ($skuAmountArray as $key => $value) {
+                                    $this->addSalesRule($item, array($key), $customerGroupIds, $value);
+                                }
+                            } else {
+                                $this->addSalesRule($item, array_keys($skuAmountArray), $customerGroupIds);
+                            }
                             $reindexRules = true;
                         }
                     }
@@ -242,11 +250,14 @@ class DiscountCreateTask
      * @param array $skuArray
      * @param $customerGroupIds
      */
-    public function addSalesRule(\Ls\Replication\Model\ReplDiscount $replDiscount, array $skuArray, $customerGroupIds)
+    public function addSalesRule(\Ls\Replication\Model\ReplDiscount $replDiscount, array $skuArray, $customerGroupIds, $amount = null)
     {
 
         if ($replDiscount instanceof \Ls\Replication\Model\ReplDiscount) {
             $websiteIds = $this->replicationHelper->getAllWebsitesIds();
+            if ($amount == null) {
+                $amount = $replDiscount->getDiscountValue();
+            }
             $rule = $this->ruleFactory->create();
             // Create root conditions to match with all child conditions
             $conditions["1"] =
@@ -282,7 +293,7 @@ class DiscountCreateTask
                 $type = 'by_percent';
             }
             $rule->setSimpleAction($type)
-                ->setDiscountAmount($replDiscount->getDiscountValue())
+                ->setDiscountAmount($amount)
                 ->setStopRulesProcessing(1)
                 ->setSortOrder($replDiscount->getPriorityNo());
 
@@ -317,12 +328,16 @@ class DiscountCreateTask
      */
     public function getUniquePublishedOffers()
     {
+        $primaryTableColumnName = 'OfferNo';
+        $secondaryTableColumnName = 'OfferNo';
+
         $publishedOfferIds = [];
         /** @var  \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection $collection */
         $collection = $this->replDiscountCollection->create();
         $collection->getSelect()
             ->columns('OfferNo')
             ->group('OfferNo');
+
         if ($collection->getSize() > 0) {
             return $collection;
         }
