@@ -919,4 +919,16 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->checkoutSession->unsBasketdata();
     }
+
+    /**
+     * Return Item Helper which can be used on multiple areas where we have dependency injection issue.
+     */
+
+    /**
+     * @return ItemHelper
+     */
+    public function getItemHelper(){
+        return $this->itemHelper;
+
+    }
 }

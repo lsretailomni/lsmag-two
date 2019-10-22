@@ -24,7 +24,7 @@ if(!empty($collection)) {
             <br/>
             <br/>
             <?php if (!empty($store['Name'])) { ?>
-                <p><i class="fas fa-store"></i>&nbsp;<lable><strong>Store:</strong>
+                <p><i class="fas fa-store"></i>&nbsp;<lable><strong><?php echo __('Store'); ?>:</strong>
                     </lable> <?php echo $store['Name']; ?></p>
             <?php } ?>
             <?php if (!empty($store['Street']) && !empty($store['City']) && !empty($store['Country'])) {
@@ -33,16 +33,16 @@ if(!empty($collection)) {
                 }
                 ?>
                 <p>
-                    <i class="fas fa-map-marker"></i>&nbsp;<strong>Address:</strong> <?php echo $store['Street'] . ", " . $store['City'] . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country'] . " " . "<br/>"; ?>
+                    <i class="fas fa-map-marker"></i>&nbsp;<strong><?php echo __('Address'); ?>:</strong> <?php echo $store['Street'] . ", " . $store['City'] . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country'] . " " . "<br/>"; ?>
                 </p>
             <?php } ?>
             <?php if (!empty($store['Phone'])) { ?>
-                <p><i class="fas fa-phone"></i><label>&nbsp;<strong>Phone:</strong></label> <a
+                <p><i class="fas fa-phone"></i><label>&nbsp;<strong><?php echo __('Phone'); ?>:</strong></label> <a
                             href="tel:<?php echo $store['Phone']; ?>"><?php echo $store['Phone']; ?></a></p>
             <?php } ?>
             <?php if (!empty($hours)) {
                 ?>
-                <p><label><i class="far fa-hourglass"></i>&nbsp;<strong>Opening Hours:</strong></label></p>
+                <p><label><i class="far fa-hourglass"></i>&nbsp;<strong><?php echo __('Opening Hours'); ?>:</strong></label></p>
                 <?php
                 foreach ($hours as $h) {
                 ?>
