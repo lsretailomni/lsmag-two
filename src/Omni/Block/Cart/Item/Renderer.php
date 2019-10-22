@@ -4,10 +4,6 @@ namespace Ls\Omni\Block\Cart\Item;
 
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\omni\Helper\ItemHelper;
-use Magento\Catalog\Model\Product\Configuration\Item\ItemResolverInterface;
-use Magento\Framework\Pricing\PriceCurrencyInterface;
-use Magento\Framework\View\Element\Message\InterpretationStrategyInterface;
-use Magento\Quote\Model\Quote\Item\AbstractItem;
 
 /**
  * Class Renderer
