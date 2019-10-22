@@ -4,6 +4,7 @@ namespace Ls\Omni\Block\Cart\Item;
 
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\omni\Helper\ItemHelper;
+use phpDocumentor\Reflection\Types\Parent_;
 
 /**
  * Class Renderer
@@ -51,8 +52,20 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
             ->get('\Ls\Omni\Helper\BasketHelper');
     }
 
+    /**
+     * @return \Magento\Framework\Pricing\PriceCurrencyInterface
+     */
+
     public function getPriceCurrency(){
         return $this->priceCurrency;
     }
 
+    /**
+     * @return array
+     */
+    public function getOptionList()
+    {
+        return $this->_productConfig->getOptions(parent::getItem());
+    }
+    
 }
