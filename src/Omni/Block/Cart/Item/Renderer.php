@@ -4,7 +4,6 @@ namespace Ls\Omni\Block\Cart\Item;
 
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\omni\Helper\ItemHelper;
-use phpDocumentor\Reflection\Types\Parent_;
 
 /**
  * Class Renderer
