@@ -131,7 +131,7 @@ class DiscountCreateTask
          * And the web store is being set in the Magento.
          * And we need to apply only those rules which are associated to the store assigned to it.
          */
-        if (!empty($storeData)) {
+        if (!empty($storeData) && $storeData instanceof \Magento\Store\Api\Data\StoreInterface) {
             $stores = [$storeData];
         } else {
             /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */

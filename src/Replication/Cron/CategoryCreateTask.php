@@ -147,7 +147,7 @@ class CategoryCreateTask
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData)) {
+        if (!empty($storeData) && $storeData instanceof \Magento\Store\Api\Data\StoreInterface) {
             $stores = [$storeData];
         } else {
             /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
