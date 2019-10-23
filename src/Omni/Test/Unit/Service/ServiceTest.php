@@ -26,10 +26,11 @@ class ServiceTest extends \PHPUnit\Framework\TestCase
      */
     protected $lsrMock;
 
-    const BASE_URL = 'http://10.27.9.39/LSOmniService411';
+    protected $baseUrl;
 
     protected function setUp()
     {
+        $this->baseUrl = $_ENV['BASE_URL'];
         $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->lsrMock = $this->createMock(LSR::class);
         $this->serviceMock = $this->createMock(Service::class);
@@ -45,8 +46,8 @@ class ServiceTest extends \PHPUnit\Framework\TestCase
         $this->lsrMock
             ->method('getStoreConfig')
             ->with('ls_mag/service/base_url')
-            ->willReturn(self::BASE_URL);
+            ->willReturn($this->baseUrl);
         $service_type = new ServiceType( ServiceType::ECOMMERCE );
-        $this->assertEquals(self::BASE_URL.'/UCService.svc?singlewsdl', $this->model->getUrl($service_type,self::BASE_URL));
+        $this->assertEquals($this->baseUrl.'/UCService.svc?singlewsdl', $this->model->getUrl($service_type,$this->baseUrl));
     }
 }
