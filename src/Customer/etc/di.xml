@@ -53,8 +53,7 @@
     <type name="Ls\Customer\Controller\Order\Shipment">
         <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
-    <type name="Magento\Framework\View\Element\AbstractBlock">
-        <plugin name="remove_block" type="Ls\Customer\Plugin\RemoveBlock" />
-    </type>
+    <preference for="Magento\Checkout\Block\Registration"
+                type="Ls\Customer\Block\Registration"/>
 </config>
 
