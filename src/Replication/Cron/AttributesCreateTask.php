@@ -135,7 +135,7 @@ class AttributesCreateTask
         /**
          * Get all the available stores config in the Magento system
          */
-        if (!empty($storeData)) {
+        if (!empty($storeData) && $storeData instanceof \Magento\Store\Api\Data\StoreInterface) {
             $stores = [$storeData];
         } else {
             /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
