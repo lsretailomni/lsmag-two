@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Helper;
 
+use Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreManagerInterface;
@@ -70,8 +71,9 @@ class Data extends AbstractHelper
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
      * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+     * @param \Ls\Omni\Helper\CacheHelper $cacheHelper
+     * @param LSR $lsr
      */
-
     public function __construct(
         Context $context,
         StoreManagerInterface $store_manager,
@@ -82,7 +84,9 @@ class Data extends AbstractHelper
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+        \Magento\Quote\Api\CartRepositoryInterface $cartRepository,
+        CacheHelper $cacheHelper,
+        LSR $lsr
     ) {
         $this->storeManager = $store_manager;
         $this->storeRepository = $storeRepository;
@@ -93,7 +97,8 @@ class Data extends AbstractHelper
         $this->priceHelper = $priceHelper;
         $this->cartRepository = $cartRepository;
         $this->loyaltyHelper = $loyaltyHelper;
-
+        $this->cacheHelper = $cacheHelper;
+        $this->lsr = $lsr;
         $this->config = $context->getScopeConfig();
         parent::__construct($context);
     }
@@ -118,16 +123,27 @@ class Data extends AbstractHelper
      */
     public function getStoreHours($storeId)
     {
-        $storeHours=null;
+        $storeHours = null;
         try {
-            // @codingStandardsIgnoreLine
-            $request = new StoreGetById();
-            $request->getOperationInput()->setStoreId($storeId);
-            if (empty($this->getValue())) {
-                $storeResults = $request->execute()->getResult()->getStoreHours()->getStoreHours();
-                $this->setValue($storeResults);
+            $cacheId = LSR::STORE . $storeId;
+            $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
+            if ($cachedResponse) {
+                $storeResults = $cachedResponse;
             } else {
-                $storeResults = $this->getValue();
+                // @codingStandardsIgnoreLine
+                $request = new StoreGetById();
+                $request->getOperationInput()->setStoreId($storeId);
+                $response = $request->execute();
+                $storeResults = [];
+                if (!empty($response)) {
+                    $storeResults = $response->getResult()->getStoreHours()->getStoreHours();
+                    $this->cacheHelper->persistContentInCache(
+                        $cacheId,
+                        $storeResults,
+                        [Type::CACHE_TAG],
+                        86400
+                    );
+                }
             }
             $counter = 0;
             $storeHours = [];
@@ -180,7 +196,7 @@ class Data extends AbstractHelper
      */
     public function getOrderBalance($giftCardAmount, $loyaltyPoints, $basketData)
     {
-        $loyaltyAmount=0;
+        $loyaltyAmount = 0;
         try {
             $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
             if (!empty($basketData)) {
