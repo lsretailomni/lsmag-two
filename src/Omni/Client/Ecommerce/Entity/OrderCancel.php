@@ -19,6 +19,16 @@ class OrderCancel implements RequestInterface
     protected $orderId = null;
 
     /**
+     * @property string $storeId
+     */
+    protected $storeId = null;
+
+    /**
+     * @property string $userId
+     */
+    protected $userId = null;
+
+    /**
      * @param string $orderId
      * @return $this
      */
@@ -34,6 +44,42 @@ class OrderCancel implements RequestInterface
     public function getOrderId()
     {
         return $this->orderId;
+    }
+
+    /**
+     * @param string $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId)
+    {
+        $this->storeId = $storeId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreId()
+    {
+        return $this->storeId;
+    }
+
+    /**
+     * @param string $userId
+     * @return $this
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserId()
+    {
+        return $this->userId;
     }
 
 

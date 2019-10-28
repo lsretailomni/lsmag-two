@@ -238,6 +238,8 @@ class OrderHelper extends AbstractHelper
         $transId = $order->getPayment()->getLastTransId();
         $ccType = $order->getPayment()->getCcType();
         $cardNumber = $order->getPayment()->getCcLast4();
+        $paidAmount = $order->getPayment()->getAmountPaid();
+        $authorizedAmount = $order->getPayment()->getAmountAuthorized();
 
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
@@ -251,19 +253,28 @@ class OrderHelper extends AbstractHelper
             //default values for all payment typoes.
             $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
                 ->setCurrencyFactor($order->getBaseToGlobalRate())
-                ->setFinalizedAmount(0)
                 ->setLineNumber('1')
-                ->setOrderId($order->getIncrementId())
-                ->setPreApprovedAmount($order->getGrandTotal());
+                ->setExternalReference($order->getIncrementId())
+                ->setAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
             if (!empty($transId)) {
                 $orderPayment->setTenderType('1');
                 $orderPayment->setCardType($ccType);
                 $orderPayment->setCardNumber($cardNumber);
-                $orderPayment->setAuthorisationCode($transId);
+                $orderPayment->setTokenNumber($transId);
+                if (!empty($paidAmount)) {
+                    $orderPayment->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
+                } else {
+                    if (!empty($authorizedAmount)) {
+                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::PRE_AUTHORIZATION);
+                    } else {
+                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::NONE);
+                    }
+                }
             } else {
                 $orderPayment->setTenderType('0');
             }
+            $orderPayment->setPreApprovedValidDate(date("Y-m-d"));
             $orderPaymentArray[] = $orderPayment;
         }
 
@@ -285,11 +296,11 @@ class OrderHelper extends AbstractHelper
             //default values for all payment typoes.
             $orderPaymentLoyalty->setCurrencyCode('LOY')
                 ->setCurrencyFactor($pointRate)
-                ->setFinalizedAmount('0')
                 ->setLineNumber('2')
                 ->setCardNumber($cardId)
-                ->setOrderId($order->getIncrementId())
-                ->setPreApprovedAmount($order->getLsPointsSpent())
+                ->setExternalReference($order->getIncrementId())
+                ->setAmount($order->getLsPointsSpent())
+                ->setPreApprovedValidDate(date("Y-m-d"))
                 ->setTenderType('3');
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
@@ -303,8 +314,9 @@ class OrderHelper extends AbstractHelper
                 ->setFinalizedAmount('0')
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())
-                ->setOrderId($order->getIncrementId())
+                ->setExternalReference($order->getIncrementId())
                 ->setPreApprovedAmount($order->getLsGiftCardAmountUsed())
+                ->setPreApprovedValidDate(date("Y-m-d"))
                 ->setTenderType('4');
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
