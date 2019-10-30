@@ -103,8 +103,7 @@ class DiscountCreateTask
         CollectionFactory $replDiscountCollection,
         ContactHelper $contactHelper,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->catalogRule = $catalogRule;
         $this->ruleFactory = $ruleFactory;
         $this->ruleCollectionFactory = $ruleCollectionFactory;
