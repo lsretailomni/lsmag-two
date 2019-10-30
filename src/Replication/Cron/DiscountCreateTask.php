@@ -103,7 +103,8 @@ class DiscountCreateTask
         CollectionFactory $replDiscountCollection,
         ContactHelper $contactHelper,
         LoggerInterface $logger
-    ) {
+    )
+    {
         $this->catalogRule = $catalogRule;
         $this->ruleFactory = $ruleFactory;
         $this->ruleCollectionFactory = $ruleCollectionFactory;
@@ -147,10 +148,12 @@ class DiscountCreateTask
                             ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                         ];
 
-                        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 100);
+                        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1);
                         /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
                         $replDiscounts = $this->replDiscountRepository->getList($criteria);
                         $skuAmountArray = [];
+                        $diffValueArray = [];
+                        $sameValueArray = [];
                         if ($item->getLoyaltySchemeCode() == '' ||
                             $item->getLoyaltySchemeCode() == null
                         ) {
@@ -164,7 +167,7 @@ class DiscountCreateTask
                             /** We check if offer exist */
                             $deleteStatus = $this->deleteOfferByName($item->getOfferNo());
                             if ($deleteStatus) {
-                                $criteriaAfterDelete = $this->replicationHelper->buildCriteriaForArray($filters, 100);
+                                $criteriaAfterDelete = $this->replicationHelper->buildCriteriaForArray($filters, -1);
                                 /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
                                 $replDiscounts = $this->replDiscountRepository->getList($criteriaAfterDelete);
                             }
@@ -185,6 +188,7 @@ class DiscountCreateTask
                                 $replDiscount->getVariantId() == null
                             ) {
                                 $skuAmountArray[$replDiscount->getItemId()] = $replDiscount->getDiscountValue();
+
                             } else {
                                 $skuAmountArray[$replDiscount->getItemId() . '-' .
                                 $replDiscount->getVariantId()] = $replDiscount->getDiscountValue();
@@ -196,16 +200,25 @@ class DiscountCreateTask
                             $this->replDiscountRepository->save($replDiscount);
                             // @codingStandardsIgnoreEnd
                         }
-                        if (!empty($skuAmountArray)) {
-                            if (!(count(array_unique($skuAmountArray)) === 1)) {
-                                foreach ($skuAmountArray as $key => $value) {
-                                    $this->addSalesRule($item, array($key), $customerGroupIds, $value);
-                                }
-                            } else {
-                                $this->addSalesRule($item, array_keys($skuAmountArray), $customerGroupIds);
+
+                        $counts = array_count_values($skuAmountArray);
+                        $sameValueArray = array_filter($skuAmountArray, function ($value) use ($counts) {
+                            return $counts[$value] > 1;
+                        });
+
+                        $diffValueArray = array_filter($skuAmountArray, function ($value) use ($counts) {
+                            return $counts[$value] == 1;
+                        });
+
+                        if (!empty($diffValueArray)) {
+                            foreach ($diffValueArray as $key => $value) {
+                                $this->addSalesRule($item, array($key), $customerGroupIds, $value);
                             }
-                            $reindexRules = true;
                         }
+                        if (!empty($sameValueArray)) {
+                            $this->addSalesRule($item, array_keys($sameValueArray), $customerGroupIds);
+                        }
+                        $reindexRules = true;
                     }
                     if ($reindexRules) {
                         $this->jobApply->applyAll();
