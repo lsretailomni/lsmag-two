@@ -153,13 +153,11 @@ class Data extends AbstractHelper
             $storeHours = [];
             foreach ($storeResults as $r) {
                 $storeHours[$counter]['openhours']   = date(
-                    ($this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT) == "0")
-                        ? LSR::STORE_HOURS_TIME_FORMAT_24HRS : LSR::STORE_HOURS_TIME_FORMAT_12HRS,
+                    $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
                     strtotime($r->getOpenFrom())
                 );
                 $storeHours[$counter]['closedhours'] = date(
-                    ($this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT) == "0")
-                        ? LSR::STORE_HOURS_TIME_FORMAT_24HRS : LSR::STORE_HOURS_TIME_FORMAT_12HRS,
+                    $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
                     strtotime($r->getOpenTo())
                 );
                 $storeHours[$counter]['day']         = $r->getNameOfDay();

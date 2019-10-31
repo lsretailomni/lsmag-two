@@ -19,7 +19,7 @@
                 <discount_mixandmatch_limit>15</discount_mixandmatch_limit>
             </ls_discounts>
             <ls_stores>
-                <timeformat>0</timeformat>
+                <timeformat>h:i A</timeformat>
             </ls_stores>
         </ls_mag>
         <!-- For Click and Collect -->

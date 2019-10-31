@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Block\Adminhtml\System\Config;
 
+use \Ls\Core\Model\LSR;
 use Magento\Framework\Option\ArrayInterface;
 
 /**
@@ -17,7 +18,10 @@ class TimeFormat implements ArrayInterface
      */
     public function toOptionArray()
     {
-        return [['value' => 1, 'label' => __('12 Hours')], ['value' => 0, 'label' => __('24 Hours')]];
+        return [
+            ['value' => LSR::STORE_HOURS_TIME_FORMAT_12HRS, 'label' => __('12 Hours')],
+            ['value' => LSR::STORE_HOURS_TIME_FORMAT_24HRS, 'label' => __('24 Hours')]
+        ];
     }
 
     /**
