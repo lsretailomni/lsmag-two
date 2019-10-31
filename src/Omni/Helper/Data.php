@@ -2,16 +2,19 @@
 
 namespace Ls\Omni\Helper;
 
+use Exception;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use Ls\Omni\Model\Cache\Type;
+use Ls\Replication\Api\ReplStoreRepositoryInterface;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use \Ls\Replication\Api\ReplStoreRepositoryInterface;
-use Magento\Framework\Api\SearchCriteriaBuilder;
-use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\LoyaltyHelper;
-use \Magento\Framework\Session\SessionManagerInterface;
 
 /**
  * Class Data
@@ -21,9 +24,6 @@ class Data extends AbstractHelper
 {
     /** @var StoreManagerInterface */
     public $storeManager;
-
-    /** @var \Magento\Framework\App\Config\ScopeConfigInterface */
-    public $config;
 
     /** @var ReplStoreRepositoryInterface */
     public $storeRepository;
@@ -37,11 +37,11 @@ class Data extends AbstractHelper
     public $session;
 
     /**
-     * @var \Magento\Checkout\Model\Session\Proxy
+     * @var Proxy
      */
     public $checkoutSession;
 
-    /** @var \Magento\Framework\Message\ManagerInterface */
+    /** @var ManagerInterface */
     public $messageManager;
 
     /**
@@ -50,14 +50,19 @@ class Data extends AbstractHelper
     public $priceHelper;
 
     /**
-     * @var \Ls\Omni\Helper\LoyaltyHelper
+     * @var LoyaltyHelper
      */
     public $loyaltyHelper;
 
     /**
-     * @var \Magento\Quote\Api\CartRepositoryInterface
+     * @var CartRepositoryInterface
      */
     public $cartRepository;
+
+    /**
+     * @var CacheHelper
+     */
+    public $cacheHelper;
 
     /**
      * Data constructor.
@@ -66,12 +71,12 @@ class Data extends AbstractHelper
      * @param ReplStoreRepositoryInterface $storeRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SessionManagerInterface $session
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param Proxy $checkoutSession
+     * @param ManagerInterface $messageManager
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
-     * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
-     * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
-     * @param \Ls\Omni\Helper\CacheHelper $cacheHelper
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param CartRepositoryInterface $cartRepository
+     * @param CacheHelper $cacheHelper
      * @param LSR $lsr
      */
     public function __construct(
@@ -80,26 +85,25 @@ class Data extends AbstractHelper
         ReplStoreRepositoryInterface $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SessionManagerInterface $session,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
+        Proxy $checkoutSession,
+        ManagerInterface $messageManager,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Quote\Api\CartRepositoryInterface $cartRepository,
+        CartRepositoryInterface $cartRepository,
         CacheHelper $cacheHelper,
         LSR $lsr
     ) {
-        $this->storeManager = $store_manager;
-        $this->storeRepository = $storeRepository;
+        $this->storeManager          = $store_manager;
+        $this->storeRepository       = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->session = $session;
-        $this->checkoutSession = $checkoutSession;
-        $this->messageManager = $messageManager;
-        $this->priceHelper = $priceHelper;
-        $this->cartRepository = $cartRepository;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->cacheHelper = $cacheHelper;
-        $this->lsr = $lsr;
-        $this->config = $context->getScopeConfig();
+        $this->session               = $session;
+        $this->checkoutSession       = $checkoutSession;
+        $this->messageManager        = $messageManager;
+        $this->priceHelper           = $priceHelper;
+        $this->cartRepository        = $cartRepository;
+        $this->loyaltyHelper         = $loyaltyHelper;
+        $this->cacheHelper           = $cacheHelper;
+        $this->lsr                   = $lsr;
         parent::__construct($context);
     }
 
@@ -110,7 +114,7 @@ class Data extends AbstractHelper
     public function getStoreNameById($storeId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('nav_id', $storeId, 'eq')->create();
-        $stores = $this->storeRepository->getList($searchCriteria)->getItems();
+        $stores         = $this->storeRepository->getList($searchCriteria)->getItems();
         foreach ($stores as $store) {
             return $store->getData('Name');
         }
@@ -125,7 +129,7 @@ class Data extends AbstractHelper
     {
         $storeHours = null;
         try {
-            $cacheId = LSR::STORE . $storeId;
+            $cacheId        = LSR::STORE . $storeId;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
             if ($cachedResponse) {
                 $storeResults = $cachedResponse;
@@ -133,7 +137,7 @@ class Data extends AbstractHelper
                 // @codingStandardsIgnoreLine
                 $request = new StoreGetById();
                 $request->getOperationInput()->setStoreId($storeId);
-                $response = $request->execute();
+                $response     = $request->execute();
                 $storeResults = [];
                 if (!empty($response)) {
                     $storeResults = $response->getResult()->getStoreHours()->getStoreHours();
@@ -145,16 +149,24 @@ class Data extends AbstractHelper
                     );
                 }
             }
-            $counter = 0;
+            $counter    = 0;
             $storeHours = [];
             foreach ($storeResults as $r) {
-                $storeHours[$counter]['openhours'] = date(LSR::STORE_HOURS_TIME_FORMAT, strtotime($r->getOpenFrom()));
-                $storeHours[$counter]['closedhours'] = date(LSR::STORE_HOURS_TIME_FORMAT, strtotime($r->getOpenTo()));
-                $storeHours[$counter]['day'] = $r->getNameOfDay();
+                $storeHours[$counter]['openhours']   = date(
+                    ($this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT) == "0")
+                        ? LSR::STORE_HOURS_TIME_FORMAT_24HRS : LSR::STORE_HOURS_TIME_FORMAT_12HRS,
+                    strtotime($r->getOpenFrom())
+                );
+                $storeHours[$counter]['closedhours'] = date(
+                    ($this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT) == "0")
+                        ? LSR::STORE_HOURS_TIME_FORMAT_24HRS : LSR::STORE_HOURS_TIME_FORMAT_12HRS,
+                    strtotime($r->getOpenTo())
+                );
+                $storeHours[$counter]['day']         = $r->getNameOfDay();
                 $counter++;
             }
             return $storeHours;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -203,7 +215,7 @@ class Data extends AbstractHelper
                 $totalAmount = $basketData->getTotalAmount();
                 return $totalAmount - $giftCardAmount - $loyaltyAmount;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $loyaltyAmount;
@@ -220,12 +232,12 @@ class Data extends AbstractHelper
     {
         try {
             $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
-            $cartId = $this->checkoutSession->getQuoteId();
-            $quote = $this->cartRepository->get($cartId);
+            $cartId        = $this->checkoutSession->getQuoteId();
+            $quote         = $this->cartRepository->get($cartId);
             if (!empty($basketData) && is_object($basketData)) {
-                $totalAmount = $basketData->getTotalAmount();
-                $discountAmount = $basketData->getTotalDiscount();
-                $combinedTotalLoyalGiftCard = $giftCardAmount + $loyaltyAmount;
+                $totalAmount                   = $basketData->getTotalAmount();
+                $discountAmount                = $basketData->getTotalDiscount();
+                $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount;
                 $combinedDiscountPaymentamount = $discountAmount + $combinedTotalLoyalGiftCard;
                 if ($loyaltyAmount > $totalAmount) {
                     $quote->setLsPointsSpent(0);
@@ -255,13 +267,13 @@ class Data extends AbstractHelper
                     $this->cartRepository->save($quote);
                     $this->messageManager->addErrorMessage(
                         __(
-                            'The gift card amount "%1" and loyalty points  "%2" are not valid.',
+                            'The gift card amount "%1" and loyalty points "%2" are not valid.',
                             $this->priceHelper->currency(
                                 $giftCardAmount,
                                 true,
-                                false,
-                                $loyaltyPoints
-                            )
+                                false
+                            ),
+                            $loyaltyPoints
                         )
                     );
                 } elseif ($combinedDiscountPaymentamount > $totalAmount) {
@@ -272,7 +284,7 @@ class Data extends AbstractHelper
             } else {
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return true;

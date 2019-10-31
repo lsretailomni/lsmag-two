@@ -1,13 +1,15 @@
 <?php
 
 /**
- * @var \Ls\Omni\Block\Stores\Stores $block
+ * @var Stores $block
  */
 
+use Ls\Omni\Block\Stores\Stores;
+
 $collection = $block->getStores();
-$counter = 0;
-$countHours=0;
-$apiKey=$block->getStoreMapKey();
+$counter    = 0;
+$countHours = 0;
+$apiKey     = $block->getStoreMapKey();
 
 if(!empty($collection)) {
 ?>
@@ -15,9 +17,9 @@ if(!empty($collection)) {
 <div class="row mt-5">
     <?php
     foreach ($collection as $stores) {
-        $store = $stores->getData();
-        $storeId=$store['nav_id'];
-        $hours=$block->getStoreHours($storeId);
+        $store   = $stores->getData();
+        $storeId = $store['nav_id'];
+        $hours   = $block->getStoreHours($storeId);
         ?>
         <div class="col-md-4 mb-5">
             <div id="map<?php echo $counter?>" style="width:300px; height:200px;"></div>
@@ -42,7 +44,7 @@ if(!empty($collection)) {
             <?php } ?>
             <?php if (!empty($hours)) {
                 ?>
-                <p><label><i class="far fa-hourglass"></i>&nbsp;<strong><?php echo __('Opening Hours'); ?>:</strong></label></p>
+                <p><label><i class="far fa-hourglass"></i>&nbsp;<strong><?php echo __('Opening Hours'); ?></strong></label></p>
                 <?php
                 foreach ($hours as $h) {
                 ?>
