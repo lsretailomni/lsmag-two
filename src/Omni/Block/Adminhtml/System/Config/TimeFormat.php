@@ -31,6 +31,9 @@ class TimeFormat implements ArrayInterface
      */
     public function toArray()
     {
-        return [0 => __('24 Hours'), 1 => __('12 Hours')];
+        return [
+            LSR::STORE_HOURS_TIME_FORMAT_24HRS => __('24 Hours'),
+            LSR::STORE_HOURS_TIME_FORMAT_12HRS => __('12 Hours')
+        ];
     }
 }
