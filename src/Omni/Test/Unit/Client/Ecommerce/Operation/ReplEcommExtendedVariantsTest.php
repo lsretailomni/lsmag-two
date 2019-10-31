@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommExtendedVariants;
-use Ls\Omni\Client\Ecommerce\Entity\ReplExtendedVariantValuesResponse;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplExtendedVariantValue;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommExtendedVariants;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplExtendedVariantValuesResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplExtendedVariantValue;
 
 class ReplEcommExtendedVariantsTest extends ReplicationTest
 {

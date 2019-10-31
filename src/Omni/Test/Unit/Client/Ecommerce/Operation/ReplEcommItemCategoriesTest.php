@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemCategories;
-use Ls\Omni\Client\Ecommerce\Entity\ReplItemCategoryResponse;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplItemCategory;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemCategories;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplItemCategoryResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplItemCategory;
 
 class ReplEcommItemCategoriesTest extends ReplicationTest
 {

@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommImageLinks;
-use Ls\Omni\Client\Ecommerce\Entity\ReplImageLinkResponse;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplImageLink;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommImageLinks;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplImageLinkResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplImageLink;
 
 class ReplEcommImageLinksTest extends ReplicationTest
 {

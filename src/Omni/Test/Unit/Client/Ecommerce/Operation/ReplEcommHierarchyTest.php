@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchy;
-use Ls\Omni\Client\Ecommerce\Entity\ReplHierarchyResponse;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplHierarchy;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchy;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchyResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplHierarchy;
 
 class ReplEcommHierarchyTest extends ReplicationTest
 {

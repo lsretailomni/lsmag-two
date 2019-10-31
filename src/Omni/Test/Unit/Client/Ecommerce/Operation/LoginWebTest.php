@@ -2,39 +2,46 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
+use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\ClassMap;
+use \Ls\Omni\Client\Ecommerce\Entity\LoginWeb;
+use \Ls\Omni\Client\Ecommerce\Entity\LoginWebResponse;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Zend\Uri\UriFactory;
 
-class ReplicationTest extends \PHPUnit\Framework\TestCase
+class LoginWebTest extends \PHPUnit\Framework\TestCase
 {
     /** @var OmniClient */
     public $client;
 
-    /** @var array */
-    public $params;
+    public $username;
+
+    public $email;
+
+    public $password;
 
     protected function setUp()
     {
         $baseUrl = $_ENV['BASE_URL'];
+        $this->username = $_ENV['USERNAME'];
+        $this->email = $_ENV['EMAIL'];
+        $this->password = $_ENV['PASSWORD'];
         $url = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
         $service_type = new ServiceType(ServiceType::ECOMMERCE);
         $uri = UriFactory::factory($url);
         $this->client = new OmniClient($uri, $service_type);
         $this->client->setClassmap(ClassMap::getClassMap());
-        $this->params = array(
-            'BatchSize' => '1000',
-            'FullReplication' => '1',
-            'LastKey' => '0',
-            'MaxKey' => '0',
-            'StoreId' => 'S0013',
-            'TerminalId' => '0'
-        );
     }
 
-    public function testClient()
+    public function testLoginUserName()
     {
         $this->assertNotNull($this->client);
+        $params = array(
+            'userName' => $this->username,
+            'password' => $this->password
+        );
+        $response = $this->client->LoginWeb($params);
+        $this->assertInstanceOf(LoginWebResponse::class, $response);
     }
 }
