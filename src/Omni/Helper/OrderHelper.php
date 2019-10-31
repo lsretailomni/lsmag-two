@@ -311,11 +311,10 @@ class OrderHelper extends AbstractHelper
             //default values for all payment typoes.
             $orderPaymentGiftCard
                 ->setCurrencyFactor(1)
-                ->setFinalizedAmount('0')
+                ->setAmount($order->getLsGiftCardAmountUsed())
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())
                 ->setExternalReference($order->getIncrementId())
-                ->setPreApprovedAmount($order->getLsGiftCardAmountUsed())
                 ->setPreApprovedValidDate(date("Y-m-d"))
                 ->setTenderType('4');
             $orderPaymentArray[] = $orderPaymentGiftCard;
