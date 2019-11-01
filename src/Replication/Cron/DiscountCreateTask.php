@@ -2,16 +2,25 @@
 
 namespace Ls\Replication\Cron;
 
+use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ReplDiscount;
+use \Ls\Replication\Model\ReplDiscountSearchResults;
+use \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
-use Magento\CatalogRule\Model\RuleFactory;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\CatalogRule\Model\Rule\Job;
-use \Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
-use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
+use Magento\CatalogRule\Model\RuleFactory;
+use Magento\Framework\DataObject;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\State\InvalidTransitionException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -118,10 +127,10 @@ class DiscountCreateTask
 
     /**
      * Discount Creation
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\State\InvalidTransitionException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws InvalidTransitionException
      */
     public function execute()
     {
@@ -139,7 +148,7 @@ class DiscountCreateTask
                 $publishedOfferCollection = $this->getUniquePublishedOffers();
                 if (!empty($publishedOfferCollection)) {
                     $reindexRules = false;
-                    /** @var \Ls\Replication\Model\ReplDiscount $item */
+                    /** @var ReplDiscount $item */
                     foreach ($publishedOfferCollection as $item) {
                         $filters = [
                             ['field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'],
@@ -148,11 +157,9 @@ class DiscountCreateTask
                         ];
 
                         $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1);
-                        /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+                        /** @var ReplDiscountSearchResults $replDiscounts */
                         $replDiscounts = $this->replDiscountRepository->getList($criteria);
-                        $skuAmountArray = [];
-                        $diffValueArray = [];
-                        $sameValueArray = [];
+                        $skuAmountArray = $diffValueArray = $sameValueArray = [];
                         if ($item->getLoyaltySchemeCode() == '' ||
                             $item->getLoyaltySchemeCode() == null
                         ) {
@@ -167,11 +174,11 @@ class DiscountCreateTask
                             $deleteStatus = $this->deleteOfferByName($item->getOfferNo());
                             if ($deleteStatus) {
                                 $criteriaAfterDelete = $this->replicationHelper->buildCriteriaForArray($filters, -1);
-                                /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+                                /** @var ReplDiscountSearchResults $replDiscounts */
                                 $replDiscounts = $this->replDiscountRepository->getList($criteriaAfterDelete);
                             }
                         }
-                        /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
+                        /** @var ReplDiscount $replDiscount */
                         foreach ($replDiscounts->getItems() as $replDiscount) {
                             $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
                                 $replDiscount->getLoyaltySchemeCode()
@@ -226,7 +233,7 @@ class DiscountCreateTask
                         ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                     ];
                     $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 100);
-                    /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+                    /** @var ReplDiscountSearchResults $replDiscounts */
                     $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
                     if (count($replDiscountsTotal->getItems()) == 0) {
                         $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
@@ -245,10 +252,10 @@ class DiscountCreateTask
 
     /**
      * @return array
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\State\InvalidTransitionException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws InvalidTransitionException
      */
     public function executeManually()
     {
@@ -258,14 +265,14 @@ class DiscountCreateTask
     }
 
     /**
-     * @param \Ls\Replication\Model\ReplDiscount $replDiscount
+     * @param ReplDiscount $replDiscount
      * @param array $skuArray
      * @param $customerGroupIds
      */
-    public function addSalesRule(\Ls\Replication\Model\ReplDiscount $replDiscount, array $skuArray, $customerGroupIds, $amount = null)
+    public function addSalesRule(ReplDiscount $replDiscount, array $skuArray, $customerGroupIds, $amount = null)
     {
 
-        if ($replDiscount instanceof \Ls\Replication\Model\ReplDiscount) {
+        if ($replDiscount instanceof ReplDiscount) {
             $websiteIds = $this->replicationHelper->getAllWebsitesIds();
             if ($amount == null) {
                 $amount = $replDiscount->getDiscountValue();
@@ -318,7 +325,7 @@ class DiscountCreateTask
              */
             $rule->setData('conditions', $conditions);
             // @codingStandardsIgnoreStart
-            $validateResult = $rule->validateData(new \Magento\Framework\DataObject($rule->getData()));
+            $validateResult = $rule->validateData(new DataObject($rule->getData()));
             // @codingStandardsIgnoreEnd
             if ($validateResult !== true) {
                 foreach ($validateResult as $errorMessage) {
@@ -329,19 +336,19 @@ class DiscountCreateTask
             try {
                 $rule->loadPost($rule->getData());
                 $this->catalogRule->save($rule);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }
     }
 
     /**
-     * @return array|\Ls\Replication\Model\ResourceModel\ReplDiscount\Collection
+     * @return array|Collection
      */
     public function getUniquePublishedOffers()
     {
         $publishedOfferIds = [];
-        /** @var  \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection $collection */
+        /** @var  Collection $collection */
         $collection = $this->replDiscountCollection->create();
         $collection->getSelect()
             ->columns('OfferNo')
@@ -361,9 +368,9 @@ class DiscountCreateTask
             ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters);
-        /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+        /** @var ReplDiscountSearchResults $replDiscounts */
         $replDiscounts = $this->replDiscountRepository->getList($criteria);
-        /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
+        /** @var ReplDiscount $replDiscount */
         foreach ($replDiscounts->getItems() as $replDiscount) {
             /** @var RuleCollectionFactory $ruleCollection */
             $ruleCollection = $this->ruleCollectionFactory->create();
@@ -376,7 +383,7 @@ class DiscountCreateTask
                 // @codingStandardsIgnoreStart
                 $this->replDiscountRepository->save($replDiscount);
                 // @codingStandardsIgnoreEnd
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -398,10 +405,10 @@ class DiscountCreateTask
                     ['field' => 'OfferNo', 'value' => $name, 'condition_type' => 'eq'],
                     ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                 ];
-                $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, 100);
-                /** @var \Ls\Replication\Model\ReplDiscountSearchResults $replDiscounts */
+                $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+                /** @var ReplDiscountSearchResults $replDiscounts */
                 $replDiscounts = $this->replDiscountRepository->getList($criteria);
-                /** @var \Ls\Replication\Model\ReplDiscount $replDiscount */
+                /** @var ReplDiscount $replDiscount */
                 foreach ($replDiscounts->getItems() as $replDiscount) {
                     $replDiscount->setData('processed', '0');
                     $replDiscount->setData('is_updated', '0');
@@ -411,7 +418,7 @@ class DiscountCreateTask
                 }
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
         return false;
