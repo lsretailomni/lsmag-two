@@ -1,8 +1,3 @@
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 define([
     'jquery',
     'ko',
@@ -71,25 +66,19 @@ define([
 
         selection: function (data, event) {
             $(event.currentTarget).find('input').attr('checked', 'checked');
-            var selected_value = $("input[name='group1']:checked").val();
-            var ele = $("input[name='group1']:checked");
+            var ele = $("input[name='group1']:checked"),
+                selected_value = ele.val();
             ele.parent().siblings().removeClass('active');
             ele.parent().addClass('active');
             $("#discount-code").val(selected_value).change();
             return true;
         },
-        checkCustomerLoggedIn: function() {
-            var check = customer.isLoggedIn;
-            return check;
+        checkCustomerLoggedIn: function () {
+            return customer.isLoggedIn;
         },
 
         isDisplay: function () {
-            if(window.checkoutConfig.coupons_display=="1"){
-                return true;
-            } else {
-                return false;
-            }
-
+            return window.checkoutConfig.coupons_display === "1" && (this.getCoupons())().length > 0 && !(this.isApplied()) && this.checkCustomerLoggedIn();
         }
     });
 });
