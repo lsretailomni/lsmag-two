@@ -5,6 +5,10 @@ namespace Ls\Omni\Model\Sales\Total\Quote;
 use Magento\Tax\Model\Config;
 use Magento\Tax\Model\Sales\Total\Quote\Subtotal;
 
+/**
+ * Class CommonTaxCollector
+ * @package Ls\Omni\Model\Sales\Total\Quote
+ */
 class CommonTaxCollector
 {
     /** @var Config */
