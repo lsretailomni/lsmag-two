@@ -22,6 +22,11 @@ class ReplItemUnitOfMeasure
     protected $CountAsOne = null;
 
     /**
+     * @property string $Description
+     */
+    protected $Description = null;
+
+    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
@@ -47,14 +52,9 @@ class ReplItemUnitOfMeasure
     protected $Selection = null;
 
     /**
-     * @property string $StoreId
+     * @property string $ShortDescription
      */
-    protected $StoreId = null;
-
-    /**
-     * @property string $UnitOfMeasure
-     */
-    protected $UnitOfMeasure = null;
+    protected $ShortDescription = null;
 
     /**
      * @param string $Code
@@ -90,6 +90,24 @@ class ReplItemUnitOfMeasure
     public function getCountAsOne()
     {
         return $this->CountAsOne;
+    }
+
+    /**
+     * @param string $Description
+     * @return $this
+     */
+    public function setDescription($Description)
+    {
+        $this->Description = $Description;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->Description;
     }
 
     /**
@@ -183,39 +201,21 @@ class ReplItemUnitOfMeasure
     }
 
     /**
-     * @param string $StoreId
+     * @param string $ShortDescription
      * @return $this
      */
-    public function setStoreId($StoreId)
+    public function setShortDescription($ShortDescription)
     {
-        $this->StoreId = $StoreId;
+        $this->ShortDescription = $ShortDescription;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getStoreId()
+    public function getShortDescription()
     {
-        return $this->StoreId;
-    }
-
-    /**
-     * @param string $UnitOfMeasure
-     * @return $this
-     */
-    public function setUnitOfMeasure($UnitOfMeasure)
-    {
-        $this->UnitOfMeasure = $UnitOfMeasure;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnitOfMeasure()
-    {
-        return $this->UnitOfMeasure;
+        return $this->ShortDescription;
     }
 
 
