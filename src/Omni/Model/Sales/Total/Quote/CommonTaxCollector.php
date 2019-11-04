@@ -7,13 +7,29 @@ use Magento\Tax\Model\Sales\Total\Quote\Subtotal;
 
 class CommonTaxCollector
 {
+    /** @var Config */
     public $config;
+
+    /**
+     * CommonTaxCollector constructor.
+     * @param Config $taxConfig
+     */
 
     public function __construct(
         Config $taxConfig
     ) {
         $this->config = $taxConfig;
     }
+
+    /**
+     * @param Subtotal $subject
+     * @param callable $proceed
+     * @param $quoteItem
+     * @param $itemTaxDetails
+     * @param $baseItemTaxDetails
+     * @param $store
+     * @return $this
+     */
 
     public function aroundUpdateItemTaxInfo(
         Subtotal $subject,
