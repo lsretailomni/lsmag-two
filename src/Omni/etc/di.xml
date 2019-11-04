@@ -58,4 +58,8 @@
     <type name="Magento\Checkout\CustomerData\AbstractItem">
         <plugin name="ls_checkout.cart.discount" type="Ls\Omni\CustomerData\AbstractItem" sortOrder="1"/>
     </type>
+
+    <type name="Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector">
+        <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector" sortOrder="1"/>
+    </type>
 </config>
