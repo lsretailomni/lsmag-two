@@ -301,7 +301,7 @@ class OrderHelper extends AbstractHelper
                 ->setCardNumber($cardId)
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getLsPointsSpent())
-                ->setPreApprovedValidDate(date($preApprovedDate)
+                ->setPreApprovedValidDate($preApprovedDate)
                 ->setTenderType('3');
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
@@ -316,7 +316,7 @@ class OrderHelper extends AbstractHelper
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())
                 ->setExternalReference($order->getIncrementId())
-                ->setPreApprovedValidDate(date($preApprovedDate))
+                ->setPreApprovedValidDate($preApprovedDate)
                 ->setTenderType('4');
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
