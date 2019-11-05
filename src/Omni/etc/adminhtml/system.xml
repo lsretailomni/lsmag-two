@@ -116,6 +116,16 @@
                     <comment>This will display the number of mix and match discounts product on promotions in product page.Set value to -1 to display all products.</comment>
                 </field>
             </group>
+            <group id="ls_stores" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Stores Listing</label>
+                <field id="timeformat" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Opening Hours Time Format</label>
+                    <source_model>Ls\Omni\Block\Adminhtml\System\Config\TimeFormat</source_model>
+                </field>
+            </group>
         </section>
         <!-- For shipment Method -->
         <section id="carriers" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"

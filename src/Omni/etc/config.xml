@@ -18,6 +18,9 @@
                 <coupon>1</coupon>
                 <discount_mixandmatch_limit>15</discount_mixandmatch_limit>
             </ls_discounts>
+            <ls_stores>
+                <timeformat>h:i A</timeformat>
+            </ls_stores>
         </ls_mag>
         <!-- For Click and Collect -->
         <omni_clickandcollect>

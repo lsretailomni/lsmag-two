@@ -240,8 +240,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const ORDER_STATE_COMPLETE = 'COMPLETE';
 
     //Store Hours Format
-    const STORE_HOURS_TIME_FORMAT = 'h:i A';
-
+    const STORE_HOURS_TIME_FORMAT_12HRS = 'h:i A';
+    const STORE_HOURS_TIME_FORMAT_24HRS = 'H:i';
     //LS Recommendation.
     const LS_RECOMMEND_ACTIVE = 'ls_mag/ls_recommend/active';
     const LS_RECOMMEND_SHOW_ON_PRODUCT = 'ls_mag/ls_recommend/product';
@@ -261,6 +261,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //Coupon Code Message
     const LS_COUPON_CODE_ERROR_MESSAGE = 'Coupon Code is not valid for these item(s)';
+
+    //Coupon Code Message
+    const LS_STORES_OPENING_HOURS_FORMAT = 'ls_mag/ls_stores/timeformat';
 
     //LS Discount Message
     const LS_DISCOUNT_PRICE_PERCENTAGE_TEXT = "Save";
