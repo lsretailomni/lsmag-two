@@ -1,9 +1,3 @@
-<!--
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <div class="payment-option _collapsible opc-payment-additional discount-code"
      data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
     <div class="payment-option-title field choice" data-role="title">
@@ -48,8 +42,6 @@
             </div>
         </form>
         <!-- ko if: isDisplay() -->
-        <!-- ko ifnot: isApplied() -->
-        <!-- ko if: checkCustomerLoggedIn() -->
         <div class="available-coupons">
             <h2><span>OR</span></h2>
             <form id="my_radio_box">
@@ -64,8 +56,6 @@
                 </fieldset>
             </form>
         </div>
-        <!-- /ko -->
-        <!-- /ko -->
         <!-- /ko -->
     </div>
 </div>
