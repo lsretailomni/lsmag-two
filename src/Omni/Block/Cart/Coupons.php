@@ -2,16 +2,21 @@
 
 namespace Ls\Omni\Block\Cart;
 
+use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Checkout\Block\Cart\Coupon;
+use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * @api
  */
-class Coupons extends \Magento\Checkout\Block\Cart\Coupon
+class Coupons extends Coupon
 {
 
     /**
@@ -19,7 +24,7 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
      */
     public $loyaltyHelper;
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     public $storeManager;
 
     /**
@@ -33,15 +38,15 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
     public $scopeConfig;
 
     /**
-     * @var \Ls\Core\Model\LSR
+     * @var LSR
      */
     public $lsr;
 
     /**
      * Coupons constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param Context $context
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param Proxy $checkoutSession
      * @param StoreManagerInterface $storeManager
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
@@ -50,9 +55,9 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
+        Context $context,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
+        Proxy $checkoutSession,
         StoreManagerInterface $storeManager,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
@@ -61,12 +66,12 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
-        $this->_isScopePrivate = true;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->storeManager = $storeManager;
+        $this->_isScopePrivate   = true;
+        $this->loyaltyHelper     = $loyaltyHelper;
+        $this->storeManager      = $storeManager;
         $this->timeZoneInterface = $timeZoneInterface;
-        $this->scopeConfig = $scopeConfig;
-        $this->lsr = $lsr;
+        $this->scopeConfig       = $scopeConfig;
+        $this->lsr               = $lsr;
     }
 
     /**
@@ -87,16 +92,16 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
     }
 
     /**
-     * @param \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon
+     * @param PublishedOffer $coupon
      * @return string
      */
-    public function getFormattedDescription(\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon)
+    public function getFormattedDescription(PublishedOffer $coupon)
     {
-        $description = "<div class='coupon-description-wrapper'>".
-            (($coupon->getOfferId()) ? "<span class='coupon-code'>".$coupon->getOfferId()."</span><br/>" : "").
-            (($coupon->getDescription()) ? "<span class='coupon-description'>".$coupon->getDescription()."</span><br/>" : "").
-            (($coupon->getDetails()) ? "<span class='coupon-detail'>".$coupon->getDetails()."</span><br/>" : "").
-            (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>".__("Valid till")."&nbsp". $this->getFormattedOfferExpiryDate($coupon->getExpirationDate())."</span>" : "") .
+        $description = "<div class='coupon-description-wrapper'>" .
+            (($coupon->getOfferId()) ? "<span class='coupon-code'>" . $coupon->getOfferId() . "</span><br/>" : "") .
+            (($coupon->getDescription()) ? "<span class='coupon-description'>" . $coupon->getDescription() . "</span><br/>" : "") .
+            (($coupon->getDetails()) ? "<span class='coupon-detail'>" . $coupon->getDetails() . "</span><br/>" : "") .
+            (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>" . __("Valid till") . "&nbsp" . $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>" : "") .
             "</div>";
         return $description;
     }
@@ -113,7 +118,7 @@ class Coupons extends \Magento\Checkout\Block\Cart\Coupon
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $offerExpiryDate;
