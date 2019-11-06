@@ -104,14 +104,14 @@ class Data
                 $invoice->setBaseGrandTotal($amount);
                 $invoice->getOrder()->setTotalPaid($amount);
                 $invoice->getOrder()->setBaseTotalPaid($amount);
-                $order->addStatusHistoryComment(__('INVOICED FROM LS CENTRAL THROUGH WEBHOOK'), false);
+                $order->addStatusHistoryComment('INVOICED FROM LS CENTRAL THROUGH WEBHOOK', false);
                 $transactionSave = $this->transactionFactory->create()->addObject($invoice)->
                 addObject($invoice->getOrder());
                 $transactionSave->save();
                 try {
                     $this->invoiceSender->send($invoice);
                 } catch (Exception $e) {
-                    $this->logger->error(__('We can\'t send the invoice email right now. ' . $documentId));
+                    $this->logger->error('We can\'t send the invoice email right now. ' . $documentId);
                     return null;
                 }
                 return self::SUCCESS;
@@ -152,20 +152,20 @@ class Data
         $validate = true;
         if (!$order->getId() || $order->getPayment()->getLastTransId() != $token) {
             $this->logger->error(
-                __('The order does not exist or token does not match.' . $documentId)
+                'The order does not exist or token does not match.' . $documentId
             );
             $validate = false;
         }
         if ($order->hasInvoices()) {
             $this->logger->error(
-                __('The order already has invoice created.' . $documentId)
+                'The order already has invoice created.' . $documentId
             );
             $validate = false;
         }
 
         if ($order->getGrandTotal() < $amount) {
             $this->logger->error(
-                __('Invoice Amount is greater than Order Amount' . $documentId)
+                'Invoice Amount is greater than Order Amount' . $documentId
             );
 
             $validate = false;
@@ -182,9 +182,9 @@ class Data
     {
         $validate = true;
         if (!$invoice || !$invoice->getTotalQty()) {
-            $this->logger->error(__(
+            $this->logger->error(
                 'We can\'t save the invoice right now' . $documentId
-            ));
+            );
             $validate = false;
         }
         return $validate;
