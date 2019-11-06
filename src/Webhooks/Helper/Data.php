@@ -3,7 +3,7 @@
 namespace Ls\WebHooks\Helper;
 
 use Exception;
-use Ls\Webhooks\Logger\Logger;
+use \Ls\Webhooks\Logger\Logger;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\DB\TransactionFactory;
 use Magento\Sales\Api\Data\OrderInterface;
