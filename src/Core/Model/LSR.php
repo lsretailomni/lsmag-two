@@ -2,9 +2,9 @@
 
 namespace Ls\Core\Model;
 
-use \Ls\Omni\Service\ServiceType;
-use Magento\Framework\App\Config\ScopeConfigInterface;
+use Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use SoapClient;
 
 /**
@@ -78,6 +78,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
+    const SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE = 'ls_mag/replication/product_attribute_batch_size';
+    const SC_REPLICATION_DISCOUNT_BATCH_SIZE = 'ls_mag/replication/discount_batch_size';
+    const SC_REPLICATION_PRODUCT_INVENTORY_BATCH_SIZE = 'ls_mag/replication/product_inventory_batch_size';
+    const SC_REPLICATION_PRODUCT_PRICES_BATCH_SIZE = 'ls_mag/replication/product_prices_batch_size';
+    const SC_REPLICATION_PRODUCT_IMAGES_BATCH_SIZE = 'ls_mag/replication/product_images_batch_size';
+    const SC_REPLICATION_PRODUCT_BARCODE_BATCH_SIZE = 'ls_mag/replication/product_barcode_batch_size';
+    const SC_REPLICATION_VARIANT_BATCH_SIZE         = 'ls_mag/replication/variant_batch_size';
+    const SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE =
+        'ls_mag/replication/product_assignment_to_category_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
 
     // CRON CHECKING
@@ -302,7 +311,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         ScopeConfigInterface $scopeConfig,
         TypeListInterface $cacheTypeList
     ) {
-        $this->scopeConfig = $scopeConfig;
+        $this->scopeConfig   = $scopeConfig;
         $this->cacheTypeList = $cacheTypeList;
     }
 
@@ -366,7 +375,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         //TODO integrate multiple store.
         $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
-        $store = $this->getStoreConfig(self::SC_SERVICE_STORE);
+        $store   = $this->getStoreConfig(self::SC_SERVICE_STORE);
         if (empty($baseUrl) || empty($store)) {
             return false;
         } else {

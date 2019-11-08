@@ -3,15 +3,15 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
-use \Ls\Omni\Helper\ContactHelper;
-use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Model\ReplDiscount;
-use \Ls\Replication\Model\ReplDiscountSearchResults;
-use \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use Ls\Omni\Helper\ContactHelper;
+use Ls\Replication\Api\ReplDiscountRepositoryInterface;
+use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Replication\Model\ReplDiscount;
+use Ls\Replication\Model\ReplDiscountSearchResults;
+use Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
+use Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\CatalogRule\Model\Rule\Job;
@@ -113,16 +113,16 @@ class DiscountCreateTask
         ContactHelper $contactHelper,
         LoggerInterface $logger
     ) {
-        $this->catalogRule = $catalogRule;
-        $this->ruleFactory = $ruleFactory;
-        $this->ruleCollectionFactory = $ruleCollectionFactory;
-        $this->jobApply = $jobApply;
+        $this->catalogRule            = $catalogRule;
+        $this->ruleFactory            = $ruleFactory;
+        $this->ruleCollectionFactory  = $ruleCollectionFactory;
+        $this->jobApply               = $jobApply;
         $this->replDiscountRepository = $replDiscountRepository;
-        $this->replicationHelper = $replicationHelper;
-        $this->contactHelper = $contactHelper;
-        $this->lsr = $LSR;
+        $this->replicationHelper      = $replicationHelper;
+        $this->contactHelper          = $contactHelper;
+        $this->lsr                    = $LSR;
         $this->replDiscountCollection = $replDiscountCollection;
-        $this->logger = $logger;
+        $this->logger                 = $logger;
     }
 
     /**
@@ -141,10 +141,11 @@ class DiscountCreateTask
          * And we need to apply only those rules which are associated to the store assigned to it.
          */
         if ($this->lsr->isLSR()) {
+            $discountBatchSize = $this->replicationHelper->getDiscountsBatchSize();
             $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
             $CronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
             if ($CronProductCheck == 1) {
-                $store_id = $this->lsr->getDefaultWebStore();
+                $store_id                 = $this->lsr->getDefaultWebStore();
                 $publishedOfferCollection = $this->getUniquePublishedOffers();
                 if (!empty($publishedOfferCollection)) {
                     $reindexRules = false;
@@ -156,24 +157,27 @@ class DiscountCreateTask
                             ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                         ];
 
-                        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1);
+                        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, $discountBatchSize);
                         /** @var ReplDiscountSearchResults $replDiscounts */
-                        $replDiscounts = $this->replDiscountRepository->getList($criteria);
+                        $replDiscounts  = $this->replDiscountRepository->getList($criteria);
                         $skuAmountArray = $diffValueArray = $sameValueArray = [];
                         if ($item->getLoyaltySchemeCode() == '' ||
                             $item->getLoyaltySchemeCode() == null
                         ) {
-                            $useAllGroupIds = true;
+                            $useAllGroupIds   = true;
                             $customerGroupIds = $this->contactHelper->getAllCustomerGroupIds();
                         } else {
-                            $useAllGroupIds = false;
+                            $useAllGroupIds   = false;
                             $customerGroupIds = [];
                         }
                         if ($replDiscounts->getItems()) {
                             /** We check if offer exist */
                             $deleteStatus = $this->deleteOfferByName($item->getOfferNo());
                             if ($deleteStatus) {
-                                $criteriaAfterDelete = $this->replicationHelper->buildCriteriaForArray($filters, -1);
+                                $criteriaAfterDelete = $this->replicationHelper->buildCriteriaForArray(
+                                    $filters,
+                                    $discountBatchSize
+                                );
                                 /** @var ReplDiscountSearchResults $replDiscounts */
                                 $replDiscounts = $this->replDiscountRepository->getList($criteriaAfterDelete);
                             }
@@ -194,7 +198,6 @@ class DiscountCreateTask
                                 $replDiscount->getVariantId() == null
                             ) {
                                 $skuAmountArray[$replDiscount->getItemId()] = $replDiscount->getDiscountValue();
-
                             } else {
                                 $skuAmountArray[$replDiscount->getItemId() . '-' .
                                 $replDiscount->getVariantId()] = $replDiscount->getDiscountValue();
@@ -207,7 +210,7 @@ class DiscountCreateTask
                             // @codingStandardsIgnoreEnd
                         }
 
-                        $counts = array_count_values($skuAmountArray);
+                        $counts         = array_count_values($skuAmountArray);
                         $sameValueArray = array_filter($skuAmountArray, function ($value) use ($counts) {
                             return $counts[$value] > 1;
                         });
@@ -281,18 +284,18 @@ class DiscountCreateTask
             // Create root conditions to match with all child conditions
             $conditions["1"] =
                 [
-                    "type" => "Magento\CatalogRule\Model\Rule\Condition\Combine",
+                    "type"       => "Magento\CatalogRule\Model\Rule\Condition\Combine",
                     "aggregator" => "all",
-                    "value" => 1,
-                    "new_child" => ""
+                    "value"      => 1,
+                    "new_child"  => ""
                 ];
 
             $conditions["1--1"] =
                 [
-                    "type" => "Magento\CatalogRule\Model\Rule\Condition\Product",
+                    "type"      => "Magento\CatalogRule\Model\Rule\Condition\Product",
                     "attribute" => "sku",
-                    "operator" => "()",
-                    "value" => implode(',', $skuArray)
+                    "operator"  => "()",
+                    "value"     => implode(',', $skuArray)
                 ];
 
             $rule->setName($replDiscount->getOfferNo())
@@ -364,7 +367,7 @@ class DiscountCreateTask
      */
     public function deleteOffers()
     {
-        $filters = [
+        $filters  = [
             ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters);
@@ -396,16 +399,17 @@ class DiscountCreateTask
      */
     public function deleteOfferByName($name)
     {
+        $discountBatchSize = $this->replicationHelper->getDiscountsBatchSize();
         $ruleCollection = $this->ruleCollectionFactory->create();
         $ruleCollection->addFieldToFilter('name', $name);
         try {
             foreach ($ruleCollection as $rule) {
                 $this->catalogRule->deleteById($rule->getId());
-                $filters = [
+                $filters  = [
                     ['field' => 'OfferNo', 'value' => $name, 'condition_type' => 'eq'],
                     ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                 ];
-                $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+                $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, $discountBatchSize);
                 /** @var ReplDiscountSearchResults $replDiscounts */
                 $replDiscounts = $this->replDiscountRepository->getList($criteria);
                 /** @var ReplDiscount $replDiscount */

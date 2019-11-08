@@ -245,6 +245,7 @@ class AttributesCreateTask
      */
     public function processVariantAttributes()
     {
+        $variantBatchSize = $this->replicationHelper->getVariantBatchSize();
         $this->logger->debug('Running Varients create task...');
         /** @var default attribute set id for catalog_product $defaultAttributeSetId */
         $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
@@ -252,7 +253,7 @@ class AttributesCreateTask
         /** @var default group id of general tab for specific product attribute set $defaultGroupId */
         $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
 
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 1000);
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $variantBatchSize);
         $variants = $this->replExtendedVariantValueRepository->getList($criteria)->getItems();
         $variantCodes = [];
         /** @var \Ls\Replication\Model\ReplExtendedVariantValue $variant */
