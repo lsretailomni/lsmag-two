@@ -62,6 +62,8 @@ class OrderPayment implements OrderPaymentInterface
      * @param TransactionFactory $transactionFactory
      * @param ManagerInterface $messageManager
      * @param InvoiceSender $invoiceSender
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param Data $helper
      */
     public function __construct(
         Logger $logger,
