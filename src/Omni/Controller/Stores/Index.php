@@ -2,25 +2,32 @@
 
 namespace Ls\Omni\Controller\Stores;
 
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\View\Result\Page;
+use Magento\Framework\View\Result\PageFactory;
+
 /**
  * Class Index
  * @package Ls\Omni\Controller\Stores
  */
-class Index extends \Magento\Framework\App\Action\Action
+class Index extends Action
 {
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @var PageFactory
      */
     public $resultPageFactory;
 
     /**
      * Index constructor.
-     * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        Context $context,
+        PageFactory $resultPageFactory
     ) {
 
         $this->resultPageFactory = $resultPageFactory;
@@ -28,10 +35,15 @@ class Index extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
+     * @return ResponseInterface|ResultInterface|Page
      */
     public function execute()
     {
-        return $this->resultPageFactory->create();
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->getConfig()->getTitle()->set(
+            __('Our Stores')
+        );
+        return $resultPage;
+
     }
 }

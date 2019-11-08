@@ -54,7 +54,7 @@ abstract class AbstractReplicationTask
             "LoyaltySchemeCode",
             "OfferNo",
             "StoreId",
-            "DiscountValue",
+            "VariantId",
             "MinimumQuantity"
         ],
         "ls_mag/replication/repl_discount_validation" => ["nav_id"],
