@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommInventoryStatus;
-use Ls\Omni\Client\Ecommerce\Entity\ReplInvStatusResponse;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplInvStatus;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommInventoryStatus;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplInvStatusResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplInvStatus;
 
 class ReplEcommInventoryStatusTest extends ReplicationTest
 {

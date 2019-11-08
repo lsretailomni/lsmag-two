@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommAttribute;
-use Ls\Omni\Client\Ecommerce\Entity\ReplAttributeResponse;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplAttribute;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommAttribute;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplAttributeResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplAttribute;
 
 class ReplEcommAttributeTest extends ReplicationTest
 {

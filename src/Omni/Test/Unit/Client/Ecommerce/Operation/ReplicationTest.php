@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Service\ServiceType;
-use Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Omni\Client\Ecommerce\ClassMap;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Zend\Uri\UriFactory;
 
 class ReplicationTest extends \PHPUnit\Framework\TestCase

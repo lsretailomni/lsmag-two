@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemVariantRegistrations;
-use Ls\Omni\Client\Ecommerce\Entity\ReplItemVariantRegistrationResponse;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplItemVariantRegistration;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemVariantRegistrations;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplItemVariantRegistrationResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplItemVariantRegistration;
 
 class ReplEcommItemVariantRegistrationsTest extends ReplicationTest
 {

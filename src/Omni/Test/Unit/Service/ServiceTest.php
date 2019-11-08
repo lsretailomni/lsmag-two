@@ -3,7 +3,7 @@
 namespace Ls\Omni\Test\Unit\Service;
 
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Operation\Ping;
+use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Service\Service;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Catalog\Model\CategoryRepository;

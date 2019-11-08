@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommBarcodes;
-use Ls\Omni\Client\Ecommerce\Entity\ReplBarcodeResponse;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplBarcode;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommBarcodes;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplBarcodeResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplBarcode;
 
 class ReplEcommBarcodesTest extends ReplicationTest
 {
