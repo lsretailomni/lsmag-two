@@ -2,34 +2,48 @@
 
 namespace Ls\Omni\Helper;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Filesystem;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class LoyaltyHelper
  * @package Ls\Omni\Helper
  */
-class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
+class LoyaltyHelper extends AbstractHelper
 {
 
     const SERVICE_TYPE = 'ecommerce';
 
-    /** @var \Magento\Framework\Api\FilterBuilder */
+    /** @var FilterBuilder */
     public $filterBuilder;
 
-    /** @var \Magento\Framework\Api\SearchCriteriaBuilder */
+    /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     public $storeManager;
 
-    /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
+    /** @var CustomerRepositoryInterface */
     public $customerRepository;
 
-    /** @var \Magento\Customer\Model\CustomerFactory */
+    /** @var CustomerFactory */
     public $customerFactory;
 
     /**
@@ -40,7 +54,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var null */
     public $ns = null;
 
-    /** @var \Magento\Framework\Filesystem */
+    /** @var Filesystem */
     public $filesystem;
 
     /**
@@ -49,12 +63,12 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $checkoutSession;
 
     /**
-     * @var \Magento\Customer\Api\GroupRepositoryInterface
+     * @var GroupRepositoryInterface
      */
     public $groupRepository;
 
     /**
-     * @var \Ls\Omni\Helper\CacheHelper
+     * @var CacheHelper
      */
     public $cacheHelper;
 
@@ -65,69 +79,69 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * LoyaltyHelper constructor.
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param Context $context
+     * @param FilterBuilder $filterBuilder
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param StoreManagerInterface $storeManager
+     * @param CustomerFactory $customerFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Framework\Filesystem $Filesystem
-     * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
-     * @param \Ls\Omni\Helper\CacheHelper $cacheHelper
+     * @param Proxy $checkoutSession
+     * @param Filesystem $Filesystem
+     * @param GroupRepositoryInterface $groupRepository
+     * @param CacheHelper $cacheHelper
      * @param LSR $lsr
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
+        Context $context,
+        FilterBuilder $filterBuilder,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        CustomerRepositoryInterface $customerRepository,
+        StoreManagerInterface $storeManager,
+        CustomerFactory $customerFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Framework\Filesystem $Filesystem,
-        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
+        Proxy $checkoutSession,
+        Filesystem $Filesystem,
+        GroupRepositoryInterface $groupRepository,
         CacheHelper $cacheHelper,
         LSR $lsr
     ) {
-        $this->filterBuilder = $filterBuilder;
+        $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->storeManager = $storeManager;
-        $this->customerRepository = $customerRepository;
-        $this->customerFactory = $customerFactory;
-        $this->customerSession = $customerSession;
-        $this->checkoutSession = $checkoutSession;
-        $this->filesystem = $Filesystem;
-        $this->groupRepository = $groupRepository;
-        $this->cacheHelper = $cacheHelper;
-        $this->lsr = $lsr;
+        $this->storeManager          = $storeManager;
+        $this->customerRepository    = $customerRepository;
+        $this->customerFactory       = $customerFactory;
+        $this->customerSession       = $customerSession;
+        $this->checkoutSession       = $checkoutSession;
+        $this->filesystem            = $Filesystem;
+        $this->groupRepository       = $groupRepository;
+        $this->cacheHelper           = $cacheHelper;
+        $this->lsr                   = $lsr;
         parent::__construct(
             $context
         );
     }
 
     /**
-     * @return Entity\ArrayOfProfile|Entity\ProfilesGetAllResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\ArrayOfProfile|Entity\ProfilesGetAllResponse|ResponseInterface|null
      */
     public function getAllProfiles()
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\ProfilesGetAll();
-        $entity = new Entity\ProfilesGetAll();
+        $entity  = new Entity\ProfilesGetAll();
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
     }
 
     /**
-     * @return Entity\ArrayOfPublishedOffer|Entity\PublishedOffersGetByCardIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\ArrayOfPublishedOffer|Entity\PublishedOffersGetByCardIdResponse|ResponseInterface|null
      */
     public function getOffers()
     {
@@ -142,7 +156,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity->setItemId('');
         try {
             $response = $request->execute($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -151,7 +165,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param null $image_id
      * @param null $image_size
-     * @return array|bool|Entity\ImageGetByIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return array|bool|Entity\ImageGetByIdResponse|ResponseInterface|null
      */
     public function getImageById($image_id = null, $image_size = null)
     {
@@ -159,22 +173,22 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if ($image_id == null || $image_size == null) {
             return $response;
         }
-        $cacheId = LSR::IMAGE_CACHE.$image_id;
+        $cacheId  = LSR::IMAGE_CACHE . $image_id;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug("Found image from cache ".$cacheId);
+            $this->_logger->debug("Found image from cache " . $cacheId);
             return $response;
         }
         // @codingStandardsIgnoreStart
         $request = new Operation\ImageGetById();
-        $entity = new Entity\ImageGetById();
+        $entity  = new Entity\ImageGetById();
         // @codingStandardsIgnoreEnd
         $entity->setId($image_id)
             ->setImageSize($image_size);
 
         try {
             $response = $request->execute($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         if (!empty($response) && !empty($response->getResult())) {
@@ -197,12 +211,12 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $points = $pointrate = $value = 0;
         /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $memberProfile */
         $memberProfile = $this->getMemberInfo();
-        $pointrate = $this->getPointRate();
+        $pointrate     = $this->getPointRate();
 
         // check if we have something in there.
         if ($memberProfile != null and $pointrate != null) {
             $points = $memberProfile->getAccount()->getPointBalance();
-            $value = $points * $pointrate;
+            $value  = $points * $pointrate;
             return $value;
         } else {
             // if no then just return 0 value
@@ -211,13 +225,13 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return Entity\ContactGetByCardIdResponse|Entity\MemberContact|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\ContactGetByCardIdResponse|Entity\MemberContact|ResponseInterface|null
      */
     public function getMemberInfo()
     {
         $response = null;
         $customer = $this->customerSession->getCustomer();
-        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId   = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         // if not set in session then get it from customer database.
         if (!$cardId) {
             $cardId = $customer->getData('lsr_cardid');
@@ -230,7 +244,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity->setCardId($cardId);
         try {
             $response = $request->execute($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -257,25 +271,25 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return float|Entity\GetPointRateResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return float|Entity\GetPointRateResponse|ResponseInterface|null
      */
     public function getPointRate()
     {
-        $storeId = $this->lsr->getDefaultWebStore();
-        $cacheId = LSR::POINTRATE.$storeId;
+        $storeId  = $this->lsr->getDefaultWebStore();
+        $cacheId  = LSR::POINTRATE . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug("Found point rate from cache ".$cacheId);
+            $this->_logger->debug("Found point rate from cache " . $cacheId);
             return $response;
         }
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\GetPointRate();
-        $entity = new Entity\GetPointRate();
+        $entity  = new Entity\GetPointRate();
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         if (!empty($response)) {
@@ -319,7 +333,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isPointsLimitValid($grandTotal, $loyaltyPoints)
     {
-        $pointrate = $this->getPointRate();
+        $pointrate      = $this->getPointRate();
         $requiredAmount = $pointrate * $loyaltyPoints;
         if ($requiredAmount <= $grandTotal) {
             return true;
@@ -350,23 +364,23 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $itemId
      * @param $storeId
-     * @return bool|Entity\DiscountsGetResponse|Entity\ProactiveDiscount[]|\Ls\Omni\Client\ResponseInterface|null
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return bool|Entity\DiscountsGetResponse|Entity\ProactiveDiscount[]|ResponseInterface|null
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getProactiveDiscounts($itemId, $storeId)
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\DiscountsGet();
-        $entity = new Entity\DiscountsGet();
-        $string = new Entity\ArrayOfstring();
+        $entity  = new Entity\DiscountsGet();
+        $string  = new Entity\ArrayOfstring();
         // @codingStandardsIgnoreEnd
         $customerGroupId = $this->customerSession->getCustomerGroupId();
-        $cacheId = LSR::PROACTIVE_DISCOUNTS.$itemId."_".$customerGroupId."_".$storeId;
-        $response = $this->cacheHelper->getCachedContent($cacheId);
+        $cacheId         = LSR::PROACTIVE_DISCOUNTS . $itemId . "_" . $customerGroupId . "_" . $storeId;
+        $response        = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug("Found proactive discounts from cache ".$cacheId);
+            $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
             return $response;
         }
         $group = $this->groupRepository->getById($customerGroupId)->getCode();
@@ -374,7 +388,7 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $entity->setStoreId($storeId)->setItemiIds($string)->setLoyaltySchemeCode($group);
         try {
             $response = $request->execute($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         if (!empty($response) &&
@@ -395,26 +409,26 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param $itemId
      * @param $storeId
      * @param $cardId
-     * @return bool|Entity\PublishedOffer[]|Entity\PublishedOffersGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return bool|Entity\PublishedOffer[]|Entity\PublishedOffersGetResponse|ResponseInterface|null
      */
     public function getPublishedOffers($itemId, $storeId, $cardId)
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\PublishedOffersGetByCardId();
-        $entity = new Entity\PublishedOffersGetByCardId();
+        $entity  = new Entity\PublishedOffersGetByCardId();
         // @codingStandardsIgnoreEnd
-        $cacheId = LSR::COUPONS.$itemId."_".$cardId."_".$storeId;
+        $cacheId  = LSR::COUPONS . $itemId . "_" . $cardId . "_" . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug("Found coupons from cache ".$cacheId);
+            $this->_logger->debug("Found coupons from cache " . $cacheId);
             return $response;
         }
         $entity->setCardId($cardId);
         $entity->setItemId($itemId);
         try {
             $response = $request->execute($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         if (!empty($response) &&
@@ -436,25 +450,40 @@ class LoyaltyHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAvailableCouponsForLoggedInCustomers()
     {
-        $memberInfo = $this->getMemberInfo();
+        $memberInfo         = $this->getMemberInfo();
         $publishedOffersObj = $memberInfo->getPublishedOffers();
-        $itemsInCart = $this->checkoutSession->getQuote()->getAllItems();
-        $coupons = [];
-        foreach ($itemsInCart as &$item) {
-            $item = $item->getSku();
+        $itemsInCart        = $this->checkoutSession->getQuote()->getAllItems();
+        $itemsSku           = [];
+        $coupons            = [];
+
+        foreach ($itemsInCart as $item) {
+            $itemsSku[] = $item->getSku();
         }
+
         if ($publishedOffersObj) {
             $publishedOffers = $publishedOffersObj->getPublishedOffer();
             foreach ($publishedOffers as $each) {
+                $getPublishedOfferLineArray = $each->getOfferLines()->getPublishedOfferLine();
                 if ($each->getCode() == "Coupon" && $each->getOfferLines()) {
-                    $getPublishedOfferLineArray = $each->getOfferLines()->getPublishedOfferLine();
-                    $itemId = $getPublishedOfferLineArray[0]->getId();
-                    if (in_array($itemId, $itemsInCart)) {
-                        $coupons[] = $each;
+                    foreach ($getPublishedOfferLineArray as $publishedOfferLine) {
+                        if (!empty($publishedOfferLine->getVariant())) {
+                            $itemSku = $publishedOfferLine->getId() . '-' . $publishedOfferLine->getVariant();
+                        } else {
+                            $itemSku = $publishedOfferLine->getId();
+                        }
+                        if (in_array($itemSku, $itemsSku)) {
+                            $coupons[] = $each;
+                        }
+                        if ($publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::PRODUCT_GROUP
+                            || $publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::ITEM_CATEGORY
+                            || $publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::SPECIAL_GROUP
+                        ) {
+                            $coupons[] = $each;
+                        }
                     }
                 }
             }
+            return $coupons;
         }
-        return $coupons;
     }
 }
