@@ -1087,15 +1087,15 @@ class ProductCreateTask
                             $productData->setBarcode($replBarcode->getNavId());
                             // @codingStandardsIgnoreStart
                             $this->productResourceModel->saveAttribute($productData, 'barcode');
-                            $replBarcode->setData('is_updated', '0');
-                            $replBarcode->setData('processed', '1');
-                            $this->replBarcodeRepository->save($replBarcode);
                             // @codingStandardsIgnoreEnd
                         }
                     } catch (Exception $e) {
                         $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                         $this->logger->debug($e->getMessage());
                     }
+                    $replBarcode->setData('is_updated', '0');
+                    $replBarcode->setData('processed', '1');
+                    $this->replBarcodeRepository->save($replBarcode);
                 }
             }
         }
