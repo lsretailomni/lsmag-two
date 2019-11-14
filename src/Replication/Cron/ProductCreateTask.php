@@ -613,6 +613,7 @@ class ProductCreateTask
                     $previousCategoryIds = $product->getCategoryIds();
                 } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
+                    continue;
                 }
 
                 $currentCategoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
