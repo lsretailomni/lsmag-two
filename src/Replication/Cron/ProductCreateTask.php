@@ -1133,15 +1133,15 @@ class ProductCreateTask
                         $productData->setPrice($replPrice->getUnitPrice());
                         // @codingStandardsIgnoreStart
                         $this->productResourceModel->saveAttribute($productData, 'price');
-                        $replPrice->setData('is_updated', '0');
-                        $replPrice->setData('processed', '1');
-                        $this->replPriceRepository->save($replPrice);
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (Exception $e) {
                     $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
+                $replPrice->setData('is_updated', '0');
+                $replPrice->setData('processed', '1');
+                $this->replPriceRepository->save($replPrice);
             }
         }
     }
@@ -1179,15 +1179,15 @@ class ProductCreateTask
                         $stockItem->setQty($replInvStatus->getQuantity());
                         $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
                         $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
-                        $replInvStatus->setData('is_updated', '0');
-                        $replInvStatus->setData('processed', '1');
-                        $this->replInvStatusRepository->save($replInvStatus);
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (Exception $e) {
                     $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
+                $replInvStatus->setData('is_updated', '0');
+                $replInvStatus->setData('processed', '1');
+                $this->replInvStatusRepository->save($replInvStatus);
             }
         }
     }
