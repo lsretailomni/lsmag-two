@@ -613,6 +613,9 @@ class ProductCreateTask
                     $previousCategoryIds = $product->getCategoryIds();
                 } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
+                    $hierarchyLeaf->setData('processed', '1');
+                    $hierarchyLeaf->setData('is_updated', '0');
+                    $this->replHierarchyLeafRepository->save($hierarchyLeaf);
                     continue;
                 }
 
