@@ -1134,6 +1134,16 @@ class ProductCreateTask
                         // @codingStandardsIgnoreStart
                         $this->productResourceModel->saveAttribute($productData, 'price');
                         // @codingStandardsIgnoreEnd
+                        if ($productData->getTypeId() == 'configurable') {
+                            $_children = $productData->getTypeInstance()->getUsedProducts($productData);
+                            foreach ($_children as $child) {
+                                $childProductData = $this->productRepository->get($child->getSKU());
+                                $childProductData->setPrice($replPrice->getUnitPrice());
+                                // @codingStandardsIgnoreStart
+                                $this->productResourceModel->saveAttribute($childProductData, 'price');
+                                // @codingStandardsIgnoreEnd
+                            }
+                        }
                     }
                 } catch (Exception $e) {
                     $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
