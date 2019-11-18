@@ -27,15 +27,16 @@ class ReplItemUnitOfMeasure
         	$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+        	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento. 0 means already added & 1 means failed into Magento tables');
         	$table->addColumn('Code' , Table::TYPE_TEXT, '');
         	$table->addColumn('CountAsOne' , Table::TYPE_BOOLEAN, '');
+        	$table->addColumn('Description' , Table::TYPE_TEXT, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, '');
         	$table->addColumn('ItemId' , Table::TYPE_TEXT, '');
         	$table->addColumn('Order' , Table::TYPE_INTEGER, '');
         	$table->addColumn('QtyPrUOM' , Table::TYPE_FLOAT, '');
         	$table->addColumn('Selection' , Table::TYPE_INTEGER, '');
-        	$table->addColumn('StoreId' , Table::TYPE_TEXT, '');
-        	$table->addColumn('UnitOfMeasure' , Table::TYPE_TEXT, '');
+        	$table->addColumn('ShortDescription' , Table::TYPE_TEXT, '');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );

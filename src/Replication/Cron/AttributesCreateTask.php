@@ -13,6 +13,7 @@ use \Ls\Replication\Model\ReplAttributeOptionValue;
 use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
 use \Ls\Replication\Model\ReplAttributeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
+use \Ls\Replication\Logger\Logger;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
@@ -24,7 +25,6 @@ use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class AttributesCreateTask
@@ -64,7 +64,7 @@ class AttributesCreateTask
     public $lsr;
 
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     public $logger;
 
@@ -97,7 +97,7 @@ class AttributesCreateTask
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ProductAttributeRepositoryInterface $productAttributeRepository
      * @param EavSetupFactory $eavSetupFactory
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param AttributeFactory $eavAttributeFactory
      * @param Entity $eav_entity
      * @param ReplAttributeRepositoryInterface $replAttributeRepositoryInterface
@@ -111,7 +111,7 @@ class AttributesCreateTask
         ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
         ProductAttributeRepositoryInterface $productAttributeRepository,
         EavSetupFactory $eavSetupFactory,
-        LoggerInterface $logger,
+        Logger $logger,
         AttributeFactory $eavAttributeFactory,
         Entity $eav_entity,
         ReplAttributeRepositoryInterface $replAttributeRepositoryInterface,
@@ -164,7 +164,7 @@ class AttributesCreateTask
         $this->execute();
         $criteria = $this->replicationHelper->buildCriteriaForNewItems();
         /** @var ReplAttributeSearchResults $replAttributes */
-        $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
+        $replAttributes     = $this->replAttributeRepositoryInterface->getList($criteria);
         $itemsLeftToProcess = count($replAttributes->getItems());
         return [$itemsLeftToProcess];
     }
@@ -174,11 +174,6 @@ class AttributesCreateTask
      */
     public function processAttributes()
     {
-        /*
-         * Replicating data from ls_replication_repl_attribute table
-         * Getting Data only for those which are not yet processed OR is modified.
-         * Technical Structure :- where processed = 0 || is_updated = 1
-         */
         try {
             $criteria = $this->replicationHelper->buildCriteriaForNewItems();
 
@@ -197,11 +192,6 @@ class AttributesCreateTask
                 if ($replAttribute->getValueType() == '5' || $replAttribute->getValueType() == '7') {
                     $this->addAttributeOptions($replAttribute->getCode());
                 }
-                $replAttribute->setData('processed', '1');
-                $replAttribute->setData('is_updated', '0');
-                // @codingStandardsIgnoreStart
-                $this->replAttributeRepositoryInterface->save($replAttribute);
-                // @codingStandardsIgnoreEnd
             }
             $attributesRemovalCounter = $this->caterAttributesRemoval();
             if (count($replAttributes->getItems()) == 0 && $attributesRemovalCounter == 0) {
@@ -226,7 +216,7 @@ class AttributesCreateTask
                 $formattedCode = $this->replicationHelper->formatAttributeCode($replAttribute->getCode());
                 $attribute     = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
                 if ($attribute) {
-                    $attributeId = $attribute->getId();
+                    $attributeId  = $attribute->getId();
                     $entityTypeId = $this->eavConfig->getEntityType(
                         Product::ENTITY
                     )->getEntityTypeId();
@@ -238,86 +228,81 @@ class AttributesCreateTask
                         null
                     );
                 }
-                $replAttribute->setData('processed', '1');
-                $replAttribute->setData('IsDeleted', '0');
-                $replAttribute->setData('is_updated', '0');
-                // @codingStandardsIgnoreStart
-                $this->replAttributeRepositoryInterface->save($replAttribute);
-                // @codingStandardsIgnoreEnd
+                $replAttribute->setData('processed', 1);
+                $replAttribute->setData('IsDeleted', 0);
+                $replAttribute->setData('is_updated', 0);
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
+                $replAttribute->setData('is_failed', 1);
             }
+            // @codingStandardsIgnoreLine
+            $this->replAttributeRepositoryInterface->save($replAttribute);
         }
         return count($replAttributes->getItems());
     }
 
     /**
+     * Create Variants Attribute
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function processVariantAttributes()
     {
-        $this->logger->debug('Running Varients create task...');
+        $this->logger->debug('Running variants create task.');
         /** @var default attribute set id for catalog_product $defaultAttributeSetId */
         $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
-
         /** @var default group id of general tab for specific product attribute set $defaultGroupId */
         $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
-
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 1000);
-        $variants = $this->replExtendedVariantValueRepository->getList($criteria)->getItems();
+        $criteria     = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 1000);
+        $variants     = $this->replExtendedVariantValueRepository->getList($criteria)->getItems();
         $variantCodes = [];
         /** @var ReplExtendedVariantValue $variant */
         foreach ($variants as $variant) {
-            $variant->setData('processed', '1');
-            $variant->setData('is_updated', '0');
-            // @codingStandardsIgnoreStart
-            $this->replExtendedVariantValueRepository->save($variant);
-            // @codingStandardsIgnoreEnd
             if (empty($variantCodes[$variant->getCode()]) ||
                 !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)
             ) {
                 $variantCodes[$variant->getCode()][] = $variant->getValue();
             }
-        }
-        if (count($variants) == 0) {
-            $this->successCronAttributeVariant = true;
+            $variant->setData('processed', 1);
+            $variant->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->replExtendedVariantValueRepository->save($variant);
         }
         foreach ($variantCodes as $code => $value) {
             $formattedCode = $this->replicationHelper->formatAttributeCode($code);
             $attribute     = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
             if (!$attribute || !$attribute->getAttributeId()) {
                 $attributeData = [
-                    'attribute_code' => $formattedCode,
-                    'is_global' => 1,
-                    'frontend_label' => ucwords(strtolower($code)),
-                    'frontend_input' => 'select',
-                    'default_value_text' => '',
-                    'default_value_yesno' => 0,
-                    'default_value_date' => '',
-                    'default_value_textarea' => '',
-                    'is_unique' => 0,
-                    'apply_to' => 0,
-                    'is_required' => 0,
-                    'is_configurable' => 1,
-                    'is_searchable' => 1,
-                    'is_comparable' => 1,
-                    'is_user_defined' => 1,
+                    'attribute_code'                => $formattedCode,
+                    'is_global'                     => 1,
+                    'frontend_label'                => ucwords(strtolower($code)),
+                    'frontend_input'                => 'select',
+                    'default_value_text'            => '',
+                    'default_value_yesno'           => 0,
+                    'default_value_date'            => '',
+                    'default_value_textarea'        => '',
+                    'is_unique'                     => 0,
+                    'apply_to'                      => 0,
+                    'is_required'                   => 0,
+                    'is_configurable'               => 1,
+                    'is_searchable'                 => 1,
+                    'is_comparable'                 => 1,
+                    'is_user_defined'               => 1,
                     'is_visible_in_advanced_search' => 1,
-                    'is_used_for_price_rules' => 0,
-                    'is_wysiwyg_enabled' => 0,
-                    'is_html_allowed_on_front' => 1,
-                    'is_visible_on_front' => 1,
-                    'used_in_product_listing' => 0,
-                    'used_for_sort_by' => 1,
-                    'is_filterable' => 1,
-                    'is_filterable_in_search' => 1,
-                    'backend_type' => 'varchar',
-                    'is_used_in_grid' => 1,
-                    'is_visible_in_grid' => 1,
-                    'is_filterable_in_grid' => 1,
-                    'attribute_set_id' => $defaultAttributeSetId,
-                    'attribute_group_id' => $defaultGroupId
+                    'is_used_for_price_rules'       => 0,
+                    'is_wysiwyg_enabled'            => 0,
+                    'is_html_allowed_on_front'      => 1,
+                    'is_visible_on_front'           => 1,
+                    'used_in_product_listing'       => 0,
+                    'used_for_sort_by'              => 1,
+                    'is_filterable'                 => 1,
+                    'is_filterable_in_search'       => 1,
+                    'backend_type'                  => 'varchar',
+                    'is_used_in_grid'               => 1,
+                    'is_visible_in_grid'            => 1,
+                    'is_filterable_in_grid'         => 1,
+                    'attribute_set_id'              => $defaultAttributeSetId,
+                    'attribute_group_id'            => $defaultGroupId
                 ];
                 try {
                     // @codingStandardsIgnoreStart
@@ -332,27 +317,27 @@ class AttributesCreateTask
             }
 
             $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
-            $newoptionsArray = [];
+            $newOptionsArray = [];
             if (empty($existingOptions)) {
                 sort($value);
                 $this->eavSetupFactory->create()
                     ->addAttributeOption(
                         [
-                            'values' => $value,
+                            'values'       => $value,
                             'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
                         ]
                     );
             } elseif (!empty($value)) {
                 foreach ($value as $k => $v) {
                     if (!in_array($v, $existingOptions, true)) {
-                        $newoptionsArray[] = $v;
+                        $newOptionsArray[] = $v;
                     }
                 }
-                if (!empty($newoptionsArray)) {
+                if (!empty($newOptionsArray)) {
                     $this->eavSetupFactory->create()
                         ->addAttributeOption(
                             [
-                                'values' => $newoptionsArray,
+                                'values'       => $newOptionsArray,
                                 'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
                             ]
                         );
@@ -360,11 +345,15 @@ class AttributesCreateTask
                 }
             }
         }
+        if (count($variants) === 0) {
+            $this->successCronAttributeVariant = true;
+        }
+        $this->logger->debug('Finished variants create task.');
     }
 
     /**
+     * Update the order of the options in ascending order
      * @param $formattedCode
-     * update the order of the options in ascending order
      */
     public function updateOptions($formattedCode)
     {
@@ -408,32 +397,32 @@ class AttributesCreateTask
         $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
         if (!$attribute || !$attribute->getAttributeId()) {
             $valueTypeArray = $this->getValueTypeArray();
-            $frontendInput = $valueTypeArray[$replAttribute->getValueType()];
-            $attributeData = [
-                'attribute_code' => $formattedCode,
-                'is_global' => 1,
-                'frontend_label' => $replAttribute->getDescription() ?: $replAttribute->getCode(),
-                'frontend_input' => $frontendInput,
-                'is_unique' => 0,
-                'apply_to' => 0,
-                'is_required' => 0,
-                'is_configurable' => 0,
-                'is_searchable' => 1,
-                'is_comparable' => 1,
-                'is_user_defined' => 1,
+            $frontendInput  = $valueTypeArray[$replAttribute->getValueType()];
+            $attributeData  = [
+                'attribute_code'                => $formattedCode,
+                'is_global'                     => 1,
+                'frontend_label'                => $replAttribute->getDescription() ?: $replAttribute->getCode(),
+                'frontend_input'                => $frontendInput,
+                'is_unique'                     => 0,
+                'apply_to'                      => 0,
+                'is_required'                   => 0,
+                'is_configurable'               => 0,
+                'is_searchable'                 => 1,
+                'is_comparable'                 => 1,
+                'is_user_defined'               => 1,
                 'is_visible_in_advanced_search' => 1,
-                'is_used_for_price_rules' => 0,
-                'is_wysiwyg_enabled' => 0,
-                'is_html_allowed_on_front' => 1,
-                'is_visible_on_front' => 1,
-                'used_in_product_listing' => 0,
-                'used_for_sort_by' => 1,
-                'backend_type' => 'varchar',
-                'attribute_set_id' => $attributeSetId,
-                'attribute_group_id' => $attributeGroupId,
-                'backend_model' => ArrayBackend::class,
-                'is_filterable' => ($frontendInput === 'multiselect') ? 1 : 0,
-                'is_filterable_in_search' => ($frontendInput === 'multiselect') ? 1 : 0
+                'is_used_for_price_rules'       => 0,
+                'is_wysiwyg_enabled'            => 0,
+                'is_html_allowed_on_front'      => 1,
+                'is_visible_on_front'           => 1,
+                'used_in_product_listing'       => 0,
+                'used_for_sort_by'              => 1,
+                'backend_type'                  => 'varchar',
+                'attribute_set_id'              => $attributeSetId,
+                'attribute_group_id'            => $attributeGroupId,
+                'backend_model'                 => ArrayBackend::class,
+                'is_filterable'                 => ($frontendInput === 'multiselect') ? 1 : 0,
+                'is_filterable_in_search'       => ($frontendInput === 'multiselect') ? 1 : 0
             ];
 
             try {
@@ -441,10 +430,15 @@ class AttributesCreateTask
                     ->addData($attributeData)
                     ->setEntityTypeId($this->getEntityTypeId(Product::ENTITY))
                     ->save();
+                $this->logger->debug('Successfully created attribute : ' . $formattedCode);
+                $replAttribute->setData('processed', 1);
+                $replAttribute->setData('is_updated', 0);
             } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
+                $this->logger->debug('Failed with Exception : ' . $e->getMessage());
+                $replAttribute->setData('is_failed', 1);
             }
-            $this->logger->debug('Successfully created attribute object for ' . $formattedCode);
+            // @codingStandardsIgnoreLine
+            $this->replAttributeRepositoryInterface->save($replAttribute);
         }
     }
 
@@ -470,7 +464,7 @@ class AttributesCreateTask
             $this->eavSetupFactory->create()
                 ->addAttributeOption(
                     [
-                        'values' => $option_data,
+                        'values'       => $option_data,
                         'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
                     ]
                 );
@@ -484,27 +478,26 @@ class AttributesCreateTask
      */
     public function generateOptionValues($attribute_code = '')
     {
-        $optionarray = [];
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems('Code', $attribute_code, 'eq');
+        $optionArray = [];
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('Code', $attribute_code, 'eq');
         /** @var ReplAttributeOptionValueSearchResults $replAttributeOptionValues */
         $replAttributeOptionValues = $this->replAttributeOptionValueRepositoryInterface->getList($criteria);
 
-        // get existing option array
+        // Get existing options array
         $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($attribute_code);
 
         /** @var ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
-            $item->setProcessed('1');
-            // @codingStandardsIgnoreStart
+            $item->setProcessed(1);
+            // @codingStandardsIgnoreLine
             $this->replAttributeOptionValueRepositoryInterface->save($item);
-            // @codingStandardsIgnoreEnd
-            // if have existing option and current value is a part of existing option then don't do anything
-            if (!empty($existingOptions) and in_array($item->getValue(), $existingOptions, true)) {
+            // If have existing option and current value is a part of existing option then don't do anything
+            if (!empty($existingOptions) && in_array($item->getValue(), $existingOptions, true)) {
                 continue;
             }
-            $optionarray[] = $item->getValue();
+            $optionArray[] = $item->getValue();
         }
-        return $optionarray;
+        return $optionArray;
     }
 
     /**
@@ -523,14 +516,14 @@ class AttributesCreateTask
     public function getValueTypeArray()
     {
         return [
-            '0' => 'text',
-            '1' => 'text',
-            '2' => 'price',
-            '3' => 'date',
-            '4' => 'text',
-            '5' => 'multiselect',
-            '6' => 'text',
-            '7' => 'multiselect',
+            '0'   => 'text',
+            '1'   => 'text',
+            '2'   => 'price',
+            '3'   => 'date',
+            '4'   => 'text',
+            '5'   => 'multiselect',
+            '6'   => 'text',
+            '7'   => 'multiselect',
             '100' => 'text'
         ];
     }
@@ -542,18 +535,18 @@ class AttributesCreateTask
      */
     public function getOptimizedOptionArrayByAttributeCode($attribute_code = '')
     {
-        $optimziedArray = [];
+        $optimizedArray = [];
         if ($attribute_code == '' || $attribute_code == null) {
-            return $optimziedArray;
+            return $optimizedArray;
         }
         $existingOptions = $this->eavConfig->getAttribute(Product::ENTITY, $attribute_code)
             ->getSource()
             ->getAllOptions();
         if (!empty($existingOptions)) {
             foreach ($existingOptions as $k) {
-                $optimziedArray[] = $k['label'];
+                $optimizedArray[] = $k['label'];
             }
         }
-        return $optimziedArray;
+        return $optimizedArray;
     }
 }

@@ -27,6 +27,7 @@ class ReplPrice
         	$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+        	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento. 0 means already added & 1 means failed into Magento tables');
         	$table->addColumn('CurrencyCode' , Table::TYPE_TEXT, '');
         	$table->addColumn('CustomerDiscountGroup' , Table::TYPE_TEXT, '');
         	$table->addColumn('EndingDate' , Table::TYPE_TEXT, '');
