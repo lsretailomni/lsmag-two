@@ -29,16 +29,45 @@ class ReplItemUnitOfMeasure
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
         	$table->addColumn('Code' , Table::TYPE_TEXT, '');
         	$table->addColumn('CountAsOne' , Table::TYPE_BOOLEAN, '');
+        	$table->addColumn('Description' , Table::TYPE_TEXT, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, '');
         	$table->addColumn('ItemId' , Table::TYPE_TEXT, '');
         	$table->addColumn('Order' , Table::TYPE_INTEGER, '');
         	$table->addColumn('QtyPrUOM' , Table::TYPE_FLOAT, '');
         	$table->addColumn('Selection' , Table::TYPE_INTEGER, '');
-        	$table->addColumn('StoreId' , Table::TYPE_TEXT, '');
-        	$table->addColumn('UnitOfMeasure' , Table::TYPE_TEXT, '');
+        	$table->addColumn('ShortDescription' , Table::TYPE_TEXT, '');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'Code' ) === false) {
+        		$connection->addColumn($table_name, 'Code', ['type' => Table::TYPE_TEXT, 'comment' => 'Code']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'CountAsOne' ) === false) {
+        		$connection->addColumn($table_name, 'CountAsOne', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'CountAsOne']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
+        		$connection->addColumn($table_name, 'Description', ['type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
+        		$connection->addColumn($table_name, 'ItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Order' ) === false) {
+        		$connection->addColumn($table_name, 'Order', ['type' => Table::TYPE_INTEGER, 'comment' => 'Order']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'QtyPrUOM' ) === false) {
+        		$connection->addColumn($table_name, 'QtyPrUOM', ['type' => Table::TYPE_FLOAT, 'comment' => 'QtyPrUOM']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Selection' ) === false) {
+        		$connection->addColumn($table_name, 'Selection', ['type' => Table::TYPE_INTEGER, 'comment' => 'Selection']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ShortDescription' ) === false) {
+        		$connection->addColumn($table_name, 'ShortDescription', ['type' => Table::TYPE_TEXT, 'comment' => 'ShortDescription']);
+        	}
         }
     }
 

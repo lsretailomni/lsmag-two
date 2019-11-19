@@ -40,6 +40,38 @@ class ReplItemVariantRegistration
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'FrameworkCode' ) === false) {
+        		$connection->addColumn($table_name, 'FrameworkCode', ['type' => Table::TYPE_TEXT, 'comment' => 'FrameworkCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
+        		$connection->addColumn($table_name, 'ItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VariantDimension1' ) === false) {
+        		$connection->addColumn($table_name, 'VariantDimension1', ['type' => Table::TYPE_TEXT, 'comment' => 'VariantDimension1']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VariantDimension2' ) === false) {
+        		$connection->addColumn($table_name, 'VariantDimension2', ['type' => Table::TYPE_TEXT, 'comment' => 'VariantDimension2']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VariantDimension3' ) === false) {
+        		$connection->addColumn($table_name, 'VariantDimension3', ['type' => Table::TYPE_TEXT, 'comment' => 'VariantDimension3']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VariantDimension4' ) === false) {
+        		$connection->addColumn($table_name, 'VariantDimension4', ['type' => Table::TYPE_TEXT, 'comment' => 'VariantDimension4']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VariantDimension5' ) === false) {
+        		$connection->addColumn($table_name, 'VariantDimension5', ['type' => Table::TYPE_TEXT, 'comment' => 'VariantDimension5']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VariantDimension6' ) === false) {
+        		$connection->addColumn($table_name, 'VariantDimension6', ['type' => Table::TYPE_TEXT, 'comment' => 'VariantDimension6']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VariantId' ) === false) {
+        		$connection->addColumn($table_name, 'VariantId', ['type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
+        	}
         }
     }
 

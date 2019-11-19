@@ -37,6 +37,29 @@ class ReplBarcode
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'Blocked' ) === false) {
+        		$connection->addColumn($table_name, 'Blocked', ['type' => Table::TYPE_INTEGER, 'comment' => 'Blocked']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
+        		$connection->addColumn($table_name, 'Description', ['type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
+        		$connection->addColumn($table_name, 'nav_id', ['type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
+        		$connection->addColumn($table_name, 'ItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'UnitOfMeasure' ) === false) {
+        		$connection->addColumn($table_name, 'UnitOfMeasure', ['type' => Table::TYPE_TEXT, 'comment' => 'UnitOfMeasure']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VariantId' ) === false) {
+        		$connection->addColumn($table_name, 'VariantId', ['type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
+        	}
         }
     }
 

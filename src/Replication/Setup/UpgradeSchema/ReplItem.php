@@ -65,6 +65,113 @@ class ReplItem
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'BaseUnitOfMeasure' ) === false) {
+        		$connection->addColumn($table_name, 'BaseUnitOfMeasure', ['type' => Table::TYPE_TEXT, 'comment' => 'BaseUnitOfMeasure']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'BlockDiscount' ) === false) {
+        		$connection->addColumn($table_name, 'BlockDiscount', ['type' => Table::TYPE_INTEGER, 'comment' => 'BlockDiscount']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'BlockDistribution' ) === false) {
+        		$connection->addColumn($table_name, 'BlockDistribution', ['type' => Table::TYPE_INTEGER, 'comment' => 'BlockDistribution']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'BlockManualPriceChange' ) === false) {
+        		$connection->addColumn($table_name, 'BlockManualPriceChange', ['type' => Table::TYPE_INTEGER, 'comment' => 'BlockManualPriceChange']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'BlockNegativeAdjustment' ) === false) {
+        		$connection->addColumn($table_name, 'BlockNegativeAdjustment', ['type' => Table::TYPE_INTEGER, 'comment' => 'BlockNegativeAdjustment']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'BlockPositiveAdjustment' ) === false) {
+        		$connection->addColumn($table_name, 'BlockPositiveAdjustment', ['type' => Table::TYPE_INTEGER, 'comment' => 'BlockPositiveAdjustment']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'BlockPurchaseReturn' ) === false) {
+        		$connection->addColumn($table_name, 'BlockPurchaseReturn', ['type' => Table::TYPE_INTEGER, 'comment' => 'BlockPurchaseReturn']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Blocked' ) === false) {
+        		$connection->addColumn($table_name, 'Blocked', ['type' => Table::TYPE_INTEGER, 'comment' => 'Blocked']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'BlockedOnPos' ) === false) {
+        		$connection->addColumn($table_name, 'BlockedOnPos', ['type' => Table::TYPE_INTEGER, 'comment' => 'BlockedOnPos']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'CrossSellingExists' ) === false) {
+        		$connection->addColumn($table_name, 'CrossSellingExists', ['type' => Table::TYPE_INTEGER, 'comment' => 'CrossSellingExists']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'DateBlocked' ) === false) {
+        		$connection->addColumn($table_name, 'DateBlocked', ['type' => Table::TYPE_TEXT, 'comment' => 'DateBlocked']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'DateToActivateItem' ) === false) {
+        		$connection->addColumn($table_name, 'DateToActivateItem', ['type' => Table::TYPE_TEXT, 'comment' => 'DateToActivateItem']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
+        		$connection->addColumn($table_name, 'Description', ['type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Details' ) === false) {
+        		$connection->addColumn($table_name, 'Details', ['type' => Table::TYPE_TEXT, 'comment' => 'Details']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'GrossWeight' ) === false) {
+        		$connection->addColumn($table_name, 'GrossWeight', ['type' => Table::TYPE_FLOAT, 'comment' => 'GrossWeight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
+        		$connection->addColumn($table_name, 'nav_id', ['type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ItemCategoryCode' ) === false) {
+        		$connection->addColumn($table_name, 'ItemCategoryCode', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemCategoryCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ItemFamilyCode' ) === false) {
+        		$connection->addColumn($table_name, 'ItemFamilyCode', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemFamilyCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'KeyingInPrice' ) === false) {
+        		$connection->addColumn($table_name, 'KeyingInPrice', ['type' => Table::TYPE_INTEGER, 'comment' => 'KeyingInPrice']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'KeyingInQty' ) === false) {
+        		$connection->addColumn($table_name, 'KeyingInQty', ['type' => Table::TYPE_INTEGER, 'comment' => 'KeyingInQty']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'MustKeyInComment' ) === false) {
+        		$connection->addColumn($table_name, 'MustKeyInComment', ['type' => Table::TYPE_INTEGER, 'comment' => 'MustKeyInComment']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'NoDiscountAllowed' ) === false) {
+        		$connection->addColumn($table_name, 'NoDiscountAllowed', ['type' => Table::TYPE_INTEGER, 'comment' => 'NoDiscountAllowed']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ProductGroupId' ) === false) {
+        		$connection->addColumn($table_name, 'ProductGroupId', ['type' => Table::TYPE_TEXT, 'comment' => 'ProductGroupId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'PurchUnitOfMeasure' ) === false) {
+        		$connection->addColumn($table_name, 'PurchUnitOfMeasure', ['type' => Table::TYPE_TEXT, 'comment' => 'PurchUnitOfMeasure']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SalseUnitOfMeasure' ) === false) {
+        		$connection->addColumn($table_name, 'SalseUnitOfMeasure', ['type' => Table::TYPE_TEXT, 'comment' => 'SalseUnitOfMeasure']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ScaleItem' ) === false) {
+        		$connection->addColumn($table_name, 'ScaleItem', ['type' => Table::TYPE_INTEGER, 'comment' => 'ScaleItem']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SeasonCode' ) === false) {
+        		$connection->addColumn($table_name, 'SeasonCode', ['type' => Table::TYPE_TEXT, 'comment' => 'SeasonCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'TaxItemGroupId' ) === false) {
+        		$connection->addColumn($table_name, 'TaxItemGroupId', ['type' => Table::TYPE_TEXT, 'comment' => 'TaxItemGroupId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'UnitPrice' ) === false) {
+        		$connection->addColumn($table_name, 'UnitPrice', ['type' => Table::TYPE_FLOAT, 'comment' => 'UnitPrice']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'UnitVolume' ) === false) {
+        		$connection->addColumn($table_name, 'UnitVolume', ['type' => Table::TYPE_FLOAT, 'comment' => 'UnitVolume']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'UnitsPerParcel' ) === false) {
+        		$connection->addColumn($table_name, 'UnitsPerParcel', ['type' => Table::TYPE_FLOAT, 'comment' => 'UnitsPerParcel']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VendorId' ) === false) {
+        		$connection->addColumn($table_name, 'VendorId', ['type' => Table::TYPE_TEXT, 'comment' => 'VendorId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VendorItemId' ) === false) {
+        		$connection->addColumn($table_name, 'VendorItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'VendorItemId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ZeroPriceValId' ) === false) {
+        		$connection->addColumn($table_name, 'ZeroPriceValId', ['type' => Table::TYPE_INTEGER, 'comment' => 'ZeroPriceValId']);
+        	}
         }
     }
 
