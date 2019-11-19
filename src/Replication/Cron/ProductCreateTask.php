@@ -3,37 +3,37 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\ImageSize;
-use Ls\Omni\Helper\LoyaltyHelper;
-use Ls\Omni\Helper\StockHelper;
-use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
-use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
-use Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
-use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
-use Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Model\ReplAttributeValue;
-use Ls\Replication\Model\ReplAttributeValueSearchResults;
-use Ls\Replication\Model\ReplBarcode;
-use Ls\Replication\Model\ReplBarcodeSearchResults;
-use Ls\Replication\Model\ReplExtendedVariantValue;
-use Ls\Replication\Model\ReplHierarchyLeafSearchResults;
-use Ls\Replication\Model\ReplImageLink;
-use Ls\Replication\Model\ReplImageLinkSearchResults;
-use Ls\Replication\Model\ReplInvStatus;
-use Ls\Replication\Model\ReplItem;
-use Ls\Replication\Model\ReplItemSearchResults;
-use Ls\Replication\Model\ReplItemVariantRegistration;
-use Ls\Replication\Model\ReplPrice;
-use Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ImageSize;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\StockHelper;
+use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
+use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
+use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ReplAttributeValue;
+use \Ls\Replication\Model\ReplAttributeValueSearchResults;
+use \Ls\Replication\Model\ReplBarcode;
+use \Ls\Replication\Model\ReplBarcodeSearchResults;
+use \Ls\Replication\Model\ReplExtendedVariantValue;
+use \Ls\Replication\Model\ReplHierarchyLeafSearchResults;
+use \Ls\Replication\Model\ReplImageLink;
+use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Replication\Model\ReplInvStatus;
+use \Ls\Replication\Model\ReplItem;
+use \Ls\Replication\Model\ReplItemSearchResults;
+use \Ls\Replication\Model\ReplItemVariantRegistration;
+use \Ls\Replication\Model\ReplPrice;
+use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
@@ -73,7 +73,6 @@ use Psr\Log\LoggerInterface;
  */
 class ProductCreateTask
 {
-
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_products';
 
     /** @var Factory */
@@ -526,8 +525,8 @@ class ProductCreateTask
         foreach ($productImages as $i => $image) {
             $types     = [];
             $imageSize = [
-                'height' => $this->lsr::DEFAULT_ITEM_IMAGE_HEIGHT,
-                'width'  => $this->lsr::DEFAULT_ITEM_IMAGE_WIDTH
+                'height' => LSR::DEFAULT_ITEM_IMAGE_HEIGHT,
+                'width' => LSR::DEFAULT_ITEM_IMAGE_WIDTH
             ];
             /** @var ImageSize $imageSizeObject */
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
@@ -618,6 +617,10 @@ class ProductCreateTask
                     $previousCategoryIds = $product->getCategoryIds();
                 } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
+                    $hierarchyLeaf->setData('processed', '1');
+                    $hierarchyLeaf->setData('is_updated', '0');
+                    $this->replHierarchyLeafRepository->save($hierarchyLeaf);
+                    continue;
                 }
 
                 $currentCategoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
@@ -972,7 +975,11 @@ class ProductCreateTask
     {
         //get configurable products attributes array with all values
         // with label (super attribute which use for configuration)
-        $assPro           = null;
+        $assPro = null;
+        if ($product->getTypeId() != 'configurable') {
+            // to bypass situation when simple products are not being properly converted into configurable.
+            return $assPro;
+        }
         $optionsData      = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
         $superAttrList    = [];
         $superAttrOptions = [];
@@ -1010,7 +1017,7 @@ class ProductCreateTask
      */
     public function updateAndAddNewImageOnly()
     {
-        $filters   = [
+        $filters  = [
             ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
 
@@ -1090,15 +1097,15 @@ class ProductCreateTask
                             $productData->setBarcode($replBarcode->getNavId());
                             // @codingStandardsIgnoreStart
                             $this->productResourceModel->saveAttribute($productData, 'barcode');
-                            $replBarcode->setData('is_updated', '0');
-                            $replBarcode->setData('processed', '1');
-                            $this->replBarcodeRepository->save($replBarcode);
                             // @codingStandardsIgnoreEnd
                         }
                     } catch (Exception $e) {
                         $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                         $this->logger->debug($e->getMessage());
                     }
+                    $replBarcode->setData('is_updated', '0');
+                    $replBarcode->setData('processed', '1');
+                    $this->replBarcodeRepository->save($replBarcode);
                 }
             }
         }
@@ -1140,15 +1147,25 @@ class ProductCreateTask
                         $productData->setPrice($replPrice->getUnitPrice());
                         // @codingStandardsIgnoreStart
                         $this->productResourceModel->saveAttribute($productData, 'price');
-                        $replPrice->setData('is_updated', '0');
-                        $replPrice->setData('processed', '1');
-                        $this->replPriceRepository->save($replPrice);
                         // @codingStandardsIgnoreEnd
+                        if ($productData->getTypeId() == 'configurable') {
+                            $_children = $productData->getTypeInstance()->getUsedProducts($productData);
+                            foreach ($_children as $child) {
+                                $childProductData = $this->productRepository->get($child->getSKU());
+                                $childProductData->setPrice($replPrice->getUnitPrice());
+                                // @codingStandardsIgnoreStart
+                                $this->productResourceModel->saveAttribute($childProductData, 'price');
+                                // @codingStandardsIgnoreEnd
+                            }
+                        }
                     }
                 } catch (Exception $e) {
                     $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
+                $replPrice->setData('is_updated', '0');
+                $replPrice->setData('processed', '1');
+                $this->replPriceRepository->save($replPrice);
             }
         }
     }
@@ -1187,15 +1204,15 @@ class ProductCreateTask
                         $stockItem->setQty($replInvStatus->getQuantity());
                         $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
                         $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
-                        $replInvStatus->setData('is_updated', '0');
-                        $replInvStatus->setData('processed', '1');
-                        $this->replInvStatusRepository->save($replInvStatus);
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (Exception $e) {
                     $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
+                $replInvStatus->setData('is_updated', '0');
+                $replInvStatus->setData('processed', '1');
+                $this->replInvStatusRepository->save($replInvStatus);
             }
         }
     }
@@ -1256,14 +1273,35 @@ class ProductCreateTask
                     $this->logger->debug($e->getMessage());
                 }
             } catch (NoSuchEntityException $e) {
+                $is_variant_contain_null = false;
+                $d1                      = (($value->getVariantDimension1()) ? $value->getVariantDimension1() : '');
+                $d2                      = (($value->getVariantDimension2()) ? $value->getVariantDimension2() : '');
+                $d3                      = (($value->getVariantDimension3()) ? $value->getVariantDimension3() : '');
+                $d4                      = (($value->getVariantDimension4()) ? $value->getVariantDimension4() : '');
+                $d5                      = (($value->getVariantDimension5()) ? $value->getVariantDimension5() : '');
+                $d6                      = (($value->getVariantDimension6()) ? $value->getVariantDimension6() : '');
+
+                /** Check if all configurable attributes has value or not. */
+
+                foreach ($attributesCode as $keyCode => $valueCode) {
+                    if (${'d' . $keyCode} == '') {
+                        // validation failed, that attribute contain some crappy data or null attribute which we does not need to process
+                        $is_variant_contain_null = true;
+                        break;
+                    }
+                }
+                if ($is_variant_contain_null) {
+                    //force override the value and continue the loop
+                    $this->logger->debug("Variant issue : Item " . $value->getItemId() . '-' . $value->getVariantId() . " contain null attribute");
+                    $value->setData('is_updated', '0');
+                    $value->setData('processed', '1');
+                    $this->replItemVariantRegistrationRepository->save($value);
+                    continue;
+                }
+
                 $productV = $this->productFactory->create();
-                $d1       = (($value->getVariantDimension1()) ? $value->getVariantDimension1() : '');
-                $d2       = (($value->getVariantDimension2()) ? $value->getVariantDimension2() : '');
-                $d3       = (($value->getVariantDimension3()) ? $value->getVariantDimension3() : '');
-                $d4       = (($value->getVariantDimension4()) ? $value->getVariantDimension4() : '');
-                $d5       = (($value->getVariantDimension5()) ? $value->getVariantDimension5() : '');
-                $d6       = (($value->getVariantDimension6()) ? $value->getVariantDimension6() : '');
-                $name     = $this->getNameForVariant($value, $item);
+
+                $name = $this->getNameForVariant($value, $item);
                 $productV->setName($name);
                 $productV->setMetaTitle($name);
                 $productV->setDescription($item->getDetails());

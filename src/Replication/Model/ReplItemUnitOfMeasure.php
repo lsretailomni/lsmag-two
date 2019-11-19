@@ -32,6 +32,11 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     protected $CountAsOne = null;
 
     /**
+     * @property string $Description
+     */
+    protected $Description = null;
+
+    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
@@ -57,14 +62,9 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     protected $Selection = null;
 
     /**
-     * @property string $StoreId
+     * @property string $ShortDescription
      */
-    protected $StoreId = null;
-
-    /**
-     * @property string $UnitOfMeasure
-     */
-    protected $UnitOfMeasure = null;
+    protected $ShortDescription = null;
 
     /**
      * @property string $scope
@@ -134,6 +134,26 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     public function getCountAsOne()
     {
         return $this->getData( 'CountAsOne' );
+    }
+
+    /**
+     * @param string $Description
+     * @return $this
+     */
+    public function setDescription($Description)
+    {
+        $this->setData( 'Description', $Description );
+        $this->Description = $Description;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->getData( 'Description' );
     }
 
     /**
@@ -237,13 +257,13 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     }
 
     /**
-     * @param string $StoreId
+     * @param string $ShortDescription
      * @return $this
      */
-    public function setStoreId($StoreId)
+    public function setShortDescription($ShortDescription)
     {
-        $this->setData( 'StoreId', $StoreId );
-        $this->StoreId = $StoreId;
+        $this->setData( 'ShortDescription', $ShortDescription );
+        $this->ShortDescription = $ShortDescription;
         $this->setDataChanges( TRUE );
         return $this;
     }
@@ -251,29 +271,9 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     /**
      * @return string
      */
-    public function getStoreId()
+    public function getShortDescription()
     {
-        return $this->getData( 'StoreId' );
-    }
-
-    /**
-     * @param string $UnitOfMeasure
-     * @return $this
-     */
-    public function setUnitOfMeasure($UnitOfMeasure)
-    {
-        $this->setData( 'UnitOfMeasure', $UnitOfMeasure );
-        $this->UnitOfMeasure = $UnitOfMeasure;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnitOfMeasure()
-    {
-        return $this->getData( 'UnitOfMeasure' );
+        return $this->getData( 'ShortDescription' );
     }
 
     /**

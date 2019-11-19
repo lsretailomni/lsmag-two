@@ -48,6 +48,62 @@ class LoyItem
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'AllowedToSell' ) === false) {
+        		$connection->addColumn($table_name, 'AllowedToSell', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'AllowedToSell']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'BlockDiscount' ) === false) {
+        		$connection->addColumn($table_name, 'BlockDiscount', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'BlockDiscount']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'BlockManualPriceChange' ) === false) {
+        		$connection->addColumn($table_name, 'BlockManualPriceChange', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'BlockManualPriceChange']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Blocked' ) === false) {
+        		$connection->addColumn($table_name, 'Blocked', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'Blocked']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
+        		$connection->addColumn($table_name, 'Description', ['type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Details' ) === false) {
+        		$connection->addColumn($table_name, 'Details', ['type' => Table::TYPE_TEXT, 'comment' => 'Details']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'GrossWeight' ) === false) {
+        		$connection->addColumn($table_name, 'GrossWeight', ['type' => Table::TYPE_FLOAT, 'comment' => 'GrossWeight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ItemCategoryCode' ) === false) {
+        		$connection->addColumn($table_name, 'ItemCategoryCode', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemCategoryCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ItemFamilyCode' ) === false) {
+        		$connection->addColumn($table_name, 'ItemFamilyCode', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemFamilyCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Price' ) === false) {
+        		$connection->addColumn($table_name, 'Price', ['type' => Table::TYPE_TEXT, 'comment' => 'Price']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ProductGroupId' ) === false) {
+        		$connection->addColumn($table_name, 'ProductGroupId', ['type' => Table::TYPE_TEXT, 'comment' => 'ProductGroupId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SalesUomId' ) === false) {
+        		$connection->addColumn($table_name, 'SalesUomId', ['type' => Table::TYPE_TEXT, 'comment' => 'SalesUomId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ScaleItem' ) === false) {
+        		$connection->addColumn($table_name, 'ScaleItem', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'ScaleItem']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SeasonCode' ) === false) {
+        		$connection->addColumn($table_name, 'SeasonCode', ['type' => Table::TYPE_TEXT, 'comment' => 'SeasonCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'UnitVolume' ) === false) {
+        		$connection->addColumn($table_name, 'UnitVolume', ['type' => Table::TYPE_FLOAT, 'comment' => 'UnitVolume']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'UnitsPerParcel' ) === false) {
+        		$connection->addColumn($table_name, 'UnitsPerParcel', ['type' => Table::TYPE_FLOAT, 'comment' => 'UnitsPerParcel']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
+        		$connection->addColumn($table_name, 'nav_id', ['type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        	}
         }
     }
 

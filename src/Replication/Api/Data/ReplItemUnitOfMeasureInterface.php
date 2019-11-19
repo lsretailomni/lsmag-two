@@ -34,6 +34,17 @@ interface ReplItemUnitOfMeasureInterface
     public function getCountAsOne();
 
     /**
+     * @param string $Description
+     * @return $this
+     */
+    public function setDescription($Description);
+
+    /**
+     * @return string
+     */
+    public function getDescription();
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -89,26 +100,15 @@ interface ReplItemUnitOfMeasureInterface
     public function getSelection();
 
     /**
-     * @param string $StoreId
+     * @param string $ShortDescription
      * @return $this
      */
-    public function setStoreId($StoreId);
+    public function setShortDescription($ShortDescription);
 
     /**
      * @return string
      */
-    public function getStoreId();
-
-    /**
-     * @param string $UnitOfMeasure
-     * @return $this
-     */
-    public function setUnitOfMeasure($UnitOfMeasure);
-
-    /**
-     * @return string
-     */
-    public function getUnitOfMeasure();
+    public function getShortDescription();
 
     /**
      * @param string $scope

@@ -2,9 +2,12 @@
 
 namespace Ls\Replication\Setup;
 
+use \Ls\Replication\Setup\UpgradeSchema\AbstractUpgradeSchema;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Zend\Code\Reflection\ClassReflection;
 
 /**
  * Class UpgradeSchema
@@ -12,47 +15,32 @@ use Magento\Framework\Setup\UpgradeSchemaInterface;
  */
 class UpgradeSchema implements UpgradeSchemaInterface
 {
-
-    /** @var string[] */
-    public static $versions = [ ];
     /**
-     * @var  SchemaSetupInterface
-     */
-    private $installer = null;
-    /**
-     * @var  ModuleContextInterface
-     */
-    private $context = null;
-
-    /**
-     * @param SchemaSetupInterface   $setup
+     * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
      */
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
-        $this->installer = $setup;
-        $this->context = $context;
-
-        $this->installer->startSetup();
-
-        foreach (UpgradeSchema::$versions as $version) {
-            if (version_compare($version, $this->context->getVersion()) == -1) {
-                $safe_version = UpgradeSchema::sanitizeVersion($version);
-                $method_name = "upgrade$safe_version";
-                $this->{$method_name}();
+        $setup->startSetup();
+        // @codingStandardsIgnoreStart
+        $fs             = new Filesystem();
+        $anchor         = new ClassReflection(AbstractUpgradeSchema::class);
+        $base_namespace = $anchor->getNamespaceName();
+        $filename       = $anchor->getFileName();
+        $folder         = dirname($filename);
+        $upgrades       = glob($folder . DIRECTORY_SEPARATOR . '*');
+        foreach ($upgrades as $upgrade_file) {
+            if (strpos($upgrade_file, 'AbstractUpgradeSchema') === false) {
+                if ($fs->exists($upgrade_file)) {
+                    $upgrade_class     = str_replace('.php', '', $fs->makePathRelative($upgrade_file, $folder));
+                    $upgrade_class_fqn = $base_namespace . '\\' . substr($upgrade_class, 0, -1);
+                    /** @var AbstractUpgradeSchema $upgrade */
+                    $upgrade = new $upgrade_class_fqn();
+                    $upgrade->upgrade($setup, $context);
+                }
             }
         }
-
-        $this->installer->endSetup();
-    }
-
-    /**
-     * @param string $version
-     *
-     * @return string
-     */
-    public static function sanitizeVersion($version)
-    {
-        return str_replace('.', '_', $version);
+        // @codingStandardsIgnoreEnd
+        $setup->endSetup();
     }
 }
