@@ -17,9 +17,9 @@ class ArrayOfRetailAttribute implements IteratorAggregate
     /**
      * @property RetailAttribute[] $RetailAttribute
      */
-    protected $RetailAttribute = array(
+    protected $RetailAttribute = [
         
-    );
+    ];
 
     /**
      * @param RetailAttribute[] $RetailAttribute

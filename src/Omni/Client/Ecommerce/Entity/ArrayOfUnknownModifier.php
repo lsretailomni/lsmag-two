@@ -17,9 +17,9 @@ class ArrayOfUnknownModifier implements IteratorAggregate
     /**
      * @property UnknownModifier[] $UnknownModifier
      */
-    protected $UnknownModifier = array(
+    protected $UnknownModifier = [
         
-    );
+    ];
 
     /**
      * @param UnknownModifier[] $UnknownModifier
