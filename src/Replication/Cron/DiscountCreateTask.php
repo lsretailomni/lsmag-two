@@ -361,15 +361,13 @@ class DiscountCreateTask
                 foreach ($ruleCollection as $rule) {
                     $this->catalogRule->deleteById($rule->getId());
                 }
-                $replDiscount->setData('processed', 1);
-                // @codingStandardsIgnoreLine
-                $this->replDiscountRepository->save($replDiscount);
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
                 $replDiscount->setData('is_failed', 1);
-                // @codingStandardsIgnoreLine
-                $this->replDiscountRepository->save($replDiscount);
             }
+            $replDiscount->setData('processed', 1);
+            // @codingStandardsIgnoreLine
+            $this->replDiscountRepository->save($replDiscount);
         }
     }
 

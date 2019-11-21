@@ -228,13 +228,13 @@ class AttributesCreateTask
                         null
                     );
                 }
-                $replAttribute->setData('processed', 1);
-                $replAttribute->setData('IsDeleted', 0);
-                $replAttribute->setData('is_updated', 0);
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
                 $replAttribute->setData('is_failed', 1);
             }
+            $replAttribute->setData('processed', 1);
+            $replAttribute->setData('IsDeleted', 0);
+            $replAttribute->setData('is_updated', 0);
             // @codingStandardsIgnoreLine
             $this->replAttributeRepositoryInterface->save($replAttribute);
         }
@@ -431,12 +431,12 @@ class AttributesCreateTask
                     ->setEntityTypeId($this->getEntityTypeId(Product::ENTITY))
                     ->save();
                 $this->logger->debug('Successfully created attribute : ' . $formattedCode);
-                $replAttribute->setData('processed', 1);
-                $replAttribute->setData('is_updated', 0);
             } catch (Exception $e) {
                 $this->logger->debug('Failed with Exception : ' . $e->getMessage());
                 $replAttribute->setData('is_failed', 1);
             }
+            $replAttribute->setData('processed', 1);
+            $replAttribute->setData('is_updated', 0);
             // @codingStandardsIgnoreLine
             $this->replAttributeRepositoryInterface->save($replAttribute);
         }

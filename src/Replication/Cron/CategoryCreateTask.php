@@ -566,15 +566,14 @@ class CategoryCreateTask
                         $mediaAttribute = ['image', 'small_image', 'thumbnail'];
                         $categoryExistData->setImage($imageSub, $mediaAttribute, true, false);
                         $this->categoryRepository->save($categoryExistData);
-                        // @codingStandardsIgnoreStart
-                        $image->setData('is_updated', 0);
-                        // @codingStandardsIgnoreEnd
                         $this->cronStatus = true;
                     }
                 } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
                     $image->setData('is_failed', 1);
                 }
+                $image->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
                 $this->replImageLinkRepositoryInterface->save($image);
             }
         }

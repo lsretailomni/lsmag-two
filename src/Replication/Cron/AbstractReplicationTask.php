@@ -268,7 +268,8 @@ abstract class AbstractReplicationTask
     public function saveSource($properties, $source)
     {
         if ($source->getIsDeleted()) {
-            $uniqueAttributes = (array_key_exists($this->getConfigPath(), self::$deleteJobCodeUniqueFieldArray)) ? self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] : self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+            $uniqueAttributes = (array_key_exists($this->getConfigPath(),
+                self::$deleteJobCodeUniqueFieldArray)) ? self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] : self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         } else {
             $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         }
