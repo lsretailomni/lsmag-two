@@ -3,12 +3,12 @@
 namespace Ls\Replication\Helper;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
 use Magento\Framework\Api\AbstractExtensibleObject;
@@ -626,12 +626,12 @@ class ReplicationHelper extends AbstractHelper
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
         $collection->getSelect()->joinInner(
-            array('second' => $second_table_name),
+            ['second' => $second_table_name],
             'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
             []
         );
         /** @var For Xdebug only to check the query $query */
-        $query = $collection->getSelect()->__toString();
+        //$query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());

@@ -2,13 +2,16 @@
 
 namespace Ls\Replication\Ui\DataProvider;
 
-use Magento\Framework\View\Element\UiComponent\DataProvider\DataProviderInterface;
-use Magento\Ui\DataProvider\AbstractDataProvider;
-use Magento\Framework\App\Request\Http;
-use Magento\Framework\Api\SearchResultsInterface;
-use Magento\Framework\Module\Dir\Reader;
-use Magento\Framework\Xml\Parser;
+use Exception;
 use \Ls\Core\Model\LSR;
+use Magento\Framework\Api\Filter;
+use Magento\Framework\App\Request\Http;
+use Magento\Framework\Module\Dir\Reader;
+use Magento\Framework\View\Element\UiComponent\DataProvider\DataProviderInterface;
+use Magento\Framework\Xml\Parser;
+use Magento\Ui\DataProvider\AbstractDataProvider;
+use Magento\Ui\DataProvider\AddFieldToCollectionInterface;
+use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
 
 /**
  * Class ProductDataProvider
@@ -17,26 +20,26 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
 {
 
     /**
-     * @var \Magento\Ui\DataProvider\AddFieldToCollectionInterface[]
+     * @var AddFieldToCollectionInterface[]
      */
     public $addFieldStrategies;
 
     /**
-     * @var \Magento\Ui\DataProvider\AddFilterToCollectionInterface[]
+     * @var AddFilterToCollectionInterface[]
      */
     public $addFilterStrategies;
 
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * @var Http
      */
     public $request;
     /**
-     * @var \Magento\Framework\Module\Dir\Reader
+     * @var Reader
      */
     public $moduleDirReader;
 
     /**
-     * @var \Magento\Framework\Xml\Parser
+     * @var Parser
      */
     private $parser;
 
@@ -67,10 +70,10 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->request = $request;
+        $this->request         = $request;
         $this->moduleDirReader = $moduleDirReader;
-        $this->parser = $parser;
-        $this->lsr = $LSR;
+        $this->parser          = $parser;
+        $this->lsr             = $LSR;
     }
 
     /**
@@ -81,9 +84,9 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
     public function getData()
     {
         $cronsGroupListing = $this->readCronFile();
-        $condition = "";
-        $items = [];
-        $counter = 1;
+        $condition         = "";
+        $items             = [];
+        $counter           = 1;
         $cronsGroupListing = array_reverse($cronsGroupListing);
         $this->lsr->flushConfig();
         foreach ($cronsGroupListing as $cronlist) {
@@ -92,19 +95,19 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 $condition = __("Flat to Magento");
             } elseif ($cronlist['_attribute']['id'] == "flat_replication") {
                 $condition = __("Omni to Flat");
-                $path = $this->lsr::CRON_STATUS_PATH_PREFIX;
+                $path      = LSR::CRON_STATUS_PATH_PREFIX;
             } else {
                 $condition = "";
             }
             foreach ($cronlist['_value']['job'] as $joblist) {
                 $fullReplicationStatus = 0;
-                $cronName = $joblist['_attribute']['name'];
+                $cronName              = $joblist['_attribute']['name'];
                 if ($path != '') {
-                    $pathNew = $path . $cronName;
+                    $pathNew               = $path . $cronName;
                     $fullReplicationStatus = $this->lsr->getStoreConfig($pathNew);
                 }
                 if ($cronName == 'repl_attributes') {
-                    $cronAttributeCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
+                    $cronAttributeCheck        = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
                     $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
                     if ($cronAttributeCheck && $cronAttributeCheck) {
                         $fullReplicationStatus = 1;
@@ -122,34 +125,36 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 if ($cronName == 'repl_price_sync') {
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_PRICE);
                 }
-
+                if ($cronName == 'repl_inventory_sync') {
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY);
+                }
                 $lastExecute = $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName);
-                $statusStr = ($fullReplicationStatus == 1) ?
+                $statusStr   = ($fullReplicationStatus == 1) ?
                     '<div class="flag-green custom-grid-flag">Complete</div>' :
                     '<div class="flag-yellow custom-grid-flag">Pending</div>';
                 if (strpos($cronName, '_reset') !== false) {
                     $statusStr = '';
                 }
                 $items[] = [
-                    'id' => $counter,
+                    'id'                    => $counter,
                     'fullreplicationstatus' => $statusStr,
-                    'label' => $cronName,
-                    'lastexecuted' => $lastExecute,
-                    'value' => $joblist['_attribute']['instance'],
-                    'condition' => $condition
+                    'label'                 => $cronName,
+                    'lastexecuted'          => $lastExecute,
+                    'value'                 => $joblist['_attribute']['instance'],
+                    'condition'             => $condition
                 ];
                 $counter++;
             }
         }
         // @codingStandardsIgnoreStart
-        $pagesize = (int)$this->request->getParam('paging')['pageSize'];
+        $pagesize    = (int)$this->request->getParam('paging')['pageSize'];
         $pageCurrent = (int)$this->request->getParam('paging')['current'];
         // @codingStandardsIgnoreEnd
         $pageoffset = ($pageCurrent - 1) * $pagesize;
 
         return [
             'totalRecords' => count($items),
-            'items' => array_slice($items, $pageoffset, $pageoffset + $pagesize)
+            'items'        => array_slice($items, $pageoffset, $pageoffset + $pagesize)
         ];
     }
 
@@ -159,10 +164,10 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
     public function readCronFile()
     {
         try {
-            $filePath = $this->moduleDirReader->getModuleDir('etc', 'Ls_Replication') . '/crontab.xml';
+            $filePath    = $this->moduleDirReader->getModuleDir('etc', 'Ls_Replication') . '/crontab.xml';
             $parsedArray = $this->parser->load($filePath)->xmlToArray();
             return $parsedArray['config']['_value']['group'];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
     }
 
@@ -183,10 +188,10 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
     }
 
     /**
-     * @param \Magento\Framework\Api\Filter $filter
+     * @param Filter $filter
      * @return mixed|void
      */
-    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    public function addFilter(Filter $filter)
     {
     }
 
