@@ -180,7 +180,7 @@ class AttributesCreateTask
          * Technical Structure :- where processed = 0 || is_updated = 1
          */
         try {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('','','',-1,1);
 
             /** @var ReplAttributeSearchResults $replAttributes */
             $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);

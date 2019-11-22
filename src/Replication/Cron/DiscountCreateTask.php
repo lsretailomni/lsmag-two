@@ -3,15 +3,15 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
-use Ls\Omni\Helper\ContactHelper;
-use Ls\Replication\Api\ReplDiscountRepositoryInterface;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Model\ReplDiscount;
-use Ls\Replication\Model\ReplDiscountSearchResults;
-use Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
-use Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ReplDiscount;
+use \Ls\Replication\Model\ReplDiscountSearchResults;
+use \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\CatalogRule\Model\Rule\Job;
