@@ -26,6 +26,11 @@ class StoreHours
     protected $Description = null;
 
     /**
+     * @property string $EndDate
+     */
+    protected $EndDate = null;
+
+    /**
      * @property string $NameOfDay
      */
     protected $NameOfDay = null;
@@ -39,6 +44,11 @@ class StoreHours
      * @property string $OpenTo
      */
     protected $OpenTo = null;
+
+    /**
+     * @property string $StartDate
+     */
+    protected $StartDate = null;
 
     /**
      * @property StoreHourType $StoreHourtype
@@ -89,6 +99,24 @@ class StoreHours
     public function getDescription()
     {
         return $this->Description;
+    }
+
+    /**
+     * @param string $EndDate
+     * @return $this
+     */
+    public function setEndDate($EndDate)
+    {
+        $this->EndDate = $EndDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndDate()
+    {
+        return $this->EndDate;
     }
 
     /**
@@ -143,6 +171,24 @@ class StoreHours
     public function getOpenTo()
     {
         return $this->OpenTo;
+    }
+
+    /**
+     * @param string $StartDate
+     * @return $this
+     */
+    public function setStartDate($StartDate)
+    {
+        $this->StartDate = $StartDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartDate()
+    {
+        return $this->StartDate;
     }
 
     /**

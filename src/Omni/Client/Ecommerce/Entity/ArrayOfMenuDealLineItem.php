@@ -17,9 +17,9 @@ class ArrayOfMenuDealLineItem implements IteratorAggregate
     /**
      * @property MenuDealLineItem[] $MenuDealLineItem
      */
-    protected $MenuDealLineItem = array(
+    protected $MenuDealLineItem = [
         
-    );
+    ];
 
     /**
      * @param MenuDealLineItem[] $MenuDealLineItem

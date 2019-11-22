@@ -234,7 +234,7 @@ class OrderPayment
                 throw new InvalidEnumException();
         }
         $this->PaymentType = $PaymentType->getValue();
-        
+
         return $this;
     }
 

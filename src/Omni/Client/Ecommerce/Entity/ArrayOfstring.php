@@ -17,9 +17,9 @@ class ArrayOfstring implements IteratorAggregate
     /**
      * @property string[] $string
      */
-    protected $string = array(
+    protected $string = [
         
-    );
+    ];
 
     /**
      * @param string[] $string

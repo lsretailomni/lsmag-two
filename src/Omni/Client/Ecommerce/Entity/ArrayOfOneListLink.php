@@ -17,9 +17,9 @@ class ArrayOfOneListLink implements IteratorAggregate
     /**
      * @property OneListLink[] $OneListLink
      */
-    protected $OneListLink = array(
+    protected $OneListLink = [
         
-    );
+    ];
 
     /**
      * @param OneListLink[] $OneListLink

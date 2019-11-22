@@ -17,9 +17,9 @@ class ArrayOfVariantExt implements IteratorAggregate
     /**
      * @property VariantExt[] $VariantExt
      */
-    protected $VariantExt = array(
+    protected $VariantExt = [
         
-    );
+    ];
 
     /**
      * @param VariantExt[] $VariantExt
