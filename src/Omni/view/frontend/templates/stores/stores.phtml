@@ -8,55 +8,72 @@ use Ls\Omni\Block\Stores\Stores;
 
 $collection = $block->getStores();
 $counter    = 0;
-$countHours = 0;
 $apiKey     = $block->getStoreMapKey();
 
-if(!empty($collection)) {
+if (!empty($collection)) :
 ?>
 <div id="map" style="height: 300px; width: 100%;"></div>
-<div class="row mt-5">
+<div class="row mt-5 stores-maps-container">
     <?php
-    foreach ($collection as $stores) {
+    foreach ($collection as $stores) :
         $store   = $stores->getData();
         $storeId = $store['nav_id'];
         $hours   = $block->getStoreHours($storeId);
         ?>
-        <div class="col-md-4 mb-5">
-            <div id="map<?php echo $counter?>" style="width:300px; height:200px;"></div>
-            <br/>
-            <br/>
-            <?php if (!empty($store['Name'])) { ?>
-                <p><i class="fas fa-store"></i>&nbsp;<lable><strong><?php echo __('Store'); ?>:</strong>
-                    </lable> <?php echo $store['Name']; ?></p>
-            <?php } ?>
-            <?php if (!empty($store['Street']) && !empty($store['City']) && !empty($store['Country'])) {
+        <div class="col-md-4 mb-5 store-map-plus-info-container">
+            <div id="map<?php echo $counter ?>" style="height:200px;" class="store-map"></div>
+            <?php if (!empty($store['Name'])) : ?>
+                <div class="store-name">
+                    <i class="fas fa-store"></i>&nbsp;
+                    <lable><strong><?php echo __('Store'); ?>:</strong>
+                    </lable>
+                    <span><?php echo $store['Name']; ?></span>
+
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($store['Street']) && !empty($store['City']) && !empty($store['Country'])) :
                 if($store['State']==null){
                     $store['State']="";
                 }
                 ?>
-                <p>
-                    <i class="fas fa-map-marker"></i>&nbsp;<strong><?php echo __('Address'); ?>:</strong> <?php echo $store['Street'] . ", " . $store['City'] . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country'] . " " . "<br/>"; ?>
-                </p>
-            <?php } ?>
-            <?php if (!empty($store['Phone'])) { ?>
-                <p><i class="fas fa-phone"></i><label>&nbsp;<strong><?php echo __('Phone'); ?>:</strong></label> <a
-                            href="tel:<?php echo $store['Phone']; ?>"><?php echo $store['Phone']; ?></a></p>
-            <?php } ?>
-            <?php if (!empty($hours)) {
+                <div class="store-address">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <strong><?php echo __('Address'); ?>:</strong>
+                    <span><?php echo $store['Street'] . ", " . $store['City'] . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country'] . " " . "<br/>"; ?></span>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($store['Phone'])) : ?>
+                <div class="store-phone">
+                    <i class="fas fa-phone-square-alt"></i>
+                    <label>&nbsp;<strong><?php echo __('Phone'); ?>:</strong></label>
+                    <a href="tel:<?php echo $store['Phone']; ?>"><span><?php echo $store['Phone']; ?></span></a>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($hours)) :
                 ?>
-                <p><label><i class="far fa-hourglass"></i>&nbsp;<strong><?php echo __('Opening Hours'); ?></strong></label></p>
+                <div class="store-opening-hours">
+                    <label><i class="fas fa-business-time"></i>&nbsp;<strong><?php echo __('Opening Hours'); ?></strong></label>
+                    <ul>
                 <?php
-                foreach ($hours as $h) {
+                foreach ($hours as $h) :
                 ?>
-                <p>
-                    <?php echo $h['day']." : "." ".$h['openhours']." to ".$h['closedhours'] ?></p>
-            <?php $countHours++; } } ?>
+                    <li>
+                        <?php echo $block->getFormattedHours($h); ?>
+                    </li>
+                <?php
+                endforeach;
+                ?>
+                    </ul>
+                </div>
+            <?php
+            endif;
+            ?>
 
         </div>
         <?php
         $counter++;
-      }
-    }
+    endforeach;
+    endif;
 
 ?>
     <script type="text/javascript">// <![CDATA[
