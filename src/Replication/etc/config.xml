@@ -10,7 +10,7 @@
                 <discount_batch_size>-1</discount_batch_size>
                 <product_attribute_batch_size>100</product_attribute_batch_size>
                 <product_inventory_batch_size>100</product_inventory_batch_size>
-                <product_prices_batch_size>100</product_prices_batch_size>
+                <product_prices_batch_size>1000</product_prices_batch_size>
                 <product_images_batch_size>2000</product_images_batch_size>
                 <product_barcode_batch_size>100</product_barcode_batch_size>
                 <variant_batch_size>1000</variant_batch_size>

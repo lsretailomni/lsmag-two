@@ -630,6 +630,8 @@ class ReplicationHelper extends AbstractHelper
             'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
             []
         );
+        /** @var For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
