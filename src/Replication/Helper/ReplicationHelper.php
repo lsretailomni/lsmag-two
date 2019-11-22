@@ -59,30 +59,22 @@ class ReplicationHelper extends AbstractHelper
     /** @var Config */
     public $eavConfig;
 
-    /**
-     * @var WriterInterface
-     */
+    /** @var WriterInterface */
     public $configWriter;
 
     /** @var Set */
     public $attributeSet;
 
-    /**
-     * @var TypeListInterface
-     */
+    /** @var TypeListInterface */
     public $cacheTypeList;
 
     /** @var LSR */
     public $lsr;
 
-    /**
-     * @var ResourceConnection
-     */
+    /** @var ResourceConnection */
     public $resource;
 
-    /**
-     * @var SortOrder
-     */
+    /** @var SortOrder */
     public $sortOrder;
 
     /**
@@ -214,7 +206,9 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -275,7 +269,9 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -297,7 +293,9 @@ class ReplicationHelper extends AbstractHelper
             $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
         }
         $criteria->addFilter('main_table.is_updated', 1, 'eq');
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -316,7 +314,9 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('IsDeleted', 1, 'eq');
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -335,7 +335,9 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('main_table.IsDeleted', 1, 'eq');
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -353,7 +355,10 @@ class ReplicationHelper extends AbstractHelper
                 $searchCriteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
-        $searchCriteria->setPageSize($pagesize);
+
+        if ($pagesize != -1) {
+            $searchCriteria->setPageSize($pagesize);
+        }
         return $searchCriteria->create();
     }
 
@@ -390,7 +395,10 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
         }
-        $criteria->setPageSize($pagesize);
+
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
