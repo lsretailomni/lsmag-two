@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Block\Stores;
 
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\Data;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Helper\Data;
+use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\View\Element\Template;
@@ -125,7 +125,16 @@ class Stores extends Template
                     strtotime($hour['normal']['close'])
                 ). "</span>";
         } else {
-            if (strtotime($hour['temporary']['open']) <= strtotime($hour['normal']['open'])) {
+            if (empty($hour['normal'])) {
+                $formattedTime = "<span class='dayofweek'>" . $hour["day"] . "</span><span class='special-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['open'])
+                    ) . " - " . date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['close'])
+                    ) . "<span class='special-label'>".__('Special')."</span></span>";
+            } elseif (strtotime($hour['temporary']['open']) <= strtotime($hour['normal']['open'])) {
                 $formattedTime = "<span class='dayofweek'>".$hour["day"]."</span><span class='special-hour'>" .
                     date(
                         $hoursFormat,
@@ -133,7 +142,7 @@ class Stores extends Template
                     )." - ".date(
                         $hoursFormat,
                         strtotime($hour['temporary']['close'])
-                    ) . "<span class='special-label'>".__('special')."</span></span>, "."<span class='normal-hour'>" .
+                    ) . "<span class='special-label'>".__('Special')."</span></span>, "."<span class='normal-hour'>" .
                     date(
                         $hoursFormat,
                         strtotime($hour['normal']['open'])
@@ -156,7 +165,7 @@ class Stores extends Template
                     ). " - ". date(
                         $hoursFormat,
                         strtotime($hour['temporary']['close'])
-                    ) . "<span class='special-label'>".__('special')."</span></span>";
+                    ) . "<span class='special-label'>".__('Special')."</span></span>";
             }
         }
         return $formattedTime;
