@@ -114,47 +114,47 @@ class Stores extends Template
 
     public function getFormattedHours($hour)
     {
-        $formattedTime = "";
+        $hoursFormat = $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT);
         if (empty($hour['temporary'])) {
             $formattedTime = "<span class='dayofweek'>".$hour["day"]."</span><span class='normal-hour'>" .
                 date(
-                    $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                    $hoursFormat,
                     strtotime($hour['normal']['open'])
                 ) . " - ". date(
-                    $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                    $hoursFormat,
                     strtotime($hour['normal']['close'])
                 ). "</span>";
         } else {
             if (strtotime($hour['temporary']['open']) <= strtotime($hour['normal']['open'])) {
                 $formattedTime = "<span class='dayofweek'>".$hour["day"]."</span><span class='special-hour'>" .
                     date(
-                        $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                        $hoursFormat,
                         strtotime($hour['temporary']['open'])
                     )." - ".date(
-                        $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                        $hoursFormat,
                         strtotime($hour['temporary']['close'])
                     ) . "<span class='special-label'>".__('special')."</span></span>, "."<span class='normal-hour'>" .
                     date(
-                        $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                        $hoursFormat,
                         strtotime($hour['normal']['open'])
                     ) ." - ". date(
-                        $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                        $hoursFormat,
                         strtotime($hour['normal']['close'])
                     ). "</span>";
             } else {
                 $formattedTime = "<span class='dayofweek'>".$hour["day"]."</span><span class='normal-hour'>" .
                     date(
-                        $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                        $hoursFormat,
                         strtotime($hour['normal']['open'])
                     ) . " - ".date(
-                        $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                        $hoursFormat,
                         strtotime($hour['normal']['close'])
                     ). "</span>, "."<span class='special-hour'>" .
                     date(
-                        $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                        $hoursFormat,
                         strtotime($hour['temporary']['open'])
                     ). " - ". date(
-                        $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
+                        $hoursFormat,
                         strtotime($hour['temporary']['close'])
                     ) . "<span class='special-label'>".__('special')."</span></span>";
             }
