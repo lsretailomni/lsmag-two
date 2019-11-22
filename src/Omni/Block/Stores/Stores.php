@@ -111,4 +111,63 @@ class Stores extends Template
             $this->logger->error($e->getMessage());
         }
     }
+
+    public function getFormattedHours($hour)
+    {
+        $hoursFormat = $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT);
+        if (empty($hour['temporary'])) {
+            $formattedTime = "<span class='dayofweek'>".$hour["day"]."</span><span class='normal-hour'>" .
+                date(
+                    $hoursFormat,
+                    strtotime($hour['normal']['open'])
+                ) . " - ". date(
+                    $hoursFormat,
+                    strtotime($hour['normal']['close'])
+                ). "</span>";
+        } else {
+            if (empty($hour['normal'])) {
+                $formattedTime = "<span class='dayofweek'>" . $hour["day"] . "</span><span class='special-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['open'])
+                    ) . " - " . date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['close'])
+                    ) . "<span class='special-label'>".__('Special')."</span></span>";
+            } elseif (strtotime($hour['temporary']['open']) <= strtotime($hour['normal']['open'])) {
+                $formattedTime = "<span class='dayofweek'>".$hour["day"]."</span><span class='special-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['open'])
+                    )." - ".date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['close'])
+                    ) . "<span class='special-label'>".__('Special')."</span></span>, "."<span class='normal-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['normal']['open'])
+                    ) ." - ". date(
+                        $hoursFormat,
+                        strtotime($hour['normal']['close'])
+                    ). "</span>";
+            } else {
+                $formattedTime = "<span class='dayofweek'>".$hour["day"]."</span><span class='normal-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['normal']['open'])
+                    ) . " - ".date(
+                        $hoursFormat,
+                        strtotime($hour['normal']['close'])
+                    ). "</span>, "."<span class='special-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['open'])
+                    ). " - ". date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['close'])
+                    ) . "<span class='special-label'>".__('Special')."</span></span>";
+            }
+        }
+        return $formattedTime;
+    }
 }
