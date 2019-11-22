@@ -78,19 +78,13 @@ class CategoryCreateTask
     /** @var CategoryLinkRepositoryInterface */
     public $categoryLinkRepositoryInterface;
 
-    /**
-     * @var ReplHierarchyLeafCollectionFactory
-     */
+    /** @var ReplHierarchyLeafCollectionFactory */
     public $replHierarchyLeafCollectionFactory;
 
-    /**
-     * @var ReplHierarchyNodeCollectionFactory
-     */
+    /** @var ReplHierarchyNodeCollectionFactory */
     public $replHierarchyNodeCollectionFactory;
 
-    /**
-     * @var Attribute
-     */
+    /** @var Attribute */
     public $eavAttribute;
 
     /**
@@ -201,7 +195,7 @@ class CategoryCreateTask
             $parentNodeNullFilter,
             $HierarchyCodeSpecificFilter
         ];
-        $criteria             = $this->replicationHelper->buildCriteriaForArray($filters, 100);
+        $criteria             = $this->replicationHelper->buildCriteriaForArray($filters, -1);
         /** @var ReplHierarchyNodeSearchResults $replHierarchyNodeRepository */
         $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
         /** @var ReplHierarchyNode $hierarchyNode */
@@ -282,7 +276,7 @@ class CategoryCreateTask
             $parentNodeNotNullFilter,
             $HierarchyCodeSpecificFilter
         ];
-        $criteriaSub             = $this->replicationHelper->buildCriteriaForArray($filtersSub, 100);
+        $criteriaSub             = $this->replicationHelper->buildCriteriaForArray($filtersSub, -1);
         /** @var ReplHierarchyNodeSearchResults $replHierarchyNodeRepositorySub */
         $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
         /** @var ReplHierarchyNode $hierarchyNodeSub */
@@ -518,8 +512,8 @@ class CategoryCreateTask
     public function getImage($imageId = '')
     {
         $imageSize = [
-            'height' => $this->lsr::DEFAULT_IMAGE_HEIGHT,
-            'width'  => $this->lsr::DEFAULT_IMAGE_WIDTH
+            'height' => LSR::DEFAULT_IMAGE_HEIGHT,
+            'width'  => LSR::DEFAULT_IMAGE_WIDTH
         ];
         /** @var ImageSize $imageSizeObject */
         $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);

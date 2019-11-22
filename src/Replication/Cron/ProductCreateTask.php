@@ -448,8 +448,6 @@ class ProductCreateTask
                 // This will update all the latest images for the product including new
                 $this->updateAndAddNewImageOnly();
                 $this->updateBarcodeOnly();
-                $this->updatePriceOnly($storeId);
-                $this->updateInventoryOnly($storeId);
             }
             $this->logger->debug('End ProductCreateTask');
         } else {
@@ -485,7 +483,8 @@ class ProductCreateTask
         ProductInterface $product,
         ReplItem $replItem
     ) {
-        $criteria = $this->replicationHelper->buildCriteriaForProductAttributes($replItem->getNavId(), 100);
+        $productAttributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
+        $criteria = $this->replicationHelper->buildCriteriaForProductAttributes($replItem->getNavId(), $productAttributeBatchSize);
         /** @var ReplAttributeValueSearchResults $items */
         $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
         /** @var ReplAttributeValue $item */
@@ -524,8 +523,8 @@ class ProductCreateTask
         foreach ($productImages as $i => $image) {
             $types     = [];
             $imageSize = [
-                'height' => $this->lsr::DEFAULT_ITEM_IMAGE_HEIGHT,
-                'width'  => $this->lsr::DEFAULT_ITEM_IMAGE_WIDTH
+                'height' => LSR::DEFAULT_ITEM_IMAGE_HEIGHT,
+                'width' => LSR::DEFAULT_ITEM_IMAGE_WIDTH
             ];
             /** @var ImageSize $imageSizeObject */
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
@@ -582,6 +581,7 @@ class ProductCreateTask
      */
     private function assignProductToCategory()
     {
+        $assignProductToCategoryBatchSize = $this->replicationHelper->getProductCategoryAssignmentBatchSize();
         $categoriesArray     = [];
         $previousCategoryIds = [];
         $hierarchyCollection = [];
@@ -594,7 +594,10 @@ class ProductCreateTask
             ['field' => 'main_table.NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
         ];
-        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, 100);
+        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+            $filters,
+            $assignProductToCategoryBatchSize
+        );
         /** @var ReplHierarchyLeafSearchResults $replHierarchyLeafRepository */
         $collection = $this->replHierarchyLeafCollectionFactory->create();
         $this->replicationHelper->setCollectionPropertiesPlusJoin(
@@ -1017,7 +1020,8 @@ class ProductCreateTask
             ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
 
         ];
-        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, 2000);
+        $batchSize = $this->replicationHelper->getProductImagesBatchSize();
+        $criteria  = $this->replicationHelper->buildCriteriaForArray($filters, $batchSize);
         /** @var ReplImageLinkSearchResults $images */
         $images         = $this->replImageLinkRepositoryInterface->getList($criteria);
         $processedItems = [];
@@ -1072,8 +1076,9 @@ class ProductCreateTask
     public function updateBarcodeOnly()
     {
         $cronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+        $barcodeBatchSize = $this->replicationHelper->getProductBarcodeBatchSize();
         if ($cronProductCheck == 1) {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', 'eq', $barcodeBatchSize);
             /** @var ReplBarcodeSearchResults $replBarcodes */
             $replBarcodes = $this->replBarcodeRepository->getList($criteria);
             if ($replBarcodes->getTotalCount() > 0) {
@@ -1100,107 +1105,6 @@ class ProductCreateTask
                     $replBarcode->setData('processed', '1');
                     $this->replBarcodeRepository->save($replBarcode);
                 }
-            }
-        }
-    }
-
-    /**
-     * @param $storeId
-     * Update the modified price of the items & item variants
-     */
-    public function updatePriceOnly($storeId)
-    {
-        $filters    = [
-            ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
-        ];
-        $criteria   = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
-        $collection = $this->replPriceCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
-            $collection,
-            $criteria,
-            'ItemId',
-            'ls_replication_repl_item',
-            'nav_id'
-        );
-        if ($collection->getSize() > 0) {
-            /** @var ReplPrice $replPrice */
-            foreach ($collection as $replPrice) {
-                try {
-                    if (!$replPrice->getVariantId()) {
-                        $sku = $replPrice->getItemId();
-                    } else {
-                        $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
-                    }
-                    $productData = $this->productRepository->get($sku);
-                    if (isset($productData)) {
-                        $productData->setPrice($replPrice->getUnitPrice());
-                        // @codingStandardsIgnoreStart
-                        $this->productResourceModel->saveAttribute($productData, 'price');
-                        // @codingStandardsIgnoreEnd
-                        if ($productData->getTypeId() == 'configurable') {
-                            $_children = $productData->getTypeInstance()->getUsedProducts($productData);
-                            foreach ($_children as $child) {
-                                $childProductData = $this->productRepository->get($child->getSKU());
-                                $childProductData->setPrice($replPrice->getUnitPrice());
-                                // @codingStandardsIgnoreStart
-                                $this->productResourceModel->saveAttribute($childProductData, 'price');
-                                // @codingStandardsIgnoreEnd
-                            }
-                        }
-                    }
-                } catch (Exception $e) {
-                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
-                    $this->logger->debug($e->getMessage());
-                }
-                $replPrice->setData('is_updated', '0');
-                $replPrice->setData('processed', '1');
-                $this->replPriceRepository->save($replPrice);
-            }
-        }
-    }
-
-    /**
-     * @param $storeId
-     * Update the inventory of the items & item variants
-     */
-    public function updateInventoryOnly($storeId)
-    {
-        $filters    = [
-            ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
-        ];
-        $criteria   = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
-        $collection = $this->replInvStatusCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
-            $collection,
-            $criteria,
-            'ItemId',
-            'ls_replication_repl_item',
-            'nav_id'
-        );
-        if ($collection->getSize() > 0) {
-            /** @var ReplInvStatus $replInvStatus */
-            foreach ($collection as $replInvStatus) {
-                try {
-                    if (!$replInvStatus->getVariantId()) {
-                        $sku = $replInvStatus->getItemId();
-                    } else {
-                        $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
-                    }
-                    $stockItem = $this->stockRegistry->getStockItemBySku($sku);
-                    if (isset($stockItem)) {
-                        // @codingStandardsIgnoreStart
-                        $stockItem->setQty($replInvStatus->getQuantity());
-                        $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
-                        $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
-                        // @codingStandardsIgnoreEnd
-                    }
-                } catch (Exception $e) {
-                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
-                    $this->logger->debug($e->getMessage());
-                }
-                $replInvStatus->setData('is_updated', '0');
-                $replInvStatus->setData('processed', '1');
-                $this->replInvStatusRepository->save($replInvStatus);
             }
         }
     }
