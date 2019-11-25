@@ -410,8 +410,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getImageLinksByType($nav_id = '', $type = 'Item Category')
     {
-        //first and the most important condition
-        if ($nav_id == '' || $nav_id === null) {
+        if (empty($nav_id)) {
             return false;
         }
         $criteria  = $this->searchCriteriaBuilder->addFilter(

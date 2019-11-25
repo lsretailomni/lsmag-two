@@ -419,7 +419,7 @@ class ProductCreateTask
                         $this->logger->debug('Found images for the item ' . $item->getNavId());
                         $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
-                    $this->logger->debug('trying to save product ' . $item->getNavId());
+                    $this->logger->debug('Trying to save product ' . $item->getNavId());
                     /** @var ProductRepositoryInterface $productSaved */
                     $product = $this->getProductAttributes($product, $item);
                     // @codingStandardsIgnoreStart
@@ -450,8 +450,14 @@ class ProductCreateTask
             }
             $this->logger->debug('End ProductCreateTask');
         } else {
-            $this->logger->debug('Product Replication cron fails because custom category, 
-            custom attribute or full image replication cron not executed successfully.');
+            $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully.' .
+                "\n Status cron CategoryCheck == " . $cronCategoryCheck .
+                "\n Status cron AttributeCheck = " . $cronAttributeCheck .
+                "\n Status cron AttributeVariantCheck = " . $cronAttributeVariantCheck .
+                "\n Status full ReplicationImageLinkStatus = " . $fullReplicationImageLinkStatus .
+                "\n Status full ReplicationBarcodeStatus = " . $fullReplicationBarcodeStatus .
+                "\n Status full ReplicationPriceStatus = " . $fullReplicationPriceStatus .
+                "\n Status full ReplicationInvStatus = " . $fullReplicationInvStatus);
         }
         $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT);
     }
@@ -1059,7 +1065,7 @@ class ProductCreateTask
                         $processedItems[] = $image->getKeyValue();
                     }
                 } catch (Exception $e) {
-                    $this->logger->debug("Problem with sku: " . $item . " in " . __METHOD__);
+                    $this->logger->debug('Problem with sku: ' . $item . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -1258,14 +1264,18 @@ class ProductCreateTask
                 $this->logger->debug("Issue while saving Attribute Id : $attributeId and Product Id : $productId - " . $e->getMessage());
             }
         }
-        $configProduct->setTypeId("configurable"); // Setting Product Type As Configurable
+        $configProduct->setTypeId('configurable'); // Setting Product Type As Configurable
         $configProduct->setAffectConfigurableProductAttributes(4);
         $this->configurable->setUsedProductAttributes($configProduct, $attributesIds);
         $configProduct->setNewVariationsAttributeSetId(4); // Setting Attribute Set Id
         $configProduct->setConfigurableProductsData($configurableProductsData);
         $configProduct->setCanSaveConfigurableAttributes(true);
         $configProduct->setAssociatedProductIds($associatedProductIds); // Setting Associated Products
-        $configProduct->save();
+        try {
+            $configProduct->save();
+        } catch (Exception $e) {
+            $this->logger->debug("Exception while saving Configurable Product Id : $productId - " . $e->getMessage());
+        }
     }
 
     /**

@@ -25,7 +25,7 @@ class SyncPrice extends ProductCreateTask
     public function execute()
     {
         $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
-        $this->logger->debug('Running SyncPrice Task ');
+        $this->logger->debug('Running SyncPrice Task');
         $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
 
         $productPricesBatchSize = $this->replicationHelper->getProductPricesBatchSize();
@@ -89,7 +89,7 @@ class SyncPrice extends ProductCreateTask
             $this->cronStatus = true;
         }
         $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT_PRICE);
-        $this->logger->debug('End SyncPrice task');
+        $this->logger->debug('End SyncPrice Task');
     }
 
     /**

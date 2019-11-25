@@ -249,7 +249,7 @@ class AttributesCreateTask
     public function processVariantAttributes()
     {
         $variantBatchSize = $this->replicationHelper->getVariantBatchSize();
-        $this->logger->debug('Running Varients create task...');
+        $this->logger->debug('Running variants create task');
         /** @var default attribute set id for catalog_product $defaultAttributeSetId */
         $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
         /** @var default group id of general tab for specific product attribute set $defaultGroupId */
