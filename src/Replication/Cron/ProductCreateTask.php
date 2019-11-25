@@ -362,7 +362,7 @@ class ProductCreateTask
             foreach ($items->getItems() as $item) {
                 try {
                     $productData = $this->productRepository->get($item->getNavId());
-                    try {
+
                         $productData->setName($item->getDescription());
                         $productData->setMetaTitle($item->getDescription());
                         $productData->setDescription($item->getDetails());
@@ -374,15 +374,16 @@ class ProductCreateTask
                             $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                         }
                         $product = $this->getProductAttributes($productData, $item);
-                        // @codingStandardsIgnoreStart
+                    try {
+                        // @codingStandardsIgnoreLine
                         $this->productRepository->save($product);
-                        $item->setData('is_updated', 0);
-                        $item->setData('processed', '1');
-                        $this->itemRepository->save($item);
-                        // @codingStandardsIgnoreEnd
                     } catch (Exception $e) {
                         $this->logger->debug($e->getMessage());
+                        $item->setData('is_failed', 1);
                     }
+                    $item->setData('is_updated', 0);
+                    $item->setData('processed', 1);
+                    $this->itemRepository->save($item);
                 } catch (NoSuchEntityException $e) {
                     /** @var ProductInterface $product */
                     $product = $this->productFactory->create();
@@ -399,7 +400,6 @@ class ProductCreateTask
                     } else {
                         $product->setPrice($item->getUnitPrice());
                     }
-
                     $product->setAttributeSetId(4);
                     $product->setStatus(Status::STATUS_ENABLED);
                     $product->setTypeId(Type::TYPE_SIMPLE);
@@ -429,7 +429,7 @@ class ProductCreateTask
                     if (!empty($variants)) {
                         $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
                     }
-                    $item->setData('processed', '1');
+                    $item->setData('processed', 1);
                     $this->itemRepository->save($item);
                     // @codingStandardsIgnoreEnd
                 }
@@ -504,7 +504,7 @@ class ProductCreateTask
                 $value = $item->getValue();
             }
             $product->setData($formattedCode, $value);
-            $item->setData('processed', '1');
+            $item->setData('processed', 1);
             // @codingStandardsIgnoreStart
             $this->replAttributeValueRepositoryInterface->save($item);
             // @codingStandardsIgnoreEnd
@@ -613,6 +613,7 @@ class ProductCreateTask
                 } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
                     $hierarchyLeaf->setData('processed', 1);
+                    $hierarchyLeaf->setData('is_failed', 1);
                     $hierarchyLeaf->setData('is_updated', 0);
                     $this->replHierarchyLeafRepository->save($hierarchyLeaf);
                     continue;
@@ -664,9 +665,8 @@ class ProductCreateTask
      */
     private function getMimeType($image64)
     {
-        // @codingStandardsIgnoreStart
+        // @codingStandardsIgnoreLine
         return finfo_buffer(finfo_open(), base64_decode($image64), FILEINFO_MIME_TYPE);
-        // @codingStandardsIgnoreEnd
     }
 
     /**
@@ -767,9 +767,8 @@ class ProductCreateTask
                 $formattedCode                           = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
                 $finalCodes[$valueCode->getDimensions()] = $formattedCode;
                 $valueCode->setData('processed', 1);
-                // @codingStandardsIgnoreStart
+                // @codingStandardsIgnoreLine
                 $this->extendedVariantValueRepository->save($valueCode);
-                // @codingStandardsIgnoreEnd
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
@@ -901,7 +900,7 @@ class ProductCreateTask
                     // @codingStandardsIgnoreEnd
                 }
             } catch (Exception $e) {
-                $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
+                $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -920,14 +919,14 @@ class ProductCreateTask
         if (!empty($variants)) {
             /** @var ReplItemVariantRegistration $value */
             foreach ($variants as $value) {
+                $d1                     = (($value->getVariantDimension1()) ?: '');
+                $d2                     = (($value->getVariantDimension2()) ?: '');
+                $d3                     = (($value->getVariantDimension3()) ?: '');
+                $d4                     = (($value->getVariantDimension4()) ?: '');
+                $d5                     = (($value->getVariantDimension5()) ?: '');
+                $d6                     = (($value->getVariantDimension6()) ?: '');
+                $itemId                 = $value->getItemId();
                 try {
-                    $d1                     = (($value->getVariantDimension1()) ?: '');
-                    $d2                     = (($value->getVariantDimension2()) ?: '');
-                    $d3                     = (($value->getVariantDimension3()) ?: '');
-                    $d4                     = (($value->getVariantDimension4()) ?: '');
-                    $d5                     = (($value->getVariantDimension5()) ?: '');
-                    $d6                     = (($value->getVariantDimension6()) ?: '');
-                    $itemId                 = $value->getItemId();
                     $productData            = $this->productRepository->get($itemId);
                     $attributeCodes         = $this->_getAttributesCodes($productData->getSku());
                     $configurableAttributes = [];
