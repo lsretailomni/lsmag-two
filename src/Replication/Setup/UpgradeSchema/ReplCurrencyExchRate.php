@@ -36,6 +36,23 @@ class ReplCurrencyExchRate
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'CurrencyCode' ) === false) {
+        		$connection->addColumn($table_name, 'CurrencyCode', ['type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'CurrencyFactor' ) === false) {
+        		$connection->addColumn($table_name, 'CurrencyFactor', ['type' => Table::TYPE_FLOAT, 'comment' => 'CurrencyFactor']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'RelationalCurrencyCode' ) === false) {
+        		$connection->addColumn($table_name, 'RelationalCurrencyCode', ['type' => Table::TYPE_TEXT, 'comment' => 'RelationalCurrencyCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'StartingDate' ) === false) {
+        		$connection->addColumn($table_name, 'StartingDate', ['type' => Table::TYPE_TEXT, 'comment' => 'StartingDate']);
+        	}
         }
     }
 

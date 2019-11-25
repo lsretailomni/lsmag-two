@@ -50,13 +50,13 @@ class SchemaUpdateGenerator extends AbstractGenerator
     public function __construct(ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation = $operation;
-        $ecommerce = ServiceType::ECOMMERCE();
-        $client = new Client(Service::getUrl($ecommerce), $ecommerce);
-        $this->reflected_entity = new ClassReflection($this->operation->getOmniEntityFqn());
+        $this->operation         = $operation;
+        $ecommerce               = ServiceType::ECOMMERCE();
+        $client                  = new Client(Service::getUrl($ecommerce), $ecommerce);
+        $this->reflected_entity  = new ClassReflection($this->operation->getOmniEntityFqn());
         $this->reflected_upgrade = new ClassReflection(UpgradeSchema::class);
-        $this->metadata = $client->getMetadata();
-        $this->case_helper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
+        $this->metadata          = $client->getMetadata();
+        $this->case_helper       = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
     }
 
     /**
@@ -64,7 +64,7 @@ class SchemaUpdateGenerator extends AbstractGenerator
      */
     public function generate()
     {
-        $entity_name = $this->case_helper->toPascalCase($this->reflected_entity->getShortName());
+        $entity_name    = $this->case_helper->toPascalCase($this->reflected_entity->getShortName());
         $upgrade_method = new MethodGenerator();
         $upgrade_method->setName("upgrade");
         $upgrade_method->setParameters([
@@ -107,9 +107,9 @@ class SchemaUpdateGenerator extends AbstractGenerator
      */
     public function getMethodBody()
     {
-        $restrictions = $this->metadata->getRestrictions();
+        $restrictions   = $this->metadata->getRestrictions();
         $property_types = [];
-        $simple_types = ['boolean', 'string', 'int', 'float'];
+        $simple_types   = ['boolean', 'string', 'int', 'float'];
         foreach ($this->reflected_entity->getProperties() as $property) {
             $docblock = $property->getDocBlock()->getContents();
             preg_match('/property\s(:?\w+)\s\$(:?\w+)/m', $docblock, $matches);
@@ -124,9 +124,9 @@ class SchemaUpdateGenerator extends AbstractGenerator
             }
         };
 
-        $table_name = $this->getTableName();
+        $table_name     = $this->getTableName();
         $table_idx_name = $this->getTableFieldId();
-        $method_body = <<<CODE
+        $method_body    = <<<CODE
 \$table_name = \$setup->getTable( 'ls_replication_$table_name' ); 
 if(!\$setup->tableExists(\$table_name)) {
 \t\$table = \$setup->getConnection()->newTable( \$table_name );
@@ -157,22 +157,35 @@ CODE;
                     $field_type = 'Table::TYPE_TEXT';
                 } else {
                     $field_type = 'Table::TYPE_BLOB';
-                    $size = '25M';
+                    $size       = '25M';
                 }
             }
             if ($name == 'Id') {
                 $name = 'nav_id';
             }
-            $method_body .= "\t\$table->addColumn('$name' , $field_type, '$size');\n";
+            $allColumnsArray[] = array(
+                'name'       => $name,
+                'field_type' => $field_type
+            );
+            $method_body       .= "\t\$table->addColumn('$name' , $field_type, '$size');\n";
         }
 
         $method_body .= <<<CODE
 \t\$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
 \t\$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
 \t\$setup->getConnection()->createTable( \$table );
-}
+} else {
+\t\$connection = \$setup->getConnection();
 CODE;
-
+        foreach ($allColumnsArray as $column) {
+            $comment = ucfirst($column['name']);
+            $method_body .= "\n\tif (\$connection->tableColumnExists(\$table_name, '" . $column['name'] . "' ) === false) {";
+            $method_body .= "\n\t\t\$connection->addColumn(\$table_name, '" . $column['name'] . "', ['type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
+            $method_body .= "\t}";
+        }
+        $method_body .= <<<CODE
+\n}
+CODE;
         return $method_body;
     }
 
@@ -197,10 +210,10 @@ CODE;
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         /** @var  \Magento\Framework\Module\Dir\Reader $dirReader */
-        $dirReader = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
-        $basepath = $dirReader->getModuleDir('', 'Ls_Replication');
+        $dirReader    = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
+        $basepath     = $dirReader->getModuleDir('', 'Ls_Replication');
         $upgrade_path = $basepath . "/Setup/UpgradeSchema";
-        $entity_name = ucfirst($this->reflected_entity->getShortName());
+        $entity_name  = ucfirst($this->reflected_entity->getShortName());
         $upgrade_path = str_replace('UpgradeSchema', "UpgradeSchema/$entity_name", $upgrade_path);
         $upgrade_path .= '.php';
         return $upgrade_path;

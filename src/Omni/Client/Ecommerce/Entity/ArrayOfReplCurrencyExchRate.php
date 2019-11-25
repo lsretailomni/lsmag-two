@@ -17,9 +17,9 @@ class ArrayOfReplCurrencyExchRate implements IteratorAggregate
     /**
      * @property ReplCurrencyExchRate[] $ReplCurrencyExchRate
      */
-    protected $ReplCurrencyExchRate = array(
+    protected $ReplCurrencyExchRate = [
         
-    );
+    ];
 
     /**
      * @param ReplCurrencyExchRate[] $ReplCurrencyExchRate

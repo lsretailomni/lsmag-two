@@ -16,6 +16,7 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -23,7 +24,6 @@ use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
@@ -59,30 +59,22 @@ class ReplicationHelper extends AbstractHelper
     /** @var Config */
     public $eavConfig;
 
-    /**
-     * @var WriterInterface
-     */
+    /** @var WriterInterface */
     public $configWriter;
 
     /** @var Set */
     public $attributeSet;
 
-    /**
-     * @var TypeListInterface
-     */
+    /** @var TypeListInterface */
     public $cacheTypeList;
 
     /** @var LSR */
     public $lsr;
 
-    /**
-     * @var ResourceConnection
-     */
+    /** @var ResourceConnection */
     public $resource;
 
-    /**
-     * @var SortOrder
-     */
+    /** @var SortOrder */
     public $sortOrder;
 
     /**
@@ -118,19 +110,19 @@ class ReplicationHelper extends AbstractHelper
         ResourceConnection $resource,
         SortOrder $sortOrder
     ) {
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->filterBuilder = $filterBuilder;
-        $this->filterGroupBuilder = $filterGroupBuilder;
-        $this->storeManager = $storeManager;
-        $this->filesystem = $Filesystem;
+        $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
+        $this->filterBuilder                    = $filterBuilder;
+        $this->filterGroupBuilder               = $filterGroupBuilder;
+        $this->storeManager                     = $storeManager;
+        $this->filesystem                       = $Filesystem;
         $this->replImageLinkRepositoryInterface = $replImageLinkRepositoryInterface;
-        $this->eavConfig = $eavConfig;
-        $this->configWriter = $configWriter;
-        $this->attributeSet = $attributeSet;
-        $this->cacheTypeList = $cacheTypeList;
-        $this->lsr = $LSR;
-        $this->resource = $resource;
-        $this->sortOrder = $sortOrder;
+        $this->eavConfig                        = $eavConfig;
+        $this->configWriter                     = $configWriter;
+        $this->attributeSet                     = $attributeSet;
+        $this->cacheTypeList                    = $cacheTypeList;
+        $this->lsr                              = $LSR;
+        $this->resource                         = $resource;
+        $this->sortOrder                        = $sortOrder;
         parent::__construct(
             $context
         );
@@ -214,7 +206,9 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -275,9 +269,12 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
+
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
      * @param array $filters
@@ -296,7 +293,9 @@ class ReplicationHelper extends AbstractHelper
             $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
         }
         $criteria->addFilter('main_table.is_updated', 1, 'eq');
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -315,7 +314,9 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('IsDeleted', 1, 'eq');
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -334,9 +335,12 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('main_table.IsDeleted', 1, 'eq');
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
+
     /**
      * Create Build Exit Criteria with Array of filters as a parameters
      * @param array $filters
@@ -351,7 +355,10 @@ class ReplicationHelper extends AbstractHelper
                 $searchCriteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
-        $searchCriteria->setPageSize($pagesize);
+
+        if ($pagesize != -1) {
+            $searchCriteria->setPageSize($pagesize);
+        }
         return $searchCriteria->create();
     }
 
@@ -388,7 +395,10 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
         }
-        $criteria->setPageSize($pagesize);
+
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -404,7 +414,7 @@ class ReplicationHelper extends AbstractHelper
         if ($nav_id == '' || $nav_id === null) {
             return false;
         }
-        $criteria = $this->searchCriteriaBuilder->addFilter(
+        $criteria  = $this->searchCriteriaBuilder->addFilter(
             'KeyValue',
             $nav_id,
             'eq'
@@ -439,7 +449,7 @@ class ReplicationHelper extends AbstractHelper
         }
         // @codingStandardsIgnoreStart
         $request = new Operation\ImageStreamGetById();
-        $entity = new Entity\ImageStreamGetById();
+        $entity  = new Entity\ImageStreamGetById();
         // @codingStandardsIgnoreEnd
         $entity->setId($image_id);
         try {
@@ -492,7 +502,7 @@ class ReplicationHelper extends AbstractHelper
     public function getAllWebsitesIds()
     {
         $websiteIds = [];
-        $websites = $this->storeManager->getWebsites();
+        $websites   = $this->storeManager->getWebsites();
         /** @var Interceptor $website */
         foreach ($websites as $website) {
             $websiteIds[] = $website->getId();
@@ -599,11 +609,11 @@ class ReplicationHelper extends AbstractHelper
         $secondaryTableColumnName
     ) {
         foreach ($criteria->getFilterGroups() as $filter_group) {
-            $fields = [];
+            $fields     = [];
             $conditions = [];
             foreach ($filter_group->getFilters() as $filter) {
-                $condition = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
-                $fields[] = $filter->getField();
+                $condition    = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
+                $fields[]     = $filter->getField();
                 $conditions[] = [$condition => $filter->getValue()];
             }
             if ($fields) {
@@ -624,12 +634,78 @@ class ReplicationHelper extends AbstractHelper
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
         $collection->getSelect()->joinInner(
-            array('second' => $second_table_name),
-            'main_table.' . $primaryTableColumnName . ' = second.'.$secondaryTableColumnName,
+            ['second' => $second_table_name],
+            'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
             []
         );
+        /** @var For Xdebug only to check the query $query */
+        //$query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductAttributeBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountsBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_DISCOUNT_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductInventoryBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_INVENTORY_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductPricesBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_PRICES_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductImagesBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_IMAGES_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductBarcodeBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BARCODE_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_VARIANT_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductCategoryAssignmentBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE);
     }
 }

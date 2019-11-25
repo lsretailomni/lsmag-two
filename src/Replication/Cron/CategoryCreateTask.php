@@ -77,14 +77,10 @@ class CategoryCreateTask
     /** @var CategoryLinkRepositoryInterface */
     public $categoryLinkRepositoryInterface;
 
-    /**
-     * @var ReplHierarchyLeafCollectionFactory
-     */
+    /** @var ReplHierarchyLeafCollectionFactory */
     public $replHierarchyLeafCollectionFactory;
 
-    /**
-     * @var ReplHierarchyNodeCollectionFactory
-     */
+    /** @var ReplHierarchyNodeCollectionFactory */
     public $replHierarchyNodeCollectionFactory;
 
     /**
@@ -198,7 +194,7 @@ class CategoryCreateTask
             $parentNodeNullFilter,
             $HierarchyCodeSpecificFilter
         ];
-        $criteria             = $this->replicationHelper->buildCriteriaForArray($filters, 100);
+        $criteria             = $this->replicationHelper->buildCriteriaForArray($filters, -1);
         /** @var ReplHierarchyNodeSearchResults $replHierarchyNodeRepository */
         $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
         /** @var ReplHierarchyNode $hierarchyNode */
@@ -221,8 +217,10 @@ class CategoryCreateTask
                         'is_active'       => true,
                         'is_anchor'       => true,
                         'include_in_menu' => true,
-                        'meta_title'      => ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId(),
-                        'nav_id'          => $hierarchyNode->getNavId()
+                        'meta_title'      => ($hierarchyNode->getDescription()) ?
+                            $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
+                        'nav_id'          => $hierarchyNode->getNavId(),
+                        'position'        => $hierarchyNode->getChildrenOrder()
                     ];
                     $category->setData($data)->setAttributeSetId($category->getDefaultAttributeSetId());
                     if ($hierarchyNode->getImageId()) {
@@ -242,7 +240,11 @@ class CategoryCreateTask
                             $image = $this->getImage($hierarchyNode->getImageId());
                             $categoryExistData->setImage($image, $mediaAttribute, true, false);
                         }
-                        // @codingStandardsIgnoreLine
+                        $categoryExistData->setData(
+                            'position',
+                            $hierarchyNode->getChildrenOrder()
+                        );
+                        // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($categoryExistData);
                     }
                 }
@@ -272,7 +274,7 @@ class CategoryCreateTask
             $parentNodeNotNullFilter,
             $HierarchyCodeSpecificFilter
         ];
-        $criteriaSub             = $this->replicationHelper->buildCriteriaForArray($filtersSub, 100);
+        $criteriaSub             = $this->replicationHelper->buildCriteriaForArray($filtersSub, -1);
         /** @var ReplHierarchyNodeSearchResults $replHierarchyNodeRepositorySub */
         $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
         /** @var ReplHierarchyNode $hierarchyNodeSub */
@@ -303,7 +305,8 @@ class CategoryCreateTask
                         'include_in_menu' => true,
                         'meta_title'      => ($hierarchyNodeSub->getDescription()) ?
                             $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId(),
-                        'nav_id'          => $hierarchyNodeSub->getNavId()
+                        'nav_id'          => $hierarchyNodeSub->getNavId(),
+                        'position'        => $hierarchyNodeSub->getChildrenOrder()
                     ];
                     $categorysub->setData($data)->setAttributeSetId($categorysub->getDefaultAttributeSetId());
                     if ($hierarchyNodeSub->getImageId()) {
@@ -323,7 +326,11 @@ class CategoryCreateTask
                             $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
                             $subCategoryExistData->setImage($imageSub, $mediaAttribute, true, false);
                         }
-                        // @codingStandardsIgnoreLine
+                        $subCategoryExistData->setData(
+                            'position',
+                            $hierarchyNodeSub->getChildrenOrder()
+                        );
+                        // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($subCategoryExistData);
                     }
                 }

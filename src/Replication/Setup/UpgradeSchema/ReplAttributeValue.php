@@ -40,6 +40,35 @@ class ReplAttributeValue
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'Code' ) === false) {
+        		$connection->addColumn($table_name, 'Code', ['type' => Table::TYPE_TEXT, 'comment' => 'Code']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'LinkField1' ) === false) {
+        		$connection->addColumn($table_name, 'LinkField1', ['type' => Table::TYPE_TEXT, 'comment' => 'LinkField1']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'LinkField2' ) === false) {
+        		$connection->addColumn($table_name, 'LinkField2', ['type' => Table::TYPE_TEXT, 'comment' => 'LinkField2']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'LinkField3' ) === false) {
+        		$connection->addColumn($table_name, 'LinkField3', ['type' => Table::TYPE_TEXT, 'comment' => 'LinkField3']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'LinkType' ) === false) {
+        		$connection->addColumn($table_name, 'LinkType', ['type' => Table::TYPE_INTEGER, 'comment' => 'LinkType']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'NumbericValue' ) === false) {
+        		$connection->addColumn($table_name, 'NumbericValue', ['type' => Table::TYPE_FLOAT, 'comment' => 'NumbericValue']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Sequence' ) === false) {
+        		$connection->addColumn($table_name, 'Sequence', ['type' => Table::TYPE_INTEGER, 'comment' => 'Sequence']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Value' ) === false) {
+        		$connection->addColumn($table_name, 'Value', ['type' => Table::TYPE_TEXT, 'comment' => 'Value']);
+        	}
         }
     }
 

@@ -17,9 +17,9 @@ class ArrayOfNotification implements IteratorAggregate
     /**
      * @property Notification[] $Notification
      */
-    protected $Notification = array(
+    protected $Notification = [
         
-    );
+    ];
 
     /**
      * @param Notification[] $Notification

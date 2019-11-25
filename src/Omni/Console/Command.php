@@ -5,6 +5,8 @@ namespace Ls\Omni\Console;
 use \Ls\Omni\Exception\InvalidServiceTypeException;
 use \Ls\Omni\Service\Service;
 use \Ls\Omni\Service\ServiceType;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Module\Dir\Reader;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,12 +38,12 @@ class Command extends SymfonyCommand
      */
     public $service;
 
-    /** @var \Magento\Framework\Module\Dir\Reader  */
+    /** @var Reader */
     public $dirReader;
 
     public function __construct(
-        \Ls\Omni\Service\Service $service,
-        \Magento\Framework\Module\Dir\Reader $dirReader
+        Service $service,
+        Reader $dirReader
     ) {
         $this->service       =   $service;
         $this->dirReader    =   $dirReader;
@@ -75,23 +77,11 @@ class Command extends SymfonyCommand
         !empty($this->base_url) or $this->base_url = $this->getBaseUrl();
     }
 
-    /**
-     * @param string $path,...
-     *
-     * @return string
-     */
-    public function path($path)
-    {
-        $parts = func_get_args();
-
-        return join(DIRECTORY_SEPARATOR, $parts);
-    }
-
     public function getBaseUrl()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $objectManager = ObjectManager::getInstance();
 
-        /** @var \Ls\Omni\Service\Service  $service */
+        /** @var Service $service */
         // @codingStandardsIgnoreLine
         $service = $objectManager->create('Ls\Omni\Service\Service');
         $service->getOmniBaseUrl();

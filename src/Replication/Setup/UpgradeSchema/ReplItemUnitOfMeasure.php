@@ -40,6 +40,35 @@ class ReplItemUnitOfMeasure
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'Code' ) === false) {
+        		$connection->addColumn($table_name, 'Code', ['type' => Table::TYPE_TEXT, 'comment' => 'Code']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'CountAsOne' ) === false) {
+        		$connection->addColumn($table_name, 'CountAsOne', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'CountAsOne']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
+        		$connection->addColumn($table_name, 'Description', ['type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
+        		$connection->addColumn($table_name, 'ItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Order' ) === false) {
+        		$connection->addColumn($table_name, 'Order', ['type' => Table::TYPE_INTEGER, 'comment' => 'Order']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'QtyPrUOM' ) === false) {
+        		$connection->addColumn($table_name, 'QtyPrUOM', ['type' => Table::TYPE_FLOAT, 'comment' => 'QtyPrUOM']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Selection' ) === false) {
+        		$connection->addColumn($table_name, 'Selection', ['type' => Table::TYPE_INTEGER, 'comment' => 'Selection']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ShortDescription' ) === false) {
+        		$connection->addColumn($table_name, 'ShortDescription', ['type' => Table::TYPE_TEXT, 'comment' => 'ShortDescription']);
+        	}
         }
     }
 

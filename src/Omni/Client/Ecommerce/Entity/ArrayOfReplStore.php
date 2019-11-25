@@ -17,9 +17,9 @@ class ArrayOfReplStore implements IteratorAggregate
     /**
      * @property ReplStore[] $ReplStore
      */
-    protected $ReplStore = array(
+    protected $ReplStore = [
         
-    );
+    ];
 
     /**
      * @param ReplStore[] $ReplStore

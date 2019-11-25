@@ -17,9 +17,9 @@ class ArrayOfReplImage implements IteratorAggregate
     /**
      * @property ReplImage[] $ReplImage
      */
-    protected $ReplImage = array(
+    protected $ReplImage = [
         
-    );
+    ];
 
     /**
      * @param ReplImage[] $ReplImage

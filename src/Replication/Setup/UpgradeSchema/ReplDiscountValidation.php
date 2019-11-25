@@ -68,6 +68,119 @@ class ReplDiscountValidation
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
+        		$connection->addColumn($table_name, 'Description', ['type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'EndAfterMidnight' ) === false) {
+        		$connection->addColumn($table_name, 'EndAfterMidnight', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'EndAfterMidnight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'EndDate' ) === false) {
+        		$connection->addColumn($table_name, 'EndDate', ['type' => Table::TYPE_TEXT, 'comment' => 'EndDate']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'EndTime' ) === false) {
+        		$connection->addColumn($table_name, 'EndTime', ['type' => Table::TYPE_TEXT, 'comment' => 'EndTime']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'FridayEnd' ) === false) {
+        		$connection->addColumn($table_name, 'FridayEnd', ['type' => Table::TYPE_TEXT, 'comment' => 'FridayEnd']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'FridayEndAfterMidnight' ) === false) {
+        		$connection->addColumn($table_name, 'FridayEndAfterMidnight', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'FridayEndAfterMidnight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'FridayStart' ) === false) {
+        		$connection->addColumn($table_name, 'FridayStart', ['type' => Table::TYPE_TEXT, 'comment' => 'FridayStart']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'FridayWithinBounds' ) === false) {
+        		$connection->addColumn($table_name, 'FridayWithinBounds', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'FridayWithinBounds']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
+        		$connection->addColumn($table_name, 'nav_id', ['type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'MondayEnd' ) === false) {
+        		$connection->addColumn($table_name, 'MondayEnd', ['type' => Table::TYPE_TEXT, 'comment' => 'MondayEnd']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'MondayEndAfterMidnight' ) === false) {
+        		$connection->addColumn($table_name, 'MondayEndAfterMidnight', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'MondayEndAfterMidnight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'MondayStart' ) === false) {
+        		$connection->addColumn($table_name, 'MondayStart', ['type' => Table::TYPE_TEXT, 'comment' => 'MondayStart']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'MondayWithinBounds' ) === false) {
+        		$connection->addColumn($table_name, 'MondayWithinBounds', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'MondayWithinBounds']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SaturdayEnd' ) === false) {
+        		$connection->addColumn($table_name, 'SaturdayEnd', ['type' => Table::TYPE_TEXT, 'comment' => 'SaturdayEnd']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SaturdayEndAfterMidnight' ) === false) {
+        		$connection->addColumn($table_name, 'SaturdayEndAfterMidnight', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'SaturdayEndAfterMidnight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SaturdayStart' ) === false) {
+        		$connection->addColumn($table_name, 'SaturdayStart', ['type' => Table::TYPE_TEXT, 'comment' => 'SaturdayStart']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SaturdayWithinBounds' ) === false) {
+        		$connection->addColumn($table_name, 'SaturdayWithinBounds', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'SaturdayWithinBounds']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'StartDate' ) === false) {
+        		$connection->addColumn($table_name, 'StartDate', ['type' => Table::TYPE_TEXT, 'comment' => 'StartDate']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'StartTime' ) === false) {
+        		$connection->addColumn($table_name, 'StartTime', ['type' => Table::TYPE_TEXT, 'comment' => 'StartTime']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SundayEnd' ) === false) {
+        		$connection->addColumn($table_name, 'SundayEnd', ['type' => Table::TYPE_TEXT, 'comment' => 'SundayEnd']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SundayEndAfterMidnight' ) === false) {
+        		$connection->addColumn($table_name, 'SundayEndAfterMidnight', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'SundayEndAfterMidnight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SundayStart' ) === false) {
+        		$connection->addColumn($table_name, 'SundayStart', ['type' => Table::TYPE_TEXT, 'comment' => 'SundayStart']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'SundayWithinBounds' ) === false) {
+        		$connection->addColumn($table_name, 'SundayWithinBounds', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'SundayWithinBounds']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ThursdayEnd' ) === false) {
+        		$connection->addColumn($table_name, 'ThursdayEnd', ['type' => Table::TYPE_TEXT, 'comment' => 'ThursdayEnd']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ThursdayEndAfterMidnight' ) === false) {
+        		$connection->addColumn($table_name, 'ThursdayEndAfterMidnight', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'ThursdayEndAfterMidnight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ThursdayStart' ) === false) {
+        		$connection->addColumn($table_name, 'ThursdayStart', ['type' => Table::TYPE_TEXT, 'comment' => 'ThursdayStart']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ThursdayWithinBounds' ) === false) {
+        		$connection->addColumn($table_name, 'ThursdayWithinBounds', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'ThursdayWithinBounds']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'TimeWithinBounds' ) === false) {
+        		$connection->addColumn($table_name, 'TimeWithinBounds', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'TimeWithinBounds']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'TuesdayEnd' ) === false) {
+        		$connection->addColumn($table_name, 'TuesdayEnd', ['type' => Table::TYPE_TEXT, 'comment' => 'TuesdayEnd']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'TuesdayEndAfterMidnight' ) === false) {
+        		$connection->addColumn($table_name, 'TuesdayEndAfterMidnight', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'TuesdayEndAfterMidnight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'TuesdayStart' ) === false) {
+        		$connection->addColumn($table_name, 'TuesdayStart', ['type' => Table::TYPE_TEXT, 'comment' => 'TuesdayStart']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'TuesdayWithinBounds' ) === false) {
+        		$connection->addColumn($table_name, 'TuesdayWithinBounds', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'TuesdayWithinBounds']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'WednesdayEnd' ) === false) {
+        		$connection->addColumn($table_name, 'WednesdayEnd', ['type' => Table::TYPE_TEXT, 'comment' => 'WednesdayEnd']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'WednesdayEndAfterMidnight' ) === false) {
+        		$connection->addColumn($table_name, 'WednesdayEndAfterMidnight', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'WednesdayEndAfterMidnight']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'WednesdayStart' ) === false) {
+        		$connection->addColumn($table_name, 'WednesdayStart', ['type' => Table::TYPE_TEXT, 'comment' => 'WednesdayStart']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'WednesdayWithinBounds' ) === false) {
+        		$connection->addColumn($table_name, 'WednesdayWithinBounds', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'WednesdayWithinBounds']);
+        	}
         }
     }
 

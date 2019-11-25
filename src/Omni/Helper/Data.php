@@ -4,6 +4,7 @@ namespace Ls\Omni\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
@@ -13,6 +14,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -65,6 +67,11 @@ class Data extends AbstractHelper
     public $cacheHelper;
 
     /**
+     * @var DateTime
+     */
+    public $date;
+
+    /**
      * Data constructor.
      * @param Context $context
      * @param StoreManagerInterface $store_manager
@@ -78,6 +85,7 @@ class Data extends AbstractHelper
      * @param CartRepositoryInterface $cartRepository
      * @param CacheHelper $cacheHelper
      * @param LSR $lsr
+     * @param DateTime $date
      */
     public function __construct(
         Context $context,
@@ -91,7 +99,8 @@ class Data extends AbstractHelper
         LoyaltyHelper $loyaltyHelper,
         CartRepositoryInterface $cartRepository,
         CacheHelper $cacheHelper,
-        LSR $lsr
+        LSR $lsr,
+        DateTime $date
     ) {
         $this->storeManager          = $store_manager;
         $this->storeRepository       = $storeRepository;
@@ -104,6 +113,7 @@ class Data extends AbstractHelper
         $this->loyaltyHelper         = $loyaltyHelper;
         $this->cacheHelper           = $cacheHelper;
         $this->lsr                   = $lsr;
+        $this->date                  = $date;
         parent::__construct($context);
     }
 
@@ -151,17 +161,27 @@ class Data extends AbstractHelper
             }
             $counter    = 0;
             $storeHours = [];
-            foreach ($storeResults as $r) {
-                $storeHours[$counter]['openhours']   = date(
-                    $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
-                    strtotime($r->getOpenFrom())
-                );
-                $storeHours[$counter]['closedhours'] = date(
-                    $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT),
-                    strtotime($r->getOpenTo())
-                );
-                $storeHours[$counter]['day']         = $r->getNameOfDay();
-                $counter++;
+            $today      = $this->date->gmtDate("Y-m-d");
+            for ($i = 0; $i < 7; $i++) {
+                $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
+                $currentDayOfWeek = date('w', strtotime($current));
+                foreach ($storeResults as $key => $r) {
+                    if ($r->getDayOfWeek() == $currentDayOfWeek) {
+                        if ($this->checkDateValidity($current, $r)) {
+                            if ($r->getType() == "Normal") {
+                                $storeHours[$currentDayOfWeek]['normal']   =
+                                    ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
+                            } else {
+                                $storeHours[$currentDayOfWeek]['temporary']   =
+                                    ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
+                            }
+                            $storeHours[$currentDayOfWeek]['day']         = $r->getNameOfDay();
+                            $counter++;
+                        }
+                        unset($storeResults[$key]);
+                    }
+                }
+
             }
             return $storeHours;
         } catch (Exception $e) {
@@ -171,6 +191,34 @@ class Data extends AbstractHelper
         return $storeHours;
     }
 
+    /**
+     * @param $current
+     * @param $storeHoursObj StoreHours
+     * @return bool
+     */
+    public function checkDateValidity($current, $storeHoursObj)
+    {
+        if ($storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
+            if (strtotime($current) >= strtotime($storeHoursObj->getStartDate())
+                && strtotime($current) <= strtotime($storeHoursObj->getEndDate())
+            ) {
+                return true;
+            }
+        } else {
+            if ($storeHoursObj->getStartDate() && !$storeHoursObj->getEndDate()) {
+                if (strtotime($current) >= strtotime($storeHoursObj->getStartDate())) {
+                    return true;
+                }
+            } else {
+                if (!$storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
+                    if (strtotime($current) <= strtotime($storeHoursObj->getEndDate())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
     /**
      * @param $value
      */

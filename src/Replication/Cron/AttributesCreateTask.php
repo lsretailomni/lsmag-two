@@ -175,7 +175,7 @@ class AttributesCreateTask
     public function processAttributes()
     {
         try {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1, 1);
 
             /** @var ReplAttributeSearchResults $replAttributes */
             $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
@@ -207,7 +207,7 @@ class AttributesCreateTask
      */
     public function caterAttributesRemoval()
     {
-        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly([]);
+        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly([], -1);
         /** @var ReplAttributeSearchResults $replAttributes */
         $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
         /** @var ReplAttribute $replAttribute */
@@ -248,12 +248,14 @@ class AttributesCreateTask
      */
     public function processVariantAttributes()
     {
-        $this->logger->debug('Running variants create task.');
+        $variantBatchSize = $this->replicationHelper->getVariantBatchSize();
+        $this->logger->debug('Running Varients create task...');
         /** @var default attribute set id for catalog_product $defaultAttributeSetId */
         $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
         /** @var default group id of general tab for specific product attribute set $defaultGroupId */
         $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
-        $criteria     = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 1000);
+
+        $criteria     = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $variantBatchSize, 1);
         $variants     = $this->replExtendedVariantValueRepository->getList($criteria)->getItems();
         $variantCodes = [];
         /** @var ReplExtendedVariantValue $variant */
@@ -479,7 +481,7 @@ class AttributesCreateTask
     public function generateOptionValues($attribute_code = '')
     {
         $optionArray = [];
-        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('Code', $attribute_code, 'eq');
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('Code', $attribute_code, 'eq', -1, 1);
         /** @var ReplAttributeOptionValueSearchResults $replAttributeOptionValues */
         $replAttributeOptionValues = $this->replAttributeOptionValueRepositoryInterface->getList($criteria);
 

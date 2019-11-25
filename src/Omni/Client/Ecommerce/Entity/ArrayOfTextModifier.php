@@ -17,9 +17,9 @@ class ArrayOfTextModifier implements IteratorAggregate
     /**
      * @property TextModifier[] $TextModifier
      */
-    protected $TextModifier = array(
+    protected $TextModifier = [
         
-    );
+    ];
 
     /**
      * @param TextModifier[] $TextModifier

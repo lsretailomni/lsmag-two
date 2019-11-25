@@ -36,6 +36,23 @@ class ReplInvStatus
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
+        		$connection->addColumn($table_name, 'ItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Quantity' ) === false) {
+        		$connection->addColumn($table_name, 'Quantity', ['type' => Table::TYPE_FLOAT, 'comment' => 'Quantity']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'StoreId' ) === false) {
+        		$connection->addColumn($table_name, 'StoreId', ['type' => Table::TYPE_TEXT, 'comment' => 'StoreId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'VariantId' ) === false) {
+        		$connection->addColumn($table_name, 'VariantId', ['type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
+        	}
         }
     }
 

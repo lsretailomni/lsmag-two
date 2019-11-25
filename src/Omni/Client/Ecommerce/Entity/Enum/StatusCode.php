@@ -153,6 +153,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode TRANSFER_ORDER_SENT()
  * @$method static StatusCode TRANSFER_ORDER_REJECTED()
  * @$method static StatusCode INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT()
+ * @$method static StatusCode NO_ITEMS_TO_SUSPEND()
  * @$method static StatusCode UNKNOWN_USER()
  * @$method static StatusCode NAV_W_S_ERROR()
  * @$method static StatusCode TRANSACTION_POST()
@@ -447,6 +448,8 @@ class StatusCode extends Enum
     const TRANSFER_ORDER_REJECTED = 'TransferOrderRejected';
 
     const INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT = 'InvalidSuspensionWithPartialPayment';
+
+    const NO_ITEMS_TO_SUSPEND = 'NoItemsToSuspend';
 
     const UNKNOWN_USER = 'UnknownUser';
 

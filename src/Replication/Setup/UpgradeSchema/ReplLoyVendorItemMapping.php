@@ -38,6 +38,29 @@ class ReplLoyVendorItemMapping
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'Deleted' ) === false) {
+        		$connection->addColumn($table_name, 'Deleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'Deleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'DisplayOrder' ) === false) {
+        		$connection->addColumn($table_name, 'DisplayOrder', ['type' => Table::TYPE_INTEGER, 'comment' => 'DisplayOrder']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsFeaturedProduct' ) === false) {
+        		$connection->addColumn($table_name, 'IsFeaturedProduct', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsFeaturedProduct']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'NavManufacturerId' ) === false) {
+        		$connection->addColumn($table_name, 'NavManufacturerId', ['type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'NavManufacturerItemId' ) === false) {
+        		$connection->addColumn($table_name, 'NavManufacturerItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerItemId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'NavProductId' ) === false) {
+        		$connection->addColumn($table_name, 'NavProductId', ['type' => Table::TYPE_TEXT, 'comment' => 'NavProductId']);
+        	}
         }
     }
 

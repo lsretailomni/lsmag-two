@@ -17,9 +17,9 @@ class ArrayOfReplBarcode implements IteratorAggregate
     /**
      * @property ReplBarcode[] $ReplBarcode
      */
-    protected $ReplBarcode = array(
+    protected $ReplBarcode = [
         
-    );
+    ];
 
     /**
      * @param ReplBarcode[] $ReplBarcode

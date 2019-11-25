@@ -17,9 +17,9 @@ class ArrayOfReplDiscount implements IteratorAggregate
     /**
      * @property ReplDiscount[] $ReplDiscount
      */
-    protected $ReplDiscount = array(
+    protected $ReplDiscount = [
         
-    );
+    ];
 
     /**
      * @param ReplDiscount[] $ReplDiscount

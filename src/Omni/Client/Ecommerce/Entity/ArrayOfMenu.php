@@ -17,9 +17,9 @@ class ArrayOfMenu implements IteratorAggregate
     /**
      * @property Menu[] $Menu
      */
-    protected $Menu = array(
+    protected $Menu = [
         
-    );
+    ];
 
     /**
      * @param Menu[] $Menu

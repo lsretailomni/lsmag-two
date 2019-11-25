@@ -34,6 +34,17 @@ class ReplCountryCode
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
+        } else {
+        	$connection = $setup->getConnection();
+        	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
+        		$connection->addColumn($table_name, 'nav_id', ['type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
+        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'Name' ) === false) {
+        		$connection->addColumn($table_name, 'Name', ['type' => Table::TYPE_TEXT, 'comment' => 'Name']);
+        	}
         }
     }
 
