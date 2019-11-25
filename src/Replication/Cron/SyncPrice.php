@@ -76,11 +76,12 @@ class SyncPrice extends ProductCreateTask
                         }
                     }
                 } catch (Exception $e) {
-                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
+                    $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());
+                    $replPrice->setData('is_failed', 1);
                 }
-                $replPrice->setData('is_updated', '0');
-                $replPrice->setData('processed', '1');
+                $replPrice->setData('is_updated', 0);
+                $replPrice->setData('processed', 1);
                 $this->replPriceRepository->save($replPrice);
             }
         }

@@ -65,11 +65,12 @@ class SyncInventory extends ProductCreateTask
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (Exception $e) {
-                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
+                    $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());
+                    $replInvStatus->setData('is_failed', 1);
                 }
-                $replInvStatus->setData('is_updated', '0');
-                $replInvStatus->setData('processed', '1');
+                $replInvStatus->setData('is_updated', 0);
+                $replInvStatus->setData('processed', 1);
                 $this->replInvStatusRepository->save($replInvStatus);
             }
         }
