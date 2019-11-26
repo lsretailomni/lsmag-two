@@ -151,6 +151,7 @@ class AttributesCreateTask
             $this->successCronAttributeVariant,
             LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT
         );
+        $this->caterAttributesRemoval();
     }
 
     /**
@@ -193,8 +194,7 @@ class AttributesCreateTask
                     $this->addAttributeOptions($replAttribute->getCode());
                 }
             }
-            $attributesRemovalCounter = $this->caterAttributesRemoval();
-            if (count($replAttributes->getItems()) == 0 && $attributesRemovalCounter == 0) {
+            if (count($replAttributes->getItems()) == 0) {
                 $this->successCronAttribute = true;
             }
         } catch (Exception $e) {
@@ -207,7 +207,7 @@ class AttributesCreateTask
      */
     public function caterAttributesRemoval()
     {
-        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly([], -1);
+        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly([], 2000);
         /** @var ReplAttributeSearchResults $replAttributes */
         $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
         /** @var ReplAttribute $replAttribute */
@@ -238,7 +238,6 @@ class AttributesCreateTask
             // @codingStandardsIgnoreLine
             $this->replAttributeRepositoryInterface->save($replAttribute);
         }
-        return count($replAttributes->getItems());
     }
 
     /**
