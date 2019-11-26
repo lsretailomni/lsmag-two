@@ -109,7 +109,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 if ($cronName == 'repl_attributes') {
                     $cronAttributeCheck        = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
                     $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
-                    if ($cronAttributeCheck && $cronAttributeCheck) {
+                    if ($cronAttributeCheck && $cronAttributeVariantCheck) {
                         $fullReplicationStatus = 1;
                     }
                 }
