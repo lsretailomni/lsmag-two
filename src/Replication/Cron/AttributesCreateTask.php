@@ -207,7 +207,8 @@ class AttributesCreateTask
      */
     public function caterAttributesRemoval()
     {
-        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly([], 2000);
+        $variantBatchSize = $this->replicationHelper->getVariantBatchSize();
+        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly([], $variantBatchSize);
         /** @var ReplAttributeSearchResults $replAttributes */
         $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
         /** @var ReplAttribute $replAttribute */
