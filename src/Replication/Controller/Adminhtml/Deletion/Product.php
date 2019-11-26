@@ -2,12 +2,14 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
+use Exception;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
 use Psr\Log\LoggerInterface;
-use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class Product Deletion
@@ -25,6 +27,9 @@ class Product extends Action
 
     /** @var ReplicationHelper */
     public $replicationHelper;
+
+    /** @var Filesystem */
+    public $filesystem;
 
     /** @var array List of ls tables required in products */
     public $ls_tables = [
@@ -145,20 +150,24 @@ class Product extends Action
      * Product Deletion constructor.
      * @param ResourceConnection $resource
      * @param LoggerInterface $logger
+     * @param Context $context
      * @param LSR $LSR
      * @param ReplicationHelper $replicationHelper
+     * @param Filesystem $filesystem
      */
     public function __construct(
         ResourceConnection $resource,
         LoggerInterface $logger,
         Context $context,
         LSR $LSR,
-        ReplicationHelper $replicationHelper
+        ReplicationHelper $replicationHelper,
+        Filesystem $filesystem
     ) {
-        $this->resource = $resource;
-        $this->logger = $logger;
-        $this->lsr = $LSR;
+        $this->resource          = $resource;
+        $this->logger            = $logger;
+        $this->lsr               = $LSR;
         $this->replicationHelper = $replicationHelper;
+        $this->filesystem        = $filesystem;
         parent::__construct($context);
     }
 
@@ -176,7 +185,7 @@ class Product extends Action
             $tableName = $connection->getTableName($catalogTable);
             try {
                 $connection->truncateTable($tableName);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -185,15 +194,24 @@ class Product extends Action
         // Update all dependent ls tables to not processed
         foreach ($this->ls_tables as $lsTable) {
             $lsTableName = $connection->getTableName($lsTable);
-            $lsQuery = "UPDATE " . $lsTableName . " SET processed = 0;";
+            $lsQuery     = "UPDATE " . $lsTableName . " SET processed = 0;";
             try {
                 $connection->query($lsQuery);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
+        $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();
+        $mediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
+        try {
+            if ($this->filesystem->exists($mediaDirectory)) {
+                $this->filesystem->remove($mediaDirectory);
+            }
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
         $this->replicationHelper->updateCronStatus(
             false,
             LSR::SC_SUCCESS_CRON_PRODUCT
