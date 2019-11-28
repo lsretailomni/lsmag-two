@@ -203,6 +203,7 @@ class CategoryCreateTask
                 if (empty($hierarchyNode->getNavId())) {
                     $hierarchyNode->setData('is_failed', 1);
                     $hierarchyNode->setData('processed', 1);
+                    $hierarchyNode->setData('is_updated', 0);
                     $this->replHierarchyNodeRepository->save($hierarchyNode);
                     continue;
                 }
@@ -283,6 +284,7 @@ class CategoryCreateTask
                 if (empty($hierarchyNodeSub->getNavId())) {
                     $hierarchyNodeSub->setData('is_failed', 1);
                     $hierarchyNodeSub->setData('processed', 1);
+                    $hierarchyNodeSub->setData('is_updated', 0);
                     $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
                     continue;
                 }
@@ -372,11 +374,8 @@ class CategoryCreateTask
                     $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
                     if ($categoryExistData) {
                         $categoryExistData->setData('is_active', 0);
-                        // @codingStandardsIgnoreStart
+                        // @codingStandardsIgnoreLine
                         $this->categoryRepository->save($categoryExistData);
-                        // @codingStandardsIgnoreEnd
-                        $hierarchyNode->setData('IsDeleted', 0);
-                        $hierarchyNode->setData('is_updated', 0);
                     }
                 } else {
                     $hierarchyNode->setData('is_failed', 1);
@@ -385,7 +384,9 @@ class CategoryCreateTask
                 $this->logger->debug($e->getMessage());
                 $hierarchyNode->setData('is_failed', 1);
             }
-            $hierarchyNode->setData('is_processed', 1);
+            $hierarchyNode->setData('IsDeleted', 0);
+            $hierarchyNode->setData('processed', 1);
+            $hierarchyNode->setData('is_updated', 0);
             // @codingStandardsIgnoreLine
             $this->replHierarchyNodeRepository->save($hierarchyNode);
         }
@@ -433,13 +434,13 @@ class CategoryCreateTask
                         }
                     }
                 }
-                $hierarchyLeaf->setData('is_processed', 1);
-                $hierarchyLeaf->setData('IsDeleted', 0);
-                $hierarchyLeaf->setData('is_updated', 0);
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
                 $hierarchyLeaf->setData('is_failed', 1);
             }
+            $hierarchyLeaf->setData('processed', 1);
+            $hierarchyLeaf->setData('IsDeleted', 0);
+            $hierarchyLeaf->setData('is_updated', 0);
             // @codingStandardsIgnoreLine
             $this->replHierarchyLeafRepository->save($hierarchyLeaf);
         }
@@ -580,6 +581,7 @@ class CategoryCreateTask
                     $image->setData('is_failed', 1);
                 }
                 $image->setData('is_updated', 0);
+                $image->setData('processed', 1);
                 // @codingStandardsIgnoreLine
                 $this->replImageLinkRepositoryInterface->save($image);
             }

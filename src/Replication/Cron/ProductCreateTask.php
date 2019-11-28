@@ -429,6 +429,7 @@ class ProductCreateTask
                         $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
                     }
                     $item->setData('processed', 1);
+                    $item->setData('is_updated', 0);
                     $this->itemRepository->save($item);
                     // @codingStandardsIgnoreEnd
                 }
@@ -451,7 +452,7 @@ class ProductCreateTask
             $this->logger->debug('End ProductCreateTask');
         } else {
             $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully.' .
-                "\n Status cron CategoryCheck == " . $cronCategoryCheck .
+                "\n Status cron CategoryCheck = " . $cronCategoryCheck .
                 "\n Status cron AttributeCheck = " . $cronAttributeCheck .
                 "\n Status cron AttributeVariantCheck = " . $cronAttributeVariantCheck .
                 "\n Status full ReplicationImageLinkStatus = " . $fullReplicationImageLinkStatus .
@@ -510,9 +511,9 @@ class ProductCreateTask
             }
             $product->setData($formattedCode, $value);
             $item->setData('processed', 1);
-            // @codingStandardsIgnoreStart
+            $item->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
             $this->replAttributeValueRepositoryInterface->save($item);
-            // @codingStandardsIgnoreEnd
         }
         return $product;
     }
@@ -775,6 +776,7 @@ class ProductCreateTask
                 $formattedCode                           = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
                 $finalCodes[$valueCode->getDimensions()] = $formattedCode;
                 $valueCode->setData('processed', 1);
+                $valueCode->setData('is_updated', 0);
                 // @codingStandardsIgnoreLine
                 $this->extendedVariantValueRepository->save($valueCode);
             }
@@ -894,22 +896,22 @@ class ProductCreateTask
         $items   = $this->getDeletedItemsOnly($filters);
 
         if (!empty($items->getItems())) {
-            try {
-                foreach ($items->getItems() as $value) {
-                    $sku         = $value->getNavId();
-                    $productData = $this->productRepository->get($sku);
-                    $productData->setStatus(Status::STATUS_DISABLED);
-                    // @codingStandardsIgnoreStart
+            foreach ($items->getItems() as $value) {
+                $sku         = $value->getNavId();
+                $productData = $this->productRepository->get($sku);
+                $productData->setStatus(Status::STATUS_DISABLED);
+                try {
                     $this->productRepository->save($productData);
-                    $value->setData('is_updated', 0);
-                    $value->setData('processed', 1);
-                    $value->setData('IsDeleted', 0);
-                    $this->itemRepository->save($value);
-                    // @codingStandardsIgnoreEnd
+                } catch (Exception $e) {
+                    $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                    $this->logger->debug($e->getMessage());
+                    $value->setData('is_failed', 1);
                 }
-            } catch (Exception $e) {
-                $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
-                $this->logger->debug($e->getMessage());
+                $value->setData('is_updated', 0);
+                $value->setData('processed', 1);
+                $value->setData('IsDeleted', 0);
+                // @codingStandardsIgnoreLine
+                $this->itemRepository->save($value);
             }
         }
     }
@@ -1021,7 +1023,6 @@ class ProductCreateTask
         $filters   = [
             ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
-
         ];
         $batchSize = $this->replicationHelper->getProductImagesBatchSize();
         $criteria  = $this->replicationHelper->buildCriteriaForArray($filters, $batchSize);
@@ -1031,42 +1032,36 @@ class ProductCreateTask
         if ($images->getTotalCount() > 0) {
             /** @var ReplImageLink $image */
             foreach ($images->getItems() as $image) {
-                if (in_array($image->getKeyValue(), $processedItems)) {
+                if (in_array($image->getKeyValue(), $processedItems, true)) {
                     continue;
                 }
-                try {
-                    if ($image->getTableName() == "Item" || $image->getTableName() == "Item Variant") {
-                        if ($image->getTableName() == "Item") {
-                            $allImages = $this->replicationHelper->getImageLinksByType(
-                                $image->getKeyValue(),
-                                'Item'
-                            );
-                        } elseif ($image->getTableName() == "Item Variant") {
-                            $allImages = $this->replicationHelper->getImageLinksByType(
-                                $image->getKeyValue(),
-                                'Item Variant'
-                            );
-                        }
-                        $item = $image->getKeyValue();
-                        $item = str_replace(',', '-', $item);
-                        $image->setData('is_updated', 0);
-                        $image->setData('processed', 1);
-                        // @codingStandardsIgnoreStart
-                        $this->replImageLinkRepositoryInterface->save($image);
+                if ($image->getTableName() === 'Item' || $image->getTableName() === 'Item Variant') {
+                    $item = $image->getKeyValue();
+                    $item = str_replace(',', '-', $item);
+                    try {
+                        $allImages = $this->replicationHelper->getImageLinksByType(
+                            $image->getKeyValue(),
+                            $image->getTableName()
+                        );
                         /* @var ProductRepositoryInterface $productData */
                         $productData  = $this->productRepository->get($item);
                         $galleryImage = $allImages;
                         if ($galleryImage) {
                             $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
+                            // @codingStandardsIgnoreLine
                             $this->productRepository->save($productData);
                         }
-                        // @codingStandardsIgnoreEnd
-                        // Adding items into an array whose images are processed.
-                        $processedItems[] = $image->getKeyValue();
+                    } catch (Exception $e) {
+                        $this->logger->debug('Problem with SKU : ' . $item . ' in ' . __METHOD__);
+                        $this->logger->debug($e->getMessage());
+                        $image->setData('is_failed', 1);
                     }
-                } catch (Exception $e) {
-                    $this->logger->debug('Problem with sku: ' . $item . ' in ' . __METHOD__);
-                    $this->logger->debug($e->getMessage());
+                    $image->setData('is_updated', 0);
+                    $image->setData('processed', 1);
+                    // @codingStandardsIgnoreLine
+                    $this->replImageLinkRepositoryInterface->save($image);
+                    // Adding items into an array whose images are processed.
+                    $processedItems[] = $image->getKeyValue();
                 }
             }
         }
@@ -1185,10 +1180,10 @@ class ProductCreateTask
                     }
                 }
                 if ($is_variant_contain_null) {
-                    //force override the value and continue the loop
-                    $this->logger->debug("Variant issue : Item " . $value->getItemId() . '-' . $value->getVariantId() . " contain null attribute");
+                    $this->logger->debug('Variant issue : Item ' . $value->getItemId() . '-' . $value->getVariantId() . ' contain null attribute');
                     $value->setData('is_updated', 0);
                     $value->setData('processed', 1);
+                    $value->setData('is_failed', 1);
                     $this->replItemVariantRegistrationRepository->save($value);
                     continue;
                 }
