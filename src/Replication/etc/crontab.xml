@@ -20,6 +20,9 @@
         <job name="repl_inventory_sync" instance="Ls\Replication\Cron\SyncInventory" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
+        <job name="repl_item_updates_sync" instance="Ls\Replication\Cron\SyncItemUpdates" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
         <job name="repl_inv_status_reset" instance="Ls\Replication\Cron\ResetReplInvStatusTask" method="execute">
             <schedule>0 0 * * *</schedule>
         </job>

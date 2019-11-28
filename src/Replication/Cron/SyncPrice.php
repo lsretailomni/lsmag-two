@@ -101,9 +101,24 @@ class SyncPrice extends ProductCreateTask
     public function executeManually()
     {
         $this->execute();
-        $criteria           = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1);
-        $items              = $this->replPriceRepository->getList($criteria);
-        $itemsLeftToProcess = count($items->getItems());
+        $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+        $filters = [
+            ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+        ];
+
+        $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+            $filters
+        );
+        $collection = $this->replPriceCollectionFactory->create();
+        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'ItemId',
+            'ls_replication_repl_item',
+            'nav_id'
+        );
+        $itemsLeftToProcess = count($collection->getItems());
         return [$itemsLeftToProcess];
     }
 }
