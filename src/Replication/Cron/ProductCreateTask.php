@@ -600,8 +600,8 @@ class ProductCreateTask
         foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
             $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
             $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $categoryIds));
-            $hierarchyLeaf->setData('processed', '1');
-            $hierarchyLeaf->setData('is_updated', '0');
+            $hierarchyLeaf->setData('processed', 1);
+            $hierarchyLeaf->setData('is_updated', 0);
             $this->replHierarchyLeafRepository->save($hierarchyLeaf);
         }
         if (!empty($resultantCategoryIds)) {
