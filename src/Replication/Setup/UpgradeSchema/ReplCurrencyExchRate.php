@@ -39,19 +39,22 @@ class ReplCurrencyExchRate
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'CurrencyCode' ) === false) {
-        		$connection->addColumn($table_name, 'CurrencyCode', ['type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
+        		$connection->addColumn($table_name, 'CurrencyCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CurrencyFactor' ) === false) {
-        		$connection->addColumn($table_name, 'CurrencyFactor', ['type' => Table::TYPE_FLOAT, 'comment' => 'CurrencyFactor']);
+        		$connection->addColumn($table_name, 'CurrencyFactor', ['default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'CurrencyFactor']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RelationalCurrencyCode' ) === false) {
-        		$connection->addColumn($table_name, 'RelationalCurrencyCode', ['type' => Table::TYPE_TEXT, 'comment' => 'RelationalCurrencyCode']);
+        		$connection->addColumn($table_name, 'RelationalCurrencyCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'RelationalCurrencyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'StartingDate' ) === false) {
-        		$connection->addColumn($table_name, 'StartingDate', ['type' => Table::TYPE_TEXT, 'comment' => 'StartingDate']);
+        		$connection->addColumn($table_name, 'StartingDate', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StartingDate']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

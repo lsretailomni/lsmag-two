@@ -46,40 +46,43 @@ class ReplVendor
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'AllowCustomersToSelectPageSize' ) === false) {
-        		$connection->addColumn($table_name, 'AllowCustomersToSelectPageSize', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'AllowCustomersToSelectPageSize']);
+        		$connection->addColumn($table_name, 'AllowCustomersToSelectPageSize', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'AllowCustomersToSelectPageSize']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Blocked' ) === false) {
-        		$connection->addColumn($table_name, 'Blocked', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'Blocked']);
+        		$connection->addColumn($table_name, 'Blocked', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Blocked']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DisplayOrder' ) === false) {
-        		$connection->addColumn($table_name, 'DisplayOrder', ['type' => Table::TYPE_INTEGER, 'comment' => 'DisplayOrder']);
+        		$connection->addColumn($table_name, 'DisplayOrder', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'DisplayOrder']);
         	}
         	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
-        		$connection->addColumn($table_name, 'nav_id', ['type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        		$connection->addColumn($table_name, 'nav_id', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ManufacturerTemplateId' ) === false) {
-        		$connection->addColumn($table_name, 'ManufacturerTemplateId', ['type' => Table::TYPE_INTEGER, 'comment' => 'ManufacturerTemplateId']);
+        		$connection->addColumn($table_name, 'ManufacturerTemplateId', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ManufacturerTemplateId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Name' ) === false) {
-        		$connection->addColumn($table_name, 'Name', ['type' => Table::TYPE_TEXT, 'comment' => 'Name']);
+        		$connection->addColumn($table_name, 'Name', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Name']);
         	}
         	if ($connection->tableColumnExists($table_name, 'PageSize' ) === false) {
-        		$connection->addColumn($table_name, 'PageSize', ['type' => Table::TYPE_INTEGER, 'comment' => 'PageSize']);
+        		$connection->addColumn($table_name, 'PageSize', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'PageSize']);
         	}
         	if ($connection->tableColumnExists($table_name, 'PageSizeOptions' ) === false) {
-        		$connection->addColumn($table_name, 'PageSizeOptions', ['type' => Table::TYPE_TEXT, 'comment' => 'PageSizeOptions']);
+        		$connection->addColumn($table_name, 'PageSizeOptions', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'PageSizeOptions']);
         	}
         	if ($connection->tableColumnExists($table_name, 'PictureId' ) === false) {
-        		$connection->addColumn($table_name, 'PictureId', ['type' => Table::TYPE_INTEGER, 'comment' => 'PictureId']);
+        		$connection->addColumn($table_name, 'PictureId', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'PictureId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Published' ) === false) {
-        		$connection->addColumn($table_name, 'Published', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'Published']);
+        		$connection->addColumn($table_name, 'Published', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Published']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UpdatedOnUtc' ) === false) {
-        		$connection->addColumn($table_name, 'UpdatedOnUtc', ['type' => Table::TYPE_TEXT, 'comment' => 'UpdatedOnUtc']);
+        		$connection->addColumn($table_name, 'UpdatedOnUtc', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'UpdatedOnUtc']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

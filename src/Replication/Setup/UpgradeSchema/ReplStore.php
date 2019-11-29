@@ -54,64 +54,67 @@ class ReplStore
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'City' ) === false) {
-        		$connection->addColumn($table_name, 'City', ['type' => Table::TYPE_TEXT, 'comment' => 'City']);
+        		$connection->addColumn($table_name, 'City', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'City']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ClickAndCollect' ) === false) {
-        		$connection->addColumn($table_name, 'ClickAndCollect', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'ClickAndCollect']);
+        		$connection->addColumn($table_name, 'ClickAndCollect', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'ClickAndCollect']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Country' ) === false) {
-        		$connection->addColumn($table_name, 'Country', ['type' => Table::TYPE_TEXT, 'comment' => 'Country']);
+        		$connection->addColumn($table_name, 'Country', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Country']);
         	}
         	if ($connection->tableColumnExists($table_name, 'County' ) === false) {
-        		$connection->addColumn($table_name, 'County', ['type' => Table::TYPE_TEXT, 'comment' => 'County']);
+        		$connection->addColumn($table_name, 'County', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'County']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CultureName' ) === false) {
-        		$connection->addColumn($table_name, 'CultureName', ['type' => Table::TYPE_TEXT, 'comment' => 'CultureName']);
+        		$connection->addColumn($table_name, 'CultureName', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CultureName']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Currency' ) === false) {
-        		$connection->addColumn($table_name, 'Currency', ['type' => Table::TYPE_TEXT, 'comment' => 'Currency']);
+        		$connection->addColumn($table_name, 'Currency', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Currency']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DefaultCustomerAccount' ) === false) {
-        		$connection->addColumn($table_name, 'DefaultCustomerAccount', ['type' => Table::TYPE_TEXT, 'comment' => 'DefaultCustomerAccount']);
+        		$connection->addColumn($table_name, 'DefaultCustomerAccount', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'DefaultCustomerAccount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'FunctionalityProfile' ) === false) {
-        		$connection->addColumn($table_name, 'FunctionalityProfile', ['type' => Table::TYPE_TEXT, 'comment' => 'FunctionalityProfile']);
+        		$connection->addColumn($table_name, 'FunctionalityProfile', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'FunctionalityProfile']);
         	}
         	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
-        		$connection->addColumn($table_name, 'nav_id', ['type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        		$connection->addColumn($table_name, 'nav_id', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Latitute' ) === false) {
-        		$connection->addColumn($table_name, 'Latitute', ['type' => Table::TYPE_FLOAT, 'comment' => 'Latitute']);
+        		$connection->addColumn($table_name, 'Latitute', ['default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'Latitute']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Longitude' ) === false) {
-        		$connection->addColumn($table_name, 'Longitude', ['type' => Table::TYPE_FLOAT, 'comment' => 'Longitude']);
+        		$connection->addColumn($table_name, 'Longitude', ['default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'Longitude']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MainMenuID' ) === false) {
-        		$connection->addColumn($table_name, 'MainMenuID', ['type' => Table::TYPE_TEXT, 'comment' => 'MainMenuID']);
+        		$connection->addColumn($table_name, 'MainMenuID', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'MainMenuID']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Name' ) === false) {
-        		$connection->addColumn($table_name, 'Name', ['type' => Table::TYPE_TEXT, 'comment' => 'Name']);
+        		$connection->addColumn($table_name, 'Name', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Name']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Phone' ) === false) {
-        		$connection->addColumn($table_name, 'Phone', ['type' => Table::TYPE_TEXT, 'comment' => 'Phone']);
+        		$connection->addColumn($table_name, 'Phone', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Phone']);
         	}
         	if ($connection->tableColumnExists($table_name, 'State' ) === false) {
-        		$connection->addColumn($table_name, 'State', ['type' => Table::TYPE_TEXT, 'comment' => 'State']);
+        		$connection->addColumn($table_name, 'State', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'State']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Street' ) === false) {
-        		$connection->addColumn($table_name, 'Street', ['type' => Table::TYPE_TEXT, 'comment' => 'Street']);
+        		$connection->addColumn($table_name, 'Street', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Street']);
         	}
         	if ($connection->tableColumnExists($table_name, 'TaxGroup' ) === false) {
-        		$connection->addColumn($table_name, 'TaxGroup', ['type' => Table::TYPE_TEXT, 'comment' => 'TaxGroup']);
+        		$connection->addColumn($table_name, 'TaxGroup', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'TaxGroup']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UserDefaultCustomerAccount' ) === false) {
-        		$connection->addColumn($table_name, 'UserDefaultCustomerAccount', ['type' => Table::TYPE_INTEGER, 'comment' => 'UserDefaultCustomerAccount']);
+        		$connection->addColumn($table_name, 'UserDefaultCustomerAccount', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'UserDefaultCustomerAccount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ZipCode' ) === false) {
-        		$connection->addColumn($table_name, 'ZipCode', ['type' => Table::TYPE_TEXT, 'comment' => 'ZipCode']);
+        		$connection->addColumn($table_name, 'ZipCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ZipCode']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

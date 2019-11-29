@@ -43,31 +43,34 @@ class ReplItemUnitOfMeasure
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'Code' ) === false) {
-        		$connection->addColumn($table_name, 'Code', ['type' => Table::TYPE_TEXT, 'comment' => 'Code']);
+        		$connection->addColumn($table_name, 'Code', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Code']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CountAsOne' ) === false) {
-        		$connection->addColumn($table_name, 'CountAsOne', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'CountAsOne']);
+        		$connection->addColumn($table_name, 'CountAsOne', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'CountAsOne']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
-        		$connection->addColumn($table_name, 'Description', ['type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        		$connection->addColumn($table_name, 'Description', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
-        		$connection->addColumn($table_name, 'ItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        		$connection->addColumn($table_name, 'ItemId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Order' ) === false) {
-        		$connection->addColumn($table_name, 'Order', ['type' => Table::TYPE_INTEGER, 'comment' => 'Order']);
+        		$connection->addColumn($table_name, 'Order', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Order']);
         	}
         	if ($connection->tableColumnExists($table_name, 'QtyPrUOM' ) === false) {
-        		$connection->addColumn($table_name, 'QtyPrUOM', ['type' => Table::TYPE_FLOAT, 'comment' => 'QtyPrUOM']);
+        		$connection->addColumn($table_name, 'QtyPrUOM', ['default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'QtyPrUOM']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Selection' ) === false) {
-        		$connection->addColumn($table_name, 'Selection', ['type' => Table::TYPE_INTEGER, 'comment' => 'Selection']);
+        		$connection->addColumn($table_name, 'Selection', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Selection']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ShortDescription' ) === false) {
-        		$connection->addColumn($table_name, 'ShortDescription', ['type' => Table::TYPE_TEXT, 'comment' => 'ShortDescription']);
+        		$connection->addColumn($table_name, 'ShortDescription', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ShortDescription']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

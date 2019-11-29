@@ -38,16 +38,19 @@ class ReplTaxSetup
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'BusinessTaxGroup' ) === false) {
-        		$connection->addColumn($table_name, 'BusinessTaxGroup', ['type' => Table::TYPE_TEXT, 'comment' => 'BusinessTaxGroup']);
+        		$connection->addColumn($table_name, 'BusinessTaxGroup', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'BusinessTaxGroup']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ProductTaxGroup' ) === false) {
-        		$connection->addColumn($table_name, 'ProductTaxGroup', ['type' => Table::TYPE_TEXT, 'comment' => 'ProductTaxGroup']);
+        		$connection->addColumn($table_name, 'ProductTaxGroup', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ProductTaxGroup']);
         	}
         	if ($connection->tableColumnExists($table_name, 'TaxPercent' ) === false) {
-        		$connection->addColumn($table_name, 'TaxPercent', ['type' => Table::TYPE_FLOAT, 'comment' => 'TaxPercent']);
+        		$connection->addColumn($table_name, 'TaxPercent', ['default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'TaxPercent']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }
