@@ -16,10 +16,10 @@ use Magento\Framework\Exception\StateException;
  */
 class SyncPrice extends ProductCreateTask
 {
-    /** @var string  */
+    /** @var string */
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_price_sync';
 
-    /** @var bool  */
+    /** @var bool */
     public $cronStatus = false;
 
     public function execute()
@@ -33,7 +33,8 @@ class SyncPrice extends ProductCreateTask
         /** Get list of only those prices whose items are already processed */
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq'],
+            ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
         ];
 
         $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -102,9 +103,11 @@ class SyncPrice extends ProductCreateTask
     {
         $this->execute();
         $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+        /** Get list of only those prices whose items are already processed */
         $filters = [
             ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq'],
+            ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
         ];
 
         $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
