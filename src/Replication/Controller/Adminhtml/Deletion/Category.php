@@ -2,14 +2,16 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
+use Exception;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\App\ResourceConnection;
-use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class CategoryDeletion
@@ -35,6 +37,9 @@ class Category extends Action
     /** @var ReplicationHelper */
     public $replicationHelper;
 
+    /** @var Filesystem */
+    public $filesystem;
+
     // @codingStandardsIgnoreStart
     /** @var array */
     protected $_publicActions = ['category'];
@@ -49,6 +54,7 @@ class Category extends Action
      * @param ResourceConnection $resource
      * @param LSR $LSR
      * @param ReplicationHelper $replicationHelper
+     * @param Filesystem $filesystem
      */
     public function __construct(
         CategoryFactory $categoryFactory,
@@ -57,14 +63,16 @@ class Category extends Action
         Context $context,
         ResourceConnection $resource,
         LSR $LSR,
-        ReplicationHelper $replicationHelper
+        ReplicationHelper $replicationHelper,
+        Filesystem $filesystem
     ) {
-        $this->categoryFactory = $categoryFactory;
-        $this->registry = $registry;
-        $this->logger = $logger;
-        $this->resource = $resource;
-        $this->lsr = $LSR;
+        $this->categoryFactory   = $categoryFactory;
+        $this->registry          = $registry;
+        $this->logger            = $logger;
+        $this->resource          = $resource;
+        $this->lsr               = $LSR;
         $this->replicationHelper = $replicationHelper;
+        $this->filesystem        = $filesystem;
         parent::__construct($context);
     }
 
@@ -83,17 +91,26 @@ class Category extends Action
                     // @codingStandardsIgnoreStart
                     $category->delete();
                     // @codingStandardsIgnoreEnd
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
                 }
             }
         }
-        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        $connection  = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $lsTableName = $connection->getTableName('ls_replication_repl_hierarchy_node');
-        $lsQuery = "UPDATE " . $lsTableName . " SET processed = 0;";
+        $lsQuery     = "UPDATE " . $lsTableName . " SET processed = 0;";
         try {
             $connection->query($lsQuery);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
+        $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();
+        $mediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "category" . DIRECTORY_SEPARATOR;
+        try {
+            if ($this->filesystem->exists($mediaDirectory)) {
+                $this->filesystem->remove($mediaDirectory);
+            }
+        } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
         $this->replicationHelper->updateCronStatus(
