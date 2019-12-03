@@ -6,7 +6,6 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ImageSize;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use \Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNodeRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
@@ -42,9 +41,6 @@ class CategoryCreateTask
 
     /** @var ReplHierarchyNodeRepository */
     public $replHierarchyNodeRepository;
-
-    /** @var ReplHierarchyLeafRepository */
-    public $replHierarchyLeafRepository;
 
     /** @var ReplImageLinkRepositoryInterface */
     public $replImageLinkRepositoryInterface;
@@ -87,7 +83,6 @@ class CategoryCreateTask
      * @param CategoryFactory $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ReplHierarchyNodeRepository $replHierarchyNodeRepository
-     * @param ReplHierarchyLeafRepository $replHierarchyLeafRepository
      * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
      * @param CollectionFactory $collectionFactory
      * @param LoggerInterface $logger
@@ -104,7 +99,6 @@ class CategoryCreateTask
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
         ReplHierarchyNodeRepository $replHierarchyNodeRepository,
-        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
         ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
         CollectionFactory $collectionFactory,
         LoggerInterface $logger,
@@ -120,7 +114,6 @@ class CategoryCreateTask
         $this->categoryFactory                    = $categoryFactory;
         $this->categoryRepository                 = $categoryRepository;
         $this->replHierarchyNodeRepository        = $replHierarchyNodeRepository;
-        $this->replHierarchyLeafRepository        = $replHierarchyLeafRepository;
         $this->replImageLinkRepositoryInterface   = $replImageLinkRepositoryInterface;
         $this->logger                             = $logger;
         $this->collectionFactory                  = $collectionFactory;
