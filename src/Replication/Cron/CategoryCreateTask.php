@@ -10,10 +10,8 @@ use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLea
 use \Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNodeRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Model\ReplHierarchyLeaf;
 use \Ls\Replication\Model\ReplHierarchyNode;
 use \Ls\Replication\Model\ReplHierarchyNodeSearchResults;
-use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyNode\CollectionFactory as ReplHierarchyNodeCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -78,9 +76,6 @@ class CategoryCreateTask
     /** @var CategoryLinkRepositoryInterface */
     public $categoryLinkRepositoryInterface;
 
-    /** @var ReplHierarchyLeafCollectionFactory */
-    public $replHierarchyLeafCollectionFactory;
-
     /** @var ReplHierarchyNodeCollectionFactory */
     public $replHierarchyNodeCollectionFactory;
 
@@ -102,7 +97,6 @@ class CategoryCreateTask
      * @param LSR $LSR
      * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
      * @param ProductRepositoryInterface $productRepository
-     * @param ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
      * @param ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory
      * @param Attribute $eavAttribute
      */
@@ -120,7 +114,6 @@ class CategoryCreateTask
         LSR $LSR,
         CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
         ProductRepositoryInterface $productRepository,
-        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
         ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory,
         Attribute $eavAttribute
     ) {
@@ -137,7 +130,6 @@ class CategoryCreateTask
         $this->lsr                                = $LSR;
         $this->categoryLinkRepositoryInterface    = $categoryLinkRepositoryInterface;
         $this->productRepository                  = $productRepository;
-        $this->replHierarchyLeafCollectionFactory = $replHierarchyLeafCollectionFactory;
         $this->replHierarchyNodeCollectionFactory = $replHierarchyCollectionFactory;
         $this->eavAttribute                       = $eavAttribute;
     }
@@ -169,12 +161,9 @@ class CategoryCreateTask
             $hierarchyCodeSpecificFilter,
             $mediaAttribute
         );
-        $hierarchyNodeDeletedCounter                 = $this->caterHierarchyNodeRemoval($hierarchyCode);
-        $hierarchyLeafDeletedCounter                 = $this->caterHierarchyLeafRemoval($hierarchyCode);
+        $this->caterHierarchyNodeRemoval($hierarchyCode);
         if ($mainCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
-            $subCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
-            $hierarchyNodeDeletedCounter == 0 &&
-            $hierarchyLeafDeletedCounter == 0) {
+            $subCategoryHierarchyNodeAddOrUpdateCounter == 0) {
             $this->cronStatus = true;
         }
         //Update the Modified Images
@@ -348,8 +337,7 @@ class CategoryCreateTask
     }
 
     /**
-     * @param $hierarchyCodeSpecificFilter
-     * @return int
+     * @param $hierarchyCode
      */
     public function caterHierarchyNodeRemoval($hierarchyCode)
     {
@@ -389,62 +377,8 @@ class CategoryCreateTask
                 $this->logger->debug($e->getMessage());
             }
         }
-        return count($collection);
     }
 
-    /**
-     * @param $hierarchyCode
-     * @return int
-     */
-    public function caterHierarchyLeafRemoval($hierarchyCode)
-    {
-        $filters    = [['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']];
-        $criteria   = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
-        $collection = $this->replHierarchyLeafCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
-            $collection,
-            $criteria,
-            'nav_id',
-            'catalog_product_entity',
-            'sku'
-        );
-        /** @var ReplHierarchyLeaf $hierarchyLeaf */
-        foreach ($collection as $hierarchyLeaf) {
-            try {
-                $sku               = $hierarchyLeaf->getNavId();
-                $product           = $this->productRepository->get($sku);
-                $categories        = $product->getCategoryIds();
-                $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId());
-                if (!empty($categoryExistData)) {
-                    $categoryId       = $categoryExistData->getEntityId();
-                    $parentCategoryId = $categoryExistData->getParentId();
-                    if (in_array($categoryId, $categories)) {
-                        $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
-                        $catIndex = array_search($categoryId, $categories);
-                        if ($catIndex !== false) {
-                            unset($categories[$catIndex]);
-                        }
-                    }
-                    if (in_array($parentCategoryId, $categories)) {
-                        $childCategories = $this->categoryRepository->get($parentCategoryId)->getChildren();
-                        $childCat        = explode(",", $childCategories);
-                        if (count(array_intersect($childCat, $categories)) == 0) {
-                            $this->categoryLinkRepositoryInterface->deleteByIds($parentCategoryId, $sku);
-                        }
-                    }
-                }
-                $hierarchyLeaf->setData('is_processed', '1');
-                $hierarchyLeaf->setData('IsDeleted', '0');
-                $hierarchyLeaf->setData('is_updated', '0');
-                // @codingStandardsIgnoreStart
-                $this->replHierarchyLeafRepository->save($hierarchyLeaf);
-                // @codingStandardsIgnoreEnd
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
-        }
-        return count($collection);
-    }
 
     /**
      * @return array

@@ -4,13 +4,13 @@ namespace Ls\Replication\Cron;
 
 use IteratorAggregate;
 use \Ls\Core\Helper\Data as LsHelper;
-use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\OperationInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
+use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
-use Magento\Config\Model\ResourceModel\Config;
-use \Ls\Core\Model\LSR;
 
 /**
  * Class AbstractReplicationTask
@@ -236,7 +236,7 @@ abstract class AbstractReplicationTask
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY);
         } elseif ($confPath == "ls_mag/replication/repl_item" ||
             $confPath == "ls_mag/replication/repl_hierarchy_leaf") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT);
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
         }
     }
 
