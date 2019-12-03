@@ -107,13 +107,13 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //check for Product Price
     const SC_SUCCESS_CRON_PRODUCT_PRICE = 'ls_mag/replication/success_sync_price';
 
-    //check for Product Price
+    //check for Product Inventory
     const SC_SUCCESS_CRON_PRODUCT_INVENTORY = 'ls_mag/replication/success_sync_inventory';
 
     //check for Discount
     const SC_SUCCESS_CRON_DISCOUNT = 'ls_mag/replication/success_repl_discount';
 
-    //check for Product Price
+    //check for Product Assignment to Categories
     const SC_SUCCESS_CRON_ITEM_UPDATES = 'ls_mag/replication/success_sync_item_updates';
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
