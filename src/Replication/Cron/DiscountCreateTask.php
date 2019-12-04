@@ -134,6 +134,11 @@ class DiscountCreateTask
      */
     public function execute()
     {
+        /**
+         * Get all Unique Publish offer so that we can create catalog rules based on that.
+         * And the web store is being set in the Magento.
+         * And we need to apply only those rules which are associated to the store assigned to it.
+         */
         if ($this->lsr->isLSR()) {
             $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
             $store_id                 = $this->lsr->getDefaultWebStore();
@@ -161,18 +166,9 @@ class DiscountCreateTask
                         $useAllGroupIds   = false;
                         $customerGroupIds = [];
                     }
-                    if ($replDiscounts->getItems()) {
+                    if ($replDiscounts->getTotalCount() > 0) {
                         /** We check if offer exist */
-                        $deleteStatus = $this->deleteOfferByName($item->getOfferNo());
-                        if ($deleteStatus) {
-                            $criteriaAfterDelete = $this->replicationHelper->buildCriteriaForArray(
-                                $filters,
-                                -1,
-                                1
-                            );
-                            /** @var ReplDiscountSearchResults $replDiscounts */
-                            $replDiscounts = $this->replDiscountRepository->getList($criteriaAfterDelete);
-                        }
+                        $this->deleteOfferByName($item->getOfferNo());
                     }
                     /** @var ReplDiscount $replDiscount */
                     foreach ($replDiscounts->getItems() as $replDiscount) {
@@ -215,22 +211,24 @@ class DiscountCreateTask
                         foreach ($diffValueArray as $key => $value) {
                             $this->addSalesRule($item, array($key), $customerGroupIds, $value);
                         }
+                        $reindexRules = true;
                     }
                     if (!empty($sameValueArray)) {
                         $this->addSalesRule($item, array_keys($sameValueArray), $customerGroupIds);
+                        $reindexRules = true;
                     }
-                    $reindexRules = true;
                 }
                 if ($reindexRules) {
                     $this->jobApply->applyAll();
                 }
                 $filtersStatus = [
+                    ['field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'],
                     ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                 ];
-                $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, -1, 1);
+                $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 2, 1);
                 /** @var ReplDiscountSearchResults $replDiscounts */
                 $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
-                if (count($replDiscountsTotal->getItems()) == 0) {
+                if (!$replDiscountsTotal->getTotalCount()) {
                     $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
                 } else {
                     $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
@@ -354,9 +352,7 @@ class DiscountCreateTask
      */
     public function deleteOffers()
     {
-        $filters  = [
-            ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
-        ];
+        $filters  = [];
         $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters, -1);
         /** @var ReplDiscountSearchResults $replDiscounts */
         $replDiscounts = $this->replDiscountRepository->getList($criteria);
@@ -381,9 +377,7 @@ class DiscountCreateTask
     }
 
     /**
-     * Delete offer by name
      * @param $name
-     * @return bool
      */
     public function deleteOfferByName($name)
     {
@@ -392,25 +386,9 @@ class DiscountCreateTask
         try {
             foreach ($ruleCollection as $rule) {
                 $this->catalogRule->deleteById($rule->getId());
-                $filters  = [
-                    ['field' => 'OfferNo', 'value' => $name, 'condition_type' => 'eq'],
-                    ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
-                ];
-                $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
-                /** @var ReplDiscountSearchResults $replDiscounts */
-                $replDiscounts = $this->replDiscountRepository->getList($criteria);
-                /** @var ReplDiscount $replDiscount */
-                foreach ($replDiscounts->getItems() as $replDiscount) {
-                    $replDiscount->setData('processed', 0);
-                    $replDiscount->setData('is_updated', 0);
-                    // @codingStandardsIgnoreLine
-                    $this->replDiscountRepository->save($replDiscount);
-                }
-                return true;
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-        return false;
     }
 }

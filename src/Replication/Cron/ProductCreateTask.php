@@ -432,11 +432,11 @@ class ProductCreateTask
                     $item->setData('is_updated', 0);
                     $this->itemRepository->save($item);
                     // @codingStandardsIgnoreEnd
+                    $this->assignProductToCategories($productSaved);
                 }
             }
             if (count($items->getItems()) == 0) {
                 $this->caterItemsRemoval();
-                $this->assignProductToCategory();
                 $this->cronStatus             = true;
                 $fullReplicationVariantStatus = $this->lsr->getStoreConfig(
                     ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS
@@ -566,7 +566,7 @@ class ProductCreateTask
      * @return mixed
      * @throws LocalizedException
      */
-    private function findCategoryIdFromFactory($productGroupId)
+    public function findCategoryIdFromFactory($productGroupId)
     {
         $categoryCollection = $this->categoryCollectionFactory->create()->addAttributeToFilter(
             'nav_id',
@@ -583,91 +583,40 @@ class ProductCreateTask
     }
 
     /**
-     * Assign products to category using HierarchyCode
+     * @param $product
+     * @throws LocalizedException
      */
-    private function assignProductToCategory()
+    public function assignProductToCategories(&$product)
     {
-        $assignProductToCategoryBatchSize = $this->replicationHelper->getProductCategoryAssignmentBatchSize();
-        $categoriesArray                  = [];
-        $previousCategoryIds              = [];
-        $hierarchyCollection              = [];
-        $hierarchyCode                    = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $hierarchyCode       = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
             $this->logger->debug('Hierarchy Code not defined in the configuration.');
             return;
         }
         $filters  = [
-            ['field' => 'main_table.NodeId', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
+            ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'nav_id', 'value' => $product->getSku(), 'condition_type' => 'eq']
         ];
-        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-            $filters,
-            $assignProductToCategoryBatchSize
+        $criteria = $this->replicationHelper->buildCriteriaForDirect(
+            $filters
         );
-        /** @var ReplHierarchyLeafSearchResults $replHierarchyLeafRepository */
-        $collection = $this->replHierarchyLeafCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
-            $collection,
-            $criteria,
-            'nav_id',
-            'ls_replication_repl_item',
-            'nav_id'
-        );
-
-        try {
-            foreach ($collection as $hierarchyLeaf) {
-                try {
-                    $product             = $this->productRepository->get($hierarchyLeaf->getNavId());
-                    $previousCategoryIds = $product->getCategoryIds();
-                } catch (Exception $e) {
-                    $this->logger->debug($e->getMessage());
-                    $hierarchyLeaf->setData('processed', 1);
-                    $hierarchyLeaf->setData('is_failed', 1);
-                    $hierarchyLeaf->setData('is_updated', 0);
-                    $this->replHierarchyLeafRepository->save($hierarchyLeaf);
-                    continue;
-                }
-
-                $currentCategoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
-
-                if (array_key_exists($hierarchyLeaf->getNavId(), $categoriesArray)) {
-                    $categoriesArray[$hierarchyLeaf->getNavId()] =
-                        array_unique(
-                            array_merge(
-                                $currentCategoryIds,
-                                $categoriesArray[$hierarchyLeaf->getNavId()]
-                            )
-                        );
-                } else {
-                    $categoriesArray[$hierarchyLeaf->getNavId()] =
-                        array_unique(
-                            array_merge(
-                                $currentCategoryIds,
-                                $previousCategoryIds
-                            )
-                        );
-                }
-                $hierarchyCollection[$hierarchyLeaf->getNavId()][] = $hierarchyLeaf;
-            }
-
-            foreach ($categoriesArray as $catKey => $catArray) {
-                if (!empty($catArray)) {
-                    $this->categoryLinkManagement->assignProductToCategories(
-                        $catKey,
-                        $catArray
-                    );
-                    foreach ($hierarchyCollection[$catKey] as $leaf) {
-                        $leaf->setData('processed', 1);
-                        $leaf->setData('is_updated', 0);
-                        $this->replHierarchyLeafRepository->save($leaf);
-                    }
-                }
-            }
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
+        $hierarchyLeafs = $this->replHierarchyLeafRepository->getList($criteria);
+        $resultantCategoryIds = [];
+        foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
+            $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
+            $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $categoryIds));
+            $hierarchyLeaf->setData('processed', 1);
+            $hierarchyLeaf->setData('is_updated', 0);
+            $this->replHierarchyLeafRepository->save($hierarchyLeaf);
+        }
+        if (!empty($resultantCategoryIds)) {
+            $this->categoryLinkManagement->assignProductToCategories(
+                $product->getSku(),
+                $resultantCategoryIds
+            );
         }
     }
-
     /**
      * @param $image64
      * @return string

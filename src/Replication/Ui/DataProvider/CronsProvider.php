@@ -128,6 +128,9 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 if ($cronName == 'repl_inventory_sync') {
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY);
                 }
+                if ($cronName == 'repl_item_updates_sync') {
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
+                }
                 $lastExecute = $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName);
                 $statusStr   = ($fullReplicationStatus == 1) ?
                     '<div class="flag-green custom-grid-flag">Complete</div>' :

@@ -600,13 +600,15 @@ class ReplicationHelper extends AbstractHelper
      * @param $primaryTableColumnName
      * @param $secondaryTableName
      * @param $secondaryTableColumnName
+     * @param bool $group
      */
     public function setCollectionPropertiesPlusJoin(
         &$collection,
         SearchCriteriaInterface $criteria,
         $primaryTableColumnName,
         $secondaryTableName,
-        $secondaryTableColumnName
+        $secondaryTableColumnName,
+        $group = false
     ) {
         foreach ($criteria->getFilterGroups() as $filter_group) {
             $fields     = [];
@@ -638,6 +640,9 @@ class ReplicationHelper extends AbstractHelper
             'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
             []
         );
+        if ($group) {
+            $collection->getSelect()->group('main_table.' . $primaryTableColumnName);
+        }
         /** @var For Xdebug only to check the query $query */
         //$query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
