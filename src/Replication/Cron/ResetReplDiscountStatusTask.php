@@ -43,10 +43,15 @@ class ResetReplDiscountStatusTask
     public $logger;
 
     /**
-     * ResetReplPriceStatusTask constructor.
+     * @var ResourceConnection
+     */
+    public $resource;
+    /**
+     * ResetReplDiscountStatusTask constructor.
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
      * @param LoggerInterface $logger
+     * @param ResourceConnection $resource
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
@@ -66,12 +71,9 @@ class ResetReplDiscountStatusTask
     public function execute()
     {
         if ($this->lsr->isLSR()) {
-
             $this->logger->debug('Running ResetReplDiscountStatusTask Task ');
 
             $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
-
-            // @codingStandardsIgnoreStart
 
             // Process for Flat tables.
             // truncating the discount table.

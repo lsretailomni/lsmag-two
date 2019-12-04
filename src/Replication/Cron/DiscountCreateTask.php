@@ -168,7 +168,7 @@ class DiscountCreateTask
                     }
                     if ($replDiscounts->getTotalCount() > 0) {
                         /** We check if offer exist */
-                        $deleteStatus = $this->deleteOfferByName($item->getOfferNo());
+                        $this->deleteOfferByName($item->getOfferNo());
                     }
                     /** @var ReplDiscount $replDiscount */
                     foreach ($replDiscounts->getItems() as $replDiscount) {
@@ -377,9 +377,7 @@ class DiscountCreateTask
     }
 
     /**
-     * Delete offer by name
      * @param $name
-     * @return bool
      */
     public function deleteOfferByName($name)
     {
@@ -388,15 +386,9 @@ class DiscountCreateTask
         try {
             foreach ($ruleCollection as $rule) {
                 $this->catalogRule->deleteById($rule->getId());
-                $filters = [
-                    ['field' => 'OfferNo', 'value' => $name, 'condition_type' => 'eq'],
-                    ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
-                ];
-                return true;
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-        return false;
     }
 }
