@@ -149,6 +149,18 @@
                 </item>
             </argument>
         </column>
+        <column name="is_failed" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ls\Replication\Model\FailedStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">6</item>
+                    <item name="label" xsi:type="string" translate="true">Failed Status</item>
+                </item>
+            </argument>
+        </column>
         <column name="Blocked">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -156,12 +168,10 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Blocked</item>
-                    <item name="sortOrder" xsi:type="number">6</item>
+                    <item name="sortOrder" xsi:type="number">7</item>
                 </item>
             </argument>
         </column>
-
-
         <column name="ItemId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
