@@ -4,13 +4,13 @@ namespace Ls\Replication\Cron;
 
 use IteratorAggregate;
 use \Ls\Core\Helper\Data as LsHelper;
-use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\OperationInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
+use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
-use Magento\Config\Model\ResourceModel\Config;
-use \Ls\Core\Model\LSR;
 
 /**
  * Class AbstractReplicationTask
@@ -268,7 +268,8 @@ abstract class AbstractReplicationTask
     public function saveSource($properties, $source)
     {
         if ($source->getIsDeleted()) {
-            $uniqueAttributes = (array_key_exists($this->getConfigPath(),self::$deleteJobCodeUniqueFieldArray)) ? self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] : self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+            $uniqueAttributes = (array_key_exists($this->getConfigPath(),
+                self::$deleteJobCodeUniqueFieldArray)) ? self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] : self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         } else {
             $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         }
@@ -278,6 +279,7 @@ abstract class AbstractReplicationTask
                 $entity = $value;
             }
             $entity->setIsUpdated(1);
+            $entity->setIsFailed(0);
         } else {
             $entity = $this->getFactory()->create();
             $entity->setScope('default')->setScopeId(0);

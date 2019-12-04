@@ -64,8 +64,8 @@ The LS Omni Service will call LS Central’s web services on behalf of Magento. 
 * Magento Open Source 2.2.x or 2.3.x
   - [Magento 2.2.x technology stack requirements](https://devdocs.magento.com/guides/v2.2/install-gde/system-requirements-tech.html)
   - [Magento 2.3.x technology stack requirements](https://devdocs.magento.com/guides/v2.3/install-gde/system-requirements-tech.html)
-* LS Omni Server 3.6 or later
-* LS Central 13.x
+* LS Omni Server 4.2 or later
+* LS Central 14.x
 * Composer
 * Git
 

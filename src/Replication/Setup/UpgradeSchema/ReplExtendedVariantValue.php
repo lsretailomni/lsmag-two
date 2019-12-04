@@ -27,6 +27,7 @@ class ReplExtendedVariantValue
         	$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+        	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
         	$table->addColumn('Code' , Table::TYPE_TEXT, '');
         	$table->addColumn('DimensionLogicalOrder' , Table::TYPE_INTEGER, '');
         	$table->addColumn('Dimensions' , Table::TYPE_TEXT, '');
@@ -42,31 +43,34 @@ class ReplExtendedVariantValue
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'Code' ) === false) {
-        		$connection->addColumn($table_name, 'Code', ['type' => Table::TYPE_TEXT, 'comment' => 'Code']);
+        		$connection->addColumn($table_name, 'Code', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Code']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DimensionLogicalOrder' ) === false) {
-        		$connection->addColumn($table_name, 'DimensionLogicalOrder', ['type' => Table::TYPE_INTEGER, 'comment' => 'DimensionLogicalOrder']);
+        		$connection->addColumn($table_name, 'DimensionLogicalOrder', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'DimensionLogicalOrder']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Dimensions' ) === false) {
-        		$connection->addColumn($table_name, 'Dimensions', ['type' => Table::TYPE_TEXT, 'comment' => 'Dimensions']);
+        		$connection->addColumn($table_name, 'Dimensions', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Dimensions']);
         	}
         	if ($connection->tableColumnExists($table_name, 'FrameworkCode' ) === false) {
-        		$connection->addColumn($table_name, 'FrameworkCode', ['type' => Table::TYPE_TEXT, 'comment' => 'FrameworkCode']);
+        		$connection->addColumn($table_name, 'FrameworkCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'FrameworkCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
-        		$connection->addColumn($table_name, 'ItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        		$connection->addColumn($table_name, 'ItemId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'LogicalOrder' ) === false) {
-        		$connection->addColumn($table_name, 'LogicalOrder', ['type' => Table::TYPE_INTEGER, 'comment' => 'LogicalOrder']);
+        		$connection->addColumn($table_name, 'LogicalOrder', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'LogicalOrder']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Timestamp' ) === false) {
-        		$connection->addColumn($table_name, 'Timestamp', ['type' => Table::TYPE_TEXT, 'comment' => 'Timestamp']);
+        		$connection->addColumn($table_name, 'Timestamp', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Timestamp']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Value' ) === false) {
-        		$connection->addColumn($table_name, 'Value', ['type' => Table::TYPE_TEXT, 'comment' => 'Value']);
+        		$connection->addColumn($table_name, 'Value', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Value']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

@@ -136,11 +136,14 @@ if(!\$setup->tableExists(\$table_name)) {
 \t\$table->addColumn('scope', Table::TYPE_TEXT, 8);
 \t\$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
 \t\$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
-\t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');\n
+\t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+\t\$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
+
 CODE;
         foreach ($property_types as $raw_name => $type) {
-            $name = $raw_name;
-            $size = null;
+            $name    = $raw_name;
+            $size    = null;
+            $default = 'null';
 
             (array_search($type, $simple_types) === false) and ($type = 'string');
             if ($type == 'int') {
@@ -149,6 +152,7 @@ CODE;
                 $field_type = 'Table::TYPE_FLOAT';
             } elseif ($type == 'boolean') {
                 $field_type = 'Table::TYPE_BOOLEAN';
+                $default    = 0;
             } else {
                 $lower_name = strtolower($name);
                 if (strpos($lower_name, 'image64') === false) {
@@ -163,12 +167,17 @@ CODE;
             }
             $allColumnsArray[] = array(
                 'name'       => $name,
-                'field_type' => $field_type
+                'field_type' => $field_type,
+                'default'    => $default
             );
             $method_body       .= "\t\$table->addColumn('$name' , $field_type, '$size');\n";
         }
-
-        $method_body .= <<<CODE
+        $allColumnsArray[] = array(
+            'name'       => 'is_failed',
+            'field_type' => 'Table::TYPE_BOOLEAN',
+            'default'    => 0
+        );
+        $method_body       .= <<<CODE
 \t\$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
 \t\$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
 \t\$setup->getConnection()->createTable( \$table );
@@ -176,9 +185,9 @@ CODE;
 \t\$connection = \$setup->getConnection();
 CODE;
         foreach ($allColumnsArray as $column) {
-            $comment = ucfirst($column['name']);
+            $comment     = ucfirst($column['name']);
             $method_body .= "\n\tif (\$connection->tableColumnExists(\$table_name, '" . $column['name'] . "' ) === false) {";
-            $method_body .= "\n\t\t\$connection->addColumn(\$table_name, '" . $column['name'] . "', ['type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
+            $method_body .= "\n\t\t\$connection->addColumn(\$table_name, '" . $column['name'] . "', ['default' => " . $column['default'] . ",'type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
             $method_body .= "\t}";
         }
         $method_body .= <<<CODE

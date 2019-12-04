@@ -27,6 +27,7 @@ class ReplDataTranslation
         	$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+        	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, '');
         	$table->addColumn('Key' , Table::TYPE_TEXT, '');
         	$table->addColumn('LanguageCode' , Table::TYPE_TEXT, '');
@@ -38,19 +39,22 @@ class ReplDataTranslation
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Key' ) === false) {
-        		$connection->addColumn($table_name, 'Key', ['type' => Table::TYPE_TEXT, 'comment' => 'Key']);
+        		$connection->addColumn($table_name, 'Key', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Key']);
         	}
         	if ($connection->tableColumnExists($table_name, 'LanguageCode' ) === false) {
-        		$connection->addColumn($table_name, 'LanguageCode', ['type' => Table::TYPE_TEXT, 'comment' => 'LanguageCode']);
+        		$connection->addColumn($table_name, 'LanguageCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'LanguageCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Text' ) === false) {
-        		$connection->addColumn($table_name, 'Text', ['type' => Table::TYPE_TEXT, 'comment' => 'Text']);
+        		$connection->addColumn($table_name, 'Text', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Text']);
         	}
         	if ($connection->tableColumnExists($table_name, 'TranslationId' ) === false) {
-        		$connection->addColumn($table_name, 'TranslationId', ['type' => Table::TYPE_TEXT, 'comment' => 'TranslationId']);
+        		$connection->addColumn($table_name, 'TranslationId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'TranslationId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }
