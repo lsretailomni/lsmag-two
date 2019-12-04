@@ -6,15 +6,12 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ImageSize;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use \Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNodeRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
-use \Ls\Replication\Model\ReplHierarchyLeaf;
 use \Ls\Replication\Model\ReplHierarchyNode;
 use \Ls\Replication\Model\ReplHierarchyNodeSearchResults;
-use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyNode\CollectionFactory as ReplHierarchyNodeCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -43,9 +40,6 @@ class CategoryCreateTask
 
     /** @var ReplHierarchyNodeRepository */
     public $replHierarchyNodeRepository;
-
-    /** @var ReplHierarchyLeafRepository */
-    public $replHierarchyLeafRepository;
 
     /** @var ReplImageLinkRepositoryInterface */
     public $replImageLinkRepositoryInterface;
@@ -77,15 +71,10 @@ class CategoryCreateTask
     /** @var CategoryLinkRepositoryInterface */
     public $categoryLinkRepositoryInterface;
 
-    /** @var ReplHierarchyLeafCollectionFactory */
-    public $replHierarchyLeafCollectionFactory;
-
     /** @var ReplHierarchyNodeCollectionFactory */
     public $replHierarchyNodeCollectionFactory;
 
-    /**
-     * @var Attribute
-     */
+    /** @var Attribute */
     public $eavAttribute;
 
     /**
@@ -93,7 +82,6 @@ class CategoryCreateTask
      * @param CategoryFactory $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ReplHierarchyNodeRepository $replHierarchyNodeRepository
-     * @param ReplHierarchyLeafRepository $replHierarchyLeafRepository
      * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
      * @param CollectionFactory $collectionFactory
      * @param Logger $logger
@@ -103,7 +91,6 @@ class CategoryCreateTask
      * @param LSR $LSR
      * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
      * @param ProductRepositoryInterface $productRepository
-     * @param ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
      * @param ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory
      * @param Attribute $eavAttribute
      */
@@ -111,7 +98,6 @@ class CategoryCreateTask
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
         ReplHierarchyNodeRepository $replHierarchyNodeRepository,
-        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
         ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
         CollectionFactory $collectionFactory,
         Logger $logger,
@@ -121,14 +107,12 @@ class CategoryCreateTask
         LSR $LSR,
         CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
         ProductRepositoryInterface $productRepository,
-        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
         ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory,
         Attribute $eavAttribute
     ) {
         $this->categoryFactory                    = $categoryFactory;
         $this->categoryRepository                 = $categoryRepository;
         $this->replHierarchyNodeRepository        = $replHierarchyNodeRepository;
-        $this->replHierarchyLeafRepository        = $replHierarchyLeafRepository;
         $this->replImageLinkRepositoryInterface   = $replImageLinkRepositoryInterface;
         $this->logger                             = $logger;
         $this->collectionFactory                  = $collectionFactory;
@@ -138,7 +122,6 @@ class CategoryCreateTask
         $this->lsr                                = $LSR;
         $this->categoryLinkRepositoryInterface    = $categoryLinkRepositoryInterface;
         $this->productRepository                  = $productRepository;
-        $this->replHierarchyLeafCollectionFactory = $replHierarchyLeafCollectionFactory;
         $this->replHierarchyNodeCollectionFactory = $replHierarchyCollectionFactory;
         $this->eavAttribute                       = $eavAttribute;
     }
@@ -169,12 +152,9 @@ class CategoryCreateTask
             $hierarchyCodeSpecificFilter,
             $mediaAttribute
         );
-        $hierarchyNodeDeletedCounter                 = $this->caterHierarchyNodeRemoval($hierarchyCode);
-        $hierarchyLeafDeletedCounter                 = $this->caterHierarchyLeafRemoval($hierarchyCode);
+        $this->caterHierarchyNodeRemoval($hierarchyCode);
         if ($mainCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
-            $subCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
-            $hierarchyNodeDeletedCounter == 0 &&
-            $hierarchyLeafDeletedCounter == 0) {
+            $subCategoryHierarchyNodeAddOrUpdateCounter == 0) {
             $this->cronStatus = true;
         }
         $this->updateImagesOnly();
@@ -394,60 +374,6 @@ class CategoryCreateTask
     }
 
     /**
-     * @param $hierarchyCode
-     * @return int
-     */
-    public function caterHierarchyLeafRemoval($hierarchyCode)
-    {
-        $filters    = [['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']];
-        $criteria   = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
-        $collection = $this->replHierarchyLeafCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
-            $collection,
-            $criteria,
-            'nav_id',
-            'catalog_product_entity',
-            'sku'
-        );
-        /** @var ReplHierarchyLeaf $hierarchyLeaf */
-        foreach ($collection as $hierarchyLeaf) {
-            try {
-                $sku               = $hierarchyLeaf->getNavId();
-                $product           = $this->productRepository->get($sku);
-                $categories        = $product->getCategoryIds();
-                $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId());
-                if (!empty($categoryExistData)) {
-                    $categoryId       = $categoryExistData->getEntityId();
-                    $parentCategoryId = $categoryExistData->getParentId();
-                    if (in_array($categoryId, $categories)) {
-                        $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
-                        $catIndex = array_search($categoryId, $categories);
-                        if ($catIndex !== false) {
-                            unset($categories[$catIndex]);
-                        }
-                    }
-                    if (in_array($parentCategoryId, $categories)) {
-                        $childCategories = $this->categoryRepository->get($parentCategoryId)->getChildren();
-                        $childCat        = explode(",", $childCategories);
-                        if (count(array_intersect($childCat, $categories)) == 0) {
-                            $this->categoryLinkRepositoryInterface->deleteByIds($parentCategoryId, $sku);
-                        }
-                    }
-                }
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-                $hierarchyLeaf->setData('is_failed', 1);
-            }
-            $hierarchyLeaf->setData('processed', 1);
-            $hierarchyLeaf->setData('IsDeleted', 0);
-            $hierarchyLeaf->setData('is_updated', 0);
-            // @codingStandardsIgnoreLine
-            $this->replHierarchyLeafRepository->save($hierarchyLeaf);
-        }
-        return count($collection);
-    }
-
-    /**
      * @return array
      */
     public function executeManually()
@@ -514,8 +440,8 @@ class CategoryCreateTask
     {
         $image     = '';
         $imageSize = [
-            'height' => $this->lsr::DEFAULT_IMAGE_HEIGHT,
-            'width'  => $this->lsr::DEFAULT_IMAGE_WIDTH
+            'height' => LSR::DEFAULT_IMAGE_HEIGHT,
+            'width'  => LSR::DEFAULT_IMAGE_WIDTH
         ];
         /** @var ImageSize $imageSizeObject */
         $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
