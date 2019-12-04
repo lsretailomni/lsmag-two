@@ -251,13 +251,15 @@ class SyncItemUpdates extends ProductCreateTask
             'nav_id',
             true
         );
+        $sku = "";
         try {
             foreach ($collection as $hierarchyLeaf) {
+                $sku = $hierarchyLeaf->getNavId();
                 $product = $this->productRepository->get($hierarchyLeaf->getNavId());
                 $this->assignProductToCategories($product);
             }
         } catch (Exception $e) {
-            $this->logger->debug("Problem with sku: " . $product->getSku() . " in " . __METHOD__);
+            $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
             $this->logger->debug($e->getMessage());
         }
         return $collection->getSize();
@@ -279,6 +281,7 @@ class SyncItemUpdates extends ProductCreateTask
             'catalog_product_entity',
             'sku'
         );
+        $sku = "";
         /** @var ReplHierarchyLeaf $hierarchyLeaf */
         foreach ($collection as $hierarchyLeaf) {
             try {
@@ -305,7 +308,7 @@ class SyncItemUpdates extends ProductCreateTask
                     }
                 }
             } catch (Exception $e) {
-                $this->logger->debug("Problem with sku: " . $product->getSku() . " in " . __METHOD__);
+                $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
                 $this->logger->debug($e->getMessage());
             }
             $hierarchyLeaf->setData('is_processed', '1');
