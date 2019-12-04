@@ -21,6 +21,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ResourceConnection;
@@ -706,5 +707,13 @@ class ReplicationHelper extends AbstractHelper
     public function getProductCategoryAssignmentBatchSize()
     {
         return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMediaPathtoStore()
+    {
+        return $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
     }
 }
