@@ -27,6 +27,7 @@ class ReplLoyVendorItemMapping
         	$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+        	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
         	$table->addColumn('Deleted' , Table::TYPE_BOOLEAN, '');
         	$table->addColumn('DisplayOrder' , Table::TYPE_INTEGER, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, '');
@@ -40,25 +41,28 @@ class ReplLoyVendorItemMapping
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'Deleted' ) === false) {
-        		$connection->addColumn($table_name, 'Deleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'Deleted']);
+        		$connection->addColumn($table_name, 'Deleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Deleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DisplayOrder' ) === false) {
-        		$connection->addColumn($table_name, 'DisplayOrder', ['type' => Table::TYPE_INTEGER, 'comment' => 'DisplayOrder']);
+        		$connection->addColumn($table_name, 'DisplayOrder', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'DisplayOrder']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsFeaturedProduct' ) === false) {
-        		$connection->addColumn($table_name, 'IsFeaturedProduct', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsFeaturedProduct']);
+        		$connection->addColumn($table_name, 'IsFeaturedProduct', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsFeaturedProduct']);
         	}
         	if ($connection->tableColumnExists($table_name, 'NavManufacturerId' ) === false) {
-        		$connection->addColumn($table_name, 'NavManufacturerId', ['type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerId']);
+        		$connection->addColumn($table_name, 'NavManufacturerId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'NavManufacturerItemId' ) === false) {
-        		$connection->addColumn($table_name, 'NavManufacturerItemId', ['type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerItemId']);
+        		$connection->addColumn($table_name, 'NavManufacturerItemId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'NavProductId' ) === false) {
-        		$connection->addColumn($table_name, 'NavProductId', ['type' => Table::TYPE_TEXT, 'comment' => 'NavProductId']);
+        		$connection->addColumn($table_name, 'NavProductId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavProductId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

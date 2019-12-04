@@ -27,6 +27,7 @@ class ReplCurrencyExchRate
         	$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+        	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
         	$table->addColumn('CurrencyCode' , Table::TYPE_TEXT, '');
         	$table->addColumn('CurrencyFactor' , Table::TYPE_FLOAT, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, '');
@@ -38,19 +39,22 @@ class ReplCurrencyExchRate
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'CurrencyCode' ) === false) {
-        		$connection->addColumn($table_name, 'CurrencyCode', ['type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
+        		$connection->addColumn($table_name, 'CurrencyCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CurrencyFactor' ) === false) {
-        		$connection->addColumn($table_name, 'CurrencyFactor', ['type' => Table::TYPE_FLOAT, 'comment' => 'CurrencyFactor']);
+        		$connection->addColumn($table_name, 'CurrencyFactor', ['default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'CurrencyFactor']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RelationalCurrencyCode' ) === false) {
-        		$connection->addColumn($table_name, 'RelationalCurrencyCode', ['type' => Table::TYPE_TEXT, 'comment' => 'RelationalCurrencyCode']);
+        		$connection->addColumn($table_name, 'RelationalCurrencyCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'RelationalCurrencyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'StartingDate' ) === false) {
-        		$connection->addColumn($table_name, 'StartingDate', ['type' => Table::TYPE_TEXT, 'comment' => 'StartingDate']);
+        		$connection->addColumn($table_name, 'StartingDate', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StartingDate']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

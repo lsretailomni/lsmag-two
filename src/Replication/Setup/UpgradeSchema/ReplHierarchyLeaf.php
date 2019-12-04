@@ -27,6 +27,7 @@ class ReplHierarchyLeaf
         	$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
         	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+        	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
         	$table->addColumn('Description' , Table::TYPE_TEXT, '');
         	$table->addColumn('HierarchyCode' , Table::TYPE_TEXT, '');
         	$table->addColumn('nav_id' , Table::TYPE_TEXT, '');
@@ -40,25 +41,28 @@ class ReplHierarchyLeaf
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
-        		$connection->addColumn($table_name, 'Description', ['type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        		$connection->addColumn($table_name, 'Description', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
         	}
         	if ($connection->tableColumnExists($table_name, 'HierarchyCode' ) === false) {
-        		$connection->addColumn($table_name, 'HierarchyCode', ['type' => Table::TYPE_TEXT, 'comment' => 'HierarchyCode']);
+        		$connection->addColumn($table_name, 'HierarchyCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'HierarchyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
-        		$connection->addColumn($table_name, 'nav_id', ['type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        		$connection->addColumn($table_name, 'nav_id', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ImageId' ) === false) {
-        		$connection->addColumn($table_name, 'ImageId', ['type' => Table::TYPE_TEXT, 'comment' => 'ImageId']);
+        		$connection->addColumn($table_name, 'ImageId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ImageId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'NodeId' ) === false) {
-        		$connection->addColumn($table_name, 'NodeId', ['type' => Table::TYPE_TEXT, 'comment' => 'NodeId']);
+        		$connection->addColumn($table_name, 'NodeId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NodeId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Type' ) === false) {
-        		$connection->addColumn($table_name, 'Type', ['type' => Table::TYPE_TEXT, 'comment' => 'Type']);
+        		$connection->addColumn($table_name, 'Type', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Type']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
+        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }
