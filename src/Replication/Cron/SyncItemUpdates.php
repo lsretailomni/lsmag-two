@@ -46,7 +46,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\StateException;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Framework\Api\ImageContentFactory;
-use Psr\Log\LoggerInterface;
+use \Ls\Replication\Logger\Logger;
 
 /**
  * Class SyncItemUpdates
@@ -98,7 +98,7 @@ class SyncItemUpdates extends ProductCreateTask
      * @param LoyaltyHelper $loyaltyHelper
      * @param ReplicationHelper $replicationHelper
      * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param LSR $LSR
      * @param ConfigurableProTypeModel $configurableProTypeModel
      * @param StockHelper $stockHelper
@@ -139,7 +139,7 @@ class SyncItemUpdates extends ProductCreateTask
         LoyaltyHelper $loyaltyHelper,
         ReplicationHelper $replicationHelper,
         ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
-        LoggerInterface $logger,
+        Logger $logger,
         LSR $LSR,
         ConfigurableProTypeModel $configurableProTypeModel,
         StockHelper $stockHelper,
