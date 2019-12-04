@@ -236,8 +236,9 @@ abstract class AbstractReplicationTask
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY);
         } elseif ($confPath == "ls_mag/replication/repl_discount") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
-        } elseif ($confPath == "ls_mag/replication/repl_item" ||
-            $confPath == "ls_mag/replication/repl_hierarchy_leaf") {
+        } elseif ($confPath == "ls_mag/replication/repl_item") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT);
+        } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
         }
     }
