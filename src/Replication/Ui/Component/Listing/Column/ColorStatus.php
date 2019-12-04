@@ -46,6 +46,12 @@ class ColorStatus extends \Magento\Ui\Component\Listing\Columns\Column
                     } else {
                         $item[$this->getData('name')] = '<div class="flag-yellow custom-grid-flag">Not Updated</div>';
                     }
+                } elseif ($this->getData('name') == "is_failed") {
+                    if ($item['is_failed'] == "1") {
+                        $item[$this->getData('name')] = '<div class="flag-red custom-grid-flag">Failed</div>';
+                    } else {
+                        $item[$this->getData('name')] = '<div class="flag-green custom-grid-flag">Pass</div>';
+                    }
                 }
             }
         }

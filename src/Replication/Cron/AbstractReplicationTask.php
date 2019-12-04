@@ -234,6 +234,8 @@ abstract class AbstractReplicationTask
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY);
+        } elseif ($confPath == "ls_mag/replication/repl_discount") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
         } elseif ($confPath == "ls_mag/replication/repl_item" ||
             $confPath == "ls_mag/replication/repl_hierarchy_leaf") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
@@ -268,7 +270,8 @@ abstract class AbstractReplicationTask
     public function saveSource($properties, $source)
     {
         if ($source->getIsDeleted()) {
-            $uniqueAttributes = (array_key_exists($this->getConfigPath(),self::$deleteJobCodeUniqueFieldArray)) ? self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] : self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+            $uniqueAttributes = (array_key_exists($this->getConfigPath(),
+                self::$deleteJobCodeUniqueFieldArray)) ? self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] : self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         } else {
             $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         }
@@ -278,6 +281,7 @@ abstract class AbstractReplicationTask
                 $entity = $value;
             }
             $entity->setIsUpdated(1);
+            $entity->setIsFailed(0);
         } else {
             $entity = $this->getFactory()->create();
             $entity->setScope('default')->setScopeId(0);

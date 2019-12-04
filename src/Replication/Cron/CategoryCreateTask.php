@@ -9,6 +9,7 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNodeRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplHierarchyNode;
 use \Ls\Replication\Model\ReplHierarchyNodeSearchResults;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyNode\CollectionFactory as ReplHierarchyNodeCollectionFactory;
@@ -22,7 +23,6 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem\Io\File;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class CategoryCreateTask
@@ -30,7 +30,6 @@ use Psr\Log\LoggerInterface;
  */
 class CategoryCreateTask
 {
-
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_category';
 
     /** @var CategoryFactory */
@@ -45,7 +44,7 @@ class CategoryCreateTask
     /** @var ReplImageLinkRepositoryInterface */
     public $replImageLinkRepositoryInterface;
 
-    /** @var LoggerInterface */
+    /** @var Logger */
     public $logger;
 
     /** @var CollectionFactory */
@@ -85,7 +84,7 @@ class CategoryCreateTask
      * @param ReplHierarchyNodeRepository $replHierarchyNodeRepository
      * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
      * @param CollectionFactory $collectionFactory
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param LoyaltyHelper $loyaltyHelper
      * @param File $file
      * @param ReplicationHelper $replicationHelper
@@ -101,7 +100,7 @@ class CategoryCreateTask
         ReplHierarchyNodeRepository $replHierarchyNodeRepository,
         ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
         CollectionFactory $collectionFactory,
-        LoggerInterface $logger,
+        Logger $logger,
         LoyaltyHelper $loyaltyHelper,
         File $file,
         ReplicationHelper $replicationHelper,
@@ -133,11 +132,10 @@ class CategoryCreateTask
     public function execute()
     {
         $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
-        $this->logger->debug("Running CategoryCreateTask");
-        // for defning category images to the product group
+        $this->logger->debug('Running CategoryCreateTask.');
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
-            $this->logger->debug("Hierarchy Code not defined in the configuration.");
+            $this->logger->debug('Hierarchy Code not defined in the configuration.');
             return;
         }
         $hierarchyCodeSpecificFilter                 = [
@@ -159,10 +157,9 @@ class CategoryCreateTask
             $subCategoryHierarchyNodeAddOrUpdateCounter == 0) {
             $this->cronStatus = true;
         }
-        //Update the Modified Images
         $this->updateImagesOnly();
         $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY);
-        $this->logger->debug("CategoryCreateTask Completed");
+        $this->logger->debug('CategoryCreateTask Completed.');
     }
 
     /**
@@ -184,6 +181,10 @@ class CategoryCreateTask
         foreach ($replHierarchyNodeRepository->getItems() as $hierarchyNode) {
             try {
                 if (empty($hierarchyNode->getNavId())) {
+                    $hierarchyNode->setData('is_failed', 1);
+                    $hierarchyNode->setData('processed', 1);
+                    $hierarchyNode->setData('is_updated', 0);
+                    $this->replHierarchyNodeRepository->save($hierarchyNode);
                     continue;
                 }
                 $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
@@ -192,8 +193,7 @@ class CategoryCreateTask
                     $category = $this->categoryFactory->create();
                     $data     = [
                         'parent_id'       => 2,
-                        'name'            => ($hierarchyNode->getDescription()) ?
-                            $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
+                        'name'            => ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId(),
                         'url_key'         => $this->oSlug($hierarchyNode->getNavId()),
                         'is_active'       => true,
                         'is_anchor'       => true,
@@ -208,17 +208,13 @@ class CategoryCreateTask
                         $image = $this->getImage($hierarchyNode->getImageId());
                         $category->setImage($image, $mediaAttribute, true, false);
                     }
-                    // @codingStandardsIgnoreStart
+                    // @codingStandardsIgnoreLine
                     $this->categoryRepository->save($category);
-                    $hierarchyNode->setData('processed', '1');
-                    $this->replHierarchyNodeRepository->save($hierarchyNode);
-                    // @codingStandardsIgnoreEnd
                 } else {
                     if ($hierarchyNode->getIsUpdated() == 1) {
                         $categoryExistData->setData(
                             'name',
-                            ($hierarchyNode->getDescription()) ?
-                                $hierarchyNode->getDescription() : $hierarchyNode->getNavId()
+                            ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId()
                         );
                         $categoryExistData->setData('is_active', 1);
                         if ($hierarchyNode->getImageId()) {
@@ -231,17 +227,18 @@ class CategoryCreateTask
                         );
                         // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($categoryExistData);
-                        $hierarchyNode->setData('processed', '1');
-                        $hierarchyNode->setData('is_updated', '0');
-                        $this->replHierarchyNodeRepository->save($hierarchyNode);
-                        // @codingStandardsIgnoreEnd
                     }
                 }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
+                $hierarchyNode->setData('is_failed', 1);
             }
+            // @codingStandardsIgnoreStart
+            $hierarchyNode->setData('processed', 1);
+            $hierarchyNode->setData('is_updated', 0);
+            $this->replHierarchyNodeRepository->save($hierarchyNode);
+            // @codingStandardsIgnoreEnd
         }
-
         return count($replHierarchyNodeRepository->getItems());
     }
 
@@ -264,6 +261,13 @@ class CategoryCreateTask
         /** @var ReplHierarchyNode $hierarchyNodeSub */
         foreach ($replHierarchyNodeRepositorySub->getItems() as $hierarchyNodeSub) {
             try {
+                if (empty($hierarchyNodeSub->getNavId())) {
+                    $hierarchyNodeSub->setData('is_failed', 1);
+                    $hierarchyNodeSub->setData('processed', 1);
+                    $hierarchyNodeSub->setData('is_updated', 0);
+                    $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
+                    continue;
+                }
                 $itemCategoryId       = $hierarchyNodeSub->getParentNode();
                 $collection           = $this->collectionFactory->create()
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
@@ -276,8 +280,7 @@ class CategoryCreateTask
                         // @codingStandardsIgnoreStart
                         'parent_id'       => $collection->getFirstItem()->getId(),
                         // @codingStandardsIgnoreEnd
-                        'name'            => ($hierarchyNodeSub->getDescription()) ?
-                            $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId(),
+                        'name'            => ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId(),
                         'url_key'         => $this->oSlug($hierarchyNodeSub->getNavId()),
                         'is_active'       => true,
                         'is_anchor'       => true,
@@ -292,17 +295,13 @@ class CategoryCreateTask
                         $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
                         $categorysub->setImage($imageSub, $mediaAttribute, true, false);
                     }
-                    // @codingStandardsIgnoreStart
+                    // @codingStandardsIgnoreLine
                     $this->categoryRepository->save($categorysub);
-                    $hierarchyNodeSub->setData('processed', '1');
-                    $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
-                    // @codingStandardsIgnoreEnd
                 } else {
                     if ($hierarchyNodeSub->getIsUpdated() == 1) {
                         $subCategoryExistData->setData(
                             'name',
-                            ($hierarchyNodeSub->getDescription()) ?
-                                $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId()
+                            ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId()
                         );
                         $subCategoryExistData->setData('is_active', 1);
                         if ($hierarchyNodeSub->getImageId()) {
@@ -315,22 +314,22 @@ class CategoryCreateTask
                         );
                         // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($subCategoryExistData);
-                        $hierarchyNodeSub->setData('processed', '1');
-                        $hierarchyNodeSub->setData('is_updated', '0');
-                        $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
-                        // @codingStandardsIgnoreEnd
                     }
                 }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
+                $hierarchyNodeSub->setData('is_failed', 1);
             }
+            $hierarchyNodeSub->setData('processed', 1);
+            $hierarchyNodeSub->setData('is_updated', 0);
+            $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
         }
-
         return count($replHierarchyNodeRepositorySub->getItems());
     }
 
     /**
-     * @param $hierarchyCode
+     * @param $hierarchyCodeSpecificFilter
+     * @return int
      */
     public function caterHierarchyNodeRemoval($hierarchyCode)
     {
@@ -355,23 +354,24 @@ class CategoryCreateTask
                     $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
                     if ($categoryExistData) {
                         $categoryExistData->setData('is_active', 0);
-                        // @codingStandardsIgnoreStart
+                        // @codingStandardsIgnoreLine
                         $this->categoryRepository->save($categoryExistData);
-                        // @codingStandardsIgnoreEnd
-                        $hierarchyNode->setData('is_processed', '1');
-                        $hierarchyNode->setData('IsDeleted', '0');
-                        $hierarchyNode->setData('is_updated', '0');
-                        // @codingStandardsIgnoreStart
-                        $this->replHierarchyNodeRepository->save($hierarchyNode);
-                        // @codingStandardsIgnoreEnd
                     }
+                } else {
+                    $hierarchyNode->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
+                $hierarchyNode->setData('is_failed', 1);
             }
+            $hierarchyNode->setData('IsDeleted', 0);
+            $hierarchyNode->setData('processed', 1);
+            $hierarchyNode->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->replHierarchyNodeRepository->save($hierarchyNode);
         }
+        return count($collection);
     }
-
 
     /**
      * @return array
@@ -438,6 +438,7 @@ class CategoryCreateTask
      */
     public function getImage($imageId = '')
     {
+        $image     = '';
         $imageSize = [
             'height' => LSR::DEFAULT_IMAGE_HEIGHT,
             'width'  => LSR::DEFAULT_IMAGE_WIDTH
@@ -445,19 +446,19 @@ class CategoryCreateTask
         /** @var ImageSize $imageSizeObject */
         $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
         $result          = $this->loyaltyHelper->getImageById($imageId, $imageSizeObject);
-        if (!empty($result) && !empty($result["format"]) && !empty($result["image"])) {
+        if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
             //check if directory exists or not and if it has the proper permission or not
             $offerpath = $this->getMediaPathtoStore();
             // @codingStandardsIgnoreStart
             if (!is_dir($offerpath)) {
                 $this->file->mkdir($offerpath, 0775);
             }
-            $format      = strtolower($result["format"]);
+            $format      = strtolower($result['format']);
             $imageName   = $this->oSlug($imageId);
             $output_file = "{$imageName}.$format";
             $file        = "{$offerpath}{$output_file}";
             if (!$this->file->fileExists($file)) {
-                $base64     = $result["image"];
+                $base64     = $result['image'];
                 $image_file = fopen($file, 'wb');
                 fwrite($image_file, base64_decode($base64));
                 fclose($image_file);
@@ -474,8 +475,8 @@ class CategoryCreateTask
      */
     public function getMediaPathtoStore()
     {
-        $mediadirectory = $this->loyaltyHelper->getMediaPathtoStore();
-        return $mediadirectory . "catalog" . DIRECTORY_SEPARATOR . "category" . DIRECTORY_SEPARATOR;
+        $mediaDirectory = $this->loyaltyHelper->getMediaPathtoStore();
+        return $mediaDirectory . 'catalog' . DIRECTORY_SEPARATOR . 'category' . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -498,17 +499,17 @@ class CategoryCreateTask
                         $imageSub       = $this->getImage($image->getImageId());
                         $mediaAttribute = ['image', 'small_image', 'thumbnail'];
                         $categoryExistData->setImage($imageSub, $mediaAttribute, true, false);
-                        // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($categoryExistData);
-                        $image->setData('is_updated', '0');
-                        $this->replImageLinkRepositoryInterface->save($image);
-                        // @codingStandardsIgnoreEnd
                         $this->cronStatus = true;
                     }
                 } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
-                    continue;
+                    $image->setData('is_failed', 1);
                 }
+                $image->setData('is_updated', 0);
+                $image->setData('processed', 1);
+                // @codingStandardsIgnoreLine
+                $this->replImageLinkRepositoryInterface->save($image);
             }
         }
     }

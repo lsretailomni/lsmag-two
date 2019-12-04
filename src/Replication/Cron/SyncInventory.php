@@ -25,7 +25,7 @@ class SyncInventory extends ProductCreateTask
     public function execute()
     {
         $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
-        $this->logger->debug('Running SyncInventory Task ');
+        $this->logger->debug('Running SyncInventory Task');
         $storeId                   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
         $productInventoryBatchSize = $this->replicationHelper->getProductInventoryBatchSize();
 
@@ -65,11 +65,12 @@ class SyncInventory extends ProductCreateTask
                         // @codingStandardsIgnoreEnd
                     }
                 } catch (Exception $e) {
-                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
+                    $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());
+                    $replInvStatus->setData('is_failed', 1);
                 }
-                $replInvStatus->setData('is_updated', '0');
-                $replInvStatus->setData('processed', '1');
+                $replInvStatus->setData('is_updated', 0);
+                $replInvStatus->setData('processed', 1);
                 $this->replInvStatusRepository->save($replInvStatus);
             }
         }
@@ -77,7 +78,7 @@ class SyncInventory extends ProductCreateTask
             $this->cronStatus = true;
         }
         $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY);
-        $this->logger->debug('End SyncInventory task');
+        $this->logger->debug('End SyncInventory Task');
     }
 
     /**
