@@ -4,8 +4,8 @@ namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Framework\App\ResourceConnection;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class ResetReplPriceStatusTask
@@ -39,24 +39,27 @@ class ResetReplDiscountStatusTask
     /** @var LSR */
     public $lsr;
 
-    /** @var LoggerInterface */
+    /**
+     * @var Logger
+     */
     public $logger;
 
     /**
      * @var ResourceConnection
      */
     public $resource;
+
     /**
      * ResetReplDiscountStatusTask constructor.
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param ResourceConnection $resource
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
         LSR $LSR,
-        LoggerInterface $logger,
+        Logger $logger,
         ResourceConnection $resource
     ) {
         $this->replicationHelper = $replicationHelper;
