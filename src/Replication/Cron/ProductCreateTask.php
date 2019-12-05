@@ -24,18 +24,18 @@ use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplBarcode;
 use \Ls\Replication\Model\ReplBarcodeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
-use \Ls\Replication\Model\ReplHierarchyLeafSearchResults;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ReplItemSearchResults;
 use \Ls\Replication\Model\ReplItemVariantRegistration;
-use \Ls\Replication\Model\ReplPrice;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
@@ -203,6 +203,15 @@ class ProductCreateTask
      */
     public $stockRegistry;
 
+    /** @var CategoryLinkRepositoryInterface */
+    public $categoryLinkRepositoryInterface;
+
+    /** @var CollectionFactory */
+    public $collectionFactory;
+
+    /** @var CategoryRepositoryInterface */
+    public $categoryRepository;
+
     /**
      * ProductCreateTask constructor.
      * @param Factory $factory
@@ -241,6 +250,9 @@ class ProductCreateTask
      * @param ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product $productResourceModel
      * @param StockRegistryInterface $stockRegistry
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
+     * @param CollectionFactory $collectionFactory
      */
     public function __construct(
         Factory $factory,
@@ -278,7 +290,10 @@ class ProductCreateTask
         ReplPriceCollectionFactory $replPriceCollectionFactory,
         ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
-        StockRegistryInterface $stockRegistry
+        StockRegistryInterface $stockRegistry,
+        CategoryRepositoryInterface $categoryRepository,
+        CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
+        CollectionFactory $collectionFactory
     ) {
         $this->factory                               = $factory;
         $this->item                                  = $item;
@@ -316,6 +331,9 @@ class ProductCreateTask
         $this->replHierarchyLeafCollectionFactory    = $replHierarchyLeafCollectionFactory;
         $this->productResourceModel                  = $productResourceModel;
         $this->stockRegistry                         = $stockRegistry;
+        $this->categoryLinkRepositoryInterface = $categoryLinkRepositoryInterface;
+        $this->collectionFactory               = $collectionFactory;
+        $this->categoryRepository              = $categoryRepository;
     }
 
     /**
