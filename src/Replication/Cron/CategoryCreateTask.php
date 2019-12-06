@@ -328,8 +328,7 @@ class CategoryCreateTask
     }
 
     /**
-     * @param $hierarchyCodeSpecificFilter
-     * @return int
+     * @param $hierarchyCode
      */
     public function caterHierarchyNodeRemoval($hierarchyCode)
     {
@@ -370,7 +369,6 @@ class CategoryCreateTask
             // @codingStandardsIgnoreLine
             $this->replHierarchyNodeRepository->save($hierarchyNode);
         }
-        return count($collection);
     }
 
     /**
