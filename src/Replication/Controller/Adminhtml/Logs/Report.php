@@ -16,8 +16,8 @@ use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class Grid
- * @package Ls\Replication\Controller\Adminhtml\Cron
+ * Class Report
+ * @package Ls\Replication\Controller\Adminhtml\Logs
  */
 class Report extends Action
 {
@@ -46,11 +46,14 @@ class Report extends Action
     public $downloader;
 
     /**
-     * Grid constructor.
+     * Report constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param ObjectManagerInterface $objectManager
      * @param LoggerInterface $logger
+     * @param DirectoryList $directoryList
+     * @param Registry $coreRegistry
+     * @param FileFactory $fileFactory
      */
     public function __construct(
         Context $context,
