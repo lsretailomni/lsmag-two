@@ -3,10 +3,12 @@
 
 namespace Ls\Replication\Code;
 
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Api\Data\Anchor;
 use ReflectionClass;
+use ReflectionException;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -30,16 +32,16 @@ class ModelInterfaceGenerator extends AbstractGenerator
     /**
      * ModelInterfaceGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
-     * @throws \ReflectionException
+     * @throws Exception
+     * @throws ReflectionException
      */
     public function __construct(ReplicationOperation $operation)
     {
         parent::__construct();
         $this->class = new InterfaceGenerator();
         $this->file->setClass($this->class);
-        $this->operation = $operation;
-        $this->entity_fqn = $this->operation->getOmniEntityFqn();
+        $this->operation        = $operation;
+        $this->entity_fqn       = $this->operation->getOmniEntityFqn();
         $this->reflected_entity = new ReflectionClass($this->entity_fqn);
     }
 
@@ -63,19 +65,22 @@ class ModelInterfaceGenerator extends AbstractGenerator
                 continue;
             }
             $property_type = $matches[1];
-            $pascal_name = $property_name;
+            $pascal_name   = $property_name;
             $variable_name = $property_name;
 
             if ($property_name == 'Id') {
-                $pascal_name = 'NavId';
+                $pascal_name   = 'NavId';
                 $variable_name = 'nav_id';
             }
             $this->createProperty(
                 null,
                 $property_type,
                 [PropertyGenerator::FLAG_PROTECTED],
-                ['pascal_name' => $pascal_name, 'variable_name' => $variable_name,
-                'interface' => true]
+                [
+                    'pascal_name'   => $pascal_name,
+                    'variable_name' => $variable_name,
+                    'interface'     => true
+                ]
             );
         }
 

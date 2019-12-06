@@ -38,7 +38,15 @@ use Psr\Log\LoggerInterface;
  */
 class ReplicationHelper extends AbstractHelper
 {
-
+    /**
+     * @var array
+     */
+    public $defaultMimeTypes = [
+        'image/jpg',
+        'image/jpeg',
+        'image/gif',
+        'image/png',
+    ];
     /** @var StoreManagerInterface */
     public $storeManager;
 
@@ -720,5 +728,16 @@ class ReplicationHelper extends AbstractHelper
     public function getMediaPathtoStore()
     {
         return $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
+    }
+
+    /**
+     * Check if given mime type is valid
+     *
+     * @param string $mimeType
+     * @return bool
+     */
+    public function isMimeTypeValid($mimeType)
+    {
+        return in_array($mimeType, $this->defaultMimeTypes);
     }
 }

@@ -3,11 +3,13 @@
 
 namespace Ls\Replication\Code;
 
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Model\ResourceModel\Anchor;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use ReflectionClass;
+use ReflectionException;
 use Zend\Code\Generator\MethodGenerator;
 
 /**
@@ -28,22 +30,14 @@ class ResourceModelGenerator extends AbstractGenerator
     /**
      * ResourceModelGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
-     * @throws \ReflectionException
+     * @throws Exception
+     * @throws ReflectionException
      */
     public function __construct(ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation = $operation;
+        $this->operation        = $operation;
         $this->reflected_entity = new ReflectionClass($this->operation->getMainEntityFqn());
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->operation->getEntityName();
     }
 
     /**
@@ -52,7 +46,7 @@ class ResourceModelGenerator extends AbstractGenerator
     public function generate()
     {
 
-        $interface_name = $this->operation->getInterfaceName();
+        $interface_name    = $this->operation->getInterfaceName();
         $contructor_method = new MethodGenerator();
         $contructor_method->setName('_construct');
         $idx_column = $this->operation->getTableName() . '_id';
@@ -76,5 +70,13 @@ class ResourceModelGenerator extends AbstractGenerator
         );
 
         return $content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->operation->getEntityName();
     }
 }

@@ -24,14 +24,12 @@ use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplBarcode;
 use \Ls\Replication\Model\ReplBarcodeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
-use \Ls\Replication\Model\ReplHierarchyLeafSearchResults;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ReplItemSearchResults;
 use \Ls\Replication\Model\ReplItemVariantRegistration;
-use \Ls\Replication\Model\ReplPrice;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
@@ -419,20 +417,24 @@ class ProductCreateTask
                         $this->logger->debug('Found images for the item ' . $item->getNavId());
                         $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
                     }
-                    $this->logger->debug('Trying to save product ' . $item->getNavId());
-                    /** @var ProductRepositoryInterface $productSaved */
                     $product = $this->getProductAttributes($product, $item);
-                    // @codingStandardsIgnoreStart
-                    $productSaved = $this->productRepository->save($product);
-                    $variants     = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
-                    if (!empty($variants)) {
-                        $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
+                    try {
+                        $this->logger->debug('Trying to save product ' . $item->getNavId());
+                        /** @var ProductRepositoryInterface $productSaved */
+                        // @codingStandardsIgnoreLine
+                        $productSaved = $this->productRepository->save($product);
+                        $variants     = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
+                        if (!empty($variants)) {
+                            $this->createConfigurableProducts($productSaved, $item, $itemBarcodes, $variants);
+                        }
+                        $this->assignProductToCategories($productSaved);
+                    } catch (Exception $e) {
+                        $this->logger->debug($e->getMessage());
+                        $item->setData('is_failed', 1);
                     }
                     $item->setData('processed', 1);
                     $item->setData('is_updated', 0);
                     $this->itemRepository->save($item);
-                    // @codingStandardsIgnoreEnd
-                    $this->assignProductToCategories($productSaved);
                 }
             }
             if (count($items->getItems()) == 0) {
@@ -490,8 +492,10 @@ class ProductCreateTask
         ReplItem $replItem
     ) {
         $productAttributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
-        $criteria                  = $this->replicationHelper->buildCriteriaForProductAttributes($replItem->getNavId(),
-            $productAttributeBatchSize);
+        $criteria                  = $this->replicationHelper->buildCriteriaForProductAttributes(
+            $replItem->getNavId(),
+            $productAttributeBatchSize
+        );
         /** @var ReplAttributeValueSearchResults $items */
         $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
         /** @var ReplAttributeValue $item */
@@ -537,21 +541,27 @@ class ProductCreateTask
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             $result          = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
             if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
-                /** @var ImageContent $imageContent */
-                $imageContent = $this->imageContent->create()
-                    ->setBase64EncodedData($result['image'])
-                    ->setName($this->oSlug($image->getImageId()))
-                    ->setType($this->getMimeType($result['image']));
-                $this->attributeMediaGalleryEntry->setMediaType('image')
-                    ->setLabel(($image->getDescription()) ? $image->getDescription() : 'Product Image')
-                    ->setPosition($image->getDisplayOrder())
-                    ->setDisabled(false)
-                    ->setContent($imageContent);
-                if ($i == 0) {
-                    $types = ['image', 'small_image', 'thumbnail'];
+                $mimeType = $this->getMimeType($result['image']);
+                if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
+                    /** @var ImageContent $imageContent */
+                    $imageContent = $this->imageContent->create()
+                        ->setBase64EncodedData($result['image'])
+                        ->setName($this->oSlug($image->getImageId()))
+                        ->setType($mimeType);
+                    $this->attributeMediaGalleryEntry->setMediaType('image')
+                        ->setLabel(($image->getDescription()) ? $image->getDescription() : 'Product Image')
+                        ->setPosition($image->getDisplayOrder())
+                        ->setDisabled(false)
+                        ->setContent($imageContent);
+                    if ($i == 0) {
+                        $types = ['image', 'small_image', 'thumbnail'];
+                    }
+                    $this->attributeMediaGalleryEntry->setTypes($types);
+                    $galleryArray[] = clone $this->attributeMediaGalleryEntry;
+                } else {
+                    $image->setData('is_failed', 1);
                 }
-                $this->attributeMediaGalleryEntry->setTypes($types);
-                $galleryArray[] = clone $this->attributeMediaGalleryEntry;
+
                 $image->setData('processed', 1);
                 $image->setData('is_updated', 0);
                 // @codingStandardsIgnoreLine

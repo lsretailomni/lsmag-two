@@ -5,12 +5,12 @@ namespace Ls\Replication\Controller\Adminhtml\Deletion;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Catalog\Model\CategoryFactory;
-use Magento\Framework\Registry;
-use Psr\Log\LoggerInterface;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Registry;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -19,7 +19,9 @@ use Symfony\Component\Filesystem\Filesystem;
 class Category extends Action
 {
 
-    /** @var LoggerInterface */
+    /**
+     * @var Logger
+     */
     public $logger;
 
     /** @var Registry $registry */
@@ -46,10 +48,10 @@ class Category extends Action
     // @codingStandardsIgnoreEnd
 
     /**
-     * Category Deletion constructor.
-     * @param CategoryFactory $categoryFactory Category Factory
-     * @param Registry $registry Magento Registry
-     * @param LoggerInterface $logger
+     * Category constructor.
+     * @param CategoryFactory $categoryFactory
+     * @param Registry $registry
+     * @param Logger $logger
      * @param Context $context
      * @param ResourceConnection $resource
      * @param LSR $LSR
@@ -59,7 +61,7 @@ class Category extends Action
     public function __construct(
         CategoryFactory $categoryFactory,
         Registry $registry,
-        LoggerInterface $logger,
+        Logger $logger,
         Context $context,
         ResourceConnection $resource,
         LSR $LSR,

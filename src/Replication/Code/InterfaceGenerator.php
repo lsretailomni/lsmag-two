@@ -22,7 +22,7 @@ class InterfaceGenerator extends ClassGenerator
     /**
      * Build a Code Generation Php Object from a Class Reflection
      *
-     * @param  ClassReflection $classReflection
+     * @param ClassReflection $classReflection
      *
      * @return InterfaceGenerator
      */
@@ -36,7 +36,7 @@ class InterfaceGenerator extends ClassGenerator
         }
 
         // class generator
-        $cg = new static($classReflection->getName());
+        $cg      = new static($classReflection->getName());
         $methods = [];
 
         $cg->setSourceContent($cg->getSourceContent());
@@ -80,11 +80,11 @@ class InterfaceGenerator extends ClassGenerator
      * @configkey constants
      * @configkey methods
      *
-     * @throws Exception\InvalidArgumentException
-     *
-     * @param  array $array
+     * @param array $array
      *
      * @return InterfaceGenerator
+     * @throws Exception\InvalidArgumentException
+     *
      */
     public static function fromArray(array $array)
     {

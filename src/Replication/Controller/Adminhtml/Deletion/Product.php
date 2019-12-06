@@ -5,10 +5,10 @@ namespace Ls\Replication\Controller\Adminhtml\Deletion;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class Product extends Action
 {
-    /** @var LoggerInterface */
+    /** @var Logger */
     public $logger;
 
     /** @var ResourceConnection */
@@ -147,9 +147,9 @@ class Product extends Action
     // @codingStandardsIgnoreEnd
 
     /**
-     * Product Deletion constructor.
+     * Product constructor.
      * @param ResourceConnection $resource
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param Context $context
      * @param LSR $LSR
      * @param ReplicationHelper $replicationHelper
@@ -157,7 +157,7 @@ class Product extends Action
      */
     public function __construct(
         ResourceConnection $resource,
-        LoggerInterface $logger,
+        Logger $logger,
         Context $context,
         LSR $LSR,
         ReplicationHelper $replicationHelper,

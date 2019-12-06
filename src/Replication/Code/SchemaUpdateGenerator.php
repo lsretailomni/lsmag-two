@@ -5,6 +5,7 @@ namespace Ls\Replication\Code;
 
 use CaseHelper\CaseHelperFactory;
 use CaseHelper\CaseHelperInterface;
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\Service;
@@ -12,9 +13,12 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Setup\UpgradeSchema;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DB\Ddl\Table;
+use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
+use ReflectionException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Reflection\ClassReflection;
@@ -43,8 +47,8 @@ class SchemaUpdateGenerator extends AbstractGenerator
     /**
      * SchemaUpdateGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
-     * @throws \ReflectionException
+     * @throws Exception
+     * @throws ReflectionException
      */
 
     public function __construct(ReplicationOperation $operation)
@@ -215,8 +219,8 @@ CODE;
 
     public function getPath()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        /** @var  \Magento\Framework\Module\Dir\Reader $dirReader */
+        $objectManager = ObjectManager::getInstance();
+        /** @var  Reader $dirReader */
         $dirReader    = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
         $basepath     = $dirReader->getModuleDir('', 'Ls_Replication');
         $upgrade_path = $basepath . "/Setup/UpgradeSchema";

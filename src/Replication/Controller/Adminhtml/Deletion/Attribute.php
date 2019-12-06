@@ -2,19 +2,21 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
-use Psr\Log\LoggerInterface;
-use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Class Attribute Deletion
  */
 class Attribute extends Action
 {
-    /** @var LoggerInterface */
+    /**
+     * @var Logger
+     */
     public $logger;
 
     /** @var ResourceConnection */
@@ -41,14 +43,14 @@ class Attribute extends Action
     /**
      * Attribute constructor.
      * @param ResourceConnection $resource
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param Context $context
      * @param LSR $LSR
      * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         ResourceConnection $resource,
-        LoggerInterface $logger,
+        Logger $logger,
         Context $context,
         LSR $LSR,
         ReplicationHelper $replicationHelper

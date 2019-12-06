@@ -2,17 +2,17 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
+use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class Order Deletion
  */
 class Order extends Action
 {
-    /** @var LoggerInterface */
+    /** @var Logger */
     public $logger;
 
     /** @var ResourceConnection */
@@ -73,13 +73,14 @@ class Order extends Action
     // @codingStandardsIgnoreEnd
 
     /**
-     * Order Deletion constructor.
+     * Order constructor.
      * @param ResourceConnection $resource
-     * @param LoggerInterface $logger
+     * @param Logger $logger
+     * @param Context $context
      */
     public function __construct(
         ResourceConnection $resource,
-        LoggerInterface $logger,
+        Logger $logger,
         Context $context
     ) {
         $this->resource = $resource;

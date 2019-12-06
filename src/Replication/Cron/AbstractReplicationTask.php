@@ -7,9 +7,10 @@ use \Ls\Core\Helper\Data as LsHelper;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\OperationInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Psr\Log\LoggerInterface;
+
 use ReflectionClass;
 
 /**
@@ -134,14 +135,14 @@ abstract class AbstractReplicationTask
      * AbstractReplicationTask constructor.
      * @param ScopeConfigInterface $scope_config
      * @param Config $resouce_config
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param LsHelper $helper
      * @param ReplicationHelper $repHelper
      */
     public function __construct(
         ScopeConfigInterface $scope_config,
         Config $resouce_config,
-        LoggerInterface $logger,
+        Logger $logger,
         LsHelper $helper,
         ReplicationHelper $repHelper
     ) {
@@ -271,8 +272,9 @@ abstract class AbstractReplicationTask
     public function saveSource($properties, $source)
     {
         if ($source->getIsDeleted()) {
-            $uniqueAttributes = (array_key_exists($this->getConfigPath(),
-                self::$deleteJobCodeUniqueFieldArray)) ? self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] : self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+            $uniqueAttributes = (array_key_exists($this->getConfigPath(), self::$deleteJobCodeUniqueFieldArray)) ?
+                self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] :
+                self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         } else {
             $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         }

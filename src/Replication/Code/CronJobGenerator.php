@@ -8,12 +8,12 @@ use \Ls\Core\Helper\Data as LsHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Cron\AbstractReplicationTask;
+use \Ls\Replication\Helper\ReplicationHelper;
+use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Psr\Log\LoggerInterface;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
-use Magento\Config\Model\ResourceModel\Config;
-use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Class CronJobGenerator
@@ -27,8 +27,8 @@ class CronJobGenerator extends AbstractGenerator
 
     /**
      * CronJobGenerator constructor.
-     *
      * @param ReplicationOperation $operation
+     * @throws \Exception
      */
     public function __construct(ReplicationOperation $operation)
     {
@@ -59,15 +59,16 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addConstant('JOB_CODE', $this->operation->getJobId());
         $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$this->operation->getTableName()}");
         $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$this->operation->getTableName()}");
-        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
+        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE',
+            "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
 
         $this->createProperty('repository', $this->operation->getRepositoryName());
         $this->createProperty('factory', $this->operation->getFactoryName());
         $this->createProperty('dataInterface', $this->operation->getInterfaceName());
 
         $repository_name = $this->operation->getRepositoryName();
-        $factory_name = $this->operation->getFactoryName();
-        $data_interface = $this->operation->getInterfaceName();
+        $factory_name    = $this->operation->getFactoryName();
+        $data_interface  = $this->operation->getInterfaceName();
 
         $this->class->addMethodFromGenerator($this->getConstructor());
         $this->class->addMethodFromGenerator($this->getMakeRequest());

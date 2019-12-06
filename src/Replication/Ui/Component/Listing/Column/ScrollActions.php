@@ -2,11 +2,11 @@
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
+use \Ls\Replication\Block\Adminhtml\Grid\Renderer\Action\UrlBuilder;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
-use \Ls\Replication\Block\Adminhtml\Grid\Renderer\Action\UrlBuilder;
-use Magento\Framework\UrlInterface;
 
 /**
  * Class ScrollActions
@@ -36,7 +36,7 @@ class ScrollActions extends Column
         array $components = [],
         array $data = []
     ) {
-        $this->urlBuilder = $urlBuilder;
+        $this->urlBuilder       = $urlBuilder;
         $this->actionUrlBuilder = $actionUrlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
@@ -51,7 +51,7 @@ class ScrollActions extends Column
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
-                $fieldName = $this->getData('name');
+                $fieldName        = $this->getData('name');
                 $item[$fieldName] = "<button class='ls_scrollbutton_forward'><span>" . __('Forward') .
                     "</span></button><button class='ls_scrollbutton_back'><span>" . __('Back') . "</span></button>";
             }
