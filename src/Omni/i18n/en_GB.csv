@@ -1,6 +1,8 @@
 "Loyalty Points Redeemed","Loyalty Points Redeemed"
 "Gift Card Redeemed ","Gift Card Redeemed "
 "Validate Base URL","Validate Base URL"
+"12 Hours","12 Hours"
+"24 Hours","24 Hours"
 "Valid till","Valid till"
 "Minimum Qty :","Minimum Qty :"
 "Avail %1 Off ","Avail %1 Off "
@@ -8,6 +10,7 @@
 "if Buy with any of these items: ","if Buy with any of these items: "
 "Expiry :","Expiry :"
 "Coupon Code :","Coupon Code :"
+Special,Special
 "Please select your hierarchy code","Please select your hierarchy code"
 "No hierarchy code found for the selected store","No hierarchy code found for the selected store"
 "Please select your web store","Please select your web store"
@@ -29,9 +32,16 @@
 "Check Your Gift Card Balance","Check Your Gift Card Balance"
 "Please check other stores or remove the not available item(s) from your ","Please check other stores or remove the not available item(s) from your "
 "This item is available","This item is available"
+"You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart.","You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart."
 "This item is not available","This item is not available"
+"Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
+"Our Stores","Our Stores"
 "Reset password token expired.","Reset password token expired."
-"The gift card amount ""%1"" and loyalty points  ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points  ""%2"" are not valid."
+"The gift card amount ""%1"" and loyalty points ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points ""%2"" are not valid."
 Products,Products
 SKU,SKU
 Qty,Qty
@@ -91,8 +101,12 @@ Redeem,Redeem
 "Send Check to","Send Check to"
 "Loading Product Discounts...","Loading Product Discounts..."
 "Check Availability in Stores","Check Availability in Stores"
-Offers and Promotions:,Offers and Promotions:
+"Offers and Promotions:","Offers and Promotions:"
 "Find Discounts","Find Discounts"
+Store,Store
+Address,Address
+Phone,Phone
+"Opening Hours","Opening Hours"
 "Select Store by map ","Select Store by map "
 "Search for a Store ","Search for a Store "
 "View Details","View Details"
@@ -112,8 +126,10 @@ Close,Close
 "Your points are successfully removed.","Your points are successfully removed."
 "Gift card code successfully applied.","Gift card code successfully applied."
 "Your points are successfully redeemed.","Your points are successfully redeemed."
+cart,cart
 Configuration,Configuration
 "Service Base URL","Service Base URL"
+"LS Key","LS Key"
 "Please validate your base url by clicking on button above","Please validate your base url by clicking on button above"
 "Select Store","Select Store"
 "Choose the web store","Choose the web store"
@@ -132,6 +148,8 @@ Enabled,Enabled
 "Show Promotions on Product Page","Show Promotions on Product Page"
 "Show Coupons on Cart/Checkout Page","Show Coupons on Cart/Checkout Page"
 "Discount Popup Mix and Match Products Limit","Discount Popup Mix and Match Products Limit"
+"Stores Listing","Stores Listing"
+"Opening Hours Time Format","Opening Hours Time Format"
 "Click And Collect","Click And Collect"
 Title,Title
 "Method Name","Method Name"
