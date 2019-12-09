@@ -2,18 +2,18 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
-use Psr\Log\LoggerInterface;
-use \Ls\Core\Model\LSR;
 
 /**
  * Class Lstables
  */
 class Lstables extends Action
 {
-    /** @var LoggerInterface */
+    /** @var Logger */
     public $logger;
 
     /** @var ResourceConnection */
@@ -65,12 +65,13 @@ class Lstables extends Action
     /**
      * Lstables constructor.
      * @param ResourceConnection $resource
+     * @param Logger $logger
      * @param LSR $LSR
-     * @param LoggerInterface $logger
+     * @param Context $context
      */
     public function __construct(
         ResourceConnection $resource,
-        LoggerInterface $logger,
+        Logger $logger,
         LSR $LSR,
         Context $context
     ) {

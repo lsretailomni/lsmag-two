@@ -3,6 +3,7 @@
 
 namespace Ls\Replication\Code;
 
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Api\SearchResultsInterface;
@@ -23,7 +24,7 @@ class SearchInterfaceGenerator extends AbstractGenerator
     /**
      * SearchInterfaceGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(ReplicationOperation $operation)
     {
@@ -44,9 +45,9 @@ class SearchInterfaceGenerator extends AbstractGenerator
         $this->class->addUse(SearchResultsInterface::class);
         $this->class->addMethod('getItems');
         $this->class->addMethod('setItems', [ParameterGenerator::fromArray(['name' => 'items', 'type' => 'array'])]);
-        $content = $this->file->generate();
+        $content        = $this->file->generate();
         $interface_name = "interface {$this->operation->getSearchInterfaceName()}";
-        $not_abstract = <<<CODE
+        $not_abstract   = <<<CODE
 
     {
     }

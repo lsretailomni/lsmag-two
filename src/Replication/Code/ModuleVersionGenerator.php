@@ -3,6 +3,8 @@
 
 namespace Ls\Replication\Code;
 
+use Sabre\Xml\LibXMLException;
+use Sabre\Xml\ParseException;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Service as XmlService;
 use Zend\Code\Generator\GeneratorInterface;
@@ -32,22 +34,22 @@ class ModuleVersionGenerator implements GeneratorInterface
      * ModuleVersionGenerator constructor.
      * @param $xml_path
      * @param $xsd_path
-     * @throws \Sabre\Xml\LibXMLException
-     * @throws \Sabre\Xml\ParseException
+     * @throws LibXMLException
+     * @throws ParseException
      */
     public function __construct($xml_path, $xsd_path)
     {
 
-        $this->xml_path = $xml_path;
-        $this->xsd_path = $xsd_path;
+        $this->xml_path    = $xml_path;
+        $this->xsd_path    = $xsd_path;
         $this->xml_service = new XmlService();
         /** @var Reader $reader */
         $reader = $this->xml_service->getReader();
 
-        $xml = file_get_contents($this->xml_path);
-        $parsed = $this->xml_service->parse($xml);
-        $parts = explode('.', $parsed[0]['attributes']['setup_version']);
-        $parts [2] = intval($parts[2]) + 1;
+        $xml           = file_get_contents($this->xml_path);
+        $parsed        = $this->xml_service->parse($xml);
+        $parts         = explode('.', $parsed[0]['attributes']['setup_version']);
+        $parts [2]     = intval($parts[2]) + 1;
         $this->version = join('.', $parts);
 
         $reader->XML($xml, 'UTF-8', LIBXML_PEDANTIC);
@@ -63,8 +65,8 @@ class ModuleVersionGenerator implements GeneratorInterface
     {
 
         $this->xml['value'][0]['attributes']['setup_version'] = $this->getVersion();
-        $content = $this->xml_service->write(null, $this->xml);
-        $content = str_replace('xmlns="" ', '', $content);
+        $content                                              = $this->xml_service->write(null, $this->xml);
+        $content                                              = str_replace('xmlns="" ', '', $content);
         return $content;
     }
 

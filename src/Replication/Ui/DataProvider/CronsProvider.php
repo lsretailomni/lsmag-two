@@ -37,14 +37,12 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      * @var Reader
      */
     public $moduleDirReader;
-
+    /** @var LSR */
+    public $lsr;
     /**
      * @var Parser
      */
     private $parser;
-
-    /** @var LSR */
-    public $lsr;
 
     /**
      * CronsProvider constructor.

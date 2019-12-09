@@ -2,32 +2,37 @@
 
 namespace LS\Replication\Model\Message;
 
+use \Ls\Core\Model\LSR;
+use Magento\Framework\Notification\MessageInterface;
+use Magento\Framework\Phrase;
+use Magento\Framework\UrlInterface;
+
 /**
  * Class Invalid
  * @package LS\Replication\Model\Message
  */
-class Invalid implements \Magento\Framework\Notification\MessageInterface
+class Invalid implements MessageInterface
 {
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     public $urlBuilder;
 
     /**
-     * @var \Ls\Core\Model\LSR
+     * @var LSR
      */
     public $lsr;
 
     /**
-     * @param \Magento\Framework\UrlInterface $urlBuilder
-     * @param \Ls\Core\Model\LSR $lsr
+     * @param UrlInterface $urlBuilder
+     * @param LSR $lsr
      */
     public function __construct(
-        \Magento\Framework\UrlInterface $urlBuilder,
-        \Ls\Core\Model\LSR $lsr
+        UrlInterface $urlBuilder,
+        LSR $lsr
     ) {
         $this->urlBuilder = $urlBuilder;
-        $this->lsr = $lsr;
+        $this->lsr        = $lsr;
     }
 
     /**
@@ -60,7 +65,7 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
     /**
      * Retrieve message text
      *
-     * @return \Magento\Framework\Phrase
+     * @return Phrase
      */
     public function getText()
     {

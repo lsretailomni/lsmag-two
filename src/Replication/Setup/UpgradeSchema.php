@@ -18,6 +18,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
     /**
      * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
+     * @throws \ReflectionException
      */
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {

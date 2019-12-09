@@ -4,7 +4,7 @@ namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
-use Psr\Log\LoggerInterface;
+use \Ls\Replication\Logger\Logger;
 
 /**
  * Class ResetReplPriceStatusTask
@@ -21,19 +21,19 @@ class ResetReplPriceStatusTask
     /** @var LSR */
     public $lsr;
 
-    /** @var LoggerInterface */
+    /** @var Logger */
     public $logger;
 
     /**
      * ResetReplPriceStatusTask constructor.
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
         LSR $LSR,
-        LoggerInterface $logger
+        Logger $logger
     ) {
         $this->replicationHelper = $replicationHelper;
         $this->lsr = $LSR;
