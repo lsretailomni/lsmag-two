@@ -32,7 +32,10 @@ $logFileName    = $block->getQueryUrlData();
 	require(['jquery'], function($){
 		$(document).ready(function() {
 			$('#log_filename').on('change', function() {
-				document.logs.submit();
+				var filename = $('#log_filename').val();
+				if(filename != '') {
+					document.logs.submit();
+				}
 			});
 		});
 	});
