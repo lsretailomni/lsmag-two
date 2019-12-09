@@ -106,12 +106,12 @@ class Report extends Action
                             $info = fread($myfile, filesize($fileName));
                             $this->coreRegistry->register('display_log', $info);
                         } else {
-                            $this->coreRegistry->register('display_log', "No Data Found File is Empty.");
+                            $this->coreRegistry->register('display_log', __("No Data Found File is Empty."));
                         }
                     }
                     fclose($myfile);
                 } else {
-                    $this->coreRegistry->register('display_log', "File Not Found.");
+                    $this->coreRegistry->register('display_log', __("File Not Found."));
                 }
             }
             return $resultPage;

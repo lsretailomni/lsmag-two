@@ -12,6 +12,9 @@ $logFileName    = $block->getQueryUrlData();
         <option <?php if (!empty($logFileName == "debug.log")) { ?> selected="selected" <?php } ?> value="debug.log">
             Debug
         </option>
+        <option <?php if (!empty($logFileName == "exception.log")) { ?> selected="selected" <?php } ?>
+                value="exception.log">Exception
+        </option>
         <option <?php if (!empty($logFileName == "replication.log")) { ?> selected="selected" <?php } ?>
                 value="replication.log">Replication
         </option>
