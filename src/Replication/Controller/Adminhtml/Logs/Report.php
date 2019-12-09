@@ -82,7 +82,7 @@ class Report extends Action
             $resultPage = $this->resultPageFactory->create();
             $resultPage->getConfig()->getTitle()->prepend(__('Logs '));
             $logFileName = $this->_request->getParam('log_filename');
-            $submitType  = $this->_request->getParam('submit');
+            $submitType  = $this->_request->getParam('submission');
             if (!empty($logFileName)) {
                 $path     = $this->directoryList->getPath('var');
                 $fileName = $path . "/log/" . $logFileName;
