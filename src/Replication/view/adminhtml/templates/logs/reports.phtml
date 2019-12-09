@@ -1,0 +1,42 @@
+<?php
+/** @var \Ls\Replication\Block\Adminhtml\Logs\Report $block */
+$displayLogData = $block->getLogData();
+$logFileName    = $block->getQueryUrlData();
+?>
+<form id="logs" name="logs">
+    <select class="select admin__control-select" id="log_filename" name="log_filename">
+        <option value="">Please Select</option>
+        <option <?php if (!empty($logFileName == "omniclient.log")) { ?> selected="selected" <?php } ?>
+                value="omniclient.log">OmniClient
+        </option>
+        <option <?php if (!empty($logFileName == "debug.log")) { ?> selected="selected" <?php } ?> value="debug.log">
+            Debug
+        </option>
+        <option <?php if (!empty($logFileName == "exception.log")) { ?> selected="selected" <?php } ?>
+                value="exception.log">Exception
+        </option>
+        <option <?php if (!empty($logFileName == "replication.log")) { ?> selected="selected" <?php } ?>
+                value="replication.log">Replication
+        </option>
+        <option <?php if (!empty($logFileName == "webhookstatus.log")) { ?> selected="selected" <?php } ?>
+                value="webhookstatus.log">WebHook Status
+        </option>
+    </select>
+    <input type="submit" class="action-primary" name="submission" Value="Download"/>
+    <input type="submit" class="action-primary" name="submission" value="Clear"/>
+</form><br/>
+<textarea name="display_log" id="display_log" wrap="off" rows="100" style="height: 100%;width: 100%;" readonly=""
+          class="form-control"><?php echo $displayLogData; ?></textarea>
+
+<script type="text/javascript">
+	require(['jquery'], function($){
+		$(document).ready(function() {
+			$('#log_filename').on('change', function() {
+				var filename = $('#log_filename').val();
+				if(filename != '') {
+					document.logs.submit();
+				}
+			});
+		});
+	});
+</script>
