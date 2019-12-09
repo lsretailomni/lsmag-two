@@ -11,7 +11,7 @@ use \Ls\Replication\Cron\AbstractReplicationTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Psr\Log\LoggerInterface;
+use \Ls\Replication\Logger\Logger;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 
@@ -45,7 +45,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->setNamespaceName($this->operation->getJobNamespace());
         $this->class->setExtendedClass(AbstractReplicationTask::class);
 
-        $this->class->addUse(LoggerInterface::class);
+        $this->class->addUse(Logger::class);
         $this->class->addUse(ScopeConfigInterface::class);
         $this->class->addUse(Config::class);
         $this->class->addUse(LsHelper::class, 'LsHelper');
@@ -91,8 +91,8 @@ class CronJobGenerator extends AbstractGenerator
         // removing the slashes from \Config -- Same for All
         $content = str_replace('\Config $resource_config', 'Config $resource_config', $content);
 
-        // removing the slashes from \LoggerInterface -- Same for All
-        $content = str_replace('\LoggerInterface $logger', 'LoggerInterface $logger', $content);
+        // removing the slashes from \Logger -- Same for All
+        $content = str_replace('\Logger $logger', 'Logger $logger', $content);
 
         // removing the slashes from \LsHelper -- Same for All
         $content = str_replace('\LsHelper $helper', 'LsHelper $helper', $content);
@@ -124,7 +124,7 @@ class CronJobGenerator extends AbstractGenerator
         $constructor->setParameters([
             new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
             new ParameterGenerator('resource_config', 'Config'),
-            new ParameterGenerator('logger', 'LoggerInterface'),
+            new ParameterGenerator('logger', 'Logger'),
             new ParameterGenerator('helper', 'LsHelper'),
             new ParameterGenerator('repHelper', 'ReplicationHelper'),
             new ParameterGenerator('factory', $this->operation->getFactoryName()),

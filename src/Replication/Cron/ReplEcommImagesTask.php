@@ -8,7 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Psr\Log\LoggerInterface;
+use Ls\Replication\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Config\Model\ResourceModel\Config;
 use Ls\Core\Helper\Data as LsHelper;
@@ -99,7 +99,7 @@ class ReplEcommImagesTask extends AbstractReplicationTask
         return $this->data_interface;
     }
 
-    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, LoggerInterface $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplImageFactory $factory, ReplImageRepository $repository, ReplImageInterface $data_interface)
+    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplImageFactory $factory, ReplImageRepository $repository, ReplImageInterface $data_interface)
     {
         parent::__construct($scope_config, $resource_config, $logger, $helper, $repHelper);
         $this->repository = $repository;
