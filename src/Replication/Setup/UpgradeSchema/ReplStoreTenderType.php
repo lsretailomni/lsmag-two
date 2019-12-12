@@ -34,12 +34,12 @@ class ReplStoreTenderType
         	$table->addColumn('CountingRequired' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('ForeignCurrency' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
-        	$table->addColumn('MaximumOverTenderAmount' , Table::TYPE_FLOAT, '10,4');
-        	$table->addColumn('MinimumChangeAmount' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('MaximumOverTenderAmount' , Table::TYPE_DECIMAL, '20,4');
+        	$table->addColumn('MinimumChangeAmount' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('Name' , Table::TYPE_TEXT, '');
         	$table->addColumn('OpenDrawer' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('ReturnAllowed' , Table::TYPE_INTEGER, 11);
-        	$table->addColumn('Rounding' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('Rounding' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('RoundingMethode' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('StoreID' , Table::TYPE_TEXT, '');
         	$table->addColumn('TenderFunction' , Table::TYPE_INTEGER, 11);
@@ -75,10 +75,10 @@ class ReplStoreTenderType
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MaximumOverTenderAmount' ) === false) {
-        		$connection->addColumn($table_name, 'MaximumOverTenderAmount', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'MaximumOverTenderAmount']);
+        		$connection->addColumn($table_name, 'MaximumOverTenderAmount', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MaximumOverTenderAmount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MinimumChangeAmount' ) === false) {
-        		$connection->addColumn($table_name, 'MinimumChangeAmount', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'MinimumChangeAmount']);
+        		$connection->addColumn($table_name, 'MinimumChangeAmount', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MinimumChangeAmount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Name' ) === false) {
         		$connection->addColumn($table_name, 'Name', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Name']);
@@ -90,7 +90,7 @@ class ReplStoreTenderType
         		$connection->addColumn($table_name, 'ReturnAllowed', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ReturnAllowed']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Rounding' ) === false) {
-        		$connection->addColumn($table_name, 'Rounding', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'Rounding']);
+        		$connection->addColumn($table_name, 'Rounding', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'Rounding']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RoundingMethode' ) === false) {
         		$connection->addColumn($table_name, 'RoundingMethode', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'RoundingMethode']);

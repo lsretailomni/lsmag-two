@@ -32,18 +32,18 @@ class ReplPrice
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ItemId' , Table::TYPE_TEXT, '');
         	$table->addColumn('LoyaltySchemeCode' , Table::TYPE_TEXT, '');
-        	$table->addColumn('MinimumQuantity' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('MinimumQuantity' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('ModifyDate' , Table::TYPE_TEXT, '');
         	$table->addColumn('PriceInclVat' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('Priority' , Table::TYPE_INTEGER, 11);
-        	$table->addColumn('QtyPerUnitOfMeasure' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('QtyPerUnitOfMeasure' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('SaleCode' , Table::TYPE_TEXT, '');
         	$table->addColumn('SaleType' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('StartingDate' , Table::TYPE_TEXT, '');
         	$table->addColumn('StoreId' , Table::TYPE_TEXT, '');
         	$table->addColumn('UnitOfMeasure' , Table::TYPE_TEXT, '');
-        	$table->addColumn('UnitPrice' , Table::TYPE_FLOAT, '10,4');
-        	$table->addColumn('UnitPriceInclVat' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('UnitPrice' , Table::TYPE_DECIMAL, '20,4');
+        	$table->addColumn('UnitPriceInclVat' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('VATPostGroup' , Table::TYPE_TEXT, '');
         	$table->addColumn('VariantId' , Table::TYPE_TEXT, '');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
@@ -70,7 +70,7 @@ class ReplPrice
         		$connection->addColumn($table_name, 'LoyaltySchemeCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'LoyaltySchemeCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MinimumQuantity' ) === false) {
-        		$connection->addColumn($table_name, 'MinimumQuantity', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'MinimumQuantity']);
+        		$connection->addColumn($table_name, 'MinimumQuantity', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MinimumQuantity']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ModifyDate' ) === false) {
         		$connection->addColumn($table_name, 'ModifyDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ModifyDate']);
@@ -82,7 +82,7 @@ class ReplPrice
         		$connection->addColumn($table_name, 'Priority', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Priority']);
         	}
         	if ($connection->tableColumnExists($table_name, 'QtyPerUnitOfMeasure' ) === false) {
-        		$connection->addColumn($table_name, 'QtyPerUnitOfMeasure', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'QtyPerUnitOfMeasure']);
+        		$connection->addColumn($table_name, 'QtyPerUnitOfMeasure', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'QtyPerUnitOfMeasure']);
         	}
         	if ($connection->tableColumnExists($table_name, 'SaleCode' ) === false) {
         		$connection->addColumn($table_name, 'SaleCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'SaleCode']);
@@ -100,10 +100,10 @@ class ReplPrice
         		$connection->addColumn($table_name, 'UnitOfMeasure', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'UnitOfMeasure']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitPrice' ) === false) {
-        		$connection->addColumn($table_name, 'UnitPrice', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'UnitPrice']);
+        		$connection->addColumn($table_name, 'UnitPrice', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitPrice']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitPriceInclVat' ) === false) {
-        		$connection->addColumn($table_name, 'UnitPriceInclVat', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'UnitPriceInclVat']);
+        		$connection->addColumn($table_name, 'UnitPriceInclVat', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitPriceInclVat']);
         	}
         	if ($connection->tableColumnExists($table_name, 'VATPostGroup' ) === false) {
         		$connection->addColumn($table_name, 'VATPostGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VATPostGroup']);

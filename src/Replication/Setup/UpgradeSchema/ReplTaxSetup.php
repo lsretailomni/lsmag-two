@@ -29,7 +29,7 @@ class ReplTaxSetup
         	$table->addColumn('BusinessTaxGroup' , Table::TYPE_TEXT, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ProductTaxGroup' , Table::TYPE_TEXT, '');
-        	$table->addColumn('TaxPercent' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('TaxPercent' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
@@ -45,7 +45,7 @@ class ReplTaxSetup
         		$connection->addColumn($table_name, 'ProductTaxGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ProductTaxGroup']);
         	}
         	if ($connection->tableColumnExists($table_name, 'TaxPercent' ) === false) {
-        		$connection->addColumn($table_name, 'TaxPercent', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'TaxPercent']);
+        		$connection->addColumn($table_name, 'TaxPercent', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'TaxPercent']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);

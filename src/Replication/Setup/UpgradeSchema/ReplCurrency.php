@@ -31,8 +31,8 @@ class ReplCurrency
         	$table->addColumn('CurrencySuffix' , Table::TYPE_TEXT, '');
         	$table->addColumn('Description' , Table::TYPE_TEXT, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
-        	$table->addColumn('RoundOfAmount' , Table::TYPE_FLOAT, '10,4');
-        	$table->addColumn('RoundOfSales' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('RoundOfAmount' , Table::TYPE_DECIMAL, '20,4');
+        	$table->addColumn('RoundOfSales' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('RoundOfTypeAmount' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('RoundOfTypeSales' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('Symbol' , Table::TYPE_TEXT, '');
@@ -57,10 +57,10 @@ class ReplCurrency
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RoundOfAmount' ) === false) {
-        		$connection->addColumn($table_name, 'RoundOfAmount', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'RoundOfAmount']);
+        		$connection->addColumn($table_name, 'RoundOfAmount', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'RoundOfAmount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RoundOfSales' ) === false) {
-        		$connection->addColumn($table_name, 'RoundOfSales', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'RoundOfSales']);
+        		$connection->addColumn($table_name, 'RoundOfSales', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'RoundOfSales']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RoundOfTypeAmount' ) === false) {
         		$connection->addColumn($table_name, 'RoundOfTypeAmount', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'RoundOfTypeAmount']);

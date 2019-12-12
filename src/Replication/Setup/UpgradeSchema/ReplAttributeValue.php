@@ -32,7 +32,7 @@ class ReplAttributeValue
         	$table->addColumn('LinkField2' , Table::TYPE_TEXT, '');
         	$table->addColumn('LinkField3' , Table::TYPE_TEXT, '');
         	$table->addColumn('LinkType' , Table::TYPE_INTEGER, 11);
-        	$table->addColumn('NumbericValue' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('NumbericValue' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('Sequence' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('Value' , Table::TYPE_TEXT, '');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
@@ -59,7 +59,7 @@ class ReplAttributeValue
         		$connection->addColumn($table_name, 'LinkType', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'LinkType']);
         	}
         	if ($connection->tableColumnExists($table_name, 'NumbericValue' ) === false) {
-        		$connection->addColumn($table_name, 'NumbericValue', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'NumbericValue']);
+        		$connection->addColumn($table_name, 'NumbericValue', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'NumbericValue']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Sequence' ) === false) {
         		$connection->addColumn($table_name, 'Sequence', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Sequence']);

@@ -36,8 +36,8 @@ class ReplStore
         	$table->addColumn('FunctionalityProfile' , Table::TYPE_TEXT, '');
         	$table->addColumn('nav_id' , Table::TYPE_TEXT, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
-        	$table->addColumn('Latitute' , Table::TYPE_FLOAT, '10,4');
-        	$table->addColumn('Longitude' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('Latitute' , Table::TYPE_DECIMAL, '20,4');
+        	$table->addColumn('Longitude' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('MainMenuID' , Table::TYPE_TEXT, '');
         	$table->addColumn('Name' , Table::TYPE_TEXT, '');
         	$table->addColumn('Phone' , Table::TYPE_TEXT, '');
@@ -82,10 +82,10 @@ class ReplStore
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Latitute' ) === false) {
-        		$connection->addColumn($table_name, 'Latitute', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'Latitute']);
+        		$connection->addColumn($table_name, 'Latitute', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'Latitute']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Longitude' ) === false) {
-        		$connection->addColumn($table_name, 'Longitude', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'Longitude']);
+        		$connection->addColumn($table_name, 'Longitude', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'Longitude']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MainMenuID' ) === false) {
         		$connection->addColumn($table_name, 'MainMenuID', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'MainMenuID']);

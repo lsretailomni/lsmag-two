@@ -32,7 +32,7 @@ class ReplItemUnitOfMeasure
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ItemId' , Table::TYPE_TEXT, '');
         	$table->addColumn('Order' , Table::TYPE_INTEGER, 11);
-        	$table->addColumn('QtyPrUOM' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('QtyPrUOM' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('Selection' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('ShortDescription' , Table::TYPE_TEXT, '');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
@@ -59,7 +59,7 @@ class ReplItemUnitOfMeasure
         		$connection->addColumn($table_name, 'Order', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Order']);
         	}
         	if ($connection->tableColumnExists($table_name, 'QtyPrUOM' ) === false) {
-        		$connection->addColumn($table_name, 'QtyPrUOM', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'QtyPrUOM']);
+        		$connection->addColumn($table_name, 'QtyPrUOM', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'QtyPrUOM']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Selection' ) === false) {
         		$connection->addColumn($table_name, 'Selection', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Selection']);

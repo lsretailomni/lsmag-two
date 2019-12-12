@@ -40,7 +40,7 @@ class ReplItem
         	$table->addColumn('DateToActivateItem' , Table::TYPE_TEXT, '');
         	$table->addColumn('Description' , Table::TYPE_TEXT, '');
         	$table->addColumn('Details' , Table::TYPE_TEXT, '');
-        	$table->addColumn('GrossWeight' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('GrossWeight' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('nav_id' , Table::TYPE_TEXT, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ItemCategoryCode' , Table::TYPE_TEXT, '');
@@ -55,9 +55,9 @@ class ReplItem
         	$table->addColumn('ScaleItem' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('SeasonCode' , Table::TYPE_TEXT, '');
         	$table->addColumn('TaxItemGroupId' , Table::TYPE_TEXT, '');
-        	$table->addColumn('UnitPrice' , Table::TYPE_FLOAT, '10,4');
-        	$table->addColumn('UnitVolume' , Table::TYPE_FLOAT, '10,4');
-        	$table->addColumn('UnitsPerParcel' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('UnitPrice' , Table::TYPE_DECIMAL, '20,4');
+        	$table->addColumn('UnitVolume' , Table::TYPE_DECIMAL, '20,4');
+        	$table->addColumn('UnitsPerParcel' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('VendorId' , Table::TYPE_TEXT, '');
         	$table->addColumn('VendorItemId' , Table::TYPE_TEXT, '');
         	$table->addColumn('ZeroPriceValId' , Table::TYPE_INTEGER, 11);
@@ -109,7 +109,7 @@ class ReplItem
         		$connection->addColumn($table_name, 'Details', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Details']);
         	}
         	if ($connection->tableColumnExists($table_name, 'GrossWeight' ) === false) {
-        		$connection->addColumn($table_name, 'GrossWeight', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'GrossWeight']);
+        		$connection->addColumn($table_name, 'GrossWeight', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'GrossWeight']);
         	}
         	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
         		$connection->addColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
@@ -154,13 +154,13 @@ class ReplItem
         		$connection->addColumn($table_name, 'TaxItemGroupId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'TaxItemGroupId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitPrice' ) === false) {
-        		$connection->addColumn($table_name, 'UnitPrice', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'UnitPrice']);
+        		$connection->addColumn($table_name, 'UnitPrice', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitPrice']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitVolume' ) === false) {
-        		$connection->addColumn($table_name, 'UnitVolume', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'UnitVolume']);
+        		$connection->addColumn($table_name, 'UnitVolume', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitVolume']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitsPerParcel' ) === false) {
-        		$connection->addColumn($table_name, 'UnitsPerParcel', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'UnitsPerParcel']);
+        		$connection->addColumn($table_name, 'UnitsPerParcel', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitsPerParcel']);
         	}
         	if ($connection->tableColumnExists($table_name, 'VendorId' ) === false) {
         		$connection->addColumn($table_name, 'VendorId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VendorId']);

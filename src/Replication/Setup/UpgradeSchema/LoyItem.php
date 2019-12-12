@@ -32,7 +32,7 @@ class LoyItem
         	$table->addColumn('Blocked' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('Description' , Table::TYPE_TEXT, '');
         	$table->addColumn('Details' , Table::TYPE_TEXT, '');
-        	$table->addColumn('GrossWeight' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('GrossWeight' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ItemCategoryCode' , Table::TYPE_TEXT, '');
         	$table->addColumn('ItemFamilyCode' , Table::TYPE_TEXT, '');
@@ -41,8 +41,8 @@ class LoyItem
         	$table->addColumn('SalesUomId' , Table::TYPE_TEXT, '');
         	$table->addColumn('ScaleItem' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('SeasonCode' , Table::TYPE_TEXT, '');
-        	$table->addColumn('UnitVolume' , Table::TYPE_FLOAT, '10,4');
-        	$table->addColumn('UnitsPerParcel' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('UnitVolume' , Table::TYPE_DECIMAL, '20,4');
+        	$table->addColumn('UnitsPerParcel' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('nav_id' , Table::TYPE_TEXT, '');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
@@ -68,7 +68,7 @@ class LoyItem
         		$connection->addColumn($table_name, 'Details', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Details']);
         	}
         	if ($connection->tableColumnExists($table_name, 'GrossWeight' ) === false) {
-        		$connection->addColumn($table_name, 'GrossWeight', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'GrossWeight']);
+        		$connection->addColumn($table_name, 'GrossWeight', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'GrossWeight']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
@@ -95,10 +95,10 @@ class LoyItem
         		$connection->addColumn($table_name, 'SeasonCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'SeasonCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitVolume' ) === false) {
-        		$connection->addColumn($table_name, 'UnitVolume', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'UnitVolume']);
+        		$connection->addColumn($table_name, 'UnitVolume', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitVolume']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitsPerParcel' ) === false) {
-        		$connection->addColumn($table_name, 'UnitsPerParcel', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'UnitsPerParcel']);
+        		$connection->addColumn($table_name, 'UnitsPerParcel', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitsPerParcel']);
         	}
         	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
         		$connection->addColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);

@@ -28,7 +28,7 @@ class ReplInvStatus
         	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ItemId' , Table::TYPE_TEXT, '');
-        	$table->addColumn('Quantity' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('Quantity' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('StoreId' , Table::TYPE_TEXT, '');
         	$table->addColumn('VariantId' , Table::TYPE_TEXT, '');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
@@ -43,7 +43,7 @@ class ReplInvStatus
         		$connection->addColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Quantity' ) === false) {
-        		$connection->addColumn($table_name, 'Quantity', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'Quantity']);
+        		$connection->addColumn($table_name, 'Quantity', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'Quantity']);
         	}
         	if ($connection->tableColumnExists($table_name, 'StoreId' ) === false) {
         		$connection->addColumn($table_name, 'StoreId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StoreId']);

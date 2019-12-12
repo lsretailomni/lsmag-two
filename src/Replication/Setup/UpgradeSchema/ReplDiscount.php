@@ -30,13 +30,13 @@ class ReplDiscount
         	$table->addColumn('CustomerDiscountGroup' , Table::TYPE_TEXT, '');
         	$table->addColumn('Description' , Table::TYPE_TEXT, '');
         	$table->addColumn('Details' , Table::TYPE_TEXT, '');
-        	$table->addColumn('DiscountValue' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('DiscountValue' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('DiscountValueType' , Table::TYPE_TEXT, '');
         	$table->addColumn('FromDate' , Table::TYPE_TEXT, '');
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ItemId' , Table::TYPE_TEXT, '');
         	$table->addColumn('LoyaltySchemeCode' , Table::TYPE_TEXT, '');
-        	$table->addColumn('MinimumQuantity' , Table::TYPE_FLOAT, '10,4');
+        	$table->addColumn('MinimumQuantity' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('ModifyDate' , Table::TYPE_TEXT, '');
         	$table->addColumn('OfferNo' , Table::TYPE_TEXT, '');
         	$table->addColumn('PriorityNo' , Table::TYPE_INTEGER, 11);
@@ -64,7 +64,7 @@ class ReplDiscount
         		$connection->addColumn($table_name, 'Details', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Details']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DiscountValue' ) === false) {
-        		$connection->addColumn($table_name, 'DiscountValue', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'DiscountValue']);
+        		$connection->addColumn($table_name, 'DiscountValue', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'DiscountValue']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DiscountValueType' ) === false) {
         		$connection->addColumn($table_name, 'DiscountValueType', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'DiscountValueType']);
@@ -82,7 +82,7 @@ class ReplDiscount
         		$connection->addColumn($table_name, 'LoyaltySchemeCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'LoyaltySchemeCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MinimumQuantity' ) === false) {
-        		$connection->addColumn($table_name, 'MinimumQuantity', ['length' => '10,4','default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'MinimumQuantity']);
+        		$connection->addColumn($table_name, 'MinimumQuantity', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MinimumQuantity']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ModifyDate' ) === false) {
         		$connection->addColumn($table_name, 'ModifyDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ModifyDate']);

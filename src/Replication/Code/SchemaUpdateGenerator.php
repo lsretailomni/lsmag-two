@@ -152,8 +152,8 @@ CODE;
                 $field_type = 'Table::TYPE_INTEGER';
                 $length     = 11;
             } elseif ($type == 'float') {
-                $field_type = 'Table::TYPE_FLOAT';
-                $length     = "'10,4'";
+                $field_type = 'Table::TYPE_DECIMAL';
+                $length     = "'20,4'";
             } elseif ($type == 'boolean') {
                 $field_type = 'Table::TYPE_BOOLEAN';
                 $default    = 0;
