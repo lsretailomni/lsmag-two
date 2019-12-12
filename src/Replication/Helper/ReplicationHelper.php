@@ -28,6 +28,7 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
 use Psr\Log\LoggerInterface;
@@ -86,6 +87,9 @@ class ReplicationHelper extends AbstractHelper
     /** @var SortOrder */
     public $sortOrder;
 
+    /** @var DateTime */
+    public $dateTime;
+
     /**
      * ReplicationHelper constructor.
      * @param Context $context
@@ -102,6 +106,7 @@ class ReplicationHelper extends AbstractHelper
      * @param LSR $LSR
      * @param ResourceConnection $resource
      * @param SortOrder $sortOrder
+     * @param DateTime $date
      */
     public function __construct(
         Context $context,
@@ -117,7 +122,8 @@ class ReplicationHelper extends AbstractHelper
         TypeListInterface $cacheTypeList,
         LSR $LSR,
         ResourceConnection $resource,
-        SortOrder $sortOrder
+        SortOrder $sortOrder,
+        DateTime $date
     ) {
         $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
         $this->filterBuilder                    = $filterBuilder;
@@ -132,6 +138,7 @@ class ReplicationHelper extends AbstractHelper
         $this->lsr                              = $LSR;
         $this->resource                         = $resource;
         $this->sortOrder                        = $sortOrder;
+        $this->dateTime                         = $date;
         parent::__construct(
             $context
         );
@@ -740,4 +747,13 @@ class ReplicationHelper extends AbstractHelper
     {
         return in_array($mimeType, $this->defaultMimeTypes);
     }
+
+    /**
+     * @return string
+     */
+    public function getDatetime()
+    {
+        return $this->dateTime->gmtDate();
+    }
+
 }

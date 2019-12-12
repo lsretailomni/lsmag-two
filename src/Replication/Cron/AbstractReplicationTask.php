@@ -10,7 +10,6 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-
 use ReflectionClass;
 
 /**
@@ -285,6 +284,7 @@ abstract class AbstractReplicationTask
             }
             $entity->setIsUpdated(1);
             $entity->setIsFailed(0);
+            $entity->setUpdatedAt($this->rep_helper->getDateTime());
         } else {
             $entity = $this->getFactory()->create();
             $entity->setScope('default')->setScopeId(0);
