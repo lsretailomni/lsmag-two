@@ -573,7 +573,6 @@ class ReplicationHelper extends AbstractHelper
             0
         );
     }
-
     /**
      * @return LoggerInterface
      */

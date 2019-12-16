@@ -25,7 +25,10 @@ class SyncItemUpdates extends ProductCreateTask
     public function execute()
     {
         $this->logger->debug('Running SyncItemUpdates Task ');
-        $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
+        $this->replicationHelper->updateConfigValue(
+            $this->replicationHelper->getDateTime(),
+            self::CONFIG_PATH_LAST_EXECUTE
+        );
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (!empty($hierarchyCode)) {
             $itemAssignmentCount         = $this->caterItemAssignmentToCategories();

@@ -24,7 +24,10 @@ class SyncInventory extends ProductCreateTask
 
     public function execute()
     {
-        $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
+        $this->replicationHelper->updateConfigValue(
+            $this->replicationHelper->getDateTime(),
+            self::CONFIG_PATH_LAST_EXECUTE
+        );
         $this->logger->debug('Running SyncInventory Task');
         $storeId                   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
         $productInventoryBatchSize = $this->replicationHelper->getProductInventoryBatchSize();
