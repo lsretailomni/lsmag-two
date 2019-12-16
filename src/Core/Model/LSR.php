@@ -115,6 +115,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //check for Product Assignment to Categories
     const SC_SUCCESS_CRON_ITEM_UPDATES = 'ls_mag/replication/success_sync_item_updates';
+
+    //check for Product Images
+    const SC_SUCCESS_CRON_ITEM_IMAGES = 'ls_mag/replication/success_sync_item_images';
+
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
     const SC_ENHANCEMENT_STORE_UUID_PREFIX = 'ls_mag/cron_enhancement/requests_per_run';
