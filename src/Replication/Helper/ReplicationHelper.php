@@ -417,7 +417,7 @@ class ReplicationHelper extends AbstractHelper
      * @return bool|AbstractExtensibleObject[]
      * @throws InputException
      */
-    public function getImageLinksByType($nav_id = '', $type = 'Item Category')
+    public function getImageLinksByType($nav_id = '', $type = 'Item Category', $includeDeleted = 0)
     {
         if (empty($nav_id)) {
             return false;
@@ -432,7 +432,7 @@ class ReplicationHelper extends AbstractHelper
             'eq'
         )->addFilter(
             'IsDeleted',
-            0,
+            $includeDeleted,
             'eq'
         )->create();
         $sortOrder = $this->sortOrder->setField('DisplayOrder')->setDirection(SortOrder::SORT_ASC);
@@ -739,5 +739,22 @@ class ReplicationHelper extends AbstractHelper
     public function isMimeTypeValid($mimeType)
     {
         return in_array($mimeType, $this->defaultMimeTypes);
+    }
+
+    /** return SortOrder object based on the parameters provided
+     * @param $field
+     * @param string $direction
+     * @return SortOrder
+     * @throws InputException
+     */
+    public function getSortOrderObject($field = 'DisplayOrder', $direction = SortOrder::SORT_ASC){
+        return $this->sortOrder->setField($field)->setDirection($direction);
+    }
+
+    public function parseImageIdfromFile($imagename = ''){
+        $imagename = pathinfo($imagename);
+        return $imagename['filename'];
+        //$imagename = explode('.',$imagename,1);
+        //return $imagename[0];
     }
 }

@@ -33,6 +33,7 @@ use \Ls\Replication\Model\ReplItemVariantRegistration;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -66,6 +67,7 @@ use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
+use Magento\Catalog\Model\Product\Gallery\Processor;
 
 /**
  * Class ProductCreateTask
@@ -161,46 +163,34 @@ class ProductCreateTask
     /** @var LSR */
     public $lsr;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     public $cronStatus = false;
 
     /** @var StockHelper */
     public $stockHelper;
-    /**
-     * @var ReplItemVariantRegistrationRepository
-     */
+
+    /** @var ReplItemVariantRegistrationRepository */
     public $replItemVariantRegistrationRepository;
 
-    /**
-     * @var ConfigurableProTypeModel
-     */
+    /** @var ConfigurableProTypeModel */
     public $configurableProTypeModel;
 
-    /**
-     * @var ReplInvStatusCollectionFactory
-     */
+    /**  @var ReplInvStatusCollectionFactory */
     public $replInvStatusCollectionFactory;
 
-    /**
-     * @var ReplPriceCollectionFactory
-     */
+    /** @var ReplPriceCollectionFactory */
     public $replPriceCollectionFactory;
 
-    /**
-     * @var ReplHierarchyLeafCollectionFactory
-     */
+    /** @var ReplHierarchyLeafCollectionFactory */
     public $replHierarchyLeafCollectionFactory;
 
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product
-     */
+    /** @var ReplImageLinkCollectionFactory */
+    public $replImageLinkCollectionFactory;
+
+    /** @var \Magento\Catalog\Model\ResourceModel\Product */
     public $productResourceModel;
 
-    /**
-     * @var StockRegistryInterface
-     */
+    /** @var StockRegistryInterface */
     public $stockRegistry;
 
     /** @var CategoryLinkRepositoryInterface */
@@ -211,6 +201,9 @@ class ProductCreateTask
 
     /** @var CategoryRepositoryInterface */
     public $categoryRepository;
+
+    /** @var Processor */
+    public $imageProcessor;
 
     /**
      * ProductCreateTask constructor.
@@ -253,6 +246,8 @@ class ProductCreateTask
      * @param CategoryRepositoryInterface $categoryRepository
      * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
      * @param CollectionFactory $collectionFactory
+     * @param ReplImageLinkCollectionFactory $replImageLinkCollectionFactory
+     * @param Processor $imageProcessor
      */
     public function __construct(
         Factory $factory,
@@ -293,7 +288,9 @@ class ProductCreateTask
         StockRegistryInterface $stockRegistry,
         CategoryRepositoryInterface $categoryRepository,
         CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
-        CollectionFactory $collectionFactory
+        CollectionFactory $collectionFactory,
+        ReplImageLinkCollectionFactory $replImageLinkCollectionFactory,
+        Processor $imageProcessor
     ) {
         $this->factory                               = $factory;
         $this->item                                  = $item;
@@ -331,9 +328,11 @@ class ProductCreateTask
         $this->replHierarchyLeafCollectionFactory    = $replHierarchyLeafCollectionFactory;
         $this->productResourceModel                  = $productResourceModel;
         $this->stockRegistry                         = $stockRegistry;
-        $this->categoryLinkRepositoryInterface = $categoryLinkRepositoryInterface;
-        $this->collectionFactory               = $collectionFactory;
-        $this->categoryRepository              = $categoryRepository;
+        $this->categoryLinkRepositoryInterface       = $categoryLinkRepositoryInterface;
+        $this->collectionFactory                     = $collectionFactory;
+        $this->categoryRepository                    = $categoryRepository;
+        $this->replImageLinkCollectionFactory        = $replImageLinkCollectionFactory;
+        $this->imageProcessor                        = $imageProcessor;
     }
 
     /**
@@ -385,11 +384,11 @@ class ProductCreateTask
                     $productData->setDescription($item->getDetails());
                     $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-                    $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
-                    if ($productImages) {
-                        $this->logger->debug('Found images for the item ' . $item->getNavId());
-                        $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                    }
+                    /*                    $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
+                                        if ($productImages) {
+                                            $this->logger->debug('Found images for the item ' . $item->getNavId());
+                                            $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
+                                        }*/
                     $product = $this->getProductAttributes($productData, $item);
                     try {
                         // @codingStandardsIgnoreLine
@@ -432,11 +431,11 @@ class ProductCreateTask
                         'is_in_stock'             => ($itemStock > 0) ? 1 : 0,
                         'qty'                     => $itemStock
                     ]);
-                    $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
-                    if ($productImages) {
-                        $this->logger->debug('Found images for the item ' . $item->getNavId());
-                        $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                    }
+                    /*                    $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
+                                        if ($productImages) {
+                                            $this->logger->debug('Found images for the item ' . $item->getNavId());
+                                            $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
+                                        }*/
                     $product = $this->getProductAttributes($product, $item);
                     try {
                         $this->logger->debug('Trying to save product ' . $item->getNavId());
@@ -467,8 +466,6 @@ class ProductCreateTask
                     $this->updateVariantsOnly();
                     $this->caterVariantsRemoval();
                 }
-                // This will update all the latest images for the product including new
-                $this->updateAndAddNewImageOnly();
                 $this->updateBarcodeOnly();
             }
             $this->logger->debug('End ProductCreateTask');
@@ -547,11 +544,18 @@ class ProductCreateTask
      * @return array
      * @throws Exception
      */
-    private function getMediaGalleryEntries($productImages)
+    public function getMediaGalleryEntries($productImages)
     {
         $galleryArray = [];
         /** @var ReplImageLink $image */
         foreach ($productImages as $i => $image) {
+            if ($image->getIsDeleted() == 1) {
+                $image->setData('processed', 1);
+                $image->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
+                $this->replImageLinkRepositoryInterface->save($image);
+                continue;
+            }
             $types     = [];
             $imageSize = [
                 'height' => LSR::DEFAULT_ITEM_IMAGE_HEIGHT,
@@ -569,7 +573,7 @@ class ProductCreateTask
                         ->setName($this->oSlug($image->getImageId()))
                         ->setType($mimeType);
                     $this->attributeMediaGalleryEntry->setMediaType('image')
-                        ->setLabel(($image->getDescription()) ? $image->getDescription() : 'Product Image')
+                        ->setLabel(($image->getDescription()) ? $image->getDescription() : __('Product Image'))
                         ->setPosition($image->getDisplayOrder())
                         ->setDisabled(false)
                         ->setContent($imageContent);
@@ -618,23 +622,23 @@ class ProductCreateTask
      */
     public function assignProductToCategories(&$product)
     {
-        $hierarchyCode       = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         if (empty($hierarchyCode)) {
             $this->logger->debug('Hierarchy Code not defined in the configuration.');
             return;
         }
-        $filters  = [
+        $filters              = [
             ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'nav_id', 'value' => $product->getSku(), 'condition_type' => 'eq']
         ];
-        $criteria = $this->replicationHelper->buildCriteriaForDirect(
+        $criteria             = $this->replicationHelper->buildCriteriaForDirect(
             $filters
         );
-        $hierarchyLeafs = $this->replHierarchyLeafRepository->getList($criteria);
+        $hierarchyLeafs       = $this->replHierarchyLeafRepository->getList($criteria);
         $resultantCategoryIds = [];
         foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
-            $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
+            $categoryIds          = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
             $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $categoryIds));
             $hierarchyLeaf->setData('processed', 1);
             $hierarchyLeaf->setData('is_updated', 0);
@@ -647,6 +651,7 @@ class ProductCreateTask
             );
         }
     }
+
     /**
      * @param $image64
      * @return string
@@ -1122,14 +1127,14 @@ class ProductCreateTask
                     $productData->setDescription($item->getDetails());
                     $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute("uom", $value->getBaseUnitOfMeasure());
-                    $productImages = $this->replicationHelper->getImageLinksByType(
-                        $value->getItemId() . ',' . $value->getVariantId(),
-                        'Item Variant'
-                    );
-                    if ($productImages) {
-                        $this->logger->debug('Found images for the simple product ' . $sku);
-                        $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                    }
+                    /*                    $productImages = $this->replicationHelper->getImageLinksByType(
+                                            $value->getItemId() . ',' . $value->getVariantId(),
+                                            'Item Variant'
+                                        );
+                                        if ($productImages) {
+                                            $this->logger->debug('Found images for the simple product ' . $sku);
+                                            $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
+                                        }*/
                     $productData->setStatus(Status::STATUS_ENABLED);
                     // @codingStandardsIgnoreLine
                     $this->productRepository->save($productData);
@@ -1196,12 +1201,12 @@ class ProductCreateTask
                         }
                     }
                 }
-                $productImages = $this->replicationHelper
-                    ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
-                if ($productImages) {
-                    $this->logger->debug('Found images for the simple product ' . $sku);
-                    $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                }
+                /*                $productImages = $this->replicationHelper
+                                    ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
+                                if ($productImages) {
+                                    $this->logger->debug('Found images for the simple product ' . $sku);
+                                    $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
+                                }*/
 
                 $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                 if (isset($itemBarcodes[$sku])) {

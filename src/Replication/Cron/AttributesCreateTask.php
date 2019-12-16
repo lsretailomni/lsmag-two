@@ -397,6 +397,7 @@ class AttributesCreateTask
         $formattedCode = $this->replicationHelper->formatAttributeCode($replAttribute->getCode());
         /** @var AttributeInterface $attribute */
         $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
+        //  create attribute if not exist.
         if (!$attribute || !$attribute->getAttributeId()) {
             $valueTypeArray = $this->getValueTypeArray();
             $frontendInput  = $valueTypeArray[$replAttribute->getValueType()];
@@ -437,11 +438,11 @@ class AttributesCreateTask
                 $this->logger->debug('Failed with Exception : ' . $e->getMessage());
                 $replAttribute->setData('is_failed', 1);
             }
-            $replAttribute->setData('processed', 1);
-            $replAttribute->setData('is_updated', 0);
-            // @codingStandardsIgnoreLine
-            $this->replAttributeRepositoryInterface->save($replAttribute);
         }
+        $replAttribute->setData('processed', 1);
+        $replAttribute->setData('is_updated', 0);
+        // @codingStandardsIgnoreLine
+        $this->replAttributeRepositoryInterface->save($replAttribute);
     }
 
     /**
