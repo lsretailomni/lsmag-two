@@ -159,7 +159,10 @@ abstract class AbstractReplicationTask
     {
         $lsr = $this->getLsrModel();
         if ($lsr->isLSR()) {
-            $this->rep_helper->updateConfigValue(date('d M,Y h:i:s A'), $this->getConfigPathLastExecute());
+            $this->rep_helper->updateConfigValue(
+                $this->rep_helper->getDateTime(),
+                $this->getConfigPathLastExecute()
+            );
             $properties      = $this->getProperties();
             $last_key        = $this->getLastKey();
             $remaining       = INF;
