@@ -585,12 +585,13 @@ class ProductCreateTask
                 } else {
                     $image->setData('is_failed', 1);
                 }
-
-                $image->setData('processed', 1);
-                $image->setData('is_updated', 0);
-                // @codingStandardsIgnoreLine
-                $this->replImageLinkRepositoryInterface->save($image);
+            } else {
+                $image->setData('is_failed', 1);
             }
+            $image->setData('processed', 1);
+            $image->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->replImageLinkRepositoryInterface->save($image);
         }
         return $galleryArray;
     }
