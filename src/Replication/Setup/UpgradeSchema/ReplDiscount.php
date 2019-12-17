@@ -20,33 +20,31 @@ class ReplDiscount
         $table_name = $setup->getTable( 'ls_replication_repl_discount' ); 
         if(!$setup->tableExists($table_name)) {
         	$table = $setup->getConnection()->newTable( $table_name );
-        	$table->addColumn('repl_discount_id', Table::TYPE_INTEGER, NULL, 
-        	                    [ 'identity' => TRUE, 'primary' => TRUE,
-        	                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ]);
+        	$table->addColumn('repl_discount_id', Table::TYPE_INTEGER, 11, [ 'identity' => TRUE, 'primary' => TRUE, 'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ]);
         	$table->addColumn('scope', Table::TYPE_TEXT, 8);
         	$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
-        	$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
-        	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
-        	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
+        	$table->addColumn('processed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
+        	$table->addColumn('is_updated', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+        	$table->addColumn('is_failed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
         	$table->addColumn('CurrencyCode' , Table::TYPE_TEXT, '');
         	$table->addColumn('CustomerDiscountGroup' , Table::TYPE_TEXT, '');
         	$table->addColumn('Description' , Table::TYPE_TEXT, '');
         	$table->addColumn('Details' , Table::TYPE_TEXT, '');
-        	$table->addColumn('DiscountValue' , Table::TYPE_FLOAT, '');
+        	$table->addColumn('DiscountValue' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('DiscountValueType' , Table::TYPE_TEXT, '');
         	$table->addColumn('FromDate' , Table::TYPE_TEXT, '');
-        	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, '');
+        	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ItemId' , Table::TYPE_TEXT, '');
         	$table->addColumn('LoyaltySchemeCode' , Table::TYPE_TEXT, '');
-        	$table->addColumn('MinimumQuantity' , Table::TYPE_FLOAT, '');
+        	$table->addColumn('MinimumQuantity' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('ModifyDate' , Table::TYPE_TEXT, '');
         	$table->addColumn('OfferNo' , Table::TYPE_TEXT, '');
-        	$table->addColumn('PriorityNo' , Table::TYPE_INTEGER, '');
+        	$table->addColumn('PriorityNo' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('StoreId' , Table::TYPE_TEXT, '');
         	$table->addColumn('ToDate' , Table::TYPE_TEXT, '');
         	$table->addColumn('Type' , Table::TYPE_TEXT, '');
         	$table->addColumn('UnitOfMeasureId' , Table::TYPE_TEXT, '');
-        	$table->addColumn('ValidationPeriodId' , Table::TYPE_INTEGER, '');
+        	$table->addColumn('ValidationPeriodId' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('VariantId' , Table::TYPE_TEXT, '');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
@@ -54,67 +52,67 @@ class ReplDiscount
         } else {
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'CurrencyCode' ) === false) {
-        		$connection->addColumn($table_name, 'CurrencyCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
+        		$connection->addColumn($table_name, 'CurrencyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CustomerDiscountGroup' ) === false) {
-        		$connection->addColumn($table_name, 'CustomerDiscountGroup', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CustomerDiscountGroup']);
+        		$connection->addColumn($table_name, 'CustomerDiscountGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CustomerDiscountGroup']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
-        		$connection->addColumn($table_name, 'Description', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        		$connection->addColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Details' ) === false) {
-        		$connection->addColumn($table_name, 'Details', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Details']);
+        		$connection->addColumn($table_name, 'Details', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Details']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DiscountValue' ) === false) {
-        		$connection->addColumn($table_name, 'DiscountValue', ['default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'DiscountValue']);
+        		$connection->addColumn($table_name, 'DiscountValue', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'DiscountValue']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DiscountValueType' ) === false) {
-        		$connection->addColumn($table_name, 'DiscountValueType', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'DiscountValueType']);
+        		$connection->addColumn($table_name, 'DiscountValueType', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'DiscountValueType']);
         	}
         	if ($connection->tableColumnExists($table_name, 'FromDate' ) === false) {
-        		$connection->addColumn($table_name, 'FromDate', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'FromDate']);
+        		$connection->addColumn($table_name, 'FromDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'FromDate']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
-        		$connection->addColumn($table_name, 'IsDeleted', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
-        		$connection->addColumn($table_name, 'ItemId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        		$connection->addColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'LoyaltySchemeCode' ) === false) {
-        		$connection->addColumn($table_name, 'LoyaltySchemeCode', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'LoyaltySchemeCode']);
+        		$connection->addColumn($table_name, 'LoyaltySchemeCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'LoyaltySchemeCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MinimumQuantity' ) === false) {
-        		$connection->addColumn($table_name, 'MinimumQuantity', ['default' => null,'type' => Table::TYPE_FLOAT, 'comment' => 'MinimumQuantity']);
+        		$connection->addColumn($table_name, 'MinimumQuantity', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MinimumQuantity']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ModifyDate' ) === false) {
-        		$connection->addColumn($table_name, 'ModifyDate', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ModifyDate']);
+        		$connection->addColumn($table_name, 'ModifyDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ModifyDate']);
         	}
         	if ($connection->tableColumnExists($table_name, 'OfferNo' ) === false) {
-        		$connection->addColumn($table_name, 'OfferNo', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'OfferNo']);
+        		$connection->addColumn($table_name, 'OfferNo', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'OfferNo']);
         	}
         	if ($connection->tableColumnExists($table_name, 'PriorityNo' ) === false) {
-        		$connection->addColumn($table_name, 'PriorityNo', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'PriorityNo']);
+        		$connection->addColumn($table_name, 'PriorityNo', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'PriorityNo']);
         	}
         	if ($connection->tableColumnExists($table_name, 'StoreId' ) === false) {
-        		$connection->addColumn($table_name, 'StoreId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StoreId']);
+        		$connection->addColumn($table_name, 'StoreId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StoreId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ToDate' ) === false) {
-        		$connection->addColumn($table_name, 'ToDate', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ToDate']);
+        		$connection->addColumn($table_name, 'ToDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ToDate']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Type' ) === false) {
-        		$connection->addColumn($table_name, 'Type', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Type']);
+        		$connection->addColumn($table_name, 'Type', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Type']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitOfMeasureId' ) === false) {
-        		$connection->addColumn($table_name, 'UnitOfMeasureId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'UnitOfMeasureId']);
+        		$connection->addColumn($table_name, 'UnitOfMeasureId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'UnitOfMeasureId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ValidationPeriodId' ) === false) {
-        		$connection->addColumn($table_name, 'ValidationPeriodId', ['default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ValidationPeriodId']);
+        		$connection->addColumn($table_name, 'ValidationPeriodId', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ValidationPeriodId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'VariantId' ) === false) {
-        		$connection->addColumn($table_name, 'VariantId', ['default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
+        		$connection->addColumn($table_name, 'VariantId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
-        		$connection->addColumn($table_name, 'is_failed', ['default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }
