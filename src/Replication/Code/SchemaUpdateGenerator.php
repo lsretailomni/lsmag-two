@@ -196,6 +196,8 @@ CODE;
             $comment     = ucfirst($column['name']);
             $method_body .= "\n\tif (\$connection->tableColumnExists(\$table_name, '" . $column['name'] . "' ) === false) {";
             $method_body .= "\n\t\t\$connection->addColumn(\$table_name, '" . $column['name'] . "', ['length' => " . $column['length'] . ",'default' => " . $column['default'] . ",'type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
+            $method_body .= "\t} else {";
+            $method_body .= "\n\t\t\$connection->modifyColumn(\$table_name, '" . $column['name'] . "', ['length' => " . $column['length'] . ",'default' => " . $column['default'] . ",'type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
             $method_body .= "\t}";
         }
         $method_body .= <<<CODE

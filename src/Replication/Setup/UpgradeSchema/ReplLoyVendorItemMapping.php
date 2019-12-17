@@ -40,27 +40,43 @@ class ReplLoyVendorItemMapping
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'Deleted' ) === false) {
         		$connection->addColumn($table_name, 'Deleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Deleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Deleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Deleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DisplayOrder' ) === false) {
         		$connection->addColumn($table_name, 'DisplayOrder', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'DisplayOrder']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'DisplayOrder', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'DisplayOrder']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsFeaturedProduct' ) === false) {
         		$connection->addColumn($table_name, 'IsFeaturedProduct', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsFeaturedProduct']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsFeaturedProduct', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsFeaturedProduct']);
         	}
         	if ($connection->tableColumnExists($table_name, 'NavManufacturerId' ) === false) {
         		$connection->addColumn($table_name, 'NavManufacturerId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'NavManufacturerId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'NavManufacturerItemId' ) === false) {
         		$connection->addColumn($table_name, 'NavManufacturerItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerItemId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'NavManufacturerItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavManufacturerItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'NavProductId' ) === false) {
         		$connection->addColumn($table_name, 'NavProductId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavProductId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'NavProductId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavProductId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

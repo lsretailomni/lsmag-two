@@ -38,21 +38,33 @@ class ReplInvStatus
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
         		$connection->addColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Quantity' ) === false) {
         		$connection->addColumn($table_name, 'Quantity', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'Quantity']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Quantity', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'Quantity']);
         	}
         	if ($connection->tableColumnExists($table_name, 'StoreId' ) === false) {
         		$connection->addColumn($table_name, 'StoreId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StoreId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'StoreId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StoreId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'VariantId' ) === false) {
         		$connection->addColumn($table_name, 'VariantId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'VariantId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

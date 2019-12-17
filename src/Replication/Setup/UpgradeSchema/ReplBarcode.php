@@ -40,27 +40,43 @@ class ReplBarcode
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'Blocked' ) === false) {
         		$connection->addColumn($table_name, 'Blocked', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Blocked']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Blocked', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Blocked']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
         		$connection->addColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
         	}
         	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
         		$connection->addColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
         		$connection->addColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitOfMeasure' ) === false) {
         		$connection->addColumn($table_name, 'UnitOfMeasure', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'UnitOfMeasure']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'UnitOfMeasure', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'UnitOfMeasure']);
         	}
         	if ($connection->tableColumnExists($table_name, 'VariantId' ) === false) {
         		$connection->addColumn($table_name, 'VariantId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'VariantId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

@@ -52,63 +52,103 @@ class ReplStoreTenderType
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'AboveMinimumTenderId' ) === false) {
         		$connection->addColumn($table_name, 'AboveMinimumTenderId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'AboveMinimumTenderId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'AboveMinimumTenderId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'AboveMinimumTenderId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'AllowOverTender' ) === false) {
         		$connection->addColumn($table_name, 'AllowOverTender', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'AllowOverTender']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'AllowOverTender', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'AllowOverTender']);
         	}
         	if ($connection->tableColumnExists($table_name, 'AllowUnderTender' ) === false) {
         		$connection->addColumn($table_name, 'AllowUnderTender', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'AllowUnderTender']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'AllowUnderTender', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'AllowUnderTender']);
         	}
         	if ($connection->tableColumnExists($table_name, 'AllowVoiding' ) === false) {
         		$connection->addColumn($table_name, 'AllowVoiding', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'AllowVoiding']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'AllowVoiding', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'AllowVoiding']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ChangeTenderId' ) === false) {
         		$connection->addColumn($table_name, 'ChangeTenderId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ChangeTenderId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ChangeTenderId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ChangeTenderId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CountingRequired' ) === false) {
         		$connection->addColumn($table_name, 'CountingRequired', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'CountingRequired']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'CountingRequired', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'CountingRequired']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ForeignCurrency' ) === false) {
         		$connection->addColumn($table_name, 'ForeignCurrency', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ForeignCurrency']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ForeignCurrency', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ForeignCurrency']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MaximumOverTenderAmount' ) === false) {
         		$connection->addColumn($table_name, 'MaximumOverTenderAmount', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MaximumOverTenderAmount']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'MaximumOverTenderAmount', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MaximumOverTenderAmount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MinimumChangeAmount' ) === false) {
         		$connection->addColumn($table_name, 'MinimumChangeAmount', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MinimumChangeAmount']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'MinimumChangeAmount', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MinimumChangeAmount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Name' ) === false) {
         		$connection->addColumn($table_name, 'Name', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Name']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Name', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Name']);
         	}
         	if ($connection->tableColumnExists($table_name, 'OpenDrawer' ) === false) {
         		$connection->addColumn($table_name, 'OpenDrawer', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'OpenDrawer']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'OpenDrawer', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'OpenDrawer']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ReturnAllowed' ) === false) {
         		$connection->addColumn($table_name, 'ReturnAllowed', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ReturnAllowed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ReturnAllowed', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ReturnAllowed']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Rounding' ) === false) {
         		$connection->addColumn($table_name, 'Rounding', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'Rounding']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Rounding', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'Rounding']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RoundingMethode' ) === false) {
         		$connection->addColumn($table_name, 'RoundingMethode', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'RoundingMethode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'RoundingMethode', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'RoundingMethode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'StoreID' ) === false) {
         		$connection->addColumn($table_name, 'StoreID', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StoreID']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'StoreID', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StoreID']);
         	}
         	if ($connection->tableColumnExists($table_name, 'TenderFunction' ) === false) {
         		$connection->addColumn($table_name, 'TenderFunction', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'TenderFunction']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'TenderFunction', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'TenderFunction']);
         	}
         	if ($connection->tableColumnExists($table_name, 'TenderTypeId' ) === false) {
         		$connection->addColumn($table_name, 'TenderTypeId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'TenderTypeId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'TenderTypeId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'TenderTypeId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ValidOnMobilePOS' ) === false) {
         		$connection->addColumn($table_name, 'ValidOnMobilePOS', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ValidOnMobilePOS']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ValidOnMobilePOS', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'ValidOnMobilePOS']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

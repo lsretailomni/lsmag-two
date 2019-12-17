@@ -38,21 +38,33 @@ class ReplCurrencyExchRate
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'CurrencyCode' ) === false) {
         		$connection->addColumn($table_name, 'CurrencyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'CurrencyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CurrencyFactor' ) === false) {
         		$connection->addColumn($table_name, 'CurrencyFactor', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'CurrencyFactor']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'CurrencyFactor', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'CurrencyFactor']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RelationalCurrencyCode' ) === false) {
         		$connection->addColumn($table_name, 'RelationalCurrencyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'RelationalCurrencyCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'RelationalCurrencyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'RelationalCurrencyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'StartingDate' ) === false) {
         		$connection->addColumn($table_name, 'StartingDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StartingDate']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'StartingDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StartingDate']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

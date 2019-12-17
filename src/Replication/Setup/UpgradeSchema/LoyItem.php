@@ -51,60 +51,98 @@ class LoyItem
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'AllowedToSell' ) === false) {
         		$connection->addColumn($table_name, 'AllowedToSell', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'AllowedToSell']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'AllowedToSell', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'AllowedToSell']);
         	}
         	if ($connection->tableColumnExists($table_name, 'BlockDiscount' ) === false) {
         		$connection->addColumn($table_name, 'BlockDiscount', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'BlockDiscount']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'BlockDiscount', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'BlockDiscount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'BlockManualPriceChange' ) === false) {
         		$connection->addColumn($table_name, 'BlockManualPriceChange', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'BlockManualPriceChange']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'BlockManualPriceChange', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'BlockManualPriceChange']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Blocked' ) === false) {
         		$connection->addColumn($table_name, 'Blocked', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Blocked']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Blocked', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Blocked']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
         		$connection->addColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Details' ) === false) {
         		$connection->addColumn($table_name, 'Details', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Details']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Details', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Details']);
         	}
         	if ($connection->tableColumnExists($table_name, 'GrossWeight' ) === false) {
         		$connection->addColumn($table_name, 'GrossWeight', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'GrossWeight']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'GrossWeight', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'GrossWeight']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ItemCategoryCode' ) === false) {
         		$connection->addColumn($table_name, 'ItemCategoryCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemCategoryCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ItemCategoryCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemCategoryCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ItemFamilyCode' ) === false) {
         		$connection->addColumn($table_name, 'ItemFamilyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemFamilyCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ItemFamilyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemFamilyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Price' ) === false) {
         		$connection->addColumn($table_name, 'Price', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Price']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Price', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Price']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ProductGroupId' ) === false) {
         		$connection->addColumn($table_name, 'ProductGroupId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ProductGroupId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ProductGroupId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ProductGroupId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'SalesUomId' ) === false) {
         		$connection->addColumn($table_name, 'SalesUomId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'SalesUomId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'SalesUomId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'SalesUomId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ScaleItem' ) === false) {
         		$connection->addColumn($table_name, 'ScaleItem', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'ScaleItem']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ScaleItem', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'ScaleItem']);
         	}
         	if ($connection->tableColumnExists($table_name, 'SeasonCode' ) === false) {
         		$connection->addColumn($table_name, 'SeasonCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'SeasonCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'SeasonCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'SeasonCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitVolume' ) === false) {
         		$connection->addColumn($table_name, 'UnitVolume', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitVolume']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'UnitVolume', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitVolume']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitsPerParcel' ) === false) {
         		$connection->addColumn($table_name, 'UnitsPerParcel', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitsPerParcel']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'UnitsPerParcel', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitsPerParcel']);
         	}
         	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
         		$connection->addColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

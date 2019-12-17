@@ -53,66 +53,108 @@ class ReplPrice
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'CurrencyCode' ) === false) {
         		$connection->addColumn($table_name, 'CurrencyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'CurrencyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CustomerDiscountGroup' ) === false) {
         		$connection->addColumn($table_name, 'CustomerDiscountGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CustomerDiscountGroup']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'CustomerDiscountGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CustomerDiscountGroup']);
         	}
         	if ($connection->tableColumnExists($table_name, 'EndingDate' ) === false) {
         		$connection->addColumn($table_name, 'EndingDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'EndingDate']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'EndingDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'EndingDate']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
         		$connection->addColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'LoyaltySchemeCode' ) === false) {
         		$connection->addColumn($table_name, 'LoyaltySchemeCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'LoyaltySchemeCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'LoyaltySchemeCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'LoyaltySchemeCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'MinimumQuantity' ) === false) {
         		$connection->addColumn($table_name, 'MinimumQuantity', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MinimumQuantity']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'MinimumQuantity', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'MinimumQuantity']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ModifyDate' ) === false) {
         		$connection->addColumn($table_name, 'ModifyDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ModifyDate']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ModifyDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ModifyDate']);
         	}
         	if ($connection->tableColumnExists($table_name, 'PriceInclVat' ) === false) {
         		$connection->addColumn($table_name, 'PriceInclVat', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'PriceInclVat']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'PriceInclVat', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'PriceInclVat']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Priority' ) === false) {
         		$connection->addColumn($table_name, 'Priority', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Priority']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Priority', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Priority']);
         	}
         	if ($connection->tableColumnExists($table_name, 'QtyPerUnitOfMeasure' ) === false) {
         		$connection->addColumn($table_name, 'QtyPerUnitOfMeasure', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'QtyPerUnitOfMeasure']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'QtyPerUnitOfMeasure', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'QtyPerUnitOfMeasure']);
         	}
         	if ($connection->tableColumnExists($table_name, 'SaleCode' ) === false) {
         		$connection->addColumn($table_name, 'SaleCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'SaleCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'SaleCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'SaleCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'SaleType' ) === false) {
         		$connection->addColumn($table_name, 'SaleType', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'SaleType']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'SaleType', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'SaleType']);
         	}
         	if ($connection->tableColumnExists($table_name, 'StartingDate' ) === false) {
         		$connection->addColumn($table_name, 'StartingDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StartingDate']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'StartingDate', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StartingDate']);
         	}
         	if ($connection->tableColumnExists($table_name, 'StoreId' ) === false) {
         		$connection->addColumn($table_name, 'StoreId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StoreId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'StoreId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'StoreId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitOfMeasure' ) === false) {
         		$connection->addColumn($table_name, 'UnitOfMeasure', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'UnitOfMeasure']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'UnitOfMeasure', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'UnitOfMeasure']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitPrice' ) === false) {
         		$connection->addColumn($table_name, 'UnitPrice', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitPrice']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'UnitPrice', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitPrice']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitPriceInclVat' ) === false) {
         		$connection->addColumn($table_name, 'UnitPriceInclVat', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitPriceInclVat']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'UnitPriceInclVat', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'UnitPriceInclVat']);
         	}
         	if ($connection->tableColumnExists($table_name, 'VATPostGroup' ) === false) {
         		$connection->addColumn($table_name, 'VATPostGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VATPostGroup']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'VATPostGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VATPostGroup']);
         	}
         	if ($connection->tableColumnExists($table_name, 'VariantId' ) === false) {
         		$connection->addColumn($table_name, 'VariantId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'VariantId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'VariantId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

@@ -43,36 +43,58 @@ class ReplCurrency
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'CurrencyCode' ) === false) {
         		$connection->addColumn($table_name, 'CurrencyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'CurrencyCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CurrencyPrefix' ) === false) {
         		$connection->addColumn($table_name, 'CurrencyPrefix', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyPrefix']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'CurrencyPrefix', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencyPrefix']);
         	}
         	if ($connection->tableColumnExists($table_name, 'CurrencySuffix' ) === false) {
         		$connection->addColumn($table_name, 'CurrencySuffix', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencySuffix']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'CurrencySuffix', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'CurrencySuffix']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
         		$connection->addColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RoundOfAmount' ) === false) {
         		$connection->addColumn($table_name, 'RoundOfAmount', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'RoundOfAmount']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'RoundOfAmount', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'RoundOfAmount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RoundOfSales' ) === false) {
         		$connection->addColumn($table_name, 'RoundOfSales', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'RoundOfSales']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'RoundOfSales', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'RoundOfSales']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RoundOfTypeAmount' ) === false) {
         		$connection->addColumn($table_name, 'RoundOfTypeAmount', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'RoundOfTypeAmount']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'RoundOfTypeAmount', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'RoundOfTypeAmount']);
         	}
         	if ($connection->tableColumnExists($table_name, 'RoundOfTypeSales' ) === false) {
         		$connection->addColumn($table_name, 'RoundOfTypeSales', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'RoundOfTypeSales']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'RoundOfTypeSales', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'RoundOfTypeSales']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Symbol' ) === false) {
         		$connection->addColumn($table_name, 'Symbol', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Symbol']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Symbol', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Symbol']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

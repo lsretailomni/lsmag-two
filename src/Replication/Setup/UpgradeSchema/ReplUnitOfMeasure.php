@@ -38,21 +38,33 @@ class ReplUnitOfMeasure
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
         		$connection->addColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
         	}
         	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
         		$connection->addColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ShortDescription' ) === false) {
         		$connection->addColumn($table_name, 'ShortDescription', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ShortDescription']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ShortDescription', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ShortDescription']);
         	}
         	if ($connection->tableColumnExists($table_name, 'UnitDecimals' ) === false) {
         		$connection->addColumn($table_name, 'UnitDecimals', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'UnitDecimals']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'UnitDecimals', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'UnitDecimals']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

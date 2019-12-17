@@ -37,18 +37,28 @@ class ReplTaxSetup
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'BusinessTaxGroup' ) === false) {
         		$connection->addColumn($table_name, 'BusinessTaxGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'BusinessTaxGroup']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'BusinessTaxGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'BusinessTaxGroup']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ProductTaxGroup' ) === false) {
         		$connection->addColumn($table_name, 'ProductTaxGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ProductTaxGroup']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ProductTaxGroup', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ProductTaxGroup']);
         	}
         	if ($connection->tableColumnExists($table_name, 'TaxPercent' ) === false) {
         		$connection->addColumn($table_name, 'TaxPercent', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'TaxPercent']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'TaxPercent', ['length' => '20,4','default' => null,'type' => Table::TYPE_DECIMAL, 'comment' => 'TaxPercent']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

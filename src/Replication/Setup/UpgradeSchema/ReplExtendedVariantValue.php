@@ -42,33 +42,53 @@ class ReplExtendedVariantValue
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'Code' ) === false) {
         		$connection->addColumn($table_name, 'Code', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Code']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Code', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Code']);
         	}
         	if ($connection->tableColumnExists($table_name, 'DimensionLogicalOrder' ) === false) {
         		$connection->addColumn($table_name, 'DimensionLogicalOrder', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'DimensionLogicalOrder']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'DimensionLogicalOrder', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'DimensionLogicalOrder']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Dimensions' ) === false) {
         		$connection->addColumn($table_name, 'Dimensions', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Dimensions']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Dimensions', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Dimensions']);
         	}
         	if ($connection->tableColumnExists($table_name, 'FrameworkCode' ) === false) {
         		$connection->addColumn($table_name, 'FrameworkCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'FrameworkCode']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'FrameworkCode', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'FrameworkCode']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'ItemId' ) === false) {
         		$connection->addColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'ItemId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'ItemId']);
         	}
         	if ($connection->tableColumnExists($table_name, 'LogicalOrder' ) === false) {
         		$connection->addColumn($table_name, 'LogicalOrder', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'LogicalOrder']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'LogicalOrder', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'LogicalOrder']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Timestamp' ) === false) {
         		$connection->addColumn($table_name, 'Timestamp', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Timestamp']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Timestamp', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Timestamp']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Value' ) === false) {
         		$connection->addColumn($table_name, 'Value', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Value']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Value', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Value']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }

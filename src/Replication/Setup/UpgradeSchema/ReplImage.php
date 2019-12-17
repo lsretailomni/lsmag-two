@@ -39,24 +39,38 @@ class ReplImage
         	$connection = $setup->getConnection();
         	if ($connection->tableColumnExists($table_name, 'Description' ) === false) {
         		$connection->addColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Description', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Description']);
         	}
         	if ($connection->tableColumnExists($table_name, 'nav_id' ) === false) {
         		$connection->addColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'nav_id', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Nav_id']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Image64' ) === false) {
         		$connection->addColumn($table_name, 'Image64', ['length' => '25M','default' => null,'type' => Table::TYPE_BLOB, 'comment' => 'Image64']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Image64', ['length' => '25M','default' => null,'type' => Table::TYPE_BLOB, 'comment' => 'Image64']);
         	}
         	if ($connection->tableColumnExists($table_name, 'IsDeleted' ) === false) {
         		$connection->addColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'IsDeleted', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'IsDeleted']);
         	}
         	if ($connection->tableColumnExists($table_name, 'Location' ) === false) {
         		$connection->addColumn($table_name, 'Location', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Location']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'Location', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Location']);
         	}
         	if ($connection->tableColumnExists($table_name, 'LocationType' ) === false) {
         		$connection->addColumn($table_name, 'LocationType', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'LocationType']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'LocationType', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'LocationType']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	}
         }
     }
