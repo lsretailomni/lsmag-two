@@ -98,11 +98,34 @@ class ModelInterfaceGenerator extends AbstractGenerator
         );
         $this->createProperty(
             null,
-            'string',
+            'boolean',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'interface' => true]
         );
-
+        $this->createProperty(
+            null,
+            'boolean',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'boolean',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'IsFailed', 'variable_name' => 'is_failed', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'CreatedAt', 'variable_name' => 'created_at', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'interface' => true]
+        );
         $content = $this->file->generate();
 
         $content = preg_replace('/\s+{\s+}+/', ";", $content);

@@ -140,15 +140,33 @@ class ModelGenerator extends AbstractGenerator
         );
         $this->createProperty(
             null,
-            'string',
+            'boolean',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'model' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            'boolean',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'model' => true]
+        );
+        $this->createProperty(
+            null,
+            'boolean',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'IsFailed', 'variable_name' => 'is_failed', 'model' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'CreatedAt', 'variable_name' => 'created_at', 'model' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'model' => true]
         );
         $content = $this->file->generate();
         $content = str_replace(

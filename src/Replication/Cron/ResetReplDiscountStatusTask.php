@@ -76,8 +76,13 @@ class ResetReplDiscountStatusTask
         if ($this->lsr->isLSR()) {
             $this->logger->debug('Running ResetReplDiscountStatusTask Task ');
 
-            $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
-
+            $this->replicationHelper->updateConfigValue(
+                $this->replicationHelper->getDateTime(),
+                self::CONFIG_PATH_LAST_EXECUTE
+            );
+            // resetting the flag back to false
+            $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH_STATUS);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH);
             // Process for Flat tables.
             // truncating the discount table.
             $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
@@ -89,10 +94,6 @@ class ResetReplDiscountStatusTask
                 $this->logger->debug("Something wrong while truncating the discount table");
                 $this->logger->debug($e->getMessage());
             }
-            // resetting the flag back to false
-            $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH_STATUS);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH);
-
             // Process for Magento tables.
             // deleting the catalog rules data
             foreach ($this->magento_discount_tables as $discountTable) {

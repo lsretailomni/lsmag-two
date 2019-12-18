@@ -10,7 +10,6 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-
 use ReflectionClass;
 
 /**
@@ -160,7 +159,10 @@ abstract class AbstractReplicationTask
     {
         $lsr = $this->getLsrModel();
         if ($lsr->isLSR()) {
-            $this->rep_helper->updateConfigValue(date('d M,Y h:i:s A'), $this->getConfigPathLastExecute());
+            $this->rep_helper->updateConfigValue(
+                $this->rep_helper->getDateTime(),
+                $this->getConfigPathLastExecute()
+            );
             $properties      = $this->getProperties();
             $last_key        = $this->getLastKey();
             $remaining       = INF;
@@ -285,6 +287,7 @@ abstract class AbstractReplicationTask
             }
             $entity->setIsUpdated(1);
             $entity->setIsFailed(0);
+            $entity->setUpdatedAt($this->rep_helper->getDateTime());
         } else {
             $entity = $this->getFactory()->create();
             $entity->setScope('default')->setScopeId(0);
