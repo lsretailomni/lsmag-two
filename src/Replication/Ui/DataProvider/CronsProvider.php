@@ -4,6 +4,7 @@ namespace Ls\Replication\Ui\DataProvider;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Api\Filter;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Module\Dir\Reader;
@@ -44,6 +45,8 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      */
     private $parser;
 
+    /** @var ReplicationHelper */
+    public $rep_helper;
     /**
      * CronsProvider constructor.
      * @param string $name
@@ -64,6 +67,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         Reader $moduleDirReader,
         Parser $parser,
         LSR $LSR,
+        ReplicationHelper $repHelper,
         array $meta = [],
         array $data = []
     ) {
@@ -72,12 +76,12 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         $this->moduleDirReader = $moduleDirReader;
         $this->parser          = $parser;
         $this->lsr             = $LSR;
+        $this->rep_helper      = $repHelper;
     }
 
     /**
-     * Get data
-     *
-     * @return array
+     * @return array|mixed
+     * @throws Exception
      */
     public function getData()
     {
@@ -132,8 +136,10 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 if ($cronName == 'repl_item_images_sync') {
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_IMAGES);
                 }
-
-                $lastExecute = $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName);
+                $lastExecute = $this->rep_helper->convertDateTimeIntoCurrentTimeZone(
+                    $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName),
+                    'd M, Y h:i:s A'
+                );
                 $statusStr   = ($fullReplicationStatus == 1) ?
                     '<div class="flag-green custom-grid-flag">Complete</div>' :
                     '<div class="flag-yellow custom-grid-flag">Pending</div>';

@@ -140,7 +140,10 @@ class DiscountCreateTask
          * And we need to apply only those rules which are associated to the store assigned to it.
          */
         if ($this->lsr->isLSR()) {
-            $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
+            $this->replicationHelper->updateConfigValue(
+                $this->replicationHelper->getDateTime(),
+                self::CONFIG_PATH_LAST_EXECUTE
+            );
             $store_id                 = $this->lsr->getDefaultWebStore();
             $publishedOfferCollection = $this->getUniquePublishedOffers();
             if (!empty($publishedOfferCollection)) {

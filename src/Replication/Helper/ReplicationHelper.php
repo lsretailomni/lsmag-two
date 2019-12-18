@@ -28,6 +28,8 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
 use Psr\Log\LoggerInterface;
@@ -86,6 +88,14 @@ class ReplicationHelper extends AbstractHelper
     /** @var SortOrder */
     public $sortOrder;
 
+    /** @var DateTime */
+    public $dateTime;
+
+    /**
+     * @var TimezoneInterface
+     */
+    public $timezone;
+
     /**
      * ReplicationHelper constructor.
      * @param Context $context
@@ -102,6 +112,8 @@ class ReplicationHelper extends AbstractHelper
      * @param LSR $LSR
      * @param ResourceConnection $resource
      * @param SortOrder $sortOrder
+     * @param DateTime $date
+     * @param TimezoneInterface $timezone
      */
     public function __construct(
         Context $context,
@@ -117,7 +129,9 @@ class ReplicationHelper extends AbstractHelper
         TypeListInterface $cacheTypeList,
         LSR $LSR,
         ResourceConnection $resource,
-        SortOrder $sortOrder
+        SortOrder $sortOrder,
+        DateTime $date,
+        TimezoneInterface $timezone
     ) {
         $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
         $this->filterBuilder                    = $filterBuilder;
@@ -132,6 +146,8 @@ class ReplicationHelper extends AbstractHelper
         $this->lsr                              = $LSR;
         $this->resource                         = $resource;
         $this->sortOrder                        = $sortOrder;
+        $this->dateTime                         = $date;
+        $this->timezone                         = $timezone;
         parent::__construct(
             $context
         );
@@ -557,7 +573,6 @@ class ReplicationHelper extends AbstractHelper
             0
         );
     }
-
     /**
      * @return LoggerInterface
      */
@@ -751,10 +766,39 @@ class ReplicationHelper extends AbstractHelper
         return $this->sortOrder->setField($field)->setDirection($direction);
     }
 
-    public function parseImageIdfromFile($imagename = ''){
+    public function parseImageIdfromFile($imagename = '')
+    {
         $imagename = pathinfo($imagename);
         return $imagename['filename'];
         //$imagename = explode('.',$imagename,1);
         //return $imagename[0];
+    }
+    /**
+     * @return string
+     */
+    public function getDatetime()
+    {
+        return $this->dateTime->gmtDate();
+    }
+
+    /**
+     * @param $dataTime
+     * @param null $format
+     * @return string
+     * @throws Exception
+     */
+    public function convertDateTimeIntoCurrentTimeZone($dataTime, $format = null)
+    {
+        $formattedDate = "";
+        if (isset($dataTime)
+            && $dataTime !== "0000-00-00 00:00:00"
+        ) {
+            $date = $this->timezone->date(new \DateTime($dataTime));
+            if ($format === null) {
+                $format = 'Y-m-d H:i:s';
+            }
+            $formattedDate = $date->format($format);
+        }
+        return $formattedDate;
     }
 }
