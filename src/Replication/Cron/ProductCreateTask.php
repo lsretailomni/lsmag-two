@@ -548,7 +548,8 @@ class ProductCreateTask
     {
         $galleryArray = [];
         /** @var ReplImageLink $image */
-        foreach ($productImages as $i => $image) {
+        $i = 0;
+        foreach ($productImages as $image) {
             if ($image->getIsDeleted() == 1) {
                 $image->setData('processed', 1);
                 $image->setData('is_updated', 0);
@@ -582,15 +583,17 @@ class ProductCreateTask
                     }
                     $this->attributeMediaGalleryEntry->setTypes($types);
                     $galleryArray[] = clone $this->attributeMediaGalleryEntry;
+                    $i++;
                 } else {
                     $image->setData('is_failed', 1);
                 }
-
-                $image->setData('processed', 1);
-                $image->setData('is_updated', 0);
-                // @codingStandardsIgnoreLine
-                $this->replImageLinkRepositoryInterface->save($image);
+            } else {
+                $image->setData('is_failed', 1);
             }
+            $image->setData('processed', 1);
+            $image->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->replImageLinkRepositoryInterface->save($image);
         }
         return $galleryArray;
     }

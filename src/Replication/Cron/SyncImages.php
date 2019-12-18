@@ -4,8 +4,7 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use Ls\Replication\Model\ReplImageLink;
-use \Ls\Replication\Model\ReplInvStatus;
+use \Ls\Replication\Model\ReplImageLink;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
@@ -70,7 +69,9 @@ class SyncImages extends ProductCreateTask
         return [$collection->getSize()];
     }
 
-
+    /**
+     * @throws InputException
+     */
     public function syncItemImages()
     {
         $batchSize = $this->replicationHelper->getProductImagesBatchSize();
@@ -98,13 +99,12 @@ class SyncImages extends ProductCreateTask
             'nav_id',
             true
         );
+        $collection->getSelect()->order('main_table.processed '. "ASC");
         if ($collection->getSize() > 0) {
             // right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
             foreach ($collection->getItems() as $itemImage) {
                 $productImages = [];
-                $deletedImages = [];
-                $newImages     = [];
                 try {
                     $productData = $this->productRepository->get($itemImage->getKeyValue());
                     // get existing product images.
@@ -122,8 +122,11 @@ class SyncImages extends ProductCreateTask
                         ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
                         ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq']
                     ];
-                    $criteriaforallImages = $this->replicationHelper->buildCriteriaForDirect($filtersforallImages, -1, false)
-                        ->setSortOrders([$sortOrder]);
+                    $criteriaforallImages = $this->replicationHelper->buildCriteriaForDirect(
+                        $filtersforallImages,
+                        -1,
+                        false
+                    )->setSortOrders([$sortOrder]);
 
 
                     /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $newImagestoProcess */
@@ -141,9 +144,15 @@ class SyncImages extends ProductCreateTask
                         ['field' => 'TableName', 'value' => 'Item Variant', 'condition_type' => 'eq']
                     ];
                     //if the item is processed, then its variant will deinately be processed, so not neeed to put seprate check on variants.
-                    $criteriaforallVariantImages = $this->replicationHelper->buildCriteriaForArray($filtersforvariantImages, -1, false);
+                    $criteriaforallVariantImages = $this->replicationHelper->buildCriteriaForArray(
+                        $filtersforvariantImages,
+                        -1,
+                        false
+                    );
                     /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $newVaraintImagestoProcess */
-                    $newVaraintImagestoProcess = $this->replImageLinkRepositoryInterface->getList($criteriaforallVariantImages);
+                    $newVaraintImagestoProcess = $this->replImageLinkRepositoryInterface->getList(
+                        $criteriaforallVariantImages
+                    );
                     if ($newVaraintImagestoProcess->getTotalCount() > 0) {
                         $processedItems = [];
                         /** @var ReplImageLink $image */
@@ -161,7 +170,10 @@ class SyncImages extends ProductCreateTask
 
                                 if (!empty($variantproductImages)) {
                                     foreach ($variantproductImages as $key => $existingImage) {
-                                        $this->imageProcessor->removeImage($variantProductData, $existingImage->getFile());
+                                        $this->imageProcessor->removeImage(
+                                            $variantProductData,
+                                            $existingImage->getFile()
+                                        );
                                         unset($variantproductImages[$key]);
                                     }
                                 }
@@ -170,14 +182,22 @@ class SyncImages extends ProductCreateTask
                                     ['field' => 'KeyValue', 'value' => $image->getKeyValue(), 'condition_type' => 'eq'],
                                     ['field' => 'TableName', 'value' => 'Item Variant', 'condition_type' => 'eq']
                                 ];
-                                $criteriaforVariantImagestoUpdate = $this->replicationHelper->buildCriteriaForDirect($filtersforvariantImagestoUpdate, -1, false)
+                                $criteriaforVariantImagestoUpdate = $this->replicationHelper->buildCriteriaForDirect(
+                                    $filtersforvariantImagestoUpdate,
+                                    -1,
+                                    false
+                                )
                                     ->setSortOrders([$sortOrder]);
 
                                 /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $varaintImagestoupdate */
-                                $varaintImagestoupdate            = $this->replImageLinkRepositoryInterface->getList($criteriaforVariantImagestoUpdate);
+                                $varaintImagestoupdate            = $this->replImageLinkRepositoryInterface->getList(
+                                    $criteriaforVariantImagestoUpdate
+                                );
 
                                 if ($varaintImagestoupdate->getTotalCount() > 0) {
-                                    $variantproductImages = $this->getMediaGalleryEntries($varaintImagestoupdate->getItems());
+                                    $variantproductImages = $this->getMediaGalleryEntries(
+                                        $varaintImagestoupdate->getItems()
+                                    );
                                 }
                                 $variantProductData->setMediaGalleryEntries($variantproductImages);
                                 $this->productRepository->save($variantProductData);
@@ -190,7 +210,9 @@ class SyncImages extends ProductCreateTask
                         }
                     }
                 } catch (Exception $e) {
-                    $this->logger->debug('Problem with Image Synchronization : ' . $itemImage->getKeyValue() . ' in ' . __METHOD__);
+                    $this->logger->debug(
+                        'Problem with Image Synchronization : ' . $itemImage->getKeyValue() . ' in ' . __METHOD__
+                    );
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -260,7 +282,7 @@ class SyncImages extends ProductCreateTask
                                      **/
                                     $imagename = $this->replicationHelper->parseImageIdfromFile($existingImage->getFile());
                                     if ($imagename == $image->getImageId()) {
-                                        $imageProcessor->removeImage($productData, $existingImage->getFile());
+                                        $this->imageProcessor->removeImage($productData, $existingImage->getFile());
                                         unset($productImages[$key]);
                                     }
                                 }
