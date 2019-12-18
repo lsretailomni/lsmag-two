@@ -747,14 +747,14 @@ class ReplicationHelper extends AbstractHelper
      * @return SortOrder
      * @throws InputException
      */
-    public function getSortOrderObject($field = 'DisplayOrder', $direction = SortOrder::SORT_ASC){
+    public function getSortOrderObject($field = 'DisplayOrder', $direction = SortOrder::SORT_ASC)
+    {
         return $this->sortOrder->setField($field)->setDirection($direction);
     }
 
-    public function parseImageIdfromFile($imagename = ''){
+    public function parseImageIdfromFile($imagename = '')
+    {
         $imagename = pathinfo($imagename);
         return $imagename['filename'];
-        //$imagename = explode('.',$imagename,1);
-        //return $imagename[0];
     }
 }
