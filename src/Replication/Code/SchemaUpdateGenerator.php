@@ -134,36 +134,38 @@ class SchemaUpdateGenerator extends AbstractGenerator
 \$table_name = \$setup->getTable( 'ls_replication_$table_name' ); 
 if(!\$setup->tableExists(\$table_name)) {
 \t\$table = \$setup->getConnection()->newTable( \$table_name );
-\t\$table->addColumn('$table_idx_name', Table::TYPE_INTEGER, NULL, 
-\t                    [ 'identity' => TRUE, 'primary' => TRUE,
-\t                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ]);
+\t\$table->addColumn('$table_idx_name', Table::TYPE_INTEGER, 11, [ 'identity' => TRUE, 'primary' => TRUE, 'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ]);
 \t\$table->addColumn('scope', Table::TYPE_TEXT, 8);
 \t\$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
-\t\$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
-\t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
-\t\$table->addColumn('is_failed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
+\t\$table->addColumn('processed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
+\t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+\t\$table->addColumn('is_failed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
 
 CODE;
         foreach ($property_types as $raw_name => $type) {
             $name    = $raw_name;
-            $size    = null;
+            $length  = null;
             $default = 'null';
 
             (array_search($type, $simple_types) === false) and ($type = 'string');
             if ($type == 'int') {
                 $field_type = 'Table::TYPE_INTEGER';
+                $length     = 11;
             } elseif ($type == 'float') {
-                $field_type = 'Table::TYPE_FLOAT';
+                $field_type = 'Table::TYPE_DECIMAL';
+                $length     = "'20,4'";
             } elseif ($type == 'boolean') {
                 $field_type = 'Table::TYPE_BOOLEAN';
                 $default    = 0;
+                $length     = 1;
             } else {
                 $lower_name = strtolower($name);
                 if (strpos($lower_name, 'image64') === false) {
                     $field_type = 'Table::TYPE_TEXT';
+                    $length     = "''";
                 } else {
                     $field_type = 'Table::TYPE_BLOB';
-                    $size       = '25M';
+                    $length     = "'25M'";
                 }
             }
             if ($name == 'Id') {
@@ -172,14 +174,16 @@ CODE;
             $allColumnsArray[] = array(
                 'name'       => $name,
                 'field_type' => $field_type,
-                'default'    => $default
+                'default'    => $default,
+                'length'     => $length
             );
-            $method_body       .= "\t\$table->addColumn('$name' , $field_type, '$size');\n";
+            $method_body       .= "\t\$table->addColumn('$name' , $field_type, $length);\n";
         }
         $allColumnsArray[] = array(
             'name'       => 'is_failed',
             'field_type' => 'Table::TYPE_BOOLEAN',
-            'default'    => 0
+            'default'    => 0,
+            'length'     => 1
         );
         $method_body       .= <<<CODE
 \t\$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
@@ -191,7 +195,9 @@ CODE;
         foreach ($allColumnsArray as $column) {
             $comment     = ucfirst($column['name']);
             $method_body .= "\n\tif (\$connection->tableColumnExists(\$table_name, '" . $column['name'] . "' ) === false) {";
-            $method_body .= "\n\t\t\$connection->addColumn(\$table_name, '" . $column['name'] . "', ['default' => " . $column['default'] . ",'type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
+            $method_body .= "\n\t\t\$connection->addColumn(\$table_name, '" . $column['name'] . "', ['length' => " . $column['length'] . ",'default' => " . $column['default'] . ",'type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
+            $method_body .= "\t} else {";
+            $method_body .= "\n\t\t\$connection->modifyColumn(\$table_name, '" . $column['name'] . "', ['length' => " . $column['length'] . ",'default' => " . $column['default'] . ",'type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
             $method_body .= "\t}";
         }
         $method_body .= <<<CODE
