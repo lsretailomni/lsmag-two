@@ -25,7 +25,10 @@ class SyncImages extends ProductCreateTask
 
     public function execute()
     {
-        $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
+        $this->replicationHelper->updateConfigValue(
+            $this->replicationHelper->getDateTime(),
+            self::CONFIG_PATH_LAST_EXECUTE
+        );
         $this->logger->debug('Running SyncImages Task');
 
         $this->syncItemImages();
