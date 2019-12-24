@@ -87,7 +87,7 @@
             <schedule>*/5 * * * *</schedule>
         </job>
     </group>
-    <group id="reset_replications">
+    <group id="flat_replication">
         <job name="repl_inv_status_reset" instance="Ls\Replication\Cron\ResetReplInvStatusTask" method="execute">
             <schedule>0 0 * * *</schedule>
         </job>
