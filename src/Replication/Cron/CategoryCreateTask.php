@@ -242,7 +242,9 @@ class CategoryCreateTask
             $this->replHierarchyNodeRepository->save($hierarchyNode);
             // @codingStandardsIgnoreEnd
         }
-        return count($replHierarchyNodeRepository->getItems());
+        /** fetch updated items after processing to mark the status of the crons */
+        $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
+        return $replHierarchyNodeRepository->getTotalCount();
     }
 
     /**
@@ -330,7 +332,9 @@ class CategoryCreateTask
             $hierarchyNodeSub->setData('is_updated', 0);
             $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
         }
-        return count($replHierarchyNodeRepositorySub->getItems());
+        /** fetch updated items after processing to mark the status of the crons */
+        $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
+        return $replHierarchyNodeRepositorySub->getTotalCount();
     }
 
     /**
