@@ -139,6 +139,7 @@ class DiscountCreateTask
          * And the web store is being set in the Magento.
          * And we need to apply only those rules which are associated to the store assigned to it.
          */
+        $discountsLeftToProcess = 0;
         if ($this->lsr->isLSR()) {
             $this->replicationHelper->updateConfigValue(
                 $this->replicationHelper->getDateTime(),
@@ -224,22 +225,24 @@ class DiscountCreateTask
                 if ($reindexRules) {
                     $this->jobApply->applyAll();
                 }
-                $filtersStatus = [
-                    ['field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'],
-                    ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
-                ];
-                $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 2, 1);
-                /** @var ReplDiscountSearchResults $replDiscounts */
-                $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
-                if (!$replDiscountsTotal->getTotalCount()) {
-                    $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
-                } else {
-                    $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
-                }
+            }
+            $filtersStatus = [
+                ['field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'],
+                ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
+            ];
+            $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 2, 1);
+            /** @var ReplDiscountSearchResults $replDiscountsTotal */
+            $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
+            if (!$replDiscountsTotal->getTotalCount()) {
+                $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
+            } else {
+                $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
             }
             /* Delete the IsDeleted offers */
             $this->deleteOffers();
+            $discountsLeftToProcess = $replDiscountsTotal->getTotalCount();
         }
+        return $discountsLeftToProcess;
     }
 
     /**
@@ -251,8 +254,7 @@ class DiscountCreateTask
      */
     public function executeManually()
     {
-        $discountsLeftToProcess = 0;
-        $this->execute();
+        $discountsLeftToProcess = $this->execute();
         return [$discountsLeftToProcess];
     }
 

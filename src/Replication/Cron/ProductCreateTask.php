@@ -205,6 +205,9 @@ class ProductCreateTask
     /** @var Processor */
     public $imageProcessor;
 
+    /** @var int */
+    public $remainingRecords;
+
     /**
      * ProductCreateTask constructor.
      * @param Factory $factory
@@ -459,9 +462,8 @@ class ProductCreateTask
                     $this->itemRepository->save($item);
                 }
             }
-            if (count($items->getItems()) == 0) {
+            if ($items->getTotalCount() == 0) {
                 $this->caterItemsRemoval();
-                $this->cronStatus             = true;
                 $fullReplicationVariantStatus = $this->lsr->getStoreConfig(
                     ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS
                 );
@@ -470,6 +472,9 @@ class ProductCreateTask
                     $this->caterVariantsRemoval();
                 }
                 $this->updateBarcodeOnly();
+            }
+            if($this->getRemainingRecords() == 0){
+                $this->cronStatus             = true;
             }
             $this->logger->debug('End ProductCreateTask');
         } else {
@@ -495,9 +500,7 @@ class ProductCreateTask
     public function executeManually()
     {
         $this->execute();
-        $criteria           = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1);
-        $items              = $this->itemRepository->getList($criteria);
-        $itemsLeftToProcess = count($items->getItems());
+        $itemsLeftToProcess =   (int) $this->getRemainingRecords();
         return [$itemsLeftToProcess];
     }
 
@@ -1321,5 +1324,18 @@ class ProductCreateTask
             (($d4) ? '-' . $d4 : '') . (($d5) ? '-' . $d5 : '') . (($d6) ? '-' . $d6 : '');
         $name    = $item->getDescription() . $dMerged;
         return $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingRecords()
+    {
+        if (!$this->remainingRecords) {
+            $criteria               = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 2);
+            $this->remainingRecords = $this->itemRepository->getList($criteria)->getTotalCount();
+        }
+        return $this->remainingRecords;
+
     }
 }

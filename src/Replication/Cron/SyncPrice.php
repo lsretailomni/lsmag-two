@@ -22,78 +22,86 @@ class SyncPrice extends ProductCreateTask
     /** @var bool */
     public $cronStatus = false;
 
+    /** @var int */
+    public $remainingRecords;
+
     public function execute()
     {
-        $this->replicationHelper->updateConfigValue(
-            $this->replicationHelper->getDateTime(),
-            self::CONFIG_PATH_LAST_EXECUTE
-        );
-        $this->logger->debug('Running SyncPrice Task');
-        $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+        if ($this->lsr->isLSR()) {
+            $this->replicationHelper->updateConfigValue(
+                $this->replicationHelper->getDateTime(),
+                self::CONFIG_PATH_LAST_EXECUTE
+            );
+            $this->logger->debug('Running SyncPrice Task');
+            $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
 
-        $productPricesBatchSize = $this->replicationHelper->getProductPricesBatchSize();
+            $productPricesBatchSize = $this->replicationHelper->getProductPricesBatchSize();
 
-        /** Get list of only those prices whose items are already processed */
-        $filters = [
-            ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq'],
-            ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
-        ];
+            /** Get list of only those prices whose items are already processed */
+            $filters = [
+                ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq'],
+                ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
+            ];
 
-        $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-            $filters,
-            $productPricesBatchSize,
-            1
-        );
-        $collection = $this->replPriceCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
-            $collection,
-            $criteria,
-            'ItemId',
-            'ls_replication_repl_item',
-            'nav_id'
-        );
-        if ($collection->getSize() > 0) {
-            /** @var ReplPrice $replPrice */
-            foreach ($collection as $replPrice) {
-                try {
-                    if (!$replPrice->getVariantId()) {
-                        $sku = $replPrice->getItemId();
-                    } else {
-                        $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
-                    }
-                    $productData = $this->productRepository->get($sku);
-                    if (isset($productData)) {
-                        $productData->setPrice($replPrice->getUnitPrice());
-                        // @codingStandardsIgnoreStart
-                        $this->productResourceModel->saveAttribute($productData, 'price');
-                        // @codingStandardsIgnoreEnd
-                        if ($productData->getTypeId() == 'configurable') {
-                            $_children = $productData->getTypeInstance()->getUsedProducts($productData);
-                            foreach ($_children as $child) {
-                                $childProductData = $this->productRepository->get($child->getSKU());
-                                $childProductData->setPrice($replPrice->getUnitPrice());
-                                // @codingStandardsIgnoreStart
-                                $this->productResourceModel->saveAttribute($childProductData, 'price');
-                                // @codingStandardsIgnoreEnd
+            $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+                $filters,
+                $productPricesBatchSize,
+                1
+            );
+            $collection = $this->replPriceCollectionFactory->create();
+            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+                $collection,
+                $criteria,
+                'ItemId',
+                'ls_replication_repl_item',
+                'nav_id'
+            );
+            if ($collection->getSize() > 0) {
+                /** @var ReplPrice $replPrice */
+                foreach ($collection as $replPrice) {
+                    try {
+                        if (!$replPrice->getVariantId()) {
+                            $sku = $replPrice->getItemId();
+                        } else {
+                            $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
+                        }
+                        $productData = $this->productRepository->get($sku);
+                        if (isset($productData)) {
+                            $productData->setPrice($replPrice->getUnitPrice());
+                            // @codingStandardsIgnoreStart
+                            $this->productResourceModel->saveAttribute($productData, 'price');
+                            // @codingStandardsIgnoreEnd
+                            if ($productData->getTypeId() == 'configurable') {
+                                $_children = $productData->getTypeInstance()->getUsedProducts($productData);
+                                foreach ($_children as $child) {
+                                    $childProductData = $this->productRepository->get($child->getSKU());
+                                    $childProductData->setPrice($replPrice->getUnitPrice());
+                                    // @codingStandardsIgnoreStart
+                                    $this->productResourceModel->saveAttribute($childProductData, 'price');
+                                    // @codingStandardsIgnoreEnd
+                                }
                             }
                         }
+                    } catch (Exception $e) {
+                        $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                        $this->logger->debug($e->getMessage());
+                        $replPrice->setData('is_failed', 1);
                     }
-                } catch (Exception $e) {
-                    $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
-                    $this->logger->debug($e->getMessage());
-                    $replPrice->setData('is_failed', 1);
+                    $replPrice->setData('is_updated', 0);
+                    $replPrice->setData('processed', 1);
+                    $this->replPriceRepository->save($replPrice);
                 }
-                $replPrice->setData('is_updated', 0);
-                $replPrice->setData('processed', 1);
-                $this->replPriceRepository->save($replPrice);
+                $remainingItems = (int)$this->getRemainingRecords();
+                if ($remainingItems == 0) {
+                    $this->cronStatus = true;
+                }
+            } else {
+                $this->cronStatus = true;
             }
+            $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT_PRICE);
+            $this->logger->debug('End SyncPrice Task');
         }
-        if (count($collection->getItems()) == 0) {
-            $this->cronStatus = true;
-        }
-        $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT_PRICE);
-        $this->logger->debug('End SyncPrice Task');
     }
 
     /**
@@ -106,26 +114,37 @@ class SyncPrice extends ProductCreateTask
     public function executeManually()
     {
         $this->execute();
-        $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
-        /** Get list of only those prices whose items are already processed */
-        $filters = [
-            ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq'],
-            ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
-        ];
-
-        $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-            $filters
-        );
-        $collection = $this->replPriceCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
-            $collection,
-            $criteria,
-            'ItemId',
-            'ls_replication_repl_item',
-            'nav_id'
-        );
-        $itemsLeftToProcess = count($collection->getItems());
+        $itemsLeftToProcess = (int)$this->getRemainingRecords();
         return [$itemsLeftToProcess];
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingRecords()
+    {
+        if (!$this->remainingRecords) {
+            $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+            /** Get list of only those prices whose items are already processed */
+            $filters = [
+                ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq'],
+                ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
+            ];
+
+            $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+                $filters
+            );
+            $collection = $this->replPriceCollectionFactory->create();
+            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+                $collection,
+                $criteria,
+                'ItemId',
+                'ls_replication_repl_item',
+                'nav_id'
+            );
+            $this->remainingRecords = $collection->getSize();
+        }
+        return $this->remainingRecords;
     }
 }
