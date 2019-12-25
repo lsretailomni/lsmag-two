@@ -14,6 +14,7 @@ use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
 use \Ls\Replication\Model\ReplAttributeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Logger\Logger;
+use Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
@@ -166,11 +167,10 @@ class AttributesCreateTask
     public function executeManually()
     {
         $this->execute();
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
-        /** @var ReplAttributeSearchResults $replAttributes */
-        $replAttributes     = $this->replAttributeRepositoryInterface->getList($criteria);
-        $itemsLeftToProcess = count($replAttributes->getItems());
-        return [$itemsLeftToProcess];
+
+        $remainingAttributes = (int)$this->getRemainingAttributesToProcess();
+        $remainingVariants   = (int)$this->getRemainingVariantsToProcess();
+        return [$remainingAttributes + $remainingVariants];
     }
 
     /**
@@ -178,8 +178,9 @@ class AttributesCreateTask
      */
     public function processAttributes()
     {
+        $BatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         try {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1, 1);
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $BatchSize, 1);
 
             /** @var ReplAttributeSearchResults $replAttributes */
             $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
@@ -197,7 +198,10 @@ class AttributesCreateTask
                     $this->addAttributeOptions($replAttribute->getCode());
                 }
             }
-            if (count($replAttributes->getItems()) == 0) {
+
+            /** Calculating againt to get the remaining items after proecssing the records in order to set the status of the job */
+            $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
+            if ($replAttributes->getTotalCount() == 0) {
                 $this->successCronAttribute = true;
             }
         } catch (Exception $e) {
@@ -251,7 +255,7 @@ class AttributesCreateTask
      */
     public function processVariantAttributes()
     {
-        $variantBatchSize = $this->replicationHelper->getVariantBatchSize();
+        $variantBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $this->logger->debug('Running variants create task');
         /** @var default attribute set id for catalog_product $defaultAttributeSetId */
         $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
@@ -350,7 +354,10 @@ class AttributesCreateTask
                 }
             }
         }
-        if (count($variants) === 0) {
+        /** fetching the list again to get the remaining records yet to process in order to set the cron job status */
+        /** @var ReplExtendedVariantValueSearchResults $remainingVariants */
+        $remainingVariants = $this->replExtendedVariantValueRepository->getList($criteria);
+        if ($remainingVariants->getTotalCount() == 0) {
             $this->successCronAttributeVariant = true;
         }
         $this->logger->debug('Finished variants create task.');
@@ -556,5 +563,29 @@ class AttributesCreateTask
             }
         }
         return $optimizedArray;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingAttributesToProcess()
+    {
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+        /** @var ReplAttributeSearchResults $replAttributes */
+        $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
+        return $replAttributes->getTotalCount();
+
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingVariantsToProcess()
+    {
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
+        /** @var ReplExtendedVariantValueSearchResults $replvariants */
+        $replvariants = $this->replExtendedVariantValueRepository->getList($criteria);
+        return $replvariants->getTotalCount();
+
     }
 }

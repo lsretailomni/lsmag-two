@@ -674,6 +674,7 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * To be used only for Processing attributes and varaints in the AttributeCreate Task
      * @return string
      */
     public function getProductAttributeBatchSize()
@@ -722,6 +723,7 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * To be used only for creating varaint based products.
      * @return string
      */
     public function getVariantBatchSize()
