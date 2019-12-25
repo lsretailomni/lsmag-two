@@ -259,6 +259,9 @@ class CategoryCreateTask
             $HierarchyCodeSpecificFilter
         ];
         $criteriaSub             = $this->replicationHelper->buildCriteriaForArray($filtersSub, -1);
+        $criteriaSub->setSortOrders(
+            [$this->replicationHelper->getSortOrderObject('Indentation')]
+        );
         /** @var ReplHierarchyNodeSearchResults $replHierarchyNodeRepositorySub */
         $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
         /** @var ReplHierarchyNode $hierarchyNodeSub */
