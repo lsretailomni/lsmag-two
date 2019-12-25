@@ -93,6 +93,12 @@ class AttributesCreateTask
      */
     public $eavEntity;
 
+    /** @var int */
+    public $remainingAttributesCount;
+
+    /** @var int */
+    public $remainingVariantsCount;
+
     /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
@@ -192,16 +198,18 @@ class AttributesCreateTask
             $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
 
             /** @var ReplAttribute $replAttribute */
-            foreach ($replAttributes->getItems() as $replAttribute) {
-                $this->createAttributeByObject($replAttribute, $defaultAttributeSetId, $defaultGroupId);
-                if ($replAttribute->getValueType() == '5' || $replAttribute->getValueType() == '7') {
-                    $this->addAttributeOptions($replAttribute->getCode());
+            if ($replAttributes->getTotalCount() > 0) {
+                foreach ($replAttributes->getItems() as $replAttribute) {
+                    $this->createAttributeByObject($replAttribute, $defaultAttributeSetId, $defaultGroupId);
+                    if ($replAttribute->getValueType() == '5' || $replAttribute->getValueType() == '7') {
+                        $this->addAttributeOptions($replAttribute->getCode());
+                    }
                 }
-            }
-
-            /** Calculating againt to get the remaining items after proecssing the records in order to set the status of the job */
-            $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
-            if ($replAttributes->getTotalCount() == 0) {
+                $remainingAttributes = (int)$this->getRemainingAttributesToProcess();
+                if ($remainingAttributes == 0) {
+                    $this->successCronAttribute = true;
+                }
+            } else {
                 $this->successCronAttribute = true;
             }
         } catch (Exception $e) {
@@ -262,102 +270,107 @@ class AttributesCreateTask
         /** @var default group id of general tab for specific product attribute set $defaultGroupId */
         $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
 
-        $criteria     = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $variantBatchSize, 1);
-        $variants     = $this->replExtendedVariantValueRepository->getList($criteria)->getItems();
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $variantBatchSize, 1);
+        /** @var ReplExtendedVariantValueSearchResults $variants */
+        $variants     = $this->replExtendedVariantValueRepository->getList($criteria);
         $variantCodes = [];
-        /** @var ReplExtendedVariantValue $variant */
-        foreach ($variants as $variant) {
-            if (empty($variantCodes[$variant->getCode()]) ||
-                !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)
-            ) {
-                $variantCodes[$variant->getCode()][] = $variant->getValue();
-            }
-            $variant->setData('processed', 1);
-            $variant->setData('is_updated', 0);
-            // @codingStandardsIgnoreLine
-            $this->replExtendedVariantValueRepository->save($variant);
-        }
-        foreach ($variantCodes as $code => $value) {
-            $formattedCode = $this->replicationHelper->formatAttributeCode($code);
-            $attribute     = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
-            if (!$attribute || !$attribute->getAttributeId()) {
-                $attributeData = [
-                    'attribute_code'                => $formattedCode,
-                    'is_global'                     => 1,
-                    'frontend_label'                => ucwords(strtolower($code)),
-                    'frontend_input'                => 'select',
-                    'default_value_text'            => '',
-                    'default_value_yesno'           => 0,
-                    'default_value_date'            => '',
-                    'default_value_textarea'        => '',
-                    'is_unique'                     => 0,
-                    'apply_to'                      => 0,
-                    'is_required'                   => 0,
-                    'is_configurable'               => 1,
-                    'is_searchable'                 => 1,
-                    'is_comparable'                 => 1,
-                    'is_user_defined'               => 1,
-                    'is_visible_in_advanced_search' => 1,
-                    'is_used_for_price_rules'       => 0,
-                    'is_wysiwyg_enabled'            => 0,
-                    'is_html_allowed_on_front'      => 1,
-                    'is_visible_on_front'           => 1,
-                    'used_in_product_listing'       => 0,
-                    'used_for_sort_by'              => 1,
-                    'is_filterable'                 => 1,
-                    'is_filterable_in_search'       => 1,
-                    'backend_type'                  => 'varchar',
-                    'is_used_in_grid'               => 1,
-                    'is_visible_in_grid'            => 1,
-                    'is_filterable_in_grid'         => 1,
-                    'attribute_set_id'              => $defaultAttributeSetId,
-                    'attribute_group_id'            => $defaultGroupId
-                ];
-                try {
-                    // @codingStandardsIgnoreStart
-                    $this->eavAttributeFactory->create()
-                        ->addData($attributeData)
-                        ->setEntityTypeId($this->getEntityTypeId(Product::ENTITY))
-                        ->save();
-                    // @codingStandardsIgnoreEnd
-                } catch (Exception $e) {
-                    $this->logger->debug($e->getMessage());
+        if ($variants->getTotalCount() > 0) {
+            /** @var ReplExtendedVariantValue $variant */
+            foreach ($variants->getItems() as $variant) {
+                if (empty($variantCodes[$variant->getCode()]) ||
+                    !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)
+                ) {
+                    $variantCodes[$variant->getCode()][] = $variant->getValue();
                 }
+                $variant->setData('processed', 1);
+                $variant->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
+                $this->replExtendedVariantValueRepository->save($variant);
             }
-
-            $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
-            $newOptionsArray = [];
-            if (empty($existingOptions)) {
-                sort($value);
-                $this->eavSetupFactory->create()
-                    ->addAttributeOption(
-                        [
-                            'values'       => $value,
-                            'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
-                        ]
-                    );
-            } elseif (!empty($value)) {
-                foreach ($value as $k => $v) {
-                    if (!in_array($v, $existingOptions, true)) {
-                        $newOptionsArray[] = $v;
+            foreach ($variantCodes as $code => $value) {
+                $formattedCode = $this->replicationHelper->formatAttributeCode($code);
+                $attribute     = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
+                if (!$attribute || !$attribute->getAttributeId()) {
+                    $attributeData = [
+                        'attribute_code'                => $formattedCode,
+                        'is_global'                     => 1,
+                        'frontend_label'                => ucwords(strtolower($code)),
+                        'frontend_input'                => 'select',
+                        'default_value_text'            => '',
+                        'default_value_yesno'           => 0,
+                        'default_value_date'            => '',
+                        'default_value_textarea'        => '',
+                        'is_unique'                     => 0,
+                        'apply_to'                      => 0,
+                        'is_required'                   => 0,
+                        'is_configurable'               => 1,
+                        'is_searchable'                 => 1,
+                        'is_comparable'                 => 1,
+                        'is_user_defined'               => 1,
+                        'is_visible_in_advanced_search' => 1,
+                        'is_used_for_price_rules'       => 0,
+                        'is_wysiwyg_enabled'            => 0,
+                        'is_html_allowed_on_front'      => 1,
+                        'is_visible_on_front'           => 1,
+                        'used_in_product_listing'       => 0,
+                        'used_for_sort_by'              => 1,
+                        'is_filterable'                 => 1,
+                        'is_filterable_in_search'       => 1,
+                        'backend_type'                  => 'varchar',
+                        'is_used_in_grid'               => 1,
+                        'is_visible_in_grid'            => 1,
+                        'is_filterable_in_grid'         => 1,
+                        'attribute_set_id'              => $defaultAttributeSetId,
+                        'attribute_group_id'            => $defaultGroupId
+                    ];
+                    try {
+                        // @codingStandardsIgnoreStart
+                        $this->eavAttributeFactory->create()
+                            ->addData($attributeData)
+                            ->setEntityTypeId($this->getEntityTypeId(Product::ENTITY))
+                            ->save();
+                        // @codingStandardsIgnoreEnd
+                    } catch (Exception $e) {
+                        $this->logger->debug($e->getMessage());
                     }
                 }
-                if (!empty($newOptionsArray)) {
+
+                $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
+                $newOptionsArray = [];
+                if (empty($existingOptions)) {
+                    sort($value);
                     $this->eavSetupFactory->create()
                         ->addAttributeOption(
                             [
-                                'values'       => $newOptionsArray,
+                                'values'       => $value,
                                 'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
                             ]
                         );
-                    $this->updateOptions($formattedCode);
+                } elseif (!empty($value)) {
+                    foreach ($value as $k => $v) {
+                        if (!in_array($v, $existingOptions, true)) {
+                            $newOptionsArray[] = $v;
+                        }
+                    }
+                    if (!empty($newOptionsArray)) {
+                        $this->eavSetupFactory->create()
+                            ->addAttributeOption(
+                                [
+                                    'values'       => $newOptionsArray,
+                                    'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
+                                ]
+                            );
+                        $this->updateOptions($formattedCode);
+                    }
                 }
             }
-        }
-        /** fetching the list again to get the remaining records yet to process in order to set the cron job status */
-        /** @var ReplExtendedVariantValueSearchResults $remainingVariants */
-        $remainingVariants = $this->replExtendedVariantValueRepository->getList($criteria);
-        if ($remainingVariants->getTotalCount() == 0) {
+            /** fetching the list again to get the remaining records yet to process in order to set the cron job status */
+
+            $remainingVariants = (int)$this->getRemainingVariantsToProcess();
+            if ($remainingVariants == 0) {
+                $this->successCronAttributeVariant = true;
+            }
+        } else {
             $this->successCronAttributeVariant = true;
         }
         $this->logger->debug('Finished variants create task.');
@@ -570,10 +583,12 @@ class AttributesCreateTask
      */
     public function getRemainingAttributesToProcess()
     {
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
-        /** @var ReplAttributeSearchResults $replAttributes */
-        $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
-        return $replAttributes->getTotalCount();
+        if (!$this->remainingAttributesCount) {
+            $criteria                       = $this->replicationHelper->buildCriteriaForNewItems();
+            $this->remainingAttributesCount = $this->replAttributeRepositoryInterface->getList($criteria)
+                ->getTotalCount();
+        }
+        return $this->remainingAttributesCount;
 
     }
 
@@ -582,10 +597,11 @@ class AttributesCreateTask
      */
     public function getRemainingVariantsToProcess()
     {
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems();
-        /** @var ReplExtendedVariantValueSearchResults $replvariants */
-        $replvariants = $this->replExtendedVariantValueRepository->getList($criteria);
-        return $replvariants->getTotalCount();
-
+        if (!$this->remainingVariantsCount) {
+            $criteria                     = $this->replicationHelper->buildCriteriaForNewItems();
+            $this->remainingVariantsCount = $this->replExtendedVariantValueRepository->getList($criteria)
+                ->getTotalCount();
+        }
+        return $this->remainingVariantsCount;
     }
 }
