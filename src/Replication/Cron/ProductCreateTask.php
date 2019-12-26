@@ -3,37 +3,37 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\ImageSize;
-use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Omni\Helper\StockHelper;
-use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use \Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
-use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use \Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
-use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
-use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
-use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
-use \Ls\Replication\Model\ReplAttributeValue;
-use \Ls\Replication\Model\ReplAttributeValueSearchResults;
-use \Ls\Replication\Model\ReplBarcode;
-use \Ls\Replication\Model\ReplBarcodeSearchResults;
-use \Ls\Replication\Model\ReplExtendedVariantValue;
-use \Ls\Replication\Model\ReplImageLink;
-use \Ls\Replication\Model\ReplImageLinkSearchResults;
-use \Ls\Replication\Model\ReplInvStatus;
-use \Ls\Replication\Model\ReplItem;
-use \Ls\Replication\Model\ReplItemSearchResults;
-use \Ls\Replication\Model\ReplItemVariantRegistration;
-use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
-use \Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
-use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
-use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\ImageSize;
+use Ls\Omni\Helper\LoyaltyHelper;
+use Ls\Omni\Helper\StockHelper;
+use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
+use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
+use Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
+use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
+use Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
+use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Replication\Logger\Logger;
+use Ls\Replication\Model\ReplAttributeValue;
+use Ls\Replication\Model\ReplAttributeValueSearchResults;
+use Ls\Replication\Model\ReplBarcode;
+use Ls\Replication\Model\ReplBarcodeSearchResults;
+use Ls\Replication\Model\ReplExtendedVariantValue;
+use Ls\Replication\Model\ReplImageLink;
+use Ls\Replication\Model\ReplImageLinkSearchResults;
+use Ls\Replication\Model\ReplInvStatus;
+use Ls\Replication\Model\ReplItem;
+use Ls\Replication\Model\ReplItemSearchResults;
+use Ls\Replication\Model\ReplItemVariantRegistration;
+use Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
+use Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
+use Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
+use Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -42,10 +42,13 @@ use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Attribute\Backend\Media\EntryConverterPool;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Gallery\Processor;
+use Magento\Catalog\Model\Product\Gallery\UpdateHandler;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
+use Magento\Catalog\Model\ProductRepository\MediaGalleryProcessor;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute\Interceptor;
 use Magento\CatalogInventory\Api\StockRegistryInterface;
@@ -206,6 +209,20 @@ class ProductCreateTask
     public $imageProcessor;
 
     /**
+     * @var MediaGalleryProcessor
+     */
+    public $mediaGalleryProcessor;
+
+    /**
+     * @var UpdateHandler
+     */
+    public $updateHandler;
+    /**
+     * @var EntryConverterPool
+     */
+    public $entryConverterPool;
+
+    /**
      * ProductCreateTask constructor.
      * @param Factory $factory
      * @param Item $item
@@ -248,6 +265,9 @@ class ProductCreateTask
      * @param CollectionFactory $collectionFactory
      * @param ReplImageLinkCollectionFactory $replImageLinkCollectionFactory
      * @param Processor $imageProcessor
+     * @param MediaGalleryProcessor $mediaGalleryProcessor
+     * @param UpdateHandler $updateHandler
+     * @param EntryConverterPool $entryConverterPool
      */
     public function __construct(
         Factory $factory,
@@ -290,15 +310,18 @@ class ProductCreateTask
         CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
         CollectionFactory $collectionFactory,
         ReplImageLinkCollectionFactory $replImageLinkCollectionFactory,
-        Processor $imageProcessor
+        Processor $imageProcessor,
+        MediaGalleryProcessor $mediaGalleryProcessor,
+        UpdateHandler $updateHandler,
+        EntryConverterPool $entryConverterPool
     ) {
-        $this->factory                               = $factory;
-        $this->item                                  = $item;
-        $this->eavConfig                             = $eavConfig;
-        $this->configurable                          = $configurable;
-        $this->attribute                             = $attribute;
-        $this->productFactory                        = $productInterfaceFactory;
-        $this->productRepository                     = $productRepository;
+        $this->factory                         = $factory;
+        $this->item                            = $item;
+        $this->eavConfig                       = $eavConfig;
+        $this->configurable                    = $configurable;
+        $this->attribute                       = $attribute;
+        $this->productFactory                  = $productInterfaceFactory;
+        $this->productRepository               = $productRepository;
         $this->attributeMediaGalleryEntry            = $attributeMediaGalleryEntry;
         $this->imageContent                          = $imageContent;
         $this->categoryCollectionFactory             = $categoryCollectionFactory;
@@ -326,13 +349,16 @@ class ProductCreateTask
         $this->replInvStatusCollectionFactory        = $replInvStatusCollectionFactory;
         $this->replPriceCollectionFactory            = $replPriceCollectionFactory;
         $this->replHierarchyLeafCollectionFactory    = $replHierarchyLeafCollectionFactory;
-        $this->productResourceModel                  = $productResourceModel;
-        $this->stockRegistry                         = $stockRegistry;
-        $this->categoryLinkRepositoryInterface       = $categoryLinkRepositoryInterface;
-        $this->collectionFactory                     = $collectionFactory;
-        $this->categoryRepository                    = $categoryRepository;
-        $this->replImageLinkCollectionFactory        = $replImageLinkCollectionFactory;
-        $this->imageProcessor                        = $imageProcessor;
+        $this->productResourceModel            = $productResourceModel;
+        $this->stockRegistry                   = $stockRegistry;
+        $this->categoryLinkRepositoryInterface = $categoryLinkRepositoryInterface;
+        $this->collectionFactory               = $collectionFactory;
+        $this->categoryRepository              = $categoryRepository;
+        $this->replImageLinkCollectionFactory  = $replImageLinkCollectionFactory;
+        $this->imageProcessor                  = $imageProcessor;
+        $this->mediaGalleryProcessor           = $mediaGalleryProcessor;
+        $this->updateHandler                   = $updateHandler;
+        $this->entryConverterPool              = $entryConverterPool;
     }
 
     /**
