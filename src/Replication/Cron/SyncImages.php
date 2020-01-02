@@ -91,7 +91,7 @@ class SyncImages extends ProductCreateTask
             'nav_id',
             true
         );
-        $collection->getSelect()->order('main_table.processed '. "ASC");
+        $collection->getSelect()->order('main_table.processed ' . "ASC");
         if ($collection->getSize() > 0) {
             // right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
@@ -121,9 +121,10 @@ class SyncImages extends ProductCreateTask
                     // check if any variant for that product has image to process.
                     // check for variant new images.
                     $filtersforvariantImages = [
-                        ['field'          => 'KeyValue',
-                         'value'          => $itemImage->getKeyValue() . ',%',
-                         'condition_type' => 'like'
+                        [
+                            'field'          => 'KeyValue',
+                            'value'          => $itemImage->getKeyValue() . ',%',
+                            'condition_type' => 'like'
                         ],
                         ['field' => 'TableName', 'value' => 'Item Variant', 'condition_type' => 'eq']
                     ];
@@ -256,6 +257,7 @@ class SyncImages extends ProductCreateTask
             $this->updateHandler->execute($productData);
         }
     }
+
     /**
      * @param array $mediaGalleryEntries
      * @return array
