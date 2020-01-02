@@ -196,7 +196,7 @@ class LoyaltyHelper extends AbstractHelper
                 $cacheId,
                 ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()],
                 [Type::CACHE_TAG],
-                172800
+                604800
             );
             return ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()];
         }

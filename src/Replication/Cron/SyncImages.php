@@ -5,8 +5,12 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplImageLink;
-use Magento\Catalog\Api\ProductRepositoryInterface;
+use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\StateException;
 
 /**
  * Class SyncInventory
@@ -33,6 +37,7 @@ class SyncImages extends ProductCreateTask
                 $this->replicationHelper->getDateTime(),
                 self::CONFIG_PATH_LAST_EXECUTE
             );
+            $this->replicationHelper->setEnvVariables();
             $this->logger->debug('Running SyncImages Task');
 
             $this->syncItemImages();
@@ -44,7 +49,10 @@ class SyncImages extends ProductCreateTask
 
     /**
      * @return array
+     * @throws CouldNotSaveException
      * @throws InputException
+     * @throws LocalizedException
+     * @throws StateException
      */
     public function executeManually()
     {
@@ -83,24 +91,15 @@ class SyncImages extends ProductCreateTask
             'nav_id',
             true
         );
-        $collection->getSelect()->order('main_table.processed ' . "ASC");
+        $collection->getSelect()->order('main_table.processed '. "ASC");
         if ($collection->getSize() > 0) {
             // right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
             foreach ($collection->getItems() as $itemImage) {
                 $productImages = [];
                 try {
-                    $productData = $this->productRepository->get($itemImage->getKeyValue());
-                    // get existing product images.
-                    $productImages = $productData->getMediaGalleryEntries();
-
-
-                    if (!empty($productImages)) {
-                        foreach ($productImages as $key => $existingImage) {
-                            $this->imageProcessor->removeImage($productData, $existingImage->getFile());
-                            unset($productImages[$key]);
-                        }
-                    }
+                    /* @var ProductInterface $productData */
+                    $productData = $this->productRepository->get($itemImage->getKeyValue(), true, null, true);
                     // check for new images.
                     $filtersforallImages  = [
                         ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
@@ -113,13 +112,11 @@ class SyncImages extends ProductCreateTask
                     )->setSortOrders([$sortOrder]);
 
 
-                    /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $newImagestoProcess */
+                    /** @var ReplImageLinkSearchResults $newImagestoProcess */
                     $newImagestoProcess = $this->replImageLinkRepositoryInterface->getList($criteriaforallImages);
                     if ($newImagestoProcess->getTotalCount() > 0) {
-                        $productImages = $this->getMediaGalleryEntries($newImagestoProcess->getItems());
+                        $this->processMediaGalleryImages($newImagestoProcess, $productData);
                     }
-                    $productData->setMediaGalleryEntries($productImages);
-                    $this->productRepository->save($productData);
 
                     // check if any variant for that product has image to process.
                     // check for variant new images.
@@ -136,7 +133,7 @@ class SyncImages extends ProductCreateTask
                         -1,
                         false
                     );
-                    /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $newVaraintImagestoProcess */
+                    /** @var ReplImageLinkSearchResults $newVaraintImagestoProcess */
                     $newVaraintImagestoProcess = $this->replImageLinkRepositoryInterface->getList(
                         $criteriaforallVariantImages
                     );
@@ -150,20 +147,8 @@ class SyncImages extends ProductCreateTask
                             $item = $image->getKeyValue();
                             $item = str_replace(',', '-', $item);
                             try {
-                                /* @var ProductRepositoryInterface $variantProductData */
-                                $variantProductData = $this->productRepository->get($item);
-                                // get existing product images.
-                                $variantproductImages = $variantProductData->getMediaGalleryEntries();
-
-                                if (!empty($variantproductImages)) {
-                                    foreach ($variantproductImages as $key => $existingImage) {
-                                        $this->imageProcessor->removeImage(
-                                            $variantProductData,
-                                            $existingImage->getFile()
-                                        );
-                                        unset($variantproductImages[$key]);
-                                    }
-                                }
+                                /* @var ProductInterface $variantProductData */
+                                $variantProductData = $this->productRepository->get($item, true, null, true);
 
                                 $filtersforvariantImagestoUpdate  = [
                                     ['field' => 'KeyValue', 'value' => $image->getKeyValue(), 'condition_type' => 'eq'],
@@ -176,18 +161,14 @@ class SyncImages extends ProductCreateTask
                                 )
                                     ->setSortOrders([$sortOrder]);
 
-                                /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $varaintImagestoupdate */
-                                $varaintImagestoupdate = $this->replImageLinkRepositoryInterface->getList(
+                                /** @var ReplImageLinkSearchResults $variantImagesToUpdate */
+                                $variantImagesToUpdate = $this->replImageLinkRepositoryInterface->getList(
                                     $criteriaforVariantImagestoUpdate
                                 );
 
-                                if ($varaintImagestoupdate->getTotalCount() > 0) {
-                                    $variantproductImages = $this->getMediaGalleryEntries(
-                                        $varaintImagestoupdate->getItems()
-                                    );
+                                if ($variantImagesToUpdate->getTotalCount() > 0) {
+                                    $this->processMediaGalleryImages($variantImagesToUpdate, $variantProductData);
                                 }
-                                $variantProductData->setMediaGalleryEntries($variantproductImages);
-                                $this->productRepository->save($variantProductData);
                             } catch (Exception $e) {
                                 $this->logger->debug('Problem with SKU : ' . $item . ' in ' . __METHOD__);
                                 $this->logger->debug($e->getMessage());
@@ -245,10 +226,55 @@ class SyncImages extends ProductCreateTask
         return $this->remainingRecords;
     }
 
+    /**
+     * @param ReplImageLinkSearchResults $imagesToUpdate
+     * @param ProductInterface $productData
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws StateException
+     */
+    public function processMediaGalleryImages($imagesToUpdate, $productData)
+    {
+        $encodedImages = [];
+        try {
+            $encodedImages = $this->getMediaGalleryEntries(
+                $imagesToUpdate->getItems()
+            );
+        } catch (Exception $e) {
+            $this->logger->debug(
+                'Problem getting encoded Images in : ' . __METHOD__
+            );
+            $this->logger->debug($e->getMessage());
+        }
+
+        if (!empty($encodedImages)) {
+            $encodedImages = $this->convertToRequiredFormat($encodedImages);
+            $this->mediaGalleryProcessor->processMediaGallery(
+                $productData,
+                $encodedImages
+            );
+            $this->updateHandler->execute($productData);
+        }
+    }
+    /**
+     * @param array $mediaGalleryEntries
+     * @return array
+     * @throws LocalizedException
+     */
+    public function convertToRequiredFormat(array $mediaGalleryEntries)
+    {
+        $images = [];
+        foreach ($mediaGalleryEntries as $entry) {
+            $images[] = $this->entryConverterPool
+                ->getConverterByMediaType($entry->getMediaType())
+                ->convertFrom($entry);
+        }
+        return $images;
+    }
+
     /** TODO reuse the logic and optimize the solution
      * DO NOT REMOVE THIS CODE
      */
-
     private function syncItemImagesOld()
     {
         $batchSize = $this->replicationHelper->getProductImagesBatchSize();
@@ -293,9 +319,8 @@ class SyncImages extends ProductCreateTask
                         ['field' => 'IsDeleted', 'value' => 1, 'condition_type' => 'eq']
 
                     ];
-                    $criteriaforDeleted = $this->replicationHelper->buildCriteriaForArray($filtersforDeleted, -1,
-                        false);
-                    /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $deletedImages */
+                    $criteriaforDeleted = $this->replicationHelper->buildCriteriaForArray($filtersforDeleted, -1, false);
+                    /** @var ReplImageLinkSearchResults $deletedImages */
                     $deletedImages = $this->replImageLinkRepositoryInterface->getList($criteriaforDeleted);
                     if ($deletedImages->getTotalCount() > 0) {
                         /** @var ReplImageLink $image */
@@ -328,7 +353,7 @@ class SyncImages extends ProductCreateTask
                         -1)
                         ->setSortOrders([$sortOrder]);
 
-                    /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $newImagestoProcess */
+                    /** @var ReplImageLinkSearchResults $newImagestoProcess */
                     $newImagestoProcess = $this->replImageLinkRepositoryInterface->getList($criteriaforNewOrUpdatedImages);
                     if ($newImagestoProcess->getTotalCount() > 0) {
                         /** @var ReplImageLink $image */

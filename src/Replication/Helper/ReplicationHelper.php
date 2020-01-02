@@ -32,7 +32,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
-use Psr\Log\LoggerInterface;
+use \Ls\Replication\Logger\Logger;
 
 /**
  * Class ReplicationHelper
@@ -91,10 +91,11 @@ class ReplicationHelper extends AbstractHelper
     /** @var DateTime */
     public $dateTime;
 
-    /**
-     * @var TimezoneInterface
-     */
+    /** @var TimezoneInterface */
     public $timezone;
+
+    /** @var Logger  */
+    public $_logger;
 
     /**
      * ReplicationHelper constructor.
@@ -114,6 +115,7 @@ class ReplicationHelper extends AbstractHelper
      * @param SortOrder $sortOrder
      * @param DateTime $date
      * @param TimezoneInterface $timezone
+     * @param Logger $_logger
      */
     public function __construct(
         Context $context,
@@ -131,7 +133,8 @@ class ReplicationHelper extends AbstractHelper
         ResourceConnection $resource,
         SortOrder $sortOrder,
         DateTime $date,
-        TimezoneInterface $timezone
+        TimezoneInterface $timezone,
+        Logger $_logger
     ) {
         $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
         $this->filterBuilder                    = $filterBuilder;
@@ -148,6 +151,7 @@ class ReplicationHelper extends AbstractHelper
         $this->sortOrder                        = $sortOrder;
         $this->dateTime                         = $date;
         $this->timezone                         = $timezone;
+        $this->_logger                          = $_logger;
         parent::__construct(
             $context
         );
@@ -573,8 +577,9 @@ class ReplicationHelper extends AbstractHelper
             0
         );
     }
+
     /**
-     * @return LoggerInterface
+     * @return Logger
      */
     public function getLogger()
     {
@@ -778,6 +783,7 @@ class ReplicationHelper extends AbstractHelper
         $imageName = pathinfo($imageName);
         return $imageName['filename'];
     }
+
     /**
      * @return string
      */
@@ -805,5 +811,23 @@ class ReplicationHelper extends AbstractHelper
             $formattedDate = $date->format($format);
         }
         return $formattedDate;
+    }
+
+    /**
+     * To set the environment variables for cron jobs
+     */
+    public function setEnvVariables()
+    {
+        $val1 = ini_get('max_execution_time');
+        $val2 = ini_get('memory_limit');
+        $this->_logger->debug('ENV Variables Values before:' . $val1 . ' ' . $val2);
+        // @codingStandardsIgnoreStart
+        @ini_set('max_execution_time', 3600);
+        @ini_set('memory_limit', -1);
+        // @codingStandardsIgnoreEnd
+        $val1 = ini_get('max_execution_time');
+        $val2 = ini_get('memory_limit');
+        $this->_logger->debug('ENV Variables Values after:' . $val1 . ' ' . $val2);
+
     }
 }
