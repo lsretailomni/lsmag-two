@@ -881,7 +881,8 @@ class ProductCreateTask
      */
     public function updateVariantsOnly()
     {
-        $allUpdatedvariants = $this->getNewOrUpdatedProductVariants();
+        $batchsize = $this->replicationHelper->getVariantBatchSize();
+        $allUpdatedvariants = $this->getNewOrUpdatedProductVariants($batchsize);
         if (!empty($allUpdatedvariants)) {
             try {
                 foreach ($allUpdatedvariants as $variant) {

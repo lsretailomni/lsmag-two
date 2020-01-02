@@ -26,6 +26,17 @@ class SyncImages extends ProductCreateTask
 
     public function execute()
     {
+        $val1 = ini_get('max_execution_time');
+        $val2 = ini_get('memory_limit');
+        $this->logger->debug('ENV Variables Values before:' . $val1 . ' ' . $val2);
+        // @codingStandardsIgnoreStart
+        @ini_set('max_execution_time', 3600);
+        @ini_set('memory_limit', -1);
+        // @codingStandardsIgnoreEnd
+        $val1 = ini_get('max_execution_time');
+        $val2 = ini_get('memory_limit');
+        $this->logger->debug('ENV Variables Values after:' . $val1 . ' ' . $val2);
+
         $this->replicationHelper->updateConfigValue(
             $this->replicationHelper->getDateTime(),
             self::CONFIG_PATH_LAST_EXECUTE
