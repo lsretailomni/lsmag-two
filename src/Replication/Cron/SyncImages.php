@@ -6,10 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplImageLink;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\StateException;
 
 /**
  * Class SyncInventory
@@ -47,10 +44,7 @@ class SyncImages extends ProductCreateTask
 
     /**
      * @return array
-     * @throws CouldNotSaveException
      * @throws InputException
-     * @throws LocalizedException
-     * @throws StateException
      */
     public function executeManually()
     {
@@ -130,7 +124,10 @@ class SyncImages extends ProductCreateTask
                     // check if any variant for that product has image to process.
                     // check for variant new images.
                     $filtersforvariantImages = [
-                        ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue() . ',%', 'condition_type' => 'like'],
+                        ['field'          => 'KeyValue',
+                         'value'          => $itemImage->getKeyValue() . ',%',
+                         'condition_type' => 'like'
+                        ],
                         ['field' => 'TableName', 'value' => 'Item Variant', 'condition_type' => 'eq']
                     ];
                     //if the item is processed, then its variant will deinately be processed, so not neeed to put seprate check on variants.
@@ -251,6 +248,7 @@ class SyncImages extends ProductCreateTask
     /** TODO reuse the logic and optimize the solution
      * DO NOT REMOVE THIS CODE
      */
+
     private function syncItemImagesOld()
     {
         $batchSize = $this->replicationHelper->getProductImagesBatchSize();
@@ -295,7 +293,8 @@ class SyncImages extends ProductCreateTask
                         ['field' => 'IsDeleted', 'value' => 1, 'condition_type' => 'eq']
 
                     ];
-                    $criteriaforDeleted = $this->replicationHelper->buildCriteriaForArray($filtersforDeleted, -1, false);
+                    $criteriaforDeleted = $this->replicationHelper->buildCriteriaForArray($filtersforDeleted, -1,
+                        false);
                     /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $deletedImages */
                     $deletedImages = $this->replImageLinkRepositoryInterface->getList($criteriaforDeleted);
                     if ($deletedImages->getTotalCount() > 0) {
@@ -325,7 +324,8 @@ class SyncImages extends ProductCreateTask
                         ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
                         ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq']
                     ];
-                    $criteriaforNewOrUpdatedImages = $this->replicationHelper->buildCriteriaForArray($filtersforNewOrUpdatedImages, -1)
+                    $criteriaforNewOrUpdatedImages = $this->replicationHelper->buildCriteriaForArray($filtersforNewOrUpdatedImages,
+                        -1)
                         ->setSortOrders([$sortOrder]);
 
                     /** @var \Ls\Replication\Model\ReplImageLinkSearchResults $newImagestoProcess */
@@ -346,5 +346,4 @@ class SyncImages extends ProductCreateTask
             }
         }
     }
-
 }

@@ -36,7 +36,7 @@ class SyncItemUpdates extends ProductCreateTask
             $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
             if (!empty($hierarchyCode)) {
                 $itemAssignmentCount         = $this->caterItemAssignmentToCategories();
-                $hierarchyLeafDeletedCounter = $this->caterHierarchyLeafRemoval($hierarchyCode);
+                $this->caterHierarchyLeafRemoval($hierarchyCode);
 
                 if ($itemAssignmentCount == 0) {
                     $this->cronStatus = true;
@@ -93,7 +93,6 @@ class SyncItemUpdates extends ProductCreateTask
         if ($collection->getSize() > 0) {
             foreach ($collection as $hierarchyLeaf) {
                 try {
-
                     $sku     = $hierarchyLeaf->getNavId();
                     $product = $this->productRepository->get($hierarchyLeaf->getNavId());
                     $this->assignProductToCategories($product);

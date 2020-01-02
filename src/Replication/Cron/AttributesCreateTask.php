@@ -14,7 +14,7 @@ use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
 use \Ls\Replication\Model\ReplAttributeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Logger\Logger;
-use Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
+use \Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
@@ -184,9 +184,9 @@ class AttributesCreateTask
      */
     public function processAttributes()
     {
-        $BatchSize = $this->replicationHelper->getProductAttributeBatchSize();
+        $batchSize = $this->replicationHelper->getProductAttributeBatchSize();
         try {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $BatchSize, 1);
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $batchSize, 1);
 
             /** @var ReplAttributeSearchResults $replAttributes */
             $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
@@ -218,7 +218,7 @@ class AttributesCreateTask
     }
 
     /**
-     * @return int
+     * Cater Attributes Removal
      */
     public function caterAttributesRemoval()
     {
@@ -589,7 +589,6 @@ class AttributesCreateTask
                 ->getTotalCount();
         }
         return $this->remainingAttributesCount;
-
     }
 
     /**

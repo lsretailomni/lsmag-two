@@ -390,11 +390,6 @@ class ProductCreateTask
                     $productData->setDescription($item->getDetails());
                     $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-                    /*                    $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
-                                        if ($productImages) {
-                                            $this->logger->debug('Found images for the item ' . $item->getNavId());
-                                            $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                        }*/
                     $product = $this->getProductAttributes($productData, $item);
                     try {
                         // @codingStandardsIgnoreLine
@@ -437,11 +432,6 @@ class ProductCreateTask
                         'is_in_stock'             => ($itemStock > 0) ? 1 : 0,
                         'qty'                     => $itemStock
                     ]);
-                    /*                    $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
-                                        if ($productImages) {
-                                            $this->logger->debug('Found images for the item ' . $item->getNavId());
-                                            $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                        }*/
                     $product = $this->getProductAttributes($product, $item);
                     try {
                         $this->logger->debug('Trying to save product ' . $item->getNavId());
@@ -473,7 +463,7 @@ class ProductCreateTask
                 }
                 $this->updateBarcodeOnly();
             }
-            if($this->getRemainingRecords() == 0){
+            if ($this->getRemainingRecords() == 0) {
                 $this->cronStatus             = true;
             }
             $this->logger->debug('End ProductCreateTask');
@@ -1136,14 +1126,6 @@ class ProductCreateTask
                     $productData->setDescription($item->getDetails());
                     $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute("uom", $value->getBaseUnitOfMeasure());
-                    /*                    $productImages = $this->replicationHelper->getImageLinksByType(
-                                            $value->getItemId() . ',' . $value->getVariantId(),
-                                            'Item Variant'
-                                        );
-                                        if ($productImages) {
-                                            $this->logger->debug('Found images for the simple product ' . $sku);
-                                            $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                        }*/
                     $productData->setStatus(Status::STATUS_ENABLED);
                     // @codingStandardsIgnoreLine
                     $this->productRepository->save($productData);
@@ -1210,13 +1192,6 @@ class ProductCreateTask
                         }
                     }
                 }
-                /*                $productImages = $this->replicationHelper
-                                    ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
-                                if ($productImages) {
-                                    $this->logger->debug('Found images for the simple product ' . $sku);
-                                    $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                }*/
-
                 $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                 if (isset($itemBarcodes[$sku])) {
                     $productV->setCustomAttribute('barcode', $itemBarcodes[$sku]);
@@ -1336,6 +1311,5 @@ class ProductCreateTask
             $this->remainingRecords = $this->itemRepository->getList($criteria)->getTotalCount();
         }
         return $this->remainingRecords;
-
     }
 }

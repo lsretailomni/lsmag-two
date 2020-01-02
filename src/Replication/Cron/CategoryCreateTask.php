@@ -21,6 +21,7 @@ use Magento\Catalog\Model\CategoryFactory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem\Io\File;
 
@@ -251,6 +252,7 @@ class CategoryCreateTask
      * @param $HierarchyCodeSpecificFilter
      * @param $mediaAttribute
      * @return int
+     * @throws InputException
      */
     public function caterSubCategoryHierarchyNodeAddOrUpdate($HierarchyCodeSpecificFilter, $mediaAttribute)
     {

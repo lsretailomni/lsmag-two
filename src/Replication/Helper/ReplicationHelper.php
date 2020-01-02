@@ -674,7 +674,7 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * To be used only for Processing attributes and varaints in the AttributeCreate Task
+     * To be used only for Processing attributes and variants in the AttributeCreate Task
      * @return string
      */
     public function getProductAttributeBatchSize()
@@ -723,7 +723,7 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * To be used only for creating varaint based products.
+     * To be used only for creating variants based products.
      * @return string
      */
     public function getVariantBatchSize()
@@ -769,10 +769,14 @@ class ReplicationHelper extends AbstractHelper
         return $this->sortOrder->setField($field)->setDirection($direction);
     }
 
-    public function parseImageIdfromFile($imagename = '')
+    /**
+     * @param string $imageName
+     * @return mixed
+     */
+    public function parseImageIdfromFile($imageName = '')
     {
-        $imagename = pathinfo($imagename);
-        return $imagename['filename'];
+        $imageName = pathinfo($imageName);
+        return $imageName['filename'];
     }
     /**
      * @return string
