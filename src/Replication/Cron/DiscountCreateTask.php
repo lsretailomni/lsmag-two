@@ -8,11 +8,11 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplDiscount;
 use \Ls\Replication\Model\ReplDiscountSearchResults;
 use \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
-use \Ls\Replication\Logger\Logger;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\CatalogRule\Model\Rule\Job;
@@ -38,6 +38,7 @@ class DiscountCreateTask
 
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
 
+    const DATE_FORMAT = 'Y-m-d';
     /**
      * @var CatalogRuleRepositoryInterface
      */
@@ -159,7 +160,7 @@ class DiscountCreateTask
                     $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1, 1);
                     /** @var ReplDiscountSearchResults $replDiscounts */
                     $replDiscounts  = $this->replDiscountRepository->getList($criteria);
-                    $skuAmountArray = $diffValueArray = $sameValueArray = [];
+                    $skuAmountArray = [];
                     if ($item->getLoyaltySchemeCode() == '' ||
                         $item->getLoyaltySchemeCode() == null
                     ) {
@@ -188,10 +189,10 @@ class DiscountCreateTask
                         if ($replDiscount->getVariantId() == '' ||
                             $replDiscount->getVariantId() == null
                         ) {
-                            $skuAmountArray[$replDiscount->getItemId()] = $replDiscount->getDiscountValue();
+                            $skuAmountArray[$replDiscount->getDiscountValue()][] = $replDiscount->getItemId();
                         } else {
-                            $skuAmountArray[$replDiscount->getItemId() . '-' .
-                            $replDiscount->getVariantId()] = $replDiscount->getDiscountValue();
+                            $skuAmountArray[$replDiscount->getDiscountValue()][] = $replDiscount->getItemId() . '-' .
+                                $replDiscount->getVariantId();
                         }
 
                         $replDiscount->setData('processed', '1');
@@ -201,23 +202,10 @@ class DiscountCreateTask
                         // @codingStandardsIgnoreEnd
                     }
 
-                    $counts         = array_count_values($skuAmountArray);
-                    $sameValueArray = array_filter($skuAmountArray, function ($value) use ($counts) {
-                        return $counts[$value] > 1;
-                    });
-
-                    $diffValueArray = array_filter($skuAmountArray, function ($value) use ($counts) {
-                        return $counts[$value] == 1;
-                    });
-
-                    if (!empty($diffValueArray)) {
-                        foreach ($diffValueArray as $key => $value) {
-                            $this->addSalesRule($item, array($key), $customerGroupIds, $value);
+                    if (!empty($skuAmountArray)) {
+                        foreach ($skuAmountArray as $value => $key) {
+                            $this->addSalesRule($item, array_unique($key), $customerGroupIds, $value);
                         }
-                        $reindexRules = true;
-                    }
-                    if (!empty($sameValueArray)) {
-                        $this->addSalesRule($item, array_keys($sameValueArray), $customerGroupIds);
                         $reindexRules = true;
                     }
                 }
@@ -293,7 +281,7 @@ class DiscountCreateTask
                 ->setWebsiteIds($websiteIds)
                 ->setFromDate($replDiscount->getFromDate());
             // Discounts for specific time
-            if (strtolower($replDiscount->getToDate()) != strtolower('1753-01-01T00:00:00')) {
+            if ($this->checkToDateSet($replDiscount->getToDate())) {
                 $rule->setToDate($replDiscount->getToDate());
             }
             /**
@@ -323,7 +311,9 @@ class DiscountCreateTask
             }
             try {
                 $rule->loadPost($rule->getData());
-                $this->catalogRule->save($rule);
+                if ($this->checkOfferExpiryDate($replDiscount->getToDate(), $replDiscount->getFromDate())) {
+                    $this->catalogRule->save($rule);
+                }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
                 $replDiscount->setData('is_failed', 1);
@@ -393,5 +383,40 @@ class DiscountCreateTask
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @return bool
+     * @throws Exception
+     */
+    public function checkOfferExpiryDate($fromDate, $toDate)
+    {
+        $format      = self::DATE_FORMAT;
+        $currentDate = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+            $this->replicationHelper->getDatetime(),
+            $format
+        );
+        if ($this->checkToDateSet($toDate)) {
+            if ((strtotime($currentDate) >= strtotime($toDate)) && (strtotime($currentDate) <= strtotime($fromDate))) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param $toDate
+     * @return bool
+     */
+    public function checkToDateSet($toDate)
+    {
+        if (strtolower($toDate) != strtolower('1753-01-01T00:00:00')) {
+            return true;
+        }
+        return false;
     }
 }
