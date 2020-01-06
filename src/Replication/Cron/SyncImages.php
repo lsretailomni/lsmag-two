@@ -233,10 +233,11 @@ class SyncImages extends ProductCreateTask
     public function convertToRequiredFormat(array $mediaGalleryEntries)
     {
         $images = [];
-        foreach ($mediaGalleryEntries as $entry) {
-            $images[] = $this->entryConverterPool
+        foreach ($mediaGalleryEntries as $key => $entry) {
+            $images[$key] = $this->entryConverterPool
                 ->getConverterByMediaType($entry->getMediaType())
                 ->convertFrom($entry);
+            $images[$key]['image_id'] = $entry->getData('image_id');
         }
         return $images;
     }

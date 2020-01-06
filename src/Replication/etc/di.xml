@@ -17,7 +17,7 @@
     <type name="Ls\Replication\Logger\Logger">
         <arguments>
             <argument name="name" xsi:type="string">replicationLogHandler</argument>
-            <argument name="handlers"  xsi:type="array">
+            <argument name="handlers" xsi:type="array">
                 <item name="system" xsi:type="object">Ls\Replication\Logger\Handler</item>
             </argument>
         </arguments>
@@ -25,9 +25,12 @@
     <preference for="Magento\Catalog\Block\Product\View\Attributes"
                 type="Ls\Replication\Block\Product\View\Attributes"/>
     <type name="Magento\Catalog\Model\ResourceModel\Product\Gallery">
-        <plugin name="afterCreateBatchBaseSelect" type="Ls\Replication\Plugin\Product\GalleryWithImageId" sortOrder="10" disabled="false"/>
+        <plugin name="afterCreateBatchBaseSelect" type="Ls\Replication\Plugin\Product\GalleryWithImageId" sortOrder="10"
+                disabled="false"/>
     </type>
-    <!--Replication API Repository Inferfaces-->
+    <preference for="Magento\Catalog\Model\Product\Gallery\Entry"
+                type="Ls\Replication\Model\Product\Gallery\ImageIdEntry"/>
+    <!--Replication API Repository Interfaces-->
     <preference for="Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueRepository"/>
     <preference for="Ls\Replication\Api\ReplAttributeRepositoryInterface"
@@ -60,7 +63,7 @@
     <preference for="Ls\Replication\Api\ReplProductGroupRepositoryInterface"
                 type="Ls\Replication\Model\ReplProductGroupRepository"/>
     <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface" type="Ls\Replication\Model\ReplStoreRepository"/>
-    <!--Replication API Data Inferfaces-->
+    <!--Replication API Data Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValue"/>
     <preference for="Ls\Replication\Api\Data\ReplAttributeInterface" type="Ls\Replication\Model\ReplAttribute"/>
@@ -83,7 +86,7 @@
     <preference for="Ls\Replication\Api\Data\ReplInvStatusInterface" type="Ls\Replication\Model\ReplInvStatus"/>
     <preference for="Ls\Replication\Api\Data\ReplProductGroupInterface" type="Ls\Replication\Model\ReplProductGroup"/>
     <preference for="Ls\Replication\Api\Data\ReplStoreInterface" type="Ls\Replication\Model\ReplStore"/>
-    <!--Replication API Search Results Inferfaces-->
+    <!--Replication API Search Results Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueSearchResultsInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplAttributeSearchResultsInterface"
