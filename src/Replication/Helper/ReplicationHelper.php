@@ -244,8 +244,9 @@ class ReplicationHelper extends AbstractHelper
      * @param boolean $excludeDeleted
      * @return SearchCriteria
      */
-    public function buildCriteriaForArray(array $filters, $pagesize = 100, $excludeDeleted = true)
+    public function buildCriteriaForArray(array $filters, $pagesize = 100, $excludeDeleted = true, $parameter = null)
     {
+        $filterOr = null;
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
             ->setConditionType('eq')
@@ -255,11 +256,27 @@ class ReplicationHelper extends AbstractHelper
             ->setValue('1')
             ->setConditionType('eq')
             ->create();
-        // building OR condition between the above two criteria
-        $filterOr = $this->filterGroupBuilder
-            ->addFilter($attr_processed)
-            ->addFilter($attr_is_updated)
-            ->create();
+
+        if (!empty($parameter)) {
+            $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+                ->setValue($parameter['value'])
+                ->setConditionType($parameter['condition_type'])
+                ->create();
+
+            // building OR condition between the above  criteria
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($attr_processed)
+                ->addFilter($attr_is_updated)
+                ->addFilter($ExtraFieldwithOrCondition)
+                ->create();
+        } else {
+            // building OR condition between the above two criteria
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($attr_processed)
+                ->addFilter($attr_is_updated)
+                ->create();
+        }
+
         // adding criteria into where clause.
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
         if (!empty($filters)) {
@@ -267,6 +284,7 @@ class ReplicationHelper extends AbstractHelper
                 $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
+
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }

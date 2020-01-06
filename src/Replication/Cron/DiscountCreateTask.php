@@ -39,6 +39,10 @@ class DiscountCreateTask
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
 
     const DATE_FORMAT = 'Y-m-d';
+
+    //offer with no time limit
+    const NO_TIME_LIMIT = '1753-01-01T00:00:00';
+
     /**
      * @var CatalogRuleRepositoryInterface
      */
@@ -214,9 +218,11 @@ class DiscountCreateTask
                 }
                 $filtersStatus = [
                     ['field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'],
-                    ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
+                    ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
+                    ['field' => 'ToDate', 'value' => $this->getCurrentDate(), 'condition_type' => 'gteq']
                 ];
-                $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 2, 1);
+                $parameter = ['field' => 'ToDate', 'value' => self::NO_TIME_LIMIT, 'condition_type' => 'eq'];
+                $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 2, 1, $parameter);
                 /** @var ReplDiscountSearchResults $replDiscounts */
                 $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
                 if (!$replDiscountsTotal->getTotalCount()) {
@@ -280,10 +286,9 @@ class DiscountCreateTask
                 ->setCustomerGroupIds($customerGroupIds)
                 ->setWebsiteIds($websiteIds)
                 ->setFromDate($replDiscount->getFromDate());
-            // Discounts for specific time
-            if ($this->checkToDateSet($replDiscount->getToDate())) {
-                $rule->setToDate($replDiscount->getToDate());
-            }
+
+            $rule->setToDate($replDiscount->getToDate());
+
             /**
              * Default Values for Action Types.
              * by_percent
@@ -311,9 +316,7 @@ class DiscountCreateTask
             }
             try {
                 $rule->loadPost($rule->getData());
-                if ($this->checkOfferExpiryDate($replDiscount->getToDate(), $replDiscount->getFromDate())) {
-                    $this->catalogRule->save($rule);
-                }
+                $this->catalogRule->save($rule);
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
                 $replDiscount->setData('is_failed', 1);
@@ -334,6 +337,12 @@ class DiscountCreateTask
         $collection->getSelect()
             ->columns('OfferNo')
             ->group('OfferNo');
+
+        $collection->addFieldToFilter(
+            ['ToDate', 'ToDate'],
+            [['gteq' => $this->getCurrentDate()], ['eq' => self::NO_TIME_LIMIT]]
+        );
+
         if ($collection->getSize() > 0) {
             return $collection;
         }
@@ -386,37 +395,16 @@ class DiscountCreateTask
     }
 
     /**
-     * @param $fromDate
-     * @param $toDate
-     * @return bool
+     * @return string
      * @throws Exception
      */
-    public function checkOfferExpiryDate($fromDate, $toDate)
+    public function getCurrentDate()
     {
         $format      = self::DATE_FORMAT;
         $currentDate = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
             $this->replicationHelper->getDatetime(),
             $format
         );
-        if ($this->checkToDateSet($toDate)) {
-            if ((strtotime($currentDate) >= strtotime($toDate)) && (strtotime($currentDate) <= strtotime($fromDate))) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * @param $toDate
-     * @return bool
-     */
-    public function checkToDateSet($toDate)
-    {
-        if (strtolower($toDate) != strtolower('1753-01-01T00:00:00')) {
-            return true;
-        }
-        return false;
+        return $currentDate;
     }
 }
