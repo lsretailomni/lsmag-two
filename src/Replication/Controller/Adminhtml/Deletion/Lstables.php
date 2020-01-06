@@ -110,7 +110,7 @@ class Lstables extends Action
             $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
             $this->lsr->flushConfig();
             // @codingStandardsIgnoreEnd
-            $this->messageManager->addSuccessMessage(__($jobName . ' table truncated successfully.'));
+            $this->messageManager->addSuccessMessage(__('%1 table truncated successfully.', $jobName));
             $this->_redirect('ls_repl/cron/grid/');
         } else {
             foreach ($this->lsTables as $lsTables) {
