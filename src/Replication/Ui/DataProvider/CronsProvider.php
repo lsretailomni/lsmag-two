@@ -47,6 +47,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
 
     /** @var ReplicationHelper */
     public $rep_helper;
+
     /**
      * CronsProvider constructor.
      * @param string $name
@@ -56,6 +57,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      * @param Reader $moduleDirReader
      * @param Parser $parser
      * @param LSR $LSR
+     * @param ReplicationHelper $repHelper
      * @param array $meta
      * @param array $data
      */
@@ -89,11 +91,13 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         $condition         = "";
         $items             = [];
         $counter           = 1;
-        $cronsGroupListing = array_reverse($cronsGroupListing);
         $this->lsr->flushConfig();
-        foreach ($cronsGroupListing as $cronlist) {
+        foreach ($cronsGroupListing as &$cronlist) {
             $path = '';
-            if ($cronlist['_attribute']['id'] == "replication") {
+            if (array_key_exists('_value', $cronlist['_value']['job'])) {
+                $cronlist['_value']['job'] = array($cronlist['_value']['job']);
+            }
+            if ($cronlist['_attribute']['id'] == "replication" || $cronlist['_attribute']['id'] == "sync_operations") {
                 $condition = __("Flat to Magento");
             } elseif ($cronlist['_attribute']['id'] == "flat_replication") {
                 $condition = __("Omni to Flat");
