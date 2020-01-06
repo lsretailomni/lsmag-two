@@ -190,12 +190,13 @@ class DiscountCreateTask
                                 $replDiscount->getLoyaltySchemeCode()
                             );
                         }
+                        $discountValue = (string) $replDiscount->getDiscountValue();
                         if ($replDiscount->getVariantId() == '' ||
                             $replDiscount->getVariantId() == null
                         ) {
-                            $skuAmountArray[$replDiscount->getDiscountValue()][] = $replDiscount->getItemId();
+                            $skuAmountArray[$discountValue][] = $replDiscount->getItemId();
                         } else {
-                            $skuAmountArray[$replDiscount->getDiscountValue()][] = $replDiscount->getItemId() . '-' .
+                            $skuAmountArray[$discountValue][] = $replDiscount->getItemId() . '-' .
                                 $replDiscount->getVariantId();
                         }
 
@@ -208,7 +209,7 @@ class DiscountCreateTask
 
                     if (!empty($skuAmountArray)) {
                         foreach ($skuAmountArray as $value => $key) {
-                            $this->addSalesRule($item, array_unique($key), $customerGroupIds, $value);
+                            $this->addSalesRule($item, array_unique($key), $customerGroupIds, (float) $value);
                         }
                         $reindexRules = true;
                     }
@@ -216,6 +217,7 @@ class DiscountCreateTask
                 if ($reindexRules) {
                     $this->jobApply->applyAll();
                 }
+
                 $filtersStatus = [
                     ['field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'],
                     ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
@@ -287,7 +289,9 @@ class DiscountCreateTask
                 ->setWebsiteIds($websiteIds)
                 ->setFromDate($replDiscount->getFromDate());
 
-            $rule->setToDate($replDiscount->getToDate());
+            if (strtolower($replDiscount->getToDate()) != strtolower('1753-01-01T00:00:00')) {
+                $rule->setToDate($replDiscount->getToDate());
+            }
 
             /**
              * Default Values for Action Types.
