@@ -186,4 +186,4 @@ State,State
 Street,Street
 TaxGroup,TaxGroup
 "Zip Code","Zip Code"
-"%1 table truncated successfully","table truncated successfully"
+"%1 table truncated successfully","%1 table truncated successfully"
