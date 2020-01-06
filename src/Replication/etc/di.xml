@@ -24,6 +24,9 @@
     </type>
     <preference for="Magento\Catalog\Block\Product\View\Attributes"
                 type="Ls\Replication\Block\Product\View\Attributes"/>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Gallery">
+        <plugin name="afterCreateBatchBaseSelect" type="Ls\Replication\Plugin\Product\GalleryWithImageId" sortOrder="10" disabled="false"/>
+    </type>
     <!--Replication API Repository Inferfaces-->
     <preference for="Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueRepository"/>

@@ -4,6 +4,8 @@ namespace Ls\Replication\Setup;
 
 use \Ls\Replication\Setup\UpgradeSchema\AbstractUpgradeSchema;
 use \Ls\Replication\Setup\UpgradeSchema\UpgradeSchemaBlockInterface;
+use Magento\Catalog\Model\ResourceModel\Product\Gallery;
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
@@ -30,20 +32,19 @@ class InstallSchema implements InstallSchemaInterface
     {
 
         $this->installer = $setup;
-        $this->context = $context;
-
+        $this->context   = $context;
         $this->installer->startSetup();
         // @codingStandardsIgnoreStart
-        $fs = new Filesystem();
-        $anchor = new ClassReflection(AbstractUpgradeSchema::class);
+        $fs             = new Filesystem();
+        $anchor         = new ClassReflection(AbstractUpgradeSchema::class);
         $base_namespace = $anchor->getNamespaceName();
-        $filename = $anchor->getFileName();
-        $folder = dirname($filename);
-        $upgrades = glob($folder . DIRECTORY_SEPARATOR . '*');
+        $filename       = $anchor->getFileName();
+        $folder         = dirname($filename);
+        $upgrades       = glob($folder . DIRECTORY_SEPARATOR . '*');
         foreach ($upgrades as $upgrade_file) {
             if (strpos($upgrade_file, 'AbstractUpgradeSchema') === false) {
                 if ($fs->exists($upgrade_file)) {
-                    $upgrade_class = str_replace('.php', '', $fs->makePathRelative($upgrade_file, $folder));
+                    $upgrade_class     = str_replace('.php', '', $fs->makePathRelative($upgrade_file, $folder));
                     $upgrade_class_fqn = $base_namespace . '\\' . substr($upgrade_class, 0, -1);
                     /** @var AbstractUpgradeSchema $upgrade */
                     $upgrade = new $upgrade_class_fqn();
@@ -51,6 +52,14 @@ class InstallSchema implements InstallSchemaInterface
                 }
             }
         }
+        $this->installer->getConnection()->addColumn(
+            $this->installer->getTable(Gallery::GALLERY_TABLE), 'image_id', [
+                'type'     => Table::TYPE_TEXT,
+                'nullable' => true,
+                'default'  => null,
+                'comment'  => 'LS Central Image Id'
+            ]
+        );
         // @codingStandardsIgnoreEnd
         $this->installer->endSetup();
     }

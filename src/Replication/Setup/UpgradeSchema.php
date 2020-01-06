@@ -10,6 +10,8 @@ use \Ls\Replication\Cron\ReplEcommPricesTask;
 use \Ls\Replication\Cron\ReplEcommStoresTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Setup\UpgradeSchema\AbstractUpgradeSchema;
+use Magento\Catalog\Model\ResourceModel\Product\Gallery;
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
@@ -34,6 +36,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
     ) {
         $this->replicationHelper = $replicationHelper;
     }
+
     /**
      * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
@@ -73,6 +76,16 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH);
             $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH_STATUS);
             $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH);
+        }
+        if (version_compare($context->getVersion(), '1.2.2', '<')) {
+            $setup->getConnection()->addColumn(
+                $setup->getTable(Gallery::GALLERY_TABLE), 'image_id', [
+                    'type'     => Table::TYPE_TEXT,
+                    'nullable' => true,
+                    'default'  => null,
+                    'comment'  => 'LS Central Image Id'
+                ]
+            );
         }
         // @codingStandardsIgnoreEnd
         $setup->endSetup();

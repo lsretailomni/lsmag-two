@@ -577,10 +577,11 @@ class ProductCreateTask
                         ->setName($this->oSlug($image->getImageId()))
                         ->setType($mimeType);
                     $this->attributeMediaGalleryEntry->setMediaType('image')
-                        ->setLabel(($image->getDescription()) ? $image->getDescription() : __('Product Image'))
+                        ->setLabel(($image->getDescription()) ?: __('Product Image'))
                         ->setPosition($image->getDisplayOrder())
                         ->setDisabled(false)
-                        ->setContent($imageContent);
+                        ->setContent($imageContent)
+                        ->setImageId($image->getImageId());
                     if ($i == 0) {
                         $types = ['image', 'small_image', 'thumbnail'];
                     }
