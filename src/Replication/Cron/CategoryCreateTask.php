@@ -202,8 +202,7 @@ class CategoryCreateTask
                         'is_active'       => true,
                         'is_anchor'       => true,
                         'include_in_menu' => true,
-                        'meta_title'      => ($hierarchyNode->getDescription()) ?
-                            $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
+                        'meta_title'      => ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId(),
                         'nav_id'          => $hierarchyNode->getNavId(),
                         'position'        => $hierarchyNode->getChildrenOrder()
                     ];
@@ -295,8 +294,7 @@ class CategoryCreateTask
                         'is_active'       => true,
                         'is_anchor'       => true,
                         'include_in_menu' => true,
-                        'meta_title'      => ($hierarchyNodeSub->getDescription()) ?
-                            $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId(),
+                        'meta_title'      => ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId(),
                         'nav_id'          => $hierarchyNodeSub->getNavId(),
                         'position'        => $hierarchyNodeSub->getChildrenOrder()
                     ];
