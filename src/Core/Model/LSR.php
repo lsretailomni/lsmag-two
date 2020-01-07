@@ -303,6 +303,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const PROACTIVE_DISCOUNTS = 'LS_Proactive_';
     const COUPONS = 'LS_Coupons_';
     const STORE = 'LS_STORE_';
+
+    // Date format to be used in fetching the data.
+    const DATE_FORMAT = 'Y-m-d';
+
+    //offer with no time limit for the discounts
+    const NO_TIME_LIMIT = '1753-01-01T00:00:00';
     /**
      * @var ScopeConfigInterface
      */

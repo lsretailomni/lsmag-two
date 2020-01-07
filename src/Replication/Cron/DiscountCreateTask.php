@@ -3,16 +3,16 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
-use \Ls\Omni\Helper\ContactHelper;
-use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
-use \Ls\Replication\Model\ReplDiscount;
-use \Ls\Replication\Model\ReplDiscountSearchResults;
-use \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use Ls\Omni\Helper\ContactHelper;
+use Ls\Replication\Api\ReplDiscountRepositoryInterface;
+use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Replication\Logger\Logger;
+use Ls\Replication\Model\ReplDiscount;
+use Ls\Replication\Model\ReplDiscountSearchResults;
+use Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
+use Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\CatalogRule\Model\Rule\Job;
@@ -35,13 +35,7 @@ use Magento\Framework\Exception\State\InvalidTransitionException;
  */
 class DiscountCreateTask
 {
-
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
-
-    const DATE_FORMAT = 'Y-m-d';
-
-    //offer with no time limit
-    const NO_TIME_LIMIT = '1753-01-01T00:00:00';
 
     /**
      * @var CatalogRuleRepositoryInterface
@@ -190,7 +184,7 @@ class DiscountCreateTask
                                 $replDiscount->getLoyaltySchemeCode()
                             );
                         }
-                        $discountValue = (string) $replDiscount->getDiscountValue();
+                        $discountValue = (string)$replDiscount->getDiscountValue();
                         if ($replDiscount->getVariantId() == '' ||
                             $replDiscount->getVariantId() == null
                         ) {
@@ -209,7 +203,7 @@ class DiscountCreateTask
 
                     if (!empty($skuAmountArray)) {
                         foreach ($skuAmountArray as $value => $key) {
-                            $this->addSalesRule($item, array_unique($key), $customerGroupIds, (float) $value);
+                            $this->addSalesRule($item, array_unique($key), $customerGroupIds, (float)$value);
                         }
                         $reindexRules = true;
                     }
@@ -223,7 +217,7 @@ class DiscountCreateTask
                     ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
                     ['field' => 'ToDate', 'value' => $this->getCurrentDate(), 'condition_type' => 'gteq']
                 ];
-                $parameter = ['field' => 'ToDate', 'value' => self::NO_TIME_LIMIT, 'condition_type' => 'eq'];
+                $parameter     = ['field' => 'ToDate', 'value' => LSR::NO_TIME_LIMIT, 'condition_type' => 'eq'];
                 $criteriaTotal = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 2, 1, $parameter);
                 /** @var ReplDiscountSearchResults $replDiscounts */
                 $replDiscountsTotal = $this->replDiscountRepository->getList($criteriaTotal);
@@ -260,7 +254,6 @@ class DiscountCreateTask
      */
     public function addSalesRule(ReplDiscount $replDiscount, array $skuArray, $customerGroupIds, $amount = null)
     {
-
         if ($replDiscount instanceof ReplDiscount) {
             $websiteIds = $this->replicationHelper->getAllWebsitesIds();
             if ($amount == null) {
@@ -344,7 +337,7 @@ class DiscountCreateTask
 
         $collection->addFieldToFilter(
             ['ToDate', 'ToDate'],
-            [['gteq' => $this->getCurrentDate()], ['eq' => self::NO_TIME_LIMIT]]
+            [['gteq' => $this->getCurrentDate()], ['eq' => LSR::NO_TIME_LIMIT]]
         );
 
         if ($collection->getSize() > 0) {
@@ -396,19 +389,5 @@ class DiscountCreateTask
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-    }
-
-    /**
-     * @return string
-     * @throws Exception
-     */
-    public function getCurrentDate()
-    {
-        $format      = self::DATE_FORMAT;
-        $currentDate = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
-            $this->replicationHelper->getDatetime(),
-            $format
-        );
-        return $currentDate;
     }
 }
