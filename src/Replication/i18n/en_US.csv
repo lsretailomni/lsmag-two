@@ -187,3 +187,5 @@ Street,Street
 TaxGroup,TaxGroup
 "Zip Code","Zip Code"
 "%1 table truncated successfully","%1 table truncated successfully"
+"Want to Reset Data for %1 Cron Job?","Want to Reset Data for %1 Cron Job?"
+"It will take some time to reset data. Please don't close this window.","It will take some time to reset data. Please don't close this window."
