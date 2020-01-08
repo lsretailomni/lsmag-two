@@ -216,6 +216,22 @@ class Product extends Action
             false,
             LSR::SC_SUCCESS_CRON_PRODUCT
         );
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY
+        );
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_PRODUCT_PRICE
+        );
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_ITEM_IMAGES
+        );
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_ITEM_UPDATES
+        );
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
