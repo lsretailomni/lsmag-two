@@ -24,15 +24,27 @@ class SyncImages extends ProductCreateTask
     /** @var bool */
     public $cronStatus = false;
 
+    /** @var int */
+    public $remainingRecords;
+
+    /**
+     * @throws InputException
+     */
     public function execute()
     {
-        $this->replicationHelper->setEnvVariables();
-        $this->logger->debug('Running SyncImages Task');
+        if ($this->lsr->isLSR()) {
+            $this->replicationHelper->updateConfigValue(
+                $this->replicationHelper->getDateTime(),
+                self::CONFIG_PATH_LAST_EXECUTE
+            );
+            $this->replicationHelper->setEnvVariables();
+            $this->logger->debug('Running SyncImages Task');
 
-        $this->syncItemImages();
+            $this->syncItemImages();
 
-        $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_IMAGES);
-        $this->logger->debug('End SyncImages Task');
+            $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_IMAGES);
+            $this->logger->debug('End SyncImages Task');
+        }
     }
 
     /**
@@ -45,29 +57,8 @@ class SyncImages extends ProductCreateTask
     public function executeManually()
     {
         $this->execute();
-        $filters  = [
-            ['field' => 'main_table.TableName', 'value' => 'Item', 'condition_type' => 'eq'],
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
-        ];
-        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-            $filters,
-            -1,
-            false
-        );
-
-        /** @var  $collection */
-        $collection = $this->replImageLinkCollectionFactory->create();
-
-        /** we only need unique product Id's which has any images to modify */
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
-            $collection,
-            $criteria,
-            'KeyValue',
-            'ls_replication_repl_item',
-            'nav_id',
-            true
-        );
-        return [$collection->getSize()];
+        $remainingrecords = (int)$this->getRemainingRecords();
+        return [$remainingrecords];
     }
 
     /**
@@ -100,7 +91,7 @@ class SyncImages extends ProductCreateTask
             'nav_id',
             true
         );
-        $collection->getSelect()->order('main_table.processed '. "ASC");
+        $collection->getSelect()->order('main_table.processed ' . "ASC");
         if ($collection->getSize() > 0) {
             // right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
@@ -130,7 +121,11 @@ class SyncImages extends ProductCreateTask
                     // check if any variant for that product has image to process.
                     // check for variant new images.
                     $filtersforvariantImages = [
-                        ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue() . ',%', 'condition_type' => 'like'],
+                        [
+                            'field'          => 'KeyValue',
+                            'value'          => $itemImage->getKeyValue() . ',%',
+                            'condition_type' => 'like'
+                        ],
                         ['field' => 'TableName', 'value' => 'Item Variant', 'condition_type' => 'eq']
                     ];
                     //if the item is processed, then its variant will deinately be processed, so not neeed to put seprate check on variants.
@@ -190,9 +185,46 @@ class SyncImages extends ProductCreateTask
                     $this->logger->debug($e->getMessage());
                 }
             }
+            $remainingItems = (int)$this->getRemainingRecords();
+            if ($remainingItems == 0) {
+                $this->cronStatus = true;
+            }
         } else {
             $this->cronStatus = true;
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingRecords()
+    {
+        if (!$this->remainingRecords) {
+            $filters  = [
+                ['field' => 'main_table.TableName', 'value' => 'Item', 'condition_type' => 'eq'],
+                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+            ];
+            $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+                $filters,
+                -1,
+                false
+            );
+
+            /** @var  $collection */
+            $collection = $this->replImageLinkCollectionFactory->create();
+
+            /** we only need unique product Id's which has any images to modify */
+            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+                $collection,
+                $criteria,
+                'KeyValue',
+                'ls_replication_repl_item',
+                'nav_id',
+                true
+            );
+            $this->remainingRecords = $collection->getSize();
+        }
+        return $this->remainingRecords;
     }
 
     /**
@@ -225,6 +257,7 @@ class SyncImages extends ProductCreateTask
             $this->updateHandler->execute($productData);
         }
     }
+
     /**
      * @param array $mediaGalleryEntries
      * @return array
@@ -318,7 +351,8 @@ class SyncImages extends ProductCreateTask
                         ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
                         ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq']
                     ];
-                    $criteriaforNewOrUpdatedImages = $this->replicationHelper->buildCriteriaForArray($filtersforNewOrUpdatedImages, -1)
+                    $criteriaforNewOrUpdatedImages = $this->replicationHelper->buildCriteriaForArray($filtersforNewOrUpdatedImages,
+                        -1)
                         ->setSortOrders([$sortOrder]);
 
                     /** @var ReplImageLinkSearchResults $newImagestoProcess */
@@ -339,5 +373,4 @@ class SyncImages extends ProductCreateTask
             }
         }
     }
-
 }

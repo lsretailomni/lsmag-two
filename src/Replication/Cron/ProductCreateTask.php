@@ -208,6 +208,9 @@ class ProductCreateTask
     /** @var Processor */
     public $imageProcessor;
 
+    /** @var int */
+    public $remainingRecords;
+
     /**
      * @var MediaGalleryProcessor
      */
@@ -413,11 +416,6 @@ class ProductCreateTask
                     $productData->setDescription($item->getDetails());
                     $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-                    /*                    $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
-                                        if ($productImages) {
-                                            $this->logger->debug('Found images for the item ' . $item->getNavId());
-                                            $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                        }*/
                     $product = $this->getProductAttributes($productData, $item);
                     try {
                         // @codingStandardsIgnoreLine
@@ -460,11 +458,6 @@ class ProductCreateTask
                         'is_in_stock'             => ($itemStock > 0) ? 1 : 0,
                         'qty'                     => $itemStock
                     ]);
-                    /*                    $productImages = $this->replicationHelper->getImageLinksByType($item->getNavId(), 'Item');
-                                        if ($productImages) {
-                                            $this->logger->debug('Found images for the item ' . $item->getNavId());
-                                            $product->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                        }*/
                     $product = $this->getProductAttributes($product, $item);
                     try {
                         $this->logger->debug('Trying to save product ' . $item->getNavId());
@@ -485,9 +478,8 @@ class ProductCreateTask
                     $this->itemRepository->save($item);
                 }
             }
-            if (count($items->getItems()) == 0) {
+            if ($items->getTotalCount() == 0) {
                 $this->caterItemsRemoval();
-                $this->cronStatus             = true;
                 $fullReplicationVariantStatus = $this->lsr->getStoreConfig(
                     ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS
                 );
@@ -496,6 +488,9 @@ class ProductCreateTask
                     $this->caterVariantsRemoval();
                 }
                 $this->updateBarcodeOnly();
+            }
+            if ($this->getRemainingRecords() == 0) {
+                $this->cronStatus             = true;
             }
             $this->logger->debug('End ProductCreateTask');
         } else {
@@ -521,9 +516,7 @@ class ProductCreateTask
     public function executeManually()
     {
         $this->execute();
-        $criteria           = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1);
-        $items              = $this->itemRepository->getList($criteria);
-        $itemsLeftToProcess = count($items->getItems());
+        $itemsLeftToProcess =   (int) $this->getRemainingRecords();
         return [$itemsLeftToProcess];
     }
 
@@ -1160,14 +1153,6 @@ class ProductCreateTask
                     $productData->setDescription($item->getDetails());
                     $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute("uom", $value->getBaseUnitOfMeasure());
-                    /*                    $productImages = $this->replicationHelper->getImageLinksByType(
-                                            $value->getItemId() . ',' . $value->getVariantId(),
-                                            'Item Variant'
-                                        );
-                                        if ($productImages) {
-                                            $this->logger->debug('Found images for the simple product ' . $sku);
-                                            $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                        }*/
                     $productData->setStatus(Status::STATUS_ENABLED);
                     // @codingStandardsIgnoreLine
                     $productSaved           = $this->productRepository->save($productData);
@@ -1236,13 +1221,6 @@ class ProductCreateTask
                         }
                     }
                 }
-                /*                $productImages = $this->replicationHelper
-                                    ->getImageLinksByType($value->getItemId() . ',' . $value->getVariantId(), 'Item Variant');
-                                if ($productImages) {
-                                    $this->logger->debug('Found images for the simple product ' . $sku);
-                                    $productV->setMediaGalleryEntries($this->getMediaGalleryEntries($productImages));
-                                }*/
-
                 $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                 if (isset($itemBarcodes[$sku])) {
                     $productV->setCustomAttribute('barcode', $itemBarcodes[$sku]);
@@ -1358,5 +1336,17 @@ class ProductCreateTask
             (($d4) ? '-' . $d4 : '') . (($d5) ? '-' . $d5 : '') . (($d6) ? '-' . $d6 : '');
         $name    = $item->getDescription() . $dMerged;
         return $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingRecords()
+    {
+        if (!$this->remainingRecords) {
+            $criteria               = $this->replicationHelper->buildCriteriaForNewItems('', '', '', 2);
+            $this->remainingRecords = $this->itemRepository->getList($criteria)->getTotalCount();
+        }
+        return $this->remainingRecords;
     }
 }

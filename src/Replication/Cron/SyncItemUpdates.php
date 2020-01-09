@@ -22,27 +22,32 @@ class SyncItemUpdates extends ProductCreateTask
     /** @var bool */
     public $cronStatus = false;
 
+    /** @var int */
+    public $remainingRecords;
+
     public function execute()
     {
-        $this->logger->debug('Running SyncItemUpdates Task ');
-        $this->replicationHelper->updateConfigValue(
-            $this->replicationHelper->getDateTime(),
-            self::CONFIG_PATH_LAST_EXECUTE
-        );
-        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
-        if (!empty($hierarchyCode)) {
-            $itemAssignmentCount         = $this->caterItemAssignmentToCategories();
-            $hierarchyLeafDeletedCounter = $this->caterHierarchyLeafRemoval($hierarchyCode);
+        if ($this->lsr->isLSR()) {
+            $this->logger->debug('Running SyncItemUpdates Task ');
+            $this->replicationHelper->updateConfigValue(
+                $this->replicationHelper->getDateTime(),
+                self::CONFIG_PATH_LAST_EXECUTE
+            );
+            $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+            if (!empty($hierarchyCode)) {
+                $itemAssignmentCount         = $this->caterItemAssignmentToCategories();
+                $this->caterHierarchyLeafRemoval($hierarchyCode);
 
-            if ($itemAssignmentCount == 0 && $hierarchyLeafDeletedCounter == 0) {
-                $this->cronStatus = true;
+                if ($itemAssignmentCount == 0) {
+                    $this->cronStatus = true;
+                }
+            } else {
+                $this->logger->debug("Hierarchy Code not defined in the configuration.");
             }
-        } else {
-            $this->logger->debug("Hierarchy Code not defined in the configuration.");
-        }
 
-        $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
-        $this->logger->debug('End SyncItemUpdates Task ');
+            $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
+            $this->logger->debug('End SyncItemUpdates Task ');
+        }
     }
 
     /**
@@ -55,7 +60,8 @@ class SyncItemUpdates extends ProductCreateTask
     public function executeManually()
     {
         $this->execute();
-        return [0];
+        $itemsLeftToProcess = (int)$this->getRemainingRecords();
+        return [$itemsLeftToProcess];
     }
 
     /**
@@ -69,10 +75,11 @@ class SyncItemUpdates extends ProductCreateTask
             ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
         ];
 
-        $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
             $assignProductToCategoryBatchSize
         );
+        /** @var  $collection */
         $collection = $this->replHierarchyLeafCollectionFactory->create();
         $this->replicationHelper->setCollectionPropertiesPlusJoin(
             $collection,
@@ -83,17 +90,21 @@ class SyncItemUpdates extends ProductCreateTask
             true
         );
         $sku = "";
-        try {
+        if ($collection->getSize() > 0) {
             foreach ($collection as $hierarchyLeaf) {
-                $sku = $hierarchyLeaf->getNavId();
-                $product = $this->productRepository->get($hierarchyLeaf->getNavId());
-                $this->assignProductToCategories($product);
+                try {
+                    $sku     = $hierarchyLeaf->getNavId();
+                    $product = $this->productRepository->get($hierarchyLeaf->getNavId());
+                    $this->assignProductToCategories($product);
+                } catch (Exception $e) {
+                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
+                    $this->logger->debug($e->getMessage());
+                }
             }
-        } catch (Exception $e) {
-            $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
-            $this->logger->debug($e->getMessage());
+            return (int)$this->getRemainingRecords();
+        } else {
+            return (int)$collection->getSize();
         }
-        return $collection->getSize();
     }
 
     /**
@@ -168,5 +179,34 @@ class SyncItemUpdates extends ProductCreateTask
             // @codingStandardsIgnoreEnd
         }
         return false;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingRecords()
+    {
+        if (!$this->remainingRecords) {
+            $filters = [
+                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+            ];
+
+            $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+                $filters,
+                -1
+            );
+            /** @var  $collection */
+            $collection = $this->replHierarchyLeafCollectionFactory->create();
+            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+                $collection,
+                $criteria,
+                'nav_id',
+                'ls_replication_repl_item',
+                'nav_id',
+                true
+            );
+            $this->remainingRecords = $collection->getSize();
+        }
+        return $this->remainingRecords;
     }
 }

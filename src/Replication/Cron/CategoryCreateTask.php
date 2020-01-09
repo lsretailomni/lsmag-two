@@ -21,6 +21,7 @@ use Magento\Catalog\Model\CategoryFactory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem\Io\File;
 
@@ -77,6 +78,12 @@ class CategoryCreateTask
     /** @var Attribute */
     public $eavAttribute;
 
+    /** @var int */
+    public $remainingRecords;
+
+    /** @var string */
+    public $hierarchyCode;
+
     /**
      * CategoryCreateTask constructor.
      * @param CategoryFactory $categoryFactory
@@ -131,35 +138,29 @@ class CategoryCreateTask
      */
     public function execute()
     {
+        $this->logger->debug('Running CategoryCreateTask.');
         $this->replicationHelper->updateConfigValue(
             $this->replicationHelper->getDateTime(),
             self::CONFIG_PATH_LAST_EXECUTE
         );
-        $this->logger->debug('Running CategoryCreateTask.');
-        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        $hierarchyCode = $this->getHierarchyCode();
         if (empty($hierarchyCode)) {
             $this->logger->debug('Hierarchy Code not defined in the configuration.');
             return;
         }
-        $hierarchyCodeSpecificFilter                 = [
+        $hierarchyCodeSpecificFilter = [
             'field'          => 'HierarchyCode',
             'value'          => $hierarchyCode,
             'condition_type' => 'eq'
         ];
-        $mediaAttribute                              = ['image', 'small_image', 'thumbnail'];
-        $mainCategoryHierarchyNodeAddOrUpdateCounter = $this->caterMainCategoryHierarchyNodeAddOrUpdate(
-            $hierarchyCodeSpecificFilter,
-            $mediaAttribute
-        );
-        $subCategoryHierarchyNodeAddOrUpdateCounter  = $this->caterSubCategoryHierarchyNodeAddOrUpdate(
-            $hierarchyCodeSpecificFilter,
-            $mediaAttribute
-        );
-        $this->caterHierarchyNodeRemoval($hierarchyCode);
-        if ($mainCategoryHierarchyNodeAddOrUpdateCounter == 0 &&
-            $subCategoryHierarchyNodeAddOrUpdateCounter == 0) {
+        $mediaAttribute              = ['image', 'small_image', 'thumbnail'];
+        $this->caterMainCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute);
+        $this->caterSubCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute);
+        $remainingRecords = $this->getRemainingRecords();
+        if ($this->getRemainingRecords() == 0) {
             $this->cronStatus = true;
         }
+        $this->caterHierarchyNodeRemoval($hierarchyCode);
         $this->updateImagesOnly();
         $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY);
         $this->logger->debug('CategoryCreateTask Completed.');
@@ -201,8 +202,7 @@ class CategoryCreateTask
                         'is_active'       => true,
                         'is_anchor'       => true,
                         'include_in_menu' => true,
-                        'meta_title'      => ($hierarchyNode->getDescription()) ?
-                            $hierarchyNode->getDescription() : $hierarchyNode->getNavId(),
+                        'meta_title'      => ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId(),
                         'nav_id'          => $hierarchyNode->getNavId(),
                         'position'        => $hierarchyNode->getChildrenOrder()
                     ];
@@ -242,13 +242,13 @@ class CategoryCreateTask
             $this->replHierarchyNodeRepository->save($hierarchyNode);
             // @codingStandardsIgnoreEnd
         }
-        return count($replHierarchyNodeRepository->getItems());
     }
 
     /**
      * @param $HierarchyCodeSpecificFilter
      * @param $mediaAttribute
      * @return int
+     * @throws InputException
      */
     public function caterSubCategoryHierarchyNodeAddOrUpdate($HierarchyCodeSpecificFilter, $mediaAttribute)
     {
@@ -259,6 +259,9 @@ class CategoryCreateTask
             $HierarchyCodeSpecificFilter
         ];
         $criteriaSub             = $this->replicationHelper->buildCriteriaForArray($filtersSub, -1);
+        $criteriaSub->setSortOrders(
+            [$this->replicationHelper->getSortOrderObject('Indentation')]
+        );
         /** @var ReplHierarchyNodeSearchResults $replHierarchyNodeRepositorySub */
         $replHierarchyNodeRepositorySub = $this->replHierarchyNodeRepository->getList($criteriaSub);
         /** @var ReplHierarchyNode $hierarchyNodeSub */
@@ -288,8 +291,7 @@ class CategoryCreateTask
                         'is_active'       => true,
                         'is_anchor'       => true,
                         'include_in_menu' => true,
-                        'meta_title'      => ($hierarchyNodeSub->getDescription()) ?
-                            $hierarchyNodeSub->getDescription() : $hierarchyNodeSub->getNavId(),
+                        'meta_title'      => ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId(),
                         'nav_id'          => $hierarchyNodeSub->getNavId(),
                         'position'        => $hierarchyNodeSub->getChildrenOrder()
                     ];
@@ -327,7 +329,6 @@ class CategoryCreateTask
             $hierarchyNodeSub->setData('is_updated', 0);
             $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
         }
-        return count($replHierarchyNodeRepositorySub->getItems());
     }
 
     /**
@@ -380,13 +381,7 @@ class CategoryCreateTask
     public function executeManually()
     {
         $this->execute();
-        $hierarchyCode           = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
-        $filters                 = [
-            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']
-        ];
-        $criteria                = $this->replicationHelper->buildCriteriaForArray($filters, 100);
-        $replHierarchy           = $this->replHierarchyNodeRepository->getList($criteria);
-        $categoriesLeftToProcess = count($replHierarchy->getItems());
+        $categoriesLeftToProcess = $this->getRemainingRecords();
         return [$categoriesLeftToProcess];
     }
 
@@ -513,5 +508,36 @@ class CategoryCreateTask
                 $this->replImageLinkRepositoryInterface->save($image);
             }
         }
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getRemainingRecords()
+    {
+        if (!$this->remainingRecords) {
+            $hierarchyCodeSpecificFilter = [
+                'field'          => 'HierarchyCode',
+                'value'          => $this->getHierarchyCode(),
+                'condition_type' => 'eq'
+            ];
+            $criteria                    = $this->replicationHelper->buildCriteriaForArray([$hierarchyCodeSpecificFilter], -1);
+            $this->remainingRecords      = $this->replHierarchyNodeRepository->getList($criteria)
+                ->getTotalCount();
+        }
+        return $this->remainingRecords;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHierarchyCode()
+    {
+        if (!$this->hierarchyCode) {
+            $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+        }
+        return $this->hierarchyCode;
+
     }
 }
