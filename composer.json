@@ -3,10 +3,10 @@
   "description": "LS Ecommerce - Magento Integration",
   "type": "magento2-module",
   "license": "proprietary",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "authors": [
     {
-      "name": "LS Retail Ecommerce Team",
+      "name": "LS Retail - Ecommerce Team",
       "email": "lsomnikl@lsretail.com"
     }
   ],
