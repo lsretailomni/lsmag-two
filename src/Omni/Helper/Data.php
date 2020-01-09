@@ -176,12 +176,21 @@ class Data extends AbstractHelper
                                     ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
                             }
                             $storeHours[$currentDayOfWeek]['day']         = $r->getNameOfDay();
+
+                            if ($r->getType() == "Closed") {
+                                if (array_key_exists($r->getDayOfWeek(), $storeHours)) {
+                                    $storeHours[$currentDayOfWeek]['normal'] ['open']     = __('Closed');
+                                    $storeHours[$currentDayOfWeek]['normal'] ['close']    = '';
+                                    $storeHours[$currentDayOfWeek]['temporary'] ['open']  = '';
+                                    $storeHours[$currentDayOfWeek]['temporary'] ['close'] = '';
+                                }
+                            }
+
                             $counter++;
                         }
                         unset($storeResults[$key]);
                     }
                 }
-
             }
             return $storeHours;
         } catch (Exception $e) {

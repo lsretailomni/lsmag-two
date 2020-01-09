@@ -124,6 +124,9 @@ class Stores extends Template
                     $hoursFormat,
                     strtotime($hour['normal']['close'])
                 ). "</span>";
+        } elseif ($hour['normal']['open']=='Closed') {
+            $formattedTime = "<span class='dayofweek'>".$hour["day"]."</span><span class='normal-hour'>"
+                .$hour['normal']['open'];
         } else {
             if (empty($hour['normal'])) {
                 $formattedTime = "<span class='dayofweek'>" . $hour["day"] . "</span><span class='special-hour'>" .
