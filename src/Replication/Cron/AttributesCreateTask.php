@@ -295,7 +295,7 @@ class AttributesCreateTask
                         'attribute_code'                => $formattedCode,
                         'is_global'                     => 1,
                         'frontend_label'                => ucwords(strtolower($code)),
-                        'frontend_input'                => 'select',
+                        'frontend_input'                => 'multiselect',
                         'default_value_text'            => '',
                         'default_value_yesno'           => 0,
                         'default_value_date'            => '',
