@@ -17,10 +17,7 @@ define([
             if (validOrNotValid) {
                 var formData = dataForm.data();
                 var sku = formData.productSku;
-                var selectedSimpleProductId = '';
-                if (typeof dataForm.data().mageConfigurable !== 'undefined') {
-                    selectedSimpleProductId = dataForm.data().mageConfigurable.simpleProduct;
-                }
+                var selectedSimpleProductId = $("input[name=selected_configurable_option]").val();
                 var controllerUrl = getBaseUrl("omni/stock/product" + "?sku=" + sku + "&id=" + selectedSimpleProductId);
                 $.ajax({
                     url: controllerUrl,
