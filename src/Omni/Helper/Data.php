@@ -168,16 +168,16 @@ class Data extends AbstractHelper
                 foreach ($storeResults as $key => $r) {
                     if ($r->getDayOfWeek() == $currentDayOfWeek) {
                         if ($this->checkDateValidity($current, $r)) {
-                            if ($r->getType() == "Normal") {
-                                $storeHours[$currentDayOfWeek]['normal']   =
+                            if ($r->getType() == \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType::NORMAL) {
+                                $storeHours[$currentDayOfWeek]['normal'] =
                                     ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
                             } else {
-                                $storeHours[$currentDayOfWeek]['temporary']   =
+                                $storeHours[$currentDayOfWeek]['temporary'] =
                                     ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
                             }
-                            $storeHours[$currentDayOfWeek]['day']         = $r->getNameOfDay();
+                            $storeHours[$currentDayOfWeek]['day'] = $r->getNameOfDay();
 
-                            if ($r->getType() == "Closed") {
+                            if ($r->getType() == \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType::CLOSED) {
                                 if (array_key_exists($r->getDayOfWeek(), $storeHours)) {
                                     $storeHours[$currentDayOfWeek]['normal'] ['open']     = __('Closed');
                                     $storeHours[$currentDayOfWeek]['normal'] ['close']    = '';
@@ -228,6 +228,7 @@ class Data extends AbstractHelper
         }
         return false;
     }
+
     /**
      * @param $value
      */
