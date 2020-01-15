@@ -78,6 +78,7 @@ class SyncInventory extends ProductCreateTask
                     }
                     $replInvStatus->setData('is_updated', 0);
                     $replInvStatus->setData('processed', 1);
+                    $replInvStatus->setData('processed_at', $this->replicationHelper->getDateTime());
                     $this->replInvStatusRepository->save($replInvStatus);
                 }
                 $remainingItems = (int)$this->getRemainingRecords();

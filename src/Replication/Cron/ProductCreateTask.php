@@ -318,13 +318,13 @@ class ProductCreateTask
         UpdateHandler $updateHandler,
         EntryConverterPool $entryConverterPool
     ) {
-        $this->factory                         = $factory;
-        $this->item                            = $item;
-        $this->eavConfig                       = $eavConfig;
-        $this->configurable                    = $configurable;
-        $this->attribute                       = $attribute;
-        $this->productFactory                  = $productInterfaceFactory;
-        $this->productRepository               = $productRepository;
+        $this->factory                               = $factory;
+        $this->item                                  = $item;
+        $this->eavConfig                             = $eavConfig;
+        $this->configurable                          = $configurable;
+        $this->attribute                             = $attribute;
+        $this->productFactory                        = $productInterfaceFactory;
+        $this->productRepository                     = $productRepository;
         $this->attributeMediaGalleryEntry            = $attributeMediaGalleryEntry;
         $this->imageContent                          = $imageContent;
         $this->categoryCollectionFactory             = $categoryCollectionFactory;
@@ -352,16 +352,16 @@ class ProductCreateTask
         $this->replInvStatusCollectionFactory        = $replInvStatusCollectionFactory;
         $this->replPriceCollectionFactory            = $replPriceCollectionFactory;
         $this->replHierarchyLeafCollectionFactory    = $replHierarchyLeafCollectionFactory;
-        $this->productResourceModel            = $productResourceModel;
-        $this->stockRegistry                   = $stockRegistry;
-        $this->categoryLinkRepositoryInterface = $categoryLinkRepositoryInterface;
-        $this->collectionFactory               = $collectionFactory;
-        $this->categoryRepository              = $categoryRepository;
-        $this->replImageLinkCollectionFactory  = $replImageLinkCollectionFactory;
-        $this->imageProcessor                  = $imageProcessor;
-        $this->mediaGalleryProcessor           = $mediaGalleryProcessor;
-        $this->updateHandler                   = $updateHandler;
-        $this->entryConverterPool              = $entryConverterPool;
+        $this->productResourceModel                  = $productResourceModel;
+        $this->stockRegistry                         = $stockRegistry;
+        $this->categoryLinkRepositoryInterface       = $categoryLinkRepositoryInterface;
+        $this->collectionFactory                     = $collectionFactory;
+        $this->categoryRepository                    = $categoryRepository;
+        $this->replImageLinkCollectionFactory        = $replImageLinkCollectionFactory;
+        $this->imageProcessor                        = $imageProcessor;
+        $this->mediaGalleryProcessor                 = $mediaGalleryProcessor;
+        $this->updateHandler                         = $updateHandler;
+        $this->entryConverterPool                    = $entryConverterPool;
     }
 
     /**
@@ -425,6 +425,7 @@ class ProductCreateTask
                         $item->setData('is_failed', 1);
                     }
                     $item->setData('is_updated', 0);
+                    $item->setData('processed_at', $this->replicationHelper->getDateTime());
                     $item->setData('processed', 1);
                     $this->itemRepository->save($item);
                 } catch (NoSuchEntityException $e) {
@@ -473,6 +474,7 @@ class ProductCreateTask
                         $this->logger->debug($e->getMessage());
                         $item->setData('is_failed', 1);
                     }
+                    $item->setData('processed_at', $this->replicationHelper->getDateTime());
                     $item->setData('processed', 1);
                     $item->setData('is_updated', 0);
                     $this->itemRepository->save($item);
@@ -490,7 +492,7 @@ class ProductCreateTask
                 $this->updateBarcodeOnly();
             }
             if ($this->getRemainingRecords() == 0) {
-                $this->cronStatus             = true;
+                $this->cronStatus = true;
             }
             $this->logger->debug('End ProductCreateTask');
         } else {
@@ -516,7 +518,7 @@ class ProductCreateTask
     public function executeManually()
     {
         $this->execute();
-        $itemsLeftToProcess =   (int) $this->getRemainingRecords();
+        $itemsLeftToProcess = (int)$this->getRemainingRecords();
         return [$itemsLeftToProcess];
     }
 
@@ -530,7 +532,7 @@ class ProductCreateTask
         ProductInterface $product,
         ReplItem $replItem
     ) {
-        $criteria                  = $this->replicationHelper->buildCriteriaForProductAttributes(
+        $criteria = $this->replicationHelper->buildCriteriaForProductAttributes(
             $replItem->getNavId(),
             -1
         );
@@ -552,6 +554,7 @@ class ProductCreateTask
                 $value = $item->getValue();
             }
             $product->setData($formattedCode, $value);
+            $item->setData('processed_at', $this->replicationHelper->getDateTime());
             $item->setData('processed', 1);
             $item->setData('is_updated', 0);
             // @codingStandardsIgnoreLine
@@ -572,6 +575,7 @@ class ProductCreateTask
         $i = 0;
         foreach ($productImages as $image) {
             if ($image->getIsDeleted() == 1) {
+                $image->setData('processed_at', $this->replicationHelper->getDateTime());
                 $image->setData('processed', 1);
                 $image->setData('is_updated', 0);
                 // @codingStandardsIgnoreLine
@@ -611,6 +615,7 @@ class ProductCreateTask
             } else {
                 $image->setData('is_failed', 1);
             }
+            $image->setData('processed_at', $this->replicationHelper->getDateTime());
             $image->setData('processed', 1);
             $image->setData('is_updated', 0);
             // @codingStandardsIgnoreLine
@@ -662,9 +667,10 @@ class ProductCreateTask
         $hierarchyLeafs       = $this->replHierarchyLeafRepository->getList($criteria);
         $resultantCategoryIds = [];
         foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
-            $categoryIds          = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
+            $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
             if (!empty($categoryIds)) {
                 $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $categoryIds));
+                $hierarchyLeaf->setData('processed_at', $this->replicationHelper->getDateTime());
                 $hierarchyLeaf->setData('processed', 1);
                 $hierarchyLeaf->setData('is_updated', 0);
                 $this->replHierarchyLeafRepository->save($hierarchyLeaf);
@@ -787,6 +793,7 @@ class ProductCreateTask
             foreach ($attributeCodes as $valueCode) {
                 $formattedCode                           = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
                 $finalCodes[$valueCode->getDimensions()] = $formattedCode;
+                $valueCode->setData('processed_at', $this->replicationHelper->getDateTime());
                 $valueCode->setData('processed', 1);
                 $valueCode->setData('is_updated', 0);
                 // @codingStandardsIgnoreLine
@@ -861,6 +868,7 @@ class ProductCreateTask
                 /** @var ReplInvStatus $invStatus */
                 $item->setData('is_updated', 0);
                 $item->setData('processed', 1);
+                $item->setData('processed_at', $this->replicationHelper->getDateTime());
                 $this->replPriceRepository->save($item);
             }
         } catch (Exception $e) {
@@ -874,7 +882,7 @@ class ProductCreateTask
      */
     public function updateVariantsOnly()
     {
-        $batchsize = $this->replicationHelper->getVariantBatchSize();
+        $batchsize          = $this->replicationHelper->getVariantBatchSize();
         $allUpdatedvariants = $this->getNewOrUpdatedProductVariants($batchsize);
         if (!empty($allUpdatedvariants)) {
             try {
@@ -922,6 +930,7 @@ class ProductCreateTask
                     $value->setData('is_failed', 1);
                 }
                 $value->setData('is_updated', 0);
+                $value->setData('processed_at', $this->replicationHelper->getDateTime());
                 $value->setData('processed', 1);
                 $value->setData('IsDeleted', 0);
                 // @codingStandardsIgnoreLine
@@ -975,6 +984,7 @@ class ProductCreateTask
                     $value->setData('is_failed', 1);
                 }
                 $value->setData('is_updated', 0);
+                $value->setData('processed_at', $this->replicationHelper->getDateTime());
                 $value->setData('processed', 1);
                 $value->setData('IsDeleted', 0);
                 // @codingStandardsIgnoreLine
@@ -1071,6 +1081,7 @@ class ProductCreateTask
                         $image->setData('is_failed', 1);
                     }
                     $image->setData('is_updated', 0);
+                    $image->setData('processed_at', $this->replicationHelper->getDateTime());
                     $image->setData('processed', 1);
                     // @codingStandardsIgnoreLine
                     $this->replImageLinkRepositoryInterface->save($image);
@@ -1113,6 +1124,7 @@ class ProductCreateTask
                         $replBarcode->setData('is_failed', 1);
                     }
                     $replBarcode->setData('is_updated', 0);
+                    $replBarcode->setData('processed_at', $this->replicationHelper->getDateTime());
                     $replBarcode->setData('processed', 1);
                     $this->replBarcodeRepository->save($replBarcode);
                 }
@@ -1140,7 +1152,7 @@ class ProductCreateTask
             $associatedProductIds = $configProduct->getTypeInstance()->getUsedProductIds($configProduct);
         }
         $configurableProductsData = [];
-        $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
+        $storeId                  = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
         /** @var ReplItemVariantRegistration $value */
         foreach ($variants as $value) {
             $sku = $value->getItemId() . '-' . $value->getVariantId();
@@ -1162,6 +1174,7 @@ class ProductCreateTask
                     $this->logger->debug($e->getMessage());
                     $value->setData('is_failed', 1);
                 }
+                $value->setData('processed_at', $this->replicationHelper->getDateTime());
                 $value->setData('processed', 1);
                 $value->setData('is_updated', 0);
                 $this->replItemVariantRegistrationRepository->save($value);
@@ -1186,6 +1199,7 @@ class ProductCreateTask
                 if ($is_variant_contain_null) {
                     $this->logger->debug('Variant issue : Item ' . $value->getItemId() . '-' . $value->getVariantId() . ' contain null attribute');
                     $value->setData('is_updated', 0);
+                    $value->setData('processed_at', $this->replicationHelper->getDateTime());
                     $value->setData('processed', 1);
                     $value->setData('is_failed', 1);
                     $this->replItemVariantRegistrationRepository->save($value);
@@ -1238,6 +1252,7 @@ class ProductCreateTask
                 $associatedProductIds[] = $productSaved->getId();
                 $value->setData('is_updated', 0);
                 $value->setData('processed', 1);
+                $value->setData('processed_at', $this->replicationHelper->getDateTime());
                 $this->replItemVariantRegistrationRepository->save($value);
                 // @codingStandardsIgnoreEnd
             }
@@ -1249,7 +1264,7 @@ class ProductCreateTask
                 /** @var Interceptor $attribute */
                 $attribute       = $this->eavConfig->getAttribute('catalog_product', $value);
                 $attributesIds[] = $attribute->getId();
-                $data = [
+                $data            = [
                     'attribute_id' => $attribute->getId(),
                     'product_id'   => $productId,
                     'position'     => $position
@@ -1309,6 +1324,7 @@ class ProductCreateTask
                 $inventoryStatus->setData('is_failed', 1);
             }
             $inventoryStatus->setData('is_updated', 0);
+            $inventoryStatus->setData('processed_at', $this->replicationHelper->getDateTime());
             $inventoryStatus->setData('processed', 1);
             $this->replInvStatusRepository->save($inventoryStatus);
         }

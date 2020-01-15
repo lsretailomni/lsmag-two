@@ -35,7 +35,7 @@ class SyncItemUpdates extends ProductCreateTask
             );
             $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
             if (!empty($hierarchyCode)) {
-                $itemAssignmentCount         = $this->caterItemAssignmentToCategories();
+                $itemAssignmentCount = $this->caterItemAssignmentToCategories();
                 $this->caterHierarchyLeafRemoval($hierarchyCode);
 
                 if ($itemAssignmentCount == 0) {
@@ -150,12 +150,13 @@ class SyncItemUpdates extends ProductCreateTask
                     }
                 }
             } catch (Exception $e) {
-                $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
+                $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
                 $this->logger->debug($e->getMessage());
             }
-            $hierarchyLeaf->setData('is_processed', '1');
-            $hierarchyLeaf->setData('IsDeleted', '0');
-            $hierarchyLeaf->setData('is_updated', '0');
+            $hierarchyLeaf->setData('processed', 1);
+            $hierarchyLeaf->setData('processed_at', $this->replicationHelper->getDateTime());
+            $hierarchyLeaf->setData('IsDeleted', 0);
+            $hierarchyLeaf->setData('is_updated', 0);
             // @codingStandardsIgnoreStart
             $this->replHierarchyLeafRepository->save($hierarchyLeaf);
             // @codingStandardsIgnoreEnd

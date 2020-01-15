@@ -248,6 +248,7 @@ class AttributesCreateTask
                 $this->logger->debug($e->getMessage());
                 $replAttribute->setData('is_failed', 1);
             }
+            $replAttribute->setData('processed_at', $this->replicationHelper->getDateTime());
             $replAttribute->setData('processed', 1);
             $replAttribute->setData('IsDeleted', 0);
             $replAttribute->setData('is_updated', 0);
@@ -282,6 +283,7 @@ class AttributesCreateTask
                 ) {
                     $variantCodes[$variant->getCode()][] = $variant->getValue();
                 }
+                $variant->setData('processed_at', $this->replicationHelper->getDateTime());
                 $variant->setData('processed', 1);
                 $variant->setData('is_updated', 0);
                 // @codingStandardsIgnoreLine
@@ -465,6 +467,7 @@ class AttributesCreateTask
             $this->logger->debug('Attribute Code already exist: ' . $formattedCode);
         }
         $replAttribute->setData('processed', 1);
+        $replAttribute->setData('processed_at', $this->replicationHelper->getDateTime());
         $replAttribute->setData('is_updated', 0);
         // @codingStandardsIgnoreLine
         $this->replAttributeRepositoryInterface->save($replAttribute);

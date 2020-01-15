@@ -90,6 +90,7 @@ class SyncPrice extends ProductCreateTask
                     }
                     $replPrice->setData('is_updated', 0);
                     $replPrice->setData('processed', 1);
+                    $replPrice->setData('processed_at', $this->replicationHelper->getDateTime());
                     $this->replPriceRepository->save($replPrice);
                 }
                 $remainingItems = (int)$this->getRemainingRecords();
