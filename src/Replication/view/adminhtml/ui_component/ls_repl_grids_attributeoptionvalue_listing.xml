@@ -153,6 +153,17 @@
                 </item>
             </argument>
         </column>
+        <column name="IsDeleted">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ls\Replication\Model\IsDeletedStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="sortOrder" xsi:type="number">4</item>
+                    <item name="label" xsi:type="string" translate="true">Deleted Status</item>
+                </item>
+            </argument>
+        </column>
         <column name="Sequence">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -171,7 +182,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Value</item>
-                    <item name="sortOrder" xsi:type="number">9</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
                 </item>
             </argument>
         </column>

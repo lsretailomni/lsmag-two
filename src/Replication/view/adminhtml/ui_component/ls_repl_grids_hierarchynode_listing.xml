@@ -135,7 +135,7 @@
                     <item name="filter" xsi:type="string">select</item>
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="sortOrder" xsi:type="number">4</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
                     <item name="label" xsi:type="string" translate="true">Flat to Magento</item>
                 </item>
             </argument>
@@ -147,7 +147,7 @@
                     <item name="filter" xsi:type="string">select</item>
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="sortOrder" xsi:type="number">5</item>
+                    <item name="sortOrder" xsi:type="number">4</item>
                     <item name="label" xsi:type="string" translate="true">Omni to Flat</item>
                 </item>
             </argument>
@@ -159,8 +159,19 @@
                     <item name="filter" xsi:type="string">select</item>
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="sortOrder" xsi:type="number">6</item>
+                    <item name="sortOrder" xsi:type="number">5</item>
                     <item name="label" xsi:type="string" translate="true">Failed Status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="IsDeleted">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ls\Replication\Model\IsDeletedStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="sortOrder" xsi:type="number">6</item>
+                    <item name="label" xsi:type="string" translate="true">Deleted Status</item>
                 </item>
             </argument>
         </column>
@@ -171,7 +182,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Children Order</item>
-                    <item name="sortOrder" xsi:type="number">6</item>
+                    <item name="sortOrder" xsi:type="number">7</item>
                 </item>
             </argument>
         </column>
@@ -183,7 +194,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Hierarchy Code</item>
-                    <item name="sortOrder" xsi:type="number">7</item>
+                    <item name="sortOrder" xsi:type="number">8</item>
                 </item>
             </argument>
         </column>
@@ -195,7 +206,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Image ID</item>
-                    <item name="sortOrder" xsi:type="number">8</item>
+                    <item name="sortOrder" xsi:type="number">9</item>
                 </item>
             </argument>
         </column>
@@ -206,7 +217,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Indentation</item>
-                    <item name="sortOrder" xsi:type="number">8</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
                 </item>
             </argument>
         </column>
@@ -217,7 +228,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">ParentNode</item>
-                    <item name="sortOrder" xsi:type="number">8</item>
+                    <item name="sortOrder" xsi:type="number">11</item>
                 </item>
             </argument>
         </column>
@@ -228,7 +239,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Presentation Order</item>
-                    <item name="sortOrder" xsi:type="number">8</item>
+                    <item name="sortOrder" xsi:type="number">12</item>
                 </item>
             </argument>
         </column>
