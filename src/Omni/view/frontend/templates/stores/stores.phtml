@@ -52,18 +52,18 @@ if (!empty($collection)) :
             <?php if (!empty($hours)) :
                 ?>
                 <div class="store-opening-hours">
-                    <label><i class="fas fa-business-time"></i>&nbsp;<strong><?php echo __('Opening Hours'); ?></strong></label>
-                    <ul>
+                    <label><i class="fas fa-business-time"></i>&nbsp;<strong><?php echo __('Hours'); ?></strong></label>
+                    <table class="table table-borderless">
                 <?php
                 foreach ($hours as $h) :
                 ?>
-                    <li>
+                    <tr>
                         <?php echo $block->getFormattedHours($h); ?>
-                    </li>
+                    </tr>
                 <?php
                 endforeach;
                 ?>
-                    </ul>
+                    </table>
                 </div>
             <?php
             endif;
