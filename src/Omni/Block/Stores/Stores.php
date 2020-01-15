@@ -123,7 +123,7 @@ class Stores extends Template
                 ) . " - " . date(
                     $hoursFormat,
                     strtotime($hour['normal']['close'])
-                ) . "<span></td>";
+                ) . "</span></td>";
         } elseif ($hour['normal']['open'] == \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType::CLOSED) {
             $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour closed'>"
                 . $hour['normal']['open'];
