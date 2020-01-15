@@ -420,26 +420,29 @@
             }
 
             .store-opening-hours {
+
+                .table-borderless td, .table-borderless th {
+                    border: none;
+                }
                 .dayofweek {
                     padding-right: 10px;
+                }
+
+                .closed {
+                    color:red;
+                }
+
+                .table th, .table td {
+                    padding: 0.50rem;
+                    vertical-align: top;
                 }
 
                 .special-hour {
                     .special-label {
                         font-size: 8px;
                         padding-left: 5px;
-                        color: red;
+                        color: green;
                         vertical-align: middle;
-                        .keyframes(fade-in; {
-                            0% {
-                                opacity: 0;
-                            }
-                            100% {
-                                opacity: 1;
-                            }
-                        });
-
-                        .animation(fade-in .2s linear infinite alternate);
                     }
                 }
             }
