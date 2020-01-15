@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Block\Stores;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Helper\Data;
-use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\Data;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\View\Element\Template;
