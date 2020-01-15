@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Block\Stores;
 
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\Data;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Helper\Data;
+use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\View\Element\Template;
@@ -125,8 +125,8 @@ class Stores extends Template
                     strtotime($hour['normal']['close'])
                 ) . "</span></td>";
         } elseif ($hour['normal']['open'] == \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType::CLOSED) {
-            $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour closed'>"
-                . $hour['normal']['open'];
+            $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour'>
+            <span class='closed'>" . $hour['normal']['open'] . '</span></td>';
         } else {
             if (empty($hour['normal'])) {
                 $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td><span class='special-hour'>" .
