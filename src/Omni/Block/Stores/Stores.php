@@ -116,14 +116,14 @@ class Stores extends Template
     {
         $hoursFormat = $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT);
         if (empty($hour['temporary'])) {
-            $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour'>" .
+            $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour'><span>" .
                 date(
                     $hoursFormat,
                     strtotime($hour['normal']['open'])
                 ) . " - " . date(
                     $hoursFormat,
                     strtotime($hour['normal']['close'])
-                ) . "</td>";
+                ) . "<span></td>";
         } elseif ($hour['normal']['open'] == \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType::CLOSED) {
             $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour closed'>"
                 . $hour['normal']['open'];
