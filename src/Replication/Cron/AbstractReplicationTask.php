@@ -54,7 +54,7 @@ abstract class AbstractReplicationTask
     /** @var array List of Replication Tables with unique field */
     private static $jobCodeUniqueFieldArray = [
         "ls_mag/replication/repl_attribute"                 => ["Code"],
-        "ls_mag/replication/repl_attribute_option_value"    => ["Code", "Sequence", "Value"],
+        "ls_mag/replication/repl_attribute_option_value"    => ["Code", "Sequence"],
         "ls_mag/replication/repl_attribute_value"           => [
             "Code",
             "LinkField1",
