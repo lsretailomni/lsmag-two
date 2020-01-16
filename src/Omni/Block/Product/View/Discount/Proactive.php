@@ -5,6 +5,7 @@ namespace Ls\Omni\Block\Product\View\Discount;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
+use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -110,34 +111,42 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             $priceCurrency,
             $data
         );
-        $this->lsr = $lsr;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->itemHelper = $itemHelper;
-        $this->httpContext = $httpContext;
-        $this->customerFactory = $customerFactory;
-        $this->storeManager = $storeManager;
+        $this->lsr               = $lsr;
+        $this->loyaltyHelper     = $loyaltyHelper;
+        $this->itemHelper        = $itemHelper;
+        $this->httpContext       = $httpContext;
+        $this->customerFactory   = $customerFactory;
+        $this->storeManager      = $storeManager;
         $this->timeZoneInterface = $timeZoneInterface;
-        $this->scopeConfig = $scopeConfig;
+        $this->scopeConfig       = $scopeConfig;
     }
 
     /**
      * @param $sku
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse|\Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount[]|\Ls\Omni\Client\ResponseInterface|null
+     * @return array|\Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse|ProactiveDiscount[]|\Ls\Omni\Client\ResponseInterface|null
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getProactiveDiscounts($sku)
     {
-        $itemId = $sku;
+        $itemId  = $sku;
         $storeId = $this->lsr->getDefaultWebStore();
         if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $storeId)) {
             if (!is_array($response)) {
                 $response = [$response];
             }
+            $tempArray = [];
+            foreach ($response as $key => $responseData) {
+                $uniqueKey = $responseData->getPercentage() . '|' . $responseData->getItemId() . '|' . $responseData->getPopUpLine1() . '|' . $responseData->getType();
+                if (!in_array($uniqueKey, $tempArray, true)) {
+                    $tempArray[] = $uniqueKey;
+                    continue;
+                }
+                unset($response[$key]);
+            }
             return $response;
-        } else {
-            return [];
         }
+        return [];
     }
 
     /**
@@ -152,14 +161,13 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             $storeId = $this->lsr->getDefaultWebStore();
             if ($this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_ID)) {
                 $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                $email = $this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_EMAIL);
-                $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
-                $cardId = $customer->getData('lsr_cardid');
+                $email     = $this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_EMAIL);
+                $customer  = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
+                $cardId    = $customer->getData('lsr_cardid');
                 if ($response = $this->loyaltyHelper->getPublishedOffers($itemId, $storeId, $cardId)) {
                     return $response;
-                } else {
-                    return [];
                 }
+                return [];
             }
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -169,47 +177,47 @@ class Proactive extends \Magento\Catalog\Block\Product\View
 
     /**
      * @param $itemId
-     * @param \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount $discount
+     * @param ProactiveDiscount $discount
      * @return array|string
      */
     // @codingStandardsIgnoreLine
     public function getFormattedDescriptionDiscount(
         $itemId,
-        \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount $discount
+        ProactiveDiscount $discount
     ) {
-        $description = [];
-        $discountText = "";
+        $description  = [];
+        $discountText = '';
         if ($discount->getDescription()) {
-            $description[] = "<span class='discount-description'>" . $discount->getDescription() . "</span>";
+            $description[] = "<span class='discount-description'>" . $discount->getDescription() . '</span>';
         }
         if (floatval($discount->getMinimumQuantity()) > 0 && $discount->getType() == ProactiveDiscountType::MULTIBUY) {
             $description[] = "
-                <span class='discount-min-qty-label discount-label'>" . __("Minimum Qty :") . "</span>
+                <span class='discount-min-qty-label discount-label'>" . __('Minimum Qty :') . "</span>
                 <span class='discount-min-qty-value discount-value'>" .
                 number_format(
                     (float)$discount->getMinimumQuantity(),
                     2,
                     '.',
                     ''
-                ) . "</span>";
+                ) . '</span>';
         }
 
         if (floatval($discount->getPercentage()) > 0) {
             $discountPercentage = number_format((float)$discount->getPercentage(), 2, '.', '');
-            $discountText = __("Avail %1 Off ", $discountPercentage . "%") . "";
+            $discountText       = __('Avail %1 Off ', $discountPercentage . '%') . '';
         }
         if ($discount->getItemIds()) {
             $itemIds = $discount->getItemIds()->getString();
             if (!is_array($itemIds)) {
                 $itemIds = [$discount->getItemIds()->getString()];
             }
-            $itemIds = array_unique($itemIds);
-            $itemIds = array_diff($itemIds, [$itemId]);
-            $counter = 0;
-            $popupLink = "";
-            $popupHtml = "";
+            $itemIds      = array_unique($itemIds);
+            $itemIds      = array_diff($itemIds, [$itemId]);
+            $counter      = 0;
+            $popupLink    = '';
+            $popupHtml    = '';
             $productsData = [];
-            $productHtml = "";
+            $productHtml  = '';
             if (!empty($itemIds)) {
                 $productsData = $this->itemHelper->getProductsInfoBySku($itemIds);
             }
@@ -217,7 +225,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                 if ($this->getMixandMatchProductLimit() == $counter) {
                     break;
                 }
-                $priceHtml = "";
+                $priceHtml = '';
                 if ($counter == 0) {
                     $popupLink = "<a style='cursor:pointer' class='ls-click-product-promotion'
                      data-id='" . $discount->getId() . "'>"
@@ -225,7 +233,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                     $popupHtml = "<div class='ls-discounts-popup-model'
                     id='ls-popup-model-" . $discount->getId() . "' style='display:none;'>";
                 }
-                $productHtml = "";
+                $productHtml = '';
                 if (!empty($productInfo)) {
                     $imageHtml = parent::getImage(
                         $productInfo,
@@ -241,29 +249,28 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                             if ($counter == 0) {
                                 $productHtml = $popupHtml;
                             }
-                            $productHtml .= "<div class='item-popup'>";
-                            $productHtml .= "<a  href = '" . $productInfo->getProductUrl() . "' class='product-link'
+                            $productHtml   .= "<div class='item-popup'>";
+                            $productHtml   .= "<a  href = '" . $productInfo->getProductUrl() . "' class='product-link'
                              target='_blank'>" . $imageHtml .
-                                "<div class='title'>" . $productName . "</div>";
-                            $productHtml .= "</a>";
-                            $productHtml .= $priceHtml . "</div>";
+                                "<div class='title'>" . $productName . '</div>';
+                            $productHtml   .= '</a>';
+                            $productHtml   .= $priceHtml . '</div>';
                             $productData[] = $productHtml;
                         }
                     }
                 }
-
                 $counter++;
             }
             if (!empty($discountText)) {
-                $discountText .= __("if Buy with any of these items: ") . $popupLink;
+                $discountText .= __('if Buy with any of these items: ') . $popupLink;
             } else {
                 $discountText .= $popupLink;
             }
             if ($this->getMixandMatchProductLimit() != 0) {
                 $description[] = $discountText;
                 if (!empty($productsData)) {
-                    $description[] = implode(" ", $productData);
-                    $description[] = "</div>";
+                    $description[] = implode(' ', $productData);
+                    $description[] = '</div>';
                 }
             }
         } else {
@@ -271,7 +278,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                 $description[] = $discountText . "</span>";
             }
         }
-        $description = implode("<br/>", $description);
+        $description = implode('<br/>', $description);
         return $description;
     }
 
@@ -283,25 +290,25 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     {
         $description = [];
         if ($coupon->getDescription()) {
-            $description[] = "<span class='coupon-description'>" . $coupon->getDescription() . "</span>";
+            $description[] = "<span class='coupon-description'>" . $coupon->getDescription() . '</span>';
         }
         if ($coupon->getDetails()) {
-            $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . "</span>";
+            $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . '</span>';
         }
-        if ($coupon->getCode()!=DiscountType::PROMOTION) {
+        if ($coupon->getCode() != DiscountType::PROMOTION) {
             if ($coupon->getExpirationDate()) {
                 $description[] = "
-        <span class='coupon-expiration-date-label discount-label'>" . __("Expiry :") . "</span>
+        <span class='coupon-expiration-date-label discount-label'>" . __('Expiry :') . "</span>
         <span class='coupon-expiration-date-value discount-value'>" .
-                    $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>";
+                    $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . '</span>';
             }
             if ($coupon->getOfferId()) {
                 $description[] = "
-        <span class='coupon-offer-id-label discount-label'>" . __("Coupon Code :") . "</span>
-        <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . "</span>";
+        <span class='coupon-offer-id-label discount-label'>" . __('Coupon Code :') . "</span>
+        <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . '</span>';
             }
         }
-        $description = implode("<br/>", $description);
+        $description = implode('<br/>', $description);
         return $description;
     }
 
