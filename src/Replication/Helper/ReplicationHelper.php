@@ -8,7 +8,6 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
@@ -33,6 +32,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
+use \Ls\Replication\Logger\Logger;
 
 /**
  * Class ReplicationHelper
@@ -736,6 +736,7 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * To be used only for Processing attributes and variants in the AttributeCreate Task
      * @return string
      */
     public function getProductAttributeBatchSize()
@@ -784,6 +785,7 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * To be used only for creating variants based products.
      * @return string
      */
     public function getVariantBatchSize()
@@ -829,10 +831,14 @@ class ReplicationHelper extends AbstractHelper
         return $this->sortOrder->setField($field)->setDirection($direction);
     }
 
-    public function parseImageIdfromFile($imagename = '')
+    /**
+     * @param string $imageName
+     * @return mixed
+     */
+    public function parseImageIdfromFile($imageName = '')
     {
-        $imagename = pathinfo($imagename);
-        return $imagename['filename'];
+        $imageName = pathinfo($imageName);
+        return $imageName['filename'];
     }
 
     /**
