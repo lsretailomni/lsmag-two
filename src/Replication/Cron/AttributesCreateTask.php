@@ -3,17 +3,17 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
-use Ls\Replication\Api\ReplAttributeRepositoryInterface;
-use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Logger\Logger;
-use Ls\Replication\Model\ReplAttribute;
-use Ls\Replication\Model\ReplAttributeOptionValue;
-use Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
-use Ls\Replication\Model\ReplAttributeSearchResults;
-use Ls\Replication\Model\ReplExtendedVariantValue;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
+use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplAttribute;
+use \Ls\Replication\Model\ReplAttributeOptionValue;
+use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
+use \Ls\Replication\Model\ReplAttributeSearchResults;
+use \Ls\Replication\Model\ReplExtendedVariantValue;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
