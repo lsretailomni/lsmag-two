@@ -279,7 +279,7 @@ class AttributesCreateTask
         $variantCodes = [];
         if ($variants->getTotalCount() > 0) {
             /** @var ReplExtendedVariantValue $variant */
-            foreach ($variantCodes as $code => $value) {
+            foreach ($variants->getItems() as $variant) {
                 if (empty($variantCodes[$variant->getCode()]) ||
                     !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)
                 ) {
