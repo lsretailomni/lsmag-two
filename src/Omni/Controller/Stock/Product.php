@@ -76,7 +76,9 @@ class Product extends \Magento\Framework\App\Action\Action
             );
             if ($response !== null) {
                 foreach ($response->getInventoryResponse() as $each) {
-                    $storesNavId[] = $each->getStoreId();
+                    if ($each->getQtyInventory() > 0) {
+                        $storesNavId[] = $each->getStoreId();
+                    }
                 }
             }
             $customResponse = $this->stockHelper->getAllStoresFromReplTable(
