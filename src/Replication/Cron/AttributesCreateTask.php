@@ -281,7 +281,8 @@ class AttributesCreateTask
             /** @var ReplExtendedVariantValue $variant */
             foreach ($variants->getItems() as $variant) {
                 if (empty($variantCodes[$variant->getCode()]) ||
-                    !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)
+                    !in_array($variant->getValue(), $variantCodes[$variant->getCode()][$variant->getLogicalOrder()],
+                        true)
                 ) {
                     $variantCodes[$variant->getCode()][$variant->getLogicalOrder()] = $variant->getValue();
                 }
