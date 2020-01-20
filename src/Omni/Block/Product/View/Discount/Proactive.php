@@ -2,24 +2,41 @@
 
 namespace Ls\Omni\Block\Product\View\Discount;
 
+use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
+use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
+use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Plugin\App\Action\Context;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Block\Product\View;
+use Magento\Catalog\Helper\Product;
+use Magento\Catalog\Model\ProductTypes\ConfigInterface;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Json\EncoderInterface;
+use Magento\Framework\Locale\FormatInterface;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Framework\Stdlib\StringUtils;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class View
  * @package Ls\Omni\Block\Product\View
  */
-class Proactive extends \Magento\Catalog\Block\Product\View
+class Proactive extends View
 {
-    /** @var \Ls\Core\Model\LSR */
+    /** @var LSR */
     public $lsr;
 
     /**
@@ -28,7 +45,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     public $loyaltyHelper;
 
     /**
-     * @var \Ls\Omni\Helper\ItemHelper
+     * @var ItemHelper
      */
     public $itemHelper;
 
@@ -38,11 +55,11 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     public $httpContext;
 
     /**
-     * @var \Magento\Customer\Model\CustomerFactory
+     * @var CustomerFactory
      */
     public $customerFactory;
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     public $storeManager;
 
     /**
@@ -62,16 +79,16 @@ class Proactive extends \Magento\Catalog\Block\Product\View
      * @param ItemHelper $itemHelper
      * @param \Magento\Catalog\Block\Product\Context $context
      * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
-     * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
-     * @param \Magento\Framework\Stdlib\StringUtils $string
-     * @param \Magento\Catalog\Helper\Product $productHelper
-     * @param \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig
-     * @param \Magento\Framework\Locale\FormatInterface $localeFormat
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param EncoderInterface $jsonEncoder
+     * @param StringUtils $string
+     * @param Product $productHelper
+     * @param ConfigInterface $productTypeConfig
+     * @param FormatInterface $localeFormat
+     * @param Proxy $customerSession
      * @param ProductRepositoryInterface $productRepository
-     * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
+     * @param PriceCurrencyInterface $priceCurrency
      * @param \Magento\Framework\App\Http\Context $httpContext
-     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param CustomerFactory $customerFactory
      * @param StoreManagerInterface $storeManager
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
@@ -83,16 +100,16 @@ class Proactive extends \Magento\Catalog\Block\Product\View
         ItemHelper $itemHelper,
         \Magento\Catalog\Block\Product\Context $context,
         \Magento\Framework\Url\EncoderInterface $urlEncoder,
-        \Magento\Framework\Json\EncoderInterface $jsonEncoder,
-        \Magento\Framework\Stdlib\StringUtils $string,
-        \Magento\Catalog\Helper\Product $productHelper,
-        \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig,
-        \Magento\Framework\Locale\FormatInterface $localeFormat,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        EncoderInterface $jsonEncoder,
+        StringUtils $string,
+        Product $productHelper,
+        ConfigInterface $productTypeConfig,
+        FormatInterface $localeFormat,
+        Proxy $customerSession,
         ProductRepositoryInterface $productRepository,
-        \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
+        PriceCurrencyInterface $priceCurrency,
         \Magento\Framework\App\Http\Context $httpContext,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
+        CustomerFactory $customerFactory,
         StoreManagerInterface $storeManager,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
@@ -123,9 +140,9 @@ class Proactive extends \Magento\Catalog\Block\Product\View
 
     /**
      * @param $sku
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse|ProactiveDiscount[]|\Ls\Omni\Client\ResponseInterface|null
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return array|DiscountsGetResponse|ProactiveDiscount[]|ResponseInterface|null
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getProactiveDiscounts($sku)
     {
@@ -137,7 +154,8 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             }
             $tempArray = [];
             foreach ($response as $key => $responseData) {
-                $uniqueKey = $responseData->getPercentage() . '|' . $responseData->getItemId() . '|' . $responseData->getPopUpLine1() . '|' . $responseData->getType();
+                $uniqueKey = $responseData->getPercentage() . '|' . $responseData->getItemId() . '|'
+                    . $responseData->getPopUpLine1() . '|' . $responseData->getType();
                 if (!in_array($uniqueKey, $tempArray, true)) {
                     $tempArray[] = $uniqueKey;
                     continue;
@@ -151,17 +169,16 @@ class Proactive extends \Magento\Catalog\Block\Product\View
 
     /**
      * @param $sku
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer[]|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse|\Ls\Omni\Client\ResponseInterface|null
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return array|PublishedOffer[]|PublishedOffersGetByCardIdResponse|ResponseInterface|null
      */
     public function getCoupons($sku)
     {
         $itemId = $sku;
         try {
             $storeId = $this->lsr->getDefaultWebStore();
-            if ($this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_ID)) {
+            if ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_ID)) {
                 $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                $email     = $this->httpContext->getValue(\Ls\Omni\Plugin\App\Action\Context::CONTEXT_CUSTOMER_EMAIL);
+                $email     = $this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL);
                 $customer  = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
                 $cardId    = $customer->getData('lsr_cardid');
                 if ($response = $this->loyaltyHelper->getPublishedOffers($itemId, $storeId, $cardId)) {
@@ -169,7 +186,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
                 }
                 return [];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return [];
@@ -283,10 +300,18 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     }
 
     /**
-     * @param \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon
+     * @return string
+     */
+    public function getMixandMatchProductLimit()
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT);
+    }
+
+    /**
+     * @param PublishedOffer $coupon
      * @return array|string
      */
-    public function getFormattedDescriptionCoupon(\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon)
+    public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
     {
         $description = [];
         if ($coupon->getDescription()) {
@@ -326,7 +351,7 @@ class Proactive extends \Magento\Catalog\Block\Product\View
             ));
 
             return $offerExpiryDate;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -359,13 +384,5 @@ class Proactive extends \Magento\Catalog\Block\Product\View
     public function isDiscountEnable()
     {
         return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_SHOW_ON_PRODUCT);
-    }
-
-    /**
-     * @return string
-     */
-    public function getMixandMatchProductLimit()
-    {
-        return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT);
     }
 }
