@@ -8,6 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
@@ -32,7 +33,6 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
-use \Ls\Replication\Logger\Logger;
 
 /**
  * Class ReplicationHelper
@@ -200,6 +200,45 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
+        return $criteria->create();
+    }
+
+    /**
+     * @param int $pagesize
+     * @return SearchCriteria
+     */
+    public function buildCriteriaForAttributeOptions(
+        $pagesize = 100
+    ) {
+        // creating search criteria for two fields
+        // processed = 0 which means not yet processed
+        $attr_processed = $this->filterBuilder->setField('processed')
+            ->setValue('0')
+            ->setConditionType('eq')
+            ->create();
+        // is_updated = 1 which means may be processed already but is updated on omni end
+        $attr_is_updated = $this->filterBuilder->setField('is_updated')
+            ->setValue('1')
+            ->setConditionType('eq')
+            ->create();
+
+        // IsDeleted = 1 which means may be processed already but is deleted on omni end
+        $attr_is_deleted = $this->filterBuilder->setField('isDeleted')
+            ->setValue('1')
+            ->setConditionType('eq')
+            ->create();
+
+        // building OR condition between the above two criteria
+        $filterOr = $this->filterGroupBuilder
+            ->addFilter($attr_processed)
+            ->addFilter($attr_is_updated)
+            ->addFilter($attr_is_deleted)
+            ->create();
+        // adding criteria into where clause.
+        $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
         if ($pagesize != -1) {
             $criteria->setPageSize($pagesize);
         }
@@ -697,7 +736,6 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * To be used only for Processing attributes and variants in the AttributeCreate Task
      * @return string
      */
     public function getProductAttributeBatchSize()
@@ -746,7 +784,6 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * To be used only for creating variants based products.
      * @return string
      */
     public function getVariantBatchSize()
@@ -792,14 +829,10 @@ class ReplicationHelper extends AbstractHelper
         return $this->sortOrder->setField($field)->setDirection($direction);
     }
 
-    /**
-     * @param string $imageName
-     * @return mixed
-     */
-    public function parseImageIdfromFile($imageName = '')
+    public function parseImageIdfromFile($imagename = '')
     {
-        $imageName = pathinfo($imageName);
-        return $imageName['filename'];
+        $imagename = pathinfo($imagename);
+        return $imagename['filename'];
     }
 
     /**

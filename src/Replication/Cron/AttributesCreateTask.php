@@ -35,6 +35,8 @@ class AttributesCreateTask
 
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_attributes';
 
+    const ATTRIBUTE_OPTION_VALUE_SORT_ORDER = 10000;
+
     /**
      * @var ReplExtendedVariantValueRepository
      */
@@ -93,6 +95,11 @@ class AttributesCreateTask
     public $eavEntity;
 
     /**
+     * @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory
+     */
+    public $attrOptionCollectionFactory;
+
+    /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ProductAttributeRepositoryInterface $productAttributeRepository
@@ -106,6 +113,7 @@ class AttributesCreateTask
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
      * @param AttributeManagementInterface $attributeManagement
+     * @param \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory $attrOptionCollectionFactory
      */
     public function __construct(
         ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
@@ -119,7 +127,8 @@ class AttributesCreateTask
         Config $eavConfig,
         ReplicationHelper $replicationHelper,
         LSR $LSR,
-        AttributeManagementInterface $attributeManagement
+        AttributeManagementInterface $attributeManagement,
+        \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory $attrOptionCollectionFactory
     ) {
         $this->replExtendedVariantValueRepository          = $replExtendedVariantValueRepository;
         $this->productAttributeRepository                  = $productAttributeRepository;
@@ -133,6 +142,7 @@ class AttributesCreateTask
         $this->replicationHelper                           = $replicationHelper;
         $this->lsr                                         = $LSR;
         $this->attributeManagement                         = $attributeManagement;
+        $this->attrOptionCollectionFactory                 = $attrOptionCollectionFactory;
     }
 
     /**
@@ -269,7 +279,7 @@ class AttributesCreateTask
             if (empty($variantCodes[$variant->getCode()]) ||
                 !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)
             ) {
-                $variantCodes[$variant->getCode()][] = $variant->getValue();
+                $variantCodes[$variant->getCode()][$variant->getLogicalOrder()] = $variant->getValue();
             }
             $variant->setData('processed', 1);
             $variant->setData('is_updated', 0);
@@ -323,6 +333,33 @@ class AttributesCreateTask
                     $this->logger->debug($e->getMessage());
                 }
             }
+
+            $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
+            $newOptionsArray = [];
+            if (empty($existingOptions)) {
+                $this->eavSetupFactory->create()
+                    ->addAttributeOption(
+                        [
+                            'values'       => $value,
+                            'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
+                        ]
+                    );
+            } elseif (!empty($value)) {
+                foreach ($value as $k => $v) {
+                    if (!in_array($v, $existingOptions, true)) {
+                        $newOptionsArray[$k] = $v;
+                    }
+                }
+                if (!empty($newOptionsArray)) {
+                    $this->eavSetupFactory->create()
+                        ->addAttributeOption(
+                            [
+                                'values'       => $newOptionsArray,
+                                'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
+                            ]
+                        );
+                }
+            }
         }
         if (count($variants) === 0) {
             $this->successCronAttributeVariant = true;
@@ -331,29 +368,42 @@ class AttributesCreateTask
     }
 
     /**
-     * Update the order of the options in ascending order
      * @param $formattedCode
+     * @param $sortOrder
+     * @param $updatedLabel
+     * @param $status
      */
-    public function updateOptions($formattedCode)
+    public function updateOptions($formattedCode, $sortOrder, $updatedLabel, $status)
     {
         try {
-            $attribute = $this->eavAttributeFactory->create();
-            $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
-            $options   = $attribute->getOptions();
-            $labels    = [];
-            foreach ($options as $index => $option) {
-                if (!empty($option->getValue())) {
-                    $labels[$option->getValue()] = $option->getLabel();
-                } else {
-                    unset($options[$index]);
+            $attribute          = $this->eavAttributeFactory->create();
+            $attribute          = $attribute->loadByCode(Product::ENTITY, $formattedCode);
+            $options            = $attribute->getOptions();
+            $finalOptionsResult = $options;
+            $counter            = 1;
+            foreach ($options as $option) {
+                if (empty($option->getValue())) {
+                    unset($finalOptionsResult[$counter - 1]);
+                    continue;
                 }
+                $finalOptionsResult[$counter]->setValue($option->getValue());
+                $finalOptionsResult[$counter]->setLabel($option->getLabel());
+                if ($counter == $sortOrder) {
+                    if ($status == 1) {
+                        $finalOptionsResult[$counter]->setLabel($updatedLabel);
+                    } elseif ($status == 2) {
+                        unset($finalOptionsResult[$counter]);
+                        $delete['value'][$option->getValue()]  = true;
+                        $delete['delete'][$option->getValue()] = true;
+                        $this->eavSetupFactory->create()->addAttributeOption($delete);
+                        $counter++;
+                        continue;
+                    }
+                }
+                $finalOptionsResult[$counter]->setSortOrder($counter);
+                $counter++;
             }
-            asort($labels);
-            foreach ($options as &$option) {
-                $sortOrder = array_search($option->getValue(), array_keys($labels));
-                $option->setSortOrder($sortOrder);
-            }
-            $attribute->setOptions($options);
+            $attribute->setOptions($finalOptionsResult);
             $this->productAttributeRepository->save($attribute);
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
@@ -444,8 +494,7 @@ class AttributesCreateTask
         if (!empty($option_data)) {
             $formattedCode               = $this->replicationHelper->formatAttributeCode($attribute_code);
             $option_data['attribute_id'] = $this->getAttributeIdbyCode($formattedCode);
-            $this->addUpdateAttributeOption($option_data);
-            $this->updateOptions($formattedCode);
+            $this->eavSetupFactory->create()->addAttributeOption($option_data);
         }
     }
 
@@ -474,7 +523,8 @@ class AttributesCreateTask
                 && in_array($item->getValue(), $existingOptions, true)) {
                 continue;
             }
-            $optionArray['values'][$item->getId()] = $item->getValue();
+            $sortOrder                         = $this->getSortOrder($item->getSequence());
+            $optionArray['values'][$sortOrder] = $item->getValue();
         }
         return $optionArray;
     }
@@ -487,8 +537,7 @@ class AttributesCreateTask
     {
         $option_data = $this->updateOptionValues();
         if (!empty($option_data)) {
-            $this->addUpdateAttributeOption($option_data);
-            $this->updateOptions($option_data['attribute_code']);
+            $this->eavSetupFactory->create()->addAttributeOption($option_data);
         }
     }
 
@@ -499,40 +548,43 @@ class AttributesCreateTask
     public function updateOptionValues()
     {
         $optionArray = [];
-        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1, false);
+        $criteria    = $this->replicationHelper->buildCriteriaForAttributeOptions(-1);
         /** @var ReplAttributeOptionValueSearchResults $replAttributeOptionValues */
         $replAttributeOptionValues = $this->replAttributeOptionValueRepositoryInterface->getList($criteria);
 
         /** @var ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
-            $attributeCode = $this->replicationHelper->formatAttributeCode($item->getCode());
-            // Get existing options array
-            $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($attributeCode);
-            $item->setProcessed(1);
-            // If have existing option and current value is a part of existing option then don't do anything
-            if (!empty($existingOptions) && !empty($item->getValue())
-                && in_array($item->getValue(), $existingOptions, true)) {
-                continue;
-            }
             try {
-                $optionArray['attribute_id'] = $this->getAttributeIdbyCode($attributeCode);
+                $attributeCode = $this->replicationHelper->formatAttributeCode($item->getCode());
+
+                // Get existing options array
+                $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($attributeCode);
+
+                $status      = 0;
+                $attributeId = $this->getAttributeIdbyCode($attributeCode);
+                $sortOrder   = $this->getSortOrder($item->getSequence());
+                if ($item->getIsUpdated() == 1) {
+                    $status = 1;
+                } elseif ($item->getIsDeleted() == 1) {
+                    $status = 2;
+                }
+                if (!empty($item->getValue())) {
+                    if (!in_array($item->getValue(), $existingOptions, true) && $item->getProcessed() == 0) {
+                        $optionArray['values'][$sortOrder] = $item->getValue();
+                        $optionArray['attribute_id']       = $attributeId;
+                    } else {
+                        $this->updateOptions($attributeCode, $sortOrder, $item->getValue(), $status);
+                    }
+                }
             } catch (\Exception $e) {
                 $item->setData('is_failed', 1);
+                $this->logger->debug($e->getMessage());
             }
+            $item->setProcessed(1);
+            $item->setIsUpdated(0);
+            $item->setIsDeleted(0);
             // @codingStandardsIgnoreLine
             $this->replAttributeOptionValueRepositoryInterface->save($item);
-            $optionId = $item->getId();
-            if (!in_array($item->getValue(), $existingOptions, true)) {
-                $optionArray['value'][$optionId]  = $item->getValue();
-                $optionArray['update'][$optionId] = $item->getValue();
-                $optionArray['attribute_code']    = $attributeCode;
-            } elseif ($item->getIsDeleted() == 1 && in_array($item->getValue(), $existingOptions, true)) {
-                $optionArray['value'][$optionId]   = $item->getValue();
-                $optionArray['deleted'][$optionId] = $item->getValue();
-            } else {
-                $optionArray['values'][$optionId] = $item->getValue();
-                $optionArray['attribute_code']    = $attributeCode;
-            }
         }
         return $optionArray;
     }
@@ -589,44 +641,15 @@ class AttributesCreateTask
     }
 
     /**
-     * @param $option
+     * @param $sortOrder
+     * @return float|int
      */
-    public function addUpdateAttributeOption($option)
+    public function getSortOrder($sortOrder)
     {
-        $eavFactory       = $this->eavSetupFactory->create();
-        $optionTable      = $eavFactory->getSetup()->getTable('eav_attribute_option');
-        $optionValueTable = $eavFactory->getSetup()->getTable('eav_attribute_option_value');
-
-        if (isset($option['value'])) {
-            foreach ($option['value'] as $optionId => $value) {
-                $intOptionId = (int)$optionId;
-                if (!empty($option['delete'][$optionId])) {
-                    if ($intOptionId) {
-                        $condition = ['option_id =?' => $intOptionId];
-                        $eavFactory->getSetup()->getConnection()->delete($optionTable, $condition);
-                    }
-                }
-
-                // for updating option values
-                if (!empty($option['update'][$optionId])) {
-                    $data = ['value' => $value];
-                    $eavFactory->getSetup()->getConnection()->update(
-                        $optionValueTable,
-                        $data,
-                        ['option_id=?' => $intOptionId]
-                    );
-                }
-            }
-        } elseif (isset($option['values'])) {
-            foreach ($option['values'] as $intOptionId => $label) {
-                // add option
-                $data = [
-                    'option_id' => $intOptionId, 'attribute_id' => $option['attribute_id']
-                ];
-                $eavFactory->getSetup()->getConnection()->insert($optionTable, $data);
-                $data = ['option_id' => $intOptionId, 'store_id' => 0, 'value' => $label];
-                $eavFactory->getSetup()->getConnection()->insert($optionValueTable, $data);
-            }
+        if ($sortOrder >= self::ATTRIBUTE_OPTION_VALUE_SORT_ORDER) {
+            $sortOrder = $sortOrder / self::ATTRIBUTE_OPTION_VALUE_SORT_ORDER;
         }
+
+        return $sortOrder;
     }
 }
