@@ -241,6 +241,11 @@ class ReplDiscountValidation extends AbstractModel implements ReplDiscountValida
      */
     protected $updated_at = null;
 
+    /**
+     * @property string $processed_at
+     */
+    protected $processed_at = null;
+
     public function _construct()
     {
         $this->_init( 'Ls\Replication\Model\ResourceModel\ReplDiscountValidation' );
@@ -1129,6 +1134,26 @@ class ReplDiscountValidation extends AbstractModel implements ReplDiscountValida
     public function getUpdatedAt()
     {
         return $this->getData( 'updated_at' );
+    }
+
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at)
+    {
+        $this->setData( 'processed_at', $processed_at );
+        $this->processed_at = $processed_at;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProcessedAt()
+    {
+        return $this->getData( 'processed_at' );
     }
 
 

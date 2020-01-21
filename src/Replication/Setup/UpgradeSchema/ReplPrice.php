@@ -46,6 +46,7 @@ class ReplPrice
         	$table->addColumn('UnitPriceInclVat' , Table::TYPE_DECIMAL, '20,4');
         	$table->addColumn('VATPostGroup' , Table::TYPE_TEXT, '');
         	$table->addColumn('VariantId' , Table::TYPE_TEXT, '');
+        	$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
         	$setup->getConnection()->createTable( $table );
@@ -155,6 +156,11 @@ class ReplPrice
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	} else {
         		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'processed_at' ) === false) {
+        		$connection->addColumn($table_name, 'processed_at', ['length' => '','default' => null,'type' => Table::TYPE_TIMESTAMP, 'comment' => 'Processed_at']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'processed_at', ['length' => '','default' => null,'type' => Table::TYPE_TIMESTAMP, 'comment' => 'Processed_at']);
         	}
         }
     }
