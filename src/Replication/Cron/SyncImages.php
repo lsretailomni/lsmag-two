@@ -340,6 +340,7 @@ class SyncImages extends ProductCreateTask
                                     }
                                 }
                             }
+                            $image->setData('processed_at', $this->replicationHelper->getDateTime());
                             $image->setData('processed', 1);
                             $image->setData('is_updated', 0);
                             // @codingStandardsIgnoreLine

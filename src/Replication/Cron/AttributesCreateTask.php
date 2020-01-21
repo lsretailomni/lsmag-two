@@ -251,6 +251,7 @@ class AttributesCreateTask
                 $this->logger->debug($e->getMessage());
                 $replAttribute->setData('is_failed', 1);
             }
+            $replAttribute->setData('processed_at', $this->replicationHelper->getDateTime());
             $replAttribute->setData('processed', 1);
             $replAttribute->setData('IsDeleted', 0);
             $replAttribute->setData('is_updated', 0);
@@ -474,6 +475,7 @@ class AttributesCreateTask
             $this->logger->debug('Attribute Code already exist: ' . $formattedCode);
         }
         $replAttribute->setData('processed', 1);
+        $replAttribute->setData('processed_at', $this->replicationHelper->getDateTime());
         $replAttribute->setData('is_updated', 0);
         // @codingStandardsIgnoreLine
         $this->replAttributeRepositoryInterface->save($replAttribute);
@@ -520,7 +522,9 @@ class AttributesCreateTask
 
         /** @var ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
+            $item->setIsUpdated(0);
             $item->setProcessed(1);
+            $item->setProcessedAt($this->replicationHelper->getDateTime());
             // @codingStandardsIgnoreLine
             $this->replAttributeOptionValueRepositoryInterface->save($item);
             // If have existing option and current value is a part of existing option then don't do anything

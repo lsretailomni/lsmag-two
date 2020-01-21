@@ -196,7 +196,7 @@ class DiscountCreateTask
                             $skuAmountArray[$discountValue][] = $replDiscount->getItemId() . '-' .
                                 $replDiscount->getVariantId();
                         }
-
+                        $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
                         $replDiscount->setData('processed', '1');
                         $replDiscount->setData('is_updated', '0');
                         // @codingStandardsIgnoreStart
@@ -361,6 +361,7 @@ class DiscountCreateTask
                 $this->logger->debug($e->getMessage());
                 $replDiscount->setData('is_failed', 1);
             }
+            $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
             $replDiscount->setData('processed', 1);
             $replDiscount->setData('is_updated', 0);
             // @codingStandardsIgnoreLine

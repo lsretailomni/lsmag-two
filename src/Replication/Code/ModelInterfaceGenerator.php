@@ -126,6 +126,12 @@ class ModelInterfaceGenerator extends AbstractGenerator
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'interface' => true]
         );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'ProcessedAt', 'variable_name' => 'processed_at', 'interface' => true]
+        );
         $content = $this->file->generate();
 
         $content = preg_replace('/\s+{\s+}+/', ";", $content);
