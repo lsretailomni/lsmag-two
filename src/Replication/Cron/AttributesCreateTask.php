@@ -3,17 +3,17 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
-use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
-use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
-use \Ls\Replication\Model\ReplAttribute;
-use \Ls\Replication\Model\ReplAttributeOptionValue;
-use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
-use \Ls\Replication\Model\ReplAttributeSearchResults;
-use \Ls\Replication\Model\ReplExtendedVariantValue;
+use Ls\Core\Model\LSR;
+use Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
+use Ls\Replication\Api\ReplAttributeRepositoryInterface;
+use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Replication\Logger\Logger;
+use Ls\Replication\Model\ReplAttribute;
+use Ls\Replication\Model\ReplAttributeOptionValue;
+use Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
+use Ls\Replication\Model\ReplAttributeSearchResults;
+use Ls\Replication\Model\ReplExtendedVariantValue;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
@@ -391,21 +391,23 @@ class AttributesCreateTask
             $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
             $options   = $attribute->getOptions();
             $counter   = 1;
-            $sortOrder = $optionData['sort_order'];
-            foreach ($options as $option) {
-                if (empty($option->getValue())) {
-                    continue;
+            foreach ($optionData as $data) {
+                $sortOrder = $data['sort_order'];
+                foreach ($options as $option) {
+                    if (empty($option->getValue())) {
+                        continue;
+                    }
+                    $option->setValue($option->getValue());
+                    $option->setLabel($option->getLabel());
+                    $option->setSortOrder($counter);
+                    if ($counter == $sortOrder || $option->getLabel() == $data['value']) {
+                        $option->setLabel($data['value']);
+                        $option->setSortOrder($sortOrder);
+                        $attribute->setOptions([$option]);
+                        $this->productAttributeRepository->save($attribute);
+                    }
+                    $counter++;
                 }
-                $option->setValue($option->getValue());
-                $option->setLabel($option->getLabel());
-                $option->setSortOrder($counter);
-                if ($counter == $sortOrder) {
-                    $option->setLabel($optionData['value']);
-                    $option->setSortOrder($sortOrder);
-                    $attribute->setOptions([$option]);
-                    $this->productAttributeRepository->save($attribute);
-                }
-                $counter++;
             }
 
         } catch (Exception $e) {
@@ -543,7 +545,9 @@ class AttributesCreateTask
             foreach ($optionResults as $attributeCode => $optionData) {
                 if (array_key_exists(0, $optionData)) {
                     if (!empty($optionData)) {
-                        $this->eavSetupFactory->create()->addAttributeOption($optionData[0]);
+                        foreach ($optionData[0] as $data) {
+                            $this->eavSetupFactory->create()->addAttributeOption($data);
+                        }
                     }
                 }
             }
@@ -586,12 +590,12 @@ class AttributesCreateTask
 
                 if (!empty($item->getValue())) {
                     if (!in_array($item->getValue(), $existingOptions, true) && $item->getProcessed() == 0) {
-                        $optionArray['values'][$sortOrder]                    = $item->getValue();
-                        $optionArray['attribute_id']                          = $attributeId;
-                        $optionResults[$attributeCode][$item->getProcessed()] = $optionArray;
+                        $optionArray['values'][$sortOrder]  = $item->getValue();
+                        $optionArray['attribute_id'] = $attributeId;
+                        $optionResults[$attributeCode][$status][$item->getSequence()] = $optionArray;
                     } elseif ($status == 1) {
-                        $optionResults[$attributeCode][$status]['sort_order'] = $sortOrder;
-                        $optionResults[$attributeCode][$status]['value']      = $item->getValue();
+                        $optionResults[$attributeCode][$status][$item->getSequence()]['sort_order'] = $sortOrder;
+                        $optionResults[$attributeCode][$status][$item->getSequence()]['value']      = $item->getValue();
 
                     }
                 }
