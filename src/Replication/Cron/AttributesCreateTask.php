@@ -519,7 +519,9 @@ class AttributesCreateTask
 
         /** @var ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
+            $item->setIsUpdated(0);
             $item->setProcessed(1);
+            $item->setProcessedAt($this->replicationHelper->getDateTime());
             // @codingStandardsIgnoreLine
             $this->replAttributeOptionValueRepositoryInterface->save($item);
             // If have existing option and current value is a part of existing option then don't do anything
