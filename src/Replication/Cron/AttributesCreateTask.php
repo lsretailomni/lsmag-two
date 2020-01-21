@@ -384,38 +384,30 @@ class AttributesCreateTask
      * @param $updatedLabel
      * @param $status
      */
-    public function updateOptions($formattedCode, $sortOrder, $updatedLabel, $status)
+    public function updateOptions($formattedCode, $optionData, $status)
     {
         try {
-            $attribute          = $this->eavAttributeFactory->create();
-            $attribute          = $attribute->loadByCode(Product::ENTITY, $formattedCode);
-            $options            = $attribute->getOptions();
-            $finalOptionsResult = $options;
-            $counter            = 1;
+            $attribute = $this->eavAttributeFactory->create();
+            $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
+            $options   = $attribute->getOptions();
+            $counter   = 1;
+            $sortOrder = $optionData['sort_order'];
             foreach ($options as $option) {
                 if (empty($option->getValue())) {
-                    unset($finalOptionsResult[$counter - 1]);
                     continue;
                 }
-                $finalOptionsResult[$counter]->setValue($option->getValue());
-                $finalOptionsResult[$counter]->setLabel($option->getLabel());
+                $option->setValue($option->getValue());
+                $option->setLabel($option->getLabel());
+                $option->setSortOrder($counter);
                 if ($counter == $sortOrder) {
-                    if ($status == 1) {
-                        $finalOptionsResult[$counter]->setLabel($updatedLabel);
-                    } elseif ($status == 2) {
-                        unset($finalOptionsResult[$counter]);
-                        $delete['value'][$option->getValue()]  = true;
-                        $delete['delete'][$option->getValue()] = true;
-                        $this->eavSetupFactory->create()->addAttributeOption($delete);
-                        $counter++;
-                        continue;
-                    }
+                    $option->setLabel($optionData['value']);
+                    $option->setSortOrder($sortOrder);
+                    $attribute->setOptions([$option]);
+                    $this->productAttributeRepository->save($attribute);
                 }
-                $finalOptionsResult[$counter]->setSortOrder($counter);
                 $counter++;
             }
-            $attribute->setOptions($finalOptionsResult);
-            $this->productAttributeRepository->save($attribute);
+
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
@@ -542,13 +534,27 @@ class AttributesCreateTask
 
     /**
      * @throws LocalizedException
-     * @throws NoSuchEntityException
      */
     public function updateAttributeOptionValues()
     {
-        $option_data = $this->updateOptionValues();
-        if (!empty($option_data)) {
-            $this->eavSetupFactory->create()->addAttributeOption($option_data);
+        $optionResults = $this->updateOptionValues();
+        if (!empty($optionResults)) {
+            // for inserting processed = 0 values;
+            foreach ($optionResults as $attributeCode => $optionData) {
+                if (array_key_exists(0, $optionData)) {
+                    if (!empty($optionData)) {
+                        $this->eavSetupFactory->create()->addAttributeOption($optionData[0]);
+                    }
+                }
+            }
+            // for updating status =1
+            foreach ($optionResults as $attributeCode => $optionData) {
+                if (array_key_exists(1, $optionData)) {
+                    if (!empty($optionData)) {
+                        $this->updateOptions($attributeCode, $optionData[1], 1);
+                    }
+                }
+            }
         }
     }
 
@@ -559,10 +565,10 @@ class AttributesCreateTask
     public function updateOptionValues()
     {
         $optionArray = [];
-        $criteria    = $this->replicationHelper->buildCriteriaForAttributeOptions(-1);
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1, true);
         /** @var ReplAttributeOptionValueSearchResults $replAttributeOptionValues */
         $replAttributeOptionValues = $this->replAttributeOptionValueRepositoryInterface->getList($criteria);
-
+        $optionResults             = [];
         /** @var ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
             try {
@@ -576,15 +582,17 @@ class AttributesCreateTask
                 $sortOrder   = $this->getSortOrder($item->getSequence());
                 if ($item->getIsUpdated() == 1) {
                     $status = 1;
-                } elseif ($item->getIsDeleted() == 1) {
-                    $status = 2;
                 }
+
                 if (!empty($item->getValue())) {
                     if (!in_array($item->getValue(), $existingOptions, true) && $item->getProcessed() == 0) {
-                        $optionArray['values'][$sortOrder] = $item->getValue();
-                        $optionArray['attribute_id']       = $attributeId;
-                    } else {
-                        $this->updateOptions($attributeCode, $sortOrder, $item->getValue(), $status);
+                        $optionArray['values'][$sortOrder]                    = $item->getValue();
+                        $optionArray['attribute_id']                          = $attributeId;
+                        $optionResults[$attributeCode][$item->getProcessed()] = $optionArray;
+                    } elseif ($status == 1) {
+                        $optionResults[$attributeCode][$status]['sort_order'] = $sortOrder;
+                        $optionResults[$attributeCode][$status]['value']      = $item->getValue();
+
                     }
                 }
             } catch (\Exception $e) {
@@ -597,7 +605,7 @@ class AttributesCreateTask
             // @codingStandardsIgnoreLine
             $this->replAttributeOptionValueRepositoryInterface->save($item);
         }
-        return $optionArray;
+        return $optionResults;
     }
 
     /**

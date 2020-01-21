@@ -207,45 +207,6 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * @param int $pagesize
-     * @return SearchCriteria
-     */
-    public function buildCriteriaForAttributeOptions(
-        $pagesize = 100
-    ) {
-        // creating search criteria for two fields
-        // processed = 0 which means not yet processed
-        $attr_processed = $this->filterBuilder->setField('processed')
-            ->setValue('0')
-            ->setConditionType('eq')
-            ->create();
-        // is_updated = 1 which means may be processed already but is updated on omni end
-        $attr_is_updated = $this->filterBuilder->setField('is_updated')
-            ->setValue('1')
-            ->setConditionType('eq')
-            ->create();
-
-        // IsDeleted = 1 which means may be processed already but is deleted on omni end
-        $attr_is_deleted = $this->filterBuilder->setField('isDeleted')
-            ->setValue('1')
-            ->setConditionType('eq')
-            ->create();
-
-        // building OR condition between the above two criteria
-        $filterOr = $this->filterGroupBuilder
-            ->addFilter($attr_processed)
-            ->addFilter($attr_is_updated)
-            ->addFilter($attr_is_deleted)
-            ->create();
-        // adding criteria into where clause.
-        $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
-        if ($pagesize != -1) {
-            $criteria->setPageSize($pagesize);
-        }
-        return $criteria->create();
-    }
-
-    /**
      * @param string $item_id
      * @param int $pagesize
      * @param bool $excludeDeleted
