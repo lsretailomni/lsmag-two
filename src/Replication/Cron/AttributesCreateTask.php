@@ -609,7 +609,7 @@ class AttributesCreateTask
             }
             $item->setProcessed(1);
             $item->setIsUpdated(0);
-            $item->setIsDeleted(0);
+            $item->setProcessedAt($this->replicationHelper->getDatetime());
             // @codingStandardsIgnoreLine
             $this->replAttributeOptionValueRepositoryInterface->save($item);
         }
