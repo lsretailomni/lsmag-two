@@ -185,7 +185,14 @@ CODE;
             'default'    => 0,
             'length'     => 1
         );
+        $allColumnsArray[] = array(
+            'name'       => 'processed_at',
+            'field_type' => 'Table::TYPE_TIMESTAMP',
+            'default'    => 'null',
+            'length'     => "''"
+        );
         $method_body       .= <<<CODE
+\t\$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
 \t\$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
 \t\$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
 \t\$setup->getConnection()->createTable( \$table );

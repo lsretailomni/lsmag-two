@@ -186,6 +186,7 @@ class CategoryCreateTask
             try {
                 if (empty($hierarchyNode->getNavId())) {
                     $hierarchyNode->setData('is_failed', 1);
+                    $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
                     $hierarchyNode->setData('processed', 1);
                     $hierarchyNode->setData('is_updated', 0);
                     $this->replHierarchyNodeRepository->save($hierarchyNode);
@@ -237,6 +238,7 @@ class CategoryCreateTask
                 $hierarchyNode->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreStart
+            $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
             $hierarchyNode->setData('processed', 1);
             $hierarchyNode->setData('is_updated', 0);
             $this->replHierarchyNodeRepository->save($hierarchyNode);
@@ -269,6 +271,7 @@ class CategoryCreateTask
             try {
                 if (empty($hierarchyNodeSub->getNavId())) {
                     $hierarchyNodeSub->setData('is_failed', 1);
+                    $hierarchyNodeSub->setData('processed_at', $this->replicationHelper->getDateTime());
                     $hierarchyNodeSub->setData('processed', 1);
                     $hierarchyNodeSub->setData('is_updated', 0);
                     $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
@@ -325,6 +328,7 @@ class CategoryCreateTask
                 $this->logger->debug($e->getMessage());
                 $hierarchyNodeSub->setData('is_failed', 1);
             }
+            $hierarchyNodeSub->setData('processed_at', $this->replicationHelper->getDateTime());
             $hierarchyNodeSub->setData('processed', 1);
             $hierarchyNodeSub->setData('is_updated', 0);
             $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
@@ -367,6 +371,7 @@ class CategoryCreateTask
                 $this->logger->debug($e->getMessage());
                 $hierarchyNode->setData('is_failed', 1);
             }
+            $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
             $hierarchyNode->setData('IsDeleted', 0);
             $hierarchyNode->setData('processed', 1);
             $hierarchyNode->setData('is_updated', 0);
@@ -502,6 +507,7 @@ class CategoryCreateTask
                     $this->logger->debug($e->getMessage());
                     $image->setData('is_failed', 1);
                 }
+                $image->setData('processed_at', $this->replicationHelper->getDateTime());
                 $image->setData('is_updated', 0);
                 $image->setData('processed', 1);
                 // @codingStandardsIgnoreLine

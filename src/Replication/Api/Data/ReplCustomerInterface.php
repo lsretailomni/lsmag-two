@@ -407,6 +407,17 @@ interface ReplCustomerInterface
      */
     public function getUpdatedAt();
 
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at);
+
+    /**
+     * @return string
+     */
+    public function getProcessedAt();
+
 
 }
 
