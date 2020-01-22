@@ -391,21 +391,19 @@ class AttributesCreateTask
             $attribute = $this->eavAttributeFactory->create();
             $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
             $options   = $attribute->getOptions();
-            $counter   = 1;
             foreach ($optionData as $data) {
                 $sortOrder = $data['sort_order'];
+                $counter   = 1;
                 foreach ($options as $option) {
                     if (empty($option->getValue())) {
                         continue;
                     }
-                    $option->setValue($option->getValue());
-                    $option->setLabel($option->getLabel());
-                    $option->setSortOrder($counter);
-                    if ($counter == $sortOrder || $option->getLabel() == $data['value']) {
+                    if ($counter == $sortOrder) {
                         $option->setLabel($data['value']);
                         $option->setSortOrder($sortOrder);
                         $attribute->setOptions([$option]);
                         $this->productAttributeRepository->save($attribute);
+                        break;
                     }
                     $counter++;
                 }
