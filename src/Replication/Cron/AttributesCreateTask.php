@@ -282,16 +282,14 @@ class AttributesCreateTask
             /** @var ReplExtendedVariantValue $variant */
             foreach ($variants->getItems() as $variant) {
                 if (empty($variantCodes[$variant->getCode()]) ||
-                    !in_array($variant->getValue(), $variantCodes[$variant->getCode()][$variant->getLogicalOrder()],
-                        true)
-                ) {
+                    !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)) {
                     $variantCodes[$variant->getCode()][$variant->getLogicalOrder()] = $variant->getValue();
+                    $variant->setData('processed_at', $this->replicationHelper->getDateTime());
+                    $variant->setData('processed', 1);
+                    $variant->setData('is_updated', 0);
+                    // @codingStandardsIgnoreLine
+                    $this->replExtendedVariantValueRepository->save($variant);
                 }
-                $variant->setData('processed_at', $this->replicationHelper->getDateTime());
-                $variant->setData('processed', 1);
-                $variant->setData('is_updated', 0);
-                // @codingStandardsIgnoreLine
-                $this->replExtendedVariantValueRepository->save($variant);
             }
             foreach ($variantCodes as $code => $value) {
                 $formattedCode = $this->replicationHelper->formatAttributeCode($code);
@@ -340,8 +338,9 @@ class AttributesCreateTask
                         $this->logger->debug($e->getMessage());
                     }
                 }
-                $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
-                $newOptionsArray = [];
+                $existingOptions    = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
+                $newOptionsArray    = [];
+                $updatedOptionArray = [];
                 if (empty($existingOptions)) {
                     $this->eavSetupFactory->create()
                         ->addAttributeOption(
@@ -354,6 +353,8 @@ class AttributesCreateTask
                     foreach ($value as $k => $v) {
                         if (!in_array($v, $existingOptions, true)) {
                             $newOptionsArray[$k] = $v;
+                        } else {
+                            $updatedOptionArray[$k] = $v;
                         }
                     }
                     if (!empty($newOptionsArray)) {
@@ -364,6 +365,10 @@ class AttributesCreateTask
                                     'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
                                 ]
                             );
+                    }
+
+                    if (!empty($updatedOptionArray)) {
+                        $this->updateVaraintLogicalOrderByLabel($formattedCode, $updatedOptionArray);
                     }
                 }
             }
@@ -377,6 +382,38 @@ class AttributesCreateTask
             $this->successCronAttributeVariant = true;
         }
         $this->logger->debug('Finished variants create task.');
+    }
+
+
+    /**
+     * @param $formattedCode
+     * @param $updatedOptionArray
+     */
+    public function updateVaraintLogicalOrderByLabel($formattedCode, $updatedOptionArray)
+    {
+        try {
+            $attribute = $this->eavAttributeFactory->create();
+            $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
+            $options   = $attribute->getOptions();
+            foreach ($updatedOptionArray as $sortOrder => $label) {
+                $counter = 1;
+                foreach ($options as $option) {
+                    if (empty($option->getValue())) {
+                        continue;
+                    }
+                    if ($option->getLabel() == $label) {
+                        $option->setSortOrder($sortOrder);
+                        $attribute->setOptions([$option]);
+                        $this->productAttributeRepository->save($attribute);
+                        break;
+                    }
+                    $counter++;
+                }
+            }
+
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
     }
 
     /**
@@ -420,11 +457,8 @@ class AttributesCreateTask
      * @param $attributeGroupId
      * @throws LocalizedException
      */
-    public function createAttributeByObject(
-        ReplAttribute $replAttribute,
-        $attributeSetId,
-        $attributeGroupId
-    ) {
+    public function createAttributeByObject(ReplAttribute $replAttribute, $attributeSetId, $attributeGroupId)
+    {
         $formattedCode = $this->replicationHelper->formatAttributeCode($replAttribute->getCode());
         /** @var AttributeInterface $attribute */
         $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
@@ -483,8 +517,9 @@ class AttributesCreateTask
      * @param string
      * @return int
      */
-    public function getEntityTypeId($type = Product::ENTITY)
-    {
+    public function getEntityTypeId(
+        $type = Product::ENTITY
+    ) {
         return $this->eavEntity->setType($type)->getTypeId();
     }
 
@@ -592,8 +627,8 @@ class AttributesCreateTask
 
                 if (!empty($item->getValue())) {
                     if (!in_array($item->getValue(), $existingOptions, true) && $item->getProcessed() == 0) {
-                        $optionArray['values'][$sortOrder]  = $item->getValue();
-                        $optionArray['attribute_id'] = $attributeId;
+                        $optionArray['values'][$sortOrder]                            = $item->getValue();
+                        $optionArray['attribute_id']                                  = $attributeId;
                         $optionResults[$attributeCode][$status][$item->getSequence()] = $optionArray;
                     } elseif ($status == 1) {
                         $optionResults[$attributeCode][$status][$item->getSequence()]['sort_order'] = $sortOrder;
