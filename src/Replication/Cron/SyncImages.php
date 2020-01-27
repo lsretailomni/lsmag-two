@@ -7,7 +7,6 @@ use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\StateException;
@@ -18,9 +17,6 @@ use Magento\Framework\Exception\StateException;
  */
 class SyncImages extends ProductCreateTask
 {
-    /** @var string */
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_images_sync';
-
     /** @var bool */
     public $cronStatus = false;
 
@@ -35,7 +31,7 @@ class SyncImages extends ProductCreateTask
         if ($this->lsr->isLSR()) {
             $this->replicationHelper->updateConfigValue(
                 $this->replicationHelper->getDateTime(),
-                self::CONFIG_PATH_LAST_EXECUTE
+                LSR::SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE
             );
             $this->replicationHelper->setEnvVariables();
             $this->logger->debug('Running SyncImages Task');
@@ -49,16 +45,13 @@ class SyncImages extends ProductCreateTask
 
     /**
      * @return array
-     * @throws CouldNotSaveException
      * @throws InputException
-     * @throws LocalizedException
-     * @throws StateException
      */
     public function executeManually()
     {
         $this->execute();
-        $remainingrecords = (int)$this->getRemainingRecords();
-        return [$remainingrecords];
+        $remainingRecords = (int)$this->getRemainingRecords();
+        return [$remainingRecords];
     }
 
     /**
@@ -70,7 +63,8 @@ class SyncImages extends ProductCreateTask
         $sortOrder = $this->replicationHelper->getSortOrderObject();
         /** Get Images for only those items which are already processed */
         $filters  = [
-            ['field' => 'main_table.TableName', 'value' => 'Item', 'condition_type' => 'eq'],
+            ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
+            ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
             ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -89,100 +83,47 @@ class SyncImages extends ProductCreateTask
             'KeyValue',
             'ls_replication_repl_item',
             'nav_id',
+            true,
             true
         );
-        $collection->getSelect()->order('main_table.processed ' . "ASC");
+        $collection->getSelect()->order('main_table.processed ASC');
         if ($collection->getSize() > 0) {
             // right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
             foreach ($collection->getItems() as $itemImage) {
                 $productImages = [];
                 try {
+                    $itemSku = $itemImage->getKeyValue();
+                    $itemSku = str_replace(',', '-', $itemSku);
                     /* @var ProductInterface $productData */
-                    $productData = $this->productRepository->get($itemImage->getKeyValue(), true, null, true);
+                    $productData = $this->productRepository->get($itemSku, true, null, true);
                     // check for new images.
-                    $filtersforallImages  = [
+                    $filtersForAllImages  = [
                         ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
                         ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq']
                     ];
-                    $criteriaforallImages = $this->replicationHelper->buildCriteriaForDirect(
-                        $filtersforallImages,
+                    $criteriaForAllImages = $this->replicationHelper->buildCriteriaForDirect(
+                        $filtersForAllImages,
                         -1,
                         false
                     )->setSortOrders([$sortOrder]);
-
-
                     /** @var ReplImageLinkSearchResults $newImagestoProcess */
-                    $newImagestoProcess = $this->replImageLinkRepositoryInterface->getList($criteriaforallImages);
-                    if ($newImagestoProcess->getTotalCount() > 0) {
-                        $this->processMediaGalleryImages($newImagestoProcess, $productData);
+                    $newImagesToProcess = $this->replImageLinkRepositoryInterface->getList($criteriaForAllImages);
+                    if ($newImagesToProcess->getTotalCount() > 0) {
+                        $this->processMediaGalleryImages($newImagesToProcess, $productData);
                     }
 
-                    // check if any variant for that product has image to process.
-                    // check for variant new images.
-                    $filtersforvariantImages = [
-                        [
-                            'field'          => 'KeyValue',
-                            'value'          => $itemImage->getKeyValue() . ',%',
-                            'condition_type' => 'like'
-                        ],
-                        ['field' => 'TableName', 'value' => 'Item Variant', 'condition_type' => 'eq']
-                    ];
-                    //if the item is processed, then its variant will deinately be processed, so not neeed to put seprate check on variants.
-                    $criteriaforallVariantImages = $this->replicationHelper->buildCriteriaForArray(
-                        $filtersforvariantImages,
-                        -1,
-                        false
-                    );
-                    /** @var ReplImageLinkSearchResults $newVaraintImagestoProcess */
-                    $newVaraintImagestoProcess = $this->replImageLinkRepositoryInterface->getList(
-                        $criteriaforallVariantImages
-                    );
-                    if ($newVaraintImagestoProcess->getTotalCount() > 0) {
-                        $processedItems = [];
-                        /** @var ReplImageLink $image */
-                        foreach ($newVaraintImagestoProcess->getItems() as $image) {
-                            if (in_array($image->getKeyValue(), $processedItems, true)) {
-                                continue;
-                            }
-                            $item = $image->getKeyValue();
-                            $item = str_replace(',', '-', $item);
-                            try {
-                                /* @var ProductInterface $variantProductData */
-                                $variantProductData = $this->productRepository->get($item, true, null, true);
-
-                                $filtersforvariantImagestoUpdate  = [
-                                    ['field' => 'KeyValue', 'value' => $image->getKeyValue(), 'condition_type' => 'eq'],
-                                    ['field' => 'TableName', 'value' => 'Item Variant', 'condition_type' => 'eq']
-                                ];
-                                $criteriaforVariantImagestoUpdate = $this->replicationHelper->buildCriteriaForDirect(
-                                    $filtersforvariantImagestoUpdate,
-                                    -1,
-                                    false
-                                )
-                                    ->setSortOrders([$sortOrder]);
-
-                                /** @var ReplImageLinkSearchResults $variantImagesToUpdate */
-                                $variantImagesToUpdate = $this->replImageLinkRepositoryInterface->getList(
-                                    $criteriaforVariantImagestoUpdate
-                                );
-
-                                if ($variantImagesToUpdate->getTotalCount() > 0) {
-                                    $this->processMediaGalleryImages($variantImagesToUpdate, $variantProductData);
-                                }
-                            } catch (Exception $e) {
-                                $this->logger->debug('Problem with SKU : ' . $item . ' in ' . __METHOD__);
-                                $this->logger->debug($e->getMessage());
-                            }
-                            // Adding items into an array whose images are processed.
-                            $processedItems[] = $image->getKeyValue();
-                        }
-                    }
                 } catch (Exception $e) {
                     $this->logger->debug(
                         'Problem with Image Synchronization : ' . $itemImage->getKeyValue() . ' in ' . __METHOD__
                     );
                     $this->logger->debug($e->getMessage());
+                    $itemImage->setData('processed_at', $this->replicationHelper->getDateTime());
+                    $itemImage->setData('is_failed', 1);
+                    $itemImage->setData('processed', 1);
+                    $itemImage->setData('is_updated', 0);
+                    // @codingStandardsIgnoreLine
+                    $this->replImageLinkRepositoryInterface->save($itemImage);
                 }
             }
             $remainingItems = (int)$this->getRemainingRecords();
@@ -201,7 +142,8 @@ class SyncImages extends ProductCreateTask
     {
         if (!$this->remainingRecords) {
             $filters  = [
-                ['field' => 'main_table.TableName', 'value' => 'Item', 'condition_type' => 'eq'],
+                ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
+                ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
                 ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
             ];
             $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -220,6 +162,7 @@ class SyncImages extends ProductCreateTask
                 'KeyValue',
                 'ls_replication_repl_item',
                 'nav_id',
+                true,
                 true
             );
             $this->remainingRecords = $collection->getSize();

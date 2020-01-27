@@ -106,18 +106,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //check for Product Price
     const SC_SUCCESS_CRON_PRODUCT_PRICE = 'ls_mag/replication/success_sync_price';
+    const SC_PRODUCT_PRICE_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_price_sync';
 
     //check for Product Inventory
     const SC_SUCCESS_CRON_PRODUCT_INVENTORY = 'ls_mag/replication/success_sync_inventory';
+    const SC_PRODUCT_INVENTORY_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_inventory_sync';
 
     //check for Discount
     const SC_SUCCESS_CRON_DISCOUNT = 'ls_mag/replication/success_repl_discount';
 
     //check for Product Assignment to Categories
     const SC_SUCCESS_CRON_ITEM_UPDATES = 'ls_mag/replication/success_sync_item_updates';
+    const SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_updates_sync';
 
     //check for Product Images
     const SC_SUCCESS_CRON_ITEM_IMAGES = 'ls_mag/replication/success_sync_item_images';
+    const SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_images_sync';
 
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
