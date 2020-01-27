@@ -366,6 +366,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Clear the cache by type code
+     * @param $typeCode
+     */
+    public function flushByTypeCode($typeCode)
+    {
+        $this->cacheTypeList->cleanType($typeCode);
+    }
+
+    /**
      * @param null $baseUrl
      * @return bool
      */

@@ -35,11 +35,9 @@ class SyncImages extends ProductCreateTask
             );
             $this->replicationHelper->setEnvVariables();
             $this->logger->debug('Running SyncImages Task');
-
             $this->syncItemImages();
-
             $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_IMAGES);
-            $this->logger->debug('End SyncImages Task');
+            $this->logger->debug('End SyncImages Task with remaining : ' . $this->getRemainingRecords());
         }
     }
 
@@ -88,7 +86,7 @@ class SyncImages extends ProductCreateTask
         );
         $collection->getSelect()->order('main_table.processed ASC');
         if ($collection->getSize() > 0) {
-            // right now the only thing we have to do is flush all the images and do it again.
+            // Right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
             foreach ($collection->getItems() as $itemImage) {
                 $productImages = [];
@@ -97,7 +95,7 @@ class SyncImages extends ProductCreateTask
                     $itemSku = str_replace(',', '-', $itemSku);
                     /* @var ProductInterface $productData */
                     $productData = $this->productRepository->get($itemSku, true, null, true);
-                    // check for new images.
+                    // Check for all images.
                     $filtersForAllImages  = [
                         ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
                         ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq']
@@ -112,7 +110,6 @@ class SyncImages extends ProductCreateTask
                     if ($newImagesToProcess->getTotalCount() > 0) {
                         $this->processMediaGalleryImages($newImagesToProcess, $productData);
                     }
-
                 } catch (Exception $e) {
                     $this->logger->debug(
                         'Problem with Image Synchronization : ' . $itemImage->getKeyValue() . ' in ' . __METHOD__
@@ -130,6 +127,7 @@ class SyncImages extends ProductCreateTask
             if ($remainingItems == 0) {
                 $this->cronStatus = true;
             }
+            $this->lsr->flushByTypeCode('full_page');
         } else {
             $this->cronStatus = true;
         }
@@ -192,12 +190,19 @@ class SyncImages extends ProductCreateTask
         }
 
         if (!empty($encodedImages)) {
-            $encodedImages = $this->convertToRequiredFormat($encodedImages);
-            $this->mediaGalleryProcessor->processMediaGallery(
-                $productData,
-                $encodedImages
-            );
-            $this->updateHandler->execute($productData);
+            try {
+                $encodedImages = $this->convertToRequiredFormat($encodedImages);
+                $this->mediaGalleryProcessor->processMediaGallery(
+                    $productData,
+                    $encodedImages
+                );
+                $this->updateHandler->execute($productData);
+            } catch (Exception $e) {
+                $this->logger->debug(
+                    'Problem while converting the images or Gallery CreateHandler in : ' . __METHOD__
+                );
+                $this->logger->debug($e->getMessage());
+            }
         }
     }
 
