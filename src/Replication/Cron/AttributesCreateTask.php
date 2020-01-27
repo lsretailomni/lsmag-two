@@ -6,14 +6,18 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
 use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
+use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttribute;
 use \Ls\Replication\Model\ReplAttributeOptionValue;
 use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
 use \Ls\Replication\Model\ReplAttributeSearchResults;
+use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
+use \Ls\Replication\Model\ReplItemSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
@@ -53,8 +57,21 @@ class AttributesCreateTask
     /** @var ReplAttributeRepositoryInterface */
     public $replAttributeRepositoryInterface;
 
+    /** @var ReplAttributeValueRepositoryInterface */
+    public $replAttributeValueRepositoryInterface;
+
     /** @var ReplAttributeOptionValueRepositoryInterface */
     public $replAttributeOptionValueRepositoryInterface;
+
+    /**
+     * @var ReplAttributeValueRepositoryInterface
+     */
+    public $replAttributeValueRepository;
+
+    /**
+     * @var ReplItemRepository
+     */
+    public $replItemRepository;
 
     /** @var Config */
     public $eavConfig;
@@ -109,7 +126,10 @@ class AttributesCreateTask
      * @param AttributeFactory $eavAttributeFactory
      * @param Entity $eav_entity
      * @param ReplAttributeRepositoryInterface $replAttributeRepositoryInterface
+     * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
+     * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepository
+     * @param ReplItemRepository $replItemRepository
      * @param Config $eavConfig
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
@@ -123,7 +143,10 @@ class AttributesCreateTask
         AttributeFactory $eavAttributeFactory,
         Entity $eav_entity,
         ReplAttributeRepositoryInterface $replAttributeRepositoryInterface,
+        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
         ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
+        ReplAttributeValueRepositoryInterface $replAttributeValueRepository,
+        ReplItemRepository $replItemRepository,
         Config $eavConfig,
         ReplicationHelper $replicationHelper,
         LSR $LSR,
@@ -136,7 +159,9 @@ class AttributesCreateTask
         $this->eavAttributeFactory                         = $eavAttributeFactory;
         $this->eavEntity                                   = $eav_entity;
         $this->replAttributeRepositoryInterface            = $replAttributeRepositoryInterface;
+        $this->replAttributeValueRepositoryInterface       = $replAttributeValueRepositoryInterface;
         $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
+        $this->replItemRepository                          = $replItemRepository;
         $this->eavConfig                                   = $eavConfig;
         $this->replicationHelper                           = $replicationHelper;
         $this->lsr                                         = $LSR;
@@ -560,6 +585,9 @@ class AttributesCreateTask
                         $this->updateOptions($attributeCode, $optionData[1], 1);
                     }
                 }
+                if (!empty($optionData)) {
+                    $this->setItemUpdated($optionData['ls_attribute_code']);
+                }
             }
         }
     }
@@ -592,12 +620,14 @@ class AttributesCreateTask
 
                 if (!empty($item->getValue())) {
                     if (!in_array($item->getValue(), $existingOptions, true) && $item->getProcessed() == 0) {
-                        $optionArray['values'][$sortOrder]  = $item->getValue();
-                        $optionArray['attribute_id'] = $attributeId;
+                        $optionArray['values'][$sortOrder]                            = $item->getValue();
+                        $optionArray['attribute_id']                                  = $attributeId;
                         $optionResults[$attributeCode][$status][$item->getSequence()] = $optionArray;
+                        $optionResults[$attributeCode] ['ls_attribute_code']          = $item->getCode();
                     } elseif ($status == 1) {
                         $optionResults[$attributeCode][$status][$item->getSequence()]['sort_order'] = $sortOrder;
                         $optionResults[$attributeCode][$status][$item->getSequence()]['value']      = $item->getValue();
+                        $optionResults[$attributeCode] ['ls_attribute_code']                        = $item->getCode();
 
                     }
                 }
@@ -701,5 +731,26 @@ class AttributesCreateTask
         }
 
         return $sortOrder;
+    }
+
+    /**
+     * @param $attributeCode
+     */
+    public function setItemUpdated($attributeCode)
+    {
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems('Code', $attributeCode, 'eq', -1, 1);
+        /** @var ReplAttributeValueSearchResults $items */
+        $replAttributeValue = $this->replAttributeValueRepositoryInterface->getList($criteria);
+        /** @var ReplAttributeValue $replAttributeValue */
+        foreach ($replAttributeValue->getItems() as $attributeValue) {
+            $itemId   = $attributeValue->getLinkField1();
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('nav_id', $itemId, 'eq', -1, 1);
+            /** @var ReplItemSearchResults $itemResults */
+            $itemResults = $this->replItemRepository->getList($criteria);
+            foreach ($itemResults->getItems() as $item) {
+                $item->setIsUpdated(1);
+                $this->replItemRepository->save($item);
+            }
+        }
     }
 }
