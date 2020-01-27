@@ -24,7 +24,7 @@ Special,Special
 "The loyalty points ""%1"" are not valid.","The loyalty points ""%1"" are not valid."
 "The gift card Amount ""%1"" is not valid.","The gift card Amount ""%1"" is not valid."
 "You have used ""%1"" amount from gift card.","You have used ""%1"" amount from gift card."
-"Gift Card cannot be apply.","Gift Card cannot be apply."
+"Gift Card cannot be applied.","Gift Card cannot be applied."
 "You have redeemed ""%1"" loyalty points.","You have redeemed ""%1"" loyalty points."
 "The loyalty points can't be redeemed.","The loyalty points can't be redeemed."
 "You have successfully canceled the points redemption.","You have successfully canceled the points redemption."
@@ -41,6 +41,7 @@ Special,Special
 "Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
 "Our Stores","Our Stores"
 "Reset password token expired.","Reset password token expired."
+Closed,Closed
 "The gift card amount ""%1"" and loyalty points ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points ""%2"" are not valid."
 Products,Products
 SKU,SKU
@@ -62,7 +63,7 @@ Subtotal,Subtotal
 "You are using","You are using"
 "Coupon code successfully removed.","Coupon code successfully removed."
 "You used coupon code ""%1"".","You used coupon code ""%1""."
-"Something trrible happen while placing order","Something trrible happen while placing order"
+"Something terrible happened while placing order","Something terrible happened while placing order"
 "Flat No/House No/Building No","Flat No/House No/Building No"
 "Street Name/Landmark","Street Name/Landmark"
 "Cart %1 doesn't contain products","Cart %1 doesn't contain products"
@@ -72,10 +73,10 @@ Subtotal,Subtotal
 "Send Check to:","Send Check to:"
 "Make Check payable to: %1","Make Check payable to: %1"
 "Ls Central Order Reference ID:","Ls Central Order Reference ID:"
-"Loyalty Points Earn","Loyalty Points Earn"
+"Loyalty Points Earned","Loyalty Points Earned"
 "Coupon Code Redeemed","Coupon Code Redeemed"
 "Gift Card Code","Gift Card Code"
-"Choosen Store","Choosen Store"
+"Chosen Store","Chosen Store"
 Loading...,Loading...
 "Loading Coupons...","Loading Coupons..."
 "Apply Discount Code","Apply Discount Code"
@@ -106,7 +107,7 @@ Redeem,Redeem
 Store,Store
 Address,Address
 Phone,Phone
-"Opening Hours","Opening Hours"
+Hours,Hours
 "Select Store by map ","Select Store by map "
 "Search for a Store ","Search for a Store "
 "View Details","View Details"
@@ -122,9 +123,9 @@ Remove,Remove
 "Place Order","Place Order"
 Items,Items
 Close,Close
-"GiftCard is  successfully removed.","GiftCard is  successfully removed."
+"Gift card successfully removed.","Gift card successfully removed."
 "Your points are successfully removed.","Your points are successfully removed."
-"Gift card code successfully applied.","Gift card code successfully applied."
+"Gift card successfully applied.","Gift card successfully applied."
 "Your points are successfully redeemed.","Your points are successfully redeemed."
 cart,cart
 Configuration,Configuration
@@ -134,7 +135,7 @@ Configuration,Configuration
 "Select Store","Select Store"
 "Choose the web store","Choose the web store"
 "Select Hierarchy Code","Select Hierarchy Code"
-"Required to get heirarchy node and leaf from omni","Required to get heirarchy node and leaf from omni"
+"Required to get hierarchy node and leaf from omni","Required to get hierarchy node and leaf from omni"
 Debug,Debug
 "Debug Mode for Omni Client","Debug Mode for Omni Client"
 "LS Recommend","LS Recommend"
@@ -171,5 +172,3 @@ Title,Title
 "Order Balance","Order Balance"
 Stores,Stores
 "Check Gift Card Balance","Check Gift Card Balance"
-"Closed","Closed"
-"Hours","Hours"
