@@ -220,6 +220,9 @@ class CategoryCreateTask
                             'name',
                             ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId()
                         );
+                        if (2 != $categoryExistData->getData('parent_id')) {
+                            $categoryExistData->move(2, null);
+                        }
                         $categoryExistData->setData('is_active', 1);
                         if ($hierarchyNode->getImageId()) {
                             $image = $this->getImage($hierarchyNode->getImageId());
@@ -311,6 +314,15 @@ class CategoryCreateTask
                             'name',
                             ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId()
                         );
+                        $parentCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getParentNode());
+                        if ($parentCategoryExistData) {
+                            $newParentId = $parentCategoryExistData->getId();
+                            if ($newParentId != $subCategoryExistData->getData('parent_id')) {
+                                $subCategoryExistData->move($newParentId, null);
+                            }
+                        } else {
+                            $this->logger->debug('Parent Category not found for Nav Id : ' . $hierarchyNodeSub->getNavId());
+                        }
                         $subCategoryExistData->setData('is_active', 1);
                         if ($hierarchyNodeSub->getImageId()) {
                             $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
@@ -528,7 +540,8 @@ class CategoryCreateTask
                 'value'          => $this->getHierarchyCode(),
                 'condition_type' => 'eq'
             ];
-            $criteria                    = $this->replicationHelper->buildCriteriaForArray([$hierarchyCodeSpecificFilter], -1);
+            $criteria                    = $this->replicationHelper->buildCriteriaForArray([$hierarchyCodeSpecificFilter],
+                -1);
             $this->remainingRecords      = $this->replHierarchyNodeRepository->getList($criteria)
                 ->getTotalCount();
         }
