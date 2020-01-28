@@ -31,8 +31,6 @@ use Magento\Framework\Filesystem\Io\File;
  */
 class CategoryCreateTask
 {
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_category';
-
     /** @var CategoryFactory */
     public $categoryFactory;
 
@@ -544,6 +542,5 @@ class CategoryCreateTask
             $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
         }
         return $this->hierarchyCode;
-
     }
 }

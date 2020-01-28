@@ -4,7 +4,6 @@ namespace Ls\Core\Model;
 
 use Exception;
 use \Ls\Omni\Service\ServiceType;
-use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use SoapClient;
 
@@ -297,10 +296,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STORES_OPENING_HOURS_FORMAT = 'ls_mag/ls_stores/timeformat';
 
     //LS Discount Message
-    const LS_DISCOUNT_PRICE_PERCENTAGE_TEXT = "Save";
+    const LS_DISCOUNT_PRICE_PERCENTAGE_TEXT = 'Save';
 
     //LS New account reset password default password
-    const LS_RESETPASSWORD_DEFAULT = "Admin123@";
+    const LS_RESETPASSWORD_DEFAULT = 'Admin123@';
 
     //LS reset password email of the current customer
     const REGISTRY_CURRENT_RESETPASSWORD_EMAIL = 'reset-password-email';
@@ -308,9 +307,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
     const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
-    const POINTRATE = 'LS_PointsRate_';
-    const PROACTIVE_DISCOUNTS = 'LS_Proactive_';
-    const COUPONS = 'LS_Coupons_';
+    const POINTRATE = 'LS_POINT_RATE_';
+    const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
+    const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
 
     // Date format to be used in fetching the data.
@@ -323,9 +322,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public $scopeConfig;
 
-    /** @var TypeListInterface */
-    public $cacheTypeList;
-
     /** @var array End Points */
     public $endpoints = [
         ServiceType::ECOMMERCE => 'UCService.svc'
@@ -336,11 +332,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        TypeListInterface $cacheTypeList
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig   = $scopeConfig;
-        $this->cacheTypeList = $cacheTypeList;
     }
 
     /**
