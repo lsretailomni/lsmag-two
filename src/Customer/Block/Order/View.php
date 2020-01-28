@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Customer\Block\Order;
 
 /**
@@ -108,7 +109,7 @@ class View extends \Magento\Framework\View\Element\Template
      */
     public function getPrintAllInvoicesUrl($order)
     {
-        return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getId()]);
+        return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
     }
 
     /**
@@ -117,6 +118,6 @@ class View extends \Magento\Framework\View\Element\Template
      */
     public function getPrintAllShipmentUrl($order)
     {
-        return $this->getUrl('*/*/printShipment', ['order_id' => $order->getId()]);
+        return $this->getUrl('*/*/printShipment', ['order_id' => $order->getDocumentId()]);
     }
 }
