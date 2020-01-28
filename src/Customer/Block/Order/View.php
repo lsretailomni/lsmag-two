@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Block\Order;
 
-use Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
