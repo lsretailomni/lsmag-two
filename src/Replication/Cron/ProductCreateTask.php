@@ -78,8 +78,6 @@ use Magento\Framework\Exception\StateException;
  */
 class ProductCreateTask
 {
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_products';
-
     /** @var Factory */
     public $factory;
 
@@ -374,7 +372,7 @@ class ProductCreateTask
     {
         $this->replicationHelper->updateConfigValue(
             $this->replicationHelper->getDateTime(),
-            self::CONFIG_PATH_LAST_EXECUTE
+            LSR::SC_CRON_PRODUCT_CONFIG_PATH_LAST_EXECUTE
         );
         $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
         $fullReplicationBarcodeStatus   = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS);

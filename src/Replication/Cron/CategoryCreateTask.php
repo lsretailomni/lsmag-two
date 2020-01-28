@@ -141,7 +141,7 @@ class CategoryCreateTask
         $this->logger->debug('Running CategoryCreateTask.');
         $this->replicationHelper->updateConfigValue(
             $this->replicationHelper->getDateTime(),
-            self::CONFIG_PATH_LAST_EXECUTE
+            LSR::SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE
         );
         $hierarchyCode = $this->getHierarchyCode();
         if (empty($hierarchyCode)) {
