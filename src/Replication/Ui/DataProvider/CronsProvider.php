@@ -88,10 +88,9 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
     public function getData()
     {
         $cronsGroupListing = $this->readCronFile();
-        $condition         = "";
         $items             = [];
         $counter           = 1;
-        $this->lsr->flushConfig();
+        $this->rep_helper->flushByTypeCode('config');
         foreach ($cronsGroupListing as &$cronlist) {
             $path = '';
             if (array_key_exists('_value', $cronlist['_value']['job'])) {
@@ -103,7 +102,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 $condition = __("Omni to Flat");
                 $path      = LSR::CRON_STATUS_PATH_PREFIX;
             } else {
-                $condition = "";
+                $condition = '';
             }
             foreach ($cronlist['_value']['job'] as $joblist) {
                 $fullReplicationStatus = 0;
@@ -162,14 +161,14 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
             }
         }
         // @codingStandardsIgnoreStart
-        $pagesize    = (int)$this->request->getParam('paging')['pageSize'];
+        $pageSize    = (int)$this->request->getParam('paging')['pageSize'];
         $pageCurrent = (int)$this->request->getParam('paging')['current'];
         // @codingStandardsIgnoreEnd
-        $pageoffset = ($pageCurrent - 1) * $pagesize;
+        $pageOffset = ($pageCurrent - 1) * $pageSize;
 
         return [
             'totalRecords' => count($items),
-            'items'        => array_slice($items, $pageoffset, $pageoffset + $pagesize)
+            'items'        => array_slice($items, $pageOffset, $pageOffset + $pageSize)
         ];
     }
 

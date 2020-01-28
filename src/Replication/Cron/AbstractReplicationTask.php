@@ -209,7 +209,7 @@ abstract class AbstractReplicationTask
                     $this->saveReplicationStatus(1);
                 }
             }
-            $this->rep_helper->flushConfig();
+            $this->rep_helper->flushByTypeCode('config');
         } else {
             $this->logger->debug("LS Retail validation failed.");
         }

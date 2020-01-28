@@ -89,7 +89,6 @@ class SyncImages extends ProductCreateTask
             // Right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
             foreach ($collection->getItems() as $itemImage) {
-                $productImages = [];
                 try {
                     $itemSku = $itemImage->getKeyValue();
                     $itemSku = str_replace(',', '-', $itemSku);
@@ -127,7 +126,7 @@ class SyncImages extends ProductCreateTask
             if ($remainingItems == 0) {
                 $this->cronStatus = true;
             }
-            $this->lsr->flushByTypeCode('full_page');
+            $this->replicationHelper->flushByTypeCode('full_page');
         } else {
             $this->cronStatus = true;
         }
@@ -221,5 +220,4 @@ class SyncImages extends ProductCreateTask
         }
         return $images;
     }
-
 }

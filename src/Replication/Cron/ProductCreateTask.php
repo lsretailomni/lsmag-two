@@ -25,7 +25,6 @@ use \Ls\Replication\Model\ReplBarcode;
 use \Ls\Replication\Model\ReplBarcodeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLink;
-use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ReplItemSearchResults;
