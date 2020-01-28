@@ -64,11 +64,6 @@ class AttributesCreateTask
     public $replAttributeOptionValueRepositoryInterface;
 
     /**
-     * @var ReplAttributeValueRepositoryInterface
-     */
-    public $replAttributeValueRepository;
-
-    /**
      * @var ReplItemRepository
      */
     public $replItemRepository;
@@ -128,7 +123,6 @@ class AttributesCreateTask
      * @param ReplAttributeRepositoryInterface $replAttributeRepositoryInterface
      * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
-     * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepository
      * @param ReplItemRepository $replItemRepository
      * @param Config $eavConfig
      * @param ReplicationHelper $replicationHelper
@@ -145,7 +139,6 @@ class AttributesCreateTask
         ReplAttributeRepositoryInterface $replAttributeRepositoryInterface,
         ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
         ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
-        ReplAttributeValueRepositoryInterface $replAttributeValueRepository,
         ReplItemRepository $replItemRepository,
         Config $eavConfig,
         ReplicationHelper $replicationHelper,
