@@ -7,13 +7,13 @@ use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Model\ReplHierarchyRepository;
 use \Ls\Replication\Model\ReplHierarchySearchResults;
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
 /**
  * Class HierarchyCode
  * @package Ls\Replication\Block\Adminhtml\System\Config
  */
-class HierarchyCode implements ArrayInterface
+class HierarchyCode implements OptionSourceInterface
 {
     /** @var ReplHierarchyRepository */
     public $replHierarchyRepository;

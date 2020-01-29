@@ -3,13 +3,13 @@
 namespace Ls\Omni\Block\Adminhtml\System\Config;
 
 use \Ls\Core\Model\LSR;
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
 /**
  * Class TimeFormat
  * @package Magento\Config\Model\Config\Source
  */
-class TimeFormat implements ArrayInterface
+class TimeFormat implements OptionSourceInterface
 {
     /**
      * Options getter

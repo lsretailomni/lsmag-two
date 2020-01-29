@@ -2,13 +2,13 @@
 
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
 /**
  * Class InventoryPerStore
  * @package Ls\Replication\Block\Adminhtml\System\Config
  */
-class InventoryPerStore implements ArrayInterface
+class InventoryPerStore implements OptionSourceInterface
 {
     /**
      * @return array

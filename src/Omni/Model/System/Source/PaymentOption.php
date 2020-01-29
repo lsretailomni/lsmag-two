@@ -2,14 +2,15 @@
 
 namespace Ls\Omni\Model\System\Source;
 
-use \Magento\Framework\App\Config\ScopeConfigInterface;
-use \Magento\Payment\Model\Config;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Payment\Model\Config;
 
 /**
  * Class PaymentOption
  * @package Ls\Omni\Model\System\Source
  */
-class PaymentOption implements \Magento\Framework\Option\ArrayInterface
+class PaymentOption implements OptionSourceInterface
 {
     /**
      * @var ScopeConfigInterface
@@ -31,7 +32,7 @@ class PaymentOption implements \Magento\Framework\Option\ArrayInterface
         Config $paymentModelConfig
     ) {
         $this->appConfigScopeConfigInterface = $appConfigScopeConfigInterface;
-        $this->paymentModelConfig = $paymentModelConfig;
+        $this->paymentModelConfig            = $paymentModelConfig;
     }
 
     /**
@@ -40,11 +41,11 @@ class PaymentOption implements \Magento\Framework\Option\ArrayInterface
     public function toOptionArray()
     {
         $payments = $this->paymentModelConfig->getActiveMethods();
-        $methods = [];
+        $methods  = [];
         foreach ($payments as $paymentCode => $paymentModel) {
             $paymentTitle = $this->appConfigScopeConfigInterface->getValue('payment/' . $paymentCode . '/title');
             if ($paymentCode != "free") {
-                $methods[$paymentCode] =[
+                $methods[$paymentCode] = [
                     'label' => $paymentTitle,
                     'value' => $paymentCode
                 ];

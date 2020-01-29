@@ -145,6 +145,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
     const SC_CART_PRODUCT_AVAILABILITY = 'ls_mag/one_list/product_availability';
+    const SC_CART_DISPLAY_STORES = 'ls_mag/one_list/display_stores';
     const SC_CART_UPDATE_INVENTORY = 'ls_mag/one_list/update_inventory';
     const SC_CART_GUEST_CHECKOUT_EMAIL = 'ls_mag/one_list/guest_checkout_email';
     const SC_CART_GUEST_CHECKOUT_PASSWORD = 'ls_mag/one_list/guest_checkout_password';
