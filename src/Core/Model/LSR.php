@@ -280,9 +280,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_DISCOUNT_MIXANDMATCH_LIMIT = 'ls_mag/ls_discounts/discount_mixandmatch_limit';
 
     //Coupon Code Message
-    const LS_COUPON_CODE_ERROR_MESSAGE = 'Coupon Code is not valid for these item(s)';
-
-    //Coupon Code Message
     const LS_STORES_OPENING_HOURS_FORMAT = 'ls_mag/ls_stores/timeformat';
 
     //LS New account reset password default password

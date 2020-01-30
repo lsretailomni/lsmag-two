@@ -43,6 +43,7 @@ Notice,Notice
 "Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
 "Our Stores","Our Stores"
 Save,Save
+"Coupon Code is not valid for these item(s)","Coupon Code is not valid for these item(s)"
 "Reset password token expired.","Reset password token expired."
 Closed,Closed
 "The gift card amount ""%1"" and loyalty points ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points ""%2"" are not valid."
