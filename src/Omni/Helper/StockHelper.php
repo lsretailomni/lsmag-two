@@ -2,20 +2,27 @@
 
 namespace Ls\Omni\Helper;
 
+use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Zend_Json;
 
 /**
  * Class StockHelper
  * @package Ls\Omni\Helper
  */
-class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
+class StockHelper extends AbstractHelper
 {
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     public $productRepository;
     /**
@@ -23,19 +30,25 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public $storeCollectionFactory;
 
+    /** @var  LSR $lsr */
+    public $lsr;
+
     /**
      * StockHelper constructor.
      * @param Context $context
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param ProductRepositoryInterface $productRepository
      * @param CollectionFactory $storeCollectionFactory
+     * @param LSR $lsr
      */
     public function __construct(
         Context $context,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        CollectionFactory $storeCollectionFactory
+        ProductRepositoryInterface $productRepository,
+        CollectionFactory $storeCollectionFactory,
+        LSR $lsr
     ) {
-        $this->productRepository = $productRepository;
+        $this->productRepository      = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
+        $this->lsr                    = $lsr;
         parent::__construct($context);
     }
 
@@ -52,7 +65,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     ) {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ItemsInStockGet();
+        $request   = new Operation\ItemsInStockGet();
         $itemStock = new Entity\ItemsInStockGet();
         // @codingStandardsIgnoreEnd
         if (!empty($parentProductId) && !empty($childProductId)) {
@@ -63,7 +76,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         try {
             $response = $request->execute($itemStock);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         if (!empty($response) &&
@@ -77,7 +90,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $storeId
      * @param $items
-     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStoreGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStoreGetResponse|ResponseInterface|null
      */
     public function getAllItemsStockInSingleStore(
         $storeId,
@@ -85,23 +98,23 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     ) {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ItemsInStoreGet();
-        $itemStock = new Entity\ItemsInStoreGet();
-        $invertoryRequestParent = new Entity\ArrayOfInventoryRequest();
+        $request                    = new Operation\ItemsInStoreGet();
+        $itemStock                  = new Entity\ItemsInStoreGet();
+        $inventoryRequestParent     = new Entity\ArrayOfInventoryRequest();
         $inventoryRequestCollection = [];
 
         foreach ($items as $item) {
             $inventoryRequest = new Entity\InventoryRequest();
-            $inventoryRequest->setItemId($item["parent"]);
-            $inventoryRequest->setVariantId($item["child"]);
+            $inventoryRequest->setItemId($item['parent']);
+            $inventoryRequest->setVariantId($item['child']);
             $inventoryRequestCollection[] = $inventoryRequest;
         }
         // @codingStandardsIgnoreEnd
-        $invertoryRequestParent->setInventoryRequest($inventoryRequestCollection);
-        $itemStock->setItems($invertoryRequestParent)->setStoreId($storeId);
+        $inventoryRequestParent->setInventoryRequest($inventoryRequestCollection);
+        $itemStock->setItems($inventoryRequestParent)->setStoreId($storeId);
         try {
             $response = $request->execute($itemStock);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ?
@@ -111,16 +124,16 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $simpleProductId
      * @param $parentProductSku
-     * @return Entity\ArrayOfStore|Entity\StoresGetbyItemInStockResponse|\Ls\Omni\Client\ResponseInterface|null
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStockGetResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
      */
     public function getAllStoresItemInStock($simpleProductId, $parentProductSku)
     {
-        $simpleProductSku = "";
-        $response = null;
+        $simpleProductSku = '';
+        $response         = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\StoresGetbyItemInStock();
-        $itemStock = new Entity\StoresGetbyItemInStock();
+        $request   = new Operation\ItemsInStockGet();
+        $itemStock = new Entity\ItemsInStockGet();
         // @codingStandardsIgnoreEnd
         if (!empty($simpleProductId)) {
             $simpleProductSku = $this->productRepository->
@@ -134,11 +147,11 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         setVariantId($simpleProductSku);
         try {
             $response = $request->execute($itemStock);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ?
-            $response->getStoresGetbyItemInStockResult() : $response;
+            $response->getItemsInStockGetResult() : $response;
     }
 
     /**
@@ -148,12 +161,12 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAllStoresFromReplTable($storesNavIds)
     {
-        $stores = $this->storeCollectionFactory
-            ->create()
-            ->addFieldToFilter('ClickAndCollect', 1)
-            ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
-            ->toArray();
-        return \Zend_Json::encode($stores);
+        $stores        = $this->storeCollectionFactory->create()->addFieldToFilter('nav_id', ['in' => $storesNavIds]);
+        $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
+        if (!$displayStores) {
+            $stores->addFieldToFilter('ClickAndCollect', 1);
+        }
+        return Zend_Json::encode($stores->toArray());
     }
 
     /**
@@ -166,9 +179,9 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $variants
     ) {
         $response = [];
-        $items = [];
+        $items    = [];
         // @codingStandardsIgnoreStart
-        $request = new Operation\ItemsInStoreGet();
+        $request      = new Operation\ItemsInStoreGet();
         $itemsInStore = new Entity\ItemsInStoreGet();
         foreach ($variants as $variant) {
             $inventoryReq = new Entity\InventoryRequest();
@@ -180,7 +193,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $itemsInStore->setItems($items);
         try {
             $response = $request->execute($itemsInStore);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         $inventoryResponseArray = $response ? $response->getItemsInStoreGetResult() : $response;
@@ -192,7 +205,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             }
             if (is_array($inventoryResponseArray->getInventoryResponse())) {
                 foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
-                    $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
+                    $sku                        = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
                     $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
                 }
             }

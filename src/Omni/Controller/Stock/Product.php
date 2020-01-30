@@ -6,7 +6,6 @@ namespace Ls\Omni\Controller\Stock;
  * Class Product
  * @package Ls\Omni\Controller\Stock
  */
-
 class Product extends \Magento\Framework\App\Action\Action
 {
 
@@ -45,9 +44,9 @@ class Product extends \Magento\Framework\App\Action\Action
         \Magento\Checkout\Model\Session\Proxy $session,
         \Ls\Omni\Helper\StockHelper $stockHelper
     ) {
-        $this->request = $request;
-        $this->session = $session;
-        $this->stockHelper = $stockHelper;
+        $this->request           = $request;
+        $this->session           = $session;
+        $this->stockHelper       = $stockHelper;
         $this->resultJsonFactory = $resultJsonFactory;
         parent::__construct($context);
     }
@@ -60,7 +59,7 @@ class Product extends \Magento\Framework\App\Action\Action
     {
         $result = $this->resultJsonFactory->create();
         // @codingStandardsIgnoreStart
-        $notAvailableNoticeTitle = __(
+        $notAvailableNoticeTitle   = __(
             \Ls\Core\Model\LSR::MSG_NOT_AVAILABLE_NOTICE_TITLE
         );
         $notAvailableNoticeContent = __(
@@ -68,29 +67,28 @@ class Product extends \Magento\Framework\App\Action\Action
         );
         // @codingStandardsIgnoreEnd
         if ($this->getRequest()->isAjax()) {
-            $storesNavId = [];
-            $productSku = $this->request->getParam('sku');
+            $storesNavId     = [];
+            $productSku      = $this->request->getParam('sku');
             $simpleProductId = $this->request->getParam('id');
-            $response = $this->stockHelper->getAllStoresItemInStock(
+            $response        = $this->stockHelper->getAllStoresItemInStock(
                 $simpleProductId,
                 $productSku
             );
-            if (is_array($response->getStore())) {
-                foreach ($response->getStore() as $each) {
-                    $storesNavId[] = $each->getId();
+            if ($response !== null) {
+                foreach ($response->getInventoryResponse() as $each) {
+                    if ($each->getQtyInventory() > 0) {
+                        $storesNavId[] = $each->getStoreId();
+                    }
                 }
-            } else {
-                $storesNavId[] = $response->getStore()->getId();
             }
-
             $customResponse = $this->stockHelper->getAllStoresFromReplTable(
                 $storesNavId
             );
-            $result = $result->setData(
+            $result         = $result->setData(
                 [
-                    "title" => $notAvailableNoticeTitle,
-                    "content" => $notAvailableNoticeContent,
-                    "stocks" => $customResponse
+                    'title'   => $notAvailableNoticeTitle,
+                    'content' => $notAvailableNoticeContent,
+                    'stocks'  => $customResponse
                 ]
             );
         }
