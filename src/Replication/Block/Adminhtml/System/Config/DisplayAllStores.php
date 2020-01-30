@@ -20,5 +20,4 @@ class DisplayAllStores implements OptionSourceInterface
             ['value' => 0, 'label' => __('Show the Click and Collect stores only')]
         ];
     }
-
 }
