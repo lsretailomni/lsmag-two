@@ -34,7 +34,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         CollectionFactory $storeCollectionFactory
     ) {
-        $this->productRepository = $productRepository;
+        $this->productRepository      = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
         parent::__construct($context);
     }
@@ -52,7 +52,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     ) {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ItemsInStockGet();
+        $request   = new Operation\ItemsInStockGet();
         $itemStock = new Entity\ItemsInStockGet();
         // @codingStandardsIgnoreEnd
         if (!empty($parentProductId) && !empty($childProductId)) {
@@ -85,15 +85,15 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     ) {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ItemsInStoreGet();
-        $itemStock = new Entity\ItemsInStoreGet();
-        $invertoryRequestParent = new Entity\ArrayOfInventoryRequest();
+        $request                    = new Operation\ItemsInStoreGet();
+        $itemStock                  = new Entity\ItemsInStoreGet();
+        $invertoryRequestParent     = new Entity\ArrayOfInventoryRequest();
         $inventoryRequestCollection = [];
 
         foreach ($items as $item) {
             $inventoryRequest = new Entity\InventoryRequest();
-            $inventoryRequest->setItemId($item["parent"]);
-            $inventoryRequest->setVariantId($item["child"]);
+            $inventoryRequest->setItemId($item['parent']);
+            $inventoryRequest->setVariantId($item['child']);
             $inventoryRequestCollection[] = $inventoryRequest;
         }
         // @codingStandardsIgnoreEnd
@@ -111,16 +111,16 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $simpleProductId
      * @param $parentProductSku
-     * @return Entity\ArrayOfStore|Entity\StoresGetbyItemInStockResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStockGetResponse|\Ls\Omni\Client\ResponseInterface|null
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getAllStoresItemInStock($simpleProductId, $parentProductSku)
     {
-        $simpleProductSku = "";
-        $response = null;
+        $simpleProductSku = '';
+        $response         = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\StoresGetbyItemInStock();
-        $itemStock = new Entity\StoresGetbyItemInStock();
+        $request   = new Operation\ItemsInStockGet();
+        $itemStock = new Entity\ItemsInStockGet();
         // @codingStandardsIgnoreEnd
         if (!empty($simpleProductId)) {
             $simpleProductSku = $this->productRepository->
@@ -138,7 +138,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return $response ?
-            $response->getStoresGetbyItemInStockResult() : $response;
+            $response->getItemsInStockGetResult() : $response;
     }
 
     /**
@@ -150,7 +150,6 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $stores = $this->storeCollectionFactory
             ->create()
-            ->addFieldToFilter('ClickAndCollect', 1)
             ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
             ->toArray();
         return \Zend_Json::encode($stores);
@@ -166,9 +165,9 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $variants
     ) {
         $response = [];
-        $items = [];
+        $items    = [];
         // @codingStandardsIgnoreStart
-        $request = new Operation\ItemsInStoreGet();
+        $request      = new Operation\ItemsInStoreGet();
         $itemsInStore = new Entity\ItemsInStoreGet();
         foreach ($variants as $variant) {
             $inventoryReq = new Entity\InventoryRequest();
@@ -192,7 +191,7 @@ class StockHelper extends \Magento\Framework\App\Helper\AbstractHelper
             }
             if (is_array($inventoryResponseArray->getInventoryResponse())) {
                 foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
-                    $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
+                    $sku                        = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
                     $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
                 }
             }

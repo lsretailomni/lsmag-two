@@ -1,11 +1,17 @@
 <?php
+
 namespace Ls\Customer\Block\Order;
+
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class View
  * @package Ls\Customer\Block\Order
  */
-class View extends \Magento\Framework\View\Element\Template
+class View extends Template
 {
     /**
      * @var string
@@ -17,19 +23,19 @@ class View extends \Magento\Framework\View\Element\Template
     /**
      * Core registry
      *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     public $coreRegistry = null;
 
     /**
      * View constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
+     * @param Context $context
+     * @param Registry $registry
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\Registry $registry,
+        Context $context,
+        Registry $registry,
         array $data = []
     ) {
         $this->coreRegistry = $registry;
@@ -47,7 +53,7 @@ class View extends \Magento\Framework\View\Element\Template
     /**
      * Retrieve current order model instance
      *
-     * @return \Ls\Omni\Client\Ecommerce\Entity\SalesEntry
+     * @return SalesEntry
      */
     public function getOrder()
     {
@@ -108,7 +114,7 @@ class View extends \Magento\Framework\View\Element\Template
      */
     public function getPrintAllInvoicesUrl($order)
     {
-        return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getId()]);
+        return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
     }
 
     /**
@@ -117,6 +123,6 @@ class View extends \Magento\Framework\View\Element\Template
      */
     public function getPrintAllShipmentUrl($order)
     {
-        return $this->getUrl('*/*/printShipment', ['order_id' => $order->getId()]);
+        return $this->getUrl('*/*/printShipment', ['order_id' => $order->getDocumentId()]);
     }
 }
