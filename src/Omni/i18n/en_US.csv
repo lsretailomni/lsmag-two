@@ -30,6 +30,8 @@ Special,Special
 "You have successfully canceled the points redemption.","You have successfully canceled the points redemption."
 "We cannot redeem the points.","We cannot redeem the points."
 "Check Your Gift Card Balance","Check Your Gift Card Balance"
+Notice,Notice
+"This item is only available online.","This item is only available online."
 "Please check other stores or remove the not available item(s) from your ","Please check other stores or remove the not available item(s) from your "
 "This item is available","This item is available"
 "You have selected %1 quantity for this item.
@@ -40,6 +42,7 @@ Special,Special
 "This item is not available","This item is not available"
 "Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
 "Our Stores","Our Stores"
+Save,Save
 "Reset password token expired.","Reset password token expired."
 Closed,Closed
 "The gift card amount ""%1"" and loyalty points ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points ""%2"" are not valid."
