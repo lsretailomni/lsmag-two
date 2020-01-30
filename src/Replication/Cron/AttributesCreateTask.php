@@ -6,9 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
 use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
-use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttribute;
@@ -55,16 +53,8 @@ class AttributesCreateTask
     /** @var ReplAttributeRepositoryInterface */
     public $replAttributeRepositoryInterface;
 
-    /** @var ReplAttributeValueRepositoryInterface */
-    public $replAttributeValueRepositoryInterface;
-
     /** @var ReplAttributeOptionValueRepositoryInterface */
     public $replAttributeOptionValueRepositoryInterface;
-
-    /**
-     * @var ReplItemRepository
-     */
-    public $replItemRepository;
 
     /** @var Config */
     public $eavConfig;
@@ -119,9 +109,7 @@ class AttributesCreateTask
      * @param AttributeFactory $eavAttributeFactory
      * @param Entity $eav_entity
      * @param ReplAttributeRepositoryInterface $replAttributeRepositoryInterface
-     * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
-     * @param ReplItemRepository $replItemRepository
      * @param Config $eavConfig
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
@@ -135,9 +123,7 @@ class AttributesCreateTask
         AttributeFactory $eavAttributeFactory,
         Entity $eav_entity,
         ReplAttributeRepositoryInterface $replAttributeRepositoryInterface,
-        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
         ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
-        ReplItemRepository $replItemRepository,
         Config $eavConfig,
         ReplicationHelper $replicationHelper,
         LSR $LSR,
@@ -150,9 +136,7 @@ class AttributesCreateTask
         $this->eavAttributeFactory                         = $eavAttributeFactory;
         $this->eavEntity                                   = $eav_entity;
         $this->replAttributeRepositoryInterface            = $replAttributeRepositoryInterface;
-        $this->replAttributeValueRepositoryInterface       = $replAttributeValueRepositoryInterface;
         $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
-        $this->replItemRepository                          = $replItemRepository;
         $this->eavConfig                                   = $eavConfig;
         $this->replicationHelper                           = $replicationHelper;
         $this->lsr                                         = $LSR;
@@ -298,8 +282,7 @@ class AttributesCreateTask
             /** @var ReplExtendedVariantValue $variant */
             foreach ($variants->getItems() as $variant) {
                 if (empty($variantCodes[$variant->getCode()]) ||
-                    !in_array($variant->getValue(), $variantCodes[$variant->getCode()],
-                        true)
+                    !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)
                 ) {
                     $variantCodes[$variant->getCode()][$variant->getLogicalOrder()] = $variant->getValue();
                 }
@@ -610,14 +593,12 @@ class AttributesCreateTask
                         $optionArray['values'][$sortOrder]                            = $item->getValue();
                         $optionArray['attribute_id']                                  = $attributeId;
                         $optionResults[$attributeCode][$status][$item->getSequence()] = $optionArray;
-                        $optionResults[$attributeCode] ['ls_attribute_code']          = $item->getCode();
                     } elseif ($status == 1) {
                         $optionResults[$attributeCode][$status][$item->getSequence()]['sort_order'] = $sortOrder;
                         $optionResults[$attributeCode][$status][$item->getSequence()]['value']      = $item->getValue();
-                        $optionResults[$attributeCode] ['ls_attribute_code']                        = $item->getCode();
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $item->setData('is_failed', 1);
                 $this->logger->debug($e->getMessage());
             }
