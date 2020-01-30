@@ -231,7 +231,8 @@ abstract class AbstractReplicationTask
     public function updateSuccessStatus()
     {
         $confPath = $this->getConfigPath();
-        if ($confPath == "ls_mag/replication/repl_attribute") {
+        if ($confPath == "ls_mag/replication/repl_attribute" ||
+            $confPath == "ls_mag/replication/repl_attribute_option_value") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
         } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);

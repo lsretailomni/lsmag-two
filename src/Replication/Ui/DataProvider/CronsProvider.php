@@ -140,6 +140,9 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 if ($cronName == 'repl_item_images_sync') {
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_IMAGES);
                 }
+                if ($cronName == 'repl_attributes_value_sync') {
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE);
+                }
                 $lastExecute = $this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                     $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName),
                     'd M, Y h:i:s A'

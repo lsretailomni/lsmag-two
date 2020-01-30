@@ -15,9 +15,7 @@ use \Ls\Replication\Model\ReplAttribute;
 use \Ls\Replication\Model\ReplAttributeOptionValue;
 use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
 use \Ls\Replication\Model\ReplAttributeSearchResults;
-use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
-use \Ls\Replication\Model\ReplItemSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
@@ -426,7 +424,6 @@ class AttributesCreateTask
                     $counter++;
                 }
             }
-
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
@@ -578,9 +575,6 @@ class AttributesCreateTask
                         $this->updateOptions($attributeCode, $optionData[1], 1);
                     }
                 }
-                if (!empty($optionData)) {
-                    $this->setItemUpdated($optionData['ls_attribute_code']);
-                }
             }
         }
     }
@@ -621,7 +615,6 @@ class AttributesCreateTask
                         $optionResults[$attributeCode][$status][$item->getSequence()]['sort_order'] = $sortOrder;
                         $optionResults[$attributeCode][$status][$item->getSequence()]['value']      = $item->getValue();
                         $optionResults[$attributeCode] ['ls_attribute_code']                        = $item->getCode();
-
                     }
                 }
             } catch (\Exception $e) {
@@ -724,26 +717,5 @@ class AttributesCreateTask
         }
 
         return $sortOrder;
-    }
-
-    /**
-     * @param $attributeCode
-     */
-    public function setItemUpdated($attributeCode)
-    {
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems('Code', $attributeCode, 'eq', -1, 1);
-        /** @var ReplAttributeValueSearchResults $items */
-        $replAttributeValue = $this->replAttributeValueRepositoryInterface->getList($criteria);
-        /** @var ReplAttributeValue $replAttributeValue */
-        foreach ($replAttributeValue->getItems() as $attributeValue) {
-            $itemId   = $attributeValue->getLinkField1();
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems('nav_id', $itemId, 'eq', -1, 1);
-            /** @var ReplItemSearchResults $itemResults */
-            $itemResults = $this->replItemRepository->getList($criteria);
-            foreach ($itemResults->getItems() as $item) {
-                $item->setIsUpdated(1);
-                $this->replItemRepository->save($item);
-            }
-        }
     }
 }
