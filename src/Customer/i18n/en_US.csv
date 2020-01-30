@@ -1,9 +1,7 @@
 Loyalty,Loyalty
 "Go To Product","Go To Product"
 "Go To Category","Go To Category"
-"Order # %1","Order # %1"
 "%1 # %2","%1 # %2"
-"Not Applicable", "Not Applicable"
 "Click and Collect","Click and Collect"
 "Flat Rate - Fixed","Flat Rate - Fixed"
 Cash,Cash
@@ -85,7 +83,6 @@ Back,Back
 "Expiry: ","Expiry: "
 "No offers","No offers"
 Orders,Orders
-"Order #","Order #"
 "Document ID #","Document ID #"
 Date,Date
 "Ship To","Ship To"
@@ -95,6 +92,7 @@ Action,Action
 Actions,Actions
 "View Order","View Order"
 Reorder,Reorder
+"Order #","Order #"
 "You have placed no orders.","You have placed no orders."
 "Order Information","Order Information"
 "Shipping Address","Shipping Address"
@@ -111,6 +109,7 @@ Subtotal,Subtotal
 "<span class=""label"">Order Date:</span> %1","<span class=""label"">Order Date:</span> %1"
 "Recent Orders","Recent Orders"
 "View All","View All"
+"Not Applicable","Not Applicable"
 "Qty Shipped","Qty Shipped"
 "Useful Information","Useful Information"
 "Click & Collect:","Click & Collect:"

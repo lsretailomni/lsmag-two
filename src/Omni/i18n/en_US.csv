@@ -41,6 +41,7 @@ Special,Special
 "Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
 "Our Stores","Our Stores"
 "Reset password token expired.","Reset password token expired."
+Closed,Closed
 "The gift card amount ""%1"" and loyalty points ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points ""%2"" are not valid."
 Products,Products
 SKU,SKU
@@ -101,12 +102,13 @@ Redeem,Redeem
 "Send Check to","Send Check to"
 "Loading Product Discounts...","Loading Product Discounts..."
 "Check Availability in Stores","Check Availability in Stores"
+"Please <a href=""%1"">Login</a> / <a href=""%2"">Register</a> to view available discounts on this product.","Please <a href=""%1"">Login</a> / <a href=""%2"">Register</a> to view available discounts on this product."
 "Offers and Promotions:","Offers and Promotions:"
 "Find Discounts","Find Discounts"
 Store,Store
 Address,Address
 Phone,Phone
-"Opening Hours","Opening Hours"
+Hours,Hours
 "Select Store by map ","Select Store by map "
 "Search for a Store ","Search for a Store "
 "View Details","View Details"
@@ -171,5 +173,3 @@ Title,Title
 "Order Balance","Order Balance"
 Stores,Stores
 "Check Gift Card Balance","Check Gift Card Balance"
-"Closed","Closed"
-"Hours","Hours"
