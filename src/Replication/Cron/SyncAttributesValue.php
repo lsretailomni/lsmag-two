@@ -2,7 +2,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
