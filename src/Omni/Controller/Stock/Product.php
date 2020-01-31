@@ -59,12 +59,8 @@ class Product extends \Magento\Framework\App\Action\Action
     {
         $result = $this->resultJsonFactory->create();
         // @codingStandardsIgnoreStart
-        $notAvailableNoticeTitle   = __(
-            \Ls\Core\Model\LSR::MSG_NOT_AVAILABLE_NOTICE_TITLE
-        );
-        $notAvailableNoticeContent = __(
-            \Ls\Core\Model\LSR::MSG_NOT_AVAILABLE_NOTICE_CONTENT
-        );
+        $notAvailableNoticeTitle   = __("Notice");
+        $notAvailableNoticeContent = __("This item is only available online.");
         // @codingStandardsIgnoreEnd
         if ($this->getRequest()->isAjax()) {
             $storesNavId     = [];

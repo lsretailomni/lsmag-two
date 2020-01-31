@@ -2,21 +2,30 @@
 
 namespace Ls\Omni\Helper;
 
-use \Ls\Core\Model\LSR;
+use Exception;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\ItemGetByIdResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\VariantRegistration;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Replication\Model\ReplBarcodeRepository;
+use Magento\Catalog\Api\Data\ProductSearchResultsInterface;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
+use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\ResourceModel\Quote;
+use Magento\Quote\Model\ResourceModel\Quote\Item;
 
 /**
  * Class ItemHelper
  * @package Ls\Omni\Helper
  */
-class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
+class ItemHelper extends AbstractHelper
 {
 
     /** @var SearchCriteriaBuilder */
@@ -32,7 +41,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $quoteRepository;
 
     /**
-     * @var \Magento\Checkout\Model\Session\Proxy
+     * @var Proxy
      */
     public $checkoutSession;
 
@@ -40,7 +49,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $cart;
 
     /**
-     * @var \Magento\Quote\Model\ResourceModel\Quote\Item
+     * @var Item
      */
     public $itemResourceModel;
 
@@ -49,11 +58,8 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public $loyaltyHelper;
 
-    /** @var array */
-    private $hashCache = [];
-
     /**
-     * @var \Magento\Quote\Model\ResourceModel\Quote
+     * @var Quote
      */
     public $quoteResourceModel;
 
@@ -64,11 +70,11 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param ReplBarcodeRepository $barcodeRepository
      * @param ProductRepository $productRepository
      * @param CartRepositoryInterface $quoteRepository
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel
+     * @param Proxy $checkoutSession
+     * @param Item $itemResourceModel
      * @param LoyaltyHelper $loyaltyHelper
      * @param Cart $cart
-     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
+     * @param Quote $quoteResourceModel
      */
     public function __construct(
         Context $context,
@@ -76,22 +82,22 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         ReplBarcodeRepository $barcodeRepository,
         ProductRepository $productRepository,
         CartRepositoryInterface $quoteRepository,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel,
+        Proxy $checkoutSession,
+        Item $itemResourceModel,
         LoyaltyHelper $loyaltyHelper,
         Cart $cart,
-        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
+        Quote $quoteResourceModel
     ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->barcodeRepository = $barcodeRepository;
-        $this->productRepository = $productRepository;
-        $this->quoteRepository = $quoteRepository;
-        $this->checkoutSession = $checkoutSession;
-        $this->itemResourceModel = $itemResourceModel;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->cart = $cart;
-        $this->quoteResourceModel = $quoteResourceModel;
+        $this->barcodeRepository     = $barcodeRepository;
+        $this->productRepository     = $productRepository;
+        $this->quoteRepository       = $quoteRepository;
+        $this->checkoutSession       = $checkoutSession;
+        $this->itemResourceModel     = $itemResourceModel;
+        $this->loyaltyHelper         = $loyaltyHelper;
+        $this->cart                  = $cart;
+        $this->quoteResourceModel    = $quoteResourceModel;
     }
 
     /**
@@ -108,11 +114,11 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $request = new Operation\ItemGetById();
         // @codingStandardsIgnoreEnd
 
-        /** @var \Ls\Omni\Client\Ecommerce\Entity\ItemGetByIdResponse $response */
+        /** @var ItemGetByIdResponse $response */
         $response = $request->execute($entity);
 
         if ($response && !($response->getItemGetByIdResult() == null)) {
-            $item = $response->getItemGetByIdResult();
+            $item   = $response->getItemGetByIdResult();
             $result = $item;
         }
 
@@ -142,7 +148,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function uom(Entity\LoyItem $item)
     {
         // @codingStandardsIgnoreLine
-        $uom = new Entity\UnitOfMeasure();
+        $uom        = new Entity\UnitOfMeasure();
         $salesUomId = $item->getSalesUomId();
 
         $uoms = $item->getUnitOfMeasures()->getUnitOfMeasure();
@@ -175,7 +181,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param Entity\LoyItem $item
      * @param null $variant_id
-     * @return Entity\VariantRegistration|null
+     * @return VariantRegistration|null
      */
     public function getItemVariant(Entity\LoyItem $item, $variant_id = null)
     {
@@ -187,7 +193,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (!is_array($variants)) {
             $variants = [$item->getVariantsRegistration()->getVariantRegistration()];
         }
-        /** @var \Ls\Omni\Client\Ecommerce\Entity\VariantRegistration $row */
+        /** @var VariantRegistration $row */
         foreach ($variants as $row) {
             if ($row->getId() == $variant_id) {
                 $variant = $row;
@@ -197,9 +203,9 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         /**  Omni is not accepting the return object so trying to work this out in different way */
 
-        /** @var Entity\VariantRegistration $response */
+        /** @var VariantRegistration $response */
         // @codingStandardsIgnoreLine
-        $response = new Entity\VariantRegistration();
+        $response = new VariantRegistration();
 
         $response->setItemId($variant->getItemId())
             ->setId($variant->getId())
@@ -217,7 +223,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $item
-     * @param \Ls\Omni\Client\Ecommerce\Entity\Order|\Ls\Omni\Client\Ecommerce\Entity\SalesEntry $orderData
+     * @param Order|SalesEntry $orderData
      * @return array|null
      */
     // @codingStandardsIgnoreLine
@@ -225,7 +231,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         try {
             $discountInfo = [];
-            $customPrice = 0;
+            $customPrice  = 0;
             if ($type == 2) {
                 $itemSku = $item->getItemId();
                 $itemSku = explode("-", $itemSku);
@@ -241,14 +247,14 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 $customPrice = $item->getCustomPrice();
             }
-            $check = false;
-            $basketData = [];
-            $discountText = LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
-            if ($orderData instanceof Entity\SalesEntry) {
-                $basketData = $orderData->getLines();
+            $check        = false;
+            $basketData   = [];
+            $discountText = __("Save");
+            if ($orderData instanceof SalesEntry) {
+                $basketData     = $orderData->getLines();
                 $discountsLines = $orderData->getDiscountLines();
-            } elseif ($orderData instanceof Entity\Order) {
-                $basketData = $orderData->getOrderLines();
+            } elseif ($orderData instanceof Order) {
+                $basketData     = $orderData->getOrderLines();
                 $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
             }
             foreach ($basketData as $basket) {
@@ -271,23 +277,23 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
             } else {
                 return null;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
 
     /**
      * @param $quote
-     * @param \Ls\Omni\Client\Ecommerce\Entity\Order $basketData
+     * @param Order $basketData
      */
     public function setDiscountedPricesForItems($quote, $basketData)
     {
         try {
             $itemlist = $this->cart->getQuote()->getAllVisibleItems();
             foreach ($itemlist as $item) {
-                $orderLines = $basketData->getOrderLines()->getOrderLine();
+                $orderLines     = $basketData->getOrderLines()->getOrderLine();
                 $oldItemVariant = [];
-                $itemSku = explode("-", $item->getSku());
+                $itemSku        = explode("-", $item->getSku());
                 // @codingStandardsIgnoreLine
                 if (count($itemSku) < 2) {
                     $itemSku[1] = null;
@@ -308,7 +314,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                                     $item->setCustomPrice($line->getAmount());
                                     $item->setDiscountAmount($line->getDiscountAmount());
                                     $item->setOriginalCustomPrice($line->getPrice());
-                                } elseif ($line->getAmount()!=$item->getProduct()->getPrice()) {
+                                } elseif ($line->getAmount() != $item->getProduct()->getPrice()) {
                                     $item->setCustomPrice($line->getAmount());
                                     $item->setOriginalCustomPrice($line->getPrice());
                                 } else {
@@ -320,13 +326,13 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                         }
                         // @codingStandardsIgnoreStart
                         if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] =
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount']    =
                                 $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount();
                             $oldItemVariant[$line->getItemId()][$line->getVariantId()] ['Discount'] =
                                 $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount();
                         } else {
 
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] = $line->getAmount();
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount']   = $line->getAmount();
                             $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] = $line->getDiscountAmount();
                         }
                         // @codingStandardsIgnoreEnd
@@ -351,7 +357,7 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
             if ($quote->getId()) {
                 $cartQuote = $this->cart->getQuote();
                 if (isset($basketData)) {
-                    $pointDiscount = $cartQuote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+                    $pointDiscount  = $cartQuote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
                     $giftCardAmount = $cartQuote->getLsGiftCardAmountUsed();
                     $cartQuote->getShippingAddress()->setGrandTotal(
                         $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
@@ -363,23 +369,23 @@ class ItemHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $cartQuote->collectTotals();
                 $this->quoteResourceModel->save($cartQuote);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
 
     /**
      * @param $items
-     * @return array|\Magento\Catalog\Api\Data\ProductSearchResultsInterface
+     * @return array|ProductSearchResultsInterface
      */
     public function getProductsInfoBySku($items)
     {
         $productData = [];
         try {
             $criteria = $this->searchCriteriaBuilder->addFilter('sku', implode(",", $items), 'in')->create();
-            $product = $this->productRepository->getList($criteria);
+            $product  = $this->productRepository->getList($criteria);
             return $product->getItems();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
         return $productData;

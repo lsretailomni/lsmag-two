@@ -164,8 +164,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CLICKCOLLECT_DEFAULT_LATITUDE = 'omni_clickandcollect/general/default_latitude';
     const SC_CLICKCOLLECT_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
     const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
-    const MSG_NOT_AVAILABLE_NOTICE_TITLE = "Notice";
-    const MSG_NOT_AVAILABLE_NOTICE_CONTENT = "This item is only available online.";
     const SC_PAYMENT_OPTION = 'carriers/clickandcollect/payment_option';
 
     // CUSTOM CONFIGURATION PATHS
@@ -283,13 +281,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_DISCOUNT_MIXANDMATCH_LIMIT = 'ls_mag/ls_discounts/discount_mixandmatch_limit';
 
     //Coupon Code Message
-    const LS_COUPON_CODE_ERROR_MESSAGE = 'Coupon Code is not valid for these item(s)';
-
-    //Coupon Code Message
     const LS_STORES_OPENING_HOURS_FORMAT = 'ls_mag/ls_stores/timeformat';
-
-    //LS Discount Message
-    const LS_DISCOUNT_PRICE_PERCENTAGE_TEXT = "Save";
 
     //LS New account reset password default password
     const LS_RESETPASSWORD_DEFAULT = "Admin123@";
@@ -326,6 +318,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
+     * @param TypeListInterface $cacheTypeList
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,

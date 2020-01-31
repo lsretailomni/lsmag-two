@@ -2,15 +2,17 @@
 
 namespace Ls\Customer\Block\Order\Item;
 
+use \Ls\Omni\Helper\ItemHelper;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
-use \Ls\Core\Model\LSR;
-use \Ls\omni\Helper\ItemHelper;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Renderer
  * @package Ls\Customer\Block\Order\Item
  */
-class Renderer extends \Magento\Framework\View\Element\Template
+class Renderer extends Template
 {
     /**
      * @var string
@@ -22,7 +24,7 @@ class Renderer extends \Magento\Framework\View\Element\Template
     /**
      * Core registry
      *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     public $coreRegistry = null;
 
@@ -38,19 +40,19 @@ class Renderer extends \Magento\Framework\View\Element\Template
 
     /**
      * Renderer constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param Context $context
      * @param PriceCurrencyInterface $priceCurrency
+     * @param ItemHelper $itemHelper
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
+        Context $context,
         PriceCurrencyInterface $priceCurrency,
         ItemHelper $itemHelper,
         array $data = []
-    )
-    {
+    ) {
         $this->priceCurrency = $priceCurrency;
-        $this->itemHelper = $itemHelper;
+        $this->itemHelper    = $itemHelper;
         parent::__construct($context, $data);
     }
 
@@ -98,9 +100,9 @@ class Renderer extends \Magento\Framework\View\Element\Template
      */
     public function getItemDiscountLines()
     {
-        $item = $this->getItem();
+        $item      = $this->getItem();
         $orderData = $this->getData('order');
-        $result = $this->itemHelper->getOrderDiscountLinesForItem($item, $orderData, 2);
+        $result    = $this->itemHelper->getOrderDiscountLinesForItem($item, $orderData, 2);
         return $result;
     }
 
@@ -109,6 +111,6 @@ class Renderer extends \Magento\Framework\View\Element\Template
      */
     public function getDiscountLabel()
     {
-        return LSR::LS_DISCOUNT_PRICE_PERCENTAGE_TEXT;
+        return __("Save");
     }
 }
