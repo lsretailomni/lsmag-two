@@ -3,11 +3,9 @@
 namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\InputException;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplAttributeValue;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Exception\StateException;
 use Magento\Setup\Exception;
 
 /**
@@ -52,10 +50,8 @@ class SyncAttributesValue extends ProductCreateTask
 
     /**
      * @return array
-     * @throws CouldNotSaveException
-     * @throws InputException
      * @throws LocalizedException
-     * @throws StateException
+     * @throws NoSuchEntityException
      */
     public function executeManually()
     {
@@ -131,12 +127,10 @@ class SyncAttributesValue extends ProductCreateTask
     public function getRemainingRecords()
     {
         if (!$this->remainingRecords) {
-
             /** Get list of only those attribute value whose items are already processed */
-            $filters = [
+            $filters    = [
                 ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
             ];
-
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters
             );
