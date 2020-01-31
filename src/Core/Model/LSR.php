@@ -119,6 +119,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //check for Product Images
     const SC_SUCCESS_CRON_ITEM_IMAGES = 'ls_mag/replication/success_sync_item_images';
 
+    //check for Product Attributes Value Sync
+    const SC_SUCCESS_CRON_ATTRIBUTES_VALUE = 'ls_mag/replication/success_sync_attributes_value';
+
+    // execute time for sync attributes value
+    const LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE  = 'ls_mag/replication/last_execute_repl_attributes_value_sync';
+
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
     const SC_ENHANCEMENT_STORE_UUID_PREFIX = 'ls_mag/cron_enhancement/requests_per_run';

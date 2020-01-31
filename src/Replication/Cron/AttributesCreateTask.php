@@ -410,7 +410,6 @@ class AttributesCreateTask
                     $counter++;
                 }
             }
-
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
@@ -445,7 +444,6 @@ class AttributesCreateTask
                     $counter++;
                 }
             }
-
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
@@ -633,10 +631,9 @@ class AttributesCreateTask
                     } elseif ($status == 1) {
                         $optionResults[$attributeCode][$status][$item->getSequence()]['sort_order'] = $sortOrder;
                         $optionResults[$attributeCode][$status][$item->getSequence()]['value']      = $item->getValue();
-
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $item->setData('is_failed', 1);
                 $this->logger->debug($e->getMessage());
             }

@@ -34,6 +34,7 @@ use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as R
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -190,6 +191,9 @@ class ProductCreateTask
     /** @var ReplImageLinkCollectionFactory */
     public $replImageLinkCollectionFactory;
 
+    /**  @var ReplAttributeValueCollectionFactory */
+    public $replAttributeValueCollectionFactory;
+
     /** @var \Magento\Catalog\Model\ResourceModel\Product */
     public $productResourceModel;
 
@@ -261,6 +265,7 @@ class ProductCreateTask
      * @param ReplInvStatusCollectionFactory $replInvStatusCollectionFactory
      * @param ReplPriceCollectionFactory $replPriceCollectionFactory
      * @param ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
+     * @param ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product $productResourceModel
      * @param StockRegistryInterface $stockRegistry
      * @param CategoryRepositoryInterface $categoryRepository
@@ -307,6 +312,7 @@ class ProductCreateTask
         ReplInvStatusCollectionFactory $replInvStatusCollectionFactory,
         ReplPriceCollectionFactory $replPriceCollectionFactory,
         ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
+        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
         StockRegistryInterface $stockRegistry,
         CategoryRepositoryInterface $categoryRepository,
@@ -352,6 +358,7 @@ class ProductCreateTask
         $this->replInvStatusCollectionFactory        = $replInvStatusCollectionFactory;
         $this->replPriceCollectionFactory            = $replPriceCollectionFactory;
         $this->replHierarchyLeafCollectionFactory    = $replHierarchyLeafCollectionFactory;
+        $this->replAttributeValueCollectionFactory   = $replAttributeValueCollectionFactory;
         $this->productResourceModel                  = $productResourceModel;
         $this->stockRegistry                         = $stockRegistry;
         $this->categoryLinkRepositoryInterface       = $categoryLinkRepositoryInterface;

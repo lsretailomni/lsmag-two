@@ -232,6 +232,10 @@ class Product extends Action
             false,
             LSR::SC_SUCCESS_CRON_ITEM_UPDATES
         );
+        $this->replicationHelper->updateCronStatus(
+            false,
+            LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE
+        );
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
