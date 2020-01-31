@@ -16,9 +16,6 @@ use Magento\Framework\Exception\StateException;
  */
 class SyncPrice extends ProductCreateTask
 {
-    /** @var string */
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_price_sync';
-
     /** @var bool */
     public $cronStatus = false;
 
@@ -30,7 +27,7 @@ class SyncPrice extends ProductCreateTask
         if ($this->lsr->isLSR()) {
             $this->replicationHelper->updateConfigValue(
                 $this->replicationHelper->getDateTime(),
-                self::CONFIG_PATH_LAST_EXECUTE
+                LSR::SC_PRODUCT_PRICE_CONFIG_PATH_LAST_EXECUTE
             );
             $this->logger->debug('Running SyncPrice Task');
             $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);

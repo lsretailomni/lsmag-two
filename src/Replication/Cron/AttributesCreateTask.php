@@ -32,11 +32,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class AttributesCreateTask
 {
-
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_attributes';
-
-    const ATTRIBUTE_OPTION_VALUE_SORT_ORDER = 10000;
-
     /**
      * @var ReplExtendedVariantValueRepository
      */
@@ -151,7 +146,7 @@ class AttributesCreateTask
     {
         $this->replicationHelper->updateConfigValue(
             $this->replicationHelper->getDateTime(),
-            self::CONFIG_PATH_LAST_EXECUTE
+            LSR::SC_CRON_ATTRIBUTE_CONFIG_PATH_LAST_EXECUTE
         );
         // Process display only attributes which are going to be used for product specification
         $this->processAttributes();
@@ -728,8 +723,8 @@ class AttributesCreateTask
      */
     public function getSortOrder($sortOrder)
     {
-        if ($sortOrder >= self::ATTRIBUTE_OPTION_VALUE_SORT_ORDER) {
-            $sortOrder = $sortOrder / self::ATTRIBUTE_OPTION_VALUE_SORT_ORDER;
+        if ($sortOrder >= LSR::ATTRIBUTE_OPTION_VALUE_SORT_ORDER) {
+            $sortOrder = $sortOrder / LSR::ATTRIBUTE_OPTION_VALUE_SORT_ORDER;
         }
 
         return $sortOrder;

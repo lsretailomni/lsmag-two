@@ -9,6 +9,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Replication\Logger\Logger;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
 use Magento\Framework\Api\AbstractExtensibleObject;
@@ -32,7 +33,6 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
-use \Ls\Replication\Logger\Logger;
 
 /**
  * Class ReplicationHelper
@@ -537,7 +537,7 @@ class ReplicationHelper extends AbstractHelper
     {
         $code = strtolower(trim($code));
         $code = str_replace(" ", "_", $code);
-        // convert all special characters and replace it wiht _
+        // convert all special characters and replace it with _
         $code = preg_replace('/[^a-zA-Z0-9_.]/', '_', $code);
         return 'ls_' . $code;
     }
@@ -557,12 +557,13 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Clear the cache for type config
+     * Clear the cache by type code
+     * @param $typeCode
      */
-    public function flushConfig()
+    public function flushByTypeCode($typeCode)
     {
-        $this->cacheTypeList->cleanType('config');
-        $this->_logger->debug('Config Flushed');
+        $this->cacheTypeList->cleanType($typeCode);
+        $this->_logger->debug($typeCode . ' cache type flushed.');
     }
 
     /**
@@ -578,7 +579,7 @@ class ReplicationHelper extends AbstractHelper
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
             0
         );
-        $this->flushConfig();
+        $this->flushByTypeCode('config');
     }
 
     /**
@@ -647,6 +648,7 @@ class ReplicationHelper extends AbstractHelper
      * @param $secondaryTableName
      * @param $secondaryTableColumnName
      * @param bool $group
+     * @param $isLikeJoin
      */
     public function setCollectionPropertiesPlusJoin(
         &$collection,
@@ -654,13 +656,13 @@ class ReplicationHelper extends AbstractHelper
         $primaryTableColumnName,
         $secondaryTableName,
         $secondaryTableColumnName,
-        $group = false
+        $group = false,
+        $isLikeJoin = false
     ) {
         foreach ($criteria->getFilterGroups() as $filter_group) {
-            $fields     = [];
-            $conditions = [];
+            $fields = $conditions = [];
             foreach ($filter_group->getFilters() as $filter) {
-                $condition    = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
+                $condition    = $filter->getConditionType() ?: 'eq';
                 $fields[]     = $filter->getField();
                 $conditions[] = [$condition => $filter->getValue()];
             }
@@ -681,11 +683,19 @@ class ReplicationHelper extends AbstractHelper
         $second_table_name = $this->resource->getTableName($secondaryTableName);
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
-        $collection->getSelect()->joinInner(
-            ['second' => $second_table_name],
-            'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
-            []
-        );
+        if ($isLikeJoin) {
+            $collection->getSelect()->joinInner(
+                ['second' => $second_table_name],
+                'main_table.' . $primaryTableColumnName . ' LIKE CONCAT(second.' . $secondaryTableColumnName . ',"%")',
+                []
+            );
+        } else {
+            $collection->getSelect()->joinInner(
+                ['second' => $second_table_name],
+                'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
+                []
+            );
+        }
         if ($group) {
             $collection->getSelect()->group('main_table.' . $primaryTableColumnName);
         }
@@ -846,7 +856,6 @@ class ReplicationHelper extends AbstractHelper
         $val1 = ini_get('max_execution_time');
         $val2 = ini_get('memory_limit');
         $this->_logger->debug('ENV Variables Values after:' . $val1 . ' ' . $val2);
-
     }
 
     /**

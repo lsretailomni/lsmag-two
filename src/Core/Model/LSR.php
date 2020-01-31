@@ -4,7 +4,6 @@ namespace Ls\Core\Model;
 
 use Exception;
 use \Ls\Omni\Service\ServiceType;
-use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use SoapClient;
 
@@ -94,30 +93,39 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //check for Attribute
     const SC_SUCCESS_CRON_ATTRIBUTE = 'ls_mag/replication/success_repl_attribute';
+    const SC_CRON_ATTRIBUTE_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_attributes';
+    const ATTRIBUTE_OPTION_VALUE_SORT_ORDER = 10000;
 
     //check for Attribute Variant
     const SC_SUCCESS_CRON_ATTRIBUTE_VARIANT = 'ls_mag/replication/success_repl_attribute_variant';
 
     //check for Category
     const SC_SUCCESS_CRON_CATEGORY = 'ls_mag/replication/success_repl_category';
+    const SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_category';
 
     //check for Product
     const SC_SUCCESS_CRON_PRODUCT = 'ls_mag/replication/success_repl_product';
+    const SC_CRON_PRODUCT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_products';
 
     //check for Product Price
     const SC_SUCCESS_CRON_PRODUCT_PRICE = 'ls_mag/replication/success_sync_price';
+    const SC_PRODUCT_PRICE_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_price_sync';
 
     //check for Product Inventory
     const SC_SUCCESS_CRON_PRODUCT_INVENTORY = 'ls_mag/replication/success_sync_inventory';
+    const SC_PRODUCT_INVENTORY_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_inventory_sync';
 
     //check for Discount
     const SC_SUCCESS_CRON_DISCOUNT = 'ls_mag/replication/success_repl_discount';
+    const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
 
     //check for Product Assignment to Categories
     const SC_SUCCESS_CRON_ITEM_UPDATES = 'ls_mag/replication/success_sync_item_updates';
+    const SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_updates_sync';
 
     //check for Product Images
     const SC_SUCCESS_CRON_ITEM_IMAGES = 'ls_mag/replication/success_sync_item_images';
+    const SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_images_sync';
 
     //check for Product Attributes Value Sync
     const SC_SUCCESS_CRON_ATTRIBUTES_VALUE = 'ls_mag/replication/success_sync_attributes_value';
@@ -288,9 +296,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //Coupon Code Message
     const LS_STORES_OPENING_HOURS_FORMAT = 'ls_mag/ls_stores/timeformat';
-
+    
     //LS New account reset password default password
-    const LS_RESETPASSWORD_DEFAULT = "Admin123@";
+    const LS_RESETPASSWORD_DEFAULT = 'Admin123@';
 
     //LS reset password email of the current customer
     const REGISTRY_CURRENT_RESETPASSWORD_EMAIL = 'reset-password-email';
@@ -298,9 +306,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
     const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
-    const POINTRATE = 'LS_PointsRate_';
-    const PROACTIVE_DISCOUNTS = 'LS_Proactive_';
-    const COUPONS = 'LS_Coupons_';
+    const POINTRATE = 'LS_POINT_RATE_';
+    const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
+    const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
 
     // Date format to be used in fetching the data.
@@ -313,9 +321,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public $scopeConfig;
 
-    /** @var TypeListInterface */
-    public $cacheTypeList;
-
     /** @var array End Points */
     public $endpoints = [
         ServiceType::ECOMMERCE => 'UCService.svc'
@@ -327,11 +332,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @param TypeListInterface $cacheTypeList
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        TypeListInterface $cacheTypeList
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig   = $scopeConfig;
-        $this->cacheTypeList = $cacheTypeList;
     }
 
     /**
@@ -351,14 +354,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             );
         }
         return $sc;
-    }
-
-    /**
-     * Clear the cache for type config
-     */
-    public function flushConfig()
-    {
-        $this->cacheTypeList->cleanType('config');
     }
 
     /**

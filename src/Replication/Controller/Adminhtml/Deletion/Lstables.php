@@ -3,6 +3,7 @@
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -57,6 +58,9 @@ class Lstables extends Action
     /** @var LSR */
     public $lsr;
 
+    /** @var ReplicationHelper */
+    public $replHelper;
+
     // @codingStandardsIgnoreStart
     /** @var array */
     protected $_publicActions = ['ls_tables'];
@@ -68,16 +72,19 @@ class Lstables extends Action
      * @param Logger $logger
      * @param LSR $LSR
      * @param Context $context
+     * @param ReplicationHelper $repHelper
      */
     public function __construct(
         ResourceConnection $resource,
         Logger $logger,
         LSR $LSR,
-        Context $context
+        Context $context,
+        ReplicationHelper $repHelper
     ) {
-        $this->resource = $resource;
-        $this->logger   = $logger;
-        $this->lsr      = $LSR;
+        $this->resource    = $resource;
+        $this->logger      = $logger;
+        $this->lsr         = $LSR;
+        $this->replHelper = $repHelper;
         parent::__construct($context);
     }
 
@@ -93,7 +100,7 @@ class Lstables extends Action
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         $jobName = $this->_request->getParam('jobname');
         if ($jobName != "") {
-            $tableName = "ls_replication_" . $jobName;
+            $tableName = 'ls_replication_' . $jobName;
             $tableName = $connection->getTableName($tableName);
             try {
                 $connection->truncateTable($tableName);
@@ -108,7 +115,7 @@ class Lstables extends Action
             $connection->query('DELETE FROM ' . $coreConfigTableName . ' 
             WHERE path = "ls_mag/replication/status_' . $jobName . '"');
             $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
-            $this->lsr->flushConfig();
+            $this->replHelper->flushByTypeCode('config');
             // @codingStandardsIgnoreEnd
             $this->messageManager->addSuccessMessage(__('%1 table truncated successfully.', $jobName));
             $this->_redirect('ls_repl/cron/grid/');
@@ -124,7 +131,7 @@ class Lstables extends Action
             $coreConfigTableName = $connection->getTableName('core_config_data');
             $connection->query('DELETE FROM ' . $coreConfigTableName . ' WHERE path LIKE "ls_mag/replication/%";');
             $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
-            $this->lsr->flushConfig();
+            $this->replHelper->flushByTypeCode('config');
             // @codingStandardsIgnoreEnd
             $this->messageManager->addSuccessMessage(__('All ls_ tables truncated successfully.'));
             $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
