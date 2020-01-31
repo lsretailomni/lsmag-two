@@ -37,7 +37,6 @@ class SyncAttributesValue extends ProductCreateTask
                     LSR::LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE
                 );
                 $this->logger->debug('Running Sync Attributes Value Task');
-                $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
                 $this->processAttributesValue();
                 $remainingItems = (int)$this->getRemainingRecords();
                 if ($remainingItems == 0) {
@@ -66,20 +65,35 @@ class SyncAttributesValue extends ProductCreateTask
     }
 
     /**
-     * @param $attributeCode
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function processAttributesValue()
     {
-        try {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', 'eq', -1, 1);
-            /** @var ReplAttributeValueSearchResults $items */
-            $replAttributeValue = $this->replAttributeValueRepositoryInterface->getList($criteria);
-            /** @var ReplAttributeValue $replAttributeValue */
-            foreach ($replAttributeValue->getItems() as $attributeValue) {
-                $itemId = $attributeValue->getLinkField1();
+        /** Get list of only those Attribute Value whose items are already processed */
+        $filters            = [
+            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+        ];
+        $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
+        $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+            $filters,
+            $attributeBatchSize,
+            1
+        );
+        $collection         = $this->replAttributeValueCollectionFactory->create();
+        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'LinkField1',
+            'ls_replication_repl_item',
+            'nav_id'
+        );
+
+        if ($collection->getSize() > 0) {
+            /** @var ReplAttributeValue $attributeValue */
+            foreach ($collection as $attributeValue) {
                 try {
+                    $itemId        = $attributeValue->getLinkField1();
                     $product       = $this->productRepository->get($itemId);
                     $formattedCode = $this->replicationHelper->formatAttributeCode($attributeValue->getCode());
                     $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
@@ -96,20 +110,20 @@ class SyncAttributesValue extends ProductCreateTask
                     }
                     $product->setData($formattedCode, $value);
                     $product->getResource()->saveAttribute($product, $formattedCode);
-                    $attributeValue->setData('processed_at', $this->replicationHelper->getDateTime());
-                    $attributeValue->setData('processed', 1);
-                    $attributeValue->setData('is_updated', 0);
-                    // @codingStandardsIgnoreLine
-                    $this->replAttributeValueRepositoryInterface->save($attributeValue);
-                } catch (NoSuchEntityException $e) {
+                } catch (Exception $e) {
                     $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());
+                    $attributeValue->setData('is_failed', 1);
                 }
+                $attributeValue->setData('processed_at', $this->replicationHelper->getDateTime());
+                $attributeValue->setData('processed', 1);
+                $attributeValue->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
+                $this->replAttributeValueRepositoryInterface->save($attributeValue);
             }
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
         }
     }
+
 
     /**
      * @return int
@@ -117,12 +131,24 @@ class SyncAttributesValue extends ProductCreateTask
     public function getRemainingRecords()
     {
         if (!$this->remainingRecords) {
-            if (!$this->remainingRecords) {
-                $criteria               = $this->replicationHelper->buildCriteriaForNewItems();
-                $this->remainingRecords = $this->replAttributeValueRepositoryInterface->getList($criteria)
-                    ->getTotalCount();
-            }
-            return $this->remainingRecords;
+
+            /** Get list of only those attribute value whose items are already processed */
+            $filters = [
+                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+            ];
+
+            $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+                $filters
+            );
+            $collection = $this->replAttributeValueCollectionFactory->create();
+            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+                $collection,
+                $criteria,
+                'LinkField1',
+                'ls_replication_repl_item',
+                'nav_id'
+            );
+            $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
     }

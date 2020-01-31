@@ -91,12 +91,12 @@
         <job name="repl_item_updates_sync" instance="Ls\Replication\Cron\SyncItemUpdates" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
+        <job name="repl_attributes_value_sync" instance="Ls\Replication\Cron\SyncAttributesValue" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
     </group>
     <group id="sync_operations">
         <job name="repl_item_images_sync" instance="Ls\Replication\Cron\SyncImages" method="execute">
-            <schedule>*/5 * * * *</schedule>
-        </job>
-        <job name="repl_attributes_value_sync" instance="Ls\Replication\Cron\SyncAttributesValue" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
     </group>
