@@ -62,8 +62,7 @@ class SyncImages extends ProductCreateTask
         /** Get Images for only those items which are already processed */
         $filters  = [
             ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
-            ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+            ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -79,8 +78,8 @@ class SyncImages extends ProductCreateTask
             $collection,
             $criteria,
             'KeyValue',
-            'ls_replication_repl_item',
-            'nav_id',
+            'catalog_product_entity',
+            'sku',
             true,
             true
         );
