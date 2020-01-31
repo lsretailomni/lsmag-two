@@ -25,7 +25,6 @@ use \Ls\Replication\Model\ReplBarcode;
 use \Ls\Replication\Model\ReplBarcodeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLink;
-use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ReplItemSearchResults;
@@ -79,8 +78,6 @@ use Magento\Framework\Exception\StateException;
  */
 class ProductCreateTask
 {
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_products';
-
     /** @var Factory */
     public $factory;
 
@@ -381,7 +378,7 @@ class ProductCreateTask
     {
         $this->replicationHelper->updateConfigValue(
             $this->replicationHelper->getDateTime(),
-            self::CONFIG_PATH_LAST_EXECUTE
+            LSR::SC_CRON_PRODUCT_CONFIG_PATH_LAST_EXECUTE
         );
         $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(ReplEcommImageLinksTask::CONFIG_PATH_STATUS);
         $fullReplicationBarcodeStatus   = $this->lsr->getStoreConfig(ReplEcommBarcodesTask::CONFIG_PATH_STATUS);
@@ -606,7 +603,7 @@ class ProductCreateTask
                         ->setName($this->oSlug($image->getImageId()))
                         ->setType($mimeType);
                     $this->attributeMediaGalleryEntry->setMediaType('image')
-                        ->setLabel(($image->getDescription()) ? $image->getDescription() : __('Product Image'))
+                        ->setLabel(($image->getDescription()) ?: __('Product Image'))
                         ->setPosition($image->getDisplayOrder())
                         ->setDisabled(false)
                         ->setContent($imageContent);
@@ -618,9 +615,11 @@ class ProductCreateTask
                     $i++;
                 } else {
                     $image->setData('is_failed', 1);
+                    $this->logger->debug('MIME Type is not valid for Image Id : ' . $image->getImageId());
                 }
             } else {
                 $image->setData('is_failed', 1);
+                $this->logger->debug('Response is empty or format empty for Image Id : ' . $image->getImageId());
             }
             $image->setData('processed_at', $this->replicationHelper->getDateTime());
             $image->setData('processed', 1);
@@ -1044,59 +1043,6 @@ class ProductCreateTask
             // it return complete product according to attribute values which you pass
         }
         return $assPro;
-    }
-
-    /**
-     * Update/Add the modified/added images of the item
-     */
-    public function updateAndAddNewImageOnly()
-    {
-        $filters   = [
-            ['field' => 'TableName', 'value' => 'Item%', 'condition_type' => 'like'],
-            ['field' => 'TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
-        ];
-        $batchSize = $this->replicationHelper->getProductImagesBatchSize();
-        $criteria  = $this->replicationHelper->buildCriteriaForArray($filters, $batchSize);
-        /** @var ReplImageLinkSearchResults $images */
-        $images         = $this->replImageLinkRepositoryInterface->getList($criteria);
-        $processedItems = [];
-        if ($images->getTotalCount() > 0) {
-            /** @var ReplImageLink $image */
-            foreach ($images->getItems() as $image) {
-                if (in_array($image->getKeyValue(), $processedItems, true)) {
-                    continue;
-                }
-                if ($image->getTableName() === 'Item' || $image->getTableName() === 'Item Variant') {
-                    $item = $image->getKeyValue();
-                    $item = str_replace(',', '-', $item);
-                    try {
-                        $allImages = $this->replicationHelper->getImageLinksByType(
-                            $image->getKeyValue(),
-                            $image->getTableName()
-                        );
-                        /* @var ProductRepositoryInterface $productData */
-                        $productData  = $this->productRepository->get($item);
-                        $galleryImage = $allImages;
-                        if ($galleryImage) {
-                            $productData->setMediaGalleryEntries($this->getMediaGalleryEntries($galleryImage));
-                            // @codingStandardsIgnoreLine
-                            $this->productRepository->save($productData);
-                        }
-                    } catch (Exception $e) {
-                        $this->logger->debug('Problem with SKU : ' . $item . ' in ' . __METHOD__);
-                        $this->logger->debug($e->getMessage());
-                        $image->setData('is_failed', 1);
-                    }
-                    $image->setData('is_updated', 0);
-                    $image->setData('processed_at', $this->replicationHelper->getDateTime());
-                    $image->setData('processed', 1);
-                    // @codingStandardsIgnoreLine
-                    $this->replImageLinkRepositoryInterface->save($image);
-                    // Adding items into an array whose images are processed.
-                    $processedItems[] = $image->getKeyValue();
-                }
-            }
-        }
     }
 
     /**

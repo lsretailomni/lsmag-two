@@ -35,8 +35,6 @@ use Magento\Framework\Exception\State\InvalidTransitionException;
  */
 class DiscountCreateTask
 {
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
-
     /**
      * @var CatalogRuleRepositoryInterface
      */
@@ -144,7 +142,7 @@ class DiscountCreateTask
         if ($this->lsr->isLSR()) {
             $this->replicationHelper->updateConfigValue(
                 $this->replicationHelper->getDateTime(),
-                self::CONFIG_PATH_LAST_EXECUTE
+                LSR::SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE
             );
             $store_id                 = $this->lsr->getDefaultWebStore();
             $publishedOfferCollection = $this->getUniquePublishedOffers();

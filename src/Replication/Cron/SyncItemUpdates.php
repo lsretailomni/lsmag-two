@@ -16,9 +16,6 @@ use Magento\Framework\Exception\StateException;
  */
 class SyncItemUpdates extends ProductCreateTask
 {
-    /** @var string */
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_updates_sync';
-
     /** @var bool */
     public $cronStatus = false;
 
@@ -31,7 +28,7 @@ class SyncItemUpdates extends ProductCreateTask
             $this->logger->debug('Running SyncItemUpdates Task ');
             $this->replicationHelper->updateConfigValue(
                 $this->replicationHelper->getDateTime(),
-                self::CONFIG_PATH_LAST_EXECUTE
+                LSR::SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE
             );
             $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
             if (!empty($hierarchyCode)) {
