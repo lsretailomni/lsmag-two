@@ -1,9 +1,10 @@
 <?php
+
 namespace Ls\Core\Cron;
 
 use \Ls\Core\Model\LSR;
-use Psr\Log\LoggerInterface;
 use Magento\Framework\Notification\NotifierInterface as NotifierPool;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class AdminNotificationTask
@@ -37,8 +38,8 @@ class AdminNotificationTask
         LSR $LSR,
         NotifierPool $notifierPool
     ) {
-        $this->logger = $logger;
-        $this->lsr = $LSR;
+        $this->logger       = $logger;
+        $this->lsr          = $LSR;
         $this->notifierPool = $notifierPool;
     }
 
@@ -54,6 +55,6 @@ class AdminNotificationTask
                 'Please complete the details under Stores > Settings > Configuration > LS Retail Tab'
             );
         }
-        $this->logger->debug("Finished Checking LS Retail Setup");
+        $this->logger->debug('Finished Checking LS Retail Setup');
     }
 }
