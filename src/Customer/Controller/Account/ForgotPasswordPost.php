@@ -3,9 +3,9 @@
 namespace Ls\Customer\Controller\Account;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Customer\Api\CustomerMetadataInterface;
 use Magento\Customer\Model\AccountManagement;
