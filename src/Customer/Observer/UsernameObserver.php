@@ -2,8 +2,18 @@
 
 namespace Ls\Customer\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
+use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
+use Magento\Customer\Controller\Account\LoginPost\Interceptor;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\ActionFlag;
+use Magento\Framework\App\Response\RedirectInterface;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class UsernameObserver
@@ -14,49 +24,49 @@ class UsernameObserver implements ObserverInterface
     /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var \Magento\Framework\Message\ManagerInterface */
+    /** @var ManagerInterface */
     private $messageManager;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var LoggerInterface */
     private $logger;
 
-    /** @var \Magento\Customer\Model\Session\Proxy */
+    /** @var Proxy */
     private $customerSession;
 
-    /** @var \Magento\Framework\App\Response\RedirectInterface */
+    /** @var RedirectInterface */
     private $redirectInterface;
 
-    /** @var \Magento\Framework\App\ActionFlag */
+    /** @var ActionFlag */
     private $actionFlag;
 
-    /** @var \Ls\Core\Model\LSR @var */
+    /** @var LSR @var */
     private $lsr;
 
     /**
      * UsernameObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Framework\App\Response\RedirectInterface $redirectInterface
-     * @param \Magento\Framework\App\ActionFlag $actionFlag
+     * @param ManagerInterface $messageManager
+     * @param LoggerInterface $logger
+     * @param Proxy $customerSession
+     * @param RedirectInterface $redirectInterface
+     * @param ActionFlag $actionFlag
      */
     public function __construct(
         ContactHelper $contactHelper,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Framework\App\Response\RedirectInterface $redirectInterface,
-        \Magento\Framework\App\ActionFlag $actionFlag,
-        \Ls\Core\Model\LSR $LSR
+        ManagerInterface $messageManager,
+        LoggerInterface $logger,
+        Proxy $customerSession,
+        RedirectInterface $redirectInterface,
+        ActionFlag $actionFlag,
+        LSR $LSR
     ) {
-        $this->contactHelper = $contactHelper;
-        $this->messageManager = $messageManager;
-        $this->logger = $logger;
-        $this->customerSession = $customerSession;
+        $this->contactHelper     = $contactHelper;
+        $this->messageManager    = $messageManager;
+        $this->logger            = $logger;
+        $this->customerSession   = $customerSession;
         $this->redirectInterface = $redirectInterface;
-        $this->actionFlag = $actionFlag;
-        $this->lsr = $LSR;
+        $this->actionFlag        = $actionFlag;
+        $this->lsr               = $LSR;
     }
 
     /**
@@ -65,25 +75,25 @@ class UsernameObserver implements ObserverInterface
      * but since NAV rely on it, and it does not allow creation of duplicate lsr_username
      * so we need to check if the username field which is coming with the form is already exist or not.
      * If exist redirect back to registration with error message that username already exist.
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return $this
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         /*
          * Adding condition to only process if LSR is enabled.
          */
         if ($this->lsr->isLSR()) {
             try {
-                /** @var \Magento\Customer\Controller\Account\LoginPost\Interceptor $controller_action */
+                /** @var Interceptor $controller_action */
                 $controller_action = $observer->getData('controller_action');
-                $parameters = $controller_action->getRequest()->getParams();
+                $parameters        = $controller_action->getRequest()->getParams();
                 $this->customerSession->setLsrUsername($parameters['lsr_username']);
                 if ($this->contactHelper->isUsernameExist($parameters['lsr_username']) || $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username'])) {
                     $this->messageManager->addErrorMessage(
                         __('Username already exist, please try another one.')
                     );
-                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                    $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
                     $observer->getControllerAction()
                         ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
                     $this->customerSession->setCustomerFormData($parameters);
@@ -93,13 +103,13 @@ class UsernameObserver implements ObserverInterface
                     $this->messageManager->addErrorMessage(
                         __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
                     );
-                    $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                    $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
                     $observer->getControllerAction()
                         ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
                     $this->customerSession->setCustomerFormData($parameters);
                     return $this;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
             }
         }

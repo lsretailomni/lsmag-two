@@ -2,6 +2,8 @@
 
 namespace Ls\Customer\Model;
 
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Api\CustomerMetadataInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
@@ -9,6 +11,7 @@ use Magento\Customer\Api\Data\ValidationResultsInterfaceFactory;
 use Magento\Customer\Helper\View as CustomerViewHelper;
 use Magento\Customer\Model\AccountConfirmation;
 use Magento\Customer\Model\Config\Share as ConfigShare;
+use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\Customer\CredentialsValidator;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\CustomerRegistry;
@@ -20,6 +23,8 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObjectFactory as ObjectFactory;
 use Magento\Framework\Encryption\EncryptorInterface as Encryptor;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Intl\DateTimeFactory;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Math\Random;
@@ -31,9 +36,6 @@ use Magento\Framework\Stdlib\DateTime;
 use Magento\Framework\Stdlib\StringUtils as StringHelper;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface as PsrLogger;
-use Magento\Customer\Model\Customer;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\ContactHelper;
 
 /**
  * Class AccountManagement
@@ -44,7 +46,7 @@ class AccountManagement extends \Magento\Customer\Model\AccountManagement
     /**
      * {@inheritdoc}
      */
-    /** @var \Magento\Framework\Registry */
+    /** @var Registry */
     public $registry;
     /** @var ContactHelper */
     private $contactHelper;
@@ -156,14 +158,14 @@ class AccountManagement extends \Magento\Customer\Model\AccountManagement
      * @param string $resetToken
      * @param string $newPassword
      * @return bool|void
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws InputException
+     * @throws LocalizedException
      */
     public function resetPassword($email, $resetToken, $newPassword)
     {
         if (!$email) {
             $customer = $this->contactHelper->matchCustomerByRpToken($resetToken);
-            $email = $customer->getEmail();
+            $email    = $customer->getEmail();
             $this->registry->register(LSR::REGISTRY_CURRENT_RESETPASSWORD_EMAIL, $email);
         }
         parent::resetPassword($email, $resetToken, $newPassword);

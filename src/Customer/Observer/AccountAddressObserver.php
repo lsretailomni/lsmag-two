@@ -2,9 +2,14 @@
 
 namespace Ls\Customer\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
-use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
+use Magento\Customer\Model\Address;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class AccountAddressObserver
@@ -15,47 +20,47 @@ class AccountAddressObserver implements ObserverInterface
     /** @var ContactHelper $contactHelper */
     private $contactHelper;
 
-    /** @var \Magento\Framework\Message\ManagerInterface $messageManager */
+    /** @var ManagerInterface $messageManager */
     private $messageManager;
 
-    /** @var \Psr\Log\LoggerInterface $logger */
+    /** @var LoggerInterface $logger */
     private $logger;
 
-    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
+    /** @var Proxy $customerSession */
     private $customerSession;
 
-    /** @var LSR @var  */
+    /** @var LSR @var */
     private $lsr;
 
     /**
      * AccountAddressObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param ManagerInterface $messageManager
+     * @param LoggerInterface $logger
+     * @param Proxy $customerSession
      * @param LSR $lsr
      */
     public function __construct(
         ContactHelper $contactHelper,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        ManagerInterface $messageManager,
+        LoggerInterface $logger,
+        Proxy $customerSession,
         LSR $lsr
     ) {
-        $this->contactHelper = $contactHelper;
-        $this->messageManager = $messageManager;
-        $this->logger = $logger;
+        $this->contactHelper   = $contactHelper;
+        $this->messageManager  = $messageManager;
+        $this->logger          = $logger;
         $this->customerSession = $customerSession;
-        $this->lsr = $lsr;
+        $this->lsr             = $lsr;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return $this
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
-        /** @var $customerAddress \Magento\Customer\Model\Address */
+        /** @var $customerAddress Address */
 
         /*
          * Adding condition to only process if LSR is enabled.

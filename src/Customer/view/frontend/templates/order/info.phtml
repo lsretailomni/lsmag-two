@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 
 // @codingStandardsIgnoreFile
 
@@ -50,19 +46,20 @@
                         $block->getFormattedAddress() ?></address>
                 </div>
             </div>
-        <?php
+            <?php
         }
         if (!empty($block->getPaymentDescription()[0])) {
             ?>
-        <div class="box box-order-billing-method">
-            <strong class="box-title">
+            <div class="box box-order-billing-method">
+                <strong class="box-title">
                 <span><?= /* @escapeNotVerified */
                     __('Payment Method') ?></span>
-            </strong>
-            <div class="box-content">
-                <?= $block->escapeHtml($block->getPaymentDescription()[0]) ?>
+                </strong>
+                <div class="box-content">
+                    <?= $block->escapeHtml($block->getPaymentDescription()[0]) ?>
+                </div>
             </div>
-        </div>
-        <?php } ?>
+        <?php
+        } ?>
     </div>
 </div>
