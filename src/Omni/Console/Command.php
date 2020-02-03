@@ -45,8 +45,8 @@ class Command extends SymfonyCommand
         Service $service,
         Reader $dirReader
     ) {
-        $this->service       =   $service;
-        $this->dirReader    =   $dirReader;
+        $this->service   = $service;
+        $this->dirReader = $dirReader;
         parent::__construct();
     }
 
@@ -60,10 +60,10 @@ class Command extends SymfonyCommand
 
         parent::initialize($input, $output);
 
-        $this->input = $input;
+        $this->input  = $input;
         $this->output = $output;
 
-        if ($this->type==null) {
+        if ($this->type == null) {
             $type = $input->getOption(self::TYPE);
             if (!ServiceType::isValid($type)) {
                 throw new InvalidServiceTypeException();

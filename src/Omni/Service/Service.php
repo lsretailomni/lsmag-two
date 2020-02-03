@@ -2,9 +2,10 @@
 
 namespace Ls\Omni\Service;
 
+use \Ls\Core\Model\LSR;
+use Magento\Framework\App\ObjectManager;
 use Zend\Uri\Uri;
 use Zend\Uri\UriFactory;
-use \Ls\Core\Model\LSR;
 
 /**
  * Class Service
@@ -12,16 +13,15 @@ use \Ls\Core\Model\LSR;
  */
 class Service
 {
-
     const DEFAULT_BASE_URL = null;
 
     /** @var  LSR $_lsr */
     public $lsr;
 
-    /** @var null|string  */
+    /** @var null|string */
     public $baseurl = null;
 
-    static public $endpoints = [
+    public static $endpoints = [
         ServiceType::ECOMMERCE => 'UCService.svc'
     ];
 
@@ -46,9 +46,9 @@ class Service
         $base_url = self::DEFAULT_BASE_URL,
         $wsdl = true
     ) {
-        if ($base_url==null) {
+        if ($base_url == null) {
             // @codingStandardsIgnoreLine
-            $base_url = (new self)->getOmniBaseUrl();
+            $base_url = (new self())->getOmniBaseUrl();
         }
         $url = join('/', [$base_url, static::$endpoints[$type->getValue()]]);
         if ($wsdl) {
@@ -63,7 +63,7 @@ class Service
      */
     public function getOmniBaseUrl()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $objectManager = ObjectManager::getInstance();
         // @codingStandardsIgnoreLine
         $lsr = $objectManager->create('Ls\Core\Model\LSR');
         return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL);

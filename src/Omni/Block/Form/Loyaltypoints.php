@@ -2,11 +2,13 @@
 
 namespace Ls\Omni\Block\Form;
 
+use Magento\Payment\Block\Form;
+
 /**
  * Class Loyaltypoints
  * @package Ls\Omni\Block\Form
  */
-class Loyaltypoints extends \Magento\Payment\Block\Form
+class Loyaltypoints extends Form
 {
     /**
      * Loyaltypoints template

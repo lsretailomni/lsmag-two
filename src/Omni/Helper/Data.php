@@ -3,11 +3,12 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
-use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
-use \Ls\Omni\Model\Cache\Type;
-use \Ls\Replication\Api\ReplStoreRepositoryInterface;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
+use Ls\Omni\Client\Ecommerce\Entity\StoreHours;
+use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
+use Ls\Omni\Model\Cache\Type;
+use Ls\Replication\Api\ReplStoreRepositoryInterface;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -168,7 +169,7 @@ class Data extends AbstractHelper
                 foreach ($storeResults as $key => $r) {
                     if ($r->getDayOfWeek() == $currentDayOfWeek) {
                         if ($this->checkDateValidity($current, $r)) {
-                            if ($r->getType() == \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType::NORMAL) {
+                            if ($r->getType() == StoreHourOpeningType::NORMAL) {
                                 $storeHours[$currentDayOfWeek]['normal'] =
                                     ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
                             } else {
@@ -177,7 +178,7 @@ class Data extends AbstractHelper
                             }
                             $storeHours[$currentDayOfWeek]['day'] = $r->getNameOfDay();
 
-                            if ($r->getType() == \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType::CLOSED) {
+                            if ($r->getType() == StoreHourOpeningType::CLOSED) {
                                 if (array_key_exists($r->getDayOfWeek(), $storeHours)) {
                                     $storeHours[$currentDayOfWeek]['normal'] ['open']     = __('Closed');
                                     $storeHours[$currentDayOfWeek]['normal'] ['close']    = '';

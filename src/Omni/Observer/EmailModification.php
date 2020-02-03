@@ -1,6 +1,8 @@
 <?php
+
 namespace Ls\Omni\Observer;
 
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
 /**
@@ -10,12 +12,12 @@ use Magento\Framework\Event\ObserverInterface;
 class EmailModification implements ObserverInterface
 {
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         $transportObject = $observer->getEvent()->getData('transportObject');
-        $order = $transportObject->getData('order');
+        $order           = $transportObject->getData('order');
         if (!empty($order->getDocumentId())) {
             $order->setIncrementId($order->getDocumentId());
         }

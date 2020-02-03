@@ -2,8 +2,10 @@
 
 namespace Ls\Omni\Model;
 
-use \Ls\Omni\Helper\BasketHelper;
+use Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Controller\Cart\CouponPost;
+use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\UrlInterface;
 
 /**
  * Class SetCouponData
@@ -11,29 +13,29 @@ use Magento\Checkout\Controller\Cart\CouponPost;
  */
 class SetCouponData
 {
-    /** @var BasketHelper  */
+    /** @var BasketHelper */
     public $basketHelper;
 
-    /** @var  \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory */
+    /** @var  RedirectFactory $redirectFactory */
     public $redirectFactory;
 
-    /** @var \Magento\Framework\UrlInterface  */
+    /** @var UrlInterface */
     public $url;
 
     /**
      * SetCouponData constructor.
      * @param BasketHelper $basketHelper
-     * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
-     * @param \Magento\Framework\UrlInterface $url
+     * @param RedirectFactory $redirectFactory
+     * @param UrlInterface $url
      */
     public function __construct(
         BasketHelper $basketHelper,
-        \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
-        \Magento\Framework\UrlInterface $url
+        RedirectFactory $redirectFactory,
+        UrlInterface $url
     ) {
-        $this->basketHelper = $basketHelper;
+        $this->basketHelper    = $basketHelper;
         $this->redirectFactory = $redirectFactory;
-        $this->url = $url;
+        $this->url             = $url;
     }
 
     public function aroundExecute(CouponPost $subject, callable $proceed)

@@ -2,12 +2,19 @@
 
 namespace Ls\Omni\Plugin\Quote;
 
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\LoyaltyHelper;
+use Closure;
+use Ls\Omni\Helper\BasketHelper;
+use Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
 use Magento\Quote\Api\Data\TotalsExtensionFactory;
+use Magento\Quote\Api\Data\TotalsExtensionInterface;
+use Magento\Quote\Api\Data\TotalsInterface;
+use Magento\Quote\Model\Quote;
+use Magento\SalesRule\Model\Coupon;
 
 /**
  * Class CartTotalRepository
@@ -18,7 +25,7 @@ class CartTotalRepository
     /**
      * Quote repository.
      *
-     * @var \Magento\Quote\Api\CartRepositoryInterface
+     * @var CartRepositoryInterface
      */
     private $quoteRepository;
 
@@ -38,12 +45,12 @@ class CartTotalRepository
     private $loyaltyHelper;
 
     /**
-     * @var \Magento\SalesRule\Model\Coupon
+     * @var Coupon
      */
     private $coupon;
 
     /**
-     * @var \Ls\Omni\Helper\BasketHelper
+     * @var BasketHelper
      */
     private $basketHelper;
 
@@ -58,7 +65,7 @@ class CartTotalRepository
      * @param TotalsExtensionFactory $totalExtensionFactory
      * @param RequestInterface $request
      * @param LoyaltyHelper $helper
-     * @param \Magento\SalesRule\Model\Coupon $coupon
+     * @param Coupon $coupon
      * @param BasketHelper $basketHelper
      * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      */
@@ -67,50 +74,50 @@ class CartTotalRepository
         TotalsExtensionFactory $totalExtensionFactory,
         RequestInterface $request,
         LoyaltyHelper $helper,
-        \Magento\SalesRule\Model\Coupon $coupon,
+        Coupon $coupon,
         BasketHelper $basketHelper,
         \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
     ) {
-        $this->quoteRepository = $quoteRepository;
+        $this->quoteRepository       = $quoteRepository;
         $this->totalExtensionFactory = $totalExtensionFactory;
-        $this->request = $request;
-        $this->loyaltyHelper = $helper;
-        $this->coupon = $coupon;
-        $this->basketHelper = $basketHelper;
-        $this->quoteResourceModel = $quoteResourceModel;
+        $this->request               = $request;
+        $this->loyaltyHelper         = $helper;
+        $this->coupon                = $coupon;
+        $this->basketHelper          = $basketHelper;
+        $this->quoteResourceModel    = $quoteResourceModel;
     }
 
     /**
      * Setting couponcode, giftcard, subtotal, tax, discount in the quote and persisting it
      * @param CartTotalRepositoryInterface $subject
-     * @param \Closure $proceed
+     * @param Closure $proceed
      * @param $cartId
-     * @return \Magento\Quote\Api\Data\TotalsInterface
-     * @throws \Magento\Framework\Exception\AlreadyExistsException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return TotalsInterface
+     * @throws AlreadyExistsException
+     * @throws NoSuchEntityException
      */
-    public function aroundGet(CartTotalRepositoryInterface $subject, \Closure $proceed, $cartId)
+    public function aroundGet(CartTotalRepositoryInterface $subject, Closure $proceed, $cartId)
     {
-        /** @var \Magento\Quote\Api\Data\TotalsInterface $quoteTotals */
+        /** @var TotalsInterface $quoteTotals */
         $quoteTotals = $proceed($cartId);
 
-        /** @var \Magento\Quote\Model\Quote $quote */
-        $quote = $this->quoteRepository->get($cartId);
+        /** @var Quote $quote */
+        $quote   = $this->quoteRepository->get($cartId);
         $storeId = $quote->getStoreId();
 
         $pointsConfig = [
             'rateLabel' => $quote->getBaseCurrencyCode() . ' ' . round($this->loyaltyHelper->getPointRate() * 10, 2),
-            'balance' => $this->loyaltyHelper->getMemberPoints(),
+            'balance'   => $this->loyaltyHelper->getMemberPoints(),
         ];
 
-        /** @var \Magento\Quote\Api\Data\TotalsExtensionInterface $totalsExtension */
+        /** @var TotalsExtensionInterface $totalsExtension */
         $totalsExtension = $quoteTotals->getExtensionAttributes() ?: $this->totalExtensionFactory->create();
         $totalsExtension->setLoyaltyPoints($pointsConfig);
         $couponCode = $this->basketHelper->checkoutSession->getCouponCode();
-        $amount = 0;
+        $amount     = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
-            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $giftCardAmount = $quote->getLsGiftCardAmountUsed();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);

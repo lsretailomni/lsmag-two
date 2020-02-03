@@ -27,14 +27,18 @@ if ($availablePoints > 0) { ?>
                     <label>
                     <span>
                         <?= /* @escapeNotVerified */
-                        __('You have %1 loyalty points. Each of 10 Points gets %2 discount.',
+                        __(
+                            'You have %1 loyalty points. Each of 10 Points gets %2 discount.',
                             '<strong>' . $availablePoints . '</strong>',
-                            '<strong>' . $block->getBaseCurrencyCode() . ' ' . round($block->getPointsRate() * 10,
-                                2) . '</strong>') ?>
+                            '<strong>' . $block->getBaseCurrencyCode() . ' ' . round(
+                                $block->getPointsRate() * 10,
+                                2
+                            ) . '</strong>'
+                        ) ?>
                     </span>
                     </label>
                 </div>
-                <div class="fieldset <?php echo $class?>">
+                <div class="fieldset <?php echo $class ?>">
                     <input type="hidden" name="remove-points" id="remove-points" value="0"/>
                     <div class="field">
                         <div class="control">

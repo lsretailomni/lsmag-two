@@ -1,14 +1,17 @@
 <?php
+
 namespace Ls\Omni\Model\Carrier;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
+use Magento\Quote\Model\Quote\Address\RateRequest;
+use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
+use Magento\Quote\Model\Quote\Address\RateResult\Method;
+use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
+use Magento\Shipping\Model\Rate\Result;
 use Magento\Shipping\Model\Rate\ResultFactory;
-use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
-use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
-use Magento\Quote\Model\Quote\Address\RateRequest;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -18,18 +21,18 @@ use Psr\Log\LoggerInterface;
 class Clickandcollect extends AbstractCarrier implements CarrierInterface
 {
 
-    /** @var string  */
+    /** @var string */
     // @codingStandardsIgnoreLine
     public $_code = 'clickandcollect';
 
-    /** @var bool  */
+    /** @var bool */
     // @codingStandardsIgnoreLine
     public $_isFixed = true;
 
-    /** @var ResultFactory  */
+    /** @var ResultFactory */
     public $rateResultFactory;
 
-    /** @var MethodFactory  */
+    /** @var MethodFactory */
     public $rateMethodFactory;
 
     /**
@@ -64,7 +67,7 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
 
     /**
      * @param RateRequest $request
-     * @return bool|DataObject|\Magento\Shipping\Model\Rate\Result|null
+     * @return bool|DataObject|Result|null
      */
     public function collectRates(RateRequest $request)
     {
@@ -72,19 +75,19 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
             return false;
         }
 
-        /** @var \Magento\Shipping\Model\Rate\Result $result */
+        /** @var Result $result */
         $result = $this->rateResultFactory->create();
 
         $shippingPrice = $this->getConfigData('price');
 
-        /** @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method */
+        /** @var Method $method */
         $method = $this->rateMethodFactory->create()
-                            ->setCarrier($this->getCarrierCode())
-                            ->setCarrierTitle($this->getConfigData('title'))
-                            ->setMethod($this->getCarrierCode())
-                            ->setMethodTitle($this->getConfigData('name'))
-                            ->setPrice($shippingPrice)
-                            ->setCost($shippingPrice);
+            ->setCarrier($this->getCarrierCode())
+            ->setCarrierTitle($this->getConfigData('title'))
+            ->setMethod($this->getCarrierCode())
+            ->setMethodTitle($this->getConfigData('name'))
+            ->setPrice($shippingPrice)
+            ->setCost($shippingPrice);
 
         $result->append($method);
 

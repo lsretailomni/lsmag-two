@@ -5,13 +5,16 @@
  */
 
 // @codingStandardsIgnoreFile
+use \Ls\Omni\Block\Form\Loyaltypoints;
+
 /**
- * @var $block \Ls\Omni\Block\Form\Loyaltypoints
+ * @var $block Loyaltypoints
  * //TODO optimize it according to our requirement
  */
 ?>
 <?php if ($block->getMethod()->getMailingAddress() || $block->getMethod()->getPayableTo()): ?>
-    <dl class="items check payable" id="payment_form_<?= $block->escapeHtml($block->getMethodCode()) ?>" style="display:none;">
+    <dl class="items check payable" id="payment_form_<?= $block->escapeHtml($block->getMethodCode()) ?>"
+        style="display:none;">
         <?php if ($block->getMethod()->getPayableTo()): ?>
             <dt class="title"><?= $block->escapeHtml(__('Make Check payable to:')) ?></dt>
             <dd class="content"><?= $block->escapeHtml($block->getMethod()->getPayableTo()) ?></dd>
@@ -20,7 +23,8 @@
             <dt class="title"><?= $block->escapeHtml(__('Send Check to:')) ?></dt>
             <dd class="content">
                 <address class="loyaltypoints mailing address">
-                    <?= /* @noEscape */ nl2br($block->escapeHtml($block->getMethod()->getMailingAddress())) ?>
+                    <?= /* @noEscape */
+                    nl2br($block->escapeHtml($block->getMethod()->getMailingAddress())) ?>
                 </address>
             </dd>
         <?php endif; ?>

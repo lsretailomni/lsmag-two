@@ -4,9 +4,10 @@ namespace Ls\Omni\Controller\Ajax;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Recommendation
@@ -43,13 +44,14 @@ class ProactiveDiscountsAndCoupons extends Action
         JsonFactory $resultJsonFactory,
         RedirectFactory $resultRedirectFactory
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultJsonFactory = $resultJsonFactory;
+        $this->resultPageFactory     = $resultPageFactory;
+        $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
         parent::__construct($context);
     }
+
     /**
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
      */
     public function execute()
     {
@@ -59,17 +61,17 @@ class ProactiveDiscountsAndCoupons extends Action
             return $resultRedirect;
         }
 
-        $result = $this->resultJsonFactory->create();
-        $resultPage = $this->resultPageFactory->create();
+        $result            = $this->resultJsonFactory->create();
+        $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');
-        $data = ['productSku' => $currentProductSku];
-        $blockCoupons = $resultPage->getLayout()
+        $data              = ['productSku' => $currentProductSku];
+        $blockCoupons      = $resultPage->getLayout()
             ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
             ->setTemplate('Ls_Omni::product/view/coupons.phtml')
             ->setData('data', $data)
             ->toHtml();
-        $data =array_merge($data, ['coupons'=>$blockCoupons]);
-        $block = $resultPage->getLayout()
+        $data              = array_merge($data, ['coupons' => $blockCoupons]);
+        $block             = $resultPage->getLayout()
             ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
             ->setTemplate('Ls_Omni::product/view/proactive.phtml')
             ->setData('data', $data)

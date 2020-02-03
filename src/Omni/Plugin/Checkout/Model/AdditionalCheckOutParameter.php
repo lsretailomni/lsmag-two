@@ -2,16 +2,17 @@
 
 namespace Ls_Omni\Plugin\Checkout\Model;
 
-use \Ls\Omni\Helper\GiftCardHelper;
+use Ls\Omni\Helper\GiftCardHelper;
+use Magento\Checkout\Model\ConfigProviderInterface;
 
 /**
  * Class AdditionalCheckOutParameter
  * @package Ls_Omni\Plugin\Checkout\Model
  */
-class AdditionalCheckOutParameter implements \Magento\Checkout\Model\ConfigProviderInterface
+class AdditionalCheckOutParameter implements ConfigProviderInterface
 {
 
-    /** @var \Ls\Omni\Helper\GiftCardHelper; */
+    /** @var GiftCardHelper; */
     public $giftCardHelper;
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Model\Total\Quote;
 
-use \Ls\Omni\Helper\LoyaltyHelper;
+use Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
@@ -37,11 +37,11 @@ class PointsDiscount extends AbstractTotal
      */
     public function fetch(Quote $quote, Total $total)
     {
-        $totals = [];
+        $totals        = [];
         $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
         if ($pointDiscount > 0.001) {
             $totals[] = [
-                'code' => $this->getCode(),
+                'code'  => $this->getCode(),
                 'title' => __('Loyalty Points Redeemed'),
                 'value' => $pointDiscount,
             ];

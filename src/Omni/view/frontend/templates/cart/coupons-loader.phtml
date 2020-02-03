@@ -1,23 +1,26 @@
 <?php
 // @codingStandardsIgnoreFile
-/** @var \Ls\Omni\Block\Cart\Coupons $block */
-$enabled= $block->isCouponEnable();
-if($enabled) {
-?>
-<div id="ls-coupons">
-    <div class="loader">
-        <img src="<?= /* @escapeNotVerified */
-        $block->getViewFileUrl('images/loader-1.gif') ?>"
-             alt="<?= /* @escapeNotVerified */
-             __('Loading...') ?>">
-        <br/>
-        <div><?php echo __('Loading Coupons...'); ?></div>
+/** @var Coupons $block */
+
+use Ls\Omni\Block\Cart\Coupons;
+
+$enabled = $block->isCouponEnable();
+if ($enabled) {
+    ?>
+    <div id="ls-coupons">
+        <div class="loader">
+            <img src="<?= /* @escapeNotVerified */
+            $block->getViewFileUrl('images/loader-1.gif') ?>"
+                 alt="<?= /* @escapeNotVerified */
+                 __('Loading...') ?>">
+            <br/>
+            <div><?php echo __('Loading Coupons...'); ?></div>
+        </div>
     </div>
-</div>
-<?php
-$ajaxUrl = $block->getAjaxUrl();
-?>
-<script type="text/x-magento-init">
+    <?php
+    $ajaxUrl = $block->getAjaxUrl();
+    ?>
+    <script type="text/x-magento-init">
         {
             "*": {
                 "Ls_Omni/js/view/checkout/cart/coupons": {
@@ -25,5 +28,6 @@ $ajaxUrl = $block->getAjaxUrl();
                 }
             }
         }
-</script>
+
+    </script>
 <?php }

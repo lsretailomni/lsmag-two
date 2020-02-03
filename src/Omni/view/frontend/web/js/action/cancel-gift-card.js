@@ -23,7 +23,7 @@ define([
 
         return storage.post(
             url,
-            JSON.stringify({'gift_card_no': null,'gift_card_amount':0}),
+            JSON.stringify({'gift_card_no': null, 'gift_card_amount': 0}),
             true,
             'application/json'
         ).done(function () {

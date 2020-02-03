@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Observer;
 
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Omni\Helper\BasketHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;

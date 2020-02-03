@@ -2,6 +2,8 @@
 
 namespace Ls\Omni\Observer;
 
+use Ls\Core\Model\LSR;
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
 /**
@@ -11,25 +13,25 @@ use Magento\Framework\Event\ObserverInterface;
 class DataAssignObserver implements ObserverInterface
 {
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var LSR @var */
     private $lsr;
 
     /**
      * DataAssignObserver constructor.
-     * @param \Ls\Core\Model\LSR $LSR
+     * @param LSR $LSR
      */
 
     public function __construct(
-        \Ls\Core\Model\LSR $LSR
+        LSR $LSR
     ) {
         $this->lsr = $LSR;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return $this|void
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         /*
          * Adding condition to only process if LSR is enabled.

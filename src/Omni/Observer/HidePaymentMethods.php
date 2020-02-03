@@ -2,11 +2,13 @@
 
 namespace Ls\Omni\Observer;
 
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\Data;
+use Exception;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Helper\BasketHelper;
+use Ls\Omni\Helper\Data;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Quote\Model\ResourceModel\Quote;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -32,12 +34,12 @@ class HidePaymentMethods implements ObserverInterface
     private $logger;
 
     /**
-     * @var \Magento\Quote\Model\ResourceModel\Quote
+     * @var Quote
      */
     private $quoteResourceModel;
 
     /**
-     * @var  \Ls\Core\Model\LSR
+     * @var  LSR
      */
     private $lsr;
 
@@ -46,21 +48,21 @@ class HidePaymentMethods implements ObserverInterface
      * @param BasketHelper $basketHelper
      * @param Data $data
      * @param LoggerInterface $logger
-     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
+     * @param Quote $quoteResourceModel
      * @param LSR $lsr
      */
     public function __construct(
         BasketHelper $basketHelper,
         Data $data,
         LoggerInterface $logger,
-        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel,
+        Quote $quoteResourceModel,
         LSR $lsr
     ) {
-        $this->basketHelper = $basketHelper;
+        $this->basketHelper       = $basketHelper;
         $this->quoteResourceModel = $quoteResourceModel;
-        $this->lsr = $lsr;
-        $this->data = $data;
-        $this->logger = $logger;
+        $this->lsr                = $lsr;
+        $this->data               = $data;
+        $this->logger             = $logger;
     }
 
     /**
@@ -69,20 +71,20 @@ class HidePaymentMethods implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $basketData = $this->basketHelper->getBasketSessionValue();
-            $quote = $this->basketHelper->checkoutSession->getQuote();
-            $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
-            $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
+            $basketData         = $this->basketHelper->getBasketSessionValue();
+            $quote              = $this->basketHelper->checkoutSession->getQuote();
+            $shippingAmount     = $quote->getShippingAddress()->getShippingAmount();
+            $shippingMethod     = $quote->getShippingAddress()->getShippingMethod();
             $paymentOptionArray = explode(',', $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION));
             if (!empty($basketData)) {
-                $orderTotal = $this->data->getOrderBalance(
+                $orderTotal      = $this->data->getOrderBalance(
                     $quote->getLsGiftCardAmountUsed(),
                     $quote->getLsPointsSpent(),
                     $basketData
                 );
-                $orderTotal = $orderTotal + $shippingAmount;
+                $orderTotal      = $orderTotal + $shippingAmount;
                 $method_instance = $observer->getEvent()->getMethodInstance()->getCode();
-                $result = $observer->getEvent()->getResult();
+                $result          = $observer->getEvent()->getResult();
                 if ($shippingMethod == "clickandcollect_clickandcollect") {
                     if (in_array($method_instance, $paymentOptionArray)) {
                         $result->setData('is_available', true);
@@ -107,7 +109,7 @@ class HidePaymentMethods implements ObserverInterface
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
     }

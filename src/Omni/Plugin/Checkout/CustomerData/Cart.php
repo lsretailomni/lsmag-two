@@ -2,8 +2,11 @@
 
 namespace Ls\Omni\Plugin\Checkout\CustomerData;
 
-use \Ls\Omni\Helper\Data;
+use Exception;
+use Ls\Omni\Helper\BasketHelper;
+use Ls\Omni\Helper\Data;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -34,7 +37,7 @@ class Cart
     public $data;
 
     /**
-     * @var \Ls\Omni\Helper\BasketHelper
+     * @var BasketHelper
      */
     public $basketHelper;
 
@@ -45,25 +48,25 @@ class Cart
     /**
      * Cart constructor.
      * @param CheckoutSession $checkoutSession
-     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+     * @param CartRepositoryInterface $quoteRepository
      * @param \Magento\Checkout\Helper\Data $checkoutHelper
      * @param Data $data
-     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
+     * @param BasketHelper $basketHelper
      */
     public function __construct(
         CheckoutSession $checkoutSession,
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
+        CartRepositoryInterface $quoteRepository,
         \Magento\Checkout\Helper\Data $checkoutHelper,
         Data $data,
-        \Ls\Omni\Helper\BasketHelper $basketHelper,
+        BasketHelper $basketHelper,
         LoggerInterface $logger
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->quoteRepository = $quoteRepository;
-        $this->checkoutHelper = $checkoutHelper;
-        $this->data = $data;
-        $this->basketHelper = $basketHelper;
-        $this->logger = $logger;
+        $this->checkoutHelper  = $checkoutHelper;
+        $this->data            = $data;
+        $this->basketHelper    = $basketHelper;
+        $this->logger          = $logger;
     }
 
     /**
@@ -74,7 +77,7 @@ class Cart
     public function afterGetSectionData(\Magento\Checkout\CustomerData\Cart $subject, array $result)
     {
         try {
-            $quote = $this->checkoutSession->getQuote();
+            $quote            = $this->checkoutSession->getQuote();
             $grandTotalAmount = $this->data->getOrderBalance(
                 $quote->getLsGiftCardAmountUsed(),
                 $quote->getLsPointsSpent(),
@@ -82,12 +85,12 @@ class Cart
             );
             if ($grandTotalAmount > 0) {
                 $result['subtotalAmount'] = $grandTotalAmount;
-                $result['subtotal'] = isset($grandTotalAmount)
+                $result['subtotal']       = isset($grandTotalAmount)
                     ? $this->checkoutHelper->formatPrice($grandTotalAmount)
                     : 0;
             }
             return $result;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
     }

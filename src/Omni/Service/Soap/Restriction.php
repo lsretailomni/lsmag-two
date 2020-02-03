@@ -24,8 +24,8 @@ class Restriction
      */
     public function __construct($name, $definition = null, $base = null)
     {
-        $this->name = $name;
-        $this->base = $base;
+        $this->name       = $name;
+        $this->base       = $base;
         $this->definition = $definition;
     }
 

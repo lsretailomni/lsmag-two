@@ -2,8 +2,28 @@
 
 namespace Ls\Omni\Model\Order\Pdf;
 
-use \Ls\Omni\Helper\LoyaltyHelper;
+use Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Locale\ResolverInterface;
+use Magento\Framework\Pricing\Helper\Data;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Framework\Stdlib\StringUtils;
+use Magento\Framework\Translate\Inline\StateInterface;
+use Magento\Sales\Model\AbstractModel;
+use Magento\Sales\Model\Order\Address\Renderer;
 use Magento\Sales\Model\Order\Pdf\Config;
+use Magento\Sales\Model\Order\Pdf\ItemsFactory;
+use Magento\Sales\Model\Order\Pdf\Total\Factory;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Zend_Pdf;
+use Zend_Pdf_Color_GrayScale;
+use Zend_Pdf_Color_Rgb;
+use Zend_Pdf_Exception;
+use Zend_Pdf_Page;
+use Zend_Pdf_Style;
 
 /**
  * Class Invoice
@@ -12,17 +32,17 @@ use Magento\Sales\Model\Order\Pdf\Config;
 class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
 {
     /**
-     * @param \Zend_Pdf_Page $page
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param Zend_Pdf_Page $page
+     * @throws LocalizedException
      */
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     public $storeManager;
 
     /**
-     * @var \Magento\Framework\Locale\ResolverInterface
+     * @var ResolverInterface
      */
     public $localeResolver;
 
@@ -32,49 +52,49 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
     public $loyaltyHelper;
 
     /**
-     * @var \Magento\Framework\Pricing\Helper\Data
+     * @var Data
      */
     public $priceHelper;
 
     /**
      * Invoice constructor.
      * @param \Magento\Payment\Helper\Data $paymentData
-     * @param \Magento\Framework\Stdlib\StringUtils $string
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Framework\Filesystem $filesystem
+     * @param StringUtils $string
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Filesystem $filesystem
      * @param Config $pdfConfig
-     * @param \Magento\Sales\Model\Order\Pdf\Total\Factory $pdfTotalFactory
-     * @param \Magento\Sales\Model\Order\Pdf\ItemsFactory $pdfItemsFactory
-     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
-     * @param \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation
-     * @param \Magento\Sales\Model\Order\Address\Renderer $addressRenderer
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\Locale\ResolverInterface $localeResolver
+     * @param Factory $pdfTotalFactory
+     * @param ItemsFactory $pdfItemsFactory
+     * @param TimezoneInterface $localeDate
+     * @param StateInterface $inlineTranslation
+     * @param Renderer $addressRenderer
+     * @param StoreManagerInterface $storeManager
+     * @param ResolverInterface $localeResolver
      * @param LoyaltyHelper $loyaltyHelper
-     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
+     * @param Data $priceHelper
      * @param array $data
      */
     public function __construct(
         \Magento\Payment\Helper\Data $paymentData,
-        \Magento\Framework\Stdlib\StringUtils $string,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\Filesystem $filesystem,
+        StringUtils $string,
+        ScopeConfigInterface $scopeConfig,
+        Filesystem $filesystem,
         Config $pdfConfig,
-        \Magento\Sales\Model\Order\Pdf\Total\Factory $pdfTotalFactory,
-        \Magento\Sales\Model\Order\Pdf\ItemsFactory $pdfItemsFactory,
-        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
-        \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation,
-        \Magento\Sales\Model\Order\Address\Renderer $addressRenderer,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Locale\ResolverInterface $localeResolver,
+        Factory $pdfTotalFactory,
+        ItemsFactory $pdfItemsFactory,
+        TimezoneInterface $localeDate,
+        StateInterface $inlineTranslation,
+        Renderer $addressRenderer,
+        StoreManagerInterface $storeManager,
+        ResolverInterface $localeResolver,
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        Data $priceHelper,
         array $data = []
     ) {
-        $this->storeManager = $storeManager;
+        $this->storeManager   = $storeManager;
         $this->localeResolver = $localeResolver;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->priceHelper = $priceHelper;
+        $this->loyaltyHelper  = $loyaltyHelper;
+        $this->priceHelper    = $priceHelper;
         parent::__construct(
             $paymentData,
             $string,
@@ -93,22 +113,22 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
     }
 
     /**
-     * @param \Zend_Pdf_Page $page
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param Zend_Pdf_Page $page
+     * @throws LocalizedException
      */
-    public function _drawHeader(\Zend_Pdf_Page $page)
+    public function _drawHeader(Zend_Pdf_Page $page)
     {
         /* Add table head */
         $this->_setFontRegular($page, 10);
         // @codingStandardsIgnoreLine
-        $page->setFillColor(new \Zend_Pdf_Color_Rgb(0.93, 0.92, 0.92));
+        $page->setFillColor(new Zend_Pdf_Color_Rgb(0.93, 0.92, 0.92));
         // @codingStandardsIgnoreLine
-        $page->setLineColor(new \Zend_Pdf_Color_GrayScale(0.5));
+        $page->setLineColor(new Zend_Pdf_Color_GrayScale(0.5));
         $page->setLineWidth(0.5);
         $page->drawRectangle(25, $this->y, 570, $this->y - 15);
         $this->y -= 10;
         // @codingStandardsIgnoreLine
-        $page->setFillColor(new \Zend_Pdf_Color_Rgb(0, 0, 0));
+        $page->setFillColor(new Zend_Pdf_Color_Rgb(0, 0, 0));
 
         //columns headers
         $lines[0][] = ['text' => __('Products'), 'feed' => 35];
@@ -127,20 +147,20 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
 
         $this->drawLineBlocks($page, [$lineBlock], ['table_header' => true]);
         // @codingStandardsIgnoreLine
-        $page->setFillColor(new \Zend_Pdf_Color_GrayScale(0));
+        $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
         $this->y -= 20;
     }
 
     /**
-     * @param \Zend_Pdf_Page $page
-     * @param \Magento\Sales\Model\AbstractModel $source
-     * @return \Zend_Pdf_Page
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param Zend_Pdf_Page $page
+     * @param AbstractModel $source
+     * @return Zend_Pdf_Page
+     * @throws LocalizedException
      */
     public function insertTotals($page, $source)
     {
-        $order = $source->getOrder();
-        $totals = $this->_getTotalsList();
+        $order     = $source->getOrder();
+        $totals    = $this->_getTotalsList();
         $lineBlock = ['lines' => [], 'height' => 15];
         foreach ($totals as $total) {
             $total->setOrder($order)->setSource($source);
@@ -151,64 +171,64 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
                     if (trim(str_replace("():", "", $totalData['label'])) == "Discount") {
                         $totalData['label'] = __("Total Discount:");
                         if ($order->getLsPointsSpent() > 0) {
-                            $loyaltyAmount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-                            $loyaltyAmount = $this->priceHelper->currency($loyaltyAmount, true, false);
+                            $loyaltyAmount        = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+                            $loyaltyAmount        = $this->priceHelper->currency($loyaltyAmount, true, false);
                             $lineBlock['lines'][] = [
                                 [
-                                    'text' => __("Loyalty Points Redeemed:"),
-                                    'feed' => 475,
-                                    'align' => 'right',
+                                    'text'      => __("Loyalty Points Redeemed:"),
+                                    'feed'      => 475,
+                                    'align'     => 'right',
                                     'font_size' => $totalData['font_size'],
-                                    'font' => 'bold',
+                                    'font'      => 'bold',
                                 ],
                                 [
-                                    'text' => $loyaltyAmount,
-                                    'feed' => 565,
-                                    'align' => 'right',
+                                    'text'      => $loyaltyAmount,
+                                    'feed'      => 565,
+                                    'align'     => 'right',
                                     'font_size' => $totalData['font_size'],
-                                    'font' => 'bold'
+                                    'font'      => 'bold'
                                 ],
                             ];
                         }
 
                         if ($order->getLsGiftCardAmountUsed() > 0) {
-                            $giftCardAmount = $this->priceHelper->currency(
+                            $giftCardAmount       = $this->priceHelper->currency(
                                 $order->getLsGiftCardAmountUsed(),
                                 true,
                                 false
                             );
                             $lineBlock['lines'][] = [
                                 [
-                                    'text' => __("GiftCard Redeemed ") . '(' . $order->getLsGiftCardNo() . '):' . "",
-                                    'feed' => 475,
-                                    'align' => 'right',
+                                    'text'      => __("GiftCard Redeemed ") . '(' . $order->getLsGiftCardNo() . '):' . "",
+                                    'feed'      => 475,
+                                    'align'     => 'right',
                                     'font_size' => $totalData['font_size'],
-                                    'font' => 'bold',
+                                    'font'      => 'bold',
                                 ],
                                 [
-                                    'text' => $giftCardAmount,
-                                    'feed' => 565,
-                                    'align' => 'right',
+                                    'text'      => $giftCardAmount,
+                                    'feed'      => 565,
+                                    'align'     => 'right',
                                     'font_size' => $totalData['font_size'],
-                                    'font' => 'bold'
+                                    'font'      => 'bold'
                                 ],
                             ];
                         }
                     }
                     $lineBlock['lines'][] = [
                         [
-                            'text' => $totalData['label'],
-                            'feed' => 475,
-                            'align' => 'right',
+                            'text'      => $totalData['label'],
+                            'feed'      => 475,
+                            'align'     => 'right',
                             'font_size' => $totalData['font_size'],
-                            'font' => 'bold',
+                            'font'      => 'bold',
                         ],
                         [
-                            'text' => $totalData['amount'],
-                            'feed' => 565,
-                            'align' => 'right',
+                            'text'      => $totalData['amount'],
+                            'feed'      => 565,
+                            'align'     => 'right',
                             'font_size' => $totalData['font_size'],
-                            'font' => 'bold'
+                            'font'      => 'bold'
                         ],
                     ];
                 }
@@ -216,25 +236,25 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
         }
 
         $this->y -= 20;
-        $page = $this->drawLineBlocks($page, [$lineBlock]);
+        $page    = $this->drawLineBlocks($page, [$lineBlock]);
         return $page;
     }
 
     /**
      * @param array $invoices
-     * @return \Zend_Pdf
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Zend_Pdf_Exception
+     * @return Zend_Pdf
+     * @throws LocalizedException
+     * @throws Zend_Pdf_Exception
      */
     public function getPdf($invoices = [])
     {
         $this->_beforeGetPdf();
         $this->_initRenderer('invoice');
         // @codingStandardsIgnoreLine
-        $pdf = new \Zend_Pdf();
+        $pdf = new Zend_Pdf();
         $this->_setPdf($pdf);
         // @codingStandardsIgnoreLine
-        $style = new \Zend_Pdf_Style();
+        $style = new Zend_Pdf_Style();
         $this->_setFontBold($style, 10);
 
         foreach ($invoices as $invoice) {
@@ -242,7 +262,7 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
                 $this->_localeResolver->emulate($invoice->getStoreId());
                 $this->_storeManager->setCurrentStore($invoice->getStoreId());
             }
-            $page = $this->newPage();
+            $page  = $this->newPage();
             $order = $invoice->getOrder();
             if (!empty($order->getDocumentId())) {
                 $order->setIncrementId($order->getDocumentId());
@@ -257,7 +277,7 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
                 $order,
                 $this->_scopeConfig->isSetFlag(
                     self::XML_PATH_SALES_PDF_INVOICE_PUT_ORDER_ID,
-                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                    ScopeInterface::SCOPE_STORE,
                     $order->getStoreId()
                 )
             );
