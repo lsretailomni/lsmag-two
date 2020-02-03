@@ -2,6 +2,7 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
@@ -81,9 +82,9 @@ class Lstables extends Action
         Context $context,
         ReplicationHelper $repHelper
     ) {
-        $this->resource    = $resource;
-        $this->logger      = $logger;
-        $this->lsr         = $LSR;
+        $this->resource   = $resource;
+        $this->logger     = $logger;
+        $this->lsr        = $LSR;
         $this->replHelper = $repHelper;
         parent::__construct($context);
     }
@@ -104,7 +105,7 @@ class Lstables extends Action
             $tableName = $connection->getTableName($tableName);
             try {
                 $connection->truncateTable($tableName);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
             $coreConfigTableName = $connection->getTableName('core_config_data');
@@ -124,7 +125,7 @@ class Lstables extends Action
                 $tableName = $connection->getTableName($lsTables);
                 try {
                     $connection->truncateTable($tableName);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
                 }
             }

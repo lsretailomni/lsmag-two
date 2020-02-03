@@ -1,215 +1,215 @@
-"Please select your hierarchy code","Please select your hierarchy code"
-"Inventory Per Store","Inventory Per Store"
-"Inventory Totals","Inventory Totals"
-"Show all the stores","Show all the stores"
-"Show the Click and Collect stores only","Show the Click and Collect stores only"
-"On Demand","On Demand"
-"Batch Job","Batch Job"
-N/A,N/A
-No,No
-"Cron Listing ","Cron Listing "
-"LS Attributes deleted successfully.","LS Attributes deleted successfully."
-"Categories deleted successfully.","Categories deleted successfully."
-"Customers deleted successfully.","Customers deleted successfully."
-"Discounts deleted successfully.","Discounts deleted successfully."
-"%1 table truncated successfully.","%1 table truncated successfully."
-"All ls_ tables truncated successfully.","All ls_ tables truncated successfully."
-"Orders deleted successfully.","Orders deleted successfully."
-"Products deleted successfully.","Products deleted successfully."
-"Attribute Replication","Attribute Replication"
-"Attribute Option Value Replication","Attribute Option Value Replication"
-"Attribute Value Replication","Attribute Value Replication"
-"Barcode Replication","Barcode Replication"
-"Discount Replication","Discount Replication"
-"Extended Variant Value Replication","Extended Variant Value Replication"
-"Hierarchy Replication","Hierarchy Replication"
-"Hierarchy Leaf Replication","Hierarchy Leaf Replication"
-"Hierarchy Node Replication","Hierarchy Node Replication"
-"Image Link Replication","Image Link Replication"
-"Inventory Status Replication","Inventory Status Replication"
-"Item Replication","Item Replication"
-"Item Category Replication","Item Category Replication"
-"Item Variant Registration Replication","Item Variant Registration Replication"
-"Item Price Replication","Item Price Replication"
-"Product Group Replication","Product Group Replication"
-"Store Replication","Store Replication"
-"Logs ","Logs "
-"No Data Found File is Empty.","No Data Found File is Empty."
-"File Not Found.","File Not Found."
-"Product Image","Product Image"
+"Please select your hierarchy code"                                                                                                                                                                              ,"Please select your hierarchy code"
+"Inventory Per Store"                                                                                                                                                                                            ,"Inventory Per Store"
+"Inventory Totals"                                                                                                                                                                                               ,"Inventory Totals"
+"Show all the stores"                                                                                                                                                                                            ,"Show all the stores"
+"Show the Click and Collect stores only"                                                                                                                                                                         ,"Show the Click and Collect stores only"
+"On Demand"                                                                                                                                                                                                      ,"On Demand"
+"Batch Job"                                                                                                                                                                                                      ,"Batch Job"
+N/A                                                                                                                                                                                                              ,N/A
+No                                                                                                                                                                                                               ,No
+"Cron Listing "                                                                                                                                                                                                  ,"Cron Listing "
+"LS Attributes deleted successfully."                                                                                                                                                                            ,"LS Attributes deleted successfully."
+"Categories deleted successfully."                                                                                                                                                                               ,"Categories deleted successfully."
+"Customers deleted successfully."                                                                                                                                                                                ,"Customers deleted successfully."
+"Discounts deleted successfully."                                                                                                                                                                                ,"Discounts deleted successfully."
+"%1 table truncated successfully."                                                                                                                                                                               ,"%1 table truncated successfully."
+"All ls_ tables truncated successfully."                                                                                                                                                                         ,"All ls_ tables truncated successfully."
+"Orders deleted successfully."                                                                                                                                                                                   ,"Orders deleted successfully."
+"Products deleted successfully."                                                                                                                                                                                 ,"Products deleted successfully."
+"Attribute Replication"                                                                                                                                                                                          ,"Attribute Replication"
+"Attribute Option Value Replication"                                                                                                                                                                             ,"Attribute Option Value Replication"
+"Attribute Value Replication"                                                                                                                                                                                    ,"Attribute Value Replication"
+"Barcode Replication"                                                                                                                                                                                            ,"Barcode Replication"
+"Discount Replication"                                                                                                                                                                                           ,"Discount Replication"
+"Extended Variant Value Replication"                                                                                                                                                                             ,"Extended Variant Value Replication"
+"Hierarchy Replication"                                                                                                                                                                                          ,"Hierarchy Replication"
+"Hierarchy Leaf Replication"                                                                                                                                                                                     ,"Hierarchy Leaf Replication"
+"Hierarchy Node Replication"                                                                                                                                                                                     ,"Hierarchy Node Replication"
+"Image Link Replication"                                                                                                                                                                                         ,"Image Link Replication"
+"Inventory Status Replication"                                                                                                                                                                                   ,"Inventory Status Replication"
+"Item Replication"                                                                                                                                                                                               ,"Item Replication"
+"Item Category Replication"                                                                                                                                                                                      ,"Item Category Replication"
+"Item Variant Registration Replication"                                                                                                                                                                          ,"Item Variant Registration Replication"
+"Item Price Replication"                                                                                                                                                                                         ,"Item Price Replication"
+"Product Group Replication"                                                                                                                                                                                      ,"Product Group Replication"
+"Store Replication"                                                                                                                                                                                              ,"Store Replication"
+"Logs "                                                                                                                                                                                                          ,"Logs "
+"No Data Found File is Empty."                                                                                                                                                                                   ,"No Data Found File is Empty."
+"File Not Found."                                                                                                                                                                                                ,"File Not Found."
+"Product Image"                                                                                                                                                                                                  ,"Product Image"
 "<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>.","<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>."
-Execute,Execute
-"Want to process %1 Cron?","Want to process %1 Cron?"
-"It will take some time to process. Please don't close this window.","It will take some time to process. Please don't close this window."
-"Omni to Flat","Omni to Flat"
-Reset,Reset
-"Want to Reset Data for %1 Cron Job?","Want to Reset Data for %1 Cron Job?"
+Execute                                                                                                                                                                                                          ,Execute
+"Want to process %1 Cron?"                                                                                                                                                                                       ,"Want to process %1 Cron?"
+"It will take some time to process. Please don't close this window."                                                                                                                                             ,"It will take some time to process. Please don't close this window."
+"Omni to Flat"                                                                                                                                                                                                   ,"Omni to Flat"
+Reset                                                                                                                                                                                                            ,Reset
+"Want to Reset Data for %1 Cron Job?"                                                                                                                                                                            ,"Want to Reset Data for %1 Cron Job?"
 "It will take some time to reset data. Please don't close this window.
-                                ","It will take some time to reset data. Please don't close this window.
+                                "                                                                                                                                           ,"It will take some time to reset data. Please don't close this window.
                                 "
-Forward,Forward
-Back,Back
-"Flat to Magento","Flat to Magento"
-" Cron has been executed. Remaining entries "," Cron has been executed. Remaining entries "
-"Do you want to execute More Data?","Do you want to execute More Data?"
-"Click Here","Click Here"
-"Flat Tables Grids","Flat Tables Grids"
-"Price Replication","Price Replication"
-Configuration,Configuration
-"LS Retail Configuration","LS Retail Configuration"
-"Manual Crons","Manual Crons"
-"Crons Listing","Crons Listing"
-Logs,Logs
-Report,Report
-"Replication Status","Replication Status"
-Item,Item
-Price,Price
-"Inventory Status","Inventory Status"
-Barcode,Barcode
-"Extended Variant Value","Extended Variant Value"
-"Image Link","Image Link"
-"Item Variant Registration","Item Variant Registration"
-Hierarchy,Hierarchy
-"Hierarchy Node","Hierarchy Node"
-"Hierarchy Leaf","Hierarchy Leaf"
-Attribute,Attribute
-"Attribute Value","Attribute Value"
-"Attribute Option Value","Attribute Option Value"
-"Item Category","Item Category"
-"Product Group","Product Group"
-Store,Store
-Replication,Replication
-"Replicate All Stores Items","Replicate All Stores Items"
-"Default Batch Size","Default Batch Size"
-"Product Batch Size","Product Batch Size"
-"Product Attribute Batch Size","Product Attribute Batch Size"
-"Product Discount Batch Size","Product Discount Batch Size"
-"Product Inventory Batch Size","Product Inventory Batch Size"
-"Product Prices Batch Size","Product Prices Batch Size"
-"Product Images Batch Size","Product Images Batch Size"
-"Product Barcode Batch Size","Product Barcode Batch Size"
-"Variant Batch Size","Variant Batch Size"
-"Product Assignment to Category Batch Size","Product Assignment to Category Batch Size"
-"Item Availability","Item Availability"
-"Availability Check","Availability Check"
-"Product Availability in Stores","Product Availability in Stores"
-"Loyalty Elements","Loyalty Elements"
-"Enable Loyalty Offers","Enable Loyalty Offers"
-"Use Static Block for Loyalty Offers Page","Use Static Block for Loyalty Offers Page"
-"Show Point Offers","Show Point Offers"
-"Show Member Offers","Show Member Offers"
-"Show General Offers","Show General Offers"
-"Show Coupons","Show Coupons"
-"Loyalty Page Image Width","Loyalty Page Image Width"
-"Loyalty Page Image Height","Loyalty Page Image Height"
-"Expiry Date Format","Expiry Date Format"
-"Restore Database","Restore Database"
-"Delete Orders","Delete Orders"
-"Delete Customers","Delete Customers"
-"Delete Products & set processed to false","Delete Products & set processed to false"
-"Delete Categories & set processed to false","Delete Categories & set processed to false"
-"Delete Attributes & set processed to false","Delete Attributes & set processed to false"
-"Delete Discounts & set processed to false","Delete Discounts & set processed to false"
-"Truncate all ls_ tables","Truncate all ls_ tables"
-"Nav ID","Nav ID"
-ID,ID
-"Job Code","Job Code"
-Status,Status
-"Last Executed","Last Executed"
-"Cron Class","Cron Class"
-Area,Area
-Action,Action
-"Reset Data","Reset Data"
-Code,Code
-Description,Description
-"Failed Status","Failed Status"
-"Deleted Status","Deleted Status"
-"Default Value","Default Value"
-"Value Type","Value Type"
-"Created Date","Created Date"
-"Updated Date","Updated Date"
-"Processed Date","Processed Date"
-Sequence,Sequence
-Value,Value
-"Link Field 1","Link Field 1"
-"Link Field 2","Link Field 2"
-"Link Field 3","Link Field 3"
-"Link Type","Link Type"
-"Numberic Value","Numberic Value"
-Blocked,Blocked
-"Item Id","Item Id"
-"Unit Of Measure","Unit Of Measure"
-"Variant ID","Variant ID"
-Scroll,Scroll
-"Item ID","Item ID"
-"Discount Value","Discount Value"
-"Discount Value Type","Discount Value Type"
-"From Date","From Date"
-"To Date","To Date"
-"Offer No","Offer No"
-"Priority No","Priority No"
-"Store ID","Store ID"
-"Currency Code","Currency Code"
-"Customer Discount Group","Customer Discount Group"
-Details,Details
-"Loyalty Scheme Code","Loyalty Scheme Code"
-"Minimum Quantity","Minimum Quantity"
-"Modify Date","Modify Date"
-Type,Type
-"Unit Of Measure ID","Unit Of Measure ID"
-"Validation Period ID","Validation Period ID"
-"Dimension Logical Order","Dimension Logical Order"
-Dimensions,Dimensions
-"Framework Code","Framework Code"
-"Logical Order","Logical Order"
-Timestamp,Timestamp
-"Hierarchy Code","Hierarchy Code"
-"Image ID","Image ID"
-"Node ID","Node ID"
-"Children Order","Children Order"
-Indentation,Indentation
-ParentNode,ParentNode
-"Presentation Order","Presentation Order"
-"Display Order","Display Order"
-"Key Value","Key Value"
-"Variant Id","Variant Id"
-Quantity,Quantity
-"Store Id","Store Id"
-"Base Unit Of Measure","Base Unit Of Measure"
-"Unit Price","Unit Price"
-"Gross Weight","Gross Weight"
-"Item Category Code","Item Category Code"
-"Item Family Code","Item Family Code"
-"Product Group ID","Product Group ID"
-"Purch Unit Of Measure","Purch Unit Of Measure"
-"Salse Unit Of Measure","Salse Unit Of Measure"
-"Scale Item","Scale Item"
-"Tax Item Group ID","Tax Item Group ID"
-"Unit Cost","Unit Cost"
-"Unit Volume","Unit Volume"
-"Units Per Parcel","Units Per Parcel"
-"Vendor Id","Vendor Id"
-"Vendor Item Id","Vendor Item Id"
-"Zero Price ValId","Zero Price ValId"
-"Variant Dimension 1","Variant Dimension 1"
-"Variant Dimension 2","Variant Dimension 2"
-"Variant Dimension 3","Variant Dimension 3"
-"Variant Dimension 4","Variant Dimension 4"
-"Variant Dimension 5","Variant Dimension 5"
-"Variant Dimension 6","Variant Dimension 6"
-"Item Category ID","Item Category ID"
-Name,Name
-City,City
-"Click And Collect","Click And Collect"
-Country,Country
-County,County
-Currency,Currency
-DefaultCustomerAccount,DefaultCustomerAccount
-"Functionality Profile","Functionality Profile"
-Latitude,Latitude
-Longitude,Longitude
-Phone,Phone
-State,State
-Street,Street
-TaxGroup,TaxGroup
-"Zip Code","Zip Code"
+Forward                                                                                                                                                                                                          ,Forward
+Back                                                                                                                                                                                                             ,Back
+"Flat to Magento"                                                                                                                                                                                                ,"Flat to Magento"
+" Cron has been executed. Remaining entries "                                                                                                                                                                    ," Cron has been executed. Remaining entries "
+"Do you want to execute More Data?"                                                                                                                                                                              ,"Do you want to execute More Data?"
+"Click Here"                                                                                                                                                                                                     ,"Click Here"
+"Flat Tables Grids"                                                                                                                                                                                              ,"Flat Tables Grids"
+"Price Replication"                                                                                                                                                                                              ,"Price Replication"
+Configuration                                                                                                                                                                                                    ,Configuration
+"LS Retail Configuration"                                                                                                                                                                                        ,"LS Retail Configuration"
+"Manual Crons"                                                                                                                                                                                                   ,"Manual Crons"
+"Crons Listing"                                                                                                                                                                                                  ,"Crons Listing"
+Logs                                                                                                                                                                                                             ,Logs
+Report                                                                                                                                                                                                           ,Report
+"Replication Status"                                                                                                                                                                                             ,"Replication Status"
+Item                                                                                                                                                                                                             ,Item
+Price                                                                                                                                                                                                            ,Price
+"Inventory Status"                                                                                                                                                                                               ,"Inventory Status"
+Barcode                                                                                                                                                                                                          ,Barcode
+"Extended Variant Value"                                                                                                                                                                                         ,"Extended Variant Value"
+"Image Link"                                                                                                                                                                                                     ,"Image Link"
+"Item Variant Registration"                                                                                                                                                                                      ,"Item Variant Registration"
+Hierarchy                                                                                                                                                                                                        ,Hierarchy
+"Hierarchy Node"                                                                                                                                                                                                 ,"Hierarchy Node"
+"Hierarchy Leaf"                                                                                                                                                                                                 ,"Hierarchy Leaf"
+Attribute                                                                                                                                                                                                        ,Attribute
+"Attribute Value"                                                                                                                                                                                                ,"Attribute Value"
+"Attribute Option Value"                                                                                                                                                                                         ,"Attribute Option Value"
+"Item Category"                                                                                                                                                                                                  ,"Item Category"
+"Product Group"                                                                                                                                                                                                  ,"Product Group"
+Store                                                                                                                                                                                                            ,Store
+Replication                                                                                                                                                                                                      ,Replication
+"Replicate All Stores Items"                                                                                                                                                                                     ,"Replicate All Stores Items"
+"Default Batch Size"                                                                                                                                                                                             ,"Default Batch Size"
+"Product Batch Size"                                                                                                                                                                                             ,"Product Batch Size"
+"Product Attribute Batch Size"                                                                                                                                                                                   ,"Product Attribute Batch Size"
+"Product Discount Batch Size"                                                                                                                                                                                    ,"Product Discount Batch Size"
+"Product Inventory Batch Size"                                                                                                                                                                                   ,"Product Inventory Batch Size"
+"Product Prices Batch Size"                                                                                                                                                                                      ,"Product Prices Batch Size"
+"Product Images Batch Size"                                                                                                                                                                                      ,"Product Images Batch Size"
+"Product Barcode Batch Size"                                                                                                                                                                                     ,"Product Barcode Batch Size"
+"Variant Batch Size"                                                                                                                                                                                             ,"Variant Batch Size"
+"Product Assignment to Category Batch Size"                                                                                                                                                                      ,"Product Assignment to Category Batch Size"
+"Item Availability"                                                                                                                                                                                              ,"Item Availability"
+"Availability Check"                                                                                                                                                                                             ,"Availability Check"
+"Product Availability in Stores"                                                                                                                                                                                 ,"Product Availability in Stores"
+"Loyalty Elements"                                                                                                                                                                                               ,"Loyalty Elements"
+"Enable Loyalty Offers"                                                                                                                                                                                          ,"Enable Loyalty Offers"
+"Use Static Block for Loyalty Offers Page"                                                                                                                                                                       ,"Use Static Block for Loyalty Offers Page"
+"Show Point Offers"                                                                                                                                                                                              ,"Show Point Offers"
+"Show Member Offers"                                                                                                                                                                                             ,"Show Member Offers"
+"Show General Offers"                                                                                                                                                                                            ,"Show General Offers"
+"Show Coupons"                                                                                                                                                                                                   ,"Show Coupons"
+"Loyalty Page Image Width"                                                                                                                                                                                       ,"Loyalty Page Image Width"
+"Loyalty Page Image Height"                                                                                                                                                                                      ,"Loyalty Page Image Height"
+"Expiry Date Format"                                                                                                                                                                                             ,"Expiry Date Format"
+"Restore Database"                                                                                                                                                                                               ,"Restore Database"
+"Delete Orders"                                                                                                                                                                                                  ,"Delete Orders"
+"Delete Customers"                                                                                                                                                                                               ,"Delete Customers"
+"Delete Products & set processed to false"                                                                                                                                                                       ,"Delete Products & set processed to false"
+"Delete Categories & set processed to false"                                                                                                                                                                     ,"Delete Categories & set processed to false"
+"Delete Attributes & set processed to false"                                                                                                                                                                     ,"Delete Attributes & set processed to false"
+"Delete Discounts & set processed to false"                                                                                                                                                                      ,"Delete Discounts & set processed to false"
+"Truncate all ls_ tables"                                                                                                                                                                                        ,"Truncate all ls_ tables"
+"Nav ID"                                                                                                                                                                                                         ,"Nav ID"
+ID                                                                                                                                                                                                               ,ID
+"Job Code"                                                                                                                                                                                                       ,"Job Code"
+Status                                                                                                                                                                                                           ,Status
+"Last Executed"                                                                                                                                                                                                  ,"Last Executed"
+"Cron Class"                                                                                                                                                                                                     ,"Cron Class"
+Area                                                                                                                                                                                                             ,Area
+Action                                                                                                                                                                                                           ,Action
+"Reset Data"                                                                                                                                                                                                     ,"Reset Data"
+Code                                                                                                                                                                                                             ,Code
+Description                                                                                                                                                                                                      ,Description
+"Failed Status"                                                                                                                                                                                                  ,"Failed Status"
+"Deleted Status"                                                                                                                                                                                                 ,"Deleted Status"
+"Default Value"                                                                                                                                                                                                  ,"Default Value"
+"Value Type"                                                                                                                                                                                                     ,"Value Type"
+"Created Date"                                                                                                                                                                                                   ,"Created Date"
+"Updated Date"                                                                                                                                                                                                   ,"Updated Date"
+"Processed Date"                                                                                                                                                                                                 ,"Processed Date"
+Sequence                                                                                                                                                                                                         ,Sequence
+Value                                                                                                                                                                                                            ,Value
+"Link Field 1"                                                                                                                                                                                                   ,"Link Field 1"
+"Link Field 2"                                                                                                                                                                                                   ,"Link Field 2"
+"Link Field 3"                                                                                                                                                                                                   ,"Link Field 3"
+"Link Type"                                                                                                                                                                                                      ,"Link Type"
+"Numberic Value"                                                                                                                                                                                                 ,"Numberic Value"
+Blocked                                                                                                                                                                                                          ,Blocked
+"Item Id"                                                                                                                                                                                                        ,"Item Id"
+"Unit Of Measure"                                                                                                                                                                                                ,"Unit Of Measure"
+"Variant ID"                                                                                                                                                                                                     ,"Variant ID"
+Scroll                                                                                                                                                                                                           ,Scroll
+"Item ID"                                                                                                                                                                                                        ,"Item ID"
+"Discount Value"                                                                                                                                                                                                 ,"Discount Value"
+"Discount Value Type"                                                                                                                                                                                            ,"Discount Value Type"
+"From Date"                                                                                                                                                                                                      ,"From Date"
+"To Date"                                                                                                                                                                                                        ,"To Date"
+"Offer No"                                                                                                                                                                                                       ,"Offer No"
+"Priority No"                                                                                                                                                                                                    ,"Priority No"
+"Store ID"                                                                                                                                                                                                       ,"Store ID"
+"Currency Code"                                                                                                                                                                                                  ,"Currency Code"
+"Customer Discount Group"                                                                                                                                                                                        ,"Customer Discount Group"
+Details                                                                                                                                                                                                          ,Details
+"Loyalty Scheme Code"                                                                                                                                                                                            ,"Loyalty Scheme Code"
+"Minimum Quantity"                                                                                                                                                                                               ,"Minimum Quantity"
+"Modify Date"                                                                                                                                                                                                    ,"Modify Date"
+Type                                                                                                                                                                                                             ,Type
+"Unit Of Measure ID"                                                                                                                                                                                             ,"Unit Of Measure ID"
+"Validation Period ID"                                                                                                                                                                                           ,"Validation Period ID"
+"Dimension Logical Order"                                                                                                                                                                                        ,"Dimension Logical Order"
+Dimensions                                                                                                                                                                                                       ,Dimensions
+"Framework Code"                                                                                                                                                                                                 ,"Framework Code"
+"Logical Order"                                                                                                                                                                                                  ,"Logical Order"
+Timestamp                                                                                                                                                                                                        ,Timestamp
+"Hierarchy Code"                                                                                                                                                                                                 ,"Hierarchy Code"
+"Image ID"                                                                                                                                                                                                       ,"Image ID"
+"Node ID"                                                                                                                                                                                                        ,"Node ID"
+"Children Order"                                                                                                                                                                                                 ,"Children Order"
+Indentation                                                                                                                                                                                                      ,Indentation
+ParentNode                                                                                                                                                                                                       ,ParentNode
+"Presentation Order"                                                                                                                                                                                             ,"Presentation Order"
+"Display Order"                                                                                                                                                                                                  ,"Display Order"
+"Key Value"                                                                                                                                                                                                      ,"Key Value"
+"Variant Id"                                                                                                                                                                                                     ,"Variant Id"
+Quantity                                                                                                                                                                                                         ,Quantity
+"Store Id"                                                                                                                                                                                                       ,"Store Id"
+"Base Unit Of Measure"                                                                                                                                                                                           ,"Base Unit Of Measure"
+"Unit Price"                                                                                                                                                                                                     ,"Unit Price"
+"Gross Weight"                                                                                                                                                                                                   ,"Gross Weight"
+"Item Category Code"                                                                                                                                                                                             ,"Item Category Code"
+"Item Family Code"                                                                                                                                                                                               ,"Item Family Code"
+"Product Group ID"                                                                                                                                                                                               ,"Product Group ID"
+"Purch Unit Of Measure"                                                                                                                                                                                          ,"Purch Unit Of Measure"
+"Salse Unit Of Measure"                                                                                                                                                                                          ,"Salse Unit Of Measure"
+"Scale Item"                                                                                                                                                                                                     ,"Scale Item"
+"Tax Item Group ID"                                                                                                                                                                                              ,"Tax Item Group ID"
+"Unit Cost"                                                                                                                                                                                                      ,"Unit Cost"
+"Unit Volume"                                                                                                                                                                                                    ,"Unit Volume"
+"Units Per Parcel"                                                                                                                                                                                               ,"Units Per Parcel"
+"Vendor Id"                                                                                                                                                                                                      ,"Vendor Id"
+"Vendor Item Id"                                                                                                                                                                                                 ,"Vendor Item Id"
+"Zero Price ValId"                                                                                                                                                                                               ,"Zero Price ValId"
+"Variant Dimension 1"                                                                                                                                                                                            ,"Variant Dimension 1"
+"Variant Dimension 2"                                                                                                                                                                                            ,"Variant Dimension 2"
+"Variant Dimension 3"                                                                                                                                                                                            ,"Variant Dimension 3"
+"Variant Dimension 4"                                                                                                                                                                                            ,"Variant Dimension 4"
+"Variant Dimension 5"                                                                                                                                                                                            ,"Variant Dimension 5"
+"Variant Dimension 6"                                                                                                                                                                                            ,"Variant Dimension 6"
+"Item Category ID"                                                                                                                                                                                               ,"Item Category ID"
+Name                                                                                                                                                                                                             ,Name
+City                                                                                                                                                                                                             ,City
+"Click And Collect"                                                                                                                                                                                              ,"Click And Collect"
+Country                                                                                                                                                                                                          ,Country
+County                                                                                                                                                                                                           ,County
+Currency                                                                                                                                                                                                         ,Currency
+DefaultCustomerAccount                                                                                                                                                                                           ,DefaultCustomerAccount
+"Functionality Profile"                                                                                                                                                                                          ,"Functionality Profile"
+Latitude                                                                                                                                                                                                         ,Latitude
+Longitude                                                                                                                                                                                                        ,Longitude
+Phone                                                                                                                                                                                                            ,Phone
+State                                                                                                                                                                                                            ,State
+Street                                                                                                                                                                                                           ,Street
+TaxGroup                                                                                                                                                                                                         ,TaxGroup
+"Zip Code"                                                                                                                                                                                                       ,"Zip Code"
