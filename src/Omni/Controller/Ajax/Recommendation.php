@@ -78,9 +78,9 @@ class Recommendation extends Action
      */
     public function execute()
     {
-        $tmp_session_dir = ini_get("session.save_path");
+        $tmpSessionDir = ini_get("session.save_path");
         $this->sessionHandler->close();
-        $this->sessionHandler->open($tmp_session_dir, "admin");
+        $this->sessionHandler->open($tmpSessionDir, "admin");
         if (!$this->getRequest()->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
