@@ -30,6 +30,8 @@ class ReplEcommProductGroupsTask extends AbstractReplicationTask
 
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_product_group';
 
+    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_product_group';
+
     /**
      * @property ReplProductGroupRepository $repository
      */
@@ -107,13 +109,14 @@ class ReplEcommProductGroupsTask extends AbstractReplicationTask
         $this->data_interface = $data_interface;
     }
 
-    public function makeRequest($last_key, $full_replication = false, $batchsize = 100, $storeId = '')
+    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '')
     {
         $request = new ReplEcommProductGroups();
         $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchsize)
-                                                        ->setFullReplication($full_replication)
-                                                        ->setLastKey($last_key)
+                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
+                                                        ->setFullReplication($fullReplication)
+                                                        ->setLastKey($lastKey)
+                                                        ->setMaxKey($maxKey)
                                                         ->setStoreId($storeId));
         return $request;
     }
@@ -131,6 +134,11 @@ class ReplEcommProductGroupsTask extends AbstractReplicationTask
     public function getConfigPathLastExecute()
     {
         return self::CONFIG_PATH_LAST_EXECUTE;
+    }
+
+    public function getConfigPathMaxKey()
+    {
+        return self::CONFIG_PATH_MAX_KEY;
     }
 
     public function getMainEntity()
