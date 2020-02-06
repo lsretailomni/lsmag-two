@@ -32,6 +32,9 @@ class ProactiveDiscountsAndCoupons extends Action
      */
     public $resultRedirectFactory;
 
+    /**
+     * @var SaveHandler
+     */
     public $sessionHandler;
 
     /**
