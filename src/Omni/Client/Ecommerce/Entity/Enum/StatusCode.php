@@ -52,6 +52,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode L_S_KEY_INVALID()
  * @$method static StatusCode PRIMARY_KEY_DUPLICATION()
  * @$method static StatusCode OBJECT_ID_MISSING()
+ * @$method static StatusCode OBJECT_MISSING()
  * @$method static StatusCode COMMUNICATION_FAILURE()
  * @$method static StatusCode GENERAL_ERROR_CODE()
  * @$method static StatusCode MISSING_TENDER_LINES()
@@ -153,6 +154,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode TRANSFER_ORDER_SENT()
  * @$method static StatusCode TRANSFER_ORDER_REJECTED()
  * @$method static StatusCode INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT()
+ * @$method static StatusCode NO_ITEMS_TO_SUSPEND()
  * @$method static StatusCode UNKNOWN_USER()
  * @$method static StatusCode NAV_W_S_ERROR()
  * @$method static StatusCode TRANSACTION_POST()
@@ -245,6 +247,8 @@ class StatusCode extends Enum
     const PRIMARY_KEY_DUPLICATION = 'PrimaryKeyDuplication';
 
     const OBJECT_ID_MISSING = 'ObjectIdMissing';
+
+    const OBJECT_MISSING = 'ObjectMissing';
 
     const COMMUNICATION_FAILURE = 'CommunicationFailure';
 
@@ -447,6 +451,8 @@ class StatusCode extends Enum
     const TRANSFER_ORDER_REJECTED = 'TransferOrderRejected';
 
     const INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT = 'InvalidSuspensionWithPartialPayment';
+
+    const NO_ITEMS_TO_SUSPEND = 'NoItemsToSuspend';
 
     const UNKNOWN_USER = 'UnknownUser';
 

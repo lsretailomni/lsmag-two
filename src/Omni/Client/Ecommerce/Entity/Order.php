@@ -9,6 +9,7 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentStatus;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use Ls\Omni\Exception\InvalidEnumException;
@@ -35,11 +36,6 @@ class Order extends Entity
      * @property string $CardId
      */
     protected $CardId = null;
-
-    /**
-     * @property boolean $ClickAndCollectOrder
-     */
-    protected $ClickAndCollectOrder = null;
 
     /**
      * @property string $CollectLocation
@@ -95,6 +91,11 @@ class Order extends Entity
      * @property SalesEntryStatus $OrderStatus
      */
     protected $OrderStatus = null;
+
+    /**
+     * @property OrderType $OrderType
+     */
+    protected $OrderType = null;
 
     /**
      * @property PaymentStatus $PaymentStatus
@@ -266,24 +267,6 @@ class Order extends Entity
     public function getCardId()
     {
         return $this->CardId;
-    }
-
-    /**
-     * @param boolean $ClickAndCollectOrder
-     * @return $this
-     */
-    public function setClickAndCollectOrder($ClickAndCollectOrder)
-    {
-        $this->ClickAndCollectOrder = $ClickAndCollectOrder;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getClickAndCollectOrder()
-    {
-        return $this->ClickAndCollectOrder;
     }
 
     /**
@@ -492,6 +475,34 @@ class Order extends Entity
     public function getOrderStatus()
     {
         return $this->OrderStatus;
+    }
+
+    /**
+     * @param OrderType|string $OrderType
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setOrderType($OrderType)
+    {
+        if ( ! $OrderType instanceof OrderType ) {
+            if ( OrderType::isValid( $OrderType ) ) 
+                $OrderType = new OrderType( $OrderType );
+            elseif ( OrderType::isValidKey( $OrderType ) ) 
+                $OrderType = new OrderType( constant( "OrderType::$OrderType" ) );
+            elseif ( ! $OrderType instanceof OrderType )
+                throw new InvalidEnumException();
+        }
+        $this->OrderType = $OrderType->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return OrderType
+     */
+    public function getOrderType()
+    {
+        return $this->OrderType;
     }
 
     /**
