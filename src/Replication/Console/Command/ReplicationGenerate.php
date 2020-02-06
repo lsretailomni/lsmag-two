@@ -124,7 +124,7 @@ class ReplicationGenerate extends OmniCommand
                 $this->processOperation($operation);
             }
         }
-        $this->output->writeln('- - - - - -');
+        $this->output->writeln('Finish Generating Replication Task Files');
     }
 
     /**
@@ -247,7 +247,7 @@ class ReplicationGenerate extends OmniCommand
                     $replication_operation->getSearchPath(true),
                     $search_generator->generate()
                 );
-                $this->output->writeln('- - - -');
+                $this->output->writeln('- - - - ' . $operation->getName() . ' - - - -');
             }
         } catch (Exception $e) {
             $this->output->writeln("\tSomething went wrong, please check log directory");
