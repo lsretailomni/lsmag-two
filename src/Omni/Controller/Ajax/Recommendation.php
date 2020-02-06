@@ -7,8 +7,13 @@ use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Session\SaveHandler;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -34,9 +39,14 @@ class Recommendation extends Action
     public $resultRedirectFactory;
 
     /**
-     * @var \Ls\Omni\Helper\CacheHelper
+     * @var CacheHelper
      */
     public $cacheHelper;
+
+    /**
+     * @var SaveHandler
+     */
+    public $sessionHandler;
 
     /**
      * Recommendation constructor.
@@ -45,37 +55,43 @@ class Recommendation extends Action
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
      * @param CacheHelper $cacheHelper
+     * @param SaveHandler $sessionHandler
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
         RedirectFactory $resultRedirectFactory,
-        CacheHelper $cacheHelper
+        CacheHelper $cacheHelper,
+        SaveHandler $sessionHandler
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultJsonFactory = $resultJsonFactory;
+        $this->resultPageFactory     = $resultPageFactory;
+        $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
-        $this->cacheHelper = $cacheHelper;
+        $this->cacheHelper           = $cacheHelper;
+        $this->sessionHandler        = $sessionHandler;
         parent::__construct($context);
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     * @return ResponseInterface|Json|Redirect|ResultInterface
      */
     public function execute()
     {
-        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+        $tmp_session_dir = ini_get("session.save_path");
+        $this->sessionHandler->close();
+        $this->sessionHandler->open($tmp_session_dir, "admin");
+        if (!$this->getRequest()->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
-        $result = $this->resultJsonFactory->create();
-        $resultPage = $this->resultPageFactory->create();
+        $result            = $this->resultJsonFactory->create();
+        $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');
-        $data = ['productSku' => $currentProductSku];
-        $cacheKey = LSR::PRODUCT_RECOMMENDATION_BLOCK_CACHE . $currentProductSku;
-        $block = $this->cacheHelper->getCachedContent($cacheKey);
+        $data              = ['productSku' => $currentProductSku];
+        $cacheKey          = LSR::PRODUCT_RECOMMENDATION_BLOCK_CACHE . $currentProductSku;
+        $block             = $this->cacheHelper->getCachedContent($cacheKey);
         if ($block === false) {
             $block = $resultPage->getLayout()
                 ->createBlock('Ls\Omni\Block\Product\View\Recommend')

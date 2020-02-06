@@ -14,7 +14,7 @@ define([
                 $.ajax({
                     context: '#lsRecommendation',
                     url: ajaxUrl,
-                    type: "POST",
+                    type: "GET",
                     data: {currentProduct: currentProduct}
                 }).done(function (data) {
                     $('#lsRecommendation').html(data.output);

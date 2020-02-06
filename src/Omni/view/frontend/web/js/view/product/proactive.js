@@ -14,7 +14,7 @@ define([
                 $.ajax({
                     context: '#ls-discounts',
                     url: ajaxUrl,
-                    type: "POST",
+                    type: "GET",
                     data: {currentProduct: currentProduct}
                 }).done(function (data) {
                     $('#ls-discounts').html(data.output);

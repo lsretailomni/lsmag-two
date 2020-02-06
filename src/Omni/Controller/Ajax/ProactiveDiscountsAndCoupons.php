@@ -4,9 +4,11 @@ namespace Ls\Omni\Controller\Ajax;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Session\SaveHandler;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Recommendation
@@ -30,46 +32,55 @@ class ProactiveDiscountsAndCoupons extends Action
      */
     public $resultRedirectFactory;
 
+    public $sessionHandler;
+
     /**
-     * Recommendation constructor.
+     * ProactiveDiscountsAndCoupons constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
+     * @param SaveHandler $sessionHandler
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
-        RedirectFactory $resultRedirectFactory
+        RedirectFactory $resultRedirectFactory,
+        SaveHandler $sessionHandler
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultJsonFactory = $resultJsonFactory;
+        $this->resultPageFactory     = $resultPageFactory;
+        $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
+        $this->sessionHandler        = $sessionHandler;
         parent::__construct($context);
     }
+
     /**
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
      */
     public function execute()
     {
-        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+        $tmp_session_dir = ini_get("session.save_path");
+        $this->sessionHandler->close();
+        $this->sessionHandler->open($tmp_session_dir, "admin");
+        if (!$this->getRequest()->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
 
-        $result = $this->resultJsonFactory->create();
-        $resultPage = $this->resultPageFactory->create();
+        $result            = $this->resultJsonFactory->create();
+        $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');
-        $data = ['productSku' => $currentProductSku];
-        $blockCoupons = $resultPage->getLayout()
+        $data              = ['productSku' => $currentProductSku];
+        $blockCoupons      = $resultPage->getLayout()
             ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
             ->setTemplate('Ls_Omni::product/view/coupons.phtml')
             ->setData('data', $data)
             ->toHtml();
-        $data =array_merge($data, ['coupons'=>$blockCoupons]);
-        $block = $resultPage->getLayout()
+        $data              = array_merge($data, ['coupons' => $blockCoupons]);
+        $block             = $resultPage->getLayout()
             ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
             ->setTemplate('Ls_Omni::product/view/proactive.phtml')
             ->setData('data', $data)
