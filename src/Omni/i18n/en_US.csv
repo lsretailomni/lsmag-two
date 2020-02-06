@@ -1,6 +1,8 @@
 "Loyalty Points Redeemed","Loyalty Points Redeemed"
 "Gift Card Redeemed ","Gift Card Redeemed "
 "Validate Base URL","Validate Base URL"
+"12 Hours","12 Hours"
+"24 Hours","24 Hours"
 "Valid till","Valid till"
 "Minimum Qty :","Minimum Qty :"
 "Avail %1 Off ","Avail %1 Off "
@@ -8,6 +10,7 @@
 "if Buy with any of these items: ","if Buy with any of these items: "
 "Expiry :","Expiry :"
 "Coupon Code :","Coupon Code :"
+Special,Special
 "Please select your hierarchy code","Please select your hierarchy code"
 "No hierarchy code found for the selected store","No hierarchy code found for the selected store"
 "Please select your web store","Please select your web store"
@@ -21,17 +24,29 @@
 "The loyalty points ""%1"" are not valid.","The loyalty points ""%1"" are not valid."
 "The gift card Amount ""%1"" is not valid.","The gift card Amount ""%1"" is not valid."
 "You have used ""%1"" amount from gift card.","You have used ""%1"" amount from gift card."
-"Gift Card cannot be apply.","Gift Card cannot be apply."
+"Gift Card cannot be applied.","Gift Card cannot be applied."
 "You have redeemed ""%1"" loyalty points.","You have redeemed ""%1"" loyalty points."
 "The loyalty points can't be redeemed.","The loyalty points can't be redeemed."
 "You have successfully canceled the points redemption.","You have successfully canceled the points redemption."
 "We cannot redeem the points.","We cannot redeem the points."
 "Check Your Gift Card Balance","Check Your Gift Card Balance"
+Notice,Notice
+"This item is only available online.","This item is only available online."
 "Please check other stores or remove the not available item(s) from your ","Please check other stores or remove the not available item(s) from your "
 "This item is available","This item is available"
+"You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart.","You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart."
 "This item is not available","This item is not available"
+"Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
+"Our Stores","Our Stores"
+Save,Save
+"Coupon Code is not valid for these item(s)","Coupon Code is not valid for these item(s)"
 "Reset password token expired.","Reset password token expired."
-"The gift card amount ""%1"" and loyalty points  ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points  ""%2"" are not valid."
+Closed,Closed
+"The gift card amount ""%1"" and loyalty points ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points ""%2"" are not valid."
 Products,Products
 SKU,SKU
 Qty,Qty
@@ -52,7 +67,7 @@ Subtotal,Subtotal
 "You are using","You are using"
 "Coupon code successfully removed.","Coupon code successfully removed."
 "You used coupon code ""%1"".","You used coupon code ""%1""."
-"Something trrible happen while placing order","Something trrible happen while placing order"
+"Something terrible happened while placing order","Something terrible happened while placing order"
 "Flat No/House No/Building No","Flat No/House No/Building No"
 "Street Name/Landmark","Street Name/Landmark"
 "Cart %1 doesn't contain products","Cart %1 doesn't contain products"
@@ -62,10 +77,10 @@ Subtotal,Subtotal
 "Send Check to:","Send Check to:"
 "Make Check payable to: %1","Make Check payable to: %1"
 "Ls Central Order Reference ID:","Ls Central Order Reference ID:"
-"Loyalty Points Earn","Loyalty Points Earn"
+"Loyalty Points Earned","Loyalty Points Earned"
 "Coupon Code Redeemed","Coupon Code Redeemed"
 "Gift Card Code","Gift Card Code"
-"Choosen Store","Choosen Store"
+"Chosen Store","Chosen Store"
 Loading...,Loading...
 "Loading Coupons...","Loading Coupons..."
 "Apply Discount Code","Apply Discount Code"
@@ -91,8 +106,13 @@ Redeem,Redeem
 "Send Check to","Send Check to"
 "Loading Product Discounts...","Loading Product Discounts..."
 "Check Availability in Stores","Check Availability in Stores"
-Offers and Promotions:,Offers and Promotions:
+"Please <a href=""%1"">Login</a> / <a href=""%2"">Register</a> to view available discounts on this product.","Please <a href=""%1"">Login</a> / <a href=""%2"">Register</a> to view available discounts on this product."
+"Offers and Promotions:","Offers and Promotions:"
 "Find Discounts","Find Discounts"
+Store,Store
+Address,Address
+Phone,Phone
+Hours,Hours
 "Select Store by map ","Select Store by map "
 "Search for a Store ","Search for a Store "
 "View Details","View Details"
@@ -108,17 +128,19 @@ Remove,Remove
 "Place Order","Place Order"
 Items,Items
 Close,Close
-"GiftCard is  successfully removed.","GiftCard is  successfully removed."
+"Gift card successfully removed.","Gift card successfully removed."
 "Your points are successfully removed.","Your points are successfully removed."
-"Gift card code successfully applied.","Gift card code successfully applied."
+"Gift card successfully applied.","Gift card successfully applied."
 "Your points are successfully redeemed.","Your points are successfully redeemed."
+cart,cart
 Configuration,Configuration
 "Service Base URL","Service Base URL"
+"LS Key","LS Key"
 "Please validate your base url by clicking on button above","Please validate your base url by clicking on button above"
 "Select Store","Select Store"
 "Choose the web store","Choose the web store"
 "Select Hierarchy Code","Select Hierarchy Code"
-"Required to get heirarchy node and leaf from omni","Required to get heirarchy node and leaf from omni"
+"Required to get hierarchy node and leaf from omni","Required to get hierarchy node and leaf from omni"
 Debug,Debug
 "Debug Mode for Omni Client","Debug Mode for Omni Client"
 "LS Recommend","LS Recommend"
@@ -132,6 +154,8 @@ Enabled,Enabled
 "Show Promotions on Product Page","Show Promotions on Product Page"
 "Show Coupons on Cart/Checkout Page","Show Coupons on Cart/Checkout Page"
 "Discount Popup Mix and Match Products Limit","Discount Popup Mix and Match Products Limit"
+"Stores Listing","Stores Listing"
+"Opening Hours Time Format","Opening Hours Time Format"
 "Click And Collect","Click And Collect"
 Title,Title
 "Method Name","Method Name"

@@ -17,9 +17,9 @@ class ArrayOfOrderDiscountLine implements IteratorAggregate
     /**
      * @property OrderDiscountLine[] $OrderDiscountLine
      */
-    protected $OrderDiscountLine = array(
+    protected $OrderDiscountLine = [
         
-    );
+    ];
 
     /**
      * @param OrderDiscountLine[] $OrderDiscountLine

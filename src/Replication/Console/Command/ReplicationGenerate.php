@@ -4,7 +4,10 @@
 namespace Ls\Replication\Console\Command;
 
 use Composer\Autoload\ClassLoader;
+use Exception;
+use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Console\Command as OmniCommand;
+use \Ls\Omni\Exception\InvalidServiceTypeException;
 use \Ls\Omni\Service\Metadata as ServiceMetadata;
 use \Ls\Omni\Service\Service;
 use \Ls\Omni\Service\ServiceType;
@@ -12,7 +15,6 @@ use \Ls\Omni\Service\Soap\Client;
 use \Ls\Omni\Service\Soap\Operation;
 use \Ls\Replication\Code\CronJobConfigGenerator;
 use \Ls\Replication\Code\CronJobGenerator;
-use \Ls\Replication\Code\CronTabGenerator;
 use \Ls\Replication\Code\ModelGenerator;
 use \Ls\Replication\Code\ModelInterfaceGenerator;
 use \Ls\Replication\Code\RepositoryGenerator;
@@ -23,10 +25,11 @@ use \Ls\Replication\Code\SchemaUpdateGenerator;
 use \Ls\Replication\Code\SearchGenerator;
 use \Ls\Replication\Code\SearchInterfaceGenerator;
 use \Ls\Replication\Code\SystemConfigGenerator;
+use Magento\Framework\Filesystem\Io\File;
+use Magento\Framework\Module\Dir\Reader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use \Ls\Core\Code\AbstractGenerator;
 
 /**
  * Class ReplicationGenerate
@@ -46,26 +49,23 @@ class ReplicationGenerate extends OmniCommand
 
     /** @var boolean */
     public $cron = false;
-
+    /** @var File */
+    public $fileHelper;
     /** @var ServiceMetadata */
     private $metadata;
-
     /** @var  ClassLoader */
     private $loader;
-
-    /** @var \Magento\Framework\Filesystem\Io\File */
-    public $fileHelper;
 
     /**
      * ReplicationGenerate constructor.
      * @param Service $service
-     * @param \Magento\Framework\Module\Dir\Reader $dirReader
-     * @param \Magento\Framework\Filesystem\Io\File $file
+     * @param Reader $dirReader
+     * @param File $file
      */
     public function __construct(
         Service $service,
-        \Magento\Framework\Module\Dir\Reader $dirReader,
-        \Magento\Framework\Filesystem\Io\File $file
+        Reader $dirReader,
+        File $file
     ) {
         parent::__construct($service, $dirReader);
         $this->fileHelper = $file;
@@ -74,18 +74,18 @@ class ReplicationGenerate extends OmniCommand
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @throws \Ls\Omni\Exception\InvalidServiceTypeException
+     * @throws InvalidServiceTypeException
      */
     public function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->type = ServiceType::ECOMMERCE();
         parent::initialize($input, $output);
 
-        $client = new Client(Service::getUrl($this->type, $this->base_url), $this->type);
+        $client         = new Client(Service::getUrl($this->type, $this->base_url), $this->type);
         $this->metadata = $client->getMetadata(true);
-        $this->system = !!$this->input->getOption(self::SYSTEM);
-        $this->cron = !!$this->input->getOption(self::CRON);
-        $this->loader = new \Composer\Autoload\ClassLoader;
+        $this->system   = !!$this->input->getOption(self::SYSTEM);
+        $this->cron     = !!$this->input->getOption(self::CRON);
+        $this->loader   = new ClassLoader;
     }
 
     public function configure()
@@ -125,6 +125,47 @@ class ReplicationGenerate extends OmniCommand
             }
         }
         $this->output->writeln('- - - - - -');
+    }
+
+    /**
+     * Create required directories if not exists.
+     */
+    private function createPathIfNotExist()
+    {
+
+        $replicationBasePath = $this->dirReader->getModuleDir('', 'Ls_Replication');
+
+        // For Replication API Data,
+        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Api/Data')))) {
+            $this->fileHelper->mkdir(
+                AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Api/Data')),
+                0755
+            );
+        }
+
+        // For Replication Cron
+        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Cron')))) {
+            $this->fileHelper->mkdir(
+                AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Cron')),
+                0755
+            );
+        }
+
+        // For Replication ResourceModel
+        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Model/ResourceModel')))) {
+            $this->fileHelper->mkdir(
+                AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Model/ResourceModel')),
+                0755
+            );
+        }
+
+        // For replication UpgradeSchema
+        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Setup/UpgradeSchema')))) {
+            $this->fileHelper->mkdir(
+                AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Setup/UpgradeSchema')),
+                0755
+            );
+        }
     }
 
     /**
@@ -208,51 +249,10 @@ class ReplicationGenerate extends OmniCommand
                 );
                 $this->output->writeln('- - - -');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->output->writeln("\tSomething went wrong, please check log directory");
             $this->output->writeln($e->getMessage());
             $this->output->writeln('- - - -');
-        }
-    }
-
-    /**
-     * Create required directories if not exists.
-     */
-    private function createPathIfNotExist()
-    {
-
-        $replicationBasePath = $this->dirReader->getModuleDir('', 'Ls_Replication');
-
-        // For Replication API Data,
-        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Api/Data')))) {
-            $this->fileHelper->mkdir(
-                AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Api/Data')),
-                0755
-            );
-        }
-
-        // For Replication Cron
-        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Cron')))) {
-            $this->fileHelper->mkdir(
-                AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Cron')),
-                0755
-            );
-        }
-
-        // For Replication ResourceModel
-        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Model/ResourceModel')))) {
-            $this->fileHelper->mkdir(
-                AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Model/ResourceModel')),
-                0755
-            );
-        }
-
-        // For replication UpgradeSchema
-        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Setup/UpgradeSchema')))) {
-            $this->fileHelper->mkdir(
-                AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Setup/UpgradeSchema')),
-                0755
-            );
         }
     }
 }

@@ -184,7 +184,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 } else {
                     $this->messageManager->addErrorMessage(
                         __(
-                            "Gift Card cannot be apply."
+                            "Gift Card cannot be applied."
                         )
                     );
                 }
@@ -195,7 +195,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $this->messageManager->addSuccessMessage(__('You have successfully cancelled the gift card.'));
             }
         } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage(__('Gift Card cannot be apply.'));
+            $this->messageManager->addErrorMessage(__('Gift Card cannot be applied.'));
         }
 
         return $this->_goBack();

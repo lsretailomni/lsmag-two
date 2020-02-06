@@ -9,6 +9,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Replication\Logger\Logger;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
 use Magento\Framework\Api\AbstractExtensibleObject;
@@ -16,20 +17,22 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class ReplicationHelper
@@ -37,7 +40,15 @@ use Psr\Log\LoggerInterface;
  */
 class ReplicationHelper extends AbstractHelper
 {
-
+    /**
+     * @var array
+     */
+    public $defaultMimeTypes = [
+        'image/jpg',
+        'image/jpeg',
+        'image/gif',
+        'image/png',
+    ];
     /** @var StoreManagerInterface */
     public $storeManager;
 
@@ -59,31 +70,32 @@ class ReplicationHelper extends AbstractHelper
     /** @var Config */
     public $eavConfig;
 
-    /**
-     * @var WriterInterface
-     */
+    /** @var WriterInterface */
     public $configWriter;
 
     /** @var Set */
     public $attributeSet;
 
-    /**
-     * @var TypeListInterface
-     */
+    /** @var TypeListInterface */
     public $cacheTypeList;
 
     /** @var LSR */
     public $lsr;
 
-    /**
-     * @var ResourceConnection
-     */
+    /** @var ResourceConnection */
     public $resource;
 
-    /**
-     * @var SortOrder
-     */
+    /** @var SortOrder */
     public $sortOrder;
+
+    /** @var DateTime */
+    public $dateTime;
+
+    /** @var TimezoneInterface */
+    public $timezone;
+
+    /** @var Logger */
+    public $_logger;
 
     /**
      * ReplicationHelper constructor.
@@ -101,6 +113,9 @@ class ReplicationHelper extends AbstractHelper
      * @param LSR $LSR
      * @param ResourceConnection $resource
      * @param SortOrder $sortOrder
+     * @param DateTime $date
+     * @param TimezoneInterface $timezone
+     * @param Logger $_logger
      */
     public function __construct(
         Context $context,
@@ -116,21 +131,27 @@ class ReplicationHelper extends AbstractHelper
         TypeListInterface $cacheTypeList,
         LSR $LSR,
         ResourceConnection $resource,
-        SortOrder $sortOrder
+        SortOrder $sortOrder,
+        DateTime $date,
+        TimezoneInterface $timezone,
+        Logger $_logger
     ) {
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->filterBuilder = $filterBuilder;
-        $this->filterGroupBuilder = $filterGroupBuilder;
-        $this->storeManager = $storeManager;
-        $this->filesystem = $Filesystem;
+        $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
+        $this->filterBuilder                    = $filterBuilder;
+        $this->filterGroupBuilder               = $filterGroupBuilder;
+        $this->storeManager                     = $storeManager;
+        $this->filesystem                       = $Filesystem;
         $this->replImageLinkRepositoryInterface = $replImageLinkRepositoryInterface;
-        $this->eavConfig = $eavConfig;
-        $this->configWriter = $configWriter;
-        $this->attributeSet = $attributeSet;
-        $this->cacheTypeList = $cacheTypeList;
-        $this->lsr = $LSR;
-        $this->resource = $resource;
-        $this->sortOrder = $sortOrder;
+        $this->eavConfig                        = $eavConfig;
+        $this->configWriter                     = $configWriter;
+        $this->attributeSet                     = $attributeSet;
+        $this->cacheTypeList                    = $cacheTypeList;
+        $this->lsr                              = $LSR;
+        $this->resource                         = $resource;
+        $this->sortOrder                        = $sortOrder;
+        $this->dateTime                         = $date;
+        $this->timezone                         = $timezone;
+        $this->_logger                          = $_logger;
         parent::__construct(
             $context
         );
@@ -214,7 +235,9 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -225,8 +248,9 @@ class ReplicationHelper extends AbstractHelper
      * @param boolean $excludeDeleted
      * @return SearchCriteria
      */
-    public function buildCriteriaForArray(array $filters, $pagesize = 100, $excludeDeleted = true)
+    public function buildCriteriaForArray(array $filters, $pagesize = 100, $excludeDeleted = true, $parameter = null)
     {
+        $filterOr       = null;
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
             ->setConditionType('eq')
@@ -236,11 +260,27 @@ class ReplicationHelper extends AbstractHelper
             ->setValue('1')
             ->setConditionType('eq')
             ->create();
-        // building OR condition between the above two criteria
-        $filterOr = $this->filterGroupBuilder
-            ->addFilter($attr_processed)
-            ->addFilter($attr_is_updated)
-            ->create();
+
+        if (!empty($parameter)) {
+            $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+                ->setValue($parameter['value'])
+                ->setConditionType($parameter['condition_type'])
+                ->create();
+
+            // building OR condition between the above  criteria
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($attr_processed)
+                ->addFilter($attr_is_updated)
+                ->addFilter($ExtraFieldwithOrCondition)
+                ->create();
+        } else {
+            // building OR condition between the above two criteria
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($attr_processed)
+                ->addFilter($attr_is_updated)
+                ->create();
+        }
+
         // adding criteria into where clause.
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
         if (!empty($filters)) {
@@ -248,6 +288,7 @@ class ReplicationHelper extends AbstractHelper
                 $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
+
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
@@ -275,9 +316,12 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
+
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
      * @param array $filters
@@ -296,7 +340,9 @@ class ReplicationHelper extends AbstractHelper
             $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
         }
         $criteria->addFilter('main_table.is_updated', 1, 'eq');
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -315,7 +361,9 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('IsDeleted', 1, 'eq');
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -334,9 +382,12 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('main_table.IsDeleted', 1, 'eq');
-        $criteria->setPageSize($pagesize);
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
+
     /**
      * Create Build Exit Criteria with Array of filters as a parameters
      * @param array $filters
@@ -351,7 +402,10 @@ class ReplicationHelper extends AbstractHelper
                 $searchCriteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
-        $searchCriteria->setPageSize($pagesize);
+
+        if ($pagesize != -1) {
+            $searchCriteria->setPageSize($pagesize);
+        }
         return $searchCriteria->create();
     }
 
@@ -388,7 +442,10 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
         }
-        $criteria->setPageSize($pagesize);
+
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
         return $criteria->create();
     }
 
@@ -398,13 +455,12 @@ class ReplicationHelper extends AbstractHelper
      * @return bool|AbstractExtensibleObject[]
      * @throws InputException
      */
-    public function getImageLinksByType($nav_id = '', $type = 'Item Category')
+    public function getImageLinksByType($nav_id = '', $type = 'Item Category', $includeDeleted = 0)
     {
-        //first and the most important condition
-        if ($nav_id == '' || $nav_id === null) {
+        if (empty($nav_id)) {
             return false;
         }
-        $criteria = $this->searchCriteriaBuilder->addFilter(
+        $criteria  = $this->searchCriteriaBuilder->addFilter(
             'KeyValue',
             $nav_id,
             'eq'
@@ -414,7 +470,7 @@ class ReplicationHelper extends AbstractHelper
             'eq'
         )->addFilter(
             'IsDeleted',
-            0,
+            $includeDeleted,
             'eq'
         )->create();
         $sortOrder = $this->sortOrder->setField('DisplayOrder')->setDirection(SortOrder::SORT_ASC);
@@ -439,7 +495,7 @@ class ReplicationHelper extends AbstractHelper
         }
         // @codingStandardsIgnoreStart
         $request = new Operation\ImageStreamGetById();
-        $entity = new Entity\ImageStreamGetById();
+        $entity  = new Entity\ImageStreamGetById();
         // @codingStandardsIgnoreEnd
         $entity->setId($image_id);
         try {
@@ -481,7 +537,7 @@ class ReplicationHelper extends AbstractHelper
     {
         $code = strtolower(trim($code));
         $code = str_replace(" ", "_", $code);
-        // convert all special characters and replace it wiht _
+        // convert all special characters and replace it with _
         $code = preg_replace('/[^a-zA-Z0-9_.]/', '_', $code);
         return 'ls_' . $code;
     }
@@ -492,7 +548,7 @@ class ReplicationHelper extends AbstractHelper
     public function getAllWebsitesIds()
     {
         $websiteIds = [];
-        $websites = $this->storeManager->getWebsites();
+        $websites   = $this->storeManager->getWebsites();
         /** @var Interceptor $website */
         foreach ($websites as $website) {
             $websiteIds[] = $website->getId();
@@ -501,12 +557,13 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Clear the cache for type config
+     * Clear the cache by type code
+     * @param $typeCode
      */
-    public function flushConfig()
+    public function flushByTypeCode($typeCode)
     {
-        $this->cacheTypeList->cleanType('config');
-        $this->_logger->debug('Config Flushed');
+        $this->cacheTypeList->cleanType($typeCode);
+        $this->_logger->debug($typeCode . ' cache type flushed.');
     }
 
     /**
@@ -522,7 +579,7 @@ class ReplicationHelper extends AbstractHelper
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
             0
         );
-        $this->flushConfig();
+        $this->flushByTypeCode('config');
     }
 
     /**
@@ -541,7 +598,7 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * @return LoggerInterface
+     * @return Logger
      */
     public function getLogger()
     {
@@ -590,20 +647,23 @@ class ReplicationHelper extends AbstractHelper
      * @param $primaryTableColumnName
      * @param $secondaryTableName
      * @param $secondaryTableColumnName
+     * @param bool $group
+     * @param $isLikeJoin
      */
     public function setCollectionPropertiesPlusJoin(
         &$collection,
         SearchCriteriaInterface $criteria,
         $primaryTableColumnName,
         $secondaryTableName,
-        $secondaryTableColumnName
+        $secondaryTableColumnName,
+        $group = false,
+        $isLikeJoin = false
     ) {
         foreach ($criteria->getFilterGroups() as $filter_group) {
-            $fields = [];
-            $conditions = [];
+            $fields = $conditions = [];
             foreach ($filter_group->getFilters() as $filter) {
-                $condition = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
-                $fields[] = $filter->getField();
+                $condition    = $filter->getConditionType() ?: 'eq';
+                $fields[]     = $filter->getField();
                 $conditions[] = [$condition => $filter->getValue()];
             }
             if ($fields) {
@@ -623,13 +683,192 @@ class ReplicationHelper extends AbstractHelper
         $second_table_name = $this->resource->getTableName($secondaryTableName);
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
-        $collection->getSelect()->joinInner(
-            array('second' => $second_table_name),
-            'main_table.' . $primaryTableColumnName . ' = second.'.$secondaryTableColumnName,
-            []
-        );
+        if ($isLikeJoin) {
+            $collection->getSelect()->joinInner(
+                ['second' => $second_table_name],
+                'main_table.' . $primaryTableColumnName . ' LIKE CONCAT(second.' . $secondaryTableColumnName . ',"%")',
+                []
+            );
+        } else {
+            $collection->getSelect()->joinInner(
+                ['second' => $second_table_name],
+                'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
+                []
+            );
+        }
+        if ($group) {
+            $collection->getSelect()->group('main_table.' . $primaryTableColumnName);
+        }
+        /** @var For Xdebug only to check the query $query */
+        //$query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
+     * To be used only for Processing attributes and variants in the AttributeCreate Task
+     * @return string
+     */
+    public function getProductAttributeBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountsBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_DISCOUNT_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductInventoryBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_INVENTORY_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductPricesBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_PRICES_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductImagesBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_IMAGES_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductBarcodeBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BARCODE_BATCH_SIZE);
+    }
+
+    /**
+     * To be used only for creating variants based products.
+     * @return string
+     */
+    public function getVariantBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_VARIANT_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductCategoryAssignmentBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMediaPathtoStore()
+    {
+        return $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
+    }
+
+    /**
+     * Check if given mime type is valid
+     *
+     * @param string $mimeType
+     * @return bool
+     */
+    public function isMimeTypeValid($mimeType)
+    {
+        return in_array($mimeType, $this->defaultMimeTypes);
+    }
+
+    /** return SortOrder object based on the parameters provided
+     * @param $field
+     * @param string $direction
+     * @return SortOrder
+     * @throws InputException
+     */
+    public function getSortOrderObject($field = 'DisplayOrder', $direction = SortOrder::SORT_ASC)
+    {
+        return $this->sortOrder->setField($field)->setDirection($direction);
+    }
+
+    /**
+     * @param string $imageName
+     * @return mixed
+     */
+    public function parseImageIdfromFile($imageName = '')
+    {
+        $imageName = pathinfo($imageName);
+        return $imageName['filename'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatetime()
+    {
+        return $this->dateTime->gmtDate();
+    }
+
+    /**
+     * @param $dataTime
+     * @param null $format
+     * @return string
+     * @throws Exception
+     */
+    public function convertDateTimeIntoCurrentTimeZone($dataTime, $format = null)
+    {
+        $formattedDate = "";
+        if (isset($dataTime)
+            && $dataTime !== "0000-00-00 00:00:00"
+        ) {
+            $date = $this->timezone->date(new \DateTime($dataTime));
+            if ($format === null) {
+                $format = 'Y-m-d H:i:s';
+            }
+            $formattedDate = $date->format($format);
+        }
+        return $formattedDate;
+    }
+
+    /**
+     * To set the environment variables for cron jobs
+     */
+    public function setEnvVariables()
+    {
+        $val1 = ini_get('max_execution_time');
+        $val2 = ini_get('memory_limit');
+        $this->_logger->debug('ENV Variables Values before:' . $val1 . ' ' . $val2);
+        // @codingStandardsIgnoreStart
+        @ini_set('max_execution_time', 3600);
+        @ini_set('memory_limit', -1);
+        // @codingStandardsIgnoreEnd
+        $val1 = ini_get('max_execution_time');
+        $val2 = ini_get('memory_limit');
+        $this->_logger->debug('ENV Variables Values after:' . $val1 . ' ' . $val2);
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getCurrentDate()
+    {
+        $format      = LSR::DATE_FORMAT;
+        $currentDate = $this->convertDateTimeIntoCurrentTimeZone(
+            $this->getDatetime(),
+            $format
+        );
+        return $currentDate;
     }
 }

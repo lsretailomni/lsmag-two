@@ -2,6 +2,8 @@
 
 namespace Ls\Replication\Block\Adminhtml\Grid\Renderer\Action;
 
+use Magento\Framework\UrlInterface;
+
 /**
  * Class UrlBuilder
  * @package Ls\Replication\Block\Adminhtml\Grid\Renderer\Action
@@ -9,14 +11,14 @@ namespace Ls\Replication\Block\Adminhtml\Grid\Renderer\Action;
 class UrlBuilder
 {
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     public $frontendUrlBuilder;
 
     /**
-     * @param \Magento\Framework\UrlInterface $frontendUrlBuilder
+     * @param UrlInterface $frontendUrlBuilder
      */
-    public function __construct(\Magento\Framework\UrlInterface $frontendUrlBuilder)
+    public function __construct(UrlInterface $frontendUrlBuilder)
     {
         $this->frontendUrlBuilder = $frontendUrlBuilder;
     }

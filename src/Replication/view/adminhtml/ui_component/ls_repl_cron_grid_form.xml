@@ -50,6 +50,9 @@
                         </item>
                         <item name="namespace" xsi:type="string">current.paging</item>
                     </item>
+                    <item name="sizesConfig" xsi:type="array">
+                        <item name="value" xsi:type="number">40</item>
+                    </item>
                 </item>
             </argument>
         </paging>
@@ -168,6 +171,16 @@
                     <item name="sortable" xsi:type="boolean">false</item>
                     <item name="label" xsi:type="string" translate="true">Action</item>
                     <item name="sortOrder" xsi:type="number">7</item>
+                    <item name="fieldAction" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn name="reset" class="Ls\Replication\Ui\Component\Listing\Column\ResetData">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Reset Data</item>
+                    <item name="sortOrder" xsi:type="number">8</item>
                     <item name="fieldAction" xsi:type="boolean">false</item>
                 </item>
             </argument>

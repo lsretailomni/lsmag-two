@@ -55,8 +55,8 @@ class RepositoryGenerator extends AbstractGenerator
     public function generate()
     {
         $interface_name = $this->operation->getRepositoryInterfaceName();
-        $simple_name = $this->operation->getEntityName();
-        $entity_name = $this->operation->getEntityName();
+        $simple_name    = $this->operation->getEntityName();
+        $entity_name    = $this->operation->getEntityName();
         $this->class->setNamespaceName(self::$namespace);
         $this->class->addUse(CouldNotDeleteException::class);
         $this->class->addUse(CouldNotSaveException::class);
@@ -154,12 +154,14 @@ class RepositoryGenerator extends AbstractGenerator
         $method = new MethodGenerator();
         $method->setName('__construct');
 
-        $method->setParameters([new ParameterGenerator(
-            'object_factory',
-            $this->operation->getEntityName() . 'Factory'
-        ),
+        $method->setParameters([
+            new ParameterGenerator(
+                'object_factory',
+                $this->operation->getEntityName() . 'Factory'
+            ),
             new ParameterGenerator('collection_factory', 'CollectionFactory'),
-            new ParameterGenerator('result_factory', $this->operation->getSearchFactory())]);
+            new ParameterGenerator('result_factory', $this->operation->getSearchFactory())
+        ]);
 
         $method->setBody(<<<CODE
 \$this->object_factory = \$object_factory;

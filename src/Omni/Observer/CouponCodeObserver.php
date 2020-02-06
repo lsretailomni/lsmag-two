@@ -3,8 +3,16 @@
 namespace Ls\Omni\Observer;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
+use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\UrlInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class CouponCodeObserver
@@ -15,53 +23,54 @@ class CouponCodeObserver implements ObserverInterface
     /** @var BasketHelper */
     private $basketHelper;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var LoggerInterface */
     private $logger;
 
-    /** @var \Magento\Framework\Message\ManagerInterface */
+    /** @var ManagerInterface */
     private $messageManager;
 
-    /** @var  \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory */
+    /** @var  RedirectFactory $redirectFactory */
     private $redirectFactory;
 
-    /** @var \Magento\Framework\UrlInterface */
+    /** @var UrlInterface */
     private $url;
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var LSR @var */
     private $lsr;
 
     /**
      * CouponCodeObserver constructor.
      * @param BasketHelper $basketHelper
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
-     * @param \Magento\Framework\UrlInterface $url
+     * @param LoggerInterface $logger
+     * @param ManagerInterface $messageManager
+     * @param RedirectFactory $redirectFactory
+     * @param UrlInterface $url
      * @param LSR $LSR
      */
     public function __construct(
         BasketHelper $basketHelper,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
-        \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
-        \Magento\Framework\UrlInterface $url,
+        LoggerInterface $logger,
+        ManagerInterface $messageManager,
+        RedirectFactory $redirectFactory,
+        UrlInterface $url,
         LSR $LSR
     ) {
-        $this->basketHelper = $basketHelper;
-        $this->logger = $logger;
-        $this->messageManager = $messageManager;
+        $this->basketHelper    = $basketHelper;
+        $this->logger          = $logger;
+        $this->messageManager  = $messageManager;
         $this->redirectFactory = $redirectFactory;
-        $this->url = $url;
-        $this->lsr = $LSR;
+        $this->url             = $url;
+        $this->lsr             = $LSR;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return $this|void
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         /*
          * Adding condition to only process if LSR is enabled.
@@ -70,7 +79,7 @@ class CouponCodeObserver implements ObserverInterface
             $controller = $observer->getControllerAction();
             $couponCode = $controller->getRequest()->getParam('coupon_code');
             $couponCode = trim($couponCode);
-            $status = $this->basketHelper->setCouponCode($couponCode);
+            $status     = $this->basketHelper->setCouponCode($couponCode);
             if ($controller->getRequest()->getParam('remove') == 1) {
                 $this->basketHelper->setCouponCode('');
                 $this->messageManager->addSuccessMessage(__("Coupon code successfully removed."));
@@ -82,8 +91,8 @@ class CouponCodeObserver implements ObserverInterface
                     ));
                 } else {
                     if ($status == "") {
-                        $message = LSR::LS_COUPON_CODE_ERROR_MESSAGE;
-                        $status = __($message);
+                        $message = __("Coupon Code is not valid for these item(s)");
+                        $status  = __($message);
                     }
                     $this->messageManager->addErrorMessage($status);
                 }

@@ -4,13 +4,13 @@ namespace Ls\Replication\Cron;
 
 use IteratorAggregate;
 use \Ls\Core\Helper\Data as LsHelper;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Omni\Client\OperationInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Psr\Log\LoggerInterface;
-use ReflectionClass;
-use Magento\Config\Model\ResourceModel\Config;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\OperationInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
+use Magento\Config\Model\ResourceModel\Config;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use ReflectionClass;
 
 /**
  * Class AbstractReplicationTask
@@ -38,40 +38,8 @@ abstract class AbstractReplicationTask
         'ls_mag/replication/repl_discount'
     ];
 
-    /** @var array List of Replication Tables with unique field */
-    private static $jobCodeUniqueFieldArray = [
-        "ls_mag/replication/repl_attribute" => ["Code"],
-        "ls_mag/replication/repl_attribute_option_value" => ["Code", "Sequence", "Value"],
-        "ls_mag/replication/repl_attribute_value" => ["Code", "LinkField1", "LinkField2", "LinkField3", "Value"],
-        "ls_mag/replication/repl_barcode" => ["nav_id"],
-        "ls_mag/replication/repl_country_code" => ["Name"],
-        "ls_mag/replication/repl_currency" => ["CurrencyCode"],
-        "ls_mag/replication/repl_currency_exch_rate" => ["CurrencyCode"],
-        "ls_mag/replication/repl_customer" => ["AccountNumber"],
-        "ls_mag/replication/repl_data_translation" => ["TranslationId"],
-        "ls_mag/replication/repl_discount" => [
-            "ItemId",
-            "LoyaltySchemeCode",
-            "OfferNo",
-            "StoreId",
-            "VariantId",
-            "MinimumQuantity"
-        ],
-        "ls_mag/replication/repl_discount_validation" => ["nav_id"],
-        "ls_mag/replication/repl_extended_variant_value" => [
-            "Code",
-            "FrameworkCode",
-            "ItemId",
-            "Value"
-        ],
-        "ls_mag/replication/repl_hierarchy" => ["nav_id"],
-        "ls_mag/replication/repl_hierarchy_leaf" => ["nav_id", "NodeId"],
-        "ls_mag/replication/repl_hierarchy_node" => ["nav_id"],
-        "ls_mag/replication/repl_image" => ["nav_id"],
-        "ls_mag/replication/repl_image_link" => ["ImageId", "KeyValue"],
-        "ls_mag/replication/repl_item" => ["nav_id"],
-        "ls_mag/replication/repl_item_category" => ["nav_id"],
-        "ls_mag/replication/repl_item_unit_of_measure" => ["Code", "ItemId"],
+    /** @var array List of Replication Tables with unique field for delete */
+    private static $deleteJobCodeUniqueFieldArray = [
         "ls_mag/replication/repl_item_variant_registration" => [
             "ItemId",
             "VariantDimension1",
@@ -80,17 +48,69 @@ abstract class AbstractReplicationTask
             "VariantDimension4",
             "VariantDimension5",
             "VariantDimension6"
+        ]
+    ];
+
+    /** @var array List of Replication Tables with unique field */
+    private static $jobCodeUniqueFieldArray = [
+        "ls_mag/replication/repl_attribute"                 => ["Code"],
+        "ls_mag/replication/repl_attribute_option_value"    => ["Code", "Sequence"],
+        "ls_mag/replication/repl_attribute_value"           => [
+            "Code",
+            "LinkField1",
+            "LinkField2",
+            "LinkField3",
+            "Value"
         ],
-        "ls_mag/replication/repl_loy_vendor_item_mapping" => ["NavManufacturerId", "NavProductId"],
-        "ls_mag/replication/repl_price" => ["ItemId", "VariantId", "StoreId", "QtyPerUnitOfMeasure", "UnitOfMeasure"],
-        "ls_mag/replication/repl_inv_status" => ["ItemId", "VariantId", "StoreId"],
-        "ls_mag/replication/repl_product_group" => ["nav_id"],
-        "ls_mag/replication/repl_shipping_agent" => ["Name"],
-        "ls_mag/replication/repl_store" => ["nav_id"],
-        "ls_mag/replication/repl_store_tender_type" => ["StoreID", "TenderTypeId"],
-        "ls_mag/replication/repl_unit_of_measure" => ["nav_id"],
-        "ls_mag/replication/repl_vendor" => ["Name"],
-        "ls_mag/replication/loy_item" => ["nav_id"]
+        "ls_mag/replication/repl_barcode"                   => ["nav_id"],
+        "ls_mag/replication/repl_country_code"              => ["Name"],
+        "ls_mag/replication/repl_currency"                  => ["CurrencyCode"],
+        "ls_mag/replication/repl_currency_exch_rate"        => ["CurrencyCode"],
+        "ls_mag/replication/repl_customer"                  => ["AccountNumber"],
+        "ls_mag/replication/repl_data_translation"          => ["TranslationId"],
+        "ls_mag/replication/repl_discount"                  => [
+            "ItemId",
+            "LoyaltySchemeCode",
+            "OfferNo",
+            "StoreId",
+            "VariantId",
+            "MinimumQuantity"
+        ],
+        "ls_mag/replication/repl_discount_validation"       => ["nav_id"],
+        "ls_mag/replication/repl_extended_variant_value"    => [
+            "Code",
+            "FrameworkCode",
+            "ItemId",
+            "Value"
+        ],
+        "ls_mag/replication/repl_hierarchy"                 => ["nav_id"],
+        "ls_mag/replication/repl_hierarchy_leaf"            => ["nav_id", "NodeId"],
+        "ls_mag/replication/repl_hierarchy_node"            => ["nav_id"],
+        "ls_mag/replication/repl_image"                     => ["nav_id"],
+        "ls_mag/replication/repl_image_link"                => ["ImageId", "KeyValue"],
+        "ls_mag/replication/repl_item"                      => ["nav_id"],
+        "ls_mag/replication/repl_item_category"             => ["nav_id"],
+        "ls_mag/replication/repl_item_unit_of_measure"      => ["Code", "ItemId"],
+        "ls_mag/replication/repl_item_variant_registration" => [
+            "ItemId",
+            "VariantId"
+        ],
+        "ls_mag/replication/repl_loy_vendor_item_mapping"   => ["NavManufacturerId", "NavProductId"],
+        "ls_mag/replication/repl_price"                     => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
+            "QtyPerUnitOfMeasure",
+            "UnitOfMeasure"
+        ],
+        "ls_mag/replication/repl_inv_status"                => ["ItemId", "VariantId", "StoreId"],
+        "ls_mag/replication/repl_product_group"             => ["nav_id"],
+        "ls_mag/replication/repl_shipping_agent"            => ["Name"],
+        "ls_mag/replication/repl_store"                     => ["nav_id"],
+        "ls_mag/replication/repl_store_tender_type"         => ["StoreID", "TenderTypeId"],
+        "ls_mag/replication/repl_unit_of_measure"           => ["nav_id"],
+        "ls_mag/replication/repl_vendor"                    => ["Name"],
+        "ls_mag/replication/loy_item"                       => ["nav_id"]
     ];
 
     /** @var LoggerInterface */
@@ -112,26 +132,24 @@ abstract class AbstractReplicationTask
 
     /**
      * AbstractReplicationTask constructor.
-     *
      * @param ScopeConfigInterface $scope_config
      * @param Config $resouce_config
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param LsHelper $helper
-     *
-     * @internal param \Magento\Framework\ObjectManager\ContextInterface $context
+     * @param ReplicationHelper $repHelper
      */
     public function __construct(
         ScopeConfigInterface $scope_config,
         Config $resouce_config,
-        LoggerInterface $logger,
+        Logger $logger,
         LsHelper $helper,
-        \Ls\Replication\Helper\ReplicationHelper $repHelper
+        ReplicationHelper $repHelper
     ) {
-        $this->scope_config = $scope_config;
+        $this->scope_config    = $scope_config;
         $this->resource_config = $resouce_config;
-        $this->logger = $logger;
-        $this->ls_helper = $helper;
-        $this->rep_helper = $repHelper;
+        $this->logger          = $logger;
+        $this->ls_helper       = $helper;
+        $this->rep_helper      = $repHelper;
     }
 
     /**
@@ -141,19 +159,22 @@ abstract class AbstractReplicationTask
     {
         $lsr = $this->getLsrModel();
         if ($lsr->isLSR()) {
-            $this->rep_helper->updateConfigValue(date('d M,Y h:i:s A'), $this->getConfigPathLastExecute());
-            $properties = $this->getProperties();
-            $last_key = $this->getLastKey();
-            $remaining = INF;
+            $this->rep_helper->updateConfigValue(
+                $this->rep_helper->getDateTime(),
+                $this->getConfigPathLastExecute()
+            );
+            $properties      = $this->getProperties();
+            $last_key        = $this->getLastKey();
+            $remaining       = INF;
             $fullReplication = 1;
-            $isFirstTime = $this->isFirstTime();
+            $isFirstTime     = $this->isFirstTime();
             if (isset($isFirstTime) && $isFirstTime == 1) {
                 $fullReplication = 0;
                 if ($this->isLastKeyAlwaysZero()) {
                     return;
                 }
             }
-            $batchSize = 100;
+            $batchSize      = 100;
             $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE);
             if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
                 $batchSize = $isBatchSizeSet;
@@ -167,13 +188,13 @@ abstract class AbstractReplicationTask
             } else {
                 $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             }
-            $request = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
-            $response = $request->execute();
-            $result = $response->getResult();
-            $last_key = $result->getLastKey();
-            $remaining = $result->getRecordsRemaining();
+            $request                = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
+            $response               = $request->execute();
+            $result                 = $response->getResult();
+            $last_key               = $result->getLastKey();
+            $remaining              = $result->getRecordsRemaining();
             $this->recordsRemaining = $remaining;
-            $traversable = $this->getIterator($result);
+            $traversable            = $this->getIterator($result);
             if ($traversable != null) {
                 // @codingStandardsIgnoreStart
                 if (count($traversable) > 0) {
@@ -188,7 +209,7 @@ abstract class AbstractReplicationTask
                     $this->saveReplicationStatus(1);
                 }
             }
-            $this->rep_helper->flushConfig();
+            $this->rep_helper->flushByTypeCode('config');
         } else {
             $this->logger->debug("LS Retail validation failed.");
         }
@@ -210,15 +231,19 @@ abstract class AbstractReplicationTask
     public function updateSuccessStatus()
     {
         $confPath = $this->getConfigPath();
-        if ($confPath == "ls_mag/replication/repl_attribute") {
+        if ($confPath == "ls_mag/replication/repl_attribute" ||
+            $confPath == "ls_mag/replication/repl_attribute_option_value") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
         } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY);
-        } elseif ($confPath == "ls_mag/replication/repl_item" ||
-            $confPath == "ls_mag/replication/repl_hierarchy_leaf") {
+        } elseif ($confPath == "ls_mag/replication/repl_discount") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
+        } elseif ($confPath == "ls_mag/replication/repl_item") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT);
+        } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
         }
     }
 
@@ -229,13 +254,13 @@ abstract class AbstractReplicationTask
      */
     public function toObject(array $array, $object)
     {
-        $class = get_class($object);
+        $class   = get_class($object);
         $methods = get_class_methods($class);
         foreach ($methods as $method) {
             preg_match(' /^(set)(.*?)$/i', $method, $results);
             $pre = $results[1] ?? '';
-            $k = $results[2] ?? '';
-            $k = strtolower(substr($k, 0, 1)) . substr($k, 1);
+            $k   = $results[2] ?? '';
+            $k   = strtolower(substr($k, 0, 1)) . substr($k, 1);
             if ($pre == 'set' && !empty($array[$k])) {
                 $object->$method($array[$k]);
             }
@@ -249,13 +274,21 @@ abstract class AbstractReplicationTask
      */
     public function saveSource($properties, $source)
     {
-        $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+        if ($source->getIsDeleted()) {
+            $uniqueAttributes = (array_key_exists($this->getConfigPath(), self::$deleteJobCodeUniqueFieldArray)) ?
+                self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] :
+                self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+        } else {
+            $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+        }
         $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
         if (!empty($entityArray)) {
             foreach ($entityArray as $value) {
                 $entity = $value;
             }
             $entity->setIsUpdated(1);
+            $entity->setIsFailed(0);
+            $entity->setUpdatedAt($this->rep_helper->getDateTime());
         } else {
             $entity = $this->getFactory()->create();
             $entity->setScope('default')->setScopeId(0);
@@ -380,7 +413,7 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * @param  string
+     * @param string
      */
     public function persistLastKey($last_key)
     {

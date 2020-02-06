@@ -24,6 +24,7 @@ class InstallSchema implements InstallSchemaInterface
     /**
      * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
+     * @throws \ReflectionException
      */
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {

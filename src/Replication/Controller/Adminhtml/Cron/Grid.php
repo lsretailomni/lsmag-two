@@ -2,12 +2,12 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Cron;
 
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
+use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\ObjectManagerInterface;
-use Psr\Log\LoggerInterface;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Grid
@@ -24,7 +24,9 @@ class Grid extends Action
     /** @var ObjectManagerInterface */
     public $objectManager;
 
-    /** @var LoggerInterface */
+    /**
+     * @var Logger
+     */
     public $logger;
 
     /**
@@ -32,13 +34,13 @@ class Grid extends Action
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param ObjectManagerInterface $objectManager
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         ObjectManagerInterface $objectManager,
-        LoggerInterface $logger
+        Logger $logger
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->objectManager = $objectManager;

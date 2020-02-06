@@ -12,7 +12,7 @@ $order = $block->getOrder();
         <?php endif;?>
         <?php if ($order->getLsPointsEarn()>0) :?>
         <tr>
-            <th><?= $block->escapeHtml(__('Loyalty Points Earn')) ?></th>
+            <th><?= $block->escapeHtml(__('Loyalty Points Earned')) ?></th>
             <td><span id="order_status"><?= $block->escapeHtml($order->getLsPointsEarn()) ?></span></td>
         </tr>
         <?php endif;?>

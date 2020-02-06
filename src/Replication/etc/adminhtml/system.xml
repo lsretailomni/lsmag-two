@@ -22,6 +22,48 @@
                     <label>Product Batch Size</label>
                     <comment>Product batch size can be increase or decrease from here</comment>
                 </field>
+                <field id="product_attribute_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Product Attribute Batch Size</label>
+                    <comment>Attribute batch size can be increase or decrease from here</comment>
+                </field>
+                <field id="discount_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Product Discount Batch Size</label>
+                    <comment>Discount Batch Size</comment>
+                </field>
+                <field id="product_inventory_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Product Inventory Batch Size</label>
+                    <comment>Inventory Batch Size</comment>
+                </field>
+                <field id="product_prices_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Product Prices Batch Size</label>
+                    <comment>Product Prices Batch Size</comment>
+                </field>
+                <field id="product_images_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Product Images Batch Size</label>
+                    <comment>Product Images Batch Size</comment>
+                </field>
+                <field id="product_barcode_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Product Barcode Batch Size</label>
+                    <comment>Product Barcode Batch Size</comment>
+                </field>
+
+                <field id="variant_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Variant Batch Size</label>
+                    <comment>Variant Batch Size to Process Variant</comment>
+                </field>
+
+                <field id="product_assignment_to_category_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Product Assignment to Category Batch Size</label>
+                    <comment>Product Assignment to Category Batch Size</comment>
+                </field>
             </group>
             <group id="one_list" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
                    showInStore="1">
@@ -38,6 +80,16 @@
                     <label>Product Availability in Stores</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Show a link in product detail page for product availability</comment>
+                </field>
+                <field id="display_stores" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Display Stores</label>
+                    <source_model>Ls\Replication\Block\Adminhtml\System\Config\DisplayAllStores</source_model>
+                    <comment>Show all or only Click and Collect stores for product availability</comment>
+                    <depends>
+                        <field id="ls_mag/one_list/product_availability">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="loyalty" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
@@ -60,7 +112,7 @@
                 </field>
                 <field id="show_member_offers" translate="label" type="select" sortOrder="10" showInDefault="1"
                        showInWebsite="1" showInStore="1">
-                    <label>Show Memeber Offers</label>
+                    <label>Show Member Offers</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="show_general_offers" translate="label" type="select" sortOrder="10" showInDefault="1"

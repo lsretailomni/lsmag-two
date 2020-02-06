@@ -17,9 +17,9 @@ class ArrayOfReplCustomer implements IteratorAggregate
     /**
      * @property ReplCustomer[] $ReplCustomer
      */
-    protected $ReplCustomer = array(
+    protected $ReplCustomer = [
         
-    );
+    ];
 
     /**
      * @param ReplCustomer[] $ReplCustomer

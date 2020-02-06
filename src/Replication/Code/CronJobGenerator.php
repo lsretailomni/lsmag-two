@@ -8,12 +8,12 @@ use \Ls\Core\Helper\Data as LsHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Cron\AbstractReplicationTask;
+use \Ls\Replication\Helper\ReplicationHelper;
+use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Psr\Log\LoggerInterface;
+use \Ls\Replication\Logger\Logger;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
-use Magento\Config\Model\ResourceModel\Config;
-use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Class CronJobGenerator
@@ -27,8 +27,8 @@ class CronJobGenerator extends AbstractGenerator
 
     /**
      * CronJobGenerator constructor.
-     *
      * @param ReplicationOperation $operation
+     * @throws \Exception
      */
     public function __construct(ReplicationOperation $operation)
     {
@@ -45,7 +45,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->setNamespaceName($this->operation->getJobNamespace());
         $this->class->setExtendedClass(AbstractReplicationTask::class);
 
-        $this->class->addUse(LoggerInterface::class);
+        $this->class->addUse(Logger::class);
         $this->class->addUse(ScopeConfigInterface::class);
         $this->class->addUse(Config::class);
         $this->class->addUse(LsHelper::class, 'LsHelper');
@@ -59,15 +59,16 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addConstant('JOB_CODE', $this->operation->getJobId());
         $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$this->operation->getTableName()}");
         $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$this->operation->getTableName()}");
-        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
+        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE',
+            "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
 
         $this->createProperty('repository', $this->operation->getRepositoryName());
         $this->createProperty('factory', $this->operation->getFactoryName());
         $this->createProperty('dataInterface', $this->operation->getInterfaceName());
 
         $repository_name = $this->operation->getRepositoryName();
-        $factory_name = $this->operation->getFactoryName();
-        $data_interface = $this->operation->getInterfaceName();
+        $factory_name    = $this->operation->getFactoryName();
+        $data_interface  = $this->operation->getInterfaceName();
 
         $this->class->addMethodFromGenerator($this->getConstructor());
         $this->class->addMethodFromGenerator($this->getMakeRequest());
@@ -90,8 +91,8 @@ class CronJobGenerator extends AbstractGenerator
         // removing the slashes from \Config -- Same for All
         $content = str_replace('\Config $resource_config', 'Config $resource_config', $content);
 
-        // removing the slashes from \LoggerInterface -- Same for All
-        $content = str_replace('\LoggerInterface $logger', 'LoggerInterface $logger', $content);
+        // removing the slashes from \Logger -- Same for All
+        $content = str_replace('\Logger $logger', 'Logger $logger', $content);
 
         // removing the slashes from \LsHelper -- Same for All
         $content = str_replace('\LsHelper $helper', 'LsHelper $helper', $content);
@@ -123,7 +124,7 @@ class CronJobGenerator extends AbstractGenerator
         $constructor->setParameters([
             new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
             new ParameterGenerator('resource_config', 'Config'),
-            new ParameterGenerator('logger', 'LoggerInterface'),
+            new ParameterGenerator('logger', 'Logger'),
             new ParameterGenerator('helper', 'LsHelper'),
             new ParameterGenerator('repHelper', 'ReplicationHelper'),
             new ParameterGenerator('factory', $this->operation->getFactoryName()),

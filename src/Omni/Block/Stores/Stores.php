@@ -62,11 +62,11 @@ class Stores extends Template
         LoggerInterface $logger
     ) {
         $this->resultPageFactory = $resultPageFactory;
-        $this->replStoreFactory = $replStoreCollectionFactory;
-        $this->scopeConfig = $scopeConfig;
-        $this->session = $session;
-        $this->storeHoursHelper = $storeHousHelper;
-        $this->logger = $logger;
+        $this->replStoreFactory  = $replStoreCollectionFactory;
+        $this->scopeConfig       = $scopeConfig;
+        $this->session           = $session;
+        $this->storeHoursHelper  = $storeHousHelper;
+        $this->logger            = $logger;
         parent::__construct($context);
     }
 
@@ -110,5 +110,68 @@ class Stores extends Template
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
+    }
+
+    public function getFormattedHours($hour)
+    {
+        $hoursFormat = $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT);
+        if (empty($hour['temporary'])) {
+            $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour'><span>" .
+                date(
+                    $hoursFormat,
+                    strtotime($hour['normal']['open'])
+                ) . " - " . date(
+                    $hoursFormat,
+                    strtotime($hour['normal']['close'])
+                ) . "</span></td>";
+        } elseif ($hour['normal']['open'] == \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType::CLOSED) {
+            $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour'>
+            <span class='closed'>" . $hour['normal']['open'] . '</span></td>';
+        } else {
+            if (empty($hour['normal'])) {
+                $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td><span class='special-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['open'])
+                    ) . " - " . date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['close'])
+                    ) . "<span class='special-label'>" . __('Special') . "</span></span></td>";
+            } elseif (strtotime($hour['temporary']['open']) <= strtotime($hour['normal']['open'])) {
+                $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td><span class='special-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['open'])
+                    ) . " - " . date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['close'])
+                    ) . "<span class='special-label'>" . __('Special') . "</span></span>" .
+                    "<br/><span class='normal-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['normal']['open'])
+                    ) . " - " . date(
+                        $hoursFormat,
+                        strtotime($hour['normal']['close'])
+                    ) . "</span></td>";
+            } else {
+                $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td><span class='normal-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['normal']['open'])
+                    ) . " - " . date(
+                        $hoursFormat,
+                        strtotime($hour['normal']['close'])
+                    ) . "</span><br/>" . "<span class='special-hour'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['open'])
+                    ) . " - " . date(
+                        $hoursFormat,
+                        strtotime($hour['temporary']['close'])
+                    ) . "<span class='special-label'>" . __('Special') . "</span></span></td>";
+            }
+        }
+        return $formattedTime;
     }
 }

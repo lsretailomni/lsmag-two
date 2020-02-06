@@ -2,9 +2,9 @@
 
 namespace Ls\Core\Model;
 
+use Exception;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Cache\TypeListInterface;
 use SoapClient;
 
 /**
@@ -78,24 +78,60 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
+    const SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE = 'ls_mag/replication/product_attribute_batch_size';
+    const SC_REPLICATION_DISCOUNT_BATCH_SIZE = 'ls_mag/replication/discount_batch_size';
+    const SC_REPLICATION_PRODUCT_INVENTORY_BATCH_SIZE = 'ls_mag/replication/product_inventory_batch_size';
+    const SC_REPLICATION_PRODUCT_PRICES_BATCH_SIZE = 'ls_mag/replication/product_prices_batch_size';
+    const SC_REPLICATION_PRODUCT_IMAGES_BATCH_SIZE = 'ls_mag/replication/product_images_batch_size';
+    const SC_REPLICATION_PRODUCT_BARCODE_BATCH_SIZE = 'ls_mag/replication/product_barcode_batch_size';
+    const SC_REPLICATION_VARIANT_BATCH_SIZE = 'ls_mag/replication/variant_batch_size';
+    const SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE =
+        'ls_mag/replication/product_assignment_to_category_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
 
     // CRON CHECKING
 
     //check for Attribute
     const SC_SUCCESS_CRON_ATTRIBUTE = 'ls_mag/replication/success_repl_attribute';
+    const SC_CRON_ATTRIBUTE_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_attributes';
+    const ATTRIBUTE_OPTION_VALUE_SORT_ORDER = 10000;
 
     //check for Attribute Variant
     const SC_SUCCESS_CRON_ATTRIBUTE_VARIANT = 'ls_mag/replication/success_repl_attribute_variant';
 
     //check for Category
     const SC_SUCCESS_CRON_CATEGORY = 'ls_mag/replication/success_repl_category';
+    const SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_category';
 
     //check for Product
     const SC_SUCCESS_CRON_PRODUCT = 'ls_mag/replication/success_repl_product';
+    const SC_CRON_PRODUCT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_products';
+
+    //check for Product Price
+    const SC_SUCCESS_CRON_PRODUCT_PRICE = 'ls_mag/replication/success_sync_price';
+    const SC_PRODUCT_PRICE_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_price_sync';
+
+    //check for Product Inventory
+    const SC_SUCCESS_CRON_PRODUCT_INVENTORY = 'ls_mag/replication/success_sync_inventory';
+    const SC_PRODUCT_INVENTORY_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_inventory_sync';
 
     //check for Discount
     const SC_SUCCESS_CRON_DISCOUNT = 'ls_mag/replication/success_repl_discount';
+    const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
+
+    //check for Product Assignment to Categories
+    const SC_SUCCESS_CRON_ITEM_UPDATES = 'ls_mag/replication/success_sync_item_updates';
+    const SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_updates_sync';
+
+    //check for Product Images
+    const SC_SUCCESS_CRON_ITEM_IMAGES = 'ls_mag/replication/success_sync_item_images';
+    const SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_images_sync';
+
+    //check for Product Attributes Value Sync
+    const SC_SUCCESS_CRON_ATTRIBUTES_VALUE = 'ls_mag/replication/success_sync_attributes_value';
+
+    // execute time for sync attributes value
+    const LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE  = 'ls_mag/replication/last_execute_repl_attributes_value_sync';
 
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
@@ -123,6 +159,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
     const SC_CART_PRODUCT_AVAILABILITY = 'ls_mag/one_list/product_availability';
+    const SC_CART_DISPLAY_STORES = 'ls_mag/one_list/display_stores';
     const SC_CART_UPDATE_INVENTORY = 'ls_mag/one_list/update_inventory';
     const SC_CART_GUEST_CHECKOUT_EMAIL = 'ls_mag/one_list/guest_checkout_email';
     const SC_CART_GUEST_CHECKOUT_PASSWORD = 'ls_mag/one_list/guest_checkout_password';
@@ -141,8 +178,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CLICKCOLLECT_DEFAULT_LATITUDE = 'omni_clickandcollect/general/default_latitude';
     const SC_CLICKCOLLECT_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
     const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
-    const MSG_NOT_AVAILABLE_NOTICE_TITLE = "Notice";
-    const MSG_NOT_AVAILABLE_NOTICE_CONTENT = "This item is only available online.";
     const SC_PAYMENT_OPTION = 'carriers/clickandcollect/payment_option';
 
     // CUSTOM CONFIGURATION PATHS
@@ -260,16 +295,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_DISCOUNT_MIXANDMATCH_LIMIT = 'ls_mag/ls_discounts/discount_mixandmatch_limit';
 
     //Coupon Code Message
-    const LS_COUPON_CODE_ERROR_MESSAGE = 'Coupon Code is not valid for these item(s)';
-
-    //Coupon Code Message
     const LS_STORES_OPENING_HOURS_FORMAT = 'ls_mag/ls_stores/timeformat';
-
-    //LS Discount Message
-    const LS_DISCOUNT_PRICE_PERCENTAGE_TEXT = "Save";
-
+    
     //LS New account reset password default password
-    const LS_RESETPASSWORD_DEFAULT = "Admin123@";
+    const LS_RESETPASSWORD_DEFAULT = 'Admin123@';
 
     //LS reset password email of the current customer
     const REGISTRY_CURRENT_RESETPASSWORD_EMAIL = 'reset-password-email';
@@ -277,17 +306,20 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
     const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
-    const POINTRATE = 'LS_PointsRate_';
-    const PROACTIVE_DISCOUNTS = 'LS_Proactive_';
-    const COUPONS = 'LS_Coupons_';
+    const POINTRATE = 'LS_POINT_RATE_';
+    const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
+    const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
+
+    // Date format to be used in fetching the data.
+    const DATE_FORMAT = 'Y-m-d';
+
+    //offer with no time limit for the discounts
+    const NO_TIME_LIMIT = '1753-01-01T00:00:00';
     /**
      * @var ScopeConfigInterface
      */
     public $scopeConfig;
-
-    /** @var TypeListInterface */
-    public $cacheTypeList;
 
     /** @var array End Points */
     public $endpoints = [
@@ -297,13 +329,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
+     * @param TypeListInterface $cacheTypeList
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        TypeListInterface $cacheTypeList
+        ScopeConfigInterface $scopeConfig
     ) {
-        $this->scopeConfig = $scopeConfig;
-        $this->cacheTypeList = $cacheTypeList;
+        $this->scopeConfig   = $scopeConfig;
     }
 
     /**
@@ -326,14 +357,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * Clear the cache for type config
-     */
-    public function flushConfig()
-    {
-        $this->cacheTypeList->cleanType('config');
-    }
-
-    /**
      * @param null $baseUrl
      * @return bool
      */
@@ -353,7 +376,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
                 if ($soapClient) {
                     return true;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return false;
             }
         }
@@ -366,7 +389,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         //TODO integrate multiple store.
         $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
-        $store = $this->getStoreConfig(self::SC_SERVICE_STORE);
+        $store   = $this->getStoreConfig(self::SC_SERVICE_STORE);
         if (empty($baseUrl) || empty($store)) {
             return false;
         } else {
@@ -381,7 +404,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
                 if ($soapClient) {
                     return true;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return false;
             }
         }

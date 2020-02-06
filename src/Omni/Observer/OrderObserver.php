@@ -134,7 +134,7 @@ class OrderObserver implements ObserverInterface
                     } else {
                         // TODO: error handling
                         $this->logger->critical(
-                            __('Something trrible happen while placing order')
+                            __('Something terrible happened while placing order')
                         );
                     }
                 } catch (\Exception $e) {

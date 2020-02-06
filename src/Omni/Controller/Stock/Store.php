@@ -6,7 +6,6 @@ namespace Ls\Omni\Controller\Stock;
  * Class Store
  * @package Ls\Omni\Controller\Stock
  */
-
 class Store extends \Magento\Framework\App\Action\Action
 {
     /**
@@ -51,10 +50,10 @@ class Store extends \Magento\Framework\App\Action\Action
         \Magento\Checkout\Model\Session\Proxy $session,
         \Ls\Omni\Helper\StockHelper $stockHelper
     ) {
-        $this->request = $request;
-        $this->scopeConfig = $scopeConfig;
-        $this->session = $session;
-        $this->stockHelper = $stockHelper;
+        $this->request           = $request;
+        $this->scopeConfig       = $scopeConfig;
+        $this->session           = $session;
+        $this->stockHelper       = $stockHelper;
         $this->resultJsonFactory = $resultJsonFactory;
         parent::__construct($context);
     }
@@ -67,21 +66,22 @@ class Store extends \Magento\Framework\App\Action\Action
     {
         $result = $this->resultJsonFactory->create();
         if ($this->getRequest()->isAjax()) {
-            $selectedStore = $this->request->getParam('storeid');
-            $items = $this->session->getQuote()->getAllVisibleItems();
-            $stockCollection = [];
+            $selectedStore      = $this->request->getParam('storeid');
+            $items              = $this->session->getQuote()->getAllVisibleItems();
+            $stockCollection    = [];
             $notAvailableNotice = __("Please check other stores or remove the not available item(s) from your ");
             foreach ($items as &$item) {
-                $sku = $item->getSku();
+                $sku              = $item->getSku();
                 $parentProductSku = $childProductSku = "";
                 if (strpos($sku, '-') !== false) {
                     $parentProductSku = explode('-', $sku)[0];
-                    $childProductSku = explode('-', $sku)[1];
+                    $childProductSku  = explode('-', $sku)[1];
                 } else {
                     $parentProductSku = $sku;
                 }
                 $stockCollection[$sku]["name"] = $item->getName();
-                $item = ["parent" => $parentProductSku, "child" => $childProductSku];
+                $stockCollection[$sku]["qty"]  = $item->getQty();
+                $item                          = ["parent" => $parentProductSku, "child" => $childProductSku];
             }
             $response = $this->stockHelper->getAllItemsStockInSingleStore($selectedStore, $items);
             if ($response) {
@@ -92,13 +92,23 @@ class Store extends \Magento\Framework\App\Action\Action
                 }
                 foreach ($response as $item) {
                     $actualQty = ceil($item->getQtyInventory());
-                    $sku = $item->getItemId() .
+                    $sku       = $item->getItemId() .
                         (($item->getVariantId()) ? '-' . $item->getVariantId() : '');
                     if ($actualQty > 0) {
-                        $stockCollection[$sku]["status"] = "1";
+                        $stockCollection[$sku]["status"]  = "1";
                         $stockCollection[$sku]["display"] = __("This item is available");
+                        if ($stockCollection[$sku]["qty"] > $actualQty) {
+                            $stockCollection[$sku]["status"]  = "0";
+                            $stockCollection[$sku]["display"] = __(
+                                "You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart.",
+                                $stockCollection[$sku]["qty"],
+                                $actualQty
+                            );
+                        }
                     } else {
-                        $stockCollection[$sku]["status"] = "0";
+                        $stockCollection[$sku]["status"]  = "0";
                         $stockCollection[$sku]["display"] = __("This item is not available");
                     }
                 }
@@ -107,7 +117,7 @@ class Store extends \Magento\Framework\App\Action\Action
                 );
             } else {
                 $notAvailableNotice = __("Oops! Unable to do stock lookup currently.");
-                $result = $result->setData(
+                $result             = $result->setData(
                     ["remarks" => $notAvailableNotice, "stocks" => null]
                 );
             }

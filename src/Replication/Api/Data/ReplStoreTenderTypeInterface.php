@@ -243,15 +243,70 @@ interface ReplStoreTenderTypeInterface
     public function getScopeId();
 
     /**
-     * @param string $processed
+     * @param boolean $processed
      * @return $this
      */
     public function setProcessed($processed);
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getProcessed();
+
+    /**
+     * @param boolean $is_updated
+     * @return $this
+     */
+    public function setIsUpdated($is_updated);
+
+    /**
+     * @return boolean
+     */
+    public function getIsUpdated();
+
+    /**
+     * @param boolean $is_failed
+     * @return $this
+     */
+    public function setIsFailed($is_failed);
+
+    /**
+     * @return boolean
+     */
+    public function getIsFailed();
+
+    /**
+     * @param string $created_at
+     * @return $this
+     */
+    public function setCreatedAt($created_at);
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt();
+
+    /**
+     * @param string $updated_at
+     * @return $this
+     */
+    public function setUpdatedAt($updated_at);
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAt();
+
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at);
+
+    /**
+     * @return string
+     */
+    public function getProcessedAt();
 
 
 }

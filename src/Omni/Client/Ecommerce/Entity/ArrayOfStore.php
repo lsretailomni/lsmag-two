@@ -17,9 +17,9 @@ class ArrayOfStore implements IteratorAggregate
     /**
      * @property Store[] $Store
      */
-    protected $Store = array(
+    protected $Store = [
         
-    );
+    ];
 
     /**
      * @param Store[] $Store

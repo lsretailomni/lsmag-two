@@ -2,13 +2,13 @@
 
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
 /**
  * Class OrderCreationMethod
  * @package Ls\Replication\Block\Adminhtml\System\Config
  */
-class OrderCreationMethod implements ArrayInterface
+class OrderCreationMethod implements OptionSourceInterface
 {
 
     /**

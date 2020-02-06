@@ -4,6 +4,7 @@
 namespace Ls\Replication\Code;
 
 use Composer\Autoload\ClassLoader;
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
@@ -28,20 +29,20 @@ class ResourceCollectionGenerator extends AbstractGenerator
     /**
      * ResourceCollectionGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(ReplicationOperation $operation)
     {
         parent::__construct();
         $this->operation = $operation;
-        $this->fs = new Filesystem();
+        $this->fs        = new Filesystem();
     }
 
 
     public function createPath()
     {
         /** @var ClassLoader $loader */
-        $path = $this->operation->getResourceCollectionPath(true);
+        $path        = $this->operation->getResourceCollectionPath(true);
         $folder_path = str_replace(DIRECTORY_SEPARATOR . 'Collection.php', '', $path);
         if (!$this->fs->exists($folder_path)) {
             $this->fs->mkdir($folder_path);
@@ -54,7 +55,7 @@ class ResourceCollectionGenerator extends AbstractGenerator
     public function generate()
     {
 
-        $model_class = $this->operation->getMainEntityFqn();
+        $model_class          = $this->operation->getMainEntityFqn();
         $resource_model_class = $this->operation->getResourceModelFqn();
 
         $contructor_method = new MethodGenerator();

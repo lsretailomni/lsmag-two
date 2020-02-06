@@ -17,9 +17,9 @@ class ArrayOfSalesEntry implements IteratorAggregate
     /**
      * @property SalesEntry[] $SalesEntry
      */
-    protected $SalesEntry = array(
+    protected $SalesEntry = [
         
-    );
+    ];
 
     /**
      * @param SalesEntry[] $SalesEntry

@@ -17,9 +17,9 @@ class ArrayOfAttributeOptionValue implements IteratorAggregate
     /**
      * @property AttributeOptionValue[] $AttributeOptionValue
      */
-    protected $AttributeOptionValue = array(
+    protected $AttributeOptionValue = [
         
-    );
+    ];
 
     /**
      * @param AttributeOptionValue[] $AttributeOptionValue

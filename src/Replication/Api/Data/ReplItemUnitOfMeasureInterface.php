@@ -34,6 +34,17 @@ interface ReplItemUnitOfMeasureInterface
     public function getCountAsOne();
 
     /**
+     * @param string $Description
+     * @return $this
+     */
+    public function setDescription($Description);
+
+    /**
+     * @return string
+     */
+    public function getDescription();
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -89,26 +100,15 @@ interface ReplItemUnitOfMeasureInterface
     public function getSelection();
 
     /**
-     * @param string $StoreId
+     * @param string $ShortDescription
      * @return $this
      */
-    public function setStoreId($StoreId);
+    public function setShortDescription($ShortDescription);
 
     /**
      * @return string
      */
-    public function getStoreId();
-
-    /**
-     * @param string $UnitOfMeasure
-     * @return $this
-     */
-    public function setUnitOfMeasure($UnitOfMeasure);
-
-    /**
-     * @return string
-     */
-    public function getUnitOfMeasure();
+    public function getShortDescription();
 
     /**
      * @param string $scope
@@ -133,15 +133,70 @@ interface ReplItemUnitOfMeasureInterface
     public function getScopeId();
 
     /**
-     * @param string $processed
+     * @param boolean $processed
      * @return $this
      */
     public function setProcessed($processed);
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getProcessed();
+
+    /**
+     * @param boolean $is_updated
+     * @return $this
+     */
+    public function setIsUpdated($is_updated);
+
+    /**
+     * @return boolean
+     */
+    public function getIsUpdated();
+
+    /**
+     * @param boolean $is_failed
+     * @return $this
+     */
+    public function setIsFailed($is_failed);
+
+    /**
+     * @return boolean
+     */
+    public function getIsFailed();
+
+    /**
+     * @param string $created_at
+     * @return $this
+     */
+    public function setCreatedAt($created_at);
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt();
+
+    /**
+     * @param string $updated_at
+     * @return $this
+     */
+    public function setUpdatedAt($updated_at);
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAt();
+
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at);
+
+    /**
+     * @return string
+     */
+    public function getProcessedAt();
 
 
 }

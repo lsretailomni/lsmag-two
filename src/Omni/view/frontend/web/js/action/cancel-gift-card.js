@@ -16,7 +16,7 @@ define([
     return function (isApplied) {
         var quoteId = quote.getQuoteId(),
             url = 'omni/ajax/updateGiftCard',
-            message = $t('GiftCard is  successfully removed.');
+            message = $t('Gift card successfully removed.');
 
         messageContainer.clear();
         fullScreenLoader.startLoader();

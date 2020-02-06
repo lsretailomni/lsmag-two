@@ -1,6 +1,8 @@
 "Please select your hierarchy code","Please select your hierarchy code"
 "Inventory Per Store","Inventory Per Store"
 "Inventory Totals","Inventory Totals"
+"Show all the stores","Show all the stores"
+"Show the Click and Collect stores only","Show the Click and Collect stores only"
 "On Demand","On Demand"
 "Batch Job","Batch Job"
 N/A,N/A
@@ -10,6 +12,7 @@ No,No
 "Categories deleted successfully.","Categories deleted successfully."
 "Customers deleted successfully.","Customers deleted successfully."
 "Discounts deleted successfully.","Discounts deleted successfully."
+"%1 table truncated successfully.","%1 table truncated successfully."
 "All ls_ tables truncated successfully.","All ls_ tables truncated successfully."
 "Orders deleted successfully.","Orders deleted successfully."
 "Products deleted successfully.","Products deleted successfully."
@@ -30,14 +33,23 @@ No,No
 "Item Price Replication","Item Price Replication"
 "Product Group Replication","Product Group Replication"
 "Store Replication","Store Replication"
+"Logs ","Logs "
+"No Data Found File is Empty.","No Data Found File is Empty."
+"File Not Found.","File Not Found."
+"Product Image","Product Image"
 "<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>.","<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>."
 Execute,Execute
 "Want to process %1 Cron?","Want to process %1 Cron?"
 "It will take some time to process. Please don't close this window.","It will take some time to process. Please don't close this window."
+"Omni to Flat","Omni to Flat"
+Reset,Reset
+"Want to Reset Data for %1 Cron Job?","Want to Reset Data for %1 Cron Job?"
+"It will take some time to reset data. Please don't close this window.
+                                ","It will take some time to reset data. Please don't close this window.
+                                "
 Forward,Forward
 Back,Back
 "Flat to Magento","Flat to Magento"
-"Omni to Flat","Omni to Flat"
 " Cron has been executed. Remaining entries "," Cron has been executed. Remaining entries "
 "Do you want to execute More Data?","Do you want to execute More Data?"
 "Click Here","Click Here"
@@ -47,6 +59,8 @@ Configuration,Configuration
 "LS Retail Configuration","LS Retail Configuration"
 "Manual Crons","Manual Crons"
 "Crons Listing","Crons Listing"
+Logs,Logs
+Report,Report
 "Replication Status","Replication Status"
 Item,Item
 Price,Price
@@ -68,6 +82,14 @@ Replication,Replication
 "Replicate All Stores Items","Replicate All Stores Items"
 "Default Batch Size","Default Batch Size"
 "Product Batch Size","Product Batch Size"
+"Product Attribute Batch Size","Product Attribute Batch Size"
+"Product Discount Batch Size","Product Discount Batch Size"
+"Product Inventory Batch Size","Product Inventory Batch Size"
+"Product Prices Batch Size","Product Prices Batch Size"
+"Product Images Batch Size","Product Images Batch Size"
+"Product Barcode Batch Size","Product Barcode Batch Size"
+"Variant Batch Size","Variant Batch Size"
+"Product Assignment to Category Batch Size","Product Assignment to Category Batch Size"
 "Item Availability","Item Availability"
 "Availability Check","Availability Check"
 "Product Availability in Stores","Product Availability in Stores"
@@ -75,7 +97,7 @@ Replication,Replication
 "Enable Loyalty Offers","Enable Loyalty Offers"
 "Use Static Block for Loyalty Offers Page","Use Static Block for Loyalty Offers Page"
 "Show Point Offers","Show Point Offers"
-"Show Memeber Offers","Show Memeber Offers"
+"Show Member Offers","Show Member Offers"
 "Show General Offers","Show General Offers"
 "Show Coupons","Show Coupons"
 "Loyalty Page Image Width","Loyalty Page Image Width"
@@ -97,12 +119,16 @@ Status,Status
 "Cron Class","Cron Class"
 Area,Area
 Action,Action
+"Reset Data","Reset Data"
 Code,Code
 Description,Description
+"Failed Status","Failed Status"
+"Deleted Status","Deleted Status"
 "Default Value","Default Value"
 "Value Type","Value Type"
 "Created Date","Created Date"
 "Updated Date","Updated Date"
+"Processed Date","Processed Date"
 Sequence,Sequence
 Value,Value
 "Link Field 1","Link Field 1"
@@ -132,6 +158,7 @@ Details,Details
 Type,Type
 "Unit Of Measure ID","Unit Of Measure ID"
 "Validation Period ID","Validation Period ID"
+"Dimension Logical Order","Dimension Logical Order"
 Dimensions,Dimensions
 "Framework Code","Framework Code"
 "Logical Order","Logical Order"
