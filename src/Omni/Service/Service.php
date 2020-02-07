@@ -31,7 +31,8 @@ class Service
      */
     public function __construct()
     {
-        $this->baseurl = $this->getOmniBaseUrl();
+        //Commented because we are not using it
+        //$this->baseurl = $this->getOmniBaseUrl();
     }
 
     /**
