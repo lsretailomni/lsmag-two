@@ -648,7 +648,7 @@ class ReplicationHelper extends AbstractHelper
      * @param $secondaryTableName
      * @param $secondaryTableColumnName
      * @param bool $group
-     * @param $isLikeJoin
+     * @param $isReplaceJoin
      */
     public function setCollectionPropertiesPlusJoin(
         &$collection,
@@ -657,7 +657,7 @@ class ReplicationHelper extends AbstractHelper
         $secondaryTableName,
         $secondaryTableColumnName,
         $group = false,
-        $isLikeJoin = false
+        $isReplaceJoin = false
     ) {
         foreach ($criteria->getFilterGroups() as $filter_group) {
             $fields = $conditions = [];
@@ -683,10 +683,10 @@ class ReplicationHelper extends AbstractHelper
         $second_table_name = $this->resource->getTableName($secondaryTableName);
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
-        if ($isLikeJoin) {
+        if ($isReplaceJoin) {
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
-                'main_table.' . $primaryTableColumnName . ' LIKE CONCAT(second.' . $secondaryTableColumnName . ',"%")',
+                'main_table.' . $primaryTableColumnName . ' = REPLACE(second.' . $secondaryTableColumnName . ',"-",",")',
                 []
             );
         } else {
