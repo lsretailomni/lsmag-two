@@ -276,15 +276,16 @@ class AttributesCreateTask
         if ($variants->getTotalCount() > 0) {
             /** @var ReplExtendedVariantValue $variant */
             foreach ($variants->getItems() as $variant) {
-                if (empty($variantCodes[$variant->getCode()]) ||
-                    !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)) {
+                if (empty($variantCodes[$variant->getCode()])) {
                     $variantCodes[$variant->getCode()][$variant->getLogicalOrder()] = $variant->getValue();
-                    $variant->setData('processed_at', $this->replicationHelper->getDateTime());
-                    $variant->setData('processed', 1);
-                    $variant->setData('is_updated', 0);
-                    // @codingStandardsIgnoreLine
-                    $this->replExtendedVariantValueRepository->save($variant);
+                } elseif (!in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)) {
+                    $variantCodes[$variant->getCode()][$variant->getLogicalOrder()] = $variant->getValue();
                 }
+                $variant->setData('processed_at', $this->replicationHelper->getDateTime());
+                $variant->setData('processed', 1);
+                $variant->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
+                $this->replExtendedVariantValueRepository->save($variant);
             }
             foreach ($variantCodes as $code => $value) {
                 $formattedCode = $this->replicationHelper->formatAttributeCode($code);
