@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Model\Total\Quote;
 
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;

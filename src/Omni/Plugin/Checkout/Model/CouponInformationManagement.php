@@ -3,8 +3,8 @@
 namespace Ls\Omni\Plugin\Checkout\Model;
 
 use Exception;
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;

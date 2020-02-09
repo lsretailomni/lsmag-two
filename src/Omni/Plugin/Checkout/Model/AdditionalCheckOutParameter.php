@@ -2,7 +2,7 @@
 
 namespace Ls_Omni\Plugin\Checkout\Model;
 
-use Ls\Omni\Helper\GiftCardHelper;
+use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Checkout\Model\ConfigProviderInterface;
 
 /**

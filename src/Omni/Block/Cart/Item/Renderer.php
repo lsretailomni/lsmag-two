@@ -4,6 +4,7 @@ namespace Ls\Omni\Block\Cart\Item;
 
 use Exception;
 use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\ItemHelper;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 
@@ -19,7 +20,7 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
     public $basketHelper;
 
     /**
-     * ItemHelper
+     * @var ItemHelper
      */
     public $itemHelper;
 

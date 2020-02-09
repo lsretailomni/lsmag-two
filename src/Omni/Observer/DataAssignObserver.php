@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Observer;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 

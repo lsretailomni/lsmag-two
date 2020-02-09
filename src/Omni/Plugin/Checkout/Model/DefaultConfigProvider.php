@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
-use Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Helper\ItemHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;

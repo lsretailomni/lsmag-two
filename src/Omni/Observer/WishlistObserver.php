@@ -2,8 +2,8 @@
 
 namespace Ls\Omni\Observer;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Helper\BasketHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\BasketHelper;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;

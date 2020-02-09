@@ -3,8 +3,8 @@
 namespace Ls\Omni\Plugin\Quote;
 
 use Closure;
-use Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;

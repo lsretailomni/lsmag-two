@@ -3,8 +3,8 @@
 namespace Ls\Omni\Plugin\Checkout\CustomerData;
 
 use Exception;
-use Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\Data;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Psr\Log\LoggerInterface;

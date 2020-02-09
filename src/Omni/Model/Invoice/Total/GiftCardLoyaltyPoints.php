@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Model\Invoice\Total;
 
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Invoice\Total\AbstractTotal;

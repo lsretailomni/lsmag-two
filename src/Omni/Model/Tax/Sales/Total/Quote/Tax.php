@@ -2,8 +2,8 @@
 
 namespace Ls\Omni\Model\Tax\Sales\Total\Quote;
 
-use Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
 use Magento\Customer\Api\Data\RegionInterfaceFactory as CustomerAddressRegionFactory;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;

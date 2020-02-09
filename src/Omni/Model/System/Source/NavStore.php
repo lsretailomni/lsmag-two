@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Model\System\Source;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Store;
-use Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Store;
+use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use Magento\Framework\Data\OptionSourceInterface;
 
 /**

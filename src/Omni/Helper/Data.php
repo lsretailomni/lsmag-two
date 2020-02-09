@@ -3,12 +3,12 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
-use Ls\Omni\Client\Ecommerce\Entity\StoreHours;
-use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
-use Ls\Omni\Model\Cache\Type;
-use Ls\Replication\Api\ReplStoreRepositoryInterface;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
+use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
+use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
+use \Ls\Omni\Model\Cache\Type;
+use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;

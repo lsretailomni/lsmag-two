@@ -3,9 +3,9 @@
 namespace Ls\Omni\Observer;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\Data;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Quote\Model\ResourceModel\Quote;

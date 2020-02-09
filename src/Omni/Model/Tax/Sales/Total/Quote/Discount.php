@@ -3,8 +3,8 @@
 namespace Ls\Omni\Model\Tax\Sales\Total\Quote;
 
 use Exception;
-use Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;

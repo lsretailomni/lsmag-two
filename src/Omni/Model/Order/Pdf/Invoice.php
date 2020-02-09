@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Model\Order\Pdf;
 
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;

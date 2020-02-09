@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Model;
 
-use Ls\Omni\Model\Payment\PayStore;
+use \Ls\Omni\Model\Payment\PayStore;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\Escaper;
 use Magento\Framework\Exception\LocalizedException;
