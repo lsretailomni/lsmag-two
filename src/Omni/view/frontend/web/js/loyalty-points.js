@@ -5,9 +5,8 @@ define([
     'use strict';
 
     $.widget('lsomni.loyaltyPoints', {
-        options: {
-        },
-        
+        options: {},
+
         _create: function () {
             this.loyaltyPoints = $(this.options.loyaltyPointsSelector);
             this.removePoints = $(this.options.removePointsSelector);

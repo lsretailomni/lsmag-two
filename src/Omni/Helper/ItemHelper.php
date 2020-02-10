@@ -134,7 +134,7 @@ class ItemHelper extends AbstractHelper
     public function lite(Entity\LoyItem $item)
     {
         // @codingStandardsIgnoreStart
-        return (new Entity\LoyItem)
+        return (new Entity\LoyItem())
             ->setId($item->getId())
             ->setPrice($item->getPrice())
             ->setAllowedToSell($item->getAllowedToSell());
@@ -331,7 +331,6 @@ class ItemHelper extends AbstractHelper
                             $oldItemVariant[$line->getItemId()][$line->getVariantId()] ['Discount'] =
                                 $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount();
                         } else {
-
                             $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount']   = $line->getAmount();
                             $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] = $line->getDiscountAmount();
                         }

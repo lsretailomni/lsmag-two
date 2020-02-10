@@ -126,7 +126,7 @@ class SchemaUpdateGenerator extends AbstractGenerator
             } else {
                 $property_types[$name] = $type;
             }
-        };
+        }
 
         $table_name     = $this->getTableName();
         $table_idx_name = $this->getTableFieldId();
@@ -171,26 +171,26 @@ CODE;
             if ($name == 'Id') {
                 $name = 'nav_id';
             }
-            $allColumnsArray[] = array(
+            $allColumnsArray[] = [
                 'name'       => $name,
                 'field_type' => $field_type,
                 'default'    => $default,
                 'length'     => $length
-            );
+            ];
             $method_body       .= "\t\$table->addColumn('$name' , $field_type, $length);\n";
         }
-        $allColumnsArray[] = array(
+        $allColumnsArray[] = [
             'name'       => 'is_failed',
             'field_type' => 'Table::TYPE_BOOLEAN',
             'default'    => 0,
             'length'     => 1
-        );
-        $allColumnsArray[] = array(
+        ];
+        $allColumnsArray[] = [
             'name'       => 'processed_at',
             'field_type' => 'Table::TYPE_TIMESTAMP',
             'default'    => 'null',
             'length'     => "''"
-        );
+        ];
         $method_body       .= <<<CODE
 \t\$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
 \t\$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');

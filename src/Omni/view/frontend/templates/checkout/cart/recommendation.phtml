@@ -1,20 +1,23 @@
 <?php
-/** @var \Ls\Omni\Block\Product\Recommend $block */
+/** @var Recommend $block */
+
+use \Ls\Omni\Block\Product\Recommend;
+
 if ($block->isEnabled()) {
     $ajaxUrl = $block->getAjaxUrl();
     if ($block->checkCartItems()) {
-    ?>
-    <div id="lsRecommendation">
-        <div class="ls-loader">
-            <img src="<?= /* @escapeNotVerified */
-            $block->getViewFileUrl('images/loader-1.gif') ?>"
-                 alt="<?= /* @escapeNotVerified */
-                    __('Loading...') ?>">
-            <br/>
-            <div><?php echo __('Loading recommended products for you...'); ?></div>
+        ?>
+        <div id="lsRecommendation">
+            <div class="ls-loader">
+                <img src="<?= /* @escapeNotVerified */
+                $block->getViewFileUrl('images/loader-1.gif') ?>"
+                     alt="<?= /* @escapeNotVerified */
+                     __('Loading...') ?>">
+                <br/>
+                <div><?php echo __('Loading recommended products for you...'); ?></div>
+            </div>
         </div>
-    </div>
-    <script type="text/x-magento-init">
+        <script type="text/x-magento-init">
         {
             "*": {
                 "Ls_Omni/js/view/product/recommendation-cart": {
@@ -22,6 +25,7 @@ if ($block->isEnabled()) {
                 }
             }
         }
-    </script>
+
+        </script>
     <?php }
 } ?>

@@ -3,19 +3,27 @@
 namespace Ls\Customer\Controller\Order;
 
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Helper\OrderHelper;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class View
  * @package Ls\Customer\Controller\Order
  */
-class View extends \Magento\Framework\App\Action\Action
+class View extends Action
 {
     /**
-     * @var \Magento\Framework\Message\ManagerInterface
+     * @var ManagerInterface
      */
     public $messageManager;
 
@@ -33,12 +41,12 @@ class View extends \Magento\Framework\App\Action\Action
     public $request;
 
     /**
-     * @var \Ls\Omni\Helper\OrderHelper
+     * @var OrderHelper
      */
     public $orderHelper;
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     public $registry;
 
@@ -47,38 +55,38 @@ class View extends \Magento\Framework\App\Action\Action
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param Http $request
-     * @param \Ls\Omni\Helper\OrderHelper $orderHelper
-     * @param \Magento\Framework\Registry $registry
+     * @param OrderHelper $orderHelper
+     * @param Registry $registry
      * @param ResultFactory $result
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param ManagerInterface $messageManager
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         Http $request,
-        \Ls\Omni\Helper\OrderHelper $orderHelper,
-        \Magento\Framework\Registry $registry,
+        OrderHelper $orderHelper,
+        Registry $registry,
         ResultFactory $result,
-        \Magento\Framework\Message\ManagerInterface $messageManager
+        ManagerInterface $messageManager
     ) {
-        $this->resultRedirect = $result;
-        $this->messageManager = $messageManager;
-        $this->request = $request;
-        $this->registry = $registry;
-        $this->orderHelper = $orderHelper;
+        $this->resultRedirect    = $result;
+        $this->messageManager    = $messageManager;
+        $this->request           = $request;
+        $this->registry          = $registry;
+        $this->orderHelper       = $orderHelper;
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
+     * @return \Magento\Framework\App\ResponseInterface|ResultInterface|Page
      */
     public function execute()
     {
         $response = null;
         if ($this->request->getParam('order_id')) {
             $docId = $this->request->getParam('order_id');
-            $type = $this->request->getParam('type');
+            $type  = $this->request->getParam('type');
             if (empty($type)) {
                 $type = DocumentIdType::ORDER;
             }
@@ -91,7 +99,7 @@ class View extends \Magento\Framework\App\Action\Action
             }
             $this->registry->register('current_invoice_option', false);
         }
-        /** @var \Magento\Framework\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         return $resultPage;
     }
@@ -99,7 +107,7 @@ class View extends \Magento\Framework\App\Action\Action
     /**
      * @param $docId
      * @param $type
-     * @return \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return SalesEntryGetResponse|ResponseInterface|null
      */
     public function setCurrentOrderInRegistry($docId, $type)
     {

@@ -24,8 +24,8 @@ class RestrictionDefinition
      */
     public function __construct($name, $value, $mapping)
     {
-        $this->name = $name;
-        $this->value = $value;
+        $this->name    = $name;
+        $this->value   = $value;
         $this->mapping = $mapping;
     }
 

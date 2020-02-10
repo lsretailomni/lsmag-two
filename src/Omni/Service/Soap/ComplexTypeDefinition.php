@@ -24,8 +24,8 @@ class ComplexTypeDefinition
      */
     public function __construct($name, $data_type, $min_occurs)
     {
-        $this->name = $name;
-        $this->data_type = $data_type;
+        $this->name       = $name;
+        $this->data_type  = $data_type;
         $this->min_occurs = $min_occurs;
     }
 

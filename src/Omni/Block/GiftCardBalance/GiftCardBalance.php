@@ -51,7 +51,7 @@ class GiftCardBalance extends Template
     ) {
 
         $this->giftCardHelper = $giftCardHelper;
-        $this->logger = $logger;
+        $this->logger         = $logger;
         parent::__construct($context, $data);
         $this->layoutProcessors = $layoutProcessors;
     }

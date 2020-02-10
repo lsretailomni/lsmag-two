@@ -2,11 +2,13 @@
 
 namespace Ls\Omni\Block\Info;
 
+use Magento\Payment\Block\Info;
+
 /**
  * Class Loyaltypoints
  * @package Ls\Omni\Block\Info
  */
-class Loyaltypoints extends \Magento\Payment\Block\Info
+class Loyaltypoints extends Info
 {
 
     /**

@@ -51,8 +51,7 @@ define([
             }
             return false;
         });
-    };
-
+    }
     function getPopUp(stores) {
         var self = this,
             buttons;
@@ -107,7 +106,7 @@ define([
                     if (store.State == null) {
                         store.State = "";
                     }
-                    infoWindow.setContent('<div class="infowindow"><h3>' + store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street +', '+ store.City+' '+ store.State +' '+ store.ZipCode+' '+ store.Country+' </div>');
+                    infoWindow.setContent('<div class="infowindow"><h3>' + store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street + ', ' + store.City + ' ' + store.State + ' ' + store.ZipCode + ' ' + store.Country + ' </div>');
                     infoWindow.open(map, marker);
                 });
             })(marker, store);

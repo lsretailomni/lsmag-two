@@ -4,10 +4,10 @@ namespace Ls\Omni\Block\Adminhtml\System\Config;
 
 use \Ls\Core\Model\LSR;
 use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Block\Widget\Button;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Backend\Block\Widget\Button;
 
 /**
  * Class Stores

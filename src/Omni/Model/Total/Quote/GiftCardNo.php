@@ -19,11 +19,11 @@ class GiftCardNo extends AbstractTotal
      */
     public function fetch(Quote $quote, Total $total)
     {
-        $totals = [];
+        $totals         = [];
         $giftCardNumber = $quote->getLsGiftCardNo();
         if (!empty($giftCardNumber)) {
             $totals[] = [
-                'code' => $this->getCode(),
+                'code'  => $this->getCode(),
                 'title' => __('Gift Card No'),
                 'value' => $giftCardNumber,
             ];

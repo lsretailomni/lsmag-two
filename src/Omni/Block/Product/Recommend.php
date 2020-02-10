@@ -2,29 +2,34 @@
 
 namespace Ls\Omni\Block\Product;
 
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem;
 use \Ls\Omni\Helper\LSRecommend as LSRecommendHelper;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Block\Product\AbstractProduct;
+use Magento\Catalog\Block\Product\Context;
 
 /**
  * This file will be used for Shopping Cart/Home/Checkout page
  * Class Recommend
  * @package Ls\Omni\Block\Product\View
  */
-class Recommend extends \Magento\Catalog\Block\Product\AbstractProduct
+class Recommend extends AbstractProduct
 {
-    /** @var \Ls\Core\Model\LSR */
+    /** @var LSR */
     public $lsr;
 
     /** @var LSRecommendHelper */
     public $LSRecommend;
 
     public function __construct(
-        \Magento\Catalog\Block\Product\Context $context,
+        Context $context,
         LSRecommendHelper $LS_RecommendHelper,
-        \Ls\Core\Model\LSR $lsr,
+        LSR $lsr,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->lsr = $lsr;
+        $this->lsr         = $lsr;
         $this->LSRecommend = $LS_RecommendHelper;
     }
 
@@ -41,14 +46,14 @@ class Recommend extends \Magento\Catalog\Block\Product\AbstractProduct
     }
 
     /**
-     * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
+     * @return ProductInterface[]|null
      */
     public function getProductRecommendationforCart()
     {
-        $response = null;
-        $productSkus = $this->LSRecommend->getProductSkusFromQuote();
+        $response            = null;
+        $productSkus         = $this->LSRecommend->getProductSkusFromQuote();
         $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productSkus);
-        if ($recommendedProducts instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem) {
+        if ($recommendedProducts instanceof ArrayOfRecommendedItem) {
             return $this->LSRecommend->parseProductRecommendation($recommendedProducts);
         }
         return $response;

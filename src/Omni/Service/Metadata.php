@@ -6,7 +6,6 @@ use DOMDocument;
 use DOMElement;
 use DOMNodeList;
 use DOMXPath;
-use \Ls\Omni\Code\AbstractOmniGenerator;
 use \Ls\Omni\Service\Soap\Client;
 use \Ls\Omni\Service\Soap\ComplexType;
 use \Ls\Omni\Service\Soap\ComplexTypeDefinition;
@@ -17,7 +16,6 @@ use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Omni\Service\Soap\Restriction;
 use \Ls\Omni\Service\Soap\RestrictionDefinition;
 use \Ls\Omni\Service\Soap\SoapType;
-use ReflectionClass;
 
 /**
  * Class Metadata
@@ -47,9 +45,29 @@ class Metadata
     public $baseClasses = [];
     /** @var DOMDocument */
     public $wsdl;
-    private $type_blacklist = ['anyType', 'anyURI', 'base64Binary', 'boolean', 'byte', 'dateTime', 'decimal',
-        'double', 'float', 'int', 'long', 'QName', 'short', 'string', 'unsignedByte',
-        'unsignedInt', 'unsignedLong', 'unsignedShort', 'char', 'duration', 'guid'];
+    private $type_blacklist = [
+        'anyType',
+        'anyURI',
+        'base64Binary',
+        'boolean',
+        'byte',
+        'dateTime',
+        'decimal',
+        'double',
+        'float',
+        'int',
+        'long',
+        'QName',
+        'short',
+        'string',
+        'unsignedByte',
+        'unsignedInt',
+        'unsignedLong',
+        'unsignedShort',
+        'char',
+        'duration',
+        'guid'
+    ];
 
     /**
      * @param Client $client
@@ -57,18 +75,16 @@ class Metadata
      */
     public function __construct(Client $client, $with_replication = false)
     {
-
         $this->client = $client;
-        $this->wsdl = $this->client->getWsdlXml();
+        $this->wsdl   = $this->client->getWsdlXml();
         // @codingStandardsIgnoreLine
-        $this->xpath = new DOMXPath($this->wsdl);
+        $this->xpath            = new DOMXPath($this->wsdl);
         $this->with_replication = $with_replication;
         $this->build();
     }
 
     public function build()
     {
-
         $omni_namespace_regex = '/(lsomni|lsretail)/';
 
         $schemas = $this->wsdl->getElementsByTagName('schema');
@@ -126,15 +142,13 @@ class Metadata
      */
     protected function parseSimpleType(DOMElement $simple_type)
     {
-
-        $name = $simple_type->getAttribute('name');
+        $name       = $simple_type->getAttribute('name');
         $definition = [];
-
 
         // TRAVERSE TO THE RESTRICTION DEFINITION
         // IF list IS THE FIRST CHILD THEN THE enumeration LIVES A TAG BELOW (simpleType) OF list
         $parent_node = $simple_type->firstChild;
-        $is_list = $parent_node->localName == 'list';
+        $is_list     = $parent_node->localName == 'list';
         if ($is_list) {
             $parent_node = $parent_node->firstChild->firstChild;
         }
@@ -142,8 +156,8 @@ class Metadata
 
         foreach ($parent_node->childNodes as $restriction_detail) {
             /** @var DOMElement $restriction_detail */
-            $detail_name = $restriction_detail->localName;
-            $detail_value = $restriction_detail->getAttribute('value');
+            $detail_name    = $restriction_detail->localName;
+            $detail_value   = $restriction_detail->getAttribute('value');
             $detail_mapping = $restriction_detail->nodeValue;
             // @codingStandardsIgnoreLine
             $definition[] = new RestrictionDefinition($detail_name, $detail_value, $detail_mapping);
@@ -168,17 +182,22 @@ class Metadata
         // TRAVERSE TO THE TYPE DEFINITION
         /** @var DOMElement $parent_node */
         $parent_node = $complex_type->firstChild;
-        $sequence = null;
+        $sequence    = null;
 
         if ($parent_node->localName == 'sequence') {
-            $sequence = $this->parseSequence($parent_node, $complex_type, $complex_name);
+            $sequence                          = $this->parseSequence($parent_node, $complex_type, $complex_name);
             $this->types[$sequence->getName()] = $sequence;
         } elseif ($parent_node->localName == 'complexContent') {
-            $extension = $parent_node->firstChild;
-            $baseClass = explode(":", $extension->getAttribute('base'));
-            $sequence = $this->parseSequence($extension->firstChild, $complex_type, $complex_name, $baseClass[1]);
+            $extension                               = $parent_node->firstChild;
+            $baseClass                               = explode(":", $extension->getAttribute('base'));
+            $sequence                                = $this->parseSequence(
+                $extension->firstChild,
+                $complex_type,
+                $complex_name,
+                $baseClass[1]
+            );
             $this->baseClasses[$sequence->getName()] = $baseClass[1];
-            $this->types[$sequence->getName()] = $sequence;
+            $this->types[$sequence->getName()]       = $sequence;
         }
 
         return $sequence;
@@ -194,15 +213,15 @@ class Metadata
     public function parseSequence(DOMElement $sequence, DOMElement $complex_type, $complex_name = null, $baseClass = '')
     {
         $complex_definition = [];
-        $entity_name = $complex_name;
-        if ($complex_name==null) {
+        $entity_name        = $complex_name;
+        if ($complex_name == null) {
             $entity_name = $complex_type->getAttribute('name');
         }
 
         foreach ($sequence->childNodes as $element) {
             /** @var DOMElement $element */
-            $name = $element->getAttribute('name');
-            $type = $this->stripType($element->getAttribute('type'));
+            $name       = $element->getAttribute('name');
+            $type       = $this->stripType($element->getAttribute('type'));
             $min_occurs = $element->getAttribute('minOccurs');
             // @codingStandardsIgnoreLine
             $complex_definition [$name] = new ComplexTypeDefinition($name, $type, $min_occurs);
@@ -225,7 +244,7 @@ class Metadata
     private function stripType($raw)
     {
         $parts = explode(':', $raw);
-        $type = array_pop($parts);
+        $type  = array_pop($parts);
 
         return $type;
     }
@@ -235,7 +254,6 @@ class Metadata
      */
     public function parseElement(DOMElement $element)
     {
-
         $name = $element->getAttribute('name');
         // MOST OF THE ELEMENTS ARE SINGLE NODES THAT ARE DEFINED BY THEIR ATTRIBUTES
         if (!$element->hasChildNodes()) {
@@ -257,21 +275,24 @@ class Metadata
      */
     public function processOmniOperations()
     {
-
         $regex_operation = '/^(?\'response\'.+)\s(?\'operation\'.+)\((?\'request\'.+)\s.*$/';
-        $operations = $this->client->getSoapClient()->__getFunctions();
+        $operations      = $this->client->getSoapClient()->__getFunctions();
 
         foreach ($operations as $operation) {
             preg_match($regex_operation, $operation, $match);
 
-            $name = $match['operation'];
-            $request = $match['request'];
+            $name     = $match['operation'];
+            $request  = $match['request'];
             $response = $match['response'];
 
             $this->elements[$request]->setRequest(true);
             $this->elements[$response]->setResponse(true);
             // @codingStandardsIgnoreLine
-            $operation = new Operation($name, $this->elements[$request], $this->elements[$response]);
+            $operation                             = new Operation(
+                $name,
+                $this->elements[$request],
+                $this->elements[$response]
+            );
             $this->operations[$match['operation']] = $operation;
 
             if ($this->with_replication && strpos($name, 'ReplEcomm') !== false) {
@@ -330,7 +351,6 @@ class Metadata
 
     public function getReplicationOperationByName($operation_name)
     {
-
         if (array_key_exists($operation_name, $this->replications)) {
             return $this->replications[$operation_name];
         }

@@ -6,7 +6,6 @@ namespace Ls\Replication\Code;
 use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
-use \Ls\Replication\Api\Data\Anchor;
 use ReflectionClass;
 use ReflectionException;
 use Zend\Code\Generator\PropertyGenerator;
@@ -18,7 +17,7 @@ use Zend\Code\Generator\PropertyGenerator;
 class ModelInterfaceGenerator extends AbstractGenerator
 {
     /** @var string */
-    static public $namespace = "Ls\\Replication\\Api\\Data";
+    public static $namespace = "Ls\\Replication\\Api\\Data";
 
     /** @var  string */
     protected $entity_fqn;
@@ -50,7 +49,6 @@ class ModelInterfaceGenerator extends AbstractGenerator
      */
     public function generate()
     {
-
         $this->class->setNamespaceName(self::$namespace);
         $this->class->setName($this->getName());
 

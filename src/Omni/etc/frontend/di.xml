@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
                 <!-- For Click and Collect and gift card enable/disable on checkout -->
-                <item name="clickandcollect_config_provider" xsi:type="object">Ls\Omni\Model\Checkout\DataProvider</item>
+                <item name="clickandcollect_config_provider" xsi:type="object">Ls\Omni\Model\Checkout\DataProvider
+                </item>
                 <!-- For Payment Method Pay at Store -->
                 <item name="paystore_config_provider" xsi:type="object">Ls\Omni\Model\PayStoreConfigProvider</item>
                 <!-- In order to get all the available coupons in the window.checkoutConfig -->
@@ -14,11 +16,12 @@
         </arguments>
     </type>
     <type name="Magento\Framework\App\Action\AbstractAction">
-        <plugin name="sr-customer-app-action-dispatchController-context-plugin" type="Ls\Omni\Plugin\App\Action\Context" sortOrder="15"/>
+        <plugin name="sr-customer-app-action-dispatchController-context-plugin" type="Ls\Omni\Plugin\App\Action\Context"
+                sortOrder="15"/>
     </type>
 
     <type name="Magento\Customer\Controller\Section\Load">
-        <plugin name="ls_omni_session_unblocker" type="Ls\Omni\Plugin\Session\SectionLoadControllerPlugin" />
+        <plugin name="ls_omni_session_unblocker" type="Ls\Omni\Plugin\Session\SectionLoadControllerPlugin"/>
     </type>
 
     <type name="Ls\Omni\Plugin\Session\SectionLoadControllerPlugin">

@@ -1,12 +1,16 @@
 <?php
 
-/** @var \Ls\Customer\Block\Loyalty\Offers $this */
+/** @var Offers $this */
+
+use \Ls\Customer\Block\Loyalty\Offers;
+use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
+
 $type = 'Coupon';
 
-/** @var \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer[] $offers */
+/** @var PublishedOffer[] $offers */
 $offers = $this->getOffers();
-$total = count($offers);
-$c = 0;
+$total  = count($offers);
+$c      = 0;
 ?>
 
 <div class="coupons-view">
@@ -59,7 +63,7 @@ $c = 0;
                             <div class="coupon-description">
                                 <p><?php echo $offer->getDetails(); ?></p>
                             </div>
-                            <?php if (!empty($offerProductCategory[0]) ){?>
+                            <?php if (!empty($offerProductCategory[0])) { ?>
                                 <p>
                                     <a class="action subscribe primary"
                                        href="<?php echo $offerProductCategory[0]; ?>"><?php echo __($offerProductCategory[1]); ?></a>

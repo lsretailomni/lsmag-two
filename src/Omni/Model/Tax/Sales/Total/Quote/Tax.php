@@ -7,7 +7,15 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
 use Magento\Customer\Api\Data\RegionInterfaceFactory as CustomerAddressRegionFactory;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
+use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address;
+use Magento\Quote\Model\Quote\Address\Total;
+use Magento\Tax\Api\Data\QuoteDetailsInterfaceFactory;
+use Magento\Tax\Api\Data\QuoteDetailsItemInterfaceFactory;
+use Magento\Tax\Api\Data\TaxClassKeyInterfaceFactory;
+use Magento\Tax\Api\TaxCalculationInterface;
+use Magento\Tax\Helper\Data;
+use Magento\Tax\Model\Config;
 
 class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
 {
@@ -24,31 +32,31 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
 
     /**
      * Tax constructor.
-     * @param \Magento\Tax\Model\Config $taxConfig
-     * @param \Magento\Tax\Api\TaxCalculationInterface $taxCalculationService
-     * @param \Magento\Tax\Api\Data\QuoteDetailsInterfaceFactory $quoteDetailsDataObjectFactory
-     * @param \Magento\Tax\Api\Data\QuoteDetailsItemInterfaceFactory $quoteDetailsItemDataObjectFactory
-     * @param \Magento\Tax\Api\Data\TaxClassKeyInterfaceFactory $taxClassKeyDataObjectFactory
+     * @param Config $taxConfig
+     * @param TaxCalculationInterface $taxCalculationService
+     * @param QuoteDetailsInterfaceFactory $quoteDetailsDataObjectFactory
+     * @param QuoteDetailsItemInterfaceFactory $quoteDetailsItemDataObjectFactory
+     * @param TaxClassKeyInterfaceFactory $taxClassKeyDataObjectFactory
      * @param CustomerAddressFactory $customerAddressFactory
      * @param CustomerAddressRegionFactory $customerAddressRegionFactory
-     * @param \Magento\Tax\Helper\Data $taxData
+     * @param Data $taxData
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        \Magento\Tax\Model\Config $taxConfig,
-        \Magento\Tax\Api\TaxCalculationInterface $taxCalculationService,
-        \Magento\Tax\Api\Data\QuoteDetailsInterfaceFactory $quoteDetailsDataObjectFactory,
-        \Magento\Tax\Api\Data\QuoteDetailsItemInterfaceFactory $quoteDetailsItemDataObjectFactory,
-        \Magento\Tax\Api\Data\TaxClassKeyInterfaceFactory $taxClassKeyDataObjectFactory,
+        Config $taxConfig,
+        TaxCalculationInterface $taxCalculationService,
+        QuoteDetailsInterfaceFactory $quoteDetailsDataObjectFactory,
+        QuoteDetailsItemInterfaceFactory $quoteDetailsItemDataObjectFactory,
+        TaxClassKeyInterfaceFactory $taxClassKeyDataObjectFactory,
         CustomerAddressFactory $customerAddressFactory,
         CustomerAddressRegionFactory $customerAddressRegionFactory,
-        \Magento\Tax\Helper\Data $taxData,
+        Data $taxData,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper
     ) {
         $this->setCode('tax');
-        $this->basketHelper = $basketHelper;
+        $this->basketHelper  = $basketHelper;
         $this->loyaltyHelper = $loyaltyHelper;
         parent::__construct(
             $taxConfig,
@@ -66,15 +74,15 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
      * Custom Collect tax totals for quote address
      */
     /**
-     * @param \Magento\Quote\Model\Quote $quote
+     * @param Quote $quote
      * @param ShippingAssignmentInterface $shippingAssignment
-     * @param Address\Total $total
+     * @param Total $total
      * @return $this|\Magento\Tax\Model\Sales\Total\Quote\Tax
      */
     public function collect(
-        \Magento\Quote\Model\Quote $quote,
+        Quote $quote,
         ShippingAssignmentInterface $shippingAssignment,
-        Address\Total $total
+        Total $total
     ) {
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
@@ -85,12 +93,12 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
     }
 
     /**
-     * @param \Magento\Quote\Model\Quote $quote
-     * @param \Magento\Quote\Model\Quote\Address\Total $total
+     * @param Quote $quote
+     * @param Total $total
      *
      * @return array|null
      */
-    public function fetch(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total)
+    public function fetch(Quote $quote, Total $total)
     {
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (!empty($basketData)) {
@@ -100,7 +108,7 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         }
         $result = null;
         $result = [
-            'code' => $this->getCode(),
+            'code'  => $this->getCode(),
             'title' => __('Tax (Inclusive Total)'),
             'value' => $taxAmount,
         ];

@@ -3,29 +3,32 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Sales\Block\Items\AbstractItems;
 
 /**
  * Class Items
  * @package Ls\Customer\Block\Order
  */
-class Items extends \Magento\Sales\Block\Items\AbstractItems
+class Items extends AbstractItems
 {
     /**
      * Core registry
      *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     public $coreRegistry = null;
 
     /**
      * Items constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
+     * @param Context $context
+     * @param Registry $registry
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\Registry $registry,
+        Context $context,
+        Registry $registry,
         array $data = []
     ) {
         $this->coreRegistry = $registry;

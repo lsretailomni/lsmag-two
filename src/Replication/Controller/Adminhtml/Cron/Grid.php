@@ -2,11 +2,15 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Cron;
 
+use Exception;
 use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\ObjectManagerInterface;
+use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -43,20 +47,20 @@ class Grid extends Action
         Logger $logger
     ) {
         $this->resultPageFactory = $resultPageFactory;
-        $this->objectManager = $objectManager;
-        $this->logger = $logger;
+        $this->objectManager     = $objectManager;
+        $this->logger            = $logger;
         parent::__construct($context);
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
+     * @return ResponseInterface|ResultInterface|Page
      */
     public function execute()
     {
         try {
             $resultPage = $this->resultPageFactory->create();
             $resultPage->getConfig()->getTitle()->prepend(__('Cron Listing '));
-            $jobUrl = $this->_request->getParam('joburl');
+            $jobUrl  = $this->_request->getParam('joburl');
             $jobName = $this->_request->getParam('jobname');
             if ($jobUrl != "") {
                 // @codingStandardsIgnoreStart
@@ -82,7 +86,7 @@ class Grid extends Action
             } else {
                 return $resultPage;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
     }

@@ -13,6 +13,7 @@ use \Ls\Replication\Setup\UpgradeSchema\AbstractUpgradeSchema;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
+use ReflectionException;
 use Symfony\Component\Filesystem\Filesystem;
 use Zend\Code\Reflection\ClassReflection;
 
@@ -34,10 +35,11 @@ class UpgradeSchema implements UpgradeSchemaInterface
     ) {
         $this->replicationHelper = $replicationHelper;
     }
+
     /**
      * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {

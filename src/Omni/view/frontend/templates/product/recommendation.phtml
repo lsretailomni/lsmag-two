@@ -1,15 +1,18 @@
 <?php
-/** @var \Ls\Omni\Block\Product\View\Recommend $block */
+/** @var Recommend $block */
+
+use \Ls\Omni\Block\Product\View\Recommend;
+
 if ($block->isEnabled()) {
     $currentProductSku = $block->getProductBySku();
-    $ajaxUrl = $block->getAjaxUrl();
+    $ajaxUrl           = $block->getAjaxUrl();
     ?>
     <div id="lsRecommendation">
         <div class="ls-loader">
             <img src="<?= /* @escapeNotVerified */
             $block->getViewFileUrl('images/loader-1.gif') ?>"
                  alt="<?= /* @escapeNotVerified */
-                    __('Loading...') ?>">
+                 __('Loading...') ?>">
             <br/>
             <div><?php echo __('Loading recommended products for you...'); ?></div>
         </div>
@@ -23,5 +26,6 @@ if ($block->isEnabled()) {
                 }
             }
         }
+
     </script>
 <?php } ?>

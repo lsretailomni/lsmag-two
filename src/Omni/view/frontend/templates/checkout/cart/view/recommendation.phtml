@@ -1,6 +1,10 @@
 <?php
-/** @var \Ls\Omni\Block\Product\Recommend $block */
-$mode = 'grid';
+/** @var Recommend $block */
+
+use \Ls\Omni\Block\Product\Recommend;
+use Magento\Catalog\Api\Data\ProductInterface;
+
+$mode  = 'grid';
 $title = __('Recommended Products for you');
 if ($items = $block->getProductRecommendationforCart()) : ?>
     <div class="block">
@@ -13,7 +17,7 @@ if ($items = $block->getProductRecommendationforCart()) : ?>
                 <ol class="product-items widget-viewed-grid">
                     <?php $iterator = 1; ?>
                     <div id="mp-list-items-lsrecommend" class="owl-carousel owl-theme">
-                        <?php /** @var \Magento\Catalog\Api\Data\ProductInterface $block */ ?>
+                        <?php /** @var ProductInterface $block */ ?>
                         <?php foreach ($items as $_item) : ?>
                             <?php echo ($iterator++ == 1) ? '<li class="product-item product-slider"">' : '</li><li class="product-item product-slider"">' ?>
                             <div class="slider-product-item-info">
@@ -44,7 +48,7 @@ if ($items = $block->getProductRecommendationforCart()) : ?>
                                                 <?php else : ?>
                                                     <?php
                                                     $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
-                                                    $postData = $postDataHelper->getPostData(
+                                                    $postData       = $postDataHelper->getPostData(
                                                         $block->getAddToCartUrl($_item),
                                                         ['product' => $_item->getEntityId()]
                                                     )

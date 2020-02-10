@@ -36,7 +36,6 @@ class CronTabGenerator
 
         $cronminute = 1;
 
-
         foreach ($metadata->getOperations() as $operation_name => $operation) {
             if ($cronminute >= 59) {
                 $cronminute = 1;
@@ -45,8 +44,11 @@ class CronTabGenerator
 
             if (strpos($operation_name, 'ReplEcomm') !== false) {
                 $jobName = $metadata->getReplicationOperationByName($operation->getName())->getJobName();
-                $jobId   = strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2',
-                    str_replace('Task', '', $jobName)));
+                $jobId   = strtolower(preg_replace(
+                    ['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'],
+                    '$1_$2',
+                    str_replace('Task', '', $jobName)
+                ));
 
                 // Only unique JOB ID will be added inside crontab.xml
                 if (!in_array($jobName, $jobNames)) {

@@ -4,9 +4,9 @@ define([
     'uiComponent',
     'Ls_Omni/js/action/get-gift-card-balance',
     'mage/translate',
-], function ($, ko, Component,getGiftCardBalanceAction,$t) {
+], function ($, ko, Component, getGiftCardBalanceAction, $t) {
     'use strict';
-    var giftCardBalance= ko.observable(null);
+    var giftCardBalance = ko.observable(null);
     var giftCardExpiryDate = ko.observable(null);
     var errorMessages = ko.observable(null);
     return Component.extend({
@@ -20,11 +20,11 @@ define([
             formDataArray.forEach(function (entry) {
                 giftCardData[entry.name] = entry.value;
             });
-            if($(form).validation()
+            if ($(form).validation()
                 && $(form).validation('isValid')
             ) {
-               getGiftCardBalanceAction(giftCardData,giftCardBalance,giftCardExpiryDate,errorMessages).always(function() {
-               });
+                getGiftCardBalanceAction(giftCardData, giftCardBalance, giftCardExpiryDate, errorMessages).always(function () {
+                });
             }
         },
         getGiftCardBalance: function () {

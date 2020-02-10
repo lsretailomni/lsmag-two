@@ -2,8 +2,12 @@
 
 namespace Ls\Customer\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class LogoutObserver
@@ -11,44 +15,44 @@ use \Ls\Omni\Helper\ContactHelper;
  */
 class LogoutObserver implements ObserverInterface
 {
-    /** @var ContactHelper  */
+    /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var \Psr\Log\LoggerInterface  */
+    /** @var LoggerInterface */
     private $logger;
 
-    /** @var \Magento\Customer\Model\Session\Proxy  */
+    /** @var Proxy */
     private $customerSession;
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var LSR @var */
     private $lsr;
 
     /**
      * LogoutObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param LoggerInterface $logger
+     * @param Proxy $customerSession
      */
     public function __construct(
         ContactHelper $contactHelper,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Ls\Core\Model\LSR $LSR
+        LoggerInterface $logger,
+        Proxy $customerSession,
+        LSR $LSR
     ) {
-        $this->contactHelper = $contactHelper;
-        $this->logger = $logger;
+        $this->contactHelper   = $contactHelper;
+        $this->logger          = $logger;
         $this->customerSession = $customerSession;
-        $this->lsr  =   $LSR;
+        $this->lsr             = $LSR;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return $this
      */
     // @codingStandardsIgnoreStart
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
-        $options=[];
+        $options = [];
         $this->customerSession->destroy($options);
         return $this;
     }

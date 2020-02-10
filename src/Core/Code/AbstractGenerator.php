@@ -36,10 +36,9 @@ DISCLAIMER;
 
     public function __construct()
     {
-
         $this->file = new FileGenerator();
         $this->file->setDocBlock(DocBlockGenerator::fromArray(['shortdescription' => $this->disclaimer]));
-        $this->class = new ClassGenerator();
+        $this->class       = new ClassGenerator();
         $this->case_helper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
         $this->file->setClass($this->class);
     }
@@ -96,11 +95,10 @@ DISCLAIMER;
         $flags = [PropertyGenerator::FLAG_PROTECTED],
         $options = []
     ) {
-
-        $pascal_name = key_exists('pascal_name', $options)
+        $pascal_name    = key_exists('pascal_name', $options)
             ? $options ['pascal_name']
             : ucfirst($this->case_helper->toCamelCase($name));
-        $variable_name = key_exists('variable_name', $options)
+        $variable_name  = key_exists('variable_name', $options)
             ? $options ['variable_name']
             : strtolower($this->case_helper->toSnakeCase($name));
         $variable_field = key_exists('variable_field', $options) ? $options ['variable_field'] : $variable_name;
@@ -114,8 +112,12 @@ DISCLAIMER;
         $set_method->setParameter(ParameterGenerator::fromArray(['name' => $variable_name]));
 
         $get_method->setDocBlock(DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$type])]]));
-        $set_method->setDocBlock(DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag($variable_name, $type),
-            new Tag\ReturnTag(['$this'])]]));
+        $set_method->setDocBlock(DocBlockGenerator::fromArray([
+            'tags' => [
+                new Tag\ParamTag($variable_name, $type),
+                new Tag\ReturnTag(['$this'])
+            ]
+        ]));
         if (key_exists('abstract', $options)) {
             $get_method->setAbstract(true);
             $set_method->setAbstract(true);
@@ -123,38 +125,49 @@ DISCLAIMER;
 
         if (!key_exists('abstract', $options) && !key_exists('interface', $options)) {
             if (key_exists('model', $options)) {
-// set & get methods for a magento model
-                $set_method->setBody(<<<CODE
+                // set & get methods for a magento model
+                $set_method->setBody(
+                    <<<CODE
 \$this->setData( '$variable_field', \$$variable_name );
 \$this->$variable_field = \$$variable_name;
 \$this->setDataChanges( TRUE );
 return \$this;
 CODE
                 );
-                $get_method->setBody(<<<CODE
+                $get_method->setBody(
+                    <<<CODE
 return \$this->getData( '$variable_field' );
 CODE
                 );
             } else {
-// set & get methods for everything else
-                $set_method->setBody(<<<CODE
+                // set & get methods for everything else
+                $set_method->setBody(
+                    <<<CODE
 \$this->$variable_field = \$$variable_name;
 return \$this;
 CODE
                 );
-                $get_method->setBody(<<<CODE
+                $get_method->setBody(
+                    <<<CODE
 return \$this->$variable_field;
 CODE
                 );
             }
         }
 
-        $property_comment = DocBlockGenerator::fromArray(['tags' => [new Tag\PropertyTag(
-            $variable_name,
-            [$type]
-        )]]);
-        $property = PropertyGenerator::fromArray(['name' => $variable_name, 'flags' => $flags,
-            'docblock' => $property_comment]);
+        $property_comment = DocBlockGenerator::fromArray([
+            'tags' => [
+                new Tag\PropertyTag(
+                    $variable_name,
+                    [$type]
+                )
+            ]
+        ]);
+        $property         = PropertyGenerator::fromArray([
+            'name'     => $variable_name,
+            'flags'    => $flags,
+            'docblock' => $property_comment
+        ]);
 
         $this->class->addPropertyFromGenerator($property);
         $this->class->addMethodFromGenerator($set_method);

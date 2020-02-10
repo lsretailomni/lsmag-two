@@ -2,15 +2,20 @@
 
 namespace Ls\Omni\Controller\Adminhtml\System\Config;
 
+use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Client\Ecommerce\Operation\ReplEcommHierarchy;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Service as OmniService;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Psr\Log\LoggerInterface;
 
@@ -50,23 +55,23 @@ class LoadHierarchy extends Action
         LoggerInterface $logger
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->lsr = $lsr;
-        $this->logger = $logger;
+        $this->lsr               = $lsr;
+        $this->logger            = $logger;
         parent::__construct($context);
     }
 
     /**
      * Collect relations data
      *
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
      */
     public function execute()
     {
         $option_array = [];
         try {
-            $baseUrl = $this->getRequest()->getParam('baseUrl');
-            $storeId = $this->getRequest()->getParam('storeId');
-            $lsKey   = $this->getRequest()->getParam('lsKey');
+            $baseUrl     = $this->getRequest()->getParam('baseUrl');
+            $storeId     = $this->getRequest()->getParam('storeId');
+            $lsKey       = $this->getRequest()->getParam('lsKey');
             $hierarchies = $this->getHierarchy($baseUrl, $storeId, $lsKey);
             if (!empty($hierarchies)) {
                 $option_array = [['value' => '', 'label' => __('Please select your hierarchy code')]];
@@ -76,10 +81,10 @@ class LoadHierarchy extends Action
             } else {
                 $option_array = [['value' => '', 'label' => __('No hierarchy code found for the selected store')]];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->critical($e);
         }
-        /** @var \Magento\Framework\Controller\Result\Json $result */
+        /** @var Json $result */
         $result = $this->resultJsonFactory->create();
         return $result->setData(['success' => true, 'hierarchy' => $option_array]);
     }
@@ -88,16 +93,16 @@ class LoadHierarchy extends Action
      * @param $baseUrl
      * @param $storeId
      * @param $lsKey
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyResponse|\Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy[]|\Ls\Omni\Client\ResponseInterface
+     * @return array|ReplEcommHierarchyResponse|ReplHierarchy[]|ResponseInterface
      */
     public function getHierarchy($baseUrl, $storeId, $lsKey)
     {
         if ($this->lsr->validateBaseUrl($baseUrl) && $storeId != "") {
             //@codingStandardsIgnoreStart
             $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
-            $url = OmniService::getUrl($service_type, $baseUrl);
-            $client = new OmniClient($url, $service_type);
-            $request = new ReplEcommHierarchy();
+            $url          = OmniService::getUrl($service_type, $baseUrl);
+            $client       = new OmniClient($url, $service_type);
+            $request      = new ReplEcommHierarchy();
             $request->setClient($client);
             $request->setToken($lsKey);
             $client->setClassmap($request->getClassMap());

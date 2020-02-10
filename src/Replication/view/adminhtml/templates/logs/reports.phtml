@@ -1,5 +1,8 @@
 <?php
-/** @var \Ls\Replication\Block\Adminhtml\Logs\Report $block */
+/** @var Report $block */
+
+use \Ls\Replication\Block\Adminhtml\Logs\Report;
+
 $displayLogData = $block->getLogData();
 $logFileName    = $block->getQueryUrlData();
 ?>
@@ -29,14 +32,14 @@ $logFileName    = $block->getQueryUrlData();
           class="form-control"><?php echo $displayLogData; ?></textarea>
 
 <script type="text/javascript">
-	require(['jquery'], function($){
-		$(document).ready(function() {
-			$('#log_filename').on('change', function() {
-				var filename = $('#log_filename').val();
-				if(filename != '') {
-					document.logs.submit();
-				}
-			});
-		});
-	});
+    require(['jquery'], function ($) {
+        $(document).ready(function () {
+            $('#log_filename').on('change', function () {
+                var filename = $('#log_filename').val();
+                if (filename != '') {
+                    document.logs.submit();
+                }
+            });
+        });
+    });
 </script>

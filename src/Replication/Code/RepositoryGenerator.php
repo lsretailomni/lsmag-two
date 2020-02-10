@@ -27,7 +27,7 @@ use Zend\Code\Generator\PropertyGenerator;
 class RepositoryGenerator extends AbstractGenerator
 {
     /** @var string */
-    static public $namespace = 'Ls\\Replication\\Model';
+    public static $namespace = 'Ls\\Replication\\Model';
 
     /** @var ReplicationOperation */
     protected $operation;
@@ -163,7 +163,8 @@ class RepositoryGenerator extends AbstractGenerator
             new ParameterGenerator('result_factory', $this->operation->getSearchFactory())
         ]);
 
-        $method->setBody(<<<CODE
+        $method->setBody(
+            <<<CODE
 \$this->object_factory = \$object_factory;
 \$this->collection_factory = \$collection_factory;
 \$this->result_factory = \$result_factory;
@@ -181,7 +182,8 @@ CODE
         $method = new MethodGenerator();
         $method->setName('getList');
         $method->setParameters([new ParameterGenerator('criteria', SearchCriteriaInterface::class)]);
-        $method->setBody(<<<CODE
+        $method->setBody(
+            <<<CODE
 /** @var SearchResultInterface \$results */
 /** @noinspection PhpUndefinedMethodInspection */
 \$results = \$this->result_factory->create();
@@ -224,7 +226,6 @@ return \$results;
 CODE
         );
 
-
         return $method;
     }
 
@@ -236,7 +237,8 @@ CODE
         $method = new MethodGenerator();
         $method->setName('save');
         $method->setParameters([new ParameterGenerator('object', $this->operation->getInterfaceName())]);
-        $method->setBody(<<<CODE
+        $method->setBody(
+            <<<CODE
 try {
     \$object->save();
 } catch ( Exception \$e ) {
@@ -258,7 +260,8 @@ CODE
         $method = new MethodGenerator();
         $method->setName('getById');
         $method->setParameters([new ParameterGenerator('id')]);
-        $method->setBody(<<<CODE
+        $method->setBody(
+            <<<CODE
 \$object = \$this->object_factory->create();
 \$object->load( \$id );
 if ( ! \$object->getId() ) {
@@ -280,7 +283,8 @@ CODE
         $method = new MethodGenerator();
         $method->setName('delete');
         $method->setParameters([new ParameterGenerator('object', $this->operation->getInterfaceName())]);
-        $method->setBody(<<<CODE
+        $method->setBody(
+            <<<CODE
 try {
     \$object->delete();
 } catch ( Exception \$e) {

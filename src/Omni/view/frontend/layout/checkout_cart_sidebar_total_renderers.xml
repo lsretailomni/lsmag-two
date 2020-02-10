@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="minicart">
             <arguments>
@@ -12,9 +13,13 @@
                                         <item name="subtotal" xsi:type="array">
                                             <item name="children" xsi:type="array">
                                                 <item name="subtotal.totals" xsi:type="array">
-                                                    <item name="component" xsi:type="string">Magento_Checkout/js/view/checkout/minicart/subtotal/totals</item>
+                                                    <item name="component" xsi:type="string">
+                                                        Magento_Checkout/js/view/checkout/minicart/subtotal/totals
+                                                    </item>
                                                     <item name="config" xsi:type="array">
-                                                        <item name="template" xsi:type="string">Ls_Omni/minicart/subtotal/totals</item>
+                                                        <item name="template" xsi:type="string">
+                                                            Ls_Omni/minicart/subtotal/totals
+                                                        </item>
                                                     </item>
                                                 </item>
                                             </item>

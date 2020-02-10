@@ -2,19 +2,34 @@
 
 namespace Ls\Omni\Model\Payment;
 
-use Magento\Payment\Model\MethodInterface;
-use Magento\Quote\Api\Data\PaymentMethodInterface;
-use Magento\Framework\DataObject;
-use Magento\Payment\Model\InfoInterface;
-use Magento\Payment\Observer\AbstractDataAssignObserver;
-use Magento\Sales\Model\Order\Payment;
 use Magento\Directory\Helper\Data as DirectoryHelper;
+use Magento\Framework\Api\AttributeValueFactory;
+use Magento\Framework\Api\ExtensionAttributesFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Model\AbstractExtensibleModel;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Registry;
+use Magento\Payment\Block\Form;
+use Magento\Payment\Block\Info;
+use Magento\Payment\Helper\Data;
+use Magento\Payment\Model\InfoInterface;
+use Magento\Payment\Model\Method\Logger;
+use Magento\Payment\Model\MethodInterface;
+use Magento\Payment\Observer\AbstractDataAssignObserver;
+use Magento\Quote\Api\Data\CartInterface;
+use Magento\Quote\Api\Data\PaymentMethodInterface;
+use Magento\Sales\Model\Order\Payment;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class PayStore
  * @package Ls\Omni\Model\Payment
  */
-class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implements
+class PayStore extends AbstractExtensibleModel implements
     MethodInterface,
     PaymentMethodInterface
 {
@@ -35,12 +50,12 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
     /**
      * @var string
      */
-    public $formBlockType = \Magento\Payment\Block\Form::class;
+    public $formBlockType = Form::class;
 
     /**
      * @var string
      */
-    public $infoBlockType = \Magento\Payment\Block\Info::class;
+    public $infoBlockType = Info::class;
 
     /**
      * @var bool
@@ -127,14 +142,14 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
     public $canCancelInvoice = false;
 
     /**
-     * @var \Magento\Payment\Helper\Data
+     * @var Data
      */
     public $paymentData;
 
     /**
      * Core store config
      *
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     public $scopeConfig;
 
@@ -155,30 +170,30 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
 
     /**
      * PayStore constructor.
-     * @param \Magento\Framework\Model\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory
-     * @param \Magento\Framework\Api\AttributeValueFactory $customAttributeFactory
-     * @param \Magento\Payment\Helper\Data $paymentData
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param Context $context
+     * @param Registry $registry
+     * @param ExtensionAttributesFactory $extensionFactory
+     * @param AttributeValueFactory $customAttributeFactory
+     * @param Data $paymentData
+     * @param ScopeConfigInterface $scopeConfig
      * @param DataObject $dataObject
-     * @param \Magento\Payment\Model\Method\Logger $logger
-     * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
-     * @param \Magento\Framework\Data\Collection\AbstractDb|null $resourceCollection
+     * @param Logger $logger
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
      * @param array $data
      * @param DirectoryHelper|null $directory
      */
     public function __construct(
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory,
-        \Magento\Framework\Api\AttributeValueFactory $customAttributeFactory,
-        \Magento\Payment\Helper\Data $paymentData,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        Context $context,
+        Registry $registry,
+        ExtensionAttributesFactory $extensionFactory,
+        AttributeValueFactory $customAttributeFactory,
+        Data $paymentData,
+        ScopeConfigInterface $scopeConfig,
         DataObject $dataObject,
-        \Magento\Payment\Model\Method\Logger $logger,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        Logger $logger,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
         array $data = [],
         DirectoryHelper $directory = null
     ) {
@@ -193,9 +208,9 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
         );
         $this->paymentData = $paymentData;
         $this->scopeConfig = $scopeConfig;
-        $this->dataObject = $dataObject;
-        $this->logger = $logger;
-        $this->directory = $directory;
+        $this->dataObject  = $dataObject;
+        $this->logger      = $logger;
+        $this->directory   = $directory;
         $this->initializeData($data);
     }
 
@@ -361,7 +376,7 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
     /**
      * @param string $country
      * @return bool
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function canUseForCountry($country)
     {
@@ -435,7 +450,7 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
 
     /**
      * @return $this|MethodInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function validate()
     {
@@ -542,7 +557,7 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
 
     /**
      * @return mixed|string
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function getTitle()
     {
@@ -563,7 +578,7 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
             $storeId = $this->getStore();
         }
         $path = 'payment/' . $this->getCode() . '/' . $field;
-        return $this->scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId);
+        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
@@ -576,8 +591,8 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
             'payment_method_assign_data',
             [
                 AbstractDataAssignObserver::METHOD_CODE => $this,
-                AbstractDataAssignObserver::MODEL_CODE => $this->getInfoInstance(),
-                AbstractDataAssignObserver::DATA_CODE => $data
+                AbstractDataAssignObserver::MODEL_CODE  => $this->getInfoInstance(),
+                AbstractDataAssignObserver::DATA_CODE   => $data
             ]
         );
 
@@ -585,11 +600,11 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
     }
 
     /**
-     * @param \Magento\Quote\Api\Data\CartInterface|null $quote
+     * @param CartInterface|null $quote
      * @return bool|mixed
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
-    public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
+    public function isAvailable(CartInterface $quote = null)
     {
         if (!$this->isActive($quote ? $quote->getStoreId() : null)) {
             return false;
@@ -602,9 +617,9 @@ class PayStore extends \Magento\Framework\Model\AbstractExtensibleModel implemen
         $this->_eventManager->dispatch(
             'payment_method_is_active',
             [
-                'result' => $checkResult,
+                'result'          => $checkResult,
                 'method_instance' => $this,
-                'quote' => $quote
+                'quote'           => $quote
             ]
         );
 

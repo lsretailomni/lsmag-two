@@ -21,9 +21,9 @@ class Client extends ZendSoapClient
     public $type;
     /** @var array */
     public $soap_options = [
-        'cache_wsdl' => WSDL_CACHE_NONE,
+        'cache_wsdl'   => WSDL_CACHE_NONE,
         'soap_version' => SOAP_1_1,
-        'features' => SOAP_SINGLE_ELEMENT_ARRAYS
+        'features'     => SOAP_SINGLE_ELEMENT_ARRAYS
     ];
 
     /**
@@ -36,7 +36,7 @@ class Client extends ZendSoapClient
 
         parent::__construct($uri->toString(), array_merge($this->soap_options));
 
-        $this->URL = $uri;
+        $this->URL  = $uri;
         $this->type = $type;
     }
 
@@ -51,7 +51,7 @@ class Client extends ZendSoapClient
         $xml = new DomDocument('1.0');
         $xml->loadXML($response->getBody());
         $xml->preserveWhiteSpace = false;
-        $xml->formatOutput = true;
+        $xml->formatOutput       = true;
 
         return $xml;
     }

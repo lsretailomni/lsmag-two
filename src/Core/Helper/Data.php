@@ -32,7 +32,7 @@ class Data extends AbstractHelper
         StoreManagerInterface $storeManager
     ) {
         $this->object_manager = $object_manager;
-        $this->store_manager = $storeManager;
+        $this->store_manager  = $storeManager;
         parent::__construct($context);
     }
 

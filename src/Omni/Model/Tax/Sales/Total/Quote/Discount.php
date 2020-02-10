@@ -2,36 +2,46 @@
 
 namespace Ls\Omni\Model\Tax\Sales\Total\Quote;
 
+use Exception;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Quote\Api\Data\ShippingAssignmentInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Address\Total;
+use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
+use Magento\SalesRule\Model\Validator;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Discount
  * @package Ls\Omni\Model\Tax\Sales\Total\Quote
  */
-class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
+class Discount extends AbstractTotal
 {
     /**
      * Discount calculation object
      *
-     * @var \Magento\SalesRule\Model\Validator
+     * @var Validator
      */
     public $calculator;
 
     /**
      * Core event manager proxy
      *
-     * @var \Magento\Framework\Event\ManagerInterface
+     * @var ManagerInterface
      */
     public $eventManager = null;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     public $storeManager;
 
     /**
-     * @var \Magento\Framework\Pricing\PriceCurrencyInterface
+     * @var PriceCurrencyInterface
      */
     public $priceCurrency;
 
@@ -45,51 +55,51 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
      */
     public $loyaltyHelper;
 
-    /** @var \Magento\Checkout\Model\Session\Proxy $checkoutSession */
+    /** @var Proxy $checkoutSession */
     public $checkoutSession;
 
     /**
      * Discount constructor.
-     * @param \Magento\Framework\Event\ManagerInterface $eventManager
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\SalesRule\Model\Validator $validator
-     * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
+     * @param ManagerInterface $eventManager
+     * @param StoreManagerInterface $storeManager
+     * @param Validator $validator
+     * @param PriceCurrencyInterface $priceCurrency
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param Proxy $checkoutSession
      */
     public function __construct(
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\SalesRule\Model\Validator $validator,
-        \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
+        ManagerInterface $eventManager,
+        StoreManagerInterface $storeManager,
+        Validator $validator,
+        PriceCurrencyInterface $priceCurrency,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession
+        Proxy $checkoutSession
     ) {
         $this->setCode('discount');
-        $this->eventManager = $eventManager;
-        $this->calculator = $validator;
-        $this->storeManager = $storeManager;
-        $this->priceCurrency = $priceCurrency;
-        $this->basketHelper = $basketHelper;
-        $this->loyaltyHelper = $loyaltyHelper;
+        $this->eventManager    = $eventManager;
+        $this->calculator      = $validator;
+        $this->storeManager    = $storeManager;
+        $this->priceCurrency   = $priceCurrency;
+        $this->basketHelper    = $basketHelper;
+        $this->loyaltyHelper   = $loyaltyHelper;
         $this->checkoutSession = $checkoutSession;
     }
 
     /**
-     * @param \Magento\Quote\Model\Quote $quote
-     * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
-     * @param \Magento\Quote\Model\Quote\Address\Total $total
-     * @return $this|\Magento\Quote\Model\Quote\Address\Total\AbstractTotal
-     * @throws \Exception
+     * @param Quote $quote
+     * @param ShippingAssignmentInterface $shippingAssignment
+     * @param Total $total
+     * @return $this|AbstractTotal
+     * @throws Exception
      */
     public function collect(
-        \Magento\Quote\Model\Quote $quote,
-        \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
-        \Magento\Quote\Model\Quote\Address\Total $total
+        Quote $quote,
+        ShippingAssignmentInterface $shippingAssignment,
+        Total $total
     ) {
-        $discountAmount = $this->getTotalDiscount($quote);
+        $discountAmount  = $this->getTotalDiscount($quote);
         $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
         if ($discountAmount < 0) {
             $total->addTotalAmount('discount', $discountAmount);
@@ -103,19 +113,19 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
     }
 
     /**
-     * @param \Magento\Quote\Model\Quote $quote
-     * @param \Magento\Quote\Model\Quote\Address\Total $total
+     * @param Quote $quote
+     * @param Total $total
      * @return array|null
-     * @throws \Exception
+     * @throws Exception
      */
-    public function fetch(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total)
+    public function fetch(Quote $quote, Total $total)
     {
         $result = null;
         $amount = $this->getTotalDiscount($quote);
-        $title = __('Discount');
+        $title  = __('Discount');
         if ($amount < 0) {
             $result = [
-                'code' => $this->getCode(),
+                'code'  => $this->getCode(),
                 'title' => $title,
                 'value' => $amount
             ];
@@ -133,9 +143,9 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
     }
 
     /**
-     * @param \Magento\Quote\Model\Quote\Address\Total $total
+     * @param Total $total
      */
-    public function clearValues(\Magento\Quote\Model\Quote\Address\Total $total)
+    public function clearValues(Total $total)
     {
         $total->setTotalAmount('subtotal', 0);
         $total->setBaseTotalAmount('subtotal', 0);
@@ -156,7 +166,7 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
      */
     public function getTotalDiscount($quote)
     {
-        $amount = 0;
+        $amount     = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $amount = -$basketData->getTotalDiscount();
@@ -170,10 +180,10 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
      */
     public function getGiftCardLoyaltyDiscount($quote)
     {
-        $amount = 0;
+        $amount     = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
-            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $giftCardAmount = $quote->getLsGiftCardAmountUsed();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);

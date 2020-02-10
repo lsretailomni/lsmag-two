@@ -69,9 +69,9 @@ class OrderHelper extends AbstractHelper
         CheckoutSessionProxy $checkoutSession
     ) {
         parent::__construct($context);
-        $this->order = $order;
-        $this->basketHelper = $basketHelper;
-        $this->loyaltyHelper = $loyaltyHelper;
+        $this->order           = $order;
+        $this->basketHelper    = $basketHelper;
+        $this->loyaltyHelper   = $loyaltyHelper;
         $this->orderRepository = $orderRepository;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
@@ -96,15 +96,15 @@ class OrderHelper extends AbstractHelper
     public function prepareOrder(Model\Order $order, Entity\Order $oneListCalculateResponse)
     {
         try {
-            $isInline = true;
-            $storeId = $this->basketHelper->getDefaultWebStore();
+            $isInline      = true;
+            $storeId       = $this->basketHelper->getDefaultWebStore();
             $customerEmail = $order->getCustomerEmail();
-            $customerName = $order->getShippingAddress()->getFirstname() .
+            $customerName  = $order->getShippingAddress()->getFirstname() .
                 ' ' . $order->getShippingAddress()->getLastname();
-            $mobileNumber = $order->getShippingAddress()->getTelephone();
+            $mobileNumber  = $order->getShippingAddress()->getTelephone();
             if ($this->customerSession->isLoggedIn()) {
                 $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-                $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+                $cardId    = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
             } else {
                 $contactId = $cardId = '';
             }
@@ -113,7 +113,7 @@ class OrderHelper extends AbstractHelper
             $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
             /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
             $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
-            $pointDiscount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $pointDiscount           = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $order->setCouponCode($this->checkoutSession->getCouponCode());
             $oneListCalculateResponse
                 ->setId($order->getIncrementId())
@@ -195,7 +195,7 @@ class OrderHelper extends AbstractHelper
         $response = null;
         // @codingStandardsIgnoreLine
         $operation = new Operation\OrderCreate();
-        $response = $operation->execute($request);
+        $response  = $operation->execute($request);
 
         // @codingStandardsIgnoreLine
         return $response ? $response->getResult() : $response;
@@ -238,12 +238,12 @@ class OrderHelper extends AbstractHelper
      */
     public function setOrderPayments(Model\Order $order, $cardId)
     {
-        $transId = $order->getPayment()->getLastTransId();
-        $ccType = $order->getPayment()->getCcType();
-        $cardNumber = $order->getPayment()->getCcLast4();
-        $paidAmount = $order->getPayment()->getAmountPaid();
+        $transId          = $order->getPayment()->getLastTransId();
+        $ccType           = $order->getPayment()->getCcType();
+        $cardNumber       = $order->getPayment()->getCcLast4();
+        $paidAmount       = $order->getPayment()->getAmountPaid();
         $authorizedAmount = $order->getPayment()->getAmountAuthorized();
-        $preApprovedDate = date('Y-m-d', strtotime('+1 years'));
+        $preApprovedDate  = date('Y-m-d', strtotime('+1 years'));
 
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
@@ -333,12 +333,12 @@ class OrderHelper extends AbstractHelper
     public function getCurrentCustomerOrderHistory()
     {
         $response = null;
-        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId   = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         if ($cardId == null) {
             return $response;
         }
         // @codingStandardsIgnoreStart
-        $request = new Operation\SalesEntriesGetByCardId();
+        $request      = new Operation\SalesEntriesGetByCardId();
         $orderHistory = new Entity\SalesEntriesGetByCardId();
         // @codingStandardsIgnoreEnd
         $orderHistory->setCardId($cardId);
@@ -361,7 +361,7 @@ class OrderHelper extends AbstractHelper
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\SalesEntryGet();
-        $order = new Entity\SalesEntryGet();
+        $order   = new Entity\SalesEntryGet();
         $order->setEntryId($docId);
         $order->setType($type);
         // @codingStandardsIgnoreEnd
@@ -379,7 +379,7 @@ class OrderHelper extends AbstractHelper
      */
     public function isAuthorizedForOrder($order)
     {
-        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         $orderCardId = $order->getCardId();
         if ($cardId == $orderCardId) {
             return true;

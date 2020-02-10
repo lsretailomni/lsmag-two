@@ -16,7 +16,7 @@ use Zend\Code\Generator\ParameterGenerator;
 class SearchInterfaceGenerator extends AbstractGenerator
 {
     /** @var string */
-    static public $namespace = "Ls\\Replication\\Api\\Data";
+    public static $namespace = "Ls\\Replication\\Api\\Data";
 
     /** @var ReplicationOperation */
     protected $operation;
@@ -28,7 +28,6 @@ class SearchInterfaceGenerator extends AbstractGenerator
      */
     public function __construct(ReplicationOperation $operation)
     {
-
         parent::__construct();
         $this->class = new InterfaceGenerator();
         $this->file->setClass($this->class);

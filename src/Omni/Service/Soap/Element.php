@@ -34,8 +34,8 @@ class Element
      */
     public function __construct($name, $type, $definition = null)
     {
-        $this->name = $name;
-        $this->type = $type;
+        $this->name       = $name;
+        $this->type       = $type;
         $this->definition = $definition;
     }
 

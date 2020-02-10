@@ -3,6 +3,7 @@
 namespace Ls\Omni\Model\Creditmemo\Total;
 
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Creditmemo\Total\AbstractTotal;
 
 /**
@@ -33,10 +34,10 @@ class GiftCardLoyaltyPoints extends AbstractTotal
     }
 
     /**
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @param Creditmemo $creditmemo
      * @return $this|AbstractTotal
      */
-    public function collect(\Magento\Sales\Model\Order\Creditmemo $creditmemo)
+    public function collect(Creditmemo $creditmemo)
     {
         $creditmemo->setLsPointsSpent(0);
         $creditmemo->setLsGiftCardAmountUsed(0);
@@ -54,8 +55,8 @@ class GiftCardLoyaltyPoints extends AbstractTotal
         $giftCardNo = $creditmemo->getOrder()->getLsGiftCardNo();
         $creditmemo->setLsGiftCardNo($giftCardNo);
 
-        $pointsSpent *= $this->loyaltyHelper->getPointRate();
-        $grandTotalAmount=$creditmemo->getOrder()->getGrandTotal()
+        $pointsSpent          *= $this->loyaltyHelper->getPointRate();
+        $grandTotalAmount     = $creditmemo->getOrder()->getGrandTotal()
             - $creditmemo->getOrder()->getShippingAmount() - $creditmemo->getOrder()->getTaxAmount();
         $baseGrandTotalAmount = $creditmemo->getOrder()->getBaseGrandTotal()
             - $creditmemo->getOrder()->getShippingAmount() - $creditmemo->getOrder()->getTaxAmount();

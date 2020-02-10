@@ -1,4 +1,3 @@
-
 define([
     'Magento_Checkout/js/model/quote',
     'jquery'
@@ -8,7 +7,7 @@ define([
     return function (Component) {
         return Component.extend({
             validateShippingInformation: function () {
-                if( quote.shippingMethod().carrier_code == 'clickandcollect') {
+                if (quote.shippingMethod().carrier_code == 'clickandcollect') {
                     var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
                     // if ($('#pickup-date').val() == '' || (stores.totalRecords > 1 && $('#pickup-store').val() == '')) {
                     if (stores.totalRecords > 1 && $('#pickup-store').val() == '') {

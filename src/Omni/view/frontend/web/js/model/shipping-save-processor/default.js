@@ -1,4 +1,3 @@
-
 define(
     [
         'jquery',
@@ -39,7 +38,7 @@ define(
                         billing_address: quote.billingAddress(),
                         shipping_method_code: quote.shippingMethod().method_code,
                         shipping_carrier_code: quote.shippingMethod().carrier_code,
-                        extension_attributes:{
+                        extension_attributes: {
                             pickup_store: $('#pickup-store').val()
                             // pickup_date: $('#pickup-date').val()
                         }

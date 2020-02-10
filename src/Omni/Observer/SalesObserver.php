@@ -14,12 +14,12 @@ use Magento\Framework\Event\ObserverInterface;
 class SalesObserver implements ObserverInterface
 {
     /**
-     * @var \Ls\Omni\Helper\BasketHelper
+     * @var BasketHelper
      */
     private $basketHelper;
 
     /**
-     * @var \Ls\Omni\Helper\LoyaltyHelper
+     * @var LoyaltyHelper
      */
     private $loyaltyHelper;
 
@@ -32,7 +32,7 @@ class SalesObserver implements ObserverInterface
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper
     ) {
-        $this->basketHelper = $basketHelper;
+        $this->basketHelper  = $basketHelper;
         $this->loyaltyHelper = $loyaltyHelper;
     }
 
@@ -41,15 +41,15 @@ class SalesObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $event = $observer->getEvent();
-        $quote = $event->getQuote();
+        $event              = $observer->getEvent();
+        $quote              = $event->getQuote();
         $shippingAssignment = $event->getShippingAssignment();
-        $addressType = $shippingAssignment->getShipping()->getAddress()->getAddressType();
-        $total = $event->getTotal();
+        $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
+        $total              = $event->getTotal();
 
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (!empty($basketData)) {
-            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $giftCardAmount = $quote->getLsGiftCardAmountUsed();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);

@@ -5,7 +5,7 @@ define(['jquery'], function ($) {
 
         window.google_maps_loaded = function () {
             google_maps_loaded_def.resolve(google.maps);
-        }
+        };
         if (typeof window.checkoutConfig !== 'undefined') {
             var key = window.checkoutConfig.shipping.select_store.maps_api_key;
         } else {

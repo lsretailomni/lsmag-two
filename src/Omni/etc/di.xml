@@ -61,6 +61,7 @@
 
     <!-- To stop magento for reculating tax on custom price. -->
     <type name="Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector">
-        <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector" sortOrder="1"/>
+        <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector"
+                sortOrder="1"/>
     </type>
 </config>
