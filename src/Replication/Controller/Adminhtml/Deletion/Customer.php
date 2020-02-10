@@ -2,6 +2,7 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
+use Exception;
 use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -61,7 +62,7 @@ class Customer extends Action
         Context $context
     ) {
         $this->resource = $resource;
-        $this->logger = $logger;
+        $this->logger   = $logger;
         parent::__construct($context);
     }
 
@@ -79,7 +80,7 @@ class Customer extends Action
             $tableName = $connection->getTableName($customerTable);
             try {
                 $connection->truncateTable($tableName);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }

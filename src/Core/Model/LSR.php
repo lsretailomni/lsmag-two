@@ -131,7 +131,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SUCCESS_CRON_ATTRIBUTES_VALUE = 'ls_mag/replication/success_sync_attributes_value';
 
     // execute time for sync attributes value
-    const LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE  = 'ls_mag/replication/last_execute_repl_attributes_value_sync';
+    const LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE = 'ls_mag/replication/last_execute_repl_attributes_value_sync';
 
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
@@ -296,7 +296,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //Coupon Code Message
     const LS_STORES_OPENING_HOURS_FORMAT = 'ls_mag/ls_stores/timeformat';
-    
+
     //LS New account reset password default password
     const LS_RESETPASSWORD_DEFAULT = 'Admin123@';
 
@@ -329,16 +329,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
-     * @param TypeListInterface $cacheTypeList
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig
     ) {
-        $this->scopeConfig   = $scopeConfig;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
-     * Note : Incase of notDefault we have to pass the StoreID
+     * Note : In case of notDefault we have to pass the StoreID
      * in the variable of notDefault variable.
      * @param $path
      * @param bool $notDefault

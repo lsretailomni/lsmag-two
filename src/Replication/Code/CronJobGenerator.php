@@ -3,15 +3,16 @@
 
 namespace Ls\Replication\Code;
 
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Core\Helper\Data as LsHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Cron\AbstractReplicationTask;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use \Ls\Replication\Logger\Logger;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 
@@ -28,7 +29,7 @@ class CronJobGenerator extends AbstractGenerator
     /**
      * CronJobGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(ReplicationOperation $operation)
     {

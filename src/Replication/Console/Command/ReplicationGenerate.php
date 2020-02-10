@@ -85,7 +85,7 @@ class ReplicationGenerate extends OmniCommand
         $this->metadata = $client->getMetadata(true);
         $this->system   = !!$this->input->getOption(self::SYSTEM);
         $this->cron     = !!$this->input->getOption(self::CRON);
-        $this->loader   = new ClassLoader;
+        $this->loader   = new ClassLoader();
     }
 
     public function configure()
@@ -105,16 +105,16 @@ class ReplicationGenerate extends OmniCommand
      * execute() method, you set the code to execute by passing
      * a Closure to the setCode() method.
      *
-     * @return int|null null or 0 if everything went fine, or an error code
-     *
-     * @throws LogicException When this abstract method is not implemented
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return void null or 0 if everything went fine, or an error code
      *
      * @see setCode()
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         /**
-         * Create Necessory paths if not exists
+         * Create Necessary paths if not exists
          */
         $this->createPathIfNotExist();
 
@@ -132,7 +132,6 @@ class ReplicationGenerate extends OmniCommand
      */
     private function createPathIfNotExist()
     {
-
         $replicationBasePath = $this->dirReader->getModuleDir('', 'Ls_Replication');
 
         // For Replication API Data,
@@ -173,7 +172,6 @@ class ReplicationGenerate extends OmniCommand
      */
     private function processOperation(Operation $operation)
     {
-
         $replication_operation = $this->metadata->getReplicationOperationByName($operation->getName());
 
         try {

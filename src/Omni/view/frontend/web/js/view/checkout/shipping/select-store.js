@@ -1,4 +1,3 @@
-
 define([
     'uiComponent',
     'ko',
@@ -23,17 +22,17 @@ define([
         isMapVisible: ko.observable(false),
 
         initialize: function () {
-        	var self = this;
-        	quote.shippingMethod.subscribe(function () {
-            	if (quote.shippingMethod().carrier_code == 'clickandcollect') {
-            		self.isClickAndCollect(true);
+            var self = this;
+            quote.shippingMethod.subscribe(function () {
+                if (quote.shippingMethod().carrier_code == 'clickandcollect') {
+                    self.isClickAndCollect(true);
                     var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
-                    if(stores.totalRecords > 1) {
+                    if (stores.totalRecords > 1) {
                         self.isSelectStoreVisible(true);
                     }
-            	} else {
-            		self.isClickAndCollect(false);
-            	}
+                } else {
+                    self.isClickAndCollect(false);
+                }
             });
 
             this.isMapVisible.subscribe(function (value) {
@@ -71,21 +70,21 @@ define([
                 }
             };
 
-            $('body').on('click', '.apply-store', function() {
+            $('body').on('click', '.apply-store', function () {
                 $('#pickup-store').val($(this).data('id'));
                 $('#selected-store-msg')
                     .show()
                     .find('span')
-                    .text( $(this).data('name') );
+                    .text($(this).data('name'));
                 self.isMapVisible(false);
-                if(popUp2){
+                if (popUp2) {
                     popUp2.closeModal();
                 }
             });
 
-            $('body').on('click', '.check-store-availability', function() {
+            $('body').on('click', '.check-store-availability', function () {
                 var selectedStore = $(this).data('id');
-                var controllerUrl = self.getBaseUrl("omni/stock/store"+"?storeid="+selectedStore);
+                var controllerUrl = self.getBaseUrl("omni/stock/store" + "?storeid=" + selectedStore);
                 var backUrl = self.getBaseUrl("checkout/cart");
                 var translatedText = $t('cart');
                 var flag = "1";
@@ -93,38 +92,38 @@ define([
                     url: controllerUrl,
                     type: 'POST',
                     dataType: "json",
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.custom-loader').append('<p>loading...</p>');
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.custom-loader').html("");
                     },
                     success: function (data) {
                         $(".stock-remarks ul").html("");
                         $(".stock-remarks > strong").remove();
                         if (data.stocks) {
-                            for(var i in data.stocks){
+                            for (var i in data.stocks) {
                                 var o = data.stocks[i];
-                                if(o.status === "0" && flag === "1"){
+                                if (o.status === "0" && flag === "1") {
                                     flag = "0";
                                 }
-                                if(o.status === "0" ){
-                                    $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:red'>"+ o.display +"</span></li>")
-                                }else{
-                                    $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:green'>"+ o.display +"</span></li>")
+                                if (o.status === "0") {
+                                    $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:red'>" + o.display + "</span></li>")
+                                } else {
+                                    $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:green'>" + o.display + "</span></li>")
                                 }
 
                             }
-                            if(flag ==="1"){
+                            if (flag === "1") {
                                 $('.apply-store').removeAttr('disabled');
-                            }else{
-                                $(".stock-remarks").append("<strong>"+data.remarks+" <a href='"+backUrl+"'>"+translatedText+"</a></strong>");
+                            } else {
+                                $(".stock-remarks").append("<strong>" + data.remarks + " <a href='" + backUrl + "'>" + translatedText + "</a></strong>");
                             }
                         } else {
-                            $(".stock-remarks").append("<strong>"+data.remarks+"</strong>");
+                            $(".stock-remarks").append("<strong>" + data.remarks + "</strong>");
                         }
                     },
-                    error: function(xhr) { // if error occured
+                    error: function (xhr) { // if error occured
                         console.log(xhr.statusText + xhr.responseText);
                     }
                 });
@@ -137,7 +136,7 @@ define([
         showMap: function () {
             this.isMapVisible(true);
         },
-        getBaseUrl: function(param) {
+        getBaseUrl: function (param) {
             return url.build(param);
         },
         getPopUp: function () {
@@ -145,29 +144,29 @@ define([
                 buttons;
 
             if (!popUp1) {
-                MapLoader.done($.proxy(map.initMap, this)).fail(function() {
+                MapLoader.done($.proxy(map.initMap, this)).fail(function () {
                     console.error("ERROR: Google maps library failed to load");
                 });
                 popUp1 = modal({
-                	'responsive': true,
-                	'innerScroll': true,
+                    'responsive': true,
+                    'innerScroll': true,
                     'buttons': [],
                     'type': 'slide',
                     'modalClass': 'mc_cac_map',
-                	closed: function() {
-            			self.isMapVisible(false)
-            		}
+                    closed: function () {
+                        self.isMapVisible(false)
+                    }
                 }, $('#map-canvas'));
             }
             return popUp1;
         },
-        getStores: function(){
+        getStores: function () {
             var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
             return stores.items;
         },
-        check : function(data, event){
+        check: function (data, event) {
             console.log(event);
-            var a="", query="", txtValue="";
+            var a = "", query = "", txtValue = "";
             query = $(event.currentTarget).val().toUpperCase();
             a = $(".cnc-stores-dropdown .block-dropdown a");
             for (var i = 0; i < a.length; i++) {
@@ -179,7 +178,7 @@ define([
                 }
             }
         },
-        clicked : function(store){
+        clicked: function (store) {
             if (!popUp2) {
                 var options = {
                     type: 'popup',

@@ -2,14 +2,18 @@
 
 namespace Ls\Customer\Controller\Loyalty;
 
+use Magento\Customer\Controller\AbstractAccount;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Memberoffers
  * @package Ls\Customer\Controller\Loyalty
  */
-class Memberoffers extends \Magento\Customer\Controller\AbstractAccount
+class Memberoffers extends AbstractAccount
 {
     /** @var PageFactory */
     public $resultPageFactory;
@@ -27,11 +31,11 @@ class Memberoffers extends \Magento\Customer\Controller\AbstractAccount
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
+     * @return ResponseInterface|ResultInterface|Page
      */
     public function execute()
     {
-        /** @var \Magento\Framework\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->set(
             __('Member Offers')

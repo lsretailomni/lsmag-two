@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Webhooks\Logger;
 
 /**

@@ -1,15 +1,11 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 /**
- * @var $block \Ls\Omni\Block\Info\Loyaltypoints
+ * @var $block Loyaltypoints
  * //TODO optimize it according to our requirement
  */
-?>
+
+use \Ls\Omni\Block\Info\Loyaltypoints; ?>
 <dl class="payment-method checkmemo">
     <dt class="title"><?= $block->escapeHtml($block->getMethod()->getTitle()) ?></dt>
     <?php if ($block->getInfo()->getAdditionalInformation()): ?>
@@ -23,7 +19,8 @@
             <dd class="content">
                 <strong><?= $block->escapeHtml(__('Send Check to')) ?></strong>
                 <address class="loyaltypoints mailing address">
-                    <?= /* @noEscape */ nl2br($block->escapeHtml($block->getMailingAddress())) ?>
+                    <?= /* @noEscape */
+                    nl2br($block->escapeHtml($block->getMailingAddress())) ?>
                 </address>
             </dd>
         <?php endif; ?>

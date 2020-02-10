@@ -1,16 +1,12 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-?>
-<?php /** @var $block \Ls\Customer\Block\Order\Recent */ ?>
+use \Ls\Customer\Block\Order\Recent;
+use Magento\Framework\Data\Helper\PostHelper; ?>
+<?php /** @var $block Recent */ ?>
 <div class="block block-dashboard-orders">
     <?php
     $_orders = $block->getOrderHistory();
-    $count = count($_orders);
+    $count   = count($_orders);
     ?>
     <div class="block-title order">
         <strong><?= /* @escapeNotVerified */
@@ -79,7 +75,7 @@
                                     if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getEntityId())) : ?>
                                         <a href="#" data-post='<?php /* @escapeNotVerified */
                                         echo
-                                        $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+                                        $this->helper(PostHelper::class)
                                             ->getPostData($block->getReorderUrl($magOrder))
                                         ?>' class="action order">
                                             <span><?= /* @escapeNotVerified */

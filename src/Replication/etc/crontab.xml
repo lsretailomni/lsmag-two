@@ -65,7 +65,8 @@
         <job name="repl_price_status_reset" instance="Ls\Replication\Cron\ResetReplPriceStatusTask" method="execute">
             <schedule>0 0 * * *</schedule>
         </job>
-        <job name="repl_discount_status_reset" instance="Ls\Replication\Cron\ResetReplDiscountStatusTask" method="execute">
+        <job name="repl_discount_status_reset" instance="Ls\Replication\Cron\ResetReplDiscountStatusTask"
+             method="execute">
             <schedule>0 0 * * *</schedule>
         </job>
     </group>

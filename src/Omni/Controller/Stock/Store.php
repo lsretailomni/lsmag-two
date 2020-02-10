@@ -2,11 +2,19 @@
 
 namespace Ls\Omni\Controller\Stock;
 
+use \Ls\Omni\Helper\StockHelper;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\Result\JsonFactory;
+
 /**
  * Class Store
  * @package Ls\Omni\Controller\Stock
  */
-class Store extends \Magento\Framework\App\Action\Action
+class Store extends Action
 {
     /**
      * @var \Magento\Framework\App\Request\Http\Proxy
@@ -14,41 +22,41 @@ class Store extends \Magento\Framework\App\Action\Action
     public $request;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     public $scopeConfig;
 
     /**
-     * @var \Magento\Checkout\Model\Session\Proxy
+     * @var Proxy
      */
     public $session;
 
     /**
-     * @var \Ls\Omni\Helper\StockHelper
+     * @var StockHelper
      */
     public $stockHelper;
 
     /**
-     * @var \Magento\Framework\Controller\Result\JsonFactory
+     * @var JsonFactory
      */
     public $resultJsonFactory;
 
     /**
      * Store constructor.
-     * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param Context $context
+     * @param JsonFactory $resultJsonFactory
      * @param \Magento\Framework\App\Request\Http\Proxy $request
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Checkout\Model\Session\Proxy $session
-     * @param \Ls\Omni\Helper\StockHelper $stockHelper
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Proxy $session
+     * @param StockHelper $stockHelper
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        Context $context,
+        JsonFactory $resultJsonFactory,
         \Magento\Framework\App\Request\Http\Proxy $request,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Checkout\Model\Session\Proxy $session,
-        \Ls\Omni\Helper\StockHelper $stockHelper
+        ScopeConfigInterface $scopeConfig,
+        Proxy $session,
+        StockHelper $stockHelper
     ) {
         $this->request           = $request;
         $this->scopeConfig       = $scopeConfig;
@@ -60,7 +68,7 @@ class Store extends \Magento\Framework\App\Action\Action
 
     /**
      * execute
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
      */
     public function execute()
     {

@@ -25,8 +25,8 @@ class Entity
      */
     public function __construct($name, $element, $definition)
     {
-        $this->name = $name;
-        $this->element = $element;
+        $this->name       = $name;
+        $this->element    = $element;
         $this->definition = $definition;
     }
 

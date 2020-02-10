@@ -3,10 +3,10 @@ define([
     'jquery',
     'mage/storage',
     'mage/translate'
-], function (ko, $ , storage, $t) {
+], function (ko, $, storage, $t) {
     'use strict';
 
-    return function (giftCardData,giftCardBalance,giftCardExpiryDate,errorMessages) {
+    return function (giftCardData, giftCardBalance, giftCardExpiryDate, errorMessages) {
         var url = 'omni/ajax/CheckGiftCardBalance';
         giftCardBalance();
         giftCardExpiryDate();

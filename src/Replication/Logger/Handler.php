@@ -2,11 +2,13 @@
 
 namespace Ls\Replication\Logger;
 
+use Magento\Framework\Logger\Handler\Base;
+
 /**
  * Class Handler
  * @package Ls\Replication\Logger
  */
-class Handler extends \Magento\Framework\Logger\Handler\Base
+class Handler extends Base
 {
     /**
      * Logging level

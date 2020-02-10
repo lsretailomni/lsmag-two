@@ -2,8 +2,19 @@
 
 namespace Ls\Omni\Block\Product\View;
 
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem;
 use \Ls\Omni\Helper\LSRecommend as LSRecommendHelper;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Block\Product\Context;
+use Magento\Catalog\Helper\Product;
+use Magento\Catalog\Model\ProductTypes\ConfigInterface;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Json\EncoderInterface;
+use Magento\Framework\Locale\FormatInterface;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\Stdlib\StringUtils;
 
 /**
  * Class Recommend
@@ -11,7 +22,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
  */
 class Recommend extends \Magento\Catalog\Block\Product\View
 {
-    /** @var \Ls\Core\Model\LSR */
+    /** @var LSR */
     public $lsr;
 
     /** @var LSRecommendHelper */
@@ -19,36 +30,36 @@ class Recommend extends \Magento\Catalog\Block\Product\View
 
     /**
      * Recommend constructor.
-     * @param \Ls\Core\Model\LSR $lsr
-     * @param \Magento\Catalog\Block\Product\Context $context
+     * @param LSR $lsr
+     * @param Context $context
      * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
-     * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
-     * @param \Magento\Framework\Stdlib\StringUtils $string
-     * @param \Magento\Catalog\Helper\Product $productHelper
-     * @param \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig
-     * @param \Magento\Framework\Locale\FormatInterface $localeFormat
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param EncoderInterface $jsonEncoder
+     * @param StringUtils $string
+     * @param Product $productHelper
+     * @param ConfigInterface $productTypeConfig
+     * @param FormatInterface $localeFormat
+     * @param Proxy $customerSession
      * @param ProductRepositoryInterface $productRepository
-     * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
+     * @param PriceCurrencyInterface $priceCurrency
      * @param LSRecommendHelper $LS_RecommendHelper
      * @param array $data
      */
     public function __construct(
-        \Ls\Core\Model\LSR $lsr,
-        \Magento\Catalog\Block\Product\Context $context,
+        LSR $lsr,
+        Context $context,
         \Magento\Framework\Url\EncoderInterface $urlEncoder,
-        \Magento\Framework\Json\EncoderInterface $jsonEncoder,
-        \Magento\Framework\Stdlib\StringUtils $string,
-        \Magento\Catalog\Helper\Product $productHelper,
-        \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig,
-        \Magento\Framework\Locale\FormatInterface $localeFormat,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        EncoderInterface $jsonEncoder,
+        StringUtils $string,
+        Product $productHelper,
+        ConfigInterface $productTypeConfig,
+        FormatInterface $localeFormat,
+        Proxy $customerSession,
         ProductRepositoryInterface $productRepository,
-        \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
+        PriceCurrencyInterface $priceCurrency,
         LSRecommendHelper $LS_RecommendHelper,
         array $data = []
     ) {
-        $this->lsr = $lsr;
+        $this->lsr         = $lsr;
         $this->LSRecommend = $LS_RecommendHelper;
         parent::__construct(
             $context,
@@ -99,7 +110,7 @@ class Recommend extends \Magento\Catalog\Block\Product\View
 
     /**
      * @param $productId
-     * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
+     * @return ProductInterface[]|null
      */
     public function getProductRecommendation($productId)
     {
@@ -108,7 +119,7 @@ class Recommend extends \Magento\Catalog\Block\Product\View
             return $response;
         }
         $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productId);
-        if ($recommendedProducts instanceof \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem) {
+        if ($recommendedProducts instanceof ArrayOfRecommendedItem) {
             return $this->LSRecommend->parseProductRecommendation($recommendedProducts);
         }
         return $response;

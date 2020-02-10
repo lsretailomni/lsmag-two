@@ -3,23 +3,23 @@
 namespace Ls\Omni\Code;
 
 use CaseHelper\CaseHelperFactory;
+use Exception;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\Soap\Restriction;
 use MyCLabs\Enum\Enum;
-use Zend\Code\Generator\DocBlock\Tag;
 use Zend\Code\Generator\DocBlockGenerator;
 
 class RestrictionGenerator extends AbstractOmniGenerator
 {
-    /** @var array  */
-    static private $reserved_words = ['new', 'final'];
+    /** @var array */
+    private static $reserved_words = ['new', 'final'];
 
     private $caseHelperFactory;
 
-    /** @var array  */
+    /** @var array */
     public $equivalences = [
-        'decimal' => 'float',
-        'long' => 'int',
+        'decimal'  => 'float',
+        'long'     => 'int',
         'dateTime' => 'string',
     ];
 
@@ -30,7 +30,7 @@ class RestrictionGenerator extends AbstractOmniGenerator
      * RestrictionGenerator constructor.
      * @param Restriction $restriction
      * @param Metadata $metadata
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(Restriction $restriction, Metadata $metadata)
     {
@@ -44,9 +44,8 @@ class RestrictionGenerator extends AbstractOmniGenerator
      * @return string
      */
 
-    function sanitizeConstantValue($name)
+    public function sanitizeConstantValue($name)
     {
-
         if (array_search(strtolower($name), self::$reserved_words) !== false) {
             $name = ucfirst($name);
             $name = "Type$name";
@@ -58,13 +57,13 @@ class RestrictionGenerator extends AbstractOmniGenerator
     /**
      * @return mixed|string
      */
-    function generate()
+    public function generate()
     {
-        $service_folder = ucfirst($this->getServiceType()->getValue());
-        $base_namespace = self::fqn('Ls', 'Omni', 'Client', $service_folder);
+        $service_folder   = ucfirst($this->getServiceType()->getValue());
+        $base_namespace   = self::fqn('Ls', 'Omni', 'Client', $service_folder);
         $entity_namespace = self::fqn($base_namespace, 'Entity', 'Enum');
         $restriction_name = $this->restriction->getName();
-        $enum_class = Enum::class;
+        $enum_class       = Enum::class;
 
         $this->class->setNamespaceName($entity_namespace);
         $this->class->addUse(Enum::class);

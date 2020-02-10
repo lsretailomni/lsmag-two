@@ -1,17 +1,13 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 /**
- * @var $block \Ls\Omni\Block\Info\Loyaltypoints
+ * @var $block Loyaltypoints
  * //TODO optimize it according to our requirement
  */
-?>
+
+use \Ls\Omni\Block\Info\Loyaltypoints; ?>
 <?= $block->escapeHtml($block->getMethod()->getTitle()) ?>
-    {{pdf_row_separator}}
+{{pdf_row_separator}}
 <?php if ($block->getInfo()->getAdditionalInformation()): ?>
     {{pdf_row_separator}}
     <?php if ($block->getPayableTo()): ?>
@@ -21,7 +17,8 @@
     <?php if ($block->getMailingAddress()): ?>
         <?= $block->escapeHtml(__('Send Check to:')) ?>
         {{pdf_row_separator}}
-        <?= /* @noEscape */ nl2br($block->escapeHtml($block->getMailingAddress())) ?>
+        <?= /* @noEscape */
+        nl2br($block->escapeHtml($block->getMailingAddress())) ?>
         {{pdf_row_separator}}
     <?php endif; ?>
 <?php endif; ?>

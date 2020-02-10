@@ -1,15 +1,11 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
+use \Ls\Omni\Block\Product\View\View;
 
-/** @var $block \Ls\Omni\Block\Product\View\View */
+/** @var $block View */
 ?>
 <?php $_product = $block->getProduct(); ?>
-<?php $isEnableCheck = $block->isEnable();?>
+<?php $isEnableCheck = $block->isEnable(); ?>
 <?php $buttonTitle = __('Add to Cart'); ?>
 <?php if ($_product->isSaleable()): ?>
     <div class="box-tocart">
@@ -33,7 +29,7 @@
                 </div>
             <?php endif; ?>
             <div class="actions">
-                <?php if($isEnableCheck){?>
+                <?php if ($isEnableCheck) { ?>
                     <div class="availability-link-container">
                         <a href="javascript:void()" name="checkavailability"
                            class="checkavailability"><?php echo __('Check Availability in Stores') ?></a>
@@ -65,6 +61,7 @@
             "Magento_Catalog/js/validate-product": {}
         }
     }
+
 </script>
 <script type="text/x-magento-init">
     {
@@ -72,4 +69,5 @@
             "lsomni/stock": {}
         }
     }
+
 </script>

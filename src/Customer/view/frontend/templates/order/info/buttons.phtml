@@ -1,16 +1,19 @@
 <?php
 // @codingStandardsIgnoreFile
 /** @var  $block \Ls\Customer\Block\Order\Info */
+
+use Magento\Framework\Data\Helper\PostHelper;
+
 ?>
 <div class="actions">
     <?php $_order = $block->getOrder();
-    $magOrder = $block->getMagOrder();
+    $magOrder     = $block->getMagOrder();
     if (!empty($magOrder)) {
         ?>
         <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getEntityId())) : ?>
             <a href="#" data-post='<?php /* @escapeNotVerified */
             echo
-            $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+            $this->helper(PostHelper::class)
                 ->getPostData($block->getReorderUrl($magOrder))
             ?>' class="action order">
                 <span><?= /* @escapeNotVerified */

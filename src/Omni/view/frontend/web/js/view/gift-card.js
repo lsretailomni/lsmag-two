@@ -7,7 +7,7 @@ define([
     'Ls_Omni/js/action/set-gift-card',
     'Ls_Omni/js/action/cancel-gift-card',
     'mage/translate',
-], function ($, ko, Component, quote,totals, setGiftCardAction, cancelGiftCardAction, $t) {
+], function ($, ko, Component, quote, totals, setGiftCardAction, cancelGiftCardAction, $t) {
     'use strict';
 
     var giftCardAmount = ko.observable(null),
@@ -17,7 +17,6 @@ define([
         isGiftCardApplied;
 
 
-
     if (totals) {
         var giftAmount = totals.getSegment('ls_gift_card_amount_used');
         if (giftAmount) {
@@ -25,12 +24,12 @@ define([
         }
     }
     if (totals) {
-        var giftNo= totals.getSegment('ls_gift_card_no');
+        var giftNo = totals.getSegment('ls_gift_card_no');
         if (giftNo) {
             giftCardNo(giftNo.value);
         }
     }
-    isGiftCardApplied = ko.observable(giftCardNo() != null && giftCardAmount()!=null);
+    isGiftCardApplied = ko.observable(giftCardNo() != null && giftCardAmount() != null);
 
     return Component.extend({
         defaults: {
@@ -38,7 +37,7 @@ define([
         },
 
         giftCardNo: giftCardNo,
-        giftCardAmount:giftCardAmount,
+        giftCardAmount: giftCardAmount,
 
         /**
          * Applied flag
@@ -50,7 +49,7 @@ define([
          */
         applyGiftCard: function () {
             if (this.validateGiftCard()) {
-                setGiftCardAction(giftCardNo(),giftCardAmount(),isGiftCardApplied);
+                setGiftCardAction(giftCardNo(), giftCardAmount(), isGiftCardApplied);
             }
         },
 
@@ -80,11 +79,11 @@ define([
          * Enable or disable GiftCard
          */
         isDisplay: function () {
-           if(window.checkoutConfig.gift_card_enable=="1"){
-               return true;
-           } else {
-               return false;
-           }
+            if (window.checkoutConfig.gift_card_enable == "1") {
+                return true;
+            } else {
+                return false;
+            }
 
         }
     });

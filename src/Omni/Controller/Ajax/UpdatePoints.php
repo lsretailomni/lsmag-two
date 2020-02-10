@@ -2,34 +2,47 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
+use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\Result\Raw;
+use Magento\Framework\Controller\Result\RawFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\Quote;
 
 /**
  * Class UpdatePoints
  * @package Ls\Omni\Controller\Ajax
  */
-class UpdatePoints extends \Magento\Framework\App\Action\Action
+class UpdatePoints extends Action
 {
 
-    /** @var \Magento\Framework\Controller\Result\JsonFactory */
+    /** @var JsonFactory */
     public $resultJsonFactory;
 
-    /** @var \Magento\Framework\Controller\Result\RawFactory */
+    /** @var RawFactory */
     public $resultRawFactory;
 
     /** @var LoyaltyHelper */
     public $loyaltyHelper;
 
     /**
-     * @var \Ls\Omni\Helper\BasketHelper
+     * @var BasketHelper
      */
     public $basketHelper;
 
     /**
-     * @var \Magento\Checkout\Model\Session\Proxy
+     * @var Proxy
      */
     public $checkoutSession;
 
@@ -51,66 +64,66 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
     /**
      * UpdatePoints constructor.
      * @param Context $context
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
+     * @param JsonFactory $resultJsonFactory
+     * @param RawFactory $resultRawFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param LoyaltyHelper $loyaltyHelper
-     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
+     * @param BasketHelper $basketHelper
      * @param Data $data
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+     * @param Proxy $checkoutSession
+     * @param CartRepositoryInterface $cartRepository
      */
     public function __construct(
         Context $context,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-        \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
+        JsonFactory $resultJsonFactory,
+        RawFactory $resultRawFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         LoyaltyHelper $loyaltyHelper,
-        \Ls\Omni\Helper\BasketHelper $basketHelper,
+        BasketHelper $basketHelper,
         Data $data,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+        Proxy $checkoutSession,
+        CartRepositoryInterface $cartRepository
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->resultRawFactory = $resultRawFactory;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->checkoutSession = $checkoutSession;
-        $this->customerSession = $customerSession;
-        $this->cartRepository = $cartRepository;
-        $this->basketHelper = $basketHelper;
-        $this->data=$data;
+        $this->resultRawFactory  = $resultRawFactory;
+        $this->loyaltyHelper     = $loyaltyHelper;
+        $this->checkoutSession   = $checkoutSession;
+        $this->customerSession   = $customerSession;
+        $this->cartRepository    = $cartRepository;
+        $this->basketHelper      = $basketHelper;
+        $this->data              = $data;
     }
 
     /**
-     * @return $this|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @return $this|ResponseInterface|ResultInterface
      */
     public function execute()
     {
         $httpBadRequestCode = 400;
-        /** @var \Magento\Framework\Controller\Result\Raw $resultRaw */
+        /** @var Raw $resultRaw */
         $resultRaw = $this->resultRawFactory->create();
         if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
 
-        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
+        /** @var Json $resultJson */
         $resultJson = $this->resultJsonFactory->create();
         if (!$this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID)) {
             $response = [
-                'error' => 'true',
+                'error'   => 'true',
                 'message' => __('Customer session not found.')
             ];
             return $resultJson->setData($response);
         }
         $base_currency = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
-        $post = $this->getRequest()->getContent();
-        $postData = json_decode($post);
+        $post          = $this->getRequest()->getContent();
+        $postData      = json_decode($post);
         $loyaltyPoints = (int)$postData->loyaltyPoints;
-        $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
+        $isPointValid  = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
         if (!is_numeric($loyaltyPoints) || $loyaltyPoints < 0 || !$isPointValid) {
             $response = [
-                'error' => 'true',
+                'error'   => 'true',
                 'message' => __(
                     'The loyalty points "%1" are not valid.',
                     $loyaltyPoints
@@ -119,9 +132,9 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
             return $resultJson->setData($response);
         }
         try {
-            $cartId = $this->checkoutSession->getQuoteId();
-            $quote = $this->cartRepository->get($cartId);
-            $orderBalance = $this->data->getOrderBalance(
+            $cartId             = $this->checkoutSession->getQuoteId();
+            $quote              = $this->cartRepository->get($cartId);
+            $orderBalance       = $this->data->getOrderBalance(
                 $quote->getLsGiftCardAmountUsed(),
                 0,
                 $this->basketHelper->getBasketSessionValue()
@@ -136,28 +149,28 @@ class UpdatePoints extends \Magento\Framework\App\Action\Action
                 $response = ['success' => 'true'];
             } else {
                 $response = [
-                    'error' => 'true',
+                    'error'   => 'true',
                     'message' => __(
                         'The loyalty points "%1" are not valid.',
                         $loyaltyPoints
                     )
                 ];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = ['error' => 'true', 'message' => $e->getMessage()];
         }
         return $resultJson->setData($response);
     }
 
     /**
-     * @param \Magento\Quote\Model\Quote $quote
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param Quote $quote
      * @return void
+     * @throws LocalizedException
      */
-    protected function validateQuote(\Magento\Quote\Model\Quote $quote)
+    protected function validateQuote(Quote $quote)
     {
         if ($quote->getItemsCount() === 0) {
-            throw new \Magento\Framework\Exception\LocalizedException(
+            throw new LocalizedException(
                 __('Totals calculation is not applicable to empty cart.')
             );
         }

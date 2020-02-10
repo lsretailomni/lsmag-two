@@ -17,7 +17,7 @@
     <type name="Ls\Replication\Logger\Logger">
         <arguments>
             <argument name="name" xsi:type="string">replicationLogHandler</argument>
-            <argument name="handlers"  xsi:type="array">
+            <argument name="handlers" xsi:type="array">
                 <item name="system" xsi:type="object">Ls\Replication\Logger\Handler</item>
             </argument>
         </arguments>

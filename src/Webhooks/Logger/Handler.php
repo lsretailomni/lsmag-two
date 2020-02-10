@@ -2,11 +2,13 @@
 
 namespace Ls\Webhooks\Logger;
 
+use Magento\Framework\Logger\Handler\Base;
+
 /**
  * Class Handler
  * @package Ls\Webhooks\Logger
  */
-class Handler extends \Magento\Framework\Logger\Handler\Base
+class Handler extends Base
 {
     /**
      * Logging level

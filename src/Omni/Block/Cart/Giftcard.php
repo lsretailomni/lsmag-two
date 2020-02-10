@@ -3,12 +3,15 @@
 namespace Ls\Omni\Block\Cart;
 
 use \Ls\Omni\Helper\GiftCardHelper;
+use Magento\Checkout\Block\Cart\AbstractCart;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Giftcard
  * @package Ls\Omni\Block\Cart
  */
-class Giftcard extends \Magento\Checkout\Block\Cart\AbstractCart
+class Giftcard extends AbstractCart
 {
 
     /**
@@ -19,20 +22,20 @@ class Giftcard extends \Magento\Checkout\Block\Cart\AbstractCart
     /**
      * Giftcard constructor.
      * @param GiftCardHelper $giftCardHelper
-     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param Context $context
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param Proxy $checkoutSession
      * @param array $data
      */
     public function __construct(
         GiftCardHelper $giftCardHelper,
-        \Magento\Framework\View\Element\Template\Context $context,
+        Context $context,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
+        Proxy $checkoutSession,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
-        $this->giftCardHelper = $giftCardHelper;
+        $this->giftCardHelper  = $giftCardHelper;
         $this->_isScopePrivate = true;
     }
 

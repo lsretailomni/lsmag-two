@@ -21,10 +21,10 @@ class PointsSpent extends AbstractTotal
     public function fetch(Quote $quote, Total $total)
     {
         $totals = [];
-        $spent = $quote->getLsPointsSpent();
+        $spent  = $quote->getLsPointsSpent();
         if ($spent > 0) {
             $totals[] = [
-                'code' => $this->getCode(),
+                'code'  => $this->getCode(),
                 'title' => __('You are using'),
                 'value' => $spent,
             ];

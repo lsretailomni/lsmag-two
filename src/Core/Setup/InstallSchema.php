@@ -30,10 +30,10 @@ class InstallSchema implements InstallSchemaInterface
          * add column `user` to `cron_schedule`
          */
         $installer->getConnection()->addColumn($installer->getTable('cron_schedule'), 'parameters', [
-            'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            'length' => 100,
+            'type'     => Table::TYPE_TEXT,
+            'length'   => 100,
             'nullable' => true,
-            'comment' => 'Accept parameters from the specific job types'
+            'comment'  => 'Accept parameters from the specific job types'
         ]);
 
         /**
@@ -44,9 +44,9 @@ class InstallSchema implements InstallSchemaInterface
             $installer->getTable('quote'),
             'pickup_date',
             [
-                'type' => 'datetime',
+                'type'     => 'datetime',
                 'nullable' => true,
-                'comment' => 'Pick Up Date',
+                'comment'  => 'Pick Up Date',
             ]
         );
 
@@ -54,9 +54,9 @@ class InstallSchema implements InstallSchemaInterface
             $installer->getTable('quote'),
             'pickup_store',
             [
-                'type' => 'text',
+                'type'     => 'text',
                 'nullable' => true,
-                'comment' => 'Pick Up Store',
+                'comment'  => 'Pick Up Store',
             ]
         );
 
@@ -64,9 +64,9 @@ class InstallSchema implements InstallSchemaInterface
             $installer->getTable('sales_order'),
             'pickup_date',
             [
-                'type' => 'datetime',
+                'type'     => 'datetime',
                 'nullable' => true,
-                'comment' => 'Pick Up Date',
+                'comment'  => 'Pick Up Date',
             ]
         );
 
@@ -74,9 +74,9 @@ class InstallSchema implements InstallSchemaInterface
             $installer->getTable('sales_order'),
             'pickup_store',
             [
-                'type' => 'text',
+                'type'     => 'text',
                 'nullable' => true,
-                'comment' => 'Pick Up Store',
+                'comment'  => 'Pick Up Store',
             ]
         );
 
@@ -84,10 +84,10 @@ class InstallSchema implements InstallSchemaInterface
             $installer->getTable('sales_order'),
             'document_id',
             [
-                'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-                'length' => 255,
+                'type'     => Table::TYPE_TEXT,
+                'length'   => 255,
                 'nullable' => true,
-                'comment' =>'Document Id'
+                'comment'  => 'Document Id'
             ]
         );
 

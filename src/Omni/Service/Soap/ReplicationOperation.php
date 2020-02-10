@@ -1,9 +1,13 @@
 <?php
+
 namespace Ls\Omni\Service\Soap;
 
-use Composer\Autoload\ClassLoader;
 use \Ls\Core\Code\AbstractGenerator;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Module\Dir\Reader;
+use Magento\Framework\ObjectManagerInterface;
 use ReflectionClass;
+use ReflectionProperty;
 
 /**
  * Note  : There are lots of things wrong in this file, all needs to be done according to the Magento coding standards.
@@ -12,7 +16,6 @@ use ReflectionClass;
  * @package Ls\Omni\Service\Soap
  * @
  */
-
 class ReplicationOperation extends Operation
 {
     const BASE_API_NAMESPACE = 'Ls\Replication\Api';
@@ -21,7 +24,7 @@ class ReplicationOperation extends Operation
     const BASE_OMNI_NAMESPACE = 'Ls\Omni\Client\Ecommerce\Entity';
     const BASE_OPERATION_NAMESPACE = 'Ls\Omni\Client\Ecommerce\Operation';
 
-    const KNOWN_RESULT_PROPERTIES = [ 'LastKey', 'MaxKey', 'RecordsRemaining' ];
+    const KNOWN_RESULT_PROPERTIES = ['LastKey', 'MaxKey', 'RecordsRemaining'];
 
     /** @var string */
     public $entity_name;
@@ -29,7 +32,7 @@ class ReplicationOperation extends Operation
     public $base_path;
 
     /**
-     * @param string  $name
+     * @param string $name
      * @param Element $request
      * @param Element $response
      */
@@ -41,7 +44,7 @@ class ReplicationOperation extends Operation
 
         parent::__construct($name, $request, $response);
         $this->entity_name = $this->discoverEntity($response);
-        $this->base_path = $this->discoverBasePath();
+        $this->base_path   = $this->discoverBasePath();
     }
 
     /**
@@ -55,10 +58,10 @@ class ReplicationOperation extends Operation
         $response_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $response->getName());
         // @codingStandardsIgnoreLine
         $response_reflection = new ReflectionClass($response_fqn);
-        $result_docbblock = $response_reflection->getMethod('getResult')->getDocComment();
+        $result_docbblock    = $response_reflection->getMethod('getResult')->getDocComment();
 
         preg_match('/@return\s(:?[\w]+)/', $result_docbblock, $matches);
-        $result_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $matches[ 1 ]);
+        $result_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $matches[1]);
         // @codingStandardsIgnoreLine
         $result_reflection = new ReflectionClass($result_fqn);
 
@@ -71,17 +74,17 @@ class ReplicationOperation extends Operation
         }
         $array_of_docblock = $array_of->getDocComment();
         preg_match('/@property\s(:?[\w]+)\s(:?\$[\w]+)/', $array_of_docblock, $matches);
-        $array_of_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $matches[ 1 ]);
+        $array_of_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $matches[1]);
         // @codingStandardsIgnoreLine
         $array_of_reflection = new ReflectionClass($array_of_fqn);
 
         // DRILL INTO THE MAIN ENTIY
         $array_of_properties = $array_of_reflection->getProperties();
-        /** @var \ReflectionProperty $main_entity */
-        $main_entity = array_pop($array_of_properties);
+        /** @var ReflectionProperty $main_entity */
+        $main_entity          = array_pop($array_of_properties);
         $main_entity_docblock = $main_entity->getDocComment();
         preg_match('/@property\s(:?[\w]+)\[\]\s(:?\$[\w]+)/', $main_entity_docblock, $matches);
-        $main_entity = $matches[ 1 ];
+        $main_entity = $matches[1];
 
         if ($main_entity == 'Item') {
             return 'NavItem';
@@ -91,16 +94,16 @@ class ReplicationOperation extends Operation
     }
 
     /**
-     * @return \Magento\Framework\ObjectManagerInterface
+     * @return ObjectManagerInterface
      */
 
     private function getObjectManager()
     {
-         return \Magento\Framework\App\ObjectManager::getInstance();
+        return ObjectManager::getInstance();
     }
 
     /**
-     * @return \Magento\Framework\Module\Dir\Reader
+     * @return Reader
      */
     private function getDirReader()
     {
@@ -396,7 +399,7 @@ class ReplicationOperation extends Operation
      */
     public function getJobId()
     {
-        return join('_', [ 'replication', $this->getTableName() ]);
+        return join('_', ['replication', $this->getTableName()]);
     }
 
     /**
@@ -412,7 +415,7 @@ class ReplicationOperation extends Operation
      */
     public function getJobName()
     {
-        return $this->getName()."Task";
+        return $this->getName() . "Task";
     }
 
     /**

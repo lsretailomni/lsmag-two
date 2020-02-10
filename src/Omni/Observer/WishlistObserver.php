@@ -2,8 +2,13 @@
 
 namespace Ls\Omni\Observer;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Wishlist\Model\Wishlist;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class CartObserver
@@ -15,54 +20,54 @@ class WishlistObserver implements ObserverInterface
     /** @var BasketHelper */
     private $basketHelper;
 
-    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
+    /** @var Proxy $customerSession */
     private $customerSession;
 
     /**
-     * @var \Ls\Core\Model\LSR
+     * @var LSR
      */
     private $lsr;
 
     /**
-     * @var \Magento\Wishlist\Model\Wishlist
+     * @var Wishlist
      */
     private $wishlist;
 
     /**
      * WishlistObserver constructor.
      * @param BasketHelper $basketHelper
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Ls\Core\Model\LSR $LSR
-     * @param \Magento\Wishlist\Model\Wishlist $wishlist
+     * @param LoggerInterface $logger
+     * @param Proxy $customerSession
+     * @param LSR $LSR
+     * @param Wishlist $wishlist
      */
     public function __construct(
         BasketHelper $basketHelper,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Ls\Core\Model\LSR $LSR,
-        \Magento\Wishlist\Model\Wishlist $wishlist
+        Proxy $customerSession,
+        LSR $LSR,
+        Wishlist $wishlist
     ) {
-        $this->basketHelper = $basketHelper;
+        $this->basketHelper    = $basketHelper;
         $this->customerSession = $customerSession;
-        $this->lsr = $LSR;
-        $this->wishlist = $wishlist;
+        $this->lsr             = $LSR;
+        $this->wishlist        = $wishlist;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return $this
      */
     // @codingStandardsIgnoreLine
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         /*
           * Adding condition to only process if LSR is enabled.
           */
         if ($this->lsr->isLSR()) {
             $customerId = $this->customerSession->getCustomer()->getId();
-            $wishlist = $this->wishlist->loadByCustomerId($customerId)->getItemCollection();
-            $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
-            $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishlist);
+            $wishlist   = $this->wishlist->loadByCustomerId($customerId)->getItemCollection();
+            $oneList    = $this->basketHelper->fetchCurrentCustomerWishlist();
+            $oneList    = $this->basketHelper->addProductToExistingWishlist($oneList, $wishlist);
             $this->basketHelper->updateWishlistAtOmni($oneList);
         }
 

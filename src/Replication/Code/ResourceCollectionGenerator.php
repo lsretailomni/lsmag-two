@@ -18,7 +18,7 @@ use Zend\Code\Generator\MethodGenerator;
 class ResourceCollectionGenerator extends AbstractGenerator
 {
     /** @var string */
-    static public $namespace = 'Ls\\Replication\\Model\\ResourceModel';
+    public static $namespace = 'Ls\\Replication\\Model\\ResourceModel';
 
     /** @var ReplicationOperation */
     protected $operation;
@@ -38,7 +38,6 @@ class ResourceCollectionGenerator extends AbstractGenerator
         $this->fs        = new Filesystem();
     }
 
-
     public function createPath()
     {
         /** @var ClassLoader $loader */
@@ -54,7 +53,6 @@ class ResourceCollectionGenerator extends AbstractGenerator
      */
     public function generate()
     {
-
         $model_class          = $this->operation->getMainEntityFqn();
         $resource_model_class = $this->operation->getResourceModelFqn();
 

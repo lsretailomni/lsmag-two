@@ -1,6 +1,7 @@
 <?php
-/** @var \Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn $block */
-?>
+/** @var DeleteDatabtn $block */
+
+use \Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn; ?>
 <div class="actions actions-validate-vat">
     <div id="validation_result" class="message-validation hidden"></div>
     <button onclick="if(confirm('Are you sure to delete this data?')) window.location.href= document.getElementById('<?= $block->escapeHtmlAttr($block->getHtmlId()) ?>').getAttribute('data-url'); else return false;"

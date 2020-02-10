@@ -1,23 +1,26 @@
 <?php
-/** @var \Ls\Omni\Block\Product\View\Discount\Proactive $block */
+/** @var Proactive $block */
+
+use \Ls\Omni\Block\Product\View\Discount\Proactive;
+
 $currentProductSku = $block->getProductSku();
-$ajaxUrl = $block->getAjaxUrl();
-$isEnabled = $block->isDiscountEnable();
+$ajaxUrl           = $block->getAjaxUrl();
+$isEnabled         = $block->isDiscountEnable();
 
 if ($isEnabled) {
-?>
+    ?>
 
-<div id="ls-discounts">
-    <div class="loader">
-        <img src="<?= /* @escapeNotVerified */
-        $block->getViewFileUrl('images/loader-1.gif') ?>"
-             alt="<?= /* @escapeNotVerified */
-                __('Loading...') ?>">
-        <br/>
-        <div><?php echo __('Loading Product Discounts...'); ?></div>
+    <div id="ls-discounts">
+        <div class="loader">
+            <img src="<?= /* @escapeNotVerified */
+            $block->getViewFileUrl('images/loader-1.gif') ?>"
+                 alt="<?= /* @escapeNotVerified */
+                 __('Loading...') ?>">
+            <br/>
+            <div><?php echo __('Loading Product Discounts...'); ?></div>
+        </div>
     </div>
-</div>
-<script type="text/x-magento-init">
+    <script type="text/x-magento-init">
         {
             "*": {
                 "Ls_Omni/js/view/product/proactive": {
@@ -26,5 +29,6 @@ if ($isEnabled) {
                 }
             }
         }
-</script>
+
+    </script>
 <?php }

@@ -2,8 +2,6 @@
 // @codingStandardsIgnoreFile
 namespace Ls\Omni\Exception;
 
-use Exception;
-
 /**
  * Class NavObjectReferenceNotAnInstanceException
  * @package Ls\Omni\Exception

@@ -1,46 +1,56 @@
 <?php
+
 namespace Ls\Customer\Block\Order;
+
+use \Ls\Omni\Helper\OrderHelper;
+use Magento\Framework\App\DefaultPathInterface;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Html\Link\Current;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Invoice;
 
 /**
  * Class Link
  * @package Ls\Customer\Block\Order
  */
-class Link extends \Magento\Framework\View\Element\Html\Link\Current
+class Link extends Current
 {
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     public $_registry;
 
     /**
-     * @var \Ls\Omni\Helper\OrderHelper
+     * @var OrderHelper
      */
     public $orderHelper;
 
     /**
      * Link constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Framework\App\DefaultPathInterface $defaultPath
-     * @param \Ls\Omni\Helper\OrderHelper $orderHelper
-     * @param \Magento\Framework\Registry $registry
+     * @param Context $context
+     * @param DefaultPathInterface $defaultPath
+     * @param OrderHelper $orderHelper
+     * @param Registry $registry
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\App\DefaultPathInterface $defaultPath,
-        \Ls\Omni\Helper\OrderHelper $orderHelper,
-        \Magento\Framework\Registry $registry,
+        Context $context,
+        DefaultPathInterface $defaultPath,
+        OrderHelper $orderHelper,
+        Registry $registry,
         array $data = []
     ) {
         parent::__construct($context, $defaultPath, $data);
-        $this->_registry = $registry;
+        $this->_registry   = $registry;
         $this->orderHelper = $orderHelper;
     }
 
     /**
      * Retrieve current order model instance
      *
-     * @return \Magento\Sales\Model\Order
+     * @return Order
      */
     private function getOrder()
     {
@@ -50,7 +60,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
     /**
      * Retrieve invoice model instance
      *
-     * @return \Magento\Sales\Model\Order\Invoice
+     * @return Invoice
      */
     public function getMagOrder()
     {
@@ -69,7 +79,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
 
     /**
      * @param $documentId
-     * @return \Magento\Sales\Api\Data\OrderInterface[]
+     * @return OrderInterface[]
      */
     public function getOrderByDocumentId($documentId)
     {
@@ -83,7 +93,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
      */
     protected function _toHtml()
     {
-        $order=$this->getMagOrder();
+        $order = $this->getMagOrder();
         if (!empty($order)) {
             if ($this->getKey() == "Invoices" && !($order->hasInvoices())) {
                 return '';
