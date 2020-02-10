@@ -4,6 +4,7 @@ namespace Ls\Omni\Controller\Ajax;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\CacheHelper;
+use \Ls\Omni\Helper\SessionHelper;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -13,7 +14,7 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Session\SaveHandler;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -44,9 +45,9 @@ class Recommendation extends Action
     public $cacheHelper;
 
     /**
-     * @var SaveHandler
+     * @var SessionHelper
      */
-    public $sessionHandler;
+    public $sessionHelper;
 
     /**
      * Recommendation constructor.
@@ -55,7 +56,7 @@ class Recommendation extends Action
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
      * @param CacheHelper $cacheHelper
-     * @param SaveHandler $sessionHandler
+     * @param SessionHelper $sessionHelper
      */
     public function __construct(
         Context $context,
@@ -63,24 +64,23 @@ class Recommendation extends Action
         JsonFactory $resultJsonFactory,
         RedirectFactory $resultRedirectFactory,
         CacheHelper $cacheHelper,
-        SaveHandler $sessionHandler
+        SessionHelper $sessionHelper
     ) {
         $this->resultPageFactory     = $resultPageFactory;
         $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->cacheHelper           = $cacheHelper;
-        $this->sessionHandler        = $sessionHandler;
+        $this->sessionHelper         = $sessionHelper;
         parent::__construct($context);
     }
 
     /**
      * @return ResponseInterface|Json|Redirect|ResultInterface
+     * @throws FileSystemException
      */
     public function execute()
     {
-        $tmpSessionDir = ini_get("session.save_path");
-        $this->sessionHandler->close();
-        $this->sessionHandler->open($tmpSessionDir, "admin");
+        $this->sessionHelper->newSessionHandler("lsrecommend");
         if (!$this->getRequest()->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');

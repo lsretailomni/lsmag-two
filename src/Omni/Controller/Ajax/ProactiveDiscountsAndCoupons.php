@@ -2,12 +2,15 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
+use \Ls\Omni\Helper\SessionHelper;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\RedirectFactory;
-use Magento\Framework\Session\SaveHandler;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -33,9 +36,9 @@ class ProactiveDiscountsAndCoupons extends Action
     public $resultRedirectFactory;
 
     /**
-     * @var SaveHandler
+     * @var SessionHelper
      */
-    public $sessionHandler;
+    public $sessionHelper;
 
     /**
      * ProactiveDiscountsAndCoupons constructor.
@@ -43,36 +46,29 @@ class ProactiveDiscountsAndCoupons extends Action
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
-     * @param SaveHandler $sessionHandler
+     * @param SessionHelper $sessionHelper
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
         RedirectFactory $resultRedirectFactory,
-        SaveHandler $sessionHandler
+        SessionHelper $sessionHelper
     ) {
         $this->resultPageFactory     = $resultPageFactory;
         $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
-        $this->sessionHandler        = $sessionHandler;
+        $this->sessionHelper         = $sessionHelper;
         parent::__construct($context);
     }
 
     /**
-     * @return Json
+     * @return ResponseInterface|Json|ResultInterface
+     * @throws FileSystemException
      */
     public function execute()
     {
-        $tmpSessionDir = ini_get("session.save_path");
-        $this->sessionHandler->close();
-        $this->sessionHandler->open($tmpSessionDir, "admin");
-        if (!$this->getRequest()->isXmlHttpRequest()) {
-            $resultRedirect = $this->resultRedirectFactory->create();
-            $resultRedirect->setPath('checkout/cart');
-            return $resultRedirect;
-        }
-
+        $this->sessionHelper->newSessionHandler("lsproactivediscounts");
         $result            = $this->resultJsonFactory->create();
         $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');
