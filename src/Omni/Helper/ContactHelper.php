@@ -2,45 +2,81 @@
 
 namespace Ls\Omni\Helper;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Customer\Api\AddressRepositoryInterface;
+use Magento\Customer\Api\CustomerMetadataInterface;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Api\Data\AddressInterfaceFactory;
 use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Customer\Api\Data\CustomerSearchResultsInterface;
+use Magento\Customer\Api\Data\GroupInterfaceFactory;
+use Magento\Customer\Api\Data\RegionInterfaceFactory;
+use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Customer\Model\Address;
+use Magento\Customer\Model\Customer;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\Group;
+use Magento\Customer\Model\ResourceModel\Group\Collection;
+use Magento\Customer\Model\ResourceModel\Group\CollectionFactory;
+use Magento\Directory\Model\Country;
+use Magento\Directory\Model\CountryFactory;
+use Magento\Directory\Model\RegionFactory;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\ExpiredException;
+use Magento\Framework\Exception\State\InvalidTransitionException;
+use Magento\Framework\Phrase;
+use Magento\Framework\Registry;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Wishlist\Model\ResourceModel\Wishlist;
+use Magento\Wishlist\Model\WishlistFactory;
 use Zend_Validate;
 use Zend_Validate_EmailAddress;
+use Zend_Validate_Exception;
 
 /**
  * Class ContactHelper
  * @package Ls\Omni\Helper
  */
-class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
+class ContactHelper extends AbstractHelper
 {
     const SERVICE_TYPE = 'ecommerce';
 
-    /** @var \Magento\Framework\Api\FilterBuilder */
+    /** @var FilterBuilder */
     public $filterBuilder;
 
-    /** @var \Magento\Framework\Api\SearchCriteriaBuilder */
+    /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     public $storeManager;
 
-    /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
+    /** @var CustomerRepositoryInterface */
     public $customerRepository;
 
-    /** @var \Magento\Customer\Api\Data\AddressInterfaceFactory */
+    /** @var AddressInterfaceFactory */
     public $addressFactory;
 
-    /** @var \Magento\Customer\Api\Data\RegionInterfaceFactory */
+    /** @var RegionInterfaceFactory */
     public $regionFactory;
 
-    /** @var \Magento\Customer\Model\CustomerFactory */
+    /** @var CustomerFactory */
     public $customerFactory;
 
-    /** @var \Magento\Customer\Api\AddressRepositoryInterface */
+    /** @var AddressRepositoryInterface */
     public $addressRepository;
 
     /** @var \Magento\Customer\Model\Session\Proxy */
@@ -49,34 +85,34 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var null */
     public $ns = null;
 
-    /** @var \Magento\Directory\Model\CountryFactory */
+    /** @var CountryFactory */
     public $countryFactory;
 
-    /** @var \Magento\Customer\Model\ResourceModel\Group\CollectionFactory */
+    /** @var CollectionFactory */
     public $customerGroupColl;
 
-    /** @var \Magento\Customer\Api\GroupRepositoryInterface */
+    /** @var GroupRepositoryInterface */
     public $groupRepository;
 
-    /** @var \Magento\Customer\Api\Data\GroupInterfaceFactory */
+    /** @var GroupInterfaceFactory */
     public $groupInterfaceFactory;
 
-    /** @var  \Ls\Omni\Helper\BasketHelper */
+    /** @var  BasketHelper */
     public $basketHelper;
 
     /** @var \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel */
     public $customerResourceModel;
 
-    /** @var \Magento\Framework\Registry */
+    /** @var Registry */
     public $registry;
 
-    /** @var \Magento\Checkout\Model\Session\Proxy */
+    /** @var Proxy */
     public $checkoutSession;
 
-    /** @var \Magento\Directory\Model\Country */
+    /** @var Country */
     public $country;
 
-    /** @var \Magento\Directory\Model\RegionFactory */
+    /** @var RegionFactory */
     public $region;
 
     /** @var ItemHelper * */
@@ -97,89 +133,89 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $wishlistResourceModel;
 
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     public $productRepository;
 
     /**
      * ContactHelper constructor.
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Customer\Api\Data\AddressInterfaceFactory $addressFactory
-     * @param \Magento\Customer\Api\Data\RegionInterfaceFactory $regionFactory
-     * @param \Magento\Customer\Api\AddressRepositoryInterface $addressRepository
-     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param Context $context
+     * @param FilterBuilder $filterBuilder
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param StoreManagerInterface $storeManager
+     * @param AddressInterfaceFactory $addressFactory
+     * @param RegionInterfaceFactory $regionFactory
+     * @param AddressRepositoryInterface $addressRepository
+     * @param CustomerFactory $customerFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Directory\Model\CountryFactory $countryFactory
-     * @param \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupColl
-     * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
-     * @param \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory
+     * @param CountryFactory $countryFactory
+     * @param CollectionFactory $customerGroupColl
+     * @param GroupRepositoryInterface $groupRepository
+     * @param GroupInterfaceFactory $groupInterfaceFactory
      * @param BasketHelper $basketHelper
-     * @param \Ls\Omni\Helper\ItemHelper $itemHelper
+     * @param ItemHelper $itemHelper
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Directory\Model\Country $country
-     * @param \Magento\Directory\Model\RegionFactory $region
+     * @param Proxy $checkoutSession
+     * @param Registry $registry
+     * @param Country $country
+     * @param RegionFactory $region
      * @param \Magento\Wishlist\Model\Wishlist $wishlist
-     * @param \Magento\Wishlist\Model\ResourceModel\Wishlist $wishlistResourceModel
-     * @param \Magento\Wishlist\Model\WishlistFactory $wishlistFactory
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param Wishlist $wishlistResourceModel
+     * @param WishlistFactory $wishlistFactory
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Customer\Api\Data\AddressInterfaceFactory $addressFactory,
-        \Magento\Customer\Api\Data\RegionInterfaceFactory $regionFactory,
-        \Magento\Customer\Api\AddressRepositoryInterface $addressRepository,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
+        Context $context,
+        FilterBuilder $filterBuilder,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        CustomerRepositoryInterface $customerRepository,
+        StoreManagerInterface $storeManager,
+        AddressInterfaceFactory $addressFactory,
+        RegionInterfaceFactory $regionFactory,
+        AddressRepositoryInterface $addressRepository,
+        CustomerFactory $customerFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Directory\Model\CountryFactory $countryFactory,
-        \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupColl,
-        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
-        \Magento\Customer\Api\Data\GroupInterfaceFactory $groupInterfaceFactory,
+        CountryFactory $countryFactory,
+        CollectionFactory $customerGroupColl,
+        GroupRepositoryInterface $groupRepository,
+        GroupInterfaceFactory $groupInterfaceFactory,
         BasketHelper $basketHelper,
         ItemHelper $itemHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Framework\Registry $registry,
-        \Magento\Directory\Model\Country $country,
-        \Magento\Directory\Model\RegionFactory $region,
+        Proxy $checkoutSession,
+        Registry $registry,
+        Country $country,
+        RegionFactory $region,
         \Magento\Wishlist\Model\Wishlist $wishlist,
-        \Magento\Wishlist\Model\ResourceModel\Wishlist $wishlistResourceModel,
-        \Magento\Wishlist\Model\WishlistFactory $wishlistFactory,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+        Wishlist $wishlistResourceModel,
+        WishlistFactory $wishlistFactory,
+        ProductRepositoryInterface $productRepository
     ) {
-        $this->filterBuilder = $filterBuilder;
+        $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->storeManager = $storeManager;
-        $this->customerRepository = $customerRepository;
-        $this->addressFactory = $addressFactory;
-        $this->addressRepository = $addressRepository;
-        $this->regionFactory = $regionFactory;
-        $this->customerFactory = $customerFactory;
-        $this->customerSession = $customerSession;
-        $this->countryFactory = $countryFactory;
-        $this->customerGroupColl = $customerGroupColl;
-        $this->groupRepository = $groupRepository;
+        $this->storeManager          = $storeManager;
+        $this->customerRepository    = $customerRepository;
+        $this->addressFactory        = $addressFactory;
+        $this->addressRepository     = $addressRepository;
+        $this->regionFactory         = $regionFactory;
+        $this->customerFactory       = $customerFactory;
+        $this->customerSession       = $customerSession;
+        $this->countryFactory        = $countryFactory;
+        $this->customerGroupColl     = $customerGroupColl;
+        $this->groupRepository       = $groupRepository;
         $this->groupInterfaceFactory = $groupInterfaceFactory;
-        $this->basketHelper = $basketHelper;
-        $this->itemHelper = $itemHelper;
+        $this->basketHelper          = $basketHelper;
+        $this->itemHelper            = $itemHelper;
         $this->customerResourceModel = $customerResourceModel;
-        $this->registry = $registry;
-        $this->checkoutSession = $checkoutSession;
-        $this->country = $country;
-        $this->region = $region;
-        $this->wishlist = $wishlist;
+        $this->registry              = $registry;
+        $this->checkoutSession       = $checkoutSession;
+        $this->country               = $country;
+        $this->region                = $region;
+        $this->wishlist              = $wishlist;
         $this->wishlistResourceModel = $wishlistResourceModel;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->productRepository = $productRepository;
+        $this->wishlistFactory       = $wishlistFactory;
+        $this->productRepository     = $productRepository;
         parent::__construct(
             $context
         );
@@ -188,13 +224,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $email
      * @return Entity\MemberContact[]|null
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws Zend_Validate_Exception
      */
     public function search($email)
     {
-        $is_email = \Zend_Validate::is($email, \Zend_Validate_EmailAddress::class);
+        $is_email = Zend_Validate::is($email, Zend_Validate_EmailAddress::class);
 
         // load customer data from magento customer database based on lsr_username if we didn't get an email
         if (!$is_email) {
@@ -207,13 +243,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             ];
             $this->searchCriteriaBuilder->addFilters($filters);
             $searchCriteria = $this->searchCriteriaBuilder->create();
-            $searchResults = $this->customerRepository->getList($searchCriteria);
+            $searchResults  = $this->customerRepository->getList($searchCriteria);
             if ($searchResults->getTotalCount() == 1) {
-                /** @var \Magento\Customer\Model\Customer $customer */
+                /** @var Customer $customer */
                 $customer = $searchResults->getItems()[0];
                 if ($customer->getId()) {
                     $is_email = true;
-                    $email = $customer->getData('email');
+                    $email    = $customer->getData('email');
                 }
             }
         }
@@ -232,9 +268,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $search->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
 
             try {
-                $response = $request->execute($search);
+                $response    = $request->execute($search);
                 $contact_pos = $response->getContactSearchResult();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
         } else {
@@ -258,9 +294,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $param
      * @return Entity\ArrayOfMemberContact|Entity\MemberContact[]|null
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws Zend_Validate_Exception
      */
     public function searchWithUsernameOrEmail($param)
     {
@@ -276,9 +312,9 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
             $search->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
             try {
-                $response = $request->execute($search);
+                $response    = $request->execute($search);
                 $contact_pos = $response->getContactSearchResult();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
             if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
@@ -300,20 +336,20 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $user
      * @param $pass
-     * @return Entity\LoginWebResponse|Entity\MemberContact|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\LoginWebResponse|Entity\MemberContact|ResponseInterface|null
      */
     public function login($user, $pass)
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\LoginWeb();
-        $login = new Entity\LoginWeb();
+        $login   = new Entity\LoginWeb();
         // @codingStandardsIgnoreEnd
         $login->setUserName($user)
             ->setPassword($pass);
         try {
             $response = $request->execute($login);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getLoginWebResult() : $response;
@@ -322,14 +358,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param Entity\MemberContact $contact
      * @param $password
-     * @return \Magento\Customer\Model\Customer
-     * @throws \Exception
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return Customer
+     * @throws Exception
+     * @throws LocalizedException
      */
     public function createNewCustomerAgainstProvidedInformation($contact, $password)
     {
         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-        $customer = $this->customerFactory->create();
+        $customer  = $this->customerFactory->create();
         $customer->setPassword($password)
             ->setData('website_id', $websiteId)
             ->setData('email', $contact->getEmail())
@@ -359,14 +395,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                     $regionDataFactory = $this->regionFactory->create();
                     $address->setRegion($regionDataFactory->setRegion($regionName));
                     $regionFactory = $this->region->create();
-                    $regionId = $regionFactory->loadByName($regionName, $addressInfo->getCountry());
+                    $regionId      = $regionFactory->loadByName($regionName, $addressInfo->getCountry());
                     if (!empty($regionId->getId())) {
                         $address->setRegionId($regionId->getId());
                     }
                 }
                 try {
                     $this->addressRepository->save($address);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->_logger->error($e->getMessage());
                 }
             }
@@ -385,8 +421,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (strlen($countryName) == 2) {
             return $countryName;
         }
-        $countryName = ucwords(strtolower($countryName));
-        $countryId = 'US';
+        $countryName       = ucwords(strtolower($countryName));
+        $countryId         = 'US';
         $countryCollection = $this->country->getCollection();
         foreach ($countryCollection as $country) {
             if ($countryName == $country->getName()) {
@@ -398,17 +434,17 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param \Magento\Customer\Model\Customer $customer
-     * @return Entity\ContactCreateResponse|Entity\MemberContact|\Ls\Omni\Client\ResponseInterface|null
+     * @param Customer $customer
+     * @return Entity\ContactCreateResponse|Entity\MemberContact|ResponseInterface|null
      */
-    public function contact(\Magento\Customer\Model\Customer $customer)
+    public function contact(Customer $customer)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $alternate_id = 'LSM' . str_pad(md5(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
-        $request = new Operation\ContactCreate();
+        $alternate_id  = 'LSM' . str_pad(md5(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
+        $request       = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
-        $contact = new Entity\MemberContact();
+        $contact       = new Entity\MemberContact();
         // @codingStandardsIgnoreEnd
         $contact->setAlternateId($alternate_id)
             ->setEmail($customer->getData('email'))
@@ -421,7 +457,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $contactCreate->setContact($contact);
         try {
             $response = $request->execute($contactCreate);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getContactCreateResult() : $response;
@@ -430,7 +466,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $username
      * @return bool
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function isUsernameExist($username)
     {
@@ -461,19 +497,19 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Check username exist in LS Central or not
      * @param $username
      * @return bool
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws InvalidEnumException
      */
     public function isUsernameExistInLsCentral($username)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ContactSearch();
+        $request       = new Operation\ContactSearch();
         $contactSearch = new Entity\ContactSearch();
         $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
         $contactSearch->setSearch($username);
         try {
             $response = $request->execute($contactSearch);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         if (!empty($response) && !empty($response->getContactSearchResult())) {
@@ -491,19 +527,19 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Check email exist in LS Central or not
      * @param $email
      * @return bool
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws InvalidEnumException
      */
     public function isEmailExistInLsCentral($email)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ContactSearch();
+        $request       = new Operation\ContactSearch();
         $contactSearch = new Entity\ContactSearch();
         $contactSearch->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
         $contactSearch->setSearch($email);
         try {
             $response = $request->execute($contactSearch);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         if (!empty($response) && !empty($response->getContactSearchResult())) {
@@ -519,14 +555,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $customer
      * @param $customer_post
-     * @return bool|Entity\ChangePasswordResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return bool|Entity\ChangePasswordResponse|ResponseInterface|null
      */
     public function changePassword($customer, $customer_post)
     {
 
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ChangePassword();
+        $request        = new Operation\ChangePassword();
         $changepassword = new Entity\ChangePassword();
         // @codingStandardsIgnoreEnd
 
@@ -538,7 +574,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($changepassword);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -554,14 +590,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ForgotPassword();
+        $request        = new Operation\ForgotPassword();
         $forgotpassword = new Entity\ForgotPassword();
         // @codingStandardsIgnoreEnd
         $forgotpassword->setUserNameOrEmail($email);
 
         try {
             $response = $request->execute($forgotpassword);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getForgotPasswordResult() : $response;
@@ -570,13 +606,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $customer
      * @param $customer_post
-     * @return bool|Entity\ResetPasswordResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return bool|Entity\ResetPasswordResponse|ResponseInterface|null
      */
     public function resetPassword($customer, $customer_post)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ResetPassword();
+        $request       = new Operation\ResetPassword();
         $resetpassword = new Entity\ResetPassword();
         // @codingStandardsIgnoreEnd
         $request->setToken($customer->getData('lsr_token'));
@@ -586,7 +622,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         try {
             $response = $request->execute($resetpassword);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -595,19 +631,19 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param null $customerAddress
-     * @return Entity\ContactUpdateResponse|Entity\MemberContact|\Ls\Omni\Client\ResponseInterface|null
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @return Entity\ContactUpdateResponse|Entity\MemberContact|ResponseInterface|null
+     * @throws InvalidEnumException
      */
     public function updateAccount($customerAddress = null)
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\ContactUpdate();
-        $entity = new Entity\ContactUpdate();
+        $entity  = new Entity\ContactUpdate();
         // @codingStandardsIgnoreEnd
 
         // only process if the pass object is the instance of Customer Address
-        if ($customerAddress instanceof \Magento\Customer\Model\Address) {
+        if ($customerAddress instanceof Address) {
             $customer = $customerAddress->getCustomer();
             $request->setToken($customer->getData('lsr_token'));
             // @codingStandardsIgnoreLine
@@ -625,7 +661,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             $entity->setContact($memberContact);
             try {
                 $response = $request->execute($entity);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
             return $response ? $response->getResult() : $response;
@@ -680,14 +716,14 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param null $customerAddress
      * @return Entity\Address|null
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws InvalidEnumException
      */
     private function setAddress($customerAddress = null)
     {
         // @codingStandardsIgnoreLine
         $address = new Entity\Address();
         // only process if the pass object in the instance of customer address
-        if ($customerAddress instanceof \Magento\Customer\Model\Address) {
+        if ($customerAddress instanceof Address) {
             $street = $customerAddress->getStreet();
             // check if street is in the form of array or string
             if (is_array($street)) {
@@ -733,7 +769,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAllCustomerGroupIds()
     {
         $customerGroupsIds = [];
-        $customerGroups = $this->customerGroupColl->create()
+        $customerGroups    = $this->customerGroupColl->create()
             ->toOptionArray();
         foreach ($customerGroups as $group) {
             $customerGroupsIds[] = $group['value'];
@@ -744,10 +780,10 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param string $groupname
      * @return bool|mixed
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\State\InvalidTransitionException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws InvalidTransitionException
      */
 
     public function getCustomerGroupIdByName($groupname = '')
@@ -757,13 +793,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
 
-        /** @var \Magento\Customer\Model\ResourceModel\Group\Collection $customerGroups */
+        /** @var Collection $customerGroups */
         $customerGroups = $this->customerGroupColl->create()
             ->addFieldToFilter('customer_group_code', $groupname);
 
         if ($customerGroups->getSize() > 0) {
 
-            /** @var \Magento\Customer\Model\Group $customerGroup */
+            /** @var Group $customerGroup */
             foreach ($customerGroups as $customerGroup) {
                 return $customerGroup->getId();
             }
@@ -778,15 +814,15 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      *  Create new Customer group based on customer name.
      * @param string $groupname
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\State\InvalidTransitionException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws InvalidTransitionException
      */
 
     private function createCustomerGroupByName($groupname = '')
     {
-        /** @var \Magento\Customer\Model\Group $group */
+        /** @var Group $group */
         $group = $this->groupInterfaceFactory->create()
             ->setCode($groupname)
             // Default Tax Class ID for retail customers, please check tax_class table of magento2 database.
@@ -798,8 +834,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Entity\OneList $oneListBasket
      * @param $contactId
      * @param $cardId
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
     public function updateBasketAfterLogin($oneListBasket, $contactId, $cardId)
     {
@@ -851,13 +887,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param Entity\OneList $oneListWishlist
-     * @throws \Exception
+     * @throws Exception
      */
     public function updateWishlistAfterLogin(Entity\OneList $oneListWishlist)
     {
         // @codingStandardsIgnoreStart
         $customerId = $this->customerSession->getCustomer()->getId();
-        $wishlist = $this->wishlist->loadByCustomerId($customerId);
+        $wishlist   = $this->wishlist->loadByCustomerId($customerId);
         $this->removeWishlist($wishlist);
         $wishlist = $this->wishlistFactory->create();
         $wishlist->loadByCustomerId($customerId, true);
@@ -867,19 +903,19 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         }
         try {
             foreach ($itemsCollection as $item) {
-                $buyRequest = [];
-                $sku = $item->getItemId();
-                $product = $this->productRepository->get($sku);
-                $qty = $item->getQuantity();
+                $buyRequest        = [];
+                $sku               = $item->getItemId();
+                $product           = $this->productRepository->get($sku);
+                $qty               = $item->getQuantity();
                 $buyRequest['qty'] = $qty;
                 if ($item->getVariantId()) {
-                    $simSku = $sku . '-' . $item->getVariantId();
-                    $simProuduct = $this->productRepository->get($simSku);
-                    $optionsData = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+                    $simSku                        = $sku . '-' . $item->getVariantId();
+                    $simProuduct                   = $this->productRepository->get($simSku);
+                    $optionsData                   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
                     $buyRequest['super_attribute'] = [];
                     foreach ($optionsData as $key => $option) {
-                        $code = $option['attribute_code'];
-                        $value = $simProuduct->getData($code);
+                        $code                                = $option['attribute_code'];
+                        $value                               = $simProuduct->getData($code);
                         $buyRequest['super_attribute'][$key] = $value;
                     }
                 }
@@ -895,7 +931,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 $oneListWishlist instanceof Entity\OneList) {
                 $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $oneListWishlist);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
         // @codingStandardsIgnoreEnd
@@ -909,7 +945,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         // @codingStandardsIgnoreStart
         try {
             $wishlist->delete();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
 
@@ -920,11 +956,11 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Entity\MemberContact $result
      * @param $credentials
      * @param $is_email
-     * @throws \Magento\Framework\Exception\AlreadyExistsException
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\State\InvalidTransitionException
+     * @throws AlreadyExistsException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws InvalidTransitionException
      */
     public function processCustomerLogin(Entity\MemberContact $result, $credentials, $is_email)
     {
@@ -937,8 +973,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         ];
         $this->searchCriteriaBuilder->addFilters($filters);
         $searchCriteria = $this->searchCriteriaBuilder->create();
-        $searchResults = $this->customerRepository->getList($searchCriteria);
-        $customer = null;
+        $searchResults  = $this->customerRepository->getList($searchCriteria);
+        $customer       = null;
         if ($searchResults->getTotalCount() == 0) {
             $customer = $this->createNewCustomerAgainstProvidedInformation($result, $credentials['password']);
         } else {
@@ -948,13 +984,13 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             }
         }
         $customer_email = $customer->getEmail();
-        $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-        /** @var \Magento\Customer\Model\Customer $customer */
+        $websiteId      = $this->storeManager->getWebsite()->getWebsiteId();
+        /** @var Customer $customer */
         $customer = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
-        $cards = $result->getCards()->getCard();
-        $cardId = $cards[0]->getId();
+        $cards    = $result->getCards()->getCard();
+        $cardId   = $cards[0]->getId();
         if ($customer->getData('lsr_id') === null) {
             $customer->setData('lsr_id', $result->getId());
         }
@@ -969,7 +1005,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $customer->setData('lsr_token', $token);
         $customer->setData(
             'attribute_set_id',
-            \Magento\Customer\Api\CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER
+            CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER
         );
 
         if (!empty($result) &&
@@ -994,8 +1030,8 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $email
-     * @return \Magento\Customer\Api\Data\CustomerSearchResultsInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return CustomerSearchResultsInterface
+     * @throws LocalizedException
      */
     public function searchCustomerByEmail($email)
     {
@@ -1015,7 +1051,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * Returns customer against the provided rptoken
      * @param string $rpToken
      * @return CustomerInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function matchCustomerByRpToken(string $rpToken): CustomerInterface
     {
@@ -1033,7 +1069,7 @@ class ContactHelper extends \Magento\Framework\App\Helper\AbstractHelper
             // @codingStandardsIgnoreStart
             //Failed to generated unique RP token
             throw new ExpiredException(
-                new \Magento\Framework\Phrase('Reset password token expired.')
+                new Phrase('Reset password token expired.')
             );
             // @codingStandardsIgnoreEnd
         }

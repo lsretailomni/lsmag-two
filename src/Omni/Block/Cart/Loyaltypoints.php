@@ -2,13 +2,18 @@
 
 namespace Ls\Omni\Block\Cart;
 
+use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Checkout\Block\Cart\AbstractCart;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Loyaltypoints
  * @package Ls\Omni\Block\Cart
  */
-class Loyaltypoints extends \Magento\Checkout\Block\Cart\AbstractCart
+class Loyaltypoints extends AbstractCart
 {
 
     /**
@@ -19,20 +24,20 @@ class Loyaltypoints extends \Magento\Checkout\Block\Cart\AbstractCart
     /**
      * Loyaltypoints constructor.
      * @param LoyaltyHelper $loyaltyHelper
-     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param Context $context
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param Proxy $checkoutSession
      * @param array $data
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Framework\View\Element\Template\Context $context,
+        Context $context,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
+        Proxy $checkoutSession,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
-        $this->loyaltyHelper = $loyaltyHelper;
+        $this->loyaltyHelper   = $loyaltyHelper;
         $this->_isScopePrivate = true;
     }
 
@@ -45,7 +50,7 @@ class Loyaltypoints extends \Magento\Checkout\Block\Cart\AbstractCart
     }
 
     /**
-     * @return float|\Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return float|GetPointRateResponse|ResponseInterface|null
      */
     public function getPointsRate()
     {
@@ -54,6 +59,8 @@ class Loyaltypoints extends \Magento\Checkout\Block\Cart\AbstractCart
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getBaseCurrencyCode()
     {

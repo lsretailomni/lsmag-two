@@ -1,14 +1,16 @@
 <?php
-/** @var \Ls\Omni\Block\Product\View\Discount\Proactive $block */
+/** @var Proactive $block */
 // @codingStandardsIgnoreFile
+use \Ls\Omni\Block\Product\View\Discount\Proactive;
+
 $productData = $block->getData();
-$productSku = $productData['data']['productSku'];
-$coupons = $productData['data']['coupons'];
+$productSku  = $productData['data']['productSku'];
+$coupons     = $productData['data']['coupons'];
 ?>
 <div class="proactive-discounts-container">
     <?php
     $discounts = $block->getProactiveDiscounts($productSku);
-    if (!empty($discounts) || !(trim($coupons) == '') ) {
+    if (!empty($discounts) || !(trim($coupons) == '')) {
         ?>
         <div class="discount-dropdown-label">
             <span><?php echo __("Offers and Promotions:"); ?></span>
@@ -16,7 +18,7 @@ $coupons = $productData['data']['coupons'];
         <div class="discount-dropdown">
             <div data-block="dropdown" class="dropdown-wrapper">
                 <button type="button" class="action primary" data-trigger="trigger">
-                    <span><?php echo __('Find Discounts');?></span>
+                    <span><?php echo __('Find Discounts'); ?></span>
                     <i class="arrow down"></i>
                 </button>
             </div>
@@ -49,25 +51,25 @@ $coupons = $productData['data']['coupons'];
     <?php } ?>
 </div>
 <script type="text/javascript">
-    require(['jquery','Magento_Ui/js/modal/modal'], function($,modal){
-            var options = {
-                type: 'popup',
-                responsive: true,
-                innerScroll: true,
-                title: $.mage.__('Items'),
-                buttons: [{
-                    text: $.mage.__('Close'),
-                    class: '',
-                    click: function () {
-                        this.closeModal();
-                    }
-                }]
-            };
+    require(['jquery', 'Magento_Ui/js/modal/modal'], function ($, modal) {
+        var options = {
+            type: 'popup',
+            responsive: true,
+            innerScroll: true,
+            title: $.mage.__('Items'),
+            buttons: [{
+                text: $.mage.__('Close'),
+                class: '',
+                click: function () {
+                    this.closeModal();
+                }
+            }]
+        };
 
-            $(".ls-click-product-promotion").on('click', function () {
-                var id = $(this).attr("data-id");
-                var popup = modal(options, $("#ls-popup-model-" + id));
-                $("#ls-popup-model-" + id).modal("openModal");
-            });
+        $(".ls-click-product-promotion").on('click', function () {
+            var id = $(this).attr("data-id");
+            var popup = modal(options, $("#ls-popup-model-" + id));
+            $("#ls-popup-model-" + id).modal("openModal");
+        });
     });
 </script>

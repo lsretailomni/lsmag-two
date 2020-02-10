@@ -94,7 +94,7 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         foreach ($cronsGroupListing as &$cronlist) {
             $path = '';
             if (array_key_exists('_value', $cronlist['_value']['job'])) {
-                $cronlist['_value']['job'] = array($cronlist['_value']['job']);
+                $cronlist['_value']['job'] = [$cronlist['_value']['job']];
             }
             if ($cronlist['_attribute']['id'] == "replication" || $cronlist['_attribute']['id'] == "sync_operations") {
                 $condition = __("Flat to Magento");

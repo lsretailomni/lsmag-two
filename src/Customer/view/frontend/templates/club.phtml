@@ -1,5 +1,8 @@
 <?php
-/** @var \Ls\Customer\Block\Account\Dashboard $this */
+/** @var Dashboard $this */
+
+use \Ls\Customer\Block\Account\Dashboard;
+
 if ($account = $this->getMembersInfo()) : ?>
     <div class="block block-club-info">
         <div class="block-title">
@@ -12,21 +15,21 @@ if ($account = $this->getMembersInfo()) : ?>
                 </div>
                 <div class="box-content">
                     <p>
-                        <h6 class='header-inline'>
-                            <?php echo __('Club Name:'); ?>
-                        </h6>
-                        <?php echo $account->getScheme()
-                            ->getClub()
-                            ->getName(); ?><br>
-                        <h6 class='header-inline'>
-                            <?php echo __('Loyalty Points Earned:'); ?>
-                        </h6>
-                        <?php echo $account->getPointBalance(); ?><br>
-                        <h6 class='header-inline'>
-                            <?php echo __('Loyalty Level:'); ?>
-                        </h6>
-                        <?php echo $account->getScheme()
-                            ->getDescription(); ?>
+                    <h6 class='header-inline'>
+                        <?php echo __('Club Name:'); ?>
+                    </h6>
+                    <?php echo $account->getScheme()
+                        ->getClub()
+                        ->getName(); ?><br>
+                    <h6 class='header-inline'>
+                        <?php echo __('Loyalty Points Earned:'); ?>
+                    </h6>
+                    <?php echo $account->getPointBalance(); ?><br>
+                    <h6 class='header-inline'>
+                        <?php echo __('Loyalty Level:'); ?>
+                    </h6>
+                    <?php echo $account->getScheme()
+                        ->getDescription(); ?>
                     </p>
                 </div>
             </div>
@@ -39,32 +42,32 @@ if ($account = $this->getMembersInfo()) : ?>
                         ->getNextScheme()
                     ) : ?>
                         <p>
-                            <h6 class='header-inline'>
-                                <?php echo __('Level:'); ?>
-                            </h6>
-                            <?php
-                            echo $account->getScheme()
-                                ->getNextScheme()
-                                ->getDescription();
-                            ?>
-                            <br>
-                            <h6 class='header-inline'>
-                                <?php echo __('Points Needed:'); ?>
-                            </h6>
-                            <?php echo $account->getScheme()
-                                ->getPointsNeeded(); ?>
-                            <br>
-                            <h6 class='header-inline'>
-                                <?php echo __('Benefits of Next Level:') ?>
-                            </h6>
-                            <?php echo $account->getScheme()
-                                ->getPerks(); ?>
+                        <h6 class='header-inline'>
+                            <?php echo __('Level:'); ?>
+                        </h6>
+                        <?php
+                        echo $account->getScheme()
+                            ->getNextScheme()
+                            ->getDescription();
+                        ?>
+                        <br>
+                        <h6 class='header-inline'>
+                            <?php echo __('Points Needed:'); ?>
+                        </h6>
+                        <?php echo $account->getScheme()
+                            ->getPointsNeeded(); ?>
+                        <br>
+                        <h6 class='header-inline'>
+                            <?php echo __('Benefits of Next Level:') ?>
+                        </h6>
+                        <?php echo $account->getScheme()
+                            ->getPerks(); ?>
                         </p>
                     <?php else : ?>
                         <p>
-                            <h6 class='header-inline'>
-                                <?php echo __('You are at the top level.'); ?>
-                            </h6>
+                        <h6 class='header-inline'>
+                            <?php echo __('You are at the top level.'); ?>
+                        </h6>
                         </p>
                     <?php endif; ?>
                 </div>

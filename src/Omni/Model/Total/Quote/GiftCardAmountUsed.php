@@ -24,7 +24,7 @@ class GiftCardAmountUsed extends AbstractTotal
         $amount = $quote->getLsGiftCardAmountUsed();
         if ($amount > 0) {
             $totals[] = [
-                'code' => $this->getCode(),
+                'code'  => $this->getCode(),
                 'title' => __('Gift Card Redeemed'),
                 'value' => $amount,
             ];

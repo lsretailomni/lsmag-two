@@ -1,15 +1,12 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 
 // @codingStandardsIgnoreFile
 
 /**
- * @var $block \Ls\Customer\Block\Order\Totals
+ * @var $block Totals
  */
-?>
+
+use \Ls\Customer\Block\Order\Totals; ?>
 <tr class="subtotal">
     <th colspan="4" class="mark" scope="row">
         <?= $block->escapeHtml('Subtotal (Inc.Tax)') ?>
@@ -18,7 +15,7 @@
         <span class="price"><?= $block->getFormattedPrice($block->getSubtotal()); ?></span>
     </td>
 </tr>
-<?php if (!empty($block->giftCardAmount>0)) { ?>
+<?php if (!empty($block->giftCardAmount > 0)) { ?>
     <tr class="discount">
         <th colspan="4" class="mark" scope="row">
             <?= $block->escapeHtml('Gift Card Redeemed') ?>
@@ -29,7 +26,7 @@
     </tr>
 <?php } ?>
 
-<?php if (!empty($block->loyaltyPointAmount>0)) { ?>
+<?php if (!empty($block->loyaltyPointAmount > 0)) { ?>
     <tr class="discount">
         <th colspan="4" class="mark" scope="row">
             <?= $block->escapeHtml('Loyalty Points Redeemed') ?>

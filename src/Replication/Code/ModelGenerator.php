@@ -20,7 +20,7 @@ use Zend\Code\Generator\PropertyGenerator;
 class ModelGenerator extends AbstractGenerator
 {
     /** @var string */
-    static public $namespace = 'Ls\\Replication\\Model';
+    public static $namespace = 'Ls\\Replication\\Model';
 
     /** @var ReplicationOperation */
     public $operation;
@@ -39,7 +39,6 @@ class ModelGenerator extends AbstractGenerator
      */
     public function __construct(ReplicationOperation $operation)
     {
-
         parent::__construct();
         $this->operation = $operation;
         // @codingStandardsIgnoreStart
@@ -60,7 +59,6 @@ class ModelGenerator extends AbstractGenerator
      */
     public function generate()
     {
-
         $interface_name = $this->operation->getInterfaceName();
         $entity_name    = $this->operation->getEntityName();
 

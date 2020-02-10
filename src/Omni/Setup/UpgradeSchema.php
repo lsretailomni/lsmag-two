@@ -36,38 +36,62 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 $setup->getTable($item['table']),
                 $item['column'],
                 [
-                    'type' => Table::TYPE_INTEGER,
-                    'visible' => false,
+                    'type'     => Table::TYPE_INTEGER,
+                    'visible'  => false,
                     'nullable' => true,
-                    'default' => '0',
-                    'comment' => 'LS Loyalty Points'
+                    'default'  => '0',
+                    'comment'  => 'LS Loyalty Points'
                 ]
             );
         }
 
         $columnsUpdateType = [
-            ['table' => 'quote', 'column' => 'ls_gift_card_no','datatype' => Table::TYPE_TEXT,'default'=>''],
-            ['table' => 'quote', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,'default'=>0],
-            ['table' => 'sales_order', 'column' => 'ls_gift_card_no','datatype' => Table::TYPE_TEXT,'default'=>''],
-            ['table' => 'sales_order', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,
-                'default'=>0],
-            ['table' => 'sales_invoice', 'column' => 'ls_gift_card_no','datatype' => Table::TYPE_TEXT,'default'=>''],
-            ['table' => 'sales_invoice', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,
-                'default'=>0],
-            ['table' => 'sales_creditmemo', 'column' => 'ls_gift_card_no','datatype' => Table::TYPE_TEXT,'default'=>''],
-            ['table' => 'sales_creditmemo', 'column' => 'ls_gift_card_amount_used','datatype' => Table::TYPE_FLOAT,
-                'default'=>0]
+            ['table' => 'quote', 'column' => 'ls_gift_card_no', 'datatype' => Table::TYPE_TEXT, 'default' => ''],
+            ['table'    => 'quote',
+             'column'   => 'ls_gift_card_amount_used',
+             'datatype' => Table::TYPE_FLOAT,
+             'default'  => 0
+            ],
+            ['table' => 'sales_order', 'column' => 'ls_gift_card_no', 'datatype' => Table::TYPE_TEXT, 'default' => ''],
+            [
+                'table'    => 'sales_order',
+                'column'   => 'ls_gift_card_amount_used',
+                'datatype' => Table::TYPE_FLOAT,
+                'default'  => 0
+            ],
+            ['table'    => 'sales_invoice',
+             'column'   => 'ls_gift_card_no',
+             'datatype' => Table::TYPE_TEXT,
+             'default'  => ''
+            ],
+            [
+                'table'    => 'sales_invoice',
+                'column'   => 'ls_gift_card_amount_used',
+                'datatype' => Table::TYPE_FLOAT,
+                'default'  => 0
+            ],
+            ['table'    => 'sales_creditmemo',
+             'column'   => 'ls_gift_card_no',
+             'datatype' => Table::TYPE_TEXT,
+             'default'  => ''
+            ],
+            [
+                'table'    => 'sales_creditmemo',
+                'column'   => 'ls_gift_card_amount_used',
+                'datatype' => Table::TYPE_FLOAT,
+                'default'  => 0
+            ]
         ];
         foreach ($columnsUpdateType as $item) {
             $setup->getConnection()->addColumn(
                 $setup->getTable($item['table']),
                 $item['column'],
                 [
-                    'type' =>  $item['datatype'],
-                    'visible' => false,
+                    'type'     => $item['datatype'],
+                    'visible'  => false,
                     'nullable' => true,
-                    'default' =>  $item['default'],
-                    'comment' => 'Ls Gift Card'
+                    'default'  => $item['default'],
+                    'comment'  => 'Ls Gift Card'
                 ]
             );
         }

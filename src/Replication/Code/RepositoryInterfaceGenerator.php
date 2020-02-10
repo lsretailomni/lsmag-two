@@ -19,7 +19,7 @@ use Zend\Code\Generator\ParameterGenerator;
 class RepositoryInterfaceGenerator implements GeneratorInterface
 {
     /** @var string */
-    static public $namespace = "Ls\\Replication\\Api";
+    public static $namespace = "Ls\\Replication\\Api";
 
     /** @var  ReplicationOperation */
     private $operation;
@@ -68,9 +68,9 @@ DISCLAIMER;
          * public function deleteById($id);
          */
         $entity_interface_name = $this->operation->getInterfaceName();
-        $docBlock              = DocBlockGenerator::fromArray(array(
+        $docBlock              = DocBlockGenerator::fromArray([
             'shortDescription' => $this->disclaimer,
-        ));
+        ]);
         $this->class->setDocblock($docBlock);
         $this->class->setName($this->getName());
         $this->class->setNamespaceName(self::$namespace);

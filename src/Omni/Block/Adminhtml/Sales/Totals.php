@@ -3,20 +3,26 @@
 namespace Ls\Omni\Block\Adminhtml\Sales;
 
 use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\OrderHelper;
+use Magento\Directory\Model\Currency;
+use Magento\Framework\DataObject;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Sales\Model\Order;
 
 /**
  * Class Totals
  * @package Ls\Omni\Block\Adminhtml\Sales
  */
-class Totals extends \Magento\Framework\View\Element\Template
+class Totals extends Template
 {
     /**
-     * @var \Ls\Omni\Helper\OrderHelper
+     * @var OrderHelper
      */
     public $orderHelper;
 
     /**
-     * @var \Magento\Directory\Model\Currency
+     * @var Currency
      */
     public $currency;
 
@@ -27,29 +33,29 @@ class Totals extends \Magento\Framework\View\Element\Template
 
     /**
      * Totals constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Ls\Omni\Helper\OrderHelper $orderHelper
+     * @param Context $context
+     * @param OrderHelper $orderHelper
      * @param LoyaltyHelper $loyaltyHelper
-     * @param \Magento\Directory\Model\Currency $currency
+     * @param Currency $currency
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Ls\Omni\Helper\OrderHelper $orderHelper,
+        Context $context,
+        OrderHelper $orderHelper,
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Directory\Model\Currency $currency,
+        Currency $currency,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->orderHelper = $orderHelper;
+        $this->orderHelper   = $orderHelper;
         $this->loyaltyHelper = $loyaltyHelper;
-        $this->currency = $currency;
+        $this->currency      = $currency;
     }
 
     /**
      * Retrieve current order model instance
      *
-     * @return \Magento\Sales\Model\Order
+     * @return Order
      */
     public function getOrder()
     {
@@ -114,9 +120,9 @@ class Totals extends \Magento\Framework\View\Element\Template
         if ($this->getSource()->getLsPointsSpent() > 0) {
             $loyaltyAmount = $this->getSource()->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             // @codingStandardsIgnoreLine
-            $loyaltyPoints = new \Magento\Framework\DataObject(
+            $loyaltyPoints = new DataObject(
                 [
-                    'code' => 'ls_points_spent',
+                    'code'  => 'ls_points_spent',
                     'value' => -$loyaltyAmount,
                     'label' => __('Loyalty Points Redeemed'),
                 ]
@@ -125,9 +131,9 @@ class Totals extends \Magento\Framework\View\Element\Template
         }
         if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
             // @codingStandardsIgnoreLine
-            $giftCardAmount = new \Magento\Framework\DataObject(
+            $giftCardAmount = new DataObject(
                 [
-                    'code' => 'ls_gift_card_amount_used',
+                    'code'  => 'ls_gift_card_amount_used',
                     'value' => -$this->getSource()->getLsGiftCardAmountUsed(),
                     'label' => __('Gift Card Redeemed ') . '(' . $this->getSource()->getLsGiftCardNo() . ')',
                 ]

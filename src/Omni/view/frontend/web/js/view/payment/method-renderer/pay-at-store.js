@@ -10,15 +10,15 @@ define([
                 template: 'Ls_Omni/payment/paystore'
             },
 
-            context: function() {
+            context: function () {
                 return this;
             },
 
-            getCode: function() {
+            getCode: function () {
                 return 'ls_payment_method_pay_at_store';
             },
 
-            isActive: function() {
+            isActive: function () {
                 return true;
             }
         });

@@ -1,52 +1,56 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zeesh
- * Date: 4/16/2019
- * Time: 11:59 AM
- */
 
 namespace Ls\Customer\Controller\Account;
 
-use \Ls\Omni\Helper\ContactHelper;
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Helper\ContactHelper;
+use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Customer\Api\CustomerMetadataInterface;
 use Magento\Customer\Model\AccountManagement;
+use Magento\Customer\Model\Customer;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Escaper;
+use Magento\Framework\Exception\SecurityViolationException;
+use Magento\Store\Model\StoreManagerInterface;
 
 class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPasswordPost
 {
 
-    /** @var \Ls\Core\Model\LSR @var  */
+    /** @var LSR @var */
     public $lsr;
 
     /** @var ContactHelper $contactHelper */
     public $contactHelper;
 
-    /** @var \Magento\Customer\Model\CustomerFactory */
+    /** @var CustomerFactory */
     public $customerFactory;
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     public $storeManager;
 
     /** @var \Magento\Customer\Model\ResourceModel\Customer */
     public $customerResourceModel;
 
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Customer\Api\AccountManagementInterface $customerAccountManagement,
-        \Magento\Framework\Escaper $escaper,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        Context $context,
+        Proxy $customerSession,
+        AccountManagementInterface $customerAccountManagement,
+        Escaper $escaper,
+        CustomerFactory $customerFactory,
+        StoreManagerInterface $storeManager,
         LSR $LSR,
         ContactHelper $contactHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
     ) {
-        $this->lsr  =   $LSR;
-        $this->contactHelper = $contactHelper;
-        $this->customerFactory = $customerFactory;
-        $this->storeManager = $storeManager;
+        $this->lsr                   = $LSR;
+        $this->contactHelper         = $contactHelper;
+        $this->customerFactory       = $customerFactory;
+        $this->storeManager          = $storeManager;
         $this->customerResourceModel = $customerResourceModel;
         parent::__construct($context, $customerSession, $customerAccountManagement, $escaper);
     }
@@ -54,7 +58,7 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
     /**
      * Have to completely override the core funciton because we are allowing resetting the password
      * with and without email address.
-     * @return \Magento\Framework\Controller\Result\Redirect
+     * @return Redirect
      */
 
     public function execute()
@@ -63,12 +67,12 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
          * Adding condition to only process if LSR is enabled.
          */
         if ($this->lsr->isLSR()) {
-            /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
+            /** @var Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
-            $email = (string)$this->getRequest()->getPost('email');
+            $email          = (string)$this->getRequest()->getPost('email');
             if ($email) {
                 // handling the LS Central Reset Password functionality.
-                /** @var Entity\ForgotPasswordResponse | null  $result */
+                /** @var Entity\ForgotPasswordResponse | null $result */
                 try {
                     // check if omni return the success reponse of reset token
                     $result = $this->contactHelper->forgotPassword($email);
@@ -76,7 +80,7 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
                     $search = $this->contactHelper->searchWithUsernameOrEmail($email);
                     if ($result && $search) {
                         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                            /** @var \Magento\Customer\Model\Customer  $customer */
+                        /** @var Customer $customer */
                         $customer = $this->customerFactory->create()
                             ->setWebsiteId($websiteId)
                             ->loadByEmail($search->getEmail());
@@ -104,10 +108,10 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
                         );
                         return $resultRedirect->setPath('*/*/forgotpassword');
                     }
-                } catch (\Magento\Framework\Exception\SecurityViolationException $exception) {
+                } catch (SecurityViolationException $exception) {
                     $this->messageManager->addErrorMessage($exception->getMessage());
                     return $resultRedirect->setPath('*/*/forgotpassword');
-                } catch (\Exception $exception) {
+                } catch (Exception $exception) {
                     $this->messageManager->addExceptionMessage(
                         $exception,
                         __('We\'re unable to send the password reset email.')

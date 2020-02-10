@@ -7,8 +7,10 @@ use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Zend_Json;
 
 /**
  * Class DataProvider
@@ -46,21 +48,21 @@ class DataProvider implements ConfigProviderInterface
         ScopeConfigInterface $scopeConfig,
         GiftCardHelper $giftCardHelper
     ) {
-        $this->storeManager = $storeManager;
+        $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
-        $this->scopeConfig = $scopeConfig;
-        $this->giftCardHelper = $giftCardHelper;
+        $this->scopeConfig            = $scopeConfig;
+        $this->giftCardHelper         = $giftCardHelper;
     }
 
     /**
      * @return array
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getConfig()
     {
-        $store = $this->getStoreId();
-        $mapsApiKey = $this->scopeConfig->getValue(self::XPATH_MAPS_API_KEY, ScopeInterface::SCOPE_STORE, $store);
-        $defaultLatitude = $this->scopeConfig->getValue(
+        $store            = $this->getStoreId();
+        $mapsApiKey       = $this->scopeConfig->getValue(self::XPATH_MAPS_API_KEY, ScopeInterface::SCOPE_STORE, $store);
+        $defaultLatitude  = $this->scopeConfig->getValue(
             self::XPATH_DEFAULT_LATITUDE,
             ScopeInterface::SCOPE_STORE,
             $store
@@ -70,27 +72,27 @@ class DataProvider implements ConfigProviderInterface
             ScopeInterface::SCOPE_STORE,
             $store
         );
-        $defaultZoom = $this->scopeConfig->getValue(self::XPATH_DEFAULT_ZOOM, ScopeInterface::SCOPE_STORE, $store);
+        $defaultZoom      = $this->scopeConfig->getValue(self::XPATH_DEFAULT_ZOOM, ScopeInterface::SCOPE_STORE, $store);
 
-        $config = [
+        $config                     = [
             'shipping' => [
                 'select_store' => [
                     'maps_api_key' => $mapsApiKey,
-                    'lat' => (float)$defaultLatitude,
-                    'lng' => (float)$defaultLongitude,
-                    'zoom' => (int)$defaultZoom,
-                    'stores' => $this->getStores()
+                    'lat'          => (float)$defaultLatitude,
+                    'lng'          => (float)$defaultLongitude,
+                    'zoom'         => (int)$defaultZoom,
+                    'stores'       => $this->getStores()
                 ]
             ]
         ];
         $config['gift_card_enable'] = $this->giftCardHelper->isGiftCardEnableOnCheckOut();
-        $config['coupons_display'] = $this->isCouponsDisplayEnabled();
+        $config['coupons_display']  = $this->isCouponsDisplayEnabled();
         return $config;
     }
 
     /**
      * @return mixed
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getStoreId()
     {
@@ -103,7 +105,7 @@ class DataProvider implements ConfigProviderInterface
             ->create()
             ->addFieldToFilter('ClickAndCollect', 1)
             ->toArray();
-        return \Zend_Json::encode($stores);
+        return Zend_Json::encode($stores);
     }
 
     /**

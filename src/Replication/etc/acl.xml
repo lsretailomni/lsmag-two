@@ -11,7 +11,8 @@
                                   sortOrder="10"/>
                         <resource id="Ls_Replication::item_price_grid" title="Price Replication" translate="title"
                                   sortOrder="10"/>
-                        <resource id="Ls_Replication::item_inventory_grid" title="Inventory Status Replication" translate="title"
+                        <resource id="Ls_Replication::item_inventory_grid" title="Inventory Status Replication"
+                                  translate="title"
                                   sortOrder="10"/>
                         <resource id="Ls_Replication::barcode_grid" title="Barcode Replication" translate="title"
                                   sortOrder="10"/>

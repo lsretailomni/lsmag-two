@@ -2,6 +2,7 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
@@ -80,7 +81,7 @@ class Discount extends Action
             $tableName = $connection->getTableName($discountTable);
             try {
                 $connection->truncateTable($tableName);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -89,7 +90,7 @@ class Discount extends Action
         $lsQuery     = "UPDATE " . $lsTableName . " SET processed = 0;";
         try {
             $connection->query($lsQuery);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');

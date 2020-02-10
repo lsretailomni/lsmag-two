@@ -6,7 +6,6 @@ namespace Ls\Replication\Code;
 use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
-use \Ls\Replication\Model\ResourceModel\Anchor;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use ReflectionClass;
 use ReflectionException;
@@ -19,7 +18,7 @@ use Zend\Code\Generator\MethodGenerator;
 class ResourceModelGenerator extends AbstractGenerator
 {
     /** @var string */
-    static public $namespace = 'Ls\\Replication\\Model\\ResourceModel';
+    public static $namespace = 'Ls\\Replication\\Model\\ResourceModel';
 
     /** @var ReflectionClass */
     protected $reflected_entity;
@@ -45,7 +44,6 @@ class ResourceModelGenerator extends AbstractGenerator
      */
     public function generate()
     {
-
         $interface_name    = $this->operation->getInterfaceName();
         $contructor_method = new MethodGenerator();
         $contructor_method->setName('_construct');

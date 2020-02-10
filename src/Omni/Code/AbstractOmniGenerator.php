@@ -3,6 +3,7 @@
 namespace Ls\Omni\Code;
 
 use CaseHelper\CaseHelperInterface;
+use Exception;
 use \Ls\Core\Code\AbstractGenerator as CoreGenerator;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\ServiceType;
@@ -28,14 +29,14 @@ abstract class AbstractOmniGenerator extends CoreGenerator
     /**
      * AbstractOmniGenerator constructor.
      * @param Metadata $metadata
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(Metadata $metadata)
     {
         parent::__construct();
 
-        $this->metadata = $metadata;
-        $this->service_type = $metadata->getClient()->getServiceType();
+        $this->metadata       = $metadata;
+        $this->service_type   = $metadata->getClient()->getServiceType();
         $this->base_namespace = $this->fqn('Ls', 'Omni', 'Client', ucfirst($this->service_type->getValue()));
     }
 

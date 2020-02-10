@@ -2,32 +2,42 @@
 
 namespace Ls\Omni\Helper;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Filesystem;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class GiftCardHelper
  * @package Ls\Omni\Helper
  */
-class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
+class GiftCardHelper extends AbstractHelper
 {
 
     const SERVICE_TYPE = 'ecommerce';
 
-    /** @var \Magento\Framework\Api\FilterBuilder */
+    /** @var FilterBuilder */
     public $filterBuilder;
 
-    /** @var \Magento\Framework\Api\SearchCriteriaBuilder */
+    /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     public $storeManager;
 
-    /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
+    /** @var CustomerRepositoryInterface */
     public $customerRepository;
 
-    /** @var \Magento\Customer\Model\CustomerFactory */
+    /** @var CustomerFactory */
     public $customerFactory;
 
     /**
@@ -38,7 +48,7 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var null */
     public $ns = null;
 
-    /** @var \Magento\Framework\Filesystem */
+    /** @var Filesystem */
     public $filesystem;
 
     /**
@@ -51,38 +61,38 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * GiftCardHelper constructor.
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param Context $context
+     * @param FilterBuilder $filterBuilder
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param StoreManagerInterface $storeManager
+     * @param CustomerFactory $customerFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Framework\Filesystem $Filesystem
+     * @param Proxy $checkoutSession
+     * @param Filesystem $Filesystem
      * @param LSR $Lsr
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
+        Context $context,
+        FilterBuilder $filterBuilder,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        CustomerRepositoryInterface $customerRepository,
+        StoreManagerInterface $storeManager,
+        CustomerFactory $customerFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Framework\Filesystem $Filesystem,
+        Proxy $checkoutSession,
+        Filesystem $Filesystem,
         LSR $Lsr
     ) {
-        $this->filterBuilder = $filterBuilder;
+        $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->storeManager = $storeManager;
-        $this->customerRepository = $customerRepository;
-        $this->customerFactory = $customerFactory;
-        $this->customerSession = $customerSession;
-        $this->checkoutSession = $checkoutSession;
-        $this->filesystem = $Filesystem;
-        $this->lsr = $Lsr;
+        $this->storeManager          = $storeManager;
+        $this->customerRepository    = $customerRepository;
+        $this->customerFactory       = $customerFactory;
+        $this->customerSession       = $customerSession;
+        $this->checkoutSession       = $checkoutSession;
+        $this->filesystem            = $Filesystem;
+        $this->lsr                   = $Lsr;
 
         parent::__construct(
             $context
@@ -98,13 +108,13 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\GiftCardGetBalance();
-        $entity = new Entity\GiftCardGetBalance();
+        $entity  = new Entity\GiftCardGetBalance();
         $entity->setCardNo($giftCardNo);
         // @codingStandardsIgnoreEnd
         try {
             $responseData = $request->execute($entity);
-            $response = $responseData ? $responseData->getResult() : $response;
-        } catch (\Exception $e) {
+            $response     = $responseData ? $responseData->getResult() : $response;
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         $this->checkoutSession->setGiftCard($response);
@@ -132,7 +142,7 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function isGiftCardEnable()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_GIFTCARD_ACTIVE);
+        return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_ACTIVE);
     }
 
     /**
@@ -141,7 +151,7 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function isGiftCardEnableOnCartPage()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_GIFTCARD_SHOW_ON_CART);
+        return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_SHOW_ON_CART);
     }
 
     /**
@@ -149,6 +159,6 @@ class GiftCardHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isGiftCardEnableOnCheckOut()
     {
-        return $this->lsr->getStoreConfig(\Ls\Core\Model\LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT);
+        return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT);
     }
 }

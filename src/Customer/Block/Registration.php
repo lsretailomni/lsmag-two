@@ -3,14 +3,14 @@
 namespace Ls\Customer\Block;
 
 use \Ls\Core\Model\LSR;
-use Magento\Customer\Api\AccountManagementInterface;
-use Magento\Customer\Model\Session\Proxy as CustomerSession;
+use Magento\Checkout\Block\Registration as CheckoutRegistration;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
+use Magento\Customer\Api\AccountManagementInterface;
+use Magento\Customer\Model\Registration as CustomerRegistration;
+use Magento\Customer\Model\Session\Proxy as CustomerSession;
 use Magento\Framework\View\Element\Template;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Address\Validator;
-use Magento\Customer\Model\Registration as CustomerRegistration;
-use Magento\Checkout\Block\Registration as CheckoutRegistration;
 
 /**
  * Class Registration

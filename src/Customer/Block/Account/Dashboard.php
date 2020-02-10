@@ -2,13 +2,17 @@
 
 namespace Ls\Customer\Block\Account;
 
+use \Ls\Omni\Client\Ecommerce\Entity\Account;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Dashboard
  * @package Ls\Customer\Block\Account
  */
-class Dashboard extends \Magento\Framework\View\Element\Template
+class Dashboard extends Template
 {
 
     /** @var LoyaltyHelper */
@@ -16,30 +20,30 @@ class Dashboard extends \Magento\Framework\View\Element\Template
 
     /**
      * Dashboard constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param Context $context
      * @param LoyaltyHelper $loyaltyHelper
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param LoggerInterface $logger
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
+        Context $context,
         LoyaltyHelper $loyaltyHelper,
-        \Psr\Log\LoggerInterface $logger,
+        LoggerInterface $logger,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->loyaltyHelper = $loyaltyHelper;
-        $this->logger = $logger;
+        $this->logger        = $logger;
     }
 
     /**
-     * @return bool|\Ls\Omni\Client\Ecommerce\Entity\Account
+     * @return bool|Account
      */
 
     public function getMembersInfo()
     {
         $account = false;
-        $result = $this->loyaltyHelper->getMemberInfo();
+        $result  = $this->loyaltyHelper->getMemberInfo();
         if ($result) {
             $account = $result->getAccount();
         }

@@ -2,33 +2,47 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
+use Exception;
+use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\Result\Raw;
+use Magento\Framework\Controller\Result\RawFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\Quote;
 
 /**
  * Class UpdatePoints
  * @package Ls\Omni\Controller\Ajax
  */
-class UpdateGiftCard extends \Magento\Framework\App\Action\Action
+class UpdateGiftCard extends Action
 {
 
-    /** @var \Magento\Framework\Controller\Result\JsonFactory */
+    /** @var JsonFactory */
     public $resultJsonFactory;
 
-    /** @var \Magento\Framework\Controller\Result\RawFactory */
+    /** @var RawFactory */
     public $resultRawFactory;
 
     /** @var GiftCardHelper */
     public $giftCardHelper;
 
     /**
-     * @var \Ls\Omni\Helper\BasketHelper
+     * @var BasketHelper
      */
     public $basketHelper;
 
     /**
-     * @var \Magento\Checkout\Model\Session\Proxy
+     * @var Proxy
      */
     public $checkoutSession;
 
@@ -55,64 +69,64 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
     /**
      * UpdateGiftCard constructor.
      * @param Context $context
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
+     * @param JsonFactory $resultJsonFactory
+     * @param RawFactory $resultRawFactory
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param GiftCardHelper $giftCardHelper
-     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+     * @param BasketHelper $basketHelper
+     * @param Proxy $checkoutSession
+     * @param CartRepositoryInterface $cartRepository
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param Data $data
      */
     public function __construct(
         Context $context,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-        \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
+        JsonFactory $resultJsonFactory,
+        RawFactory $resultRawFactory,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         GiftCardHelper $giftCardHelper,
-        \Ls\Omni\Helper\BasketHelper $basketHelper,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Quote\Api\CartRepositoryInterface $cartRepository,
+        BasketHelper $basketHelper,
+        Proxy $checkoutSession,
+        CartRepositoryInterface $cartRepository,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         Data $data
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->resultRawFactory = $resultRawFactory;
-        $this->giftCardHelper = $giftCardHelper;
-        $this->basketHelper = $basketHelper;
-        $this->checkoutSession = $checkoutSession;
-        $this->customerSession = $customerSession;
-        $this->cartRepository = $cartRepository;
-        $this->priceHelper = $priceHelper;
-        $this->data = $data;
+        $this->resultRawFactory  = $resultRawFactory;
+        $this->giftCardHelper    = $giftCardHelper;
+        $this->basketHelper      = $basketHelper;
+        $this->checkoutSession   = $checkoutSession;
+        $this->customerSession   = $customerSession;
+        $this->cartRepository    = $cartRepository;
+        $this->priceHelper       = $priceHelper;
+        $this->data              = $data;
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\Result\Raw|\Magento\Framework\Controller\ResultInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return ResponseInterface|Json|Raw|ResultInterface
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
         $httpBadRequestCode = 400;
-        /** @var \Magento\Framework\Controller\Result\Raw $resultRaw */
+        /** @var Raw $resultRaw */
         $resultRaw = $this->resultRawFactory->create();
         if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
 
-        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
-        $resultJson = $this->resultJsonFactory->create();
-        $base_currency = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
-        $post = $this->getRequest()->getContent();
-        $postData = json_decode($post);
-        $giftCardNo = $postData->gift_card_no;
-        $giftCardAmount = $postData->gift_card_amount;
+        /** @var Json $resultJson */
+        $resultJson            = $this->resultJsonFactory->create();
+        $base_currency         = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
+        $post                  = $this->getRequest()->getContent();
+        $postData              = json_decode($post);
+        $giftCardNo            = $postData->gift_card_no;
+        $giftCardAmount        = $postData->gift_card_amount;
         $giftCardBalanceAmount = 0;
-        $cartId = $this->checkoutSession->getQuoteId();
-        $quote = $this->cartRepository->get($cartId);
+        $cartId                = $this->checkoutSession->getQuoteId();
+        $quote                 = $this->cartRepository->get($cartId);
         if ($giftCardNo != null && $giftCardAmount != 0) {
             $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo);
 
@@ -139,7 +153,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
 
         if (empty($giftCardResponse)) {
             $response = [
-                'error' => 'true',
+                'error'   => 'true',
                 'message' => __(
                     'The gift card code %1 is not valid.',
                     $giftCardNo
@@ -162,7 +176,7 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
 
         if (!is_numeric($giftCardAmount) || $giftCardAmount < 0 || !$isGiftCardAmountValid) {
             $response = [
-                'error' => 'true',
+                'error'   => 'true',
                 'message' => __(
                     'The applied amount %3' .
                     ' is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).',
@@ -183,28 +197,28 @@ class UpdateGiftCard extends \Magento\Framework\App\Action\Action
                 $response = ['success' => 'true'];
             } else {
                 $response = [
-                    'error' => 'true',
+                    'error'   => 'true',
                     'message' => __(
                         'The gift card amount "%1" is not valid.',
                         $this->priceHelper->currency($giftCardAmount, true, false)
                     )
                 ];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = ['error' => 'true', 'message' => $e->getMessage()];
         }
         return $resultJson->setData($response);
     }
 
     /**
-     * @param \Magento\Quote\Model\Quote $quote
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param Quote $quote
      * @return void
+     * @throws LocalizedException
      */
-    protected function validateQuote(\Magento\Quote\Model\Quote $quote)
+    protected function validateQuote(Quote $quote)
     {
         if ($quote->getItemsCount() === 0) {
-            throw new \Magento\Framework\Exception\LocalizedException(
+            throw new LocalizedException(
                 __('Totals calculation is not applicable to empty cart.')
             );
         }

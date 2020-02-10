@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Code;
 
+use Exception;
 use \Ls\Omni\Service\Metadata;
 use Zend\Code\Generator\MethodGenerator;
 
@@ -15,7 +16,7 @@ class ClassMapGenerator extends AbstractOmniGenerator
     /**
      * ClassMapGenerator constructor.
      * @param Metadata $metadata
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(Metadata $metadata)
     {
@@ -31,17 +32,21 @@ class ClassMapGenerator extends AbstractOmniGenerator
 
         $body = '';
         foreach ($this->metadata->getEntities() as $entity_name => $entity) {
-            $fqn = self::fqn($this->base_namespace, 'Entity', $entity->getElement()->getType());
-            $fqn = str_replace('\\', '\\\\', $fqn);
+            $fqn  = self::fqn($this->base_namespace, 'Entity', $entity->getElement()->getType());
+            $fqn  = str_replace('\\', '\\\\', $fqn);
             $body .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $entity_name, $fqn);
         }
-        $restriction_blacklist = ['char', 'duration', 'guid', 'StreamBody',
+        $restriction_blacklist = [
+            'char',
+            'duration',
+            'guid',
+            'StreamBody',
             //'NotificationStatus','OrderQueueStatusFilterType',
         ];
         foreach ($this->metadata->getRestrictions() as $restriction_name => $restriction) {
             if (array_search($restriction_name, $restriction_blacklist) === false) {
-                $fqn = self::fqn($this->base_namespace, 'Entity', 'Enum', $restriction_name);
-                $fqn = str_replace('\\', '\\\\', $fqn);
+                $fqn  = self::fqn($this->base_namespace, 'Entity', 'Enum', $restriction_name);
+                $fqn  = str_replace('\\', '\\\\', $fqn);
                 $body .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $restriction_name, $fqn);
             }
         }

@@ -5,7 +5,7 @@
 define([
     "jquery",
     "Ls_Omni/js/owl.carousel.min"
-], function($){
+], function ($) {
     return function (config, element) {
         return $(element).owlCarousel(config);
     }

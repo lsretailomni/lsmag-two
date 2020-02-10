@@ -7,7 +7,7 @@
     ], function ($, p, v, $t) {
         function fetchStores() {
             let baseUrl = $('#ls_mag_service_base_url').val();
-            let lsKey =  $('#ls_mag_service_ls_key').val();
+            let lsKey = $('#ls_mag_service_ls_key').val();
             $('#ls_mag_service_base_url').validation();
             if (!$('#ls_mag_service_base_url').validation('isValid')) {
                 return false;
@@ -17,7 +17,7 @@
                 type: 'POST',
                 showLoader: true,
                 dataType: 'json',
-                data: {baseUrl: baseUrl,lsKey:lsKey},
+                data: {baseUrl: baseUrl, lsKey: lsKey},
                 complete: function (response) {
                     stores = response.responseJSON.store;
                     hierarchy = response.responseJSON.hierarchy;
@@ -45,7 +45,7 @@
 
         function fetchHierarchy() {
             let baseUrl = $('#ls_mag_service_base_url').val();
-            let lsKey =  $('#ls_mag_service_ls_key').val();
+            let lsKey = $('#ls_mag_service_ls_key').val();
             $('#ls_mag_service_base_url').validation();
             if (!$('#ls_mag_service_base_url').validation('isValid')) {
                 return false;
@@ -56,7 +56,7 @@
                 type: 'POST',
                 showLoader: true,
                 dataType: 'json',
-                data: {baseUrl: baseUrl, storeId: storeId,lsKey:lsKey},
+                data: {baseUrl: baseUrl, storeId: storeId, lsKey: lsKey},
                 complete: function (response) {
                     hierarchies = response.responseJSON.hierarchy;
                     $("#ls_mag_service_replicate_hierarchy_code option").remove();

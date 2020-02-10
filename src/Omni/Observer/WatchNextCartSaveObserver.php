@@ -1,8 +1,9 @@
 <?php
+
 namespace Ls\Omni\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class WatchNextCartSaveObserver
@@ -10,7 +11,7 @@ use Magento\Framework\Event\Observer;
  */
 class WatchNextCartSaveObserver implements ObserverInterface
 {
-    /** @var CartObserver  */
+    /** @var CartObserver */
     private $cartObserver;
 
     public function __construct(CartObserver $cartObserver)

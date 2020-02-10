@@ -4,9 +4,13 @@ namespace Ls\Omni\Controller\Ajax;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class RecommendationCart
@@ -43,14 +47,14 @@ class Coupons extends Action
         JsonFactory $resultJsonFactory,
         RedirectFactory $resultRedirectFactory
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultJsonFactory = $resultJsonFactory;
+        $this->resultPageFactory     = $resultPageFactory;
+        $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
         parent::__construct($context);
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     * @return ResponseInterface|Json|Redirect|ResultInterface
      */
     public function execute()
     {
@@ -59,9 +63,9 @@ class Coupons extends Action
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
-        $result = $this->resultJsonFactory->create();
+        $result     = $this->resultJsonFactory->create();
         $resultPage = $this->resultPageFactory->create();
-        $block = $resultPage->getLayout()
+        $block      = $resultPage->getLayout()
             ->createBlock('Ls\Omni\Block\Cart\Coupons')
             ->setTemplate('Ls_Omni::cart/coupons-listing.phtml')
             ->toHtml();

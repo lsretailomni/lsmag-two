@@ -2,6 +2,17 @@
 
 namespace Ls\Omni\Model\Order\Pdf\Items\Invoice;
 
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Filter\FilterManager;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Registry;
+use Magento\Framework\Stdlib\StringUtils;
+use Magento\Tax\Helper\Data;
+
 /**
  * Class DefaultInvoice
  * @package Ls\Omni\Model\Order\Pdf\Items\Invoice
@@ -11,41 +22,41 @@ class DefaultInvoice extends \Magento\Sales\Model\Order\Pdf\Items\Invoice\Defaul
     /**
      * Core string
      *
-     * @var \Magento\Framework\Stdlib\StringUtils
+     * @var StringUtils
      */
     public $string;
 
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     public $productRepository;
 
     /**
      * DefaultInvoice constructor.
-     * @param \Magento\Framework\Model\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Tax\Helper\Data $taxData
-     * @param \Magento\Framework\Filesystem $filesystem
-     * @param \Magento\Framework\Filter\FilterManager $filterManager
-     * @param \Magento\Framework\Stdlib\StringUtils $string
-     * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
-     * @param \Magento\Framework\Data\Collection\AbstractDb|null $resourceCollection
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param Context $context
+     * @param Registry $registry
+     * @param Data $taxData
+     * @param Filesystem $filesystem
+     * @param FilterManager $filterManager
+     * @param StringUtils $string
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
+     * @param ProductRepositoryInterface $productRepository
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Tax\Helper\Data $taxData,
-        \Magento\Framework\Filesystem $filesystem,
-        \Magento\Framework\Filter\FilterManager $filterManager,
-        \Magento\Framework\Stdlib\StringUtils $string,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        Context $context,
+        Registry $registry,
+        Data $taxData,
+        Filesystem $filesystem,
+        FilterManager $filterManager,
+        StringUtils $string,
+        ProductRepositoryInterface $productRepository,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
         array $data = []
     ) {
-        $this->string = $string;
+        $this->string            = $string;
         $this->productRepository = $productRepository;
         parent::__construct(
             $context,
@@ -61,32 +72,32 @@ class DefaultInvoice extends \Magento\Sales\Model\Order\Pdf\Items\Invoice\Defaul
     }
 
     /**
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function draw()
     {
-        $order = $this->getOrder();
-        $item = $this->getItem();
-        $pdf = $this->getPdf();
-        $page = $this->getPage();
-        $lines = [];
-        $id = $item->getProductid();
-        $product = $this->productRepository->getById($id);
+        $order     = $this->getOrder();
+        $item      = $this->getItem();
+        $pdf       = $this->getPdf();
+        $page      = $this->getPage();
+        $lines     = [];
+        $id        = $item->getProductid();
+        $product   = $this->productRepository->getById($id);
         $PcbMaster = $product->getData('pcb_master');
 
         // draw Product name
         $lines[0] = [['text' => $this->string->split($item->getName(), 35, true, true), 'feed' => 35]];
 
         $lines[0][] = [
-            'text' => $PcbMaster,
-            'feed' => 190,
+            'text'  => $PcbMaster,
+            'feed'  => 190,
             'align' => 'right',
         ];
 
         // draw SKU
         $lines[0][] = [
-            'text' => $this->string->split($this->getSku($item), 17),
-            'feed' => 290,
+            'text'  => $this->string->split($this->getSku($item), 17),
+            'feed'  => 290,
             'align' => 'right',
         ];
 
@@ -94,9 +105,9 @@ class DefaultInvoice extends \Magento\Sales\Model\Order\Pdf\Items\Invoice\Defaul
         $lines[0][] = ['text' => $item->getQty() * 1, 'feed' => 435, 'align' => 'right'];
 
         // draw item Prices
-        $i = 0;
-        $prices = $this->getItemPricesForDisplay();
-        $feedPrice = 395;
+        $i            = 0;
+        $prices       = $this->getItemPricesForDisplay();
+        $feedPrice    = 395;
         $feedSubtotal = $feedPrice + 170;
         foreach ($prices as $priceData) {
             if (isset($priceData['label'])) {
@@ -108,16 +119,16 @@ class DefaultInvoice extends \Magento\Sales\Model\Order\Pdf\Items\Invoice\Defaul
             }
             // draw Price
             $lines[$i][] = [
-                'text' => $priceData['price'],
-                'feed' => $feedPrice,
-                'font' => 'bold',
+                'text'  => $priceData['price'],
+                'feed'  => $feedPrice,
+                'font'  => 'bold',
                 'align' => 'right',
             ];
             // draw Subtotal
             $lines[$i][] = [
-                'text' => $priceData['subtotal'],
-                'feed' => $feedSubtotal,
-                'font' => 'bold',
+                'text'  => $priceData['subtotal'],
+                'feed'  => $feedSubtotal,
+                'font'  => 'bold',
                 'align' => 'right',
             ];
             $i++;
@@ -125,9 +136,9 @@ class DefaultInvoice extends \Magento\Sales\Model\Order\Pdf\Items\Invoice\Defaul
 
         // draw Tax
         $lines[0][] = [
-            'text' => $order->formatPriceTxt($item->getDiscountAmount()),
-            'feed' => 495,
-            'font' => 'bold',
+            'text'  => $order->formatPriceTxt($item->getDiscountAmount()),
+            'feed'  => 495,
+            'font'  => 'bold',
             'align' => 'right',
         ];
 
@@ -164,41 +175,41 @@ class DefaultInvoice extends \Magento\Sales\Model\Order\Pdf\Items\Invoice\Defaul
 
     /**
      * @return array
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function getItemPricesForDisplay()
     {
         $order = $this->getOrder();
-        $item = $this->getItem();
+        $item  = $this->getItem();
         if ($this->_taxData->displaySalesBothPrices()) {
             $prices = [
                 [
-                    'label' => __('Excl. Tax') . ':',
-                    'price' => $order->formatPriceTxt($item->getBasePrice() - $item->getDiscountAmount()),
+                    'label'          => __('Excl. Tax') . ':',
+                    'price'          => $order->formatPriceTxt($item->getBasePrice() - $item->getDiscountAmount()),
                     'discountAmount' => $order->formatPriceTxt($item->getDiscountAmount()),
-                    'subtotal' => $order->formatPriceTxt($item->getRowTotal()),
+                    'subtotal'       => $order->formatPriceTxt($item->getRowTotal()),
                 ],
                 [
-                    'label' => __('Incl. Tax') . ':',
-                    'price' => $order->formatPriceTxt($item->getPriceInclTax()),
+                    'label'          => __('Incl. Tax') . ':',
+                    'price'          => $order->formatPriceTxt($item->getPriceInclTax()),
                     'discountAmount' => $order->formatPriceTxt($item->getDiscountAmount()),
-                    'subtotal' => $order->formatPriceTxt($item->getRowTotalInclTax())
+                    'subtotal'       => $order->formatPriceTxt($item->getRowTotalInclTax())
                 ],
             ];
         } elseif ($this->_taxData->displaySalesPriceInclTax()) {
             $prices = [
                 [
-                    'price' => $order->formatPriceTxt($item->getPriceInclTax()),
+                    'price'          => $order->formatPriceTxt($item->getPriceInclTax()),
                     'discountAmount' => $order->formatPriceTxt($item->getDiscountAmount()),
-                    'subtotal' => $order->formatPriceTxt($item->getRowTotalInclTax()),
+                    'subtotal'       => $order->formatPriceTxt($item->getRowTotalInclTax()),
                 ],
             ];
         } else {
             $prices = [
                 [
-                    'price' => $order->formatPriceTxt($item->getBasePrice()),
+                    'price'          => $order->formatPriceTxt($item->getBasePrice()),
                     'discountAmount' => $order->formatPriceTxt($item->getDiscountAmount()),
-                    'subtotal' => $order->formatPriceTxt($item->getRowTotal() - $item->getDiscountAmount()),
+                    'subtotal'       => $order->formatPriceTxt($item->getRowTotal() - $item->getDiscountAmount()),
                 ],
             ];
         }

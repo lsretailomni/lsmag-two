@@ -2,12 +2,25 @@
 
 namespace Ls\Customer\Observer;
 
+use Exception;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Helper\ContactHelper;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\ActionFlag;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Json\Helper\Data;
+use Magento\Framework\Registry;
+use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 use Zend_Validate;
 use Zend_Validate_EmailAddress;
-use \Ls\Omni\Helper\ContactHelper;
-use \Ls\Omni\Client\Ecommerce\Entity;
 
 /**
  * Class AjaxLoginObserver
@@ -19,74 +32,74 @@ class AjaxLoginObserver implements ObserverInterface
     /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var LoggerInterface */
     private $logger;
 
-    /** @var \Magento\Customer\Model\Session\Proxy */
+    /** @var Proxy */
     private $customerSession;
 
-    /** @var \Magento\Framework\App\ActionFlag */
+    /** @var ActionFlag */
     private $actionFlag;
 
-    /** @var \Magento\Framework\Json\Helper\Data $jsonhelper */
+    /** @var Data $jsonhelper */
     private $jsonhelper;
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     private $storeManage;
 
-    /** @var \Magento\Customer\Model\CustomerFactory */
+    /** @var CustomerFactory */
     private $customerFactory;
 
-    /** @var \Magento\Framework\Controller\Result\JsonFactory */
+    /** @var JsonFactory */
     private $resultJsonFactory;
 
-    /** @var \Ls\Core\Model\LSR @var */
+    /** @var LSR @var */
     private $lsr;
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     private $registry;
 
     /**
      * AjaxLoginObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Magento\Framework\Registry $registry
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Framework\Json\Helper\Data $jsonhelper
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
-     * @param \Magento\Framework\App\ActionFlag $actionFlag
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param Registry $registry
+     * @param LoggerInterface $logger
+     * @param Proxy $customerSession
+     * @param Data $jsonhelper
+     * @param JsonFactory $resultJsonFactory
+     * @param ActionFlag $actionFlag
+     * @param StoreManagerInterface $storeManager
+     * @param CustomerFactory $customerFactory
      */
     public function __construct(
         ContactHelper $contactHelper,
-        \Magento\Framework\Registry $registry,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Framework\Json\Helper\Data $jsonhelper,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-        \Magento\Framework\App\ActionFlag $actionFlag,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Ls\Core\Model\LSR $LSR
+        Registry $registry,
+        LoggerInterface $logger,
+        Proxy $customerSession,
+        Data $jsonhelper,
+        JsonFactory $resultJsonFactory,
+        ActionFlag $actionFlag,
+        StoreManagerInterface $storeManager,
+        CustomerFactory $customerFactory,
+        LSR $LSR
     ) {
-        $this->contactHelper = $contactHelper;
-        $this->registry = $registry;
-        $this->logger = $logger;
-        $this->customerSession = $customerSession;
+        $this->contactHelper     = $contactHelper;
+        $this->registry          = $registry;
+        $this->logger            = $logger;
+        $this->customerSession   = $customerSession;
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->jsonhelper = $jsonhelper;
-        $this->actionFlag = $actionFlag;
-        $this->storeManage = $storeManager;
-        $this->customerFactory = $customerFactory;
-        $this->lsr = $LSR;
+        $this->jsonhelper        = $jsonhelper;
+        $this->actionFlag        = $actionFlag;
+        $this->storeManage       = $storeManager;
+        $this->customerFactory   = $customerFactory;
+        $this->lsr               = $LSR;
     }
 
     /**
      * @param Observer $observer
-     * @return $this|AjaxLoginObserver|\Magento\Framework\Controller\Result\Json
+     * @return $this|AjaxLoginObserver|Json
      */
     public function execute(Observer $observer)
     {
@@ -95,20 +108,20 @@ class AjaxLoginObserver implements ObserverInterface
          */
         if ($this->lsr->isLSR()) {
             try {
-                /** @var $request \Magento\Framework\App\RequestInterface */
+                /** @var $request RequestInterface */
                 $request = $observer->getEvent()->getRequest();
-                /** @var \Magento\Framework\Controller\Result\Json $resultJson */
+                /** @var Json $resultJson */
                 $resultJson = $this->resultJsonFactory->create();
                 // check if we have a data in request and request is Ajax.
                 if ($request && $request->isXmlHttpRequest()) {
                     $credentials = $this->jsonhelper->jsonDecode($request->getContent());
-                    $email = $username = $credentials['username'];
-                    $websiteId = $this->storeManage->getWebsite()->getWebsiteId();
-                    $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
+                    $email       = $username = $credentials['username'];
+                    $websiteId   = $this->storeManage->getWebsite()->getWebsiteId();
+                    $is_email    = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
                     // CASE FOR EMAIL LOGIN := TRANSLATION TO USERNAME
                     if ($is_email) {
                         $search = $this->contactHelper->search($username);
-                        $found = $search !== null
+                        $found  = $search !== null
                             && ($search instanceof Entity\MemberContact)
                             && !empty($search->getEmail());
                         if (!$found) {
@@ -140,7 +153,7 @@ class AjaxLoginObserver implements ObserverInterface
                         return $this->generateMessage($observer, $message, true);
                     }
                     $response = [
-                        'errors' => false,
+                        'errors'  => false,
                         'message' => __('Omni login successful.')
                     ];
                     if ($result instanceof Entity\MemberContact) {
@@ -159,14 +172,14 @@ class AjaxLoginObserver implements ObserverInterface
                             );
                         }
                         $this->customerSession->regenerateId();
-                        $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+                        $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
                         return $resultJson->setData($response);
                     } else {
                         $message = __('The service is currently unavailable. Please try again later.');
                         return $this->generateMessage($observer, $message, true);
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
             }
         }
@@ -179,13 +192,13 @@ class AjaxLoginObserver implements ObserverInterface
      * @param bool $isError
      * @return $this
      */
-    private function generateMessage(\Magento\Framework\Event\Observer $observer, $message, $isError = true)
+    private function generateMessage(Observer $observer, $message, $isError = true)
     {
         $response = [
-            'errors' => $isError,
+            'errors'  => $isError,
             'message' => __($message)
         ];
-        $this->actionFlag->set('', \Magento\Framework\App\Action\Action::FLAG_NO_DISPATCH, true);
+        $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
         $observer->getControllerAction()
             ->getResponse()
             ->representJson($this->jsonhelper->jsonEncode($response));

@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Omni\Service;
 
 use MyCLabs\Enum\Enum;

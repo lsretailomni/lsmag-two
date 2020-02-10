@@ -57,7 +57,7 @@ define([
 
                 google.maps.event.addListener(marker, 'click', (function (marker, i) {
                     return function () {
-                        var url="https://www.google.com/maps/dir/?api=1&destination="+locations[i][1]+","+locations[i][2];
+                        var url = "https://www.google.com/maps/dir/?api=1&destination=" + locations[i][1] + "," + locations[i][2];
                         window.open(url, "_blank");
                     }
                 })(marker, i));

@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Omni\Service\Soap;
 
 /**
@@ -7,8 +8,8 @@ namespace Ls\Omni\Service\Soap;
  */
 class ComplexType
 {
-    private static $registry = [ ];
-    private static $cache = [ ];
+    private static $registry = [];
+    private static $cache = [];
     /** @var string */
     private $name;
     /** @var SoapType */
@@ -21,28 +22,28 @@ class ComplexType
     /**
      * SoapEntity constructor.
      *
-     * @param string                  $name
-     * @param SoapType                $soap_type
+     * @param string $name
+     * @param SoapType $soap_type
      * @param ComplexTypeDefinition[] $definition
-     * @param string                  $base
+     * @param string $base
      */
     public function __construct($name, SoapType $soap_type, $definition, $base = null)
     {
 
-        $this->name = $name;
-        $this->soap_type = $soap_type;
+        $this->name       = $name;
+        $this->soap_type  = $soap_type;
         $this->definition = $definition;
-        $this->base = $base;
+        $this->base       = $base;
 
         if (array_search($name, ComplexType::$registry) === false) {
-            ComplexType::$registry[] = $name;
-            ComplexType::$cache[ $name ] = $this;
+            ComplexType::$registry[]   = $name;
+            ComplexType::$cache[$name] = $this;
         } else {
-            $base_keys = array_keys(ComplexType::$cache[ $name ]->getDefinition());
-            $keys = array_keys($definition);
+            $base_keys = array_keys(ComplexType::$cache[$name]->getDefinition());
+            $keys      = array_keys($definition);
 
             $difference = array_diff($keys, $base_keys);
-            $merged = array_merge(ComplexType::$cache[ $name ]->getDefinition(), $this->definition);
+            $merged     = array_merge(ComplexType::$cache[$name]->getDefinition(), $this->definition);
             if (!empty($difference)) {
                 $this->definition = $merged;
             }

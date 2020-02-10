@@ -2,14 +2,15 @@
 
 namespace Ls\Omni\Helper;
 
-use Magento\Framework\App\Helper\Context;
 use \Ls\Omni\Model\Cache\Type;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 
 /**
  * Class CacheHelper
  * @package Ls\Omni\Helper
  */
-class CacheHelper extends \Magento\Framework\App\Helper\AbstractHelper
+class CacheHelper extends AbstractHelper
 {
     /**
      * @var Type

@@ -2,6 +2,19 @@
 
 namespace Ls\Omni\Controller\Cart;
 
+use Exception;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Checkout\Model\Cart;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Data\Form\FormKey\Validator;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
+
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -10,49 +23,49 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
     /**
      * Sales quote repository
      *
-     * @var \Magento\Quote\Api\CartRepositoryInterface
+     * @var CartRepositoryInterface
      */
     public $quoteRepository;
 
     /**
-     * @var \Ls\Omni\Helper\LoyaltyHelper
+     * @var LoyaltyHelper
      */
     public $loyaltyHelper;
 
     /**
-     * @var \Ls\Omni\Helper\BasketHelper
+     * @var BasketHelper
      */
     public $basketHelper;
 
     /**
-     * @var \Ls\Omni\Helper\Data
+     * @var Data
      */
     public $data;
 
     /**
      * RedeemPoints constructor.
-     * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
-     * @param \Magento\Checkout\Model\Cart $cart
-     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
-     * @param \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper
-     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
-     * @param \Ls\Omni\Helper\Data $data
+     * @param Context $context
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Proxy $checkoutSession
+     * @param StoreManagerInterface $storeManager
+     * @param Validator $formKeyValidator
+     * @param Cart $cart
+     * @param CartRepositoryInterface $quoteRepository
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param BasketHelper $basketHelper
+     * @param Data $data
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator,
-        \Magento\Checkout\Model\Cart $cart,
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
-        \Ls\Omni\Helper\LoyaltyHelper $loyaltyHelper,
-        \Ls\Omni\Helper\BasketHelper $basketHelper,
-        \Ls\Omni\Helper\Data $data
+        Context $context,
+        ScopeConfigInterface $scopeConfig,
+        Proxy $checkoutSession,
+        StoreManagerInterface $storeManager,
+        Validator $formKeyValidator,
+        Cart $cart,
+        CartRepositoryInterface $quoteRepository,
+        LoyaltyHelper $loyaltyHelper,
+        BasketHelper $basketHelper,
+        Data $data
     ) {
         parent::__construct(
             $context,
@@ -63,15 +76,15 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             $cart
         );
         $this->quoteRepository = $quoteRepository;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->basketHelper = $basketHelper;
-        $this->data = $data;
+        $this->loyaltyHelper   = $loyaltyHelper;
+        $this->basketHelper    = $basketHelper;
+        $this->data            = $data;
     }
 
     /**
      * Initialize coupon
      *
-     * @return \Magento\Framework\Controller\Result\Redirect
+     * @return Redirect
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
@@ -86,12 +99,12 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             return $this->_goBack();
         }
 
-        $loyaltyPoints = (int) $loyaltyPoints;
+        $loyaltyPoints = (int)$loyaltyPoints;
         try {
-            $cartQuote = $this->cart->getQuote();
-            $itemsCount = $cartQuote->getItemsCount();
-            $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
-            $orderBalance =$this->data->getOrderBalance(
+            $cartQuote          = $this->cart->getQuote();
+            $itemsCount         = $cartQuote->getItemsCount();
+            $isPointValid       = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
+            $orderBalance       = $this->data->getOrderBalance(
                 $cartQuote->getLsGiftCardAmountUsed(),
                 0,
                 $this->basketHelper->getBasketSessionValue()
@@ -134,7 +147,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             } else {
                 $this->messageManager->addSuccessMessage(__('You have successfully canceled the points redemption.'));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->messageManager->addErrorMessage(__('We cannot redeem the points.'));
         }
         return $this->_goBack();

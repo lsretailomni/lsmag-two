@@ -42,18 +42,17 @@ class OperationGenerator extends AbstractOmniGenerator
      */
     public function generate()
     {
-
-        $request_type = $this->operation->getRequest()->getType();
-        $response_type = $this->operation->getResponse()->getType();
-        $service_folder = ucfirst($this->getServiceType()->getValue());
-        $base_namespace = self::fqn('Ls', 'Omni', 'Client', $service_folder);
-        $operation_name = $this->operation->getName();
+        $request_type        = $this->operation->getRequest()->getType();
+        $response_type       = $this->operation->getResponse()->getType();
+        $service_folder      = ucfirst($this->getServiceType()->getValue());
+        $base_namespace      = self::fqn('Ls', 'Omni', 'Client', $service_folder);
+        $operation_name      = $this->operation->getName();
         $operation_namespace = self::fqn($base_namespace, 'Operation');
-        $entity_namespace = self::fqn($base_namespace, 'Entity');
-        $request_fqn = self::fqn($entity_namespace, $request_type);
-        $request_alias = "{$operation_name}Request";
-        $response_fqn = self::fqn($entity_namespace, $response_type);
-        $response_alias = "{$operation_name}Response";
+        $entity_namespace    = self::fqn($base_namespace, 'Entity');
+        $request_fqn         = self::fqn($entity_namespace, $request_type);
+        $request_alias       = "{$operation_name}Request";
+        $response_fqn        = self::fqn($entity_namespace, $response_type);
+        $response_alias      = "{$operation_name}Response";
 
         $is_tokenized = array_search($operation_name, $this->tokenized_operations) !== false ? 'TRUE' : 'FALSE';
 
@@ -106,12 +105,12 @@ class OperationGenerator extends AbstractOmniGenerator
         // THE CLASS
         $content = $this->file->generate();
 
-        $no_inspection = '/** @noinspection PhpDocSignatureInspection */';
+        $no_inspection    = '/** @noinspection PhpDocSignatureInspection */';
         $execute_docblock = <<<COMMENT
 	/**
      * @param $request_alias \$request
 COMMENT;
-        $content = str_replace($execute_docblock, "$no_inspection\n$execute_docblock", $content);
+        $content          = str_replace($execute_docblock, "$no_inspection\n$execute_docblock", $content);
         // USE SIMPLIFIED FULLY QUALIFIED NAME
         $content = str_replace('execute(\\RequestInterface', 'execute(RequestInterface', $content);
         $content = str_replace(
@@ -136,7 +135,8 @@ COMMENT;
         // @codingStandardsIgnoreLine
         $method = new MethodGenerator();
         $method->setName('__construct');
-        $method->setBody(<<<CODE
+        $method->setBody(
+            <<<CODE
 \$service_type = new ServiceType( self::SERVICE_TYPE );
 parent::__construct( \$service_type );
 \$url = OmniService::getUrl( \$service_type ); 
@@ -159,17 +159,26 @@ CODE
         // @codingStandardsIgnoreLine
         $method = new MethodGenerator();
         $method->setName('execute');
-        $method->setParameter(ParameterGenerator::fromArray(['name' => 'request',
-            'type' => 'RequestInterface',
-            'defaultvalue' => null]));
+        $method->setParameter(ParameterGenerator::fromArray([
+            'name'         => 'request',
+            'type'         => 'RequestInterface',
+            'defaultvalue' => null
+        ]));
         // @codingStandardsIgnoreStart
         $method->setDocBlock(
-            DocBlockGenerator::fromArray(['tags' => [new Tag\ParamTag('request', $request_alias),
-                new Tag\ReturnTag(['ResponseInterface',
-            $response_alias])]])
+            DocBlockGenerator::fromArray([
+                'tags' => [
+                    new Tag\ParamTag('request', $request_alias),
+                    new Tag\ReturnTag([
+                        'ResponseInterface',
+                        $response_alias
+                    ])
+                ]
+            ])
         );
         // @codingStandardsIgnoreEnd
-        $method->setBody(<<<CODE
+        $method->setBody(
+            <<<CODE
 if ( !is_null( \$request ) ) {
     \$this->setRequest( \$request );
 }
@@ -193,7 +202,8 @@ CODE
             DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$request_alias])]])
         );
         // @codingStandardsIgnoreEnd
-        $method->setBody(<<<CODE
+        $method->setBody(
+            <<<CODE
 if ( is_null( \$this->request ) ) {
     \$this->request = new $request_alias();
 }
@@ -217,7 +227,8 @@ CODE
             DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag(['array'])]])
         );
         // @codingStandardsIgnoreEnd
-        $method->setBody(<<<CODE
+        $method->setBody(
+            <<<CODE
 return ClassMap::getClassMap();
 CODE
         );

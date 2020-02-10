@@ -2,18 +2,22 @@
 
 namespace Ls\Customer\Block\Order;
 
-use Magento\Framework\Pricing\PriceCurrencyInterface;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Totals
  * @package Ls\Customer\Block\Order
  */
-class Totals extends \Magento\Framework\View\Element\Template
+class Totals extends Template
 {
     /**
-     * @var \Magento\Framework\Registry|null
+     * @var Registry|null
      */
     public $coreRegistry = null;
 
@@ -39,29 +43,29 @@ class Totals extends \Magento\Framework\View\Element\Template
 
     /**
      * Totals constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
+     * @param Context $context
+     * @param Registry $registry
      * @param PriceCurrencyInterface $priceCurrency
      * @param LoyaltyHelper $loyaltyHelper
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\Registry $registry,
+        Context $context,
+        Registry $registry,
         PriceCurrencyInterface $priceCurrency,
         LoyaltyHelper $loyaltyHelper,
         array $data = []
     ) {
         $this->priceCurrency = $priceCurrency;
         $this->loyaltyHelper = $loyaltyHelper;
-        $this->coreRegistry = $registry;
+        $this->coreRegistry  = $registry;
         parent::__construct($context, $data);
     }
 
     /**
      * Retrieve current order model instance
      *
-     * @return \Ls\Omni\Client\Ecommerce\Entity\SalesEntry
+     * @return SalesEntry
      */
     public function getOrder()
     {
@@ -83,9 +87,9 @@ class Totals extends \Magento\Framework\View\Element\Template
      */
     public function getTotalTax()
     {
-        $grandTotal = $this->getGrandTotal();
+        $grandTotal     = $this->getGrandTotal();
         $totalNetAmount = $this->getTotalNetAmount();
-        $totalTax = $grandTotal - $totalNetAmount;
+        $totalTax       = $grandTotal - $totalNetAmount;
         return $totalTax;
     }
 
@@ -133,7 +137,7 @@ class Totals extends \Magento\Framework\View\Element\Template
     public function getShipmentChargeLineFee()
     {
         $orderLines = $this->getOrder()->getLines();
-        $fee = 0;
+        $fee        = 0;
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == LSR::LSR_SHIPMENT_ITEM_ID) {
                 $fee = $line->getAmount();
@@ -149,9 +153,9 @@ class Totals extends \Magento\Framework\View\Element\Template
     {
         $this->getLoyaltyGiftCardInfo();
         $shipmentFee = $this->getShipmentChargeLineFee();
-        $grandTotal = $this->getGrandTotal();
-        $discount = $this->getTotalDiscount();
-        $fee = (float)$grandTotal + $discount - (float)$shipmentFee;
+        $grandTotal  = $this->getGrandTotal();
+        $discount    = $this->getTotalDiscount();
+        $fee         = (float)$grandTotal + $discount - (float)$shipmentFee;
         return $fee;
     }
 
@@ -162,9 +166,9 @@ class Totals extends \Magento\Framework\View\Element\Template
     {
         // @codingStandardsIgnoreStart
         $paymentLines = $this->getOrder()->getPayments();
-        $methods = array();
+        $methods      = array();
         $giftCardInfo = array();
-        $loyaltyInfo = array();
+        $loyaltyInfo  = array();
         // @codingStandardsIgnoreEnd
         foreach ($paymentLines as $line) {
             if ($line->getTenderType() == '0') {
@@ -174,10 +178,10 @@ class Totals extends \Magento\Framework\View\Element\Template
             } elseif ($line->getTenderType() == '2') {
                 $methods[] = __('Coupon');
             } elseif ($line->getTenderType() == '3') {
-                $methods[] = __('Loyalty Points');
+                $methods[]                = __('Loyalty Points');
                 $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getAmount());
             } elseif ($line->getTenderType() == '4') {
-                $methods[] = __('Gift Card');
+                $methods[]            = __('Gift Card');
                 $this->giftCardAmount = $line->getAmount();
             } else {
                 $methods[] = __('Unknown');

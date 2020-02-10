@@ -1,47 +1,56 @@
 <?php
+
 namespace Ls\Omni\Block\Product\View;
 
+use \Ls\Core\Model\LSR;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Block\Product\Context;
+use Magento\Catalog\Helper\Product;
+use Magento\Catalog\Model\ProductTypes\ConfigInterface;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Json\EncoderInterface;
+use Magento\Framework\Locale\FormatInterface;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\Stdlib\StringUtils;
 
 /**
  * Class View
  * @package Ls\Omni\Block\Product\View
  */
-
 class View extends \Magento\Catalog\Block\Product\View
 {
     /**
-     * @var \Ls\Core\Model\LSR
+     * @var LSR
      */
     public $lsr;
 
     /**
      * View constructor.
-     * @param \Ls\Core\Model\LSR $lsr
-     * @param \Magento\Catalog\Block\Product\Context $context
+     * @param LSR $lsr
+     * @param Context $context
      * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
-     * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
-     * @param \Magento\Framework\Stdlib\StringUtils $string
-     * @param \Magento\Catalog\Helper\Product $productHelper
-     * @param \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig
-     * @param \Magento\Framework\Locale\FormatInterface $localeFormat
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param EncoderInterface $jsonEncoder
+     * @param StringUtils $string
+     * @param Product $productHelper
+     * @param ConfigInterface $productTypeConfig
+     * @param FormatInterface $localeFormat
+     * @param Proxy $customerSession
      * @param ProductRepositoryInterface $productRepository
-     * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
+     * @param PriceCurrencyInterface $priceCurrency
      * @param array $data
      */
     public function __construct(
-        \Ls\Core\Model\LSR $lsr,
-        \Magento\Catalog\Block\Product\Context $context,
+        LSR $lsr,
+        Context $context,
         \Magento\Framework\Url\EncoderInterface $urlEncoder,
-        \Magento\Framework\Json\EncoderInterface $jsonEncoder,
-        \Magento\Framework\Stdlib\StringUtils $string,
-        \Magento\Catalog\Helper\Product $productHelper,
-        \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig,
-        \Magento\Framework\Locale\FormatInterface $localeFormat,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        EncoderInterface $jsonEncoder,
+        StringUtils $string,
+        Product $productHelper,
+        ConfigInterface $productTypeConfig,
+        FormatInterface $localeFormat,
+        Proxy $customerSession,
         ProductRepositoryInterface $productRepository,
-        \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
+        PriceCurrencyInterface $priceCurrency,
         array $data = []
     ) {
         $this->lsr = $lsr;
