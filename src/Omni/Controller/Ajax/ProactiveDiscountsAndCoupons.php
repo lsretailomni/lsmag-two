@@ -67,12 +67,12 @@ class ProactiveDiscountsAndCoupons extends Action
      */
     public function execute()
     {
-        $this->sessionHelper->newSessionHandler("lsproactivediscounts");
         if (!$this->getRequest()->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
+        $this->sessionHelper->newSessionHandler("lsproactivediscounts");
         $result            = $this->resultJsonFactory->create();
         $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');

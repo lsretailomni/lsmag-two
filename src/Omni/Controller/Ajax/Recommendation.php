@@ -80,12 +80,12 @@ class Recommendation extends Action
      */
     public function execute()
     {
-        $this->sessionHelper->newSessionHandler("lsrecommend");
         if (!$this->getRequest()->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
+        $this->sessionHelper->newSessionHandler("lsrecommend");
         $result            = $this->resultJsonFactory->create();
         $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');
