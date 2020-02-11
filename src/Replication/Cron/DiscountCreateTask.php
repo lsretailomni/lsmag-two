@@ -212,7 +212,7 @@ class DiscountCreateTask
                 if ($reindexRules) {
                     $this->jobApply->applyAll();
                 }
-                if (!$this->getRemainingRecords() == 0) {
+                if ($this->getRemainingRecords() == 0) {
                     $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
                 } else {
                     $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
@@ -316,6 +316,7 @@ class DiscountCreateTask
 
     /**
      * @return array|Collection
+     * @throws Exception
      */
     public function getUniquePublishedOffers()
     {
@@ -385,6 +386,7 @@ class DiscountCreateTask
 
     /**
      * @return int
+     * @throws Exception
      */
     public function getRemainingRecords()
     {
