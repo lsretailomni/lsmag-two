@@ -1,4 +1,5 @@
-<?php echo $block->getData('jobName') ?><?php echo __(" Cron has been executed. Remaining entries "); ?><?php echo $block->getData('remaining') ?>.
+<?php echo $block->getData('jobName') ?><?php echo __(" Cron has been executed. "); ?>
+<?php if($block->getData('remaining')!=-1){?><?php __("Remaining entries ");?><?php echo $block->getData('remaining') ?>.<?php }?>
 <?php if ($block->getData('url') != "") { ?>
     <?php echo __("Do you want to execute More Data?"); ?> <a
             href="<?php echo $block->escapeUrl($block->getData('url')); ?>"><?php echo $block->escapeHtml(__("Click Here")); ?>

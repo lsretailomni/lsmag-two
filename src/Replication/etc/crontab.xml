@@ -101,4 +101,9 @@
             <schedule>*/5 * * * *</schedule>
         </job>
     </group>
+    <group id="sync_version">
+        <job name="sync_version" instance="Ls\Replication\Cron\SyncVersion" method="execute">
+            <schedule>0 0 * * 0</schedule>
+        </job>
+    </group>
 </config>

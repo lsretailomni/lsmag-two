@@ -63,6 +63,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_DEBUG = 'ls_mag/service/debug';
     const SC_SERVICE_TOKENIZED = 'ls_mag/service/tokenized_operations';
     const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
+    const SC_SERVICE_VERSION = 'ls_mag/service/version';
+    const SC_SERVICE_LS_CENTRAL_VERSION = 'ls_mag/service/ls_central_version';
+
 
     // REPLICATION
     const SC_REPLICATION_GETCATEGORIES = 'ls_mag/replication/replicate_category';
@@ -132,6 +135,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     // execute time for sync attributes value
     const LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE = 'ls_mag/replication/last_execute_repl_attributes_value_sync';
+
+    const SC_VERSION_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_version';
 
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';

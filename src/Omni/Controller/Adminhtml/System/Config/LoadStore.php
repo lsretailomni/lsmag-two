@@ -3,15 +3,15 @@
 namespace Ls\Omni\Controller\Adminhtml\System\Config;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
-use \Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
-use \Ls\Omni\Client\Ecommerce\Operation\Ping;
-use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Service\Service as OmniService;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
+use Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
+use Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Helper\Data;
+use Ls\Omni\Service\Service as OmniService;
+use Ls\Omni\Service\ServiceType;
+use Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Config\Storage\WriterInterface;
@@ -48,6 +48,11 @@ class LoadStore extends Action
     public $lsr;
 
     /**
+     * @var Data
+     */
+    public $helper;
+
+    /**
      * @var LoggerInterface
      */
     public $logger;
@@ -59,6 +64,7 @@ class LoadStore extends Action
      * @param RawFactory $resultRawFactory
      * @param WriterInterface $configWriter
      * @param LSR $lsr
+     * @param Data $helper
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -67,12 +73,14 @@ class LoadStore extends Action
         RawFactory $resultRawFactory,
         WriterInterface $configWriter,
         LSR $lsr,
+        Data $helper,
         LoggerInterface $logger
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory  = $resultRawFactory;
         $this->configWriter      = $configWriter;
         $this->lsr               = $lsr;
+        $this->helper            = $helper;
         $this->logger            = $logger;
         parent::__construct($context);
     }
@@ -90,12 +98,14 @@ class LoadStore extends Action
         ];
         $option_array         = [];
         try {
-            $baseUrl = $this->getRequest()->getParam('baseUrl');
-            $lsKey   = $this->getRequest()->getParam('lsKey');
-            $stores  = $this->getStores($baseUrl, $lsKey);
+            $baseUrl   = $this->getRequest()->getParam('baseUrl');
+            $lsKey     = $this->getRequest()->getParam('lsKey');
+            $websiteId = $this->getRequest()->getParam('websiteId');
+            $stores    = $this->getStores($baseUrl, $lsKey);
             if (!empty($stores)) {
                 $option_array = [['value' => '', 'label' => __('Please select your web store')]];
-                $pong         = $this->omniPing($baseUrl, $lsKey);
+                $pong         = $this->helper->omniPing($baseUrl, $lsKey);
+                $version      = $this->helper->parsePingResponseAndSaveToConfigData($pong, $websiteId);
                 foreach ($stores as $store) {
                     $option_array[] = ['value' => $store->getId(), 'label' => $store->getDescription()];
                 }
@@ -108,7 +118,10 @@ class LoadStore extends Action
         /** @var Json $result */
         $result = $this->resultJsonFactory->create();
         return $result->setData(
-            ['success' => true, 'store' => $option_array, 'pong' => $pong, 'hierarchy' => $hierarchyPlaceholder]
+            [
+                'success' => true, 'store' => $option_array, 'pong' => $pong, 'hierarchy' => $hierarchyPlaceholder,
+                'version' => $version
+            ]
         );
     }
 
@@ -140,26 +153,6 @@ class LoadStore extends Action
             }
         }
         return [];
-    }
-
-    /**
-     * @param $baseUrl
-     * @return mixed
-     */
-    public function omniPing($baseUrl, $lsKey)
-    {
-        //@codingStandardsIgnoreStart
-        $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
-        $url          = OmniService::getUrl($service_type, $baseUrl);
-        $client       = new OmniClient($url, $service_type);
-        $ping         = new Ping();
-        //@codingStandardsIgnoreEnd
-        $ping->setClient($client);
-        $ping->setToken($lsKey);
-        $client->setClassmap($ping->getClassMap());
-        $result = $ping->execute();
-        $pong   = $result->getResult();
-        return $pong;
     }
 
     /**

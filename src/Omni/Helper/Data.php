@@ -6,11 +6,18 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
+use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
+use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Model\Cache\Type;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Message\ManagerInterface;
@@ -73,6 +80,11 @@ class Data extends AbstractHelper
     public $date;
 
     /**
+     * @var WriterInterface
+     */
+    public $configWriter;
+
+    /**
      * Data constructor.
      * @param Context $context
      * @param StoreManagerInterface $store_manager
@@ -87,6 +99,7 @@ class Data extends AbstractHelper
      * @param CacheHelper $cacheHelper
      * @param LSR $lsr
      * @param DateTime $date
+     * @param WriterInterface $configWriter
      */
     public function __construct(
         Context $context,
@@ -101,7 +114,8 @@ class Data extends AbstractHelper
         CartRepositoryInterface $cartRepository,
         CacheHelper $cacheHelper,
         LSR $lsr,
-        DateTime $date
+        DateTime $date,
+        WriterInterface $configWriter
     ) {
         $this->storeManager          = $store_manager;
         $this->storeRepository       = $storeRepository;
@@ -115,6 +129,7 @@ class Data extends AbstractHelper
         $this->cacheHelper           = $cacheHelper;
         $this->lsr                   = $lsr;
         $this->date                  = $date;
+        $this->configWriter          = $configWriter;
         parent::__construct($context);
     }
 
@@ -345,5 +360,88 @@ class Data extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return true;
+    }
+
+    /**
+     * @param $pingResponseText
+     * @param string $websiteId
+     * @return array
+     */
+    public function parsePingResponseAndSaveToConfigData($pingResponseText, $websiteId = null)
+    {
+        $bothVersion = [];
+        try {
+            $results     = explode('&', $pingResponseText);
+            if (!empty($results)) {
+                $versionArray = explode(",", trim(preg_replace("^\[(.*?)\]^", ",", $results[2])));
+                foreach ($versionArray as $version) {
+                    if (!empty($version)) {
+                        if (strpos($version, "OMNI:") !== false) {
+                            $serviceVersion                 = trim(str_replace("OMNI:", "", $version));
+                            $bothVersion['service_version'] = $serviceVersion;
+                            if (!empty($websiteId)) {
+                                $this->configWriter->save(
+                                    LSR::SC_SERVICE_VERSION,
+                                    $serviceVersion,
+                                    \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+                                    $websiteId
+                                );
+                            } else {
+                                $this->configWriter->save(
+                                    LSR::SC_SERVICE_VERSION,
+                                    $serviceVersion,
+                                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                                    0
+                                );
+                            }
+                        }
+                        if (strpos($version, "LS:") !== false) {
+                            $lsCentralVersion                  = trim(str_replace("LS:", "", $version));
+                            $bothVersion['ls_central_version'] = $lsCentralVersion;
+                            if (!empty($websiteId)) {
+                                $this->configWriter->save(
+                                    LSR::SC_SERVICE_LS_CENTRAL_VERSION,
+                                    $lsCentralVersion,
+                                    \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+                                    $websiteId
+                                );
+                            } else {
+                                $this->configWriter->save(
+                                    LSR::SC_SERVICE_LS_CENTRAL_VERSION,
+                                    $lsCentralVersion,
+                                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                                    0
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $this->_logger->critical($e);
+        }
+
+        return $bothVersion;
+    }
+
+    /**
+     * @param $baseUrl
+     * @param $lsKey
+     * @return string
+     */
+    public function omniPing($baseUrl, $lsKey)
+    {
+        //@codingStandardsIgnoreStart
+        $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
+        $url          = OmniService::getUrl($service_type, $baseUrl);
+        $client       = new OmniClient($url, $service_type);
+        $ping         = new Ping();
+        //@codingStandardsIgnoreEnd
+        $ping->setClient($client);
+        $ping->setToken($lsKey);
+        $client->setClassmap($ping->getClassMap());
+        $result = $ping->execute();
+        $pong   = $result->getResult();
+        return $pong;
     }
 }
