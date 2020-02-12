@@ -11,9 +11,10 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Controller\Result\RedirectFactory;
 
 /**
- * Class Recommendation
+ * Class ProactiveDiscountsAndCoupons
  * @package Ls\Omni\Controller\Ajax
  */
 class ProactiveDiscountsAndCoupons extends Action
