@@ -488,4 +488,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         );
         return $configValue;
     }
+
+    /**
+     * Get default default zoom from config
+     * @return string
+     */
+    public function inventoryLookupBeforeAddToCartEnabled()
+    {
+        $configValue = $this->scopeConfig->getValue(
+            self::SC_CART_CHECK_INVENTORY,
+            ScopeConfigInterface::
+            SCOPE_TYPE_DEFAULT
+        );
+        return $configValue;
+    }
 }
