@@ -23,8 +23,7 @@
 					stores = response.responseJSON.store;
 					hierarchy = response.responseJSON.hierarchy;
 					version = response.responseJSON.version;
-					if(version) {
-						console.log(version.service_version);
+					if (version) {
 						$("#row_ls_mag_service_version .control-value").html(version.service_version);
 						$("#row_ls_mag_service_ls_central_version .control-value").html(version.ls_central_version);
 					}
