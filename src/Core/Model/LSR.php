@@ -490,8 +490,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * Get default default zoom from config
-     * @return string
+     * Check if inventory lookup is enabled
+     * @return mixed
      */
     public function inventoryLookupBeforeAddToCartEnabled()
     {
