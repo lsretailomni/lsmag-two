@@ -277,14 +277,15 @@ class AttributesCreateTask
             /** @var ReplExtendedVariantValue $variant */
             foreach ($variants->getItems() as $variant) {
                 if (empty($variantCodes[$variant->getCode()]) ||
-                    !in_array($variant->getValue(), $variantCodes[$variant->getCode()], true)) {
-                    $variantCodes[$variant->getCode()][$variant->getLogicalOrder()] = $variant->getValue();
-                    $variant->setData('processed_at', $this->replicationHelper->getDateTime());
-                    $variant->setData('processed', 1);
-                    $variant->setData('is_updated', 0);
-                    // @codingStandardsIgnoreLine
-                    $this->replExtendedVariantValueRepository->save($variant);
+                    !array_key_exists($variant->getValue(), $variantCodes[$variant->getCode()])) {
+                    $variantCodes[$variant->getCode()][$variant->getValue()][$variant->getLogicalOrder()]
+                        = $variant->getValue();
                 }
+                $variant->setData('processed_at', $this->replicationHelper->getDateTime());
+                $variant->setData('processed', 1);
+                $variant->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
+                $this->replExtendedVariantValueRepository->save($variant);
             }
             foreach ($variantCodes as $code => $value) {
                 $formattedCode = $this->replicationHelper->formatAttributeCode($code);
@@ -333,42 +334,36 @@ class AttributesCreateTask
                         $this->logger->debug($e->getMessage());
                     }
                 }
-                $existingOptions    = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
-                $newOptionsArray    = [];
-                $updatedOptionArray = [];
+                $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
                 if (empty($existingOptions)) {
-                    $this->eavSetupFactory->create()
-                        ->addAttributeOption(
-                            [
-                                'values'       => $value,
-                                'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
-                            ]
-                        );
-                } elseif (!empty($value)) {
-                    foreach ($value as $k => $v) {
-                        if (!in_array($v, $existingOptions, true)) {
-                            $newOptionsArray[$k] = $v;
-                        } else {
-                            $updatedOptionArray[$k] = $v;
-                        }
-                    }
-                    if (!empty($newOptionsArray)) {
+                    foreach ($value as $eachVariantValue) {
                         $this->eavSetupFactory->create()
                             ->addAttributeOption(
                                 [
-                                    'values'       => $newOptionsArray,
+                                    'values'       => $eachVariantValue,
                                     'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
                                 ]
                             );
                     }
-
-                    if (!empty($updatedOptionArray)) {
-                        $this->updateVaraintLogicalOrderByLabel($formattedCode, $updatedOptionArray);
+                } elseif (!empty($value)) {
+                    foreach ($value as $k => $v) {
+                        foreach ($v as $logicalOrder => $optionValue) {
+                            if (!in_array($optionValue, $existingOptions, true)) {
+                                $this->eavSetupFactory->create()
+                                    ->addAttributeOption(
+                                        [
+                                            'values'       => $v,
+                                            'attribute_id' => $this->getAttributeIdbyCode($formattedCode)
+                                        ]
+                                    );
+                            } else {
+                                $this->updateVariantLogicalOrderByLabel($formattedCode, $v);
+                            }
+                        }
                     }
                 }
             }
             /** fetching the list again to get the remaining records yet to process in order to set the cron job status */
-
             $remainingVariants = (int)$this->getRemainingVariantsToProcess();
             if ($remainingVariants == 0) {
                 $this->successCronAttributeVariant = true;
@@ -384,14 +379,13 @@ class AttributesCreateTask
      * @param $formattedCode
      * @param $updatedOptionArray
      */
-    public function updateVaraintLogicalOrderByLabel($formattedCode, $updatedOptionArray)
+    public function updateVariantLogicalOrderByLabel($formattedCode, $updatedOptionArray)
     {
         try {
             $attribute = $this->eavAttributeFactory->create();
             $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
             $options   = $attribute->getOptions();
             foreach ($updatedOptionArray as $sortOrder => $label) {
-                $counter = 1;
                 foreach ($options as $option) {
                     if (empty($option->getValue())) {
                         continue;
@@ -402,7 +396,6 @@ class AttributesCreateTask
                         $this->productAttributeRepository->save($attribute);
                         break;
                     }
-                    $counter++;
                 }
             }
         } catch (Exception $e) {
