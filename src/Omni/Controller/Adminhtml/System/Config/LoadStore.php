@@ -3,15 +3,15 @@
 namespace Ls\Omni\Controller\Adminhtml\System\Config;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
-use Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
-use Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Helper\Data;
-use Ls\Omni\Service\Service as OmniService;
-use Ls\Omni\Service\ServiceType;
-use Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
+use \Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
+use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Config\Storage\WriterInterface;
