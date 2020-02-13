@@ -140,6 +140,7 @@ class DiscountCreateTask
          * And we need to apply only those rules which are associated to the store assigned to it.
          */
         if ($this->lsr->isLSR()) {
+            $this->logger->debug('Running DiscountCreateTask');
             $this->replicationHelper->updateConfigValue(
                 $this->replicationHelper->getDateTime(),
                 LSR::SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE
@@ -212,7 +213,7 @@ class DiscountCreateTask
                 if ($reindexRules) {
                     $this->jobApply->applyAll();
                 }
-                if (!$this->getRemainingRecords() == 0) {
+                if ($this->getRemainingRecords() == 0) {
                     $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT);
                 } else {
                     $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT);
@@ -220,6 +221,7 @@ class DiscountCreateTask
             }
             /* Delete the IsDeleted offers */
             $this->deleteOffers();
+            $this->logger->debug('End DiscountCreateTask');
         }
     }
 
@@ -316,6 +318,7 @@ class DiscountCreateTask
 
     /**
      * @return array|Collection
+     * @throws Exception
      */
     public function getUniquePublishedOffers()
     {
@@ -385,6 +388,7 @@ class DiscountCreateTask
 
     /**
      * @return int
+     * @throws Exception
      */
     public function getRemainingRecords()
     {
