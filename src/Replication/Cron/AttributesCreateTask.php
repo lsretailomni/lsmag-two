@@ -357,7 +357,7 @@ class AttributesCreateTask
                                         ]
                                     );
                             } else {
-                                $this->updateVaraintLogicalOrderByLabel($formattedCode, $v);
+                                $this->updateVariantLogicalOrderByLabel($formattedCode, $v);
                             }
                         }
                     }
@@ -379,14 +379,13 @@ class AttributesCreateTask
      * @param $formattedCode
      * @param $updatedOptionArray
      */
-    public function updateVaraintLogicalOrderByLabel($formattedCode, $updatedOptionArray)
+    public function updateVariantLogicalOrderByLabel($formattedCode, $updatedOptionArray)
     {
         try {
             $attribute = $this->eavAttributeFactory->create();
             $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
             $options   = $attribute->getOptions();
             foreach ($updatedOptionArray as $sortOrder => $label) {
-                $counter = 1;
                 foreach ($options as $option) {
                     if (empty($option->getValue())) {
                         continue;
@@ -397,7 +396,6 @@ class AttributesCreateTask
                         $this->productAttributeRepository->save($attribute);
                         break;
                     }
-                    $counter++;
                 }
             }
         } catch (Exception $e) {
