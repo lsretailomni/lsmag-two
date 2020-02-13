@@ -58,7 +58,7 @@ class ItemPlugin
                     );
                     if ($stock) {
                         $itemStock = reset($stock);
-                        if ($itemStock->getQtyInventory() < 0) {
+                        if ($itemStock->getQtyInventory() <= 0) {
                             throw new LocalizedException(__(
                                 'Product that you are trying to add is not available.'
                             ));
