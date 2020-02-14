@@ -13,17 +13,19 @@ use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
-use \Ls\Replication\Api\ReplStoreRepositoryInterface;
+use Ls\Replication\Api\ReplStoreRepositoryInterface;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
@@ -85,6 +87,11 @@ class Data extends AbstractHelper
     public $configWriter;
 
     /**
+     * @var DirectoryList
+     */
+    public $directoryList;
+
+    /**
      * Data constructor.
      * @param Context $context
      * @param StoreManagerInterface $store_manager
@@ -100,6 +107,7 @@ class Data extends AbstractHelper
      * @param LSR $lsr
      * @param DateTime $date
      * @param WriterInterface $configWriter
+     * @param DirectoryList $directoryList
      */
     public function __construct(
         Context $context,
@@ -115,7 +123,8 @@ class Data extends AbstractHelper
         CacheHelper $cacheHelper,
         LSR $lsr,
         DateTime $date,
-        WriterInterface $configWriter
+        WriterInterface $configWriter,
+        DirectoryList $directoryList
     ) {
         $this->storeManager          = $store_manager;
         $this->storeRepository       = $storeRepository;
@@ -130,6 +139,7 @@ class Data extends AbstractHelper
         $this->lsr                   = $lsr;
         $this->date                  = $date;
         $this->configWriter          = $configWriter;
+        $this->directoryList         = $directoryList;
         parent::__construct($context);
     }
 
@@ -371,7 +381,7 @@ class Data extends AbstractHelper
     {
         $bothVersion = [];
         try {
-            $results     = explode('&', $pingResponseText);
+            $results = explode('&', $pingResponseText);
             if (!empty($results)) {
                 $versionArray = explode(",", trim(preg_replace("^\[(.*?)\]^", ",", $results[2])));
                 foreach ($versionArray as $version) {
@@ -383,7 +393,7 @@ class Data extends AbstractHelper
                                 $this->configWriter->save(
                                     LSR::SC_SERVICE_VERSION,
                                     $serviceVersion,
-                                    \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+                                    ScopeInterface::SCOPE_WEBSITE,
                                     $websiteId
                                 );
                             } else {
@@ -402,7 +412,7 @@ class Data extends AbstractHelper
                                 $this->configWriter->save(
                                     LSR::SC_SERVICE_LS_CENTRAL_VERSION,
                                     $lsCentralVersion,
-                                    \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+                                    ScopeInterface::SCOPE_WEBSITE,
                                     $websiteId
                                 );
                             } else {
@@ -417,12 +427,37 @@ class Data extends AbstractHelper
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->critical($e);
         }
 
         return $bothVersion;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getExtensionVersion()
+    {
+        try {
+            $Path       = $this->directoryList->getRoot();
+            $modulePath = $Path . "/" . LSR::EXTENSION_COMPOSER_PATH;
+
+            if ($modulePath) {
+                $content = file_get_contents($modulePath);
+                if ($content) {
+                    $jsonContent = json_decode($content, true);
+
+                    if (!empty($jsonContent['version'])) {
+                        return $jsonContent['version'];
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+    }
+
 
     /**
      * @param $baseUrl

@@ -20,6 +20,7 @@ Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';
     const APP_NAME = 'ls-mag';
     const APP_VERSION = '1.0.0';
+    const EXTENSION_COMPOSER_PATH = "vendor/lsretail/lsmag-two/composer.json";
     const CRON_STATUS_PATH_PREFIX = 'ls_mag/replication/status_';
 
     // DEFAULT IMAGE SIZE
