@@ -22,6 +22,7 @@ use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity;
 use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
+use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -296,6 +297,7 @@ class AttributesCreateTask
                         'is_global'                     => 1,
                         'frontend_label'                => ucwords(strtolower($code)),
                         'frontend_input'                => 'multiselect',
+                        'source_model'                  => Table::class,
                         'default_value_text'            => '',
                         'default_value_yesno'           => 0,
                         'default_value_date'            => '',
