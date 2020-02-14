@@ -31,7 +31,7 @@
                 <cron_expr_product>1 * * * * *</cron_expr_product>
             </replication>
             <one_list>
-                <availability_check>1</availability_check>
+                <availability_check>0</availability_check>
                 <product_availability>1</product_availability>
                 <display_stores>0</display_stores>
                 <update_inventory>0</update_inventory>

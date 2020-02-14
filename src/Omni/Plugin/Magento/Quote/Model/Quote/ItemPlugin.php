@@ -49,8 +49,10 @@ class ItemPlugin
                     $simpleProductSku = $result->getSku();
                     $qty              = $result->getQty();
 
-                    $parentProductSku = explode('-', $simpleProductSku)[0];
-                    $childProductSku  = explode('-', $simpleProductSku)[1];
+                    $parentProductSku = isset(explode('-', $simpleProductSku)[0]) ?
+                        explode('-', $simpleProductSku)[0] : "";
+                    $childProductSku  = isset(explode('-', $simpleProductSku)[1]) ?
+                        explode('-', $simpleProductSku)[1] : "";
                     $stock            = $this->stockHelper->getItemStockInStore(
                         $storeId,
                         $parentProductSku,
