@@ -73,6 +73,8 @@ Subtotal,Subtotal
 "Cart %1 doesn't contain products","Cart %1 doesn't contain products"
 "Cart isn't assigned to correct store","Cart isn't assigned to correct store"
 "Could not delete coupon code","Could not delete coupon code"
+"Product that you are trying to add is not available.","Product that you are trying to add is not available."
+"Max quantity available for this item is %1","Max quantity available for this item is %1"
 "Make Check payable to:","Make Check payable to:"
 "Send Check to:","Send Check to:"
 "Make Check payable to: %1","Make Check payable to: %1"
@@ -175,5 +177,15 @@ Title,Title
 "LS eCommerce cache for storing the response objects","LS eCommerce cache for storing the response objects"
 "Subtotal (Inc.Tax)","Subtotal (Inc.Tax)"
 "Order Balance","Order Balance"
+"
+                                                                    Subtotal (Inc.Tax)
+                                                                ","
+                                                                    Subtotal (Inc.Tax)
+                                                                "
+"
+                                                                    Order Balance
+                                                                ","
+                                                                    Order Balance
+                                                                "
 Stores,Stores
 "Check Gift Card Balance","Check Gift Card Balance"
