@@ -488,4 +488,13 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         );
         return $configValue;
     }
+
+    /**
+     * check if inventory lookup is enabled
+     * @return string
+     */
+    public function inventoryLookupBeforeAddToCartEnabled()
+    {
+        return $this->getStoreConfig(self::SC_CART_CHECK_INVENTORY);
+    }
 }

@@ -56,7 +56,7 @@ class StockHelper extends AbstractHelper
      * @param $storeId
      * @param $parentProductId
      * @param $childProductId
-     * @return Entity\ArrayOfInventoryResponse|null
+     * @return InventoryResponse[]|null
      */
     public function getItemStockInStore(
         $storeId,
@@ -81,8 +81,8 @@ class StockHelper extends AbstractHelper
         }
         if (!empty($response) &&
             !empty($response->getItemsInStockGetResult()) &&
-            !is_array($response->getItemsInStockGetResult()->getInventoryResponse())) {
-            return $response->getItemsInStockGetResult();
+            !empty($response->getItemsInStockGetResult()->getInventoryResponse())) {
+            return $response->getItemsInStockGetResult()->getInventoryResponse();
         }
         return null;
     }

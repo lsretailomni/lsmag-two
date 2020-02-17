@@ -34,4 +34,8 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\Quote\Model\Quote\Item">
+        <plugin name="changeAllowProductsBehaviour" type="Ls\Omni\Plugin\Magento\Quote\Model\Quote\ItemPlugin" sortOrder="1" />
+    </type>
 </config>
