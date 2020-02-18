@@ -29,7 +29,7 @@
                     <comment>Please validate your base url by clicking on button above</comment>
                 </field>
                 <field id="version" translate="label" type="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Service Version</label>
+                    <label>Omni Service Version</label>
                 </field>
                 <field id="ls_central_version" translate="label" type="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>LS Central Version</label>

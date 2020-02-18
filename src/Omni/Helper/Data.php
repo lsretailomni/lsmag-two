@@ -381,49 +381,27 @@ class Data extends AbstractHelper
     {
         $bothVersion = [];
         try {
-            $results = explode('&', $pingResponseText);
+            $results = explode('LS:', $pingResponseText);
             if (!empty($results)) {
-                $versionArray = explode(",", trim(preg_replace("^\[(.*?)\]^", ",", $results[2])));
-                foreach ($versionArray as $version) {
-                    if (!empty($version)) {
-                        if (strpos($version, "OMNI:") !== false) {
-                            $serviceVersion                 = trim(str_replace("OMNI:", "", $version));
-                            $bothVersion['service_version'] = $serviceVersion;
-                            if (!empty($websiteId)) {
-                                $this->configWriter->save(
-                                    LSR::SC_SERVICE_VERSION,
-                                    $serviceVersion,
-                                    ScopeInterface::SCOPE_WEBSITE,
-                                    $websiteId
-                                );
-                            } else {
-                                $this->configWriter->save(
-                                    LSR::SC_SERVICE_VERSION,
-                                    $serviceVersion,
-                                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                                    0
-                                );
-                            }
-                        }
-                        if (strpos($version, "LS:") !== false) {
-                            $lsCentralVersion                  = trim(str_replace("LS:", "", $version));
-                            $bothVersion['ls_central_version'] = $lsCentralVersion;
-                            if (!empty($websiteId)) {
-                                $this->configWriter->save(
-                                    LSR::SC_SERVICE_LS_CENTRAL_VERSION,
-                                    $lsCentralVersion,
-                                    ScopeInterface::SCOPE_WEBSITE,
-                                    $websiteId
-                                );
-                            } else {
-                                $this->configWriter->save(
-                                    LSR::SC_SERVICE_LS_CENTRAL_VERSION,
-                                    $lsCentralVersion,
-                                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                                    0
-                                );
-                            }
-                        }
+                $versions = explode('OMNI:', $results[1]);
+                if (!empty($versions)) {
+                    $serviceVersion                 = trim($versions[1]);
+                    $bothVersion['service_version'] = $serviceVersion;
+                    if (!empty($websiteId)) {
+                        $this->updateConfigValueWebsite($serviceVersion, LSR::SC_SERVICE_VERSION, $websiteId);
+                    } else {
+                        $this->updateConfigValueDefault($serviceVersion, LSR::SC_SERVICE_VERSION);
+                    }
+                    $lsCentralVersion                  = trim($versions[0]);
+                    $bothVersion['ls_central_version'] = $lsCentralVersion;
+                    if (!empty($websiteId)) {
+                        $this->updateConfigValueWebsite(
+                            $lsCentralVersion,
+                            LSR::SC_SERVICE_LS_CENTRAL_VERSION,
+                            $websiteId
+                        );
+                    } else {
+                        $this->updateConfigValueDefault($lsCentralVersion, LSR::SC_SERVICE_LS_CENTRAL_VERSION);
                     }
                 }
             }
@@ -440,16 +418,35 @@ class Data extends AbstractHelper
     public function getExtensionVersion()
     {
         try {
-            $Path       = $this->directoryList->getRoot();
-            $modulePath = $Path . "/" . LSR::EXTENSION_COMPOSER_PATH;
-
-            if ($modulePath) {
-                $content = file_get_contents($modulePath);
+            $content          = null;
+            $Path             = $this->directoryList->getRoot();
+            $modulePathVendor = $Path . "/" . LSR::EXTENSION_COMPOSER_PATH_VENDOR;
+            $modulePathApp    = $Path . "/" . LSR::EXTENSION_COMPOSER_PATH_APP;
+            if ($modulePathVendor) {
+                try {
+                    $content = file_get_contents($modulePathVendor);
+                } catch (Exception $e) {
+                    $this->_logger->debug($e->getMessage());
+                }
                 if ($content) {
                     $jsonContent = json_decode($content, true);
 
                     if (!empty($jsonContent['version'])) {
                         return $jsonContent['version'];
+                    }
+                }
+                if (empty($content)) {
+                    try {
+                        $content = file_get_contents($modulePathApp);
+                    } catch (Exception $e) {
+                        $this->_logger->debug($e->getMessage());
+                    }
+                    if ($content) {
+                        $jsonContent = json_decode($content, true);
+
+                        if (!empty($jsonContent['version'])) {
+                            return $jsonContent['version'];
+                        }
                     }
                 }
             }
@@ -478,5 +475,35 @@ class Data extends AbstractHelper
         $result = $ping->execute();
         $pong   = $result->getResult();
         return $pong;
+    }
+
+    /**
+     * Update the config value
+     * @param $value
+     * @param $path
+     */
+    public function updateConfigValueDefault($value, $path)
+    {
+        $this->configWriter->save(
+            $path,
+            $value,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+            0
+        );
+    }
+
+    /**
+     * @param $value
+     * @param $path
+     * @param $websiteId
+     */
+    public function updateConfigValueWebsite($value, $path, $websiteId)
+    {
+        $this->configWriter->save(
+            $path,
+            $value,
+            ScopeInterface::SCOPE_WEBSITE,
+            $websiteId
+        );
     }
 }
