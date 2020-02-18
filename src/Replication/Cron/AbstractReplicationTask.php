@@ -164,7 +164,8 @@ abstract class AbstractReplicationTask
                 $this->getConfigPathLastExecute()
             );
             $properties      = $this->getProperties();
-            $last_key        = $this->getLastKey();
+            $lastKey         = $this->getLastKey();
+            $maxKey          = $this->getMaxKey();
             $remaining       = INF;
             $fullReplication = 1;
             $isFirstTime     = $this->isFirstTime();
@@ -188,10 +189,11 @@ abstract class AbstractReplicationTask
             } else {
                 $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             }
-            $request                = $this->makeRequest($last_key, $fullReplication, $batchSize, $webStoreID);
+            $request                = $this->makeRequest($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey);
             $response               = $request->execute();
             $result                 = $response->getResult();
-            $last_key               = $result->getLastKey();
+            $lastKey                = $result->getLastKey();
+            $maxKey                 = $result->getMaxKey();
             $remaining              = $result->getRecordsRemaining();
             $this->recordsRemaining = $remaining;
             $traversable            = $this->getIterator($result);
@@ -204,11 +206,12 @@ abstract class AbstractReplicationTask
                     }
                     $this->updateSuccessStatus();
                 }
-                $this->persistLastKey($last_key);
+                $this->persistLastKey($lastKey);
                 if ($remaining == 0) {
                     $this->saveReplicationStatus(1);
                 }
             }
+            $this->persistMaxKey($maxKey);
             $this->rep_helper->flushByTypeCode('config');
         } else {
             $this->logger->debug("LS Retail validation failed.");
@@ -407,6 +410,14 @@ abstract class AbstractReplicationTask
     /**
      * @return string
      */
+    public function getMaxKey()
+    {
+        return $this->scope_config->getValue($this->getConfigPathMaxKey(), ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+    }
+
+    /**
+     * @return string
+     */
     public function isFirstTime()
     {
         return $this->scope_config->getValue($this->getConfigPathStatus(), ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
@@ -420,6 +431,19 @@ abstract class AbstractReplicationTask
         $this->resource_config->saveConfig(
             $this->getConfigPath(),
             $last_key,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+            0
+        );
+    }
+
+    /**
+     * @param string
+     */
+    public function persistMaxKey($maxKey)
+    {
+        $this->resource_config->saveConfig(
+            $this->getConfigPathMaxKey(),
+            $maxKey,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
             0
         );
@@ -494,11 +518,19 @@ abstract class AbstractReplicationTask
     abstract public function getConfigPathLastExecute();
 
     /**
-     * @param $last_key
-     *
+     * @return string
+     */
+    abstract public function getConfigPathMaxKey();
+
+    /**
+     * @param $lastKey
+     * @param $fullReplication
+     * @param $batchSize
+     * @param $storeId
+     * @param $maxKey
      * @return OperationInterface
      */
-    abstract public function makeRequest($last_key);
+    abstract public function makeRequest($lastKey, $fullReplication, $batchSize, $storeId, $maxKey);
 
     abstract public function getFactory();
 

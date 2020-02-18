@@ -127,8 +127,12 @@ class OrderHelper extends AbstractHelper
                 ->setShipToPhoneNumber($mobileNumber)
                 ->setContactAddress($this->convertAddress($order->getBillingAddress()))
                 ->setShipToAddress($this->convertAddress($order->getShippingAddress()))
-                ->setClickAndCollectOrder($isClickCollect)
                 ->setStoreId($storeId);
+            if ($isClickCollect) {
+                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
+            } else {
+                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
+            }
             $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
             //For click and collect.
             if ($isClickCollect) {

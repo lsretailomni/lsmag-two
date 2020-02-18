@@ -88,6 +88,11 @@ class SalesEntry extends Entity
     protected $Posted = null;
 
     /**
+     * @property string $ReceiptNo
+     */
+    protected $ReceiptNo = null;
+
+    /**
      * @property Address $ShipToAddress
      */
     protected $ShipToAddress = null;
@@ -427,6 +432,24 @@ class SalesEntry extends Entity
     public function getPosted()
     {
         return $this->Posted;
+    }
+
+    /**
+     * @param string $ReceiptNo
+     * @return $this
+     */
+    public function setReceiptNo($ReceiptNo)
+    {
+        $this->ReceiptNo = $ReceiptNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReceiptNo()
+    {
+        return $this->ReceiptNo;
     }
 
     /**

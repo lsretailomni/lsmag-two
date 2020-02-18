@@ -62,7 +62,8 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$this->operation->getTableName()}");
         $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE',
             "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
-
+        $this->class->addConstant('CONFIG_PATH_MAX_KEY',
+            "ls_mag/replication/max_key_{$this->operation->getTableName()}");
         $this->createProperty('repository', $this->operation->getRepositoryName());
         $this->createProperty('factory', $this->operation->getFactoryName());
         $this->createProperty('dataInterface', $this->operation->getInterfaceName());
@@ -76,6 +77,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addMethodFromGenerator($this->getConfigPath());
         $this->class->addMethodFromGenerator($this->getConfigPathStatus());
         $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
+        $this->class->addMethodFromGenerator($this->getConfigPathMaxKey());
         $this->class->addMethodFromGenerator($this->getMainEntity());
 
         $content = $this->file->generate();
@@ -151,20 +153,20 @@ CODE
         $make_request = new MethodGenerator();
         $make_request->setName('makeRequest')
             ->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $make_request->setParameters([new ParameterGenerator('last_key')]);
-        //making full replication dynamic instead of making it true all the time.
-        // @see https://solutions.lsretail.com/jira/browse/OMNI-4508
-        $make_request->setParameters([new ParameterGenerator('full_replication', null, false)]);
-        // making batchsize dynamic and setting the default value to 100
-        $make_request->setParameters([new ParameterGenerator('batchsize', null, 100)]);
-        // setting storeid for those which requorire
+        $make_request->setParameters([new ParameterGenerator('lastKey')]);
+        $make_request->setParameters([new ParameterGenerator('fullReplication', null, false)]);
+        // making batchSize dynamic and setting the default value to 100
+        $make_request->setParameters([new ParameterGenerator('batchSize', null, 100)]);
+        // setting storeId for those which require
         $make_request->setParameters([new ParameterGenerator('storeId', null, '')]);
+        $make_request->setParameters([new ParameterGenerator('maxKey', null, '')]);
         $make_request->setBody(<<<CODE
 \$request = new {$this->operation->getName()}();
 \$request->getOperationInput()
-         ->setReplRequest( ( new ReplRequest() )->setBatchSize(\$batchsize)
-                                                ->setFullReplication(\$full_replication)
-                                                ->setLastKey(\$last_key)
+         ->setReplRequest( ( new ReplRequest() )->setBatchSize(\$batchSize)
+                                                ->setFullReplication(\$fullReplication)
+                                                ->setLastKey(\$lastKey)
+                                                ->setMaxKey(\$maxKey)
                                                 ->setStoreId(\$storeId));
 return \$request;
 CODE
@@ -206,6 +208,19 @@ CODE
             ->setVisibility(MethodGenerator::FLAG_PROTECTED);
         $config_path->setBody(<<<CODE
 return self::CONFIG_PATH_LAST_EXECUTE;
+CODE
+        );
+
+        return $config_path;
+    }
+
+    private function getConfigPathMaxKey()
+    {
+        $config_path = new MethodGenerator();
+        $config_path->setName('getConfigPathMaxKey')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
+        $config_path->setBody(<<<CODE
+return self::CONFIG_PATH_MAX_KEY;
 CODE
         );
 
