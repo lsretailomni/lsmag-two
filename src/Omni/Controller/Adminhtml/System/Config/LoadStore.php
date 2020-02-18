@@ -97,6 +97,7 @@ class LoadStore extends Action
             ['value' => '', 'label' => __('No hierarchy code found for the selected store')]
         ];
         $option_array         = [];
+        $version              = null;
         try {
             $baseUrl   = $this->getRequest()->getParam('baseUrl');
             $lsKey     = $this->getRequest()->getParam('lsKey');
@@ -119,8 +120,11 @@ class LoadStore extends Action
         $result = $this->resultJsonFactory->create();
         return $result->setData(
             [
-                'success' => true, 'store' => $option_array, 'pong' => $pong, 'hierarchy' => $hierarchyPlaceholder,
-                'version' => $version
+                'success'   => true,
+                'store'     => $option_array,
+                'pong'      => $pong,
+                'hierarchy' => $hierarchyPlaceholder,
+                'version'   => $version
             ]
         );
     }
