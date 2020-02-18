@@ -4,6 +4,7 @@ namespace Ls\Omni\Controller\Ajax;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\CacheHelper;
+use \Ls\Omni\Helper\SessionHelper;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -13,6 +14,7 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -43,37 +45,47 @@ class Recommendation extends Action
     public $cacheHelper;
 
     /**
+     * @var SessionHelper
+     */
+    public $sessionHelper;
+
+    /**
      * Recommendation constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
      * @param CacheHelper $cacheHelper
+     * @param SessionHelper $sessionHelper
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
         RedirectFactory $resultRedirectFactory,
-        CacheHelper $cacheHelper
+        CacheHelper $cacheHelper,
+        SessionHelper $sessionHelper
     ) {
         $this->resultPageFactory     = $resultPageFactory;
         $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->cacheHelper           = $cacheHelper;
+        $this->sessionHelper         = $sessionHelper;
         parent::__construct($context);
     }
 
     /**
      * @return ResponseInterface|Json|Redirect|ResultInterface
+     * @throws FileSystemException
      */
     public function execute()
     {
-        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
+        $this->sessionHelper->newSessionHandler("lsrecommend");
         $result            = $this->resultJsonFactory->create();
         $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');
