@@ -419,9 +419,9 @@ class Data extends AbstractHelper
     {
         try {
             $content          = null;
-            $Path             = $this->directoryList->getRoot();
-            $modulePathVendor = $Path . "/" . LSR::EXTENSION_COMPOSER_PATH_VENDOR;
-            $modulePathApp    = $Path . "/" . LSR::EXTENSION_COMPOSER_PATH_APP;
+            $path             = $this->directoryList->getRoot();
+            $modulePathVendor = $path . "/" . LSR::EXTENSION_COMPOSER_PATH_VENDOR;
+            $modulePathApp    = $path . "/" . LSR::EXTENSION_COMPOSER_PATH_APP;
             if ($modulePathVendor) {
                 try {
                     $content = file_get_contents($modulePathVendor);
