@@ -50,7 +50,8 @@ Reset,Reset
 Forward,Forward
 Back,Back
 "Flat to Magento","Flat to Magento"
-" Cron has been executed. Remaining entries "," Cron has been executed. Remaining entries "
+" Cron has been executed. "," Cron has been executed. "
+"Remaining entries ","Remaining entries "
 "Do you want to execute More Data?","Do you want to execute More Data?"
 "Click Here","Click Here"
 "Flat Tables Grids","Flat Tables Grids"

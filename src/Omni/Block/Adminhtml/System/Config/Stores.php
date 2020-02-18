@@ -82,6 +82,14 @@ class Stores extends Field
 
     /**
      * @return mixed
+     */
+    public function getWebsiteId()
+    {
+        return $this->_request->getParam('website');
+    }
+
+    /**
+     * @return mixed
      * @throws LocalizedException
      */
     public function getButtonHtml()

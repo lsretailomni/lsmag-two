@@ -6,17 +6,26 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
+use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
+use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Model\Cache\Type;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
@@ -73,6 +82,16 @@ class Data extends AbstractHelper
     public $date;
 
     /**
+     * @var WriterInterface
+     */
+    public $configWriter;
+
+    /**
+     * @var DirectoryList
+     */
+    public $directoryList;
+
+    /**
      * Data constructor.
      * @param Context $context
      * @param StoreManagerInterface $store_manager
@@ -87,6 +106,8 @@ class Data extends AbstractHelper
      * @param CacheHelper $cacheHelper
      * @param LSR $lsr
      * @param DateTime $date
+     * @param WriterInterface $configWriter
+     * @param DirectoryList $directoryList
      */
     public function __construct(
         Context $context,
@@ -101,7 +122,9 @@ class Data extends AbstractHelper
         CartRepositoryInterface $cartRepository,
         CacheHelper $cacheHelper,
         LSR $lsr,
-        DateTime $date
+        DateTime $date,
+        WriterInterface $configWriter,
+        DirectoryList $directoryList
     ) {
         $this->storeManager          = $store_manager;
         $this->storeRepository       = $storeRepository;
@@ -115,6 +138,8 @@ class Data extends AbstractHelper
         $this->cacheHelper           = $cacheHelper;
         $this->lsr                   = $lsr;
         $this->date                  = $date;
+        $this->configWriter          = $configWriter;
+        $this->directoryList         = $directoryList;
         parent::__construct($context);
     }
 
@@ -345,5 +370,140 @@ class Data extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return true;
+    }
+
+    /**
+     * @param $pingResponseText
+     * @param string $websiteId
+     * @return array
+     */
+    public function parsePingResponseAndSaveToConfigData($pingResponseText, $websiteId = null)
+    {
+        $bothVersion = [];
+        try {
+            $results = explode('LS:', $pingResponseText);
+            if (!empty($results)) {
+                $versions = explode('OMNI:', $results[1]);
+                if (!empty($versions)) {
+                    $serviceVersion                 = trim($versions[1]);
+                    $bothVersion['service_version'] = $serviceVersion;
+                    if (!empty($websiteId)) {
+                        $this->updateConfigValueWebsite($serviceVersion, LSR::SC_SERVICE_VERSION, $websiteId);
+                    } else {
+                        $this->updateConfigValueDefault($serviceVersion, LSR::SC_SERVICE_VERSION);
+                    }
+                    $lsCentralVersion                  = trim($versions[0]);
+                    $bothVersion['ls_central_version'] = $lsCentralVersion;
+                    if (!empty($websiteId)) {
+                        $this->updateConfigValueWebsite(
+                            $lsCentralVersion,
+                            LSR::SC_SERVICE_LS_CENTRAL_VERSION,
+                            $websiteId
+                        );
+                    } else {
+                        $this->updateConfigValueDefault($lsCentralVersion, LSR::SC_SERVICE_LS_CENTRAL_VERSION);
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            $this->_logger->critical($e);
+        }
+
+        return $bothVersion;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtensionVersion()
+    {
+        try {
+            $content          = null;
+            $path             = $this->directoryList->getRoot();
+            $modulePathVendor = $path . "/" . LSR::EXTENSION_COMPOSER_PATH_VENDOR;
+            $modulePathApp    = $path . "/" . LSR::EXTENSION_COMPOSER_PATH_APP;
+            if ($modulePathVendor) {
+                try {
+                    $content = file_get_contents($modulePathVendor);
+                } catch (Exception $e) {
+                    $this->_logger->debug($e->getMessage());
+                }
+                if ($content) {
+                    $jsonContent = json_decode($content, true);
+
+                    if (!empty($jsonContent['version'])) {
+                        return $jsonContent['version'];
+                    }
+                }
+                if (empty($content)) {
+                    try {
+                        $content = file_get_contents($modulePathApp);
+                    } catch (Exception $e) {
+                        $this->_logger->debug($e->getMessage());
+                    }
+                    if ($content) {
+                        $jsonContent = json_decode($content, true);
+
+                        if (!empty($jsonContent['version'])) {
+                            return $jsonContent['version'];
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+    }
+
+
+    /**
+     * @param $baseUrl
+     * @param $lsKey
+     * @return string
+     */
+    public function omniPing($baseUrl, $lsKey)
+    {
+        //@codingStandardsIgnoreStart
+        $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
+        $url          = OmniService::getUrl($service_type, $baseUrl);
+        $client       = new OmniClient($url, $service_type);
+        $ping         = new Ping();
+        //@codingStandardsIgnoreEnd
+        $ping->setClient($client);
+        $ping->setToken($lsKey);
+        $client->setClassmap($ping->getClassMap());
+        $result = $ping->execute();
+        $pong   = $result->getResult();
+        return $pong;
+    }
+
+    /**
+     * Update the config value
+     * @param $value
+     * @param $path
+     */
+    public function updateConfigValueDefault($value, $path)
+    {
+        $this->configWriter->save(
+            $path,
+            $value,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+            0
+        );
+    }
+
+    /**
+     * @param $value
+     * @param $path
+     * @param $websiteId
+     */
+    public function updateConfigValueWebsite($value, $path, $websiteId)
+    {
+        $this->configWriter->save(
+            $path,
+            $value,
+            ScopeInterface::SCOPE_WEBSITE,
+            $websiteId
+        );
     }
 }
