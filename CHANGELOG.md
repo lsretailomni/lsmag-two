@@ -6,9 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Added Support for LS Omni 4.5 and LS Central 15.0 https://solutions.lsretail.com/jira/browse/OMNI-5098
-- Added support to store LS Omni and LS Central version in Magento database and display values on admin configuration https://solutions.lsretail.com/jira/browse/OMNI-5118
-- Provided configurable option to check real time inventory at LS Central before adding item to the cart https://solutions.lsretail.com/jira/browse/OMNI-5114
+- Added support for LS Omni 4.5 and LS Central 15.0 versions [OMNI-5098](https://solutions.lsretail.com/jira/browse/OMNI-5098)
+- Provided configurable option to check real time inventory at LS Central before adding item to the cart [OMNI-5114](https://solutions.lsretail.com/jira/browse/OMNI-5114)
 - Added support to display LS Central Order ID in the Sales order section of Magento admin panel https://solutions.lsretail.com/jira/browse/OMNI-5113
 - Enhancement in Catalog Rule replication to support multiple discount value created against same offer in LS Central. https://solutions.lsretail.com/jira/browse/OMNI-4952
 - Improvement in Discount code display on shopping cart page https://solutions.lsretail.com/jira/browse/OMNI-5013
@@ -23,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Improved synchronization process of variants images https://solutions.lsretail.com/jira/browse/OMNI-5101
 - Added support to pick missing attribute value and assign it to products https://solutions.lsretail.com/jira/browse/OMNI-5101
 - Added separate synchronization cron to monitor and create new/updated attribute option values and assigning it to products https://solutions.lsretail.com/jira/browse/OMNI-5095
+- Added support to store LS Omni and LS Central version in Magento database and display values on admin configuration https://solutions.lsretail.com/jira/browse/OMNI-5118
 - Unit Tests for Replication API's. https://solutions.lsretail.com/jira/browse/OMNI-5007
 - Unit Tests for Customer Login to LS Central. https://solutions.lsretail.com/jira/browse/OMNI-5009
  
