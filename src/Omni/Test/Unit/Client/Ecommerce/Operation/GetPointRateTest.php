@@ -3,7 +3,6 @@
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
 use \Ls\Omni\Client\Ecommerce\ClassMap;
-use \Ls\Omni\Client\Ecommerce\Entity\Store;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Zend\Uri\UriFactory;
@@ -23,17 +22,9 @@ class StoreGetByIdTest extends \PHPUnit\Framework\TestCase
     public function testExecute()
     {
         $this->assertNotNull($this->client);
-        $param = array(
-            'storeId' => $_ENV['STOREID']
-        );
-        $response = $this->client->StoreGetById($param);
+        $response = $this->client->GetPointRate();
         $result = $response->getResult();
-        $this->assertInstanceOf(Store::class, $result);
-        $this->assertNotNull($result->getLatitude());
-        $this->assertNotNull($result->getLongitude());
-        $this->assertNotNull($result->getPhone());
-        $this->assertNotNull($result->getStoreHours());
-        $this->assertNotNull($result->getAddress());
-        $this->assertEquals($_ENV['STOREID'], $result->getId());
+        $this->assertNotNull($result);
+        $this->assertNotEmpty($result);
     }
 }
