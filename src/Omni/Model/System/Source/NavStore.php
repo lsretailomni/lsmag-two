@@ -5,19 +5,16 @@ namespace Ls\Omni\Model\System\Source;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Store;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
 /**
  * Class NavStore
  * @package Ls\Omni\Model\System\Source
  */
-class NavStore implements ArrayInterface
+class NavStore implements OptionSourceInterface
 {
     /**
-     * @return array
-     */
-    /**
-     * @var Ls\Core\Model\LSR
+     * @var LSR
      */
     public $lsr;
 
@@ -60,7 +57,7 @@ class NavStore implements ArrayInterface
         if ($this->lsr->validateBaseUrl($baseUrl)) {
                 // @codingStandardsIgnoreLine
                 $get_nav_stores = new StoresGetAll($baseUrl);
-                $result = $get_nav_stores->execute();
+                $result         = $get_nav_stores->execute();
 
                 if ($result != null) {
                     $result = $result->getResult();

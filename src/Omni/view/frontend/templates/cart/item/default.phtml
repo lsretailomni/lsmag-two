@@ -3,13 +3,14 @@
 
 /** @var $block \Ls\Omni\Block\Cart\Item\Renderer */
 
-$_item = $block->getItem();
-$product = $_item->getProduct();
+$_item            = $block->getItem();
+$product          = $_item->getProduct();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
-$basketdata = $block->getOneListCalculateData($_item);
+$basketdata       = $block->getOneListCalculateData($_item);
 /** @var \Magento\Msrp\Helper\Data $helper */
-$helper = $this->helper('Magento\Msrp\Helper\Data');
-$canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+$helper              = $this->helper('Magento\Msrp\Helper\Data');
+$canApplyMsrp        = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+$this->priceCurrency = $block->getPriceCurrency();
 ?>
 <tbody class="cart item">
 <tr class="item-info">
@@ -95,20 +96,21 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
             <?php if (!empty($basketdata)) { ?>
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
-                        <?php echo $block->priceCurrency->format($_item->getCustomPrice(), true); ?><br/>
-                        <?php if($_item->getDiscountAmount()>0){ ?>
-                        <div class="lsdiscountprice2">
-                            <strike> <?php echo $block->priceCurrency->format($_item->getProduct()->getPrice() * (int)$block->getQty(), true); ?>
+                        <?php echo $this->priceCurrency->format($_item->getCustomPrice(), true); ?><br/>
+                        <?php if ($_item->getDiscountAmount() > 0) { ?>
+                            <div class="lsdiscountprice2">
+                            <strike> <?php echo $this->priceCurrency->format($_item->getProduct()->getPrice() * (int)$block->getQty(),
+                                    true); ?>
                             </strike>
                         </div>
                         <?php } ?>
                     </span>
                 </span>
-                <?php if ($_item->getDiscountAmount()>0) {
+                <?php if ($_item->getDiscountAmount() > 0) {
                     ?>
                     <div class="lsdiscountamount">
                         <?php
-                        echo '(' . __($basketdata[1]) . ' ' . $block->priceCurrency->format($_item->getDiscountAmount()) . ')';
+                        echo '(' . __($basketdata[1]) . ' ' . $this->priceCurrency->format($_item->getDiscountAmount()) . ')';
                         ?>
                     </div>
                     <?php
@@ -153,7 +155,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
             <?php if (!empty($basketdata)) { ?>
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
-                <?php echo $block->priceCurrency->format($_item->getCustomPrice(), true); ?>
+                <?php echo $this->priceCurrency->format($_item->getCustomPrice(), true); ?>
                 </span>
         </span>
             <?php } else { ?>

@@ -106,9 +106,9 @@ class ReplHierarchy
     public function setType($Type)
     {
         if ( ! $Type instanceof HierarchyType ) {
-            if ( HierarchyType::isValid( $Type ) ) 
+            if ( HierarchyType::isValid( $Type ) )
                 $Type = new HierarchyType( $Type );
-            elseif ( HierarchyType::isValidKey( $Type ) ) 
+            elseif ( HierarchyType::isValidKey( $Type ) )
                 $Type = new HierarchyType( constant( "HierarchyType::$Type" ) );
             elseif ( ! $Type instanceof HierarchyType )
                 throw new InvalidEnumException();

@@ -2,11 +2,14 @@
 
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
+use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\Data\Form\Element\AbstractElement;
+
 /**
  * Class DeleteDatabtn
  * @package Ls\Replication\Block\Adminhtml\System\Config
  */
-class DeleteDatabtn extends \Magento\Config\Block\System\Config\Form\Field
+class DeleteDatabtn extends Field
 {
 
     /**
@@ -22,29 +25,29 @@ class DeleteDatabtn extends \Magento\Config\Block\System\Config\Form\Field
     }
 
     /**
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @param AbstractElement $element
      * @return string
      */
-    public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    public function render(AbstractElement $element)
     {
         $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
         return parent::render($element);
     }
 
     /**
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @param AbstractElement $element
      * @return string
      */
-    public function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    public function _getElementHtml(AbstractElement $element)
     {
         $originalData = $element->getOriginalData();
-        $buttonLabel = $originalData['button_label'];
-        $buttonUrl = $originalData['button_url'];
+        $buttonLabel  = $originalData['button_label'];
+        $buttonUrl    = $originalData['button_url'];
         $this->addData(
             [
                 'button_label' => __($buttonLabel),
-                'button_url' => $this->getUrl($buttonUrl),
-                'html_id' => $element->getHtmlId(),
+                'button_url'   => $this->getUrl($buttonUrl),
+                'html_id'      => $element->getHtmlId(),
             ]
         );
 

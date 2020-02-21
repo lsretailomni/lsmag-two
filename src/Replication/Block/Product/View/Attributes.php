@@ -19,8 +19,8 @@ class Attributes extends \Magento\Catalog\Block\Product\View\Attributes
      */
     public function getAdditionalData(array $excludeAttr = [])
     {
-        $data = [];
-        $product = $this->getProduct();
+        $data       = [];
+        $product    = $this->getProduct();
         $attributes = $product->getAttributes();
         foreach ($attributes as $attribute) {
             if ($attribute->getIsVisibleOnFront() && !in_array($attribute->getAttributeCode(), $excludeAttr)) {
@@ -40,7 +40,7 @@ class Attributes extends \Magento\Catalog\Block\Product\View\Attributes
                     $data[$attribute->getAttributeCode()] = [
                         'label' => __($attribute->getStoreLabel()),
                         'value' => $value,
-                        'code' => $attribute->getAttributeCode(),
+                        'code'  => $attribute->getAttributeCode(),
                     ];
                 }
                 // @codingStandardsIgnoreEnd

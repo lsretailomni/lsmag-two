@@ -8,8 +8,12 @@
             <group id="service" translate="label" type="text" sortOrder="10"
                    showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Configuration</label>
-                <field id="base_url" translate="label comment" type="text" sortOrder="10"
-                       showInWebsite="1" showInStore="0">
+                <field id="extension_version" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Version</label>
+                    <backend_model>Ls\Omni\Model\System\Backend\ExtensionVersion</backend_model>
+                </field>
+                <field id="base_url" translate="label" type="text" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Service Base URL</label>
                     <validate>required-entry validate-url</validate>
                     <comment>http://lsretail.cloudapp.net/lsomniservice</comment>
@@ -24,8 +28,14 @@
                     <frontend_model>Ls\Omni\Block\Adminhtml\System\Config\Stores</frontend_model>
                     <comment>Please validate your base url by clicking on button above</comment>
                 </field>
-                <field id="selected_store" translate="label comment" type="select" sortOrder="10"
-                       showInWebsite="1">
+                <field id="version" translate="label" type="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Omni Service Version</label>
+                </field>
+                <field id="ls_central_version" translate="label" type="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>LS Central Version</label>
+                </field>
+                <field id="selected_store" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Select Store</label>
                     <validate>required-entry</validate>
                     <source_model>Ls\Omni\Model\System\Source\NavStore</source_model>
@@ -35,7 +45,7 @@
                        showInWebsite="1">
                     <label>Select Hierarchy Code</label>
                     <validate>required-entry</validate>
-                    <comment>Required to get heirarchy node and leaf from omni</comment>
+                    <comment>Required to get hierarchy node and leaf from omni</comment>
                     <source_model>Ls\Replication\Block\Adminhtml\System\Config\HierarchyCode</source_model>
                 </field>
                 <field id="debug" translate="label comment" type="select" sortOrder="10" showInDefault="1"
@@ -113,8 +123,18 @@
                        showInWebsite="1" showInStore="1">
                     <label>Discount Popup Mix and Match Products Limit</label>
                     <comment>This will display the number of mix and match discounts product on promotions in product
-                        page. Set value to -1 to display all products.
+                        page.Set value to -1 to display all products.
                     </comment>
+                </field>
+            </group>
+            <group id="ls_stores" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Stores Listing</label>
+                <field id="timeformat" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Opening Hours Time Format</label>
+                    <source_model>Ls\Omni\Block\Adminhtml\System\Config\TimeFormat</source_model>
                 </field>
             </group>
         </section>

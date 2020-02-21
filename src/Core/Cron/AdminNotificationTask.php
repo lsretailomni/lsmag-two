@@ -3,8 +3,10 @@
 namespace Ls\Core\Cron;
 
 use \Ls\Core\Model\LSR;
-use Psr\Log\LoggerInterface;
 use Magento\Framework\Notification\NotifierInterface as NotifierPool;
+use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class AdminNotificationTask
@@ -28,7 +30,7 @@ class AdminNotificationTask
     public $notifierPool;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     public $storeManager;
 
@@ -37,17 +39,16 @@ class AdminNotificationTask
      * @param LoggerInterface $logger
      * @param LSR $LSR
      * @param NotifierPool $notifierPool
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         LoggerInterface $logger,
         LSR $LSR,
         NotifierPool $notifierPool,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
-    )
-    {
-        $this->logger = $logger;
-        $this->lsr = $LSR;
+        StoreManagerInterface $storeManager
+    ) {
+        $this->logger       = $logger;
+        $this->lsr          = $LSR;
         $this->notifierPool = $notifierPool;
         $this->storeManager = $storeManager;
     }
@@ -57,18 +58,12 @@ class AdminNotificationTask
      */
     public function execute()
     {
-        $this->logger->debug("Checking LS Retail Setup");
-
-        /**
-         * The Idea is for Multi Store, if any of the store has isLSR setup? then in that case we dont need to thorw this error.
-         */
-
+        $this->logger->debug('Checking LS Retail Setup');
         $is_lr = false;
-
-        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+        /** @var StoreInterface[] $stores */
         $stores = $this->storeManager->getStores();
         if (!empty($stores)) {
-            /** @var \Magento\Store\Api\Data\StoreInterface $store */
+            /** @var StoreInterface $store */
             foreach ($stores as $store) {
                 if ($this->lsr->isLSR($store->getId())) {
                     $is_lr = true;
@@ -82,6 +77,6 @@ class AdminNotificationTask
                 'Please complete the details under Stores > Settings > Configuration > LS Retail Tab'
             );
         }
-        $this->logger->debug("Finished Checking LS Retail Setup");
+        $this->logger->debug('Finished Checking LS Retail Setup');
     }
 }

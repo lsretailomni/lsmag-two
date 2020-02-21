@@ -4,8 +4,7 @@ define([
     "OwlCarousel"
 ], function ($) {
     "use strict";
-    return function main(config, element)
-    {
+    return function main(config, element) {
         var $element = $(element);
         var ajaxUrl = config.ajaxUrl;
         var currentProduct = config.currentProduct;
@@ -14,7 +13,7 @@ define([
                 $.ajax({
                     context: '#lsRecommendation',
                     url: ajaxUrl,
-                    type: "POST",
+                    type: "GET",
                     data: {currentProduct: currentProduct}
                 }).done(function (data) {
                     $('#lsRecommendation').html(data.output);

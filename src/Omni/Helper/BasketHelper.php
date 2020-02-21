@@ -2,28 +2,40 @@
 
 namespace Ls\Omni\Helper;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
+use Magento\Catalog\Model\Product\Interceptor;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Phrase;
 use Magento\Framework\Registry;
 use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Item;
 
 /**
  * Class BasketHelper
  * @package Ls\Omni\Helper
  */
-class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
+class BasketHelper extends AbstractHelper
 {
     /** @var Cart $cart */
     public $cart;
 
-    /** @var \Magento\Catalog\Model\ProductRepository $productRepository */
+    /** @var ProductRepository $productRepository */
     public $productRepository;
 
     /**
@@ -32,14 +44,14 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public $checkoutSession;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var Proxy
      */
     public $customerSession;
 
     /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
-    /** @var \Magento\ConfigurableProduct\Model\ResourceModel\Product\
+    /** @var
      * Type\Configurable $catalogProductTypeConfigurable
      */
     public $catalogProductTypeConfigurable;
@@ -93,16 +105,16 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      * @param Cart $cart
      * @param ProductRepository $productRepository
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param Proxy $customerSession
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable
      * @param ProductFactory $productFactory
      * @param ItemHelper $itemHelper
      * @param Registry $registry
      * @param LSR $Lsr
-     * @param \Ls\Omni\Helper\Data $data
+     * @param Data $data
      * @param SessionManagerInterface $session
-     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+     * @param CartRepositoryInterface $quoteRepository
      * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      */
     public function __construct(
@@ -110,7 +122,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         Cart $cart,
         ProductRepository $productRepository,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        Proxy $customerSession,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
         ProductFactory $productFactory,
@@ -119,30 +131,30 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         LSR $Lsr,
         Data $data,
         SessionManagerInterface $session,
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
+        CartRepositoryInterface $quoteRepository,
         \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
     ) {
         parent::__construct($context);
-        $this->cart = $cart;
-        $this->productRepository = $productRepository;
-        $this->checkoutSession = $checkoutSession;
-        $this->customerSession = $customerSession;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->cart                           = $cart;
+        $this->productRepository              = $productRepository;
+        $this->checkoutSession                = $checkoutSession;
+        $this->customerSession                = $customerSession;
+        $this->searchCriteriaBuilder          = $searchCriteriaBuilder;
         $this->catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
-        $this->productFactory = $productFactory;
-        $this->itemHelper = $itemHelper;
-        $this->registry = $registry;
-        $this->lsr = $Lsr;
-        $this->data = $data;
-        $this->session = $session;
-        $this->quoteRepository = $quoteRepository;
-        $this->quoteResourceModel = $quoteResourceModel;
+        $this->productFactory                 = $productFactory;
+        $this->itemHelper                     = $itemHelper;
+        $this->registry                       = $registry;
+        $this->lsr                            = $Lsr;
+        $this->data                           = $data;
+        $this->session                        = $session;
+        $this->quoteRepository                = $quoteRepository;
+        $this->quoteResourceModel             = $quoteResourceModel;
     }
 
     /**
      * Compared a OneList with a quote and returns an array which contains
      * the items present only in the quote and only in the OneList (basket)
-     * @param Entity\OneList $list
+     * @param Entity\OneList $oneList
      * @param Quote $quote
      * @return array
      */
@@ -151,10 +163,10 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
         /** @var Entity\OneListItem[] $onlyInOneList */
         /** @var Entity\OneListItem[] $onlyInQuote */
         $onlyInOneList = [];
-        $onlyInQuote = [];
+        $onlyInQuote   = [];
 
-        /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
-        $cache = [];
+        /** @var Item[] $quoteItems */
+        $cache      = [];
         $quoteItems = $quote->getAllVisibleItems();
 
         /** @var Entity\OneListItem[] $oneListItems */
@@ -167,7 +179,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             foreach ($quoteItems as $quoteItem) {
                 $isConfigurable = $quoteItem->getProductType()
-                    == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE;
+                    == Configurable::TYPE_CODE;
                 if (isset($cache[$quoteItem->getId()]) || $isConfigurable) {
                     continue;
                 }
@@ -177,9 +189,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                     ->getData('lsr_id');
                 // @codingStandardsIgnoreEnd
                 $quote_has_item = $productLsrId == $oneListItem->getItem()->getId();
-                $qi_qty = $quoteItem->getData('qty');
-                $item_qty = (int)($oneListItem->getQuantity());
-                $match = $quote_has_item && ($qi_qty == $item_qty);
+                $qi_qty         = $quoteItem->getData('qty');
+                $item_qty       = (int)($oneListItem->getQuantity());
+                $match          = $quote_has_item && ($qi_qty == $item_qty);
 
                 if ($match) {
                     $cache[$quoteItem->getId()] = $found = true;
@@ -195,7 +207,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         foreach ($quoteItems as $quoteItem) {
             $isConfigurable = $quoteItem->getProductType()
-                == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE;
+                == Configurable::TYPE_CODE;
 
             // if the item is in the cache, it is present in the oneList and the quote
             if (isset($cache[$quoteItem->getId()]) || $isConfigurable) {
@@ -214,7 +226,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function setOneListQuote(Quote $quote, Entity\OneList $oneList)
     {
-        /** @var \Magento\Quote\Model\Quote\Item[] $quoteItems */
+        /** @var Item[] $quoteItems */
         $quoteItems = $quote->getAllVisibleItems();
         if (count($quoteItems) == 0) {
             $this->unsetCouponCode("");
@@ -236,12 +248,12 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             $productList = $this->productRepository->getList($searchCriteria)->getItems();
 
-            /** @var \Magento\Catalog\Model\Product\Interceptor $product */
+            /** @var Interceptor $product */
             $product = array_pop($productList);
 
             $barcode = $product->getData('barcode');
 
-            $uom = $product->getData('uom');
+            $uom   = $product->getData('uom');
             $parts = explode('-', $sku);
             // first element is lsr_id
             $lsr_id = array_shift($parts);
@@ -284,7 +296,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     {
         /** @var Entity\ArrayOfOneListItem $items */
         // @codingStandardsIgnoreLine
-        $items = new Entity\ArrayOfOneListItem();
+        $items      = new Entity\ArrayOfOneListItem();
         $itemsArray = [];
         foreach ($wishlistItems as $item) {
             if ($item->getOptionByCode('simple_product')) {
@@ -292,20 +304,20 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             } else {
                 $product = $item->getProduct();
             }
-            $sku = $product->getSku();
+            $sku            = $product->getSku();
             $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
 
             $productList = $this->productRepository->getList($searchCriteria)->getItems();
 
-            /** @var \Magento\Catalog\Model\Product\Interceptor $product */
+            /** @var Interceptor $product */
             $product = array_pop($productList);
-            $qty = $item->getData('qty');
+            $qty     = $item->getData('qty');
             // initialize the default null value
             $barcode = $product->getData('barcode');
 
             $sku = $product->getSku();
 
-            $uom = $product->getData('uom');
+            $uom   = $product->getData('uom');
             $parts = explode('-', $sku);
             // first element is lsr_id
             $lsr_id = array_shift($parts);
@@ -350,7 +362,6 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param Entity\OneList $oneList
      * @return bool
-     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function delete(Entity\OneList $oneList)
     {
@@ -371,11 +382,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param Entity\OneList $oneList
-     * @return Entity\OneListCalculateResponse|null
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return Entity\OneListCalculateResponse|Entity\Order
+     * @throws InvalidEnumException
      */
-    // @codingStandardsIgnoreLine
     public function update(Entity\OneList $oneList)
     {
         $this->saveToOmni($oneList);
@@ -406,12 +415,12 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param Entity\OneList $oneList
-     * @return bool|Entity\OrderAvailabilityResponse|Entity\OrderCheckAvailabilityResponse|\Ls\Omni\Client\ResponseInterface
+     * @return bool|Entity\OrderAvailabilityResponse|Entity\OrderCheckAvailabilityResponse|ResponseInterface
      */
     public function availability(Entity\OneList $oneList)
     {
         $oneListItems = $oneList->getItems();
-        $response = false;
+        $response     = false;
 
         if (!($oneListItems->getOneListItem() == null)) {
             $array = [];
@@ -421,9 +430,9 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             foreach ($oneListItems->getOneListItem() as $listItem) {
                 $variant = $listItem->getVariant();
-                $uom = !($listItem->getUom() == null) ? $listItem->getUom()[0]->getId() : null;
+                $uom     = !($listItem->getUom() == null) ? $listItem->getUom()[0]->getId() : null;
                 // @codingStandardsIgnoreLine
-                $line = (new Entity\OrderLineAvailability())
+                $line    = (new Entity\OrderLineAvailability())
                     ->setItemId($listItem->getItem()->getId())
                     ->setLineType(Entity\Enum\LineType::ITEM)
                     ->setUomId($uom)
@@ -445,7 +454,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setSourceType(Entity\Enum\SourceType::STANDARD)
                 ->setItemNumberType(Entity\Enum\ItemNumberType::ITEM_NO)
                 ->setOrderLineAvailabilityRequests($lines);
-            $entity = new Entity\OrderCheckAvailability();
+            $entity  = new Entity\OrderCheckAvailability();
             $entity->setRequest($request);
             $operation = new Operation\OrderCheckAvailability();
             // @codingStandardsIgnoreEnd
@@ -523,19 +532,18 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         return false;
     }
+
     /**
      * @param Entity\OneList $oneList
      * @return Entity\OneListCalculateResponse|Entity\Order
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws InvalidEnumException
      */
-    // @codingStandardsIgnoreLine
     public function calculate(Entity\OneList $oneList)
     {
         // @codingStandardsIgnoreLine
-        $storeId = $this->getDefaultWebStore();
+        $storeId   = $this->getDefaultWebStore();
         $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId    = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
 
         /** @var Entity\ArrayOfOneListItem $oneListItems */
         $oneListItems = $oneList->getItems();
@@ -564,7 +572,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
             /** @var Entity\OneListCalculate $entity */
             if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
-                $offer = new Entity\OneListPublishedOffer();
+                $offer  = new Entity\OneListPublishedOffer();
                 $offers = new Entity\ArrayOfOneListPublishedOffer();
                 $offers->setOneListPublishedOffer($offer);
                 $offer->setId($this->getCouponCode());
@@ -601,8 +609,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return mixed
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return string
+     * @throws Exception
      */
     public function getCouponCode()
     {
@@ -636,8 +644,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @return mixed
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws InvalidEnumException
      */
     public function getOneListCalculation()
     {
@@ -664,9 +671,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @return array|bool|Entity\OneList|Entity\OneList[]|mixed|null
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws InvalidEnumException
      */
-    // @codingStandardsIgnoreLine
     public function get()
     {
         /** @var Entity\OneList $list */
@@ -694,7 +700,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                         }
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->_logger->critical($e);
             }
         }
@@ -707,7 +713,8 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return Entity\OneList|mixed|null
+     * @return Entity\OneList|mixed
+     * @throws InvalidEnumException
      */
     public function fetchCurrentCustomerWishlist()
     {
@@ -730,7 +737,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @return array|bool|Entity\OneList|Entity\OneList[]|mixed
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws InvalidEnumException
      */
     public function fetchFromOmni()
     {
@@ -803,13 +810,14 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $couponCode
-     * @return Entity\OneListCalculateResponse|null|string
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return Entity\OneListCalculateResponse|Phrase|string|null
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function setCouponCode($couponCode)
     {
-        $status = "";
+        $status     = "";
         $couponCode = trim($couponCode);
         if ($couponCode == "") {
             $this->couponCode = '';
@@ -825,7 +833,7 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
             return $status = '';
         }
         $this->couponCode = $couponCode;
-        $status = $this->update(
+        $status           = $this->update(
             $this->get()
         );
 
@@ -867,19 +875,19 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 }
             }
             if (is_object($status)) {
-                $status = LSR::LS_COUPON_CODE_ERROR_MESSAGE;
+                $status = __("Coupon Code is not valid for these item(s)");
             }
 
             return $status;
         } else {
             $this->setCouponQuote("");
-            return LSR::LS_COUPON_CODE_ERROR_MESSAGE;
+            return __("Coupon Code is not valid for these item(s)");
         }
     }
 
     /**
      * @param $couponCode
-     * @throws \Exception
+     * @throws Exception
      */
     public function setCouponQuote($couponCode)
     {
@@ -918,5 +926,17 @@ class BasketHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function unSetBasketSessionValue()
     {
         return $this->checkoutSession->unsBasketdata();
+    }
+
+    /**
+     * Return Item Helper which can be used on multiple areas where we have dependency injection issue.
+     */
+
+    /**
+     * @return ItemHelper
+     */
+    public function getItemHelper()
+    {
+        return $this->itemHelper;
     }
 }

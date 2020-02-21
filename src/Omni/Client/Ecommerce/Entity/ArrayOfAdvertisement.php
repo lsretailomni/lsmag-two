@@ -17,9 +17,9 @@ class ArrayOfAdvertisement implements IteratorAggregate
     /**
      * @property Advertisement[] $Advertisement
      */
-    protected $Advertisement = array(
+    protected $Advertisement = [
         
-    );
+    ];
 
     /**
      * @param Advertisement[] $Advertisement

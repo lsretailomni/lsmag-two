@@ -15,7 +15,7 @@ define([
          */
         getMailingAddress: function () {
             if (typeof window.checkoutConfig.payment.checkmo === 'undefined') {
-               return "";
+                return "";
             } else {
                 return window.checkoutConfig.payment.checkmo.mailingAddress;
             }

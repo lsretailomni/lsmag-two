@@ -5,6 +5,7 @@ namespace Ls\Replication\Code;
 
 use CaseHelper\CaseHelperFactory;
 use CaseHelper\CaseHelperInterface;
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\Service;
@@ -12,9 +13,12 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Setup\UpgradeSchema;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DB\Ddl\Table;
+use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
+use ReflectionException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Reflection\ClassReflection;
@@ -43,20 +47,20 @@ class SchemaUpdateGenerator extends AbstractGenerator
     /**
      * SchemaUpdateGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
-     * @throws \ReflectionException
+     * @throws Exception
+     * @throws ReflectionException
      */
 
     public function __construct(ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation = $operation;
-        $ecommerce = ServiceType::ECOMMERCE();
-        $client = new Client(Service::getUrl($ecommerce), $ecommerce);
-        $this->reflected_entity = new ClassReflection($this->operation->getOmniEntityFqn());
+        $this->operation         = $operation;
+        $ecommerce               = ServiceType::ECOMMERCE();
+        $client                  = new Client(Service::getUrl($ecommerce), $ecommerce);
+        $this->reflected_entity  = new ClassReflection($this->operation->getOmniEntityFqn());
         $this->reflected_upgrade = new ClassReflection(UpgradeSchema::class);
-        $this->metadata = $client->getMetadata();
-        $this->case_helper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
+        $this->metadata          = $client->getMetadata();
+        $this->case_helper       = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
     }
 
     /**
@@ -64,7 +68,7 @@ class SchemaUpdateGenerator extends AbstractGenerator
      */
     public function generate()
     {
-        $entity_name = $this->case_helper->toPascalCase($this->reflected_entity->getShortName());
+        $entity_name    = $this->case_helper->toPascalCase($this->reflected_entity->getShortName());
         $upgrade_method = new MethodGenerator();
         $upgrade_method->setName("upgrade");
         $upgrade_method->setParameters([
@@ -107,9 +111,9 @@ class SchemaUpdateGenerator extends AbstractGenerator
      */
     public function getMethodBody()
     {
-        $restrictions = $this->metadata->getRestrictions();
+        $restrictions   = $this->metadata->getRestrictions();
         $property_types = [];
-        $simple_types = ['boolean', 'string', 'int', 'float'];
+        $simple_types   = ['boolean', 'string', 'int', 'float'];
         foreach ($this->reflected_entity->getProperties() as $property) {
             $docblock = $property->getDocBlock()->getContents();
             preg_match('/property\s(:?\w+)\s\$(:?\w+)/m', $docblock, $matches);
@@ -122,56 +126,90 @@ class SchemaUpdateGenerator extends AbstractGenerator
             } else {
                 $property_types[$name] = $type;
             }
-        };
+        }
 
-        $table_name = $this->getTableName();
+        $table_name     = $this->getTableName();
         $table_idx_name = $this->getTableFieldId();
-        $method_body = <<<CODE
+        $method_body    = <<<CODE
 \$table_name = \$setup->getTable( 'ls_replication_$table_name' ); 
 if(!\$setup->tableExists(\$table_name)) {
 \t\$table = \$setup->getConnection()->newTable( \$table_name );
-\t\$table->addColumn('$table_idx_name', Table::TYPE_INTEGER, NULL, 
-\t                    [ 'identity' => TRUE, 'primary' => TRUE,
-\t                      'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ]);
+\t\$table->addColumn('$table_idx_name', Table::TYPE_INTEGER, 11, [ 'identity' => TRUE, 'primary' => TRUE, 'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ]);
 \t\$table->addColumn('scope', Table::TYPE_TEXT, 8);
 \t\$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
-\t\$table->addColumn('processed', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
-\t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, null, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+\t\$table->addColumn('processed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
+\t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+\t\$table->addColumn('is_failed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
 
 CODE;
         foreach ($property_types as $raw_name => $type) {
-            $name = $raw_name;
-            $size = null;
+            $name    = $raw_name;
+            $length  = null;
+            $default = 'null';
 
             (array_search($type, $simple_types) === false) and ($type = 'string');
             if ($type == 'int') {
                 $field_type = 'Table::TYPE_INTEGER';
+                $length     = 11;
             } elseif ($type == 'float') {
-                $field_type = 'Table::TYPE_FLOAT';
+                $field_type = 'Table::TYPE_DECIMAL';
+                $length     = "'20,4'";
             } elseif ($type == 'boolean') {
                 $field_type = 'Table::TYPE_BOOLEAN';
+                $default    = 0;
+                $length     = 1;
             } else {
                 $lower_name = strtolower($name);
                 if (strpos($lower_name, 'image64') === false) {
                     $field_type = 'Table::TYPE_TEXT';
+                    $length     = "''";
                 } else {
                     $field_type = 'Table::TYPE_BLOB';
-                    $size = '25M';
+                    $length     = "'25M'";
                 }
             }
             if ($name == 'Id') {
                 $name = 'nav_id';
             }
-            $method_body .= "\t\$table->addColumn('$name' , $field_type, '$size');\n";
+            $allColumnsArray[] = [
+                'name'       => $name,
+                'field_type' => $field_type,
+                'default'    => $default,
+                'length'     => $length
+            ];
+            $method_body       .= "\t\$table->addColumn('$name' , $field_type, $length);\n";
         }
-
-        $method_body .= <<<CODE
+        $allColumnsArray[] = [
+            'name'       => 'is_failed',
+            'field_type' => 'Table::TYPE_BOOLEAN',
+            'default'    => 0,
+            'length'     => 1
+        ];
+        $allColumnsArray[] = [
+            'name'       => 'processed_at',
+            'field_type' => 'Table::TYPE_TIMESTAMP',
+            'default'    => 'null',
+            'length'     => "''"
+        ];
+        $method_body       .= <<<CODE
+\t\$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
 \t\$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
 \t\$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
 \t\$setup->getConnection()->createTable( \$table );
-}
+} else {
+\t\$connection = \$setup->getConnection();
 CODE;
-
+        foreach ($allColumnsArray as $column) {
+            $comment     = ucfirst($column['name']);
+            $method_body .= "\n\tif (\$connection->tableColumnExists(\$table_name, '" . $column['name'] . "' ) === false) {";
+            $method_body .= "\n\t\t\$connection->addColumn(\$table_name, '" . $column['name'] . "', ['length' => " . $column['length'] . ",'default' => " . $column['default'] . ",'type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
+            $method_body .= "\t} else {";
+            $method_body .= "\n\t\t\$connection->modifyColumn(\$table_name, '" . $column['name'] . "', ['length' => " . $column['length'] . ",'default' => " . $column['default'] . ",'type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
+            $method_body .= "\t}";
+        }
+        $method_body .= <<<CODE
+\n}
+CODE;
         return $method_body;
     }
 
@@ -194,12 +232,12 @@ CODE;
 
     public function getPath()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        /** @var  \Magento\Framework\Module\Dir\Reader $dirReader */
-        $dirReader = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
-        $basepath = $dirReader->getModuleDir('', 'Ls_Replication');
+        $objectManager = ObjectManager::getInstance();
+        /** @var  Reader $dirReader */
+        $dirReader    = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
+        $basepath     = $dirReader->getModuleDir('', 'Ls_Replication');
         $upgrade_path = $basepath . "/Setup/UpgradeSchema";
-        $entity_name = ucfirst($this->reflected_entity->getShortName());
+        $entity_name  = ucfirst($this->reflected_entity->getShortName());
         $upgrade_path = str_replace('UpgradeSchema', "UpgradeSchema/$entity_name", $upgrade_path);
         $upgrade_path .= '.php';
         return $upgrade_path;

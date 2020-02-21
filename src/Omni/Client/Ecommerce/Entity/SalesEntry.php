@@ -88,6 +88,11 @@ class SalesEntry extends Entity
     protected $Posted = null;
 
     /**
+     * @property string $ReceiptNo
+     */
+    protected $ReceiptNo = null;
+
+    /**
      * @property Address $ShipToAddress
      */
     protected $ShipToAddress = null;
@@ -309,9 +314,9 @@ class SalesEntry extends Entity
     public function setIdType($IdType)
     {
         if ( ! $IdType instanceof DocumentIdType ) {
-            if ( DocumentIdType::isValid( $IdType ) ) 
+            if ( DocumentIdType::isValid( $IdType ) )
                 $IdType = new DocumentIdType( $IdType );
-            elseif ( DocumentIdType::isValidKey( $IdType ) ) 
+            elseif ( DocumentIdType::isValidKey( $IdType ) )
                 $IdType = new DocumentIdType( constant( "DocumentIdType::$IdType" ) );
             elseif ( ! $IdType instanceof DocumentIdType )
                 throw new InvalidEnumException();
@@ -355,9 +360,9 @@ class SalesEntry extends Entity
     public function setPaymentStatus($PaymentStatus)
     {
         if ( ! $PaymentStatus instanceof PaymentStatus ) {
-            if ( PaymentStatus::isValid( $PaymentStatus ) ) 
+            if ( PaymentStatus::isValid( $PaymentStatus ) )
                 $PaymentStatus = new PaymentStatus( $PaymentStatus );
-            elseif ( PaymentStatus::isValidKey( $PaymentStatus ) ) 
+            elseif ( PaymentStatus::isValidKey( $PaymentStatus ) )
                 $PaymentStatus = new PaymentStatus( constant( "PaymentStatus::$PaymentStatus" ) );
             elseif ( ! $PaymentStatus instanceof PaymentStatus )
                 throw new InvalidEnumException();
@@ -427,6 +432,24 @@ class SalesEntry extends Entity
     public function getPosted()
     {
         return $this->Posted;
+    }
+
+    /**
+     * @param string $ReceiptNo
+     * @return $this
+     */
+    public function setReceiptNo($ReceiptNo)
+    {
+        $this->ReceiptNo = $ReceiptNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReceiptNo()
+    {
+        return $this->ReceiptNo;
     }
 
     /**
@@ -545,9 +568,9 @@ class SalesEntry extends Entity
     public function setShippingStatus($ShippingStatus)
     {
         if ( ! $ShippingStatus instanceof ShippingStatus ) {
-            if ( ShippingStatus::isValid( $ShippingStatus ) ) 
+            if ( ShippingStatus::isValid( $ShippingStatus ) )
                 $ShippingStatus = new ShippingStatus( $ShippingStatus );
-            elseif ( ShippingStatus::isValidKey( $ShippingStatus ) ) 
+            elseif ( ShippingStatus::isValidKey( $ShippingStatus ) )
                 $ShippingStatus = new ShippingStatus( constant( "ShippingStatus::$ShippingStatus" ) );
             elseif ( ! $ShippingStatus instanceof ShippingStatus )
                 throw new InvalidEnumException();
@@ -573,9 +596,9 @@ class SalesEntry extends Entity
     public function setStatus($Status)
     {
         if ( ! $Status instanceof SalesEntryStatus ) {
-            if ( SalesEntryStatus::isValid( $Status ) ) 
+            if ( SalesEntryStatus::isValid( $Status ) )
                 $Status = new SalesEntryStatus( $Status );
-            elseif ( SalesEntryStatus::isValidKey( $Status ) ) 
+            elseif ( SalesEntryStatus::isValidKey( $Status ) )
                 $Status = new SalesEntryStatus( constant( "SalesEntryStatus::$Status" ) );
             elseif ( ! $Status instanceof SalesEntryStatus )
                 throw new InvalidEnumException();

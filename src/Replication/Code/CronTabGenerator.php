@@ -3,8 +3,12 @@
 
 namespace Ls\Replication\Code;
 
+use DOMDocument;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Module\Dir\Reader;
+use Magento\Framework\ObjectManagerInterface;
 
 /**
  * Class CronTabGenerator
@@ -18,7 +22,7 @@ class CronTabGenerator
      */
     public static function Generate(Service\Metadata $metadata)
     {
-        $dom = new \DOMDocument('1.0');
+        $dom               = new DOMDocument('1.0');
         $dom->formatOutput = true;
 
         $config = $dom->createElement('config');
@@ -32,7 +36,6 @@ class CronTabGenerator
 
         $cronminute = 1;
 
-
         foreach ($metadata->getOperations() as $operation_name => $operation) {
             if ($cronminute >= 59) {
                 $cronminute = 1;
@@ -41,7 +44,11 @@ class CronTabGenerator
 
             if (strpos($operation_name, 'ReplEcomm') !== false) {
                 $jobName = $metadata->getReplicationOperationByName($operation->getName())->getJobName();
-                $jobId = strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', str_replace('Task', '', $jobName)));
+                $jobId   = strtolower(preg_replace(
+                    ['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'],
+                    '$1_$2',
+                    str_replace('Task', '', $jobName)
+                ));
 
                 // Only unique JOB ID will be added inside crontab.xml
                 if (!in_array($jobName, $jobNames)) {
@@ -71,7 +78,7 @@ class CronTabGenerator
      */
     private static function getCronTabPath($absolute = false)
     {
-        $path = AbstractGenerator::path('etc', 'crontab.xml');
+        $path      = AbstractGenerator::path('etc', 'crontab.xml');
         $base_path = CronTabGenerator::getPath();
 
         if ($absolute) {
@@ -96,9 +103,9 @@ class CronTabGenerator
      */
     private static function getModuleDirectory($moduleName = 'Ls_Replication', $type = '')
     {
-        /** @var \Magento\Framework\ObjectManagerInterface $om */
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
-        /** @var \Magento\Framework\Module\Dir\Reader $reader */
+        /** @var ObjectManagerInterface $om */
+        $om = ObjectManager::getInstance();
+        /** @var Reader $reader */
         $reader = $om->get('Magento\Framework\Module\Dir\Reader');
         return $reader->getModuleDir($type, $moduleName);
     }

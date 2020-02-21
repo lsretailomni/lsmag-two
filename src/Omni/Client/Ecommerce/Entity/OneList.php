@@ -223,9 +223,9 @@ class OneList extends Entity
     public function setListType($ListType)
     {
         if ( ! $ListType instanceof ListType ) {
-            if ( ListType::isValid( $ListType ) ) 
+            if ( ListType::isValid( $ListType ) )
                 $ListType = new ListType( $ListType );
-            elseif ( ListType::isValidKey( $ListType ) ) 
+            elseif ( ListType::isValidKey( $ListType ) )
                 $ListType = new ListType( constant( "ListType::$ListType" ) );
             elseif ( ! $ListType instanceof ListType )
                 throw new InvalidEnumException();

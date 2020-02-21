@@ -29,7 +29,7 @@ define([
 
         balanceFormatted: ko.computed(function () {
             var label = $t('You have %1 loyalty points. Each of 10 Points gets %2 discount.');
-            label = label.replace('%1', '<strong>' + points.format(points.balance) + '</strong>')
+            label = label.replace('%1', '<strong>' + points.format(points.balance) + '</strong>');
             return label.replace('%2', '<strong>' + points.rateLabel + '</strong>');
         }),
 

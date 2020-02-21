@@ -2,8 +2,17 @@
 
 namespace Ls\Customer\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
+use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\ResourceModel\Customer;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class CheckoutRegisterObserver
@@ -14,66 +23,66 @@ class CheckoutRegisterObserver implements ObserverInterface
     /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var \Magento\Checkout\Model\Session\Proxy */
+    /** @var Proxy */
     private $checkoutSession;
 
-    /** @var \Magento\Sales\Api\OrderRepositoryInterface */
+    /** @var OrderRepositoryInterface */
     private $orderRepository;
 
-    /** @var \Magento\Customer\Model\CustomerFactory */
+    /** @var CustomerFactory */
     private $customerFactory;
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     private $storeManager;
 
-    /** @var \Magento\Customer\Model\ResourceModel\Customer */
+    /** @var Customer */
     private $customerResourceModel;
 
-    /** @var \Ls\Core\Model\LSR @var */
+    /** @var LSR @var */
     private $lsr;
 
     /**
      * CheckoutRegisterObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
-     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
+     * @param Proxy $checkoutSession
+     * @param OrderRepositoryInterface $orderRepository
+     * @param CustomerFactory $customerFactory
+     * @param StoreManagerInterface $storeManager
+     * @param Customer $customerResourceModel
      */
 
     public function __construct(
         ContactHelper $contactHelper,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
-        \Ls\Core\Model\LSR $LSR
+        Proxy $checkoutSession,
+        OrderRepositoryInterface $orderRepository,
+        CustomerFactory $customerFactory,
+        StoreManagerInterface $storeManager,
+        Customer $customerResourceModel,
+        LSR $LSR
     ) {
-        $this->contactHelper = $contactHelper;
-        $this->checkoutSession = $checkoutSession;
-        $this->orderRepository = $orderRepository;
-        $this->customerFactory = $customerFactory;
-        $this->storeManager = $storeManager;
+        $this->contactHelper         = $contactHelper;
+        $this->checkoutSession       = $checkoutSession;
+        $this->orderRepository       = $orderRepository;
+        $this->customerFactory       = $customerFactory;
+        $this->storeManager          = $storeManager;
         $this->customerResourceModel = $customerResourceModel;
-        $this->lsr = $LSR;
+        $this->lsr                   = $LSR;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
-     * @throws \Exception
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param Observer $observer
+     * @throws Exception
+     * @throws LocalizedException
      */
     // @codingStandardsIgnoreStart
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         /*
          * Adding condition to only process if LSR is enabled.
          */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $orderId = $this->checkoutSession->getLastOrderId();
-            $order = $this->orderRepository->get($orderId);
+            $order   = $this->orderRepository->get($orderId);
             if ($order->getCustomerId()) {
                 // only performed when a customer id is created
                 $customer = $this->customerFactory->create()
@@ -87,7 +96,7 @@ class CheckoutRegisterObserver implements ObserverInterface
                 $contact = $this->contactHelper->contact($customer);
                 if (is_object($contact) && $contact->getId()) {
                     $token = $contact->getLoggedOnToDevice()->getSecurityToken();
-                    $card = $contact->getCard();
+                    $card  = $contact->getCard();
                     $customer->setData('lsr_id', $contact->getId());
                     $customer->setData('lsr_token', $token);
                     $customer->setData('lsr_cardid', $card->getId());

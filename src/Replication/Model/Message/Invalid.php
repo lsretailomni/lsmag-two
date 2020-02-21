@@ -2,40 +2,47 @@
 
 namespace LS\Replication\Model\Message;
 
+use \Ls\Core\Model\LSR;
+use Magento\Framework\Notification\MessageInterface;
+use Magento\Framework\Phrase;
+use Magento\Framework\UrlInterface;
+use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\StoreManagerInterface;
+
 /**
  * Class Invalid
  * @package LS\Replication\Model\Message
  */
-class Invalid implements \Magento\Framework\Notification\MessageInterface
+class Invalid implements MessageInterface
 {
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     public $urlBuilder;
 
     /**
-     * @var \Ls\Core\Model\LSR
+     * @var LSR
      */
     public $lsr;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     public $storeManager;
 
     /**
      * Invalid constructor.
-     * @param \Magento\Framework\UrlInterface $urlBuilder
-     * @param \Ls\Core\Model\LSR $lsr
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param UrlInterface $urlBuilder
+     * @param LSR $lsr
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        \Magento\Framework\UrlInterface $urlBuilder,
-        \Ls\Core\Model\LSR $lsr,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        UrlInterface $urlBuilder,
+        LSR $lsr,
+        StoreManagerInterface $storeManager
     ) {
-        $this->urlBuilder = $urlBuilder;
-        $this->lsr = $lsr;
+        $this->urlBuilder   = $urlBuilder;
+        $this->lsr          = $lsr;
         $this->storeManager = $storeManager;
     }
 
@@ -53,10 +60,10 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
          */
         $displayNotice = true;
 
-        /** @var \Magento\Store\Api\Data\StoreInterface[] $stores */
+        /** @var StoreInterface[] $stores */
         $stores = $this->storeManager->getStores();
         if (!empty($stores)) {
-            /** @var \Magento\Store\Api\Data\StoreInterface $store */
+            /** @var StoreInterface $store */
             foreach ($stores as $store) {
                 if ($this->lsr->isLSR($store->getId())) {
                     $displayNotice = false;
@@ -84,7 +91,7 @@ class Invalid implements \Magento\Framework\Notification\MessageInterface
     /**
      * Retrieve message text
      *
-     * @return \Magento\Framework\Phrase
+     * @return Phrase
      */
     public function getText()
     {

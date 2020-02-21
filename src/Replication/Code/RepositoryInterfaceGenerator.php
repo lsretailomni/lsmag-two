@@ -6,10 +6,11 @@ namespace Ls\Replication\Code;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use ReflectionClass;
+use ReflectionException;
+use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\FileGenerator;
 use Zend\Code\Generator\GeneratorInterface;
 use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Generator\DocBlockGenerator;
 
 /**
  * Class RepositoryInterfaceGenerator
@@ -18,7 +19,7 @@ use Zend\Code\Generator\DocBlockGenerator;
 class RepositoryInterfaceGenerator implements GeneratorInterface
 {
     /** @var string */
-    static public $namespace = "Ls\\Replication\\Api";
+    public static $namespace = "Ls\\Replication\\Api";
 
     /** @var  ReplicationOperation */
     private $operation;
@@ -42,14 +43,14 @@ DISCLAIMER;
     /**
      * RepositoryInterfaceGenerator constructor.
      * @param ReplicationOperation $replication_operation
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function __construct(ReplicationOperation $replication_operation)
     {
-        $this->operation = $replication_operation;
+        $this->operation        = $replication_operation;
         $this->reflected_entity = new ReflectionClass($this->operation->getMainEntityFqn());
-        $this->file = new FileGenerator();
-        $this->class = new InterfaceGenerator();
+        $this->file             = new FileGenerator();
+        $this->class            = new InterfaceGenerator();
         $this->file->setClass($this->class);
     }
 
@@ -67,9 +68,9 @@ DISCLAIMER;
          * public function deleteById($id);
          */
         $entity_interface_name = $this->operation->getInterfaceName();
-        $docBlock = DocBlockGenerator::fromArray(array(
+        $docBlock              = DocBlockGenerator::fromArray([
             'shortDescription' => $this->disclaimer,
-        ));
+        ]);
         $this->class->setDocblock($docBlock);
         $this->class->setName($this->getName());
         $this->class->setNamespaceName(self::$namespace);
@@ -80,18 +81,18 @@ DISCLAIMER;
         $this->class->addMethod('delete', [new ParameterGenerator('page', $entity_interface_name)]);
         $this->class->addMethod('getById', [new ParameterGenerator('id')]);
         $this->class->addMethod('deleteById', [new ParameterGenerator('id')]);
-        $content = $this->file->generate();
+        $content      = $this->file->generate();
         $not_abstract = <<<CODE
     {
 }
 CODE;
-        $content = str_replace("\\$entity_interface_name \$page", "$entity_interface_name \$page", $content);
-        $content = str_replace(
+        $content      = str_replace("\\$entity_interface_name \$page", "$entity_interface_name \$page", $content);
+        $content      = str_replace(
             "\Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
             "SearchCriteriaInterface \$criteria",
             $content
         );
-        $content = preg_replace('/\s+{\s+}+/', ";", $content);
+        $content      = preg_replace('/\s+{\s+}+/', ";", $content);
         return $content;
     }
 

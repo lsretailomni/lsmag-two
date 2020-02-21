@@ -209,9 +209,9 @@ class RetailAttribute
     public function setLinkType($LinkType)
     {
         if ( ! $LinkType instanceof AttributeLinkType ) {
-            if ( AttributeLinkType::isValid( $LinkType ) ) 
+            if ( AttributeLinkType::isValid( $LinkType ) )
                 $LinkType = new AttributeLinkType( $LinkType );
-            elseif ( AttributeLinkType::isValidKey( $LinkType ) ) 
+            elseif ( AttributeLinkType::isValidKey( $LinkType ) )
                 $LinkType = new AttributeLinkType( constant( "AttributeLinkType::$LinkType" ) );
             elseif ( ! $LinkType instanceof AttributeLinkType )
                 throw new InvalidEnumException();
@@ -291,9 +291,9 @@ class RetailAttribute
     public function setValueType($ValueType)
     {
         if ( ! $ValueType instanceof AttributeValueType ) {
-            if ( AttributeValueType::isValid( $ValueType ) ) 
+            if ( AttributeValueType::isValid( $ValueType ) )
                 $ValueType = new AttributeValueType( $ValueType );
-            elseif ( AttributeValueType::isValidKey( $ValueType ) ) 
+            elseif ( AttributeValueType::isValidKey( $ValueType ) )
                 $ValueType = new AttributeValueType( constant( "AttributeValueType::$ValueType" ) );
             elseif ( ! $ValueType instanceof AttributeValueType )
                 throw new InvalidEnumException();

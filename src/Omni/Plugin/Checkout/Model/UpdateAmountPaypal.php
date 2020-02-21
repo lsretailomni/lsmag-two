@@ -2,6 +2,9 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+use Magento\Checkout\Model\Session;
+use Magento\Checkout\Model\Session\Proxy;
+
 /**
  * Class UpdateAmountPaypal
  * @package Ls\Omni\Plugin\Checkout\Model
@@ -11,16 +14,16 @@ class UpdateAmountPaypal
     const SUBTOTAL = 'subtotal';
 
     /**
-     * @var \Magento\Checkout\Model\Session
+     * @var Session
      */
     public $checkoutSession;
 
     /**
      * UpdateAmountPaypal constructor.
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param Proxy $checkoutSession
      */
     public function __construct(
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession
+        Proxy $checkoutSession
     ) {
         $this->checkoutSession = $checkoutSession;
     }
@@ -32,7 +35,7 @@ class UpdateAmountPaypal
      */
     public function afterGetAmounts($cart, $result)
     {
-        $quote = $this->checkoutSession->getQuote();
+        $quote         = $this->checkoutSession->getQuote();
         $paymentMethod = $quote->getPayment()->getMethod();
 
         $paypalMehodList = [
@@ -43,7 +46,8 @@ class UpdateAmountPaypal
             'paypal_express_bml',
             'payflow_express_bml',
             'payflow_express',
-            'paypal_express'];
+            'paypal_express'
+        ];
 
         if (in_array($paymentMethod, $paypalMehodList)) {
             $result[self::SUBTOTAL] = $quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount();

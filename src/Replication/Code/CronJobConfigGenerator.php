@@ -31,9 +31,9 @@ class CronJobConfigGenerator implements GeneratorInterface
     public function generate()
     {
 
-        $job_id = $this->operation->getJobId();
+        $job_id  = $this->operation->getJobId();
         $job_fqn = $this->operation->getJobFqn();
-        $xml = <<<XML
+        $xml     = <<<XML
 <job name="$job_id" instance="$job_fqn" method="execute">
   <schedule>* * * * *</schedule>
 </job>

@@ -2,14 +2,19 @@
 
 namespace Ls\Customer\Setup;
 
-use Magento\Customer\Setup\CustomerSetupFactory;
+use Magento\Catalog\Model\Category;
+use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\Customer;
-use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Customer\Setup\CustomerSetupFactory;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
 use Magento\Eav\Model\Entity\Attribute\SetFactory as AttributeSetFactory;
+use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Zend_Validate_Exception;
 
 /**
  * Class InstallData
@@ -36,6 +41,7 @@ class InstallData implements InstallDataInterface
     /**
      * @param CustomerSetupFactory $customerSetupFactory
      * @param AttributeSetFactory $attributeSetFactory
+     * @param EavSetupFactory $eavSetupFactory
      */
     public function __construct(
         CustomerSetupFactory $customerSetupFactory,
@@ -43,8 +49,8 @@ class InstallData implements InstallDataInterface
         EavSetupFactory $eavSetupFactory
     ) {
         $this->customerSetupFactory = $customerSetupFactory;
-        $this->attributeSetFactory = $attributeSetFactory;
-        $this->eavSetupFactory = $eavSetupFactory;
+        $this->attributeSetFactory  = $attributeSetFactory;
+        $this->eavSetupFactory      = $eavSetupFactory;
     }
 
     /**
@@ -78,71 +84,71 @@ class InstallData implements InstallDataInterface
         ModuleContextInterface $context
     ) {
         /** @var CustomerSetup $customerSetup */
-        $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+        $customerSetup  = $this->customerSetupFactory->create(['setup' => $setup]);
         $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
         $attributeSetId = $customerEntity->getDefaultAttributeSetId();
         /** @var $attributeSet AttributeSet */
-        $attributeSet = $this->attributeSetFactory->create();
+        $attributeSet     = $this->attributeSetFactory->create();
         $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
         $customerSetup->addAttribute(Customer::ENTITY, 'lsr_username', [
-            'type' => 'varchar',
-            'input' => 'text',
-            'label' => 'Member Username',
-            'unique' => false,
-            'visible' => false,
-            'visible_in_front' => true,
-            'required' => false,
-            'user_defined' => false,
-            'default' => null,
-            'attribute_set_id' => $attributeSetId,
+            'type'               => 'varchar',
+            'input'              => 'text',
+            'label'              => 'Member Username',
+            'unique'             => false,
+            'visible'            => false,
+            'visible_in_front'   => true,
+            'required'           => false,
+            'user_defined'       => false,
+            'default'            => null,
+            'attribute_set_id'   => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_id', [
-            'type' => 'varchar',
-            'input' => 'text',
-            'label' => 'Member Id',
-            'unique' => false,
-            'visible' => false,
-            'visible_in_front' => true,
-            'required' => false,
-            'user_defined' => false,
-            'default' => null,
-            'attribute_set_id' => $attributeSetId,
+            'type'               => 'varchar',
+            'input'              => 'text',
+            'label'              => 'Member Id',
+            'unique'             => false,
+            'visible'            => false,
+            'visible_in_front'   => true,
+            'required'           => false,
+            'user_defined'       => false,
+            'default'            => null,
+            'attribute_set_id'   => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_token', [
-            'type' => 'varchar',
-            'input' => 'text',
-            'label' => 'Member Token',
-            'unique' => false,
-            'visible' => false,
-            'visible_in_front' => true,
-            'required' => false,
-            'user_defined' => false,
-            'default' => null,
-            'attribute_set_id' => $attributeSetId,
+            'type'               => 'varchar',
+            'input'              => 'text',
+            'label'              => 'Member Token',
+            'unique'             => false,
+            'visible'            => false,
+            'visible_in_front'   => true,
+            'required'           => false,
+            'user_defined'       => false,
+            'default'            => null,
+            'attribute_set_id'   => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_resetcode', [
-            'type' => 'varchar',
-            'input' => 'text',
-            'label' => 'Password Reset Code',
-            'unique' => false,
-            'visible' => false,
-            'visible_in_front' => true,
-            'required' => false,
-            'user_defined' => false,
-            'default' => null,
-            'attribute_set_id' => $attributeSetId,
+            'type'               => 'varchar',
+            'input'              => 'text',
+            'label'              => 'Password Reset Code',
+            'unique'             => false,
+            'visible'            => false,
+            'visible_in_front'   => true,
+            'required'           => false,
+            'user_defined'       => false,
+            'default'            => null,
+            'attribute_set_id'   => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_cardid', [
-            'type' => 'varchar',
-            'input' => 'text',
-            'label' => 'LSR Card ID',
-            'unique' => false,
-            'visible' => false,
-            'visible_in_front' => true,
-            'required' => false,
-            'user_defined' => false,
-            'default' => null,
-            'attribute_set_id' => $attributeSetId,
+            'type'               => 'varchar',
+            'input'              => 'text',
+            'label'              => 'LSR Card ID',
+            'unique'             => false,
+            'visible'            => false,
+            'visible_in_front'   => true,
+            'required'           => false,
+            'user_defined'       => false,
+            'default'            => null,
+            'attribute_set_id'   => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ]);
     }
@@ -150,6 +156,8 @@ class InstallData implements InstallDataInterface
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
+     * @throws LocalizedException
+     * @throws Zend_Validate_Exception
      */
     protected function createAllCategoryAttributes(
         ModuleDataSetupInterface $setup,
@@ -157,19 +165,19 @@ class InstallData implements InstallDataInterface
     ) {
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         $eavSetup->addAttribute(
-            \Magento\Catalog\Model\Category::ENTITY,
+            Category::ENTITY,
             'nav_id',
             [
-                'type' => 'varchar',
-                'label' => 'Nav ID',
-                'input' => 'text',
-                'sort_order' => 4,
-                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                'visible' => true,
-                'required' => false,
+                'type'         => 'varchar',
+                'label'        => 'Nav ID',
+                'input'        => 'text',
+                'sort_order'   => 4,
+                'global'       => ScopedAttributeInterface::SCOPE_STORE,
+                'visible'      => true,
+                'required'     => false,
                 'user_defined' => false,
-                'default' => null,
-                'group' => 'General Information',
+                'default'      => null,
+                'group'        => 'General Information',
             ]
         );
     }
@@ -177,6 +185,8 @@ class InstallData implements InstallDataInterface
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
+     * @throws LocalizedException
+     * @throws Zend_Validate_Exception
      */
     protected function createAllProductAttributes(
         ModuleDataSetupInterface $setup,
@@ -184,34 +194,34 @@ class InstallData implements InstallDataInterface
     ) {
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         $eavSetup->addAttribute(
-            \Magento\Catalog\Model\Product::ENTITY,
+            Product::ENTITY,
             'barcode',
             [
-                'type' => 'varchar',
-                'label' => 'Barcode',
-                'input' => 'text',
-                'sort_order' => 4,
-                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                'visible' => true,
-                'required' => false,
+                'type'         => 'varchar',
+                'label'        => 'Barcode',
+                'input'        => 'text',
+                'sort_order'   => 4,
+                'global'       => ScopedAttributeInterface::SCOPE_STORE,
+                'visible'      => true,
+                'required'     => false,
                 'user_defined' => false,
-                'default' => null,
-                'group' => 'General Information',
+                'default'      => null,
+                'group'        => 'General Information',
             ]
         )->addAttribute(
-            \Magento\Catalog\Model\Product::ENTITY,
+            Product::ENTITY,
             'uom',
             [
-                'type' => 'varchar',
-                'label' => 'Unit of Measurement',
-                'input' => 'text',
-                'sort_order' => 4,
-                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                'visible' => true,
-                'required' => false,
+                'type'         => 'varchar',
+                'label'        => 'Unit of Measurement',
+                'input'        => 'text',
+                'sort_order'   => 4,
+                'global'       => ScopedAttributeInterface::SCOPE_STORE,
+                'visible'      => true,
+                'required'     => false,
                 'user_defined' => false,
-                'default' => null,
-                'group' => 'General Information',
+                'default'      => null,
+                'group'        => 'General Information',
             ]
         );
     }

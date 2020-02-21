@@ -4,15 +4,19 @@ namespace Ls\Omni\Block\Adminhtml\System\Config;
 
 use \Ls\Core\Model\LSR;
 use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Block\Widget\Button;
+use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class Stores
  * @package Ls\Omni\Block\Adminhtml\System\Config
  */
-class Stores extends \Magento\Config\Block\System\Config\Form\Field
+class Stores extends Field
 {
     /**
-     * @var \Ls\Core\Model\LSR
+     * @var LSR
      */
     public $lsr;
 
@@ -40,10 +44,10 @@ class Stores extends \Magento\Config\Block\System\Config\Form\Field
     /**
      * Unset some non-related element parameters
      *
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @param AbstractElement $element
      * @return string
      */
-    public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    public function render(AbstractElement $element)
     {
         $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
         return parent::render($element);
@@ -52,10 +56,10 @@ class Stores extends \Magento\Config\Block\System\Config\Form\Field
     /**
      * Get the button and scripts contents
      *
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @param AbstractElement $element
      * @return string
      */
-    public function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    public function _getElementHtml(AbstractElement $element)
     {
         return $this->_toHtml();
     }
@@ -78,15 +82,23 @@ class Stores extends \Magento\Config\Block\System\Config\Form\Field
 
     /**
      * @return mixed
-     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getWebsiteId()
+    {
+        return $this->_request->getParam('website');
+    }
+
+    /**
+     * @return mixed
+     * @throws LocalizedException
      */
     public function getButtonHtml()
     {
         $button = $this->getLayout()->createBlock(
-            'Magento\Backend\Block\Widget\Button'
+            Button::class
         )->setData(
             [
-                'id' => 'validate_base_url',
+                'id'    => 'validate_base_url',
                 'label' => __('Validate Base URL'),
             ]
         );

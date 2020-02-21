@@ -17,9 +17,9 @@ class ArrayOfReplLoyVendorItemMapping implements IteratorAggregate
     /**
      * @property ReplLoyVendorItemMapping[] $ReplLoyVendorItemMapping
      */
-    protected $ReplLoyVendorItemMapping = array(
+    protected $ReplLoyVendorItemMapping = [
         
-    );
+    ];
 
     /**
      * @param ReplLoyVendorItemMapping[] $ReplLoyVendorItemMapping

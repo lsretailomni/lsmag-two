@@ -2,13 +2,17 @@
 
 namespace Ls\Customer\Controller\Sales\Order;
 
+use Exception;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Request\Http;
-use Magento\Framework\App\Action;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Sales\Controller\AbstractController\OrderLoaderInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Controller\AbstractController\OrderViewAuthorizationInterface;
+use Psr\Log\LoggerInterface;
 
 class PrintShipment extends \Magento\Sales\Controller\Order\PrintShipment
 {
@@ -19,11 +23,11 @@ class PrintShipment extends \Magento\Sales\Controller\Order\PrintShipment
     public $request;
 
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     public $orderRepository;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var LoggerInterface */
     public $logger;
 
 
@@ -31,26 +35,26 @@ class PrintShipment extends \Magento\Sales\Controller\Order\PrintShipment
         Http $request,
         Context $context,
         OrderViewAuthorizationInterface $orderAuthorization,
-        \Magento\Framework\Registry $registry,
+        Registry $registry,
         PageFactory $resultPageFactory,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+        LoggerInterface $logger,
+        OrderRepositoryInterface $orderRepository
     ) {
         parent::__construct($context, $orderAuthorization, $registry, $resultPageFactory);
-        $this->request = $request;
-        $this->logger = $logger;
+        $this->request         = $request;
+        $this->logger          = $logger;
         $this->orderRepository = $orderRepository;
     }
 
     /**
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {
         try {
             if ($this->request->getParam('order_id')) {
-                $orderId = $this->request->getParam('order_id');
-                $order = $this->getOrder($orderId);
+                $orderId    = $this->request->getParam('order_id');
+                $order      = $this->getOrder($orderId);
                 $documentId = $order->getDocumentId();
             }
             if (empty($documentId)) {
@@ -59,7 +63,7 @@ class PrintShipment extends \Magento\Sales\Controller\Order\PrintShipment
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
             $resultRedirect->setPath('customer/order/printshipment/order_id/' . $documentId);
             return $resultRedirect;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return parent::execute();
         }
@@ -67,7 +71,7 @@ class PrintShipment extends \Magento\Sales\Controller\Order\PrintShipment
 
     /**
      * @param $id
-     * @return \Magento\Sales\Api\Data\OrderInterface
+     * @return OrderInterface
      */
     public function getOrder($id)
     {

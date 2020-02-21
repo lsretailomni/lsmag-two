@@ -2,11 +2,11 @@
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
+use \Ls\Replication\Block\Adminhtml\Grid\Renderer\Action\UrlBuilder;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
-use \Ls\Replication\Block\Adminhtml\Grid\Renderer\Action\UrlBuilder;
-use Magento\Framework\UrlInterface;
 
 /**
  * Class Actions
@@ -39,7 +39,7 @@ class Actions extends Column
         array $components = [],
         array $data = []
     ) {
-        $this->urlBuilder = $urlBuilder;
+        $this->urlBuilder       = $urlBuilder;
         $this->actionUrlBuilder = $actionUrlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
@@ -54,17 +54,16 @@ class Actions extends Column
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
-                $name = $this->getData('name');
-                $storeId =$this->context->getFilterParam('store_id', \Magento\Store\Model\Store::DEFAULT_STORE_ID);
+                $name    = $this->getData('name');
                 if (isset($item['value'])) {
                     $item[$name]['execute'] = [
-                        'href' => $this->urlBuilder->getUrl(
+                        'href'    => $this->urlBuilder->getUrl(
                             self::URL_PATH_EXECUTE,
-                            ['joburl' => $item['value'],'jobname' => $item['label'],'store'=>$item['storeId']]
+                            ['joburl' => $item['value'], 'jobname' => $item['label'], 'store' => $item['storeId']]
                         ),
-                        'label' => __('Execute'),
+                        'label'   => __('Execute'),
                         'confirm' => [
-                            'title' => __('Want to process %1 Cron?','${ $.$data.label }'),
+                            'title'   => __('Want to process %1 Cron?', '${ $.$data.label }'),
                             'message' => __('It will take some time to process. Please don\'t close this window.')
                         ]
                     ];

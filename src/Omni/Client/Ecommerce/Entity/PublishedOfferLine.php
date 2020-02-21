@@ -110,9 +110,9 @@ class PublishedOfferLine extends Entity
     public function setDiscountType($DiscountType)
     {
         if ( ! $DiscountType instanceof OfferDiscountType ) {
-            if ( OfferDiscountType::isValid( $DiscountType ) ) 
+            if ( OfferDiscountType::isValid( $DiscountType ) )
                 $DiscountType = new OfferDiscountType( $DiscountType );
-            elseif ( OfferDiscountType::isValidKey( $DiscountType ) ) 
+            elseif ( OfferDiscountType::isValidKey( $DiscountType ) )
                 $DiscountType = new OfferDiscountType( constant( "OfferDiscountType::$DiscountType" ) );
             elseif ( ! $DiscountType instanceof OfferDiscountType )
                 throw new InvalidEnumException();
@@ -174,9 +174,9 @@ class PublishedOfferLine extends Entity
     public function setLineType($LineType)
     {
         if ( ! $LineType instanceof OfferDiscountLineType ) {
-            if ( OfferDiscountLineType::isValid( $LineType ) ) 
+            if ( OfferDiscountLineType::isValid( $LineType ) )
                 $LineType = new OfferDiscountLineType( $LineType );
-            elseif ( OfferDiscountLineType::isValidKey( $LineType ) ) 
+            elseif ( OfferDiscountLineType::isValidKey( $LineType ) )
                 $LineType = new OfferDiscountLineType( constant( "OfferDiscountLineType::$LineType" ) );
             elseif ( ! $LineType instanceof OfferDiscountLineType )
                 throw new InvalidEnumException();
@@ -256,9 +256,9 @@ class PublishedOfferLine extends Entity
     public function setVariantType($VariantType)
     {
         if ( ! $VariantType instanceof OfferLineVariantType ) {
-            if ( OfferLineVariantType::isValid( $VariantType ) ) 
+            if ( OfferLineVariantType::isValid( $VariantType ) )
                 $VariantType = new OfferLineVariantType( $VariantType );
-            elseif ( OfferLineVariantType::isValidKey( $VariantType ) ) 
+            elseif ( OfferLineVariantType::isValidKey( $VariantType ) )
                 $VariantType = new OfferLineVariantType( constant( "OfferLineVariantType::$VariantType" ) );
             elseif ( ! $VariantType instanceof OfferLineVariantType )
                 throw new InvalidEnumException();

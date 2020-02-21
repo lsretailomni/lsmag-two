@@ -17,9 +17,9 @@ class ArrayOfPrice implements IteratorAggregate
     /**
      * @property Price[] $Price
      */
-    protected $Price = array(
+    protected $Price = [
         
-    );
+    ];
 
     /**
      * @param Price[] $Price

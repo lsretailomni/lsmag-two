@@ -4,8 +4,7 @@ define([
     "OwlCarousel"
 ], function ($) {
     "use strict";
-    return function main(config, element)
-    {
+    return function main(config, element) {
         var $element = $(element);
         var ajaxUrl = config.ajaxUrl;
         $(document).ready(function () {

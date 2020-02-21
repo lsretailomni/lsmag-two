@@ -2,11 +2,21 @@
 
 namespace Ls\Omni\Observer;
 
+use Exception;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\OneList;
+use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\Data;
 use \LS\Omni\Helper\ItemHelper;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Quote\Model\Quote;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class CartObserver
@@ -23,22 +33,22 @@ class CartObserver implements ObserverInterface
     /** @var ItemHelper */
     private $itemHelper;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
     private $customerSession;
 
-    /** @var \Magento\Checkout\Model\Session\Proxy $checkoutSession */
+    /** @var Proxy $checkoutSession */
     private $checkoutSession;
 
     /** @var bool */
     private $watchNextSave = false;
 
-    /** @var \Ls\Core\Model\LSR @var */
+    /** @var LSR @var */
     private $lsr;
 
-    /** @var \Ls\Omni\Helper\Data @var */
+    /** @var Data @var */
     private $data;
 
     /**
@@ -46,40 +56,40 @@ class CartObserver implements ObserverInterface
      * @param ContactHelper $contactHelper
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param LoggerInterface $logger
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Ls\Core\Model\LSR $LSR
+     * @param Proxy $checkoutSession
+     * @param LSR $LSR
      * @param Data $data
      */
     public function __construct(
         ContactHelper $contactHelper,
         BasketHelper $basketHelper,
         ItemHelper $itemHelper,
-        \Psr\Log\LoggerInterface $logger,
+        LoggerInterface $logger,
         \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Ls\Core\Model\LSR $LSR,
+        Proxy $checkoutSession,
+        LSR $LSR,
         Data $data
     ) {
-        $this->contactHelper = $contactHelper;
-        $this->basketHelper = $basketHelper;
-        $this->itemHelper = $itemHelper;
-        $this->logger = $logger;
+        $this->contactHelper   = $contactHelper;
+        $this->basketHelper    = $basketHelper;
+        $this->itemHelper      = $itemHelper;
+        $this->logger          = $logger;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
-        $this->lsr = $LSR;
-        $this->data = $data;
+        $this->lsr             = $LSR;
+        $this->data            = $data;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return $this|void
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
     // @codingStandardsIgnoreLine
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         /*
           * Adding condition to only process if LSR is enabled.
@@ -87,11 +97,11 @@ class CartObserver implements ObserverInterface
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($this->watchNextSave) {
                 try {
-                    /** @var \Magento\Quote\Model\Quote $quote */
-                    $quote = $this->checkoutSession->getQuote();
+                    /** @var Quote $quote */
+                    $quote      = $this->checkoutSession->getQuote();
                     $couponCode = $this->checkoutSession->getCouponCode();
                     // This will create one list if not created and will return onelist if its already created.
-                    /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList|null $oneList */
+                    /** @var OneList|null $oneList */
                     $oneList = $this->basketHelper->get();
                     //TODO if there is any no items, i-e when user only has one item and s/he prefer to remove from cart,
                     // then dont calculate basket functionality below.
@@ -112,7 +122,7 @@ class CartObserver implements ObserverInterface
                         $quote->setBaseGrandTotal(0);
                         $this->basketHelper->quoteRepository->save($quote);
                     }
-                    /** @var \Ls\Omni\Client\Ecommerce\Entity\Order $basketData */
+                    /** @var Order $basketData */
                     $basketData = $this->basketHelper->update($oneList);
                     $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
                     if (!empty($basketData)) {
@@ -127,7 +137,7 @@ class CartObserver implements ObserverInterface
                             $basketData
                         );
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->logger->error($e->getMessage());
                 }
             }

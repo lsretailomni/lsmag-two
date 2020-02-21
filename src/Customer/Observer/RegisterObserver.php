@@ -2,10 +2,16 @@
 
 namespace Ls\Customer\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
-use \Ls\Omni\Helper\ContactHelper;
-use \Ls\Omni\Client\Ecommerce\Entity;
+use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Helper\ContactHelper;
+use Magento\Customer\Model\Customer;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Registry;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class RegisterObserver
@@ -16,51 +22,51 @@ class RegisterObserver implements ObserverInterface
     /** @var ContactHelper $contactHelper */
     private $contactHelper;
 
-    /** @var \Magento\Framework\Registry $registry */
+    /** @var Registry $registry */
     private $registry;
 
-    /** @var \Psr\Log\LoggerInterface $logger */
+    /** @var LoggerInterface $logger */
     private $logger;
 
-    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
+    /** @var Proxy $customerSession */
     private $customerSession;
 
     /** @var \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel */
     private $customerResourceModel;
 
-    /** @var \Ls\Core\Model\LSR @var */
+    /** @var LSR @var */
     private $lsr;
 
     /**
      * RegisterObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param \Magento\Framework\Registry $registry
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param Registry $registry
+     * @param LoggerInterface $logger
+     * @param Proxy $customerSession
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
      * @param LSR $LSR
      */
     public function __construct(
         ContactHelper $contactHelper,
-        \Magento\Framework\Registry $registry,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        Registry $registry,
+        LoggerInterface $logger,
+        Proxy $customerSession,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
         LSR $LSR
     ) {
-        $this->contactHelper = $contactHelper;
-        $this->registry = $registry;
-        $this->logger = $logger;
-        $this->customerSession = $customerSession;
+        $this->contactHelper         = $contactHelper;
+        $this->registry              = $registry;
+        $this->logger                = $logger;
+        $this->customerSession       = $customerSession;
         $this->customerResourceModel = $customerResourceModel;
-        $this->lsr = $LSR;
+        $this->lsr                   = $LSR;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return $this
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         /*
          * Adding condition to only process if LSR is enabled.
@@ -68,10 +74,10 @@ class RegisterObserver implements ObserverInterface
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
                 $controller_action = $observer->getData('controller_action');
-                $parameters = $controller_action->getRequest()->getParams();
-                $session = $this->customerSession;
+                $parameters        = $controller_action->getRequest()->getParams();
+                $session           = $this->customerSession;
 
-                /** @var \Magento\Customer\Model\Customer $customer */
+                /** @var Customer $customer */
                 $customer = $session->getCustomer();
                 if ($customer->getId()) {
                     $customer->setData('lsr_username', $parameters['lsr_username']);
@@ -126,7 +132,7 @@ class RegisterObserver implements ObserverInterface
                         }
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
             }
         }

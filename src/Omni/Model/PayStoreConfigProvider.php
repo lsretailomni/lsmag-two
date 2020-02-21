@@ -5,7 +5,9 @@ namespace Ls\Omni\Model;
 use \Ls\Omni\Model\Payment\PayStore;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\Escaper;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Payment\Helper\Data as PaymentHelper;
+use Magento\Payment\Model\MethodInterface;
 
 /**
  * Class PayStoreConfigProvider
@@ -19,7 +21,7 @@ class PayStoreConfigProvider implements ConfigProviderInterface
     public $methodCode = PayStore::CODE;
 
     /**
-     * @var \Magento\Payment\Model\MethodInterface
+     * @var MethodInterface
      */
     public $method;
 
@@ -32,14 +34,14 @@ class PayStoreConfigProvider implements ConfigProviderInterface
      * PayStoreConfigProvider constructor.
      * @param PaymentHelper $paymentHelper
      * @param Escaper $escaper
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function __construct(
         PaymentHelper $paymentHelper,
         Escaper $escaper
     ) {
         $this->escaper = $escaper;
-        $this->method = $paymentHelper->getMethodInstance($this->methodCode);
+        $this->method  = $paymentHelper->getMethodInstance($this->methodCode);
     }
 
     /**
@@ -51,7 +53,7 @@ class PayStoreConfigProvider implements ConfigProviderInterface
             'payment' => [
                 'paystore' => [
                     'mailingAddress' => $this->getMailingAddress(),
-                    'payableTo' => $this->getPayableTo()
+                    'payableTo'      => $this->getPayableTo()
                 ],
             ],
         ] : [];

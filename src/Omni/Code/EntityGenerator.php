@@ -3,6 +3,7 @@
 namespace Ls\Omni\Code;
 
 use ArrayIterator;
+use Exception;
 use IteratorAggregate;
 use \Ls\Omni\Client\RequestInterface;
 use \Ls\Omni\Client\ResponseInterface;
@@ -26,11 +27,11 @@ class EntityGenerator extends AbstractOmniGenerator
 
     /** @var array */
     public $equivalences = [
-        'decimal' => 'float',
-        'long' => 'int',
-        'dateTime' => 'string',
-        'char' => 'int',
-        'guid' => 'string',
+        'decimal'    => 'float',
+        'long'       => 'int',
+        'dateTime'   => 'string',
+        'char'       => 'int',
+        'guid'       => 'string',
         'StreamBody' => 'string',
     ];
 
@@ -41,7 +42,7 @@ class EntityGenerator extends AbstractOmniGenerator
      * EntityGenerator constructor.
      * @param Entity $restriction
      * @param Metadata $metadata
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(Entity $restriction, Metadata $metadata)
     {
@@ -54,13 +55,12 @@ class EntityGenerator extends AbstractOmniGenerator
      */
     function generate()
     {
-
-        $service_folder = ucfirst($this->getServiceType()->getValue());
-        $base_namespace = self::fqn('Ls', 'Omni', 'Client', $service_folder);
+        $service_folder   = ucfirst($this->getServiceType()->getValue());
+        $base_namespace   = self::fqn('Ls', 'Omni', 'Client', $service_folder);
         $entity_namespace = self::fqn($base_namespace, 'Entity');
 
         $element = $this->entity->getElement();
-        $types = $this->metadata->getTypes();
+        $types   = $this->metadata->getTypes();
 
         $this->class->setName($this->entity->getName());
 
@@ -98,7 +98,7 @@ class EntityGenerator extends AbstractOmniGenerator
             strpos($lowerString, 'replecom') === false &&
             strpos($lowerString, 'response') === false &&
             $lowerString != 'replrequest') {
-            $typeDefinitionArray ['scope'] = new ComplexTypeDefinition('scope', 'string', '0');
+            $typeDefinitionArray ['scope']    = new ComplexTypeDefinition('scope', 'string', '0');
             $typeDefinitionArray ['scope_id'] = new ComplexTypeDefinition('scope_id', 'int', '0');
         }
 
@@ -108,17 +108,11 @@ class EntityGenerator extends AbstractOmniGenerator
             foreach ($typeDefinitionArray as $field_name => $field_type) {
                 $field_data_type = $this->normalizeDataType($field_type->getDataType()) . ($is_array ? '[]' : '');
 
-                /**
-                 * To convert functions from scope_id into ScopeId;
-                 */
-                $field_name_optimized = str_replace('_', ' ', $field_name);
+                //To convert functions from scope_id into ScopeId;
+                $field_name_optimized   = str_replace('_', ' ', $field_name);
                 $field_name_capitalized = ucwords($field_name_optimized);
                 $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
-
-                /**
-                 * End of customization for scope_id into ScopeId
-                 */
-
+                //End of customization for scope_id into ScopeId
 
                 $field_is_restriction = array_key_exists($field_data_type, $this->metadata->getRestrictions());
                 if ($field_is_restriction) {
@@ -126,12 +120,12 @@ class EntityGenerator extends AbstractOmniGenerator
                 }
                 $this->class->addPropertyFromGenerator(PropertyGenerator::fromArray(
                     [
-                        'name' => $field_name,
+                        'name'         => $field_name,
                         'defaultvalue' => $is_array ? [] : null,
-                        'docblock' => DocBlockGenerator::fromArray(
+                        'docblock'     => DocBlockGenerator::fromArray(
                             ['tags' => [new Tag\PropertyTag($field_name, [$field_data_type])]]
                         ),
-                        'flags' => [PropertyGenerator::FLAG_PROTECTED]
+                        'flags'        => [PropertyGenerator::FLAG_PROTECTED]
                     ]
                 ));
 
@@ -171,9 +165,9 @@ CODE
                         $this->class->addUse(InvalidEnumException::class);
                         $set_method->setBody(<<<CODE
 if ( ! \$$field_name instanceof $field_data_type ) {
-    if ( $field_data_type::isValid( \$$field_name ) ) 
+    if ( $field_data_type::isValid( \$$field_name ) )
         \$$field_name = new $field_data_type( \$$field_name );
-    elseif ( $field_data_type::isValidKey( \$$field_name ) ) 
+    elseif ( $field_data_type::isValidKey( \$$field_name ) )
         \$$field_name = new $field_data_type( constant( "$field_data_type::\$$field_name" ) );
     elseif ( ! \$$field_name instanceof $field_data_type )
         throw new InvalidEnumException();
@@ -232,7 +226,7 @@ CODE
             $this->class->setImplementedInterfaces([ResponseInterface::class]);
             foreach ($type->getDefinition() as $field_name => $field_type) {
                 $field_data_type = $this->normalizeDataType($field_type->getDataType());
-                $method_name = "getResult";
+                $method_name     = "getResult";
 
                 if (!$this->class->hasMethod($method_name)) {
                     $method = new MethodGenerator();
@@ -263,10 +257,11 @@ CODE
         }
 
 
-        $content = str_replace('implements \\IteratorAggregate', 'implements IteratorAggregate', $content);
-        $content = str_replace('implements Ls\\Omni\\Client\\RequestInterface', 'implements RequestInterface',
-            $content);
-        $content = str_replace('implements Ls\\Omni\\Client\\ResponseInterface', 'implements ResponseInterface',
+        $content = str_replace(array(
+            'implements \\IteratorAggregate',
+            'implements Ls\\Omni\\Client\\RequestInterface',
+            'implements Ls\\Omni\\Client\\ResponseInterface'
+        ), array('implements IteratorAggregate', 'implements RequestInterface', 'implements ResponseInterface'),
             $content);
 
         return $content;

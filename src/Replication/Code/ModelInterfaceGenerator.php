@@ -3,10 +3,11 @@
 
 namespace Ls\Replication\Code;
 
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
-use \Ls\Replication\Api\Data\Anchor;
 use ReflectionClass;
+use ReflectionException;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -16,7 +17,7 @@ use Zend\Code\Generator\PropertyGenerator;
 class ModelInterfaceGenerator extends AbstractGenerator
 {
     /** @var string */
-    static public $namespace = "Ls\\Replication\\Api\\Data";
+    public static $namespace = "Ls\\Replication\\Api\\Data";
 
     /** @var  string */
     protected $entity_fqn;
@@ -30,16 +31,16 @@ class ModelInterfaceGenerator extends AbstractGenerator
     /**
      * ModelInterfaceGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
-     * @throws \ReflectionException
+     * @throws Exception
+     * @throws ReflectionException
      */
     public function __construct(ReplicationOperation $operation)
     {
         parent::__construct();
         $this->class = new InterfaceGenerator();
         $this->file->setClass($this->class);
-        $this->operation = $operation;
-        $this->entity_fqn = $this->operation->getOmniEntityFqn();
+        $this->operation        = $operation;
+        $this->entity_fqn       = $this->operation->getOmniEntityFqn();
         $this->reflected_entity = new ReflectionClass($this->entity_fqn);
     }
 
@@ -48,7 +49,6 @@ class ModelInterfaceGenerator extends AbstractGenerator
      */
     public function generate()
     {
-
         $this->class->setNamespaceName(self::$namespace);
         $this->class->setName($this->getName());
 
@@ -63,41 +63,67 @@ class ModelInterfaceGenerator extends AbstractGenerator
                 continue;
             }
             $property_type = $matches[1];
-            $pascal_name = $property_name;
+            $pascal_name   = $property_name;
             $variable_name = $property_name;
 
             if ($property_name == 'Id') {
-                $pascal_name = 'NavId';
+                $pascal_name   = 'NavId';
                 $variable_name = 'nav_id';
+            } elseif ($property_name == 'scope') {
+                $pascal_name   = 'Scope';
+                $variable_name = 'scope';
+            } elseif ($property_name == 'scope_id') {
+                $pascal_name   = 'ScopeId';
+                $variable_name = 'scope_id';
             }
             $this->createProperty(
                 null,
                 $property_type,
                 [PropertyGenerator::FLAG_PROTECTED],
-                ['pascal_name' => $pascal_name, 'variable_name' => $variable_name,
-                'interface' => true]
+                [
+                    'pascal_name'   => $pascal_name,
+                    'variable_name' => $variable_name,
+                    'interface'     => true
+                ]
             );
         }
 
         $this->createProperty(
             null,
-            'string',
-            [PropertyGenerator::FLAG_PROTECTED],
-            ['pascal_name' => 'Scope', 'variable_name' => 'scope', 'interface' => true]
-        );
-        $this->createProperty(
-            null,
-            'int',
-            [PropertyGenerator::FLAG_PROTECTED],
-            ['pascal_name' => 'ScopeId', 'variable_name' => 'scope_id', 'interface' => true]
-        );
-        $this->createProperty(
-            null,
-            'string',
+            'boolean',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'interface' => true]
         );
-
+        $this->createProperty(
+            null,
+            'boolean',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'boolean',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'IsFailed', 'variable_name' => 'is_failed', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'CreatedAt', 'variable_name' => 'created_at', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'ProcessedAt', 'variable_name' => 'processed_at', 'interface' => true]
+        );
         $content = $this->file->generate();
 
         $content = preg_replace('/\s+{\s+}+/', ";", $content);

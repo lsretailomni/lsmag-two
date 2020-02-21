@@ -223,9 +223,9 @@ class ReplDiscount
     public function setDiscountValueType($DiscountValueType)
     {
         if ( ! $DiscountValueType instanceof DiscountValueType ) {
-            if ( DiscountValueType::isValid( $DiscountValueType ) ) 
+            if ( DiscountValueType::isValid( $DiscountValueType ) )
                 $DiscountValueType = new DiscountValueType( $DiscountValueType );
-            elseif ( DiscountValueType::isValidKey( $DiscountValueType ) ) 
+            elseif ( DiscountValueType::isValidKey( $DiscountValueType ) )
                 $DiscountValueType = new DiscountValueType( constant( "DiscountValueType::$DiscountValueType" ) );
             elseif ( ! $DiscountValueType instanceof DiscountValueType )
                 throw new InvalidEnumException();
@@ -431,9 +431,9 @@ class ReplDiscount
     public function setType($Type)
     {
         if ( ! $Type instanceof ReplDiscountType ) {
-            if ( ReplDiscountType::isValid( $Type ) ) 
+            if ( ReplDiscountType::isValid( $Type ) )
                 $Type = new ReplDiscountType( $Type );
-            elseif ( ReplDiscountType::isValidKey( $Type ) ) 
+            elseif ( ReplDiscountType::isValidKey( $Type ) )
                 $Type = new ReplDiscountType( constant( "ReplDiscountType::$Type" ) );
             elseif ( ! $Type instanceof ReplDiscountType )
                 throw new InvalidEnumException();

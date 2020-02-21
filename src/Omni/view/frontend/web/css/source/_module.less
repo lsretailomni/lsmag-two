@@ -1,18 +1,22 @@
 @import 'module/_owl.carousel.less';
 @import 'module/_owl.theme.less';
 @import 'module/_owl.transitions.less';
+
 @color_1: #666666;
-#lsRecommendation .loader, #ls-discounts .loader, #ls-coupons .loader{
+#lsRecommendation .loader, #ls-discounts .loader, #ls-coupons .loader {
   width: 100%;
   text-align: center;
 }
+
 .dropdown-wrapper {
   display: inline-block;
   position: relative;
   float: right;
-  .action.primary{
+
+  .action.primary {
     line-height: 2.2rem;
   }
+
   .block-dropdown {
     margin: 0;
     padding: 10px;
@@ -33,6 +37,7 @@
     overflow-x: hidden;
     max-height: 330px;
   }
+
   i {
     border: solid white;
     border-width: 0 3px 3px 0;
@@ -40,21 +45,26 @@
     padding: 3px;
     margin-left: 5px;
   }
+
   i.arrow {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
   }
 }
+
 .dropdown-wrapper.active {
   overflow: visible;
+
   .block-dropdown {
     display: block;
   }
+
   i.arrow {
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
   }
 }
+
 .ls-discounts-popup-model {
   .item-popup {
     float: left;
@@ -62,18 +72,22 @@
     margin-left: 30px;
     text-align: center;
   }
+
   .item-popup .product-link {
-    text-decoration:none;
+    text-decoration: none;
 
   }
 }
+
 .proactive-discounts-container {
   width: 100%;
-  float:left;
+  float: left;
   margin-bottom: 10px;
+
   .discount-dropdown-label {
     float: left;
     line-height: 3;
+
     span {
       color: @color_1;
       font-weight: 600;
@@ -81,44 +95,53 @@
       line-height: 2;
     }
   }
+
   .discount-dropdown {
     float: right;
     width: 60%;
   }
+
   .block-dropdown {
     .dropdown-content-wrapper {
-      &+.dropdown-content-wrapper {
+      & + .dropdown-content-wrapper {
         border-top: 1px solid black;
         margin-top: 10px;
         padding-top: 10px;
-        clear:both;
+        clear: both;
       }
-      .coupon-description, .discount-description, .discount-label{
+
+      .coupon-description, .discount-description, .discount-label {
         font-weight: bold;
       }
-      .discount-label{
-        padding-right:5px;
+
+      .discount-label {
+        padding-right: 5px;
       }
+
       .coupon-description, .discount-description {
         color: #C41F3F;
       }
+
       .ls-click-product-promotion {
         cursor: pointer;
       }
     }
   }
 }
-.checkout-cart-index,.checkout-index-index{
-  .available-coupons{
-    padding-top:20px;
+
+.checkout-cart-index, .checkout-index-index {
+  .available-coupons {
+    padding-top: 20px;
     cursor: pointer;
-    h2{
-      width:100%;
-      text-align:center;
+
+    h2 {
+      width: 100%;
+      text-align: center;
       border-bottom: 1px solid #000;
-      line-height:0.1em;
-      margin:10px 0 20px;
-      span{
+      line-height: 0.1em;
+      margin: 10px 0 20px;
+
+      span {
         background: #fff;
         border: 1px solid black;
         height: 100px;
@@ -128,36 +151,43 @@
         font-size: 15px;
         padding: 5px;
         font-weight: bold;
-        color:black;
+        color: black;
       }
     }
-    .coupon-major{
-      input{
-        width:10px;
+
+    .coupon-major {
+      input {
+        width: 10px;
       }
-      .coupon-description-wrapper{
-        .coupon-code{
+
+      .coupon-description-wrapper {
+        .coupon-code {
           font-weight: bold;
           border: 1px dashed;
           padding: 2px;
         }
+
         width: 90%;
         display: inline-block;
         vertical-align: top;
-        color:black;
+        color: black;
       }
+
       padding: 10px;
     }
-    .coupon-major.active{
+
+    .coupon-major.active {
       background: #1979c30f;
-      .coupon-description-wrapper{
+
+      .coupon-description-wrapper {
         color: #1979c3;
       }
     }
-    fieldset{
-      border:unset;
-      margin:unset;
-      padding:unset;
+
+    fieldset {
+      border: unset;
+      margin: unset;
+      padding: unset;
     }
   }
 }
@@ -165,81 +195,97 @@
 .checkout-index-index {
   .cnc-stores-container {
     float: left;
-    width:100%;
+    width: 100%;
+
     .cnc-stores-map {
       float: left;
     }
+
     .cnc-stores-dropdown {
       float: right;
     }
+
     .block-dropdown {
-      padding:unset;
+      padding: unset;
+
       .dropdown-content-wrapper {
         display: block;
-        padding:5px;
-        cursor:pointer;
+        padding: 5px;
+        cursor: pointer;
         text-decoration: none;
+
         &:hover {
-          background:#e8e8e8;
+          background: #e8e8e8;
         }
       }
     }
   }
-.check-store-availability{
-  font-size: 10px;
-  width: 120px;
-  padding: 2px 0px;
-  margin-right: 5px;
-}
-  .apply-store{
+
+  .check-store-availability {
     font-size: 10px;
     width: 120px;
     padding: 2px 0px;
     margin-right: 5px;
   }
-  .stock-remarks{
-    .custom-loader{
-      text-align:center;
+
+  .apply-store {
+    font-size: 10px;
+    width: 120px;
+    padding: 2px 0px;
+    margin-right: 5px;
+  }
+
+  .stock-remarks {
+    .custom-loader {
+      text-align: center;
     }
-    ul{
-    list-style: none;
-      padding:0;
+
+    ul {
+      list-style: none;
+      padding: 0;
       margin-bottom: 10px;
     }
   }
-  .double-btn-container{
+
+  .double-btn-container {
     text-align: center;
   }
 }
-.checkout-cart-index{
-  .cart-discount{
+
+.checkout-cart-index {
+  .cart-discount {
     input[type="text"], input[type="number"], input[type="submit"] {
       font-size: 13px;
       height: 38px;
       padding: 10px;
       border-radius: 6px;
     }
-    .actions-toolbar{
+
+    .actions-toolbar {
       display: table-cell;
-      .action.primary{
+
+      .action.primary {
         &:hover {
-          background:@button__hover__background;
-          border:@button__hover__border;
-          color:@button__hover__color;
+          background: @button__hover__background;
+          border: @button__hover__border;
+          color: @button__hover__color;
         }
-        background:@button__background;
-        border:@button__border;
-        color:@button__color;
+
+        background: @button__background;
+        border: @button__border;
+        color: @button__color;
         line-height: 1.6rem;
         height: 38px;
       }
     }
-    .block{
-      clear:both;
-      float:left !important;
+
+    .block {
+      clear: both;
+      float: left !important;
       margin-bottom: 30px;
       width: 80% !important;
     }
+
     #discount-coupon-form {
       .field {
         .input-text {
@@ -250,22 +296,28 @@
     }
   }
 }
-#loyalty-points-form{
-  .applied{
-    .actions-toolbar{
-      width:40%;
-      > .primary{
-        width:100%;
-        .action.apply.primary{
+
+#loyalty-points-form {
+  .applied {
+    .actions-toolbar {
+      width: 40%;
+
+      > .primary {
+        width: 100%;
+
+        .action.apply.primary {
           margin-right: 5px;
         }
-        .apply,.cancel{
-          border-radius:3px;
+
+        .apply, .cancel {
+          border-radius: 3px;
         }
       }
     }
-    .field{
-      width:60%;
+
+    .field {
+      width: 60%;
+
       input {
         border-top-right-radius: unset;
         border-bottom-right-radius: unset;
@@ -273,48 +325,60 @@
     }
 
   }
-  .field{
+
+  .field {
     input {
       border-top-right-radius: unset;
       border-bottom-right-radius: unset;
     }
   }
 }
+
 .giftcard {
   margin-bottom: 30px;
+
   .fieldset {
     &:last-child {
       margin-bottom: auto;
     }
   }
+
   .content {
     margin-top: 10px;
   }
+
   #gift_card_amount {
     margin-top: 10px;
   }
 }
+
 #giftcard-form {
-  .gift-card-code-field{
+  .gift-card-code-field {
     padding-right: 2px;
   }
-  .applied{
-    .actions-toolbar{
-      width:40%;
-      > .primary{
-        width:100%;
-        .action.applygiftcard.primary{
+
+  .applied {
+    .actions-toolbar {
+      width: 40%;
+
+      > .primary {
+        width: 100%;
+
+        .action.applygiftcard.primary {
           margin-right: 5px;
         }
-        .applygiftcard,.cancelgiftcard{
-          border-radius:3px;
+
+        .applygiftcard, .cancelgiftcard {
+          border-radius: 3px;
         }
       }
     }
-    .field{
-      width:30%;
+
+    .field {
+      width: 30%;
     }
   }
+
   .gift-card-amount-field {
     input {
       border-top-right-radius: unset;
@@ -322,31 +386,103 @@
     }
   }
 }
+
 .giftcardinfo {
   p {
     font-size: 1.5rem;
   }
 }
+
 #gift-card-balance {
   .action {
     margin-top: 10px;
   }
+
   .error-messages {
     margin-bottom: 10px;
   }
 }
 
+.omni-stores-index {
+  .stores-maps-container {
+    .store-map-plus-info-container {
+      .store-map {
+        margin-bottom: 20px;
+      }
+
+      span,
+      strong {
+        font-size: 1.3rem;
+      }
+
+      div {
+        margin-bottom: 10px;
+      }
+
+      .store-opening-hours {
+
+        .table-borderless td, .table-borderless th {
+          border: none;
+        }
+
+        .dayofweek {
+          padding-right: 10px;
+        }
+
+        .closed {
+          color: red;
+        }
+
+        .table th, .table td {
+          padding: 0.50rem;
+          vertical-align: top;
+        }
+
+        .special-hour {
+          .special-label {
+            font-size: 8px;
+            padding-left: 5px;
+            color: green;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+  }
+}
+
+.keyframes(@name; @arguments) {
+  @-moz-keyframes @name {
+    @arguments();
+  }
+  @-webkit-keyframes @name {
+    @arguments();
+  }
+  @keyframes @name {
+    @arguments();
+  }
+}
+
+.animation(@arguments) {
+  -webkit-animation: @arguments;
+  -moz-animation: @arguments;
+  animation: @arguments;
+}
+
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
   .proactive-discounts-container {
-    .discount-dropdown-label{
-      display:none;
+    .discount-dropdown-label {
+      display: none;
     }
-    .discount-dropdown{
-      width:100%;
-      .dropdown-wrapper{
-        width:100%;
-        button{
-          width:100%;
+
+    .discount-dropdown {
+      width: 100%;
+
+      .dropdown-wrapper {
+        width: 100%;
+
+        button {
+          width: 100%;
         }
       }
     }
@@ -355,50 +491,58 @@
     .item-popup {
       float: left;
       width: 100%;
-      margin-left:0px;
+      margin-left: 0px;
       margin-bottom: 20px;
       text-align: center;
     }
   }
   .checkout-cart-index {
     .cart-discount {
-      .block{
-        width:100% !important;
+      .block {
+        width: 100% !important;
       }
     }
-    #giftcard-form{
-      .applied{
-        .field{
-          width:100%;
-          display:block;
-          input{
+
+    #giftcard-form {
+      .applied {
+        .field {
+          width: 100%;
+          display: block;
+
+          input {
             border-radius: 6px;
           }
         }
-        .actions-toolbar{
-          width:100%;
-          display:block;
-          input{
-            border-radius:3px;
+
+        .actions-toolbar {
+          width: 100%;
+          display: block;
+
+          input {
+            border-radius: 3px;
           }
         }
       }
     }
-    #loyalty-points-form{
-      .applied{
-        .field{
-          width:100%;
-          display:block;
-          input{
+
+    #loyalty-points-form {
+      .applied {
+        .field {
+          width: 100%;
+          display: block;
+
+          input {
             border-radius: 6px;
           }
         }
-        .actions-toolbar{
-          width:100%;
-          display:block;
+
+        .actions-toolbar {
+          width: 100%;
+          display: block;
+
           > .primary {
-            .apply,.cancel{
-              border-radius:3px;
+            .apply, .cancel {
+              border-radius: 3px;
             }
           }
         }
@@ -408,24 +552,27 @@
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
-  .checkout-index-index{
-    .cnc-stores-container{
+  .checkout-index-index {
+    .cnc-stores-container {
       .cnc-stores-map, .cnc-stores-dropdown {
         float: left;
         width: 100%;
       }
-      .cnc-stores-map{
-        a{
-          width:100%;
-          text-align:center;
+
+      .cnc-stores-map {
+        a {
+          width: 100%;
+          text-align: center;
         }
       }
-      .cnc-stores-dropdown{
-        .dropdown-wrapper{
-          float:left;
-          width:100%;
-          button{
-            width:100%;
+
+      .cnc-stores-dropdown {
+        .dropdown-wrapper {
+          float: left;
+          width: 100%;
+
+          button {
+            width: 100%;
           }
         }
       }
@@ -433,7 +580,7 @@
   }
 }
 
-#lsRecommendation .ls-loader{
+#lsRecommendation .ls-loader {
   width: 100%;
   text-align: center;
 }

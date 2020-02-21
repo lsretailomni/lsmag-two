@@ -2,14 +2,19 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
+use \Ls\Omni\Helper\SessionHelper;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\RedirectFactory;
 
 /**
- * Class Recommendation
+ * Class ProactiveDiscountsAndCoupons
  * @package Ls\Omni\Controller\Ajax
  */
 class ProactiveDiscountsAndCoupons extends Action
@@ -31,45 +36,55 @@ class ProactiveDiscountsAndCoupons extends Action
     public $resultRedirectFactory;
 
     /**
-     * Recommendation constructor.
+     * @var SessionHelper
+     */
+    public $sessionHelper;
+
+    /**
+     * ProactiveDiscountsAndCoupons constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
+     * @param SessionHelper $sessionHelper
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
-        RedirectFactory $resultRedirectFactory
+        RedirectFactory $resultRedirectFactory,
+        SessionHelper $sessionHelper
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultJsonFactory = $resultJsonFactory;
+        $this->resultPageFactory     = $resultPageFactory;
+        $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
+        $this->sessionHelper         = $sessionHelper;
         parent::__construct($context);
     }
+
     /**
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return ResponseInterface|Json|ResultInterface
+     * @throws FileSystemException
      */
     public function execute()
     {
-        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
-
-        $result = $this->resultJsonFactory->create();
-        $resultPage = $this->resultPageFactory->create();
+        $this->sessionHelper->newSessionHandler("lsproactivediscounts");
+        $result            = $this->resultJsonFactory->create();
+        $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->getRequest()->getParam('currentProduct');
-        $data = ['productSku' => $currentProductSku];
-        $blockCoupons = $resultPage->getLayout()
+        $data              = ['productSku' => $currentProductSku];
+        $blockCoupons      = $resultPage->getLayout()
             ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
             ->setTemplate('Ls_Omni::product/view/coupons.phtml')
             ->setData('data', $data)
             ->toHtml();
-        $data =array_merge($data, ['coupons'=>$blockCoupons]);
-        $block = $resultPage->getLayout()
+        $data              = array_merge($data, ['coupons' => $blockCoupons]);
+        $block             = $resultPage->getLayout()
             ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
             ->setTemplate('Ls_Omni::product/view/proactive.phtml')
             ->setData('data', $data)

@@ -2,30 +2,33 @@
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
+use Magento\Framework\View\Element\UiComponent\ContextInterface;
+use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Store\Model\System\Store as StoreManager;
+use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
  * Class ColorStatus
  * @package Ls\Replication\Ui\Component\Listing\Column
  */
-class Stores extends \Magento\Ui\Component\Listing\Columns\Column
+class Stores extends Column
 {
     /**
-     * @var \Magento\Store\Model\System\Store
+     * @var StoreManager
      */
     public $storeManager;
 
     /**
      * Stores constructor.
-     * @param \Magento\Framework\View\Element\UiComponent\ContextInterface $context
-     * @param \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory
+     * @param ContextInterface $context
+     * @param UiComponentFactory $uiComponentFactory
      * @param StoreManager $storeManager
      * @param array $components
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\UiComponent\ContextInterface $context,
-        \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory,
+        ContextInterface $context,
+        UiComponentFactory $uiComponentFactory,
         StoreManager $storeManager,
         array $components = [],
         array $data = []
@@ -45,7 +48,7 @@ class Stores extends \Magento\Ui\Component\Listing\Columns\Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if ($this->getData('name') == "scope_id") {
-                    $item[$this->getData('name')]= $this->storeManager->getStoreName($item['scope_id']);
+                    $item[$this->getData('name')] = $this->storeManager->getStoreName($item['scope_id']);
                 }
             }
         }

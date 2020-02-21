@@ -3,12 +3,13 @@
 
 namespace Ls\Replication\Code;
 
-use Composer\Autoload\ClassLoader;
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractModel;
 use ReflectionClass;
+use ReflectionException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -19,7 +20,7 @@ use Zend\Code\Generator\PropertyGenerator;
 class ModelGenerator extends AbstractGenerator
 {
     /** @var string */
-    static public $namespace = 'Ls\\Replication\\Model';
+    public static $namespace = 'Ls\\Replication\\Model';
 
     /** @var ReplicationOperation */
     public $operation;
@@ -33,12 +34,11 @@ class ModelGenerator extends AbstractGenerator
     /**
      * ModelGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
-     * @throws \ReflectionException
+     * @throws Exception
+     * @throws ReflectionException
      */
     public function __construct(ReplicationOperation $operation)
     {
-
         parent::__construct();
         $this->operation = $operation;
         // @codingStandardsIgnoreStart
@@ -59,9 +59,8 @@ class ModelGenerator extends AbstractGenerator
      */
     public function generate()
     {
-
         $interface_name = $this->operation->getInterfaceName();
-        $entity_name = $this->operation->getEntityName();
+        $entity_name    = $this->operation->getEntityName();
 
         $contructor_method = new MethodGenerator();
         $contructor_method->setName('_construct');
@@ -78,7 +77,7 @@ class ModelGenerator extends AbstractGenerator
 
         $this->class->setName($this->operation->getEntityName());
         $this->class->setExtendedClass(AbstractModel::class);
-        $this->class->setImplementedInterfaces([ $this->operation->getInterfaceName(), IdentityInterface::class ]);
+        $this->class->setImplementedInterfaces([$this->operation->getInterfaceName(), IdentityInterface::class]);
 
         $this->class->addConstant('CACHE_TAG', 'ls_replication_' . $this->operation->getTableName());
         $this->class->addProperty(
@@ -97,54 +96,75 @@ class ModelGenerator extends AbstractGenerator
         $property_regex = '/\@property\s(:?\w+)\s\$(:?\w+)/';
         foreach ($this->reflected_entity->getProperties() as $property) {
             $property_name = $property->getName();
-            if ($property_name[ 0 ] == '_') {
+            if ($property_name[0] == '_') {
                 continue;
             }
             preg_match($property_regex, $property->getDocComment(), $matches);
             if (empty($matches)) {
                 continue;
             }
-            $property_type = $matches[ 1 ];
+            $property_type = $matches[1];
 
-            $pascal_name = $property_name;
+            $pascal_name   = $property_name;
             $variable_name = $property_name;
 
             if ($property_name == 'Id') {
-                $pascal_name = 'NavId';
+                $pascal_name   = 'NavId';
                 $variable_name = 'nav_id';
+            } elseif ($property_name == 'scope') {
+                $pascal_name   = 'Scope';
+                $variable_name = 'scope';
+            } elseif ($property_name == 'scope_id') {
+                $pascal_name   = 'ScopeId';
+                $variable_name = 'scope_id';
             }
             $this->createProperty(
                 null,
                 $property_type,
-                [ PropertyGenerator::FLAG_PROTECTED ],
-                [ 'pascal_name' => $pascal_name, 'variable_name' => $variable_name,
-                'model' => true ]
+                [PropertyGenerator::FLAG_PROTECTED],
+                [
+                    'pascal_name'   => $pascal_name,
+                    'variable_name' => $variable_name,
+                    'model'         => true
+                ]
             );
         }
 
         $this->createProperty(
             null,
-            'string',
-            [ PropertyGenerator::FLAG_PROTECTED ],
-            [ 'pascal_name' => 'Scope', 'variable_name' => 'scope', 'model' => true ]
+            'boolean',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'model' => true]
         );
         $this->createProperty(
             null,
-            'int',
-            [ PropertyGenerator::FLAG_PROTECTED ],
-            [ 'pascal_name' => 'ScopeId', 'variable_name' => 'scope_id', 'model' => true ]
+            'boolean',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'model' => true]
+        );
+        $this->createProperty(
+            null,
+            'boolean',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'IsFailed', 'variable_name' => 'is_failed', 'model' => true]
         );
         $this->createProperty(
             null,
             'string',
-            [ PropertyGenerator::FLAG_PROTECTED ],
-            [ 'pascal_name' => 'Processed', 'variable_name' => 'processed', 'model' => true ]
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'CreatedAt', 'variable_name' => 'created_at', 'model' => true]
         );
         $this->createProperty(
             null,
             'string',
-            [ PropertyGenerator::FLAG_PROTECTED ],
-            [ 'pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'model' => true ]
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'model' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'ProcessedAt', 'variable_name' => 'processed_at', 'model' => true]
         );
         $content = $this->file->generate();
         $content = str_replace(

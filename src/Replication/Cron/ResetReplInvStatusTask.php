@@ -4,7 +4,7 @@ namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
-use Psr\Log\LoggerInterface;
+use \Ls\Replication\Logger\Logger;
 
 /**
  * Class ResetReplInvStatusTask
@@ -20,19 +20,21 @@ class ResetReplInvStatusTask
     /** @var LSR */
     public $lsr;
 
-    /** @var LoggerInterface */
+    /**
+     * @var Logger
+     */
     public $logger;
 
     /**
-     * ResetReplInvStatusTask constructor
+     * ResetReplInvStatusTask constructor.
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
         LSR $LSR,
-        LoggerInterface $logger
+        Logger $logger
     ) {
         $this->replicationHelper = $replicationHelper;
         $this->lsr = $LSR;
@@ -45,8 +47,12 @@ class ResetReplInvStatusTask
     public function execute()
     {
         if ($this->lsr->isLSR()) {
-            $this->replicationHelper->updateConfigValue(date('d M,Y h:i:s A'), self::CONFIG_PATH_LAST_EXECUTE);
+            $this->replicationHelper->updateConfigValue(
+                $this->replicationHelper->getDateTime(),
+                self::CONFIG_PATH_LAST_EXECUTE
+            );
             $this->replicationHelper->updateCronStatus(false, ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommInventoryStatusTask::CONFIG_PATH);
         }
     }
 

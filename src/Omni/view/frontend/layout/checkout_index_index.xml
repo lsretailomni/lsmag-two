@@ -49,10 +49,15 @@
                                                             <!-- merge payment method renders here -->
                                                             <item name="children" xsi:type="array">
                                                                 <item name="payatstore" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Ls_Omni/js/view/payment/pay-store</item>
+                                                                    <item name="component" xsi:type="string">
+                                                                        Ls_Omni/js/view/payment/pay-store
+                                                                    </item>
                                                                     <item name="methods" xsi:type="array">
-                                                                        <item name="ls_payment_method_pay_at_store" xsi:type="array">
-                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        <item name="ls_payment_method_pay_at_store"
+                                                                              xsi:type="array">
+                                                                            <item name="isBillingAddressRequired"
+                                                                                  xsi:type="boolean">true
+                                                                            </item>
                                                                         </item>
                                                                     </item>
                                                                 </item>
@@ -63,12 +68,19 @@
                                                             </item>
                                                             <item name="children" xsi:type="array">
                                                                 <item name="discount" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Ls_Omni/js/view/payment/discount</item>
+                                                                    <item name="component" xsi:type="string">
+                                                                        Ls_Omni/js/view/payment/discount
+                                                                    </item>
                                                                     <item name="children" xsi:type="array">
                                                                         <item name="errors" xsi:type="array">
-                                                                            <item name="sortOrder" xsi:type="string">0</item>
-                                                                            <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/discount-messages</item>
-                                                                            <item name="displayArea" xsi:type="string">messages</item>
+                                                                            <item name="sortOrder" xsi:type="string">0
+                                                                            </item>
+                                                                            <item name="component" xsi:type="string">
+                                                                                Magento_SalesRule/js/view/payment/discount-messages
+                                                                            </item>
+                                                                            <item name="displayArea" xsi:type="string">
+                                                                                messages
+                                                                            </item>
                                                                         </item>
                                                                     </item>
                                                                 </item>

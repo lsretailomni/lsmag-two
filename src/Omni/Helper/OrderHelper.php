@@ -2,11 +2,18 @@
 
 namespace Ls\Omni\Helper;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
+use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
+use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
 
 /**
@@ -19,7 +26,7 @@ class OrderHelper extends AbstractHelper
     /** @var Model\Order $order */
     public $order;
 
-    /** @var \Ls\Omni\Helper\BasketHelper $basketHelper */
+    /** @var BasketHelper $basketHelper */
     public $basketHelper;
 
     /**
@@ -28,12 +35,12 @@ class OrderHelper extends AbstractHelper
     public $loyaltyHelper;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var CustomerSessionProxy
      */
     public $customerSession;
 
     /**
-     * @var \Magento\Checkout\Model\Session\Proxy
+     * @var CheckoutSessionProxy
      */
     public $checkoutSession;
 
@@ -52,9 +59,8 @@ class OrderHelper extends AbstractHelper
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param Model\OrderRepository $orderRepository
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param LSR $Lsr
+     * @param CustomerSessionProxy $customerSession
+     * @param CheckoutSessionProxy $checkoutSession
      */
     public function __construct(
         Context $context,
@@ -62,14 +68,13 @@ class OrderHelper extends AbstractHelper
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
         Model\OrderRepository $orderRepository,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        LSR $Lsr
+        CustomerSessionProxy $customerSession,
+        CheckoutSessionProxy $checkoutSession
     ) {
         parent::__construct($context);
-        $this->order = $order;
-        $this->basketHelper = $basketHelper;
-        $this->loyaltyHelper = $loyaltyHelper;
+        $this->order           = $order;
+        $this->basketHelper    = $basketHelper;
+        $this->loyaltyHelper   = $loyaltyHelper;
         $this->orderRepository = $orderRepository;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
@@ -79,7 +84,6 @@ class OrderHelper extends AbstractHelper
     /**
      * @param $orderId
      * @param Entity\Order $oneListCalculateResponse
-     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function placeOrderById($orderId, Entity\Order $oneListCalculateResponse)
     {
@@ -92,31 +96,31 @@ class OrderHelper extends AbstractHelper
      * @param Model\Order $order
      * @param Entity\Order $oneListCalculateResponse
      * @return Entity\OrderCreate
-     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function prepareOrder(Model\Order $order, Entity\Order $oneListCalculateResponse)
     {
         try {
-            $isInline = true;
-            $storeId = $this->basketHelper->getDefaultWebStore();
+            $isInline      = true;
+            $storeId       = $this->basketHelper->getDefaultWebStore();
             $customerEmail = $order->getCustomerEmail();
-            $customerName = $order->getShippingAddress()->getFirstname() .
-                " " . $order->getShippingAddress()->getLastname();
-            $mobileNumber = $order->getShippingAddress()->getTelephone();
+            $customerName  = $order->getShippingAddress()->getFirstname() .
+                ' ' . $order->getShippingAddress()->getLastname();
+            $mobileNumber  = $order->getShippingAddress()->getTelephone();
             if ($this->customerSession->isLoggedIn()) {
                 $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-                $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+                $cardId    = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
             } else {
-                $contactId = $cardId = "";
+                $contactId = $cardId = '';
             }
             $shippingMethod = $order->getShippingMethod(true);
             //TODO work on condition
             $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
             /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
             $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
-            $pointDiscount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $pointDiscount           = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $order->setCouponCode($this->checkoutSession->getCouponCode());
             $oneListCalculateResponse
+                ->setId($order->getIncrementId())
                 ->setContactId($contactId)
                 ->setCardId($cardId)
                 ->setEmail($customerEmail)
@@ -127,8 +131,12 @@ class OrderHelper extends AbstractHelper
                 ->setShipToPhoneNumber($mobileNumber)
                 ->setContactAddress($this->convertAddress($order->getBillingAddress()))
                 ->setShipToAddress($this->convertAddress($order->getShippingAddress()))
-                ->setClickAndCollectOrder($isClickCollect)
                 ->setStoreId($storeId);
+            if ($isClickCollect) {
+                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
+            } else {
+                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
+            }
             $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
             //For click and collect.
             if ($isClickCollect) {
@@ -143,7 +151,7 @@ class OrderHelper extends AbstractHelper
             $oneListCalculateResponse->setOrderLines($orderLinesArray);
             $request->setRequest($oneListCalculateResponse);
             return $request;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
@@ -152,7 +160,7 @@ class OrderHelper extends AbstractHelper
      * @param $orderLines
      * @param $order
      * @return mixed
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws InvalidEnumException
      */
     public function updateShippingAmount($orderLines, $order)
     {
@@ -175,7 +183,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @param $line
+     * @param $orderLine
      * @param $order
      */
     public function setSpecialPropertiesForShipmentLine(&$orderLine, $order)
@@ -187,16 +195,15 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * Place the Order directly
      * @param Entity\OrderCreate $request
-     * @return Entity\OrderCreateResponse|\Ls\Omni\Client\IResponse
+     * @return Entity\OrderCreateResponse|Entity\SalesEntry|ResponseInterface
      */
     public function placeOrder(Entity\OrderCreate $request)
     {
         $response = null;
         // @codingStandardsIgnoreLine
         $operation = new Operation\OrderCreate();
-        $response = $operation->execute($request);
+        $response  = $operation->execute($request);
 
         // @codingStandardsIgnoreLine
         return $response ? $response->getResult() : $response;
@@ -218,7 +225,7 @@ class OrderHelper extends AbstractHelper
                 break;
             }
             // @codingStandardsIgnoreLine
-            $method = "setAddress" . strval($i + 1);
+            $method = 'setAddress' . strval($i + 1);
             $omniAddress->$method($street);
         }
         $region = substr($magentoAddress->getRegion(), 0, 30);
@@ -232,16 +239,19 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * Please use this funciton to put all condition for different Order Payments:
      * @param Model\Order $order
      * @param $cardId
      * @return Entity\ArrayOfOrderPayment
+     * @throws InvalidEnumException
      */
     public function setOrderPayments(Model\Order $order, $cardId)
     {
-        $transId = $order->getPayment()->getLastTransId();
-        $ccType = $order->getPayment()->getCcType();
-        $cardNumber = $order->getPayment()->getCcLast4();
+        $transId          = $order->getPayment()->getLastTransId();
+        $ccType           = $order->getPayment()->getCcType();
+        $cardNumber       = $order->getPayment()->getCcLast4();
+        $paidAmount       = $order->getPayment()->getAmountPaid();
+        $authorizedAmount = $order->getPayment()->getAmountAuthorized();
+        $preApprovedDate  = date('Y-m-d', strtotime('+1 years'));
 
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
@@ -255,19 +265,28 @@ class OrderHelper extends AbstractHelper
             //default values for all payment typoes.
             $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
                 ->setCurrencyFactor($order->getBaseToGlobalRate())
-                ->setFinalizedAmount(0)
                 ->setLineNumber('1')
-                ->setOrderId($order->getIncrementId())
-                ->setPreApprovedAmount($order->getGrandTotal());
+                ->setExternalReference($order->getIncrementId())
+                ->setAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
             if (!empty($transId)) {
                 $orderPayment->setTenderType('1');
                 $orderPayment->setCardType($ccType);
                 $orderPayment->setCardNumber($cardNumber);
-                $orderPayment->setAuthorisationCode($transId);
+                $orderPayment->setTokenNumber($transId);
+                if (!empty($paidAmount)) {
+                    $orderPayment->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
+                } else {
+                    if (!empty($authorizedAmount)) {
+                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::PRE_AUTHORIZATION);
+                    } else {
+                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::NONE);
+                    }
+                }
             } else {
                 $orderPayment->setTenderType('0');
             }
+            $orderPayment->setPreApprovedValidDate($preApprovedDate);
             $orderPaymentArray[] = $orderPayment;
         }
 
@@ -289,11 +308,11 @@ class OrderHelper extends AbstractHelper
             //default values for all payment typoes.
             $orderPaymentLoyalty->setCurrencyCode('LOY')
                 ->setCurrencyFactor($pointRate)
-                ->setFinalizedAmount('0')
                 ->setLineNumber('2')
                 ->setCardNumber($cardId)
-                ->setOrderId($order->getIncrementId())
-                ->setPreApprovedAmount($order->getLsPointsSpent())
+                ->setExternalReference($order->getIncrementId())
+                ->setAmount($order->getLsPointsSpent())
+                ->setPreApprovedValidDate($preApprovedDate)
                 ->setTenderType('3');
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
@@ -304,11 +323,11 @@ class OrderHelper extends AbstractHelper
             //default values for all payment typoes.
             $orderPaymentGiftCard
                 ->setCurrencyFactor(1)
-                ->setFinalizedAmount('0')
+                ->setAmount($order->getLsGiftCardAmountUsed())
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())
-                ->setOrderId($order->getIncrementId())
-                ->setPreApprovedAmount($order->getLsGiftCardAmountUsed())
+                ->setExternalReference($order->getIncrementId())
+                ->setPreApprovedValidDate($preApprovedDate)
                 ->setTenderType('4');
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
@@ -317,43 +336,46 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @return Entity\SalesEntriesGetByCardIdResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @return Entity\ArrayOfSalesEntry|Entity\SalesEntriesGetByCardIdResponse|ResponseInterface|null
      */
     public function getCurrentCustomerOrderHistory()
     {
         $response = null;
-        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId   = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         if ($cardId == null) {
             return $response;
         }
         // @codingStandardsIgnoreStart
-        $request = new Operation\SalesEntriesGetByCardId();
+        $request      = new Operation\SalesEntriesGetByCardId();
         $orderHistory = new Entity\SalesEntriesGetByCardId();
         // @codingStandardsIgnoreEnd
         $orderHistory->setCardId($cardId);
         try {
             $response = $request->execute($orderHistory);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getSalesEntriesGetByCardIdResult() : $response;
     }
 
     /**
-     * @param $orderId
-     * @return Entity\SalesEntryGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @param $docId
+     * @param string $type
+     * @return Entity\SalesEntry|Entity\SalesEntryGetResponse|ResponseInterface|null
+     * @throws InvalidEnumException
      */
-    public function getOrderDetailsAgainstId($orderId)
+    public function getOrderDetailsAgainstId($docId, $type = DocumentIdType::ORDER)
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\SalesEntryGet();
-        $order = new Entity\SalesEntryGet();
-        $order->setEntryId($orderId);
+        $order   = new Entity\SalesEntryGet();
+        $order->setEntryId($docId);
+        $order->setType($type);
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($order);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getSalesEntryGetResult() : $response;
@@ -365,7 +387,7 @@ class OrderHelper extends AbstractHelper
      */
     public function isAuthorizedForOrder($order)
     {
-        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         $orderCardId = $order->getCardId();
         if ($cardId == $orderCardId) {
             return true;
@@ -375,22 +397,22 @@ class OrderHelper extends AbstractHelper
 
     /**
      * @param $documentId
-     * @return \Magento\Sales\Api\Data\OrderInterface[]
+     * @return OrderInterface[]
      */
     public function getOrderByDocumentId($documentId)
     {
         try {
-            $order = [];
+            $order      = [];
             $customerId = $this->customerSession->getCustomerId();
-            $order = $this->orderRepository->getList(
-                $this->basketHelper->searchCriteriaBuilder->addFilter('document_id', $documentId, 'eq')->create()
+            $orderList  = $this->orderRepository->getList(
+                $this->basketHelper->searchCriteriaBuilder->
+                addFilter('document_id', $documentId, 'eq')->
+                addFilter('customer_id', $customerId, 'eq')->create()
             )->getItems();
-            foreach ($order as $ord) {
-                if ($ord->getCustomerId() == $customerId) {
-                    return $ord;
-                }
+            if (!empty($orderList)) {
+                $order = reset($orderList);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $order;

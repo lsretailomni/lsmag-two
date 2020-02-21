@@ -1,22 +1,22 @@
 <div id="pickup-info-wrapper">
     <?php if ($block->getPickupStore()) : ?>
-        <strong><?php echo __('Choosen Store') ?>:</strong>
+        <strong><?php echo __('Chosen Store') ?>:</strong>
         <span class="price">
             <?php echo $this->helper('Ls\Omni\Helper\Data')->getStoreNameById(
-                $block->getPickupStore()
-            ); ?>
+    $block->getPickupStore()
+); ?>
         </span>
     <?php endif; ?>
     <br/>
-    <?php // @codingStandardsIgnoreStart ?>
-<!--    <strong>--><?php //echo __('Pickup Date') ?><!--:</strong>-->
-<!--    <span class="price">--><?php //echo $block->getPickupDate() ?><!--</span>-->
-    <?php // @codingStandardsIgnoreEnd ?>
+    <?php // @codingStandardsIgnoreStart?>
+    <!--    <strong>--><?php //echo __('Pickup Date')?><!--:</strong>-->
+    <!--    <span class="price">--><?php //echo $block->getPickupDate()?><!--</span>-->
+    <?php // @codingStandardsIgnoreEnd?>
 </div>
 <script type="text/javascript">
     require(
         ['jquery'],
-        function($) {
+        function ($) {
             $('#pickup-info-wrapper').appendTo('.order-shipping-method div:last-child');
         }
     );

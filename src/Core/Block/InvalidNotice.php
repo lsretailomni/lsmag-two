@@ -2,14 +2,15 @@
 
 namespace Ls\Core\Block;
 
-use Magento\Framework\View\Element\Template\Context;
 use \Ls\Core\Model\LSR;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class InvalidNotice
  * @package Ls\Core\Block
  */
-class InvalidNotice extends \Magento\Framework\View\Element\Template
+class InvalidNotice extends Template
 {
     /**
      * @var LSR

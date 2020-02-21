@@ -14,7 +14,7 @@
             <block class="Ls\Omni\Block\Product\View\Recommend"
                    name="ls.omni.product.recommendation"
                    template="Ls_Omni::product/recommendation.phtml"
-                   after="product.info.details" ifconfig="ls_mag/ls_recommend/product" />
+                   after="product.info.details" ifconfig="ls_mag/ls_recommend/product"/>
         </referenceContainer>
         <referenceBlock name="product.info.addtocart">
             <action method="setTemplate">

@@ -2,19 +2,22 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
+use Exception;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
-use Psr\Log\LoggerInterface;
-use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Class Attribute Deletion
  */
 class Attribute extends Action
 {
-    /** @var LoggerInterface */
+    /**
+     * @var Logger
+     */
     public $logger;
 
     /** @var ResourceConnection */
@@ -41,21 +44,21 @@ class Attribute extends Action
     /**
      * Attribute constructor.
      * @param ResourceConnection $resource
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param Context $context
      * @param LSR $LSR
      * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         ResourceConnection $resource,
-        LoggerInterface $logger,
+        Logger $logger,
         Context $context,
         LSR $LSR,
         ReplicationHelper $replicationHelper
     ) {
-        $this->resource = $resource;
-        $this->logger = $logger;
-        $this->lsr = $LSR;
+        $this->resource          = $resource;
+        $this->logger            = $logger;
+        $this->lsr               = $LSR;
         $this->replicationHelper = $replicationHelper;
         parent::__construct($context);
     }
@@ -69,20 +72,20 @@ class Attribute extends Action
     {
         // @codingStandardsIgnoreStart
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $tableName = $connection->getTableName('eav_attribute');
-        $query = "DELETE FROM " . $tableName . " WHERE attribute_code LIKE 'ls\_%'";
+        $tableName  = $connection->getTableName('eav_attribute');
+        $query      = "DELETE FROM " . $tableName . " WHERE attribute_code LIKE 'ls\_%'";
         try {
             $connection->query($query);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
         // Update all dependent ls tables to not processed
         foreach ($this->ls_tables as $lsTable) {
             $lsTableName = $connection->getTableName($lsTable);
-            $lsQuery = "UPDATE " . $lsTableName . " SET processed = 0;";
+            $lsQuery     = "UPDATE " . $lsTableName . " SET processed = 0;";
             try {
                 $connection->query($lsQuery);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }

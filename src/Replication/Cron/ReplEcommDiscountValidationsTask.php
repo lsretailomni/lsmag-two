@@ -8,7 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Psr\Log\LoggerInterface;
+use Ls\Replication\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Config\Model\ResourceModel\Config;
 use Ls\Core\Helper\Data as LsHelper;
@@ -29,6 +29,8 @@ class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
     const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_discount_validation';
 
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_validation';
+
+    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_discount_validation';
 
     /**
      * @property ReplDiscountValidationRepository $repository
@@ -99,7 +101,7 @@ class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
         return $this->data_interface;
     }
 
-    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, LoggerInterface $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplDiscountValidationFactory $factory, ReplDiscountValidationRepository $repository, ReplDiscountValidationInterface $data_interface)
+    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplDiscountValidationFactory $factory, ReplDiscountValidationRepository $repository, ReplDiscountValidationInterface $data_interface)
     {
         parent::__construct($scope_config, $resource_config, $logger, $helper, $repHelper);
         $this->repository = $repository;
@@ -107,13 +109,14 @@ class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
         $this->data_interface = $data_interface;
     }
 
-    public function makeRequest($last_key, $full_replication = false, $batchsize = 100, $storeId = '', $baseUrl = '')
+    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '')
     {
         $request = new ReplEcommDiscountValidations($baseUrl);
         $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchsize)
-                                                        ->setFullReplication($full_replication)
-                                                        ->setLastKey($last_key)
+                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
+                                                        ->setFullReplication($fullReplication)
+                                                        ->setLastKey($lastKey)
+                                                        ->setMaxKey($maxKey)
                                                         ->setStoreId($storeId));
         return $request;
     }
@@ -131,6 +134,11 @@ class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
     public function getConfigPathLastExecute()
     {
         return self::CONFIG_PATH_LAST_EXECUTE;
+    }
+
+    public function getConfigPathMaxKey()
+    {
+        return self::CONFIG_PATH_MAX_KEY;
     }
 
     public function getMainEntity()

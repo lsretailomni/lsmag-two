@@ -2,32 +2,40 @@
 
 namespace Ls\Omni\Helper;
 
-use Magento\Framework\App\Helper\Context;
+use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Core\Model\LSR;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Item;
 
 /**
  * All Functionality related to LS Recommend will go here.
  * Class BasketHelper
  * @package Ls\Omni\Helper
  */
-class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
+class LSRecommend extends AbstractHelper
 {
 
     /** @var \Magento\Checkout\Model\Session\Proxy */
     public $checkoutSession;
 
-    /** @var \Magento\Customer\Model\Session\Proxy */
+    /** @var Proxy */
     public $customerSession;
 
-    /** @var \Magento\Framework\Api\SearchCriteriaBuilder */
+    /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
     /** @var  LSR $lsr */
     public $lsr;
 
-    /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
+    /** @var ProductRepositoryInterface */
     public $productRepository;
 
     /** @var array */
@@ -37,25 +45,25 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
      * LSRecommend constructor.
      * @param Context $context
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param Proxy $customerSession
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param ProductRepositoryInterface $productRepository
      * @param LSR $Lsr
      */
     public function __construct(
         Context $context,
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        Proxy $customerSession,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        ProductRepositoryInterface $productRepository,
         LSR $Lsr
     ) {
         parent::__construct($context);
-        $this->checkoutSession = $checkoutSession;
-        $this->customerSession = $customerSession;
-        $this->lsr = $Lsr;
+        $this->checkoutSession       = $checkoutSession;
+        $this->customerSession       = $customerSession;
+        $this->lsr                   = $Lsr;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->productRepository = $productRepository;
+        $this->productRepository     = $productRepository;
     }
 
     /**
@@ -139,7 +147,7 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
             ->setUserId('');
         try {
             $response = $request->execute($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getRecommendedItemsGetResult() : $response;
@@ -148,7 +156,7 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param Entity\ArrayOfRecommendedItem $recommendedProducts
-     * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
+     * @return ProductInterface[]|null
      */
     public function parseProductRecommendation(
         Entity\ArrayOfRecommendedItem $recommendedProducts
@@ -182,7 +190,7 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param $productIds
-     * @return \Magento\Catalog\Api\Data\ProductInterface[]|null
+     * @return ProductInterface[]|null
      */
     public function getProductCollection($productIds)
     {
@@ -201,18 +209,18 @@ class LSRecommend extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getProductSkusFromQuote()
     {
-        /** @var \Magento\Quote\Model\Quote $quote */
+        /** @var Quote $quote */
         $itemsSkus = null;
-        $quote = $this->checkoutSession->getQuote();
+        $quote     = $this->checkoutSession->getQuote();
         if ($quote->hasItems()) {
             $quoteItems = $this->checkoutSession->getQuote()->getAllVisibleItems();
-            /** @var \Magento\Quote\Model\Quote\Item $quoteItem */
+            /** @var Item $quoteItem */
             //resetting back to null.
             $itemsSkusArray = array();
             foreach ($quoteItems as $quoteItem) {
-                $skuArray = explode('-', $quoteItem->getSku());
-                $sku = array_shift($skuArray);
-                $itemsSkusArray[] = $sku;
+                $skuArray  = explode('-', $quoteItem->getSku());
+                $sku       = array_shift($skuArray);
+                $itemsSkus .= $sku . ',';
             }
             $itemsSkus = implode(',', $itemsSkusArray);
         }

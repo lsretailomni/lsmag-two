@@ -2,17 +2,22 @@
 
 namespace Ls\Omni\Controller\Adminhtml\System\Config;
 
+use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Operation\Ping;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Service as OmniService;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
+use \Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\RawFactory;
-use Magento\Framework\App\Config\Storage\WriterInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -43,6 +48,11 @@ class LoadStore extends Action
     public $lsr;
 
     /**
+     * @var Data
+     */
+    public $helper;
+
+    /**
      * @var LoggerInterface
      */
     public $logger;
@@ -54,6 +64,7 @@ class LoadStore extends Action
      * @param RawFactory $resultRawFactory
      * @param WriterInterface $configWriter
      * @param LSR $lsr
+     * @param Data $helper
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -62,64 +73,75 @@ class LoadStore extends Action
         RawFactory $resultRawFactory,
         WriterInterface $configWriter,
         LSR $lsr,
+        Data $helper,
         LoggerInterface $logger
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->resultRawFactory = $resultRawFactory;
-        $this->configWriter = $configWriter;
-        $this->lsr = $lsr;
-        $this->logger = $logger;
+        $this->resultRawFactory  = $resultRawFactory;
+        $this->configWriter      = $configWriter;
+        $this->lsr               = $lsr;
+        $this->helper            = $helper;
+        $this->logger            = $logger;
         parent::__construct($context);
     }
 
     /**
      * Collect relations data
      *
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
      */
     public function execute()
     {
-        $pong = 'Omni Ping failed. Please try with valid service base URL.';
+        $pong                 = 'Omni Ping failed. Please try with valid service base URL.';
         $hierarchyPlaceholder = [
             ['value' => '', 'label' => __('No hierarchy code found for the selected store')]
         ];
-        $option_array = [];
+        $option_array         = [];
+        $version              = null;
         try {
-            $baseUrl = $this->getRequest()->getParam('baseUrl');
-            $lsKey = $this->getRequest()->getParam('lsKey');
-            $stores = $this->getStores($baseUrl, $lsKey);
+            $baseUrl   = $this->getRequest()->getParam('baseUrl');
+            $lsKey     = $this->getRequest()->getParam('lsKey');
+            $websiteId = $this->getRequest()->getParam('websiteId');
+            $stores    = $this->getStores($baseUrl, $lsKey);
             if (!empty($stores)) {
                 $option_array = [['value' => '', 'label' => __('Please select your web store')]];
-                $pong = $this->omniPing($baseUrl, $lsKey);
+                $pong         = $this->helper->omniPing($baseUrl, $lsKey);
+                $version      = $this->helper->parsePingResponseAndSaveToConfigData($pong, $websiteId);
                 foreach ($stores as $store) {
                     $option_array[] = ['value' => $store->getId(), 'label' => $store->getDescription()];
                 }
             } else {
                 $option_array = [['value' => '', 'label' => __('No store found for entered omni api url')]];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->critical($e);
         }
-        /** @var \Magento\Framework\Controller\Result\Json $result */
+        /** @var Json $result */
         $result = $this->resultJsonFactory->create();
         return $result->setData(
-            ['success' => true, 'store' => $option_array, 'pong' => $pong, 'hierarchy' => $hierarchyPlaceholder]
+            [
+                'success'   => true,
+                'store'     => $option_array,
+                'pong'      => $pong,
+                'hierarchy' => $hierarchyPlaceholder,
+                'version'   => $version
+            ]
         );
     }
 
     /**
      * @param $baseUrl
      * @param $lsKey
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore|\Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse|\Ls\Omni\Client\ResponseInterface
+     * @return array|ArrayOfStore|StoresGetAllResponse|ResponseInterface
      */
     public function getStores($baseUrl, $lsKey)
     {
         if ($this->lsr->validateBaseUrl($baseUrl)) {
             //@codingStandardsIgnoreStart
             $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
-            $url = OmniService::getUrl($service_type, $baseUrl);
-            $client = new OmniClient($url, $service_type);
-            $getStores = new StoresGetAll();
+            $url          = OmniService::getUrl($service_type, $baseUrl);
+            $client       = new OmniClient($url, $service_type);
+            $getStores    = new StoresGetAll();
             //@codingStandardsIgnoreEnd
             $getStores->setClient($client);
             $getStores->setToken($lsKey);
@@ -135,26 +157,6 @@ class LoadStore extends Action
             }
         }
         return [];
-    }
-
-    /**
-     * @param $baseUrl
-     * @return mixed
-     */
-    public function omniPing($baseUrl, $lsKey)
-    {
-        //@codingStandardsIgnoreStart
-        $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
-        $url = OmniService::getUrl($service_type, $baseUrl);
-        $client = new OmniClient($url, $service_type);
-        $ping = new Ping();
-        //@codingStandardsIgnoreEnd
-        $ping->setClient($client);
-        $ping->setToken($lsKey);
-        $client->setClassmap($ping->getClassMap());
-        $result = $ping->execute();
-        $pong = $result->getResult();
-        return $pong;
     }
 
     /**

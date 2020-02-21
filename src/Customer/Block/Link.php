@@ -4,6 +4,7 @@ namespace Ls\Customer\Block;
 
 use Magento\Customer\Block\Account\SortLinkInterface;
 use Magento\Customer\Model\Context;
+use Magento\Framework\Phrase;
 
 /**
  * Class Link
@@ -53,7 +54,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
     }
 
     /**
-     * @return \Magento\Framework\Phrase
+     * @return Phrase
      */
     public function getLabel()
     {

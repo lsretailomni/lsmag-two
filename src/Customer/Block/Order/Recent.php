@@ -2,18 +2,25 @@
 
 namespace Ls\Customer\Block\Order;
 
+use DateTime;
+use Exception;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Sales\Api\Data\OrderInterface;
 
 /**
  * Class Recent
  * @package Ls\Customer\Block\Order
  */
-class Recent extends \Magento\Framework\View\Element\Template
+class Recent extends Template
 {
     /**
-     * @var \Ls\Omni\Helper\OrderHelper
+     * @var OrderHelper
      */
     public $orderHelper;
 
@@ -23,12 +30,12 @@ class Recent extends \Magento\Framework\View\Element\Template
     public $priceCurrency;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     public $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var Proxy
      */
     public $customerSession;
 
@@ -37,36 +44,36 @@ class Recent extends \Magento\Framework\View\Element\Template
      * @param Context $context
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param Proxy $customerSession
      * @param array $data
      */
     public function __construct(
         Context $context,
         OrderHelper $orderHelper,
         PriceCurrencyInterface $priceCurrency,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        Proxy $customerSession,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->orderHelper = $orderHelper;
-        $this->priceCurrency = $priceCurrency;
+        $this->orderHelper           = $orderHelper;
+        $this->priceCurrency         = $priceCurrency;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->customerSession = $customerSession;
+        $this->customerSession       = $customerSession;
     }
 
     /**
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\SalesEntry[]|null
+     * @return array|SalesEntry[]|null
      */
     public function getOrderHistory()
     {
         $response = [];
-        $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
+        $orders   = $this->orderHelper->getCurrentCustomerOrderHistory();
         if ($orders) {
             try {
                 $response = $orders->getSalesEntry();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
         }
@@ -89,12 +96,12 @@ class Recent extends \Magento\Framework\View\Element\Template
     /**
      * @param $date
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function getFormattedDate($date)
     {
         // @codingStandardsIgnoreStart
-        $formattedDate = new \DateTime($date);
+        $formattedDate = new DateTime($date);
         // @codingStandardsIgnoreEnd
         $result = $formattedDate->format('d/m/y');
         return $result;
@@ -106,7 +113,7 @@ class Recent extends \Magento\Framework\View\Element\Template
      */
     public function getViewUrl($order)
     {
-        return $this->getUrl('customer/order/view', ['order_id' => $order->getId()]);
+        return $this->getUrl('customer/order/view', ['order_id' => $order->getId(), 'type' => $order->getIdType()]);
     }
 
     /**
@@ -121,14 +128,14 @@ class Recent extends \Magento\Framework\View\Element\Template
             } else {
                 return parent::getReorderUrl($order);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
 
     /**
      * @param $documentId
-     * @return \Magento\Sales\Api\Data\OrderInterface[]
+     * @return OrderInterface[]
      */
     public function getOrderByDocumentId($documentId)
     {

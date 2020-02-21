@@ -2,8 +2,20 @@
 
 namespace Ls\Customer\Block\Order;
 
-use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+use DateTime;
+use Exception;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
+use \Ls\Omni\Helper\OrderHelper;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order\Config;
+use Magento\Sales\Model\OrderRepository;
+use Magento\Sales\Model\ResourceModel\Order\Collection;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 
 /**
  * Class History
@@ -12,7 +24,7 @@ use Magento\Framework\Pricing\PriceCurrencyInterface;
 class History extends \Magento\Sales\Block\Order\History
 {
     /**
-     * @var \Ls\Omni\Helper\OrderHelper
+     * @var OrderHelper
      */
     public $orderHelper;
 
@@ -21,7 +33,7 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public $priceCurrency;
 
-    /** @var \Ls\Core\Model\LSR @var */
+    /** @var LSR @var */
     public $lsr;
 
     /**
@@ -36,39 +48,39 @@ class History extends \Magento\Sales\Block\Order\History
 
     /**
      * History constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Sales\Model\Order\Config $orderConfig
-     * @param \Ls\Omni\Helper\OrderHelper $orderHelper
+     * @param Context $context
+     * @param CollectionFactory $orderCollectionFactory
+     * @param Proxy $customerSession
+     * @param Config $orderConfig
+     * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
-     * @param \Ls\Core\Model\LSR $LSR
-     * @param \Magento\Sales\Model\OrderRepository $orderRepository
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param LSR $LSR
+     * @param OrderRepository $orderRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Sales\Model\Order\Config $orderConfig,
-        \Ls\Omni\Helper\OrderHelper $orderHelper,
+        Context $context,
+        CollectionFactory $orderCollectionFactory,
+        Proxy $customerSession,
+        Config $orderConfig,
+        OrderHelper $orderHelper,
         PriceCurrencyInterface $priceCurrency,
-        \Ls\Core\Model\LSR $LSR,
-        \Magento\Sales\Model\OrderRepository $orderRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        LSR $LSR,
+        OrderRepository $orderRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
         array $data = []
     ) {
-        $this->orderHelper = $orderHelper;
-        $this->priceCurrency = $priceCurrency;
-        $this->lsr = $LSR;
-        $this->orderRepository = $orderRepository;
+        $this->orderHelper           = $orderHelper;
+        $this->priceCurrency         = $priceCurrency;
+        $this->lsr                   = $LSR;
+        $this->orderRepository       = $orderRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         parent::__construct($context, $orderCollectionFactory, $customerSession, $orderConfig, $data);
     }
 
     /**
-     * @return array|bool|\Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry|\Magento\Sales\Model\ResourceModel\Order\Collection|null
+     * @return array|bool|ArrayOfSalesEntry|Collection|null
      */
     public function getOrderHistory()
     {
@@ -77,11 +89,11 @@ class History extends \Magento\Sales\Block\Order\History
         */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $response = [];
-            $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
+            $orders   = $this->orderHelper->getCurrentCustomerOrderHistory();
             if ($orders) {
                 try {
                     $response = $orders;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->_logger->error($e->getMessage());
                 }
             }
@@ -103,12 +115,12 @@ class History extends \Magento\Sales\Block\Order\History
     /**
      * @param $date
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function getFormattedDate($date)
     {
         // @codingStandardsIgnoreStart
-        $formattedDate = new \DateTime($date);
+        $formattedDate = new DateTime($date);
         // @codingStandardsIgnoreEnd
         $result = $formattedDate->format('d/m/y');
         return $result;
@@ -124,7 +136,7 @@ class History extends \Magento\Sales\Block\Order\History
         * Adding condition to only process if LSR is enabled.
         */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            return $this->getUrl('customer/order/view', ['order_id' => $order->getId()]);
+            return $this->getUrl('customer/order/view', ['order_id' => $order->getId(), 'type' => $order->getIdType()]);
         }
         return parent::getViewUrl($order);
     }
@@ -141,14 +153,14 @@ class History extends \Magento\Sales\Block\Order\History
             } else {
                 return parent::getReorderUrl($order);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
 
     /**
      * @param $documentId
-     * @return \Magento\Sales\Api\Data\OrderInterface[]
+     * @return OrderInterface[]
      */
     public function getOrderByDocumentId($documentId)
     {

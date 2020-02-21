@@ -17,10 +17,7 @@ define([
             if (validOrNotValid) {
                 var formData = dataForm.data();
                 var sku = formData.productSku;
-                var selectedSimpleProductId = '';
-                if (typeof dataForm.data().mageConfigurable !== 'undefined') {
-                    selectedSimpleProductId = dataForm.data().mageConfigurable.simpleProduct;
-                }
+                var selectedSimpleProductId = $("input[name=selected_configurable_option]").val();
                 var controllerUrl = getBaseUrl("omni/stock/product" + "?sku=" + sku + "&id=" + selectedSimpleProductId);
                 $.ajax({
                     url: controllerUrl,
@@ -54,8 +51,7 @@ define([
             }
             return false;
         });
-    };
-
+    }
     function getPopUp(stores) {
         var self = this,
             buttons;
@@ -110,7 +106,7 @@ define([
                     if (store.State == null) {
                         store.State = "";
                     }
-                    infoWindow.setContent('<div class="infowindow"><h3>' + store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street +', '+ store.City+' '+ store.State +' '+ store.ZipCode+' '+ store.Country+' </div>');
+                    infoWindow.setContent('<div class="infowindow"><h3>' + store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street + ', ' + store.City + ' ' + store.State + ' ' + store.ZipCode + ' ' + store.Country + ' </div>');
                     infoWindow.open(map, marker);
                 });
             })(marker, store);

@@ -3,9 +3,9 @@
 
 namespace Ls\Replication\Code;
 
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
-use \Ls\Replication\Model\Anchor;
 use Magento\Framework\Api\SearchResults;
 
 /**
@@ -15,7 +15,7 @@ use Magento\Framework\Api\SearchResults;
 class SearchGenerator extends AbstractGenerator
 {
     /** @var string */
-    static public $namespace = 'Ls\\Replication\\Model';
+    public static $namespace = 'Ls\\Replication\\Model';
 
     /** @var ReplicationOperation */
     protected $operation;
@@ -23,7 +23,7 @@ class SearchGenerator extends AbstractGenerator
     /**
      * SearchGenerator constructor.
      * @param ReplicationOperation $operation
-     * @throws \Exception
+     * @throws Exception
      */
 
     public function __construct(ReplicationOperation $operation)
@@ -44,11 +44,19 @@ class SearchGenerator extends AbstractGenerator
         $this->class->setExtendedClass('SearchResults');
         $this->class->setImplementedInterfaces([$this->operation->getSearchInterfaceName()]);
         $interface_name = $this->operation->getSearchInterfaceName();
-        $content = $this->file->generate();
-        $content = str_replace('extends Magento\\Framework\\Model\\AbstractModel', 'extends AbstractModel', $content);
-        $content = str_replace(', Magento\\Framework\\DataObject\\IdentityInterface', ', IdentityInterface', $content);
-        $content = str_replace('extends \SearchResults', 'extends SearchResults', $content);
-        $content = str_replace("implements \\{$interface_name}", "implements {$interface_name}", $content);
+        $content        = $this->file->generate();
+        $content        = str_replace(
+            'extends Magento\\Framework\\Model\\AbstractModel',
+            'extends AbstractModel',
+            $content
+        );
+        $content        = str_replace(
+            ', Magento\\Framework\\DataObject\\IdentityInterface',
+            ', IdentityInterface',
+            $content
+        );
+        $content        = str_replace('extends \SearchResults', 'extends SearchResults', $content);
+        $content        = str_replace("implements \\{$interface_name}", "implements {$interface_name}", $content);
         return $content;
     }
 }

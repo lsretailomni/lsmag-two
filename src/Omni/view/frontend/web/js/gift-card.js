@@ -5,9 +5,8 @@ define([
     'use strict';
 
     $.widget('lsomni.giftCard', {
-        options: {
-        },
-        
+        options: {},
+
         _create: function () {
             this.giftCard = $(this.options.GiftcardSelector);
             this.removeGiftCard = $(this.options.removeGiftCardSelector);

@@ -2,23 +2,31 @@
 
 namespace Ls\Customer\Block\Loyalty;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferType;
+use Exception;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use \Ls\Omni\Client\Ecommerce\Entity\ImageView;
+use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Magento\Catalog\Model\ProductRepository;
+use Magento\Catalog\Helper\Category as CategoryHelper;
 use Magento\Catalog\Model\CategoryRepository;
-use \Magento\Catalog\Helper\Category as CategoryHelper;
+use Magento\Catalog\Model\ProductRepository;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\ValidatorException;
+use Magento\Framework\Filesystem\Io\File;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Framework\UrlInterface;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Offers
  * @package Ls\Customer\Block\Loyalty
  */
-class Offers extends \Magento\Framework\View\Element\Template
+class Offers extends Template
 {
 
     /**
@@ -27,7 +35,7 @@ class Offers extends \Magento\Framework\View\Element\Template
     private $loyaltyHelper;
 
     /**
-     * @var \Magento\Framework\Filesystem\Io\File
+     * @var File
      */
     public $file;
 
@@ -37,19 +45,19 @@ class Offers extends \Magento\Framework\View\Element\Template
     public $storeManager;
 
     /**
-     * @var Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     public $scopeConfig;
 
     /**
-     * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     * @var TimezoneInterface
      */
     public $timeZoneInterface;
 
-    /** @var ProductRepositoryInterface */
+    /** @var ProductRepository */
     public $productRepository;
 
-    /** @var CategoryRepositoryInterface */
+    /** @var CategoryRepository */
     public $categoryRepository;
 
     /** @var CategoryHelper */
@@ -62,9 +70,9 @@ class Offers extends \Magento\Framework\View\Element\Template
 
     /**
      * Offers constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param Context $context
      * @param LoyaltyHelper $loyaltyHelper
-     * @param \Magento\Framework\Filesystem\Io\File $file
+     * @param File $file
      * @param StoreManagerInterface $storeManager
      * @param ScopeConfigInterface $scopeConfig
      * @param TimezoneInterface $timeZoneInterface
@@ -75,9 +83,9 @@ class Offers extends \Magento\Framework\View\Element\Template
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
+        Context $context,
         LoyaltyHelper $loyaltyHelper,
-        \Magento\Framework\Filesystem\Io\File $file,
+        File $file,
         StoreManagerInterface $storeManager,
         ScopeConfigInterface $scopeConfig,
         TimezoneInterface $timeZoneInterface,
@@ -88,19 +96,19 @@ class Offers extends \Magento\Framework\View\Element\Template
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->file = $file;
-        $this->storeManager = $storeManager;
-        $this->scopeConfig = $scopeConfig;
-        $this->timeZoneInterface = $timeZoneInterface;
-        $this->productRepository = $productRepository;
+        $this->loyaltyHelper      = $loyaltyHelper;
+        $this->file               = $file;
+        $this->storeManager       = $storeManager;
+        $this->scopeConfig        = $scopeConfig;
+        $this->timeZoneInterface  = $timeZoneInterface;
+        $this->productRepository  = $productRepository;
         $this->categoryRepository = $categoryRepository;
-        $this->categoryHelper = $categoryHelper;
-        $this->lsr = $lsr;
+        $this->categoryHelper     = $categoryHelper;
+        $this->lsr                = $lsr;
     }
 
     /**
-     * @return \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer[]
+     * @return PublishedOffer[]
      */
     public function getOffers()
     {
@@ -109,18 +117,15 @@ class Offers extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon
-     * @return array|\Ls\Omni\Client\Ecommerce\Entity\ImageView|\Ls\Omni\Client\Ecommerce\Entity\ImageView[]|mixed
+     * @param PublishedOffer $coupon
+     * @return array|ImageView|ImageView[]|mixed
      */
-    public function fetchImages(\Ls\Omni\Client\Ecommerce\Entity\PublishedOffer $coupon)
+    public function fetchImages(PublishedOffer $coupon)
     {
         try {
             $images = [];
-            $index = 0;
-
-            $img = $coupon->getImages()
-                ->getImageView();
-
+            $index  = 0;
+            $img    = $coupon->getImages()->getImageView();
             if (empty($img)) {
                 return $img;
             }
@@ -139,53 +144,51 @@ class Offers extends \Magento\Framework\View\Element\Template
 
             $result = $this->loyaltyHelper->getImageById($img->getId(), $img_size);
 
-            if (!empty($result) && !empty($result["format"]) && !empty($result["image"])) {
+            if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                 $offerpath = $this->getMediaPathtoStore();
                 // @codingStandardsIgnoreStart
                 if (!is_dir($offerpath)) {
                     $this->file->mkdir($offerpath, 0775);
                 }
-                $format = strtolower($result["format"]);
-                $id = $img->getId();
+                $format      = strtolower($result['format']);
+                $id          = $img->getId();
                 $output_file = "{$id}-{$index}.$format";
-                $file = "{$offerpath}{$output_file}";
+                $file        = "{$offerpath}{$output_file}";
 
                 if (!$this->file->fileExists($file)) {
-                    $base64 = $result["image"];
+                    $base64     = $result['image'];
                     $image_file = fopen($file, 'wb');
                     fwrite($image_file, base64_decode($base64));
                     fclose($image_file);
                 }
-
                 // @codingStandardsIgnoreEnd
                 $images[] = "{$output_file}";
             }
-
             return $images;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\ValidatorException
+     * @throws ValidatorException
      */
     public function getMediaPathtoStore()
     {
         return $this->getMediaDirectory()
-                ->getAbsolutePath() . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
+                ->getAbsolutePath() . 'ls' . DIRECTORY_SEPARATOR . 'offers' . DIRECTORY_SEPARATOR;
     }
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getMediaPathToLoad()
     {
         return $this->storeManager->getStore()
-                ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
-            . DIRECTORY_SEPARATOR . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
+                ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA)
+            . DIRECTORY_SEPARATOR . 'ls' . DIRECTORY_SEPARATOR . 'offers' . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -203,9 +206,8 @@ class Offers extends \Magento\Framework\View\Element\Template
                 LSR::SC_LOYALTY_PAGE_IMAGE_HEIGHT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             );
-
             return $size;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
@@ -222,9 +224,8 @@ class Offers extends \Magento\Framework\View\Element\Template
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getCurrentStoreId()
             ));
-
             return $offerExpiryDate;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }
@@ -232,34 +233,36 @@ class Offers extends \Magento\Framework\View\Element\Template
     /**
      * @param $offerLines
      * @return array|null
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
-    // @codingStandardsIgnoreLine
     public function getOfferProductCategoryLink($offerLines)
     {
-        $url = '';
+        $url  = '';
         $text = '';
         if (count($offerLines) == 1) {
             try {
                 if ($offerLines[0]->getLineType() == OfferDiscountLineType::ITEM) {
                     $product = $this->productRepository->get($offerLines[0]->getId());
-                    $url = $product->getProductUrl();
-                    $text = __("Go To Product");
+                    $url     = $product->getProductUrl();
+                    $text    = __("Go To Product");
                 }
-                if ($offerLines[0]->getLineType() == OfferDiscountLineType::PRODUCT_GROUP) {
-                    return ["", ""];
+                if ($offerLines[0]->getLineType() == OfferDiscountLineType::PRODUCT_GROUP
+                    || $offerLines[0]->getLineType() == OfferDiscountLineType::ITEM_CATEGORY
+                    || $offerLines[0]->getLineType() == OfferDiscountLineType::SPECIAL_GROUP
+                ) {
+                    return ['', ''];
                 }
-            } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+            } catch (NoSuchEntityException $e) {
                 return null;
             }
         } else {
             $categoryIds = [];
-            $count = 0;
+            $count       = 0;
             foreach ($offerLines as $offerLine) {
                 if ($offerLine->getLineType() == LineType::ITEM) {
                     try {
                         $catIds = $this->productRepository->get($offerLine->getId())->getCategoryIds();
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         return null;
                     }
                     if (!empty($catIds)) {
@@ -270,20 +273,25 @@ class Offers extends \Magento\Framework\View\Element\Template
                         }
                         $count++;
                     }
+                } elseif ($offerLine->getLineType() == OfferDiscountLineType::PRODUCT_GROUP
+                    || $offerLine->getLineType() == OfferDiscountLineType::ITEM_CATEGORY
+                    || $offerLine->getLineType() == OfferDiscountLineType::SPECIAL_GROUP
+                ) {
+                    return ['', ''];
                 }
             }
             if (!empty($categoryIds)) {
                 $categoryIds = array_values($categoryIds);
-                $category = $this->categoryRepository->get($categoryIds[count($categoryIds) - 1]);
-                $url = $this->categoryHelper->getCategoryUrl($category);
-                $text = __("Go To Category");
+                $category    = $this->categoryRepository->get($categoryIds[count($categoryIds) - 1]);
+                $url         = $this->categoryHelper->getCategoryUrl($category);
+                $text        = __('Go To Category');
             } else {
                 try {
                     $product = $this->productRepository->get($offerLines[0]->getId());
-                    $url = $product->getProductUrl();
-                    $text = __("Go To Product");
-                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-                    return ["", ""];
+                    $url     = $product->getProductUrl();
+                    $text    = __('Go To Product');
+                } catch (NoSuchEntityException $e) {
+                    return ['', ''];
                 }
             }
         }

@@ -2,9 +2,12 @@
 
 namespace Ls\Core\Model;
 
+use Exception;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use SoapClient;
 
 /**
@@ -20,7 +23,10 @@ Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';
     const APP_NAME = 'ls-mag';
     const APP_VERSION = '1.0.0';
+    const EXTENSION_COMPOSER_PATH_VENDOR = "vendor/lsretail/lsmag-two/composer.json";
+    const EXTENSION_COMPOSER_PATH_APP = "app/code/lsretail/lsmag-two/composer.json";
     const CRON_STATUS_PATH_PREFIX = 'ls_mag/replication/status_';
+    const URL_PATH_EXECUTE = 'ls_repl/cron/grid';
 
     // DEFAULT IMAGE SIZE
     const DEFAULT_IMAGE_WIDTH = 500;
@@ -63,6 +69,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_DEBUG = 'ls_mag/service/debug';
     const SC_SERVICE_TOKENIZED = 'ls_mag/service/tokenized_operations';
     const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
+    const SC_SERVICE_VERSION = 'ls_mag/service/version';
+    const SC_SERVICE_LS_CENTRAL_VERSION = 'ls_mag/service/ls_central_version';
 
     // REPLICATION
     const SC_REPLICATION_GETCATEGORIES = 'ls_mag/replication/replicate_category';
@@ -78,6 +86,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
+    const SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE = 'ls_mag/replication/product_attribute_batch_size';
+    const SC_REPLICATION_DISCOUNT_BATCH_SIZE = 'ls_mag/replication/discount_batch_size';
+    const SC_REPLICATION_PRODUCT_INVENTORY_BATCH_SIZE = 'ls_mag/replication/product_inventory_batch_size';
+    const SC_REPLICATION_PRODUCT_PRICES_BATCH_SIZE = 'ls_mag/replication/product_prices_batch_size';
+    const SC_REPLICATION_PRODUCT_IMAGES_BATCH_SIZE = 'ls_mag/replication/product_images_batch_size';
+    const SC_REPLICATION_PRODUCT_BARCODE_BATCH_SIZE = 'ls_mag/replication/product_barcode_batch_size';
+    const SC_REPLICATION_VARIANT_BATCH_SIZE = 'ls_mag/replication/variant_batch_size';
+    const SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE =
+        'ls_mag/replication/product_assignment_to_category_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
     const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_STORE = 'ls_mag/replication/manual_cron_grid_default_store';
 
@@ -85,18 +102,47 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //check for Attribute
     const SC_SUCCESS_CRON_ATTRIBUTE = 'ls_mag/replication/success_repl_attribute';
+    const SC_CRON_ATTRIBUTE_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_attributes';
+    const ATTRIBUTE_OPTION_VALUE_SORT_ORDER = 10000;
 
     //check for Attribute Variant
     const SC_SUCCESS_CRON_ATTRIBUTE_VARIANT = 'ls_mag/replication/success_repl_attribute_variant';
 
     //check for Category
     const SC_SUCCESS_CRON_CATEGORY = 'ls_mag/replication/success_repl_category';
+    const SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_category';
 
     //check for Product
     const SC_SUCCESS_CRON_PRODUCT = 'ls_mag/replication/success_repl_product';
+    const SC_CRON_PRODUCT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_products';
+
+    //check for Product Price
+    const SC_SUCCESS_CRON_PRODUCT_PRICE = 'ls_mag/replication/success_sync_price';
+    const SC_PRODUCT_PRICE_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_price_sync';
+
+    //check for Product Inventory
+    const SC_SUCCESS_CRON_PRODUCT_INVENTORY = 'ls_mag/replication/success_sync_inventory';
+    const SC_PRODUCT_INVENTORY_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_inventory_sync';
 
     //check for Discount
     const SC_SUCCESS_CRON_DISCOUNT = 'ls_mag/replication/success_repl_discount';
+    const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
+
+    //check for Product Assignment to Categories
+    const SC_SUCCESS_CRON_ITEM_UPDATES = 'ls_mag/replication/success_sync_item_updates';
+    const SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_updates_sync';
+
+    //check for Product Images
+    const SC_SUCCESS_CRON_ITEM_IMAGES = 'ls_mag/replication/success_sync_item_images';
+    const SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_images_sync';
+
+    //check for Product Attributes Value Sync
+    const SC_SUCCESS_CRON_ATTRIBUTES_VALUE = 'ls_mag/replication/success_sync_attributes_value';
+
+    // execute time for sync attributes value
+    const LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE = 'ls_mag/replication/last_execute_repl_attributes_value_sync';
+
+    const SC_VERSION_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_version';
 
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
@@ -124,6 +170,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
     const SC_CART_PRODUCT_AVAILABILITY = 'ls_mag/one_list/product_availability';
+    const SC_CART_DISPLAY_STORES = 'ls_mag/one_list/display_stores';
     const SC_CART_UPDATE_INVENTORY = 'ls_mag/one_list/update_inventory';
     const SC_CART_GUEST_CHECKOUT_EMAIL = 'ls_mag/one_list/guest_checkout_email';
     const SC_CART_GUEST_CHECKOUT_PASSWORD = 'ls_mag/one_list/guest_checkout_password';
@@ -142,8 +189,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CLICKCOLLECT_DEFAULT_LATITUDE = 'omni_clickandcollect/general/default_latitude';
     const SC_CLICKCOLLECT_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
     const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
-    const MSG_NOT_AVAILABLE_NOTICE_TITLE = "Notice";
-    const MSG_NOT_AVAILABLE_NOTICE_CONTENT = "This item is only available online.";
     const SC_PAYMENT_OPTION = 'carriers/clickandcollect/payment_option';
 
     // CUSTOM CONFIGURATION PATHS
@@ -241,8 +286,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const ORDER_STATE_COMPLETE = 'COMPLETE';
 
     //Store Hours Format
-    const STORE_HOURS_TIME_FORMAT = 'h:i A';
-
+    const STORE_HOURS_TIME_FORMAT_12HRS = 'h:i A';
+    const STORE_HOURS_TIME_FORMAT_24HRS = 'H:i';
     //LS Recommendation.
     const LS_RECOMMEND_ACTIVE = 'ls_mag/ls_recommend/active';
     const LS_RECOMMEND_SHOW_ON_PRODUCT = 'ls_mag/ls_recommend/product';
@@ -261,13 +306,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_DISCOUNT_MIXANDMATCH_LIMIT = 'ls_mag/ls_discounts/discount_mixandmatch_limit';
 
     //Coupon Code Message
-    const LS_COUPON_CODE_ERROR_MESSAGE = 'Coupon Code is not valid for these item(s)';
-
-    //LS Discount Message
-    const LS_DISCOUNT_PRICE_PERCENTAGE_TEXT = "Save";
+    const LS_STORES_OPENING_HOURS_FORMAT = 'ls_mag/ls_stores/timeformat';
 
     //LS New account reset password default password
-    const LS_RESETPASSWORD_DEFAULT = "Admin123@";
+    const LS_RESETPASSWORD_DEFAULT = 'Admin123@';
 
     //LS reset password email of the current customer
     const REGISTRY_CURRENT_RESETPASSWORD_EMAIL = 'reset-password-email';
@@ -275,16 +317,20 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
     const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
-    const POINTRATE = 'LS_POINTSRATE_';
+    const POINTRATE = 'LS_POINT_RATE_';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
+    const STORE = 'LS_STORE_';
+
+    // Date format to be used in fetching the data.
+    const DATE_FORMAT = 'Y-m-d';
+
+    //offer with no time limit for the discounts
+    const NO_TIME_LIMIT = '1753-01-01T00:00:00';
     /**
      * @var ScopeConfigInterface
      */
     public $scopeConfig;
-
-    /** @var TypeListInterface */
-    public $cacheTypeList;
 
     /** @var array End Points */
     public $endpoints = [
@@ -292,36 +338,34 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     ];
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     public $storeManager;
 
     /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
-     * @param TypeListInterface $cacheTypeList
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        TypeListInterface $cacheTypeList,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager
     ) {
-        $this->scopeConfig = $scopeConfig;
-        $this->cacheTypeList = $cacheTypeList;
+        $this->scopeConfig  = $scopeConfig;
         $this->storeManager = $storeManager;
     }
 
     /**
-     * Note : Incase of notDefault we have to pass the StoreID
+     * Note : In case of notDefault we have to pass the StoreID
      * in the variable of notDefault variable.
      * @param $path
+     * @param bool $storeId
      * @return string
      */
-    public function getStoreConfig($path, $store_id = false)
+    public function getStoreConfig($path, $storeId = false)
     {
-        if ($store_id) {
-            $sc = $this->scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store_id);
+        if ($storeId) {
+            $sc = $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId);
         } else {
             $sc = $this->scopeConfig->getValue($path);
         }
@@ -338,19 +382,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getWebsiteConfig($path, $website_id = false)
     {
         if ($website_id) {
-            $sc = $this->scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE, $website_id);
+            $sc = $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_WEBSITE, $website_id);
         } else {
             $sc = $this->scopeConfig->getValue($path);
         }
         return $sc;
-    }
-
-    /**
-     * Clear the cache for type config
-     */
-    public function flushConfig()
-    {
-        $this->cacheTypeList->cleanType('config');
     }
 
     /**
@@ -373,23 +409,25 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
                 if ($soapClient) {
                     return true;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return false;
             }
         }
     }
 
     /**
+     * @param bool $store_id
+     * @param bool $scope
      * @return bool
      */
     public function isLSR($store_id = false, $scope = false)
     {
         if ($scope == 'website') {
             $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
-            $store = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
+            $store   = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
         } else {
             $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
-            $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
+            $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
         }
         if (empty($baseUrl) || empty($store)) {
             return false;
@@ -405,7 +443,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
                 if ($soapClient) {
                     return true;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return false;
             }
         }
@@ -504,6 +542,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * check if inventory lookup is enabled
+     * @return string
+     */
+    public function inventoryLookupBeforeAddToCartEnabled()
+    {
+        return $this->getStoreConfig(self::SC_CART_CHECK_INVENTORY);
+    }
+
+    /*
      * This can be used on all frontend areas to dynamically fetch the current storeId.
      * Try not to use it on backend.
      * @return int
@@ -516,10 +563,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Return all the stores we have in Magento.
-     * @return \Magento\Store\Api\Data\StoreInterface[]
+     * @return StoreInterface[]
      */
-
-    public function getAllStores(){
+    public function getAllStores()
+    {
         return $this->storeManager->getStores();
 
     }
@@ -528,8 +575,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * Set Store ID in Magento Session
      * @param $store_id
      */
-
-    public function setStoreId($store_id){
+    public function setStoreId($store_id)
+    {
         $this->storeManager->setCurrentStore($store_id);
     }
 

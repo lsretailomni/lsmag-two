@@ -14,6 +14,11 @@
         <add id="Ls_Replication::ls_retail_cron_group_crons_grid" title="Crons Listing" translate="title"
              module="Ls_Replication" sortOrder="10" resource="Ls_Replication::ls_retail_cron_group_crons_grid"
              parent="Ls_Replication::ls_retail_cron_group" action="ls_repl/cron/grid"/>
+        <add id="Ls_Replication::ls_retail_logs_report" title="Logs" translate="title" module="Ls_Replication"
+             sortOrder="20" parent="Ls_Replication::ls_retail" resource="Ls_Replication::ls_retail_logs_report"/>
+        <add id="Ls_Replication::ls_retail_logs_report_main" title="Report" translate="title"
+             module="Ls_Replication" sortOrder="10" resource="Ls_Replication::ls_retail_logs_report_main"
+             parent="Ls_Replication::ls_retail_logs_report" action="ls_repl/logs/report"/>
         <add id="Ls_Replication::replication_grid_group" title="Replication Status" translate="title"
              module="Ls_Replication" sortOrder="30" parent="Ls_Replication::ls_retail"
              resource="Ls_Replication::replication_grid_group"/>
@@ -23,7 +28,8 @@
         <add id="Ls_Replication::item_price_grid" title="Price" translate="title" module="Ls_Replication" sortOrder="1"
              resource="Ls_Replication::item_price_grid" parent="Ls_Replication::replication_grid_group"
              action="ls_repl/grids/price"/>
-        <add id="Ls_Replication::item_inventory_grid" title="Inventory Status" translate="title" module="Ls_Replication" sortOrder="1"
+        <add id="Ls_Replication::item_inventory_grid" title="Inventory Status" translate="title" module="Ls_Replication"
+             sortOrder="1"
              resource="Ls_Replication::item_inventory_grid" parent="Ls_Replication::replication_grid_group"
              action="ls_repl/grids/inventorystatus"/>
         <add id="Ls_Replication::barcode_grid" title="Barcode" translate="title" module="Ls_Replication" sortOrder="2"

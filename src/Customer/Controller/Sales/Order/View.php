@@ -2,11 +2,17 @@
 
 namespace Ls\Customer\Controller\Sales\Order;
 
-use Magento\Framework\App\Request\Http;
+use Exception;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use Magento\Framework\App\Action;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Sales\Controller\AbstractController\OrderLoaderInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Controller\AbstractController\OrderLoaderInterface;
+use Psr\Log\LoggerInterface;
 
 class View extends \Magento\Sales\Controller\Order\View
 {
@@ -17,11 +23,11 @@ class View extends \Magento\Sales\Controller\Order\View
     public $request;
 
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     public $orderRepository;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var LoggerInterface */
     public $logger;
 
     /**
@@ -30,40 +36,40 @@ class View extends \Magento\Sales\Controller\Order\View
      * @param Action\Context $context
      * @param OrderLoaderInterface $orderLoader
      * @param PageFactory $resultPageFactory
-     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         Http $request,
         Action\Context $context,
         OrderLoaderInterface $orderLoader,
         PageFactory $resultPageFactory,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+        LoggerInterface $logger,
+        OrderRepositoryInterface $orderRepository
     ) {
         parent::__construct($context, $orderLoader, $resultPageFactory);
-        $this->request = $request;
-        $this->logger = $logger;
+        $this->request         = $request;
+        $this->logger          = $logger;
         $this->orderRepository = $orderRepository;
     }
 
     /**
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {
         try {
             if ($this->request->getParam('order_id')) {
-                $orderId = $this->request->getParam('order_id');
-                $order = $this->getOrder($orderId);
+                $orderId    = $this->request->getParam('order_id');
+                $order      = $this->getOrder($orderId);
                 $documentId = $order->getDocumentId();
             }
             if (empty($documentId)) {
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setPath('customer/order/view/order_id/' . $documentId);
+            $resultRedirect->setPath('customer/order/view/order_id/' . $documentId . '/type/' . DocumentIdType::ORDER);
             return $resultRedirect;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return parent::execute();
         }
@@ -71,7 +77,7 @@ class View extends \Magento\Sales\Controller\Order\View
 
     /**
      * @param $id
-     * @return \Magento\Sales\Api\Data\OrderInterface
+     * @return OrderInterface
      */
     public function getOrder($id)
     {

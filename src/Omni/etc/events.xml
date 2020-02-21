@@ -37,7 +37,7 @@
         <observer name="copy_pickup_info_from_quote_to_order" instance="Ls\Omni\Observer\DataAssignObserver"/>
     </event>
     <event name="sales_order_place_after">
-    <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
+        <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
     </event>
     <!-- for fixing grand total and base grand total -->
     <event name="sales_quote_address_collect_totals_after">

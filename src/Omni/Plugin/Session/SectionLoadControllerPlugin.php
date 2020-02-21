@@ -2,6 +2,9 @@
 
 namespace Ls\Omni\Plugin\Session;
 
+use Magento\Customer\Controller\Section\Load;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Message\Session;
 use Magento\Framework\Session\Generic as GenericSession;
 
 /**
@@ -16,7 +19,7 @@ class SectionLoadControllerPlugin
     public $genericSession;
 
     /**
-     * @var \Magento\Framework\App\RequestInterface
+     * @var RequestInterface
      */
     public $request;
 
@@ -28,28 +31,28 @@ class SectionLoadControllerPlugin
     /**
      * SectionLoadControllerPlugin constructor.
      * @param GenericSession $genericSession
-     * @param \Magento\Framework\App\RequestInterface $request
+     * @param RequestInterface $request
      * @param array $additionalSessions
      */
     public function __construct(
         GenericSession $genericSession,
-        \Magento\Framework\App\RequestInterface $request,
+        RequestInterface $request,
         array $additionalSessions
     ) {
 
-        $this->genericSession = $genericSession;
-        $this->request = $request;
+        $this->genericSession     = $genericSession;
+        $this->request            = $request;
         $this->additionalSessions = $additionalSessions;
     }
 
     // @codingStandardsIgnoreLine
-    public function beforeExecute(\Magento\Customer\Controller\Section\Load $subject)
+    public function beforeExecute(Load $subject)
     {
-        $hasMessages = 0;
+        $hasMessages     = 0;
         $updateSectionId = $this->request->getParam('update_section_id');
-        $sections = $this->request->getParam('sections');
+        $sections        = $this->request->getParam('sections');
         foreach ($this->additionalSessions as $session) {
-            if ($session instanceof \Magento\Framework\Message\Session) {
+            if ($session instanceof Session) {
                 foreach ($session->getData() as $messageCollection) {
                     // @codingStandardsIgnoreLine
                     $hasMessages += count($messageCollection->getItems());

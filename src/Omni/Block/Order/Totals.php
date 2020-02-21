@@ -3,12 +3,15 @@
 namespace Ls\Omni\Block\Order;
 
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Framework\DataObject;
+use Magento\Framework\View\Element\AbstractBlock;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Totals
  * @package Ls\Omni\Block\Order
  */
-class Totals extends \Magento\Framework\View\Element\AbstractBlock
+class Totals extends AbstractBlock
 {
 
     /**
@@ -18,12 +21,12 @@ class Totals extends \Magento\Framework\View\Element\AbstractBlock
 
     /**
      * Totals constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param Context $context
      * @param LoyaltyHelper $loyaltyHelper
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
+        Context $context,
         LoyaltyHelper $loyaltyHelper,
         array $data = []
     ) {
@@ -37,13 +40,13 @@ class Totals extends \Magento\Framework\View\Element\AbstractBlock
     public function initTotals()
     {
         $orderTotalsBlock = $this->getParentBlock();
-        $order = $orderTotalsBlock->getOrder();
+        $order            = $orderTotalsBlock->getOrder();
         if ($order->getLsPointsSpent() > 0) {
             $loyaltyAmount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             // @codingStandardsIgnoreLine
-            $loyaltyPoints = new \Magento\Framework\DataObject(
+            $loyaltyPoints = new DataObject(
                 [
-                    'code' => 'ls_points_spent',
+                    'code'  => 'ls_points_spent',
                     'value' => -$loyaltyAmount,
                     'label' => __('Loyalty Points Redeemed'),
                 ]
@@ -52,9 +55,9 @@ class Totals extends \Magento\Framework\View\Element\AbstractBlock
         }
         if ($order->getLsGiftCardAmountUsed() > 0) {
             // @codingStandardsIgnoreLine
-            $giftCardAmount = new \Magento\Framework\DataObject(
+            $giftCardAmount = new DataObject(
                 [
-                    'code' => 'ls_gift_card_amount_used',
+                    'code'  => 'ls_gift_card_amount_used',
                     'value' => -$order->getLsGiftCardAmountUsed(),
                     'label' => __('Gift Card Redeemed ') . '(' . $order->getLsGiftCardNo() . ')',
                 ]

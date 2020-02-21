@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Omni\Console\Command;
 
 use \Ls\Omni\Console\Command;
@@ -20,9 +21,9 @@ class ClientWsdl extends Command
     {
 
         $this->setName(self::COMMAND_NAME)
-             ->setDescription('show WSDL contents')
-             ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
-             ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url');
+            ->setDescription('show WSDL contents')
+            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
+            ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url');
     }
 
     /**

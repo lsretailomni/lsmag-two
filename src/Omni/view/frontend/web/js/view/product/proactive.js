@@ -4,8 +4,7 @@ define([
     "OwlCarousel"
 ], function ($) {
     "use strict";
-    return function main(config, element)
-    {
+    return function main(config, element) {
         var $element = $(element);
         var ajaxUrl = config.ajaxUrl;
         var currentProduct = config.currentProduct;
@@ -14,11 +13,11 @@ define([
                 $.ajax({
                     context: '#ls-discounts',
                     url: ajaxUrl,
-                    type: "POST",
+                    type: "GET",
                     data: {currentProduct: currentProduct}
                 }).done(function (data) {
                     $('#ls-discounts').html(data.output);
-                    $('#ls-discounts').find('.proactive-discounts-container').trigger('contentUpdated')
+                    $('#ls-discounts').find('.proactive-discounts-container').trigger('contentUpdated');
                     return true;
                 });
             }, 2000);

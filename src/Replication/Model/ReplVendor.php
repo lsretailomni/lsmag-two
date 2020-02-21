@@ -92,14 +92,34 @@ class ReplVendor extends AbstractModel implements ReplVendorInterface, IdentityI
     protected $scope_id = null;
 
     /**
-     * @property string $processed
+     * @property boolean $processed
      */
     protected $processed = null;
 
     /**
-     * @property string $is_updated
+     * @property boolean $is_updated
      */
     protected $is_updated = null;
+
+    /**
+     * @property boolean $is_failed
+     */
+    protected $is_failed = null;
+
+    /**
+     * @property string $created_at
+     */
+    protected $created_at = null;
+
+    /**
+     * @property string $updated_at
+     */
+    protected $updated_at = null;
+
+    /**
+     * @property string $processed_at
+     */
+    protected $processed_at = null;
 
     public function _construct()
     {
@@ -392,7 +412,7 @@ class ReplVendor extends AbstractModel implements ReplVendorInterface, IdentityI
     }
 
     /**
-     * @param string $processed
+     * @param boolean $processed
      * @return $this
      */
     public function setProcessed($processed)
@@ -404,7 +424,7 @@ class ReplVendor extends AbstractModel implements ReplVendorInterface, IdentityI
     }
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getProcessed()
     {
@@ -412,7 +432,7 @@ class ReplVendor extends AbstractModel implements ReplVendorInterface, IdentityI
     }
 
     /**
-     * @param string $is_updated
+     * @param boolean $is_updated
      * @return $this
      */
     public function setIsUpdated($is_updated)
@@ -424,11 +444,91 @@ class ReplVendor extends AbstractModel implements ReplVendorInterface, IdentityI
     }
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getIsUpdated()
     {
         return $this->getData( 'is_updated' );
+    }
+
+    /**
+     * @param boolean $is_failed
+     * @return $this
+     */
+    public function setIsFailed($is_failed)
+    {
+        $this->setData( 'is_failed', $is_failed );
+        $this->is_failed = $is_failed;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsFailed()
+    {
+        return $this->getData( 'is_failed' );
+    }
+
+    /**
+     * @param string $created_at
+     * @return $this
+     */
+    public function setCreatedAt($created_at)
+    {
+        $this->setData( 'created_at', $created_at );
+        $this->created_at = $created_at;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt()
+    {
+        return $this->getData( 'created_at' );
+    }
+
+    /**
+     * @param string $updated_at
+     * @return $this
+     */
+    public function setUpdatedAt($updated_at)
+    {
+        $this->setData( 'updated_at', $updated_at );
+        $this->updated_at = $updated_at;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAt()
+    {
+        return $this->getData( 'updated_at' );
+    }
+
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at)
+    {
+        $this->setData( 'processed_at', $processed_at );
+        $this->processed_at = $processed_at;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProcessedAt()
+    {
+        return $this->getData( 'processed_at' );
     }
 
 

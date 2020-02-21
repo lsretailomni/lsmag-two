@@ -2,9 +2,20 @@
 
 namespace Ls\Replication\Setup;
 
+use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
+use \Ls\Replication\Cron\ReplEcommDiscountsTask;
+use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
+use \Ls\Replication\Cron\ReplEcommItemsTask;
+use \Ls\Replication\Cron\ReplEcommPricesTask;
+use \Ls\Replication\Cron\ReplEcommStoresTask;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Setup\UpgradeSchema\AbstractUpgradeSchema;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
+use ReflectionException;
+use Symfony\Component\Filesystem\Filesystem;
+use Zend\Code\Reflection\ClassReflection;
 
 /**
  * Class UpgradeSchema
@@ -12,47 +23,60 @@ use Magento\Framework\Setup\UpgradeSchemaInterface;
  */
 class UpgradeSchema implements UpgradeSchemaInterface
 {
-
-    /** @var string[] */
-    public static $versions = [ ];
-    /**
-     * @var  SchemaSetupInterface
-     */
-    private $installer = null;
-    /**
-     * @var  ModuleContextInterface
-     */
-    private $context = null;
+    /** @var ReplicationHelper */
+    public $replicationHelper;
 
     /**
-     * @param SchemaSetupInterface   $setup
-     * @param ModuleContextInterface $context
+     * UpgradeSchema constructor.
+     * @param ReplicationHelper $replicationHelper
      */
-    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
-    {
-        $this->installer = $setup;
-        $this->context = $context;
-
-        $this->installer->startSetup();
-
-        foreach (UpgradeSchema::$versions as $version) {
-            if (version_compare($version, $this->context->getVersion()) == -1) {
-                $safe_version = UpgradeSchema::sanitizeVersion($version);
-                $method_name = "upgrade$safe_version";
-                $this->{$method_name}();
-            }
-        }
-
-        $this->installer->endSetup();
+    public function __construct(
+        ReplicationHelper $replicationHelper
+    ) {
+        $this->replicationHelper = $replicationHelper;
     }
 
     /**
-     * @param string $version
-     *
-     * @return string
+     * @param SchemaSetupInterface $setup
+     * @param ModuleContextInterface $context
+     * @throws ReflectionException
      */
-    public static function sanitizeVersion($version)
+    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
-        return str_replace('.', '_', $version);
+        $setup->startSetup();
+        // @codingStandardsIgnoreStart
+        $fs             = new Filesystem();
+        $anchor         = new ClassReflection(AbstractUpgradeSchema::class);
+        $base_namespace = $anchor->getNamespaceName();
+        $filename       = $anchor->getFileName();
+        $folder         = dirname($filename);
+        $upgrades       = glob($folder . DIRECTORY_SEPARATOR . '*');
+        foreach ($upgrades as $upgrade_file) {
+            if (strpos($upgrade_file, 'AbstractUpgradeSchema') === false) {
+                if ($fs->exists($upgrade_file)) {
+                    $upgrade_class     = str_replace('.php', '', $fs->makePathRelative($upgrade_file, $folder));
+                    $upgrade_class_fqn = $base_namespace . '\\' . substr($upgrade_class, 0, -1);
+                    /** @var AbstractUpgradeSchema $upgrade */
+                    $upgrade = new $upgrade_class_fqn();
+                    $upgrade->upgrade($setup, $context);
+                }
+            }
+        }
+        if (version_compare($context->getVersion(), '1.2.1', '<')) {
+            $this->replicationHelper->updateCronStatus(false, ReplEcommItemsTask::CONFIG_PATH_STATUS);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommItemsTask::CONFIG_PATH);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommInventoryStatusTask::CONFIG_PATH);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommStoresTask::CONFIG_PATH_STATUS);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommStoresTask::CONFIG_PATH);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommAttributeValueTask::CONFIG_PATH_STATUS);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommAttributeValueTask::CONFIG_PATH);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH_STATUS);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH_STATUS);
+            $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH);
+        }
+        // @codingStandardsIgnoreEnd
+        $setup->endSetup();
     }
 }

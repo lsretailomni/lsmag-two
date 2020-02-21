@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 
 // @codingStandardsIgnoreFile
 
@@ -11,40 +7,59 @@
 <?php $_order = $block->getOrder() ?>
 <div class="block block-order-details-view">
     <div class="block-title">
-        <strong><?= /* @escapeNotVerified */ __('Order Information') ?></strong>
+        <strong><?= /* @escapeNotVerified */
+            __('Order Information') ?></strong>
     </div>
     <div class="block-content">
-        <?php if(!$block->getOrder()->getClickAndCollectOrder()){?>
-        <div class="box box-order-shipping-address">
-            <strong class="box-title"><span><?= /* @escapeNotVerified */ __('Shipping Address') ?></span></strong>
-            <div class="box-content">
-                <address><?= /* @escapeNotVerified */ $block->getFormattedAddress() ?></address>
-            </div>
-        </div>
-        <?php } ?>
-
-
-        <div class="box box-order-shipping-method">
-            <strong class="box-title">
-                <span><?= /* @escapeNotVerified */ __('Shipping Method') ?></span>
-            </strong>
-            <div class="box-content">
-                <?= $block->escapeHtml($block->getShippingDescription()) ?>
-            </div>
-        </div>
-        <div class="box box-order-billing-address">
-                <strong class="box-title"><span><?= /* @escapeNotVerified */ __('Billing Address') ?></span></strong>
+        <?php if (!$block->getOrder()->getClickAndCollectOrder() && !empty($block->getFormattedAddress())) {
+                ?>
+            <div class="box box-order-shipping-address">
+                <strong class="box-title"><span><?= /* @escapeNotVerified */
+                        __('Shipping Address') ?></span></strong>
                 <div class="box-content">
-                    <address><?= /* @escapeNotVerified */ $block->getFormattedAddress() ?></address>
+                    <address><?= /* @escapeNotVerified */
+                        $block->getFormattedAddress() ?></address>
                 </div>
-        </div>
-        <div class="box box-order-billing-method">
-            <strong class="box-title">
-                <span><?= /* @escapeNotVerified */ __('Payment Method') ?></span>
-            </strong>
-            <div class="box-content">
-                <?= $block->escapeHtml($block->getPaymentDescription()[0])  ?>
             </div>
-        </div>
+            <?php
+            }
+        if (!empty($block->getShippingDescription())) {
+            ?>
+            <div class="box box-order-shipping-method">
+                <strong class="box-title">
+                <span><?= /* @escapeNotVerified */
+                    __('Shipping Method') ?></span>
+                </strong>
+                <div class="box-content">
+                    <?= $block->escapeHtml($block->getShippingDescription()) ?>
+                </div>
+            </div>
+            <?php
+        }
+        if (!empty($block->getFormattedAddress())) {
+            ?>
+            <div class="box box-order-billing-address">
+                <strong class="box-title"><span><?= /* @escapeNotVerified */
+                        __('Billing Address') ?></span></strong>
+                <div class="box-content">
+                    <address><?= /* @escapeNotVerified */
+                        $block->getFormattedAddress() ?></address>
+                </div>
+            </div>
+            <?php
+        }
+        if (!empty($block->getPaymentDescription()[0])) {
+            ?>
+            <div class="box box-order-billing-method">
+                <strong class="box-title">
+                <span><?= /* @escapeNotVerified */
+                    __('Payment Method') ?></span>
+                </strong>
+                <div class="box-content">
+                    <?= $block->escapeHtml($block->getPaymentDescription()[0]) ?>
+                </div>
+            </div>
+        <?php
+        } ?>
     </div>
 </div>

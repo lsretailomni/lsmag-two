@@ -2,23 +2,35 @@
 
 namespace Ls\Customer\Block\Order;
 
+use Exception;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Helper\OrderHelper;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Directory\Model\CountryFactory;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Http\Context;
+use Magento\Framework\Phrase;
+use Magento\Framework\Pricing\Helper\Data;
 use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context as TemplateContext;
+use Magento\Sales\Model\OrderRepository;
 
 /**
  * Class Info
  * @package Ls\Customer\Block\Order
  */
-class Info extends \Magento\Framework\View\Element\Template
+class Info extends Template
 {
     /**
-     * @var \Magento\Directory\Model\CountryFactory
+     * @var CountryFactory
      */
     public $countryFactory;
 
     /**
-     * @var \Magento\Framework\Pricing\Helper\Data
+     * @var Data
      */
     public $priceHelper;
 
@@ -28,17 +40,17 @@ class Info extends \Magento\Framework\View\Element\Template
     public $orderRepository;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     public $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var Proxy
      */
     public $customerSession;
 
     /**
-     * @var \Ls\Omni\Helper\OrderHelper
+     * @var OrderHelper
      */
     public $orderHelper;
 
@@ -52,12 +64,12 @@ class Info extends \Magento\Framework\View\Element\Template
     /**
      * Core registry
      *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     public $coreRegistry = null;
 
     /**
-     * @var \Magento\Framework\App\Http\Context
+     * @var Context
      */
     public $httpContext;
 
@@ -65,35 +77,35 @@ class Info extends \Magento\Framework\View\Element\Template
      * Info constructor.
      * @param TemplateContext $context
      * @param Registry $registry
-     * @param \Magento\Directory\Model\CountryFactory $countryFactory
-     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
-     * @param \Magento\Sales\Model\OrderRepository $orderRepository
-     * @param \Ls\Omni\Helper\OrderHelper $orderHelper
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Framework\App\Http\Context $httpContext
+     * @param CountryFactory $countryFactory
+     * @param Data $priceHelper
+     * @param OrderRepository $orderRepository
+     * @param OrderHelper $orderHelper
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param Proxy $customerSession
+     * @param Context $httpContext
      * @param array $data
      */
     public function __construct(
         TemplateContext $context,
         Registry $registry,
-        \Magento\Directory\Model\CountryFactory $countryFactory,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        \Magento\Sales\Model\OrderRepository $orderRepository,
-        \Ls\Omni\Helper\OrderHelper $orderHelper,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Framework\App\Http\Context $httpContext,
+        CountryFactory $countryFactory,
+        Data $priceHelper,
+        OrderRepository $orderRepository,
+        OrderHelper $orderHelper,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        Proxy $customerSession,
+        Context $httpContext,
         array $data = []
     ) {
-        $this->coreRegistry = $registry;
-        $this->countryFactory = $countryFactory;
-        $this->priceHelper = $priceHelper;
-        $this->orderRepository = $orderRepository;
-        $this->orderHelper = $orderHelper;
+        $this->coreRegistry          = $registry;
+        $this->countryFactory        = $countryFactory;
+        $this->priceHelper           = $priceHelper;
+        $this->orderRepository       = $orderRepository;
+        $this->orderHelper           = $orderHelper;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->customerSession = $customerSession;
-        $this->httpContext = $httpContext;
+        $this->customerSession       = $customerSession;
+        $this->httpContext           = $httpContext;
         parent::__construct($context, $data);
     }
 
@@ -110,35 +122,21 @@ class Info extends \Magento\Framework\View\Element\Template
      */
     public function getFormattedAddress()
     {
-        $order = $this->getOrder();
+        $order         = $this->getOrder();
         $shipToAddress = $order->getShipToAddress();
-        $address = "";
-        $tmp = "";
-        $tmp = $order->getShipToName() ? $order->getShipToName() . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getAddress1() ? $shipToAddress->getAddress1() . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getAddress2() ? $shipToAddress->getAddress2() . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getCity() ? $shipToAddress->getCity() . ", " : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getStateProvinceRegion() ? $shipToAddress->getStateProvinceRegion() . ", " : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $shipToAddress->getPostCode() ? $shipToAddress->getPostCode() . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $this->getCountryName($shipToAddress->getCountry()) ?
-            $this->getCountryName($shipToAddress->getCountry()) . "<br/>" : "";
-        $address .= $tmp;
-        $tmp = "";
-        $tmp = $order->getShipToPhoneNumber() ?
-            "<a href='tel:" . $order->getShipToPhoneNumber() . "'>" . $order->getShipToPhoneNumber() . "</a>" : "";
-        $address .= $tmp;
+        $address       = '';
+        if (!empty($shipToAddress)) {
+            $address .= $order->getShipToName() ? $order->getShipToName() . '<br/>' : '';
+            $address .= $shipToAddress->getAddress1() ? $shipToAddress->getAddress1() . '<br/>' : '';
+            $address .= $shipToAddress->getAddress2() ? $shipToAddress->getAddress2() . '<br/>' : '';
+            $address .= $shipToAddress->getCity() ? $shipToAddress->getCity() . ', ' : '';
+            $address .= $shipToAddress->getStateProvinceRegion() ? $shipToAddress->getStateProvinceRegion() . ', ' : '';
+            $address .= $shipToAddress->getPostCode() ? $shipToAddress->getPostCode() . '<br/>' : '';
+            $address .= $this->getCountryName($shipToAddress->getCountry()) ?
+                $this->getCountryName($shipToAddress->getCountry()) . '<br/>' : '';
+            $address .= $order->getShipToPhoneNumber() ?
+                "<a href='tel:" . $order->getShipToPhoneNumber() . "'>" . $order->getShipToPhoneNumber() . '</a>' : '';
+        }
         return $address;
     }
 
@@ -158,14 +156,14 @@ class Info extends \Magento\Framework\View\Element\Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getId()));
+        $this->pageConfig->getTitle()->set(__('%1 # %2', $this->getOrder()->getIdType(), $this->getOrder()->getId()));
     }
     // @codingStandardsIgnoreEnd
 
     /**
      * Retrieve current order model instance
      *
-     * @return \Ls\Omni\Client\Ecommerce\Entity\SalesEntry
+     * @return SalesEntry
      */
     public function getOrder()
     {
@@ -173,11 +171,15 @@ class Info extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @return \Magento\Framework\Phrase
+     * @return Phrase|string
      */
     public function getShippingDescription()
     {
         $status = $this->getOrder()->getClickAndCollectOrder();
+        $type   = $this->getOrder()->getIdType();
+        if ($type !== DocumentIdType::ORDER) {
+            return '';
+        }
         if ($status) {
             return __('Click and Collect');
         } else {
@@ -192,7 +194,7 @@ class Info extends \Magento\Framework\View\Element\Template
     {
         // @codingStandardsIgnoreStart
         $paymentLines = $this->getOrder()->getPayments();
-        $methods = array();
+        $methods      = array();
         $giftCardInfo = array();
         // @codingStandardsIgnoreEnd
         foreach ($paymentLines as $line) {
@@ -205,7 +207,7 @@ class Info extends \Magento\Framework\View\Element\Template
             } elseif ($line->getTenderType() == '3') {
                 $methods[] = __('Loyalty Points');
             } elseif ($line->getTenderType() == '4') {
-                $methods[] = __('Gift Card');
+                $methods[]       = __('Gift Card');
                 $giftCardInfo[0] = $line->getCardNo();
                 $giftCardInfo[1] = $line->getAmount();
             } else {
@@ -213,10 +215,10 @@ class Info extends \Magento\Framework\View\Element\Template
             }
         }
         //TODO when order edit payment available for offline payment we need to change it.
-        if (empty($paymentLines)) {
+        if (empty($paymentLines->getSalesEntryPayment())) {
             $methods[] = __('Pay At Store');
         }
-        return[implode(', ', $methods),$giftCardInfo];
+        return [implode(', ', $methods), $giftCardInfo];
     }
 
     /**
@@ -261,7 +263,7 @@ class Info extends \Magento\Framework\View\Element\Template
             if ($order->getDocumentId() != null) {
                 return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
     }

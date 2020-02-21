@@ -1,32 +1,38 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 
 // @codingStandardsIgnoreFile
 
-/** @var \Ls\Customer\Block\Order\Items $block */
-$order=$block->getMagOrder();
+/** @var Items $block */
+$order = $block->getMagOrder();
+
+use \Ls\Customer\Block\Order\Items;
+
 ?>
 <div class="table-wrapper order-items">
-    <table class="data table table-order-items" id="my-orders-table" summary="<?= /* @escapeNotVerified */ __('Items Ordered') ?>">
-        <caption class="table-caption"><?= /* @escapeNotVerified */ __('Items Ordered') ?></caption>
+    <table class="data table table-order-items" id="my-orders-table" summary="<?= /* @escapeNotVerified */
+    __('Items Ordered') ?>">
+        <caption class="table-caption"><?= /* @escapeNotVerified */
+            __('Items Ordered') ?></caption>
         <thead>
         <tr>
-            <th class="col name"><?= /* @escapeNotVerified */ __('Product Name') ?></th>
-            <th class="col sku"><?= /* @escapeNotVerified */ __('SKU') ?></th>
-            <?php if(!$block->getShipmentOption()) { ?>
-            <th class="col price"><?= /* @escapeNotVerified */ __('Price') ?></th>
+            <th class="col name"><?= /* @escapeNotVerified */
+                __('Product Name') ?></th>
+            <th class="col sku"><?= /* @escapeNotVerified */
+                __('SKU') ?></th>
+            <?php if (!$block->getShipmentOption()) { ?>
+                <th class="col price"><?= /* @escapeNotVerified */
+                    __('Price') ?></th>
             <?php } ?>
-                <th class="col qty"><?= /* @escapeNotVerified */ __('Qty') ?></th>
-            <?php if(!$block->getShipmentOption()) { ?>
-                <th class="col subtotal"><?= /* @escapeNotVerified */ __('Subtotal') ?></th>
+            <th class="col qty"><?= /* @escapeNotVerified */
+                __('Qty') ?></th>
+            <?php if (!$block->getShipmentOption()) { ?>
+                <th class="col subtotal"><?= /* @escapeNotVerified */
+                    __('Subtotal') ?></th>
             <?php } ?>
         </tr>
         </thead>
         <?php $items = $block->getItems(); ?>
-        <?php $giftMessage = ''?>
+        <?php $giftMessage = '' ?>
         <?php foreach ($items as $item):
             ?>
             <tbody>

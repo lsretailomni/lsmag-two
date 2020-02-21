@@ -1,16 +1,12 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-?>
-<?php /** @var $block \Ls\Customer\Block\Order\Recent */ ?>
+use \Ls\Customer\Block\Order\Recent;
+use Magento\Framework\Data\Helper\PostHelper; ?>
+<?php /** @var $block Recent */ ?>
 <div class="block block-dashboard-orders">
     <?php
     $_orders = $block->getOrderHistory();
-    $count = count($_orders);
+    $count   = count($_orders);
     ?>
     <div class="block-title order">
         <strong><?= /* @escapeNotVerified */
@@ -33,7 +29,7 @@
                     <thead>
                     <tr>
                         <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                            __('Order #') ?></th>
+                            __('Document ID #') ?></th>
                         <th scope="col" class="col date"><?= /* @escapeNotVerified */
                             __('Date') ?></th>
                         <th scope="col" class="col shipping"><?= /* @escapeNotVerified */
@@ -50,24 +46,19 @@
                     </thead>
                     <tbody>
                     <?php foreach ($_orders as $i => $_order):
-                        if ($_order->getIdType() !== \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType::ORDER) {
-                            continue;
-                        }
                         if ($i > 4) {
                             break;
                         }
                         ?>
                         <tr>
-                            <td data-th="<?= $block->escapeHtml(__('Order #')) ?>"
+                            <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
                                 class="col id"><?= /* @escapeNotVerified */
                                 $_order->getId() ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
                                 class="col date"><?= /* @escapeNotVerified */
                                 $block->getFormattedDate($_order->getDocumentRegTime()) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
-                                class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : '&nbsp;' ?></td>
-                            <td data-th="<?= $block->escapeHtml(__('Store Name')) ?>"
-                                class="col store-name"><?= $_order->getStoreName()?></td>
+                                class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable'); ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Total')) ?>"
                                 class="col total"><?= /* @escapeNotVerified */
                                 $block->getFormattedPrice($_order->getTotalAmount()) ?></td>
@@ -86,7 +77,7 @@
                                     if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getEntityId())) : ?>
                                         <a href="#" data-post='<?php /* @escapeNotVerified */
                                         echo
-                                        $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+                                        $this->helper(PostHelper::class)
                                             ->getPostData($block->getReorderUrl($magOrder))
                                         ?>' class="action order">
                                             <span><?= /* @escapeNotVerified */

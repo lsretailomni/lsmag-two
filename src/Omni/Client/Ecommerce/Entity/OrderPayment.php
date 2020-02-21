@@ -8,13 +8,21 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
+use Ls\Omni\Exception\InvalidEnumException;
+
 class OrderPayment
 {
 
     /**
-     * @property string $AuthorisationCode
+     * @property float $Amount
      */
-    protected $AuthorisationCode = null;
+    protected $Amount = null;
+
+    /**
+     * @property string $AuthorizationCode
+     */
+    protected $AuthorizationCode = null;
 
     /**
      * @property string $CardNumber
@@ -37,9 +45,9 @@ class OrderPayment
     protected $CurrencyFactor = null;
 
     /**
-     * @property float $FinalizedAmount
+     * @property string $ExternalReference
      */
-    protected $FinalizedAmount = null;
+    protected $ExternalReference = null;
 
     /**
      * @property int $LineNumber
@@ -47,19 +55,9 @@ class OrderPayment
     protected $LineNumber = null;
 
     /**
-     * @property string $No
+     * @property PaymentType $PaymentType
      */
-    protected $No = null;
-
-    /**
-     * @property string $OrderId
-     */
-    protected $OrderId = null;
-
-    /**
-     * @property float $PreApprovedAmount
-     */
-    protected $PreApprovedAmount = null;
+    protected $PaymentType = null;
 
     /**
      * @property string $PreApprovedValidDate
@@ -72,21 +70,44 @@ class OrderPayment
     protected $TenderType = null;
 
     /**
-     * @param string $AuthorisationCode
+     * @property string $TokenNumber
+     */
+    protected $TokenNumber = null;
+
+    /**
+     * @param float $Amount
      * @return $this
      */
-    public function setAuthorisationCode($AuthorisationCode)
+    public function setAmount($Amount)
     {
-        $this->AuthorisationCode = $AuthorisationCode;
+        $this->Amount = $Amount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        return $this->Amount;
+    }
+
+    /**
+     * @param string $AuthorizationCode
+     * @return $this
+     */
+    public function setAuthorizationCode($AuthorizationCode)
+    {
+        $this->AuthorizationCode = $AuthorizationCode;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAuthorisationCode()
+    public function getAuthorizationCode()
     {
-        return $this->AuthorisationCode;
+        return $this->AuthorizationCode;
     }
 
     /**
@@ -162,21 +183,21 @@ class OrderPayment
     }
 
     /**
-     * @param float $FinalizedAmount
+     * @param string $ExternalReference
      * @return $this
      */
-    public function setFinalizedAmount($FinalizedAmount)
+    public function setExternalReference($ExternalReference)
     {
-        $this->FinalizedAmount = $FinalizedAmount;
+        $this->ExternalReference = $ExternalReference;
         return $this;
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getFinalizedAmount()
+    public function getExternalReference()
     {
-        return $this->FinalizedAmount;
+        return $this->ExternalReference;
     }
 
     /**
@@ -198,57 +219,31 @@ class OrderPayment
     }
 
     /**
-     * @param string $No
+     * @param PaymentType|string $PaymentType
      * @return $this
+     * @throws InvalidEnumException
      */
-    public function setNo($No)
+    public function setPaymentType($PaymentType)
     {
-        $this->No = $No;
+        if ( ! $PaymentType instanceof PaymentType ) {
+            if ( PaymentType::isValid( $PaymentType ) )
+                $PaymentType = new PaymentType( $PaymentType );
+            elseif ( PaymentType::isValidKey( $PaymentType ) )
+                $PaymentType = new PaymentType( constant( "PaymentType::$PaymentType" ) );
+            elseif ( ! $PaymentType instanceof PaymentType )
+                throw new InvalidEnumException();
+        }
+        $this->PaymentType = $PaymentType->getValue();
+
         return $this;
     }
 
     /**
-     * @return string
+     * @return PaymentType
      */
-    public function getNo()
+    public function getPaymentType()
     {
-        return $this->No;
-    }
-
-    /**
-     * @param string $OrderId
-     * @return $this
-     */
-    public function setOrderId($OrderId)
-    {
-        $this->OrderId = $OrderId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOrderId()
-    {
-        return $this->OrderId;
-    }
-
-    /**
-     * @param float $PreApprovedAmount
-     * @return $this
-     */
-    public function setPreApprovedAmount($PreApprovedAmount)
-    {
-        $this->PreApprovedAmount = $PreApprovedAmount;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPreApprovedAmount()
-    {
-        return $this->PreApprovedAmount;
+        return $this->PaymentType;
     }
 
     /**
@@ -285,6 +280,24 @@ class OrderPayment
     public function getTenderType()
     {
         return $this->TenderType;
+    }
+
+    /**
+     * @param string $TokenNumber
+     * @return $this
+     */
+    public function setTokenNumber($TokenNumber)
+    {
+        $this->TokenNumber = $TokenNumber;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenNumber()
+    {
+        return $this->TokenNumber;
     }
 
 

@@ -1,10 +1,13 @@
 <?php
 
-/** @var \Ls\Customer\Block\Loyalty\Offers $this */
-$type = 'SpecialMember';
+/** @var Offers $this */
+
+use \Ls\Customer\Block\Loyalty\Offers;
+
+$type   = 'SpecialMember';
 $offers = $this->getOffers();
-$total = count($offers);
-$c = 0;
+$total  = count($offers);
+$c      = 0;
 ?>
 
 <div class="coupons-view">
@@ -36,7 +39,7 @@ $c = 0;
                             <div class="title">
                                 <h3><?php echo $offer->getDescription(); ?></h3>
                             </div>
-                            <?php if($offer->getCode()=='Coupon') { ?>
+                            <?php if ($offer->getCode() == 'Coupon') { ?>
                                 <div class="code">
                                     <span><b><?php echo __("Code: "); ?></b><?php echo $offer->getOfferId(); ?></span>
                                 </div>
@@ -57,7 +60,7 @@ $c = 0;
                             <div class="coupon-description">
                                 <p><?php echo $offer->getDetails(); ?></p>
                             </div>
-                            <?php if (!empty($offerProductCategory[0]) ){?>
+                            <?php if (!empty($offerProductCategory[0])) { ?>
                                 <p>
                                     <a class="action subscribe primary"
                                        href="<?php echo $offerProductCategory[0]; ?>"><?php echo __($offerProductCategory[1]); ?></a>

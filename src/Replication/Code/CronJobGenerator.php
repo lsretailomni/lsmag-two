@@ -3,17 +3,18 @@
 
 namespace Ls\Replication\Code;
 
+use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Core\Helper\Data as LsHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Cron\AbstractReplicationTask;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
+use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Psr\Log\LoggerInterface;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
-use Magento\Config\Model\ResourceModel\Config;
-use \Ls\Replication\Helper\ReplicationHelper;
 
 /**
  * Class CronJobGenerator
@@ -27,8 +28,8 @@ class CronJobGenerator extends AbstractGenerator
 
     /**
      * CronJobGenerator constructor.
-     *
      * @param ReplicationOperation $operation
+     * @throws Exception
      */
     public function __construct(ReplicationOperation $operation)
     {
@@ -45,7 +46,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->setNamespaceName($this->operation->getJobNamespace());
         $this->class->setExtendedClass(AbstractReplicationTask::class);
 
-        $this->class->addUse(LoggerInterface::class);
+        $this->class->addUse(Logger::class);
         $this->class->addUse(ScopeConfigInterface::class);
         $this->class->addUse(Config::class);
         $this->class->addUse(LsHelper::class, 'LsHelper');
@@ -59,21 +60,24 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addConstant('JOB_CODE', $this->operation->getJobId());
         $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$this->operation->getTableName()}");
         $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$this->operation->getTableName()}");
-        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
-
+        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE',
+            "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
+        $this->class->addConstant('CONFIG_PATH_MAX_KEY',
+            "ls_mag/replication/max_key_{$this->operation->getTableName()}");
         $this->createProperty('repository', $this->operation->getRepositoryName());
         $this->createProperty('factory', $this->operation->getFactoryName());
         $this->createProperty('dataInterface', $this->operation->getInterfaceName());
 
         $repository_name = $this->operation->getRepositoryName();
-        $factory_name = $this->operation->getFactoryName();
-        $data_interface = $this->operation->getInterfaceName();
+        $factory_name    = $this->operation->getFactoryName();
+        $data_interface  = $this->operation->getInterfaceName();
 
         $this->class->addMethodFromGenerator($this->getConstructor());
         $this->class->addMethodFromGenerator($this->getMakeRequest());
         $this->class->addMethodFromGenerator($this->getConfigPath());
         $this->class->addMethodFromGenerator($this->getConfigPathStatus());
         $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
+        $this->class->addMethodFromGenerator($this->getConfigPathMaxKey());
         $this->class->addMethodFromGenerator($this->getMainEntity());
 
         $content = $this->file->generate();
@@ -90,8 +94,8 @@ class CronJobGenerator extends AbstractGenerator
         // removing the slashes from \Config -- Same for All
         $content = str_replace('\Config $resource_config', 'Config $resource_config', $content);
 
-        // removing the slashes from \LoggerInterface -- Same for All
-        $content = str_replace('\LoggerInterface $logger', 'LoggerInterface $logger', $content);
+        // removing the slashes from \Logger -- Same for All
+        $content = str_replace('\Logger $logger', 'Logger $logger', $content);
 
         // removing the slashes from \LsHelper -- Same for All
         $content = str_replace('\LsHelper $helper', 'LsHelper $helper', $content);
@@ -123,7 +127,7 @@ class CronJobGenerator extends AbstractGenerator
         $constructor->setParameters([
             new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
             new ParameterGenerator('resource_config', 'Config'),
-            new ParameterGenerator('logger', 'LoggerInterface'),
+            new ParameterGenerator('logger', 'Logger'),
             new ParameterGenerator('helper', 'LsHelper'),
             new ParameterGenerator('repHelper', 'ReplicationHelper'),
             new ParameterGenerator('factory', $this->operation->getFactoryName()),
@@ -149,22 +153,22 @@ CODE
         $make_request = new MethodGenerator();
         $make_request->setName('makeRequest')
             ->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $make_request->setParameters([new ParameterGenerator('last_key')]);
-        //making full replication dynamic instead of making it true all the time.
-        // @see https://solutions.lsretail.com/jira/browse/OMNI-4508
-        $make_request->setParameters([new ParameterGenerator('full_replication', null, false)]);
-        // making batchsize dynamic and setting the default value to 100
-        $make_request->setParameters([new ParameterGenerator('batchsize', null, 100)]);
-        // setting storeid for those which requorire
+        $make_request->setParameters([new ParameterGenerator('lastKey')]);
+        $make_request->setParameters([new ParameterGenerator('fullReplication', null, false)]);
+        // making batchSize dynamic and setting the default value to 100
+        $make_request->setParameters([new ParameterGenerator('batchSize', null, 100)]);
+        // setting storeId for those which require
         $make_request->setParameters([new ParameterGenerator('storeId', null, '')]);
+        $make_request->setParameters([new ParameterGenerator('maxKey', null, '')]);
         $make_request->setParameters([new ParameterGenerator('baseUrl', null, '')]);
 
         $make_request->setBody(<<<CODE
 \$request = new {$this->operation->getName()}(\$baseUrl);
 \$request->getOperationInput()
-         ->setReplRequest( ( new ReplRequest() )->setBatchSize(\$batchsize)
-                                                ->setFullReplication(\$full_replication)
-                                                ->setLastKey(\$last_key)
+         ->setReplRequest( ( new ReplRequest() )->setBatchSize(\$batchSize)
+                                                ->setFullReplication(\$fullReplication)
+                                                ->setLastKey(\$lastKey)
+                                                ->setMaxKey(\$maxKey)
                                                 ->setStoreId(\$storeId));
 return \$request;
 CODE
@@ -206,6 +210,19 @@ CODE
             ->setVisibility(MethodGenerator::FLAG_PROTECTED);
         $config_path->setBody(<<<CODE
 return self::CONFIG_PATH_LAST_EXECUTE;
+CODE
+        );
+
+        return $config_path;
+    }
+
+    private function getConfigPathMaxKey()
+    {
+        $config_path = new MethodGenerator();
+        $config_path->setName('getConfigPathMaxKey')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
+        $config_path->setBody(<<<CODE
+return self::CONFIG_PATH_MAX_KEY;
 CODE
         );
 

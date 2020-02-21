@@ -28,9 +28,9 @@ class Operation
     public function __construct($name = null, Element $request, Element $response = null)
     {
 
-        $this->name = $name;
-        $this->request = $request;
-        $this->response = $response;
+        $this->name        = $name;
+        $this->request     = $request;
+        $this->response    = $response;
         $this->case_helper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
     }
 

@@ -56,9 +56,9 @@ class OneListGetByCardId implements RequestInterface
     public function setListType($listType)
     {
         if ( ! $listType instanceof ListType ) {
-            if ( ListType::isValid( $listType ) ) 
+            if ( ListType::isValid( $listType ) )
                 $listType = new ListType( $listType );
-            elseif ( ListType::isValidKey( $listType ) ) 
+            elseif ( ListType::isValidKey( $listType ) )
                 $listType = new ListType( constant( "ListType::$listType" ) );
             elseif ( ! $listType instanceof ListType )
                 throw new InvalidEnumException();

@@ -2,6 +2,19 @@
 
 namespace Ls\Omni\Controller\Cart;
 
+use Exception;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\GiftCardHelper;
+use Magento\Checkout\Model\Cart;
+use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Data\Form\FormKey\Validator;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
+
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -10,17 +23,17 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     /**
      * Sales quote repository
      *
-     * @var \Magento\Quote\Api\CartRepositoryInterface
+     * @var CartRepositoryInterface
      */
     public $quoteRepository;
 
     /**
-     * @var \Ls\Omni\Helper\GiftCardHelper
+     * @var GiftCardHelper
      */
     public $giftCardHelper;
 
     /**
-     * @var \Ls\Omni\Helper\BasketHelper
+     * @var BasketHelper
      */
     public $basketHelper;
 
@@ -30,36 +43,36 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     public $priceHelper;
 
     /**
-     * @var \Ls\Omni\Helper\Data
+     * @var Data
      */
     public $data;
 
     /**
      * GiftCardUsed constructor.
-     * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
-     * @param \Magento\Checkout\Model\Cart $cart
-     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
-     * @param \Ls\Omni\Helper\GiftCardHelper $giftCardHelper
-     * @param \Ls\Omni\Helper\BasketHelper $basketHelper
+     * @param Context $context
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Proxy $checkoutSession
+     * @param StoreManagerInterface $storeManager
+     * @param Validator $formKeyValidator
+     * @param Cart $cart
+     * @param CartRepositoryInterface $quoteRepository
+     * @param GiftCardHelper $giftCardHelper
+     * @param BasketHelper $basketHelper
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
-     * @param \Ls\Omni\Helper\Data $data
+     * @param Data $data
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator,
-        \Magento\Checkout\Model\Cart $cart,
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
-        \Ls\Omni\Helper\GiftCardHelper $giftCardHelper,
-        \Ls\Omni\Helper\BasketHelper $basketHelper,
+        Context $context,
+        ScopeConfigInterface $scopeConfig,
+        Proxy $checkoutSession,
+        StoreManagerInterface $storeManager,
+        Validator $formKeyValidator,
+        Cart $cart,
+        CartRepositoryInterface $quoteRepository,
+        GiftCardHelper $giftCardHelper,
+        BasketHelper $basketHelper,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        \Ls\Omni\Helper\Data $data
+        Data $data
     ) {
         parent::__construct(
             $context,
@@ -70,24 +83,24 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             $cart
         );
         $this->quoteRepository = $quoteRepository;
-        $this->giftCardHelper = $giftCardHelper;
-        $this->priceHelper = $priceHelper;
-        $this->basketHelper = $basketHelper;
-        $this->data = $data;
+        $this->giftCardHelper  = $giftCardHelper;
+        $this->priceHelper     = $priceHelper;
+        $this->basketHelper    = $basketHelper;
+        $this->data            = $data;
     }
 
     /**
      * Initialize coupon
      *
-     * @return \Magento\Framework\Controller\Result\Redirect
+     * @return Redirect
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function execute()
     {
-        $giftCardNo = $this->getRequest()->getParam('giftcardno');
+        $giftCardNo            = $this->getRequest()->getParam('giftcardno');
         $giftCardBalanceAmount = 0;
-        $giftCardAmount = $this->getRequest()->getParam('removegiftcard') == 1
+        $giftCardAmount        = $this->getRequest()->getParam('removegiftcard') == 1
             ? 0
             : trim($this->getRequest()->getParam('giftcardamount'));
 
@@ -117,9 +130,9 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 return $this->_goBack();
             }
 
-            $cartQuote = $this->cart->getQuote();
-            $itemsCount = $cartQuote->getItemsCount();
-            $orderBalance =$this->data->getOrderBalance(
+            $cartQuote    = $this->cart->getQuote();
+            $itemsCount   = $cartQuote->getItemsCount();
+            $orderBalance = $this->data->getOrderBalance(
                 0,
                 $cartQuote->getLsPointsSpent(),
                 $this->basketHelper->getBasketSessionValue()
@@ -134,7 +147,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             if ($isGiftCardAmountValid == false) {
                 $this->messageManager->addErrorMessage(
                     __(
-                        'The applied amount %3'.
+                        'The applied amount %3' .
                         ' is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).',
                         $this->priceHelper->currency(
                             $giftCardBalanceAmount,
@@ -184,18 +197,18 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 } else {
                     $this->messageManager->addErrorMessage(
                         __(
-                            "Gift Card cannot be apply."
+                            "Gift Card cannot be applied."
                         )
                     );
                 }
             } else {
-                if ($giftCardAmount==0) {
+                if ($giftCardAmount == 0) {
                     $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();
                 }
                 $this->messageManager->addSuccessMessage(__('You have successfully cancelled the gift card.'));
             }
-        } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage(__('Gift Card cannot be apply.'));
+        } catch (Exception $e) {
+            $this->messageManager->addErrorMessage(__('Gift Card cannot be applied.'));
         }
 
         return $this->_goBack();

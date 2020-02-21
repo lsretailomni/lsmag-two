@@ -5,7 +5,7 @@ define(
         'uiComponent',
         'mage/translate'
     ],
-    function (Component,$t) {
+    function (Component, $t) {
         "use strict";
         var quoteItemData = window.checkoutConfig.quoteItemData;
         return Component.extend({
@@ -18,7 +18,7 @@ define(
             },
             getOriginalPrice: function (quoteItem) {
                 var item = this.getItem(quoteItem.item_id);
-                if (item.discountamount!=='') {
+                if (item.discountamount !== '') {
                     return item.originalprice;
                 }
             },
@@ -28,7 +28,7 @@ define(
             },
             getDiscountAmount: function (quoteItem) {
                 var item = this.getItem(quoteItem.item_id);
-                if (item.discountamount!=='') {
+                if (item.discountamount !== '') {
                     return '(' + $t(item.discountamounttext) + ' ' + item.discountamount + ')';
                 }
             },

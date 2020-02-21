@@ -1,4 +1,6 @@
-<?php
+<?php use Magento\Customer\Block\Widget\Dob;
+use Magento\Customer\Block\Widget\Taxvat;
+
 /**
  * Create account form template
  *
@@ -6,6 +8,7 @@
  */
 // @codingStandardsIgnoreFile
 $_isLSR = true;
+
 ?>
 <?php echo $block->getChildHtml('form_fields_before') ?>
 <?php /* Extensions placeholder */ ?>
@@ -40,13 +43,13 @@ $_isLSR = true;
                 <?php echo $block->getChildHtml('customer.form.register.newsletter') ?>
             <?php endif ?>
 
-            <?php /** @var \Magento\Customer\Block\Widget\Dob $_dob */
+            <?php /** @var Dob $_dob */
             $_dob = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Dob') ?>
             <?php if ($_dob->isEnabled()) : ?>
                 <?php echo $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
             <?php endif ?>
 
-            <?php $_taxvat = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Taxvat') ?>
+            <?php $_taxvat = $block->getLayout()->createBlock(Taxvat::class) ?>
             <?php if ($_taxvat->isEnabled()) : ?>
                 <?php echo $_taxvat->setTaxvat($block->getFormData()->getTaxvat())->toHtml() ?>
             <?php endif ?>

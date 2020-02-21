@@ -2,10 +2,15 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+use Exception;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Quote\Model\CouponManagement;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\QuoteRepository;
 
 /**
  * Class CouponInformationManagement
@@ -13,40 +18,40 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class CouponInformationManagement
 {
-    /** @var \Magento\Quote\Model\QuoteRepository */
+    /** @var QuoteRepository */
     public $quoteRepository;
 
-    /** @var \Ls\Omni\Helper\BasketHelper; */
+    /** @var BasketHelper; */
     public $basketHelper;
 
     /**
      * CouponInformationManagement constructor.
-     * @param \Magento\Quote\Model\QuoteRepository $quoteRepository
+     * @param QuoteRepository $quoteRepository
      * @param BasketHelper $basketHelper
      */
     public function __construct(
-        \Magento\Quote\Model\QuoteRepository $quoteRepository,
+        QuoteRepository $quoteRepository,
         BasketHelper $basketHelper
     ) {
         $this->quoteRepository = $quoteRepository;
-        $this->basketHelper = $basketHelper;
+        $this->basketHelper    = $basketHelper;
     }
 
     /**
-     * @param \Magento\Quote\Model\CouponManagement $subject
+     * @param CouponManagement $subject
      * @param $proceed
      * @param $cartId
      * @param $couponCode
      * @return bool
      * @throws CouldNotSaveException
      * @throws NoSuchEntityException
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws InvalidEnumException
      */
     // @codingStandardsIgnoreLine
-    public function aroundSet(\Magento\Quote\Model\CouponManagement $subject, $proceed, $cartId, $couponCode)
+    public function aroundSet(CouponManagement $subject, $proceed, $cartId, $couponCode)
     {
         $couponCode = trim($couponCode);
-        /** @var  \Magento\Quote\Model\Quote $quote */
+        /** @var  Quote $quote */
         $quote = $this->quoteRepository->getActive($cartId);
         if (!$quote->getItemsCount()) {
             throw new NoSuchEntityException(__('Cart %1 doesn\'t contain products', $cartId));
@@ -64,15 +69,15 @@ class CouponInformationManagement
     }
 
     /**
-     * @param \Magento\Quote\Model\CouponManagement $subject
+     * @param CouponManagement $subject
      * @param $cartId
      * @throws CouldNotDeleteException
      * @throws NoSuchEntityException
      */
     // @codingStandardsIgnoreLine
-    public function beforeRemove(\Magento\Quote\Model\CouponManagement $subject, $cartId)
+    public function beforeRemove(CouponManagement $subject, $cartId)
     {
-        /** @var  \Magento\Quote\Model\Quote $quote */
+        /** @var  Quote $quote */
         $quote = $this->quoteRepository->getActive($cartId);
         if (!$quote->getItemsCount()) {
             throw new NoSuchEntityException(__('Cart %1 doesn\'t contain products', $cartId));
@@ -80,7 +85,7 @@ class CouponInformationManagement
         $quote->getShippingAddress()->setCollectShippingRates(true);
         try {
             $this->basketHelper->setCouponCode('');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new CouldNotDeleteException(__('Could not delete coupon code'));
         }
     }

@@ -4,8 +4,10 @@ namespace Ls\Omni\Model\Api;
 
 use \Ls\Omni\Api\PointsManagementInterface;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
+use Magento\Quote\Model\Quote;
 
 /**
  * Class PointsManagement
@@ -22,7 +24,7 @@ class PointsManagement implements PointsManagementInterface
     /**
      * Cart total repository.
      *
-     * @var \Magento\Quote\Api\CartTotalRepositoryInterface
+     * @var CartTotalRepositoryInterface
      */
     protected $cartTotalRepository;
 
@@ -42,9 +44,9 @@ class PointsManagement implements PointsManagementInterface
         CartTotalRepositoryInterface $cartTotalRepository,
         CheckoutSession $checkoutSession
     ) {
-        $this->cartRepository = $cartRepository;
+        $this->cartRepository      = $cartRepository;
         $this->cartTotalRepository = $cartTotalRepository;
-        $this->checkoutSession = $checkoutSession;
+        $this->checkoutSession     = $checkoutSession;
     }
 
     /**
@@ -52,7 +54,7 @@ class PointsManagement implements PointsManagementInterface
      */
     public function updatePoints($cartId, $pointSpent)
     {
-        /** @var \Magento\Quote\Model\Quote $quote */
+        /** @var Quote $quote */
         $quote = $this->cartRepository->get($cartId);
         $quote->setLsPointsSpent($pointSpent);
         $this->validateQuote($quote);
@@ -62,14 +64,14 @@ class PointsManagement implements PointsManagementInterface
     }
 
     /**
-     * @param \Magento\Quote\Model\Quote $quote
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param Quote $quote
      * @return void
+     * @throws LocalizedException
      */
-    protected function validateQuote(\Magento\Quote\Model\Quote $quote)
+    protected function validateQuote(Quote $quote)
     {
         if ($quote->getItemsCount() === 0) {
-            throw new \Magento\Framework\Exception\LocalizedException(
+            throw new LocalizedException(
                 __('Totals calculation is not applicable to empty cart.')
             );
         }

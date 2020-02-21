@@ -1,4 +1,5 @@
 <?php
+
 namespace Ls\Omni\Console\Command;
 
 use \Ls\Omni\Client\OperationInterface;
@@ -19,9 +20,9 @@ class ClientPing extends Command
     {
 
         $this->setName(self::COMMAND_NAME)
-             ->setDescription('show WSDL contents')
-             ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
-             ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url');
+            ->setDescription('show WSDL contents')
+            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
+            ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url');
     }
 
     /**
@@ -33,7 +34,7 @@ class ClientPing extends Command
     {
 
         $uc_type = ucfirst($this->type->getValue());
-        $class = "Ls\\Omni\\Client\\$uc_type\\Operation\\Ping";
+        $class   = "Ls\\Omni\\Client\\$uc_type\\Operation\\Ping";
         /** @var OperationInterface $ping */
         // @codingStandardsIgnoreLine
         $ping = new $class();

@@ -1,19 +1,16 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 
 // @codingStandardsIgnoreFile
 
-/** @var  $block \Ls\Customer\Block\Order\Item\Renderer */
-$_item = $block->getItem();
+/** @var  $block Renderer */
+$_item        = $block->getItem();
 $discountInfo = $block->getItemDiscountLines();
-$sku = $block->getSku();
+$sku          = $block->getSku();
 if (!empty($_item->getVariantId())) {
-    $sku = $sku . "-" . $_item->getVariantId();
+    $sku .= '-' . $_item->getVariantId();
 }
-?>
+
+use \Ls\Customer\Block\Order\Item\Renderer; ?>
 <tr id="order-item-row-<?= /* @escapeNotVerified */
 $_item->getItemId() ?>">
     <td class="col name" data-th="<?= $block->escapeHtml(__('Product Name')) ?>">
