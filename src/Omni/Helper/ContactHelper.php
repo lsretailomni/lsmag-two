@@ -378,7 +378,7 @@ class ContactHelper extends AbstractHelper
         $addressArray = $contact->getAddresses();
         if (!empty($addressArray)) {
             $addressInfo = reset($addressArray->getAddress());
-            if ($addressInfo instanceof Entity\Address) {
+            if ($addressInfo instanceof Entity\Address && !empty($addressInfo->getCountry())) {
                 $address = $this->addressFactory->create();
                 $address->setCustomerId($customer->getId())
                     ->setFirstname($contact->getFirstName())
