@@ -377,7 +377,7 @@ class ContactHelper extends AbstractHelper
         // Save Address
         $addressArray = $contact->getAddresses();
         if (!empty($addressArray)) {
-            $addressInfo = $addressArray->getAddress();
+            $addressInfo = reset($addressArray->getAddress());
             if ($addressInfo instanceof Entity\Address) {
                 $address = $this->addressFactory->create();
                 $address->setCustomerId($customer->getId())
@@ -391,7 +391,7 @@ class ContactHelper extends AbstractHelper
                     ->setIsDefaultBilling('1')
                     ->setIsDefaultShipping('1');
                 $regionName = $addressInfo->getStateProvinceRegion();
-                if (isset($regionName)) {
+                if (!empty($regionName)) {
                     $regionDataFactory = $this->regionFactory->create();
                     $address->setRegion($regionDataFactory->setRegion($regionName));
                     $regionFactory = $this->region->create();
