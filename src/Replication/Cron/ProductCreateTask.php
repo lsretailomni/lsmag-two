@@ -502,8 +502,7 @@ class ProductCreateTask
                                 ]);
                                 $product = $this->getProductAttributes($product, $item);
                                 try {
-                                    $this->logger->debug('Trying to save product ' . $item->getNavId() . ' in store ',
-                                        $store->getName());
+                                    $this->logger->debug('Trying to save product ' . $item->getNavId() . ' in store ' . $store->getName());
                                     /** @var ProductRepositoryInterface $productSaved */
                                     $productSaved = $this->productRepository->save($product);
                                     $variants     = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
@@ -533,7 +532,7 @@ class ProductCreateTask
                             }
                             $this->updateBarcodeOnly();
                         }
-                        if ($this->getRemainingRecords() == 0) {
+                        if ($this->getRemainingRecords($store) == 0) {
                             $this->cronStatus = true;
                         }
                         $this->logger->debug('End ProductCreateTask for Store ' . $store->getName());

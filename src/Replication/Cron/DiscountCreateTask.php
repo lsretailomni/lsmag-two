@@ -165,14 +165,17 @@ class DiscountCreateTask
                         $this->store->getId()
                     );
                     $storeId                  = $this->store->getId();
-                    $publishedOfferCollection = $this->getUniquePublishedOffers();
+                    $publishedOfferCollection = $this->getUniquePublishedOffers($storeId);
                     if (!empty($publishedOfferCollection)) {
                         $reindexRules = false;
                         /** @var ReplDiscount $item */
                         foreach ($publishedOfferCollection as $item) {
                             $filters = [
                                 ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
-                                ['field' => 'StoreId', 'value' => $this->lsr->getActiveWebStore(), 'condition_type' => 'eq'],
+                                ['field'          => 'StoreId',
+                                 'value'          => $this->lsr->getActiveWebStore(),
+                                 'condition_type' => 'eq'
+                                ],
                                 ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
                                 ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
                             ];
@@ -254,11 +257,12 @@ class DiscountCreateTask
      * @throws LocalizedException
      * @throws NoSuchEntityException
      * @throws InvalidTransitionException
+     * @throws Exception
      */
     public function executeManually($storeData = null)
     {
         $this->execute();
-        $discountsLeftToProcess = $this->getRemainingRecords();
+        $discountsLeftToProcess = $this->getRemainingRecords($storeData->getId());
         return [$discountsLeftToProcess];
     }
 
