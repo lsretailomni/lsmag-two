@@ -7,6 +7,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ReplAttributeValue;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Setup\Exception;
+use Magento\Store\Api\Data\StoreInterface;
 
 /**
  * Class SyncAttributesValue
@@ -22,41 +23,58 @@ class SyncAttributesValue extends ProductCreateTask
     public $remainingRecords;
 
     /**
+     * @param null $storeData
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        if ($this->lsr->isLSR()) {
-            $cronAttributeCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-            if ($cronAttributeCheck == 1) {
-                $this->replicationHelper->updateConfigValue(
-                    $this->replicationHelper->getDateTime(),
-                    LSR::LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE
-                );
-                $this->logger->debug('Running Sync Attributes Value Task');
-                $this->processAttributesValue();
-                $remainingItems = (int)$this->getRemainingRecords();
-                if ($remainingItems == 0) {
-                    $this->cronStatus = true;
+        if (!empty($storeData) && $storeData instanceof StoreInterface) {
+            $stores = [$storeData];
+        } else {
+            /** @var StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $cronAttributeCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+                        $this->store->getId());
+                    if ($cronAttributeCheck == 1) {
+                        $this->replicationHelper->updateConfigValue(
+                            $this->replicationHelper->getDateTime(),
+                            LSR::LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE, $this->store->getId()
+                        );
+                        $this->logger->debug('Running Sync Attributes Value Task for store ' . $this->store->getName());
+                        $this->processAttributesValue();
+                        $remainingItems = (int)$this->getRemainingRecords($this->store);
+                        if ($remainingItems == 0) {
+                            $this->cronStatus = true;
+                        }
+                    } else {
+                        $this->cronStatus = false;
+                    }
+                    $this->replicationHelper->updateCronStatus($this->cronStatus,
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE, $this->store->getId());
+                    $this->logger->debug('End Sync Attributes Value Task for store ' . $this->store->getName());
                 }
-            } else {
-                $this->cronStatus = false;
+                $this->lsr->setStoreId(null);
             }
-            $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE);
-            $this->logger->debug('End Sync Attributes Value Task');
         }
     }
 
     /**
+     * @param null $storeData
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $itemsLeftToProcess = (int)$this->getRemainingRecords();
+        $this->execute($storeData);
+        $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
     }
 
@@ -66,9 +84,8 @@ class SyncAttributesValue extends ProductCreateTask
      */
     public function processAttributesValue()
     {
-        /** Get list of only those Attribute Value whose items are already processed */
         $filters            = [
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -81,8 +98,10 @@ class SyncAttributesValue extends ProductCreateTask
             $collection,
             $criteria,
             'LinkField1',
-            'ls_replication_repl_item',
-            'nav_id'
+            'catalog_product_entity',
+            'sku',
+            true,
+            true
         );
 
         if ($collection->getSize() > 0) {
@@ -122,14 +141,14 @@ class SyncAttributesValue extends ProductCreateTask
 
 
     /**
+     * @param $storeData
      * @return int
      */
-    public function getRemainingRecords()
+    public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
-            /** Get list of only those attribute value whose items are already processed */
             $filters    = [
-                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+                ['field' => 'main_table.scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq']
             ];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters
@@ -139,8 +158,10 @@ class SyncAttributesValue extends ProductCreateTask
                 $collection,
                 $criteria,
                 'LinkField1',
-                'ls_replication_repl_item',
-                'nav_id'
+                'catalog_product_entity',
+                'sku',
+                true,
+                true
             );
             $this->remainingRecords = $collection->getSize();
         }

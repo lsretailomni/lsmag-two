@@ -9,6 +9,7 @@ use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\StateException;
+use Magento\Store\Api\Data\StoreInterface;
 
 /**
  * Class SyncItemUpdates
@@ -22,42 +23,56 @@ class SyncItemUpdates extends ProductCreateTask
     /** @var int */
     public $remainingRecords;
 
-    public function execute()
+    public function execute($storeData = null)
     {
-        if ($this->lsr->isLSR()) {
-            $this->logger->debug('Running SyncItemUpdates Task ');
-            $this->replicationHelper->updateConfigValue(
-                $this->replicationHelper->getDateTime(),
-                LSR::SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE
-            );
-            $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
-            if (!empty($hierarchyCode)) {
-                $itemAssignmentCount = $this->caterItemAssignmentToCategories();
-                $this->caterHierarchyLeafRemoval($hierarchyCode);
+        if (!empty($storeData) && $storeData instanceof StoreInterface) {
+            $stores = [$storeData];
+        } else {
+            /** @var StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $this->logger->debug('Running SyncItemUpdates Task for store ' . $this->store->getName());
+                    $this->replicationHelper->updateConfigValue(
+                        $this->replicationHelper->getDateTime(),
+                        LSR::SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE, $this->store->getId());
+                    $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE,
+                        $this->store->getId());
+                    if (!empty($hierarchyCode)) {
+                        $itemAssignmentCount = $this->caterItemAssignmentToCategories();
+                        $this->caterHierarchyLeafRemoval($hierarchyCode);
+                        if ($itemAssignmentCount == 0) {
+                            $this->cronStatus = true;
+                        }
+                    } else {
+                        $this->logger->debug('Hierarchy Code not defined in the configuration.');
+                    }
 
-                if ($itemAssignmentCount == 0) {
-                    $this->cronStatus = true;
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
+                        $this->store->getId());
+                    $this->logger->debug('End SyncItemUpdates Task for store ' . $this->store->getName());
                 }
-            } else {
-                $this->logger->debug("Hierarchy Code not defined in the configuration.");
+                $this->lsr->setStoreId(null);
             }
-
-            $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
-            $this->logger->debug('End SyncItemUpdates Task ');
         }
     }
 
     /**
+     * @param null $storeData
      * @return array
      * @throws CouldNotSaveException
      * @throws InputException
      * @throws LocalizedException
      * @throws StateException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $itemsLeftToProcess = (int)$this->getRemainingRecords();
+        $this->execute($storeData);
+        $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
     }
 
@@ -69,7 +84,7 @@ class SyncItemUpdates extends ProductCreateTask
         $assignProductToCategoryBatchSize = $this->replicationHelper->getProductCategoryAssignmentBatchSize();
 
         $filters = [
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
 
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -82,8 +97,9 @@ class SyncItemUpdates extends ProductCreateTask
             $collection,
             $criteria,
             'nav_id',
-            'ls_replication_repl_item',
-            'nav_id',
+            'catalog_product_entity',
+            'sku',
+            true,
             true
         );
         $sku = "";
@@ -94,11 +110,11 @@ class SyncItemUpdates extends ProductCreateTask
                     $product = $this->productRepository->get($hierarchyLeaf->getNavId());
                     $this->assignProductToCategories($product);
                 } catch (Exception $e) {
-                    $this->logger->debug("Problem with sku: " . $sku . " in " . __METHOD__);
+                    $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());
                 }
             }
-            return (int)$this->getRemainingRecords();
+            return (int)$this->getRemainingRecords($this->store);
         } else {
             return (int)$collection->getSize();
         }
@@ -110,7 +126,10 @@ class SyncItemUpdates extends ProductCreateTask
      */
     public function caterHierarchyLeafRemoval($hierarchyCode)
     {
-        $filters    = [['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq']];
+        $filters    = [
+            ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+        ];
         $criteria   = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
         $collection = $this->replHierarchyLeafCollectionFactory->create();
         $this->replicationHelper->setCollectionPropertiesPlusJoin(
@@ -118,7 +137,9 @@ class SyncItemUpdates extends ProductCreateTask
             $criteria,
             'nav_id',
             'catalog_product_entity',
-            'sku'
+            'sku',
+            true,
+            true
         );
         $sku = "";
         /** @var ReplHierarchyLeaf $hierarchyLeaf */
@@ -180,15 +201,15 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
+     * @param $storeData
      * @return int
      */
-    public function getRemainingRecords()
+    public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
             $filters = [
-                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+                ['field' => 'main_table.scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq']
             ];
-
             $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,
                 -1
@@ -199,8 +220,9 @@ class SyncItemUpdates extends ProductCreateTask
                 $collection,
                 $criteria,
                 'nav_id',
-                'ls_replication_repl_item',
-                'nav_id',
+                'catalog_product_entity',
+                'sku',
+                true,
                 true
             );
             $this->remainingRecords = $collection->getSize();
