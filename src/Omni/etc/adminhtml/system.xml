@@ -138,6 +138,17 @@
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\TimeFormat</source_model>
                 </field>
             </group>
+            <group id="ls_order_number" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Magento Order Number Prefix</label>
+                <field id="prefix" translate="label" type="text" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Prefix for Order Number</label>
+                    <comment>Maximum Length 5 Characters</comment>
+                    <validate>validate-length maximum-length-5</validate>
+                </field>
+            </group>
         </section>
         <!-- For shipment Method -->
         <section id="carriers" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
