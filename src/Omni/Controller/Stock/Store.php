@@ -77,7 +77,7 @@ class Store extends Action
             $selectedStore      = $this->request->getParam('storeid');
             $items              = $this->session->getQuote()->getAllVisibleItems();
             $stockCollection    = [];
-            $notAvailableNotice = __("Please check other stores or remove the not available item(s) from your ");
+            $notAvailableNotice = __('Please check other stores or remove the not available item(s) from your ');
             foreach ($items as &$item) {
                 $sku              = $item->getSku();
                 $parentProductSku = $childProductSku = "";
@@ -87,9 +87,9 @@ class Store extends Action
                 } else {
                     $parentProductSku = $sku;
                 }
-                $stockCollection[$sku]["name"] = $item->getName();
-                $stockCollection[$sku]["qty"]  = $item->getQty();
-                $item                          = ["parent" => $parentProductSku, "child" => $childProductSku];
+                $stockCollection[$sku]['name'] = $item->getName();
+                $stockCollection[$sku]['qty']  = $item->getQty();
+                $item                          = ['parent' => $parentProductSku, 'child' => $childProductSku];
             }
             $response = $this->stockHelper->getAllItemsStockInSingleStore($selectedStore, $items);
             if ($response) {
@@ -103,30 +103,30 @@ class Store extends Action
                     $sku       = $item->getItemId() .
                         (($item->getVariantId()) ? '-' . $item->getVariantId() : '');
                     if ($actualQty > 0) {
-                        $stockCollection[$sku]["status"]  = "1";
-                        $stockCollection[$sku]["display"] = __("This item is available");
-                        if ($stockCollection[$sku]["qty"] > $actualQty) {
-                            $stockCollection[$sku]["status"]  = "0";
-                            $stockCollection[$sku]["display"] = __(
-                                "You have selected %1 quantity for this item.
+                        $stockCollection[$sku]['status']  = '1';
+                        $stockCollection[$sku]['display'] = __('This item is available');
+                        if ($stockCollection[$sku]['qty'] > $actualQty) {
+                            $stockCollection[$sku]['status']  = '0';
+                            $stockCollection[$sku]['display'] = __(
+                                'You have selected %1 quantity for this item.
                                  We only have %2 quantity available in stock for this store.
-                                 Please update this item quantity in cart.",
-                                $stockCollection[$sku]["qty"],
+                                 Please update this item quantity in cart.',
+                                $stockCollection[$sku]['qty'],
                                 $actualQty
                             );
                         }
                     } else {
-                        $stockCollection[$sku]["status"]  = "0";
-                        $stockCollection[$sku]["display"] = __("This item is not available");
+                        $stockCollection[$sku]['status']  = '0';
+                        $stockCollection[$sku]['display'] = __('This item is not available');
                     }
                 }
                 $result = $result->setData(
-                    ["remarks" => $notAvailableNotice, "stocks" => $stockCollection]
+                    ['remarks' => $notAvailableNotice, 'stocks' => $stockCollection]
                 );
             } else {
-                $notAvailableNotice = __("Oops! Unable to do stock lookup currently.");
+                $notAvailableNotice = __('Oops! Unable to do stock lookup currently.');
                 $result             = $result->setData(
-                    ["remarks" => $notAvailableNotice, "stocks" => null]
+                    ['remarks' => $notAvailableNotice, 'stocks' => null]
                 );
             }
         }
