@@ -13,7 +13,6 @@ define([
                     // if ($('#pickup-date').val() == '' || (stores.totalRecords > 1 && $('#pickup-store').val() == '')) {
                     if (stores.totalRecords > 1 && $('#pickup-store').val() == '') {
                         this.errorValidationMessage($t('Please provide where (if suitable) you prefer to pick your order.'));
-                        $('.message.notice').css("clear", "both");
                         return false;
                     }
                 }
