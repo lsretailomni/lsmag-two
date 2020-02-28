@@ -8,7 +8,7 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Zend\Uri\UriFactory;
 
-class StoresGetAll extends \PHPUnit\Framework\TestCase
+class StoresGetAllTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp()
     {
