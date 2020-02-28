@@ -7,7 +7,7 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Zend\Uri\UriFactory;
 
-class StoreGetByIdTest extends \PHPUnit\Framework\TestCase
+class GetPointRateTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp()
     {

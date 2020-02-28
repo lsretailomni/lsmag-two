@@ -17,7 +17,7 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Zend\Uri\UriFactory;
 
-class ContactUpdate extends \PHPUnit\Framework\TestCase
+class ContactUpdateTest extends \PHPUnit\Framework\TestCase
 {
     protected $contact;
     protected $contactCreate;
@@ -39,7 +39,7 @@ class ContactUpdate extends \PHPUnit\Framework\TestCase
         $append  = "test" . chr(rand(97, 122));
         $contact->setFirstName($append . "test");
         $contact->setLastName($append . "test");
-        $contact->setId($_ENV['ID']);
+        $contact->setId($_ENV['CONTACT_ID']);
         $contact->setUserName($_ENV['USERNAME']);
         $contact->setEmail($_ENV['EMAIL']);
         $contact->setMiddleName('  ');

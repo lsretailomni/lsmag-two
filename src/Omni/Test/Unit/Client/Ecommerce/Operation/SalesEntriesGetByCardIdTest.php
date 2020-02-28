@@ -8,7 +8,7 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Zend\Uri\UriFactory;
 
-class SalesEntriesGetByCardId extends \PHPUnit\Framework\TestCase
+class SalesEntriesGetByCardIdTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function setUp()
