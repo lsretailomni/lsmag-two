@@ -182,3 +182,5 @@ Stores,Stores
 "Omni Service Version","Omni Service Version"
 "LS Central Version","LS Central Version"
 "Version","Version"
+"Prefix for Order Number","Prefix for Order Number"
+"Please use only letters (a-z or A-Z), numbers (0-9), dash or underscore in this field.","Please use only letters (a-z or A-Z), numbers (0-9), dash or underscore in this field."

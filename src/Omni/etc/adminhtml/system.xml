@@ -146,7 +146,7 @@
                        showInStore="1">
                     <label>Prefix for Order Number</label>
                     <comment>Maximum Length 5 Characters</comment>
-                    <validate>validate-length maximum-length-5</validate>
+                    <validate>validate-length maximum-length-5 validate-no-html-tags validate-sequence-number</validate>
                 </field>
             </group>
         </section>

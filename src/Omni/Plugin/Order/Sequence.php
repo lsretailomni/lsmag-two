@@ -37,6 +37,9 @@ class Sequence
     ) {
         $prefix      = $this->lsr->getStoreConfig(LSR::LS_ORDER_NUMBER_PREFIX_PATH);
         $returnValue = $proceed();
-        return $prefix . $returnValue;
+        if (!empty($prefix)) {
+            return $prefix . $returnValue;
+        }
+        return $returnValue;
     }
 }
