@@ -68,9 +68,7 @@ class SyncItemUpdates extends ProductCreateTask
     {
         $assignProductToCategoryBatchSize = $this->replicationHelper->getProductCategoryAssignmentBatchSize();
 
-        $filters = [
-            ['field' => 'main_table.processed', 'value' => 1, 'condition_type' => 'eq']
-        ];
+        $filters = [];
 
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -185,9 +183,7 @@ class SyncItemUpdates extends ProductCreateTask
     public function getRemainingRecords()
     {
         if (!$this->remainingRecords) {
-            $filters = [
-                ['field' => 'main_table.processed', 'value' => 1, 'condition_type' => 'eq']
-            ];
+            $filters = [];
 
             $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,

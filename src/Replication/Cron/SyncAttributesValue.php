@@ -67,9 +67,7 @@ class SyncAttributesValue extends ProductCreateTask
     public function processAttributesValue()
     {
         /** Get list of only those Attribute Value whose items are already processed */
-        $filters            = [
-            ['field' => 'main_table.processed', 'value' => 1, 'condition_type' => 'eq']
-        ];
+        $filters            = [];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -131,9 +129,7 @@ class SyncAttributesValue extends ProductCreateTask
     {
         if (!$this->remainingRecords) {
             /** Get list of only those attribute value whose items are already processed */
-            $filters    = [
-                ['field' => 'main_table.processed', 'value' => 1, 'condition_type' => 'eq']
-            ];
+            $filters    = [];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters
             );
