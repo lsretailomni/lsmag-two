@@ -22,20 +22,6 @@ class SyncPrice extends ProductCreateTask
     /** @var int */
     public $remainingRecords;
 
-    /**
-     * @return array
-     * @throws CouldNotSaveException
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws StateException
-     */
-    public function executeManually()
-    {
-        $this->execute();
-        $itemsLeftToProcess = (int)$this->getRemainingRecords();
-        return [$itemsLeftToProcess];
-    }
-
     public function execute()
     {
         if ($this->lsr->isLSR()) {
@@ -115,6 +101,20 @@ class SyncPrice extends ProductCreateTask
             $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT_PRICE);
             $this->logger->debug('End SyncPrice Task');
         }
+    }
+
+    /**
+     * @return array
+     * @throws CouldNotSaveException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws StateException
+     */
+    public function executeManually()
+    {
+        $this->execute();
+        $itemsLeftToProcess = (int)$this->getRemainingRecords();
+        return [$itemsLeftToProcess];
     }
 
     /**
