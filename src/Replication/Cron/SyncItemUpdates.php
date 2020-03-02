@@ -99,10 +99,9 @@ class SyncItemUpdates extends ProductCreateTask
             'nav_id',
             'catalog_product_entity',
             'sku',
-            true,
             true
         );
-        $sku = "";
+        $sku = '';
         if ($collection->getSize() > 0) {
             foreach ($collection as $hierarchyLeaf) {
                 try {
@@ -138,10 +137,9 @@ class SyncItemUpdates extends ProductCreateTask
             'nav_id',
             'catalog_product_entity',
             'sku',
-            true,
             true
         );
-        $sku = "";
+        $sku = '';
         /** @var ReplHierarchyLeaf $hierarchyLeaf */
         foreach ($collection as $hierarchyLeaf) {
             try {
@@ -222,7 +220,6 @@ class SyncItemUpdates extends ProductCreateTask
                 'nav_id',
                 'catalog_product_entity',
                 'sku',
-                true,
                 true
             );
             $this->remainingRecords = $collection->getSize();

@@ -100,7 +100,6 @@ class SyncAttributesValue extends ProductCreateTask
             'LinkField1',
             'catalog_product_entity',
             'sku',
-            true,
             true
         );
 
@@ -160,7 +159,6 @@ class SyncAttributesValue extends ProductCreateTask
                 'LinkField1',
                 'catalog_product_entity',
                 'sku',
-                true,
                 true
             );
             $this->remainingRecords = $collection->getSize();

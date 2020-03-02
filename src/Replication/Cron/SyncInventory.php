@@ -59,7 +59,6 @@ class SyncInventory extends ProductCreateTask
                         'ItemId',
                         'catalog_product_entity',
                         'sku',
-                        true,
                         true
                     );
                     if ($collection->getSize() > 0) {
@@ -144,7 +143,6 @@ class SyncInventory extends ProductCreateTask
                 'ItemId',
                 'catalog_product_entity',
                 'sku',
-                true,
                 true
             );
             $this->remainingRecords = $collection->getSize();
