@@ -22,6 +22,20 @@ class SyncPrice extends ProductCreateTask
     /** @var int */
     public $remainingRecords;
 
+    /**
+     * @return array
+     * @throws CouldNotSaveException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws StateException
+     */
+    public function executeManually()
+    {
+        $this->execute();
+        $itemsLeftToProcess = (int)$this->getRemainingRecords();
+        return [$itemsLeftToProcess];
+    }
+
     public function execute()
     {
         if ($this->lsr->isLSR()) {
@@ -37,7 +51,6 @@ class SyncPrice extends ProductCreateTask
             /** Get list of only those prices whose items are already processed */
             $filters = [
                 ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq'],
                 ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
             ];
 
@@ -47,12 +60,14 @@ class SyncPrice extends ProductCreateTask
                 1
             );
             $collection = $this->replPriceCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'ItemId',
-                'ls_replication_repl_item',
-                'nav_id'
+                'VariantId',
+                'catalog_product_entity',
+                'sku',
+                true
             );
             if ($collection->getSize() > 0) {
                 /** @var ReplPrice $replPrice */
@@ -103,20 +118,6 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
-     * @return array
-     * @throws CouldNotSaveException
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws StateException
-     */
-    public function executeManually()
-    {
-        $this->execute();
-        $itemsLeftToProcess = (int)$this->getRemainingRecords();
-        return [$itemsLeftToProcess];
-    }
-
-    /**
      * @return int
      */
     public function getRemainingRecords()
@@ -126,7 +127,6 @@ class SyncPrice extends ProductCreateTask
             /** Get list of only those prices whose items are already processed */
             $filters = [
                 ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq'],
                 ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
             ];
 
@@ -134,12 +134,14 @@ class SyncPrice extends ProductCreateTask
                 $filters
             );
             $collection = $this->replPriceCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'ItemId',
-                'ls_replication_repl_item',
-                'nav_id'
+                'VariantId',
+                'catalog_product_entity',
+                'sku',
+                true
             );
             $this->remainingRecords = $collection->getSize();
         }

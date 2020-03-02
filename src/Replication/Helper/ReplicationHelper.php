@@ -707,6 +707,68 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * @param $collection
+     * @param SearchCriteriaInterface $criteria
+     * @param $primaryTableColumnName
+     * @param $primaryTableColumnName2
+     * @param $secondaryTableName
+     * @param $secondaryTableColumnName
+     * @param bool $isReplaceJoin
+     */
+    public function setCollectionPropertiesPlusJoinSku(
+        &$collection,
+        SearchCriteriaInterface $criteria,
+        $primaryTableColumnName,
+        $primaryTableColumnName2,
+        $secondaryTableName,
+        $secondaryTableColumnName,
+        $isReplaceJoin = false
+    ) {
+        foreach ($criteria->getFilterGroups() as $filter_group) {
+            $fields = $conditions = [];
+            foreach ($filter_group->getFilters() as $filter) {
+                $condition    = $filter->getConditionType() ?: 'eq';
+                $fields[]     = $filter->getField();
+                $conditions[] = [$condition => $filter->getValue()];
+            }
+            if ($fields) {
+                $collection->addFieldToFilter($fields, $conditions);
+            }
+        }
+        $sort_orders = $criteria->getSortOrders();
+        if ($sort_orders) {
+            /** @var SortOrder $sort_order */
+            foreach ($sort_orders as $sort_order) {
+                $collection->addOrder(
+                    $sort_order->getField(),
+                    ($sort_order->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
+                );
+            }
+        }
+        $second_table_name = $this->resource->getTableName($secondaryTableName);
+        // @codingStandardsIgnoreStart
+        // In order to only select those records whose items are available
+        if ($isReplaceJoin) {
+            $collection->getSelect()->joinInner(
+                ['second' => $second_table_name],
+                'CONCAT_WS("-",main_table.' . $primaryTableColumnName.',main_table.' . $primaryTableColumnName2.') = second.' . $secondaryTableColumnName,
+                []
+            );
+        } else {
+            $collection->getSelect()->joinInner(
+                ['second' => $second_table_name],
+                'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
+                []
+            );
+        }
+        /** @var For Xdebug only to check the query $query */
+        //$query = $collection->getSelect()->__toString();
+        // @codingStandardsIgnoreEnd
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
      * To be used only for Processing attributes and variants in the AttributeCreate Task
      * @return string
      */

@@ -69,7 +69,7 @@ class SyncItemUpdates extends ProductCreateTask
         $assignProductToCategoryBatchSize = $this->replicationHelper->getProductCategoryAssignmentBatchSize();
 
         $filters = [
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+            ['field' => 'main_table.processed', 'value' => 1, 'condition_type' => 'eq']
         ];
 
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -78,13 +78,13 @@ class SyncItemUpdates extends ProductCreateTask
         );
         /** @var  $collection */
         $collection = $this->replHierarchyLeafCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+        $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
             $criteria,
             'nav_id',
-            'ls_replication_repl_item',
-            'nav_id',
-            true
+            null,
+            'catalog_product_entity',
+            'sku'
         );
         $sku = "";
         if ($collection->getSize() > 0) {
@@ -186,7 +186,7 @@ class SyncItemUpdates extends ProductCreateTask
     {
         if (!$this->remainingRecords) {
             $filters = [
-                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+                ['field' => 'main_table.processed', 'value' => 1, 'condition_type' => 'eq']
             ];
 
             $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -195,13 +195,13 @@ class SyncItemUpdates extends ProductCreateTask
             );
             /** @var  $collection */
             $collection = $this->replHierarchyLeafCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'nav_id',
-                'ls_replication_repl_item',
-                'nav_id',
-                true
+                null,
+                'catalog_product_entity',
+                'sku'
             );
             $this->remainingRecords = $collection->getSize();
         }

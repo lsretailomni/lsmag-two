@@ -35,8 +35,7 @@ class SyncInventory extends ProductCreateTask
 
             /** Get list of only those Inventory whose items are already processed */
             $filters    = [
-                ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+                ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
             ];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,
@@ -44,12 +43,14 @@ class SyncInventory extends ProductCreateTask
                 1
             );
             $collection = $this->replInvStatusCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'ItemId',
-                'ls_replication_repl_item',
-                'nav_id'
+                'VariantId',
+                'catalog_product_entity',
+                'sku',
+                true
             );
             if ($collection->getSize() > 0) {
                 /** @var ReplInvStatus $replInvStatus */
@@ -114,8 +115,7 @@ class SyncInventory extends ProductCreateTask
             $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
             /** Get list of only those Inventory whose items are already processed */
             $filters    = [
-                ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
+                ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
             ];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,
@@ -123,12 +123,14 @@ class SyncInventory extends ProductCreateTask
                 1
             );
             $collection = $this->replInvStatusCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'ItemId',
-                'ls_replication_repl_item',
-                'nav_id'
+                'VariantId',
+                'catalog_product_entity',
+                'sku',
+                true
             );
 
             $this->remainingRecords = $collection->getSize();
