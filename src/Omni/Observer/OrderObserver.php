@@ -138,6 +138,7 @@ class OrderObserver implements ObserverInterface
                             $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
                             // delete checkout session data.
                             $this->basketHelper->unSetOneListCalculation();
+                            $this->basketHelper->unsetCouponCode();
                         }
                     } else {
                         // TODO: error handling

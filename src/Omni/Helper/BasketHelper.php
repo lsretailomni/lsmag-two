@@ -229,7 +229,7 @@ class BasketHelper extends AbstractHelper
         /** @var Item[] $quoteItems */
         $quoteItems = $quote->getAllVisibleItems();
         if (count($quoteItems) == 0) {
-            $this->unsetCouponCode("");
+            $this->unSetCouponCode();
         }
 
         /** @var Entity\ArrayOfOneListItem $items */
@@ -625,11 +625,11 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * @param $couponCode
+     * clear coupon code
      */
-    public function unsetCouponCode($couponCode)
+    public function unSetCouponCode()
     {
-        $this->checkoutSession->setCouponCode($couponCode);
+        $this->checkoutSession->unsCouponCode();
     }
 
     /**
