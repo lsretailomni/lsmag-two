@@ -323,6 +323,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
+
+    //Magento Order Number Prefix
+    const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_number/prefix';
+
     /**
      * @var ScopeConfigInterface
      */
