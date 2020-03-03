@@ -73,14 +73,51 @@ class ReplCustomerRepositoryTest extends TestCase
         );
     }
 
-    public function testGet()
+    public function testGetById()
     {
         $entityId = 1;
         $entityMock = $this->createMock(ReplCustomerRepository::class);
-        $entityMock->method('getById')->willReturn(
-            $entityId
-        );
+        $entityMock->method('getById')
+             ->with($entityId)
+             ->willReturn($entityId);
         $this->assertEquals($entityId, $entityMock->getById($entityId));
+    }
+
+    /**
+     * @expectedException \Magento\Framework\Exception\NoSuchEntityException 
+     * @expectedExceptionMessage Object with id 1 does not exist.
+     */
+    public function testGetWithNoSuchEntityException()
+    {
+        $entityId = 1;
+        $entityMock = $this->createMock(ReplCustomerRepository::class);
+        $entityMock->method('getById')
+             ->with($entityId)
+             ->willThrowException(
+                 new NoSuchEntityException(
+                     new Phrase('Object with id ' . $entityId . ' does not exist.')
+                 )
+             );
+        $entityMock->getById($entityId);
+    }
+
+    public function testGetListWithSearchCriteria()
+    {
+        $searchCriteria = $this->getMockBuilder(SearchCriteriaInterface::class)->getMock();
+        $entityMock = $this->createMock(ReplCustomerRepository::class);
+        $entityMock->method('getList')
+             ->with($searchCriteria)
+             ->willReturn($this->entitySearchResultsInterface);
+        $this->assertEquals($this->entitySearchResultsInterface, $entityMock->getList($searchCriteria));
+    }
+
+    public function testSave()
+    {
+        $entityMock = $this->createMock(ReplCustomerRepository::class);
+        $entityMock->method('save')
+             ->with($this->entityInterface)
+             ->willReturn($this->entityInterface);
+        $this->assertEquals($this->entityInterface, $entityMock->save($this->entityInterface));
     }
 
 

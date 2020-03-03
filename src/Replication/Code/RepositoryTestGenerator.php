@@ -56,7 +56,7 @@ class RepositoryTestGenerator extends AbstractGenerator
      */
     public function generate()
     {
-        $entityName    = $this->operation->getEntityName();
+        $entityName = $this->operation->getEntityName();
         $this->class->setNamespaceName(self::$namespace);
         $this->class->addUse(CouldNotDeleteException::class);
         $this->class->addUse(CouldNotSaveException::class);
@@ -133,7 +133,10 @@ class RepositoryTestGenerator extends AbstractGenerator
         $this->class->addPropertyFromGenerator($entitySearchResultsInterfaceProperty);
 
         $this->class->addMethodFromGenerator($this->getSetUpMethod());
-        $this->class->addMethodFromGenerator($this->getGetMethod());
+        $this->class->addMethodFromGenerator($this->getGetByIdMethod());
+        $this->class->addMethodFromGenerator($this->getGetWithNoSuchEntityExceptionMethod());
+        $this->class->addMethodFromGenerator($this->getGetListMethod());
+        $this->class->addMethodFromGenerator($this->getSaveMethod());
         $content = $this->file->generate();
         return $content;
     }
@@ -143,12 +146,12 @@ class RepositoryTestGenerator extends AbstractGenerator
      */
     public function getSetUpMethod()
     {
-        $method = new MethodGenerator();
-        $entityName    = $this->operation->getEntityName();
-        $objectFactory = $entityName.'Factory';
-        $searchFactoryProperty = $this->operation->getSearchFactory();
-        $entityInterface = $this->operation->getInterfaceName();
-        $entityRepository = $this->operation->getRepositoryName();
+        $method                       = new MethodGenerator();
+        $entityName                   = $this->operation->getEntityName();
+        $objectFactory                = $entityName . 'Factory';
+        $searchFactoryProperty        = $this->operation->getSearchFactory();
+        $entityInterface              = $this->operation->getInterfaceName();
+        $entityRepository             = $this->operation->getRepositoryName();
         $entitySearchResultsInterface = $this->operation->getSearchInterfaceName();
         $method->setName('setUp');
         $method->setBody(
@@ -171,19 +174,88 @@ CODE
     /**
      * @return MethodGenerator
      */
-    public function getGetMethod()
+    public function getGetByIdMethod()
     {
-        $method = new MethodGenerator();
+        $method           = new MethodGenerator();
         $entityRepository = $this->operation->getRepositoryName();
-        $method->setName('testGet');
+        $method->setName('testGetById');
         $method->setBody(
             <<<CODE
 \$entityId = 1;
 \$entityMock = \$this->createMock($entityRepository::class);
-\$entityMock->method('getById')->willReturn(
-    \$entityId
-);
+\$entityMock->method('getById')
+     ->with(\$entityId)
+     ->willReturn(\$entityId);
 \$this->assertEquals(\$entityId, \$entityMock->getById(\$entityId));
+CODE
+        );
+        return $method;
+    }
+
+    /**
+     * @return MethodGenerator
+     */
+    public function getGetWithNoSuchEntityExceptionMethod()
+    {
+        $method           = new MethodGenerator();
+        $entityRepository = $this->operation->getRepositoryName();
+        $method->setName('testGetWithNoSuchEntityException');
+        $method->setDocBlock('@expectedException \Magento\Framework\Exception\NoSuchEntityException 
+@expectedExceptionMessage Object with id 1 does not exist.');
+        $method->setBody(
+            <<<CODE
+\$entityId = 1;
+\$entityMock = \$this->createMock($entityRepository::class);
+\$entityMock->method('getById')
+     ->with(\$entityId)
+     ->willThrowException(
+         new NoSuchEntityException(
+             new Phrase('Object with id ' . \$entityId . ' does not exist.')
+         )
+     );
+\$entityMock->getById(\$entityId);
+CODE
+        );
+        return $method;
+    }
+
+
+    /**
+     * @return MethodGenerator
+     */
+    public function getGetListMethod()
+    {
+        $method           = new MethodGenerator();
+        $entityRepository = $this->operation->getRepositoryName();
+        $method->setName('testGetListWithSearchCriteria');
+        $method->setBody(
+            <<<CODE
+\$searchCriteria = \$this->getMockBuilder(SearchCriteriaInterface::class)->getMock();
+\$entityMock = \$this->createMock($entityRepository::class);
+\$entityMock->method('getList')
+     ->with(\$searchCriteria)
+     ->willReturn(\$this->entitySearchResultsInterface);
+\$this->assertEquals(\$this->entitySearchResultsInterface, \$entityMock->getList(\$searchCriteria));
+CODE
+        );
+        return $method;
+    }
+
+    /**
+     * @return MethodGenerator
+     */
+    public function getSaveMethod()
+    {
+        $method           = new MethodGenerator();
+        $entityRepository = $this->operation->getRepositoryName();
+        $method->setName('testSave');
+        $method->setBody(
+            <<<CODE
+\$entityMock = \$this->createMock($entityRepository::class);
+\$entityMock->method('save')
+     ->with(\$this->entityInterface)
+     ->willReturn(\$this->entityInterface);
+\$this->assertEquals(\$this->entityInterface, \$entityMock->save(\$this->entityInterface));
 CODE
         );
         return $method;
