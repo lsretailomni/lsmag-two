@@ -67,9 +67,7 @@ class SyncAttributesValue extends ProductCreateTask
     public function processAttributesValue()
     {
         /** Get list of only those Attribute Value whose items are already processed */
-        $filters            = [
-            ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
-        ];
+        $filters            = [];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -77,13 +75,16 @@ class SyncAttributesValue extends ProductCreateTask
             1
         );
         $collection         = $this->replAttributeValueCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+
+        $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
             $criteria,
             'LinkField1',
-            'ls_replication_repl_item',
-            'nav_id'
+            null,
+            'catalog_product_entity',
+            'sku'
         );
+
 
         if ($collection->getSize() > 0) {
             /** @var ReplAttributeValue $attributeValue */
@@ -128,19 +129,18 @@ class SyncAttributesValue extends ProductCreateTask
     {
         if (!$this->remainingRecords) {
             /** Get list of only those attribute value whose items are already processed */
-            $filters    = [
-                ['field' => 'second.processed', 'value' => 1, 'condition_type' => 'eq']
-            ];
+            $filters    = [];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters
             );
             $collection = $this->replAttributeValueCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'LinkField1',
-                'ls_replication_repl_item',
-                'nav_id'
+                null,
+                'catalog_product_entity',
+                'sku'
             );
             $this->remainingRecords = $collection->getSize();
         }
