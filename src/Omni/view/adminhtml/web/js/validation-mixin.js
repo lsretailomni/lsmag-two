@@ -9,7 +9,9 @@ define([
             function (value) {
                 var regex;
                 regex = /^[a-zA-Z0-9-_]+$/;
-                if ($.mage.isEmpty(value) || !regex.test(value)) {
+                if ($.mage.isEmpty(value)) {
+                    return true;
+                } else if (!regex.test(value)) {
                     return false;
                 }
                 return true;
