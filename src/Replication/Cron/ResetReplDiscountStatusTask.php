@@ -91,7 +91,7 @@ class ResetReplDiscountStatusTask
             try {
                 $connection->truncateTable($tableName);
             } catch (\Exception $e) {
-                $this->logger->debug("Something wrong while truncating the discount table");
+                $this->logger->debug('Something wrong while truncating the discount table');
                 $this->logger->debug($e->getMessage());
             }
             // Process for Magento tables.
@@ -101,7 +101,7 @@ class ResetReplDiscountStatusTask
                 try {
                     $connection->truncateTable($tableName);
                 } catch (\Exception $e) {
-                    $this->logger->debug("Something wrong while deleting the catalog rule");
+                    $this->logger->debug('Something wrong while deleting the catalog rule');
                     $this->logger->debug($e->getMessage());
                 }
             }

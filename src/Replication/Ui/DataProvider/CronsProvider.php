@@ -61,9 +61,9 @@ class CronsProvider extends DataProvider implements DataProviderInterface
 
     /**
      * CronsProvider constructor.
-     * @param $name
-     * @param $primaryFieldName
-     * @param $requestFieldName
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
      * @param Reporting $reporting
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param RequestInterface $request

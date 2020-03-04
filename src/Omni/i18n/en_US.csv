@@ -178,7 +178,10 @@ Title,Title
 "Subtotal (Inc.Tax)","Subtotal (Inc.Tax)"
 "Order Balance","Order Balance"
 Stores,Stores
+"Prefix for Order Number","Prefix for Order Number"
+"Please use only letters (a-z or A-Z), numbers (0-9), dash or underscore in this field.","Please use only letters (a-z or A-Z), numbers (0-9), dash or underscore in this field."
 "Check Gift Card Balance","Check Gift Card Balance"
 "Omni Service Version","Omni Service Version"
 "LS Central Version","LS Central Version"
 "Version","Version"
+"Please provide where (if suitable) you prefer to pick your order","Please provide where (if suitable) you prefer to pick your order"

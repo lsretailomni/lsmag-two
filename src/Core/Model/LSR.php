@@ -327,6 +327,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
+
+    //Magento Order Number Prefix
+    const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_number/prefix';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -356,8 +360,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * Note : In case of notDefault we have to pass the StoreID
-     * in the variable of notDefault variable.
+     * In case of notDefault we have to pass the StoreId
      * @param $path
      * @param bool $storeId
      * @return string
@@ -373,8 +376,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * This needs to be used only for Websites Scope.
-     * in the variable of notDefault variable.
+     * This needs to be used only for Websites Scope
      * @param $path
      * @param bool $website_id
      * @return mixed
@@ -573,11 +575,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Set Store ID in Magento Session
-     * @param $store_id
+     * @param $storeId
      */
-    public function setStoreId($store_id)
+    public function setStoreId($storeId)
     {
-        $this->storeManager->setCurrentStore($store_id);
+        $this->storeManager->setCurrentStore($storeId);
     }
 
 }

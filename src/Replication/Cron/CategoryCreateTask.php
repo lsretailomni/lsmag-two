@@ -159,9 +159,9 @@ class CategoryCreateTask
                     $this->logger->debug('Running CategoryCreateTask for Store ' . $this->store->getName());
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
-                        LSR::SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE
+                        LSR::SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE, $this->store->getId()
                     );
-                    $hierarchyCode = $this->getHierarchyCode();
+                    $hierarchyCode = $this->getHierarchyCode($store);
                     if (empty($hierarchyCode)) {
                         $this->logger->debug('Hierarchy Code not defined in the configuration.');
                         return;
@@ -181,7 +181,7 @@ class CategoryCreateTask
                         $scopeIdFilter);
                     $this->caterSubCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute,
                         $scopeIdFilter);
-                    if ($this->getRemainingRecords() == 0) {
+                    if ($this->getRemainingRecords($store) == 0) {
                         $this->cronStatus = true;
                     }
                     $this->caterHierarchyNodeRemoval($hierarchyCode);
@@ -412,8 +412,10 @@ class CategoryCreateTask
     {
         $attribute_id = $this->eavAttribute->getIdByCode(Category::ENTITY, 'nav_id');
         $filters      = [
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
-            ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq']
+            ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq'],
+            ['field' => 'second.store_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
         ];
         $criteria     = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
         $collection   = $this->replHierarchyNodeCollectionFactory->create();
@@ -457,8 +459,8 @@ class CategoryCreateTask
      */
     public function executeManually($storeData = null)
     {
-        $this->execute();
-        $categoriesLeftToProcess = $this->getRemainingRecords();
+        $this->execute($storeData);
+        $categoriesLeftToProcess = $this->getRemainingRecords($storeData);
         return [$categoriesLeftToProcess];
     }
 
@@ -587,6 +589,7 @@ class CategoryCreateTask
     public function updateImagesOnly()
     {
         $filters  = [
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
             ['field' => 'main_table.TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
@@ -621,29 +624,27 @@ class CategoryCreateTask
     /**
      * @return int
      */
-    public function getRemainingRecords()
+    public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
-            $hierarchyCodeSpecificFilter = [
-                'field'          => 'HierarchyCode',
-                'value'          => $this->getHierarchyCode(),
-                'condition_type' => 'eq'
+            $filters                = [
+                ['field' => 'HierarchyCode', 'value' => $this->getHierarchyCode($storeData), 'condition_type' => 'eq'],
+                ['field' => 'scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq']
             ];
-            $criteria                    = $this->replicationHelper->buildCriteriaForArray([$hierarchyCodeSpecificFilter],
-                -1);
-            $this->remainingRecords      = $this->replHierarchyNodeRepository->getList($criteria)
-                ->getTotalCount();
+            $criteria               = $this->replicationHelper->buildCriteriaForArray($filters, -1);
+            $this->remainingRecords = $this->replHierarchyNodeRepository->getList($criteria)->getTotalCount();
         }
         return $this->remainingRecords;
     }
 
     /**
+     * @param $storeData
      * @return string
      */
-    public function getHierarchyCode()
+    public function getHierarchyCode($storeData)
     {
         if (!$this->hierarchyCode) {
-            $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+            $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $storeData->getId());
         }
         return $this->hierarchyCode;
     }
