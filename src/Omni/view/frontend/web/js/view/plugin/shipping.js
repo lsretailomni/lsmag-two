@@ -1,7 +1,8 @@
 define([
     'Magento_Checkout/js/model/quote',
-    'jquery'
-], function (quote, $) {
+    'jquery',
+    'mage/translate'
+], function (quote, $, $t) {
     'use strict';
 
     return function (Component) {
@@ -11,7 +12,7 @@ define([
                     var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
                     // if ($('#pickup-date').val() == '' || (stores.totalRecords > 1 && $('#pickup-store').val() == '')) {
                     if (stores.totalRecords > 1 && $('#pickup-store').val() == '') {
-                        this.errorValidationMessage('Please provide where (if suitable) you prefer to pick your order.');
+                        this.errorValidationMessage($t('Please provide where (if suitable) you prefer to pick your order.'));
                         return false;
                     }
                 }

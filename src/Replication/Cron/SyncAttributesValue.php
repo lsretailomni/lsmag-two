@@ -84,9 +84,8 @@ class SyncAttributesValue extends ProductCreateTask
      */
     public function processAttributesValue()
     {
-        $filters            = [
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
-        ];
+        /** Get list of only those Attribute Value whose items are already processed */
+        $filters            = [];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -94,14 +93,16 @@ class SyncAttributesValue extends ProductCreateTask
             1
         );
         $collection         = $this->replAttributeValueCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+
+        $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
             $criteria,
             'LinkField1',
+            null,
             'catalog_product_entity',
-            'sku',
-            true
+            'sku'
         );
+
 
         if ($collection->getSize() > 0) {
             /** @var ReplAttributeValue $attributeValue */
@@ -146,20 +147,19 @@ class SyncAttributesValue extends ProductCreateTask
     public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
-            $filters    = [
-                ['field' => 'main_table.scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq']
-            ];
+            /** Get list of only those attribute value whose items are already processed */
+            $filters    = [];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters
             );
             $collection = $this->replAttributeValueCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'LinkField1',
+                null,
                 'catalog_product_entity',
-                'sku',
-                true
+                'sku'
             );
             $this->remainingRecords = $collection->getSize();
         }

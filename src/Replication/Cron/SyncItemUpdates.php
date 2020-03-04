@@ -83,9 +83,7 @@ class SyncItemUpdates extends ProductCreateTask
     {
         $assignProductToCategoryBatchSize = $this->replicationHelper->getProductCategoryAssignmentBatchSize();
 
-        $filters = [
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
-        ];
+        $filters = [];
 
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -93,13 +91,13 @@ class SyncItemUpdates extends ProductCreateTask
         );
         /** @var  $collection */
         $collection = $this->replHierarchyLeafCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+        $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
             $criteria,
             'nav_id',
+            null,
             'catalog_product_entity',
-            'sku',
-            true
+            'sku'
         );
         $sku = '';
         if ($collection->getSize() > 0) {
@@ -205,22 +203,20 @@ class SyncItemUpdates extends ProductCreateTask
     public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
-            $filters = [
-                ['field' => 'main_table.scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq']
-            ];
+            $filters = [];
             $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,
                 -1
             );
             /** @var  $collection */
             $collection = $this->replHierarchyLeafCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'nav_id',
+                null,
                 'catalog_product_entity',
-                'sku',
-                true
+                'sku'
             );
             $this->remainingRecords = $collection->getSize();
         }

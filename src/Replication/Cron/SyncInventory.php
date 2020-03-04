@@ -53,10 +53,11 @@ class SyncInventory extends ProductCreateTask
                         1
                     );
                     $collection = $this->replInvStatusCollectionFactory->create();
-                    $this->replicationHelper->setCollectionPropertiesPlusJoin(
+                    $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                         $collection,
                         $criteria,
                         'ItemId',
+                        'VariantId',
                         'catalog_product_entity',
                         'sku',
                         true
@@ -137,10 +138,11 @@ class SyncInventory extends ProductCreateTask
                 1
             );
             $collection = $this->replInvStatusCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'ItemId',
+                'VariantId',
                 'catalog_product_entity',
                 'sku',
                 true

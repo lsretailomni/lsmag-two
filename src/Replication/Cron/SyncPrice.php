@@ -57,10 +57,11 @@ class SyncPrice extends ProductCreateTask
                         1
                     );
                     $collection = $this->replPriceCollectionFactory->create();
-                    $this->replicationHelper->setCollectionPropertiesPlusJoin(
+                    $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                         $collection,
                         $criteria,
                         'ItemId',
+                        'VariantId',
                         'catalog_product_entity',
                         'sku',
                         true
@@ -150,10 +151,11 @@ class SyncPrice extends ProductCreateTask
                 $filters
             );
             $collection = $this->replPriceCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                 $collection,
                 $criteria,
                 'ItemId',
+                'VariantId',
                 'catalog_product_entity',
                 'sku',
                 true

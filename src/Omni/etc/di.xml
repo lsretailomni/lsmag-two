@@ -64,4 +64,11 @@
         <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector"
                 sortOrder="1"/>
     </type>
+
+    <!-- Magento order number prefix. -->
+    <type name="Magento\SalesSequence\Model\Sequence">
+        <plugin name="ls.order.number.sequence" type="Ls\Omni\Plugin\Order\Sequence"
+                sortOrder="1"/>
+    </type>
+
 </config>
