@@ -11,15 +11,14 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Phrase;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Magento\Framework\Phrase;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\DocBlock\Tag\PropertyTag;
 use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\FileGenerator;
 use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -137,8 +136,8 @@ class RepositoryTestGenerator extends AbstractGenerator
         $this->class->addMethodFromGenerator($this->getGetWithNoSuchEntityExceptionMethod());
         $this->class->addMethodFromGenerator($this->getGetListMethod());
         $this->class->addMethodFromGenerator($this->getSaveMethod());
-        $content = $this->file->generate();
-        return $content;
+        $this->class->addMethodFromGenerator($this->getSaveWithCouldNotSaveExceptionMethod());
+        return $this->file->generate();
     }
 
     /**
@@ -219,7 +218,6 @@ CODE
         return $method;
     }
 
-
     /**
      * @return MethodGenerator
      */
@@ -256,6 +254,32 @@ CODE
      ->with(\$this->entityInterface)
      ->willReturn(\$this->entityInterface);
 \$this->assertEquals(\$this->entityInterface, \$entityMock->save(\$this->entityInterface));
+CODE
+        );
+        return $method;
+    }
+
+    /**
+     * @return MethodGenerator
+     */
+    public function getSaveWithCouldNotSaveExceptionMethod()
+    {
+        $method           = new MethodGenerator();
+        $entityRepository = $this->operation->getRepositoryName();
+        $method->setName('testSaveWithCouldNotSaveException');
+        $method->setDocBlock('@expectedException \Magento\Framework\Exception\CouldNotSaveException 
+@expectedExceptionMessage Could not save entity');
+        $method->setBody(
+            <<<CODE
+\$entityMock = \$this->createMock($entityRepository::class);
+\$entityMock->method('save')
+     ->with(\$this->entityInterface)
+     ->willThrowException(
+         new CouldNotSaveException(
+             __('Could not save entity')
+         )
+     );
+\$entityMock->save(\$this->entityInterface);
 CODE
         );
         return $method;

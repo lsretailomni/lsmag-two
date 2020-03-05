@@ -120,6 +120,23 @@ class ReplImageLinkRepositoryTest extends TestCase
         $this->assertEquals($this->entityInterface, $entityMock->save($this->entityInterface));
     }
 
+    /**
+     * @expectedException \Magento\Framework\Exception\CouldNotSaveException 
+     * @expectedExceptionMessage Could not save entity
+     */
+    public function testSaveWithCouldNotSaveException()
+    {
+        $entityMock = $this->createMock(ReplImageLinkRepository::class);
+        $entityMock->method('save')
+             ->with($this->entityInterface)
+             ->willThrowException(
+                 new CouldNotSaveException(
+                     __('Could not save entity')
+                 )
+             );
+        $entityMock->save($this->entityInterface);
+    }
+
 
 }
 
