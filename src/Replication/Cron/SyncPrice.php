@@ -5,6 +5,7 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplPrice;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -70,7 +71,7 @@ class SyncPrice extends ProductCreateTask
                             // @codingStandardsIgnoreStart
                             $this->productResourceModel->saveAttribute($productData, 'price');
                             // @codingStandardsIgnoreEnd
-                            if ($productData->getTypeId() == 'configurable') {
+                            if ($productData->getTypeId() == Configurable::TYPE_CODE) {
                                 $_children = $productData->getTypeInstance()->getUsedProducts($productData);
                                 foreach ($_children as $child) {
                                     $childProductData = $this->productRepository->get($child->getSKU());
