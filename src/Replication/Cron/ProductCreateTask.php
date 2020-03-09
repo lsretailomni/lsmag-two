@@ -1127,10 +1127,6 @@ class ProductCreateTask
                     $this->logger->debug($e->getMessage());
                     $value->setData('is_failed', 1);
                 }
-                $value->setData('processed_at', $this->replicationHelper->getDateTime());
-                $value->setData('processed', 1);
-                $value->setData('is_updated', 0);
-                $this->replItemVariantRegistrationRepository->save($value);
             } catch (NoSuchEntityException $e) {
                 $is_variant_contain_null = false;
                 $d1                      = (($value->getVariantDimension1()) ?: '');
@@ -1203,12 +1199,12 @@ class ProductCreateTask
                 // @codingStandardsIgnoreStart
                 $productSaved           = $this->productRepository->save($productV);
                 $associatedProductIds[] = $productSaved->getId();
-                $value->setData('is_updated', 0);
-                $value->setData('processed', 1);
-                $value->setData('processed_at', $this->replicationHelper->getDateTime());
-                $this->replItemVariantRegistrationRepository->save($value);
                 // @codingStandardsIgnoreEnd
             }
+            $value->setData('processed_at', $this->replicationHelper->getDateTime());
+            $value->setData('processed', 1);
+            $value->setData('is_updated', 0);
+            $this->replItemVariantRegistrationRepository->save($value);
         }
         // This is added to take care Magento Commerce PK
         $productId = $configProduct->getDataByKey('row_id');
