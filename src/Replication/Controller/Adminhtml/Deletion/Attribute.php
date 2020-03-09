@@ -73,7 +73,7 @@ class Attribute extends Action
         // @codingStandardsIgnoreStart
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $tableName  = $connection->getTableName('eav_attribute');
-        $query      = "DELETE FROM " . $tableName . " WHERE attribute_code LIKE 'ls\_%'";
+        $query      = "DELETE FROM $tableName WHERE attribute_code LIKE 'ls\_%'";
         try {
             $connection->query($query);
         } catch (Exception $e) {
@@ -82,7 +82,7 @@ class Attribute extends Action
         // Update all dependent ls tables to not processed
         foreach ($this->ls_tables as $lsTable) {
             $lsTableName = $connection->getTableName($lsTable);
-            $lsQuery     = "UPDATE " . $lsTableName . " SET processed = 0;";
+            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0;';
             try {
                 $connection->query($lsQuery);
             } catch (Exception $e) {

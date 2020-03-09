@@ -65,7 +65,19 @@ class Order extends Action
         "sales_shipping_aggregated",
         "sales_shipping_aggregated_order",
         "tax_order_aggregated_created",
-        "tax_order_aggregated_updated"
+        "tax_order_aggregated_updated",
+        "sequence_order_0",
+        "sequence_order_1",
+        "sequence_order_2",
+        "sequence_creditmemo_0",
+        "sequence_creditmemo_1",
+        "sequence_creditmemo_2",
+        "sequence_invoice_0",
+        "sequence_invoice_1",
+        "sequence_invoice_2",
+        "sequence_shipment_0",
+        "sequence_shipment_1",
+        "sequence_shipment_2"
     ];
 
     // @codingStandardsIgnoreStart
@@ -100,9 +112,11 @@ class Order extends Action
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->order_tables as $orderTable) {
-            $tableName = $connection->getTableName($orderTable);
             try {
-                $connection->truncateTable($tableName);
+                $tableName = $connection->getTableName($orderTable);
+                if ($connection->isTableExists($tableName)) {
+                    $connection->truncateTable($tableName);
+                }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }

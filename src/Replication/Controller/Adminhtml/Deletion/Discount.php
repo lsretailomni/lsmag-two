@@ -38,7 +38,8 @@ class Discount extends Action
         "catalogrule_product_price_replica",
         "catalogrule_product",
         "catalogrule_product_replica",
-        "catalogrule_website"
+        "catalogrule_website",
+        "sequence_catalogrule"
     ];
 
     // @codingStandardsIgnoreStart
@@ -80,14 +81,16 @@ class Discount extends Action
         foreach ($this->discount_tables as $discountTable) {
             $tableName = $connection->getTableName($discountTable);
             try {
-                $connection->truncateTable($tableName);
+                if ($connection->isTableExists($tableName)) {
+                    $connection->truncateTable($tableName);
+                }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
         }
         $connection  = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $lsTableName = $connection->getTableName('ls_replication_repl_discount');
-        $lsQuery     = "UPDATE " . $lsTableName . " SET processed = 0;";
+        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0;';
         try {
             $connection->query($lsQuery);
         } catch (Exception $e) {
