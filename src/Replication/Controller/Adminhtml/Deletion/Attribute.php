@@ -82,7 +82,7 @@ class Attribute extends Action
         // Update all dependent ls tables to not processed
         foreach ($this->ls_tables as $lsTable) {
             $lsTableName = $connection->getTableName($lsTable);
-            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0;';
+            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
             try {
                 $connection->query($lsQuery);
             } catch (Exception $e) {
