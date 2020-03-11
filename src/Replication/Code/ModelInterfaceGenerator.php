@@ -128,6 +128,12 @@ class ModelInterfaceGenerator extends AbstractGenerator
             null,
             'string',
             [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'Checksum', 'variable_name' => 'checksum', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'ProcessedAt', 'variable_name' => 'processed_at', 'interface' => true]
         );
         $content = $this->file->generate();

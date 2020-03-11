@@ -87,6 +87,11 @@ class ReplImageLink extends AbstractModel implements ReplImageLinkInterface, Ide
     protected $updated_at = null;
 
     /**
+     * @property string $checksum
+     */
+    protected $checksum = null;
+
+    /**
      * @property string $processed_at
      */
     protected $processed_at = null;
@@ -359,6 +364,26 @@ class ReplImageLink extends AbstractModel implements ReplImageLinkInterface, Ide
     public function getUpdatedAt()
     {
         return $this->getData( 'updated_at' );
+    }
+
+    /**
+     * @param string $checksum
+     * @return $this
+     */
+    public function setChecksum($checksum)
+    {
+        $this->setData( 'checksum', $checksum );
+        $this->checksum = $checksum;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChecksum()
+    {
+        return $this->getData( 'checksum' );
     }
 
     /**

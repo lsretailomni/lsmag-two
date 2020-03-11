@@ -284,6 +284,7 @@ abstract class AbstractReplicationTask
         } else {
             $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         }
+        $checksum    = crc32(serialize($source));
         $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
         if (!empty($entityArray)) {
             foreach ($entityArray as $value) {
@@ -296,22 +297,25 @@ abstract class AbstractReplicationTask
             $entity = $this->getFactory()->create();
             $entity->setScope('default')->setScopeId(0);
         }
-        foreach ($properties as $property) {
-            if ($property === 'nav_id') {
-                $set_method = 'setNavId';
-                $get_method = 'getId';
-            } else {
-                $set_method = "set$property";
-                $get_method = "get$property";
+        if ($entity->getChecksum() != $checksum) {
+            $entity->setChecksum($checksum);
+            foreach ($properties as $property) {
+                if ($property === 'nav_id') {
+                    $set_method = 'setNavId';
+                    $get_method = 'getId';
+                } else {
+                    $set_method = "set$property";
+                    $get_method = "get$property";
+                }
+                if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
+                    $entity->{$set_method}($source->{$get_method}());
+                }
             }
-            if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
-                $entity->{$set_method}($source->{$get_method}());
+            try {
+                $this->getRepository()->save($entity);
+            } catch (\Exception $e) {
+                $this->logger->debug($e->getMessage());
             }
-        }
-        try {
-            $this->getRepository()->save($entity);
-        } catch (\Exception $e) {
-            $this->logger->debug($e->getMessage());
         }
     }
 
