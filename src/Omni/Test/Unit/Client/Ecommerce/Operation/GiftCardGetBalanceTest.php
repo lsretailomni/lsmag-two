@@ -2,17 +2,16 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use \Ls\Omni\Block\GiftCardBalance\GiftCardBalance;
 use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Client\Ecommerce\Entity\GiftCard;
 use \Ls\Omni\Client\Ecommerce\Entity\GiftCardGetBalance;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use PHPUnit\Framework\TestCase;
 use Zend\Uri\UriFactory;
 
-class GiftCardGetBalanceTest extends \PHPUnit\Framework\TestCase
+class GiftCardGetBalanceTest extends TestCase
 {
-
     protected function setUp()
     {
         $baseUrl      = $_ENV['BASE_URL'];
@@ -26,7 +25,7 @@ class GiftCardGetBalanceTest extends \PHPUnit\Framework\TestCase
     public function testExecute()
     {
         $this->assertNotNull($this->client);
-        $entity  = new GiftCardGetBalance();
+        $entity = new GiftCardGetBalance();
         $entity->setCardNo($_ENV['GIFTCARDCODE']);
         $response = $this->client->GiftCardGetBalance($entity);
         $result   = $response->getResult();

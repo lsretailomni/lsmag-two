@@ -12,12 +12,14 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfProfile;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Card;
+use \Ls\Omni\Client\Ecommerce\Entity\ContactUpdate;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use PHPUnit\Framework\TestCase;
 use Zend\Uri\UriFactory;
 
-class ContactUpdateTest extends \PHPUnit\Framework\TestCase
+class ContactUpdateTest extends TestCase
 {
     protected $contact;
     protected $contactCreate;
@@ -48,7 +50,7 @@ class ContactUpdateTest extends \PHPUnit\Framework\TestCase
         $cardArray = new ArrayOfCard();
         $cardArray->setCard($card);
         $contact->setCards($cardArray);
-        $contactUpdate = new \Ls\Omni\Client\Ecommerce\Entity\ContactUpdate();
+        $contactUpdate = new ContactUpdate();
         $contactUpdate->setContact($contact);
 
         $response = $this->client->ContactUpdate($contactUpdate);

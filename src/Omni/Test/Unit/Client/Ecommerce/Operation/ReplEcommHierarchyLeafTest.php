@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplHierarchyLeaf;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyLeaf;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchyLeafResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReplHierarchyLeaf;
 
 class ReplEcommHierarchyLeafTest extends ReplicationTest
 {
@@ -13,7 +13,7 @@ class ReplEcommHierarchyLeafTest extends ReplicationTest
         $request = new ReplEcommHierarchyLeaf();
         $request->setReplRequest($this->params);
         $response = $this->client->ReplEcommHierarchyLeaf($request);
-        $result = $response->getResult();
+        $result   = $response->getResult();
         $this->assertInstanceOf(ReplHierarchyLeafResponse::class, $result);
         $this->assertNotNull($result->getLeafs());
         $this->assertInstanceOf(ArrayOfReplHierarchyLeaf::class, $result->getLeafs());

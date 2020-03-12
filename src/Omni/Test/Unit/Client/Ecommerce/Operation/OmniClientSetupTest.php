@@ -1,15 +1,21 @@
 <?php
 
-namespace Ls\Omni\Test\Unit\Client;
+namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
 use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use PHPUnit\Framework\TestCase;
 use Zend\Uri\UriFactory;
 
-class PingTest extends \PHPUnit\Framework\TestCase
+/**
+ * Class OmniClientSetupTest
+ * @package Ls\Omni\Test\Unit\Client\Ecommerce\Operation
+ */
+class OmniClientSetupTest extends TestCase
 {
-    protected $client;
+    /** @var OmniClient */
+    public $client;
 
     protected function setUp()
     {
@@ -19,20 +25,12 @@ class PingTest extends \PHPUnit\Framework\TestCase
         $uri          = UriFactory::factory($url);
         $this->client = new OmniClient($uri, $service_type);
         $this->client->setClassmap(ClassMap::getClassMap());
+        $this->assertNotNull($this->client);
     }
 
-    public function testValidateBaseUrl()
+    public function testExecute()
     {
-        $this->assertNotNull($this->client);
         $pong = $this->client->Ping();
         $this->assertContains('PONG OK> Successfully connected to [LSOmni DB] & [LSCentral DB]', $pong->getResult());
-    }
-
-    /**
-     * @return array
-     */
-    public function matchProvider()
-    {
-        return [[true], [false]];
     }
 }

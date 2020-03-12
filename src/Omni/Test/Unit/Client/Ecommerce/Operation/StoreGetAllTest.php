@@ -6,9 +6,10 @@ use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use PHPUnit\Framework\TestCase;
 use Zend\Uri\UriFactory;
 
-class StoresGetAllTest extends \PHPUnit\Framework\TestCase
+class StoresGetAllTest extends TestCase
 {
     protected function setUp()
     {
