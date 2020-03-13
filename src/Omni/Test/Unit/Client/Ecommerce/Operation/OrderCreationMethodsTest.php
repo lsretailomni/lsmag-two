@@ -7,6 +7,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfInventoryResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneList;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListItem;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryRequest;
@@ -15,6 +16,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\OneListCalculate;
 use \Ls\Omni\Client\Ecommerce\Entity\OneListItem;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Exception\InvalidEnumException;
 
@@ -344,7 +346,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     }
 
     /**
-     * Create Customer Order for ClickAndCollect
+     * Create Customer Order for ClickAndCollect using Cash Order Payment Line only
      * @depends testOneListSaveBasket
      */
     public function testOrderCreate()
@@ -364,6 +366,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $response = $this->client->OneListCalculate($entity);
         $result   = $response->getResult();
         $this->assertInstanceOf(Order::class, $result);
+        $orderPayment = new OrderPayment();
+        $orderPayment->setCurrencyFactor(1)
+            ->setAmount('72')
+            ->setLineNumber('1')
+            ->setExternalReference('TEST0012345')
+            ->setTenderType('0');
+        $orderPayments = new ArrayOfOrderPayment();
+        $orderPayments->setOrderPayment([$orderPayment]);
+        $result->setOrderPayments($orderPayments);
+        $result->setOrderType(OrderType::CLICK_AND_COLLECT);
         // Order creation request
         $paramOrderCreate  = [
             'request' => $result
@@ -379,5 +391,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
         $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
         $this->assertObjectHasAttribute('Status', $resultOrderCreate);
+        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
     }
 }
