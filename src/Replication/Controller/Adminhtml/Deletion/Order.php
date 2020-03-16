@@ -7,6 +7,7 @@ use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Order Deletion
@@ -67,17 +68,9 @@ class Order extends Action
         "tax_order_aggregated_created",
         "tax_order_aggregated_updated",
         "sequence_order_0",
-        "sequence_order_1",
-        "sequence_order_2",
         "sequence_creditmemo_0",
-        "sequence_creditmemo_1",
-        "sequence_creditmemo_2",
         "sequence_invoice_0",
-        "sequence_invoice_1",
-        "sequence_invoice_2",
-        "sequence_shipment_0",
-        "sequence_shipment_1",
-        "sequence_shipment_2"
+        "sequence_shipment_0"
     ];
 
     // @codingStandardsIgnoreStart
@@ -86,18 +79,26 @@ class Order extends Action
     // @codingStandardsIgnoreEnd
 
     /**
+     * @var StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
      * Order constructor.
      * @param ResourceConnection $resource
      * @param Logger $logger
+     * @param StoreManagerInterface $storeManager
      * @param Context $context
      */
     public function __construct(
         ResourceConnection $resource,
         Logger $logger,
+        StoreManagerInterface $storeManager,
         Context $context
     ) {
-        $this->resource = $resource;
-        $this->logger   = $logger;
+        $this->resource     = $resource;
+        $this->logger       = $logger;
+        $this->storeManager = $storeManager;
         parent::__construct($context);
     }
 
@@ -111,6 +112,14 @@ class Order extends Action
         // @codingStandardsIgnoreStart
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
+        $stores = $this->storeManager->getStores();
+        foreach ($stores as $store) {
+            $storeId              = $store->getId();
+            $this->order_tables[] = 'sequence_order_' . $storeId;
+            $this->order_tables[] = 'sequence_creditmemo_' . $storeId;
+            $this->order_tables[] = 'sequence_invoice_' . $storeId;
+            $this->order_tables[] = 'sequence_shipment_' . $storeId;
+        }
         foreach ($this->order_tables as $orderTable) {
             try {
                 $tableName = $connection->getTableName($orderTable);
