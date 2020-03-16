@@ -14,27 +14,27 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use PHPUnit\Framework\TestCase;
 use Zend\Uri\UriFactory;
 
-class ContactGetByCardIdTest extends \PHPUnit\Framework\TestCase
+class ContactGetByCardIdTest extends TestCase
 {
-
     protected function setUp()
     {
-        $baseUrl                = $_ENV['BASE_URL'];
-        $url                    = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
-        $service_type           = new ServiceType(ServiceType::ECOMMERCE);
-        $uri                    = UriFactory::factory($url);
-        $this->client           = new OmniClient($uri, $service_type);
+        $baseUrl      = $_ENV['BASE_URL'];
+        $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
+        $service_type = new ServiceType(ServiceType::ECOMMERCE);
+        $uri          = UriFactory::factory($url);
+        $this->client = new OmniClient($uri, $service_type);
         $this->client->setClassmap(ClassMap::getClassMap());
     }
 
     public function testExecute()
     {
         $this->assertNotNull($this->client);
-        $param    = array(
+        $param    = [
             'cardId' => $_ENV['CARD_ID']
-        );
+        ];
         $response = $this->client->ContactGetByCardId($param);
         $result   = $response->getResult();
         $this->assertInstanceOf(MemberContact::class, $result);

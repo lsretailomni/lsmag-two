@@ -2,18 +2,18 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\ClassMap;
+use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfMemberContact;
-use \Ls\Omni\Client\Ecommerce\Entity\ContactSearch;
 use \Ls\Omni\Client\Ecommerce\Entity\ContactSearchResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\LoginWeb;
 use \Ls\Omni\Client\Ecommerce\Entity\LoginWebResponse;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use PHPUnit\Framework\TestCase;
+use SoapFault;
 use Zend\Uri\UriFactory;
 
-class LoginWebTest extends \PHPUnit\Framework\TestCase
+class LoginWebTest extends TestCase
 {
     /** @var OmniClient */
     public $client;
@@ -26,14 +26,14 @@ class LoginWebTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $baseUrl = $_ENV['BASE_URL'];
+        $baseUrl        = $_ENV['BASE_URL'];
         $this->username = $_ENV['USERNAME'];
-        $this->email = $_ENV['EMAIL'];
+        $this->email    = $_ENV['EMAIL'];
         $this->password = $_ENV['PASSWORD'];
-        $url = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
-        $service_type = new ServiceType(ServiceType::ECOMMERCE);
-        $uri = UriFactory::factory($url);
-        $this->client = new OmniClient($uri, $service_type);
+        $url            = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
+        $service_type   = new ServiceType(ServiceType::ECOMMERCE);
+        $uri            = UriFactory::factory($url);
+        $this->client   = new OmniClient($uri, $service_type);
         $this->client->setClassmap(ClassMap::getClassMap());
         $this->assertNotNull($this->client);
     }
@@ -41,15 +41,15 @@ class LoginWebTest extends \PHPUnit\Framework\TestCase
     public function testSearchUsername()
     {
         try {
-            $params = array(
+            $params   = [
                 'searchType' => Entity\Enum\ContactSearchType::USER_NAME,
-                'search' => $this->username
-            );
+                'search'     => $this->username
+            ];
             $response = $this->client->ContactSearch($params);
             $this->assertInstanceOf(ContactSearchResponse::class, $response);
             $this->assertInstanceOf(ArrayOfMemberContact::class, $response->getResult());
             $this->assertGreaterThanOrEqual(1, count($response->getResult()->getMemberContact()));
-        } catch (\SoapFault $e) {
+        } catch (SoapFault $e) {
             echo $e->getMessage();
         }
     }
@@ -60,13 +60,13 @@ class LoginWebTest extends \PHPUnit\Framework\TestCase
     public function testLoginUserName()
     {
         try {
-            $params = array(
+            $params   = [
                 'userName' => $this->username,
                 'password' => $this->password
-            );
+            ];
             $response = $this->client->LoginWeb($params);
             $this->assertInstanceOf(LoginWebResponse::class, $response);
-        } catch (\SoapFault $e) {
+        } catch (SoapFault $e) {
             echo $e->getMessage();
         }
     }
