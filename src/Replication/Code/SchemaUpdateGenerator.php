@@ -139,8 +139,7 @@ if(!\$setup->tableExists(\$table_name)) {
 \t\$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
 \t\$table->addColumn('processed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
 \t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
-\t\$table->addColumn('is_failed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
-
+\t\$table->addColumn('is_failed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');\n
 CODE;
         foreach ($property_types as $raw_name => $type) {
             $name    = $raw_name;
@@ -186,12 +185,19 @@ CODE;
             'length'     => 1
         ];
         $allColumnsArray[] = [
+            'name'       => 'checksum',
+            'field_type' => 'Table::TYPE_TEXT',
+            'default'    => 'null',
+            'length'     => "''"
+        ];
+        $allColumnsArray[] = [
             'name'       => 'processed_at',
             'field_type' => 'Table::TYPE_TIMESTAMP',
             'default'    => 'null',
             'length'     => "''"
         ];
         $method_body       .= <<<CODE
+\t\$table->addColumn('checksum', Table::TYPE_TEXT,'');
 \t\$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
 \t\$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
 \t\$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
