@@ -9,42 +9,39 @@
                    showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Configuration</label>
                 <field id="extension_version" translate="label" type="label" sortOrder="1" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                       showInWebsite="1" showInStore="1">
                     <label>Version</label>
                     <backend_model>Ls\Omni\Model\System\Backend\ExtensionVersion</backend_model>
                 </field>
-                <field id="base_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
-                       showInStore="1">
+                <field id="base_url" translate="label" type="text" sortOrder="10" showInWebsite="1">
                     <label>Service Base URL</label>
                     <validate>required-entry validate-url</validate>
                     <comment>http://lsretail.cloudapp.net/lsomniservice</comment>
                 </field>
-                <field id="ls_key" translate="label" type="text" sortOrder="10" showInWebsite="1" showInStore="1">
+                <field id="ls_key" translate="label" type="text" sortOrder="10" showInWebsite="1">
                     <label>LS Key</label>
                     <comment>For Multi Tenant Web Services</comment>
                 </field>
-                <field id="validate_base_url" translate="label comment" type="button" sortOrder="10" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="validate_base_url" translate="label comment" type="button" sortOrder="10"
+                       showInWebsite="1">
                     <frontend_model>Ls\Omni\Block\Adminhtml\System\Config\Stores</frontend_model>
                     <comment>Please validate your base url by clicking on button above</comment>
                 </field>
-                <field id="version" translate="label" type="label" sortOrder="10" showInDefault="1" showInWebsite="1"
-                       showInStore="1">
+                <field id="version" translate="label" type="label" sortOrder="10" showInWebsite="1">
                     <label>Omni Service Version</label>
                 </field>
-                <field id="ls_central_version" translate="label" type="label" sortOrder="10" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="ls_central_version" translate="label" type="label" sortOrder="10"
+                       showInWebsite="1">
                     <label>LS Central Version</label>
                 </field>
-                <field id="selected_store" translate="label comment" type="select" sortOrder="10" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="selected_store" translate="label comment" type="select" sortOrder="10"
+                       showInWebsite="1">
                     <label>Select Store</label>
                     <validate>required-entry</validate>
                     <source_model>Ls\Omni\Model\System\Source\NavStore</source_model>
                     <comment>Choose the web store</comment>
                 </field>
-                <field id="replicate_hierarchy_code" translate="label comment" type="select" sortOrder="10"
-                       showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="replicate_hierarchy_code" translate="label comment" type="select" sortOrder="10" showInWebsite="1">
                     <label>Select Hierarchy Code</label>
                     <validate>required-entry</validate>
                     <comment>Required to get hierarchy node and leaf from omni</comment>

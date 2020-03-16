@@ -38,21 +38,20 @@ class SyncInventory extends ProductCreateTask
                 if ($this->lsr->isLSR($this->store->getId())) {
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
-                        LSR::SC_PRODUCT_INVENTORY_CONFIG_PATH_LAST_EXECUTE, $this->store->getId()
+                        LSR::SC_PRODUCT_INVENTORY_CONFIG_PATH_LAST_EXECUTE,
+                        $this->store->getId()
                     );
                     $this->logger->debug('Running SyncInventory Task for store ' . $this->store->getName());
-                    $storeId                   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE,
-                        $this->store->getId());
                     $productInventoryBatchSize = $this->replicationHelper->getProductInventoryBatchSize();
-                    $filters    = [
-                        ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
+                    $filters                   = [
+                        ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
                     ];
-                    $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+                    $criteria                  = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                         $filters,
                         $productInventoryBatchSize,
                         1
                     );
-                    $collection = $this->replInvStatusCollectionFactory->create();
+                    $collection                = $this->replInvStatusCollectionFactory->create();
                     $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
                         $collection,
                         $criteria,
@@ -97,8 +96,11 @@ class SyncInventory extends ProductCreateTask
                         $this->cronStatus = true;
                     }
 
-                    $this->replicationHelper->updateCronStatus($this->cronStatus,
-                        LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY, $this->store->getId());
+                    $this->replicationHelper->updateCronStatus(
+                        $this->cronStatus,
+                        LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
+                        $this->store->getId()
+                    );
                     $this->logger->debug('End SyncInventory Task for store ' . $this->store->getName());
                 }
                 $this->lsr->setStoreId(null);
@@ -128,9 +130,8 @@ class SyncInventory extends ProductCreateTask
     public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
-            $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $storeData->getId());
             $filters    = [
-                ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq']
+                ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
             ];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,
