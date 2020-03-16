@@ -1009,7 +1009,7 @@ class ProductCreateTask
         //get configurable products attributes array with all values
         // with label (super attribute which use for configuration)
         $assPro = null;
-        if ($product->getTypeId() != 'configurable') {
+        if ($product->getTypeId() != Configurable::TYPE_CODE) {
             // to bypass situation when simple products are not being properly converted into configurable.
             return $assPro;
         }
@@ -1101,7 +1101,7 @@ class ProductCreateTask
         $attributesCode       = $this->_getAttributesCodes($item->getNavId());
         $attributesIds        = [];
         $associatedProductIds = [];
-        if ($configProduct->getTypeId() == 'configurable') {
+        if ($configProduct->getTypeId() == Configurable::TYPE_CODE) {
             $associatedProductIds = $configProduct->getTypeInstance()->getUsedProductIds($configProduct);
         }
         $configurableProductsData = [];
@@ -1127,10 +1127,6 @@ class ProductCreateTask
                     $this->logger->debug($e->getMessage());
                     $value->setData('is_failed', 1);
                 }
-                $value->setData('processed_at', $this->replicationHelper->getDateTime());
-                $value->setData('processed', 1);
-                $value->setData('is_updated', 0);
-                $this->replItemVariantRegistrationRepository->save($value);
             } catch (NoSuchEntityException $e) {
                 $is_variant_contain_null = false;
                 $d1                      = (($value->getVariantDimension1()) ?: '');
@@ -1179,7 +1175,7 @@ class ProductCreateTask
                 $productV->setWebsiteIds([1]);
                 $productV->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
                 $productV->setStatus(Status::STATUS_ENABLED);
-                $productV->setTypeId('simple');
+                $productV->setTypeId(Type::TYPE_SIMPLE);
                 foreach ($attributesCode as $keyCode => $valueCode) {
                     if (isset($keyCode) && $keyCode != '') {
                         $optionId = $this->_getOptionIDByCode($valueCode, ${'d' . $keyCode});
@@ -1203,16 +1199,20 @@ class ProductCreateTask
                 // @codingStandardsIgnoreStart
                 $productSaved           = $this->productRepository->save($productV);
                 $associatedProductIds[] = $productSaved->getId();
-                $value->setData('is_updated', 0);
-                $value->setData('processed', 1);
-                $value->setData('processed_at', $this->replicationHelper->getDateTime());
-                $this->replItemVariantRegistrationRepository->save($value);
                 // @codingStandardsIgnoreEnd
             }
+            $value->setData('processed_at', $this->replicationHelper->getDateTime());
+            $value->setData('processed', 1);
+            $value->setData('is_updated', 0);
+            $this->replItemVariantRegistrationRepository->save($value);
         }
-        $productId = $configProduct->getId();
-        $position  = 0;
-        if ($configProduct->getTypeId() == 'simple') {
+        // This is added to take care Magento Commerce PK
+        $productId = $configProduct->getDataByKey('row_id');
+        if (empty($productId)) {
+            $productId = $configProduct->getId();
+        }
+        $position = 0;
+        if ($configProduct->getTypeId() == Type::TYPE_SIMPLE) {
             foreach ($attributesCode as $value) {
                 /** @var Interceptor $attribute */
                 $attribute       = $this->eavConfig->getAttribute('catalog_product', $value);
@@ -1226,13 +1226,13 @@ class ProductCreateTask
                     // @codingStandardsIgnoreLine
                     $this->attribute->setData($data)->save();
                 } catch (Exception $e) {
-                    $this->logger->debug("Issue while saving Attribute Id : " . $attribute->getId() . " and Product Id : $productId - " . $e->getMessage());
+                    $this->logger->debug('Issue while saving Attribute Id : ' . $attribute->getId() . " and Product Id : $productId - " . $e->getMessage());
                 }
                 $position++;
             }
         }
 
-        $configProduct->setTypeId('configurable'); // Setting Product Type As Configurable
+        $configProduct->setTypeId(Configurable::TYPE_CODE); // Setting Product Type As Configurable
         $configProduct->setAffectConfigurableProductAttributes(4);
         $this->configurable->setUsedProductAttributes($configProduct, $attributesIds);
         $configProduct->setNewVariationsAttributeSetId(4); // Setting Attribute Set Id
@@ -1240,7 +1240,7 @@ class ProductCreateTask
         $configProduct->setCanSaveConfigurableAttributes(true);
         $configProduct->setAssociatedProductIds($associatedProductIds); // Setting Associated Products
         try {
-            $configProduct->save();
+            $this->productRepository->save($configProduct);
         } catch (Exception $e) {
             $this->logger->debug("Exception while saving Configurable Product Id : $productId - " . $e->getMessage());
         }

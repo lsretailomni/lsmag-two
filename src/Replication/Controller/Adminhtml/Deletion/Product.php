@@ -138,7 +138,8 @@ class Product extends Action
         "report_viewed_product_aggregated_daily",
         "report_viewed_product_aggregated_monthly",
         "report_viewed_product_aggregated_yearly",
-        "report_viewed_product_index"
+        "report_viewed_product_index",
+        "sequence_product"
     ];
 
     // @codingStandardsIgnoreStart
@@ -184,7 +185,9 @@ class Product extends Action
         foreach ($this->catalog_products_tables as $catalogTable) {
             $tableName = $connection->getTableName($catalogTable);
             try {
-                $connection->truncateTable($tableName);
+                if ($connection->isTableExists($tableName)) {
+                    $connection->truncateTable($tableName);
+                }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
@@ -194,7 +197,7 @@ class Product extends Action
         // Update all dependent ls tables to not processed
         foreach ($this->ls_tables as $lsTable) {
             $lsTableName = $connection->getTableName($lsTable);
-            $lsQuery     = "UPDATE " . $lsTableName . " SET processed = 0;";
+            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
             try {
                 $connection->query($lsQuery);
             } catch (Exception $e) {
