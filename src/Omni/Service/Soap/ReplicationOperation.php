@@ -383,6 +383,14 @@ class ReplicationOperation extends Operation
     }
 
     /**
+     * @return string
+     */
+    public function getRepositoryTestName()
+    {
+        return $this->getEntityName() . 'RepositoryTest';
+    }
+
+    /**
      * @param bool $absolute
      *
      * @return string
@@ -390,6 +398,18 @@ class ReplicationOperation extends Operation
     public function getRepositoryPath($absolute = false)
     {
         $relative_path = AbstractGenerator::path('Model', $this->getRepositoryName() . '.php');
+
+        return $this->getPath($relative_path, $absolute);
+    }
+
+    /**
+     * @param bool $absolute
+     *
+     * @return string
+     */
+    public function getRepositoryTestPath($absolute = false)
+    {
+        $relative_path = AbstractGenerator::path('Test', 'Unit', 'Model', $this->getRepositoryTestName() . '.php');
 
         return $this->getPath($relative_path, $absolute);
     }

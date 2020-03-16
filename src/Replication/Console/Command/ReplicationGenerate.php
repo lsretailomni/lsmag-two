@@ -19,6 +19,7 @@ use \Ls\Replication\Code\ModelGenerator;
 use \Ls\Replication\Code\ModelInterfaceGenerator;
 use \Ls\Replication\Code\RepositoryGenerator;
 use \Ls\Replication\Code\RepositoryInterfaceGenerator;
+use \Ls\Replication\Code\RepositoryTestGenerator;
 use \Ls\Replication\Code\ResourceCollectionGenerator;
 use \Ls\Replication\Code\ResourceModelGenerator;
 use \Ls\Replication\Code\SchemaUpdateGenerator;
@@ -244,6 +245,13 @@ class ReplicationGenerate extends OmniCommand
                 file_put_contents(
                     $replication_operation->getSearchPath(true),
                     $search_generator->generate()
+                );
+
+                // REPOSITORY TEST Ls\Replication\Model\Test\Unit\$classname.RepositoryTest.php
+                $repositoryTestGenerator = new RepositoryTestGenerator($replication_operation);
+                file_put_contents(
+                    $replication_operation->getRepositoryTestPath(true),
+                    $repositoryTestGenerator->generate()
                 );
                 $this->output->writeln('- - - - ' . $operation->getName() . ' - - - -');
             }
