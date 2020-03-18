@@ -239,7 +239,7 @@ class CategoryCreateTask
                     /** @var Category $category */
                     $category = $this->categoryFactory->create();
                     $data     = [
-                        'parent_id'       => 2,
+                        'parent_id'       => $this->store->getRootCategoryId(),
                         'name'            => ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId(),
                         'url_key'         => $this->oSlug($hierarchyNode->getNavId()),
                         'is_active'       => true,

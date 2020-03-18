@@ -38,16 +38,16 @@ class SyncPrice extends ProductCreateTask
                 if ($this->lsr->isLSR($this->store->getId())) {
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
-                        LSR::SC_PRODUCT_PRICE_CONFIG_PATH_LAST_EXECUTE, $this->store->getId()
+                        LSR::SC_PRODUCT_PRICE_CONFIG_PATH_LAST_EXECUTE,
+                        $this->store->getId()
                     );
                     $this->logger->debug('Running SyncPrice Task for store ' . $this->store->getName());
-                    $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $this->store->getId());
 
                     $productPricesBatchSize = $this->replicationHelper->getProductPricesBatchSize();
 
                     /** Get list of only those prices whose items are already processed */
                     $filters = [
-                        ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+                        ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
                         ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
                     ];
 
@@ -140,10 +140,9 @@ class SyncPrice extends ProductCreateTask
     public function getRemainingRecords($storeData = null)
     {
         if (!$this->remainingRecords) {
-            $storeId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $storeData->getId());
             /** Get list of only those prices whose items are already processed */
             $filters = [
-                ['field' => 'main_table.StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+                ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
                 ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
             ];
 
