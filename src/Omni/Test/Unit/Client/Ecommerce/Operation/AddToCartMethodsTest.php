@@ -4,7 +4,7 @@ namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneList;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListItem;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListPublishedOffer;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListPublishedOffer;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
