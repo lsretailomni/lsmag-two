@@ -339,6 +339,8 @@ class CustomerRegistrationTest extends TestCase
                 ->with('lsr_token', $contact->getLoggedOnToDevice()->getSecurityToken());
             $customerModel->method('setData')
                 ->with('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
+            $customerModel->method('setData')
+                ->with('lsr_username', $contact->getUserName());
             $customerModel->expects($this->once())
                 ->method('getAttributeSetId')
                 ->willReturn(null);
