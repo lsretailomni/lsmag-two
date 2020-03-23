@@ -108,7 +108,8 @@ class SyncImages extends ProductCreateTask
                     $itemSku = $itemImage->getKeyValue();
                     $itemSku = str_replace(',', '-', $itemSku);
                     /* @var ProductInterface $productData */
-                    $productData = $this->productRepository->get($itemSku, true, null, true);
+                    $productData = $this->productRepository->get($itemSku, true, $this->store->getId(), true);
+                    $productData->setData('store_id',0);
                     // Check for all images.
                     $filtersForAllImages  = [
                         ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],

@@ -502,7 +502,7 @@ class Data extends AbstractHelper
         $this->configWriter->save(
             $path,
             $value,
-            ScopeInterface::SCOPE_WEBSITE,
+            ScopeInterface::SCOPE_WEBSITES,
             $websiteId
         );
     }
