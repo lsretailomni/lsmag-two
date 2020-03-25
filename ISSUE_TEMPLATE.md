@@ -10,8 +10,7 @@
 
 ### Preconditions (*)
 <!---
-    Please provide as detailed information about your environment as possible.
-    For example Magento version, LS Central version, LS Omni version, tag, HEAD, PHP & MySQL version, etc..
+    Provide the exact Magento version (example: 2.3.2), LS Central version (14.02), LS Omni version (4.5.2), LS eCommerce - Magento version (1.2.1) and any important information on the environment where bug is reproducible.
 -->
 1. 
 2. 
