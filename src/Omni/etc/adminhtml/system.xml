@@ -4,7 +4,7 @@
     <system>
         <section id="ls_mag">
             <tab>ls_retail</tab>
-            <resource>Ls_Omni::config</resource>
+            <resource>Ls_Core::config</resource>
             <group id="service" translate="label" type="text" sortOrder="10"
                    showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Configuration</label>
@@ -230,7 +230,7 @@
         <section id="omni_clickandcollect" sortOrder="2" showInDefault="1">
             <tab>ls_retail</tab>
             <label>Click And Collect</label>
-            <resource>Magento_Config::config</resource>
+            <resource>Ls_Core::config</resource>
             <group id="general" showInDefault="1">
                 <label>Default Maps Settings</label>
                 <field id="maps_api_key" translate="label" type="text" sortOrder="10" showInDefault="1"
