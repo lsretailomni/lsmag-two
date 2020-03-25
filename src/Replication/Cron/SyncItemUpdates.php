@@ -150,7 +150,6 @@ class SyncItemUpdates extends ProductCreateTask
             }
             $hierarchyLeaf->setData('processed', 1);
             $hierarchyLeaf->setData('processed_at', $this->replicationHelper->getDateTime());
-            $hierarchyLeaf->setData('IsDeleted', 0);
             $hierarchyLeaf->setData('is_updated', 0);
             // @codingStandardsIgnoreStart
             $this->replHierarchyLeafRepository->save($hierarchyLeaf);

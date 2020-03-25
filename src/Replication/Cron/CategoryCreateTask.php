@@ -364,29 +364,31 @@ class CategoryCreateTask
             'catalog_category_entity_varchar',
             'value'
         );
-        /** @var ReplHierarchyNode $hierarchyNode */
-        foreach ($collection as $hierarchyNode) {
-            try {
-                if (!empty($hierarchyNode->getNavId())) {
-                    $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
-                    if ($categoryExistData) {
-                        $categoryExistData->setData('is_active', 0);
-                        // @codingStandardsIgnoreLine
-                        $this->categoryRepository->save($categoryExistData);
+        $collection->getSelect()->distinct(true);
+        if ($collection->getSize() > 0) {
+            /** @var ReplHierarchyNode $hierarchyNode */
+            foreach ($collection as $hierarchyNode) {
+                try {
+                    if (!empty($hierarchyNode->getNavId())) {
+                        $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
+                        if ($categoryExistData) {
+                            $categoryExistData->setData('is_active', 0);
+                            // @codingStandardsIgnoreLine
+                            $this->categoryRepository->save($categoryExistData);
+                        }
+                    } else {
+                        $hierarchyNode->setData('is_failed', 1);
                     }
-                } else {
+                } catch (Exception $e) {
+                    $this->logger->debug($e->getMessage());
                     $hierarchyNode->setData('is_failed', 1);
                 }
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-                $hierarchyNode->setData('is_failed', 1);
+                $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
+                $hierarchyNode->setData('processed', 1);
+                $hierarchyNode->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
+                $this->replHierarchyNodeRepository->save($hierarchyNode);
             }
-            $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
-            $hierarchyNode->setData('IsDeleted', 0);
-            $hierarchyNode->setData('processed', 1);
-            $hierarchyNode->setData('is_updated', 0);
-            // @codingStandardsIgnoreLine
-            $this->replHierarchyNodeRepository->save($hierarchyNode);
         }
     }
 

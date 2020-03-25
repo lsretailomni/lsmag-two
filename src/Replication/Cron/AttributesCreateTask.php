@@ -249,7 +249,6 @@ class AttributesCreateTask
             }
             $replAttribute->setData('processed_at', $this->replicationHelper->getDateTime());
             $replAttribute->setData('processed', 1);
-            $replAttribute->setData('IsDeleted', 0);
             $replAttribute->setData('is_updated', 0);
             // @codingStandardsIgnoreLine
             $this->replAttributeRepositoryInterface->save($replAttribute);
