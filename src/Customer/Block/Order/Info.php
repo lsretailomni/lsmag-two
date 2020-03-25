@@ -125,7 +125,7 @@ class Info extends Template
         $order         = $this->getOrder();
         $shipToAddress = $order->getShipToAddress();
         $address       = '';
-        if (!empty($shipToAddress)) {
+        if (!empty($shipToAddress) && !empty($shipToAddress->getCountry())) {
             $address .= $order->getShipToName() ? $order->getShipToName() . '<br/>' : '';
             $address .= $shipToAddress->getAddress1() ? $shipToAddress->getAddress1() . '<br/>' : '';
             $address .= $shipToAddress->getAddress2() ? $shipToAddress->getAddress2() . '<br/>' : '';

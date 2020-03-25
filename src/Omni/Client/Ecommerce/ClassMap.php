@@ -420,6 +420,8 @@ class ClassMap
         		'RetailAttribute' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\RetailAttribute',
         		'ArrayOfAttributeOptionValue' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfAttributeOptionValue',
         		'AttributeOptionValue' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\AttributeOptionValue',
+        		'ArrayOfItemLocation' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfItemLocation',
+        		'ItemLocation' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ItemLocation',
         		'ArrayOfPrice' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfPrice',
         		'Price' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Price',
         		'GiftCard' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GiftCard',

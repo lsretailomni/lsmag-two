@@ -70,7 +70,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                         __('View Order') ?></span>
                                 </a>
                                 <?php
-                                $magOrder = $block->getOrderByDocumentId($_order->getId());
+                                $magOrder = $block->getOrderByDocumentId($_order->getCustomerOrderNo());
                                 if (!empty($magOrder)):
                                     if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getEntityId())) : ?>
                                         <a href="#" data-post='<?php /* @escapeNotVerified */
