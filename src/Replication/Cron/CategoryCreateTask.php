@@ -61,7 +61,7 @@ class CategoryCreateTask
     /** @var LSR */
     public $lsr;
 
-    /** @var Cron Checking */
+    /** @var bool */
     public $cronStatus = false;
 
     /** @var ProductRepositoryInterface */
@@ -154,7 +154,6 @@ class CategoryCreateTask
         $mediaAttribute              = ['image', 'small_image', 'thumbnail'];
         $this->caterMainCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute);
         $this->caterSubCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute);
-        $remainingRecords = $this->getRemainingRecords();
         if ($this->getRemainingRecords() == 0) {
             $this->cronStatus = true;
         }
@@ -250,7 +249,6 @@ class CategoryCreateTask
     /**
      * @param $HierarchyCodeSpecificFilter
      * @param $mediaAttribute
-     * @return int
      * @throws InputException
      */
     public function caterSubCategoryHierarchyNodeAddOrUpdate($HierarchyCodeSpecificFilter, $mediaAttribute)
@@ -279,6 +277,7 @@ class CategoryCreateTask
                     continue;
                 }
                 $itemCategoryId       = $hierarchyNodeSub->getParentNode();
+                /** @var  $collection */
                 $collection           = $this->collectionFactory->create()
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
                     ->setPageSize(1);
