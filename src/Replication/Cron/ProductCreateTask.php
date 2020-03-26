@@ -938,7 +938,6 @@ class ProductCreateTask
                 $value->setData('is_updated', 0);
                 $value->setData('processed_at', $this->replicationHelper->getDateTime());
                 $value->setData('processed', 1);
-                $value->setData('IsDeleted', 0);
                 // @codingStandardsIgnoreLine
                 $this->itemRepository->save($value);
             }
@@ -992,7 +991,6 @@ class ProductCreateTask
                 $value->setData('is_updated', 0);
                 $value->setData('processed_at', $this->replicationHelper->getDateTime());
                 $value->setData('processed', 1);
-                $value->setData('IsDeleted', 0);
                 // @codingStandardsIgnoreLine
                 $this->replItemVariantRegistrationRepository->save($value);
             }

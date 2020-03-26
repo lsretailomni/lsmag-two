@@ -361,6 +361,7 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('IsDeleted', 1, 'eq');
+        $criteria->addFilter('is_updated', 1, 'eq');
         if ($pagesize != -1) {
             $criteria->setPageSize($pagesize);
         }
@@ -382,6 +383,7 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('main_table.IsDeleted', 1, 'eq');
+        $criteria->addFilter('main_table.is_updated', 1, 'eq');
         if ($pagesize != -1) {
             $criteria->setPageSize($pagesize);
         }

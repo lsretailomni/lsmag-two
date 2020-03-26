@@ -113,7 +113,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/loy_item"                       => ["nav_id"]
     ];
 
-    /** @var LoggerInterface */
+    /** @var Logger */
     public $logger;
     /** @var ScopeConfigInterface */
     public $scope_config;
