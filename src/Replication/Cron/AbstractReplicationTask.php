@@ -125,7 +125,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/loy_item"                       => ["nav_id", "scope_id"]
     ];
 
-    /** @var LoggerInterface */
+    /** @var Logger */
     public $logger;
     /** @var ScopeConfigInterface */
     public $scope_config;
@@ -318,6 +318,7 @@ abstract class AbstractReplicationTask
         } else {
             $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         }
+        $checksum    = crc32(serialize($source));
         $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
         if (!empty($entityArray)) {
             foreach ($entityArray as $value) {
@@ -329,25 +330,28 @@ abstract class AbstractReplicationTask
         } else {
             $entity = $this->getFactory()->create();
         }
-        foreach ($properties as $property) {
-            if ($property == 'nav_id') {
-                $set_method = 'setNavId';
-                $get_method = 'getId';
-            } else {
-                $field_name_optimized   = str_replace('_', ' ', $property);
-                $field_name_capitalized = ucwords($field_name_optimized);
-                $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
-                $set_method             = "set$field_name_capitalized";
-                $get_method             = "get$field_name_capitalized";
+        if ($entity->getChecksum() != $checksum) {
+            $entity->setChecksum($checksum);
+            foreach ($properties as $property) {
+                if ($property === 'nav_id') {
+                    $set_method = 'setNavId';
+                    $get_method = 'getId';
+                } else {
+                    $field_name_optimized   = str_replace('_', ' ', $property);
+                    $field_name_capitalized = ucwords($field_name_optimized);
+                    $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
+                    $set_method             = "set$field_name_capitalized";
+                    $get_method             = "get$field_name_capitalized";
+                }
+                if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
+                    $entity->{$set_method}($source->{$get_method}());
+                }
             }
-            if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
-                $entity->{$set_method}($source->{$get_method}());
+            try {
+                $this->getRepository()->save($entity);
+            } catch (\Exception $e) {
+                $this->logger->debug($e->getMessage());
             }
-        }
-        try {
-            $this->getRepository()->save($entity);
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
         }
     }
 

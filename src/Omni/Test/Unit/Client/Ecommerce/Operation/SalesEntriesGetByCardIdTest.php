@@ -6,11 +6,11 @@ use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use PHPUnit\Framework\TestCase;
 use Zend\Uri\UriFactory;
 
-class SalesEntriesGetByCardIdTest extends \PHPUnit\Framework\TestCase
+class SalesEntriesGetByCardIdTest extends TestCase
 {
-
     protected function setUp()
     {
         $baseUrl      = $_ENV['BASE_URL'];
@@ -24,9 +24,9 @@ class SalesEntriesGetByCardIdTest extends \PHPUnit\Framework\TestCase
     public function testExecute()
     {
         $this->assertNotNull($this->client);
-        $param    = array(
+        $param    = [
             'cardId' => $_ENV['CARD_ID']
-        );
+        ];
         $response = $this->client->SalesEntriesGetByCardId($param);
         $result   = $response->getResult();
         $this->assertInstanceOf(ArrayOfSalesEntry::class, $result);

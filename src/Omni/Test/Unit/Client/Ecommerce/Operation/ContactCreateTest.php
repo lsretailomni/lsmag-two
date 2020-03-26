@@ -14,17 +14,18 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use PHPUnit\Framework\TestCase;
 use Zend\Uri\UriFactory;
 
-class ContactCreate extends \PHPUnit\Framework\TestCase
+class ContactCreate extends TestCase
 {
     protected function setUp()
     {
-        $baseUrl             = $_ENV['BASE_URL'];
-        $url                 = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
-        $service_type        = new ServiceType(ServiceType::ECOMMERCE);
-        $uri                 = UriFactory::factory($url);
-        $this->client        = new OmniClient($uri, $service_type);
+        $baseUrl      = $_ENV['BASE_URL'];
+        $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
+        $service_type = new ServiceType(ServiceType::ECOMMERCE);
+        $uri          = UriFactory::factory($url);
+        $this->client = new OmniClient($uri, $service_type);
         $this->client->setClassmap(ClassMap::getClassMap());
     }
 
@@ -32,11 +33,11 @@ class ContactCreate extends \PHPUnit\Framework\TestCase
     {
         $this->assertNotNull($this->client);
         $append      = "test" . chr(rand(97, 122));
-        $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append.$_ENV['USERNAME']), 8, '0', STR_PAD_LEFT);
+        $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append . $_ENV['USERNAME']), 8, '0', STR_PAD_LEFT);
         $contact     = new MemberContact();
         $contact->setAlternateId($alternateId);
-        $contact->setEmail($append.$_ENV['EMAIL']);
-        $contact->setUserName($append.$_ENV['USERNAME']);
+        $contact->setEmail($append . $_ENV['EMAIL']);
+        $contact->setUserName($append . $_ENV['USERNAME']);
         $contact->setPassword($_ENV['PASSWORD']);
         $contact->setFirstName("test");
         $contact->setLastName("test");

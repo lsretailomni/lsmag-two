@@ -7,6 +7,7 @@ use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Order Deletion
@@ -65,7 +66,11 @@ class Order extends Action
         "sales_shipping_aggregated",
         "sales_shipping_aggregated_order",
         "tax_order_aggregated_created",
-        "tax_order_aggregated_updated"
+        "tax_order_aggregated_updated",
+        "sequence_order_0",
+        "sequence_creditmemo_0",
+        "sequence_invoice_0",
+        "sequence_shipment_0"
     ];
 
     // @codingStandardsIgnoreStart
@@ -74,18 +79,26 @@ class Order extends Action
     // @codingStandardsIgnoreEnd
 
     /**
+     * @var StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
      * Order constructor.
      * @param ResourceConnection $resource
      * @param Logger $logger
+     * @param StoreManagerInterface $storeManager
      * @param Context $context
      */
     public function __construct(
         ResourceConnection $resource,
         Logger $logger,
+        StoreManagerInterface $storeManager,
         Context $context
     ) {
-        $this->resource = $resource;
-        $this->logger   = $logger;
+        $this->resource     = $resource;
+        $this->logger       = $logger;
+        $this->storeManager = $storeManager;
         parent::__construct($context);
     }
 
@@ -99,10 +112,20 @@ class Order extends Action
         // @codingStandardsIgnoreStart
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
+        $stores = $this->storeManager->getStores();
+        foreach ($stores as $store) {
+            $storeId              = $store->getId();
+            $this->order_tables[] = 'sequence_order_' . $storeId;
+            $this->order_tables[] = 'sequence_creditmemo_' . $storeId;
+            $this->order_tables[] = 'sequence_invoice_' . $storeId;
+            $this->order_tables[] = 'sequence_shipment_' . $storeId;
+        }
         foreach ($this->order_tables as $orderTable) {
-            $tableName = $connection->getTableName($orderTable);
             try {
-                $connection->truncateTable($tableName);
+                $tableName = $connection->getTableName($orderTable);
+                if ($connection->isTableExists($tableName)) {
+                    $connection->truncateTable($tableName);
+                }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }

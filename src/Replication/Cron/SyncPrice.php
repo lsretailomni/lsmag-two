@@ -5,6 +5,7 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplPrice;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;

@@ -45,6 +45,7 @@ class ReplStoreTenderType
         	$table->addColumn('TenderFunction' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('TenderTypeId' , Table::TYPE_TEXT, '');
         	$table->addColumn('ValidOnMobilePOS' , Table::TYPE_INTEGER, 11);
+        	$table->addColumn('checksum', Table::TYPE_TEXT,'');
         	$table->addColumn('scope' , Table::TYPE_TEXT, '');
         	$table->addColumn('scope_id' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
@@ -162,6 +163,11 @@ class ReplStoreTenderType
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	} else {
         		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'checksum' ) === false) {
+        		$connection->addColumn($table_name, 'checksum', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Checksum']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'checksum', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Checksum']);
         	}
         	if ($connection->tableColumnExists($table_name, 'processed_at' ) === false) {
         		$connection->addColumn($table_name, 'processed_at', ['length' => '','default' => null,'type' => Table::TYPE_TIMESTAMP, 'comment' => 'Processed_at']);

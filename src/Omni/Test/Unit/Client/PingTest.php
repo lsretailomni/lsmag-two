@@ -13,10 +13,10 @@ class PingTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $baseUrl = $_ENV['BASE_URL'];
-        $url = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
+        $baseUrl      = $_ENV['BASE_URL'];
+        $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
         $service_type = new ServiceType(ServiceType::ECOMMERCE);
-        $uri = UriFactory::factory($url);
+        $uri          = UriFactory::factory($url);
         $this->client = new OmniClient($uri, $service_type);
         $this->client->setClassmap(ClassMap::getClassMap());
     }

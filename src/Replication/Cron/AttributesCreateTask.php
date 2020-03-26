@@ -222,7 +222,7 @@ class AttributesCreateTask
             /** @var default attribute set if for catalog_product $defaultAttributeSetId */
             $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
 
-            /** @var default group if of general tab for specific product attribute set $defaultGroupId */
+            /** default group if of general tab for specific product attribute set $defaultGroupId */
             $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
 
             /** @var ReplAttribute $replAttribute */
@@ -278,7 +278,6 @@ class AttributesCreateTask
             }
             $replAttribute->setData('processed_at', $this->replicationHelper->getDateTime());
             $replAttribute->setData('processed', 1);
-            $replAttribute->setData('IsDeleted', 0);
             $replAttribute->setData('is_updated', 0);
             // @codingStandardsIgnoreLine
             $this->replAttributeRepositoryInterface->save($replAttribute);
@@ -411,6 +410,7 @@ class AttributesCreateTask
     public function updateVariantLogicalOrderByLabel($formattedCode, $updatedOptionArray)
     {
         try {
+            /** @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute  $attribute */
             $attribute = $this->eavAttributeFactory->create();
             $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
             $options   = $attribute->getOptions();
@@ -441,6 +441,7 @@ class AttributesCreateTask
     public function updateOptions($formattedCode, $optionData, $status)
     {
         try {
+            /** @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute $attribute */
             $attribute = $this->eavAttributeFactory->create();
             $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
             $options   = $attribute->getOptions();

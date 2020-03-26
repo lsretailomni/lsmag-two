@@ -30,6 +30,7 @@ class ReplTaxSetup
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ProductTaxGroup' , Table::TYPE_TEXT, '');
         	$table->addColumn('TaxPercent' , Table::TYPE_DECIMAL, '20,4');
+        	$table->addColumn('checksum', Table::TYPE_TEXT,'');
         	$table->addColumn('scope' , Table::TYPE_TEXT, '');
         	$table->addColumn('scope_id' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
@@ -72,6 +73,11 @@ class ReplTaxSetup
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
         	} else {
         		$connection->modifyColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'checksum' ) === false) {
+        		$connection->addColumn($table_name, 'checksum', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Checksum']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'checksum', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Checksum']);
         	}
         	if ($connection->tableColumnExists($table_name, 'processed_at' ) === false) {
         		$connection->addColumn($table_name, 'processed_at', ['length' => '','default' => null,'type' => Table::TYPE_TIMESTAMP, 'comment' => 'Processed_at']);

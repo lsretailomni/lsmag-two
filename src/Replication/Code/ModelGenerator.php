@@ -164,6 +164,12 @@ class ModelGenerator extends AbstractGenerator
             null,
             'string',
             [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'Checksum', 'variable_name' => 'checksum', 'model' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'ProcessedAt', 'variable_name' => 'processed_at', 'model' => true]
         );
         $content = $this->file->generate();

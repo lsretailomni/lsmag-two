@@ -6,16 +6,17 @@ use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Client\Ecommerce\Entity\Store;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use PHPUnit\Framework\TestCase;
 use Zend\Uri\UriFactory;
 
-class StoreGetByIdTest extends \PHPUnit\Framework\TestCase
+class StoreGetByIdTest extends TestCase
 {
     protected function setUp()
     {
-        $baseUrl = $_ENV['BASE_URL'];
-        $url = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
+        $baseUrl      = $_ENV['BASE_URL'];
+        $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
         $service_type = new ServiceType(ServiceType::ECOMMERCE);
-        $uri = UriFactory::factory($url);
+        $uri          = UriFactory::factory($url);
         $this->client = new OmniClient($uri, $service_type);
         $this->client->setClassmap(ClassMap::getClassMap());
     }
@@ -23,17 +24,17 @@ class StoreGetByIdTest extends \PHPUnit\Framework\TestCase
     public function testExecute()
     {
         $this->assertNotNull($this->client);
-        $param = array(
-            'storeId' => $_ENV['STOREID']
-        );
+        $param    = [
+            'storeId' => $_ENV['STORE_ID']
+        ];
         $response = $this->client->StoreGetById($param);
-        $result = $response->getResult();
+        $result   = $response->getResult();
         $this->assertInstanceOf(Store::class, $result);
         $this->assertNotNull($result->getLatitude());
         $this->assertNotNull($result->getLongitude());
         $this->assertNotNull($result->getPhone());
         $this->assertNotNull($result->getStoreHours());
         $this->assertNotNull($result->getAddress());
-        $this->assertEquals($_ENV['STOREID'], $result->getId());
+        $this->assertEquals($_ENV['STORE_ID'], $result->getId());
     }
 }

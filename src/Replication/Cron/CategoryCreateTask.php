@@ -62,7 +62,7 @@ class CategoryCreateTask
     /** @var LSR */
     public $lsr;
 
-    /** @var Cron Checking */
+    /** @var bool */
     public $cronStatus = false;
 
     /** @var ProductRepositoryInterface */
@@ -296,7 +296,6 @@ class CategoryCreateTask
      * @param $HierarchyCodeSpecificFilter
      * @param $mediaAttribute
      * @param bool $scopeIdFilter
-     * @return void
      * @throws InputException
      */
     public function caterSubCategoryHierarchyNodeAddOrUpdate(
@@ -336,7 +335,8 @@ class CategoryCreateTask
                     $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
                     continue;
                 }
-                $itemCategoryId       = $hierarchyNodeSub->getParentNode();
+                $itemCategoryId = $hierarchyNodeSub->getParentNode();
+                /** @var CollectionFactory $collection */
                 $collection           = $this->collectionFactory->create()
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
                     ->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/')
@@ -426,30 +426,32 @@ class CategoryCreateTask
             'catalog_category_entity_varchar',
             'value'
         );
-        /** @var ReplHierarchyNode $hierarchyNode */
-        foreach ($collection as $hierarchyNode) {
-            try {
-                if (!empty($hierarchyNode->getNavId())) {
-                    $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
-                    if ($categoryExistData) {
-                        $categoryExistData->setData('is_active', 0);
-                        // @codingStandardsIgnoreLine
-                        $this->categoryRepository->save($categoryExistData);
+        $collection->getSelect()->distinct(true);
+        if ($collection->getSize() > 0) {
+            /** @var ReplHierarchyNode $hierarchyNode */
+            foreach ($collection as $hierarchyNode) {
+                try {
+                    if (!empty($hierarchyNode->getNavId())) {
+                        $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
+                        if ($categoryExistData) {
+                            $categoryExistData->setData('is_active', 0);
+                            // @codingStandardsIgnoreLine
+                            $this->categoryRepository->save($categoryExistData);
+                        }
+                    } else {
+                        $hierarchyNode->setData('is_failed', 1);
                     }
-                } else {
+                } catch (Exception $e) {
+                    $this->logger->debug($e->getMessage());
+                    $this->logger->debug('Error while creating ' . $hierarchyNode->getNavId());
                     $hierarchyNode->setData('is_failed', 1);
                 }
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while creating ' . $hierarchyNode->getNavId());
-                $hierarchyNode->setData('is_failed', 1);
+                $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
+                $hierarchyNode->setData('processed', 1);
+                $hierarchyNode->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
+                $this->replHierarchyNodeRepository->save($hierarchyNode);
             }
-            $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
-            $hierarchyNode->setData('IsDeleted', 0);
-            $hierarchyNode->setData('processed', 1);
-            $hierarchyNode->setData('is_updated', 0);
-            // @codingStandardsIgnoreLine
-            $this->replHierarchyNodeRepository->save($hierarchyNode);
         }
     }
 
@@ -484,8 +486,6 @@ class CategoryCreateTask
                 'UTF-8'
             )
         ), '-'));
-
-
         if ($parent) {
             $slug = strtolower(trim(preg_replace(
                     '~[^0-9a-z]+~i',
@@ -502,12 +502,6 @@ class CategoryCreateTask
                 ), '-')) . '-' . $slug;
 
         }
-
-        /**
-         * Check if URL key already exist.
-         */
-
-
         return $slug;
         // @codingStandardsIgnoreEnd
     }
@@ -525,7 +519,6 @@ class CategoryCreateTask
 
         if ($store) {
             $collection->addAttributeToFilter('parent_id', $store->getRootCategoryId());
-
         }
         $collection->setPageSize(1);
         if ($collection->getSize()) {

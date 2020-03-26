@@ -100,14 +100,14 @@ class Category extends Action
         }
         $connection  = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $lsTableName = $connection->getTableName('ls_replication_repl_hierarchy_node');
-        $lsQuery     = "UPDATE " . $lsTableName . " SET processed = 0;";
+        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
         try {
             $connection->query($lsQuery);
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
         $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();
-        $mediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "category" . DIRECTORY_SEPARATOR;
+        $mediaDirectory .= 'catalog' . DIRECTORY_SEPARATOR . 'category' . DIRECTORY_SEPARATOR;
         try {
             if ($this->filesystem->exists($mediaDirectory)) {
                 $this->filesystem->remove($mediaDirectory);

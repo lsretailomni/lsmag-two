@@ -133,6 +133,17 @@ interface ReplProductGroupInterface
     public function getUpdatedAt();
 
     /**
+     * @param string $checksum
+     * @return $this
+     */
+    public function setChecksum($checksum);
+
+    /**
+     * @return string
+     */
+    public function getChecksum();
+
+    /**
      * @param string $processed_at
      * @return $this
      */
