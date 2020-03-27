@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
+use \Ls\Omni\Client\Ecommerce\Entity\Address;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfInventoryRequest;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfInventoryResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneList;
@@ -16,6 +17,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\OneListCalculate;
 use \Ls\Omni\Client\Ecommerce\Entity\OneListItem;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -207,6 +209,38 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
     }
 
+    /**
+     * Save Basket type one list for Guest
+     * @throws InvalidEnumException
+     */
+    public function testOneListSaveBasketGuest()
+    {
+        $listItems = new OneListItem();
+        $listItems->setItemId($_ENV['ITEM_ID']);
+        $listItems->setVariantId($_ENV['VARIANT_ID']);
+        $listItems->setQuantity(1);
+        $itemsArray = new ArrayOfOneListItem();
+        $itemsArray->setOneListItem($listItems);
+        $oneListRequest = new OneList();
+        $oneListRequest->setItems($itemsArray);
+        $oneListRequest->setStoreId($_ENV['STORE_ID']);
+        $oneListRequest->setListType(ListType::BASKET);
+        $param    = [
+            'oneList'   => $oneListRequest,
+            'calculate' => true
+        ];
+        $response = $this->client->OneListSave($param);
+        $oneList  = $response->getResult();
+        $this->assertInstanceOf(OneList::class, $oneList);
+        $this->assertObjectHasAttribute('Id', $oneList);
+        $this->assertObjectHasAttribute('ListType', $oneList);
+        $this->assertObjectHasAttribute('CreateDate', $oneList);
+        $this->assertObjectHasAttribute('StoreId', $oneList);
+        $this->assertObjectHasAttribute('TotalAmount', $oneList);
+        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
+        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
+        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+    }
 
     /**
      * Save Wish type one list
@@ -347,6 +381,9 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
 
     /**
      * Create Customer Order for ClickAndCollect using Cash Order Payment Line only
+     * Type - ClickAndCollect
+     * User - Member
+     * PaymentLine - Cash
      * @depends testOneListSaveBasket
      */
     public function testOrderCreate()
@@ -385,6 +422,307 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
         $this->assertObjectHasAttribute('Id', $resultOrderCreate);
         $this->assertObjectHasAttribute('CardId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
+        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+    }
+
+    /**
+     * Create Customer Order for ClickAndCollect using Online Payment Line only
+     * Type - ClickAndCollect
+     * User - Member
+     * PaymentLine - Online Card
+     * @depends testOneListSaveBasket
+     */
+    public function testOrderCreateOnlinePayment()
+    {
+        $param = [
+            'cardId'       => $_ENV['CARD_ID'],
+            'listType'     => ListType::BASKET,
+            'includeLines' => true
+        ];
+        // Get one list by cardId
+        $response       = $this->client->OneListGetByCardId($param);
+        $oneListRequest = $response->getResult();
+        $this->assertInstanceOf(ArrayOfOneList::class, $oneListRequest);
+        // Basket calculation
+        $entity = new OneListCalculate();
+        $entity->setOneList($oneListRequest->getOneList()[0]);
+        $response = $this->client->OneListCalculate($entity);
+        $result   = $response->getResult();
+        $this->assertInstanceOf(Order::class, $result);
+        $orderPayment = new OrderPayment();
+        $orderPayment->setCurrencyFactor(1)
+            ->setAmount('72')
+            ->setLineNumber('1')
+            ->setExternalReference('TEST0012345')
+            ->setTenderType('1')
+            ->setCardType('VISA')
+            ->setCardNumber('4111111111111111')
+            ->setTokenNumber('1276349812634981234')
+            ->setPaymentType('Payment');
+        $orderPayments = new ArrayOfOrderPayment();
+        $orderPayments->setOrderPayment([$orderPayment]);
+        $result->setOrderPayments($orderPayments);
+        $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        // Order creation request
+        $paramOrderCreate  = [
+            'request' => $result
+        ];
+        $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
+        $resultOrderCreate = $responseOrder->getResult();
+        $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
+        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
+        $this->assertObjectHasAttribute('CardId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
+        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+    }
+
+    /**
+     * Create Customer Order for ClickAndCollect using Cash Order Payment Line only
+     * Type - ClickAndCollect
+     * User - Guest
+     * PaymentLine - Cash
+     */
+    public function testOrderCreateGuest()
+    {
+        $listItems = new OneListItem();
+        $listItems->setItemId($_ENV['ITEM_ID']);
+        $listItems->setVariantId($_ENV['VARIANT_ID']);
+        $listItems->setQuantity(1);
+        $itemsArray = new ArrayOfOneListItem();
+        $itemsArray->setOneListItem($listItems);
+        $oneListRequest = new OneList();
+        $oneListRequest->setItems($itemsArray);
+        $oneListRequest->setStoreId($_ENV['STORE_ID']);
+        $oneListRequest->setListType(ListType::BASKET);
+        $param    = [
+            'oneList'   => $oneListRequest,
+            'calculate' => true
+        ];
+        $response = $this->client->OneListSave($param);
+        $oneList  = $response->getResult();
+        // Basket calculation
+        $entity = new OneListCalculate();
+        $entity->setOneList($oneList);
+        $response = $this->client->OneListCalculate($entity);
+        $result   = $response->getResult();
+        $this->assertInstanceOf(Order::class, $result);
+        $orderPayment = new OrderPayment();
+        $orderPayment->setCurrencyFactor(1)
+            ->setAmount('72')
+            ->setLineNumber('1')
+            ->setExternalReference('TEST0012345')
+            ->setTenderType('0');
+        $orderPayments = new ArrayOfOrderPayment();
+        $orderPayments->setOrderPayment([$orderPayment]);
+        $result->setOrderPayments($orderPayments);
+        $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        // Order creation request
+        $paramOrderCreate  = [
+            'request' => $result
+        ];
+        $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
+        $resultOrderCreate = $responseOrder->getResult();
+        $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
+        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
+        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
+        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+    }
+
+    /**
+     * Create Customer Order for ClickAndCollect using Cash, Gift Card and Loyalty Payment Line
+     * Type - ClickAndCollect
+     * User - Member
+     * PaymentLines - Cash + Gift Card + Loyalty
+     */
+    public function testOrderCreateWithGiftCardAndLoyalty()
+    {
+        $listItems = new OneListItem();
+        $listItems->setItemId($_ENV['ITEM_ID']);
+        $listItems->setVariantId($_ENV['VARIANT_ID']);
+        $listItems->setQuantity(1);
+        $itemsArray = new ArrayOfOneListItem();
+        $itemsArray->setOneListItem($listItems);
+        $oneListRequest = new OneList();
+        $oneListRequest->setItems($itemsArray);
+        $oneListRequest->setCardId($_ENV['CARD_ID']);
+        $oneListRequest->setStoreId($_ENV['STORE_ID']);
+        $oneListRequest->setListType(ListType::BASKET);
+        $paramOneList = [
+            'oneList'   => $oneListRequest,
+            'calculate' => true
+        ];
+        $response     = $this->client->OneListSave($paramOneList);
+        $oneList      = $response->getResult();
+        $this->assertInstanceOf(OneList::class, $oneList);
+        $param = [
+            'cardId'       => $_ENV['CARD_ID'],
+            'listType'     => ListType::BASKET,
+            'includeLines' => true
+        ];
+        // Get one list by cardId
+        $response       = $this->client->OneListGetByCardId($param);
+        $oneListRequest = $response->getResult();
+        $this->assertInstanceOf(ArrayOfOneList::class, $oneListRequest);
+        // Basket calculation
+        $entity = new OneListCalculate();
+        $entity->setOneList($oneListRequest->getOneList()[0]);
+        $response = $this->client->OneListCalculate($entity);
+        $result   = $response->getResult();
+        $this->assertInstanceOf(Order::class, $result);
+        $orderPaymentArray = [];
+        $preApprovedDate   = date('Y-m-d', strtotime('+1 years'));
+        $orderPayment      = new OrderPayment();
+        $orderPayment->setCurrencyFactor(1)
+            ->setAmount('60')
+            ->setLineNumber('1')
+            ->setExternalReference('TEST0012345')
+            ->setTenderType('0');
+        $orderPaymentArray[] = $orderPayment;
+        $orderPaymentGift    = new OrderPayment();
+        $orderPaymentGift->setCurrencyFactor(1)
+            ->setAmount('20')
+            ->setLineNumber('3')
+            ->setCardNumber($_ENV['GIFTCARDCODE'])
+            ->setExternalReference('TEST0012345')
+            ->setPreApprovedValidDate($preApprovedDate)
+            ->setTenderType('4');
+        $orderPaymentArray[] = $orderPaymentGift;
+        $orderPaymentLoyalty = new OrderPayment();
+        $orderPaymentLoyalty->setCurrencyCode('LOY')
+            ->setCurrencyFactor('0.10')
+            ->setLineNumber('2')
+            ->setCardNumber($_ENV['CARD_ID'])
+            ->setExternalReference('TEST0012345')
+            ->setAmount('50')
+            ->setPreApprovedValidDate($preApprovedDate)
+            ->setTenderType('3');
+        $orderPaymentArray[] = $orderPaymentLoyalty;
+        $orderPayments       = new ArrayOfOrderPayment();
+        $orderPayments->setOrderPayment($orderPaymentArray);
+        $result->setOrderPayments($orderPayments);
+        $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        // Order creation request
+        $paramOrderCreate  = [
+            'request' => $result
+        ];
+        $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
+        $resultOrderCreate = $responseOrder->getResult();
+        $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
+        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
+        $this->assertObjectHasAttribute('CardId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
+        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+    }
+
+    /**
+     * Create Customer Order for Sale using Online Payment Line only
+     * Type - Sale
+     * User - Guest
+     * PaymentLine - Card
+     */
+    public function testOrderCreateOnlinePaymentSaleGuest()
+    {
+        $listItems = new OneListItem();
+        $listItems->setItemId($_ENV['ITEM_ID']);
+        $listItems->setVariantId($_ENV['VARIANT_ID']);
+        $listItems->setQuantity(1);
+        $itemsArray = new ArrayOfOneListItem();
+        $itemsArray->setOneListItem($listItems);
+        $oneListRequest = new OneList();
+        $oneListRequest->setItems($itemsArray);
+        $oneListRequest->setStoreId($_ENV['STORE_ID']);
+        $oneListRequest->setListType(ListType::BASKET);
+        $param    = [
+            'oneList'   => $oneListRequest,
+            'calculate' => true
+        ];
+        $response = $this->client->OneListSave($param);
+        $oneList  = $response->getResult();
+        // Basket calculation
+        $entity = new OneListCalculate();
+        $entity->setOneList($oneList);
+        $response = $this->client->OneListCalculate($entity);
+        $result   = $response->getResult();
+        $this->assertInstanceOf(Order::class, $result);
+        $orderPayment = new OrderPayment();
+        $orderPayment->setCurrencyFactor(1)
+            ->setAmount('72')
+            ->setLineNumber('1')
+            ->setExternalReference('TEST0012345')
+            ->setTenderType('1')
+            ->setCardType('VISA')
+            ->setCardNumber('4111111111111111')
+            ->setTokenNumber('1276349812634981234')
+            ->setPaymentType('Payment');
+        $orderPayments = new ArrayOfOrderPayment();
+        $orderPayments->setOrderPayment([$orderPayment]);
+        $result->setOrderPayments($orderPayments);
+        $result->setOrderType(OrderType::SALE);
+        $omniAddress = new Address();
+        $omniAddress->setCity('KL')
+            ->setAddress1('Jalan')
+            ->setAddress2('Klang')
+            ->setCountry('MY')
+            ->setStateProvinceRegion('Kuala Lumpur')
+            ->setPostCode('47301');
+        $result->setId('TEST0012345')
+            ->setContactId('')
+            ->setCardId('')
+            ->setEmail('testingorder@lsretail.com')
+            ->setShipToEmail('testingorder@lsretail.com')
+            ->setContactName('Testing')
+            ->setShipToName('Testing')
+            ->setMobileNumber('9999999999')
+            ->setShipToPhoneNumber('9999999999')
+            ->setContactAddress($omniAddress)
+            ->setShipToAddress($omniAddress)
+            ->setShippingStatus('NotYetShipped')
+            ->setStoreId('S0013');
+        $orderLines = $result->getOrderLines()->getOrderLine();
+        $shipmentOrderLine = new OrderLine();
+        $shipmentOrderLine->setPrice('5')
+            ->setNetPrice('5')
+            ->setNetAmount('5')
+            ->setAmount('5')
+            ->setItemId('66010')
+            ->setLineType('Item')
+            ->setQuantity(1)
+            ->setQuantityToInvoice(1);
+        array_push($orderLines, $shipmentOrderLine);
+        $result->setOrderLines($orderLines);
+        // Order creation request
+        $paramOrderCreate  = [
+            'request' => $result
+        ];
+        $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
+        $resultOrderCreate = $responseOrder->getResult();
+        $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
+        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
         $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
         $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
         $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
