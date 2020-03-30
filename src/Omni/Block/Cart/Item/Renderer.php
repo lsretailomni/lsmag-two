@@ -3,6 +3,7 @@
 namespace Ls\Omni\Block\Cart\Item;
 
 use Exception;
+use Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use Magento\Framework\App\ObjectManager;
@@ -71,4 +72,14 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
         return $this->_productConfig->getOptions(parent::getItem());
     }
 
+    /**
+     * @param $item
+     * @return string
+     * @throws InvalidEnumException
+     */
+    public function getItemRowTotal($item)
+    {
+        $basketHelper = $this->getBasketHelper();
+        return $basketHelper->getItemRowTotal($item);
+    }
 }

@@ -54,11 +54,6 @@
     <type name="Magento\Paypal\Model\Cart">
         <plugin name="ls_update_paypal_amount_order" type="Ls\Omni\Plugin\Checkout\Model\UpdateAmountPayPal"/>
     </type>
-
-    <type name="Magento\Checkout\CustomerData\AbstractItem">
-        <plugin name="ls_checkout.cart.discount" type="Ls\Omni\CustomerData\AbstractItem" sortOrder="1"/>
-    </type>
-
     <!-- To stop magento for reculating tax on custom price. -->
     <type name="Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector">
         <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector"

@@ -96,7 +96,7 @@ $this->priceCurrency = $block->getPriceCurrency();
             <?php if (!empty($basketdata)) { ?>
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
-                        <?php echo $this->priceCurrency->format($_item->getCustomPrice(), true); ?><br/>
+                        <?php echo $this->priceCurrency->format($block->getItemRowTotal($_item), true); ?><br/>
                         <?php if ($_item->getDiscountAmount() > 0) { ?>
                             <div class="lsdiscountprice2">
                             <strike> <?php echo $this->priceCurrency->format($_item->getProduct()->getPrice() * (int)$block->getQty(),
@@ -155,7 +155,7 @@ $this->priceCurrency = $block->getPriceCurrency();
             <?php if (!empty($basketdata)) { ?>
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
-                <?php echo $this->priceCurrency->format($_item->getCustomPrice(), true); ?>
+                <?php echo $this->priceCurrency->format($block->getItemRowTotal($_item), true); ?>
                 </span>
         </span>
             <?php } else { ?>

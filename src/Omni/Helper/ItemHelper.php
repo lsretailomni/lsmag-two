@@ -301,6 +301,7 @@ class ItemHelper extends AbstractHelper
                 if (is_array($orderLines)) {
                     foreach ($orderLines as $line) {
                         if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
+                            $unitPrice = $line->getAmount() / $line->getQuantity();
                             if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
                                 // @codingStandardsIgnoreLine
                                 $item->setCustomPrice($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount());
@@ -311,11 +312,11 @@ class ItemHelper extends AbstractHelper
                                 $item->setOriginalCustomPrice($line->getPrice());
                             } else {
                                 if ($line->getDiscountAmount() > 0) {
-                                    $item->setCustomPrice($line->getAmount());
+                                    $item->setCustomPrice($unitPrice);
                                     $item->setDiscountAmount($line->getDiscountAmount());
                                     $item->setOriginalCustomPrice($line->getPrice());
                                 } elseif ($line->getAmount() != $item->getProduct()->getPrice()) {
-                                    $item->setCustomPrice($line->getAmount());
+                                    $item->setCustomPrice($unitPrice);
                                     $item->setOriginalCustomPrice($line->getPrice());
                                 } else {
                                     $item->setCustomPrice(null);

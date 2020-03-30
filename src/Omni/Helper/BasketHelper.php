@@ -939,4 +939,28 @@ class BasketHelper extends AbstractHelper
     {
         return $this->itemHelper;
     }
+
+    /**
+     * @param $item
+     * @return string
+     * @throws InvalidEnumException
+     */
+    public function getItemRowTotal($item)
+    {
+        $itemSku = explode("-", $item->getSku());
+        // @codingStandardsIgnoreLine
+        if (count($itemSku) < 2) {
+            $itemSku[1] = null;
+        }
+        $rowTotal   = "";
+        $basketData = $this->getOneListCalculation();
+        $orderLines = $basketData->getOrderLines()->getOrderLine();
+        foreach ($orderLines as $line) {
+            if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
+                $rowTotal = $line->getAmount();
+                break;
+            }
+        }
+        return $rowTotal;
+    }
 }
