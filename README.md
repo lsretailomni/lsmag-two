@@ -17,3 +17,10 @@
 8. If your server is setup for cron, then you will see all the new crons created in the `cron_schedule` table and status of all the replication data by navigating to LS Retail -> Cron Listing from the Admin Panel.
 9. To Trigger the cron manually from admin panel, navigate to LS Retail -> Cron Listing from the left menu and click on the cron which needs to be run.
 10. To check the status of data replicated from LS Central, navigate to any Replication job from `LS Retail -> Replication Status` and there we can see the list of all data along with status with `Processed` or `Not Processed` in the grid.
+
+## Support
+All LS Retail active partners can use [ LS Partner & Customer Portal](https://portal.lsretail.com/ "LS Retail Partner & Customer Portal") to submit the technical support request.
+
+- Partner Portal: https://portal.lsretail.com/
+- https://www.lsretail.com/contact-us
+- support@lsretail.com
