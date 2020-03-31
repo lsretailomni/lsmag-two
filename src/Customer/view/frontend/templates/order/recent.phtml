@@ -70,6 +70,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                         __('View Order') ?></span>
                                 </a>
                                 <?php
+                                // This is to support backward compatibility of Omni
                                 if (version_compare($block->getOmniVersion(), '4.6.0', '>')) {
                                     $magOrder = $block->getOrderByDocumentId($_order->getCustomerOrderNo());
                                 } else {
