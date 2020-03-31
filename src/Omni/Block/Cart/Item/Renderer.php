@@ -3,7 +3,7 @@
 namespace Ls\Omni\Block\Cart\Item;
 
 use Exception;
-use Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use Magento\Framework\App\ObjectManager;
