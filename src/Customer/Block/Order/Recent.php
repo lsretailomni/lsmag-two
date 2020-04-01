@@ -113,7 +113,22 @@ class Recent extends Template
      */
     public function getViewUrl($order)
     {
-        return $this->getUrl('customer/order/view', ['order_id' => $order->getId(), 'type' => $order->getIdType()]);
+        if (version_compare($this->orderHelper->getOmniVersion(), '4.5.0', '<')) {
+            return $this->getUrl(
+                'customer/order/view',
+                [
+                    'order_id' => $order->getId(),
+                    'type'     => $order->getIdType()
+                ]
+            );
+        } else {
+            return $this->getUrl(
+                'customer/order/view',
+                [
+                    'order_id' => $order->getId()
+                ]
+            );
+        }
     }
 
     /**

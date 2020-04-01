@@ -413,4 +413,12 @@ class OrderHelper extends AbstractHelper
         }
         return $order;
     }
+
+    /**
+     * @return string
+     */
+    public function getOmniVersion()
+    {
+        return $this->basketHelper->lsr->getStoreConfig(LSR::SC_SERVICE_VERSION);
+    }
 }

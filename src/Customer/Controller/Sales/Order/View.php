@@ -4,6 +4,7 @@ namespace Ls\Customer\Controller\Sales\Order;
 
 use Exception;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\App\Action;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\ResultFactory;
@@ -14,6 +15,10 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Controller\AbstractController\OrderLoaderInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class View
+ * @package Ls\Customer\Controller\Sales\Order
+ */
 class View extends \Magento\Sales\Controller\Order\View
 {
 
@@ -31,12 +36,19 @@ class View extends \Magento\Sales\Controller\Order\View
     public $logger;
 
     /**
+     * @var OrderHelper
+     */
+    public $orderHelper;
+
+    /**
      * View constructor.
      * @param Http $request
      * @param Action\Context $context
      * @param OrderLoaderInterface $orderLoader
      * @param PageFactory $resultPageFactory
+     * @param LoggerInterface $logger
      * @param OrderRepositoryInterface $orderRepository
+     * @param OrderHelper $orderHelper
      */
     public function __construct(
         Http $request,
@@ -44,12 +56,14 @@ class View extends \Magento\Sales\Controller\Order\View
         OrderLoaderInterface $orderLoader,
         PageFactory $resultPageFactory,
         LoggerInterface $logger,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        OrderHelper $orderHelper
     ) {
         parent::__construct($context, $orderLoader, $resultPageFactory);
         $this->request         = $request;
         $this->logger          = $logger;
         $this->orderRepository = $orderRepository;
+        $this->orderHelper     = $orderHelper;
     }
 
     /**
@@ -67,7 +81,13 @@ class View extends \Magento\Sales\Controller\Order\View
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setPath('customer/order/view/order_id/' . $documentId . '/type/' . DocumentIdType::ORDER);
+            if (version_compare($this->orderHelper->getOmniVersion(), '4.5.0', '<')) {
+                $resultRedirect->setPath(
+                    'customer/order/view/order_id/' . $documentId . '/type/' . DocumentIdType::ORDER
+                );
+            } else {
+                $resultRedirect->setPath('customer/order/view/order_id/' . $documentId);
+            }
             return $resultRedirect;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
