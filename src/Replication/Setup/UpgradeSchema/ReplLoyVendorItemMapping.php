@@ -34,6 +34,8 @@ class ReplLoyVendorItemMapping
         	$table->addColumn('NavManufacturerItemId' , Table::TYPE_TEXT, '');
         	$table->addColumn('NavProductId' , Table::TYPE_TEXT, '');
         	$table->addColumn('checksum', Table::TYPE_TEXT,'');
+        	$table->addColumn('scope' , Table::TYPE_TEXT, '');
+        	$table->addColumn('scope_id' , Table::TYPE_INTEGER, 11);
         	$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
@@ -74,6 +76,16 @@ class ReplLoyVendorItemMapping
         		$connection->addColumn($table_name, 'NavProductId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavProductId']);
         	} else {
         		$connection->modifyColumn($table_name, 'NavProductId', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'NavProductId']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'scope' ) === false) {
+        		$connection->addColumn($table_name, 'scope', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Scope']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'scope', ['length' => '','default' => null,'type' => Table::TYPE_TEXT, 'comment' => 'Scope']);
+        	}
+        	if ($connection->tableColumnExists($table_name, 'scope_id' ) === false) {
+        		$connection->addColumn($table_name, 'scope_id', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Scope_id']);
+        	} else {
+        		$connection->modifyColumn($table_name, 'scope_id', ['length' => 11,'default' => null,'type' => Table::TYPE_INTEGER, 'comment' => 'Scope_id']);
         	}
         	if ($connection->tableColumnExists($table_name, 'is_failed' ) === false) {
         		$connection->addColumn($table_name, 'is_failed', ['length' => 1,'default' => 0,'type' => Table::TYPE_BOOLEAN, 'comment' => 'Is_failed']);

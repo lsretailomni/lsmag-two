@@ -109,9 +109,9 @@ class ReplEcommAttributeTask extends AbstractReplicationTask
         $this->data_interface = $data_interface;
     }
 
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '')
+    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '')
     {
-        $request = new ReplEcommAttribute();
+        $request = new ReplEcommAttribute($baseUrl);
         $request->getOperationInput()
                  ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
                                                         ->setFullReplication($fullReplication)

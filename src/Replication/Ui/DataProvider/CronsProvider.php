@@ -5,19 +5,23 @@ namespace Ls\Replication\Ui\DataProvider;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
-use Magento\Framework\Api\Filter;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Module\Dir\Reader;
+use Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider;
 use Magento\Framework\View\Element\UiComponent\DataProvider\DataProviderInterface;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Xml\Parser;
-use Magento\Ui\DataProvider\AbstractDataProvider;
+use Magento\Store\Model\System\Store as StoreManager;
+use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
 use Magento\Ui\DataProvider\AddFieldToCollectionInterface;
 use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
 
 /**
  * Class ProductDataProvider
  */
-class CronsProvider extends AbstractDataProvider implements DataProviderInterface
+class CronsProvider extends DataProvider implements DataProviderInterface
 {
 
     /**
@@ -38,8 +42,15 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      * @var Reader
      */
     public $moduleDirReader;
+
+    /**
+     * @var \Magento\Store\Model\System\Store
+     */
+    public $storeManager;
+
     /** @var LSR */
     public $lsr;
+
     /**
      * @var Parser
      */
@@ -53,10 +64,14 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
-     * @param Http $request
+     * @param Reporting $reporting
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param RequestInterface $request
      * @param Reader $moduleDirReader
      * @param Parser $parser
-     * @param LSR $LSR
+     * @param FilterBuilder $filterBuilder
+     * @param StoreManager $storeManager
+     * @param LSR $lsr
      * @param ReplicationHelper $repHelper
      * @param array $meta
      * @param array $data
@@ -65,20 +80,36 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         $name,
         $primaryFieldName,
         $requestFieldName,
-        Http $request,
+        Reporting $reporting,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        RequestInterface $request,
         Reader $moduleDirReader,
         Parser $parser,
-        LSR $LSR,
+        FilterBuilder $filterBuilder,
+        StoreManager $storeManager,
+        LSR $lsr,
         ReplicationHelper $repHelper,
         array $meta = [],
         array $data = []
     ) {
-        parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
+        parent::__construct(
+            $name,
+            $primaryFieldName,
+            $requestFieldName,
+            $reporting,
+            $searchCriteriaBuilder,
+            $request,
+            $filterBuilder,
+            $meta,
+            $data
+        );
         $this->request         = $request;
         $this->moduleDirReader = $moduleDirReader;
         $this->parser          = $parser;
-        $this->lsr             = $LSR;
+        $this->lsr             = $lsr;
+        $this->filterBuilder   = $filterBuilder;
         $this->rep_helper      = $repHelper;
+        $this->storeManager    = $storeManager;
     }
 
     /**
@@ -91,15 +122,19 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         $items             = [];
         $counter           = 1;
         $this->rep_helper->flushByTypeCode('config');
-        foreach ($cronsGroupListing as &$cronlist) {
+        $storeId = $this->request->getParam('store');
+        if (empty($storeId)) {
+            $storeId = 1;
+        }
+        foreach ($cronsGroupListing as $cronlist) {
             $path = '';
             if (array_key_exists('_value', $cronlist['_value']['job'])) {
                 $cronlist['_value']['job'] = [$cronlist['_value']['job']];
             }
             if ($cronlist['_attribute']['id'] == "replication" || $cronlist['_attribute']['id'] == "sync_operations") {
-                $condition = __("Flat to Magento");
+                $condition = __('Flat to Magento');
             } elseif ($cronlist['_attribute']['id'] == "flat_replication") {
-                $condition = __("Omni to Flat");
+                $condition = __('Omni to Flat');
                 $path      = LSR::CRON_STATUS_PATH_PREFIX;
             } else {
                 $condition = '';
@@ -109,41 +144,44 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 $cronName              = $joblist['_attribute']['name'];
                 if ($path != '') {
                     $pathNew               = $path . $cronName;
-                    $fullReplicationStatus = $this->lsr->getStoreConfig($pathNew);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig($pathNew, $storeId);
                 }
                 if ($cronName == 'repl_attributes') {
-                    $cronAttributeCheck        = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
+                    $cronAttributeCheck        = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE, $storeId);
+                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                        $storeId);
                     if ($cronAttributeCheck && $cronAttributeVariantCheck) {
                         $fullReplicationStatus = 1;
                     }
                 }
                 if ($cronName == 'repl_category') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY, $storeId);
                 }
                 if ($cronName == 'repl_products') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT, $storeId);
                 }
                 if ($cronName == 'repl_discount_create') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DISCOUNT);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
                 }
                 if ($cronName == 'repl_price_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_PRICE);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_PRICE, $storeId);
                 }
                 if ($cronName == 'repl_inventory_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
+                        $storeId);
                 }
                 if ($cronName == 'repl_item_updates_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_UPDATES, $storeId);
                 }
                 if ($cronName == 'repl_item_images_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_IMAGES);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_IMAGES, $storeId);
                 }
                 if ($cronName == 'repl_attributes_value_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
+                        $storeId);
                 }
                 $lastExecute = $this->rep_helper->convertDateTimeIntoCurrentTimeZone(
-                    $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName),
+                    $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName, $storeId),
                     'd M, Y h:i:s A'
                 );
                 $statusStr   = ($fullReplicationStatus == 1) ?
@@ -154,6 +192,8 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
                 }
                 $items[] = [
                     'id'                    => $counter,
+                    'store'                 => $this->storeManager->getStoreName($storeId),
+                    'storeId'               => $storeId,
                     'fullreplicationstatus' => $statusStr,
                     'label'                 => $cronName,
                     'lastexecuted'          => $lastExecute,
@@ -188,39 +228,26 @@ class CronsProvider extends AbstractDataProvider implements DataProviderInterfac
         }
     }
 
-    /**
-     * @param int $offset
-     * @param int $size
-     */
-    public function setLimit($offset, $size)
+    public function prepareUpdateUrl()
     {
-    }
-
-    /**
-     * @param string $field
-     * @param string $direction
-     */
-    public function addOrder($field, $direction)
-    {
-    }
-
-    /**
-     * @param Filter $filter
-     * @return mixed|void
-     */
-    public function addFilter(Filter $filter)
-    {
-    }
-
-    /**
-     * @param SearchResultInterface $searchResult
-     * @return array
-     */
-    public function searchResultToOutput(SearchResultInterface $searchResult)
-    {
-    }
-
-    public function getItems()
-    {
+        if (!isset($this->data['config']['filter_url_params'])) {
+            return;
+        }
+        foreach ($this->data['config']['filter_url_params'] as $paramName => $paramValue) {
+            if ('*' == $paramValue) {
+                $paramValue = $this->request->getParam($paramName);
+            }
+            if ($paramValue) {
+                $this->data['config']['update_url'] = sprintf(
+                    '%s%s/%s',
+                    $this->data['config']['update_url'],
+                    $paramName,
+                    $paramValue
+                );
+                $this->addFilter(
+                    $this->filterBuilder->setField($paramName)->setValue($paramValue)->setConditionType('eq')->create()
+                );
+            }
+        }
     }
 }

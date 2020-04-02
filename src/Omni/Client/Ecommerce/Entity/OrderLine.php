@@ -248,9 +248,9 @@ class OrderLine extends Entity
     public function setLineType($LineType)
     {
         if ( ! $LineType instanceof LineType ) {
-            if ( LineType::isValid( $LineType ) ) 
+            if ( LineType::isValid( $LineType ) )
                 $LineType = new LineType( $LineType );
-            elseif ( LineType::isValidKey( $LineType ) ) 
+            elseif ( LineType::isValidKey( $LineType ) )
                 $LineType = new LineType( constant( "LineType::$LineType" ) );
             elseif ( ! $LineType instanceof LineType )
                 throw new InvalidEnumException();

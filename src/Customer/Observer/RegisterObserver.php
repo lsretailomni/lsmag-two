@@ -71,7 +71,7 @@ class RegisterObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
                 $controller_action = $observer->getData('controller_action');
                 $parameters        = $controller_action->getRequest()->getParams();

@@ -51,9 +51,9 @@ class SalesEntryGet implements RequestInterface
     public function setType($type)
     {
         if ( ! $type instanceof DocumentIdType ) {
-            if ( DocumentIdType::isValid( $type ) ) 
+            if ( DocumentIdType::isValid( $type ) )
                 $type = new DocumentIdType( $type );
-            elseif ( DocumentIdType::isValidKey( $type ) ) 
+            elseif ( DocumentIdType::isValidKey( $type ) )
                 $type = new DocumentIdType( constant( "DocumentIdType::$type" ) );
             elseif ( ! $type instanceof DocumentIdType )
                 throw new InvalidEnumException();

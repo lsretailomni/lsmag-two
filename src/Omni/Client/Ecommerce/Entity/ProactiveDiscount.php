@@ -313,9 +313,9 @@ class ProactiveDiscount
     public function setType($Type)
     {
         if ( ! $Type instanceof ProactiveDiscountType ) {
-            if ( ProactiveDiscountType::isValid( $Type ) ) 
+            if ( ProactiveDiscountType::isValid( $Type ) )
                 $Type = new ProactiveDiscountType( $Type );
-            elseif ( ProactiveDiscountType::isValidKey( $Type ) ) 
+            elseif ( ProactiveDiscountType::isValidKey( $Type ) )
                 $Type = new ProactiveDiscountType( constant( "ProactiveDiscountType::$Type" ) );
             elseif ( ! $Type instanceof ProactiveDiscountType )
                 throw new InvalidEnumException();

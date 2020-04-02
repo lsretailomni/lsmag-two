@@ -10,9 +10,11 @@ use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
 use Magento\Eav\Model\Entity\Attribute\SetFactory as AttributeSetFactory;
 use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Zend_Validate_Exception;
 
 /**
  * Class InstallData
@@ -154,8 +156,8 @@ class InstallData implements InstallDataInterface
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @throws LocalizedException
+     * @throws Zend_Validate_Exception
      */
     protected function createAllCategoryAttributes(
         ModuleDataSetupInterface $setup,
@@ -183,8 +185,8 @@ class InstallData implements InstallDataInterface
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @throws LocalizedException
+     * @throws Zend_Validate_Exception
      */
     protected function createAllProductAttributes(
         ModuleDataSetupInterface $setup,

@@ -33,9 +33,9 @@ class ActivityAttributesGet implements RequestInterface
     public function setType($type)
     {
         if ( ! $type instanceof AttributeType ) {
-            if ( AttributeType::isValid( $type ) ) 
+            if ( AttributeType::isValid( $type ) )
                 $type = new AttributeType( $type );
-            elseif ( AttributeType::isValidKey( $type ) ) 
+            elseif ( AttributeType::isValidKey( $type ) )
                 $type = new AttributeType( constant( "AttributeType::$type" ) );
             elseif ( ! $type instanceof AttributeType )
                 throw new InvalidEnumException();

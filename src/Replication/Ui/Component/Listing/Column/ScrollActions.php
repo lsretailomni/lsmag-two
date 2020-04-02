@@ -53,7 +53,7 @@ class ScrollActions extends Column
             foreach ($dataSource['data']['items'] as & $item) {
                 $fieldName        = $this->getData('name');
                 $item[$fieldName] = "<button class='ls_scrollbutton_forward'><span>" . __('Forward') .
-                    "</span></button><button class='ls_scrollbutton_back'><span>" . __('Back') . "</span></button>";
+                    "</span></button><button class='ls_scrollbutton_back'><span>" . __('Back') . '</span></button>';
             }
         }
         return $dataSource;

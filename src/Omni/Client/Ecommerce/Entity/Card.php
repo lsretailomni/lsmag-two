@@ -188,9 +188,9 @@ class Card extends Entity
     public function setStatus($Status)
     {
         if ( ! $Status instanceof CardStatus ) {
-            if ( CardStatus::isValid( $Status ) ) 
+            if ( CardStatus::isValid( $Status ) )
                 $Status = new CardStatus( $Status );
-            elseif ( CardStatus::isValidKey( $Status ) ) 
+            elseif ( CardStatus::isValidKey( $Status ) )
                 $Status = new CardStatus( constant( "CardStatus::$Status" ) );
             elseif ( ! $Status instanceof CardStatus )
                 throw new InvalidEnumException();

@@ -6,6 +6,12 @@
             <group id="replication" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Replication</label>
+                <field id="manual_cron_grid_default_store" translate="label" type="select" sortOrder="0" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Manual Cron Grid Default Store</label>
+                    <source_model>Ls\Replication\Model\System\Source\MagStore</source_model>
+                    <comment>Select the default store for manual cron grid</comment>
+                </field>
                 <field id="replicate_all_stores_items" translate="label" type="select" sortOrder="0" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Replicate All Stores Items</label>
@@ -58,7 +64,6 @@
                     <label>Variant Batch Size</label>
                     <comment>Variant Batch Size to Process Variant</comment>
                 </field>
-
                 <field id="product_assignment_to_category_batch_size" translate="label" type="text" sortOrder="2"
                        showInDefault="40"
                        showInWebsite="0" showInStore="0">

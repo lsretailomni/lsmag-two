@@ -7,6 +7,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Model\ReplHierarchyRepository;
 use \Ls\Replication\Model\ReplHierarchySearchResults;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Data\OptionSourceInterface;
 
 /**
@@ -24,20 +25,26 @@ class HierarchyCode implements OptionSourceInterface
     /** @var LSR */
     public $lsr;
 
+    /** @var RequestInterface */
+    public $request;
+
     /**
      * HierarchyCode constructor.
      * @param ReplHierarchyRepository $replHierarchyRepository
      * @param ReplicationHelper $replicationHelper
      * @param LSR $lsr
+     * @param RequestInterface $request
      */
     public function __construct(
         ReplHierarchyRepository $replHierarchyRepository,
         ReplicationHelper $replicationHelper,
-        LSR $lsr
+        LSR $lsr,
+        RequestInterface $request
     ) {
         $this->replHierarchyRepository = $replHierarchyRepository;
         $this->replicationHelper       = $replicationHelper;
         $this->lsr                     = $lsr;
+        $this->request                 = $request;
     }
 
     /**
@@ -49,7 +56,11 @@ class HierarchyCode implements OptionSourceInterface
             'value' => '',
             'label' => __('Please select your hierarchy code')
         ];
-        if ($this->lsr->isLSR()) {
+
+        // get current Website Id.
+        $websiteId = (int)$this->request->getParam('website');
+
+        if ($this->lsr->isLSR($websiteId, 'website')) {
             /**
              * We want to populate all the Hierarchy codes first even though if the replication is not done.
              */
@@ -67,7 +78,7 @@ class HierarchyCode implements OptionSourceInterface
                     ];
                 }
             } else {
-                $hierarchyData = $this->replicationHelper->getHierarchyByStore();
+                $hierarchyData = $this->replicationHelper->getHierarchyByStore($websiteId);
                 if ($hierarchyData) {
                     $data = $hierarchyData->getHierarchies()->getReplHierarchy();
                     if (is_array($data)) {

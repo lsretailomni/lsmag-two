@@ -106,7 +106,7 @@ class AjaxLoginObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
                 /** @var $request RequestInterface */
                 $request = $observer->getEvent()->getRequest();

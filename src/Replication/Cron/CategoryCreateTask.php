@@ -24,6 +24,7 @@ use Magento\Framework\DataObject;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem\Io\File;
+use Magento\Store\Api\Data\StoreInterface;
 
 /**
  * Class CategoryCreateTask
@@ -82,6 +83,9 @@ class CategoryCreateTask
     /** @var string */
     public $hierarchyCode;
 
+    /** @var StoreInterface $store */
+    public $store;
+
     /**
      * CategoryCreateTask constructor.
      * @param CategoryFactory $categoryFactory
@@ -133,34 +137,62 @@ class CategoryCreateTask
 
     /**
      * execute
+     * @param null $storeData
+     * @throws InputException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        $this->logger->debug('Running CategoryCreateTask.');
-        $this->replicationHelper->updateConfigValue(
-            $this->replicationHelper->getDateTime(),
-            LSR::SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE
-        );
-        $hierarchyCode = $this->getHierarchyCode();
-        if (empty($hierarchyCode)) {
-            $this->logger->debug('Hierarchy Code not defined in the configuration.');
-            return;
+        /**
+         * Get all the available stores config in the Magento system
+         */
+        if (!empty($storeData) && $storeData instanceof StoreInterface) {
+            $stores = [$storeData];
+        } else {
+            /** @var StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
         }
-        $hierarchyCodeSpecificFilter = [
-            'field'          => 'HierarchyCode',
-            'value'          => $hierarchyCode,
-            'condition_type' => 'eq'
-        ];
-        $mediaAttribute              = ['image', 'small_image', 'thumbnail'];
-        $this->caterMainCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute);
-        $this->caterSubCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute);
-        if ($this->getRemainingRecords() == 0) {
-            $this->cronStatus = true;
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $this->logger->debug('Running CategoryCreateTask for Store ' . $this->store->getName());
+                    $this->replicationHelper->updateConfigValue(
+                        $this->replicationHelper->getDateTime(),
+                        LSR::SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE, $this->store->getId()
+                    );
+                    $hierarchyCode = $this->getHierarchyCode($store);
+                    if (empty($hierarchyCode)) {
+                        $this->logger->debug('Hierarchy Code not defined in the configuration.');
+                        return;
+                    }
+                    $hierarchyCodeSpecificFilter = [
+                        'field'          => 'HierarchyCode',
+                        'value'          => $hierarchyCode,
+                        'condition_type' => 'eq'
+                    ];
+                    $scopeIdFilter               = [
+                        'field'          => 'scope_id',
+                        'value'          => $store->getId(),
+                        'condition_type' => 'eq'
+                    ];
+                    $mediaAttribute              = ['image', 'small_image', 'thumbnail'];
+                    $this->caterMainCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute,
+                        $scopeIdFilter);
+                    $this->caterSubCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute,
+                        $scopeIdFilter);
+                    if ($this->getRemainingRecords($store) == 0) {
+                        $this->cronStatus = true;
+                    }
+                    $this->caterHierarchyNodeRemoval($hierarchyCode);
+                    $this->updateImagesOnly();
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY,
+                        $store->getId());
+                    $this->logger->debug('CategoryCreateTask Completed for Store ' . $this->store->getName());
+                }
+                $this->lsr->setStoreId(null);
+            }
         }
-        $this->caterHierarchyNodeRemoval($hierarchyCode);
-        $this->updateImagesOnly();
-        $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY);
-        $this->logger->debug('CategoryCreateTask Completed.');
     }
 
     /**
@@ -168,14 +200,26 @@ class CategoryCreateTask
      * @param $mediaAttribute
      * @return int
      */
-    public function caterMainCategoryHierarchyNodeAddOrUpdate($HierarchyCodeSpecificFilter, $mediaAttribute)
-    {
+    public function caterMainCategoryHierarchyNodeAddOrUpdate(
+        $HierarchyCodeSpecificFilter,
+        $mediaAttribute,
+        $scopeIdFilter = false
+    ) {
         $parentNodeNullFilter = ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'null'];
-        $filters              = [
-            $parentNodeNullFilter,
-            $HierarchyCodeSpecificFilter
-        ];
-        $criteria             = $this->replicationHelper->buildCriteriaForArray($filters, -1);
+        if ($scopeIdFilter) {
+            // if the filter is set then add the scopeId into the condition as well.
+            $filters = [
+                $parentNodeNullFilter,
+                $HierarchyCodeSpecificFilter,
+                $scopeIdFilter
+            ];
+        } else {
+            $filters = [
+                $parentNodeNullFilter,
+                $HierarchyCodeSpecificFilter
+            ];
+        }
+        $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1);
         /** @var ReplHierarchyNodeSearchResults $replHierarchyNodeRepository */
         $replHierarchyNodeRepository = $this->replHierarchyNodeRepository->getList($criteria);
         /** @var ReplHierarchyNode $hierarchyNode */
@@ -189,12 +233,13 @@ class CategoryCreateTask
                     $this->replHierarchyNodeRepository->save($hierarchyNode);
                     continue;
                 }
-                $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
+                //** Adding Filter for Store so that we can search for Store based on Store Root Category. */
+                $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId(), $this->store);
                 if (!$categoryExistData) {
                     /** @var Category $category */
                     $category = $this->categoryFactory->create();
                     $data     = [
-                        'parent_id'       => 2,
+                        'parent_id'       => $this->store->getRootCategoryId(),
                         'name'            => ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId(),
                         'url_key'         => $this->oSlug($hierarchyNode->getNavId()),
                         'is_active'       => true,
@@ -235,6 +280,7 @@ class CategoryCreateTask
                 }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
+                $this->logger->debug('Error while creating ' . $hierarchyNode->getNavId() . ' for store ' . $this->store->getName());
                 $hierarchyNode->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreStart
@@ -249,17 +295,30 @@ class CategoryCreateTask
     /**
      * @param $HierarchyCodeSpecificFilter
      * @param $mediaAttribute
+     * @param bool $scopeIdFilter
      * @throws InputException
      */
-    public function caterSubCategoryHierarchyNodeAddOrUpdate($HierarchyCodeSpecificFilter, $mediaAttribute)
-    {
+    public function caterSubCategoryHierarchyNodeAddOrUpdate(
+        $HierarchyCodeSpecificFilter,
+        $mediaAttribute,
+        $scopeIdFilter = false
+    ) {
         // This is for the child/sub categories apply ParentNode Not Null Criteria
         $parentNodeNotNullFilter = ['field' => 'ParentNode', 'value' => true, 'condition_type' => 'notnull'];
-        $filtersSub              = [
-            $parentNodeNotNullFilter,
-            $HierarchyCodeSpecificFilter
-        ];
-        $criteriaSub             = $this->replicationHelper->buildCriteriaForArray($filtersSub, -1);
+        if ($scopeIdFilter) {
+            // if the filter is set then add the scopeId into the condition as well.
+            $filtersSub = [
+                $parentNodeNotNullFilter,
+                $HierarchyCodeSpecificFilter,
+                $scopeIdFilter
+            ];
+        } else {
+            $filtersSub = [
+                $parentNodeNotNullFilter,
+                $HierarchyCodeSpecificFilter
+            ];
+        }
+        $criteriaSub = $this->replicationHelper->buildCriteriaForArray($filtersSub, -1);
         $criteriaSub->setSortOrders(
             [$this->replicationHelper->getSortOrderObject('Indentation')]
         );
@@ -276,12 +335,13 @@ class CategoryCreateTask
                     $this->replHierarchyNodeRepository->save($hierarchyNodeSub);
                     continue;
                 }
-                $itemCategoryId       = $hierarchyNodeSub->getParentNode();
-                /** @var  $collection */
+                $itemCategoryId = $hierarchyNodeSub->getParentNode();
+                /** @var CollectionFactory $collection */
                 $collection           = $this->collectionFactory->create()
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
+                    ->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/')
                     ->setPageSize(1);
-                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId());
+                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(), $this->store);
                 if ($collection->getSize() && !$subCategoryExistData) {
                     /** @var CategoryFactory $categorysub */
                     $categorysub = $this->categoryFactory->create();
@@ -335,6 +395,7 @@ class CategoryCreateTask
                 }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
+                $this->logger->debug('Error while creating ' . $hierarchyNodeSub->getNavId() . ' for store ' . $this->store->getName());
                 $hierarchyNodeSub->setData('is_failed', 1);
             }
             $hierarchyNodeSub->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -351,8 +412,10 @@ class CategoryCreateTask
     {
         $attribute_id = $this->eavAttribute->getIdByCode(Category::ENTITY, 'nav_id');
         $filters      = [
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
-            ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq']
+            ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq'],
+            ['field' => 'second.store_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
         ];
         $criteria     = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
         $collection   = $this->replHierarchyNodeCollectionFactory->create();
@@ -380,6 +443,7 @@ class CategoryCreateTask
                     }
                 } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
+                    $this->logger->debug('Error while creating ' . $hierarchyNode->getNavId());
                     $hierarchyNode->setData('is_failed', 1);
                 }
                 $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -392,12 +456,13 @@ class CategoryCreateTask
     }
 
     /**
+     * @param null $storeData
      * @return array
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $categoriesLeftToProcess = $this->getRemainingRecords();
+        $this->execute($storeData);
+        $categoriesLeftToProcess = $this->getRemainingRecords($storeData);
         return [$categoriesLeftToProcess];
     }
 
@@ -405,11 +470,10 @@ class CategoryCreateTask
      * @param $string
      * @return string]
      */
-    //TODO integrate existing slug check or check if the url already exist or not.
-    public function oSlug($string)
+    public function oSlug($string, $parent = false)
     {
         // @codingStandardsIgnoreStart
-        return strtolower(trim(preg_replace(
+        $slug = strtolower(trim(preg_replace(
             '~[^0-9a-z]+~i',
             '-',
             html_entity_decode(
@@ -422,6 +486,23 @@ class CategoryCreateTask
                 'UTF-8'
             )
         ), '-'));
+        if ($parent) {
+            $slug = strtolower(trim(preg_replace(
+                    '~[^0-9a-z]+~i',
+                    '-',
+                    html_entity_decode(
+                        preg_replace(
+                            '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+                            '$1',
+                            htmlentities($parent, ENT_QUOTES, 'UTF-8')
+                        ),
+                        ENT_QUOTES,
+                        'UTF-8'
+                    )
+                ), '-')) . '-' . $slug;
+
+        }
+        return $slug;
         // @codingStandardsIgnoreEnd
     }
 
@@ -431,11 +512,15 @@ class CategoryCreateTask
      * @return bool|DataObject
      * @throws LocalizedException
      */
-    public function isCategoryExist($nav_id)
+    public function isCategoryExist($nav_id, $store = false)
     {
         $collection = $this->collectionFactory->create()
-            ->addAttributeToFilter('nav_id', $nav_id)
-            ->setPageSize(1);
+            ->addAttributeToFilter('nav_id', $nav_id);
+
+        if ($store) {
+            $collection->addAttributeToFilter('parent_id', $store->getRootCategoryId());
+        }
+        $collection->setPageSize(1);
         if ($collection->getSize()) {
             // @codingStandardsIgnoreStart
             return $collection->getFirstItem();
@@ -497,6 +582,7 @@ class CategoryCreateTask
     public function updateImagesOnly()
     {
         $filters  = [
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
             ['field' => 'main_table.TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
@@ -531,29 +617,27 @@ class CategoryCreateTask
     /**
      * @return int
      */
-    public function getRemainingRecords()
+    public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
-            $hierarchyCodeSpecificFilter = [
-                'field'          => 'HierarchyCode',
-                'value'          => $this->getHierarchyCode(),
-                'condition_type' => 'eq'
+            $filters                = [
+                ['field' => 'HierarchyCode', 'value' => $this->getHierarchyCode($storeData), 'condition_type' => 'eq'],
+                ['field' => 'scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq']
             ];
-            $criteria                    = $this->replicationHelper->buildCriteriaForArray([$hierarchyCodeSpecificFilter],
-                -1);
-            $this->remainingRecords      = $this->replHierarchyNodeRepository->getList($criteria)
-                ->getTotalCount();
+            $criteria               = $this->replicationHelper->buildCriteriaForArray($filters, -1);
+            $this->remainingRecords = $this->replHierarchyNodeRepository->getList($criteria)->getTotalCount();
         }
         return $this->remainingRecords;
     }
 
     /**
+     * @param $storeData
      * @return string
      */
-    public function getHierarchyCode()
+    public function getHierarchyCode($storeData)
     {
         if (!$this->hierarchyCode) {
-            $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE);
+            $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $storeData->getId());
         }
         return $this->hierarchyCode;
     }

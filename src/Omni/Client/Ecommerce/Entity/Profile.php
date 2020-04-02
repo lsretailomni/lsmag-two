@@ -65,9 +65,9 @@ class Profile extends Entity
     public function setDataType($DataType)
     {
         if ( ! $DataType instanceof ProfileDataType ) {
-            if ( ProfileDataType::isValid( $DataType ) ) 
+            if ( ProfileDataType::isValid( $DataType ) )
                 $DataType = new ProfileDataType( $DataType );
-            elseif ( ProfileDataType::isValidKey( $DataType ) ) 
+            elseif ( ProfileDataType::isValidKey( $DataType ) )
                 $DataType = new ProfileDataType( constant( "ProfileDataType::$DataType" ) );
             elseif ( ! $DataType instanceof ProfileDataType )
                 throw new InvalidEnumException();

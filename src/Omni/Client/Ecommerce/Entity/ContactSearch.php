@@ -38,9 +38,9 @@ class ContactSearch implements RequestInterface
     public function setSearchType($searchType)
     {
         if ( ! $searchType instanceof ContactSearchType ) {
-            if ( ContactSearchType::isValid( $searchType ) ) 
+            if ( ContactSearchType::isValid( $searchType ) )
                 $searchType = new ContactSearchType( $searchType );
-            elseif ( ContactSearchType::isValidKey( $searchType ) ) 
+            elseif ( ContactSearchType::isValidKey( $searchType ) )
                 $searchType = new ContactSearchType( constant( "ContactSearchType::$searchType" ) );
             elseif ( ! $searchType instanceof ContactSearchType )
                 throw new InvalidEnumException();

@@ -103,6 +103,7 @@ class DataProvider implements ConfigProviderInterface
     {
         $stores = $this->storeCollectionFactory
             ->create()
+            ->addFieldToFilter('scope_id', $this->getStoreId())
             ->addFieldToFilter('ClickAndCollect', 1)
             ->toArray();
         return Zend_Json::encode($stores);

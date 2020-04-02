@@ -9,6 +9,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Checkout\Model\Session\Proxy;
+use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
@@ -85,7 +86,7 @@ class LoyaltyHelper extends AbstractHelper
      * @param CustomerRepositoryInterface $customerRepository
      * @param StoreManagerInterface $storeManager
      * @param CustomerFactory $customerFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param CustomerProxy $customerSession
      * @param Proxy $checkoutSession
      * @param Filesystem $Filesystem
      * @param GroupRepositoryInterface $groupRepository
@@ -99,7 +100,7 @@ class LoyaltyHelper extends AbstractHelper
         CustomerRepositoryInterface $customerRepository,
         StoreManagerInterface $storeManager,
         CustomerFactory $customerFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        CustomerProxy $customerSession,
         Proxy $checkoutSession,
         Filesystem $Filesystem,
         GroupRepositoryInterface $groupRepository,
@@ -173,7 +174,8 @@ class LoyaltyHelper extends AbstractHelper
         if ($image_id == null || $image_size == null) {
             return $response;
         }
-        $cacheId  = LSR::IMAGE_CACHE . $image_id;
+        $storeId = $this->lsr->getCurrentStoreId();
+        $cacheId = LSR::IMAGE_CACHE . $image_id . "_" . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
             $this->_logger->debug("Found image from cache " . $cacheId);
@@ -270,16 +272,20 @@ class LoyaltyHelper extends AbstractHelper
         return 0;
     }
 
+    /*
+     * Convert Point Rate into Values
+     */
+
     /**
      * @return float|Entity\GetPointRateResponse|ResponseInterface|null
      */
     public function getPointRate()
     {
-        $storeId  = $this->lsr->getDefaultWebStore();
-        $cacheId  = LSR::POINTRATE . $storeId;
+        $storeId = $this->lsr->getCurrentStoreId();
+        $cacheId = LSR::POINTRATE . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug("Found point rate from cache " . $cacheId);
+            $this->_logger->debug('Found point rate from cache ' . $cacheId);
             return $response;
         }
         $response = null;
@@ -363,12 +369,12 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @param $itemId
-     * @param $storeId
+     * @param $webStore
      * @return bool|Entity\DiscountsGetResponse|Entity\ProactiveDiscount[]|ResponseInterface|null
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getProactiveDiscounts($itemId, $storeId)
+    public function getProactiveDiscounts($itemId, $webStore)
     {
         $response = null;
         // @codingStandardsIgnoreStart
@@ -376,6 +382,7 @@ class LoyaltyHelper extends AbstractHelper
         $entity  = new Entity\DiscountsGet();
         $string  = new Entity\ArrayOfstring();
         // @codingStandardsIgnoreEnd
+        $storeId = $this->lsr->getCurrentStoreId();
         $customerGroupId = $this->customerSession->getCustomerGroupId();
         $cacheId         = LSR::PROACTIVE_DISCOUNTS . $itemId . "_" . $customerGroupId . "_" . $storeId;
         $response        = $this->cacheHelper->getCachedContent($cacheId);
@@ -385,7 +392,7 @@ class LoyaltyHelper extends AbstractHelper
         }
         $group = $this->groupRepository->getById($customerGroupId)->getCode();
         $string->setString([$itemId]);
-        $entity->setStoreId($storeId)->setItemiIds($string)->setLoyaltySchemeCode($group);
+        $entity->setStoreId($webStore)->setItemiIds($string)->setLoyaltySchemeCode($group);
         try {
             $response = $request->execute($entity);
         } catch (Exception $e) {

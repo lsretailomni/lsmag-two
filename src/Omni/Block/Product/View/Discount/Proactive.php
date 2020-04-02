@@ -15,12 +15,14 @@ use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Plugin\App\Action\Context;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Block\Product\Context as ProductContext;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Helper\Product;
 use Magento\Catalog\Model\ProductTypes\ConfigInterface;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Json\EncoderInterface;
@@ -28,6 +30,7 @@ use Magento\Framework\Locale\FormatInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Stdlib\StringUtils;
+use Magento\Framework\Url\EncoderInterface as UrlEncoderInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
@@ -63,22 +66,19 @@ class Proactive extends View
     public $storeManager;
 
     /**
-     * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     * @var TimezoneInterface
      */
     public $timeZoneInterface;
 
     /**
-     * @var Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     public $scopeConfig;
 
     /**
      * Proactive constructor.
-     * @param LSR $lsr
-     * @param LoyaltyHelper $loyaltyHelper
-     * @param ItemHelper $itemHelper
-     * @param \Magento\Catalog\Block\Product\Context $context
-     * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
+     * @param ProductContext $context
+     * @param UrlEncoderInterface $urlEncoder
      * @param EncoderInterface $jsonEncoder
      * @param StringUtils $string
      * @param Product $productHelper
@@ -87,7 +87,10 @@ class Proactive extends View
      * @param Proxy $customerSession
      * @param ProductRepositoryInterface $productRepository
      * @param PriceCurrencyInterface $priceCurrency
-     * @param \Magento\Framework\App\Http\Context $httpContext
+     * @param LSR $lsr
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param ItemHelper $itemHelper
+     * @param HttpContext $httpContext
      * @param CustomerFactory $customerFactory
      * @param StoreManagerInterface $storeManager
      * @param TimezoneInterface $timeZoneInterface
@@ -95,11 +98,8 @@ class Proactive extends View
      * @param array $data
      */
     public function __construct(
-        LSR $lsr,
-        LoyaltyHelper $loyaltyHelper,
-        ItemHelper $itemHelper,
-        \Magento\Catalog\Block\Product\Context $context,
-        \Magento\Framework\Url\EncoderInterface $urlEncoder,
+        ProductContext $context,
+        UrlEncoderInterface $urlEncoder,
         EncoderInterface $jsonEncoder,
         StringUtils $string,
         Product $productHelper,
@@ -108,7 +108,10 @@ class Proactive extends View
         Proxy $customerSession,
         ProductRepositoryInterface $productRepository,
         PriceCurrencyInterface $priceCurrency,
-        \Magento\Framework\App\Http\Context $httpContext,
+        LSR $lsr,
+        LoyaltyHelper $loyaltyHelper,
+        ItemHelper $itemHelper,
+        HttpContext $httpContext,
         CustomerFactory $customerFactory,
         StoreManagerInterface $storeManager,
         TimezoneInterface $timeZoneInterface,
@@ -146,9 +149,9 @@ class Proactive extends View
      */
     public function getProactiveDiscounts($sku)
     {
-        $itemId  = $sku;
-        $storeId = $this->lsr->getDefaultWebStore();
-        if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $storeId)) {
+        $itemId   = $sku;
+        $webStore = $this->lsr->getActiveWebStore();
+        if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore)) {
             if (!is_array($response)) {
                 $response = [$response];
             }
@@ -175,7 +178,7 @@ class Proactive extends View
     {
         $itemId = $sku;
         try {
-            $storeId = $this->lsr->getDefaultWebStore();
+            $storeId = $this->lsr->getActiveWebStore();
             if ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_ID)) {
                 $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
                 $email     = $this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL);
@@ -304,7 +307,7 @@ class Proactive extends View
      */
     public function getMixandMatchProductLimit()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT);
+        return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT, $this->lsr->getCurrentStoreId());
     }
 
     /**
@@ -347,7 +350,8 @@ class Proactive extends View
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getActiveWebStore()
             ));
 
             return $offerExpiryDate;
@@ -380,9 +384,13 @@ class Proactive extends View
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isDiscountEnable()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_SHOW_ON_PRODUCT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_DISCOUNT_SHOW_ON_PRODUCT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 }

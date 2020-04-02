@@ -18,7 +18,9 @@ class InvalidNotice extends Template
     public $lsr;
 
     /**
+     * InvalidNotice constructor.
      * @param Context $context
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(Context $context, LSR $lsr, array $data = [])

@@ -54,12 +54,12 @@ class Actions extends Column
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
-                $name = $this->getData('name');
+                $name    = $this->getData('name');
                 if (isset($item['value'])) {
                     $item[$name]['execute'] = [
                         'href'    => $this->urlBuilder->getUrl(
                             self::URL_PATH_EXECUTE,
-                            ['joburl' => $item['value'], 'jobname' => $item['label']]
+                            ['joburl' => $item['value'], 'jobname' => $item['label'], 'store' => $item['storeId']]
                         ),
                         'label'   => __('Execute'),
                         'confirm' => [

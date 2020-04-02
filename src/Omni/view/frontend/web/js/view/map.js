@@ -15,7 +15,6 @@ define([
             });
 
             var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
-            console.log(stores);
             var infoWindow = new google.maps.InfoWindow();
 
             $.each(stores.items, function (index, store) {

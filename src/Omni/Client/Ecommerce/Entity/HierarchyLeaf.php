@@ -27,9 +27,9 @@ class HierarchyLeaf extends HierarchyPoint
     public function setType($Type)
     {
         if ( ! $Type instanceof HierarchyLeafType ) {
-            if ( HierarchyLeafType::isValid( $Type ) ) 
+            if ( HierarchyLeafType::isValid( $Type ) )
                 $Type = new HierarchyLeafType( $Type );
-            elseif ( HierarchyLeafType::isValidKey( $Type ) ) 
+            elseif ( HierarchyLeafType::isValidKey( $Type ) )
                 $Type = new HierarchyLeafType( constant( "HierarchyLeafType::$Type" ) );
             elseif ( ! $Type instanceof HierarchyLeafType )
                 throw new InvalidEnumException();
