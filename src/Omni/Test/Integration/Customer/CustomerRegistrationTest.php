@@ -44,7 +44,7 @@ class CustomerRegistrationTest extends AbstractController
         $this->contactHelper       = Bootstrap::getObjectManager()->get(ContactHelper::class);
     }
 
-    private function testCustomerRegistrationOmni()
+    protected function customerRegistrationOmni()
     {
         $this->assertNotNull($this->client);
         $append      = "test4" . chr(rand(97, 122));
@@ -79,7 +79,7 @@ class CustomerRegistrationTest extends AbstractController
 
     public function testCustomerRegistration()
     {
-        $contact           = $this->testCustomerRegistrationOmni();
+        $contact           = $this->customerRegistrationOmni();
         $attributeUsername = $this->attributeRepository->get('customer', 'lsr_username');
         $this->assertEquals('lsr_username', $attributeUsername->getAttributeCode());
         $attributeLsrId = $this->attributeRepository->get('customer', 'lsr_id');
@@ -88,10 +88,10 @@ class CustomerRegistrationTest extends AbstractController
         $this->assertEquals('lsr_token', $attributeLsrToken->getAttributeCode());
         $attributeLsrCardId = $this->attributeRepository->get('customer', 'lsr_cardid');
         $this->assertEquals('lsr_cardid', $attributeLsrCardId->getAttributeCode());
-        $this->testGetCustomerGroupIdByName($contact->getAccount()->getScheme()->getId());
+        $this->getCustomerGroupIdByName($contact->getAccount()->getScheme()->getId());
     }
 
-    private function testGetCustomerGroupIdByName($groupName)
+    protected function getCustomerGroupIdByName($groupName)
     {
         $customerGroupId = $this->contactHelper->getCustomerGroupIdByName($groupName);
         $this->assertNotNull($customerGroupId);
