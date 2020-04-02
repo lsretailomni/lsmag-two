@@ -168,15 +168,18 @@ class UpgradeData implements UpgradeDataInterface
 
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        if (version_compare($context->getVersion(), '1.3.0', '=')) {
-            // only need to run  for existing clients in order to modify their data.
+        $this->logger->debug("Came here");
+        $this->logger->debug($context->getVersion());
+
+        if (version_compare($context->getVersion(), '1.3.0', '<')) {
+            // only need to run  for existing clients who are using older version then 1.3.0
             // @codingStandardsIgnoreStart
+            $this->logger->debug("Also here");
             $this->updateFlatTables();
             $this->updateConfigTable();
-
-
+        } else {
+            $this->logger->debug("But not here");
         }
-
     }
 
     /**
@@ -188,7 +191,7 @@ class UpgradeData implements UpgradeDataInterface
         // Update all
         foreach ($this->lsTables as $lsTable) {
             $lsTableName = $connection->getTableName($lsTable);
-            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET scope = \'stores\', scope_id = 1';
+            $lsQuery     = "UPDATE $lsTableName SET scope = 'stores', scope_id = 1";
             try {
                 $connection->query($lsQuery);
             } catch (Exception $e) {
@@ -196,16 +199,18 @@ class UpgradeData implements UpgradeDataInterface
             }
         }
     }
+
     /**
      * Update All Core Config values.
      */
     private function updateConfigTable()
     {
-        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $lsTableName = $connection->getTableName('core_config_data');
-        $websiteQuery = "UPDATE $lsTableName set scope = 'websites', scope_id = 1 WHERE path IN (".implode(',',$this->websiteScopeFields).")";
-        $storeQuery = "UPDATE $lsTableName set scope = 'stores', scope_id = 1 WHERE path IN (".implode(',',$this->nonwebsiteScopeFields).")";
-
+        $connection   = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        $lsTableName  = $connection->getTableName('core_config_data');
+        $websiteQuery = "UPDATE $lsTableName set scope = 'websites', scope_id = 1 WHERE path IN ('" . implode("','", $this->websiteScopeFields) . "')";
+        $storeQuery   = "UPDATE $lsTableName set scope = 'stores', scope_id = 1 WHERE path IN ('" . implode("','", $this->nonwebsiteScopeFields) . "')";
+        $this->logger->debug($websiteQuery);
+        $this->logger->debug($storeQuery);
         try {
             $connection->query($websiteQuery);
             $connection->query($storeQuery);
@@ -213,8 +218,5 @@ class UpgradeData implements UpgradeDataInterface
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-
-
-
     }
 }
