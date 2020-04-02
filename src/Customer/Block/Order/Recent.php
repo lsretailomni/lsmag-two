@@ -156,6 +156,6 @@ class Recent extends Template
      */
     public function getOmniVersion()
     {
-        return $this->lsr->getStoreConfig($this->lsr::SC_SERVICE_VERSION);
+        return $this->lsr->getStoreConfig($this->lsr::SC_SERVICE_VERSION, $this->lsr->getCurrentStoreId());
     }
 }

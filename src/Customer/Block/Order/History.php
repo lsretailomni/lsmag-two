@@ -192,6 +192,6 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public function getOmniVersion()
     {
-        return $this->lsr->getStoreConfig($this->lsr::SC_SERVICE_VERSION);
+        return $this->lsr->getStoreConfig($this->lsr::SC_SERVICE_VERSION, $this->lsr->getCurrentStoreId());
     }
 }
