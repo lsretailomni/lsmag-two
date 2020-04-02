@@ -27,6 +27,8 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                             __('Date') ?></th>
                         <th scope="col" class="col shipping"><?= /* @escapeNotVerified */
                             __('Ship To') ?></th>
+                        <th scope="col" class="col store-name"><?= /* @escapeNotVerified */
+                            __('Store Name') ?></th>
                         <th scope="col" class="col total"><?= /* @escapeNotVerified */
                             __('Total') ?></th>
                         <th scope="col" class="col status"><?= /* @escapeNotVerified */
@@ -46,7 +48,9 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                 class="col date"><?= /* @escapeNotVerified */
                                 $block->getFormattedDate($_order->getDocumentRegTime()) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
-                                class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : '&nbsp;' ?></td>
+                                class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable') ?></td>
+                            <td data-th="<?= $block->escapeHtml(__('Store Name')) ?>"
+                                class="col store-name"><?= $_order->getStoreName() ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Total')) ?>"
                                 class="col total"><?= /* @escapeNotVerified */
                                 $block->getFormattedPrice($_order->getTotalAmount()) ?></td>
@@ -122,7 +126,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                             $extra->getChildHtml() ?>
                         <?php endif; ?>
                         <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
-                            class="col shipping"><?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+                            class="col shipping"><?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : __('Not Applicable') ?></td>
                         <td data-th="<?= $block->escapeHtml(__('Total')) ?>"
                             class="col total"><?= /* @escapeNotVerified */
                             $_order->formatPrice($_order->getGrandTotal()) ?></td>

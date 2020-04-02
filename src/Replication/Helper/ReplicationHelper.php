@@ -31,6 +31,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
 
@@ -212,8 +213,12 @@ class ReplicationHelper extends AbstractHelper
      * @param bool $excludeDeleted
      * @return SearchCriteria
      */
-    public function buildCriteriaForProductAttributes($item_id = '', $pagesize = 100, $excludeDeleted = true)
-    {
+    public function buildCriteriaForProductAttributes(
+        $item_id = '',
+        $pagesize = 100,
+        $excludeDeleted = true,
+        $scope_id = false
+    ) {
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
             ->setConditionType('eq')
@@ -230,8 +235,12 @@ class ReplicationHelper extends AbstractHelper
             ->create();
         // adding criteria into where clause.
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
+        if ($scope_id) {
+            $criteria->addFilter('scope_id', $scope_id, 'eq');
+        }
         $criteria->addFilter('LinkType', 0, 'eq');
         $criteria->addFilter('LinkField1', $item_id, 'eq');
+
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
@@ -280,15 +289,12 @@ class ReplicationHelper extends AbstractHelper
                 ->addFilter($attr_is_updated)
                 ->create();
         }
-
-        // adding criteria into where clause.
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
         if (!empty($filters)) {
             foreach ($filters as $filter) {
                 $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
-
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
@@ -361,6 +367,7 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('IsDeleted', 1, 'eq');
+        $criteria->addFilter('is_updated', 1, 'eq');
         if ($pagesize != -1) {
             $criteria->setPageSize($pagesize);
         }
@@ -382,6 +389,7 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         $criteria->addFilter('main_table.IsDeleted', 1, 'eq');
+        $criteria->addFilter('main_table.is_updated', 1, 'eq');
         if ($pagesize != -1) {
             $criteria->setPageSize($pagesize);
         }
@@ -452,15 +460,17 @@ class ReplicationHelper extends AbstractHelper
     /**
      * @param string $nav_id
      * @param string $type
+     * @param int $includeDeleted
+     * @param bool $store_id
      * @return bool|AbstractExtensibleObject[]
      * @throws InputException
      */
-    public function getImageLinksByType($nav_id = '', $type = 'Item Category', $includeDeleted = 0)
+    public function getImageLinksByType($nav_id = '', $type = 'Item Category', $includeDeleted = 0, $store_id = false)
     {
         if (empty($nav_id)) {
             return false;
         }
-        $criteria  = $this->searchCriteriaBuilder->addFilter(
+        $criteria = $this->searchCriteriaBuilder->addFilter(
             'KeyValue',
             $nav_id,
             'eq'
@@ -472,11 +482,15 @@ class ReplicationHelper extends AbstractHelper
             'IsDeleted',
             $includeDeleted,
             'eq'
-        )->create();
+        );
+
+        if ($store_id) {
+            $criteria->addFilter('scope_id', $store_id, 'eq');
+        }
         $sortOrder = $this->sortOrder->setField('DisplayOrder')->setDirection(SortOrder::SORT_ASC);
         $criteria->setSortOrders([$sortOrder]);
         /** @var ReplImageLinkSearchResults $items */
-        $items = $this->replImageLinkRepositoryInterface->getList($criteria);
+        $items = $this->replImageLinkRepositoryInterface->getList($criteria->create());
         if ($items->getTotalCount() > 0) {
             return $items->getItems();
         }
@@ -536,7 +550,7 @@ class ReplicationHelper extends AbstractHelper
     public function formatAttributeCode($code)
     {
         $code = strtolower(trim($code));
-        $code = str_replace(" ", "_", $code);
+        $code = str_replace(' ', '_', $code);
         // convert all special characters and replace it with _
         $code = preg_replace('/[^a-zA-Z0-9_.]/', '_', $code);
         return 'ls_' . $code;
@@ -570,15 +584,27 @@ class ReplicationHelper extends AbstractHelper
      * Update the config status and clean cache for config
      * @param $data
      * @param $path
+     * @param bool $storeId
      */
-    public function updateCronStatus($data, $path)
+    public function updateCronStatus($data, $path, $storeId = false)
     {
-        $this->configWriter->save(
-            $path,
-            ($data) ? 1 : 0,
-            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-            0
-        );
+        /**
+         * Added the condition to update config value based on specific store id.
+         */
+        if ($storeId) {
+            $this->configWriter->save(
+                $path,
+                ($data) ? 1 : 0,
+                ScopeInterface::SCOPE_STORES, $storeId
+            );
+        } else {
+            $this->configWriter->save(
+                $path,
+                ($data) ? 1 : 0,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                0
+            );
+        }
         $this->flushByTypeCode('config');
     }
 
@@ -586,15 +612,28 @@ class ReplicationHelper extends AbstractHelper
      * Update the config value
      * @param $value
      * @param $path
+     * @param bool $storeId
      */
-    public function updateConfigValue($value, $path)
+    public function updateConfigValue($value, $path, $storeId = false)
     {
-        $this->configWriter->save(
-            $path,
-            $value,
-            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-            0
-        );
+
+        /**
+         * Added the condition to update config value based on specific store id.
+         */
+        if ($storeId) {
+            $this->configWriter->save(
+                $path,
+                $value,
+                ScopeInterface::SCOPE_STORES, $storeId
+            );
+        } else {
+            $this->configWriter->save(
+                $path,
+                $value,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                0
+            );
+        }
     }
 
     /**
@@ -606,13 +645,17 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * This websiteId is the id of scope website in the Magento system. and webStore is the LS Central store id stored in the core_config_data
      * Trigger the disposable Hierarchy replication job to get Hierarchy based on stores.
+     * @param string $websiteId
      * @return array|Entity\ReplEcommHierarchyResponse|Entity\ReplHierarchyResponse|ResponseInterface
      */
-    public function getHierarchyByStore()
+    public function getHierarchyByStore($websiteId = '')
     {
         $response = [];
-        $store_id = $this->lsr->getDefaultWebStore();
+
+        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+        $base_url = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
         // @codingStandardsIgnoreStart
         /** @var Entity\ReplEcommHierarchy $hierarchy */
         $hierarchy = new Entity\ReplEcommHierarchy();
@@ -621,10 +664,10 @@ class ReplicationHelper extends AbstractHelper
         $request = new Entity\ReplRequest();
 
         /** @var Operation\ReplEcommHierarchy $operation */
-        $operation = new Operation\ReplEcommHierarchy();
+        $operation = new Operation\ReplEcommHierarchy($base_url);
         // @codingStandardsIgnoreEnd
 
-        $request->setStoreId($store_id)
+        $request->setStoreId($webStore)
             ->setBatchSize(100)
             ->setFullReplication(true)
             ->setLastKey(0)

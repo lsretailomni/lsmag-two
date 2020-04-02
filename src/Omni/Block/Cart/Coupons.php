@@ -116,7 +116,8 @@ class Coupons extends Coupon
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getCurrentStoreId()
             ));
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -134,9 +135,13 @@ class Coupons extends Coupon
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isCouponEnable()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_COUPON_SHOW_ON_CART_CHECKOUT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_COUPON_SHOW_ON_CART_CHECKOUT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 }

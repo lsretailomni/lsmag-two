@@ -203,9 +203,9 @@ class AdditionalCharge
     public function setProductType($ProductType)
     {
         if ( ! $ProductType instanceof ProductChargeType ) {
-            if ( ProductChargeType::isValid( $ProductType ) ) 
+            if ( ProductChargeType::isValid( $ProductType ) )
                 $ProductType = new ProductChargeType( $ProductType );
-            elseif ( ProductChargeType::isValidKey( $ProductType ) ) 
+            elseif ( ProductChargeType::isValidKey( $ProductType ) )
                 $ProductType = new ProductChargeType( constant( "ProductChargeType::$ProductType" ) );
             elseif ( ! $ProductType instanceof ProductChargeType )
                 throw new InvalidEnumException();

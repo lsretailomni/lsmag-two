@@ -69,6 +69,12 @@ class ModelInterfaceGenerator extends AbstractGenerator
             if ($property_name == 'Id') {
                 $pascal_name   = 'NavId';
                 $variable_name = 'nav_id';
+            } elseif ($property_name == 'scope') {
+                $pascal_name   = 'Scope';
+                $variable_name = 'scope';
+            } elseif ($property_name == 'scope_id') {
+                $pascal_name   = 'ScopeId';
+                $variable_name = 'scope_id';
             }
             $this->createProperty(
                 null,
@@ -82,18 +88,6 @@ class ModelInterfaceGenerator extends AbstractGenerator
             );
         }
 
-        $this->createProperty(
-            null,
-            'string',
-            [PropertyGenerator::FLAG_PROTECTED],
-            ['pascal_name' => 'Scope', 'variable_name' => 'scope', 'interface' => true]
-        );
-        $this->createProperty(
-            null,
-            'int',
-            [PropertyGenerator::FLAG_PROTECTED],
-            ['pascal_name' => 'ScopeId', 'variable_name' => 'scope_id', 'interface' => true]
-        );
         $this->createProperty(
             null,
             'boolean',

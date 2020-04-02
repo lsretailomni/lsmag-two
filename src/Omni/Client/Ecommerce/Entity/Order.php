@@ -457,9 +457,9 @@ class Order extends Entity
     public function setOrderStatus($OrderStatus)
     {
         if ( ! $OrderStatus instanceof SalesEntryStatus ) {
-            if ( SalesEntryStatus::isValid( $OrderStatus ) ) 
+            if ( SalesEntryStatus::isValid( $OrderStatus ) )
                 $OrderStatus = new SalesEntryStatus( $OrderStatus );
-            elseif ( SalesEntryStatus::isValidKey( $OrderStatus ) ) 
+            elseif ( SalesEntryStatus::isValidKey( $OrderStatus ) )
                 $OrderStatus = new SalesEntryStatus( constant( "SalesEntryStatus::$OrderStatus" ) );
             elseif ( ! $OrderStatus instanceof SalesEntryStatus )
                 throw new InvalidEnumException();
@@ -485,9 +485,9 @@ class Order extends Entity
     public function setOrderType($OrderType)
     {
         if ( ! $OrderType instanceof OrderType ) {
-            if ( OrderType::isValid( $OrderType ) ) 
+            if ( OrderType::isValid( $OrderType ) )
                 $OrderType = new OrderType( $OrderType );
-            elseif ( OrderType::isValidKey( $OrderType ) ) 
+            elseif ( OrderType::isValidKey( $OrderType ) )
                 $OrderType = new OrderType( constant( "OrderType::$OrderType" ) );
             elseif ( ! $OrderType instanceof OrderType )
                 throw new InvalidEnumException();
@@ -513,9 +513,9 @@ class Order extends Entity
     public function setPaymentStatus($PaymentStatus)
     {
         if ( ! $PaymentStatus instanceof PaymentStatus ) {
-            if ( PaymentStatus::isValid( $PaymentStatus ) ) 
+            if ( PaymentStatus::isValid( $PaymentStatus ) )
                 $PaymentStatus = new PaymentStatus( $PaymentStatus );
-            elseif ( PaymentStatus::isValidKey( $PaymentStatus ) ) 
+            elseif ( PaymentStatus::isValidKey( $PaymentStatus ) )
                 $PaymentStatus = new PaymentStatus( constant( "PaymentStatus::$PaymentStatus" ) );
             elseif ( ! $PaymentStatus instanceof PaymentStatus )
                 throw new InvalidEnumException();
@@ -793,9 +793,9 @@ class Order extends Entity
     public function setShippingStatus($ShippingStatus)
     {
         if ( ! $ShippingStatus instanceof ShippingStatus ) {
-            if ( ShippingStatus::isValid( $ShippingStatus ) ) 
+            if ( ShippingStatus::isValid( $ShippingStatus ) )
                 $ShippingStatus = new ShippingStatus( $ShippingStatus );
-            elseif ( ShippingStatus::isValidKey( $ShippingStatus ) ) 
+            elseif ( ShippingStatus::isValidKey( $ShippingStatus ) )
                 $ShippingStatus = new ShippingStatus( constant( "ShippingStatus::$ShippingStatus" ) );
             elseif ( ! $ShippingStatus instanceof ShippingStatus )
                 throw new InvalidEnumException();

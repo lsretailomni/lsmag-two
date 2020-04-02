@@ -80,7 +80,7 @@ class CheckoutRegisterObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $orderId = $this->checkoutSession->getLastOrderId();
             $order   = $this->orderRepository->get($orderId);
             if ($order->getCustomerId()) {

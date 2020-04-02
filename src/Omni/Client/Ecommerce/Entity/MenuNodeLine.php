@@ -73,9 +73,9 @@ class MenuNodeLine
     public function setNodeLineType($NodeLineType)
     {
         if ( ! $NodeLineType instanceof NodeLineType ) {
-            if ( NodeLineType::isValid( $NodeLineType ) ) 
+            if ( NodeLineType::isValid( $NodeLineType ) )
                 $NodeLineType = new NodeLineType( $NodeLineType );
-            elseif ( NodeLineType::isValidKey( $NodeLineType ) ) 
+            elseif ( NodeLineType::isValidKey( $NodeLineType ) )
                 $NodeLineType = new NodeLineType( constant( "NodeLineType::$NodeLineType" ) );
             elseif ( ! $NodeLineType instanceof NodeLineType )
                 throw new InvalidEnumException();

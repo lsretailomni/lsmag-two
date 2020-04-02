@@ -9,7 +9,7 @@ use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Customer\Api\CustomerMetadataInterface;
 use Magento\Customer\Model\AccountManagement;
-use Magento\Customer\Model\Customer;
+use Magento\Customer\Model\ResourceModel\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Action\Context;
@@ -33,7 +33,7 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
     /** @var StoreManagerInterface */
     public $storeManager;
 
-    /** @var \Magento\Customer\Model\ResourceModel\Customer */
+    /** @var Customer */
     public $customerResourceModel;
 
     public function __construct(
@@ -45,7 +45,7 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
         StoreManagerInterface $storeManager,
         LSR $LSR,
         ContactHelper $contactHelper,
-        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
+        Customer $customerResourceModel
     ) {
         $this->lsr                   = $LSR;
         $this->contactHelper         = $contactHelper;
@@ -56,27 +56,20 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
     }
 
     /**
-     * Have to completely override the core funciton because we are allowing resetting the password
+     * Have to completely override the core function because we are allowing resetting the password
      * with and without email address.
      * @return Redirect
      */
-
     public function execute()
     {
-        /*
-         * Adding condition to only process if LSR is enabled.
-         */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             /** @var Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
             $email          = (string)$this->getRequest()->getPost('email');
             if ($email) {
-                // handling the LS Central Reset Password functionality.
                 /** @var Entity\ForgotPasswordResponse | null $result */
                 try {
-                    // check if omni return the success reponse of reset token
                     $result = $this->contactHelper->forgotPassword($email);
-                    // check if omni also returned some response for the contact search
                     $search = $this->contactHelper->searchWithUsernameOrEmail($email);
                     if ($result && $search) {
                         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();

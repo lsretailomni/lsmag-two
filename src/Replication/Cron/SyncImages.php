@@ -10,6 +10,7 @@ use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\StateException;
+use Magento\Store\Api\Data\StoreInterface;
 
 /**
  * Class SyncInventory
@@ -24,31 +25,45 @@ class SyncImages extends ProductCreateTask
     public $remainingRecords;
 
     /**
+     * @param null $storeData
      * @throws InputException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        if ($this->lsr->isLSR()) {
-            $this->replicationHelper->updateConfigValue(
-                $this->replicationHelper->getDateTime(),
-                LSR::SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE
-            );
-            $this->replicationHelper->setEnvVariables();
-            $this->logger->debug('Running SyncImages Task');
-            $this->syncItemImages();
-            $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_IMAGES);
-            $this->logger->debug('End SyncImages Task with remaining : ' . $this->getRemainingRecords());
+        if (!empty($storeData) && $storeData instanceof StoreInterface) {
+            $stores = [$storeData];
+        } else {
+            /** @var StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $this->replicationHelper->updateConfigValue($this->replicationHelper->getDateTime(),
+                        LSR::SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE, $this->store->getId());
+                    $this->replicationHelper->setEnvVariables();
+                    $this->logger->debug('Running SyncImages Task for store ' . $this->store->getName());
+                    $this->syncItemImages();
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_IMAGES,
+                        $this->store->getId());
+                    $this->logger->debug('End SyncImages Task with remaining : ' . $this->getRemainingRecords($this->store));
+                }
+                $this->lsr->setStoreId(null);
+            }
         }
     }
 
     /**
+     * @param null $storeData
      * @return array
      * @throws InputException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-        $remainingRecords = (int)$this->getRemainingRecords();
+        $this->execute($storeData);
+        $remainingRecords = (int)$this->getRemainingRecords($storeData);
         return [$remainingRecords];
     }
 
@@ -62,7 +77,8 @@ class SyncImages extends ProductCreateTask
         /** Get Images for only those items which are already processed */
         $filters  = [
             ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
-            ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
+            ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -92,11 +108,13 @@ class SyncImages extends ProductCreateTask
                     $itemSku = $itemImage->getKeyValue();
                     $itemSku = str_replace(',', '-', $itemSku);
                     /* @var ProductInterface $productData */
-                    $productData = $this->productRepository->get($itemSku, true, null, true);
+                    $productData = $this->productRepository->get($itemSku, true, $this->store->getId(), true);
+                    $productData->setData('store_id',0);
                     // Check for all images.
                     $filtersForAllImages  = [
                         ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
-                        ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq']
+                        ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq'],
+                        ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
                     ];
                     $criteriaForAllImages = $this->replicationHelper->buildCriteriaForDirect(
                         $filtersForAllImages,
@@ -121,7 +139,7 @@ class SyncImages extends ProductCreateTask
                     $this->replImageLinkRepositoryInterface->save($itemImage);
                 }
             }
-            $remainingItems = (int)$this->getRemainingRecords();
+            $remainingItems = (int)$this->getRemainingRecords($this->store);
             if ($remainingItems == 0) {
                 $this->cronStatus = true;
             }
@@ -132,25 +150,25 @@ class SyncImages extends ProductCreateTask
     }
 
     /**
+     * @param $storeData
      * @return int
      */
-    public function getRemainingRecords()
+    public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
             $filters  = [
                 ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
-                ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq']
+                ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
+                ['field' => 'main_table.scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq']
             ];
             $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,
                 -1,
                 false
             );
-
             /** @var  $collection */
             $collection = $this->replImageLinkCollectionFactory->create();
-
-            /** we only need unique product Id's which has any images to modify */
+            /** We only need sku which has any images to modify */
             $this->replicationHelper->setCollectionPropertiesPlusJoin(
                 $collection,
                 $criteria,

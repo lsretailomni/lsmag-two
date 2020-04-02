@@ -68,54 +68,71 @@ class LSRecommend extends AbstractHelper
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-
     public function isLsRecommendEnable()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_RECOMMEND_ACTIVE);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_ACTIVE,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-
     public function isLsRecommendEnableOnProductPage()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_RECOMMEND_SHOW_ON_PRODUCT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_SHOW_ON_PRODUCT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isLsRecommendEnableOnCartPage()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_RECOMMEND_SHOW_ON_CART);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_SHOW_ON_CART,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isLsRecommendEnableOnHomePage()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_RECOMMEND_SHOW_ON_HOME);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_SHOW_ON_HOME,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isLsRecommendEnableOnCheckoutPage()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_RECOMMEND_SHOW_ON_CHECKOUT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_RECOMMEND_SHOW_ON_CHECKOUT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     // @codingStandardsIgnoreStart
     public function getProductRecommendationfromOmni($product_ids)
     {
-
         if (is_null($product_ids) || empty($product_ids) || $product_ids == '') {
             return null;
         }
-        $store_Id = $this->lsr->getDefaultWebStore();
+        $webStore = $this->lsr->getActiveWebStore();
         $response = null;
         // @codingStandardsIgnoreStart
         /** @var Operation\RecommendedItemsGet $request */
@@ -126,9 +143,8 @@ class LSRecommend extends AbstractHelper
 
         //TODO work with UserID.
         $entity->setItems($product_ids)
-            ->setStoreId($store_Id)
+            ->setStoreId($webStore)
             ->setUserId('');
-
         try {
             $response = $request->execute($entity);
         } catch (Exception $e) {
@@ -146,10 +162,6 @@ class LSRecommend extends AbstractHelper
         Entity\ArrayOfRecommendedItem $recommendedProducts
     ) {
         if ($recommendedProducts instanceof Entity\ArrayOfRecommendedItem) {
-            /**
-             * now we are sure we will get the correct type of
-             * data so that we dont mess up handling LS Recommend errors.
-             */
             if (empty($recommendedProducts)) {
                 return null;
             }
@@ -168,7 +180,6 @@ class LSRecommend extends AbstractHelper
     public function getProductIdsFromLsRecommendObject(
         Entity\ArrayOfRecommendedItem $recommendedProducts
     ) {
-
         $productIds = [];
         /** @var  Entity\RecommendedItem $recommendedItem */
         foreach ($recommendedProducts as $recommendedItem) {
@@ -186,9 +197,7 @@ class LSRecommend extends AbstractHelper
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('sku', $productIds, 'in')
             ->create();
-
         $products = $this->productRepository->getList($searchCriteria);
-
         if ($products->getTotalCount() > 0) {
             return $products->getItems();
         }
@@ -207,12 +216,13 @@ class LSRecommend extends AbstractHelper
             $quoteItems = $this->checkoutSession->getQuote()->getAllVisibleItems();
             /** @var Item $quoteItem */
             //resetting back to null.
-            $itemsSkus = '';
+            $itemsSkusArray = array();
             foreach ($quoteItems as $quoteItem) {
                 $skuArray  = explode('-', $quoteItem->getSku());
                 $sku       = array_shift($skuArray);
                 $itemsSkus .= $sku . ',';
             }
+            $itemsSkus = implode(',', $itemsSkusArray);
         }
         return $itemsSkus;
     }

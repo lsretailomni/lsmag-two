@@ -2,7 +2,8 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
-use \Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -26,9 +27,9 @@ class DefaultConfigProvider
     public $quoteRepository;
 
     /**
-     * @var itemHelper
+     * @var BasketHelper
      */
-    public $itemHelper;
+    public $basketHelper;
 
     /**
      * @var pricingHelper
@@ -39,18 +40,18 @@ class DefaultConfigProvider
      * DefaultConfigProvider constructor.
      * @param CheckoutSession $checkoutSession
      * @param CartRepositoryInterface $quoteRepository
-     * @param ItemHelper $itemHelper
+     * @param BasketHelper $basketHelper
      * @param PricingHelper $pricingHelper
      */
     public function __construct(
         CheckoutSession $checkoutSession,
         CartRepositoryInterface $quoteRepository,
-        ItemHelper $itemHelper,
+        BasketHelper $basketHelper,
         PricingHelper $pricingHelper
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->quoteRepository = $quoteRepository;
-        $this->itemHelper      = $itemHelper;
+        $this->basketHelper    = $basketHelper;
         $this->pricingHelper   = $pricingHelper;
     }
 
@@ -60,6 +61,7 @@ class DefaultConfigProvider
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws InvalidEnumException
      */
     public function afterGetConfig(
         \Magento\Checkout\Model\DefaultConfigProvider $subject,
@@ -71,7 +73,7 @@ class DefaultConfigProvider
             $originalPrice = $quoteItem->getProduct()->getPrice() * $quoteItem->getQty();
             if ($quoteItem->getCustomPrice() > 0) {
                 $result['quoteItemData'][$index]['discountprice']      =
-                    $this->pricingHelper->currency($quoteItem->getCustomPrice(), true, false);
+                    $this->pricingHelper->currency($this->basketHelper->getItemRowTotal($quoteItem), true, false);
                 $discountAmount                                        = $quoteItem->getDiscountAmount();
                 $result['quoteItemData'][$index]['discountamount']     =
                     ($discountAmount > 0 && $discountAmount != null) ?

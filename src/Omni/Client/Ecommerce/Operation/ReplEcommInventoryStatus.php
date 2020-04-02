@@ -55,11 +55,11 @@ class ReplEcommInventoryStatus extends AbstractOperation
      */
     protected $error = null;
 
-    public function __construct()
+    public function __construct($baseUrl = '')
     {
         $service_type = new ServiceType( self::SERVICE_TYPE );
         parent::__construct( $service_type );
-        $url = OmniService::getUrl( $service_type ); 
+        $url = OmniService::getUrl( $service_type,$baseUrl ); 
         $this->client = new OmniClient( $url, $service_type );
         $this->client->setClassmap( $this->getClassMap() );
     }

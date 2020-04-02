@@ -73,9 +73,9 @@ class StoreServices
     public function setStoreServiceType($StoreServiceType)
     {
         if ( ! $StoreServiceType instanceof StoreServiceType ) {
-            if ( StoreServiceType::isValid( $StoreServiceType ) ) 
+            if ( StoreServiceType::isValid( $StoreServiceType ) )
                 $StoreServiceType = new StoreServiceType( $StoreServiceType );
-            elseif ( StoreServiceType::isValidKey( $StoreServiceType ) ) 
+            elseif ( StoreServiceType::isValidKey( $StoreServiceType ) )
                 $StoreServiceType = new StoreServiceType( constant( "StoreServiceType::$StoreServiceType" ) );
             elseif ( ! $StoreServiceType instanceof StoreServiceType )
                 throw new InvalidEnumException();

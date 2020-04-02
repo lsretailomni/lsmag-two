@@ -62,11 +62,15 @@ class Service
      * @return string
      * Use this in combination with \Ls\Core\Model\LSR::isLSR funciton
      */
-    public function getOmniBaseUrl()
+    public function getOmniBaseUrl($magentoStoreId = '')
     {
         $objectManager = ObjectManager::getInstance();
         // @codingStandardsIgnoreLine
         $lsr = $objectManager->create('Ls\Core\Model\LSR');
-        return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
+        if ($magentoStoreId == '') {
+            // get storeId from default loaded store.
+            $magentoStoreId = $lsr->getCurrentStoreId();
+        }
+        return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $magentoStoreId);
     }
 }

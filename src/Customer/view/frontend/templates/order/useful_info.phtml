@@ -10,6 +10,13 @@
             __('Useful Information') ?></strong>
     </div>
     <div class="block-content">
+        <?php if (!empty($_order->getStoreName())) { ?>
+            <div class="custom-box">
+                <strong class="box-title"><span><?= /* @escapeNotVerified */
+                        __('Store Name:') ?></span></strong>
+                <span><?= $_order->getStoreName() ?></span>
+            </div>
+        <?php } ?>
         <div class="custom-box">
             <strong class="box-title"><span><?= /* @escapeNotVerified */
                     __('Click & Collect:') ?></span></strong>

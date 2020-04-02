@@ -130,6 +130,6 @@ class LoadHierarchy extends Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Ls_Omni::config');
+        return $this->_authorization->isAllowed('Ls_Core::config');
     }
 }

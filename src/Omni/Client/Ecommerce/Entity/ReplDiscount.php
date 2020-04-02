@@ -116,6 +116,16 @@ class ReplDiscount
     protected $VariantId = null;
 
     /**
+     * @property string $scope
+     */
+    protected $scope = null;
+
+    /**
+     * @property int $scope_id
+     */
+    protected $scope_id = null;
+
+    /**
      * @param string $CurrencyCode
      * @return $this
      */
@@ -213,9 +223,9 @@ class ReplDiscount
     public function setDiscountValueType($DiscountValueType)
     {
         if ( ! $DiscountValueType instanceof DiscountValueType ) {
-            if ( DiscountValueType::isValid( $DiscountValueType ) ) 
+            if ( DiscountValueType::isValid( $DiscountValueType ) )
                 $DiscountValueType = new DiscountValueType( $DiscountValueType );
-            elseif ( DiscountValueType::isValidKey( $DiscountValueType ) ) 
+            elseif ( DiscountValueType::isValidKey( $DiscountValueType ) )
                 $DiscountValueType = new DiscountValueType( constant( "DiscountValueType::$DiscountValueType" ) );
             elseif ( ! $DiscountValueType instanceof DiscountValueType )
                 throw new InvalidEnumException();
@@ -421,9 +431,9 @@ class ReplDiscount
     public function setType($Type)
     {
         if ( ! $Type instanceof ReplDiscountType ) {
-            if ( ReplDiscountType::isValid( $Type ) ) 
+            if ( ReplDiscountType::isValid( $Type ) )
                 $Type = new ReplDiscountType( $Type );
-            elseif ( ReplDiscountType::isValidKey( $Type ) ) 
+            elseif ( ReplDiscountType::isValidKey( $Type ) )
                 $Type = new ReplDiscountType( constant( "ReplDiscountType::$Type" ) );
             elseif ( ! $Type instanceof ReplDiscountType )
                 throw new InvalidEnumException();
@@ -493,6 +503,42 @@ class ReplDiscount
     public function getVariantId()
     {
         return $this->VariantId;
+    }
+
+    /**
+     * @param string $scope
+     * @return $this
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * @param int $scope_id
+     * @return $this
+     */
+    public function setScopeId($scope_id)
+    {
+        $this->scope_id = $scope_id;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->scope_id;
     }
 
 

@@ -160,8 +160,10 @@ CODE
         // setting storeId for those which require
         $make_request->setParameters([new ParameterGenerator('storeId', null, '')]);
         $make_request->setParameters([new ParameterGenerator('maxKey', null, '')]);
+        $make_request->setParameters([new ParameterGenerator('baseUrl', null, '')]);
+
         $make_request->setBody(<<<CODE
-\$request = new {$this->operation->getName()}();
+\$request = new {$this->operation->getName()}(\$baseUrl);
 \$request->getOperationInput()
          ->setReplRequest( ( new ReplRequest() )->setBatchSize(\$batchSize)
                                                 ->setFullReplication(\$fullReplication)
