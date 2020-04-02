@@ -152,16 +152,6 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     protected $nav_id = null;
 
     /**
-     * @property string $scope
-     */
-    protected $scope = null;
-
-    /**
-     * @property int $scope_id
-     */
-    protected $scope_id = null;
-
-    /**
      * @property boolean $processed
      */
     protected $processed = null;
@@ -724,46 +714,6 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     public function getNavId()
     {
         return $this->getData( 'nav_id' );
-    }
-
-    /**
-     * @param string $scope
-     * @return $this
-     */
-    public function setScope($scope)
-    {
-        $this->setData( 'scope', $scope );
-        $this->scope = $scope;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getScope()
-    {
-        return $this->getData( 'scope' );
-    }
-
-    /**
-     * @param int $scope_id
-     * @return $this
-     */
-    public function setScopeId($scope_id)
-    {
-        $this->setData( 'scope_id', $scope_id );
-        $this->scope_id = $scope_id;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getScopeId()
-    {
-        return $this->getData( 'scope_id' );
     }
 
     /**

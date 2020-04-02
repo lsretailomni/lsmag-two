@@ -226,9 +226,9 @@ class OrderPayment
     public function setPaymentType($PaymentType)
     {
         if ( ! $PaymentType instanceof PaymentType ) {
-            if ( PaymentType::isValid( $PaymentType ) ) 
+            if ( PaymentType::isValid( $PaymentType ) )
                 $PaymentType = new PaymentType( $PaymentType );
-            elseif ( PaymentType::isValidKey( $PaymentType ) ) 
+            elseif ( PaymentType::isValidKey( $PaymentType ) )
                 $PaymentType = new PaymentType( constant( "PaymentType::$PaymentType" ) );
             elseif ( ! $PaymentType instanceof PaymentType )
                 throw new InvalidEnumException();

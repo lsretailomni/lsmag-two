@@ -45,23 +45,28 @@ class Offers extends Template
     public $storeManager;
 
     /**
-     * @var Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     public $scopeConfig;
 
     /**
-     * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     * @var TimezoneInterface
      */
     public $timeZoneInterface;
 
-    /** @var ProductRepositoryInterface */
+    /** @var ProductRepository */
     public $productRepository;
 
-    /** @var CategoryRepositoryInterface */
+    /** @var CategoryRepository */
     public $categoryRepository;
 
     /** @var CategoryHelper */
     public $categoryHelper;
+
+    /**
+     * @var LSR
+     */
+    public $lsr;
 
     /**
      * Offers constructor.
@@ -74,6 +79,7 @@ class Offers extends Template
      * @param ProductRepository $productRepository
      * @param CategoryRepository $categoryRepository
      * @param CategoryHelper $categoryHelper
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
@@ -86,6 +92,7 @@ class Offers extends Template
         ProductRepository $productRepository,
         CategoryRepository $categoryRepository,
         CategoryHelper $categoryHelper,
+        LSR $lsr,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -97,6 +104,7 @@ class Offers extends Template
         $this->productRepository  = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->categoryHelper     = $categoryHelper;
+        $this->lsr                = $lsr;
     }
 
     /**
@@ -117,10 +125,7 @@ class Offers extends Template
         try {
             $images = [];
             $index  = 0;
-
-            $img = $coupon->getImages()
-                ->getImageView();
-
+            $img    = $coupon->getImages()->getImageView();
             if (empty($img)) {
                 return $img;
             }
@@ -139,28 +144,26 @@ class Offers extends Template
 
             $result = $this->loyaltyHelper->getImageById($img->getId(), $img_size);
 
-            if (!empty($result) && !empty($result["format"]) && !empty($result["image"])) {
+            if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                 $offerpath = $this->getMediaPathtoStore();
                 // @codingStandardsIgnoreStart
                 if (!is_dir($offerpath)) {
                     $this->file->mkdir($offerpath, 0775);
                 }
-                $format      = strtolower($result["format"]);
+                $format      = strtolower($result['format']);
                 $id          = $img->getId();
                 $output_file = "{$id}-{$index}.$format";
                 $file        = "{$offerpath}{$output_file}";
 
                 if (!$this->file->fileExists($file)) {
-                    $base64     = $result["image"];
+                    $base64     = $result['image'];
                     $image_file = fopen($file, 'wb');
                     fwrite($image_file, base64_decode($base64));
                     fclose($image_file);
                 }
-
                 // @codingStandardsIgnoreEnd
                 $images[] = "{$output_file}";
             }
-
             return $images;
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -174,7 +177,7 @@ class Offers extends Template
     public function getMediaPathtoStore()
     {
         return $this->getMediaDirectory()
-                ->getAbsolutePath() . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
+                ->getAbsolutePath() . 'ls' . DIRECTORY_SEPARATOR . 'offers' . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -185,7 +188,7 @@ class Offers extends Template
     {
         return $this->storeManager->getStore()
                 ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA)
-            . DIRECTORY_SEPARATOR . "ls" . DIRECTORY_SEPARATOR . "offers" . DIRECTORY_SEPARATOR;
+            . DIRECTORY_SEPARATOR . 'ls' . DIRECTORY_SEPARATOR . 'offers' . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -203,7 +206,6 @@ class Offers extends Template
                 LSR::SC_LOYALTY_PAGE_IMAGE_HEIGHT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             );
-
             return $size;
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -219,9 +221,9 @@ class Offers extends Template
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getCurrentStoreId()
             ));
-
             return $offerExpiryDate;
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -233,7 +235,6 @@ class Offers extends Template
      * @return array|null
      * @throws NoSuchEntityException
      */
-    // @codingStandardsIgnoreLine
     public function getOfferProductCategoryLink($offerLines)
     {
         $url  = '';
@@ -249,7 +250,7 @@ class Offers extends Template
                     || $offerLines[0]->getLineType() == OfferDiscountLineType::ITEM_CATEGORY
                     || $offerLines[0]->getLineType() == OfferDiscountLineType::SPECIAL_GROUP
                 ) {
-                    return ["", ""];
+                    return ['', ''];
                 }
             } catch (NoSuchEntityException $e) {
                 return null;
@@ -276,21 +277,21 @@ class Offers extends Template
                     || $offerLine->getLineType() == OfferDiscountLineType::ITEM_CATEGORY
                     || $offerLine->getLineType() == OfferDiscountLineType::SPECIAL_GROUP
                 ) {
-                    return ["", ""];
+                    return ['', ''];
                 }
             }
             if (!empty($categoryIds)) {
                 $categoryIds = array_values($categoryIds);
                 $category    = $this->categoryRepository->get($categoryIds[count($categoryIds) - 1]);
                 $url         = $this->categoryHelper->getCategoryUrl($category);
-                $text        = __("Go To Category");
+                $text        = __('Go To Category');
             } else {
                 try {
                     $product = $this->productRepository->get($offerLines[0]->getId());
                     $url     = $product->getProductUrl();
-                    $text    = __("Go To Product");
+                    $text    = __('Go To Product');
                 } catch (NoSuchEntityException $e) {
-                    return ["", ""];
+                    return ['', ''];
                 }
             }
         }

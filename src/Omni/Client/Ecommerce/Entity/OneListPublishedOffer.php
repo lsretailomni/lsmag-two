@@ -73,9 +73,9 @@ class OneListPublishedOffer extends Entity
     public function setType($Type)
     {
         if ( ! $Type instanceof OfferDiscountType ) {
-            if ( OfferDiscountType::isValid( $Type ) ) 
+            if ( OfferDiscountType::isValid( $Type ) )
                 $Type = new OfferDiscountType( $Type );
-            elseif ( OfferDiscountType::isValidKey( $Type ) ) 
+            elseif ( OfferDiscountType::isValidKey( $Type ) )
                 $Type = new OfferDiscountType( constant( "OfferDiscountType::$Type" ) );
             elseif ( ! $Type instanceof OfferDiscountType )
                 throw new InvalidEnumException();

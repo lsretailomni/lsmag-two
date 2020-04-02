@@ -16,6 +16,7 @@ use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
+use \Ls\Omni\Service\Soap\ComplexTypeDefinition;
 
 /**
  * Class EntityGenerator
@@ -54,7 +55,6 @@ class EntityGenerator extends AbstractOmniGenerator
      */
     function generate()
     {
-
         $service_folder   = ucfirst($this->getServiceType()->getValue());
         $base_namespace   = self::fqn('Ls', 'Omni', 'Client', $service_folder);
         $entity_namespace = self::fqn($base_namespace, 'Entity');
@@ -88,12 +88,31 @@ class EntityGenerator extends AbstractOmniGenerator
             }
         }
 
+        /**
+         * Some dirty code to add scopeId and Scope functions directly in the array.
+         * and bypass un-necessary functions in there.
+         */
+        $lowerString = strtolower($this->entity->getName());
+        if (!$is_array &&
+            substr($lowerString, 0, 4) == 'repl' &&
+            strpos($lowerString, 'replecom') === false &&
+            strpos($lowerString, 'response') === false &&
+            $lowerString != 'replrequest') {
+            $typeDefinitionArray ['scope']    = new ComplexTypeDefinition('scope', 'string', '0');
+            $typeDefinitionArray ['scope_id'] = new ComplexTypeDefinition('scope_id', 'int', '0');
+        }
+
         // TRAVERSE THE COMPLEX TYPE DISCOVERED BY THE WSDL PROCESSOR
         // OUR ENTITIES HAVE A NASTY MERGE SO THEM CAN WORK ON OVERLAPPING SCHEMA DEFINITIONS
         if ($typeDefinitionArray != null) {
             foreach ($typeDefinitionArray as $field_name => $field_type) {
-                $field_data_type        = $this->normalizeDataType($field_type->getDataType()) . ($is_array ? '[]' : '');
-                $field_name_capitalized = ucfirst($field_name);
+                $field_data_type = $this->normalizeDataType($field_type->getDataType()) . ($is_array ? '[]' : '');
+
+                //To convert functions from scope_id into ScopeId;
+                $field_name_optimized   = str_replace('_', ' ', $field_name);
+                $field_name_capitalized = ucwords($field_name_optimized);
+                $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
+                //End of customization for scope_id into ScopeId
 
                 $field_is_restriction = array_key_exists($field_data_type, $this->metadata->getRestrictions());
                 if ($field_is_restriction) {
@@ -146,9 +165,9 @@ CODE
                         $this->class->addUse(InvalidEnumException::class);
                         $set_method->setBody(<<<CODE
 if ( ! \$$field_name instanceof $field_data_type ) {
-    if ( $field_data_type::isValid( \$$field_name ) ) 
+    if ( $field_data_type::isValid( \$$field_name ) )
         \$$field_name = new $field_data_type( \$$field_name );
-    elseif ( $field_data_type::isValidKey( \$$field_name ) ) 
+    elseif ( $field_data_type::isValidKey( \$$field_name ) )
         \$$field_name = new $field_data_type( constant( "$field_data_type::\$$field_name" ) );
     elseif ( ! \$$field_name instanceof $field_data_type )
         throw new InvalidEnumException();
@@ -238,10 +257,11 @@ CODE
         }
 
 
-        $content = str_replace('implements \\IteratorAggregate', 'implements IteratorAggregate', $content);
-        $content = str_replace('implements Ls\\Omni\\Client\\RequestInterface', 'implements RequestInterface',
-            $content);
-        $content = str_replace('implements Ls\\Omni\\Client\\ResponseInterface', 'implements ResponseInterface',
+        $content = str_replace(array(
+            'implements \\IteratorAggregate',
+            'implements Ls\\Omni\\Client\\RequestInterface',
+            'implements Ls\\Omni\\Client\\ResponseInterface'
+        ), array('implements IteratorAggregate', 'implements RequestInterface', 'implements ResponseInterface'),
             $content);
 
         return $content;

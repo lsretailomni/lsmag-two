@@ -9,8 +9,10 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Checkout\Model\Session\Proxy;
+use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
@@ -55,7 +57,7 @@ class OrderObserver implements ObserverInterface
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param CustomerProxy $customerSession
      * @param Proxy $checkoutSession
      * @param Order $orderResourceModel
      * @param LSR $LSR
@@ -66,7 +68,7 @@ class OrderObserver implements ObserverInterface
         BasketHelper $basketHelper,
         OrderHelper $orderHelper,
         LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        CustomerProxy $customerSession,
         Proxy $checkoutSession,
         Order $orderResourceModel,
         LSR $LSR
@@ -87,13 +89,14 @@ class OrderObserver implements ObserverInterface
      * @throws InvalidEnumException
      * @throws InputException
      * @throws NoSuchEntityException
+     * @throws AlreadyExistsException
      */
     public function execute(Observer $observer)
     {
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $success            = false;
             $check              = false;
             $order              = $observer->getEvent()->getData('order');
@@ -125,16 +128,15 @@ class OrderObserver implements ObserverInterface
                 $response = $this->orderHelper->placeOrder($request);
                 try {
                     if ($response) {
-                        //delete from Omni.
                         $documentId = $response->getId();
                         $order->setDocumentId($documentId);
                         $this->orderResourceModel->save($order);
                         $this->checkoutSession->setLastDocumentId($documentId);
                         $this->checkoutSession->unsetData('member_points');
                         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                            $onelist = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
+                            $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
                             //TODO error which Hjalti highlighted. when there is only one item in the cart and customer remove that.
-                            $success = $this->basketHelper->delete($onelist);
+                            $success = $this->basketHelper->delete($oneList);
                             $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
                             // delete checkout session data.
                             $this->basketHelper->unSetOneListCalculation();
@@ -142,6 +144,7 @@ class OrderObserver implements ObserverInterface
                         }
                     } else {
                         // TODO: error handling
+                        $this->logger->error($response);
                         $this->logger->critical(
                             __('Something terrible happened while placing order')
                         );

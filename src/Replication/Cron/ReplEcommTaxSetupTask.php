@@ -109,9 +109,9 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
         $this->data_interface = $data_interface;
     }
 
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '')
+    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '')
     {
-        $request = new ReplEcommTaxSetup();
+        $request = new ReplEcommTaxSetup($baseUrl);
         $request->getOperationInput()
                  ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
                                                         ->setFullReplication($fullReplication)

@@ -32,6 +32,16 @@ class ReplProductGroup
     protected $ItemCategoryID = null;
 
     /**
+     * @property string $scope
+     */
+    protected $scope = null;
+
+    /**
+     * @property int $scope_id
+     */
+    protected $scope_id = null;
+
+    /**
      * @param string $Description
      * @return $this
      */
@@ -101,6 +111,42 @@ class ReplProductGroup
     public function getItemCategoryID()
     {
         return $this->ItemCategoryID;
+    }
+
+    /**
+     * @param string $scope
+     * @return $this
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * @param int $scope_id
+     * @return $this
+     */
+    public function setScopeId($scope_id)
+    {
+        $this->scope_id = $scope_id;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->scope_id;
     }
 
 

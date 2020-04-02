@@ -97,9 +97,9 @@ class OneListLinking implements RequestInterface
     public function setStatus($status)
     {
         if ( ! $status instanceof LinkStatus ) {
-            if ( LinkStatus::isValid( $status ) ) 
+            if ( LinkStatus::isValid( $status ) )
                 $status = new LinkStatus( $status );
-            elseif ( LinkStatus::isValidKey( $status ) ) 
+            elseif ( LinkStatus::isValidKey( $status ) )
                 $status = new LinkStatus( constant( "LinkStatus::$status" ) );
             elseif ( ! $status instanceof LinkStatus )
                 throw new InvalidEnumException();

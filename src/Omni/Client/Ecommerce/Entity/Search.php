@@ -74,9 +74,9 @@ class Search implements RequestInterface
     public function setSearchTypes($searchTypes)
     {
         if ( ! $searchTypes instanceof SearchType ) {
-            if ( SearchType::isValid( $searchTypes ) ) 
+            if ( SearchType::isValid( $searchTypes ) )
                 $searchTypes = new SearchType( $searchTypes );
-            elseif ( SearchType::isValidKey( $searchTypes ) ) 
+            elseif ( SearchType::isValidKey( $searchTypes ) )
                 $searchTypes = new SearchType( constant( "SearchType::$searchTypes" ) );
             elseif ( ! $searchTypes instanceof SearchType )
                 throw new InvalidEnumException();

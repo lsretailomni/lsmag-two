@@ -14,6 +14,7 @@ use \Ls\Replication\Model\ReplAttributeOptionValue;
 use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
 use \Ls\Replication\Model\ReplAttributeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
+use Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
@@ -26,6 +27,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\Data\StoreInterface;
 
 /**
  * Class AttributesCreateTask
@@ -75,6 +77,7 @@ class AttributesCreateTask
      * @var bool
      */
     public $successCronAttributeVariant = false;
+
     /**
      * @var AttributeManagementInterface
      */
@@ -95,6 +98,9 @@ class AttributesCreateTask
 
     /** @var int */
     public $remainingVariantsCount;
+
+    /** @var StoreInterface $store */
+    public $store;
 
     /**
      * AttributesCreateTask constructor.
@@ -140,57 +146,80 @@ class AttributesCreateTask
     }
 
     /**
+     * @param null $storeData
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        $this->replicationHelper->updateConfigValue(
-            $this->replicationHelper->getDateTime(),
-            LSR::SC_CRON_ATTRIBUTE_CONFIG_PATH_LAST_EXECUTE
-        );
-        // Process display only attributes which are going to be used for product specification
-        $this->processAttributes();
-        // Process variants attributes which are going to be used for configurable product
-        $this->processVariantAttributes();
-        //Process Attribute Option Values
-        $this->updateAttributeOptionValues();
-        $this->replicationHelper->updateCronStatus($this->successCronAttribute, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-        $this->replicationHelper->updateCronStatus(
-            $this->successCronAttributeVariant,
-            LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT
-        );
+        /**
+         * Get all the available stores config in the Magento system
+         */
+        if (!empty($storeData) && $storeData instanceof StoreInterface) {
+            $stores = [$storeData];
+        } else {
+            /** @var StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $this->replicationHelper->updateConfigValue(
+                        $this->replicationHelper->getDateTime(),
+                        LSR::SC_CRON_ATTRIBUTE_CONFIG_PATH_LAST_EXECUTE,
+                        $store->getId()
+                    );
+                    // Process display only attributes which are going to be used for product specification
+                    $this->processAttributes($store);
+                    // Process variants attributes which are going to be used for configurable product
+                    $this->processVariantAttributes($store);
+                    //Process Attribute Option Values
+                    $this->updateAttributeOptionValues($store);
+                    $this->replicationHelper->updateCronStatus($this->successCronAttribute,
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+                        $store->getId()
+                    );
+                    $this->replicationHelper->updateCronStatus(
+                        $this->successCronAttributeVariant,
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                        $store->getId()
+                    );
+                }
+                $this->lsr->setStoreId(null);
+            }
+        }
         $this->caterAttributesRemoval();
     }
 
     /**
-     * For Manual Cron
+     * @param null $storeData
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
-
-        $remainingAttributes = (int)$this->getRemainingAttributesToProcess();
-        $remainingVariants   = (int)$this->getRemainingVariantsToProcess();
+        $this->execute($storeData);
+        $remainingAttributes = (int)$this->getRemainingAttributesToProcess($storeData->getId());
+        $remainingVariants   = (int)$this->getRemainingVariantsToProcess($storeData->getId());
         return [$remainingAttributes + $remainingVariants];
     }
 
     /**
      * Process Attributes
      */
-    public function processAttributes()
+    public function processAttributes($store = null)
     {
         $batchSize = $this->replicationHelper->getProductAttributeBatchSize();
         try {
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $batchSize, 1);
-
+            $criteria = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq',
+                $batchSize, true);
             /** @var ReplAttributeSearchResults $replAttributes */
             $replAttributes = $this->replAttributeRepositoryInterface->getList($criteria);
 
-            /** defualt attribute set if for catalog_product $defaultAttributeSetId */
+            /** @var default attribute set if for catalog_product $defaultAttributeSetId */
             $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
 
             /** default group if of general tab for specific product attribute set $defaultGroupId */
@@ -204,7 +233,7 @@ class AttributesCreateTask
                         $this->addAttributeOptions($replAttribute->getCode());
                     }
                 }
-                $remainingAttributes = (int)$this->getRemainingAttributesToProcess();
+                $remainingAttributes = (int)$this->getRemainingAttributesToProcess($store->getId());
                 if ($remainingAttributes == 0) {
                     $this->successCronAttribute = true;
                 }
@@ -260,17 +289,15 @@ class AttributesCreateTask
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function processVariantAttributes()
+    public function processVariantAttributes($store)
     {
         $variantBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
-        $this->logger->debug('Running variants create task');
-        /** default attribute set id for catalog_product $defaultAttributeSetId */
+        $this->logger->debug('Running variants create task for store ' . $store->getName());
         $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
-        /** @var default group id of general tab for specific product attribute set $defaultGroupId */
-        $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
-
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems('', '', '', $variantBatchSize, 1);
-        /** @var \Ls\Replication\Model\ReplExtendedVariantValueSearchResults $variants */
+        $defaultGroupId        = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
+        $criteria              = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq',
+            $variantBatchSize, true);
+        /** @var ReplExtendedVariantValueSearchResults $variants */
         $variants     = $this->replExtendedVariantValueRepository->getList($criteria);
         $variantCodes = [];
         if ($variants->getTotalCount() > 0) {
@@ -365,14 +392,14 @@ class AttributesCreateTask
                 }
             }
             /** fetching the list again to get the remaining records yet to process in order to set the cron job status */
-            $remainingVariants = (int)$this->getRemainingVariantsToProcess();
+            $remainingVariants = (int)$this->getRemainingVariantsToProcess($store->getId());
             if ($remainingVariants == 0) {
                 $this->successCronAttributeVariant = true;
             }
         } else {
             $this->successCronAttributeVariant = true;
         }
-        $this->logger->debug('Finished variants create task.');
+        $this->logger->debug('Finished variants create task for store ' . $store->getName());
     }
 
 
@@ -563,9 +590,9 @@ class AttributesCreateTask
     /**
      * @throws LocalizedException
      */
-    public function updateAttributeOptionValues()
+    public function updateAttributeOptionValues($store)
     {
-        $optionResults = $this->updateOptionValues();
+        $optionResults = $this->updateOptionValues($store);
         if (!empty($optionResults)) {
             // for inserting processed = 0 values;
             foreach ($optionResults as $attributeCode => $optionData) {
@@ -592,7 +619,7 @@ class AttributesCreateTask
      * @return array
      * @throws LocalizedException
      */
-    public function updateOptionValues()
+    public function updateOptionValues($store)
     {
         $optionArray = [];
         $criteria    = $this->replicationHelper->buildCriteriaForNewItems('', '', '', -1, true);
@@ -688,12 +715,14 @@ class AttributesCreateTask
     }
 
     /**
+     * @param $storeId
      * @return int
      */
-    public function getRemainingAttributesToProcess()
+    public function getRemainingAttributesToProcess($storeId)
     {
         if (!$this->remainingAttributesCount) {
-            $criteria                       = $this->replicationHelper->buildCriteriaForNewItems();
+            $criteria                       = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $storeId,
+                'eq');
             $this->remainingAttributesCount = $this->replAttributeRepositoryInterface->getList($criteria)
                 ->getTotalCount();
         }
@@ -701,12 +730,14 @@ class AttributesCreateTask
     }
 
     /**
+     * @param $storeId
      * @return int
      */
-    public function getRemainingVariantsToProcess()
+    public function getRemainingVariantsToProcess($storeId)
     {
         if (!$this->remainingVariantsCount) {
-            $criteria                     = $this->replicationHelper->buildCriteriaForNewItems();
+            $criteria                     = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $storeId,
+                'eq');
             $this->remainingVariantsCount = $this->replExtendedVariantValueRepository->getList($criteria)
                 ->getTotalCount();
         }

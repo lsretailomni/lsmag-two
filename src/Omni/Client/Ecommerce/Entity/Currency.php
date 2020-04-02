@@ -82,9 +82,9 @@ class Currency extends Entity
     public function setAmountRoundingMethod($AmountRoundingMethod)
     {
         if ( ! $AmountRoundingMethod instanceof CurrencyRoundingMethod ) {
-            if ( CurrencyRoundingMethod::isValid( $AmountRoundingMethod ) ) 
+            if ( CurrencyRoundingMethod::isValid( $AmountRoundingMethod ) )
                 $AmountRoundingMethod = new CurrencyRoundingMethod( $AmountRoundingMethod );
-            elseif ( CurrencyRoundingMethod::isValidKey( $AmountRoundingMethod ) ) 
+            elseif ( CurrencyRoundingMethod::isValidKey( $AmountRoundingMethod ) )
                 $AmountRoundingMethod = new CurrencyRoundingMethod( constant( "CurrencyRoundingMethod::$AmountRoundingMethod" ) );
             elseif ( ! $AmountRoundingMethod instanceof CurrencyRoundingMethod )
                 throw new InvalidEnumException();
@@ -254,9 +254,9 @@ class Currency extends Entity
     public function setSaleRoundingMethod($SaleRoundingMethod)
     {
         if ( ! $SaleRoundingMethod instanceof CurrencyRoundingMethod ) {
-            if ( CurrencyRoundingMethod::isValid( $SaleRoundingMethod ) ) 
+            if ( CurrencyRoundingMethod::isValid( $SaleRoundingMethod ) )
                 $SaleRoundingMethod = new CurrencyRoundingMethod( $SaleRoundingMethod );
-            elseif ( CurrencyRoundingMethod::isValidKey( $SaleRoundingMethod ) ) 
+            elseif ( CurrencyRoundingMethod::isValidKey( $SaleRoundingMethod ) )
                 $SaleRoundingMethod = new CurrencyRoundingMethod( constant( "CurrencyRoundingMethod::$SaleRoundingMethod" ) );
             elseif ( ! $SaleRoundingMethod instanceof CurrencyRoundingMethod )
                 throw new InvalidEnumException();

@@ -5,6 +5,9 @@ namespace Ls\Core\Model;
 use Exception;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use SoapClient;
 
 /**
@@ -23,6 +26,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const EXTENSION_COMPOSER_PATH_VENDOR = "vendor/lsretail/lsmag-two/composer.json";
     const EXTENSION_COMPOSER_PATH_APP = "app/code/lsretail/lsmag-two/composer.json";
     const CRON_STATUS_PATH_PREFIX = 'ls_mag/replication/status_';
+    const URL_PATH_EXECUTE = 'ls_repl/cron/grid';
 
     // DEFAULT IMAGE SIZE
     const DEFAULT_IMAGE_WIDTH = 500;
@@ -68,7 +72,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_VERSION = 'ls_mag/service/version';
     const SC_SERVICE_LS_CENTRAL_VERSION = 'ls_mag/service/ls_central_version';
 
-
     // REPLICATION
     const SC_REPLICATION_GETCATEGORIES = 'ls_mag/replication/replicate_category';
     const SC_REPLICATION_HIERARCHY_CODE = 'ls_mag/service/replicate_hierarchy_code';
@@ -93,6 +96,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE =
         'ls_mag/replication/product_assignment_to_category_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
+    const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_STORE = 'ls_mag/replication/manual_cron_grid_default_store';
 
     // CRON CHECKING
 
@@ -338,30 +342,51 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     ];
 
     /**
+     * @var StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        StoreManagerInterface $storeManager
     ) {
-        $this->scopeConfig = $scopeConfig;
+        $this->scopeConfig  = $scopeConfig;
+        $this->storeManager = $storeManager;
     }
 
     /**
-     * Note : In case of notDefault we have to pass the StoreID
-     * in the variable of notDefault variable.
+     * In case of notDefault we have to pass the StoreId
      * @param $path
-     * @param bool $notDefault
+     * @param bool $storeId
      * @return string
      */
-    public function getStoreConfig($path, $notDefault = false)
+    public function getStoreConfig($path, $storeId = false)
     {
-        if ($notDefault) {
-            $sc = $this->scopeConfig->getValue($path, $notDefault);
+        if ($storeId) {
+            $sc = $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId);
         } else {
-            $sc = $this->scopeConfig->getValue(
-                $path
-            );
+            $sc = $this->scopeConfig->getValue($path);
+        }
+        return $sc;
+    }
+
+    /**
+     * This needs to be used only for Websites Scope
+     * @param $path
+     * @param bool $website_id
+     * @return mixed
+     */
+    public function getWebsiteConfig($path, $website_id = false)
+    {
+        if ($website_id) {
+            $sc = $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_WEBSITE, $website_id);
+        } else {
+            $sc = $this->scopeConfig->getValue($path);
         }
         return $sc;
     }
@@ -393,13 +418,19 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * @param bool $store_id
+     * @param bool $scope
      * @return bool
      */
-    public function isLSR()
+    public function isLSR($store_id = false, $scope = false)
     {
-        //TODO integrate multiple store.
-        $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
-        $store   = $this->getStoreConfig(self::SC_SERVICE_STORE);
+        if ($scope == 'website') {
+            $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
+            $store   = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
+        } else {
+            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
+            $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
+        }
         if (empty($baseUrl) || empty($store)) {
             return false;
         } else {
@@ -420,6 +451,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
     }
 
+
     /**
      * @return string
      */
@@ -428,6 +460,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         return $this->getStoreConfig(
             self::SC_SERVICE_STORE,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getActiveWebStore()
+    {
+        return $this->getStoreConfig(
+            LSR::SC_SERVICE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
@@ -508,4 +551,35 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         return $this->getStoreConfig(self::SC_CART_CHECK_INVENTORY);
     }
+
+    /*
+     * This can be used on all frontend areas to dynamically fetch the current storeId.
+     * Try not to use it on backend.
+     * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getCurrentStoreId()
+    {
+        return $this->storeManager->getStore()->getId();
+    }
+
+    /**
+     * Return all the stores we have in Magento.
+     * @return StoreInterface[]
+     */
+    public function getAllStores()
+    {
+        return $this->storeManager->getStores();
+
+    }
+
+    /**
+     * Set Store ID in Magento Session
+     * @param $storeId
+     */
+    public function setStoreId($storeId)
+    {
+        $this->storeManager->setCurrentStore($storeId);
+    }
+
 }

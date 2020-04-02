@@ -132,9 +132,9 @@ class PublishedOffer extends Entity
     public function setCode($Code)
     {
         if ( ! $Code instanceof OfferDiscountType ) {
-            if ( OfferDiscountType::isValid( $Code ) ) 
+            if ( OfferDiscountType::isValid( $Code ) )
                 $Code = new OfferDiscountType( $Code );
-            elseif ( OfferDiscountType::isValidKey( $Code ) ) 
+            elseif ( OfferDiscountType::isValidKey( $Code ) )
                 $Code = new OfferDiscountType( constant( "OfferDiscountType::$Code" ) );
             elseif ( ! $Code instanceof OfferDiscountType )
                 throw new InvalidEnumException();
@@ -250,9 +250,9 @@ class PublishedOffer extends Entity
     public function setType($Type)
     {
         if ( ! $Type instanceof OfferType ) {
-            if ( OfferType::isValid( $Type ) ) 
+            if ( OfferType::isValid( $Type ) )
                 $Type = new OfferType( $Type );
-            elseif ( OfferType::isValidKey( $Type ) ) 
+            elseif ( OfferType::isValidKey( $Type ) )
                 $Type = new OfferType( constant( "OfferType::$Type" ) );
             elseif ( ! $Type instanceof OfferType )
                 throw new InvalidEnumException();

@@ -377,9 +377,9 @@ class MemberContact extends Entity
     public function setGender($Gender)
     {
         if ( ! $Gender instanceof Gender ) {
-            if ( Gender::isValid( $Gender ) ) 
+            if ( Gender::isValid( $Gender ) )
                 $Gender = new Gender( $Gender );
-            elseif ( Gender::isValidKey( $Gender ) ) 
+            elseif ( Gender::isValidKey( $Gender ) )
                 $Gender = new Gender( constant( "Gender::$Gender" ) );
             elseif ( ! $Gender instanceof Gender )
                 throw new InvalidEnumException();
@@ -459,9 +459,9 @@ class MemberContact extends Entity
     public function setMaritalStatus($MaritalStatus)
     {
         if ( ! $MaritalStatus instanceof MaritalStatus ) {
-            if ( MaritalStatus::isValid( $MaritalStatus ) ) 
+            if ( MaritalStatus::isValid( $MaritalStatus ) )
                 $MaritalStatus = new MaritalStatus( $MaritalStatus );
-            elseif ( MaritalStatus::isValidKey( $MaritalStatus ) ) 
+            elseif ( MaritalStatus::isValidKey( $MaritalStatus ) )
                 $MaritalStatus = new MaritalStatus( constant( "MaritalStatus::$MaritalStatus" ) );
             elseif ( ! $MaritalStatus instanceof MaritalStatus )
                 throw new InvalidEnumException();

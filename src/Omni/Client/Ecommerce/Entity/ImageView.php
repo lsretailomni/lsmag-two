@@ -188,9 +188,9 @@ class ImageView extends Entity
     public function setLocationType($LocationType)
     {
         if ( ! $LocationType instanceof LocationType ) {
-            if ( LocationType::isValid( $LocationType ) ) 
+            if ( LocationType::isValid( $LocationType ) )
                 $LocationType = new LocationType( $LocationType );
-            elseif ( LocationType::isValidKey( $LocationType ) ) 
+            elseif ( LocationType::isValidKey( $LocationType ) )
                 $LocationType = new LocationType( constant( "LocationType::$LocationType" ) );
             elseif ( ! $LocationType instanceof LocationType )
                 throw new InvalidEnumException();

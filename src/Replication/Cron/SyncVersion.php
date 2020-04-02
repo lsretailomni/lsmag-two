@@ -5,6 +5,7 @@ namespace Ls\Replication\Cron;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
+use Magento\Store\Api\Data\StoreInterface;
 
 /**
  * Class SyncVersion
@@ -24,6 +25,14 @@ class SyncVersion
     public $helper;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /** @var StoreInterface $store */
+    public $store;
+
+    /**
      * SyncVersion constructor.
      * @param LSR $lsr
      * @param Data $helper
@@ -40,27 +49,47 @@ class SyncVersion
         $this->replicationHelper = $replicationHelper;
     }
 
-
-    public function execute()
+    /**
+     * @param null $storeData
+     * @return array
+     */
+    public function execute($storeData = null)
     {
-        if ($this->lsr->isLSR()) {
-            $info = [];
-            $this->replicationHelper->updateConfigValue(
-                $this->replicationHelper->getDateTime(),
-                LSR::SC_VERSION_CONFIG_PATH_LAST_EXECUTE
-            );
-            $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL);
-            $lsKey   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY);
-            $pong    = $this->helper->omniPing($baseUrl, $lsKey);
-            $this->helper->parsePingResponseAndSaveToConfigData($pong);
-            $info[] = -1;
-            return $info;
+        if (!empty($storeData) && $storeData instanceof StoreInterface) {
+            $stores = [$storeData];
+        } else {
+            /** @var StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $info = [];
+                    $this->replicationHelper->updateConfigValue(
+                        $this->replicationHelper->getDateTime(),
+                        LSR::SC_VERSION_CONFIG_PATH_LAST_EXECUTE, $this->store->getId()
+                    );
+                    $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $this->store->getId());
+                    $lsKey   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $this->store->getId());
+                    $pong    = $this->helper->omniPing($baseUrl, $lsKey);
+                    $this->helper->parsePingResponseAndSaveToConfigData($pong);
+                    $info[] = -1;
+                    return $info;
+                }
+                $this->lsr->setStoreId(null);
+            }
         }
     }
 
-    public function executeManually()
+    /**
+     * @param null $storeData
+     * @return array
+     */
+    public function executeManually($storeData = null)
     {
-        $info = $this->execute();
+        $info = $this->execute($storeData);
         return $info;
     }
 }

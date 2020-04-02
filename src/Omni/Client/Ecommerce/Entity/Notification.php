@@ -176,9 +176,9 @@ class Notification extends Entity
     public function setNotificationTextType($NotificationTextType)
     {
         if ( ! $NotificationTextType instanceof NotificationTextType ) {
-            if ( NotificationTextType::isValid( $NotificationTextType ) ) 
+            if ( NotificationTextType::isValid( $NotificationTextType ) )
                 $NotificationTextType = new NotificationTextType( $NotificationTextType );
-            elseif ( NotificationTextType::isValidKey( $NotificationTextType ) ) 
+            elseif ( NotificationTextType::isValidKey( $NotificationTextType ) )
                 $NotificationTextType = new NotificationTextType( constant( "NotificationTextType::$NotificationTextType" ) );
             elseif ( ! $NotificationTextType instanceof NotificationTextType )
                 throw new InvalidEnumException();
@@ -222,9 +222,9 @@ class Notification extends Entity
     public function setStatus($Status)
     {
         if ( ! $Status instanceof NotificationStatus ) {
-            if ( NotificationStatus::isValid( $Status ) ) 
+            if ( NotificationStatus::isValid( $Status ) )
                 $Status = new NotificationStatus( $Status );
-            elseif ( NotificationStatus::isValidKey( $Status ) ) 
+            elseif ( NotificationStatus::isValidKey( $Status ) )
                 $Status = new NotificationStatus( constant( "NotificationStatus::$Status" ) );
             elseif ( ! $Status instanceof NotificationStatus )
                 throw new InvalidEnumException();

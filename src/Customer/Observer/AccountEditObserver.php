@@ -77,18 +77,12 @@ class AccountEditObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /** @var Interceptor $controller_action */
-
-        /*
-         * Adding condition to only process if LSR is enabled.
-         */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $controller_action  = $observer->getData('controller_action');
             $customer_edit_post = $controller_action->getRequest()->getParams();
             $customer           = $this->customerSession->getCustomer();
             if (isset($customer_edit_post['change_password']) && $customer_edit_post['change_password']) {
                 if ($customer_edit_post['password'] == $customer_edit_post['password_confirmation']) {
-                    $result = null;
                     $result = $this->contactHelper->changePassword($customer, $customer_edit_post);
                     if (!empty($result)) {
                         $this->messageManager->addSuccessMessage(

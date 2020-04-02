@@ -5,6 +5,7 @@ namespace Ls\Core\Code;
 
 use CaseHelper\CaseHelperFactory;
 use CaseHelper\CaseHelperInterface;
+use Exception;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\DocBlock\Tag;
 use Zend\Code\Generator\DocBlockGenerator;
@@ -31,7 +32,7 @@ DISCLAIMER;
 
     /**
      * AbstractGenerator constructor.
-     * @throws \Exception
+     * @throws Exception
      */
 
     public function __construct()
@@ -95,13 +96,13 @@ DISCLAIMER;
         $flags = [PropertyGenerator::FLAG_PROTECTED],
         $options = []
     ) {
-        $pascal_name    = key_exists('pascal_name', $options)
+        $pascal_name    = array_key_exists('pascal_name', $options)
             ? $options ['pascal_name']
             : ucfirst($this->case_helper->toCamelCase($name));
-        $variable_name  = key_exists('variable_name', $options)
+        $variable_name  = array_key_exists('variable_name', $options)
             ? $options ['variable_name']
             : strtolower($this->case_helper->toSnakeCase($name));
-        $variable_field = key_exists('variable_field', $options) ? $options ['variable_field'] : $variable_name;
+        $variable_field = array_key_exists('variable_field', $options) ? $options ['variable_field'] : $variable_name;
 
         $set_method = new MethodGenerator();
         $get_method = new MethodGenerator();
@@ -123,8 +124,8 @@ DISCLAIMER;
             $set_method->setAbstract(true);
         }
 
-        if (!key_exists('abstract', $options) && !key_exists('interface', $options)) {
-            if (key_exists('model', $options)) {
+        if (!array_key_exists('abstract', $options) && !array_key_exists('interface', $options)) {
+            if (array_key_exists('model', $options)) {
                 // set & get methods for a magento model
                 $set_method->setBody(
                     <<<CODE
