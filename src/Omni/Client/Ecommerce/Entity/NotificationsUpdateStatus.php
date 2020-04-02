@@ -74,9 +74,9 @@ class NotificationsUpdateStatus implements RequestInterface
     public function setNotificationStatus($notificationStatus)
     {
         if ( ! $notificationStatus instanceof NotificationStatus ) {
-            if ( NotificationStatus::isValid( $notificationStatus ) ) 
+            if ( NotificationStatus::isValid( $notificationStatus ) )
                 $notificationStatus = new NotificationStatus( $notificationStatus );
-            elseif ( NotificationStatus::isValidKey( $notificationStatus ) ) 
+            elseif ( NotificationStatus::isValidKey( $notificationStatus ) )
                 $notificationStatus = new NotificationStatus( constant( "NotificationStatus::$notificationStatus" ) );
             elseif ( ! $notificationStatus instanceof NotificationStatus )
                 throw new InvalidEnumException();

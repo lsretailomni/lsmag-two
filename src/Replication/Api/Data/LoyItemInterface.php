@@ -298,28 +298,6 @@ interface LoyItemInterface
     public function getNavId();
 
     /**
-     * @param string $scope
-     * @return $this
-     */
-    public function setScope($scope);
-
-    /**
-     * @return string
-     */
-    public function getScope();
-
-    /**
-     * @param int $scope_id
-     * @return $this
-     */
-    public function setScopeId($scope_id);
-
-    /**
-     * @return int
-     */
-    public function getScopeId();
-
-    /**
      * @param boolean $processed
      * @return $this
      */

@@ -127,9 +127,9 @@ class OrderDiscountLine extends Entity
     public function setDiscountType($DiscountType)
     {
         if ( ! $DiscountType instanceof DiscountType ) {
-            if ( DiscountType::isValid( $DiscountType ) ) 
+            if ( DiscountType::isValid( $DiscountType ) )
                 $DiscountType = new DiscountType( $DiscountType );
-            elseif ( DiscountType::isValidKey( $DiscountType ) ) 
+            elseif ( DiscountType::isValidKey( $DiscountType ) )
                 $DiscountType = new DiscountType( constant( "DiscountType::$DiscountType" ) );
             elseif ( ! $DiscountType instanceof DiscountType )
                 throw new InvalidEnumException();
@@ -245,9 +245,9 @@ class OrderDiscountLine extends Entity
     public function setPeriodicDiscType($PeriodicDiscType)
     {
         if ( ! $PeriodicDiscType instanceof PeriodicDiscType ) {
-            if ( PeriodicDiscType::isValid( $PeriodicDiscType ) ) 
+            if ( PeriodicDiscType::isValid( $PeriodicDiscType ) )
                 $PeriodicDiscType = new PeriodicDiscType( $PeriodicDiscType );
-            elseif ( PeriodicDiscType::isValidKey( $PeriodicDiscType ) ) 
+            elseif ( PeriodicDiscType::isValidKey( $PeriodicDiscType ) )
                 $PeriodicDiscType = new PeriodicDiscType( constant( "PeriodicDiscType::$PeriodicDiscType" ) );
             elseif ( ! $PeriodicDiscType instanceof PeriodicDiscType )
                 throw new InvalidEnumException();

@@ -109,9 +109,9 @@ class ReplEcommInventoryStatusTask extends AbstractReplicationTask
         $this->data_interface = $data_interface;
     }
 
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '')
+    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '')
     {
-        $request = new ReplEcommInventoryStatus();
+        $request = new ReplEcommInventoryStatus($baseUrl);
         $request->getOperationInput()
                  ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
                                                         ->setFullReplication($fullReplication)

@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Checkout\Model\Session\Proxy;
+use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\Api\FilterBuilder;
@@ -67,7 +68,7 @@ class GiftCardHelper extends AbstractHelper
      * @param CustomerRepositoryInterface $customerRepository
      * @param StoreManagerInterface $storeManager
      * @param CustomerFactory $customerFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param CustomerProxy $customerSession
      * @param Proxy $checkoutSession
      * @param Filesystem $Filesystem
      * @param LSR $Lsr
@@ -79,7 +80,7 @@ class GiftCardHelper extends AbstractHelper
         CustomerRepositoryInterface $customerRepository,
         StoreManagerInterface $storeManager,
         CustomerFactory $customerFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        CustomerProxy $customerSession,
         Proxy $checkoutSession,
         Filesystem $Filesystem,
         LSR $Lsr
@@ -138,27 +139,25 @@ class GiftCardHelper extends AbstractHelper
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-
-    public function isGiftCardEnable()
-    {
-        return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_ACTIVE);
-    }
-
-    /**
-     * @return string
-     */
-
     public function isGiftCardEnableOnCartPage()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_SHOW_ON_CART);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_GIFTCARD_SHOW_ON_CART,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isGiftCardEnableOnCheckOut()
     {
-        return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT);
+        return $this->lsr->getStoreConfig(
+            LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 }

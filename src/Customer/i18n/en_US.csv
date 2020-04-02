@@ -87,6 +87,7 @@ Orders,Orders
 "Document ID #","Document ID #"
 Date,Date
 "Ship To","Ship To"
+"Store Name","Store Name"
 Total,Total
 Status,Status
 Action,Action
@@ -114,6 +115,7 @@ Subtotal,Subtotal
 "Qty Shipped","Qty Shipped"
 "Useful Information","Useful Information"
 "Click & Collect:","Click & Collect:"
+"Store Name:","Store Name:"
 "Loyalty Points Rewarded:","Loyalty Points Rewarded:"
 "Gift Card Code:","Gift Card Code:"
 "Print Invoice","Print Invoice"

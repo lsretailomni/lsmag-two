@@ -199,9 +199,9 @@ class StoreHours
     public function setStoreHourtype($StoreHourtype)
     {
         if ( ! $StoreHourtype instanceof StoreHourType ) {
-            if ( StoreHourType::isValid( $StoreHourtype ) ) 
+            if ( StoreHourType::isValid( $StoreHourtype ) )
                 $StoreHourtype = new StoreHourType( $StoreHourtype );
-            elseif ( StoreHourType::isValidKey( $StoreHourtype ) ) 
+            elseif ( StoreHourType::isValidKey( $StoreHourtype ) )
                 $StoreHourtype = new StoreHourType( constant( "StoreHourType::$StoreHourtype" ) );
             elseif ( ! $StoreHourtype instanceof StoreHourType )
                 throw new InvalidEnumException();
@@ -245,9 +245,9 @@ class StoreHours
     public function setType($Type)
     {
         if ( ! $Type instanceof StoreHourOpeningType ) {
-            if ( StoreHourOpeningType::isValid( $Type ) ) 
+            if ( StoreHourOpeningType::isValid( $Type ) )
                 $Type = new StoreHourOpeningType( $Type );
-            elseif ( StoreHourOpeningType::isValidKey( $Type ) ) 
+            elseif ( StoreHourOpeningType::isValidKey( $Type ) )
                 $Type = new StoreHourOpeningType( constant( "StoreHourOpeningType::$Type" ) );
             elseif ( ! $Type instanceof StoreHourOpeningType )
                 throw new InvalidEnumException();

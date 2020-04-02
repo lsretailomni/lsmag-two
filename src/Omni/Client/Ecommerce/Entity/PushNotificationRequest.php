@@ -59,9 +59,9 @@ class PushNotificationRequest
     public function setApplication($Application)
     {
         if ( ! $Application instanceof PushApplication ) {
-            if ( PushApplication::isValid( $Application ) ) 
+            if ( PushApplication::isValid( $Application ) )
                 $Application = new PushApplication( $Application );
-            elseif ( PushApplication::isValidKey( $Application ) ) 
+            elseif ( PushApplication::isValidKey( $Application ) )
                 $Application = new PushApplication( constant( "PushApplication::$Application" ) );
             elseif ( ! $Application instanceof PushApplication )
                 throw new InvalidEnumException();
@@ -141,9 +141,9 @@ class PushNotificationRequest
     public function setPlatform($Platform)
     {
         if ( ! $Platform instanceof PushPlatform ) {
-            if ( PushPlatform::isValid( $Platform ) ) 
+            if ( PushPlatform::isValid( $Platform ) )
                 $Platform = new PushPlatform( $Platform );
-            elseif ( PushPlatform::isValidKey( $Platform ) ) 
+            elseif ( PushPlatform::isValidKey( $Platform ) )
                 $Platform = new PushPlatform( constant( "PushPlatform::$Platform" ) );
             elseif ( ! $Platform instanceof PushPlatform )
                 throw new InvalidEnumException();
@@ -169,9 +169,9 @@ class PushNotificationRequest
     public function setStatus($Status)
     {
         if ( ! $Status instanceof PushStatus ) {
-            if ( PushStatus::isValid( $Status ) ) 
+            if ( PushStatus::isValid( $Status ) )
                 $Status = new PushStatus( $Status );
-            elseif ( PushStatus::isValidKey( $Status ) ) 
+            elseif ( PushStatus::isValidKey( $Status ) )
                 $Status = new PushStatus( constant( "PushStatus::$Status" ) );
             elseif ( ! $Status instanceof PushStatus )
                 throw new InvalidEnumException();

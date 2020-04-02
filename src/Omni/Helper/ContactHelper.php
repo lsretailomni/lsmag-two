@@ -1093,7 +1093,7 @@ class ContactHelper extends AbstractHelper
         if (is_array($arrayOneLists)) {
             /** @var Entity\OneList $oneList */
             foreach ($arrayOneLists as $oneList) {
-                if ($oneList->getListType() == $type) {
+                if ($oneList->getListType() == $type && $oneList->getStoreId() == $this->basketHelper->getDefaultWebStore()) {
                     return $oneList;
                 }
             }

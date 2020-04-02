@@ -96,9 +96,9 @@ class OneListLink
     public function setStatus($Status)
     {
         if ( ! $Status instanceof LinkStatus ) {
-            if ( LinkStatus::isValid( $Status ) ) 
+            if ( LinkStatus::isValid( $Status ) )
                 $Status = new LinkStatus( $Status );
-            elseif ( LinkStatus::isValidKey( $Status ) ) 
+            elseif ( LinkStatus::isValidKey( $Status ) )
                 $Status = new LinkStatus( constant( "LinkStatus::$Status" ) );
             elseif ( ! $Status instanceof LinkStatus )
                 throw new InvalidEnumException();

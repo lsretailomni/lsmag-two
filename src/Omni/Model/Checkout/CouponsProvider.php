@@ -48,6 +48,22 @@ class CouponsProvider implements ConfigProviderInterface
      */
     public $logger;
 
+    /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
+     * CouponsProvider constructor.
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param StoreManagerInterface $storeManager
+     * @param TimezoneInterface $timeZoneInterface
+     * @param ScopeConfigInterface $scopeConfig
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param LoggerInterface $logger
+     * @param LSR $lsr
+     */
     public function __construct(
         \Magento\Customer\Model\Session\Proxy $customerSession,
         Proxy $checkoutSession,
@@ -122,7 +138,8 @@ class CouponsProvider implements ConfigProviderInterface
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getCurrentStoreId()
             ));
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());

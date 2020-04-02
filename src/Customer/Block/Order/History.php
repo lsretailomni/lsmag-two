@@ -8,7 +8,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session\Proxy;
-use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -58,7 +58,7 @@ class History extends \Magento\Sales\Block\Order\History
      * @param PriceCurrencyInterface $priceCurrency
      * @param LSR $LSR
      * @param OrderRepository $orderRepository
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param array $data
      */
     public function __construct(
@@ -70,7 +70,7 @@ class History extends \Magento\Sales\Block\Order\History
         PriceCurrencyInterface $priceCurrency,
         LSR $LSR,
         OrderRepository $orderRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
         array $data = []
     ) {
         $this->orderHelper           = $orderHelper;
@@ -89,7 +89,7 @@ class History extends \Magento\Sales\Block\Order\History
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $response = [];
             $orders   = $this->orderHelper->getCurrentCustomerOrderHistory();
             if ($orders) {
@@ -137,7 +137,7 @@ class History extends \Magento\Sales\Block\Order\History
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             return $this->getUrl('customer/order/view', ['order_id' => $order->getId(), 'type' => $order->getIdType()]);
         }
         return parent::getViewUrl($order);

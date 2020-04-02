@@ -63,7 +63,7 @@ class WishlistObserver implements ObserverInterface
         /*
           * Adding condition to only process if LSR is enabled.
           */
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $customerId = $this->customerSession->getCustomer()->getId();
             $wishlist   = $this->wishlist->loadByCustomerId($customerId)->getItemCollection();
             $oneList    = $this->basketHelper->fetchCurrentCustomerWishlist();
