@@ -138,7 +138,7 @@ class History extends \Magento\Sales\Block\Order\History
         * Adding condition to only process if LSR is enabled.
         */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            if (version_compare($this->orderHelper->getOmniVersion(), '4.5.0', '<')) {
+            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '<')) {
                 return $this->getUrl(
                     'customer/order/view',
                     [
@@ -207,6 +207,6 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public function getOmniVersion()
     {
-        return $this->lsr->getStoreConfig($this->lsr::SC_SERVICE_VERSION, $this->lsr->getCurrentStoreId());
+        return $this->lsr->getOmniVersion();
     }
 }

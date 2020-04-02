@@ -80,7 +80,7 @@ class OrderHelper extends AbstractHelper
         $this->orderRepository = $orderRepository;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
-        $this->lsr = $lsr;
+        $this->lsr             = $lsr;
     }
 
     /**
@@ -428,13 +428,5 @@ class OrderHelper extends AbstractHelper
     public function getActiveWebStore()
     {
         return $this->lsr->getActiveWebStore();
-    }
-
-    /**
-     * @return string
-     */
-    public function getOmniVersion()
-    {
-        return $this->basketHelper->lsr->getStoreConfig(LSR::SC_SERVICE_VERSION);
     }
 }

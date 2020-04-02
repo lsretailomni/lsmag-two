@@ -4,7 +4,7 @@ namespace Ls\Customer\Controller\Sales\Order;
 
 use Exception;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\App\Action;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\ResultFactory;
@@ -22,23 +22,17 @@ use Psr\Log\LoggerInterface;
 class View extends \Magento\Sales\Controller\Order\View
 {
 
-    /**
-     * @var Http $request
-     */
+    /**@var Http $request */
     public $request;
 
-    /**
-     * @var OrderRepositoryInterface
-     */
+    /** @var OrderRepositoryInterface */
     public $orderRepository;
 
     /** @var LoggerInterface */
     public $logger;
 
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
+    /** @var LSR */
+    public $lsr;
 
     /**
      * View constructor.
@@ -48,7 +42,7 @@ class View extends \Magento\Sales\Controller\Order\View
      * @param PageFactory $resultPageFactory
      * @param LoggerInterface $logger
      * @param OrderRepositoryInterface $orderRepository
-     * @param OrderHelper $orderHelper
+     * @param LSR $lsr
      */
     public function __construct(
         Http $request,
@@ -57,13 +51,13 @@ class View extends \Magento\Sales\Controller\Order\View
         PageFactory $resultPageFactory,
         LoggerInterface $logger,
         OrderRepositoryInterface $orderRepository,
-        OrderHelper $orderHelper
+        LSR $lsr
     ) {
         parent::__construct($context, $orderLoader, $resultPageFactory);
         $this->request         = $request;
         $this->logger          = $logger;
         $this->orderRepository = $orderRepository;
-        $this->orderHelper     = $orderHelper;
+        $this->lsr             = $lsr;
     }
 
     /**
@@ -81,7 +75,7 @@ class View extends \Magento\Sales\Controller\Order\View
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            if (version_compare($this->orderHelper->getOmniVersion(), '4.5.0', '<')) {
+            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '<')) {
                 $resultRedirect->setPath(
                     'customer/order/view/order_id/' . $documentId . '/type/' . DocumentIdType::ORDER
                 );

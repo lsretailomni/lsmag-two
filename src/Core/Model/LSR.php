@@ -582,4 +582,14 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         $this->storeManager->setCurrentStore($storeId);
     }
 
+    /**
+     * @return string
+     */
+    public function getOmniVersion()
+    {
+        return $this->getStoreConfig(self::SC_SERVICE_VERSION, $this->getCurrentStoreId());
+    }
+
+
+
 }
