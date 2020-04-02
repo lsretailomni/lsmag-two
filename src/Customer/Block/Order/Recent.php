@@ -122,7 +122,7 @@ class Recent extends Template
      */
     public function getViewUrl($order)
     {
-        if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '<')) {
+        if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '>')) {
             return $this->getUrl(
                 'customer/order/view',
                 [
