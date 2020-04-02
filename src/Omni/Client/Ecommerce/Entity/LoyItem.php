@@ -22,6 +22,11 @@ class LoyItem extends Entity
     protected $ItemAttributes = null;
 
     /**
+     * @property ArrayOfItemLocation $Locations
+     */
+    protected $Locations = null;
+
+    /**
      * @property ArrayOfPrice $Prices
      */
     protected $Prices = null;
@@ -170,6 +175,24 @@ class LoyItem extends Entity
     public function getItemAttributes()
     {
         return $this->ItemAttributes;
+    }
+
+    /**
+     * @param ArrayOfItemLocation $Locations
+     * @return $this
+     */
+    public function setLocations($Locations)
+    {
+        $this->Locations = $Locations;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfItemLocation
+     */
+    public function getLocations()
+    {
+        return $this->Locations;
     }
 
     /**

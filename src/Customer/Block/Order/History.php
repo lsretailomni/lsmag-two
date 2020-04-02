@@ -33,7 +33,9 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public $priceCurrency;
 
-    /** @var LSR @var */
+    /**
+     * @var LSR
+     */
     public $lsr;
 
     /**
@@ -198,5 +200,13 @@ class History extends \Magento\Sales\Block\Order\History
     public function getPrintAllInvoicesUrl($order)
     {
         return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOmniVersion()
+    {
+        return $this->lsr->getStoreConfig($this->lsr::SC_SERVICE_VERSION, $this->lsr->getCurrentStoreId());
     }
 }

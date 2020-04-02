@@ -48,6 +48,11 @@ class SalesEntry extends Entity
     protected $ClickAndCollectOrder = null;
 
     /**
+     * @property string $CustomerOrderNo
+     */
+    protected $CustomerOrderNo = null;
+
+    /**
      * @property string $DocumentRegTime
      */
     protected $DocumentRegTime = null;
@@ -86,11 +91,6 @@ class SalesEntry extends Entity
      * @property boolean $Posted
      */
     protected $Posted = null;
-
-    /**
-     * @property string $ReceiptNo
-     */
-    protected $ReceiptNo = null;
 
     /**
      * @property Address $ShipToAddress
@@ -271,6 +271,24 @@ class SalesEntry extends Entity
     }
 
     /**
+     * @param string $CustomerOrderNo
+     * @return $this
+     */
+    public function setCustomerOrderNo($CustomerOrderNo)
+    {
+        $this->CustomerOrderNo = $CustomerOrderNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerOrderNo()
+    {
+        return $this->CustomerOrderNo;
+    }
+
+    /**
      * @param string $DocumentRegTime
      * @return $this
      */
@@ -432,24 +450,6 @@ class SalesEntry extends Entity
     public function getPosted()
     {
         return $this->Posted;
-    }
-
-    /**
-     * @param string $ReceiptNo
-     * @return $this
-     */
-    public function setReceiptNo($ReceiptNo)
-    {
-        $this->ReceiptNo = $ReceiptNo;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReceiptNo()
-    {
-        return $this->ReceiptNo;
     }
 
     /**
