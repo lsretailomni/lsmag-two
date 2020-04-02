@@ -158,6 +158,11 @@ class UpgradeData implements UpgradeDataInterface
     ];
 
 
+    /**
+     * UpgradeData constructor.
+     * @param ResourceConnection $resource
+     * @param Logger $logger
+     */
     public function __construct(
         ResourceConnection $resource,
         Logger $logger
@@ -166,19 +171,16 @@ class UpgradeData implements UpgradeDataInterface
         $this->logger   = $logger;
     }
 
+    /**
+     * @param ModuleDataSetupInterface $setup
+     * @param ModuleContextInterface $context
+     */
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        $this->logger->debug("Came here");
-        $this->logger->debug($context->getVersion());
-
         if (version_compare($context->getVersion(), '1.3.0', '<')) {
             // only need to run  for existing clients who are using older version then 1.3.0
-            // @codingStandardsIgnoreStart
-            $this->logger->debug("Also here");
             $this->updateFlatTables();
             $this->updateConfigTable();
-        } else {
-            $this->logger->debug("But not here");
         }
     }
 
@@ -209,8 +211,6 @@ class UpgradeData implements UpgradeDataInterface
         $lsTableName  = $connection->getTableName('core_config_data');
         $websiteQuery = "UPDATE $lsTableName set scope = 'websites', scope_id = 1 WHERE path IN ('" . implode("','", $this->websiteScopeFields) . "')";
         $storeQuery   = "UPDATE $lsTableName set scope = 'stores', scope_id = 1 WHERE path IN ('" . implode("','", $this->nonwebsiteScopeFields) . "')";
-        $this->logger->debug($websiteQuery);
-        $this->logger->debug($storeQuery);
         try {
             $connection->query($websiteQuery);
             $connection->query($storeQuery);
