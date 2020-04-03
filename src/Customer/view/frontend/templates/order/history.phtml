@@ -39,6 +39,12 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                     </thead>
                     <tbody>
                     <?php foreach ($_orders as $_order):
+                        // This is to support backward compatibility of Omni
+                        if (version_compare($block->getOmniVersion(), '4.6.0', '>')) {
+                            $magOrder = $block->getOrderByDocumentId($_order->getCustomerOrderNo());
+                        } else {
+                            $magOrder = $block->getOrderByDocumentId($_order->getId());
+                        }
                         ?>
                         <tr>
                             <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
@@ -59,12 +65,11 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                 $_order->getStatus() ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
                                 <a href="<?= /* @escapeNotVerified */
-                                $block->getViewUrl($_order) ?>" class="action view">
+                                $block->getViewUrl($_order, $magOrder) ?>" class="action view">
                                 <span><?= /* @escapeNotVerified */
                                     __('View Order') ?></span>
                                 </a>
                                 <?php
-                                $magOrder = $block->getOrderByDocumentId($_order->getId());
                                 if (!empty($magOrder)):
                                     if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getEntityId())) : ?>
                                         <a href="#" data-post='<?php /* @escapeNotVerified */

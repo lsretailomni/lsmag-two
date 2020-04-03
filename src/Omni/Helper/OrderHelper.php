@@ -80,7 +80,7 @@ class OrderHelper extends AbstractHelper
         $this->orderRepository = $orderRepository;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
-        $this->lsr = $lsr;
+        $this->lsr             = $lsr;
     }
 
     /**
@@ -403,16 +403,18 @@ class OrderHelper extends AbstractHelper
      */
     public function getOrderByDocumentId($documentId)
     {
+        $order = [];
         try {
-            $order      = [];
-            $customerId = $this->customerSession->getCustomerId();
-            $orderList  = $this->orderRepository->getList(
-                $this->basketHelper->searchCriteriaBuilder->
-                addFilter('document_id', $documentId, 'eq')->
-                addFilter('customer_id', $customerId, 'eq')->create()
-            )->getItems();
-            if (!empty($orderList)) {
-                $order = reset($orderList);
+            if (!empty($documentId)) {
+                $customerId = $this->customerSession->getCustomerId();
+                $orderList  = $this->orderRepository->getList(
+                    $this->basketHelper->searchCriteriaBuilder->
+                    addFilter('document_id', $documentId, 'eq')->
+                    addFilter('customer_id', $customerId, 'eq')->create()
+                )->getItems();
+                if (!empty($orderList)) {
+                    $order = reset($orderList);
+                }
             }
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());

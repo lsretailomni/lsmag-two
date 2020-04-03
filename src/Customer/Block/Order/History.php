@@ -33,7 +33,9 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public $priceCurrency;
 
-    /** @var LSR @var */
+    /**
+     * @var LSR
+     */
     public $lsr;
 
     /**
@@ -128,15 +130,35 @@ class History extends \Magento\Sales\Block\Order\History
 
     /**
      * @param object $order
+     * @param null $magOrder
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getViewUrl($order)
+    public function getViewUrl($order, $magOrder = null)
     {
         /*
         * Adding condition to only process if LSR is enabled.
         */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            return $this->getUrl('customer/order/view', ['order_id' => $order->getId(), 'type' => $order->getIdType()]);
+            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
+                // This condition is added to support viewing of orders created by POS
+                if (!empty($magOrder)) {
+                    return $this->getUrl(
+                        'customer/order/view',
+                        [
+                            'order_id' => $order->getId()
+                        ]
+                    );
+                }
+            }
+
+            return $this->getUrl(
+                'customer/order/view',
+                [
+                    'order_id' => $order->getId(),
+                    'type'     => $order->getIdType()
+                ]
+            );
         }
         return parent::getViewUrl($order);
     }
@@ -183,5 +205,13 @@ class History extends \Magento\Sales\Block\Order\History
     public function getPrintAllInvoicesUrl($order)
     {
         return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOmniVersion()
+    {
+        return $this->lsr->getOmniVersion();
     }
 }

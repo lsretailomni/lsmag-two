@@ -46,6 +46,8 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode UPGRADE()
  * @$method static StatusCode CURRENCY_CODE_NOT_FOUND()
  * @$method static StatusCode TASK_STATUS_CANNOT_CHANGE()
+ * @$method static StatusCode ORDER_ID_NOT_FOUND()
+ * @$method static StatusCode ADDRESS_IS_EMPTY()
  * @$method static StatusCode SECURITY_TOKEN_INVALID()
  * @$method static StatusCode ACCESS_NOT_ALLOWED()
  * @$method static StatusCode USER_NOT_LOGGED_IN()
@@ -63,6 +65,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode LOGIN_ID_NOT_MEMBER_OF_CLUB()
  * @$method static StatusCode DEVICE_ID_NOT_FOUND()
  * @$method static StatusCode COUPON_NOT_FOUND()
+ * @$method static StatusCode GIFT_CARD_NOT_FOUND()
  * @$method static StatusCode ACCOUNT_CONTACT_ID_INVALID()
  * @$method static StatusCode ACCOUNT_EXISTS_IN_OTHER_CLUB()
  * @$method static StatusCode MISSING_ITEM_NUMER()
@@ -120,6 +123,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode CLUB_INVALID()
  * @$method static StatusCode SCHEME_INVALID()
  * @$method static StatusCode SCHEME_CLUB_INVALID()
+ * @$method static StatusCode RECEIPT_NO_MISSING()
  * @$method static StatusCode CONTACT_IS_BLOCKED()
  * @$method static StatusCode SERVER_REFUSING_TO_RESPOND()
  * @$method static StatusCode DINING_TABLE_STATUS_NOT_ABLE_TO_CHANGE()
@@ -157,11 +161,6 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode NO_ITEMS_TO_SUSPEND()
  * @$method static StatusCode UNKNOWN_USER()
  * @$method static StatusCode NAV_W_S_ERROR()
- * @$method static StatusCode TRANSACTION_POST()
- * @$method static StatusCode TRANSACTION_CALC()
- * @$method static StatusCode GET_HIERARCHY()
- * @$method static StatusCode GET_HIERARCHY_NODE()
- * @$method static StatusCode GET_ITEM_INVENTORY()
  */
 class StatusCode extends Enum
 {
@@ -236,6 +235,10 @@ class StatusCode extends Enum
 
     const TASK_STATUS_CANNOT_CHANGE = 'TaskStatusCannotChange';
 
+    const ORDER_ID_NOT_FOUND = 'OrderIdNotFound';
+
+    const ADDRESS_IS_EMPTY = 'AddressIsEmpty';
+
     const SECURITY_TOKEN_INVALID = 'SecurityTokenInvalid';
 
     const ACCESS_NOT_ALLOWED = 'AccessNotAllowed';
@@ -269,6 +272,8 @@ class StatusCode extends Enum
     const DEVICE_ID_NOT_FOUND = 'DeviceIdNotFound';
 
     const COUPON_NOT_FOUND = 'CouponNotFound';
+
+    const GIFT_CARD_NOT_FOUND = 'GiftCardNotFound';
 
     const ACCOUNT_CONTACT_ID_INVALID = 'AccountContactIdInvalid';
 
@@ -384,6 +389,8 @@ class StatusCode extends Enum
 
     const SCHEME_CLUB_INVALID = 'SchemeClubInvalid';
 
+    const RECEIPT_NO_MISSING = 'ReceiptNoMissing';
+
     const CONTACT_IS_BLOCKED = 'ContactIsBlocked';
 
     const SERVER_REFUSING_TO_RESPOND = 'ServerRefusingToRespond';
@@ -457,16 +464,6 @@ class StatusCode extends Enum
     const UNKNOWN_USER = 'UnknownUser';
 
     const NAV_W_S_ERROR = 'NavWSError';
-
-    const TRANSACTION_POST = 'TransactionPost';
-
-    const TRANSACTION_CALC = 'TransactionCalc';
-
-    const GET_HIERARCHY = 'GetHierarchy';
-
-    const GET_HIERARCHY_NODE = 'GetHierarchyNode';
-
-    const GET_ITEM_INVENTORY = 'GetItemInventory';
 
 
 }

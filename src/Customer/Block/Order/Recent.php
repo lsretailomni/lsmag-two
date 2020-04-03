@@ -4,6 +4,7 @@ namespace Ls\Customer\Block\Order;
 
 use DateTime;
 use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session\Proxy;
@@ -40,12 +41,18 @@ class Recent extends Template
     public $customerSession;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * Recent constructor.
      * @param Context $context
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param Proxy $customerSession
+     * @param LSR $LSR
      * @param array $data
      */
     public function __construct(
@@ -54,6 +61,7 @@ class Recent extends Template
         PriceCurrencyInterface $priceCurrency,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         Proxy $customerSession,
+        LSR $LSR,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -61,6 +69,7 @@ class Recent extends Template
         $this->priceCurrency         = $priceCurrency;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerSession       = $customerSession;
+        $this->lsr                   = $LSR;
     }
 
     /**
@@ -108,12 +117,31 @@ class Recent extends Template
     }
 
     /**
-     * @param object $order
+     * @param $order
+     * @param null $magOrder
      * @return string
      */
-    public function getViewUrl($order)
+    public function getViewUrl($order, $magOrder = null)
     {
-        return $this->getUrl('customer/order/view', ['order_id' => $order->getId(), 'type' => $order->getIdType()]);
+        if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
+            // This condition is added to support viewing of orders created by POS
+            if (!empty($magOrder)) {
+                return $this->getUrl(
+                    'customer/order/view',
+                    [
+                        'order_id' => $order->getId()
+                    ]
+                );
+            }
+        }
+
+        return $this->getUrl(
+            'customer/order/view',
+            [
+                'order_id' => $order->getId(),
+                'type'     => $order->getIdType()
+            ]
+        );
     }
 
     /**
@@ -140,5 +168,13 @@ class Recent extends Template
     public function getOrderByDocumentId($documentId)
     {
         return $this->orderHelper->getOrderByDocumentId($documentId);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOmniVersion()
+    {
+        return $this->lsr->getOmniVersion();
     }
 }

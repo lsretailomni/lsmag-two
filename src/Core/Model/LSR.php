@@ -368,7 +368,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStoreConfig($path, $storeId = false)
     {
         if ($storeId) {
-            $sc = $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId);
+            $sc = $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORES, $storeId);
         } else {
             $sc = $this->scopeConfig->getValue($path);
         }
@@ -384,7 +384,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getWebsiteConfig($path, $website_id = false)
     {
         if ($website_id) {
-            $sc = $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_WEBSITE, $website_id);
+            $sc = $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_WEBSITES, $website_id);
         } else {
             $sc = $this->scopeConfig->getValue($path);
         }
@@ -581,5 +581,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         $this->storeManager->setCurrentStore($storeId);
     }
+
+    /**
+     * @return string
+     */
+    public function getOmniVersion()
+    {
+        return $this->getStoreConfig(self::SC_SERVICE_VERSION, $this->getCurrentStoreId());
+    }
+
+
 
 }
