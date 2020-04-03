@@ -2,9 +2,12 @@
 
 namespace Ls\Customer\Controller\Order;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -51,6 +54,11 @@ class View extends Action
     public $registry;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * View constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
@@ -59,6 +67,7 @@ class View extends Action
      * @param Registry $registry
      * @param ResultFactory $result
      * @param ManagerInterface $messageManager
+     * @param LSR $LSR
      */
     public function __construct(
         Context $context,
@@ -67,7 +76,8 @@ class View extends Action
         OrderHelper $orderHelper,
         Registry $registry,
         ResultFactory $result,
-        ManagerInterface $messageManager
+        ManagerInterface $messageManager,
+        LSR $LSR
     ) {
         $this->resultRedirect    = $result;
         $this->messageManager    = $messageManager;
@@ -75,11 +85,13 @@ class View extends Action
         $this->registry          = $registry;
         $this->orderHelper       = $orderHelper;
         $this->resultPageFactory = $resultPageFactory;
+        $this->lsr               = $LSR;
         parent::__construct($context);
     }
 
     /**
      * @return \Magento\Framework\App\ResponseInterface|ResultInterface|Page
+     * @throws InvalidEnumException
      */
     public function execute()
     {
@@ -90,11 +102,15 @@ class View extends Action
             if (empty($type)) {
                 $type = DocumentIdType::ORDER;
             }
+            /** @var SalesEntry|null $response */
             $response = $this->setCurrentOrderInRegistry($docId, $type);
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
-            if ($type === DocumentIdType::ORDER) {
+            // This is to support backward compatibility of Omni
+            if (version_compare($this->lsr->getOmniVersion(), '4.6.0', '>')) {
+                $this->setCurrentMagOrderInRegistry($response->getCustomerOrderNo());
+            } elseif ($type === DocumentIdType::ORDER) {
                 $this->setCurrentMagOrderInRegistry($docId);
             }
             $this->registry->register('current_invoice_option', false);
@@ -108,6 +124,7 @@ class View extends Action
      * @param $docId
      * @param $type
      * @return SalesEntryGetResponse|ResponseInterface|null
+     * @throws InvalidEnumException
      */
     public function setCurrentOrderInRegistry($docId, $type)
     {

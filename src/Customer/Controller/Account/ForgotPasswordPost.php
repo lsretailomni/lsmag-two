@@ -21,7 +21,7 @@ use Magento\Store\Model\StoreManagerInterface;
 class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPasswordPost
 {
 
-    /** @var LSR @var */
+    /** @var LSR */
     public $lsr;
 
     /** @var ContactHelper $contactHelper */
@@ -36,6 +36,18 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
     /** @var Customer */
     public $customerResourceModel;
 
+    /**
+     * ForgotPasswordPost constructor.
+     * @param Context $context
+     * @param Proxy $customerSession
+     * @param AccountManagementInterface $customerAccountManagement
+     * @param Escaper $escaper
+     * @param CustomerFactory $customerFactory
+     * @param StoreManagerInterface $storeManager
+     * @param LSR $LSR
+     * @param ContactHelper $contactHelper
+     * @param Customer $customerResourceModel
+     */
     public function __construct(
         Context $context,
         Proxy $customerSession,
