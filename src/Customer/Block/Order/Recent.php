@@ -117,27 +117,31 @@ class Recent extends Template
     }
 
     /**
-     * @param object $order
+     * @param $order
+     * @param null $magOrder
      * @return string
      */
-    public function getViewUrl($order)
+    public function getViewUrl($order, $magOrder = null)
     {
-        if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '>')) {
-            return $this->getUrl(
-                'customer/order/view',
-                [
-                    'order_id' => $order->getId(),
-                    'type'     => $order->getIdType()
-                ]
-            );
-        } else {
-            return $this->getUrl(
-                'customer/order/view',
-                [
-                    'order_id' => $order->getId()
-                ]
-            );
+        if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
+            // This condition is added to support viewing of orders created by POS
+            if (!empty($magOrder)) {
+                return $this->getUrl(
+                    'customer/order/view',
+                    [
+                        'order_id' => $order->getId()
+                    ]
+                );
+            }
         }
+
+        return $this->getUrl(
+            'customer/order/view',
+            [
+                'order_id' => $order->getId(),
+                'type'     => $order->getIdType()
+            ]
+        );
     }
 
     /**

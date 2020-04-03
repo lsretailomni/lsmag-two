@@ -3,8 +3,8 @@
 namespace Ls\Customer\Controller\Sales\Order;
 
 use Exception;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use Magento\Framework\App\Action;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\ResultFactory;
@@ -75,12 +75,12 @@ class View extends \Magento\Sales\Controller\Order\View
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '<')) {
+            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
+                $resultRedirect->setPath('customer/order/view/order_id/' . $documentId);
+            } else {
                 $resultRedirect->setPath(
                     'customer/order/view/order_id/' . $documentId . '/type/' . DocumentIdType::ORDER
                 );
-            } else {
-                $resultRedirect->setPath('customer/order/view/order_id/' . $documentId);
             }
             return $resultRedirect;
         } catch (Exception $e) {

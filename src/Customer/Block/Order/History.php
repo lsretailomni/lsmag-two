@@ -130,30 +130,35 @@ class History extends \Magento\Sales\Block\Order\History
 
     /**
      * @param object $order
+     * @param null $magOrder
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getViewUrl($order)
+    public function getViewUrl($order, $magOrder = null)
     {
         /*
         * Adding condition to only process if LSR is enabled.
         */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '>')) {
-                return $this->getUrl(
-                    'customer/order/view',
-                    [
-                        'order_id' => $order->getId(),
-                        'type'     => $order->getIdType()
-                    ]
-                );
-            } else {
-                return $this->getUrl(
-                    'customer/order/view',
-                    [
-                        'order_id' => $order->getId()
-                    ]
-                );
+            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
+                // This condition is added to support viewing of orders created by POS
+                if (!empty($magOrder)) {
+                    return $this->getUrl(
+                        'customer/order/view',
+                        [
+                            'order_id' => $order->getId()
+                        ]
+                    );
+                }
             }
+
+            return $this->getUrl(
+                'customer/order/view',
+                [
+                    'order_id' => $order->getId(),
+                    'type'     => $order->getIdType()
+                ]
+            );
         }
         return parent::getViewUrl($order);
     }
