@@ -589,7 +589,4 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         return $this->getStoreConfig(self::SC_SERVICE_VERSION, $this->getCurrentStoreId());
     }
-
-
-
 }
