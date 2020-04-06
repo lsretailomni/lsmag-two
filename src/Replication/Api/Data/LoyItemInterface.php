@@ -34,6 +34,17 @@ interface LoyItemInterface
     public function getItemAttributes();
 
     /**
+     * @param ArrayOfItemLocation $Locations
+     * @return $this
+     */
+    public function setLocations($Locations);
+
+    /**
+     * @return ArrayOfItemLocation
+     */
+    public function getLocations();
+
+    /**
      * @param ArrayOfPrice $Prices
      * @return $this
      */

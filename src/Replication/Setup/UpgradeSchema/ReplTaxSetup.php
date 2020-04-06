@@ -30,9 +30,9 @@ class ReplTaxSetup
         	$table->addColumn('IsDeleted' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('ProductTaxGroup' , Table::TYPE_TEXT, '');
         	$table->addColumn('TaxPercent' , Table::TYPE_DECIMAL, '20,4');
-        	$table->addColumn('checksum', Table::TYPE_TEXT,'');
         	$table->addColumn('scope' , Table::TYPE_TEXT, '');
         	$table->addColumn('scope_id' , Table::TYPE_INTEGER, 11);
+        	$table->addColumn('checksum', Table::TYPE_TEXT,'');
         	$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');

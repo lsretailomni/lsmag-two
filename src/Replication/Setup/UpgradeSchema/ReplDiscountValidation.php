@@ -63,9 +63,9 @@ class ReplDiscountValidation
         	$table->addColumn('WednesdayEndAfterMidnight' , Table::TYPE_BOOLEAN, 1);
         	$table->addColumn('WednesdayStart' , Table::TYPE_TEXT, '');
         	$table->addColumn('WednesdayWithinBounds' , Table::TYPE_BOOLEAN, 1);
-        	$table->addColumn('checksum', Table::TYPE_TEXT,'');
         	$table->addColumn('scope' , Table::TYPE_TEXT, '');
         	$table->addColumn('scope_id' , Table::TYPE_INTEGER, 11);
+        	$table->addColumn('checksum', Table::TYPE_TEXT,'');
         	$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');

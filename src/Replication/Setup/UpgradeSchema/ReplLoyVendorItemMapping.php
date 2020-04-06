@@ -33,9 +33,9 @@ class ReplLoyVendorItemMapping
         	$table->addColumn('NavManufacturerId' , Table::TYPE_TEXT, '');
         	$table->addColumn('NavManufacturerItemId' , Table::TYPE_TEXT, '');
         	$table->addColumn('NavProductId' , Table::TYPE_TEXT, '');
-        	$table->addColumn('checksum', Table::TYPE_TEXT,'');
         	$table->addColumn('scope' , Table::TYPE_TEXT, '');
         	$table->addColumn('scope_id' , Table::TYPE_INTEGER, 11);
+        	$table->addColumn('checksum', Table::TYPE_TEXT,'');
         	$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
         	$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
         	$table->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE ], 'Updated At');
