@@ -9,10 +9,10 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Checkout\Model\Session\Proxy;
-use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Filesystem\DirectoryList;
@@ -48,7 +48,7 @@ class LoyaltyHelper extends AbstractHelper
     public $customerFactory;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var CustomerProxy
      */
     public $customerSession;
 
@@ -166,16 +166,15 @@ class LoyaltyHelper extends AbstractHelper
     /**
      * @param null $image_id
      * @param null $image_size
-     * @return array|bool|Entity\ImageGetByIdResponse|ResponseInterface|null
+     * @return array|bool
      */
     public function getImageById($image_id = null, $image_size = null)
     {
-        $response = null;
         if ($image_id == null || $image_size == null) {
-            return $response;
+            return [];
         }
-        $storeId = $this->lsr->getCurrentStoreId();
-        $cacheId = LSR::IMAGE_CACHE . $image_id . "_" . $storeId;
+        $storeId  = $this->lsr->getCurrentStoreId();
+        $cacheId  = LSR::IMAGE_CACHE . $image_id . "_" . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
             $this->_logger->debug("Found image from cache " . $cacheId);
@@ -202,7 +201,7 @@ class LoyaltyHelper extends AbstractHelper
             );
             return ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()];
         }
-        return $response;
+        return [];
     }
 
     /**
@@ -281,8 +280,8 @@ class LoyaltyHelper extends AbstractHelper
      */
     public function getPointRate()
     {
-        $storeId = $this->lsr->getCurrentStoreId();
-        $cacheId = LSR::POINTRATE . $storeId;
+        $storeId  = $this->lsr->getCurrentStoreId();
+        $cacheId  = LSR::POINTRATE . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
             $this->_logger->debug('Found point rate from cache ' . $cacheId);
@@ -382,7 +381,7 @@ class LoyaltyHelper extends AbstractHelper
         $entity  = new Entity\DiscountsGet();
         $string  = new Entity\ArrayOfstring();
         // @codingStandardsIgnoreEnd
-        $storeId = $this->lsr->getCurrentStoreId();
+        $storeId         = $this->lsr->getCurrentStoreId();
         $customerGroupId = $this->customerSession->getCustomerGroupId();
         $cacheId         = LSR::PROACTIVE_DISCOUNTS . $itemId . "_" . $customerGroupId . "_" . $storeId;
         $response        = $this->cacheHelper->getCachedContent($cacheId);
@@ -454,6 +453,8 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getAvailableCouponsForLoggedInCustomers()
     {
