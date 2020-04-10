@@ -71,7 +71,8 @@ class CouponsProvider implements ConfigProviderInterface
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
         LoyaltyHelper $loyaltyHelper,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        LSR $lsr
     ) {
         $this->customerSession   = $customerSession;
         $this->checkoutSession   = $checkoutSession;
@@ -80,6 +81,7 @@ class CouponsProvider implements ConfigProviderInterface
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
         $this->logger            = $logger;
+        $this->lsr = $lsr;
     }
 
     public function getConfig()
