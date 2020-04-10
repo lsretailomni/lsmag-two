@@ -79,8 +79,8 @@ class AttributeData
                         }
                     }
                 }
+                $optionsData['attributes'][$attributeId]['options'] = $newOptionData;
             }
-            $optionsData['attributes'][$attributeId]['options'] = $newOptionData;
         }
         return $optionsData;
     }
