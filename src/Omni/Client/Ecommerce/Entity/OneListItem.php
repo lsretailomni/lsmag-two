@@ -67,6 +67,11 @@ class OneListItem extends Entity
     protected $ItemId = null;
 
     /**
+     * @property string $Location
+     */
+    protected $Location = null;
+
+    /**
      * @property float $NetAmount
      */
     protected $NetAmount = null;
@@ -312,6 +317,24 @@ class OneListItem extends Entity
     public function getItemId()
     {
         return $this->ItemId;
+    }
+
+    /**
+     * @param string $Location
+     * @return $this
+     */
+    public function setLocation($Location)
+    {
+        $this->Location = $Location;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->Location;
     }
 
     /**

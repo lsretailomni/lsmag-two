@@ -32,6 +32,11 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     protected $ItemAttributes = null;
 
     /**
+     * @property ArrayOfItemLocation $Locations
+     */
+    protected $Locations = null;
+
+    /**
      * @property ArrayOfPrice $Prices
      */
     protected $Prices = null;
@@ -234,6 +239,26 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     public function getItemAttributes()
     {
         return $this->getData( 'ItemAttributes' );
+    }
+
+    /**
+     * @param ArrayOfItemLocation $Locations
+     * @return $this
+     */
+    public function setLocations($Locations)
+    {
+        $this->setData( 'Locations', $Locations );
+        $this->Locations = $Locations;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfItemLocation
+     */
+    public function getLocations()
+    {
+        return $this->getData( 'Locations' );
     }
 
     /**
