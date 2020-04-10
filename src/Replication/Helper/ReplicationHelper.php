@@ -8,8 +8,8 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
 use Magento\Framework\Api\AbstractExtensibleObject;
@@ -305,6 +305,64 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * @param array $filters
+     * @param int $pagesize
+     * @param bool $excludeDeleted
+     * @param null $parameter
+     * @return SearchCriteria
+     */
+    public function buildCriteriaForArrayFrontEnd(
+        array $filters,
+        $pagesize = 100,
+        $excludeDeleted = true,
+        $parameter = null
+    ) {
+        $filterOr       = null;
+        $attr_processed = $this->filterBuilder->setField('processed')
+            ->setValue('1')
+            ->setConditionType('eq')
+            ->create();
+        // is_updated = 1 which means may be processed already but is updated on omni end
+        $attr_is_updated = $this->filterBuilder->setField('is_updated')
+            ->setValue('0')
+            ->setConditionType('eq')
+            ->create();
+
+        if (!empty($parameter)) {
+            $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+                ->setValue($parameter['value'])
+                ->setConditionType($parameter['condition_type'])
+                ->create();
+
+            // building OR condition between the above  criteria
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($attr_processed)
+                ->addFilter($attr_is_updated)
+                ->addFilter($ExtraFieldwithOrCondition)
+                ->create();
+        } else {
+            // building OR condition between the above two criteria
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($attr_processed)
+                ->addFilter($attr_is_updated)
+                ->create();
+        }
+        $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+            }
+        }
+        if ($excludeDeleted) {
+            $criteria->addFilter('IsDeleted', 0, 'eq');
+        }
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
+        return $criteria->create();
+    }
+
+    /**
      * Create Build Criteria with Array of filters as a parameters
      * @param array $filters
      * @param int $pagesize
@@ -557,6 +615,19 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Format the Magento attribute code to LS Central Attribute Code Format
+     * @param $code
+     * @return mixed|string
+     */
+    public function changeAttributeCodeFormat($code)
+    {
+        $code = str_replace("ls_", "", $code);
+        $code = str_replace("_", " ", $code);
+        $code = strtoupper(trim($code));
+        return $code;
+    }
+
+    /**
      * @return array
      */
     public function getAllWebsitesIds()
@@ -794,7 +865,7 @@ class ReplicationHelper extends AbstractHelper
         if ($isReplaceJoin) {
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
-                'CONCAT_WS("-",main_table.' . $primaryTableColumnName.',main_table.' . $primaryTableColumnName2.') = second.' . $secondaryTableColumnName,
+                'CONCAT_WS("-",main_table.' . $primaryTableColumnName . ',main_table.' . $primaryTableColumnName2 . ') = second.' . $secondaryTableColumnName,
                 []
             );
         } else {
