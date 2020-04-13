@@ -306,45 +306,43 @@ class ReplicationHelper extends AbstractHelper
 
     /**
      * @param array $filters
-     * @param int $pagesize
+     * @param int $pageSize
      * @param bool $excludeDeleted
      * @param null $parameter
      * @return SearchCriteria
      */
     public function buildCriteriaForArrayFrontEnd(
         array $filters,
-        $pagesize = 100,
+        $pageSize = 100,
         $excludeDeleted = true,
         $parameter = null
     ) {
-        $filterOr       = null;
-        $attr_processed = $this->filterBuilder->setField('processed')
+        $filterOr      = null;
+        $attrProcessed = $this->filterBuilder->setField('processed')
             ->setValue('1')
             ->setConditionType('eq')
             ->create();
         // is_updated = 1 which means may be processed already but is updated on omni end
-        $attr_is_updated = $this->filterBuilder->setField('is_updated')
+        $attrIsUpdated = $this->filterBuilder->setField('is_updated')
             ->setValue('0')
             ->setConditionType('eq')
             ->create();
-
         if (!empty($parameter)) {
-            $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+            $extraFieldWithOrCondition = $this->filterBuilder->setField($parameter['field'])
                 ->setValue($parameter['value'])
                 ->setConditionType($parameter['condition_type'])
                 ->create();
-
             // building OR condition between the above  criteria
             $filterOr = $this->filterGroupBuilder
-                ->addFilter($attr_processed)
-                ->addFilter($attr_is_updated)
-                ->addFilter($ExtraFieldwithOrCondition)
+                ->addFilter($attrProcessed)
+                ->addFilter($attrIsUpdated)
+                ->addFilter($extraFieldWithOrCondition)
                 ->create();
         } else {
             // building OR condition between the above two criteria
             $filterOr = $this->filterGroupBuilder
-                ->addFilter($attr_processed)
-                ->addFilter($attr_is_updated)
+                ->addFilter($attrProcessed)
+                ->addFilter($attrIsUpdated)
                 ->create();
         }
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
@@ -356,8 +354,8 @@ class ReplicationHelper extends AbstractHelper
         if ($excludeDeleted) {
             $criteria->addFilter('IsDeleted', 0, 'eq');
         }
-        if ($pagesize != -1) {
-            $criteria->setPageSize($pagesize);
+        if ($pageSize != -1) {
+            $criteria->setPageSize($pageSize);
         }
         return $criteria->create();
     }
