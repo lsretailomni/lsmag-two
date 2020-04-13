@@ -9,7 +9,7 @@ use Magento\Framework\Api\SortOrderBuilder;
 
 /**
  * Class AttributeData
- * @package Magento\ConfigurableProduct\Helper
+ * @package Ls\Omni\Plugin\Product
  */
 class AttributeData
 {
