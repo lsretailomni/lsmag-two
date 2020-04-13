@@ -615,19 +615,6 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Format the Magento attribute code to LS Central Attribute Code Format
-     * @param $code
-     * @return mixed|string
-     */
-    public function changeAttributeCodeFormat($code)
-    {
-        $code = str_replace("ls_", "", $code);
-        $code = str_replace("_", " ", $code);
-        $code = strtoupper(trim($code));
-        return $code;
-    }
-
-    /**
      * @return array
      */
     public function getAllWebsitesIds()

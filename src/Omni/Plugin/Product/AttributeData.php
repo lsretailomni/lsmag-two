@@ -60,11 +60,10 @@ class AttributeData
         $storeId = $this->lsr->getCurrentStoreId();
         foreach ($optionsData['attributes'] as $attributeId => $value) {
             $newOptionData = [];
-            $attributeCode = $this->replicationHelper->changeAttributeCodeFormat($value['code']);
             $filters       = [];
             $filters[]     = ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'];
             $filters[]     = ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'];
-            $filters[]     = ['field' => 'Code', 'value' => $attributeCode, 'condition_type' => 'eq'];
+            $filters[]     = ['field' => 'Code', 'value' => $value['label'], 'condition_type' => 'eq'];
             $criteria      = $this->replicationHelper->buildCriteriaForArrayFrontEnd($filters, -1);
             $sortOrder     = $this->sortOrderBuilder->setField('LogicalOrder')->setDirection('ASC')->create();
             $criteria->setSortOrders([$sortOrder]);
