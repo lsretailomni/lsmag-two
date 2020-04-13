@@ -322,11 +322,6 @@ class ReplicationHelper extends AbstractHelper
             ->setValue('1')
             ->setConditionType('eq')
             ->create();
-        // is_updated = 1 which means may be processed already but is updated on omni end
-        $attrIsUpdated = $this->filterBuilder->setField('is_updated')
-            ->setValue('0')
-            ->setConditionType('eq')
-            ->create();
         if (!empty($parameter)) {
             $extraFieldWithOrCondition = $this->filterBuilder->setField($parameter['field'])
                 ->setValue($parameter['value'])
@@ -335,14 +330,12 @@ class ReplicationHelper extends AbstractHelper
             // building OR condition between the above  criteria
             $filterOr = $this->filterGroupBuilder
                 ->addFilter($attrProcessed)
-                ->addFilter($attrIsUpdated)
                 ->addFilter($extraFieldWithOrCondition)
                 ->create();
         } else {
             // building OR condition between the above two criteria
             $filterOr = $this->filterGroupBuilder
                 ->addFilter($attrProcessed)
-                ->addFilter($attrIsUpdated)
                 ->create();
         }
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
