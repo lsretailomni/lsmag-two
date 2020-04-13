@@ -333,7 +333,6 @@ class ReplicationHelper extends AbstractHelper
                 ->addFilter($extraFieldWithOrCondition)
                 ->create();
         } else {
-            // building OR condition between the above two criteria
             $filterOr = $this->filterGroupBuilder
                 ->addFilter($attrProcessed)
                 ->create();
