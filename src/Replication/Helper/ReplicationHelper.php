@@ -8,8 +8,8 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
 use Magento\Framework\Api\AbstractExtensibleObject;
@@ -300,6 +300,54 @@ class ReplicationHelper extends AbstractHelper
         }
         if ($pagesize != -1) {
             $criteria->setPageSize($pagesize);
+        }
+        return $criteria->create();
+    }
+
+    /**
+     * @param array $filters
+     * @param int $pageSize
+     * @param bool $excludeDeleted
+     * @param null $parameter
+     * @return SearchCriteria
+     */
+    public function buildCriteriaForArrayFrontEnd(
+        array $filters,
+        $pageSize = 100,
+        $excludeDeleted = true,
+        $parameter = null
+    ) {
+        $filterOr      = null;
+        $attrProcessed = $this->filterBuilder->setField('processed')
+            ->setValue('1')
+            ->setConditionType('eq')
+            ->create();
+        if (!empty($parameter)) {
+            $extraFieldWithOrCondition = $this->filterBuilder->setField($parameter['field'])
+                ->setValue($parameter['value'])
+                ->setConditionType($parameter['condition_type'])
+                ->create();
+            // building OR condition between the above  criteria
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($attrProcessed)
+                ->addFilter($extraFieldWithOrCondition)
+                ->create();
+        } else {
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($attrProcessed)
+                ->create();
+        }
+        $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+            }
+        }
+        if ($excludeDeleted) {
+            $criteria->addFilter('IsDeleted', 0, 'eq');
+        }
+        if ($pageSize != -1) {
+            $criteria->setPageSize($pageSize);
         }
         return $criteria->create();
     }
@@ -794,7 +842,7 @@ class ReplicationHelper extends AbstractHelper
         if ($isReplaceJoin) {
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
-                'CONCAT_WS("-",main_table.' . $primaryTableColumnName.',main_table.' . $primaryTableColumnName2.') = second.' . $secondaryTableColumnName,
+                'CONCAT_WS("-",main_table.' . $primaryTableColumnName . ',main_table.' . $primaryTableColumnName2 . ') = second.' . $secondaryTableColumnName,
                 []
             );
         } else {
