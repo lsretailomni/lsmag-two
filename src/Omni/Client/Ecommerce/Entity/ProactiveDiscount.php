@@ -15,6 +15,11 @@ class ProactiveDiscount
 {
 
     /**
+     * @property ArrayOfstring $BenefitItemIds
+     */
+    protected $BenefitItemIds = null;
+
+    /**
      * @property ArrayOfstring $ItemIds
      */
     protected $ItemIds = null;
@@ -88,6 +93,24 @@ class ProactiveDiscount
      * @property string $VariantId
      */
     protected $VariantId = null;
+
+    /**
+     * @param ArrayOfstring $BenefitItemIds
+     * @return $this
+     */
+    public function setBenefitItemIds($BenefitItemIds)
+    {
+        $this->BenefitItemIds = $BenefitItemIds;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfstring
+     */
+    public function getBenefitItemIds()
+    {
+        return $this->BenefitItemIds;
+    }
 
     /**
      * @param ArrayOfstring $ItemIds
