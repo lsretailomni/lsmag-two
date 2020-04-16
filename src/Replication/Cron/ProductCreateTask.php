@@ -535,7 +535,6 @@ class ProductCreateTask
                         if ($this->getRemainingRecords($store) == 0) {
                             $this->cronStatus = true;
                         }
-                        $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT, $store->getId());
                         $this->logger->debug('End ProductCreateTask for Store ' . $store->getName());
                     } else {
                         $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully for Store ' . $store->getName() .
@@ -547,6 +546,7 @@ class ProductCreateTask
                             "\n Status full ReplicationPriceStatus = " . $fullReplicationPriceStatus .
                             "\n Status full ReplicationInvStatus = " . $fullReplicationInvStatus);
                     }
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT, $store->getId());
                 }
                 $this->lsr->setStoreId(null);
             }
