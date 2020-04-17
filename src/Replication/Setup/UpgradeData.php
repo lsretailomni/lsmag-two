@@ -154,7 +154,10 @@ class UpgradeData implements UpgradeDataInterface
         "ls_mag/replication/last_execute_repl_inventory_sync",
         "ls_mag/replication/last_execute_repl_item_images_sync",
         "ls_mag/replication/last_execute_repl_attributes_value_sync",
-        "ls_mag/replication/last_execute_repl_price_sync"
+        "ls_mag/replication/last_execute_repl_price_sync",
+        "ls_mag/replication/last_execute_repl_discount_status_reset",
+        "ls_mag/replication/last_execute_repl_inv_status_reset",
+        "ls_mag/replication/last_execute_repl_price_status_reset"
     ];
 
 
@@ -177,7 +180,8 @@ class UpgradeData implements UpgradeDataInterface
      */
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        if (version_compare($context->getVersion(), '1.3.0', '<')) {
+        if (version_compare($context->getVersion(), '1.3.0', '<') ||
+            version_compare($context->getVersion(), '1.3.1', '<')) {
             // only need to run  for existing clients who are using older version then 1.3.0
             $this->updateFlatTables();
             $this->updateConfigTable();
