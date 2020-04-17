@@ -546,6 +546,7 @@ class ProductCreateTask
                             "\n Status full ReplicationPriceStatus = " . $fullReplicationPriceStatus .
                             "\n Status full ReplicationInvStatus = " . $fullReplicationInvStatus);
                     }
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT, $store->getId());
                 }
                 $this->lsr->setStoreId(null);
             }
