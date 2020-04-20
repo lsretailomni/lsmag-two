@@ -188,7 +188,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     '<div class="flag-green custom-grid-flag">Complete</div>' :
                     '<div class="flag-yellow custom-grid-flag">Pending</div>';
                 if (strpos($cronName, '_reset') !== false || $cronName == "sync_version") {
-                    $statusStr = '';
+                    $condition = $statusStr = '';
                 }
                 $items[] = [
                     'id'                    => $counter,
