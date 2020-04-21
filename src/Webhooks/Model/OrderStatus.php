@@ -13,8 +13,8 @@ use Magento\Framework\Exception\LocalizedException;
  */
 class OrderStatus implements OrderStatusInterface
 {
-    const SUCCESS = "OK";
-    const ERROR = "ERROR";
+    const SUCCESS = 'OK';
+    const ERROR = 'ERROR';
 
     /**
      * @var Logger
@@ -47,10 +47,10 @@ class OrderStatus implements OrderStatusInterface
     {
         try {
             $data = [
-                "document_id" => $document_id,
-                "status"      => $status
+                'document_id' => $document_id,
+                'status'      => $status
             ];
-            $this->logger->info("OrderStatus", $data);
+            $this->logger->info('OrderStatus', $data);
             return self::SUCCESS;
         } catch (LocalizedException $e) {
             $this->logger->error($e->getMessage());

@@ -101,12 +101,12 @@ class OrderPayment implements OrderPaymentInterface
     {
         try {
             $data = [
-                "document_id" => $documentId,
-                "status"      => $status,
-                "token"       => $token,
-                "amount"      => $amount
+                'document_id' => $documentId,
+                'status'      => $status,
+                'token'       => $token,
+                'amount'      => $amount
             ];
-            $this->logger->info("orderpayment", $data);
+            $this->logger->info('orderpayment', $data);
             if (!empty($documentId)) {
                 $result = $this->helper->generateInvoice($data);
                 return $result;
