@@ -72,6 +72,11 @@ class ResetReplPriceStatusTask
                         ReplEcommPricesTask::CONFIG_PATH,
                         $store->getId()
                     );
+                    $this->replicationHelper->updateCronStatus(
+                        false,
+                        ReplEcommPricesTask::CONFIG_PATH_MAX_KEY,
+                        $store->getId()
+                    );
                 }
             }
         }

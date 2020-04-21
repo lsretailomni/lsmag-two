@@ -104,6 +104,11 @@ class ResetReplDiscountStatusTask
                         ReplEcommDiscountsTask::CONFIG_PATH,
                         $store->getId()
                     );
+                    $this->replicationHelper->updateCronStatus(
+                        false,
+                        ReplEcommDiscountsTask::CONFIG_PATH_MAX_KEY,
+                        $store->getId()
+                    );
                     // Process for Flat tables.
                     // truncating the discount table.
                     $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);

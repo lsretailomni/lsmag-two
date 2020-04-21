@@ -74,6 +74,11 @@ class ResetReplInvStatusTask
                         ReplEcommInventoryStatusTask::CONFIG_PATH,
                         $store->getId()
                     );
+                    $this->replicationHelper->updateCronStatus(
+                        false,
+                        ReplEcommInventoryStatusTask::CONFIG_PATH_MAX_KEY,
+                        $store->getId()
+                    );
                 }
             }
         }
