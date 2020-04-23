@@ -18,8 +18,8 @@ use Magento\Sales\Model\Service\InvoiceService;
  */
 class Data
 {
-    const SUCCESS = "OK";
-    const ERROR = "ERROR";
+    public const SUCCESS = 'OK';
+    public const ERROR = 'ERROR';
 
     /**
      * @var Logger
@@ -46,7 +46,9 @@ class Data
      */
     public $invoiceSender;
 
-    /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
+    /**
+     * @var SearchCriteriaBuilder
+     */
     public $searchCriteriaBuilder;
 
     /**
@@ -84,7 +86,6 @@ class Data
         $documentId = $data['document_id'];
         $amount     = $data['amount'];
         $token      = $data['token'];
-
         try {
             $order           = $this->getOrderByDocumentId($documentId);
             $validateOrder   = $this->validateOrder($order, $amount, $documentId, $token);
@@ -110,15 +111,16 @@ class Data
                 $transactionSave->save();
                 try {
                     $this->invoiceSender->send($invoice);
+                    return self::SUCCESS;
                 } catch (Exception $e) {
                     $this->logger->error('We can\'t send the invoice email right now. ' . $documentId);
-                    return null;
+                    return "We can\'t send the invoice email right now for Document ID #" . $documentId;
                 }
-                return self::SUCCESS;
             }
+            return 'Validate Invoice failed at Magento end.';
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return self::ERROR;
+            return $e->getMessage();
         }
     }
 
@@ -145,6 +147,9 @@ class Data
 
     /**
      * @param $order
+     * @param $amount
+     * @param $documentId
+     * @param $token
      * @return bool
      */
     public function validateOrder($order, $amount, $documentId, $token)
@@ -162,20 +167,18 @@ class Data
             );
             $validate = false;
         }
-
         if ($order->getGrandTotal() < $amount) {
             $this->logger->error(
                 'Invoice Amount is greater than Order Amount' . $documentId
             );
-
             $validate = false;
         }
-
         return $validate;
     }
 
     /**
      * @param $invoice
+     * @param $documentId
      * @return bool
      */
     public function validateInvoice($invoice, $documentId)

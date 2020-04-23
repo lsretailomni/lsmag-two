@@ -46,7 +46,9 @@ class OrderPayment implements OrderPaymentInterface
      */
     public $invoiceSender;
 
-    /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
+    /**
+     * @var SearchCriteriaBuilder
+     */
     public $searchCriteriaBuilder;
 
     /**
@@ -86,16 +88,7 @@ class OrderPayment implements OrderPaymentInterface
     }
 
     /**
-     * set order status Api.
-     *
-     * @param string $document_id
-     * @param string $status (Unchanged=0,Changed=1,Cancelled=2)
-     * @param string $token
-     * @param double $amount
-     *
-     * @return String
-     * @api
-     *
+     * @inheritdoc
      */
     public function set($documentId, $status, $token, $amount)
     {
@@ -111,8 +104,6 @@ class OrderPayment implements OrderPaymentInterface
                 $result = $this->helper->generateInvoice($data);
                 return $result;
             }
-        } catch (LocalizedException $e) {
-            $this->logger->error($e->getMessage());
             return $this->helper::ERROR;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());

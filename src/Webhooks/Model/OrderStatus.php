@@ -5,7 +5,6 @@ namespace Ls\WebHooks\Model;
 use Exception;
 use \Ls\Webhooks\Api\OrderStatusInterface;
 use \Ls\Webhooks\Logger\Logger;
-use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class OrderStatus
@@ -32,16 +31,7 @@ class OrderStatus implements OrderStatusInterface
     }
 
     /**
-     * set order status Api.
-     *
-     * @param string $document_id
-     * @param string $status
-     *
-     *
-     *
-     * @return String
-     * @api
-     *
+     * @inheritdoc
      */
     public function set($document_id, $status)
     {
@@ -52,9 +42,6 @@ class OrderStatus implements OrderStatusInterface
             ];
             $this->logger->info('OrderStatus', $data);
             return self::SUCCESS;
-        } catch (LocalizedException $e) {
-            $this->logger->error($e->getMessage());
-            return self::ERROR;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return self::ERROR;
