@@ -5,6 +5,7 @@ namespace Ls\Replication\Cron;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
+use Magento\Store\Api\Data\StoreInterface;
 
 /**
  * Class ResetReplPriceStatusTask
@@ -12,7 +13,6 @@ use \Ls\Replication\Logger\Logger;
  */
 class ResetReplPriceStatusTask
 {
-
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_price_status_reset';
 
     /** @var ReplicationHelper */
@@ -42,25 +42,53 @@ class ResetReplPriceStatusTask
 
     /**
      * Reset the Inventory Status
+     * @param null $storeData
      */
-    public function execute()
+    public function execute($storeData = null)
     {
-        if ($this->lsr->isLSR()) {
-            $this->replicationHelper->updateConfigValue(
-                $this->replicationHelper->getDateTime(),
-                self::CONFIG_PATH_LAST_EXECUTE
-            );
-            $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH_STATUS);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH);
+        if (!empty($storeData) && $storeData instanceof StoreInterface) {
+            $stores = [$storeData];
+        } else {
+            /** @var StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
+
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                $this->lsr->setStoreId($store->getId());
+                if ($this->lsr->isLSR($store->getId())) {
+                    $this->replicationHelper->updateConfigValue(
+                        $this->replicationHelper->getDateTime(),
+                        self::CONFIG_PATH_LAST_EXECUTE,
+                        $store->getId()
+                    );
+                    $this->replicationHelper->updateCronStatus(
+                        false,
+                        ReplEcommPricesTask::CONFIG_PATH_STATUS,
+                        $store->getId()
+                    );
+                    $this->replicationHelper->updateCronStatus(
+                        false,
+                        ReplEcommPricesTask::CONFIG_PATH,
+                        $store->getId()
+                    );
+                    $this->replicationHelper->updateCronStatus(
+                        false,
+                        ReplEcommPricesTask::CONFIG_PATH_MAX_KEY,
+                        $store->getId()
+                    );
+                }
+            }
         }
     }
 
     /**
+     * @param null $storeData
      * @return array
      */
-    public function executeManually()
+    public function executeManually($storeData = null)
     {
-        $this->execute();
+        $this->execute($storeData);
         return [0];
     }
 }
