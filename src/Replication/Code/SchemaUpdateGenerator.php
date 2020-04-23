@@ -134,12 +134,7 @@ class SchemaUpdateGenerator extends AbstractGenerator
 \$table_name = \$setup->getTable( 'ls_replication_$table_name' ); 
 if(!\$setup->tableExists(\$table_name)) {
 \t\$table = \$setup->getConnection()->newTable( \$table_name );
-\t\$table->addColumn('$table_idx_name', Table::TYPE_INTEGER, 11, [ 'identity' => TRUE, 'primary' => TRUE, 'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ]);
-\t\$table->addColumn('scope', Table::TYPE_TEXT, 8);
-\t\$table->addColumn('scope_id', Table::TYPE_INTEGER, 11);
-\t\$table->addColumn('processed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
-\t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
-\t\$table->addColumn('is_failed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');\n
+\t\$table->addColumn('$table_idx_name', Table::TYPE_INTEGER, 11, [ 'identity' => TRUE, 'primary' => TRUE, 'unsigned' => TRUE, 'nullable' => FALSE, 'auto_increment'=> TRUE ]);\n
 CODE;
         foreach ($property_types as $raw_name => $type) {
             $name    = $raw_name;
@@ -170,33 +165,69 @@ CODE;
             if ($name == 'Id') {
                 $name = 'nav_id';
             }
-            $allColumnsArray[] = [
+            $defaultColumnsArray[] = [
                 'name'       => $name,
                 'field_type' => $field_type,
                 'default'    => $default,
                 'length'     => $length
             ];
-            $method_body       .= "\t\$table->addColumn('$name' , $field_type, $length);\n";
+            $method_body           .= "\t\$table->addColumn('$name' , $field_type, $length);\n";
         }
-        $allColumnsArray[] = [
-            'name'       => 'is_failed',
-            'field_type' => 'Table::TYPE_BOOLEAN',
-            'default'    => 0,
-            'length'     => 1
+        $extraColumnsArray = [
+            [
+                'name'       => 'processed',
+                'field_type' => 'Table::TYPE_BOOLEAN',
+                'default'    => 0,
+                'length'     => 1,
+                'comment'    => 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied'
+            ],
+            [
+                'name'       => 'is_updated',
+                'field_type' => 'Table::TYPE_BOOLEAN',
+                'default'    => 0,
+                'length'     => 1,
+                'comment'    => 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables'
+            ],
+            [
+                'name'       => 'is_failed',
+                'field_type' => 'Table::TYPE_BOOLEAN',
+                'default'    => 0,
+                'length'     => 1,
+                'comment'    => 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables'
+            ],
+            [
+                'name'       => 'checksum',
+                'field_type' => 'Table::TYPE_TEXT',
+                'default'    => 'null',
+                'length'     => "''"
+            ],
+            [
+                'name'       => 'processed_at',
+                'field_type' => 'Table::TYPE_TIMESTAMP',
+                'default'    => 'null',
+                'length'     => "''",
+                'comment'    => 'Processed At'
+            ],
+            [
+                'name'       => 'created_at',
+                'field_type' => 'Table::TYPE_TIMESTAMP',
+                'default'    => 'Table::TIMESTAMP_INIT',
+                'length'     => "''",
+                'comment'    => 'Created At'
+            ],
+            [
+                'name'       => 'updated_at',
+                'field_type' => 'Table::TYPE_TIMESTAMP',
+                'default'    => 'Table::TIMESTAMP_INIT_UPDATE',
+                'length'     => "''",
+                'comment'    => 'Updated At'
+            ]
         ];
-        $allColumnsArray[] = [
-            'name'       => 'checksum',
-            'field_type' => 'Table::TYPE_TEXT',
-            'default'    => 'null',
-            'length'     => "''"
-        ];
-        $allColumnsArray[] = [
-            'name'       => 'processed_at',
-            'field_type' => 'Table::TYPE_TIMESTAMP',
-            'default'    => 'null',
-            'length'     => "''"
-        ];
+        $allColumnsArray   = array_merge($defaultColumnsArray, $extraColumnsArray);
         $method_body       .= <<<CODE
+\t\$table->addColumn('processed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied');
+\t\$table->addColumn('is_updated', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables');
+\t\$table->addColumn('is_failed', Table::TYPE_BOOLEAN, 1, [ 'default' => 0 ], 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables');
 \t\$table->addColumn('checksum', Table::TYPE_TEXT,'');
 \t\$table->addColumn('processed_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => true ], 'Processed At');
 \t\$table->addColumn('created_at', Table::TYPE_TIMESTAMP, null, [ 'nullable' => false, 'default' => Table::TIMESTAMP_INIT ], 'Created At');
@@ -206,7 +237,7 @@ CODE;
 \t\$connection = \$setup->getConnection();
 CODE;
         foreach ($allColumnsArray as $column) {
-            $comment     = ucfirst($column['name']);
+            $comment     = (!empty($column['comment'])) ? $column['comment'] : ucfirst($column['name']);
             $method_body .= "\n\tif (\$connection->tableColumnExists(\$table_name, '" . $column['name'] . "' ) === false) {";
             $method_body .= "\n\t\t\$connection->addColumn(\$table_name, '" . $column['name'] . "', ['length' => " . $column['length'] . ",'default' => " . $column['default'] . ",'type' => " . $column['field_type'] . ", 'comment' => '$comment']);\n";
             $method_body .= "\t} else {";
