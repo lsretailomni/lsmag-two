@@ -181,7 +181,7 @@ class UpgradeData implements UpgradeDataInterface
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         if (version_compare($context->getVersion(), '1.3.0', '<')) {
-            // only need to run  for existing clients who are using older version then 1.3.1
+            // only need to run  for existing clients who are using older version then 1.3.0
             $this->updateFlatTables();
             $this->updateConfigTable();
         }
