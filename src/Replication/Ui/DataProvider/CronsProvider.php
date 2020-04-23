@@ -5,16 +5,16 @@ namespace Ls\Replication\Ui\DataProvider;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\Request\Http;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider;
 use Magento\Framework\View\Element\UiComponent\DataProvider\DataProviderInterface;
-use Magento\Framework\Api\FilterBuilder;
-use Magento\Framework\Api\Search\SearchCriteriaBuilder;
-use Magento\Framework\App\RequestInterface;
+use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
 use Magento\Framework\Xml\Parser;
 use Magento\Store\Model\System\Store as StoreManager;
-use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
 use Magento\Ui\DataProvider\AddFieldToCollectionInterface;
 use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
 
@@ -148,8 +148,10 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 }
                 if ($cronName == 'repl_attributes') {
                     $cronAttributeCheck        = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE, $storeId);
-                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
-                        $storeId);
+                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                        $storeId
+                    );
                     if ($cronAttributeCheck && $cronAttributeVariantCheck) {
                         $fullReplicationStatus = 1;
                     }
@@ -167,8 +169,10 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_PRICE, $storeId);
                 }
                 if ($cronName == 'repl_inventory_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
-                        $storeId);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(
+                        LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
+                        $storeId
+                    );
                 }
                 if ($cronName == 'repl_item_updates_sync') {
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_UPDATES, $storeId);
@@ -177,8 +181,10 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_IMAGES, $storeId);
                 }
                 if ($cronName == 'repl_attributes_value_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
-                        $storeId);
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
+                        $storeId
+                    );
                 }
                 $lastExecute = $this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                     $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName, $storeId),
@@ -188,7 +194,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     '<div class="flag-green custom-grid-flag">Complete</div>' :
                     '<div class="flag-yellow custom-grid-flag">Pending</div>';
                 if (strpos($cronName, '_reset') !== false || $cronName == "sync_version") {
-                    $statusStr = '';
+                    $condition = $statusStr = '';
                 }
                 $items[] = [
                     'id'                    => $counter,
