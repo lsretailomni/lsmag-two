@@ -5,4 +5,7 @@
         <observer name="ls_clickandcollect_add_pickup_info_to_order_page"
                   instance="Ls\Omni\Observer\Adminhtml\BlockObserver"/>
     </event>
+    <event name="sales_order_place_after">
+        <observer name="OrderObserver" instance="Ls\Omni\Observer\Adminhtml\OrderObserver"/>
+    </event>
 </config>
