@@ -192,8 +192,6 @@ class Product extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
-        $tableURLRewrite = $connection->getTableName('url_rewrite');
-        $connection->query("DELETE FROM " . $tableURLRewrite . " WHERE entity_type = 'product';");
         // Update all dependent ls tables to not processed
         foreach ($this->ls_tables as $lsTable) {
             $lsTableName = $connection->getTableName($lsTable);
