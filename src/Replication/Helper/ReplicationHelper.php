@@ -1041,7 +1041,7 @@ class ReplicationHelper extends AbstractHelper
         if ($type && in_array($type, $this->allowedUrlTypes)) {
             // only process if type is either category|product
             $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-            $lsQuery    = "DELETE FROM " . $connection->getTableName("url_rewrite") . " WHERE entity_type = $type";
+            $lsQuery    = "DELETE FROM " . $connection->getTableName("url_rewrite") . " WHERE entity_type = '".$type."' ";
             try {
                 $connection->query($lsQuery);
             } catch (Exception $e) {
