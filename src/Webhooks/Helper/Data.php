@@ -79,11 +79,11 @@ class Data
 
     /**
      * @param $data
-     * @return string|null
+     * @return array
      */
     public function generateInvoice($data)
     {
-        $documentId = $data['document_id'];
+        $documentId = $data['documentId'];
         $amount     = $data['amount'];
         $token      = $data['token'];
         try {
@@ -105,22 +105,42 @@ class Data
                 $invoice->setBaseGrandTotal($amount);
                 $invoice->getOrder()->setTotalPaid($amount);
                 $invoice->getOrder()->setBaseTotalPaid($amount);
-                $order->addStatusHistoryComment('INVOICED FROM LS CENTRAL THROUGH WEBHOOK', false);
+                $order->addCommentToStatusHistory('INVOICED FROM LS CENTRAL THROUGH WEBHOOK', false);
                 $transactionSave = $this->transactionFactory->create()->addObject($invoice)->
                 addObject($invoice->getOrder());
                 $transactionSave->save();
                 try {
                     $this->invoiceSender->send($invoice);
-                    return self::SUCCESS;
+                    return [
+                        "data" => [
+                            'success' => true,
+                            'message' => 'Status updated successfully.'
+                        ]
+                    ];
                 } catch (Exception $e) {
                     $this->logger->error('We can\'t send the invoice email right now. ' . $documentId);
-                    return "We can\'t send the invoice email right now for Document ID #" . $documentId;
+                    return [
+                        "data" => [
+                            'success' => false,
+                            'message' => "We can\'t send the invoice email right now for Document ID #" . $documentId
+                        ]
+                    ];
                 }
             }
-            return 'Validate Invoice failed at Magento end.';
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => 'Validate Invoice failed at Magento end.'
+                ]
+            ];
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return $e->getMessage();
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            ];
         }
     }
 

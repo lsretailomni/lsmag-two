@@ -94,20 +94,30 @@ class OrderPayment implements OrderPaymentInterface
     {
         try {
             $data = [
-                'document_id' => $documentId,
-                'status'      => $status,
-                'token'       => $token,
-                'amount'      => $amount
+                'documentId' => $documentId,
+                'status'     => $status,
+                'token'      => $token,
+                'amount'     => $amount
             ];
             $this->logger->info('orderpayment', $data);
             if (!empty($documentId)) {
                 $result = $this->helper->generateInvoice($data);
                 return $result;
             }
-            return $this->helper::ERROR;
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => 'Document Id is not valid.'
+                ]
+            ];
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return $this->helper::ERROR;
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            ];
         }
     }
 }

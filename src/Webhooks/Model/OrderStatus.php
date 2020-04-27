@@ -33,18 +33,28 @@ class OrderStatus implements OrderStatusInterface
     /**
      * @inheritdoc
      */
-    public function set($document_id, $status)
+    public function set($documentId, $status)
     {
         try {
             $data = [
-                'document_id' => $document_id,
-                'status'      => $status
+                'documentId' => $documentId,
+                'status'     => $status
             ];
             $this->logger->info('OrderStatus', $data);
-            return self::SUCCESS;
+            return [
+                "data" => [
+                    'success' => true,
+                    'message' => 'Status updated successfully.'
+                ]
+            ];
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return self::ERROR;
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            ];
         }
     }
 }
