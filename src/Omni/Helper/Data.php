@@ -205,7 +205,7 @@ class Data extends AbstractHelper
 
                             if ($r->getType() == StoreHourOpeningType::CLOSED) {
                                 if (array_key_exists($r->getDayOfWeek(), $storeHours)) {
-                                    $storeHours[$currentDayOfWeek]['normal'] ['open']     = __('Closed');
+                                    $storeHours[$currentDayOfWeek]['normal'] ['open']     = 'Closed';
                                     $storeHours[$currentDayOfWeek]['normal'] ['close']    = '';
                                     $storeHours[$currentDayOfWeek]['temporary'] ['open']  = '';
                                     $storeHours[$currentDayOfWeek]['temporary'] ['close'] = '';
