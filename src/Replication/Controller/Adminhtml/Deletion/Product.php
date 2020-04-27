@@ -204,6 +204,9 @@ class Product extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
+        // remove the url keys from url_rewrite table.
+        $this->replicationHelper->resetUrlRewriteByType('product');
+
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
         $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();

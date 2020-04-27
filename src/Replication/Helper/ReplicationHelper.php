@@ -50,6 +50,14 @@ class ReplicationHelper extends AbstractHelper
         'image/gif',
         'image/png',
     ];
+
+    /**
+     * @var array
+     */
+    public $allowedUrlTypes = [
+        'category',
+        'product'
+    ];
     /** @var StoreManagerInterface */
     public $storeManager;
 
@@ -1023,5 +1031,23 @@ class ReplicationHelper extends AbstractHelper
             $format
         );
         return $currentDate;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function resetUrlRewriteByType($type = '')
+    {
+        if ($type && in_array($type, $this->allowedUrlTypes)) {
+            // only process if type is either category|product
+            $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+            $lsQuery    = "DELETE FROM " . $connection->getTableName("url_rewrite") . " WHERE entity_type = $type";
+            try {
+                $connection->query($lsQuery);
+            } catch (Exception $e) {
+                $this->_logger->debug($e->getMessage());
+            }
+        }
+        return;
     }
 }
