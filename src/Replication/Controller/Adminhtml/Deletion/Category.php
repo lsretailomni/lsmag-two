@@ -117,8 +117,8 @@ class Category extends Action
         }
         // remove the url keys from url_rewrite table.
         $this->replicationHelper->resetUrlRewriteByType('category');
-        
-        $this->replicationHelper->updateCronStatus(
+
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_CATEGORY
         );

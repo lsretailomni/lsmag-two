@@ -98,7 +98,7 @@ class Discount extends Action
         }
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
-        $this->replicationHelper->updateCronStatus(
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_DISCOUNT
         );

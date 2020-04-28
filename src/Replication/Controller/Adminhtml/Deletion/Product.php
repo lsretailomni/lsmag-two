@@ -216,27 +216,27 @@ class Product extends Action
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-        $this->replicationHelper->updateCronStatus(
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_PRODUCT
         );
-        $this->replicationHelper->updateCronStatus(
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY
         );
-        $this->replicationHelper->updateCronStatus(
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_PRODUCT_PRICE
         );
-        $this->replicationHelper->updateCronStatus(
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_ITEM_IMAGES
         );
-        $this->replicationHelper->updateCronStatus(
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_ITEM_UPDATES
         );
-        $this->replicationHelper->updateCronStatus(
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE
         );

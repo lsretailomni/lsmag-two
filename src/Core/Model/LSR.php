@@ -336,6 +336,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public $scopeConfig;
 
+    /** @var StoreInterface[] */
+    public $stores;
+
     /** @var array End Points */
     public $endpoints = [
         ServiceType::ECOMMERCE => 'UCService.svc'
@@ -569,7 +572,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getAllStores()
     {
-        return $this->storeManager->getStores();
+        /** add it into the object in order to avoid loading multiple time within the same call. */
+        if($this->stores){
+            return $this->stores;
+        }
+        $this->stores = $this->storeManager->getStores();
+        return $this->stores;
 
     }
 
