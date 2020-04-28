@@ -94,8 +94,14 @@ class Data
             if ($validateOrder) {
                 $invoice         = $this->invoiceService->prepareInvoice($order);
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
+            } else {
+                return [
+                    "data" => [
+                        'success' => false,
+                        'message' => 'Validate order failed at Magento end.'
+                    ]
+                ];
             }
-
             if ($validateInvoice) {
                 $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
                 $invoice->register();
@@ -114,15 +120,15 @@ class Data
                     return [
                         "data" => [
                             'success' => true,
-                            'message' => 'Status updated successfully.'
+                            'message' => 'Order posted successfully and invoice sent to customer for document id #' . $documentId
                         ]
                     ];
                 } catch (Exception $e) {
-                    $this->logger->error('We can\'t send the invoice email right now. ' . $documentId);
+                    $this->logger->error('We can\'t send the invoice email right now for document id #' . $documentId);
                     return [
                         "data" => [
                             'success' => false,
-                            'message' => "We can\'t send the invoice email right now for Document ID #" . $documentId
+                            'message' => "We can\'t send the invoice email right now for document id #" . $documentId
                         ]
                     ];
                 }
@@ -130,7 +136,7 @@ class Data
             return [
                 "data" => [
                     'success' => false,
-                    'message' => 'Validate Invoice failed at Magento end.'
+                    'message' => 'Validate invoice failed at Magento end.'
                 ]
             ];
         } catch (Exception $e) {
@@ -177,19 +183,19 @@ class Data
         $validate = true;
         if (!$order->getId() || $order->getPayment()->getLastTransId() != $token) {
             $this->logger->error(
-                'The order does not exist or token does not match.' . $documentId
+                'The order does not exist or token does not match for document id #' . $documentId
             );
             $validate = false;
         }
         if ($order->hasInvoices()) {
             $this->logger->error(
-                'The order already has invoice created.' . $documentId
+                'Invoice already created for document id #' . $documentId
             );
             $validate = false;
         }
         if ($order->getGrandTotal() < $amount) {
             $this->logger->error(
-                'Invoice Amount is greater than Order Amount' . $documentId
+                'Invoice amount is greater than order amount for document id #' . $documentId
             );
             $validate = false;
         }
@@ -206,7 +212,7 @@ class Data
         $validate = true;
         if (!$invoice || !$invoice->getTotalQty()) {
             $this->logger->error(
-                'We can\'t save the invoice right now' . $documentId
+                'We can\'t save the invoice right now for document id #' . $documentId
             );
             $validate = false;
         }
