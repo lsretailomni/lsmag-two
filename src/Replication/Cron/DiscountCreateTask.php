@@ -172,9 +172,10 @@ class DiscountCreateTask
                         foreach ($publishedOfferCollection as $item) {
                             $filters = [
                                 ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
-                                ['field'          => 'StoreId',
-                                 'value'          => $this->lsr->getActiveWebStore(),
-                                 'condition_type' => 'eq'
+                                [
+                                    'field'          => 'StoreId',
+                                    'value'          => $this->lsr->getActiveWebStore(),
+                                    'condition_type' => 'eq'
                                 ],
                                 ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
                                 ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
@@ -241,6 +242,9 @@ class DiscountCreateTask
                         } else {
                             $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
                         }
+                    } else {
+                        // set the status to success if there is nothing to process.
+                        $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
                     }
                     /* Delete the IsDeleted offers */
                     $this->deleteOffers();
@@ -261,7 +265,7 @@ class DiscountCreateTask
      */
     public function executeManually($storeData = null)
     {
-        $this->execute();
+        $this->execute($storeData);
         $discountsLeftToProcess = $this->getRemainingRecords($storeData->getId());
         return [$discountsLeftToProcess];
     }
