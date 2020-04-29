@@ -36,8 +36,9 @@ class NavStore implements OptionSourceInterface
     public function toOptionArray()
     {
         $option_array = [['value' => '', 'label' => __('Please select your web store')]];
-        if (!empty($this->getNavStores())) {
-            foreach ($this->getNavStores() as $nav_store) {
+        $stores = $this->getNavStores();
+        if (!empty($stores)) {
+            foreach ($stores as $nav_store) {
                 $option_array[] = ['value' => $nav_store->getId(), 'label' => $nav_store->getDescription()];
             }
         }
