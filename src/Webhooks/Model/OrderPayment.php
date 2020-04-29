@@ -8,8 +8,6 @@ use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Logger\Logger;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\DB\TransactionFactory;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Service\InvoiceService;
@@ -62,7 +60,6 @@ class OrderPayment implements OrderPaymentInterface
      * @param OrderRepositoryInterface $orderRepository
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
-     * @param ManagerInterface $messageManager
      * @param InvoiceSender $invoiceSender
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param Data $helper
@@ -72,7 +69,6 @@ class OrderPayment implements OrderPaymentInterface
         OrderRepositoryInterface $orderRepository,
         InvoiceService $invoiceService,
         TransactionFactory $transactionFactory,
-        ManagerInterface $messageManager,
         InvoiceSender $invoiceSender,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         Data $helper
@@ -101,8 +97,7 @@ class OrderPayment implements OrderPaymentInterface
             ];
             $this->logger->info('orderpayment', $data);
             if (!empty($documentId)) {
-                $result = $this->helper->generateInvoice($data);
-                return $result;
+                return $this->helper->generateInvoice($data);
             }
             return [
                 "data" => [

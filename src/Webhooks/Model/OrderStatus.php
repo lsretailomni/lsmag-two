@@ -12,9 +12,6 @@ use \Ls\Webhooks\Logger\Logger;
  */
 class OrderStatus implements OrderStatusInterface
 {
-    const SUCCESS = 'OK';
-    const ERROR = 'ERROR';
-
     /**
      * @var Logger
      */

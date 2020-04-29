@@ -18,9 +18,6 @@ use Magento\Sales\Model\Service\InvoiceService;
  */
 class Data
 {
-    public const SUCCESS = 'OK';
-    public const ERROR = 'ERROR';
-
     /**
      * @var Logger
      */
