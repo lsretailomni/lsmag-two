@@ -2,17 +2,18 @@
 
 namespace Ls\Webhooks\Api;
 
+/**
+ * Interface OrderStatusInterface
+ * @package Ls\Webhooks\Api
+ * @api
+ */
 interface OrderStatusInterface
 {
     /**
-     * set order status Api.
-     *
-     * @param string $document_id
+     * Set order status API
+     * @param string $documentId
      * @param string $status
-     *
-     * @return string
-     * @api
-     *
+     * @return mixed
      */
-    public function set($document_id, $status);
+    public function set($documentId, $status);
 }
