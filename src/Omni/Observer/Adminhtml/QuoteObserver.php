@@ -3,12 +3,12 @@
 namespace Ls\Omni\Observer\Adminhtml;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\OneList;
-use Ls\Omni\Client\Ecommerce\Entity\Order;
-use Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\Data;
-use LS\Omni\Helper\ItemHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\OneList;
+use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\Data;
+use \LS\Omni\Helper\ItemHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Quote\Model\Quote;
