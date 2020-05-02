@@ -5,4 +5,8 @@
         <observer name="ls_clickandcollect_add_pickup_info_to_order_page"
                   instance="Ls\Omni\Observer\Adminhtml\BlockObserver"/>
     </event>
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="basket_calculation"
+                  instance="Ls\Omni\Observer\Adminhtml\QuoteObserver"/>
+    </event>
 </config>
