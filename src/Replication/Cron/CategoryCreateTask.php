@@ -581,12 +581,17 @@ class CategoryCreateTask
      */
     public function updateImagesOnly()
     {
-        $filters  = [
+        $filters    = [
             ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
-            ['field' => 'main_table.TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq']
         ];
-        $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
-        $images   = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
+        $parameter1 = ['field' => 'main_table.TableName', 'value' => 'Hierarchy Nodes', 'condition_type' => 'eq'];
+        $parameter2 = ['field' => 'main_table.TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq'];
+        $criteria   = $this->replicationHelper->buildCriteriaForCategoryImages(
+            $filters,
+            $parameter1,
+            $parameter2
+        );
+        $images     = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
         if (!empty($images)) {
             foreach ($images as $image) {
                 try {
