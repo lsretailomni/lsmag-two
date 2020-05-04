@@ -2,19 +2,20 @@
 
 namespace Ls\Webhooks\Api;
 
+/**
+ * Interface OrderPaymentInterface
+ * @package Ls\Webhooks\Api
+ * @api
+ */
 interface OrderPaymentInterface
 {
     /**
-     * set order status Api.
-     *
-     * @param string $document_id
+     * Set order payment status API
+     * @param string $documentId
      * @param string $status
      * @param string $token
-     * @param double $amount
-     *
-     * @return string
-     * @api
-     *
+     * @param string $amount
+     * @return mixed
      */
-    public function set($document_id, $status, $token, $amount);
+    public function set($documentId, $status, $token, $amount);
 }

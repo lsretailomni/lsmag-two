@@ -192,8 +192,6 @@ class Product extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
-        $tableURLRewrite = $connection->getTableName('url_rewrite');
-        $connection->query("DELETE FROM " . $tableURLRewrite . " WHERE entity_type = 'product';");
         // Update all dependent ls tables to not processed
         foreach ($this->ls_tables as $lsTable) {
             $lsTableName = $connection->getTableName($lsTable);
@@ -204,6 +202,9 @@ class Product extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
+        // remove the url keys from url_rewrite table.
+        $this->replicationHelper->resetUrlRewriteByType('product');
+
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
         $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();

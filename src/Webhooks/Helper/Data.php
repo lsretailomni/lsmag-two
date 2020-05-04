@@ -18,9 +18,6 @@ use Magento\Sales\Model\Service\InvoiceService;
  */
 class Data
 {
-    const SUCCESS = "OK";
-    const ERROR = "ERROR";
-
     /**
      * @var Logger
      */
@@ -46,7 +43,9 @@ class Data
      */
     public $invoiceSender;
 
-    /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
+    /**
+     * @var SearchCriteriaBuilder
+     */
     public $searchCriteriaBuilder;
 
     /**
@@ -77,14 +76,13 @@ class Data
 
     /**
      * @param $data
-     * @return string|null
+     * @return array
      */
     public function generateInvoice($data)
     {
-        $documentId = $data['document_id'];
+        $documentId = $data['documentId'];
         $amount     = $data['amount'];
         $token      = $data['token'];
-
         try {
             $order           = $this->getOrderByDocumentId($documentId);
             $validateOrder   = $this->validateOrder($order, $amount, $documentId, $token);
@@ -93,8 +91,14 @@ class Data
             if ($validateOrder) {
                 $invoice         = $this->invoiceService->prepareInvoice($order);
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
+            } else {
+                return [
+                    "data" => [
+                        'success' => false,
+                        'message' => 'Validate order failed at Magento end.'
+                    ]
+                ];
             }
-
             if ($validateInvoice) {
                 $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
                 $invoice->register();
@@ -104,21 +108,42 @@ class Data
                 $invoice->setBaseGrandTotal($amount);
                 $invoice->getOrder()->setTotalPaid($amount);
                 $invoice->getOrder()->setBaseTotalPaid($amount);
-                $order->addStatusHistoryComment('INVOICED FROM LS CENTRAL THROUGH WEBHOOK', false);
+                $order->addCommentToStatusHistory('INVOICED FROM LS CENTRAL THROUGH WEBHOOK', false);
                 $transactionSave = $this->transactionFactory->create()->addObject($invoice)->
                 addObject($invoice->getOrder());
                 $transactionSave->save();
                 try {
                     $this->invoiceSender->send($invoice);
+                    return [
+                        "data" => [
+                            'success' => true,
+                            'message' => 'Order posted successfully and invoice sent to customer for document id #' . $documentId
+                        ]
+                    ];
                 } catch (Exception $e) {
-                    $this->logger->error('We can\'t send the invoice email right now. ' . $documentId);
-                    return null;
+                    $this->logger->error('We can\'t send the invoice email right now for document id #' . $documentId);
+                    return [
+                        "data" => [
+                            'success' => false,
+                            'message' => "We can\'t send the invoice email right now for document id #" . $documentId
+                        ]
+                    ];
                 }
-                return self::SUCCESS;
             }
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => 'Validate invoice failed at Magento end.'
+                ]
+            ];
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return self::ERROR;
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            ];
         }
     }
 
@@ -145,6 +170,9 @@ class Data
 
     /**
      * @param $order
+     * @param $amount
+     * @param $documentId
+     * @param $token
      * @return bool
      */
     public function validateOrder($order, $amount, $documentId, $token)
@@ -152,30 +180,28 @@ class Data
         $validate = true;
         if (!$order->getId() || $order->getPayment()->getLastTransId() != $token) {
             $this->logger->error(
-                'The order does not exist or token does not match.' . $documentId
+                'The order does not exist or token does not match for document id #' . $documentId
             );
             $validate = false;
         }
         if ($order->hasInvoices()) {
             $this->logger->error(
-                'The order already has invoice created.' . $documentId
+                'Invoice already created for document id #' . $documentId
             );
             $validate = false;
         }
-
         if ($order->getGrandTotal() < $amount) {
             $this->logger->error(
-                'Invoice Amount is greater than Order Amount' . $documentId
+                'Invoice amount is greater than order amount for document id #' . $documentId
             );
-
             $validate = false;
         }
-
         return $validate;
     }
 
     /**
      * @param $invoice
+     * @param $documentId
      * @return bool
      */
     public function validateInvoice($invoice, $documentId)
@@ -183,7 +209,7 @@ class Data
         $validate = true;
         if (!$invoice || !$invoice->getTotalQty()) {
             $this->logger->error(
-                'We can\'t save the invoice right now' . $documentId
+                'We can\'t save the invoice right now for document id #' . $documentId
             );
             $validate = false;
         }
