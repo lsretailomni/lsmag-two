@@ -8,8 +8,6 @@ use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Logger\Logger;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\DB\TransactionFactory;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Service\InvoiceService;
@@ -46,7 +44,9 @@ class OrderPayment implements OrderPaymentInterface
      */
     public $invoiceSender;
 
-    /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
+    /**
+     * @var SearchCriteriaBuilder
+     */
     public $searchCriteriaBuilder;
 
     /**
@@ -60,7 +60,6 @@ class OrderPayment implements OrderPaymentInterface
      * @param OrderRepositoryInterface $orderRepository
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
-     * @param ManagerInterface $messageManager
      * @param InvoiceSender $invoiceSender
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param Data $helper
@@ -70,7 +69,6 @@ class OrderPayment implements OrderPaymentInterface
         OrderRepositoryInterface $orderRepository,
         InvoiceService $invoiceService,
         TransactionFactory $transactionFactory,
-        ManagerInterface $messageManager,
         InvoiceSender $invoiceSender,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         Data $helper
@@ -86,37 +84,35 @@ class OrderPayment implements OrderPaymentInterface
     }
 
     /**
-     * set order status Api.
-     *
-     * @param string $document_id
-     * @param string $status (Unchanged=0,Changed=1,Cancelled=2)
-     * @param string $token
-     * @param double $amount
-     *
-     * @return String
-     * @api
-     *
+     * @inheritdoc
      */
     public function set($documentId, $status, $token, $amount)
     {
         try {
             $data = [
-                "document_id" => $documentId,
-                "status"      => $status,
-                "token"       => $token,
-                "amount"      => $amount
+                'documentId' => $documentId,
+                'status'     => $status,
+                'token'      => $token,
+                'amount'     => $amount
             ];
-            $this->logger->info("orderpayment", $data);
+            $this->logger->info('orderpayment', $data);
             if (!empty($documentId)) {
-                $result = $this->helper->generateInvoice($data);
-                return $result;
+                return $this->helper->generateInvoice($data);
             }
-        } catch (LocalizedException $e) {
-            $this->logger->error($e->getMessage());
-            return $this->helper::ERROR;
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => 'Document Id is not valid.'
+                ]
+            ];
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return $this->helper::ERROR;
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            ];
         }
     }
 }

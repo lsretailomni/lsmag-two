@@ -364,20 +364,29 @@ class ContactHelper extends AbstractHelper
      */
     public function createNewCustomerAgainstProvidedInformation($contact, $password)
     {
+        // Create Customer to Magento
         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
         $customer  = $this->customerFactory->create();
-        $customer->setPassword($password)
-            ->setData('website_id', $websiteId)
-            ->setData('email', $contact->getEmail())
-            ->setData('lsr_id', $contact->getId())
-            ->setData('lsr_username', $contact->getUserName())
-            ->setData('firstname', $contact->getFirstName())
-            ->setData('lastname', $contact->getLastName());
-        $this->customerResourceModel->save($customer);
+        try {
+            $cards  = $contact->getCards()->getCard();
+            $cardId = $cards[0]->getId();
+            $customer->setPassword($password)
+                ->setData('website_id', $websiteId)
+                ->setData('email', $contact->getEmail())
+                ->setData('lsr_id', $contact->getId())
+                ->setData('lsr_username', $contact->getUserName())
+                ->setData('lsr_cardid', $cardId)
+                ->setData('firstname', $contact->getFirstName())
+                ->setData('lastname', $contact->getLastName());
+            $this->customerResourceModel->save($customer);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
         // Save Address
-        $addressArray = $contact->getAddresses();
-        if (!empty($addressArray)) {
-            $addressInfo = reset($addressArray->getAddress());
+        $addressesArray = $contact->getAddresses();
+        if (!empty($addressesArray)) {
+            $addressArray = $addressesArray->getAddress();
+            $addressInfo  = reset($addressArray);
             if ($addressInfo instanceof Entity\Address && !empty($addressInfo->getCountry())) {
                 $address = $this->addressFactory->create();
                 $address->setCustomerId($customer->getId())

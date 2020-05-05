@@ -116,8 +116,10 @@ abstract class AbstractOperation implements OperationInterface
                 $response = null;
             }
         }
-        $this->debugLog($operation_name);
-
+        if(!is_null($response)){
+            /** Only log when we have something to log. */
+            $this->debugLog($operation_name);
+        }
         return $response;
     }
 

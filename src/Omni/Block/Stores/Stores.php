@@ -129,7 +129,7 @@ class Stores extends Template
                 ) . '</span></td>';
         } elseif ($hour['normal']['open'] == StoreHourOpeningType::CLOSED) {
             $formattedTime = "<td class='dayofweek'>" . $hour['day'] . "</td><td class='normal-hour'>
-            <span class='closed'>" . $hour['normal']['open'] . '</span></td>';
+            <span class='closed'>" . __("Closed") . '</span></td>';
         } else {
             if (empty($hour['normal'])) {
                 $formattedTime = "<td class='dayofweek'>" . $hour['day'] . "</td><td><span class='special-hour'>" .

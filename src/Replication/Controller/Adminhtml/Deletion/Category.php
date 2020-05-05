@@ -115,6 +115,9 @@ class Category extends Action
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
+        // remove the url keys from url_rewrite table.
+        $this->replicationHelper->resetUrlRewriteByType('category');
+        
         $this->replicationHelper->updateCronStatus(
             false,
             LSR::SC_SUCCESS_CRON_CATEGORY

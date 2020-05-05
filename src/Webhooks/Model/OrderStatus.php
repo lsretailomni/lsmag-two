@@ -5,7 +5,6 @@ namespace Ls\WebHooks\Model;
 use Exception;
 use \Ls\Webhooks\Api\OrderStatusInterface;
 use \Ls\Webhooks\Logger\Logger;
-use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class OrderStatus
@@ -13,9 +12,6 @@ use Magento\Framework\Exception\LocalizedException;
  */
 class OrderStatus implements OrderStatusInterface
 {
-    const SUCCESS = "OK";
-    const ERROR = "ERROR";
-
     /**
      * @var Logger
      */
@@ -32,32 +28,30 @@ class OrderStatus implements OrderStatusInterface
     }
 
     /**
-     * set order status Api.
-     *
-     * @param string $document_id
-     * @param string $status
-     *
-     *
-     *
-     * @return String
-     * @api
-     *
+     * @inheritdoc
      */
-    public function set($document_id, $status)
+    public function set($documentId, $status)
     {
         try {
             $data = [
-                "document_id" => $document_id,
-                "status"      => $status
+                'documentId' => $documentId,
+                'status'     => $status
             ];
-            $this->logger->info("OrderStatus", $data);
-            return self::SUCCESS;
-        } catch (LocalizedException $e) {
-            $this->logger->error($e->getMessage());
-            return self::ERROR;
+            $this->logger->info('OrderStatus', $data);
+            return [
+                "data" => [
+                    'success' => true,
+                    'message' => 'Status updated successfully.'
+                ]
+            ];
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return self::ERROR;
+            return [
+                "data" => [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            ];
         }
     }
 }
