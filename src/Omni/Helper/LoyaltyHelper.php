@@ -284,7 +284,6 @@ class LoyaltyHelper extends AbstractHelper
         $cacheId  = LSR::POINTRATE . $storeId;
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
-            $this->_logger->debug('Found point rate from cache ' . $cacheId);
             return $response;
         }
         $response = null;
