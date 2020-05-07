@@ -664,6 +664,29 @@ class ReplicationHelper extends AbstractHelper
         $this->flushByTypeCode('config');
     }
 
+
+    /**
+     * USE THIS WHEN YOU WANT TO RESET STATUS FOR ALL THE STORES WITHOUT PASSING ANY STORE ID
+     * @param $data
+     * @param $path
+     */
+    public function updateCronStatusForAllStores($data, $path)
+    {
+        $stores = $this->lsr->getAllStores();
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                $this->configWriter->save(
+                    $path,
+                    ($data) ? 1 : 0,
+                    ScopeInterface::SCOPE_STORES, $store->getId()
+                );
+
+            }
+            $this->flushByTypeCode('config');
+        }
+
+    }
+
     /**
      * Update the config value
      * @param $value
@@ -1041,7 +1064,7 @@ class ReplicationHelper extends AbstractHelper
         if ($type && in_array($type, $this->allowedUrlTypes)) {
             // only process if type is either category|product
             $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-            $lsQuery    = "DELETE FROM " . $connection->getTableName("url_rewrite") . " WHERE entity_type = '".$type."' ";
+            $lsQuery    = "DELETE FROM " . $connection->getTableName("url_rewrite") . " WHERE entity_type = '" . $type . "' ";
             try {
                 $connection->query($lsQuery);
             } catch (Exception $e) {
