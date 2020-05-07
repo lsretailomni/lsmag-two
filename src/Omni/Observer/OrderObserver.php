@@ -3,11 +3,11 @@
 namespace Ls\Omni\Observer;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\ContactHelper;
-use \Ls\Omni\Helper\OrderHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Exception\InvalidEnumException;
+use Ls\Omni\Helper\BasketHelper;
+use Ls\Omni\Helper\ContactHelper;
+use Ls\Omni\Helper\OrderHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
@@ -15,6 +15,8 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
@@ -24,32 +26,33 @@ use Psr\Log\LoggerInterface;
  */
 class OrderObserver implements ObserverInterface
 {
+    /**
+     * @var CartRepositoryInterface
+     */
+    public $quoteRepository;
+    /**
+     * @var ManagerInterface
+     */
+    protected $messageManager;
     /** @var ContactHelper */
     private $contactHelper;
-
     /** @var BasketHelper */
     private $basketHelper;
-
     /** @var OrderHelper */
     private $orderHelper;
-
     /** @var LoggerInterface */
     private $logger;
-
-    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
+    /** @var CustomerProxy $customerSession */
     private $customerSession;
-
     /** @var Proxy $checkoutSession */
     private $checkoutSession;
-
     /** @var bool */
     private $watchNextSave = false;
-
     /** @var Order $orderResourceModel */
     private $orderResourceModel;
-
     /** @var LSR @var */
     private $lsr;
+
 
     /**
      * OrderObserver constructor.
@@ -61,8 +64,9 @@ class OrderObserver implements ObserverInterface
      * @param Proxy $checkoutSession
      * @param Order $orderResourceModel
      * @param LSR $LSR
+     * @param ManagerInterface $messageManager
+     * @param CartRepositoryInterface $quoteRepository
      */
-
     public function __construct(
         ContactHelper $contactHelper,
         BasketHelper $basketHelper,
@@ -71,7 +75,9 @@ class OrderObserver implements ObserverInterface
         CustomerProxy $customerSession,
         Proxy $checkoutSession,
         Order $orderResourceModel,
-        LSR $LSR
+        LSR $LSR,
+        ManagerInterface $messageManager,
+        CartRepositoryInterface $quoteRepository
     ) {
         $this->contactHelper      = $contactHelper;
         $this->basketHelper       = $basketHelper;
@@ -81,6 +87,8 @@ class OrderObserver implements ObserverInterface
         $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
+        $this->messageManager     = $messageManager;
+        $this->quoteRepository    = $quoteRepository;
     }
 
     /**
@@ -97,10 +105,9 @@ class OrderObserver implements ObserverInterface
          * Adding condition to only process if LSR is enabled.
          */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $success            = false;
-            $check              = false;
-            $order              = $observer->getEvent()->getData('order');
-            $oneListCalculation = $this->basketHelper->getOneListCalculation();
+            $check             = false;
+            $order             = $observer->getEvent()->getData('order');
+            $adminOrderRequest = $observer->getEvent()->getData('admin_order_request');
             if (empty($order)) {
                 $orderIds = $observer->getEvent()->getOrderIds();
                 $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
@@ -123,6 +130,10 @@ class OrderObserver implements ObserverInterface
                     $check         = $paymentMethod->isOffline();
                 }
             }
+            $event = $observer->getEvent()->getName();
+            if ($event != "checkout_onepage_controller_success_action" || $check == false) {
+                $oneListCalculation = $this->basketHelper->getOneListCalculation();
+            }
             if (($check == true || !empty($transId)) && !empty($oneListCalculation)) {
                 $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                 $response = $this->orderHelper->placeOrder($request);
@@ -133,10 +144,17 @@ class OrderObserver implements ObserverInterface
                         $this->orderResourceModel->save($order);
                         $this->checkoutSession->setLastDocumentId($documentId);
                         $this->checkoutSession->unsetData('member_points');
+                        if ($adminOrderRequest) {
+                            $this->messageManager->addSuccessMessage(__('Order request has been sent successfully!'));
+                        }
                         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                             $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-                            //TODO error which Hjalti highlighted. when there is only one item in the cart and customer remove that.
                             $success = $this->basketHelper->delete($oneList);
+                            if ($success) {
+                                $quote   = $this->quoteRepository->get($order->getQuoteId());
+                                $quote->setLsOnelistId('');
+                                $this->quoteRepository->save($quote);
+                            }
                             $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
                             // delete checkout session data.
                             $this->basketHelper->unSetOneListCalculation();
@@ -148,6 +166,14 @@ class OrderObserver implements ObserverInterface
                         $this->logger->critical(
                             __('Something terrible happened while placing order')
                         );
+                        $this->checkoutSession->unsetData('member_points');
+                        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+                            $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
+                            $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
+                            // delete checkout session data.
+                            $this->basketHelper->unSetOneListCalculation();
+                            $this->basketHelper->unsetCouponCode();
+                        }
                     }
                 } catch (Exception $e) {
                     $this->logger->error($e->getMessage());

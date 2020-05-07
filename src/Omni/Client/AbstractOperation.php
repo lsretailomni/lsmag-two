@@ -154,10 +154,15 @@ abstract class AbstractOperation implements OperationInterface
         //@codingStandardsIgnoreEnd
         $isEnable = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
         if ($isEnable) {
-            $this->logger->debug("==== REQUEST == ".date("Y-m-d H:i:s O")." == ".$operation_name." ====");
-            $this->logger->debug($this->formatXML($this->getClient()->getLastRequest()));
-            $this->logger->debug("==== RESPONSE == ".date("Y-m-d H:i:s O")." == ".$operation_name." ====");
-            $this->logger->debug($this->formatXML($this->getClient()->getLastResponse()));
+            $this->logger->debug("==== REQUEST == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
+            if (!empty($this->getClient()->getLastRequest())) {
+                $this->logger->debug($this->formatXML($this->getClient()->getLastRequest()));
+            }
+
+            $this->logger->debug("==== RESPONSE == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
+            if (!empty($this->getClient()->getLastRequest())) {
+                $this->logger->debug($this->formatXML($this->getClient()->getLastResponse()));
+            }
         }
     }
 

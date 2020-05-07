@@ -95,6 +95,23 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ]
             );
         }
+        $columnsUpdateType = [
+            ['table' => 'quote', 'column' => 'ls_onelist_id', 'datatype' => Table::TYPE_TEXT, 'default' => ''],
+        ];
+
+        foreach ($columnsUpdateType as $item) {
+            $setup->getConnection()->addColumn(
+                $setup->getTable($item['table']),
+                $item['column'],
+                [
+                    'type'     => $item['datatype'],
+                    'visible'  => false,
+                    'nullable' => true,
+                    'default'  => $item['default'],
+                    'comment'  => 'Ls Onelist'
+                ]
+            );
+        }
 
         $setup->endSetup();
     }

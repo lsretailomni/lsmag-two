@@ -126,6 +126,7 @@ class CartObserver implements ObserverInterface
                     $basketData = $this->basketHelper->update($oneList);
                     $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
                     if (!empty($basketData)) {
+                        $this->checkoutSession->getQuote()->setLsOnelistId($oneList->getId());
                         $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
                     }
                     if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||

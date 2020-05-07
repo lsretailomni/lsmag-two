@@ -670,10 +670,11 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * @param null $id
      * @return array|bool|Entity\OneList|Entity\OneList[]|mixed|null
      * @throws InvalidEnumException
      */
-    public function get()
+    public function get($id = null)
     {
         /** @var Entity\OneList $list */
         $list = null;
@@ -703,6 +704,14 @@ class BasketHelper extends AbstractHelper
             } catch (Exception $e) {
                 $this->_logger->critical($e);
             }
+        }
+        if ($id) {
+            $entity = new Entity\OneListGetById();
+            $entity->setId($id);
+            $entity->setIncludeLines(true);
+            $request = new Operation\OneListGetById();
+            $response = $request->execute($entity);
+            return $response->getOneListGetByIdResult();
         }
 
         /** If no list found from customer session or registered user then get from omni */
