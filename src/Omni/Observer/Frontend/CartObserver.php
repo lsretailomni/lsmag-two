@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\Omni\Observer;
+namespace Ls\Omni\Observer\Frontend;
 
 use Exception;
 use \Ls\Core\Model\LSR;
@@ -20,7 +20,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class CartObserver
- * @package Ls\Omni\Observer
+ * @package Ls\Omni\Observer\Frontend
  */
 class CartObserver implements ObserverInterface
 {

@@ -99,7 +99,6 @@ class OrderObserver implements ObserverInterface
          * Adding condition to only process if LSR is enabled.
          */
         if ($this->lsr->isLSR($order->getStoreId())) {
-            $success            = false;
             $check              = false;
             $oneListCalculation = $this->basketHelper->getOneListCalculation();
             if (!empty($order)) {
@@ -138,7 +137,7 @@ class OrderObserver implements ObserverInterface
                     $this->logger->error($e->getMessage());
                 }
             }
-            return $this;
         }
+        return $this;
     }
 }

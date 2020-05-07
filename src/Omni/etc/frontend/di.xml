@@ -11,7 +11,6 @@
                 <item name="paystore_config_provider" xsi:type="object">Ls\Omni\Model\PayStoreConfigProvider</item>
                 <!-- In order to get all the available coupons in the window.checkoutConfig -->
                 <item name="custom-coupons" xsi:type="object">Ls\Omni\Model\Checkout\CouponsProvider</item>
-
             </argument>
         </arguments>
     </type>
@@ -19,11 +18,9 @@
         <plugin name="sr-customer-app-action-dispatchController-context-plugin" type="Ls\Omni\Plugin\App\Action\Context"
                 sortOrder="15"/>
     </type>
-
     <type name="Magento\Customer\Controller\Section\Load">
         <plugin name="ls_omni_session_unblocker" type="Ls\Omni\Plugin\Session\SectionLoadControllerPlugin"/>
     </type>
-
     <type name="Ls\Omni\Plugin\Session\SectionLoadControllerPlugin">
         <arguments>
             <argument name="additionalSessions" xsi:type="array">
@@ -34,11 +31,12 @@
             </argument>
         </arguments>
     </type>
-
     <type name="Magento\Quote\Model\Quote\Item">
         <plugin name="changeAllowProductsBehaviour" type="Ls\Omni\Plugin\Magento\Quote\Model\Quote\ItemPlugin" sortOrder="1" />
     </type>
     <type name="Magento\ConfigurableProduct\Model\ConfigurableAttributeData">
         <plugin name="ls_omni_attribute_option_data_sort" type="Ls\Omni\Plugin\Product\AttributeData" sortOrder="10" />
     </type>
+    <!-- To Override Tax Calculator -->
+    <preference for="Magento\Tax\Model\Sales\Total\Quote\Tax" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Tax"/>
 </config>
