@@ -2,12 +2,14 @@
 
 namespace Ls\Omni\Controller\Adminhtml\Order;
 
-use Ls\Omni\Helper\BasketHelper;
+use Exception;
+use \Ls\Omni\Helper\BasketHelper;
 use Magento\Backend\App\Action;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class LoadStore
@@ -15,7 +17,6 @@ use Magento\Sales\Model\Order;
  */
 class Request extends Action
 {
-
     /**
      * @var OrderRepositoryInterface
      */
@@ -26,13 +27,20 @@ class Request extends Action
      */
     public $quoteRepository;
 
-    /** @var BasketHelper */
+    /**
+     * @var BasketHelper
+     */
     public $basketHelper;
 
     /**
      * @var ManagerInterface
      */
     public $eventManager;
+
+    /**
+     * @var LoggerInterface
+     */
+    public $logger;
 
     /**
      * Request constructor.
@@ -47,44 +55,46 @@ class Request extends Action
         OrderRepositoryInterface $orderRepository,
         CartRepositoryInterface $quoteRepository,
         BasketHelper $basketHelper,
-        ManagerInterface $eventManager
+        ManagerInterface $eventManager,
+        LoggerInterface $logger
     ) {
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
         $this->basketHelper    = $basketHelper;
         $this->eventManager    = $eventManager;
+        $this->logger          = $logger;
         parent::__construct($context);
     }
 
-
     public function execute()
     {
-        $orderId = $this->getRequest()->getParam('order_id');
-        /** @var Order $order */
-        $order     = $this->orderRepository->get($orderId);
-        $quote     = $this->quoteRepository->get($order->getQuoteId());
-        $oneListId = $quote->getLsOnelistId();
+        $orderId        = $this->getRequest()->getParam('order_id');
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
-        if (!empty($oneListId)) {
-            $oneList = $this->basketHelper->get($oneListId);
-            $basketData = $this->basketHelper->update($oneList);
-            if ($basketData) {
-                $this->eventManager->dispatch(
-                    'sales_order_place_after',
-                    ['order' => $order, 'admin_order_request' => 1]
-                );
+        try {
+            /** @var Order $order */
+            $order = $this->orderRepository->get($orderId);
+            $quote = $this->quoteRepository->get($order->getQuoteId());
+            $couponCode = $order->getCouponCode();
+            $oneListId = $quote->getLsOnelistId();
+            if (!empty($oneListId)) {
+                $oneList = $this->basketHelper->get($oneListId);
+                if ($oneList) {
+                    if (!empty($couponCode)) {
+                        $this->basketHelper->couponCode = $couponCode;
+                    }
+                    $basketData = $this->basketHelper->update($oneList);
+                    if ($basketData) {
+                        $this->eventManager->dispatch(
+                            'sales_order_place_after',
+                            ['order' => $order]
+                        );
+                    }
+                }
             }
-
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
         }
         return $resultRedirect;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return true;
     }
 }

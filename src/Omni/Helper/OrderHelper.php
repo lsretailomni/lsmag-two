@@ -102,7 +102,6 @@ class OrderHelper extends AbstractHelper
     public function prepareOrder(Model\Order $order, Entity\Order $oneListCalculateResponse)
     {
         try {
-            $isInline      = true;
             $storeId       = $this->basketHelper->getDefaultWebStore();
             $customerEmail = $order->getCustomerEmail();
             $customerName  = $order->getShippingAddress()->getFirstname() .
@@ -110,16 +109,16 @@ class OrderHelper extends AbstractHelper
             $mobileNumber  = $order->getShippingAddress()->getTelephone();
             if ($this->customerSession->isLoggedIn()) {
                 $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-                $cardId    = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+
             } else {
-                $contactId = $cardId = '';
+                $contactId = '';
             }
+            $cardId    = $oneListCalculateResponse->getCardId();
             $shippingMethod = $order->getShippingMethod(true);
             //TODO work on condition
             $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
-            /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
+            /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
             $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
-            $pointDiscount           = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $order->setCouponCode($this->checkoutSession->getCouponCode());
             $oneListCalculateResponse
                 ->setId($order->getIncrementId())
@@ -206,9 +205,8 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreLine
         $operation = new Operation\OrderCreate();
         $response  = $operation->execute($request);
-
         // @codingStandardsIgnoreLine
-        return $response ? $response->getResult() : $response;
+        return $response;
     }
 
     /**

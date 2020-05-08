@@ -20,19 +20,29 @@ use Psr\Log\LoggerInterface;
  */
 class QuoteObserver implements ObserverInterface
 {
-    /** @var BasketHelper */
+    /**
+     * @var BasketHelper
+     */
     private $basketHelper;
 
-    /** @var ItemHelper */
+    /**
+     * @var ItemHelper
+     */
     private $itemHelper;
 
-    /** @var LoggerInterface */
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
 
-    /** @var LSR @var */
+    /**
+     * @var LSR
+     */
     private $lsr;
 
-    /** @var Data @var */
+    /**
+     * @var Data
+     */
     private $data;
 
     /**
@@ -91,6 +101,7 @@ class QuoteObserver implements ObserverInterface
             $basketData = $this->basketHelper->update($oneList);
             $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
             if (!empty($basketData)) {
+                $quote->setLsOnelistId($oneList->getId());
                 $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
             }
             if ($quote->getLsGiftCardAmountUsed() > 0 ||

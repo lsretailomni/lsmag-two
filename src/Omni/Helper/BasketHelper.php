@@ -12,8 +12,9 @@ use Magento\Catalog\Model\Product\Interceptor;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
+use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -39,12 +40,12 @@ class BasketHelper extends AbstractHelper
     public $productRepository;
 
     /**
-     * @var \Magento\Checkout\Model\Session\Proxy
+     * @var CheckoutProxy
      */
     public $checkoutSession;
 
     /**
-     * @var Proxy
+     * @var CustomerProxy
      */
     public $customerSession;
 
@@ -104,8 +105,8 @@ class BasketHelper extends AbstractHelper
      * @param Context $context
      * @param Cart $cart
      * @param ProductRepository $productRepository
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param Proxy $customerSession
+     * @param CheckoutProxy $checkoutSession
+     * @param CustomerProxy $customerSession
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable
      * @param ProductFactory $productFactory
@@ -121,8 +122,8 @@ class BasketHelper extends AbstractHelper
         Context $context,
         Cart $cart,
         ProductRepository $productRepository,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        Proxy $customerSession,
+        CheckoutProxy $checkoutSession,
+        CustomerProxy $customerSession,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
         ProductFactory $productFactory,
@@ -288,6 +289,25 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * clear coupon code
+     */
+    public function unSetCouponCode()
+    {
+        $this->checkoutSession->unsCouponCode();
+    }
+
+    /**
+     * @return Entity\ArrayOfOneListPublishedOffer
+     */
+    private function _offers()
+    {
+        // @codingStandardsIgnoreLine
+        $offers = new Entity\ArrayOfOneListPublishedOffer();
+
+        return $offers;
+    }
+
+    /**
      * @param Entity\OneList $oneList
      * @param $wishlistItems
      * @return Entity\OneList
@@ -349,17 +369,6 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * @return Entity\ArrayOfOneListPublishedOffer
-     */
-    private function _offers()
-    {
-        // @codingStandardsIgnoreLine
-        $offers = new Entity\ArrayOfOneListPublishedOffer();
-
-        return $offers;
-    }
-
-    /**
      * @param Entity\OneList $oneList
      * @return bool
      */
@@ -382,35 +391,54 @@ class BasketHelper extends AbstractHelper
 
     /**
      * @param Entity\OneList $oneList
-     * @return Entity\OneListCalculateResponse|Entity\Order
-     * @throws InvalidEnumException
-     */
-    public function update(Entity\OneList $oneList)
-    {
-        $this->saveToOmni($oneList);
-        $basketData = $this->calculate($oneList);
-        if (is_object($basketData)) {
-            $this->setOneListCalculation($basketData);
-            if (isset($basketData)) {
-                $this->unSetBasketSessionValue();
-                $this->setBasketSessionValue($basketData);
-            }
-        } else {
-            return $basketData;
-        }
-
-        return $basketData;
-    }
-
-    /**
-     * @param Entity\OneList $oneList
      * @return bool|Entity\OneList
      */
     // @codingStandardsIgnoreLine
+
     public function updateWishlistAtOmni(Entity\OneList $oneList)
     {
         $response = $this->saveWishlistToOmni($oneList);
         return $response;
+    }
+
+    /**
+     * @param Entity\OneList $list
+     * @return bool|Entity\OneList
+     */
+    public function saveWishlistToOmni(Entity\OneList $list)
+    {
+        /** @var Operation\OneListSave $operation */
+        // @codingStandardsIgnoreLine
+        $operation = new Operation\OneListSave();
+
+        $list->setStoreId($this->getDefaultWebStore());
+
+        /** @var Entity\OneListSave $request */
+        // @codingStandardsIgnoreLine
+        $request = (new Entity\OneListSave())
+            ->setOneList($list)
+            ->setCalculate(true);
+
+        /** @var Entity\OneListSaveResponse $response */
+        $response = $operation->execute($request);
+        if ($response) {
+            $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $response->getOneListSaveResult());
+            return $response->getOneListSaveResult();
+        }
+
+        return false;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDefaultWebStore()
+    {
+        if ($this->store_id == null) {
+            $this->store_id = $this->lsr->getActiveWebStore();
+        }
+
+        return $this->store_id;
     }
 
     /**
@@ -465,150 +493,6 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * @return null|string
-     */
-    public function getDefaultWebStore()
-    {
-        if ($this->store_id == null) {
-            $this->store_id = $this->lsr->getActiveWebStore();
-        }
-
-        return $this->store_id;
-    }
-
-    /**
-     * @param Entity\OneList $list
-     * @return bool|Entity\OneList
-     */
-    public function saveToOmni(Entity\OneList $list)
-    {
-
-        /** @var Operation\OneListSave $operation */
-        // @codingStandardsIgnoreLine
-        $operation = new Operation\OneListSave();
-
-        $list->setStoreId($this->getDefaultWebStore());
-
-        /** @var Entity\OneListSave $request */
-        // @codingStandardsIgnoreLine
-        $request = (new Entity\OneListSave())
-            ->setOneList($list)
-            ->setCalculate(true);
-
-        /** @var Entity\OneListSaveResponse $response */
-        $response = $operation->execute($request);
-        if ($response) {
-            $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $response->getOneListSaveResult());
-            return $response->getOneListSaveResult();
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Entity\OneList $list
-     * @return bool|Entity\OneList
-     */
-    public function saveWishlistToOmni(Entity\OneList $list)
-    {
-        /** @var Operation\OneListSave $operation */
-        // @codingStandardsIgnoreLine
-        $operation = new Operation\OneListSave();
-
-        $list->setStoreId($this->getDefaultWebStore());
-
-        /** @var Entity\OneListSave $request */
-        // @codingStandardsIgnoreLine
-        $request = (new Entity\OneListSave())
-            ->setOneList($list)
-            ->setCalculate(true);
-
-        /** @var Entity\OneListSaveResponse $response */
-        $response = $operation->execute($request);
-        if ($response) {
-            $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $response->getOneListSaveResult());
-            return $response->getOneListSaveResult();
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Entity\OneList $oneList
-     * @return Entity\OneListCalculateResponse|Entity\Order
-     * @throws InvalidEnumException
-     */
-    public function calculate(Entity\OneList $oneList)
-    {
-        // @codingStandardsIgnoreLine
-        $storeId   = $this->getDefaultWebStore();
-        $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-        $cardId    = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
-
-        /** @var Entity\ArrayOfOneListItem $oneListItems */
-        $oneListItems = $oneList->getItems();
-
-        /** @var Entity\OneListCalculateResponse $response */
-        $response = false;
-
-        if (!($oneListItems->getOneListItem() == null)) {
-            /** @var Entity\OneListItem || Entity\OneListItem[] $listItems */
-            $listItems = $oneListItems->getOneListItem();
-
-            if (!is_array($listItems)) {
-                /** @var Entity\ArrayOfOneListItem $items */
-                // @codingStandardsIgnoreLine
-                $items = new Entity\ArrayOfOneListItem();
-                $items->setOneListItem($listItems);
-                $listItems = $items;
-            }
-            // @codingStandardsIgnoreStart
-            /** @var Entity\OneList $oneListRequest */
-            $oneListRequest = (new Entity\OneList())
-                ->setCardId($cardId)
-                ->setListType(Entity\Enum\ListType::BASKET)
-                ->setItems($listItems)
-                ->setStoreId($storeId);
-
-            /** @var Entity\OneListCalculate $entity */
-            if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
-                $offer  = new Entity\OneListPublishedOffer();
-                $offers = new Entity\ArrayOfOneListPublishedOffer();
-                $offers->setOneListPublishedOffer($offer);
-                $offer->setId($this->getCouponCode());
-                $offer->setType("Coupon");
-                $oneListRequest->setPublishedOffers($offers);
-            } else {
-                $oneListRequest->setPublishedOffers($this->_offers());
-            }
-
-            $entity = new Entity\OneListCalculate();
-            $entity->setOneList($oneListRequest);
-            $request = new Operation\OneListCalculate();
-            // @codingStandardsIgnoreEnd
-
-            /** @var  Entity\OneListCalculateResponse $response */
-            $response = $request->execute($entity);
-        }
-        if (($response == null)) {
-            // @codingStandardsIgnoreLine
-            $oneListCalResponse = new Entity\OneListCalculateResponse();
-            return $oneListCalResponse->getResult();
-        }
-        if (property_exists($response, "OneListCalculateResult")) {
-            // @codingStandardsIgnoreLine
-            $this->setOneListCalculation($response->getResult());
-            return $response->getResult();
-        }
-        if (is_object($response)) {
-            $this->setOneListCalculation($response->getResult());
-            return $response->getResult();
-        } else {
-            return $response;
-        }
-    }
-
-    /**
      * @return string
      * @throws Exception
      */
@@ -622,199 +506,6 @@ class BasketHelper extends AbstractHelper
         } else {
             return $this->couponCode;
         }
-    }
-
-    /**
-     * clear coupon code
-     */
-    public function unSetCouponCode()
-    {
-        $this->checkoutSession->unsCouponCode();
-    }
-
-    /**
-     * TODO in next release.
-     * Load Shipment Fee Product
-     *
-     */
-    // @codingStandardsIgnoreLine
-    public function getShipmentFeeProduct()
-    {
-    }
-
-    /**
-     * @return mixed
-     * @throws InvalidEnumException
-     */
-    public function getOneListCalculation()
-    {
-        // @codingStandardsIgnoreStart
-        $oneListCalc = $this->checkoutSession->getOneListCalculation();
-        if ($oneListCalc == null) {
-            $this->calculate($this->get());
-
-            // calculate updates the session, so we fetch again
-            return $this->checkoutSession->getOneListCalculation();
-            // @codingStandardsIgnoreEnd
-        }
-
-        return $oneListCalc;
-    }
-
-    /**
-     * @param Entity\OneListCalculateResponse|null $calculation
-     */
-    public function setOneListCalculation($calculation)
-    {
-        $this->checkoutSession->setOneListCalculation($calculation);
-    }
-
-    /**
-     * @param null $id
-     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed|null
-     * @throws InvalidEnumException
-     */
-    public function get($id = null)
-    {
-        /** @var Entity\OneList $list */
-        $list = null;
-
-        //check if onelist is created and stored in session. if it is, than return it.
-        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-            return $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-        }
-
-        /** @var Entity\MemberContact $loginContact */
-        // For logged in users check if onelist is already stored in registry.
-        if ($loginContact = $this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT)) {
-            try {
-                if ($loginContact->getBasket() instanceof Entity\OneList) {
-                    $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $loginContact->getBasket());
-                    return $loginContact->getBasket();
-                } else {
-                    if ($loginContact->getBasket() instanceof Entity\ArrayOfOneList) {
-                        foreach ($loginContact->getBasket()->getIterator() as $list) {
-                            if ($list->getIsDefaultList()) {
-                                $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $list);
-                                return $list;
-                            }
-                        }
-                    }
-                }
-            } catch (Exception $e) {
-                $this->_logger->critical($e);
-            }
-        }
-        if ($id) {
-            $entity = new Entity\OneListGetById();
-            $entity->setId($id);
-            $entity->setIncludeLines(true);
-            $request = new Operation\OneListGetById();
-            $response = $request->execute($entity);
-            return $response->getOneListGetByIdResult();
-        }
-
-        /** If no list found from customer session or registered user then get from omni */
-        if ($list == null) {
-            return $this->fetchFromOmni();
-        }
-        return null;
-    }
-
-    /**
-     * @return Entity\OneList|mixed
-     * @throws InvalidEnumException
-     */
-    public function fetchCurrentCustomerWishlist()
-    {
-        //check if onelist is created and stored in session. if it is, than return it.
-        if ($this->customerSession->getData(LSR::SESSION_CART_WISHLIST)) {
-            return $this->customerSession->getData(LSR::SESSION_CART_WISHLIST);
-        }
-        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
-            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
-
-        $store_id = $this->getDefaultWebStore();
-        $wishlist = (new Entity\OneList())
-            ->setCardId($cardId)
-            ->setDescription('List ' . $cardId)
-            ->setListType(Entity\Enum\ListType::WISH)
-            ->setItems(new Entity\ArrayOfOneListItem())
-            ->setStoreId($store_id);
-        return $wishlist;
-    }
-
-    /**
-     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed
-     * @throws InvalidEnumException
-     */
-    public function fetchFromOmni()
-    {
-
-        /** Handling the guest user too */
-        $contactId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID) == null) ?
-            $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID) : '');
-        // if guest, then empty cardid
-        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
-            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
-
-        $store_id = $this->getDefaultWebStore();
-
-        /**
-         * If its a logged in user then we need to fetch already created one list.
-         */
-        if ($cardId != '') {
-            /** @var Operation\OneListGetByCardId $request */
-            // @codingStandardsIgnoreLine
-            $request = new Operation\OneListGetByCardId();
-            /** @var Entity\OneListGetByCardId $entity */
-            // @codingStandardsIgnoreLine
-            $entity = new Entity\OneListGetByCardId();
-            $entity->setCardId($cardId)
-                ->setListType(Entity\Enum\ListType::BASKET)
-                ->setIncludeLines(true);
-
-            /** @var Entity\OneListGetByCardIdResponse $response */
-            $response = $request->execute($entity);
-
-            $lists = $response->getOneListGetByCardIdResult()->getOneList();
-            // if we have a list or an array, return it
-            if (!empty($lists)) {
-                if ($lists instanceof Entity\OneList) {
-                    return $lists;
-                } elseif (is_array($lists)) {
-                    # return first list
-                    return array_pop($lists);
-                }
-            }
-        }
-
-        /**
-         * only those users who either does not have onelist created or
-         * is guest user will come up here so for them lets create a new one.
-         * for those lets create new list with no items and the existing offers and coupons
-         */
-
-        /** @var Entity\OneList $list */
-        // @codingStandardsIgnoreStart
-        $list = (new Entity\OneList())
-            ->setCardId($cardId)
-            ->setDescription('OneList Magento')
-            ->setListType(Entity\Enum\ListType::BASKET)
-            ->setItems(new Entity\ArrayOfOneListItem())
-            ->setPublishedOffers($this->_offers())
-            ->setStoreId($store_id);
-
-        return $this->saveToOmni($list);
-        // @codingStandardsIgnoreEnd
-    }
-
-    /**
-     * Unset onelist calculation from session.
-     */
-    public function unSetOneListCalculation()
-    {
-        $this->checkoutSession->unsOneListCalculation();
     }
 
     /**
@@ -911,21 +602,142 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * Set Basket Session Data
-     * @param $value
+     * @param Entity\OneList $oneList
+     * @return Entity\OneListCalculateResponse|Entity\Order
+     * @throws InvalidEnumException
      */
-    public function setBasketSessionValue($value)
+    public function update(Entity\OneList $oneList)
     {
-        $this->checkoutSession->setBasketdata($value);
+        $this->saveToOmni($oneList);
+        $basketData = $this->calculate($oneList);
+        if (is_object($basketData)) {
+            $this->setOneListCalculation($basketData);
+            if (isset($basketData)) {
+                $this->unSetBasketSessionValue();
+                $this->setBasketSessionValue($basketData);
+            }
+        } else {
+            return $basketData;
+        }
+
+        return $basketData;
     }
 
     /**
-     * Get Basket Session Data
-     * @return mixed
+     * TODO in next release.
+     * Load Shipment Fee Product
+     *
      */
-    public function getBasketSessionValue()
+    // @codingStandardsIgnoreLine
+    /**
+     * @param Entity\OneList $list
+     * @return bool|Entity\OneList
+     */
+    public function saveToOmni(Entity\OneList $list)
     {
-        return $this->checkoutSession->getBasketdata();
+
+        /** @var Operation\OneListSave $operation */
+        // @codingStandardsIgnoreLine
+        $operation = new Operation\OneListSave();
+
+        $list->setStoreId($this->getDefaultWebStore());
+
+        /** @var Entity\OneListSave $request */
+        // @codingStandardsIgnoreLine
+        $request = (new Entity\OneListSave())
+            ->setOneList($list)
+            ->setCalculate(true);
+
+        /** @var Entity\OneListSaveResponse $response */
+        $response = $operation->execute($request);
+        if ($response) {
+            $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $response->getOneListSaveResult());
+            return $response->getOneListSaveResult();
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Entity\OneList $oneList
+     * @return Entity\OneListCalculateResponse|Entity\Order
+     * @throws InvalidEnumException
+     */
+    public function calculate(Entity\OneList $oneList)
+    {
+        // @codingStandardsIgnoreLine
+        $storeId   = $this->getDefaultWebStore();
+        $cardId    = $oneList->getCardId();
+
+        /** @var Entity\ArrayOfOneListItem $oneListItems */
+        $oneListItems = $oneList->getItems();
+
+        /** @var Entity\OneListCalculateResponse $response */
+        $response = false;
+
+        if (!($oneListItems->getOneListItem() == null)) {
+            /** @var Entity\OneListItem || Entity\OneListItem[] $listItems */
+            $listItems = $oneListItems->getOneListItem();
+
+            if (!is_array($listItems)) {
+                /** Entity\ArrayOfOneListItem $items */
+                // @codingStandardsIgnoreLine
+                $items = new Entity\ArrayOfOneListItem();
+                $items->setOneListItem($listItems);
+                $listItems = $items;
+            }
+            // @codingStandardsIgnoreStart
+            /** @var Entity\OneList $oneListRequest */
+            $oneListRequest = (new Entity\OneList())
+                ->setCardId($cardId)
+                ->setListType(Entity\Enum\ListType::BASKET)
+                ->setItems($listItems)
+                ->setStoreId($storeId);
+
+            /** @var Entity\OneListCalculate $entity */
+            if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
+                $offer  = new Entity\OneListPublishedOffer();
+                $offers = new Entity\ArrayOfOneListPublishedOffer();
+                $offers->setOneListPublishedOffer($offer);
+                $offer->setId($this->getCouponCode());
+                $offer->setType("Coupon");
+                $oneListRequest->setPublishedOffers($offers);
+            } else {
+                $oneListRequest->setPublishedOffers($this->_offers());
+            }
+
+            $entity = new Entity\OneListCalculate();
+            $entity->setOneList($oneListRequest);
+            $request = new Operation\OneListCalculate();
+            // @codingStandardsIgnoreEnd
+
+            /** @var  Entity\OneListCalculateResponse $response */
+            $response = $request->execute($entity);
+        }
+        if (($response == null)) {
+            // @codingStandardsIgnoreLine
+            $oneListCalResponse = new Entity\OneListCalculateResponse();
+            return $oneListCalResponse->getResult();
+        }
+        if (property_exists($response, "OneListCalculateResult")) {
+            // @codingStandardsIgnoreLine
+            $this->setOneListCalculation($response->getResult());
+            return $response->getResult();
+        }
+        if (is_object($response)) {
+            $this->setOneListCalculation($response->getResult());
+            return $response->getResult();
+        } else {
+            return $response;
+        }
+    }
+
+    /**
+     * @param Entity\OneListCalculateResponse|null $calculation
+     */
+    public function setOneListCalculation($calculation)
+    {
+        $this->checkoutSession->setOneListCalculation($calculation);
     }
 
     /**
@@ -938,8 +750,175 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * Return Item Helper which can be used on multiple areas where we have dependency injection issue.
+     * Set Basket Session Data
+     * @param $value
      */
+    public function setBasketSessionValue($value)
+    {
+        $this->checkoutSession->setBasketdata($value);
+    }
+
+    /**
+     * @param null $id
+     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed|null
+     * @throws InvalidEnumException
+     */
+    public function get($id = null)
+    {
+        /** @var Entity\OneList $list */
+        $list = null;
+
+        //check if onelist is created and stored in session. if it is, than return it.
+        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+            return $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
+        }
+
+        /** @var Entity\MemberContact $loginContact */
+        // For logged in users check if onelist is already stored in registry.
+        if ($loginContact = $this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT)) {
+            try {
+                if ($loginContact->getBasket() instanceof Entity\OneList) {
+                    $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $loginContact->getBasket());
+                    return $loginContact->getBasket();
+                } else {
+                    if ($loginContact->getBasket() instanceof Entity\ArrayOfOneList) {
+                        foreach ($loginContact->getBasket()->getIterator() as $list) {
+                            if ($list->getIsDefaultList()) {
+                                $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $list);
+                                return $list;
+                            }
+                        }
+                    }
+                }
+            } catch (Exception $e) {
+                $this->_logger->critical($e);
+            }
+        }
+        if ($id) {
+            $entity = new Entity\OneListGetById();
+            $entity->setId($id);
+            $entity->setIncludeLines(true);
+            $request  = new Operation\OneListGetById();
+            $response = $request->execute($entity);
+            return $response->getOneListGetByIdResult();
+        }
+
+        /** If no list found from customer session or registered user then get from omni */
+        if ($list == null) {
+            return $this->fetchFromOmni();
+        }
+        return null;
+    }
+
+    /**
+     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed
+     * @throws InvalidEnumException
+     */
+    public function fetchFromOmni()
+    {
+
+        /** Handling the guest user too */
+        $contactId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID) == null) ?
+            $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID) : '');
+        // if guest, then empty cardid
+        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
+            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
+
+        $store_id = $this->getDefaultWebStore();
+
+        /**
+         * If its a logged in user then we need to fetch already created one list.
+         */
+        if ($cardId != '') {
+            /** @var Operation\OneListGetByCardId $request */
+            // @codingStandardsIgnoreLine
+            $request = new Operation\OneListGetByCardId();
+            /** @var Entity\OneListGetByCardId $entity */
+            // @codingStandardsIgnoreLine
+            $entity = new Entity\OneListGetByCardId();
+            $entity->setCardId($cardId)
+                ->setListType(Entity\Enum\ListType::BASKET)
+                ->setIncludeLines(true);
+
+            /** @var Entity\OneListGetByCardIdResponse $response */
+            $response = $request->execute($entity);
+
+            $lists = $response->getOneListGetByCardIdResult()->getOneList();
+            // if we have a list or an array, return it
+            if (!empty($lists)) {
+                if ($lists instanceof Entity\OneList) {
+                    return $lists;
+                } elseif (is_array($lists)) {
+                    # return first list
+                    return array_pop($lists);
+                }
+            }
+        }
+
+        /**
+         * only those users who either does not have onelist created or
+         * is guest user will come up here so for them lets create a new one.
+         * for those lets create new list with no items and the existing offers and coupons
+         */
+
+        /** @var Entity\OneList $list */
+        // @codingStandardsIgnoreStart
+        $list = (new Entity\OneList())
+            ->setCardId($cardId)
+            ->setDescription('OneList Magento')
+            ->setListType(Entity\Enum\ListType::BASKET)
+            ->setItems(new Entity\ArrayOfOneListItem())
+            ->setPublishedOffers($this->_offers())
+            ->setStoreId($store_id);
+
+        return $this->saveToOmni($list);
+        // @codingStandardsIgnoreEnd
+    }
+
+    /**
+     * Get Basket Session Data
+     * @return mixed
+     */
+    public function getBasketSessionValue()
+    {
+        return $this->checkoutSession->getBasketdata();
+    }
+
+
+    public function getShipmentFeeProduct()
+    {
+    }
+
+    /**
+     * @return Entity\OneList|mixed
+     * @throws InvalidEnumException
+     */
+    public function fetchCurrentCustomerWishlist()
+    {
+        //check if onelist is created and stored in session. if it is, than return it.
+        if ($this->customerSession->getData(LSR::SESSION_CART_WISHLIST)) {
+            return $this->customerSession->getData(LSR::SESSION_CART_WISHLIST);
+        }
+        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
+            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
+
+        $store_id = $this->getDefaultWebStore();
+        $wishlist = (new Entity\OneList())
+            ->setCardId($cardId)
+            ->setDescription('List ' . $cardId)
+            ->setListType(Entity\Enum\ListType::WISH)
+            ->setItems(new Entity\ArrayOfOneListItem())
+            ->setStoreId($store_id);
+        return $wishlist;
+    }
+
+    /**
+     * Unset onelist calculation from session.
+     */
+    public function unSetOneListCalculation()
+    {
+        $this->checkoutSession->unsOneListCalculation();
+    }
 
     /**
      * @return ItemHelper
@@ -948,6 +927,10 @@ class BasketHelper extends AbstractHelper
     {
         return $this->itemHelper;
     }
+
+    /**
+     * Return Item Helper which can be used on multiple areas where we have dependency injection issue.
+     */
 
     /**
      * @param $item
@@ -971,5 +954,24 @@ class BasketHelper extends AbstractHelper
             }
         }
         return $rowTotal;
+    }
+
+    /**
+     * @return mixed
+     * @throws InvalidEnumException
+     */
+    public function getOneListCalculation()
+    {
+        // @codingStandardsIgnoreStart
+        $oneListCalc = $this->checkoutSession->getOneListCalculation();
+        if ($oneListCalc == null) {
+            $this->calculate($this->get());
+
+            // calculate updates the session, so we fetch again
+            return $this->checkoutSession->getOneListCalculation();
+            // @codingStandardsIgnoreEnd
+        }
+
+        return $oneListCalc;
     }
 }
