@@ -1,185 +1,110 @@
 <?php
 
-namespace Ls\Omni\Observer;
+namespace Ls\Omni\Observer\Adminhtml;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Ecommerce\Entity\OneList;
+use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\ContactHelper;
-use \Ls\Omni\Helper\OrderHelper;
-use Magento\Checkout\Model\Session\Proxy;
-use Magento\Customer\Model\Session\Proxy as CustomerProxy;
+use \Ls\Omni\Helper\Data;
+use \LS\Omni\Helper\ItemHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Exception\AlreadyExistsException;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Sales\Model\ResourceModel\Order;
+use Magento\Quote\Model\Quote;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class OrderObserver
+ * Class QuoteObserver
  * @package Ls\Omni\Observer
  */
-class OrderObserver implements ObserverInterface
+class QuoteObserver implements ObserverInterface
 {
-    /** @var ContactHelper */
-    private $contactHelper;
-
     /** @var BasketHelper */
     private $basketHelper;
 
-    /** @var OrderHelper */
-    private $orderHelper;
+    /** @var ItemHelper */
+    private $itemHelper;
 
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
-    private $customerSession;
-
-    /** @var Proxy $checkoutSession */
-    private $checkoutSession;
-
-    /** @var bool */
-    private $watchNextSave = false;
-
-    /** @var Order $orderResourceModel */
-    private $orderResourceModel;
-
     /** @var LSR @var */
     private $lsr;
-    /**
-     * @var \Magento\Framework\Message\ManagerInterface
-     */
-    protected $messageManager;
+
+    /** @var Data @var */
+    private $data;
 
     /**
-     * @var CartRepositoryInterface
-     */
-    public $quoteRepository;
-    /**
-     * OrderObserver constructor.
-     * @param ContactHelper $contactHelper
+     * QuoteObserver constructor.
      * @param BasketHelper $basketHelper
-     * @param OrderHelper $orderHelper
+     * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
-     * @param CustomerProxy $customerSession
-     * @param Proxy $checkoutSession
-     * @param Order $orderResourceModel
      * @param LSR $LSR
+     * @param Data $data
      */
-
     public function __construct(
-        ContactHelper $contactHelper,
         BasketHelper $basketHelper,
-        OrderHelper $orderHelper,
+        ItemHelper $itemHelper,
         LoggerInterface $logger,
-        CustomerProxy $customerSession,
-        Proxy $checkoutSession,
-        Order $orderResourceModel,
         LSR $LSR,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
-        CartRepositoryInterface $quoteRepository
+        Data $data
     ) {
-        $this->contactHelper      = $contactHelper;
-        $this->basketHelper       = $basketHelper;
-        $this->orderHelper        = $orderHelper;
-        $this->logger             = $logger;
-        $this->customerSession    = $customerSession;
-        $this->checkoutSession    = $checkoutSession;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->lsr                = $LSR;
-        $this->messageManager = $messageManager;
-        $this->quoteRepository = $quoteRepository;
+        $this->basketHelper = $basketHelper;
+        $this->itemHelper   = $itemHelper;
+        $this->logger       = $logger;
+        $this->lsr          = $LSR;
+        $this->data         = $data;
     }
 
     /**
      * @param Observer $observer
      * @return $this|void
-     * @throws InvalidEnumException
-     * @throws InputException
-     * @throws NoSuchEntityException
-     * @throws AlreadyExistsException
      */
+    // @codingStandardsIgnoreLine
     public function execute(Observer $observer)
     {
-        /*
-         * Adding condition to only process if LSR is enabled.
-         */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $success            = false;
-            $check              = false;
-            $order              = $observer->getEvent()->getData('order');
-            if (empty($order)) {
-                $orderIds = $observer->getEvent()->getOrderIds();
-                $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
-            }
-            //checking for Adyen payment gateway
-            $adyen_response = $observer->getEvent()->getData('adyen_response');
-            if (!empty($adyen_response)) {
-                $order->getPayment()->setLastTransId($adyen_response['pspReference']);
-                $order->getPayment()->setCcTransId($adyen_response['pspReference']);
-                $order->getPayment()->setCcType($adyen_response['paymentMethod']);
-                $order->getPayment()->setCcStatus($adyen_response['authResult']);
-                $this->orderHelper->orderRepository->save($order);
-                $order = $this->orderHelper->orderRepository->get($order->getEntityId());
-            }
-            if (!empty($order)) {
-                $paymentMethod = $order->getPayment();
-                if (!empty($paymentMethod)) {
-                    $paymentMethod = $order->getPayment()->getMethodInstance();
-                    $transId       = $order->getPayment()->getLastTransId();
-                    $check         = $paymentMethod->isOffline();
+        try {
+            /** @var Quote $quote */
+            $quote      = $observer->getEvent()->getQuote();
+            $couponCode = $quote->getCouponCode();
+            // This will create one list if not created and will return onelist if its already created.
+            /** @var OneList|null $oneList */
+            $oneList = $this->basketHelper->get();
+            $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
+            if (!empty($couponCode)) {
+                $status = $this->basketHelper->setCouponCode($couponCode);
+                if (!is_object($status)) {
+                    $quote->setCouponCode('');
                 }
             }
-            $event = $observer->getEvent()->getName();
-            if ($event != "checkout_onepage_controller_success_action" || $check == false) {
-                $oneListCalculation = $this->basketHelper->getOneListCalculation();
+            if (count($quote->getAllItems()) == 0) {
+                $quote->setLsGiftCardAmountUsed(0);
+                $quote->setLsGiftCardNo(null);
+                $quote->setLsPointsSpent(0);
+                $quote->setLsPointsEarn(0);
+                $quote->setGrandTotal(0);
+                $quote->setBaseGrandTotal(0);
+                $this->basketHelper->quoteRepository->save($quote);
             }
-            if (($check == true || !empty($transId)) && !empty($oneListCalculation)) {
-                $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                $response = $this->orderHelper->placeOrder($request);
-                try {
-                    if ($response) {
-                        $documentId = $response->getId();
-                        $order->setDocumentId($documentId);
-                        $this->orderResourceModel->save($order);
-                        $this->checkoutSession->setLastDocumentId($documentId);
-                        $this->checkoutSession->unsetData('member_points');
-                        $this->messageManager->addSuccessMessage(__('Request has been sent successfully!'));
-                        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                            $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-                            $success = $this->basketHelper->delete($oneList);
-                            $quote     = $this->quoteRepository->get($order->getQuoteId());
-                            $quote->setLsOnelistId('')->save();
-                            $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
-                            // delete checkout session data.
-                            $this->basketHelper->unSetOneListCalculation();
-                            $this->basketHelper->unsetCouponCode();
-                        }
-                    } else {
-                        // TODO: error handling
-                        $this->logger->error($response);
-                        $this->logger->critical(
-                            __('Something terrible happened while placing order')
-                        );
-                        $this->checkoutSession->unsetData('member_points');
-                        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                            $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-                            $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
-                            // delete checkout session data.
-                            $this->basketHelper->unSetOneListCalculation();
-                            $this->basketHelper->unsetCouponCode();
-                        }
-                    }
-                } catch (Exception $e) {
-                    $this->logger->error($e->getMessage());
-                }
+            /** @var Order $basketData */
+            $basketData = $this->basketHelper->update($oneList);
+            $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
+            if (!empty($basketData)) {
+                $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
             }
-            return $this;
+            if ($quote->getLsGiftCardAmountUsed() > 0 ||
+                $quote->getLsPointsSpent() > 0) {
+                $this->data->orderBalanceCheck(
+                    $quote->getLsGiftCardNo(),
+                    $quote->getLsGiftCardAmountUsed(),
+                    $quote->getLsPointsSpent(),
+                    $basketData
+                );
+            }
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
         }
+        return $this;
     }
 }
