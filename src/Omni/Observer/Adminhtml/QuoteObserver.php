@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class QuoteObserver
- * @package Ls\Omni\Observer
+ * @package Ls\Omni\Observer\Adminhtml
  */
 class QuoteObserver implements ObserverInterface
 {

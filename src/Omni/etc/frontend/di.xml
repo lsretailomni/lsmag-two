@@ -39,4 +39,9 @@
     </type>
     <!-- To Override Tax Calculator -->
     <preference for="Magento\Tax\Model\Sales\Total\Quote\Tax" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Tax"/>
+    <!-- To stop magento for re-calculating tax on custom price. -->
+    <type name="Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector">
+        <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector"
+                sortOrder="1"/>
+    </type>
 </config>

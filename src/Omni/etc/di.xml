@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<config
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
@@ -12,9 +11,7 @@
         </arguments>
     </type>
     <type name="Magento\Checkout\Controller\Cart\CouponPost">
-        <plugin name="SetCouponData"
-                type="Ls\Omni\Model\SetCouponData"
-                sortOrder="1"/>
+        <plugin name="SetCouponData" type="Ls\Omni\Model\SetCouponData" sortOrder="1"/>
     </type>
     <!-- For Click and Collect -->
     <type name="Magento\Checkout\Model\ShippingInformationManagement">
@@ -52,16 +49,9 @@
     <type name="Magento\Paypal\Model\Cart">
         <plugin name="ls_update_paypal_amount_order" type="Ls\Omni\Plugin\Checkout\Model\UpdateAmountPayPal"/>
     </type>
-    <!-- To stop magento for reculating tax on custom price. -->
-    <type name="Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector">
-        <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector"
-                sortOrder="1"/>
-    </type>
-
     <!-- Magento order number prefix. -->
     <type name="Magento\SalesSequence\Model\Sequence">
         <plugin name="ls.order.number.sequence" type="Ls\Omni\Plugin\Order\Sequence"
                 sortOrder="1"/>
     </type>
-
 </config>

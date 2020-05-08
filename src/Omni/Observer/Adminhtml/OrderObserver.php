@@ -99,20 +99,11 @@ class OrderObserver implements ObserverInterface
          * Adding condition to only process if LSR is enabled.
          */
         if ($this->lsr->isLSR($order->getStoreId())) {
-            $check              = false;
             $oneListCalculation = $this->basketHelper->getOneListCalculation();
-            if (!empty($order)) {
-                $paymentMethod = $order->getPayment();
-                if (!empty($paymentMethod)) {
-                    $paymentMethod = $order->getPayment()->getMethodInstance();
-                    $transId       = $order->getPayment()->getLastTransId();
-                    $check         = $paymentMethod->isOffline();
-                }
-            }
-            if (($check == true || !empty($transId)) && !empty($oneListCalculation)) {
-                $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                $response = $this->orderHelper->placeOrder($request);
+            if (!empty($oneListCalculation)) {
                 try {
+                    $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                    $response = $this->orderHelper->placeOrder($request);
                     if ($response) {
                         $documentId = $response->getId();
                         $order->setDocumentId($documentId);
