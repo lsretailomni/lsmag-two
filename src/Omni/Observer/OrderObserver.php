@@ -149,9 +149,8 @@ class OrderObserver implements ObserverInterface
                     $check         = $paymentMethod->isOffline();
                 }
             }
-            $event = $observer->getEvent()->getName();
-            if ($event != "checkout_onepage_controller_success_action" || $check == false) {
-                $oneListCalculation = $this->basketHelper->getOneListCalculation();
+            if (!empty($this->checkoutSession->getOneListCalculation())) {
+                $oneListCalculation = $this->checkoutSession->getOneListCalculation();
             }
             if (($check == true || !empty($transId)) && !empty($oneListCalculation)) {
                 $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
