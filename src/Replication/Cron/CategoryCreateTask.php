@@ -509,6 +509,7 @@ class CategoryCreateTask
     /**
      * Check if the category already exist or not
      * @param $nav_id
+     * @param bool $store
      * @return bool|DataObject
      * @throws LocalizedException
      */
@@ -518,7 +519,7 @@ class CategoryCreateTask
             ->addAttributeToFilter('nav_id', $nav_id);
 
         if ($store) {
-            $collection->addAttributeToFilter('parent_id', $store->getRootCategoryId());
+            $collection->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/');
         }
         $collection->setPageSize(1);
         if ($collection->getSize()) {
@@ -581,17 +582,12 @@ class CategoryCreateTask
      */
     public function updateImagesOnly()
     {
-        $filters    = [
+        $filters  = [
             ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'main_table.TableName', 'value' => 'Hierarchy Node%', 'condition_type' => 'like']
         ];
-        $parameter1 = ['field' => 'main_table.TableName', 'value' => 'Hierarchy Nodes', 'condition_type' => 'eq'];
-        $parameter2 = ['field' => 'main_table.TableName', 'value' => 'Hierarchy Node', 'condition_type' => 'eq'];
-        $criteria   = $this->replicationHelper->buildCriteriaForCategoryImages(
-            $filters,
-            $parameter1,
-            $parameter2
-        );
-        $images     = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
+        $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
+        $images   = $this->replImageLinkRepositoryInterface->getList($criteria)->getItems();
         if (!empty($images)) {
             foreach ($images as $image) {
                 try {
