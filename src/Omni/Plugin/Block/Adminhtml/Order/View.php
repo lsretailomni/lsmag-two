@@ -16,7 +16,7 @@ class View
             $view->addButton(
                 'send-order-request',
                 [
-                    'label'   => __('Send Order Request to Omni'),
+                    'label'   => __('Send to Ls Central'),
                     'class'   => 'send-order-request',
                     'onclick' => "confirmSetLocation('{$message}', '{$url}')"
                 ]
