@@ -1,61 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <event name="checkout_cart_product_add_after">
-        <observer name="WatchNextCartSaveObserver" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
-    </event>
-    <event name="checkout_cart_update_items_after">
-        <observer name="WatchNextCartSaveObserver" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
-    </event>
-    <event name="sales_quote_remove_item">
-        <observer name="WatchNextCartSaveObserver" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
-    </event>
-    <event name="checkout_cart_save_after">
-        <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
-    </event>
-    <!-- For Wishlist  -->
-    <event name="controller_action_postdispatch_wishlist_index_add">
-        <observer name="WishlistAddObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
-    </event>
-    <event name="controller_action_postdispatch_wishlist_index_update">
-        <observer name="WishlistUpdateObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
-    </event>
-    <event name="controller_action_postdispatch_wishlist_index_updateItemOptions">
-        <observer name="WishlistUpdateItemOptionsObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
-    </event>
-    <event name="controller_action_postdispatch_wishlist_index_remove">
-        <observer name="WishlistRemoveObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
-    </event>
-    <event name="controller_action_postdispatch_wishlist_index_cart">
-        <observer name="WishlistSaveObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
-    </event>
-    <event name="controller_action_postdispatch_wishlist_index_allcart">
-        <observer name="WishlistSaveObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
-    </event>
-    <!-- For click and collect  -->
-    <event name="sales_model_service_quote_submit_before">
-        <observer name="copy_pickup_info_from_quote_to_order" instance="Ls\Omni\Observer\DataAssignObserver"/>
-    </event>
-    <event name="sales_order_place_after">
-        <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
-    </event>
-    <!-- for fixing grand total and base grand total -->
-    <event name="sales_quote_address_collect_totals_after">
-        <observer name="sales_quote_totals_after" instance="Ls\Omni\Observer\SalesObserver"/>
-    </event>
-    <!-- For Coupon Code -->
-    <event name="controller_action_predispatch_checkout_cart_couponPost">
-        <observer name="coupon_code" instance="Ls\Omni\Observer\CouponCodeObserver"/>
-    </event>
-
-    <!-- When edit item on product page -->
-    <event name="controller_action_predispatch_checkout_cart_updateitemoptions">
-        <observer name="coupon_code" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
-    </event>
-    <!-- hiding payment method on order total zero -->
-    <event name="payment_method_is_active">
-        <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
-    </event>
     <!-- for changing increment_id to document_id in emails -->
     <event name="email_order_set_template_vars_before">
         <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification"/>
@@ -65,12 +10,5 @@
     </event>
     <event name="email_shipment_set_template_vars_before">
         <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification"/>
-    </event>
-    <event name="checkout_onepage_controller_success_action">
-        <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
-    </event>
-    <!-- event for Adyen -->
-    <event name="adyen_payment_process_resulturl_after">
-        <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
     </event>
 </config>

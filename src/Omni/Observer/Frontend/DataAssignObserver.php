@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\Omni\Observer;
+namespace Ls\Omni\Observer\Frontend;
 
 use \Ls\Core\Model\LSR;
 use Magento\Framework\Event\Observer;
@@ -8,7 +8,7 @@ use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class DataAssignObserver
- * @package Ls\Omni\Observer
+ * @package Ls\Omni\Observer\Frontend
  */
 class DataAssignObserver implements ObserverInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\Omni\Observer;
+namespace Ls\Omni\Observer\Frontend;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class CouponCodeObserver
- * @package Ls\Omni\Observer
+ * @package Ls\Omni\Observer\Frontend
  */
 class CouponCodeObserver implements ObserverInterface
 {
