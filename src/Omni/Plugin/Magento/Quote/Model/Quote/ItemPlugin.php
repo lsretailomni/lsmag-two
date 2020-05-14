@@ -42,7 +42,7 @@ class ItemPlugin
      */
     public function afterAddQty(Item $subject, $result)
     {
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
                 if (!$result->getParentItem() || !$result->getId()) {
                     $storeId          = $this->lsr->getDefaultWebStore();
