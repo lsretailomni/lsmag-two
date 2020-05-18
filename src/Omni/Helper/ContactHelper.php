@@ -303,7 +303,7 @@ class ContactHelper extends AbstractHelper
         /** @var Operation\ContactGetById $request */
         // @codingStandardsIgnoreStart
         if (!Zend_Validate::is($param, Zend_Validate_EmailAddress::class)) {
-            // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserNameOrEmail
+            // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
             if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $param)) {
                 return null;
             }
@@ -518,6 +518,10 @@ class ContactHelper extends AbstractHelper
      */
     public function isUsernameExistInLsCentral($username)
     {
+        // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
+        if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $username)) {
+            return null;
+        }
         $response = null;
         // @codingStandardsIgnoreStart
         $request       = new Operation\ContactSearch();

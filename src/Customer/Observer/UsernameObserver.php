@@ -95,23 +95,22 @@ class UsernameObserver implements ObserverInterface
                     $this->messageManager->addErrorMessage(
                         __('Username already exist, please try another one.')
                     );
-                    $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()
-                        ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
-                    $this->customerSession->setCustomerFormData($parameters);
-                    return $this;
+                } else {
+                    $isEmailValid = Zend_Validate::is($parameters['email'], Zend_Validate_EmailAddress::class);
+                    if (!$isEmailValid) {
+                        $this->messageManager->addErrorMessage(
+                            __('Your email address is invalid.')
+                        );
+                    } elseif ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
+                        $this->messageManager->addErrorMessage(
+                            __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
+                        );
+                    }
                 }
-                $isEmailValid = Zend_Validate::is($parameters['email'], Zend_Validate_EmailAddress::class);
-                if ($isEmailValid && $this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
-                    $this->messageManager->addErrorMessage(
-                        __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
-                    );
-                    $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()
-                        ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
-                    $this->customerSession->setCustomerFormData($parameters);
-                    return $this;
-                }
+                $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
+                $observer->getControllerAction()
+                    ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
+                $this->customerSession->setCustomerFormData($parameters);
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
             }
