@@ -14,6 +14,8 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
+use Zend_Validate;
+use Zend_Validate_EmailAddress;
 
 /**
  * Class UsernameObserver
@@ -99,7 +101,8 @@ class UsernameObserver implements ObserverInterface
                     $this->customerSession->setCustomerFormData($parameters);
                     return $this;
                 }
-                if ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
+                $isEmailValid = Zend_Validate::is($parameters['email'], Zend_Validate_EmailAddress::class);
+                if ($isEmailValid && $this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
                     $this->messageManager->addErrorMessage(
                         __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
                     );
