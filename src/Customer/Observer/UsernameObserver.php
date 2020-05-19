@@ -87,6 +87,7 @@ class UsernameObserver implements ObserverInterface
          */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
+                $isNotValid = false;
                 /** @var Interceptor $controller_action */
                 $controller_action = $observer->getData('controller_action');
                 $parameters        = $controller_action->getRequest()->getParams();
@@ -95,22 +96,27 @@ class UsernameObserver implements ObserverInterface
                     $this->messageManager->addErrorMessage(
                         __('Username already exist, please try another one.')
                     );
+                    $isNotValid = true;
                 } else {
                     $isEmailValid = Zend_Validate::is($parameters['email'], Zend_Validate_EmailAddress::class);
                     if (!$isEmailValid) {
                         $this->messageManager->addErrorMessage(
                             __('Your email address is invalid.')
                         );
+                        $isNotValid = true;
                     } elseif ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
                         $this->messageManager->addErrorMessage(
                             __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
                         );
+                        $isNotValid = true;
                     }
                 }
-                $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
-                $observer->getControllerAction()
-                    ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
-                $this->customerSession->setCustomerFormData($parameters);
+                if ($isNotValid) {
+                    $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
+                    $observer->getControllerAction()
+                        ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
+                    $this->customerSession->setCustomerFormData($parameters);
+                }
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
             }
