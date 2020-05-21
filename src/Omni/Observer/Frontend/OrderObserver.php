@@ -4,18 +4,14 @@ namespace Ls\Omni\Observer\Frontend;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\OrderHelper;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface;
-use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
@@ -25,21 +21,6 @@ use Psr\Log\LoggerInterface;
  */
 class OrderObserver implements ObserverInterface
 {
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $quoteRepository;
-
-    /**
-     * @var ManagerInterface
-     */
-    protected $messageManager;
-
-    /**
-     * @var ContactHelper
-     */
-    private $contactHelper;
-
     /**
      * @var BasketHelper
      */
@@ -61,7 +42,7 @@ class OrderObserver implements ObserverInterface
     private $customerSession;
 
     /**
-     * @var Proxy
+     * @var CheckoutProxy
      */
     private $checkoutSession;
 
@@ -77,30 +58,23 @@ class OrderObserver implements ObserverInterface
 
     /**
      * OrderObserver constructor.
-     * @param ContactHelper $contactHelper
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
      * @param CustomerProxy $customerSession
-     * @param Proxy $checkoutSession
+     * @param CheckoutProxy $checkoutSession
      * @param Order $orderResourceModel
      * @param LSR $LSR
-     * @param ManagerInterface $messageManager
-     * @param CartRepositoryInterface $quoteRepository
      */
     public function __construct(
-        ContactHelper $contactHelper,
         BasketHelper $basketHelper,
         OrderHelper $orderHelper,
         LoggerInterface $logger,
         CustomerProxy $customerSession,
-        Proxy $checkoutSession,
+        CheckoutProxy $checkoutSession,
         Order $orderResourceModel,
-        LSR $LSR,
-        ManagerInterface $messageManager,
-        CartRepositoryInterface $quoteRepository
+        LSR $LSR
     ) {
-        $this->contactHelper      = $contactHelper;
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
         $this->logger             = $logger;
@@ -108,15 +82,12 @@ class OrderObserver implements ObserverInterface
         $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
-        $this->messageManager     = $messageManager;
-        $this->quoteRepository    = $quoteRepository;
     }
 
     /**
      * @param Observer $observer
      * @return $this|void
      * @throws InputException
-     * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
@@ -125,8 +96,8 @@ class OrderObserver implements ObserverInterface
          * Adding condition to only process if LSR is enabled.
          */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $check             = false;
-            $order             = $observer->getEvent()->getData('order');
+            $check = false;
+            $order = $observer->getEvent()->getData('order');
             if (empty($order)) {
                 $orderIds = $observer->getEvent()->getOrderIds();
                 $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
@@ -162,24 +133,18 @@ class OrderObserver implements ObserverInterface
                             $order->setDocumentId($documentId);
                             $this->checkoutSession->setLastDocumentId($documentId);
                         }
-                        $order->addStatusHistoryComment('Order request has been sent to ls central successfully');
+                        $order->addCommentToStatusHistory('Order request has been sent to ls central successfully');
                         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                             $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-                            $success = $this->basketHelper->delete($oneList);
-                            if ($success) {
-                                $quote = $this->quoteRepository->get($order->getQuoteId());
-                                $quote->setLsOnelistId('');
-                                $this->quoteRepository->save($quote);
-                            }
+                            $this->basketHelper->delete($oneList);
                         }
                     } else {
-                        // TODO: error handling
                         if ($response) {
                             if (!empty($response->getMessage())) {
                                 $this->logger->critical(
                                     __('Something terrible happened while placing order')
                                 );
-                                $order->addStatusHistoryComment($response->getMessage());
+                                $order->addCommentToStatusHistory($response->getMessage());
                             }
                             $this->checkoutSession->unsetData('last_document_id');
                         }

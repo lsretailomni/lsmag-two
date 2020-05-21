@@ -119,7 +119,9 @@ class OrderHelper extends AbstractHelper
             $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
             $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
-            $order->setCouponCode($this->checkoutSession->getCouponCode());
+            if (!empty($this->checkoutSession->getCouponCode())) {
+                $order->setCouponCode($this->checkoutSession->getCouponCode());
+            }
             $oneListCalculateResponse
                 ->setId($order->getIncrementId())
                 ->setContactId($contactId)

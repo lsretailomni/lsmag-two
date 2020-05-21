@@ -105,7 +105,6 @@ class QuoteObserver implements ObserverInterface
                 $basketData = $this->basketHelper->update($oneList);
                 $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
                 if (!empty($basketData)) {
-                    $quote->setLsOnelistId($oneList->getId());
                     $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
                 }
                 if ($quote->getLsGiftCardAmountUsed() > 0 ||

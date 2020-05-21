@@ -5,6 +5,9 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
+use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderLine;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -14,6 +17,7 @@ use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
 use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -100,6 +104,9 @@ class BasketHelper extends AbstractHelper
      */
     public $quoteResourceModel;
 
+    /** @var CustomerFactory */
+    public $customerFactory;
+
     /**
      * BasketHelper constructor.
      * @param Context $context
@@ -133,7 +140,8 @@ class BasketHelper extends AbstractHelper
         Data $data,
         SessionManagerInterface $session,
         CartRepositoryInterface $quoteRepository,
-        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
+        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel,
+        CustomerFactory $customerFactory
     ) {
         parent::__construct($context);
         $this->cart                           = $cart;
@@ -150,6 +158,7 @@ class BasketHelper extends AbstractHelper
         $this->session                        = $session;
         $this->quoteRepository                = $quoteRepository;
         $this->quoteResourceModel             = $quoteResourceModel;
+        $this->customerFactory                = $customerFactory;
     }
 
     /**
@@ -666,8 +675,8 @@ class BasketHelper extends AbstractHelper
     public function calculate(Entity\OneList $oneList)
     {
         // @codingStandardsIgnoreLine
-        $storeId   = $this->getDefaultWebStore();
-        $cardId    = $oneList->getCardId();
+        $storeId = $this->getDefaultWebStore();
+        $cardId  = $oneList->getCardId();
 
         /** @var Entity\ArrayOfOneListItem $oneListItems */
         $oneListItems = $oneList->getItems();
@@ -973,5 +982,53 @@ class BasketHelper extends AbstractHelper
         }
 
         return $oneListCalc;
+    }
+
+    /**
+     * @param $order
+     * @return Order
+     * @throws InvalidEnumException
+     */
+    public function calculateOneListFromOrder($order)
+    {
+        $orderLines = [];
+        $orderItems = $order->getAllVisibleItems();
+        foreach ($orderItems as $index => $orderItem) {
+            $orderLine = new OrderLine();
+            $sku       = $orderItem->getSku();
+            $parts     = explode('-', $sku);
+            $itemId    = array_shift($parts);
+            $variantId = count($parts) ? array_shift($parts) : null;
+            $qty       = $orderItem->getQtyOrdered();
+            $amount    = $orderItem->getPrice() * $qty;
+            $orderLine->setItemId($itemId)
+                ->setVariantId($variantId)
+                ->setQuantity($qty)
+                ->setQuantityToInvoice($qty)
+                ->setAmount($amount)
+                ->setDiscountAmount($orderItem->getDiscountAmount())
+                ->setNetPrice($orderItem->getOriginalPrice())
+                ->setNetAmount($amount)
+                ->setPrice($orderItem->getOriginalPrice())
+                ->setLineNumber(++$index)
+                ->setLineType('Item');
+            $orderLines[] = $orderLine;
+        }
+        $oneListCalculation = new Order();
+        $items              = new ArrayOfOrderLine();
+        $items->setOrderLine($orderLines);
+        $oneListCalculation->setOrderLines($items);
+        if (!$order->getCustomerIsGuest()) {
+            $customerEmail = $order->getCustomerEmail();
+            $websiteId     = $order->getStore()->getWebsiteId();
+            $customer      = $this->customerFactory->create()
+                ->setWebsiteId($websiteId)
+                ->loadByEmail($customerEmail);
+            $cardId        = $customer->getData('lsr_cardid');
+            $oneListCalculation->setCardId($cardId);
+        }
+        $oneListCalculation->setTotalAmount($order->getGrandTotal());
+        $oneListCalculation->setTotalDiscount(abs($order->getDiscountAmount()));
+        return $oneListCalculation;
     }
 }

@@ -7,11 +7,9 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\Data;
 use \LS\Omni\Helper\ItemHelper;
 use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
-use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Quote\Model\Quote;
@@ -23,10 +21,6 @@ use Psr\Log\LoggerInterface;
  */
 class CartObserver implements ObserverInterface
 {
-    /**
-     * @var ContactHelper
-     */
-    private $contactHelper;
 
     /**
      * @var BasketHelper
@@ -43,10 +37,6 @@ class CartObserver implements ObserverInterface
      */
     private $logger;
 
-    /**
-     * @var CustomerProxy
-     */
-    private $customerSession;
 
     /**
      * @var CheckoutProxy
@@ -70,30 +60,24 @@ class CartObserver implements ObserverInterface
 
     /**
      * CartObserver constructor.
-     * @param ContactHelper $contactHelper
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
-     * @param CustomerProxy $customerSession
      * @param CheckoutProxy $checkoutSession
      * @param LSR $LSR
      * @param Data $data
      */
     public function __construct(
-        ContactHelper $contactHelper,
         BasketHelper $basketHelper,
         ItemHelper $itemHelper,
         LoggerInterface $logger,
-        CustomerProxy $customerSession,
         CheckoutProxy $checkoutSession,
         LSR $LSR,
         Data $data
     ) {
-        $this->contactHelper   = $contactHelper;
         $this->basketHelper    = $basketHelper;
         $this->itemHelper      = $itemHelper;
         $this->logger          = $logger;
-        $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->lsr             = $LSR;
         $this->data            = $data;
@@ -141,7 +125,6 @@ class CartObserver implements ObserverInterface
                     $basketData = $this->basketHelper->update($oneList);
                     $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
                     if (!empty($basketData)) {
-                        $this->checkoutSession->getQuote()->setLsOnelistId($oneList->getId());
                         $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
                     }
                     if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||

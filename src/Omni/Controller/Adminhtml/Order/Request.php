@@ -4,11 +4,12 @@ namespace Ls\Omni\Controller\Adminhtml\Order;
 
 use Exception;
 use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Backend\App\Action;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\Order;
+use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -23,19 +24,10 @@ class Request extends Action
     public $orderRepository;
 
     /**
-     * @var CartRepositoryInterface
-     */
-    public $quoteRepository;
-
-    /**
      * @var BasketHelper
      */
     public $basketHelper;
 
-    /**
-     * @var ManagerInterface
-     */
-    public $eventManager;
 
     /**
      * @var LoggerInterface
@@ -43,26 +35,29 @@ class Request extends Action
     public $logger;
 
     /**
+     * @var OrderHelper
+     */
+    public $orderHelper;
+
+    /**
      * Request constructor.
      * @param Action\Context $context
      * @param OrderRepositoryInterface $orderRepository
-     * @param CartRepositoryInterface $quoteRepository
      * @param BasketHelper $basketHelper
-     * @param ManagerInterface $eventManager
+     * @param LoggerInterface $logger
+     * @param OrderHelper $orderHelper
      */
     public function __construct(
         Action\Context $context,
         OrderRepositoryInterface $orderRepository,
-        CartRepositoryInterface $quoteRepository,
         BasketHelper $basketHelper,
-        ManagerInterface $eventManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        OrderHelper $orderHelper
     ) {
         $this->orderRepository = $orderRepository;
-        $this->quoteRepository = $quoteRepository;
         $this->basketHelper    = $basketHelper;
-        $this->eventManager    = $eventManager;
         $this->logger          = $logger;
+        $this->orderHelper     = $orderHelper;
         parent::__construct($context);
     }
 
@@ -72,26 +67,27 @@ class Request extends Action
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
         try {
-            /** @var Order $order */
-            $order = $this->orderRepository->get($orderId);
-            $quote = $this->quoteRepository->get($order->getQuoteId());
-            $couponCode = $order->getCouponCode();
-            $oneListId = $quote->getLsOnelistId();
-            if (!empty($oneListId)) {
-                $oneList = $this->basketHelper->get($oneListId);
-                if ($oneList) {
-                    if (!empty($couponCode)) {
-                        $this->basketHelper->couponCode = $couponCode;
-                    }
-                    $basketData = $this->basketHelper->update($oneList);
-                    if ($basketData) {
-                        $this->eventManager->dispatch(
-                            'sales_order_place_after',
-                            ['order' => $order]
+            $order              = $this->orderRepository->get($orderId);
+            $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
+            $request            = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+            $response           = $this->orderHelper->placeOrder($request);
+            if (property_exists($response, 'OrderCreateResult')) {
+                if (!empty($response->getResult()->getId())) {
+                    $documentId = $response->getResult()->getId();
+                    $order->setDocumentId($documentId);
+                }
+                $order->addCommentToStatusHistory('Order request has been sent to ls central successfully');
+            } else {
+                if ($response) {
+                    if (!empty($response->getMessage())) {
+                        $this->logger->critical(
+                            __('Something terrible happened while placing order')
                         );
+                        $order->addCommentToStatusHistory($response->getMessage());
                     }
                 }
             }
+            $this->orderRepository->save($order);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
