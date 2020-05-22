@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\Omni\Observer\Frontend;
+namespace Ls\Omni\Observer;
 
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -9,7 +9,7 @@ use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class SalesObserver
- * @package Ls\Omni\Observer\Frontend
+ * @package Ls\Omni\Observer
  */
 class SalesObserver implements ObserverInterface
 {

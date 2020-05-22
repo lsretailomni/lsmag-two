@@ -1,13 +1,13 @@
 <?php
 
-namespace Ls\Omni\Observer\Frontend;
+namespace Ls\Omni\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class WatchNextCartSaveObserver
- * @package Ls\Omni\Observer\Frontend
+ * @package Ls\Omni\Observer
  */
 class WatchNextCartSaveObserver implements ObserverInterface
 {

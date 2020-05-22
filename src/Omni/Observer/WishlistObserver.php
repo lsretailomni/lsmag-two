@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\Omni\Observer\Frontend;
+namespace Ls\Omni\Observer;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class CartObserver
- * @package Ls\Omni\Observer\Frontend
+ * @package Ls\Omni\Observer
  */
 class WishlistObserver implements ObserverInterface
 {
