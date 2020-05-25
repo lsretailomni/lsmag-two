@@ -102,23 +102,22 @@ class OrderHelper extends AbstractHelper
     public function prepareOrder(Model\Order $order, Entity\Order $oneListCalculateResponse)
     {
         try {
-            $storeId       = $this->basketHelper->getDefaultWebStore();
+            $storeId       = $oneListCalculateResponse->getStoreId();
+            $cardId        = $oneListCalculateResponse->getCardId();
             $customerEmail = $order->getCustomerEmail();
             $customerName  = $order->getShippingAddress()->getFirstname() .
                 ' ' . $order->getShippingAddress()->getLastname();
             $mobileNumber  = $order->getShippingAddress()->getTelephone();
             if ($this->customerSession->isLoggedIn()) {
                 $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-
             } else {
                 $contactId = '';
             }
-            $cardId    = $oneListCalculateResponse->getCardId();
             $shippingMethod = $order->getShippingMethod(true);
             //TODO work on condition
             $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-            $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
+            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
             if (!empty($this->checkoutSession->getCouponCode())) {
                 $order->setCouponCode($this->checkoutSession->getCouponCode());
             }

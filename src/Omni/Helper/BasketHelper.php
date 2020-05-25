@@ -768,6 +768,32 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * @param $customerEmail
+     * @param $websiteId
+     * @return bool|Entity\OneList
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     */
+    public function getOneListAdmin($customerEmail, $websiteId)
+    {
+        /** @var Entity\OneList $list */
+        $list     = null;
+        $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
+        $cardId   = $customer->getData('lsr_cardid');
+        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+        // @codingStandardsIgnoreStart
+        $list = (new Entity\OneList())
+            ->setCardId($cardId)
+            ->setDescription('OneList Magento')
+            ->setListType(Entity\Enum\ListType::BASKET)
+            ->setItems(new Entity\ArrayOfOneListItem())
+            ->setPublishedOffers($this->_offers())
+            ->setStoreId($webStore);
+        return $this->saveToOmni($list);
+        // @codingStandardsIgnoreEnd
+    }
+
+    /**
      * @param null $id
      * @return array|bool|Entity\OneList|Entity\OneList[]|mixed|null
      * @throws InvalidEnumException
@@ -825,11 +851,7 @@ class BasketHelper extends AbstractHelper
      */
     public function fetchFromOmni()
     {
-
-        /** Handling the guest user too */
-        $contactId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID) == null) ?
-            $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID) : '');
-        // if guest, then empty cardid
+        // if guest, then empty card id
         $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
             ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
 
