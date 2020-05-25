@@ -6,10 +6,8 @@ use Exception;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Backend\App\Action;
-use Magento\Framework\Event\ManagerInterface;
-use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -40,6 +38,11 @@ class Request extends Action
     public $orderHelper;
 
     /**
+     * @var ManagerInterface
+     */
+    public $messageManager;
+
+    /**
      * Request constructor.
      * @param Action\Context $context
      * @param OrderRepositoryInterface $orderRepository
@@ -58,6 +61,7 @@ class Request extends Action
         $this->basketHelper    = $basketHelper;
         $this->logger          = $logger;
         $this->orderHelper     = $orderHelper;
+        $this->messageManager  = $context->getMessageManager();
         parent::__construct($context);
     }
 
@@ -76,13 +80,19 @@ class Request extends Action
                     $documentId = $response->getResult()->getId();
                     $order->setDocumentId($documentId);
                 }
-                $order->addCommentToStatusHistory('Order request has been sent to ls central successfully');
+                $this->messageManager->addSuccessMessage(
+                    __('Order request has been sent to ls central successfully')
+                );
+                $order->addCommentToStatusHistory(
+                    __('Order request has been sent to ls central successfully')
+                );
             } else {
                 if ($response) {
                     if (!empty($response->getMessage())) {
                         $this->logger->critical(
                             __('Something terrible happened while placing order')
                         );
+                        $this->messageManager->addErrorMessage($response->getMessage());
                         $order->addCommentToStatusHistory($response->getMessage());
                     }
                 }

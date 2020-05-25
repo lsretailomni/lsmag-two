@@ -133,7 +133,9 @@ class OrderObserver implements ObserverInterface
                             $order->setDocumentId($documentId);
                             $this->checkoutSession->setLastDocumentId($documentId);
                         }
-                        $order->addCommentToStatusHistory('Order request has been sent to ls central successfully');
+                        $order->addCommentToStatusHistory(
+                            __('Order request has been sent to ls central successfully')
+                        );
                         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                             $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
                             $this->basketHelper->delete($oneList);

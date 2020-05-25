@@ -84,7 +84,10 @@ class QuoteObserver implements ObserverInterface
                 $couponCode = $quote->getCouponCode();
                 // This will create one list if not created and will return onelist if its already created.
                 /** @var OneList|null $oneList */
-                $oneList = $this->basketHelper->getOneListAdmin($quote->getCustomerEmail(), $quote->getStore()->getWebsiteId());
+                $oneList = $this->basketHelper->getOneListAdmin(
+                    $quote->getCustomerEmail(),
+                    $quote->getStore()->getWebsiteId()
+                );
                 $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
                 if (!empty($couponCode)) {
                     $status = $this->basketHelper->setCouponCode($couponCode);

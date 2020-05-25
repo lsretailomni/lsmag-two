@@ -1040,17 +1040,17 @@ class BasketHelper extends AbstractHelper
         $items              = new ArrayOfOrderLine();
         $items->setOrderLine($orderLines);
         $oneListCalculation->setOrderLines($items);
+        $websiteId     = $order->getStore()->getWebsiteId();
         if (!$order->getCustomerIsGuest()) {
             $customerEmail = $order->getCustomerEmail();
-            $websiteId     = $order->getStore()->getWebsiteId();
-            $webStore      = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
             $customer      = $this->customerFactory->create()
                 ->setWebsiteId($websiteId)
                 ->loadByEmail($customerEmail);
             $cardId        = $customer->getData('lsr_cardid');
             $oneListCalculation->setCardId($cardId);
-            $oneListCalculation->setStoreId($webStore);
         }
+        $webStore      = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+        $oneListCalculation->setStoreId($webStore);
         $oneListCalculation->setTotalAmount($order->getGrandTotal());
         $oneListCalculation->setTotalDiscount(abs($order->getDiscountAmount()));
         return $oneListCalculation;

@@ -10,6 +10,7 @@ use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
@@ -48,6 +49,11 @@ class OrderObserver implements ObserverInterface
     private $lsr;
 
     /**
+     * @var ManagerInterface
+     */
+    private $messageManager;
+
+    /**
      * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
@@ -56,6 +62,7 @@ class OrderObserver implements ObserverInterface
      * @param CheckoutProxy $checkoutSession
      * @param Order $orderResourceModel
      * @param LSR $LSR
+     * @param ManagerInterface $messageManager
      */
     public function __construct(
         BasketHelper $basketHelper,
@@ -64,7 +71,8 @@ class OrderObserver implements ObserverInterface
         CustomerProxy $customerSession,
         CheckoutProxy $checkoutSession,
         Order $orderResourceModel,
-        LSR $LSR
+        LSR $LSR,
+        ManagerInterface $messageManager
     ) {
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
@@ -73,6 +81,7 @@ class OrderObserver implements ObserverInterface
         $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
+        $this->messageManager     = $messageManager;
     }
 
     /**
@@ -100,7 +109,12 @@ class OrderObserver implements ObserverInterface
                             $order->setDocumentId($documentId);
                             $this->checkoutSession->setLastDocumentId($documentId);
                         }
-                        $order->addCommentToStatusHistory('Order request has been sent to ls central successfully');
+                        $this->messageManager->addSuccessMessage(
+                            __('Order request has been sent to ls central successfully')
+                        );
+                        $order->addCommentToStatusHistory(
+                            __('Order request has been sent to ls central successfully')
+                        );
                         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                             $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
                             $this->basketHelper->delete($oneList);
@@ -111,6 +125,7 @@ class OrderObserver implements ObserverInterface
                                 $this->logger->critical(
                                     __('Something terrible happened while placing order')
                                 );
+                                $this->messageManager->addErrorMessage($response->getMessage());
                                 $order->addCommentToStatusHistory($response->getMessage());
                             }
                             $this->checkoutSession->unsetData('last_document_id');
