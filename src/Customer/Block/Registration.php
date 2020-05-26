@@ -65,7 +65,7 @@ class Registration extends CheckoutRegistration
      */
     public function toHtml()
     {
-        if ($this->lsr->isLSR()) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             return '';
         } else {
             return parent::toHtml();
