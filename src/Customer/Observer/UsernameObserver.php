@@ -14,6 +14,8 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
+use Zend_Validate;
+use Zend_Validate_EmailAddress;
 
 /**
  * Class UsernameObserver
@@ -85,29 +87,41 @@ class UsernameObserver implements ObserverInterface
          */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
+                $isNotValid = false;
                 /** @var Interceptor $controller_action */
                 $controller_action = $observer->getData('controller_action');
                 $parameters        = $controller_action->getRequest()->getParams();
                 $this->customerSession->setLsrUsername($parameters['lsr_username']);
-                if ($this->contactHelper->isUsernameExist($parameters['lsr_username']) || $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username'])) {
+                // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
+                if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $parameters['lsr_username'])) {
+                    $this->messageManager->addErrorMessage(
+                        __('Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.')
+                    );
+                    $isNotValid = true;
+                } elseif ($this->contactHelper->isUsernameExist($parameters['lsr_username']) || $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username'])) {
                     $this->messageManager->addErrorMessage(
                         __('Username already exist, please try another one.')
                     );
-                    $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()
-                        ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
-                    $this->customerSession->setCustomerFormData($parameters);
-                    return $this;
+                    $isNotValid = true;
+                } else {
+                    $isEmailValid = Zend_Validate::is($parameters['email'], Zend_Validate_EmailAddress::class);
+                    if (!$isEmailValid) {
+                        $this->messageManager->addErrorMessage(
+                            __('Your email address is invalid.')
+                        );
+                        $isNotValid = true;
+                    } elseif ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
+                        $this->messageManager->addErrorMessage(
+                            __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
+                        );
+                        $isNotValid = true;
+                    }
                 }
-                if ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
-                    $this->messageManager->addErrorMessage(
-                        __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
-                    );
+                if ($isNotValid) {
                     $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
                     $observer->getControllerAction()
                         ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
                     $this->customerSession->setCustomerFormData($parameters);
-                    return $this;
                 }
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
