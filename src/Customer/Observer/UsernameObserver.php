@@ -92,7 +92,13 @@ class UsernameObserver implements ObserverInterface
                 $controller_action = $observer->getData('controller_action');
                 $parameters        = $controller_action->getRequest()->getParams();
                 $this->customerSession->setLsrUsername($parameters['lsr_username']);
-                if ($this->contactHelper->isUsernameExist($parameters['lsr_username']) || $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username'])) {
+                // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
+                if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $parameters['lsr_username'])) {
+                    $this->messageManager->addErrorMessage(
+                        __('Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.')
+                    );
+                    $isNotValid = true;
+                } elseif ($this->contactHelper->isUsernameExist($parameters['lsr_username']) || $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username'])) {
                     $this->messageManager->addErrorMessage(
                         __('Username already exist, please try another one.')
                     );

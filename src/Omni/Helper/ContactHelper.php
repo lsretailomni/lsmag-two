@@ -518,10 +518,6 @@ class ContactHelper extends AbstractHelper
      */
     public function isUsernameExistInLsCentral($username)
     {
-        // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
-        if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $username)) {
-            return null;
-        }
         $response = null;
         // @codingStandardsIgnoreStart
         $request       = new Operation\ContactSearch();
