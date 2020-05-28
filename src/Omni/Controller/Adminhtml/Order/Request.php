@@ -81,10 +81,10 @@ class Request extends Action
                     $order->setDocumentId($documentId);
                 }
                 $this->messageManager->addSuccessMessage(
-                    __('Order request has been sent to ls central successfully')
+                    __('Order request has been sent to LS Central successfully')
                 );
                 $order->addCommentToStatusHistory(
-                    __('Order request has been sent to ls central successfully')
+                    __('Order request has been sent to LS Central successfully')
                 );
             } else {
                 if ($response) {

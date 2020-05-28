@@ -10,7 +10,7 @@ class View
 {
     public function beforeSetLayout(\Magento\Sales\Block\Adminhtml\Order\View $view)
     {
-        $message = 'Are you sure you want to do this?';
+        $message = 'Create similar order in Ls Central?';
         $url     = $view->getUrl('omni/order/request/id', ['order_id' => $view->getOrderId()]);
         if (is_null($view->getOrder()->getDocumentId())) {
             $view->addButton(
