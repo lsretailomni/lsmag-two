@@ -83,9 +83,6 @@ class Request extends Action
                 $this->messageManager->addSuccessMessage(
                     __('Order request has been sent to LS Central successfully')
                 );
-                $order->addCommentToStatusHistory(
-                    __('Order request has been sent to LS Central successfully')
-                );
             } else {
                 if ($response) {
                     if (!empty($response->getMessage())) {
@@ -93,7 +90,6 @@ class Request extends Action
                             __('Something terrible happened while placing order')
                         );
                         $this->messageManager->addErrorMessage($response->getMessage());
-                        $order->addCommentToStatusHistory($response->getMessage());
                     }
                 }
             }

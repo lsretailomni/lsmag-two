@@ -112,9 +112,6 @@ class OrderObserver implements ObserverInterface
                         $this->messageManager->addSuccessMessage(
                             __('Order request has been sent to LS Central successfully')
                         );
-                        $order->addCommentToStatusHistory(
-                            __('Order request has been sent to LS Central successfully')
-                        );
                         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                             $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
                             $this->basketHelper->delete($oneList);
@@ -126,7 +123,6 @@ class OrderObserver implements ObserverInterface
                                     __('Something terrible happened while placing order')
                                 );
                                 $this->messageManager->addErrorMessage($response->getMessage());
-                                $order->addCommentToStatusHistory($response->getMessage());
                             }
                             $this->checkoutSession->unsetData('last_document_id');
                         }
