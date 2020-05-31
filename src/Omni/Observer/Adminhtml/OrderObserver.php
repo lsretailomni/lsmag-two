@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\Omni\Observer;
+namespace Ls\Omni\Observer\Adminhtml;
 
 use Exception;
 use \Ls\Core\Model\LSR;
@@ -10,25 +10,21 @@ use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
 /**
  * Class OrderObserver
- * @package Ls\Omni\Observer
+ * @package Ls\Omni\Observer\Adminhtml
  */
 class OrderObserver implements ObserverInterface
 {
-    /**
-     * @var BasketHelper
-     */
+
+    /** @var BasketHelper */
     private $basketHelper;
 
-    /**
-     * @var OrderHelper
-     */
+    /** @var OrderHelper */
     private $orderHelper;
 
     /**
@@ -46,15 +42,16 @@ class OrderObserver implements ObserverInterface
      */
     private $checkoutSession;
 
-    /**
-     * @var Order
-     */
+    /** @var Order $orderResourceModel */
     private $orderResourceModel;
 
-    /**
-     * @var LSR
-     */
+    /** @var LSR @var */
     private $lsr;
+
+    /**
+     * @var ManagerInterface
+     */
+    private $messageManager;
 
     /**
      * OrderObserver constructor.
@@ -65,6 +62,7 @@ class OrderObserver implements ObserverInterface
      * @param CheckoutProxy $checkoutSession
      * @param Order $orderResourceModel
      * @param LSR $LSR
+     * @param ManagerInterface $messageManager
      */
     public function __construct(
         BasketHelper $basketHelper,
@@ -73,7 +71,8 @@ class OrderObserver implements ObserverInterface
         CustomerProxy $customerSession,
         CheckoutProxy $checkoutSession,
         Order $orderResourceModel,
-        LSR $LSR
+        LSR $LSR,
+        ManagerInterface $messageManager
     ) {
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
@@ -82,58 +81,35 @@ class OrderObserver implements ObserverInterface
         $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
+        $this->messageManager     = $messageManager;
     }
 
     /**
      * @param Observer $observer
      * @return $this|void
-     * @throws InputException
-     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
+        /** @var \Magento\Sales\Model\Order $order */
+        $order = $observer->getEvent()->getData('order');
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $check = false;
-            $order = $observer->getEvent()->getData('order');
-            if (empty($order)) {
-                $orderIds = $observer->getEvent()->getOrderIds();
-                $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
-            }
-            //checking for Adyen payment gateway
-            $adyen_response = $observer->getEvent()->getData('adyen_response');
-            if (!empty($adyen_response)) {
-                $order->getPayment()->setLastTransId($adyen_response['pspReference']);
-                $order->getPayment()->setCcTransId($adyen_response['pspReference']);
-                $order->getPayment()->setCcType($adyen_response['paymentMethod']);
-                $order->getPayment()->setCcStatus($adyen_response['authResult']);
-                $this->orderHelper->orderRepository->save($order);
-                $order = $this->orderHelper->orderRepository->get($order->getEntityId());
-            }
-            if (!empty($order)) {
-                $paymentMethod = $order->getPayment();
-                if (!empty($paymentMethod)) {
-                    $paymentMethod = $order->getPayment()->getMethodInstance();
-                    $transId       = $order->getPayment()->getLastTransId();
-                    $check         = $paymentMethod->isOffline();
-                }
-            }
+        if ($this->lsr->isLSR($order->getStoreId())) {
             if (!empty($this->checkoutSession->getOneListCalculation())) {
                 $oneListCalculation = $this->checkoutSession->getOneListCalculation();
             }
-            if (($check == true || !empty($transId)) && !empty($oneListCalculation)) {
-                $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                $response = $this->orderHelper->placeOrder($request);
+            if (!empty($oneListCalculation)) {
                 try {
+                    $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                    $response = $this->orderHelper->placeOrder($request);
                     if (property_exists($response, 'OrderCreateResult')) {
                         if (!empty($response->getResult()->getId())) {
                             $documentId = $response->getResult()->getId();
                             $order->setDocumentId($documentId);
                             $this->checkoutSession->setLastDocumentId($documentId);
                         }
-                        $order->addCommentToStatusHistory(
+                        $this->messageManager->addSuccessMessage(
                             __('Order request has been sent to LS Central successfully')
                         );
                         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
@@ -146,7 +122,7 @@ class OrderObserver implements ObserverInterface
                                 $this->logger->critical(
                                     __('Something terrible happened while placing order')
                                 );
-                                $order->addCommentToStatusHistory($response->getMessage());
+                                $this->messageManager->addErrorMessage($response->getMessage());
                             }
                             $this->checkoutSession->unsetData('last_document_id');
                         }
@@ -163,7 +139,7 @@ class OrderObserver implements ObserverInterface
                     $this->logger->error($e->getMessage());
                 }
             }
-            return $this;
         }
+        return $this;
     }
 }

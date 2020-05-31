@@ -10,7 +10,10 @@
 "if Buy with any of these items: ","if Buy with any of these items: "
 "Expiry :","Expiry :"
 "Coupon Code :","Coupon Code :"
+Closed,Closed
 Special,Special
+"Order request has been sent to LS Central successfully","Order request has been sent to LS Central successfully"
+"Something terrible happened while placing order","Something terrible happened while placing order"
 "Please select your hierarchy code","Please select your hierarchy code"
 "No hierarchy code found for the selected store","No hierarchy code found for the selected store"
 "Please select your web store","Please select your web store"
@@ -42,11 +45,10 @@ Notice,Notice
 "This item is not available","This item is not available"
 "Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
 "Our Stores","Our Stores"
-Save,Save
 "Coupon Code is not valid for these item(s)","Coupon Code is not valid for these item(s)"
 "Reset password token expired.","Reset password token expired."
-Closed,Closed
 "The gift card amount ""%1"" and loyalty points ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points ""%2"" are not valid."
+Save,Save
 Products,Products
 SKU,SKU
 Qty,Qty
@@ -67,7 +69,8 @@ Subtotal,Subtotal
 "You are using","You are using"
 "Coupon code successfully removed.","Coupon code successfully removed."
 "You used coupon code ""%1"".","You used coupon code ""%1""."
-"Something terrible happened while placing order","Something terrible happened while placing order"
+"Send order to LS Central?","Send order to LS Central?"
+"Send to LS Central","Send to LS Central"
 "Flat No/House No/Building No","Flat No/House No/Building No"
 "Street Name/Landmark","Street Name/Landmark"
 "Cart %1 doesn't contain products","Cart %1 doesn't contain products"
@@ -135,10 +138,14 @@ Close,Close
 "Gift card successfully applied.","Gift card successfully applied."
 "Your points are successfully redeemed.","Your points are successfully redeemed."
 cart,cart
+"Please provide where (if suitable) you prefer to pick your order.","Please provide where (if suitable) you prefer to pick your order."
 Configuration,Configuration
+Version,Version
 "Service Base URL","Service Base URL"
 "LS Key","LS Key"
 "Please validate your base url by clicking on button above","Please validate your base url by clicking on button above"
+"Omni Service Version","Omni Service Version"
+"LS Central Version","LS Central Version"
 "Select Store","Select Store"
 "Choose the web store","Choose the web store"
 "Select Hierarchy Code","Select Hierarchy Code"
@@ -158,6 +165,8 @@ Enabled,Enabled
 "Discount Popup Mix and Match Products Limit","Discount Popup Mix and Match Products Limit"
 "Stores Listing","Stores Listing"
 "Opening Hours Time Format","Opening Hours Time Format"
+"Magento Order Number Prefix","Magento Order Number Prefix"
+"Prefix for Order Number","Prefix for Order Number"
 "Click And Collect","Click And Collect"
 Title,Title
 "Method Name","Method Name"
@@ -178,10 +187,4 @@ Title,Title
 "Subtotal (Inc.Tax)","Subtotal (Inc.Tax)"
 "Order Balance","Order Balance"
 Stores,Stores
-"Prefix for Order Number","Prefix for Order Number"
-"Please use only letters (a-z or A-Z), numbers (0-9), dash or underscore in this field.","Please use only letters (a-z or A-Z), numbers (0-9), dash or underscore in this field."
 "Check Gift Card Balance","Check Gift Card Balance"
-"Omni Service Version","Omni Service Version"
-"LS Central Version","LS Central Version"
-"Version","Version"
-"Please provide where (if suitable) you prefer to pick your order","Please provide where (if suitable) you prefer to pick your order"

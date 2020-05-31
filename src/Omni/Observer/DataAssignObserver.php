@@ -3,6 +3,7 @@
 namespace Ls\Omni\Observer;
 
 use \Ls\Core\Model\LSR;
+use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
@@ -16,15 +17,24 @@ class DataAssignObserver implements ObserverInterface
     /** @var LSR @var */
     private $lsr;
 
+
+    /**
+     * @var Proxy
+     */
+    private $checkoutSession;
+
+
     /**
      * DataAssignObserver constructor.
      * @param LSR $LSR
+     * @param Proxy $checkoutSession
      */
-
     public function __construct(
-        LSR $LSR
+        LSR $LSR,
+        Proxy $checkoutSession
     ) {
-        $this->lsr = $LSR;
+        $this->lsr             = $LSR;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -43,6 +53,9 @@ class DataAssignObserver implements ObserverInterface
             $order->setPickupDate($quote->getPickupDate());
             if ($quote->getPickupStore()) {
                 $order->setPickupStore($quote->getPickupStore());
+            }
+            if (!empty($this->checkoutSession->getCouponCode())) {
+                $order->setCouponCode($this->checkoutSession->getCouponCode());
             }
             $order->setLsPointsSpent($quote->getLsPointsSpent());
             $order->setLsPointsEarn($quote->getLsPointsEarn());

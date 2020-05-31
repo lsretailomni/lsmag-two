@@ -6,15 +6,12 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\Data;
 use \LS\Omni\Helper\ItemHelper;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote;
 use Psr\Log\LoggerInterface;
 
@@ -24,59 +21,63 @@ use Psr\Log\LoggerInterface;
  */
 class CartObserver implements ObserverInterface
 {
-    /** @var ContactHelper */
-    private $contactHelper;
 
-    /** @var BasketHelper */
+    /**
+     * @var BasketHelper
+     */
     private $basketHelper;
 
-    /** @var ItemHelper */
+    /**
+     * @var ItemHelper
+     */
     private $itemHelper;
 
-    /** @var LoggerInterface */
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
 
-    /** @var \Magento\Customer\Model\Session\Proxy $customerSession */
-    private $customerSession;
 
-    /** @var Proxy $checkoutSession */
+    /**
+     * @var CheckoutProxy
+     */
     private $checkoutSession;
 
-    /** @var bool */
+    /**
+     * @var bool
+     */
     private $watchNextSave = false;
 
-    /** @var LSR @var */
+    /**
+     * @var LSR
+     */
     private $lsr;
 
-    /** @var Data @var */
+    /**
+     * @var Data
+     */
     private $data;
 
     /**
      * CartObserver constructor.
-     * @param ContactHelper $contactHelper
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param Proxy $checkoutSession
+     * @param CheckoutProxy $checkoutSession
      * @param LSR $LSR
      * @param Data $data
      */
     public function __construct(
-        ContactHelper $contactHelper,
         BasketHelper $basketHelper,
         ItemHelper $itemHelper,
         LoggerInterface $logger,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        Proxy $checkoutSession,
+        CheckoutProxy $checkoutSession,
         LSR $LSR,
         Data $data
     ) {
-        $this->contactHelper   = $contactHelper;
         $this->basketHelper    = $basketHelper;
         $this->itemHelper      = $itemHelper;
         $this->logger          = $logger;
-        $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->lsr             = $LSR;
         $this->data            = $data;
@@ -85,8 +86,6 @@ class CartObserver implements ObserverInterface
     /**
      * @param Observer $observer
      * @return $this|void
-     * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      */
     // @codingStandardsIgnoreLine
     public function execute(Observer $observer)
