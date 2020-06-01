@@ -102,25 +102,25 @@ class OrderHelper extends AbstractHelper
     public function prepareOrder(Model\Order $order, Entity\Order $oneListCalculateResponse)
     {
         try {
-            $isInline      = true;
-            $storeId       = $this->basketHelper->getDefaultWebStore();
+            $storeId       = $oneListCalculateResponse->getStoreId();
+            $cardId        = $oneListCalculateResponse->getCardId();
             $customerEmail = $order->getCustomerEmail();
             $customerName  = $order->getShippingAddress()->getFirstname() .
                 ' ' . $order->getShippingAddress()->getLastname();
             $mobileNumber  = $order->getShippingAddress()->getTelephone();
             if ($this->customerSession->isLoggedIn()) {
                 $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-                $cardId    = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
             } else {
-                $contactId = $cardId = '';
+                $contactId = '';
             }
             $shippingMethod = $order->getShippingMethod(true);
             //TODO work on condition
             $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
-            /** @var Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-            $orderPaymentArrayObject = $this->setOrderPayments($order, $oneListCalculateResponse->getCardId());
-            $pointDiscount           = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-            $order->setCouponCode($this->checkoutSession->getCouponCode());
+            /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
+            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
+            if (!empty($this->checkoutSession->getCouponCode())) {
+                $order->setCouponCode($this->checkoutSession->getCouponCode());
+            }
             $oneListCalculateResponse
                 ->setId($order->getIncrementId())
                 ->setContactId($contactId)
@@ -206,9 +206,8 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreLine
         $operation = new Operation\OrderCreate();
         $response  = $operation->execute($request);
-
         // @codingStandardsIgnoreLine
-        return $response ? $response->getResult() : $response;
+        return $response;
     }
 
     /**

@@ -2,12 +2,16 @@
 
 namespace Ls\Omni\Client;
 
-use \Ls\Omni\Exception\TokenNotFoundException;
+use DOMDocument;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
-use \Ls\Core\Model\LSR;
+use Magento\Framework\App\ObjectManager;
+use SoapFault;
+use Zend\Log\Logger;
+use Zend\Log\Writer\Stream;
 
 /**
  * Class AbstractOperation
@@ -15,29 +19,40 @@ use \Ls\Core\Model\LSR;
  */
 abstract class AbstractOperation implements OperationInterface
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private static $header = 'LSRETAIL-KEY';
 
-    /** @var  ServiceType */
+    /**
+     * @var ServiceType
+     */
     public $service_type;
 
-    /** @var string */
+    /**
+     * @var null
+     */
     public $token = null;
 
-    /** @var $service_type ServiceType */
+    /**
+     * @var Logger
+     */
     public $logger;
 
-    /** @var \Zend\Log\Writer\Stream */
+    /**
+     * @var Stream
+     */
     public $writer;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /**
+     * @var mixed
+     */
     public $magentoLogger;
 
-    /** @var $objectManager \Magento\Framework\App\ObjectManager */
+    /**
+     * @var ObjectManager
+     */
     public $objectManager;
-
-    /*** @var Zend\Log\Writer\Stream */
-    public $zendWriter;
 
     /**
      * AbstractOperation constructor.
@@ -47,10 +62,10 @@ abstract class AbstractOperation implements OperationInterface
     {
         $this->service_type = $service_type;
         //@codingStandardsIgnoreStart
-        $this->writer = new \Zend\Log\Writer\Stream(BP.'/var/log/omniclient.log');
-        $this->logger = new \Zend\Log\Logger();
+        $this->writer = new Stream(BP . '/var/log/omniclient.log');
+        $this->logger = new Logger();
         $this->logger->addWriter($this->writer);
-        $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->objectManager = ObjectManager::getInstance();
         $this->magentoLogger = $this->objectManager->get('\Psr\Log\LoggerInterface');
         //@codingStandardsIgnoreEnd
     }
@@ -68,11 +83,47 @@ abstract class AbstractOperation implements OperationInterface
      */
     /** If we change this then we need to change our generator classes in Client/Loyalty Folder as well. */
     // @codingStandardsIgnoreStart
-    protected function isTokenized()
+    /**
+     * @param $operation_name
+     * @return NavException|NavObjectReferenceNotAnInstanceException|string|null
+     */
+    public function makeRequest($operation_name)
     {
-        return false;
+        $request_input = $this->getOperationInput();
+        $client        = $this->getClient();
+        $header        = self::$header;
+        $response      = null;
+        if (empty($this->token)) {
+            $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
+            $this->setToken($lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY));
+        }
+        //@codingStandardsIgnoreStart
+        $client->setStreamContext(stream_context_create(['http' => ['header' => "$header: {$this->token}"]]));
+        //@codingStandardsIgnoreEnd
+        try {
+            $response = $client->{$operation_name}($request_input);
+        } catch (SoapFault $e) {
+            $navException = $this->parseException($e);
+            $this->magentoLogger->critical($navException);
+            if ($e->getMessage() != "") {
+                if ($e->faultcode == 's:TransactionCalc' && $operation_name == 'OneListCalculate') {
+                    $response = $e->getMessage();
+                } elseif ($operation_name == 'OrderCreate') {
+                    $response = $navException;
+                }
+            } else {
+                $response = null;
+            }
+        }
+        $this->debugLog($operation_name);
+        return $response;
     }
     // @codingStandardsIgnoreEnd
+
+    /**
+     * @return OmniClient
+     */
+    abstract public function getClient();
 
     /**
      * @param string $token
@@ -87,61 +138,19 @@ abstract class AbstractOperation implements OperationInterface
     }
 
     /**
-     * @param $operation_name
-     *
-     * @return ResponseInterface
-     * @throws TokenNotFoundException
+     * @param SoapFault $exception
+     * @return NavException|NavObjectReferenceNotAnInstanceException
      */
-    public function makeRequest($operation_name)
-    {
-        $request_input = $this->getOperationInput();
-        $client = $this->getClient();
-        $header = self::$header;
-        if (empty($this->token)) {
-            $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
-            $this->setToken($lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY));
-        }
-        //@codingStandardsIgnoreStart
-        $client->setStreamContext(stream_context_create(['http' => ['header' => "$header: {$this->token}"]]));
-        //@codingStandardsIgnoreEnd
-        try {
-            $response = $client->{$operation_name}($request_input);
-        } catch (\SoapFault $e) {
-            $navException = $this->parseException($e);
-            $this->magentoLogger->critical($navException);
-            if ($e->faultcode == 's:TransactionCalc' && $operation_name == 'OneListCalculate' && $e->getMessage() != "") {
-                $this->debugLog($operation_name);
-                return $e->getMessage();
-            } else {
-                $response = null;
-            }
-        }
-        if(!is_null($response)){
-            /** Only log when we have something to log. */
-            $this->debugLog($operation_name);
-        }
-        return $response;
-    }
-
-    /**
-     * @return OmniClient
-     */
-    abstract public function getClient();
-
-    /**
-     * @param $xmlString
-     * @return string
-     */
-    private function formatXML($xmlString)
+    public function parseException(SoapFault $exception)
     {
         //@codingStandardsIgnoreStart
-        $dom = new \DOMDocument("1.0");
-        //@codingStandardsIgnoreEnd
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
-        $dom->loadXML($xmlString);
+        $navException = new NavException($exception->getMessage(), 1, $exception);
+        if (strpos($exception->getMessage(), "Object reference not set to an instance of an object") !== -1) {
+            $navException = new NavObjectReferenceNotAnInstanceException($exception->getMessage(), 1, $exception);
+        }
 
-        return "\n".$dom->saveXML();
+        //@codingStandardsIgnoreEnd
+        return $navException;
     }
 
     /**
@@ -154,26 +163,36 @@ abstract class AbstractOperation implements OperationInterface
         //@codingStandardsIgnoreEnd
         $isEnable = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
         if ($isEnable) {
-            $this->logger->debug("==== REQUEST == ".date("Y-m-d H:i:s O")." == ".$operation_name." ====");
-            $this->logger->debug($this->formatXML($this->getClient()->getLastRequest()));
-            $this->logger->debug("==== RESPONSE == ".date("Y-m-d H:i:s O")." == ".$operation_name." ====");
-            $this->logger->debug($this->formatXML($this->getClient()->getLastResponse()));
+            $this->logger->debug("==== REQUEST == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
+            if (!empty($this->getClient()->getLastRequest())) {
+                $this->logger->debug($this->formatXML($this->getClient()->getLastRequest()));
+            }
+
+            $this->logger->debug("==== RESPONSE == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
+            if (!empty($this->getClient()->getLastResponse())) {
+                $this->logger->debug($this->formatXML($this->getClient()->getLastResponse()));
+            }
         }
     }
 
     /**
-     * @param \SoapFault $exception
-     * @return NavException|NavObjectReferenceNotAnInstanceException
+     * @param $xmlString
+     * @return string
      */
-    public function parseException(\SoapFault $exception)
+    private function formatXML($xmlString)
     {
         //@codingStandardsIgnoreStart
-        $navException = new NavException($exception->getMessage(), 1, $exception);
-        if (strpos($exception->getMessage(), "Object reference not set to an instance of an object") !== -1) {
-            $navException = new NavObjectReferenceNotAnInstanceException($exception->getMessage(), 1, $exception);
-        }
-
+        $dom = new DOMDocument("1.0");
         //@codingStandardsIgnoreEnd
-        return $navException;
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput       = true;
+        $dom->loadXML($xmlString);
+
+        return "\n" . $dom->saveXML();
+    }
+
+    protected function isTokenized()
+    {
+        return false;
     }
 }

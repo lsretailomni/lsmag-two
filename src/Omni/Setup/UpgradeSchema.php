@@ -95,7 +95,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ]
             );
         }
-
         $setup->endSetup();
     }
 }

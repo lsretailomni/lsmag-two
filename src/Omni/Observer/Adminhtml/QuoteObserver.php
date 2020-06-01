@@ -16,23 +16,33 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class QuoteObserver
- * @package Ls\Omni\Observer
+ * @package Ls\Omni\Observer\Adminhtml
  */
 class QuoteObserver implements ObserverInterface
 {
-    /** @var BasketHelper */
+    /**
+     * @var BasketHelper
+     */
     private $basketHelper;
 
-    /** @var ItemHelper */
+    /**
+     * @var ItemHelper
+     */
     private $itemHelper;
 
-    /** @var LoggerInterface */
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
 
-    /** @var LSR @var */
+    /**
+     * @var LSR
+     */
     private $lsr;
 
-    /** @var Data @var */
+    /**
+     * @var Data
+     */
     private $data;
 
     /**
@@ -64,46 +74,54 @@ class QuoteObserver implements ObserverInterface
     // @codingStandardsIgnoreLine
     public function execute(Observer $observer)
     {
-        try {
-            /** @var Quote $quote */
-            $quote      = $observer->getEvent()->getQuote();
-            $couponCode = $quote->getCouponCode();
-            // This will create one list if not created and will return onelist if its already created.
-            /** @var OneList|null $oneList */
-            $oneList = $this->basketHelper->get();
-            $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-            if (!empty($couponCode)) {
-                $status = $this->basketHelper->setCouponCode($couponCode);
-                if (!is_object($status)) {
-                    $quote->setCouponCode('');
-                }
-            }
-            if (count($quote->getAllItems()) == 0) {
-                $quote->setLsGiftCardAmountUsed(0);
-                $quote->setLsGiftCardNo(null);
-                $quote->setLsPointsSpent(0);
-                $quote->setLsPointsEarn(0);
-                $quote->setGrandTotal(0);
-                $quote->setBaseGrandTotal(0);
-                $this->basketHelper->quoteRepository->save($quote);
-            }
-            /** @var Order $basketData */
-            $basketData = $this->basketHelper->update($oneList);
-            $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
-            if (!empty($basketData)) {
-                $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
-            }
-            if ($quote->getLsGiftCardAmountUsed() > 0 ||
-                $quote->getLsPointsSpent() > 0) {
-                $this->data->orderBalanceCheck(
-                    $quote->getLsGiftCardNo(),
-                    $quote->getLsGiftCardAmountUsed(),
-                    $quote->getLsPointsSpent(),
-                    $basketData
+        /** @var Quote $quote */
+        $quote = $observer->getEvent()->getQuote();
+        /*
+        * Adding condition to only process if LSR is enabled.
+        */
+        if ($this->lsr->isLSR($quote->getStoreId())) {
+            try {
+                $couponCode = $quote->getCouponCode();
+                // This will create one list if not created and will return onelist if its already created.
+                /** @var OneList|null $oneList */
+                $oneList = $this->basketHelper->getOneListAdmin(
+                    $quote->getCustomerEmail(),
+                    $quote->getStore()->getWebsiteId()
                 );
+                $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
+                if (!empty($couponCode)) {
+                    $status = $this->basketHelper->setCouponCode($couponCode);
+                    if (!is_object($status)) {
+                        $quote->setCouponCode('');
+                    }
+                }
+                if (count($quote->getAllItems()) == 0) {
+                    $quote->setLsGiftCardAmountUsed(0);
+                    $quote->setLsGiftCardNo(null);
+                    $quote->setLsPointsSpent(0);
+                    $quote->setLsPointsEarn(0);
+                    $quote->setGrandTotal(0);
+                    $quote->setBaseGrandTotal(0);
+                    $this->basketHelper->quoteRepository->save($quote);
+                }
+                /** @var Order $basketData */
+                $basketData = $this->basketHelper->update($oneList);
+                $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
+                if (!empty($basketData)) {
+                    $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
+                }
+                if ($quote->getLsGiftCardAmountUsed() > 0 ||
+                    $quote->getLsPointsSpent() > 0) {
+                    $this->data->orderBalanceCheck(
+                        $quote->getLsGiftCardNo(),
+                        $quote->getLsGiftCardAmountUsed(),
+                        $quote->getLsPointsSpent(),
+                        $basketData
+                    );
+                }
+            } catch (Exception $e) {
+                $this->logger->error($e->getMessage());
             }
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
         }
         return $this;
     }
