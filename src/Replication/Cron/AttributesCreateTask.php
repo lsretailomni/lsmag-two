@@ -555,8 +555,7 @@ class AttributesCreateTask
                 && in_array($item->getValue(), $existingOptions, true)) {
                 continue;
             }
-            $sortOrder                         = $this->getSortOrder($item->getSequence());
-            $optionArray['values'][$sortOrder] = $item->getValue();
+            $optionArray['values'][] = $item->getValue();
         }
         return $optionArray;
     }
@@ -706,18 +705,5 @@ class AttributesCreateTask
                 ->getTotalCount();
         }
         return $this->remainingVariantsCount;
-    }
-
-    /**
-     * @param $sortOrder
-     * @return float|int
-     */
-    public function getSortOrder($sortOrder)
-    {
-        if ($sortOrder >= LSR::ATTRIBUTE_OPTION_VALUE_SORT_ORDER) {
-            $sortOrder = $sortOrder / LSR::ATTRIBUTE_OPTION_VALUE_SORT_ORDER;
-        }
-
-        return $sortOrder;
     }
 }
