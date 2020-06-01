@@ -91,10 +91,6 @@
         </job>
     </group>
     <group id="flat_replication">
-        <job name="repl_hierarchy_status_reset" instance="Ls\Replication\Cron\ResetReplHierarchyStatusTask"
-             method="execute">
-            <schedule>*/10 * * * *</schedule>
-        </job>
         <!-- To run everyday to get the best data of the day -->
         <job name="repl_inv_status_reset" instance="Ls\Replication\Cron\ResetReplInvStatusTask" method="execute">
             <schedule>0 0 * * *</schedule>
