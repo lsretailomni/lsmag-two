@@ -601,13 +601,12 @@ class AttributesCreateTask
                 // Get existing options array
                 $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($attributeCode);
                 $attributeId     = $this->getAttributeIdByCode($attributeCode);
-                $sortOrder       = $this->getSortOrder($item->getSequence());
                 if (!empty($item->getValue())) {
                     // Just add the option value if it doesn't exist
                     if (!in_array($item->getValue(), $existingOptions, true)) {
-                        $optionArray['values'][$sortOrder] = $item->getValue();
-                        $optionArray['attribute_id']       = $attributeId;
-                        $optionResults[$attributeCode][]   = $optionArray;
+                        $optionArray['values'][]         = $item->getValue();
+                        $optionArray['attribute_id']     = $attributeId;
+                        $optionResults[$attributeCode][] = $optionArray;
                     }
                 }
             } catch (Exception $e) {
