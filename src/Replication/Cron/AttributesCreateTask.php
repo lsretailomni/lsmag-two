@@ -541,21 +541,26 @@ class AttributesCreateTask
         $replAttributeOptionValues = $this->replAttributeOptionValueRepositoryInterface->getList($criteria);
 
         // Get existing options array
-        $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($attribute_code);
+        $formattedCode   = $this->replicationHelper->formatAttributeCode($attribute_code);
+        $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
 
         /** @var ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
             $item->setIsUpdated(0);
             $item->setProcessed(1);
+            if (empty($item->getValue())) {
+                $item->setIsFailed(1);
+            }
             $item->setProcessedAt($this->replicationHelper->getDateTime());
             // @codingStandardsIgnoreLine
             $this->replAttributeOptionValueRepositoryInterface->save($item);
             // If have existing option and current value is a part of existing option then don't do anything
-            if (!empty($existingOptions) && !empty($item->getValue())
-                && in_array($item->getValue(), $existingOptions, true)) {
+            if (empty($item->getValue()) || (!empty($existingOptions)
+                    && in_array($item->getValue(), $existingOptions, true))) {
                 continue;
             }
             $optionArray['values'][] = $item->getValue();
+            $existingOptions[]       = $item->getValue();
         }
         return $optionArray;
     }
@@ -596,20 +601,21 @@ class AttributesCreateTask
         /** @var ReplAttributeOptionValue $item */
         foreach ($replAttributeOptionValues->getItems() as $item) {
             try {
-                $attributeCode = $this->replicationHelper->formatAttributeCode($item->getCode());
-                // Get existing options array
-                $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($attributeCode);
-                $attributeId     = $this->getAttributeIdByCode($attributeCode);
+                $formattedCode   = $this->replicationHelper->formatAttributeCode($item->getCode());
+                $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
+                $attributeId     = $this->getAttributeIdByCode($formattedCode);
                 if (!empty($item->getValue())) {
                     // Just add the option value if it doesn't exist
                     if (!in_array($item->getValue(), $existingOptions, true)) {
                         $optionArray['values'][]         = $item->getValue();
                         $optionArray['attribute_id']     = $attributeId;
-                        $optionResults[$attributeCode][] = $optionArray;
+                        $optionResults[$formattedCode][] = $optionArray;
                     }
+                } else {
+                    $item->setIsFailed(1);
                 }
             } catch (Exception $e) {
-                $item->setData('is_failed', 1);
+                $item->setIsFailed(1);
                 $this->logger->debug($e->getMessage());
             }
             $item->setProcessed(1);
