@@ -18,7 +18,6 @@ use \Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
-use Magento\Eav\Api\AttributeManagementInterface;
 use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity;
@@ -79,11 +78,6 @@ class AttributesCreateTask
     public $successCronAttributeVariant = false;
 
     /**
-     * @var AttributeManagementInterface
-     */
-    public $attributeManagement;
-
-    /**
      * @var AttributeFactory
      */
     public $eavAttributeFactory;
@@ -115,7 +109,6 @@ class AttributesCreateTask
      * @param Config $eavConfig
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
-     * @param AttributeManagementInterface $attributeManagement
      */
     public function __construct(
         ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
@@ -128,8 +121,7 @@ class AttributesCreateTask
         ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
         Config $eavConfig,
         ReplicationHelper $replicationHelper,
-        LSR $LSR,
-        AttributeManagementInterface $attributeManagement
+        LSR $LSR
     ) {
         $this->replExtendedVariantValueRepository          = $replExtendedVariantValueRepository;
         $this->productAttributeRepository                  = $productAttributeRepository;
@@ -142,7 +134,6 @@ class AttributesCreateTask
         $this->eavConfig                                   = $eavConfig;
         $this->replicationHelper                           = $replicationHelper;
         $this->lsr                                         = $LSR;
-        $this->attributeManagement                         = $attributeManagement;
     }
 
     /**
@@ -210,6 +201,7 @@ class AttributesCreateTask
 
     /**
      * Process Attributes
+     * @param null $store
      */
     public function processAttributes($store = null)
     {
@@ -291,7 +283,8 @@ class AttributesCreateTask
     }
 
     /**
-     * Create Variants Attribute
+     * Process Variant Attributes
+     * @param $store
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
