@@ -106,7 +106,8 @@ define([
                     if (store.State == null) {
                         store.State = "";
                     }
-                    infoWindow.setContent('<div class="infowindow"><h3>' + store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street + ', ' + store.City + ' ' + store.State + ' ' + store.ZipCode + ' ' + store.Country + ' </div>');
+                    var storeInfo = $(stores.storesInfo).find('#store-'+store.nav_id).html();
+                    infoWindow.setContent('<div class="infowindow">'+storeInfo+'</div>');
                     infoWindow.open(map, marker);
                 });
             })(marker, store);

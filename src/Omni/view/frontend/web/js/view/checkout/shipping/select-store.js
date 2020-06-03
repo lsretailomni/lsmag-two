@@ -108,11 +108,10 @@ define([
                                     flag = "0";
                                 }
                                 if (o.status === "0") {
-                                    $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:red'>" + o.display + "</span></li>")
+                                    $(".stock-remarks ul").append("<br/><li><strong>" + o.name + ":</strong> <span style='color:red'>" + o.display + "</span></li>")
                                 } else {
-                                    $(".stock-remarks ul").append("<li><strong>" + o.name + ":</strong> <span style='color:green'>" + o.display + "</span></li>")
+                                    $(".stock-remarks ul").append("<br/><li><strong>" + o.name + ":</strong> <span style='color:green'>" + o.display + "</span></li>")
                                 }
-
                             }
                             if (flag === "1") {
                                 $('.apply-store').removeAttr('disabled');
@@ -120,7 +119,7 @@ define([
                                 $(".stock-remarks").append("<strong>" + data.remarks + " <a href='" + backUrl + "'>" + translatedText + "</a></strong>");
                             }
                         } else {
-                            $(".stock-remarks").append("<strong>" + data.remarks + "</strong>");
+                            $(".stock-remarks").append("<br/><strong>" + data.remarks + "</strong><br/>");
                         }
                     },
                     error: function (xhr) { // if error occured
@@ -189,9 +188,12 @@ define([
                 };
                 popUp2 = modal(options, $('#popup-modal'));
             }
-            $("#popup-modal").html("").append('<div class="infowindow"><h3>' + store.Name + '</h3><strong>Address: </strong>' + store.Street + ', ' + store.City + ' ' + store.State + ' ' + store.ZipCode + ' ' + store.Country + '<br /><br /><div class="double-btn-container"><button data-id="'
+            var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
+            var storeInfo = $(stores.storesInfo).find('#store-'+store.nav_id).html();
+            $("#popup-modal").html("").append('<div class="double-btn-container"><button data-id="'
                 + store.nav_id + '" class="check-store-availability">Check Availability</button><button disabled data-id="'
-                + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button></div><br /><div class="stock-remarks"><div class="custom-loader"></div><ul></ul></div></div>');
+                + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button></div><div class="stock-remarks"><div class="custom-loader"></div><ul></ul></div></div><br/>'
+                +'<div class="infowindow">'+storeInfo+'</div>');
             $("#popup-modal").modal("openModal");
         }
     });

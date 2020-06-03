@@ -155,9 +155,8 @@ class StockHelper extends AbstractHelper
     }
 
     /**
-     * getAllStoresFromReplTable
      * @param $storesNavIds
-     * @return string
+     * @return \Ls\Replication\Model\ResourceModel\ReplStore\Collection
      */
     public function getAllStoresFromReplTable($storesNavIds)
     {
@@ -166,7 +165,7 @@ class StockHelper extends AbstractHelper
         if (!$displayStores) {
             $stores->addFieldToFilter('ClickAndCollect', 1);
         }
-        return Zend_Json::encode($stores->toArray());
+        return $stores;
     }
 
     /**
@@ -205,7 +204,7 @@ class StockHelper extends AbstractHelper
             }
             if (is_array($inventoryResponseArray->getInventoryResponse())) {
                 foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
-                    $sku                        = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
+                    $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
                     $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
                 }
             }

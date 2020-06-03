@@ -33,9 +33,11 @@ define([
                         if (store.State == null) {
                             store.State = "";
                         }
-                        infoWindow.setContent('<div class="infowindow"><h3>' + store.Name + '</h3><br /><br /><strong>Address: </strong>' + store.Street + ', ' + store.City + ' ' + store.State + ' ' + store.ZipCode + ' ' + store.Country + ' <br /><br /><div style="text-align: center;"><button style="font-size: 10px;width: 120px;padding: 2px 0px;margin-right: 5px;" data-id="'
+                        var storeInfo = $(stores.storesInfo).find('#store-'+store.nav_id).html();
+                        infoWindow.setContent('<div style="text-align: center;"><button style="font-size: 10px;width: 120px;padding: 2px 0px;margin-right: 5px;" data-id="'
                             + store.nav_id + '" class="check-store-availability">Check Availability</button><button style="font-size: 10px;width: 120px;padding: 2px 0px;margin-right: 5px;" disabled data-id="'
-                            + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button></div><br /><div class="stock-remarks"><div class="custom-loader" style="text-align:center;"></div><ul style="padding:0;margin-bottom: 10px;"></ul></div></div>');
+                            + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button></div><div class="stock-remarks"><div class="custom-loader" style="text-align:center;"></div><ul style="padding:0;margin-bottom: 10px;"></ul></div></div><br/>'
+                            +'<div class="infowindow">'+storeInfo+'</div>');
                         infoWindow.open(map, marker);
                     });
                 })(marker, store);

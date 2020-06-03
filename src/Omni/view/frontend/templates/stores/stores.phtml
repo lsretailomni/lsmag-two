@@ -4,65 +4,71 @@
  * @var Stores $block
  */
 
-use \Ls\Omni\Block\Stores\Stores;
-
-$collection = $block->getStores();
-$counter    = 0;
-$apiKey     = $block->getStoreMapKey();
+use Ls\Omni\Block\Stores\Stores;
+$show=true;
+if (array_key_exists("data",$block->getData())) {
+    $collection = $block->getData()['data'];
+    $show= false;
+} else {
+    $collection = $block->getStores();
+}
+$counter = 0;
+$apiKey  = $block->getStoreMapKey();
 
 if (!empty($collection)) :
 ?>
+<?php if($show) {?>
 <div id="map" style="height: 300px; width: 100%;"></div>
+<?php } ?>
 <div class="row mt-5 stores-maps-container">
     <?php
     foreach ($collection as $stores) :
-        $store   = $stores->getData();
+        $store = $stores->getData();
         $storeId = $store['nav_id'];
-        $hours   = $block->getStoreHours($storeId);
+        $hours = $block->getStoreHours($storeId);
         ?>
-        <div class="col-md-4 mb-5 store-map-plus-info-container">
+        <div class="col-md-4 mb-5 store-map-plus-info-container" id="store-<?php echo $storeId; ?>">
+            <?php if($show) {?>
             <div id="map<?php echo $counter ?>" style="height:200px;" class="store-map"></div>
+            <?php } ?>
             <?php if (!empty($store['Name'])) : ?>
                 <div class="store-name">
-                    <i class="fas fa-store"></i>&nbsp;
-                    <lable><strong><?php echo __('Store'); ?>:</strong>
-                    </lable>
+                    <i class="fas fa-store"></i><label><strong><?php echo __('Store'); ?>:</strong></label>
                     <span><?php echo $store['Name']; ?></span>
 
                 </div>
             <?php endif; ?>
             <?php if (!empty($store['Street']) && !empty($store['City']) && !empty($store['Country'])) :
-                if($store['State']==null){
-                    $store['State']="";
+                if ($store['State'] == null) {
+                    $store['State'] = "";
                 }
                 ?>
                 <div class="store-address">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <strong><?php echo __('Address'); ?>:</strong>
-                    <span><?php echo $store['Street'] . ", " . $store['City'] . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country'] . " " . "<br/>"; ?></span>
+                    <i class="fas fa-map-marked-alt"></i><strong><?php echo __('Address'); ?>:</strong>
+                    <span><a target="_blank" href="http://maps.google.com/maps?q=<?php echo $store['Street'] . "+" . $store['City'] . "+" . $store['State'] . "+" . $store['ZipCode'] . "+" . $store['Country']; ?>">
+                <?php echo $store['Street'] . ", " . $store['City'] . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country'] . " " . "</a><br/>"; ?></span>
                 </div>
             <?php endif; ?>
             <?php if (!empty($store['Phone'])) : ?>
                 <div class="store-phone">
-                    <i class="fas fa-phone-square-alt"></i>
-                    <label>&nbsp;<strong><?php echo __('Phone'); ?>:</strong></label>
+                    <i class="fas fa-phone-square-alt"></i><label><strong><?php echo __('Phone'); ?>:</strong></label>
                     <a href="tel:<?php echo $store['Phone']; ?>"><span><?php echo $store['Phone']; ?></span></a>
                 </div>
             <?php endif; ?>
             <?php if (!empty($hours)) :
                 ?>
                 <div class="store-opening-hours">
-                    <label><i class="fas fa-business-time"></i>&nbsp;<strong><?php echo __('Hours'); ?></strong></label>
+                    <label><i class="fas fa-business-time"></i><strong><?php echo __('Hours'); ?></strong></label>
                     <table class="table table-borderless">
-                <?php
-                foreach ($hours as $h) :
-                ?>
-                    <tr>
-                        <?php echo $block->getFormattedHours($h); ?>
-                    </tr>
-                <?php
-                endforeach;
-                ?>
+                        <?php
+                        foreach ($hours as $h) :
+                            ?>
+                            <tr>
+                                <?php echo $block->getFormattedHours($h); ?>
+                            </tr>
+                        <?php
+                        endforeach;
+                        ?>
                     </table>
                 </div>
             <?php
@@ -75,24 +81,27 @@ if (!empty($collection)) :
     endforeach;
     endif;
 
-?>
+    ?>
+    <?php if($show) {?>
     <script type="text/javascript">// <![CDATA[
         var apiKey = '<?php echo $apiKey;?>';
         var locations = [
             <?php foreach($collection->getData() as $store) {
-            if($store['State']==null){
-                $store['State']="";
+            if ($store['State'] == null) {
+                $store['State'] = "";
             }
             ?>
-            ['<?php echo $store['Name']?><br/><?php echo $store['Street'] . ", " . $store['City'] . "  ". " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country']; ?> ', <?php echo $store['Latitute']?>,<?php echo $store['Longitude'];?>, 14],
+            ['<?php echo $store['Name']?><br/><?php echo $store['Street'] . ", " . $store['City'] . "  " . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country']; ?> ', <?php echo $store['Latitute']?>,<?php echo $store['Longitude'];?>, 14],
             <?php }  ?>
         ];
         requirejs([
-            'Ls_Omni/js/view/stores/googlemaps'
-        ], function (map) {
-            map.allStoresMap(locations);
-            map.singleStoreMap(locations);}
-            );
+                'Ls_Omni/js/view/stores/googlemaps'
+            ], function (map) {
+                map.allStoresMap(locations);
+                map.singleStoreMap(locations);
+            }
+        );
         // ]]>
     </script>
+    <?php } ?>
 </div>

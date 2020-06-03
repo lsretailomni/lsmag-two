@@ -2,15 +2,15 @@
 
 namespace Ls\Omni\Model\Checkout;
 
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\GiftCardHelper;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Helper\GiftCardHelper;
+use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Zend_Json;
 
 /**
  * Class DataProvider
@@ -36,22 +36,30 @@ class DataProvider implements ConfigProviderInterface
     public $giftCardHelper;
 
     /**
+     * @var PageFactory
+     */
+    public $resultPageFactory;
+
+    /**
      * DataProvider constructor.
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param GiftCardHelper $giftCardHelper
+     * @param PageFactory $resultPageFactory
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         CollectionFactory $storeCollectionFactory,
         ScopeConfigInterface $scopeConfig,
-        GiftCardHelper $giftCardHelper
+        GiftCardHelper $giftCardHelper,
+        PageFactory $resultPageFactory
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->scopeConfig            = $scopeConfig;
         $this->giftCardHelper         = $giftCardHelper;
+        $this->resultPageFactory      = $resultPageFactory;
     }
 
     /**
@@ -74,6 +82,18 @@ class DataProvider implements ConfigProviderInterface
         );
         $defaultZoom      = $this->scopeConfig->getValue(self::XPATH_DEFAULT_ZOOM, ScopeInterface::SCOPE_STORE, $store);
 
+        $storesResponse = $this->getStores();
+
+        $resultPage = $this->resultPageFactory->create();
+        $storesData = $resultPage->getLayout()->createBlock('Ls\Omni\Block\Stores\Stores')
+            ->setTemplate('Ls_Omni::stores/stores.phtml')
+            ->setData('data', $storesResponse)
+            ->toHtml();
+
+        $stores               = $storesResponse->toArray();
+        $stores['storesInfo'] = $storesData;
+        $encodedStores        = \Zend_Json::encode($stores);
+
         $config                     = [
             'shipping' => [
                 'select_store' => [
@@ -81,7 +101,7 @@ class DataProvider implements ConfigProviderInterface
                     'lat'          => (float)$defaultLatitude,
                     'lng'          => (float)$defaultLongitude,
                     'zoom'         => (int)$defaultZoom,
-                    'stores'       => $this->getStores()
+                    'stores'       => $encodedStores
                 ]
             ]
         ];
@@ -104,9 +124,9 @@ class DataProvider implements ConfigProviderInterface
         $stores = $this->storeCollectionFactory
             ->create()
             ->addFieldToFilter('scope_id', $this->getStoreId())
-            ->addFieldToFilter('ClickAndCollect', 1)
-            ->toArray();
-        return Zend_Json::encode($stores);
+            ->addFieldToFilter('ClickAndCollect', 1);
+
+        return $stores;
     }
 
     /**
