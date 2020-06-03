@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Controller\Stock;
 
-use Ls\Omni\Helper\StockHelper;
+use \Ls\Omni\Helper\StockHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;

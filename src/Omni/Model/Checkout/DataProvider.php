@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Model\Checkout;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Helper\GiftCardHelper;
-use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\GiftCardHelper;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
