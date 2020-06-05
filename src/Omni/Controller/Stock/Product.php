@@ -67,7 +67,6 @@ class Product extends Action
         $this->stockHelper       = $stockHelper;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultPageFactory = $resultPageFactory;
-
         parent::__construct($context);
     }
 

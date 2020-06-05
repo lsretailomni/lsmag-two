@@ -5,10 +5,11 @@
  */
 
 use \Ls\Omni\Block\Stores\Stores;
-$show=true;
-if (array_key_exists("data",$block->getData())) {
+
+$show = true;
+if (array_key_exists("data", $block->getData())) {
     $collection = $block->getData()['data'];
-    $show= false;
+    $show       = false;
 } else {
     $collection = $block->getStores();
 }
@@ -17,8 +18,8 @@ $apiKey  = $block->getStoreMapKey();
 
 if (!empty($collection)) :
 ?>
-<?php if($show) {?>
-<div id="map" style="height: 300px; width: 100%;"></div>
+<?php if ($show) { ?>
+    <div id="map" style="height: 300px; width: 100%;"></div>
 <?php } ?>
 <div class="row mt-5 stores-maps-container">
     <?php
@@ -28,8 +29,8 @@ if (!empty($collection)) :
         $hours = $block->getStoreHours($storeId);
         ?>
         <div class="col-md-4 mb-5 store-map-plus-info-container" id="store-<?php echo $storeId; ?>">
-            <?php if($show) {?>
-            <div id="map<?php echo $counter ?>" style="height:200px;" class="store-map"></div>
+            <?php if ($show) { ?>
+                <div id="map<?php echo $counter ?>" style="height:200px;" class="store-map"></div>
             <?php } ?>
             <?php if (!empty($store['Name'])) : ?>
                 <div class="store-name">
@@ -45,7 +46,8 @@ if (!empty($collection)) :
                 ?>
                 <div class="store-address">
                     <i class="fas fa-map-marked-alt"></i><strong><?php echo __('Address'); ?>:</strong>
-                    <span><a target="_blank" href="http://maps.google.com/maps?q=<?php echo $store['Street'] . "+" . $store['City'] . "+" . $store['State'] . "+" . $store['ZipCode'] . "+" . $store['Country']; ?>">
+                    <span><a target="_blank"
+                             href="http://maps.google.com/maps?q=<?php echo $store['Street'] . "+" . $store['City'] . "+" . $store['State'] . "+" . $store['ZipCode'] . "+" . $store['Country']; ?>">
                 <?php echo $store['Street'] . ", " . $store['City'] . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country'] . " " . "</a><br/>"; ?></span>
                 </div>
             <?php endif; ?>
@@ -82,26 +84,26 @@ if (!empty($collection)) :
     endif;
 
     ?>
-    <?php if($show) {?>
-    <script type="text/javascript">// <![CDATA[
-        var apiKey = '<?php echo $apiKey;?>';
-        var locations = [
-            <?php foreach($collection->getData() as $store) {
-            if ($store['State'] == null) {
-                $store['State'] = "";
-            }
-            ?>
-            ['<?php echo $store['Name']?><br/><?php echo $store['Street'] . ", " . $store['City'] . "  " . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country']; ?> ', <?php echo $store['Latitute']?>,<?php echo $store['Longitude'];?>, 14],
-            <?php }  ?>
-        ];
-        requirejs([
-                'Ls_Omni/js/view/stores/googlemaps'
-            ], function (map) {
-                map.allStoresMap(locations);
-                map.singleStoreMap(locations);
-            }
-        );
-        // ]]>
-    </script>
+    <?php if ($show) { ?>
+        <script type="text/javascript">// <![CDATA[
+            var apiKey = '<?php echo $apiKey;?>';
+            var locations = [
+                <?php foreach($collection->getData() as $store) {
+                if ($store['State'] == null) {
+                    $store['State'] = "";
+                }
+                ?>
+                ['<?php echo $store['Name']?><br/><?php echo $store['Street'] . ", " . $store['City'] . "  " . " " . $store['State'] . " " . $store['ZipCode'] . " " . $store['Country']; ?> ', <?php echo $store['Latitute']?>,<?php echo $store['Longitude'];?>, 14],
+                <?php }  ?>
+            ];
+            requirejs([
+                    'Ls_Omni/js/view/stores/googlemaps'
+                ], function (map) {
+                    map.allStoresMap(locations);
+                    map.singleStoreMap(locations);
+                }
+            );
+            // ]]>
+        </script>
     <?php } ?>
 </div>

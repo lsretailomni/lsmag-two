@@ -82,14 +82,12 @@ class DataProvider implements ConfigProviderInterface
         );
         $defaultZoom      = $this->scopeConfig->getValue(self::XPATH_DEFAULT_ZOOM, ScopeInterface::SCOPE_STORE, $store);
 
-        $storesResponse = $this->getStores();
-
-        $resultPage = $this->resultPageFactory->create();
-        $storesData = $resultPage->getLayout()->createBlock('Ls\Omni\Block\Stores\Stores')
+        $storesResponse       = $this->getStores();
+        $resultPage           = $this->resultPageFactory->create();
+        $storesData           = $resultPage->getLayout()->createBlock('Ls\Omni\Block\Stores\Stores')
             ->setTemplate('Ls_Omni::stores/stores.phtml')
             ->setData('data', $storesResponse)
             ->toHtml();
-
         $stores               = $storesResponse->toArray();
         $stores['storesInfo'] = $storesData;
         $encodedStores        = \Zend_Json::encode($stores);
@@ -125,7 +123,6 @@ class DataProvider implements ConfigProviderInterface
             ->create()
             ->addFieldToFilter('scope_id', $this->getStoreId())
             ->addFieldToFilter('ClickAndCollect', 1);
-
         return $stores;
     }
 

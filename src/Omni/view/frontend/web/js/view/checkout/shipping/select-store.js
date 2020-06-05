@@ -189,11 +189,11 @@ define([
                 popUp2 = modal(options, $('#popup-modal'));
             }
             var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
-            var storeInfo = $(stores.storesInfo).find('#store-'+store.nav_id).html();
+            var storeInfo = $(stores.storesInfo).find('#store-' + store.nav_id).html();
             $("#popup-modal").html("").append('<div class="double-btn-container"><button data-id="'
                 + store.nav_id + '" class="check-store-availability">Check Availability</button><button disabled data-id="'
                 + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button></div><div class="stock-remarks"><div class="custom-loader"></div><ul></ul></div></div><br/>'
-                +'<div class="infowindow">'+storeInfo+'</div>');
+                + '<div class="infowindow">' + storeInfo + '</div>');
             $("#popup-modal").modal("openModal");
         }
     });

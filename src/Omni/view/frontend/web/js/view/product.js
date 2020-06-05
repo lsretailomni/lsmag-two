@@ -52,6 +52,7 @@ define([
             return false;
         });
     }
+
     function getPopUp(stores) {
         var self = this,
             buttons;
@@ -106,8 +107,8 @@ define([
                     if (store.State == null) {
                         store.State = "";
                     }
-                    var storeInfo = $(stores.storesInfo).find('#store-'+store.nav_id).html();
-                    infoWindow.setContent('<div class="infowindow">'+storeInfo+'</div>');
+                    var storeInfo = $(stores.storesInfo).find('#store-' + store.nav_id).html();
+                    infoWindow.setContent('<div class="infowindow">' + storeInfo + '</div>');
                     infoWindow.open(map, marker);
                 });
             })(marker, store);

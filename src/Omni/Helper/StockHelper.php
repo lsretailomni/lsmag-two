@@ -8,12 +8,12 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Zend_Json;
 
 /**
  * Class StockHelper
@@ -156,7 +156,7 @@ class StockHelper extends AbstractHelper
 
     /**
      * @param $storesNavIds
-     * @return \Ls\Replication\Model\ResourceModel\ReplStore\Collection
+     * @return Collection
      */
     public function getAllStoresFromReplTable($storesNavIds)
     {
@@ -204,7 +204,7 @@ class StockHelper extends AbstractHelper
             }
             if (is_array($inventoryResponseArray->getInventoryResponse())) {
                 foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
-                    $sku = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
+                    $sku                        = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
                     $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
                 }
             }
