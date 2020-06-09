@@ -8,12 +8,12 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Zend_Json;
 
 /**
  * Class StockHelper
@@ -155,9 +155,8 @@ class StockHelper extends AbstractHelper
     }
 
     /**
-     * getAllStoresFromReplTable
      * @param $storesNavIds
-     * @return string
+     * @return Collection
      */
     public function getAllStoresFromReplTable($storesNavIds)
     {
@@ -166,7 +165,7 @@ class StockHelper extends AbstractHelper
         if (!$displayStores) {
             $stores->addFieldToFilter('ClickAndCollect', 1);
         }
-        return Zend_Json::encode($stores->toArray());
+        return $stores;
     }
 
     /**
