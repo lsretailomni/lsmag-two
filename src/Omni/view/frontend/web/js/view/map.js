@@ -37,7 +37,7 @@ define([
                         infoWindow.setContent('<div style="text-align: center;"><button style="font-size: 10px;width: 120px;padding: 2px 0px;margin-right: 5px;" data-id="'
                             + store.nav_id + '" class="check-store-availability">Check Availability</button><button style="font-size: 10px;width: 120px;padding: 2px 0px;margin-right: 5px;" disabled data-id="'
                             + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button></div><div class="stock-remarks"><div class="custom-loader" style="text-align:center;"></div><ul style="padding:0;margin-bottom: 10px;"></ul></div></div><br/>'
-                            + '<div class="infowindow">' + storeInfo + '</div>');
+                            + '<div class="omni-stores-index "><div class="stores-maps-container"><div class="store-map-plus-info-container info-window">' + storeInfo + '</div></div></div>');
                         infoWindow.open(map, marker);
                     });
                 })(marker, store);

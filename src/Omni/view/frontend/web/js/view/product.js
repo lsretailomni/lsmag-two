@@ -108,7 +108,7 @@ define([
                         store.State = "";
                     }
                     var storeInfo = $(stores.storesInfo).find('#store-' + store.nav_id).html();
-                    infoWindow.setContent('<div class="infowindow">' + storeInfo + '</div>');
+                    infoWindow.setContent('<div class="omni-stores-index "><div class="stores-maps-container"><div class="store-map-plus-info-container info-window">' + storeInfo + '</div></div></div>');
                     infoWindow.open(map, marker);
                 });
             })(marker, store);
