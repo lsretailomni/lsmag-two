@@ -5,8 +5,6 @@ namespace Ls\Replication\Block\Adminhtml\System\Config;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy;
 use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Model\ReplHierarchyRepository;
-use \Ls\Replication\Model\ReplHierarchySearchResults;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Data\OptionSourceInterface;
 
@@ -16,9 +14,6 @@ use Magento\Framework\Data\OptionSourceInterface;
  */
 class HierarchyCode implements OptionSourceInterface
 {
-    /** @var ReplHierarchyRepository */
-    public $replHierarchyRepository;
-
     /** @var ReplicationHelper */
     public $replicationHelper;
 
@@ -30,21 +25,18 @@ class HierarchyCode implements OptionSourceInterface
 
     /**
      * HierarchyCode constructor.
-     * @param ReplHierarchyRepository $replHierarchyRepository
      * @param ReplicationHelper $replicationHelper
      * @param LSR $lsr
      * @param RequestInterface $request
      */
     public function __construct(
-        ReplHierarchyRepository $replHierarchyRepository,
         ReplicationHelper $replicationHelper,
         LSR $lsr,
         RequestInterface $request
     ) {
-        $this->replHierarchyRepository = $replHierarchyRepository;
-        $this->replicationHelper       = $replicationHelper;
-        $this->lsr                     = $lsr;
-        $this->request                 = $request;
+        $this->replicationHelper = $replicationHelper;
+        $this->lsr               = $lsr;
+        $this->request           = $request;
     }
 
     /**
@@ -56,43 +48,14 @@ class HierarchyCode implements OptionSourceInterface
             'value' => '',
             'label' => __('Please select your hierarchy code')
         ];
-
-        // get current Website Id.
+        // Get current Website Id.
         $websiteId = (int)$this->request->getParam('website');
-
         if ($this->lsr->isLSR($websiteId, 'website')) {
-            /**
-             * We want to populate all the Hierarchy codes first even though if the replication is not done.
-             */
-            $criteria = $this->replicationHelper->buildCriteriaForNewItems();
-            /** @var ReplHierarchySearchResults $replHierarchyRepository */
-            $replHierarchyRepository = $this->replHierarchyRepository->getList($criteria);
-
-            if ($replHierarchyRepository->getTotalCount() > 0) {
-                // We got the data from our system, so use that.
-                /** @var \Ls\Replication\Model\ReplHierarchy $hierarchy */
-                foreach ($replHierarchyRepository->getItems() as $hierarchy) {
-                    $hierarchyCodes[] = [
-                        'value' => $hierarchy->getData('nav_id'),
-                        'label' => __($hierarchy->getData('Description'))
-                    ];
-                }
-            } else {
-                $hierarchyData = $this->replicationHelper->getHierarchyByStore($websiteId);
-                if ($hierarchyData) {
-                    $data = $hierarchyData->getHierarchies()->getReplHierarchy();
-                    if (is_array($data)) {
-                        /** @var ReplHierarchy $item */
-                        foreach ($data as $item) {
-                            if ($item instanceof ReplHierarchy) {
-                                $hierarchyCodes[] = [
-                                    'value' => $item->getId(),
-                                    'label' => __($item->getDescription())
-                                ];
-                            }
-                        }
-                    } elseif ($data instanceof ReplHierarchy) {
-                        $item             = $data;
+            $hierarchyData = $this->replicationHelper->getHierarchyByStore($websiteId);
+            if ($hierarchyData) {
+                $data = $hierarchyData->getHierarchies()->getReplHierarchy();
+                foreach ($data as $item) {
+                    if ($item instanceof ReplHierarchy) {
                         $hierarchyCodes[] = [
                             'value' => $item->getId(),
                             'label' => __($item->getDescription())
