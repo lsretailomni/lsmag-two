@@ -288,7 +288,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Store Hours Format
     const STORE_HOURS_TIME_FORMAT_12HRS = 'h:i A';
     const STORE_HOURS_TIME_FORMAT_24HRS = 'H:i';
-    //LS Recommendation.
+    //LS Recommendation
     const LS_RECOMMEND_ACTIVE = 'ls_mag/ls_recommend/active';
     const LS_RECOMMEND_SHOW_ON_PRODUCT = 'ls_mag/ls_recommend/product';
     const LS_RECOMMEND_SHOW_ON_CART = 'ls_mag/ls_recommend/cart';
@@ -296,7 +296,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_RECOMMEND_SHOW_ON_HOME = 'ls_mag/ls_recommend/home';
     const LS_RECOMMEND_PRODUCT_COUNT = 'ls_mag/ls_recommend/productcount';
 
-    //GiftCard.
+    //Coupons
+    const LS_COUPONS_SHOW_ON_CART = 'ls_mag/ls_coupons/cart';
+    const LS_COUPONS_SHOW_ON_CHECKOUT = 'ls_mag/ls_coupons/checkout';
+
+    //LoyaltyPoints
+    const LS_LOYALTYPOINTS_SHOW_ON_CART = 'ls_mag/ls_loyaltypoints/cart';
+    const LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT = 'ls_mag/ls_loyaltypoints/checkout';
+
+    //GiftCard
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
 

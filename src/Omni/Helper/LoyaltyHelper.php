@@ -493,4 +493,23 @@ class LoyaltyHelper extends AbstractHelper
             return $coupons;
         }
     }
+
+    /**
+     * @param $area
+     * @return string
+     */
+    public function isLoyaltyPointsEnabled($area)
+    {
+        if ($area == "cart") {
+            return $this->lsr->getStoreConfig(
+                LSR::LS_LOYALTYPOINTS_SHOW_ON_CART,
+                $this->lsr->getCurrentStoreId()
+            );
+        }
+        return $this->lsr->getStoreConfig(
+            LSR::LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
 }

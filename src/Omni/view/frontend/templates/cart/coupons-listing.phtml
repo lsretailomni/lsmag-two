@@ -1,8 +1,9 @@
 <?php
 // @codingStandardsIgnoreFile
+
 /** @var Coupons $block */
 
-use \Ls\Omni\Block\Cart\Coupons;
+use Ls\Omni\Block\Cart\Coupons;
 
 $availableCoupons = [];
 $loggedIn         = $block->isCustomerLoggedIn();
@@ -13,14 +14,18 @@ if (empty($block->getCouponCode()) && $loggedIn) {
 ?>
 
 <?php if ($loggedIn && !empty($availableCoupons) && empty($block->getCouponCode())) { ?>
-<div class="available-coupons">
-    <h2><span>OR</span></h2>
-    <form id="my_radio_box">
-        <fieldset id="group1">
+    <div class="available-coupons">
+        <h2><span>OR</span></h2>
+        <form id="my_radio_box">
+            <fieldset id="group1">
 
-            <?php foreach ($availableCoupons as $each) {
-                echo " <div class='coupon-major'><input type='radio' value='" . $each->getOfferId() .
-                    "' name='group1'>" . $block->getFormattedDescription($each) . '</div>';
-                ?>
-            <?php }
-            } ?>
+                <?php foreach ($availableCoupons as $each) {
+                    echo " <div class='coupon-major'><input type='radio' value='" . $each->getOfferId() .
+                        "' name='group1'>" . $block->getFormattedDescription($each) . '</div>';
+                    ?>
+                <?php } ?>
+            </fieldset>
+        </form>
+    </div>
+    <?php
+} ?>

@@ -70,6 +70,6 @@ class Giftcard extends AbstractCart
      */
     public function getGiftCardActive()
     {
-        return $this->giftCardHelper->isGiftCardEnableOnCartPage();
+        return $this->giftCardHelper->isGiftCardEnabled('cart');
     }
 }

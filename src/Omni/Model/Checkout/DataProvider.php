@@ -4,9 +4,11 @@ namespace Ls\Omni\Model\Checkout;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\GiftCardHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -36,22 +38,38 @@ class DataProvider implements ConfigProviderInterface
     public $giftCardHelper;
 
     /**
+     * @var LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
+    /**
+     * @var Http
+     */
+    public $request;
+
+    /**
      * DataProvider constructor.
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param GiftCardHelper $giftCardHelper
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param Http $request
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         CollectionFactory $storeCollectionFactory,
         ScopeConfigInterface $scopeConfig,
-        GiftCardHelper $giftCardHelper
+        GiftCardHelper $giftCardHelper,
+        LoyaltyHelper $loyaltyHelper,
+        Http $request
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->scopeConfig            = $scopeConfig;
         $this->giftCardHelper         = $giftCardHelper;
+        $this->loyaltyHelper          = $loyaltyHelper;
+        $this->request                = $request;
     }
 
     /**
@@ -85,7 +103,6 @@ class DataProvider implements ConfigProviderInterface
                 ]
             ]
         ];
-        $config['gift_card_enable'] = $this->giftCardHelper->isGiftCardEnableOnCheckOut();
         $config['coupons_display']  = $this->isCouponsDisplayEnabled();
         return $config;
     }

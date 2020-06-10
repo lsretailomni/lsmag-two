@@ -87,6 +87,36 @@
                     </depends>
                 </field>
             </group>
+            <group id="ls_loyaltypoints" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Loyalty Points</label>
+                <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Show on Cart Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="checkout" translate="label" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show on Checkout Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="ls_coupons" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Coupons</label>
+                <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Show on Cart Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="checkout" translate="label" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show on Checkout Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
             <group id="ls_giftcard" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Gift Card</label>
@@ -96,7 +126,6 @@
                     <label>Show on Cart Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-
                 <field id="checkout" translate="label" type="select" sortOrder="3" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Show on Checkout Page</label>
@@ -106,23 +135,34 @@
             <group id="ls_discounts" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Discount and Coupon Management</label>
-                <field id="discount" translate="label" type="select" sortOrder="2" showInDefault="1"
+                <field id="discount" translate="label" type="select" sortOrder="1" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
                     <label>Show Promotions on Product Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="coupon" translate="label" type="select" sortOrder="3" showInDefault="1"
+                <field id="discount_login_register_notice" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1" showInStore="1">
-                    <label>Show Coupons on Cart/Checkout Page</label>
+                    <label>Show Login/Register Notice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/discount">1</field>
+                    </depends>
                 </field>
-                <field id="discount_mixandmatch_limit" translate="label" type="text" sortOrder="4" showInDefault="1"
+                <field id="discount_mixandmatch_limit" translate="label" type="text" sortOrder="3" showInDefault="1"
                        showInWebsite="1" showInStore="1">
-                    <label>Discount Popup Mix and Match Products Limit</label>
+                    <label>Mix and Match Products Limit on Popup</label>
+                    <depends>
+                        <field id="*/*/discount">1</field>
+                    </depends>
                     <comment>This will display the number of mix and match discounts product on promotions in product
-                        page.Set value to -1 to display all products.
+                        page. Set value to -1 to display all products.
                     </comment>
+                </field>
+                <field id="coupon" translate="label" type="select" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show Coupons Recommendations on Cart/Checkout Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
             <group id="ls_stores" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
