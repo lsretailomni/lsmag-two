@@ -79,7 +79,7 @@
         </referenceBlock>
         <referenceBlock name="checkout.cart.coupon" template="Ls_Omni::cart/coupons.phtml">
             <arguments>
-                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\CustomViewModel</argument>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\CouponsViewModel</argument>
             </arguments>
         </referenceBlock>
     </body>

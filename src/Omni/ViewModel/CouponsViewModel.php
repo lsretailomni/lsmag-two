@@ -17,7 +17,7 @@ class CouponsViewModel implements ArgumentInterface
     public $data;
 
     /**
-     * CustomViewModel constructor.
+     * CouponsViewModel constructor.
      * @param Data $data
      */
     public function __construct(Data $data)
