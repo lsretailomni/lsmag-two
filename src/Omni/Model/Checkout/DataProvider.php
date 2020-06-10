@@ -3,12 +3,9 @@
 namespace Ls\Omni\Model\Checkout;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\GiftCardHelper;
-use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -34,42 +31,20 @@ class DataProvider implements ConfigProviderInterface
     /** @var ScopeConfigInterface */
     public $scopeConfig;
 
-    /** @var GiftCardHelper */
-    public $giftCardHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var Http
-     */
-    public $request;
-
     /**
      * DataProvider constructor.
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
-     * @param GiftCardHelper $giftCardHelper
-     * @param LoyaltyHelper $loyaltyHelper
-     * @param Http $request
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         CollectionFactory $storeCollectionFactory,
-        ScopeConfigInterface $scopeConfig,
-        GiftCardHelper $giftCardHelper,
-        LoyaltyHelper $loyaltyHelper,
-        Http $request
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->scopeConfig            = $scopeConfig;
-        $this->giftCardHelper         = $giftCardHelper;
-        $this->loyaltyHelper          = $loyaltyHelper;
-        $this->request                = $request;
     }
 
     /**
@@ -92,7 +67,7 @@ class DataProvider implements ConfigProviderInterface
         );
         $defaultZoom      = $this->scopeConfig->getValue(self::XPATH_DEFAULT_ZOOM, ScopeInterface::SCOPE_STORE, $store);
 
-        $config                     = [
+        $config                    = [
             'shipping' => [
                 'select_store' => [
                     'maps_api_key' => $mapsApiKey,
@@ -103,7 +78,7 @@ class DataProvider implements ConfigProviderInterface
                 ]
             ]
         ];
-        $config['coupons_display']  = $this->isCouponsDisplayEnabled();
+        $config['coupons_display'] = $this->isCouponsDisplayEnabled();
         return $config;
     }
 
