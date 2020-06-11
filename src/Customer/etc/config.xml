@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ls_mag>
+            <loyalty>
+                <show_club_information>1</show_club_information>
+                <enable_loyalty_elements>1</enable_loyalty_elements>
+                <show_loyalty_offers>1</show_loyalty_offers>
+                <use_static_block>0</use_static_block>
+                <show_point_offers>1</show_point_offers>
+                <show_member_offers>1</show_member_offers>
+                <show_general_offers>1</show_general_offers>
+                <show_coupons>1</show_coupons>
+                <enable_notifications>1</enable_notifications>
+                <show_notifications_top>1</show_notifications_top>
+                <show_notifications_left>0</show_notifications_left>
+                <set_image_size_width_for_loyalty_page>400</set_image_size_width_for_loyalty_page>
+                <set_image_size_height_for_loyalty_page>400</set_image_size_height_for_loyalty_page>
+                <loyalty_expiry_date_format>jS M, Y h:i A</loyalty_expiry_date_format>
+            </loyalty>
+        </ls_mag>
+    </default>
+</config>

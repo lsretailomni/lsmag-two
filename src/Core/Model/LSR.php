@@ -153,7 +153,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_ENHANCEMENT_STORE_UPDATE_INVENTORY_WHEN_ZERO = 'ls_mag/cron_enhancement/if_zero';
 
     // LOYALTY
-    const SC_LOYALTY_SHOW_OFFERS = 'ls_mag/loyalty/enable_loyalty_offers';
+    const SC_LOYALTY_SHOW_OFFERS = 'ls_mag/loyalty/show_loyalty_offers';
     const SC_LOYALTY_OFFERS_USE_STATIC_BLOCK = 'ls_mag/loyalty/use_static_block';
     const SC_LOYALTY_OFFERS_STATIC_BLOCK = 'ls_mag/loyalty/offers_block';
     const SC_LOYALTY_SHOW_POINT_OFFERS = 'ls_mag/loyalty/show_point_offers';

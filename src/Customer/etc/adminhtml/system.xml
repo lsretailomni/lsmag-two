@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="ls_mag">
+            <group id="loyalty" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Customer Dashboard and Loyalty Elements</label>
+                <field id="show_club_information" translate="label" type="select" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show Customer Club Information</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment> Information like club name, loyalty points earned, current loyalty level,
+                        next loyalty level, points needed, benefits of next level.
+                    </comment>
+                </field>
+                <field id="enable_loyalty_elements" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enable Loyalty Elements</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="show_loyalty_offers" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show Loyalty Offers</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/enable_loyalty_elements">1</field>
+                    </depends>
+                </field>
+                <field id="use_static_block" translate="label" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Use Static Block for Loyalty Offers Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/enable_loyalty_elements">1</field>
+                    </depends>
+                </field>
+                <field id="show_point_offers" translate="label" type="select" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show Point Offers</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/enable_loyalty_elements">1</field>
+                    </depends>
+                </field>
+                <field id="show_member_offers" translate="label" type="select" sortOrder="5" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show Member Offers</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/enable_loyalty_elements">1</field>
+                    </depends>
+                </field>
+                <field id="show_general_offers" translate="label" type="select" sortOrder="6" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show General Offers</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/enable_loyalty_elements">1</field>
+                    </depends>
+                </field>
+                <field id="show_coupons" translate="label" type="select" sortOrder="7" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show Coupons</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/enable_loyalty_elements">1</field>
+                    </depends>
+                </field>
+                <field id="set_image_size_width_for_loyalty_page" translate="label" type="text" sortOrder="8"
+                       showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Loyalty Page Image Width</label>
+                    <depends>
+                        <field id="*/*/enable_loyalty_elements">1</field>
+                    </depends>
+                </field>
+                <field id="set_image_size_height_for_loyalty_page" translate="label" type="text" sortOrder="9"
+                       showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Loyalty Page Image Height</label>
+                    <depends>
+                        <field id="*/*/enable_loyalty_elements">1</field>
+                    </depends>
+                </field>
+                <field id="loyalty_expiry_date_format" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Expiry Date Format</label>
+                    <depends>
+                        <field id="*/*/enable_loyalty_elements">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

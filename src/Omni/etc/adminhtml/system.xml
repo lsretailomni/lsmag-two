@@ -5,7 +5,7 @@
         <section id="ls_mag">
             <tab>ls_retail</tab>
             <resource>Ls_Core::config</resource>
-            <group id="service" translate="label" type="text" sortOrder="10"
+            <group id="service" translate="label" type="text" sortOrder="1"
                    showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Configuration</label>
                 <field id="extension_version" translate="label" type="label" sortOrder="1" showInDefault="1"
@@ -54,7 +54,7 @@
                     <comment>Debug Mode for Omni Client</comment>
                 </field>
             </group>
-            <group id="ls_recommend" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+            <group id="ls_recommend" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>LS Recommend</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
@@ -87,7 +87,7 @@
                     </depends>
                 </field>
             </group>
-            <group id="ls_loyaltypoints" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+            <group id="ls_loyaltypoints" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Loyalty Points</label>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
@@ -102,7 +102,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="ls_coupons" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+            <group id="ls_coupons" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Coupons</label>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
@@ -117,7 +117,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="ls_giftcard" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+            <group id="ls_giftcard" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Gift Card</label>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
@@ -132,7 +132,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="ls_discounts" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+            <group id="ls_discounts" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Discount and Coupon Management</label>
                 <field id="discount" translate="label" type="select" sortOrder="1" showInDefault="1"
@@ -165,7 +165,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="ls_stores" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+            <group id="ls_stores" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Stores Listing</label>
                 <field id="timeformat" translate="label" type="select" sortOrder="2" showInDefault="1"
