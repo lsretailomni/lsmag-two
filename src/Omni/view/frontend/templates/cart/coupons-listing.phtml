@@ -15,7 +15,7 @@ if (empty($block->getCouponCode()) && $loggedIn) {
 
 <?php if ($loggedIn && !empty($availableCoupons) && empty($block->getCouponCode())) { ?>
     <div class="available-coupons">
-        <h2><span>OR</span></h2>
+        <h2><span><?= __('OR') ?></span></h2>
         <form id="my_radio_box">
             <fieldset id="group1">
 
