@@ -1,6 +1,27 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.3.2] - 2020-06-17
+
+### Added
+
+- Now basket calculation will works for the order created from admin panel and any order created from Magento admin panel will now also be sync to LS Central as well. [OMNI-4994](https://solutions.lsretail.com/jira/browse/OMNI-4994)
+- Now you can try to make order request to Ls Central from order detail at admin panel if for some reason the request could not be completed on the frontend as part of disaster recovery. [OMNI-5163](https://solutions.lsretail.com/jira/browse/OMNI-5163)
+- Added additional store information on map in product and checkout page. [OMNI-5215](https://solutions.lsretail.com/jira/browse/OMNI-5215)
+- Added additional validation rules to handle duplicate attribute option values and crappy data. [OMNI-5204](https://solutions.lsretail.com/jira/browse/OMNI-5204)
+- Added the validation for Username/Email before sending data to LS Central for customer login/registration. [OMNI-5202](https://solutions.lsretail.com/jira/browse/OMNI-5202)
+ 
+### Changed
+
+- Real-time request to load the Hierarchy Code list during the web store setup. [OMNI-5199](https://solutions.lsretail.com/jira/browse/OMNI-5199)
+
+### Bugs/Fixes
+
+- Resolved issue for inventory lookup in physical stores on product detail page. [OMNI-5203](https://solutions.lsretail.com/jira/browse/OMNI-5203)
+- Resolve issue for the synchronization of Hierarchy images once its updated from LS Central. [OMNI-5194](https://solutions.lsretail.com/jira/browse/OMNI-5194)
+
+
+
 ## [1.3.1] - 2020-05-07
 
 ### Added
