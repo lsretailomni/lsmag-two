@@ -195,23 +195,16 @@ class Data extends AbstractHelper
                     if ($r->getDayOfWeek() == $currentDayOfWeek) {
                         if ($this->checkDateValidity($current, $r)) {
                             if ($r->getType() == StoreHourOpeningType::NORMAL) {
-                                $storeHours[$currentDayOfWeek]['normal'] =
+                                $storeHours[$currentDayOfWeek]['normal'][] =
+                                    ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
+                            } elseif($r->getType() == StoreHourOpeningType::TEMPORARY) {
+                                $storeHours[$currentDayOfWeek]['temporary'] =
                                     ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
                             } else {
-                                $storeHours[$currentDayOfWeek]['temporary'] =
+                                $storeHours[$currentDayOfWeek]['closed'] =
                                     ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
                             }
                             $storeHours[$currentDayOfWeek]['day'] = $r->getNameOfDay();
-
-                            if ($r->getType() == StoreHourOpeningType::CLOSED) {
-                                if (array_key_exists($r->getDayOfWeek(), $storeHours)) {
-                                    $storeHours[$currentDayOfWeek]['normal'] ['open']     = 'Closed';
-                                    $storeHours[$currentDayOfWeek]['normal'] ['close']    = '';
-                                    $storeHours[$currentDayOfWeek]['temporary'] ['open']  = '';
-                                    $storeHours[$currentDayOfWeek]['temporary'] ['close'] = '';
-                                }
-                            }
-
                             $counter++;
                         }
                         unset($storeResults[$key]);
