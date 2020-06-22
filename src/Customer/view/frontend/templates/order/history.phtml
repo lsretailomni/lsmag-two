@@ -15,7 +15,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
         if (count($_orders) > 0) {
             $orderExist = true;
             ?>
-            <div class="table-wrapper orders-history">
+            <div class="table-wrapper orders-history" id="my-orders-table-container" style="display:none;">
                 <table class="data table table-order-items history" id="my-orders-table">
                     <caption class="table-caption"><?= /* @escapeNotVerified */
                         __('Orders') ?></caption>
@@ -93,7 +93,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
     } else {
         $orderExist = true;
         ?>
-        <div class="table-wrapper orders-history">
+        <div class="table-wrapper orders-history" id="my-orders-table-container" style="display:none;">
             <table class="data table table-order-items history" id="my-orders-table">
                 <caption class="table-caption"><?= /* @escapeNotVerified */
                     __('Orders') ?></caption>
@@ -161,7 +161,16 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                 </tbody>
             </table>
         </div>
-    <?php }
+    <?php } ?>
+    <script type="text/javascript">
+        require(['jquery', 'Ls_Core/js/datatables.min'], function($, $t){
+            $(document).ready(function() {
+                $('#my-orders-table').DataTable();
+                $('#my-orders-table-container').show();
+            } );
+        })
+    </script>
+<?php
 endif;
 ?>
 <?php if ($orderExist == false) { ?>
