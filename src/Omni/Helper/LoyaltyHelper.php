@@ -512,4 +512,69 @@ class LoyaltyHelper extends AbstractHelper
         );
     }
 
+    /**
+     * @return string
+     */
+    public function isEnabledLoyaltyElements()
+    {
+        return $this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_ENABLE_LOYALTY_ELEMENTS,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function isEnabledShowLoyaltyOffers()
+    {
+        return $this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_SHOW_LOYALTY_OFFERS,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function isEnabledShowPointOffers()
+    {
+        return $this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_SHOW_POINT_OFFERS,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function isEnabledShowMemberOffers()
+    {
+        return $this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_SHOW_MEMBER_OFFERS,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function isEnabledShowGeneralOffers()
+    {
+        return $this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_SHOW_GENERAL_OFFERS,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function isEnabledShowCouponOffers()
+    {
+        return $this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_SHOW_COUPON_OFFERS,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
 }

@@ -153,13 +153,14 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_ENHANCEMENT_STORE_UPDATE_INVENTORY_WHEN_ZERO = 'ls_mag/cron_enhancement/if_zero';
 
     // LOYALTY
-    const SC_LOYALTY_SHOW_OFFERS = 'ls_mag/loyalty/show_loyalty_offers';
+    const SC_LOYALTY_ENABLE_LOYALTY_ELEMENTS = 'ls_mag/loyalty/enable_loyalty_elements';
+    const SC_LOYALTY_SHOW_LOYALTY_OFFERS = 'ls_mag/loyalty/show_loyalty_offers';
     const SC_LOYALTY_OFFERS_USE_STATIC_BLOCK = 'ls_mag/loyalty/use_static_block';
     const SC_LOYALTY_OFFERS_STATIC_BLOCK = 'ls_mag/loyalty/offers_block';
     const SC_LOYALTY_SHOW_POINT_OFFERS = 'ls_mag/loyalty/show_point_offers';
     const SC_LOYALTY_SHOW_MEMBER_OFFERS = 'ls_mag/loyalty/show_member_offers';
     const SC_LOYALTY_SHOW_GENERAL_OFFERS = 'ls_mag/loyalty/show_general_offers';
-    const SC_LOYALTY_SHOW_COUPONS = 'ls_mag/loyalty/show_coupon_offers';
+    const SC_LOYALTY_SHOW_COUPON_OFFERS = 'ls_mag/loyalty/show_coupon_offers';
     const SC_LOYALTY_SHOW_NOTIFICATIONS = 'ls_mag/loyalty/show_notifications';
     const SC_LOYALTY_SHOW_NOTIFICATIONS_TOP = 'ls_mag/loyalty/show_notifications_top';
     const SC_LOYALTY_SHOW_NOTIFICATIONS_LEFT = 'ls_mag/loyalty/show_notifications_left';
