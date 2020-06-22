@@ -116,6 +116,11 @@
                     <label>Show on Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="coupon_recommendations" translate="label" type="select" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Show Coupon Recommendations on Cart/Checkout Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
             <group id="ls_giftcard" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1"
                    showInStore="1">
@@ -134,7 +139,7 @@
             </group>
             <group id="ls_discounts" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1"
                    showInStore="1">
-                <label>Discount and Coupon Management</label>
+                <label>Discount Management</label>
                 <field id="discount" translate="label" type="select" sortOrder="1" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
@@ -158,11 +163,6 @@
                     <comment>This will display the number of mix and match discounts product on promotions in product
                         page. Set value to -1 to display all products.
                     </comment>
-                </field>
-                <field id="coupon" translate="label" type="select" sortOrder="4" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
-                    <label>Show Coupons Recommendations on Cart/Checkout Page</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
             <group id="ls_stores" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"

@@ -159,7 +159,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_SHOW_POINT_OFFERS = 'ls_mag/loyalty/show_point_offers';
     const SC_LOYALTY_SHOW_MEMBER_OFFERS = 'ls_mag/loyalty/show_member_offers';
     const SC_LOYALTY_SHOW_GENERAL_OFFERS = 'ls_mag/loyalty/show_general_offers';
-    const SC_LOYALTY_SHOW_COUPONS = 'ls_mag/loyalty/show_coupons';
+    const SC_LOYALTY_SHOW_COUPONS = 'ls_mag/loyalty/show_coupon_offers';
     const SC_LOYALTY_SHOW_NOTIFICATIONS = 'ls_mag/loyalty/show_notifications';
     const SC_LOYALTY_SHOW_NOTIFICATIONS_TOP = 'ls_mag/loyalty/show_notifications_top';
     const SC_LOYALTY_SHOW_NOTIFICATIONS_LEFT = 'ls_mag/loyalty/show_notifications_left';
@@ -299,6 +299,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Coupons
     const LS_COUPONS_SHOW_ON_CART = 'ls_mag/ls_coupons/cart';
     const LS_COUPONS_SHOW_ON_CHECKOUT = 'ls_mag/ls_coupons/checkout';
+    const LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT = 'ls_mag/ls_coupons/coupon_recommendations';
 
     //LoyaltyPoints
     const LS_LOYALTYPOINTS_SHOW_ON_CART = 'ls_mag/ls_loyaltypoints/cart';
@@ -308,9 +309,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
 
-    //Discount and Coupon Management
+    //Discount Management
     const LS_DISCOUNT_SHOW_ON_PRODUCT = 'ls_mag/ls_discounts/discount';
-    const LS_COUPON_SHOW_ON_CART_CHECKOUT = 'ls_mag/ls_discounts/coupon';
     const LS_DISCOUNT_MIXANDMATCH_LIMIT = 'ls_mag/ls_discounts/discount_mixandmatch_limit';
 
     //Coupon Code Message

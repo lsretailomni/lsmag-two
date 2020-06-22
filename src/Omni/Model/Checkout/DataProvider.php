@@ -106,6 +106,6 @@ class DataProvider implements ConfigProviderInterface
      */
     public function isCouponsDisplayEnabled()
     {
-        return $this->scopeConfig->getValue(LSR::LS_COUPON_SHOW_ON_CART_CHECKOUT);
+        return $this->scopeConfig->getValue(LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT);
     }
 }

@@ -16,6 +16,7 @@
             <ls_coupons>
                 <cart>1</cart>
                 <checkout>1</checkout>
+                <coupon_recommendations>1</coupon_recommendations>
             </ls_coupons>
             <ls_giftcard>
                 <cart>1</cart>
@@ -25,7 +26,6 @@
                 <discount>1</discount>
                 <discount_login_register_notice>0</discount_login_register_notice>
                 <discount_mixandmatch_limit>15</discount_mixandmatch_limit>
-                <coupon>1</coupon>
             </ls_discounts>
             <ls_stores>
                 <timeformat>h:i A</timeformat>

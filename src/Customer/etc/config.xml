@@ -11,7 +11,7 @@
                 <show_point_offers>1</show_point_offers>
                 <show_member_offers>1</show_member_offers>
                 <show_general_offers>1</show_general_offers>
-                <show_coupons>1</show_coupons>
+                <show_coupon_offers>1</show_coupon_offers>
                 <enable_notifications>1</enable_notifications>
                 <show_notifications_top>1</show_notifications_top>
                 <show_notifications_left>0</show_notifications_left>
