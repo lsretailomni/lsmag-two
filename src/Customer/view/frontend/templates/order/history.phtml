@@ -51,7 +51,9 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                 class="col id"><?= /* @escapeNotVerified */
                                 $_order->getId() ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
-                                class="col date"><?= /* @escapeNotVerified */
+                                class="col date">
+                                <span style="display:none;"><?= strtotime($_order->getDocumentRegTime())?></span>
+                                <?= /* @escapeNotVerified */
                                 $block->getFormattedDate($_order->getDocumentRegTime()) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
                                 class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable') ?></td>
@@ -165,7 +167,9 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
     <script type="text/javascript">
         require(['jquery', 'Ls_Core/js/datatables.min'], function($, $t){
             $(document).ready(function() {
-                $('#my-orders-table').DataTable();
+                $('#my-orders-table').DataTable({
+                    order: [[1, 'desc']]
+                });
                 $('#my-orders-table-container').show();
             } );
         })
