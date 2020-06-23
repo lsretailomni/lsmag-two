@@ -44,4 +44,10 @@
         <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector"
                 sortOrder="1"/>
     </type>
+    <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
+        <plugin name="checkout_layout_processor" type="Ls\Omni\Plugin\Checkout\Model\LayoutProcessorPlugin" sortOrder="1"/>
+    </type>
+    <type name="Magento\Checkout\Block\Cart\CartTotalsProcessor">
+        <plugin name="cart_totals_layout_processor" type="Ls\Omni\Plugin\Cart\Model\CartTotalsProcessorPlugin" sortOrder="1"/>
+    </type>
 </config>

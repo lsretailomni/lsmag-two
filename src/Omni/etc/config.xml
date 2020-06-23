@@ -9,13 +9,22 @@
                 <advanced>0</advanced>
                 <timeout>120</timeout>
             </service>
+            <ls_loyaltypoints>
+                <cart>1</cart>
+                <checkout>1</checkout>
+            </ls_loyaltypoints>
+            <ls_coupons>
+                <cart>1</cart>
+                <checkout>1</checkout>
+                <coupon_recommendations>1</coupon_recommendations>
+            </ls_coupons>
             <ls_giftcard>
                 <cart>1</cart>
                 <checkout>1</checkout>
             </ls_giftcard>
             <ls_discounts>
                 <discount>1</discount>
-                <coupon>1</coupon>
+                <discount_login_register_notice>0</discount_login_register_notice>
                 <discount_mixandmatch_limit>15</discount_mixandmatch_limit>
             </ls_discounts>
             <ls_stores>

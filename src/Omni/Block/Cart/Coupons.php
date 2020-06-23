@@ -140,7 +140,7 @@ class Coupons extends Coupon
     public function isCouponEnable()
     {
         return $this->lsr->getStoreConfig(
-            LSR::LS_COUPON_SHOW_ON_CART_CHECKOUT,
+            LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT,
             $this->lsr->getCurrentStoreId()
         );
     }

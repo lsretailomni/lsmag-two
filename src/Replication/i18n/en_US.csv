@@ -1,8 +1,8 @@
+"Show all the stores","Show all the stores"
+"Show the Click and Collect stores only","Show the Click and Collect stores only"
 "Please select your hierarchy code","Please select your hierarchy code"
 "Inventory Per Store","Inventory Per Store"
 "Inventory Totals","Inventory Totals"
-"Show all the stores","Show all the stores"
-"Show the Click and Collect stores only","Show the Click and Collect stores only"
 "On Demand","On Demand"
 "Batch Job","Batch Job"
 N/A,N/A
@@ -38,6 +38,8 @@ No,No
 "File Not Found.","File Not Found."
 "Product Image","Product Image"
 "<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>.","<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>."
+"Object with id ' . . ' does not exist.","Object with id ' . . ' does not exist."
+"Could not save entity","Could not save entity"
 Execute,Execute
 "Want to process %1 Cron?","Want to process %1 Cron?"
 "It will take some time to process. Please don't close this window.","It will take some time to process. Please don't close this window."
@@ -54,8 +56,6 @@ Back,Back
 "Remaining entries ","Remaining entries "
 "Do you want to execute More Data?","Do you want to execute More Data?"
 "Click Here","Click Here"
-"Flat Tables Grids","Flat Tables Grids"
-"Price Replication","Price Replication"
 Configuration,Configuration
 "LS Retail Configuration","LS Retail Configuration"
 "Manual Crons","Manual Crons"
@@ -63,6 +63,7 @@ Configuration,Configuration
 Logs,Logs
 Report,Report
 "Replication Status","Replication Status"
+"Price Replication","Price Replication"
 Item,Item
 Price,Price
 "Inventory Status","Inventory Status"
@@ -80,6 +81,7 @@ Attribute,Attribute
 "Product Group","Product Group"
 Store,Store
 Replication,Replication
+"Manual Cron Grid Default Store","Manual Cron Grid Default Store"
 "Replicate All Stores Items","Replicate All Stores Items"
 "Default Batch Size","Default Batch Size"
 "Product Batch Size","Product Batch Size"
@@ -94,16 +96,7 @@ Replication,Replication
 "Item Availability","Item Availability"
 "Availability Check","Availability Check"
 "Product Availability in Stores","Product Availability in Stores"
-"Loyalty Elements","Loyalty Elements"
-"Enable Loyalty Offers","Enable Loyalty Offers"
-"Use Static Block for Loyalty Offers Page","Use Static Block for Loyalty Offers Page"
-"Show Point Offers","Show Point Offers"
-"Show Member Offers","Show Member Offers"
-"Show General Offers","Show General Offers"
-"Show Coupons","Show Coupons"
-"Loyalty Page Image Width","Loyalty Page Image Width"
-"Loyalty Page Image Height","Loyalty Page Image Height"
-"Expiry Date Format","Expiry Date Format"
+"Display Stores","Display Stores"
 "Restore Database","Restore Database"
 "Delete Orders","Delete Orders"
 "Delete Customers","Delete Customers"
@@ -121,6 +114,8 @@ Status,Status
 Area,Area
 Action,Action
 "Reset Data","Reset Data"
+"All Store Views","All Store Views"
+"Store View","Store View"
 Code,Code
 Description,Description
 "Failed Status","Failed Status"
