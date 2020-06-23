@@ -138,23 +138,17 @@ class GiftCardHelper extends AbstractHelper
     }
 
     /**
+     * @param $area
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function isGiftCardEnableOnCartPage()
+    public function isGiftCardEnabled($area)
     {
-        return $this->lsr->getStoreConfig(
-            LSR::LS_GIFTCARD_SHOW_ON_CART,
-            $this->lsr->getCurrentStoreId()
-        );
-    }
-
-    /**
-     * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    public function isGiftCardEnableOnCheckOut()
-    {
+        if ($area == 'cart') {
+            return $this->lsr->getStoreConfig(
+                LSR::LS_GIFTCARD_SHOW_ON_CART,
+                $this->lsr->getCurrentStoreId()
+            );
+        }
         return $this->lsr->getStoreConfig(
             LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
             $this->lsr->getCurrentStoreId()

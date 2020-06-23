@@ -4,7 +4,7 @@
     <body>
         <!-- Adding Loyalty Link to Top menu bar -->
         <referenceBlock name="top.links">
-            <block class="Ls\Customer\Block\Link" name="loyalty-link" after="my-account-link">
+            <block class="Ls\Customer\Block\Link" name="loyalty-link" after="my-account-link" ifconfig="ls_mag/loyalty/enable_loyalty_elements">
                 <arguments>
                     <argument name="sortOrder" xsi:type="number">60</argument>
                 </arguments>

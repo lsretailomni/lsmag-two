@@ -92,6 +92,11 @@ class Data extends AbstractHelper
     public $directoryList;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * Data constructor.
      * @param Context $context
      * @param StoreManagerInterface $store_manager
@@ -497,6 +502,24 @@ class Data extends AbstractHelper
             $value,
             ScopeInterface::SCOPE_WEBSITES,
             $websiteId
+        );
+    }
+
+    /**
+     * @param $area
+     * @return string
+     */
+    public function isCouponsEnabled($area)
+    {
+        if ($area == "cart") {
+            return $this->lsr->getStoreConfig(
+                LSR::LS_COUPONS_SHOW_ON_CART,
+                $this->lsr->getCurrentStoreId()
+            );
+        }
+        return $this->lsr->getStoreConfig(
+            LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+            $this->lsr->getCurrentStoreId()
         );
     }
 }

@@ -15,7 +15,8 @@
                     <arguments>
                         <argument name="css_class" xsi:type="string">nav items</argument>
                     </arguments>
-                    <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-loyalty-offers-link">
+                    <block class="Magento\Customer\Block\Account\SortLinkInterface"
+                           name="customer-loyalty-offers-link" ifconfig="ls_mag/loyalty/show_loyalty_offers">
                         <arguments>
                             <argument name="label" xsi:type="string" translate="true">Loyalty Offers</argument>
                             <argument name="path" xsi:type="string">customer/loyalty</argument>
@@ -23,7 +24,7 @@
                         </arguments>
                     </block>
                     <block class="Magento\Customer\Block\Account\SortLinkInterface"
-                           name="customer-loyalty-memberoffers-link">
+                           name="customer-loyalty-memberoffers-link" ifconfig="ls_mag/loyalty/show_member_offers">
                         <arguments>
                             <argument name="label" xsi:type="string" translate="true">Member Offers</argument>
                             <argument name="path" xsi:type="string">customer/loyalty/memberoffers</argument>
@@ -31,7 +32,7 @@
                         </arguments>
                     </block>
                     <block class="Magento\Customer\Block\Account\SortLinkInterface"
-                           name="customer-loyalty-pointoffers-link">
+                           name="customer-loyalty-pointoffers-link" ifconfig="ls_mag/loyalty/show_point_offers">
                         <arguments>
                             <argument name="label" xsi:type="string" translate="true">Point Offers</argument>
                             <argument name="path" xsi:type="string">customer/loyalty/pointoffers</argument>
@@ -39,7 +40,7 @@
                         </arguments>
                     </block>
                     <block class="Magento\Customer\Block\Account\SortLinkInterface"
-                           name="customer-loyalty-generaloffers-link">
+                           name="customer-loyalty-generaloffers-link" ifconfig="ls_mag/loyalty/show_general_offers">
                         <arguments>
                             <argument name="label" xsi:type="string" translate="true">General Offers</argument>
                             <argument name="path" xsi:type="string">customer/loyalty/generaloffers</argument>
@@ -47,9 +48,9 @@
                         </arguments>
                     </block>
                     <block class="Magento\Customer\Block\Account\SortLinkInterface"
-                           name="customer-loyalty-coupons-link">
+                           name="customer-loyalty-coupons-link" ifconfig="ls_mag/loyalty/show_coupon_offers">
                         <arguments>
-                            <argument name="label" xsi:type="string" translate="true">Coupons</argument>
+                            <argument name="label" xsi:type="string" translate="true">Coupon Offers</argument>
                             <argument name="path" xsi:type="string">customer/loyalty/coupons</argument>
                             <argument name="sortOrder" xsi:type="number">160</argument>
                         </arguments>

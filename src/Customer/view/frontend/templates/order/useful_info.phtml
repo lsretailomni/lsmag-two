@@ -22,11 +22,13 @@
                     __('Click & Collect:') ?></span></strong>
             <span><?= $_order->getClickAndCollectOrder() ? 'Yes' : 'No'; ?></span>
         </div>
+        <?php if ($_order->getPointsRewarded() > 0) { ?>
         <div class="custom-box">
             <strong class="box-title"><span><?= /* @escapeNotVerified */
                     __('Loyalty Points Rewarded:') ?></span></strong>
             <span><?= $block->getFormattedLoyaltyPoints($_order->getPointsRewarded()); ?></span>
         </div>
+        <?php } ?>
         <?php if (!empty($block->getPaymentDescription()[1])) { ?>
             <div class="custom-box">
                 <strong class="box-title"><span><?= /* @escapeNotVerified */
