@@ -73,9 +73,24 @@
 /* Order History ============================================================================= */
 .sales-order-history {
   .orders-history {
-    select,
-    input {
-      width: auto;
+    .dataTables_length {
+      select {
+        width: auto;
+      }
+    }
+
+    .dataTables_filter {
+      input {
+        width: auto;
+      }
+    }
+
+    table {
+      thead {
+        th {
+          padding: 10px 8px;
+        }
+      }
     }
   }
 }

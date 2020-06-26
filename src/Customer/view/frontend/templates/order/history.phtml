@@ -22,7 +22,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                     <thead>
                     <tr>
                         <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                            __('Document ID #') ?></th>
+                            __('Doc ID') ?></th>
                         <th scope="col" class="col date"><?= /* @escapeNotVerified */
                             __('Date') ?></th>
                         <th scope="col" class="col shipping"><?= /* @escapeNotVerified */
@@ -102,7 +102,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                 <thead>
                 <tr>
                     <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                        __('Document ID #') ?></th>
+                        __('Doc ID') ?></th>
                     <th scope="col" class="col date"><?= /* @escapeNotVerified */
                         __('Date') ?></th>
                     <?= /* @noEscape */
@@ -167,8 +167,23 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
     <script type="text/javascript">
         require(['jquery', 'Ls_Core/js/datatables.min'], function($, $t){
             $(document).ready(function() {
-                $('#my-orders-table').DataTable({
-                    order: [[1, 'desc']]
+                $('#my-orders-table thead tr').clone(true).appendTo( '#my-orders-table thead' );
+                $('#my-orders-table thead tr:eq(1) th').each( function (i) {
+                    var title = $(this).text();
+                    $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+
+                    $( 'input', this ).on( 'keyup change', function () {
+                        if ( table.column(i).search() !== this.value ) {
+                            table
+                                .column(i)
+                                .search( this.value )
+                                .draw();
+                        }
+                    } );
+                } );
+                var table = $('#my-orders-table').DataTable({
+                    order: [[1, 'desc']],
+                    orderCellsTop: true
                 });
                 $('#my-orders-table-container').show();
             } );
