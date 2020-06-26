@@ -31,6 +31,7 @@ Coupons,Coupons
 "The service is currently unavailable. Please try again later.","The service is currently unavailable. Please try again later."
 "Sorry! No account found with the provided email address.","Sorry! No account found with the provided email address."
 "Invalid LS Central login or password.","Invalid LS Central login or password."
+"Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.","Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @."
 "Username already exist, please try another one.","Username already exist, please try another one."
 "Your email address is invalid.","Your email address is invalid."
 "There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.","There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address."
@@ -85,13 +86,15 @@ Back,Back
 "Expiry: ","Expiry: "
 "No offers","No offers"
 Orders,Orders
-"Document ID #","Document ID #"
+"Doc ID","Doc ID"
 Date,Date
 "Ship To","Ship To"
 "Store Name","Store Name"
 Total,Total
 Status,Status
 Action,Action
+"Document ID #","Document ID #"
+"Not Applicable","Not Applicable"
 Actions,Actions
 "View Order","View Order"
 Reorder,Reorder
@@ -112,11 +115,10 @@ Subtotal,Subtotal
 "<span class=""label"">Order Date:</span> %1","<span class=""label"">Order Date:</span> %1"
 "Recent Orders","Recent Orders"
 "View All","View All"
-"Not Applicable","Not Applicable"
 "Qty Shipped","Qty Shipped"
 "Useful Information","Useful Information"
-"Click & Collect:","Click & Collect:"
 "Store Name:","Store Name:"
+"Click & Collect:","Click & Collect:"
 "Loyalty Points Rewarded:","Loyalty Points Rewarded:"
 "Gift Card Code:","Gift Card Code:"
 "Print Invoice","Print Invoice"
@@ -124,6 +126,5 @@ Subtotal,Subtotal
 "Track this shipment","Track this shipment"
 "Tracking Number(s):","Tracking Number(s):"
 Name,Name
-"Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.","Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @."
 Invoices,Invoices
 "Order Shipments","Order Shipments"
