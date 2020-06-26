@@ -86,6 +86,7 @@ Subtotal,Subtotal
 "Coupon Code Redeemed","Coupon Code Redeemed"
 "Gift Card Code","Gift Card Code"
 "Chosen Store","Chosen Store"
+OR,OR
 Loading...,Loading...
 "Loading Coupons...","Loading Coupons..."
 "Apply Discount Code","Apply Discount Code"
@@ -157,12 +158,15 @@ Enabled,Enabled
 "Show on Product Page","Show on Product Page"
 "Show on Cart Page","Show on Cart Page"
 "Show on Home Page","Show on Home Page"
-"Gift Card","Gift Card"
+"Loyalty Points","Loyalty Points"
 "Show on Checkout Page","Show on Checkout Page"
-"Discount and Coupon Management","Discount and Coupon Management"
+Coupons,Coupons
+"Show Coupon Recommendations on Cart/Checkout Page","Show Coupon Recommendations on Cart/Checkout Page"
+"Gift Card","Gift Card"
+"Discount Management","Discount Management"
 "Show Promotions on Product Page","Show Promotions on Product Page"
-"Show Coupons on Cart/Checkout Page","Show Coupons on Cart/Checkout Page"
-"Discount Popup Mix and Match Products Limit","Discount Popup Mix and Match Products Limit"
+"Show Login/Register Notice","Show Login/Register Notice"
+"Mix and Match Products Limit on Popup","Mix and Match Products Limit on Popup"
 "Stores Listing","Stores Listing"
 "Opening Hours Time Format","Opening Hours Time Format"
 "Magento Order Number Prefix","Magento Order Number Prefix"

@@ -126,5 +126,18 @@ Subtotal,Subtotal
 "Track this shipment","Track this shipment"
 "Tracking Number(s):","Tracking Number(s):"
 Name,Name
+"Customer Dashboard and Loyalty Elements","Customer Dashboard and Loyalty Elements"
+"Show Customer Club Information","Show Customer Club Information"
+"Enable Loyalty Elements","Enable Loyalty Elements"
+"Show Loyalty Offers","Show Loyalty Offers"
+"Use Static Block for Loyalty Offers Page","Use Static Block for Loyalty Offers Page"
+"Show Point Offers","Show Point Offers"
+"Show Member Offers","Show Member Offers"
+"Show General Offers","Show General Offers"
+"Show Coupon Offers","Show Coupon Offers"
+"Loyalty Page Image Width","Loyalty Page Image Width"
+"Loyalty Page Image Height","Loyalty Page Image Height"
+"Expiry Date Format","Expiry Date Format"
+"Coupon Offers","Coupon Offers"
 Invoices,Invoices
 "Order Shipments","Order Shipments"

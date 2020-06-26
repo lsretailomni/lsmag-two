@@ -4,7 +4,7 @@
     <body>
         <referenceContainer name="content">
             <block class="Ls\Customer\Block\Account\Dashboard" name="ls_customer_account_club"
-                   template="Ls_Customer::club.phtml" ifconfig="ls_mag/service/replicate_hierarchy_code"/>
+                   template="Ls_Customer::club.phtml" ifconfig="ls_mag/loyalty/show_club_information"/>
             <block class="Ls\Customer\Block\Order\Recent" name="ls_customer_order_recent"
                    template="Ls_Customer::order/recent.phtml" after="ls_customer_account_club"
                    ifconfig="ls_mag/service/replicate_hierarchy_code"/>

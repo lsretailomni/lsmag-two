@@ -2,11 +2,11 @@
 
 namespace Ls\Customer\Block\Account;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Account;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class Dashboard
@@ -16,24 +16,29 @@ class Dashboard extends Template
 {
 
     /** @var LoyaltyHelper */
-    private $loyaltyHelper;
+    public $loyaltyHelper;
+
+    /**
+     * @var LSR
+     */
+    public $lsr;
 
     /**
      * Dashboard constructor.
      * @param Context $context
      * @param LoyaltyHelper $loyaltyHelper
-     * @param LoggerInterface $logger
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
         Context $context,
         LoyaltyHelper $loyaltyHelper,
-        LoggerInterface $logger,
+        LSR $lsr,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->loyaltyHelper = $loyaltyHelper;
-        $this->logger        = $logger;
+        $this->lsr           = $lsr;
     }
 
     /**
@@ -43,9 +48,11 @@ class Dashboard extends Template
     public function getMembersInfo()
     {
         $account = false;
-        $result  = $this->loyaltyHelper->getMemberInfo();
-        if ($result) {
-            $account = $result->getAccount();
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            $result = $this->loyaltyHelper->getMemberInfo();
+            if ($result) {
+                $account = $result->getAccount();
+            }
         }
         return $account;
     }

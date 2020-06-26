@@ -3,7 +3,6 @@
 namespace Ls\Omni\Model\Checkout;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -11,6 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Zend_Json;
 
 /**
  * Class DataProvider
@@ -32,9 +32,6 @@ class DataProvider implements ConfigProviderInterface
     /** @var ScopeConfigInterface */
     public $scopeConfig;
 
-    /** @var GiftCardHelper */
-    public $giftCardHelper;
-
     /**
      * @var PageFactory
      */
@@ -45,20 +42,17 @@ class DataProvider implements ConfigProviderInterface
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
-     * @param GiftCardHelper $giftCardHelper
      * @param PageFactory $resultPageFactory
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         CollectionFactory $storeCollectionFactory,
         ScopeConfigInterface $scopeConfig,
-        GiftCardHelper $giftCardHelper,
         PageFactory $resultPageFactory
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->scopeConfig            = $scopeConfig;
-        $this->giftCardHelper         = $giftCardHelper;
         $this->resultPageFactory      = $resultPageFactory;
     }
 
@@ -68,20 +62,19 @@ class DataProvider implements ConfigProviderInterface
      */
     public function getConfig()
     {
-        $store            = $this->getStoreId();
-        $mapsApiKey       = $this->scopeConfig->getValue(self::XPATH_MAPS_API_KEY, ScopeInterface::SCOPE_STORE, $store);
-        $defaultLatitude  = $this->scopeConfig->getValue(
+        $store                = $this->getStoreId();
+        $mapsApiKey           = $this->scopeConfig->getValue(self::XPATH_MAPS_API_KEY, ScopeInterface::SCOPE_STORE, $store);
+        $defaultLatitude      = $this->scopeConfig->getValue(
             self::XPATH_DEFAULT_LATITUDE,
             ScopeInterface::SCOPE_STORE,
             $store
         );
-        $defaultLongitude = $this->scopeConfig->getValue(
+        $defaultLongitude     = $this->scopeConfig->getValue(
             self::XPATH_DEFAULT_LONGITUDE,
             ScopeInterface::SCOPE_STORE,
             $store
         );
-        $defaultZoom      = $this->scopeConfig->getValue(self::XPATH_DEFAULT_ZOOM, ScopeInterface::SCOPE_STORE, $store);
-
+        $defaultZoom          = $this->scopeConfig->getValue(self::XPATH_DEFAULT_ZOOM, ScopeInterface::SCOPE_STORE, $store);
         $storesResponse       = $this->getStores();
         $resultPage           = $this->resultPageFactory->create();
         $storesData           = $resultPage->getLayout()->createBlock('Ls\Omni\Block\Stores\Stores')
@@ -90,9 +83,9 @@ class DataProvider implements ConfigProviderInterface
             ->toHtml();
         $stores               = $storesResponse->toArray();
         $stores['storesInfo'] = $storesData;
-        $encodedStores        = \Zend_Json::encode($stores);
+        $encodedStores        = Zend_Json::encode($stores);
 
-        $config                     = [
+        $config                    = [
             'shipping' => [
                 'select_store' => [
                     'maps_api_key' => $mapsApiKey,
@@ -103,8 +96,7 @@ class DataProvider implements ConfigProviderInterface
                 ]
             ]
         ];
-        $config['gift_card_enable'] = $this->giftCardHelper->isGiftCardEnableOnCheckOut();
-        $config['coupons_display']  = $this->isCouponsDisplayEnabled();
+        $config['coupons_display'] = $this->isCouponsDisplayEnabled();
         return $config;
     }
 
@@ -131,6 +123,6 @@ class DataProvider implements ConfigProviderInterface
      */
     public function isCouponsDisplayEnabled()
     {
-        return $this->scopeConfig->getValue(LSR::LS_COUPON_SHOW_ON_CART_CHECKOUT);
+        return $this->scopeConfig->getValue(LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT);
     }
 }
