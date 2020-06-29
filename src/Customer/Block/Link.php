@@ -5,6 +5,7 @@ namespace Ls\Customer\Block;
 use Magento\Customer\Block\Account\SortLinkInterface;
 use Magento\Customer\Model\Context;
 use Magento\Framework\Phrase;
+use \Ls\Core\Model\LSR;
 
 /**
  * Class Link
@@ -20,6 +21,11 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
     public $httpContext;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * Link constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\App\Http\Context $httpContext
@@ -28,18 +34,21 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\App\Http\Context $httpContext,
+        LSR $lsr,
         array $data = []
     ) {
         $this->httpContext = $httpContext;
+        $this->lsr = $lsr;
         parent::__construct($context, $data);
     }
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function _toHtml()
     {
-        if ($this->isLoggedIn()) {
+        if ($this->isLoggedIn() && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             return parent::_toHtml();
         }
         return '';

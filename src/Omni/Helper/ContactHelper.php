@@ -230,8 +230,8 @@ class ContactHelper extends AbstractHelper
      */
     public function search($email)
     {
-        $is_email = Zend_Validate::is($email, Zend_Validate_EmailAddress::class);
-
+        $is_email    = Zend_Validate::is($email, Zend_Validate_EmailAddress::class);
+        $contact_pos = null;
         // load customer data from magento customer database based on lsr_username if we didn't get an email
         if (!$is_email) {
             $filters = [
@@ -268,8 +268,12 @@ class ContactHelper extends AbstractHelper
             $search->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
 
             try {
-                $response    = $request->execute($search);
-                $contact_pos = $response->getContactSearchResult();
+                $response = $request->execute($search);
+                if (property_exists($response, 'ContactSearchResult')) {
+                    $contact_pos = $response->getContactSearchResult();
+                } else {
+                    return $response;
+                }
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
@@ -359,6 +363,9 @@ class ContactHelper extends AbstractHelper
             $response = $request->execute($login);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
+        }
+        if (!property_exists($response, "LoginWebResult")) {
+            return $response;
         }
         return $response ? $response->getLoginWebResult() : $response;
     }
@@ -1046,12 +1053,52 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * @param $isEmail
+     * @param $userNameOrEmail
+     * @throws LocalizedException
+     */
+    public function loginCustomerIfOmniServiceDown($isEmail, $userNameOrEmail)
+    {
+        $customer  = null;
+        $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
+        if (!$isEmail) {
+            $filters = [
+                $this->filterBuilder
+                    ->setField('lsr_username')
+                    ->setConditionType('like')
+                    ->setValue($userNameOrEmail)
+                    ->create()
+            ];
+        } else {
+            $filters = [
+                $this->filterBuilder
+                    ->setField('email')
+                    ->setConditionType('eq')
+                    ->setValue($userNameOrEmail)
+                    ->create()
+            ];
+        }
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        $searchResults  = $this->customerRepository->getList($searchCriteria);
+        if ($searchResults->getTotalCount() == 1) {
+            /** @var Customer $customer */
+            $customerRepository = $searchResults->getItems()[0];
+            $customer           = $this->customerFactory->create()
+                ->setWebsiteId($websiteId)
+                ->loadByEmail($customerRepository->getEmail());
+            $this->customerSession->setCustomerAsLoggedIn($customer);
+        }
+    }
+
+    /**
      * @param $email
      * @return CustomerSearchResultsInterface
      * @throws LocalizedException
      */
-    public function searchCustomerByEmail($email)
-    {
+    public function searchCustomerByEmail(
+        $email
+    ) {
         $filters = [
             $this->filterBuilder
                 ->setField('email')
