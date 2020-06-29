@@ -15,18 +15,15 @@ use Zend\Uri\Uri;
  */
 class Client extends ZendSoapClient
 {
-    const DEFAULT_TIMEOUT = 10;
-
     /** @var Uri */
     public $URL;
     /** @var  ServiceType */
     public $type;
     /** @var array */
     public $soap_options = [
-        'cache_wsdl'         => WSDL_CACHE_NONE,
-        'soap_version'       => SOAP_1_1,
-        'features'           => SOAP_SINGLE_ELEMENT_ARRAYS,
-        'connection_timeout' => self::DEFAULT_TIMEOUT,
+        'cache_wsdl'   => WSDL_CACHE_NONE,
+        'soap_version' => SOAP_1_1,
+        'features'     => SOAP_SINGLE_ELEMENT_ARRAYS
     ];
 
     /**
