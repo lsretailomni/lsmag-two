@@ -93,12 +93,16 @@ abstract class AbstractOperation implements OperationInterface
         $client        = $this->getClient();
         $header        = self::$header;
         $response      = null;
+        $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
         if (empty($this->token)) {
-            $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
             $this->setToken($lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY));
         }
         //@codingStandardsIgnoreStart
-        $client->setStreamContext(stream_context_create(['http' => ['header' => "$header: {$this->token}"]]));
+        $client->setStreamContext(
+            stream_context_create(
+                ['http' => ['header' => "$header: {$this->token}",'timeout' => floatval($lsr->getOmniTimeout())]]
+            )
+        );
         //@codingStandardsIgnoreEnd
         try {
             $response = $client->{$operation_name}($request_input);

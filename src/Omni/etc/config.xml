@@ -7,7 +7,7 @@
             <service>
                 <debug>0</debug>
                 <advanced>0</advanced>
-                <timeout>120</timeout>
+                <timeout>10</timeout>
             </service>
             <ls_loyaltypoints>
                 <cart>1</cart>
