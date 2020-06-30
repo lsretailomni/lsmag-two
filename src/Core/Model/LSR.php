@@ -4,6 +4,7 @@ namespace Ls\Core\Model;
 
 use Exception;
 use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
@@ -420,6 +421,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
                 // @codingStandardsIgnoreStart
                 $soapClient = new SoapClient($url . '?singlewsdl');
                 // @codingStandardsIgnoreEnd
+
                 if ($soapClient) {
                     return true;
                 }
@@ -582,7 +584,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getAllStores()
     {
         /** add it into the object in order to avoid loading multiple time within the same call. */
-        if($this->stores){
+        if ($this->stores) {
             return $this->stores;
         }
         $this->stores = $this->storeManager->getStores();
@@ -601,6 +603,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getOmniVersion()
     {
@@ -613,5 +616,20 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getOmniTimeout()
     {
         return $this->getStoreConfig(self::SC_SERVICE_TIMEOUT, $this->getCurrentStoreId());
+    }
+
+    /**
+     * @param $exception
+     * @return bool
+     */
+    public function checkOmniService($exception)
+    {
+        if ($exception instanceof NavObjectReferenceNotAnInstanceException) {
+            $exceptionCode = $exception->getPrevious();
+            if ($exceptionCode->faultcode == "WSDL") {
+                return false;
+            }
+        }
+        return true;
     }
 }

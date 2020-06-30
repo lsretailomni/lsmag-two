@@ -115,48 +115,54 @@ class LoginObserver implements ObserverInterface
                 $is_email          = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
                 if ($is_email) {
                     $search = $this->contactHelper->search($username);
-                    $found  = $search !== null
-                        && ($search instanceof Entity\MemberContact)
-                        && !empty($search->getEmail());
-                    if (!$found) {
-                        $errorMessage = __('Sorry! No account found with the provided email address.');
-                        return $this->handleErrorMessage($observer, $errorMessage);
+                    if ($this->lsr->checkOmniService($search)) {
+                        $found = $search !== null
+                            && ($search instanceof Entity\MemberContact)
+                            && !empty($search->getEmail());
+                        if (!$found) {
+                            $errorMessage = __('Sorry! No account found with the provided email address.');
+                            return $this->handleErrorMessage($observer, $errorMessage);
+                        }
+                        $username = $search->getUserName();
                     }
-                    $username = $search->getUserName();
                 }
                 /** @var  Entity\MemberContact $result */
                 $result = $this->contactHelper->login($username, $login['password']);
-                if ($result == false) {
-                    $errorMessage = __('Invalid LS Central login or password.');
-                    return $this->handleErrorMessage($observer, $errorMessage);
-                }
-                if ($result instanceof Entity\MemberContact) {
-                    $this->contactHelper->processCustomerLogin($result, $login, $is_email);
-                    $oneListBasket = $this->contactHelper->getOneListTypeObject(
-                        $result->getOneLists()->getOneList(),
-                        Entity\Enum\ListType::BASKET
-                    );
-                    if ($oneListBasket) {
-                        /** Update Basket to Omni */
-                        $this->contactHelper->updateBasketAfterLogin(
-                            $oneListBasket,
-                            $result->getId(),
-                            $result->getCards()->getCard()[0]->getId()
-                        );
+                if ($this->lsr->checkOmniService($result)) {
+                    if ($result == false) {
+                        $errorMessage = __('Invalid LS Central login or password.');
+                        return $this->handleErrorMessage($observer, $errorMessage);
                     }
-                    $oneListWish = $this->contactHelper->getOneListTypeObject(
-                        $result->getOneLists()->getOneList(),
-                        Entity\Enum\ListType::WISH
-                    );
-                    if ($oneListWish) {
-                        $this->contactHelper->updateWishlistAfterLogin(
-                            $oneListWish
+                    if ($result instanceof Entity\MemberContact) {
+                        $this->contactHelper->processCustomerLogin($result, $login, $is_email);
+                        $oneListBasket = $this->contactHelper->getOneListTypeObject(
+                            $result->getOneLists()->getOneList(),
+                            Entity\Enum\ListType::BASKET
+                        );
+                        if ($oneListBasket) {
+                            /** Update Basket to Omni */
+                            $this->contactHelper->updateBasketAfterLogin(
+                                $oneListBasket,
+                                $result->getId(),
+                                $result->getCards()->getCard()[0]->getId()
+                            );
+                        }
+                        $oneListWish = $this->contactHelper->getOneListTypeObject(
+                            $result->getOneLists()->getOneList(),
+                            Entity\Enum\ListType::WISH
+                        );
+                        if ($oneListWish) {
+                            $this->contactHelper->updateWishlistAfterLogin(
+                                $oneListWish
+                            );
+                        }
+                    } else {
+                        $this->customerSession->addError(
+                            __('The service is currently unavailable. Please try again later.')
                         );
                     }
                 } else {
-                    $this->customerSession->addError(
-                        __('The service is currently unavailable. Please try again later.')
-                    );
+                    $this->contactHelper->loginCustomerIfOmniServiceDown($is_email, $email);
                 }
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());

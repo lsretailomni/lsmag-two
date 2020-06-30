@@ -24,6 +24,8 @@ abstract class AbstractOperation implements OperationInterface
      */
     private static $header = 'LSRETAIL-KEY';
 
+    private $disasterRecovery = ["OrderCreate", "LoginWeb", "ContactSearch"];
+
     /**
      * @var ServiceType
      */
@@ -112,7 +114,7 @@ abstract class AbstractOperation implements OperationInterface
             if ($e->getMessage() != "") {
                 if ($e->faultcode == 's:TransactionCalc' && $operation_name == 'OneListCalculate') {
                     $response = $e->getMessage();
-                } elseif ($operation_name == 'OrderCreate') {
+                } elseif (in_array($operation_name, $this->disasterRecovery)) {
                     $response = $navException;
                 }
             } else {
