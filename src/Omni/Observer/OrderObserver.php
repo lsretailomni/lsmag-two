@@ -10,6 +10,7 @@ use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
@@ -89,19 +90,21 @@ class OrderObserver implements ObserverInterface
      * @return $this|void
      * @throws InputException
      * @throws NoSuchEntityException
+     * @throws AlreadyExistsException
      */
     public function execute(Observer $observer)
     {
+        $comment = "";
+        $order   = $observer->getEvent()->getData('order');
+        if (empty($order)) {
+            $orderIds = $observer->getEvent()->getOrderIds();
+            $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
+        }
         /*
-         * Adding condition to only process if LSR is enabled.
-         */
+        * Adding condition to only process if LSR is enabled.
+        */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $check = false;
-            $order = $observer->getEvent()->getData('order');
-            if (empty($order)) {
-                $orderIds = $observer->getEvent()->getOrderIds();
-                $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
-            }
             //checking for Adyen payment gateway
             $adyen_response = $observer->getEvent()->getData('adyen_response');
             if (!empty($adyen_response)) {
@@ -133,9 +136,7 @@ class OrderObserver implements ObserverInterface
                             $order->setDocumentId($documentId);
                             $this->checkoutSession->setLastDocumentId($documentId);
                         }
-                        $order->addCommentToStatusHistory(
-                            __('Order request has been sent to LS Central successfully')
-                        );
+                        $comment = __('Order request has been sent to LS Central successfully');
                         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
                             $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
                             $this->basketHelper->delete($oneList);
@@ -143,27 +144,30 @@ class OrderObserver implements ObserverInterface
                     } else {
                         if ($response) {
                             if (!empty($response->getMessage())) {
-                                $this->logger->critical(
-                                    __('Something terrible happened while placing order')
-                                );
-                                $order->addCommentToStatusHistory($response->getMessage());
+                                $comment = $response->getMessage();
+                                $this->logger->critical($comment);
                             }
                             $this->checkoutSession->unsetData('last_document_id');
                         }
-                    }
-                    $this->orderResourceModel->save($order);
-                    $this->checkoutSession->unsetData('member_points');
-                    if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                        $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
-                        // delete checkout session data.
-                        $this->basketHelper->unSetOneListCalculation();
-                        $this->basketHelper->unsetCouponCode();
                     }
                 } catch (Exception $e) {
                     $this->logger->error($e->getMessage());
                 }
             }
-            return $this;
+        } else {
+            $comment = __('The service is currently unavailable. Please try again later.');
+            $this->logger->critical($comment);
+            $this->checkoutSession->unsetData('last_document_id');
         }
+        $order->addCommentToStatusHistory($comment);
+        $this->orderResourceModel->save($order);
+        $this->checkoutSession->unsetData('member_points');
+        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
+            $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
+            // delete checkout session data.
+            $this->basketHelper->unSetOneListCalculation();
+            $this->basketHelper->unsetCouponCode();
+        }
+        return $this;
     }
 }

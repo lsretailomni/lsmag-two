@@ -2,14 +2,14 @@
 
 namespace Ls\Core\Model;
 
-use Exception;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
+use \Ls\Core\Helper\Data;
+use \Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use SoapClient;
 
 /**
  * Class LSR
@@ -360,16 +360,24 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public $storeManager;
 
     /**
+     * @var Data
+     */
+    public $coreHelper;
+
+    /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
+     * @param Data $coreHelper
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Data $coreHelper
     ) {
         $this->scopeConfig  = $scopeConfig;
         $this->storeManager = $storeManager;
+        $this->coreHelper = $coreHelper;
     }
 
     /**
@@ -407,6 +415,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * @param null $baseUrl
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function validateBaseUrl($baseUrl = null)
     {
@@ -415,26 +424,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
         if (empty($baseUrl)) {
             return false;
-        } else {
-            try {
-                $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
-                // @codingStandardsIgnoreStart
-                $soapClient = new SoapClient($url . '?singlewsdl');
-                // @codingStandardsIgnoreEnd
-
-                if ($soapClient) {
-                    return true;
-                }
-            } catch (Exception $e) {
-                return false;
-            }
         }
+        $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
+        return $this->coreHelper->isEndpointResponding($url);
     }
 
     /**
      * @param bool $store_id
      * @param bool $scope
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function isLSR($store_id = false, $scope = false)
     {
@@ -448,20 +447,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if (empty($baseUrl) || empty($store)) {
             return false;
         } else {
-            try {
-                $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
-                // @codingStandardsIgnoreStart
-                $soapClient = new SoapClient(
-                    $url . '?singlewsdl',
-                    ['features' => SOAP_SINGLE_ELEMENT_ARRAYS]
-                );
-                // @codingStandardsIgnoreEnd
-                if ($soapClient) {
-                    return true;
-                }
-            } catch (Exception $e) {
-                return false;
-            }
+            return $this->validateBaseUrl($baseUrl);
         }
     }
 
@@ -603,7 +589,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getOmniVersion()
     {

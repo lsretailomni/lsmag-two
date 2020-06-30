@@ -15,7 +15,7 @@ Save,Save
 "There is no account found with the provided email/username.","There is no account found with the provided email/username."
 "We're unable to send the password reset email.","We're unable to send the password reset email."
 "Please enter your email.","Please enter your email."
-Coupons,Coupons
+"Coupon Offers","Coupon Offers"
 "General Offers","General Offers"
 "Loyalty Offers","Loyalty Offers"
 "Member Offers","Member Offers"
@@ -137,6 +137,5 @@ Name,Name
 "Loyalty Page Image Width","Loyalty Page Image Width"
 "Loyalty Page Image Height","Loyalty Page Image Height"
 "Expiry Date Format","Expiry Date Format"
-"Coupon Offers","Coupon Offers"
 Invoices,Invoices
 "Order Shipments","Order Shipments"
