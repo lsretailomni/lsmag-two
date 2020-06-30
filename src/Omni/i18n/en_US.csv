@@ -153,6 +153,8 @@ Version,Version
 "Required to get hierarchy node and leaf from omni","Required to get hierarchy node and leaf from omni"
 Debug,Debug
 "Debug Mode for Omni Client","Debug Mode for Omni Client"
+"Service Timeout","Service Timeout"
+"Max time in seconds to wait for omni response","Max time in seconds to wait for omni response"
 "LS Recommend","LS Recommend"
 Enabled,Enabled
 "Show on Product Page","Show on Product Page"
