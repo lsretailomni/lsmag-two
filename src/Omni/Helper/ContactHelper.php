@@ -232,7 +232,6 @@ class ContactHelper extends AbstractHelper
     public function search($email)
     {
         $is_email    = Zend_Validate::is($email, Zend_Validate_EmailAddress::class);
-        $contact_pos = null;
         // load customer data from magento customer database based on lsr_username if we didn't get an email
         if (!$is_email) {
             $filters = [
@@ -270,11 +269,7 @@ class ContactHelper extends AbstractHelper
 
             try {
                 $response = $request->execute($search);
-                if (property_exists($response, 'ContactSearchResult')) {
-                    $contact_pos = $response->getContactSearchResult();
-                } else {
-                    return $response;
-                }
+                $contact_pos = $response->getContactSearchResult();
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
@@ -365,9 +360,7 @@ class ContactHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if (!property_exists($response, "LoginWebResult")) {
-            return $response;
-        }
+
         return $response ? $response->getLoginWebResult() : $response;
     }
 
