@@ -19,6 +19,7 @@ use Magento\Customer\Api\Data\CustomerSearchResultsInterface;
 use Magento\Customer\Api\Data\GroupInterfaceFactory;
 use Magento\Customer\Api\Data\RegionInterfaceFactory;
 use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Customer\Controller\Account\LoginPost\Interceptor;
 use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
@@ -1055,12 +1056,11 @@ class ContactHelper extends AbstractHelper
     /**
      * @param $isEmail
      * @param $userNameOrEmail
+     * @param Interceptor $controllerAction
      * @throws LocalizedException
      */
-    public function loginCustomerIfOmniServiceDown($isEmail, $userNameOrEmail)
+    public function loginCustomerIfOmniServiceDown($isEmail, $userNameOrEmail, Interceptor $controllerAction)
     {
-        $customer  = null;
-        $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
         if (!$isEmail) {
             $filters = [
                 $this->filterBuilder
@@ -1069,25 +1069,16 @@ class ContactHelper extends AbstractHelper
                     ->setValue($userNameOrEmail)
                     ->create()
             ];
-        } else {
-            $filters = [
-                $this->filterBuilder
-                    ->setField('email')
-                    ->setConditionType('eq')
-                    ->setValue($userNameOrEmail)
-                    ->create()
-            ];
-        }
-        $this->searchCriteriaBuilder->addFilters($filters);
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        $searchResults  = $this->customerRepository->getList($searchCriteria);
-        if ($searchResults->getTotalCount() == 1) {
-            /** @var Customer $customer */
-            $customerRepository = $searchResults->getItems()[0];
-            $customer           = $this->customerFactory->create()
-                ->setWebsiteId($websiteId)
-                ->loadByEmail($customerRepository->getEmail());
-            $this->customerSession->setCustomerAsLoggedIn($customer);
+            $this->searchCriteriaBuilder->addFilters($filters);
+            $searchCriteria = $this->searchCriteriaBuilder->create();
+            $searchResults  = $this->customerRepository->getList($searchCriteria);
+            if ($searchResults->getTotalCount() == 1) {
+                $customerRepository = $searchResults->getItems()[0];
+                $email              = $customerRepository->getEmail();
+                $login              = $controllerAction->getRequest()->getPost("login");
+                $login              = ['username' => $email, 'password' => $login['password']];
+                $controllerAction->getRequest()->setPostValue("login", $login);
+            }
         }
     }
 

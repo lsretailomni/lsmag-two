@@ -575,7 +575,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
         $this->stores = $this->storeManager->getStores();
         return $this->stores;
-
     }
 
     /**
@@ -589,6 +588,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getOmniVersion()
     {
@@ -597,24 +597,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getOmniTimeout()
     {
         return $this->getStoreConfig(self::SC_SERVICE_TIMEOUT, $this->getCurrentStoreId());
-    }
-
-    /**
-     * @param $exception
-     * @return bool
-     */
-    public function checkOmniService($exception)
-    {
-        if ($exception instanceof NavObjectReferenceNotAnInstanceException) {
-            $exceptionCode = $exception->getPrevious();
-            if ($exceptionCode->faultcode == "WSDL") {
-                return false;
-            }
-        }
-        return true;
     }
 }

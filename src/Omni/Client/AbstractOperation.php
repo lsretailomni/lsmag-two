@@ -24,8 +24,6 @@ abstract class AbstractOperation implements OperationInterface
      */
     private static $header = 'LSRETAIL-KEY';
 
-    private $disasterRecovery = ["OrderCreate", "LoginWeb", "ContactSearch"];
-
     /**
      * @var ServiceType
      */
@@ -95,14 +93,14 @@ abstract class AbstractOperation implements OperationInterface
         $client        = $this->getClient();
         $header        = self::$header;
         $response      = null;
-        $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
+        $lsr           = $this->objectManager->get("\Ls\Core\Model\LSR");
         if (empty($this->token)) {
             $this->setToken($lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY));
         }
         //@codingStandardsIgnoreStart
         $client->setStreamContext(
             stream_context_create(
-                ['http' => ['header' => "$header: {$this->token}",'timeout' => floatval($lsr->getOmniTimeout())]]
+                ['http' => ['header' => "$header: {$this->token}", 'timeout' => floatval($lsr->getOmniTimeout())]]
             )
         );
         //@codingStandardsIgnoreEnd
@@ -114,8 +112,6 @@ abstract class AbstractOperation implements OperationInterface
             if ($e->getMessage() != "") {
                 if ($e->faultcode == 's:TransactionCalc' && $operation_name == 'OneListCalculate') {
                     $response = $e->getMessage();
-                } elseif (in_array($operation_name, $this->disasterRecovery)) {
-                    $response = $navException;
                 }
             } else {
                 $response = null;

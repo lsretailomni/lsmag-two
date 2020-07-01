@@ -102,71 +102,66 @@ class LoginObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        /** @var Interceptor $controller_action */
+        $controller_action = $observer->getData('controller_action');
+        $login             = $controller_action->getRequest()->getPost('login');
+        $email             = $username = $login['username'];
+        $is_email          = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
         /*
          * Adding condition to only process if LSR is enabled.
          */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
-                /** @var Interceptor $controller_action */
-                $controller_action = $observer->getData('controller_action');
-                $login             = $controller_action->getRequest()->getPost('login');
-                $email             = $username = $login['username'];
-                $websiteId         = $this->storeManager->getWebsite()->getWebsiteId();
-                $is_email          = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
                 if ($is_email) {
                     $search = $this->contactHelper->search($username);
-                    if ($this->lsr->checkOmniService($search)) {
-                        $found = $search !== null
-                            && ($search instanceof Entity\MemberContact)
-                            && !empty($search->getEmail());
-                        if (!$found) {
-                            $errorMessage = __('Sorry! No account found with the provided email address.');
-                            return $this->handleErrorMessage($observer, $errorMessage);
-                        }
-                        $username = $search->getUserName();
+                    $found  = $search !== null
+                        && ($search instanceof Entity\MemberContact)
+                        && !empty($search->getEmail());
+                    if (!$found) {
+                        $errorMessage = __('Sorry! No account found with the provided email address.');
+                        return $this->handleErrorMessage($observer, $errorMessage);
                     }
+                    $username = $search->getUserName();
                 }
                 /** @var  Entity\MemberContact $result */
                 $result = $this->contactHelper->login($username, $login['password']);
-                if ($this->lsr->checkOmniService($result)) {
-                    if ($result == false) {
-                        $errorMessage = __('Invalid LS Central login or password.');
-                        return $this->handleErrorMessage($observer, $errorMessage);
+                if ($result == false) {
+                    $errorMessage = __('Invalid LS Central login or password.');
+                    return $this->handleErrorMessage($observer, $errorMessage);
+                }
+                if ($result instanceof Entity\MemberContact) {
+                    $this->contactHelper->processCustomerLogin($result, $login, $is_email);
+                    $oneListBasket = $this->contactHelper->getOneListTypeObject(
+                        $result->getOneLists()->getOneList(),
+                        Entity\Enum\ListType::BASKET
+                    );
+                    if ($oneListBasket) {
+                        /** Update Basket to Omni */
+                        $this->contactHelper->updateBasketAfterLogin(
+                            $oneListBasket,
+                            $result->getId(),
+                            $result->getCards()->getCard()[0]->getId()
+                        );
                     }
-                    if ($result instanceof Entity\MemberContact) {
-                        $this->contactHelper->processCustomerLogin($result, $login, $is_email);
-                        $oneListBasket = $this->contactHelper->getOneListTypeObject(
-                            $result->getOneLists()->getOneList(),
-                            Entity\Enum\ListType::BASKET
-                        );
-                        if ($oneListBasket) {
-                            /** Update Basket to Omni */
-                            $this->contactHelper->updateBasketAfterLogin(
-                                $oneListBasket,
-                                $result->getId(),
-                                $result->getCards()->getCard()[0]->getId()
-                            );
-                        }
-                        $oneListWish = $this->contactHelper->getOneListTypeObject(
-                            $result->getOneLists()->getOneList(),
-                            Entity\Enum\ListType::WISH
-                        );
-                        if ($oneListWish) {
-                            $this->contactHelper->updateWishlistAfterLogin(
-                                $oneListWish
-                            );
-                        }
-                    } else {
-                        $this->customerSession->addError(
-                            __('The service is currently unavailable. Please try again later.')
+                    $oneListWish = $this->contactHelper->getOneListTypeObject(
+                        $result->getOneLists()->getOneList(),
+                        Entity\Enum\ListType::WISH
+                    );
+                    if ($oneListWish) {
+                        $this->contactHelper->updateWishlistAfterLogin(
+                            $oneListWish
                         );
                     }
                 } else {
-                    $this->contactHelper->loginCustomerIfOmniServiceDown($is_email, $email);
+                    $this->customerSession->addError(
+                        __('The service is currently unavailable. Please try again later.')
+                    );
                 }
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
             }
+        } else {
+            $this->contactHelper->loginCustomerIfOmniServiceDown($is_email, $email, $controller_action);
         }
         return $this;
     }
