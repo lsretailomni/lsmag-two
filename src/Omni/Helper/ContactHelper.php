@@ -33,6 +33,7 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -231,7 +232,7 @@ class ContactHelper extends AbstractHelper
      */
     public function search($email)
     {
-        $is_email    = Zend_Validate::is($email, Zend_Validate_EmailAddress::class);
+        $is_email = Zend_Validate::is($email, Zend_Validate_EmailAddress::class);
         // load customer data from magento customer database based on lsr_username if we didn't get an email
         if (!$is_email) {
             $filters = [
@@ -268,7 +269,7 @@ class ContactHelper extends AbstractHelper
             $search->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
 
             try {
-                $response = $request->execute($search);
+                $response    = $request->execute($search);
                 $contact_pos = $response->getContactSearchResult();
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
@@ -1049,10 +1050,11 @@ class ContactHelper extends AbstractHelper
     /**
      * @param $isEmail
      * @param $userNameOrEmail
-     * @param Interceptor $controllerAction
+     * @param $request
+     * @param bool $isAjax
      * @throws LocalizedException
      */
-    public function loginCustomerIfOmniServiceDown($isEmail, $userNameOrEmail, Interceptor $controllerAction)
+    public function loginCustomerIfOmniServiceDown($isEmail, $userNameOrEmail, $request, $isAjax = false)
     {
         if (!$isEmail) {
             $filters = [
@@ -1068,9 +1070,17 @@ class ContactHelper extends AbstractHelper
             if ($searchResults->getTotalCount() == 1) {
                 $customerRepository = $searchResults->getItems()[0];
                 $email              = $customerRepository->getEmail();
-                $login              = $controllerAction->getRequest()->getPost("login");
-                $login              = ['username' => $email, 'password' => $login['password']];
-                $controllerAction->getRequest()->setPostValue("login", $login);
+                if ($isAjax == true) {
+                    /** @var RequestInterface $request */
+                    $credentials             = json_decode($request->getContent(), true);
+                    $credentials['username'] = $email;
+                    $request->setContent(json_encode($credentials));
+                } else {
+                    /** @var Interceptor $request */
+                    $login             = $request->getRequest()->getPost("login");
+                    $login['username'] = $email;
+                    $request->getRequest()->setPostValue("login", $login);
+                }
             }
         }
     }
@@ -1080,9 +1090,8 @@ class ContactHelper extends AbstractHelper
      * @return CustomerSearchResultsInterface
      * @throws LocalizedException
      */
-    public function searchCustomerByEmail(
-        $email
-    ) {
+    public function searchCustomerByEmail($email)
+    {
         $filters = [
             $this->filterBuilder
                 ->setField('email')
