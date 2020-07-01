@@ -8,9 +8,12 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerProxy;
+use Magento\Framework\App\Area;
+use Magento\Framework\App\State;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
@@ -57,6 +60,11 @@ class OrderObserver implements ObserverInterface
     private $lsr;
 
     /**
+     * @var State
+     */
+    private $state;
+
+    /**
      * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
@@ -65,6 +73,7 @@ class OrderObserver implements ObserverInterface
      * @param CheckoutProxy $checkoutSession
      * @param Order $orderResourceModel
      * @param LSR $LSR
+     * @param State $state
      */
     public function __construct(
         BasketHelper $basketHelper,
@@ -73,7 +82,8 @@ class OrderObserver implements ObserverInterface
         CustomerProxy $customerSession,
         CheckoutProxy $checkoutSession,
         Order $orderResourceModel,
-        LSR $LSR
+        LSR $LSR,
+        State $state
     ) {
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
@@ -82,6 +92,7 @@ class OrderObserver implements ObserverInterface
         $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
+        $this->state              = $state;
     }
 
     /**
@@ -89,9 +100,16 @@ class OrderObserver implements ObserverInterface
      * @return $this|void
      * @throws InputException
      * @throws NoSuchEntityException
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws LocalizedException
      */
     public function execute(Observer $observer)
     {
+        //only run this at frontend because we have different observer for admin
+        if ($this->isAdmin()) {
+            return $this;
+        }
+
         /*
          * Adding condition to only process if LSR is enabled.
          */
@@ -165,5 +183,15 @@ class OrderObserver implements ObserverInterface
             }
             return $this;
         }
+    }
+
+    /**
+     * @return bool
+     * @throws LocalizedException
+     */
+    private function isAdmin()
+    {
+        $areaCode = $this->state->getAreaCode();
+        return $areaCode == Area::AREA_ADMINHTML;
     }
 }

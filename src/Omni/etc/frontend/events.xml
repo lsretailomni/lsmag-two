@@ -37,15 +37,8 @@
     <event name="controller_action_predispatch_checkout_cart_updateitemoptions">
         <observer name="coupon_code" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
     </event>
-    <!-- hiding payment method on order total zero -->
-    <event name="payment_method_is_active">
-        <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
-    </event>
     <event name="checkout_cart_save_after">
         <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
-    </event>
-    <event name="sales_order_place_after">
-        <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
     </event>
     <event name="checkout_onepage_controller_success_action">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
