@@ -73,18 +73,6 @@ define([
             var form = '#gift-card';
 
             return $(form).validation() && $(form).validation('isValid');
-        },
-
-        /**
-         * Enable or disable GiftCard
-         */
-        isDisplay: function () {
-            if (window.checkoutConfig.gift_card_enable == "1") {
-                return true;
-            } else {
-                return false;
-            }
-
         }
     });
 });

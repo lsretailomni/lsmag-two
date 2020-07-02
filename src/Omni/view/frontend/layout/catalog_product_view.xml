@@ -9,6 +9,7 @@
             <block class="Magento\Customer\Block\Account\Customer"
                    name="ls.omni.product.notification"
                    template="Ls_Omni::product/view/notification.phtml"
+                   ifconfig="ls_mag/ls_discounts/discount_login_register_notice"
                    before="product.info.main"/>
             <!-- For LS Recommendation. -->
             <block class="Ls\Omni\Block\Product\View\Recommend"

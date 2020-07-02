@@ -14,9 +14,9 @@
         </referenceContainer>
         <referenceContainer name="cart.discount">
             <block class="Ls\Omni\Block\Cart\Loyaltypoints" name="checkout.cart.loyaltypoints" as="loyaltypoints"
-                   template="Ls_Omni::cart/loyalty-points.phtml" before="-"/>
+                   template="Ls_Omni::cart/loyalty-points.phtml" before="-" ifconfig="ls_mag/ls_loyaltypoints/cart"/>
             <block class="Ls\Omni\Block\Cart\Giftcard" name="checkout.cart.giftcard" as="giftcard"
-                   template="Ls_Omni::cart/gift-card.phtml" before="-"/>
+                   template="Ls_Omni::cart/gift-card.phtml" before="-" ifconfig="ls_mag/ls_giftcard/cart"/>
         </referenceContainer>
         <move element="cart.discount" destination="checkout.cart.container" after="-"/>
         <referenceBlock name="checkout.cart.totals">
@@ -77,10 +77,10 @@
                 <argument name="renderer_list_name" xsi:type="string">checkout.cart.item.renderers.override</argument>
             </arguments>
         </referenceBlock>
-        <referenceBlock name="checkout.cart.coupon">
-            <action method="setTemplate">
-                <argument name="template" xsi:type="string">Ls_Omni::cart/coupons.phtml</argument>
-            </action>
+        <referenceBlock name="checkout.cart.coupon" template="Ls_Omni::cart/coupons.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\CouponsViewModel</argument>
+            </arguments>
         </referenceBlock>
     </body>
 </page>
