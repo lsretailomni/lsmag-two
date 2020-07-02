@@ -15,11 +15,4 @@
     <event name="sales_model_service_quote_submit_before">
         <observer name="copy_coupon_plus_other_extension_attributes_from_quote_to_order" instance="Ls\Omni\Observer\DataAssignObserver"/>
     </event>
-    <!-- hiding payment method on order total zero -->
-    <event name="payment_method_is_active">
-        <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
-    </event>
-    <event name="sales_order_place_after">
-        <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
-    </event>
 </config>

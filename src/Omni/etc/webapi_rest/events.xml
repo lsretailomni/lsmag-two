@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- hiding payment method on order total zero -->
+    <event name="payment_method_is_active">
+        <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
+    </event>
+    <event name="sales_order_place_after">
+        <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
+    </event>
+</config>
