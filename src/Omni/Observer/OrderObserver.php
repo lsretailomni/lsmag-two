@@ -11,7 +11,6 @@ use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
@@ -90,8 +89,6 @@ class OrderObserver implements ObserverInterface
      * @return $this|void
      * @throws InputException
      * @throws NoSuchEntityException
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     * @throws LocalizedException
      */
     public function execute(Observer $observer)
     {
