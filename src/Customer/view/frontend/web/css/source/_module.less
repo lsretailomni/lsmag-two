@@ -70,6 +70,7 @@
   vertical-align: middle;
   white-space: nowrap;
 }
+
 /* Order History ============================================================================= */
 .sales-order-history {
   .orders-history {
@@ -346,4 +347,15 @@ table.transactions-table tr:hover {
 
 .header-inline {
   display: inline;
+}
+
+
+@media only screen and (max-width: @screen__m) {
+  .sales-order-history {
+    .sidebar-main {
+      .block-collapsible-nav {
+        position: relative;
+      }
+    }
+  }
 }
