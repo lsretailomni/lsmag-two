@@ -15,14 +15,14 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
         if (count($_orders) > 0) {
             $orderExist = true;
             ?>
-            <div class="table-wrapper orders-history">
-                <table class="data table table-order-items history" id="my-orders-table">
+            <div class="table-wrapper orders-history" id="my-orders-table-container" style="display:none;">
+                <table class="data table table-order-items history" id="my-orders-table" style="width:100%">
                     <caption class="table-caption"><?= /* @escapeNotVerified */
                         __('Orders') ?></caption>
                     <thead>
                     <tr>
                         <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                            __('Document ID #') ?></th>
+                            __('Doc ID') ?></th>
                         <th scope="col" class="col date"><?= /* @escapeNotVerified */
                             __('Date') ?></th>
                         <th scope="col" class="col shipping"><?= /* @escapeNotVerified */
@@ -51,7 +51,9 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                 class="col id"><?= /* @escapeNotVerified */
                                 $_order->getId() ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
-                                class="col date"><?= /* @escapeNotVerified */
+                                class="col date">
+                                <span style="display:none;"><?= strtotime($_order->getDocumentRegTime())?></span>
+                                <?= /* @escapeNotVerified */
                                 $block->getFormattedDate($_order->getDocumentRegTime()) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
                                 class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable') ?></td>
@@ -93,14 +95,14 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
     } else {
         $orderExist = true;
         ?>
-        <div class="table-wrapper orders-history">
-            <table class="data table table-order-items history" id="my-orders-table">
+        <div class="table-wrapper orders-history" id="my-orders-table-container" style="display:none;">
+            <table class="data table table-order-items history" id="my-orders-table" style="width:100%">
                 <caption class="table-caption"><?= /* @escapeNotVerified */
                     __('Orders') ?></caption>
                 <thead>
                 <tr>
                     <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                        __('Document ID #') ?></th>
+                        __('Doc ID') ?></th>
                     <th scope="col" class="col date"><?= /* @escapeNotVerified */
                         __('Date') ?></th>
                     <?= /* @noEscape */
@@ -161,7 +163,33 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                 </tbody>
             </table>
         </div>
-    <?php }
+    <?php } ?>
+    <script type="text/javascript">
+        require(['jquery', 'Ls_Core/js/datatables.min'], function($, $t){
+            $(document).ready(function() {
+                $('#my-orders-table thead tr').clone(true).appendTo( '#my-orders-table thead' );
+                $('#my-orders-table thead tr:eq(1) th').each( function (i) {
+                    var title = $(this).text();
+                    $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+
+                    $( 'input', this ).on( 'keyup change', function () {
+                        if ( table.column(i).search() !== this.value ) {
+                            table
+                                .column(i)
+                                .search( this.value )
+                                .draw();
+                        }
+                    } );
+                } );
+                var table = $('#my-orders-table').DataTable({
+                    order: [[1, 'desc']],
+                    orderCellsTop: true
+                });
+                $('#my-orders-table-container').show();
+            } );
+        })
+    </script>
+<?php
 endif;
 ?>
 <?php if ($orderExist == false) { ?>
