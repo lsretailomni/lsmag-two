@@ -71,6 +71,31 @@
   white-space: nowrap;
 }
 
+/* Order History ============================================================================= */
+.sales-order-history {
+  .orders-history {
+    .dataTables_length {
+      select {
+        width: auto;
+      }
+    }
+
+    .dataTables_filter {
+      input {
+        width: auto;
+      }
+    }
+
+    table {
+      thead {
+        th {
+          padding: 10px 8px;
+        }
+      }
+    }
+  }
+}
+
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media screen and (max-width: 800px) {
   .coupons-grid li.item {
@@ -322,4 +347,15 @@ table.transactions-table tr:hover {
 
 .header-inline {
   display: inline;
+}
+
+
+@media only screen and (max-width: @screen__m) {
+  .sales-order-history {
+    .sidebar-main {
+      .block-collapsible-nav {
+        position: relative;
+      }
+    }
+  }
 }

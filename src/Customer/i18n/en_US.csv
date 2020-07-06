@@ -85,13 +85,14 @@ Back,Back
 "Expiry: ","Expiry: "
 "No offers","No offers"
 Orders,Orders
-"Document ID #","Document ID #"
+"Doc ID","Doc ID"
 Date,Date
 "Ship To","Ship To"
 "Store Name","Store Name"
 Total,Total
 Status,Status
 Action,Action
+"Document ID #","Document ID #"
 "Not Applicable","Not Applicable"
 Actions,Actions
 "View Order","View Order"
