@@ -6,7 +6,6 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
@@ -14,12 +13,11 @@ use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 use Zend_Validate;
 use Zend_Validate_EmailAddress;
+use Zend_Validate_Exception;
 
 /**
  * Class LoginObserver
@@ -46,12 +44,6 @@ class LoginObserver implements ObserverInterface
     /** @var ActionFlag */
     private $actionFlag;
 
-    /** @var StoreManagerInterface */
-    private $storeManager;
-
-    /** @var CustomerFactory */
-    private $customerFactory;
-
     /** @var LSR @var */
     private $lsr;
 
@@ -63,8 +55,6 @@ class LoginObserver implements ObserverInterface
      * @param Proxy $customerSession
      * @param RedirectInterface $redirectInterface
      * @param ActionFlag $actionFlag
-     * @param StoreManagerInterface $storeManager
-     * @param CustomerFactory $customerFactory
      * @param LSR $LSR
      */
     public function __construct(
@@ -74,8 +64,6 @@ class LoginObserver implements ObserverInterface
         Proxy $customerSession,
         RedirectInterface $redirectInterface,
         ActionFlag $actionFlag,
-        StoreManagerInterface $storeManager,
-        CustomerFactory $customerFactory,
         LSR $LSR
     ) {
         $this->contactHelper     = $contactHelper;
@@ -84,8 +72,6 @@ class LoginObserver implements ObserverInterface
         $this->customerSession   = $customerSession;
         $this->redirectInterface = $redirectInterface;
         $this->actionFlag        = $actionFlag;
-        $this->storeManager      = $storeManager;
-        $this->customerFactory   = $customerFactory;
         $this->lsr               = $LSR;
     }
 
@@ -99,15 +85,13 @@ class LoginObserver implements ObserverInterface
      * If input is email but the account does not exist in Magento then
      * we need to throw an error that "Email login is only available for users registered in Magento".
      * @param Observer $observer
-     * @return $this|LoginObserver
+     * @return $this|void
      * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws \Zend_Validate_Exception
+     * @throws Zend_Validate_Exception
      */
     public function execute(Observer $observer)
     {
-        $controller_action = $observer->getData('controller_action');
-        $login             = $controller_action->getRequest()->getPost('login');
+        $login = $observer->getRequest()->getPost('login');
         if (!empty($login['username']) && !empty($login['password'])) {
             $email    = $username = $login['username'];
             $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);

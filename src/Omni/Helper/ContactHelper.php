@@ -258,7 +258,6 @@ class ContactHelper extends AbstractHelper
             /** @var Operation\ContactGetById $request */
             // @codingStandardsIgnoreStart
             $request = new Operation\ContactSearch();
-            /** @var Entity\ContactSearch $search */
             $search = new Entity\ContactSearch();
             // @codingStandardsIgnoreEnd
             $search->setSearch($email);
@@ -1003,7 +1002,6 @@ class ContactHelper extends AbstractHelper
         }
         $customer_email = $customer->getEmail();
         $websiteId      = $this->storeManager->getWebsite()->getWebsiteId();
-        /** @var Customer $customer */
         $customer = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
@@ -1070,12 +1068,10 @@ class ContactHelper extends AbstractHelper
                 $customerRepository = $searchResults->getItems()[0];
                 $email              = $customerRepository->getEmail();
                 if ($isAjax == true) {
-                    /** @var RequestInterface $request */
                     $credentials             = json_decode($request->getContent(), true);
                     $credentials['username'] = $email;
                     $request->setContent(json_encode($credentials));
                 } else {
-                    /** @var RequestInterface $request */
                     $login             = $request->getPost("login");
                     $login['username'] = $email;
                     $request->setPostValue("login", $login);

@@ -25,7 +25,6 @@ Save,Save
 "You have entered an invalid current password.","You have entered an invalid current password."
 "Confirm password did not match.","Confirm password did not match."
 "Sorry. No account found with the provided email address","Sorry. No account found with the provided email address"
-"Unfortunately email login is only available for members registered in Magento","Unfortunately email login is only available for members registered in Magento"
 "Invalid Omni login or Omni password","Invalid Omni login or Omni password"
 "Omni login successful.","Omni login successful."
 "The service is currently unavailable. Please try again later.","The service is currently unavailable. Please try again later."

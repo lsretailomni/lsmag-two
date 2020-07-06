@@ -11,18 +11,15 @@ use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Json\Helper\Data;
-use Magento\Framework\Registry;
-use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 use Zend_Validate;
 use Zend_Validate_EmailAddress;
+use Zend_Validate_Exception;
 
 /**
  * Class AjaxLoginObserver
@@ -46,71 +43,56 @@ class AjaxLoginObserver implements ObserverInterface
     /** @var Data $jsonhelper */
     private $jsonhelper;
 
-    /** @var StoreManagerInterface */
-    private $storeManage;
-
     /** @var CustomerFactory */
     private $customerFactory;
 
     /** @var JsonFactory */
     private $resultJsonFactory;
 
-    /** @var LSR @var */
+    /** @var LSR */
     private $lsr;
-
-    /**
-     * @var Registry
-     */
-    private $registry;
 
     /**
      * AjaxLoginObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param Registry $registry
      * @param LoggerInterface $logger
      * @param Proxy $customerSession
      * @param Data $jsonhelper
      * @param JsonFactory $resultJsonFactory
      * @param ActionFlag $actionFlag
-     * @param StoreManagerInterface $storeManager
      * @param CustomerFactory $customerFactory
+     * @param LSR $LSR
      */
     public function __construct(
         ContactHelper $contactHelper,
-        Registry $registry,
         LoggerInterface $logger,
         Proxy $customerSession,
         Data $jsonhelper,
         JsonFactory $resultJsonFactory,
         ActionFlag $actionFlag,
-        StoreManagerInterface $storeManager,
         CustomerFactory $customerFactory,
         LSR $LSR
     ) {
         $this->contactHelper     = $contactHelper;
-        $this->registry          = $registry;
         $this->logger            = $logger;
         $this->customerSession   = $customerSession;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->jsonhelper        = $jsonhelper;
         $this->actionFlag        = $actionFlag;
-        $this->storeManage       = $storeManager;
         $this->customerFactory   = $customerFactory;
         $this->lsr               = $LSR;
     }
 
     /**
      * @param Observer $observer
-     * @return $this|Json|void
+     * @return $this|void
      * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws \Zend_Validate_Exception
+     * @throws Zend_Validate_Exception
      */
     public function execute(Observer $observer)
     {
         /** @var $request RequestInterface */
         $request = $observer->getEvent()->getRequest();
-        /** @var Json $resultJson */
         $resultJson = $this->resultJsonFactory->create();
         // check if we have a data in request and request is Ajax.
         if ($request && $request->isXmlHttpRequest()) {
@@ -118,7 +100,6 @@ class AjaxLoginObserver implements ObserverInterface
 
             if (!empty($credentials['username']) && !empty($credentials['password'])) {
                 $email     = $username = $credentials['username'];
-                $websiteId = $this->storeManage->getWebsite()->getWebsiteId();
                 $is_email  = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                     try {
@@ -197,5 +178,4 @@ class AjaxLoginObserver implements ObserverInterface
             ->representJson($this->jsonhelper->jsonEncode($response));
         return $this;
     }
-
 }
