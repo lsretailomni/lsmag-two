@@ -6,7 +6,6 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Controller\Account\LoginPost\Interceptor;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
@@ -14,6 +13,8 @@ use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -99,70 +100,73 @@ class LoginObserver implements ObserverInterface
      * we need to throw an error that "Email login is only available for users registered in Magento".
      * @param Observer $observer
      * @return $this|LoginObserver
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws \Zend_Validate_Exception
      */
     public function execute(Observer $observer)
     {
-        /** @var Interceptor $controller_action */
         $controller_action = $observer->getData('controller_action');
         $login             = $controller_action->getRequest()->getPost('login');
         $email             = $username = $login['username'];
         $is_email          = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
-        /*
-         * Adding condition to only process if LSR is enabled.
-         */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            try {
-                if ($is_email) {
-                    $search = $this->contactHelper->search($username);
-                    $found  = $search !== null
-                        && ($search instanceof Entity\MemberContact)
-                        && !empty($search->getEmail());
-                    if (!$found) {
-                        $errorMessage = __('Sorry! No account found with the provided email address.');
+
+        if (!empty($login['username']) && !empty($login['password'])) {
+            if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                try {
+                    if ($is_email) {
+                        $search = $this->contactHelper->search($username);
+                        $found  = $search !== null
+                            && ($search instanceof Entity\MemberContact)
+                            && !empty($search->getEmail());
+                        if (!$found) {
+                            $errorMessage = __('Sorry! No account found with the provided email address.');
+                            return $this->handleErrorMessage($observer, $errorMessage);
+                        }
+                        $username = $search->getUserName();
+                    }
+                    /** @var  Entity\MemberContact $result */
+                    $result = $this->contactHelper->login($username, $login['password']);
+                    if ($result == false) {
+                        $errorMessage = __('Invalid LS Central login or password.');
                         return $this->handleErrorMessage($observer, $errorMessage);
                     }
-                    $username = $search->getUserName();
-                }
-                /** @var  Entity\MemberContact $result */
-                $result = $this->contactHelper->login($username, $login['password']);
-                if ($result == false) {
-                    $errorMessage = __('Invalid LS Central login or password.');
-                    return $this->handleErrorMessage($observer, $errorMessage);
-                }
-                if ($result instanceof Entity\MemberContact) {
-                    $this->contactHelper->processCustomerLogin($result, $login, $is_email);
-                    $oneListBasket = $this->contactHelper->getOneListTypeObject(
-                        $result->getOneLists()->getOneList(),
-                        Entity\Enum\ListType::BASKET
-                    );
-                    if ($oneListBasket) {
-                        /** Update Basket to Omni */
-                        $this->contactHelper->updateBasketAfterLogin(
-                            $oneListBasket,
-                            $result->getId(),
-                            $result->getCards()->getCard()[0]->getId()
+                    if ($result instanceof Entity\MemberContact) {
+                        $this->contactHelper->processCustomerLogin($result, $login, $is_email);
+                        $oneListBasket = $this->contactHelper->getOneListTypeObject(
+                            $result->getOneLists()->getOneList(),
+                            Entity\Enum\ListType::BASKET
+                        );
+                        if ($oneListBasket) {
+                            /** Update Basket to Omni */
+                            $this->contactHelper->updateBasketAfterLogin(
+                                $oneListBasket,
+                                $result->getId(),
+                                $result->getCards()->getCard()[0]->getId()
+                            );
+                        }
+                        $oneListWish = $this->contactHelper->getOneListTypeObject(
+                            $result->getOneLists()->getOneList(),
+                            Entity\Enum\ListType::WISH
+                        );
+                        if ($oneListWish) {
+                            $this->contactHelper->updateWishlistAfterLogin(
+                                $oneListWish
+                            );
+                        }
+                    } else {
+                        $this->customerSession->addError(
+                            __('The service is currently unavailable. Please try again later.')
                         );
                     }
-                    $oneListWish = $this->contactHelper->getOneListTypeObject(
-                        $result->getOneLists()->getOneList(),
-                        Entity\Enum\ListType::WISH
-                    );
-                    if ($oneListWish) {
-                        $this->contactHelper->updateWishlistAfterLogin(
-                            $oneListWish
-                        );
-                    }
-                } else {
-                    $this->customerSession->addError(
-                        __('The service is currently unavailable. Please try again later.')
-                    );
+                } catch (Exception $e) {
+                    $this->logger->error($e->getMessage());
                 }
-            } catch (Exception $e) {
-                $this->logger->error($e->getMessage());
+            } else {
+                $this->contactHelper->loginCustomerIfOmniServiceDown($is_email, $email, $controller_action);
             }
-        } else {
-            $this->contactHelper->loginCustomerIfOmniServiceDown($is_email, $email, $controller_action);
         }
+
         return $this;
     }
 
