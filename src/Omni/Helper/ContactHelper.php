@@ -19,7 +19,6 @@ use Magento\Customer\Api\Data\CustomerSearchResultsInterface;
 use Magento\Customer\Api\Data\GroupInterfaceFactory;
 use Magento\Customer\Api\Data\RegionInterfaceFactory;
 use Magento\Customer\Api\GroupRepositoryInterface;
-use Magento\Customer\Controller\Account\LoginPost\Interceptor;
 use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
@@ -1050,7 +1049,7 @@ class ContactHelper extends AbstractHelper
     /**
      * @param $isEmail
      * @param $userNameOrEmail
-     * @param $request
+     * @param RequestInterface $request
      * @param bool $isAjax
      * @throws LocalizedException
      */
@@ -1076,10 +1075,10 @@ class ContactHelper extends AbstractHelper
                     $credentials['username'] = $email;
                     $request->setContent(json_encode($credentials));
                 } else {
-                    /** @var Interceptor $request */
-                    $login             = $request->getRequest()->getPost("login");
+                    /** @var RequestInterface $request */
+                    $login             = $request->getPost("login");
                     $login['username'] = $email;
-                    $request->getRequest()->setPostValue("login", $login);
+                    $request->setPostValue("login", $login);
                 }
             }
         }

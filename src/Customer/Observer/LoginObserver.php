@@ -108,10 +108,9 @@ class LoginObserver implements ObserverInterface
     {
         $controller_action = $observer->getData('controller_action');
         $login             = $controller_action->getRequest()->getPost('login');
-        $email             = $username = $login['username'];
-        $is_email          = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
-
         if (!empty($login['username']) && !empty($login['password'])) {
+            $email    = $username = $login['username'];
+            $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                 try {
                     if ($is_email) {
@@ -163,7 +162,7 @@ class LoginObserver implements ObserverInterface
                     $this->logger->error($e->getMessage());
                 }
             } else {
-                $this->contactHelper->loginCustomerIfOmniServiceDown($is_email, $email, $controller_action);
+                $this->contactHelper->loginCustomerIfOmniServiceDown($is_email, $email, $observer->getRequest());
             }
         }
 

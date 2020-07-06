@@ -115,11 +115,11 @@ class AjaxLoginObserver implements ObserverInterface
         // check if we have a data in request and request is Ajax.
         if ($request && $request->isXmlHttpRequest()) {
             $credentials = $this->jsonhelper->jsonDecode($request->getContent());
-            $email       = $username = $credentials['username'];
-            $websiteId   = $this->storeManage->getWebsite()->getWebsiteId();
-            $is_email    = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
 
             if (!empty($credentials['username']) && !empty($credentials['password'])) {
+                $email     = $username = $credentials['username'];
+                $websiteId = $this->storeManage->getWebsite()->getWebsiteId();
+                $is_email  = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                     try {
                         // CASE FOR EMAIL LOGIN := TRANSLATION TO USERNAME
@@ -132,24 +132,7 @@ class AjaxLoginObserver implements ObserverInterface
                                 $message = __('Sorry. No account found with the provided email address');
                                 return $this->generateMessage($observer, $message, true);
                             }
-                            $email = $search->getEmail();
-                        }
-                        if ($is_email) {
-                            $searchResults = $this->contactHelper->searchCustomerByEmail($email);
-                            if ($searchResults->getTotalCount() == 0) {
-                                $message = __(
-                                    'Unfortunately email login is only available for members registered in Magento'
-                                );
-                                return $this->generateMessage($observer, $message, true);
-                            } else {
-                                $customerObj = null;
-                                foreach ($searchResults->getItems() as $match) {
-                                    $customerObj = $this->customerFactory->create()->setWebsiteId($websiteId)
-                                        ->loadByEmail($email);
-                                    break;
-                                }
-                                $username = $customerObj->getData('lsr_username');
-                            }
+                            $username = $search->getUserName();
                         }
                         $result = $this->contactHelper->login($username, $credentials['password']);
                         if ($result == false) {
