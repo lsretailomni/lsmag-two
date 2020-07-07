@@ -457,7 +457,7 @@ class LoyaltyHelper extends AbstractHelper
      */
     public function getAvailableCouponsForLoggedInCustomers()
     {
-        $memberInfo         = $this->getMemberInfo();
+        $memberInfo = $this->getMemberInfo();
         if (!$memberInfo) {
             return [];
         }
@@ -500,19 +500,24 @@ class LoyaltyHelper extends AbstractHelper
     /**
      * @param $area
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isLoyaltyPointsEnabled($area)
     {
-        if ($area == "cart") {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            if ($area == "cart") {
+                return $this->lsr->getStoreConfig(
+                    LSR::LS_LOYALTYPOINTS_SHOW_ON_CART,
+                    $this->lsr->getCurrentStoreId()
+                );
+            }
             return $this->lsr->getStoreConfig(
-                LSR::LS_LOYALTYPOINTS_SHOW_ON_CART,
+                LSR::LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT,
                 $this->lsr->getCurrentStoreId()
             );
+        } else {
+            return false;
         }
-        return $this->lsr->getStoreConfig(
-            LSR::LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT,
-            $this->lsr->getCurrentStoreId()
-        );
     }
 
     /**

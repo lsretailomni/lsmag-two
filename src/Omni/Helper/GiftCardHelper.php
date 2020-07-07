@@ -14,6 +14,7 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -42,7 +43,7 @@ class GiftCardHelper extends AbstractHelper
     public $customerFactory;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var CustomerProxy
      */
     public $customerSession;
 
@@ -53,7 +54,7 @@ class GiftCardHelper extends AbstractHelper
     public $filesystem;
 
     /**
-     * @var $checkoutSession
+     * @var Proxy
      */
     public $checkoutSession;
 
@@ -140,18 +141,23 @@ class GiftCardHelper extends AbstractHelper
     /**
      * @param $area
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isGiftCardEnabled($area)
     {
-        if ($area == 'cart') {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            if ($area == 'cart') {
+                return $this->lsr->getStoreConfig(
+                    LSR::LS_GIFTCARD_SHOW_ON_CART,
+                    $this->lsr->getCurrentStoreId()
+                );
+            }
             return $this->lsr->getStoreConfig(
-                LSR::LS_GIFTCARD_SHOW_ON_CART,
+                LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
                 $this->lsr->getCurrentStoreId()
             );
+        } else {
+            return false;
         }
-        return $this->lsr->getStoreConfig(
-            LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
-            $this->lsr->getCurrentStoreId()
-        );
     }
 }

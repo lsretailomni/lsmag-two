@@ -12,6 +12,7 @@ use \LS\Omni\Helper\ItemHelper;
 use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote;
 use Psr\Log\LoggerInterface;
 
@@ -86,6 +87,7 @@ class CartObserver implements ObserverInterface
     /**
      * @param Observer $observer
      * @return $this|void
+     * @throws NoSuchEntityException
      */
     // @codingStandardsIgnoreLine
     public function execute(Observer $observer)

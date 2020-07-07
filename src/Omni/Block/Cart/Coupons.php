@@ -9,6 +9,8 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Block\Cart\Coupon;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
@@ -84,11 +86,12 @@ class Coupons extends Coupon
 
     /**
      * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getAvailableCoupons()
     {
-        $coupons = $this->loyaltyHelper->getAvailableCouponsForLoggedInCustomers();
-        return $coupons;
+        return $this->loyaltyHelper->getAvailableCouponsForLoggedInCustomers();
     }
 
     /**
@@ -97,13 +100,12 @@ class Coupons extends Coupon
      */
     public function getFormattedDescription(PublishedOffer $coupon)
     {
-        $description = "<div class='coupon-description-wrapper'>" .
+        return "<div class='coupon-description-wrapper'>" .
             (($coupon->getOfferId()) ? "<span class='coupon-code'>" . $coupon->getOfferId() . "</span><br/>" : "") .
             (($coupon->getDescription()) ? "<span class='coupon-description'>" . $coupon->getDescription() . "</span><br/>" : "") .
             (($coupon->getDetails()) ? "<span class='coupon-detail'>" . $coupon->getDetails() . "</span><br/>" : "") .
             (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>" . __("Valid till") . "&nbsp" . $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>" : "") .
             "</div>";
-        return $description;
     }
 
     /**
@@ -135,7 +137,6 @@ class Coupons extends Coupon
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function isCouponEnable()
     {
