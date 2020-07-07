@@ -15,7 +15,7 @@ Save,Save
 "There is no account found with the provided email/username.","There is no account found with the provided email/username."
 "We're unable to send the password reset email.","We're unable to send the password reset email."
 "Please enter your email.","Please enter your email."
-Coupons,Coupons
+"Coupon Offers","Coupon Offers"
 "General Offers","General Offers"
 "Loyalty Offers","Loyalty Offers"
 "Member Offers","Member Offers"
@@ -25,7 +25,6 @@ Coupons,Coupons
 "You have entered an invalid current password.","You have entered an invalid current password."
 "Confirm password did not match.","Confirm password did not match."
 "Sorry. No account found with the provided email address","Sorry. No account found with the provided email address"
-"Unfortunately email login is only available for members registered in Magento","Unfortunately email login is only available for members registered in Magento"
 "Invalid Omni login or Omni password","Invalid Omni login or Omni password"
 "Omni login successful.","Omni login successful."
 "The service is currently unavailable. Please try again later.","The service is currently unavailable. Please try again later."
@@ -138,6 +137,5 @@ Name,Name
 "Loyalty Page Image Width","Loyalty Page Image Width"
 "Loyalty Page Image Height","Loyalty Page Image Height"
 "Expiry Date Format","Expiry Date Format"
-"Coupon Offers","Coupon Offers"
 Invoices,Invoices
 "Order Shipments","Order Shipments"

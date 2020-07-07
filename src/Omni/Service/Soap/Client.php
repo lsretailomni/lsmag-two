@@ -33,7 +33,6 @@ class Client extends ZendSoapClient
      */
     public function __construct(Uri $uri, ServiceType $type)
     {
-
         parent::__construct($uri->toString(), array_merge($this->soap_options));
 
         $this->URL  = $uri;

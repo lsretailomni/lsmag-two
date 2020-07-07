@@ -458,6 +458,9 @@ class LoyaltyHelper extends AbstractHelper
     public function getAvailableCouponsForLoggedInCustomers()
     {
         $memberInfo         = $this->getMemberInfo();
+        if (!$memberInfo) {
+            return [];
+        }
         $publishedOffersObj = $memberInfo->getPublishedOffers();
         $itemsInCart        = $this->checkoutSession->getQuote()->getAllItems();
         $itemsSku           = [];

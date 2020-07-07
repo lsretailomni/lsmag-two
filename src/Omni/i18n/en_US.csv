@@ -69,6 +69,7 @@ Subtotal,Subtotal
 "You are using","You are using"
 "Coupon code successfully removed.","Coupon code successfully removed."
 "You used coupon code ""%1"".","You used coupon code ""%1""."
+"The service is currently unavailable. Please try again later.","The service is currently unavailable. Please try again later."
 "Send order to LS Central?","Send order to LS Central?"
 "Send to LS Central","Send to LS Central"
 "Flat No/House No/Building No","Flat No/House No/Building No"
@@ -153,6 +154,8 @@ Version,Version
 "Required to get hierarchy node and leaf from omni","Required to get hierarchy node and leaf from omni"
 Debug,Debug
 "Debug Mode for Omni Client","Debug Mode for Omni Client"
+"Service Timeout","Service Timeout"
+"Max time in seconds to wait for omni response","Max time in seconds to wait for omni response"
 "LS Recommend","LS Recommend"
 Enabled,Enabled
 "Show on Product Page","Show on Product Page"

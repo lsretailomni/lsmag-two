@@ -32,6 +32,7 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -231,7 +232,6 @@ class ContactHelper extends AbstractHelper
     public function search($email)
     {
         $is_email = Zend_Validate::is($email, Zend_Validate_EmailAddress::class);
-
         // load customer data from magento customer database based on lsr_username if we didn't get an email
         if (!$is_email) {
             $filters = [
@@ -258,7 +258,6 @@ class ContactHelper extends AbstractHelper
             /** @var Operation\ContactGetById $request */
             // @codingStandardsIgnoreStart
             $request = new Operation\ContactSearch();
-            /** @var Entity\ContactSearch $search */
             $search = new Entity\ContactSearch();
             // @codingStandardsIgnoreEnd
             $search->setSearch($email);
@@ -360,6 +359,7 @@ class ContactHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+
         return $response ? $response->getLoginWebResult() : $response;
     }
 
@@ -1002,7 +1002,6 @@ class ContactHelper extends AbstractHelper
         }
         $customer_email = $customer->getEmail();
         $websiteId      = $this->storeManager->getWebsite()->getWebsiteId();
-        /** @var Customer $customer */
         $customer = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
@@ -1043,6 +1042,42 @@ class ContactHelper extends AbstractHelper
         }
 
         $this->customerSession->setCustomerAsLoggedIn($customer);
+    }
+
+    /**
+     * @param $isEmail
+     * @param $userNameOrEmail
+     * @param RequestInterface $request
+     * @param bool $isAjax
+     * @throws LocalizedException
+     */
+    public function loginCustomerIfOmniServiceDown($isEmail, $userNameOrEmail, $request, $isAjax = false)
+    {
+        if (!$isEmail) {
+            $filters = [
+                $this->filterBuilder
+                    ->setField('lsr_username')
+                    ->setConditionType('like')
+                    ->setValue($userNameOrEmail)
+                    ->create()
+            ];
+            $this->searchCriteriaBuilder->addFilters($filters);
+            $searchCriteria = $this->searchCriteriaBuilder->create();
+            $searchResults  = $this->customerRepository->getList($searchCriteria);
+            if ($searchResults->getTotalCount() == 1) {
+                $customerRepository = $searchResults->getItems()[0];
+                $email              = $customerRepository->getEmail();
+                if ($isAjax == true) {
+                    $credentials             = json_decode($request->getContent(), true);
+                    $credentials['username'] = $email;
+                    $request->setContent(json_encode($credentials));
+                } else {
+                    $login             = $request->getPost("login");
+                    $login['username'] = $email;
+                    $request->setPostValue("login", $login);
+                }
+            }
+        }
     }
 
     /**
