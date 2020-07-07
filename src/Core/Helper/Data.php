@@ -56,13 +56,25 @@ class Data extends AbstractHelper
      */
     public function isEndpointResponding($url)
     {
-        $opts    = ['http' => ['timeout' => floatval($this->scopeConfig->getValue(LSR::SC_SERVICE_TIMEOUT, ScopeInterface::SCOPE_STORES, $this->store_manager->getStore()->getId()))]];
+        $opts    = [
+            'http' => [
+                'timeout' => floatval($this->scopeConfig->getValue(
+                    LSR::SC_SERVICE_TIMEOUT,
+                    ScopeInterface::SCOPE_STORES,
+                    $this->store_manager->getStore()->getId()
+                ))
+            ]
+        ];
         $context = stream_context_create($opts);
         try {
             // @codingStandardsIgnoreStart
             $soapClient = new SoapClient(
                 $url . '?singlewsdl',
-                ['features' => SOAP_SINGLE_ELEMENT_ARRAYS, 'cache_wsdl' => WSDL_CACHE_NONE, 'stream_context' => $context]
+                [
+                    'features'       => SOAP_SINGLE_ELEMENT_ARRAYS,
+                    'cache_wsdl'     => WSDL_CACHE_NONE,
+                    'stream_context' => $context
+                ]
             );
             // @codingStandardsIgnoreEnd
             if ($soapClient) {

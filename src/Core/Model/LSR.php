@@ -2,11 +2,10 @@
 
 namespace Ls\Core\Model;
 
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Core\Helper\Data;
-use \Magento\Framework\Exception\NoSuchEntityException;
+use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -365,6 +364,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public $coreHelper;
 
     /**
+     * @var bool
+     */
+    public $isLsr = true;
+
+    /**
+     * @var bool
+     */
+    public $validaBaseUrlResponse;
+
+    /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
@@ -377,7 +386,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     ) {
         $this->scopeConfig  = $scopeConfig;
         $this->storeManager = $storeManager;
-        $this->coreHelper = $coreHelper;
+        $this->coreHelper   = $coreHelper;
     }
 
     /**
@@ -447,7 +456,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if (empty($baseUrl) || empty($store)) {
             return false;
         } else {
-            return $this->validateBaseUrl($baseUrl);
+            if ($this->isLsr) {
+                $this->isLsr = false;
+                return $this->validaBaseUrlResponse = $this->validateBaseUrl($baseUrl);
+            } else {
+                return $this->validaBaseUrlResponse;
+            }
         }
     }
 
@@ -465,6 +479,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getActiveWebStore()
     {
