@@ -457,7 +457,7 @@ class LoyaltyHelper extends AbstractHelper
      */
     public function getAvailableCouponsForLoggedInCustomers()
     {
-        $memberInfo         = $this->getMemberInfo();
+        $memberInfo = $this->getMemberInfo();
         if (!$memberInfo) {
             return [];
         }
@@ -467,9 +467,16 @@ class LoyaltyHelper extends AbstractHelper
         $coupons            = [];
 
         foreach ($itemsInCart as $item) {
-            $itemsSku[] = $item->getSku();
+            if (!empty($item->getParentItemId())) {
+                $parentItem = $item->getParentItem();
+                $parentSku  = $parentItem->getProduct()->getData('sku');
+                if (!empty($parentSku)) {
+                    $itemsSku[] = $parentSku;
+                }
+            } else {
+                $itemsSku[] = $item->getSku();
+            }
         }
-
         if ($publishedOffersObj) {
             $publishedOffers = $publishedOffersObj->getPublishedOffer();
             foreach ($publishedOffers as $each) {
