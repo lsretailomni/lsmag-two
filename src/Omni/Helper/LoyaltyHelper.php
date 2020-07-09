@@ -21,6 +21,7 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem;
+use Magento\Quote\Model\Quote\Item;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
@@ -465,7 +466,7 @@ class LoyaltyHelper extends AbstractHelper
         $itemsInCart        = $this->checkoutSession->getQuote()->getAllItems();
         $itemsSku           = [];
         $coupons            = [];
-
+        /** @var Item $item */
         foreach ($itemsInCart as $item) {
             if (!empty($item->getParentItemId())) {
                 $parentItem = $item->getParentItem();
