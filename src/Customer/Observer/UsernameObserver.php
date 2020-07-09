@@ -5,13 +5,14 @@ namespace Ls\Customer\Observer;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Controller\Account\LoginPost\Interceptor;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 use Zend_Validate;
@@ -79,52 +80,56 @@ class UsernameObserver implements ObserverInterface
      * If exist redirect back to registration with error message that username already exist.
      * @param Observer $observer
      * @return $this
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
-        /*
-         * Adding condition to only process if LSR is enabled.
-         */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            try {
-                $isNotValid = false;
-                /** @var Interceptor $controller_action */
-                $controller_action = $observer->getData('controller_action');
-                $parameters        = $controller_action->getRequest()->getParams();
-                $this->customerSession->setLsrUsername($parameters['lsr_username']);
-                // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
-                if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $parameters['lsr_username'])) {
-                    $this->messageManager->addErrorMessage(
-                        __('Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.')
-                    );
-                    $isNotValid = true;
-                } elseif ($this->contactHelper->isUsernameExist($parameters['lsr_username']) || $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username'])) {
-                    $this->messageManager->addErrorMessage(
-                        __('Username already exist, please try another one.')
-                    );
-                    $isNotValid = true;
-                } else {
-                    $isEmailValid = Zend_Validate::is($parameters['email'], Zend_Validate_EmailAddress::class);
-                    if (!$isEmailValid) {
-                        $this->messageManager->addErrorMessage(
-                            __('Your email address is invalid.')
-                        );
+        $parameters = $observer->getRequest()->getParams();
+        $isNotValid = false;
+        $message    = __('Username already exist, please try another one.');
+
+        if (!empty($parameters['lsr_username']) && !empty($parameters['email'])) {
+            // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
+            if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $parameters['lsr_username'])) {
+                $this->messageManager->addErrorMessage(
+                    __('Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.')
+                );
+                $isNotValid = true;
+            } elseif ($this->contactHelper->isUsernameExist($parameters['lsr_username'])) {
+                $this->messageManager->addErrorMessage($message);
+                $isNotValid = true;
+            }
+            if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                try {
+                    $isNotValid = false;
+                    if ($this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username'])) {
+                        $this->messageManager->addErrorMessage($message);
                         $isNotValid = true;
-                    } elseif ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
-                        $this->messageManager->addErrorMessage(
-                            __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
-                        );
-                        $isNotValid = true;
+                    } else {
+                        $isEmailValid = Zend_Validate::is($parameters['email'], Zend_Validate_EmailAddress::class);
+                        if (!$isEmailValid) {
+                            $this->messageManager->addErrorMessage(
+                                __('Your email address is invalid.')
+                            );
+                            $isNotValid = true;
+                        } elseif ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
+                            $this->messageManager->addErrorMessage(
+                                __('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.')
+                            );
+                            $isNotValid = true;
+                        }
                     }
+                } catch (Exception $e) {
+                    $this->logger->error($e->getMessage());
                 }
-                if ($isNotValid) {
-                    $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
-                    $observer->getControllerAction()
-                        ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
-                    $this->customerSession->setCustomerFormData($parameters);
-                }
-            } catch (Exception $e) {
-                $this->logger->error($e->getMessage());
+            }
+
+            if ($isNotValid) {
+                $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
+                $observer->getControllerAction()
+                    ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
+                $this->customerSession->setCustomerFormData($parameters);
             }
         }
         return $this;

@@ -69,13 +69,12 @@ class RegisterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $controller_action = $observer->getData('controller_action');
-            $parameters        = $controller_action->getRequest()->getParams();
-            $session           = $this->customerSession;
+            $parameters = $observer->getRequest()->getParams();
+            $session    = $this->customerSession;
 
             /** @var Customer $customer */
             $customer = $session->getCustomer();
-            if ($customer->getId()) {
+            if ($customer->getId() && !empty($parameters['lsr_username']) && !empty($parameters['password'])) {
                 $customer->setData('lsr_username', $parameters['lsr_username']);
                 $customer->setData('password', $parameters['password']);
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {

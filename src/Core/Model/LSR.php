@@ -371,7 +371,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * @var bool
      */
-    public $validaBaseUrlResponse;
+    public $validateBaseUrlResponse;
 
     /**
      * LSR constructor.
@@ -458,9 +458,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         } else {
             if ($this->isLsr) {
                 $this->isLsr = false;
-                return $this->validaBaseUrlResponse = $this->validateBaseUrl($baseUrl);
+                return $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl);
             } else {
-                return $this->validaBaseUrlResponse;
+                return $this->validateBaseUrlResponse;
             }
         }
     }
