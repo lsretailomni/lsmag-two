@@ -65,12 +65,6 @@
         <add id="Ls_Replication::discount_grid" title="Discount Replication" translate="title" module="Ls_Replication"
              sortOrder="12" resource="Ls_Replication::discount_grid" parent="Ls_Replication::replication_grid_group"
              action="ls_repl/grids/discount"/>
-        <add id="Ls_Replication::itemcategory_grid" title="Item Category" translate="title" module="Ls_Replication"
-             sortOrder="13" resource="Ls_Replication::itemcategory_grid" parent="Ls_Replication::replication_grid_group"
-             action="ls_repl/grids/itemcategory"/>
-        <add id="Ls_Replication::productgroup_grid" title="Product Group" translate="title" module="Ls_Replication"
-             sortOrder="14" resource="Ls_Replication::productgroup_grid" parent="Ls_Replication::replication_grid_group"
-             action="ls_repl/grids/productgroup"/>
         <add id="Ls_Replication::store_grid" title="Store" translate="title" module="Ls_Replication" sortOrder="15"
              resource="Ls_Replication::store_grid" parent="Ls_Replication::replication_grid_group"
              action="ls_repl/grids/store"/>
