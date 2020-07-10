@@ -364,14 +364,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public $coreHelper;
 
     /**
-     * @var bool
+     * @var null
      */
-    public $isLsr = true;
-
-    /**
-     * @var bool
-     */
-    public $validateBaseUrlResponse;
+    public $validateBaseUrlResponse = null;
 
     /**
      * LSR constructor.
@@ -446,6 +441,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isLSR($store_id = false, $scope = false)
     {
+        if (isset($this->validateBaseUrlResponse)) {
+            return $this->validateBaseUrlResponse;
+        }
+
         if ($scope == 'website') {
             $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
             $store   = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
@@ -454,15 +453,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
         }
         if (empty($baseUrl) || empty($store)) {
-            return false;
+            $this->validateBaseUrlResponse = false;
         } else {
-            if ($this->isLsr) {
-                $this->isLsr = false;
-                return $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl);
-            } else {
-                return $this->validateBaseUrlResponse;
-            }
+            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl);
         }
+
+        return $this->validateBaseUrlResponse;
     }
 
 
