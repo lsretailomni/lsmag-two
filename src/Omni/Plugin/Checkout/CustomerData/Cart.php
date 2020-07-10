@@ -8,7 +8,6 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote\Item;
 use Magento\Tax\Block\Item\Price\Renderer;
 use Psr\Log\LoggerInterface;
@@ -24,11 +23,6 @@ class Cart
      * @var CheckoutSession
      */
     public $checkoutSession;
-
-    /**
-     * @var $quoteRepository
-     */
-    public $quoteRepository;
 
     /**
      * @var $checkoutHelper
@@ -63,7 +57,6 @@ class Cart
     /**
      * Cart constructor.
      * @param CheckoutSession $checkoutSession
-     * @param CartRepositoryInterface $quoteRepository
      * @param \Magento\Checkout\Helper\Data $checkoutHelper
      * @param Data $data
      * @param BasketHelper $basketHelper
@@ -73,7 +66,6 @@ class Cart
      */
     public function __construct(
         CheckoutSession $checkoutSession,
-        CartRepositoryInterface $quoteRepository,
         \Magento\Checkout\Helper\Data $checkoutHelper,
         Data $data,
         BasketHelper $basketHelper,
@@ -82,7 +74,6 @@ class Cart
         LSR $lsr
     ) {
         $this->checkoutSession   = $checkoutSession;
-        $this->quoteRepository   = $quoteRepository;
         $this->checkoutHelper    = $checkoutHelper;
         $this->data              = $data;
         $this->basketHelper      = $basketHelper;

@@ -6,7 +6,6 @@ use Closure;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
@@ -37,11 +36,6 @@ class CartTotalRepository
     private $totalExtensionFactory;
 
     /**
-     * @var RequestInterface
-     */
-    private $request;
-
-    /**
      * @var LoyaltyHelper
      */
     private $loyaltyHelper;
@@ -70,7 +64,6 @@ class CartTotalRepository
      * CartTotalRepository constructor.
      * @param CartRepositoryInterface $quoteRepository
      * @param TotalsExtensionFactory $totalExtensionFactory
-     * @param RequestInterface $request
      * @param LoyaltyHelper $helper
      * @param Coupon $coupon
      * @param BasketHelper $basketHelper
@@ -80,7 +73,6 @@ class CartTotalRepository
     public function __construct(
         CartRepositoryInterface $quoteRepository,
         TotalsExtensionFactory $totalExtensionFactory,
-        RequestInterface $request,
         LoyaltyHelper $helper,
         Coupon $coupon,
         BasketHelper $basketHelper,
@@ -89,7 +81,6 @@ class CartTotalRepository
     ) {
         $this->quoteRepository       = $quoteRepository;
         $this->totalExtensionFactory = $totalExtensionFactory;
-        $this->request               = $request;
         $this->loyaltyHelper         = $helper;
         $this->coupon                = $coupon;
         $this->basketHelper          = $basketHelper;
@@ -111,13 +102,13 @@ class CartTotalRepository
         /** @var TotalsInterface $quoteTotals */
         $quoteTotals = $proceed($cartId);
         /** @var Quote $quote */
-        $quote   = $this->quoteRepository->get($cartId);
+        $quote = $this->quoteRepository->get($cartId);
         if ($this->lsr->isLSR($quote->getStoreId())) {
             $pointsConfig = [
                 'rateLabel' => $quote->getBaseCurrencyCode() . ' ' . round(
-                    $this->loyaltyHelper->getPointRate() * 10,
+                        $this->loyaltyHelper->getPointRate() * 10,
                         2
-                ),
+                    ),
                 'balance'   => $this->loyaltyHelper->getMemberPoints(),
             ];
 

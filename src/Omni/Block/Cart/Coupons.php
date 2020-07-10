@@ -7,13 +7,13 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Block\Cart\Coupon;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
+use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * @api
@@ -25,9 +25,6 @@ class Coupons extends Coupon
      * @var LoyaltyHelper
      */
     public $loyaltyHelper;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
 
     /**
      * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
@@ -47,9 +44,8 @@ class Coupons extends Coupon
     /**
      * Coupons constructor.
      * @param Context $context
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param Proxy $checkoutSession
-     * @param StoreManagerInterface $storeManager
+     * @param CustomerProxy $customerSession
+     * @param CheckoutProxy $checkoutSession
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
      * @param LSR $lsr
@@ -58,22 +54,20 @@ class Coupons extends Coupon
      */
     public function __construct(
         Context $context,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        Proxy $checkoutSession,
-        StoreManagerInterface $storeManager,
+        CustomerProxy $customerSession,
+        CheckoutProxy $checkoutSession,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
         LSR $lsr,
         LoyaltyHelper $loyaltyHelper,
         array $data = []
     ) {
-        parent::__construct($context, $customerSession, $checkoutSession, $data);
         $this->_isScopePrivate   = true;
         $this->loyaltyHelper     = $loyaltyHelper;
-        $this->storeManager      = $storeManager;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
         $this->lsr               = $lsr;
+        parent::__construct($context, $customerSession, $checkoutSession, $data);
     }
 
     /**
@@ -137,6 +131,7 @@ class Coupons extends Coupon
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isCouponEnable()
     {

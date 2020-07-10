@@ -27,7 +27,6 @@ use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Data
@@ -35,8 +34,6 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Data extends AbstractHelper
 {
-    /** @var StoreManagerInterface */
-    public $storeManager;
 
     /** @var ReplStoreRepositoryInterface */
     public $storeRepository;
@@ -100,7 +97,6 @@ class Data extends AbstractHelper
     /**
      * Data constructor.
      * @param Context $context
-     * @param StoreManagerInterface $store_manager
      * @param ReplStoreRepositoryInterface $storeRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SessionManagerInterface $session
@@ -117,7 +113,6 @@ class Data extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        StoreManagerInterface $store_manager,
         ReplStoreRepositoryInterface $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SessionManagerInterface $session,
@@ -132,7 +127,6 @@ class Data extends AbstractHelper
         WriterInterface $configWriter,
         DirectoryList $directoryList
     ) {
-        $this->storeManager          = $store_manager;
         $this->storeRepository       = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->session               = $session;

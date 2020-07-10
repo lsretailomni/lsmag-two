@@ -9,12 +9,9 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Checkout\Model\Session\Proxy;
-use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session\Proxy as CustomerProxy;
-use Magento\Framework\Api\FilterBuilder;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -22,7 +19,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem;
 use Magento\Quote\Model\Quote\Item;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class LoyaltyHelper
@@ -33,19 +29,9 @@ class LoyaltyHelper extends AbstractHelper
 
     const SERVICE_TYPE = 'ecommerce';
 
-    /** @var FilterBuilder */
-    public $filterBuilder;
-
-    /** @var SearchCriteriaBuilder */
-    public $searchCriteriaBuilder;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
-    /** @var CustomerRepositoryInterface */
-    public $customerRepository;
-
-    /** @var CustomerFactory */
+    /**
+     * @var CustomerFactory
+     */
     public $customerFactory;
 
     /**
@@ -53,10 +39,9 @@ class LoyaltyHelper extends AbstractHelper
      */
     public $customerSession;
 
-    /** @var null */
-    public $ns = null;
-
-    /** @var Filesystem */
+    /**
+     * @var Filesystem
+     */
     public $filesystem;
 
     /**
@@ -82,10 +67,6 @@ class LoyaltyHelper extends AbstractHelper
     /**
      * LoyaltyHelper constructor.
      * @param Context $context
-     * @param FilterBuilder $filterBuilder
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param StoreManagerInterface $storeManager
      * @param CustomerFactory $customerFactory
      * @param CustomerProxy $customerSession
      * @param Proxy $checkoutSession
@@ -96,10 +77,6 @@ class LoyaltyHelper extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        FilterBuilder $filterBuilder,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        CustomerRepositoryInterface $customerRepository,
-        StoreManagerInterface $storeManager,
         CustomerFactory $customerFactory,
         CustomerProxy $customerSession,
         Proxy $checkoutSession,
@@ -108,17 +85,13 @@ class LoyaltyHelper extends AbstractHelper
         CacheHelper $cacheHelper,
         LSR $lsr
     ) {
-        $this->filterBuilder         = $filterBuilder;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->storeManager          = $storeManager;
-        $this->customerRepository    = $customerRepository;
-        $this->customerFactory       = $customerFactory;
-        $this->customerSession       = $customerSession;
-        $this->checkoutSession       = $checkoutSession;
-        $this->filesystem            = $Filesystem;
-        $this->groupRepository       = $groupRepository;
-        $this->cacheHelper           = $cacheHelper;
-        $this->lsr                   = $lsr;
+        $this->customerFactory = $customerFactory;
+        $this->customerSession = $customerSession;
+        $this->checkoutSession = $checkoutSession;
+        $this->filesystem      = $Filesystem;
+        $this->groupRepository = $groupRepository;
+        $this->cacheHelper     = $cacheHelper;
+        $this->lsr             = $lsr;
         parent::__construct(
             $context
         );
@@ -168,6 +141,7 @@ class LoyaltyHelper extends AbstractHelper
      * @param null $image_id
      * @param null $image_size
      * @return array|bool
+     * @throws NoSuchEntityException
      */
     public function getImageById($image_id = null, $image_size = null)
     {
@@ -207,21 +181,18 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @return float|int
+     * @throws NoSuchEntityException
      */
     public function convertPointsIntoValues()
     {
-        $points = $pointrate = $value = 0;
-        /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $memberProfile */
+        $points        = $pointRate = $value = 0;
         $memberProfile = $this->getMemberInfo();
-        $pointrate     = $this->getPointRate();
-
-        // check if we have something in there.
-        if ($memberProfile != null and $pointrate != null) {
+        $pointRate     = $this->getPointRate();
+        if ($memberProfile != null && $pointRate != null) {
             $points = $memberProfile->getAccount()->getPointBalance();
-            $value  = $points * $pointrate;
+            $value  = $points * $pointRate;
             return $value;
         } else {
-            // if no then just return 0 value
             return 0;
         }
     }
@@ -278,6 +249,7 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @return float|Entity\GetPointRateResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
      */
     public function getPointRate()
     {
@@ -335,6 +307,7 @@ class LoyaltyHelper extends AbstractHelper
      * @param $grandTotal
      * @param $loyaltyPoints
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function isPointsLimitValid($grandTotal, $loyaltyPoints)
     {
@@ -354,7 +327,6 @@ class LoyaltyHelper extends AbstractHelper
      */
     public function isPointsAreValid($loyaltyPoints)
     {
-        /* \Ls\Omni\Client\Ecommerce\Entity\MemberContact $memberProfile */
         $memberProfile = $this->getMemberInfo();
         if ($memberProfile != null) {
             $points = $memberProfile->getAccount()->getPointBalance();
@@ -530,6 +502,7 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isEnabledLoyaltyElements()
     {
@@ -541,6 +514,7 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isEnabledShowLoyaltyOffers()
     {
@@ -552,6 +526,7 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isEnabledShowPointOffers()
     {
@@ -563,6 +538,7 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isEnabledShowMemberOffers()
     {
@@ -574,6 +550,7 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isEnabledShowGeneralOffers()
     {
@@ -585,6 +562,7 @@ class LoyaltyHelper extends AbstractHelper
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isEnabledShowCouponOffers()
     {
