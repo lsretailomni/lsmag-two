@@ -243,40 +243,39 @@ class LoyaltyHelper extends AbstractHelper
         return 0;
     }
 
-    /*
-     * Convert Point Rate into Values
-     */
-
     /**
+     * Convert Point Rate into Values
      * @return float|Entity\GetPointRateResponse|ResponseInterface|null
      * @throws NoSuchEntityException
      */
     public function getPointRate()
     {
         $storeId  = $this->lsr->getCurrentStoreId();
-        $cacheId  = LSR::POINTRATE . $storeId;
-        $response = $this->cacheHelper->getCachedContent($cacheId);
-        if ($response) {
-            return $response;
-        }
         $response = null;
-        // @codingStandardsIgnoreStart
-        $request = new Operation\GetPointRate();
-        $entity  = new Entity\GetPointRate();
-        // @codingStandardsIgnoreEnd
-        try {
-            $response = $request->execute($entity);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (!empty($response)) {
-            $this->cacheHelper->persistContentInCache(
-                $cacheId,
-                $response->getResult(),
-                [Type::CACHE_TAG],
-                86400
-            );
-            return $response->getResult();
+        if ($this->lsr->isLSR($storeId)) {
+            $cacheId  = LSR::POINTRATE . $storeId;
+            $response = $this->cacheHelper->getCachedContent($cacheId);
+            if ($response) {
+                return $response;
+            }
+            // @codingStandardsIgnoreStart
+            $request = new Operation\GetPointRate();
+            $entity  = new Entity\GetPointRate();
+            // @codingStandardsIgnoreEnd
+            try {
+                $response = $request->execute($entity);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if (!empty($response)) {
+                $this->cacheHelper->persistContentInCache(
+                    $cacheId,
+                    $response->getResult(),
+                    [Type::CACHE_TAG],
+                    86400
+                );
+                return $response->getResult();
+            }
         }
         return $response;
     }
@@ -347,39 +346,43 @@ class LoyaltyHelper extends AbstractHelper
      */
     public function getProactiveDiscounts($itemId, $webStore)
     {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $request = new Operation\DiscountsGet();
-        $entity  = new Entity\DiscountsGet();
-        $string  = new Entity\ArrayOfstring();
-        // @codingStandardsIgnoreEnd
-        $storeId         = $this->lsr->getCurrentStoreId();
-        $customerGroupId = $this->customerSession->getCustomerGroupId();
-        $cacheId         = LSR::PROACTIVE_DISCOUNTS . $itemId . "_" . $customerGroupId . "_" . $storeId;
-        $response        = $this->cacheHelper->getCachedContent($cacheId);
-        if ($response) {
-            $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
-            return $response;
-        }
-        $group = $this->groupRepository->getById($customerGroupId)->getCode();
-        $string->setString([$itemId]);
-        $entity->setStoreId($webStore)->setItemiIds($string)->setLoyaltySchemeCode($group);
-        try {
-            $response = $request->execute($entity);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (!empty($response) &&
-            !empty($response->getDiscountsGetResult())) {
-            $this->cacheHelper->persistContentInCache(
-                $cacheId,
-                $response->getDiscountsGetResult()->getProactiveDiscount(),
-                [Type::CACHE_TAG],
-                7200
-            );
-            return $response->getDiscountsGetResult()->getProactiveDiscount();
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            $response = null;
+            // @codingStandardsIgnoreStart
+            $request = new Operation\DiscountsGet();
+            $entity  = new Entity\DiscountsGet();
+            $string  = new Entity\ArrayOfstring();
+            // @codingStandardsIgnoreEnd
+            $storeId         = $this->lsr->getCurrentStoreId();
+            $customerGroupId = $this->customerSession->getCustomerGroupId();
+            $cacheId         = LSR::PROACTIVE_DISCOUNTS . $itemId . "_" . $customerGroupId . "_" . $storeId;
+            $response        = $this->cacheHelper->getCachedContent($cacheId);
+            if ($response) {
+                $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
+                return $response;
+            }
+            $group = $this->groupRepository->getById($customerGroupId)->getCode();
+            $string->setString([$itemId]);
+            $entity->setStoreId($webStore)->setItemiIds($string)->setLoyaltySchemeCode($group);
+            try {
+                $response = $request->execute($entity);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if (!empty($response) &&
+                !empty($response->getDiscountsGetResult())) {
+                $this->cacheHelper->persistContentInCache(
+                    $cacheId,
+                    $response->getDiscountsGetResult()->getProactiveDiscount(),
+                    [Type::CACHE_TAG],
+                    7200
+                );
+                return $response->getDiscountsGetResult()->getProactiveDiscount();
+            } else {
+                return $response;
+            }
         } else {
-            return $response;
+            return null;
         }
     }
 
@@ -388,38 +391,43 @@ class LoyaltyHelper extends AbstractHelper
      * @param $storeId
      * @param $cardId
      * @return bool|Entity\PublishedOffer[]|Entity\PublishedOffersGetResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
      */
     public function getPublishedOffers($itemId, $storeId, $cardId)
     {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $request = new Operation\PublishedOffersGetByCardId();
-        $entity  = new Entity\PublishedOffersGetByCardId();
-        // @codingStandardsIgnoreEnd
-        $cacheId  = LSR::COUPONS . $itemId . "_" . $cardId . "_" . $storeId;
-        $response = $this->cacheHelper->getCachedContent($cacheId);
-        if ($response) {
-            $this->_logger->debug("Found coupons from cache " . $cacheId);
-            return $response;
-        }
-        $entity->setCardId($cardId);
-        $entity->setItemId($itemId);
-        try {
-            $response = $request->execute($entity);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (!empty($response) &&
-            !empty($response->getPublishedOffersGetByCardIdResult())) {
-            $this->cacheHelper->persistContentInCache(
-                $cacheId,
-                $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer(),
-                [Type::CACHE_TAG],
-                7200
-            );
-            return $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer();
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            $response = null;
+            // @codingStandardsIgnoreStart
+            $request = new Operation\PublishedOffersGetByCardId();
+            $entity  = new Entity\PublishedOffersGetByCardId();
+            // @codingStandardsIgnoreEnd
+            $cacheId  = LSR::COUPONS . $itemId . "_" . $cardId . "_" . $storeId;
+            $response = $this->cacheHelper->getCachedContent($cacheId);
+            if ($response) {
+                $this->_logger->debug("Found coupons from cache " . $cacheId);
+                return $response;
+            }
+            $entity->setCardId($cardId);
+            $entity->setItemId($itemId);
+            try {
+                $response = $request->execute($entity);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if (!empty($response) &&
+                !empty($response->getPublishedOffersGetByCardIdResult())) {
+                $this->cacheHelper->persistContentInCache(
+                    $cacheId,
+                    $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer(),
+                    [Type::CACHE_TAG],
+                    7200
+                );
+                return $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer();
+            } else {
+                return $response;
+            }
         } else {
-            return $response;
+            return null;
         }
     }
 
