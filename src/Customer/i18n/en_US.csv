@@ -1,3 +1,4 @@
+"LS Central Membership","LS Central Membership"
 Loyalty,Loyalty
 "Go To Product","Go To Product"
 "Go To Category","Go To Category"
@@ -34,6 +35,10 @@ Save,Save
 "Username already exist, please try another one.","Username already exist, please try another one."
 "Your email address is invalid.","Your email address is invalid."
 "There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.","There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address."
+"Membership Information","Membership Information"
+"Member Contact No.:","Member Contact No.:"
+"Member Card No.:","Member Card No.:"
+"Member Username:","Member Username:"
 "* Required Fields","* Required Fields"
 "Contact Information","Contact Information"
 Address,Address
@@ -137,5 +142,8 @@ Name,Name
 "Loyalty Page Image Width","Loyalty Page Image Width"
 "Loyalty Page Image Height","Loyalty Page Image Height"
 "Expiry Date Format","Expiry Date Format"
+"Member Contact No.","Member Contact No."
+"Member Card No.","Member Card No."
+"Member Username","Member Username"
 Invoices,Invoices
 "Order Shipments","Order Shipments"

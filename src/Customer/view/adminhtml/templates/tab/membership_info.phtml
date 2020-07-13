@@ -1,0 +1,27 @@
+<?php
+
+/** @var \Ls\Customer\Block\Adminhtml\Tab\MembershipInfo $block */
+
+$memberData = $block->getMembershipInfo();
+?>
+<div class="fieldset-wrapper customer-information">
+    <div class="fieldset-wrapper-title">
+        <span class="title"><?= $block->escapeHtml(__('Membership Information')) ?></span>
+    </div>
+    <table class="admin__table-secondary">
+        <tbody>
+        <tr>
+            <th><?= $block->escapeHtml(__('Member Contact No.:')) ?></th>
+            <td><?= (isset($memberData['lsr_id'])) ? $memberData['lsr_id'] : '' ?></td>
+        </tr>
+        <tr>
+            <th><?= $block->escapeHtml(__('Member Card No.:')) ?></th>
+            <td><?= (isset($memberData['lsr_cardid'])) ? $memberData['lsr_cardid'] : '' ?></td>
+        </tr>
+        <tr>
+            <th><?= $block->escapeHtml(__('Member Username:')) ?></th>
+            <td><?= (isset($memberData['lsr_username'])) ? $memberData['lsr_username'] : '' ?></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
