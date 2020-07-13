@@ -259,6 +259,48 @@
 }
 
 .checkout-cart-index {
+  .mc_cac_map .modal-inner-wrap {
+    position: relative;
+  }
+
+  .mc_cac_map .modal-header {
+    display: none;
+  }
+
+  .mc_cac_map .modal-content {
+    padding: 0 0 0 0;
+  }
+
+  .mc_cac_map .modal-content #map-canvas {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    left: 0;
+  }
+
+  #pickup-date {
+    width: 350px;
+  }
+
+  #selected-store-msg {
+    display: none;
+    margin-top: 20px;
+  }
+
+  #selected-store-msg span {
+    font-weight: bold;
+  }
+
+  .availability-link-container {
+    padding: 10px 0px
+  }
+
+  .availability-link-container .checkavailability {
+    font-size: 14px;
+  }
+
   .cart-discount {
     input[type="text"], input[type="number"], input[type="submit"] {
       font-size: 13px;
@@ -393,11 +435,6 @@
   }
 }
 
-.giftcardinfo {
-  p {
-    font-size: 1.5rem;
-  }
-}
 
 #gift-card-balance {
   .action {
@@ -409,12 +446,84 @@
   }
 }
 
+.omni-giftcardbalance-index {
+
+  .row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+
+  .mt-5, .mb-5 {
+    margin-top: 2rem !important;
+  }
+
+  .col-md-6 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .giftcardinfo {
+    p {
+      font-size: 1.5rem;
+    }
+  }
+
+}
+
 .omni-stores-index {
+
+  .row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+
+  .mt-5, .mb-5 {
+    margin-top: 2rem !important;
+  }
+
+  .col-md-4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 30%;
+    flex: 0 0 30%;
+    max-width: 30%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
   .stores-maps-container {
     .store-map-plus-info-container {
       .fas {
         padding-right: 5px;
       }
+
       .store-map {
         margin-bottom: 20px;
       }
@@ -429,6 +538,13 @@
       }
 
       .store-opening-hours {
+
+        .table {
+          width: 100%;
+          max-width: 100%;
+          margin-bottom: 1rem;
+          background-color: transparent;
+        }
 
         .table-borderless td, .table-borderless th {
           border: none;
@@ -558,6 +674,19 @@
       }
     }
   }
+  .omni-stores-index {
+    .col-md-4 {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 100%;
+      flex: 0 0 100%;
+      max-width: 100%;
+      position: relative;
+      width: 100%;
+      min-height: 1px;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+  }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
@@ -587,9 +716,57 @@
       }
     }
   }
+
+  .omni-stores-index {
+    .col-md-4 {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 90%;
+      flex: 0 0 90%;
+      max-width: 90%;
+      position: relative;
+      width: 100%;
+      min-height: 1px;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+  }
 }
 
 #lsRecommendation .ls-loader {
   width: 100%;
   text-align: center;
+}
+
+#lsRecommendation .product-items .owl-carousel .product-item.product-slider {
+  width: 100%;
+}
+
+.lsdiscountprice {
+  text-decoration: line-through;
+  color: #9e9e9e;
+  display: block;
+  text-align: left;
+}
+
+.lsdiscountprice2 {
+  text-decoration: line-through;
+  color: #9e9e9e;
+  display: block;
+}
+
+.lsdiscountamount {
+  color: red;
+  font-weight: bold;
+}
+
+.minicart-items .product-item-details .lsdiscountamount .price {
+  color: red;
+}
+
+.minicart-items .product-item-details .lsdiscountprice .price {
+  color: #9e9e9e;
+}
+
+.lsoriginalprice {
+  font-weight: bold;
 }
