@@ -3,666 +3,672 @@
 @import 'module/_owl.transitions.less';
 
 @color_1: #666666;
+@color_discount_desc: #C41F3F;
+@color_coupon_desc: #1979c3;
+@color_discount_price: #9e9e9e;
 
-#lsRecommendation {
-  .loader {
-    width: 100%;
-    text-align: center;
-  }
-}
+& when (@media-common = true) {
 
-#ls-discounts {
-  .loader {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-#ls-coupons {
-  .loader {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-.dropdown-wrapper {
-  display: inline-block;
-  position: relative;
-  float: right;
-
-  .action.primary {
-    line-height: 2.2rem;
-  }
-
-  .block-dropdown {
-    margin: 0;
-    padding: 10px;
-    list-style: none none;
-    background: #ffffff;
-    border: 1px solid #bbbbbb;
-    min-width: 100%;
-    width: 320px;
-    z-index: 101;
-    box-sizing: border-box;
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0px;
-    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
-    min-height: 50px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: 330px;
-  }
-
-  i {
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 3px;
-    margin-left: 5px;
-  }
-
-  i.arrow {
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-  }
-}
-
-.dropdown-wrapper.active {
-  overflow: visible;
-
-  .block-dropdown {
-    display: block;
-  }
-
-  i.arrow {
-    transform: rotate(-135deg);
-    -webkit-transform: rotate(-135deg);
-  }
-}
-
-.ls-discounts-popup-model {
-  .item-popup {
-    float: left;
-    width: 25%;
-    margin-left: 30px;
-    text-align: center;
-  }
-
-  .item-popup .product-link {
-    text-decoration: none;
-
-  }
-}
-
-.proactive-discounts-container {
-  width: 100%;
-  float: left;
-  margin-bottom: 10px;
-
-  .discount-dropdown-label {
-    float: left;
-    line-height: 3;
-
-    span {
-      color: @color_1;
-      font-weight: 600;
-      letter-spacing: .05em;
-      line-height: 2;
-    }
-  }
-
-  .discount-dropdown {
-    float: right;
-    width: 60%;
-  }
-
-  .block-dropdown {
-    .dropdown-content-wrapper {
-      & + .dropdown-content-wrapper {
-        border-top: 1px solid black;
-        margin-top: 10px;
-        padding-top: 10px;
-        clear: both;
-      }
-
-      .coupon-description, .discount-description, .discount-label {
-        font-weight: bold;
-      }
-
-      .discount-label {
-        padding-right: 5px;
-      }
-
-      .coupon-description, .discount-description {
-        color: #C41F3F;
-      }
-
-      .ls-click-product-promotion {
-        cursor: pointer;
-      }
-    }
-  }
-}
-
-.checkout-cart-index, .checkout-index-index {
-  .available-coupons {
-    padding-top: 20px;
-    cursor: pointer;
-
-    h2 {
+  #lsRecommendation {
+    .loader {
       width: 100%;
       text-align: center;
-      border-bottom: 1px solid #000;
-      line-height: 0.1em;
-      margin: 10px 0 20px;
-
-      span {
-        background: #fff;
-        border: 1px solid black;
-        height: 100px;
-        -moz-border-radius: 75px;
-        -webkit-border-radius: 75px;
-        width: 100px;
-        font-size: 15px;
-        padding: 5px;
-        font-weight: bold;
-        color: black;
-      }
-    }
-
-    .coupon-major {
-      input {
-        width: 10px;
-      }
-
-      .coupon-description-wrapper {
-        .coupon-code {
-          font-weight: bold;
-          border: 1px dashed;
-          padding: 2px;
-        }
-
-        width: 90%;
-        display: inline-block;
-        vertical-align: top;
-        color: black;
-      }
-
-      padding: 10px;
-    }
-
-    .coupon-major.active {
-      background: #1979c30f;
-
-      .coupon-description-wrapper {
-        color: #1979c3;
-      }
-    }
-
-    fieldset {
-      border: unset;
-      margin: unset;
-      padding: unset;
     }
   }
-}
 
-.checkout-index-index {
-  .cnc-stores-container {
-    float: left;
-    width: 100%;
-
-    .cnc-stores-map {
-      float: left;
+  #ls-discounts {
+    .loader {
+      width: 100%;
+      text-align: center;
     }
+  }
 
-    .cnc-stores-dropdown {
-      float: right;
+  #ls-coupons {
+    .loader {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .dropdown-wrapper {
+    display: inline-block;
+    position: relative;
+    float: right;
+
+    .action.primary {
+      line-height: 2.2rem;
     }
 
     .block-dropdown {
-      padding: unset;
+      margin: 0;
+      padding: 10px;
+      list-style: none none;
+      background: #ffffff;
+      border: 1px solid #bbbbbb;
+      min-width: 100%;
+      width: 320px;
+      z-index: 101;
+      box-sizing: border-box;
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0px;
+      box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+      min-height: 50px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 330px;
+    }
 
-      .dropdown-content-wrapper {
-        display: block;
-        padding: 5px;
-        cursor: pointer;
-        text-decoration: none;
+    i {
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      display: inline-block;
+      padding: 3px;
+      margin-left: 5px;
+    }
 
-        &:hover {
-          background: #e8e8e8;
-        }
-      }
+    i.arrow {
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
     }
   }
 
-  .check-store-availability {
-    font-size: 10px;
-    width: 120px;
-    padding: 2px 0px;
-    margin-right: 5px;
+  .dropdown-wrapper.active {
+    overflow: visible;
+
+    .block-dropdown {
+      display: block;
+    }
+
+    i.arrow {
+      transform: rotate(-135deg);
+      -webkit-transform: rotate(-135deg);
+    }
   }
 
-  .apply-store {
-    font-size: 10px;
-    width: 120px;
-    padding: 2px 0px;
-    margin-right: 5px;
-  }
-
-  .stock-remarks {
-    .custom-loader {
+  .ls-discounts-popup-model {
+    .item-popup {
+      float: left;
+      width: 25%;
+      margin-left: 30px;
       text-align: center;
     }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-bottom: 10px;
+    .item-popup .product-link {
+      text-decoration: none;
+
     }
   }
 
-  .double-btn-container {
-    text-align: center;
-  }
-
-  .checkout-shipping-method {
-    .message.notice {
-      clear: both;
-    }
-  }
-}
-
-.checkout-cart-index {
-  .mc_cac_map {
-    .modal-inner-wrap {
-      position: relative;
-    }
-
-    .modal-header {
-      display: none;
-    }
-
-    .modal-content {
-      padding: 0 0 0 0;
-
-      #map-canvas {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-      }
-    }
-  }
-
-  #pickup-date {
-    width: 350px;
-  }
-
-  #selected-store-msg {
-    display: none;
-    margin-top: 20px;
-
-    span {
-      font-weight: bold;
-    }
-  }
-
-  .availability-link-container {
-    padding: 10px 0px;
-
-    .checkavailability {
-      font-size: 14px;
-    }
-  }
-
-  .cart-discount {
-    input[type="text"], input[type="number"], input[type="submit"] {
-      font-size: 13px;
-      height: 38px;
-      padding: 10px;
-      border-radius: 6px;
-    }
-
-    .actions-toolbar {
-      display: table-cell;
-
-      .action.primary {
-        &:hover {
-          background: @button__hover__background;
-          border: @button__hover__border;
-          color: @button__hover__color;
-        }
-
-        background: @button__background;
-        border: @button__border;
-        color: @button__color;
-        line-height: 1.6rem;
-        height: 38px;
-      }
-    }
-
-    .block {
-      clear: both;
-      float: left !important;
-      margin-bottom: 30px;
-      width: 80% !important;
-    }
-
-    #discount-coupon-form {
-      .field {
-        .input-text {
-          border-top-right-radius: unset;
-          border-bottom-right-radius: unset;
-        }
-      }
-    }
-  }
-}
-
-#loyalty-points-form {
-  .applied {
-    .actions-toolbar {
-      width: 40%;
-
-      > .primary {
-        width: 100%;
-
-        .action.apply.primary {
-          margin-right: 5px;
-        }
-
-        .apply, .cancel {
-          border-radius: 3px;
-        }
-      }
-    }
-
-    .field {
-      width: 60%;
-
-      input {
-        border-top-right-radius: unset;
-        border-bottom-right-radius: unset;
-      }
-    }
-
-  }
-
-  .field {
-    input {
-      border-top-right-radius: unset;
-      border-bottom-right-radius: unset;
-    }
-  }
-}
-
-.giftcard {
-  margin-bottom: 30px;
-
-  .fieldset {
-    &:last-child {
-      margin-bottom: auto;
-    }
-  }
-
-  .content {
-    margin-top: 10px;
-  }
-
-  #gift_card_amount {
-    margin-top: 10px;
-  }
-}
-
-#giftcard-form {
-  .gift-card-code-field {
-    padding-right: 2px;
-  }
-
-  .applied {
-    .actions-toolbar {
-      width: 40%;
-
-      > .primary {
-        width: 100%;
-
-        .action.applygiftcard.primary {
-          margin-right: 5px;
-        }
-
-        .applygiftcard, .cancelgiftcard {
-          border-radius: 3px;
-        }
-      }
-    }
-
-    .field {
-      width: 30%;
-    }
-  }
-
-  .gift-card-amount-field {
-    input {
-      border-top-right-radius: unset;
-      border-bottom-right-radius: unset;
-    }
-  }
-}
-
-
-#gift-card-balance {
-  .action {
-    margin-top: 10px;
-  }
-
-  .error-messages {
+  .proactive-discounts-container {
+    width: 100%;
+    float: left;
     margin-bottom: 10px;
-  }
-}
 
-.omni-giftcardbalance-index {
+    .discount-dropdown-label {
+      float: left;
+      line-height: 3;
 
-  .row {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-  }
+      span {
+        color: @color_1;
+        font-weight: 600;
+        letter-spacing: .05em;
+        line-height: 2;
+      }
+    }
 
-  .mt-5, .mb-5 {
-    margin-top: 2rem !important;
-  }
+    .discount-dropdown {
+      float: right;
+      width: 60%;
+    }
 
-  .col-md-6 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 50%;
-    flex: 0 0 50%;
-    max-width: 50%;
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
-  }
+    .block-dropdown {
+      .dropdown-content-wrapper {
+        & + .dropdown-content-wrapper {
+          border-top: 1px solid black;
+          margin-top: 10px;
+          padding-top: 10px;
+          clear: both;
+        }
 
-  .container {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-  }
+        .coupon-description, .discount-description, .discount-label {
+          font-weight: bold;
+        }
 
-  .giftcardinfo {
-    p {
-      font-size: 1.5rem;
+        .discount-label {
+          padding-right: 5px;
+        }
+
+        .coupon-description, .discount-description {
+          color: @color_discount_desc
+        }
+
+        .ls-click-product-promotion {
+          cursor: pointer;
+        }
+      }
     }
   }
 
-}
+  .checkout-cart-index, .checkout-index-index {
+    .available-coupons {
+      padding-top: 20px;
+      cursor: pointer;
 
-.omni-stores-index {
+      h2 {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        line-height: 0.1em;
+        margin: 10px 0 20px;
 
-  .row {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-  }
-
-  .mt-5, .mb-5 {
-    margin-top: 2rem !important;
-  }
-
-  .col-md-4 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 30%;
-    flex: 0 0 30%;
-    max-width: 30%;
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-
-  .stores-maps-container {
-    .store-map-plus-info-container {
-      .fas {
-        padding-right: 5px;
+        span {
+          background: #fff;
+          border: 1px solid black;
+          height: 100px;
+          -moz-border-radius: 75px;
+          -webkit-border-radius: 75px;
+          width: 100px;
+          font-size: 15px;
+          padding: 5px;
+          font-weight: bold;
+          color: black;
+        }
       }
 
-      .store-map {
-        margin-bottom: 20px;
+      .coupon-major {
+        input {
+          width: 10px;
+        }
+
+        .coupon-description-wrapper {
+          .coupon-code {
+            font-weight: bold;
+            border: 1px dashed;
+            padding: 2px;
+          }
+
+          width: 90%;
+          display: inline-block;
+          vertical-align: top;
+          color: black;
+        }
+
+        padding: 10px;
       }
 
-      span,
-      strong {
-        font-size: 1.3rem;
+      .coupon-major.active {
+        background: #1979c30f;
+
+        .coupon-description-wrapper {
+          color: @color_coupon_desc;
+        }
       }
 
-      div {
+      fieldset {
+        border: unset;
+        margin: unset;
+        padding: unset;
+      }
+    }
+  }
+
+  .checkout-index-index {
+    .cnc-stores-container {
+      float: left;
+      width: 100%;
+
+      .cnc-stores-map {
+        float: left;
+      }
+
+      .cnc-stores-dropdown {
+        float: right;
+      }
+
+      .block-dropdown {
+        padding: unset;
+
+        .dropdown-content-wrapper {
+          display: block;
+          padding: 5px;
+          cursor: pointer;
+          text-decoration: none;
+
+          &:hover {
+            background: #e8e8e8;
+          }
+        }
+      }
+    }
+
+    .check-store-availability {
+      font-size: 10px;
+      width: 120px;
+      padding: 2px 0px;
+      margin-right: 5px;
+    }
+
+    .apply-store {
+      font-size: 10px;
+      width: 120px;
+      padding: 2px 0px;
+      margin-right: 5px;
+    }
+
+    .stock-remarks {
+      .custom-loader {
+        text-align: center;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
         margin-bottom: 10px;
       }
+    }
 
-      .store-opening-hours {
+    .double-btn-container {
+      text-align: center;
+    }
 
-        .table {
-          width: 100%;
-          max-width: 100%;
-          margin-bottom: 1rem;
-          background-color: transparent;
+    .checkout-shipping-method {
+      .message.notice {
+        clear: both;
+      }
+    }
+  }
+
+  .checkout-cart-index {
+    .mc_cac_map {
+      .modal-inner-wrap {
+        position: relative;
+      }
+
+      .modal-header {
+        display: none;
+      }
+
+      .modal-content {
+        padding: 0 0 0 0;
+
+        #map-canvas {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
         }
+      }
+    }
 
-        .table-borderless td, .table-borderless th {
-          border: none;
+    #pickup-date {
+      width: 350px;
+    }
+
+    #selected-store-msg {
+      display: none;
+      margin-top: 20px;
+
+      span {
+        font-weight: bold;
+      }
+    }
+
+    .availability-link-container {
+      padding: 10px 0px;
+
+      .checkavailability {
+        font-size: 14px;
+      }
+    }
+
+    .cart-discount {
+      input[type="text"], input[type="number"], input[type="submit"] {
+        font-size: 13px;
+        height: 38px;
+        padding: 10px;
+        border-radius: 6px;
+      }
+
+      .actions-toolbar {
+        display: table-cell;
+
+        .action.primary {
+          &:hover {
+            background: @button__hover__background;
+            border: @button__hover__border;
+            color: @button__hover__color;
+          }
+
+          background: @button__background;
+          border: @button__border;
+          color: @button__color;
+          line-height: 1.6rem;
+          height: 38px;
         }
+      }
 
-        .dayofweek {
-          padding-right: 10px;
-        }
+      .block {
+        clear: both;
+        float: left !important;
+        margin-bottom: 30px;
+        width: 80% !important;
+      }
 
-        .closed {
-          color: red;
-        }
-
-        .table th, .table td {
-          padding: 0.50rem;
-          vertical-align: middle;
-        }
-
-        .special-hour {
-          .special-label {
-            font-size: 8px;
-            padding-left: 5px;
-            color: green;
-            vertical-align: middle;
+      #discount-coupon-form {
+        .field {
+          .input-text {
+            border-top-right-radius: unset;
+            border-bottom-right-radius: unset;
           }
         }
       }
     }
   }
-}
 
-.keyframes(@name; @arguments) {
-  @-moz-keyframes @name {
-    @arguments();
-  }
-  @-webkit-keyframes @name {
-    @arguments();
-  }
-  @keyframes @name {
-    @arguments();
-  }
-}
+  #loyalty-points-form {
+    .applied {
+      .actions-toolbar {
+        width: 40%;
 
-.animation(@arguments) {
-  -webkit-animation: @arguments;
-  -moz-animation: @arguments;
-  animation: @arguments;
-}
+        > .primary {
+          width: 100%;
 
-#lsRecommendation {
-  .ls-loader {
-    width: 100%;
-    text-align: center;
-  }
+          .action.apply.primary {
+            margin-right: 5px;
+          }
 
-  .product-items {
-    .owl-carousel {
-      .product-item.product-slider {
-        width: 100%;
+          .apply, .cancel {
+            border-radius: 3px;
+          }
+        }
+      }
+
+      .field {
+        width: 60%;
+
+        input {
+          border-top-right-radius: unset;
+          border-bottom-right-radius: unset;
+        }
+      }
+
+    }
+
+    .field {
+      input {
+        border-top-right-radius: unset;
+        border-bottom-right-radius: unset;
       }
     }
   }
-}
 
-.lsdiscountprice {
-  text-decoration: line-through;
-  color: #9e9e9e;
-  display: block;
-  text-align: left;
-}
+  .giftcard {
+    margin-bottom: 30px;
 
-.lsdiscountprice2 {
-  text-decoration: line-through;
-  color: #9e9e9e;
-  display: block;
-}
-
-.lsdiscountamount {
-  color: red;
-  font-weight: bold;
-}
-
-.minicart-items {
-  .product-item-details {
-    .lsdiscountamount {
-      .price {
-        color: red;
+    .fieldset {
+      &:last-child {
+        margin-bottom: auto;
       }
     }
 
-    .lsdiscountprice {
-      .price {
-        color: #9e9e9e;
+    .content {
+      margin-top: 10px;
+    }
+
+    #gift_card_amount {
+      margin-top: 10px;
+    }
+  }
+
+  #giftcard-form {
+    .gift-card-code-field {
+      padding-right: 2px;
+    }
+
+    .applied {
+      .actions-toolbar {
+        width: 40%;
+
+        > .primary {
+          width: 100%;
+
+          .action.applygiftcard.primary {
+            margin-right: 5px;
+          }
+
+          .applygiftcard, .cancelgiftcard {
+            border-radius: 3px;
+          }
+        }
+      }
+
+      .field {
+        width: 30%;
+      }
+    }
+
+    .gift-card-amount-field {
+      input {
+        border-top-right-radius: unset;
+        border-bottom-right-radius: unset;
       }
     }
   }
-}
 
-.lsoriginalprice {
-  font-weight: bold;
+
+  #gift-card-balance {
+    .action {
+      margin-top: 10px;
+    }
+
+    .error-messages {
+      margin-bottom: 10px;
+    }
+  }
+
+  .omni-giftcardbalance-index {
+
+    .row {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+
+    .mt-5, .mb-5 {
+      margin-top: 2rem !important;
+    }
+
+    .col-md-6 {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 50%;
+      flex: 0 0 50%;
+      max-width: 50%;
+      position: relative;
+      width: 100%;
+      min-height: 1px;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+
+    .container {
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .giftcardinfo {
+      p {
+        font-size: 1.5rem;
+      }
+    }
+
+  }
+
+  .omni-stores-index {
+
+    .row {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+
+    .mt-5, .mb-5 {
+      margin-top: 2rem !important;
+    }
+
+    .col-md-4 {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 30%;
+      flex: 0 0 30%;
+      max-width: 30%;
+      position: relative;
+      width: 100%;
+      min-height: 1px;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+
+    .stores-maps-container {
+      .store-map-plus-info-container {
+        .fas {
+          padding-right: 5px;
+        }
+
+        .store-map {
+          margin-bottom: 20px;
+        }
+
+        span,
+        strong {
+          font-size: 1.3rem;
+        }
+
+        div {
+          margin-bottom: 10px;
+        }
+
+        .store-opening-hours {
+
+          .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+          }
+
+          .table-borderless td, .table-borderless th {
+            border: none;
+          }
+
+          .dayofweek {
+            padding-right: 10px;
+          }
+
+          .closed {
+            color: red;
+          }
+
+          .table th, .table td {
+            padding: 0.50rem;
+            vertical-align: middle;
+          }
+
+          .special-hour {
+            .special-label {
+              font-size: 8px;
+              padding-left: 5px;
+              color: green;
+              vertical-align: middle;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .keyframes(@name; @arguments) {
+    @-moz-keyframes @name {
+      @arguments();
+    }
+    @-webkit-keyframes @name {
+      @arguments();
+    }
+    @keyframes @name {
+      @arguments();
+    }
+  }
+
+  .animation(@arguments) {
+    -webkit-animation: @arguments;
+    -moz-animation: @arguments;
+    animation: @arguments;
+  }
+
+  #lsRecommendation {
+    .ls-loader {
+      width: 100%;
+      text-align: center;
+    }
+
+    .product-items {
+      .owl-carousel {
+        .product-item.product-slider {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .lsdiscountprice {
+    text-decoration: line-through;
+    color: @color_discount_price;
+    display: block;
+    text-align: left;
+  }
+
+  .lsdiscountprice2 {
+    text-decoration: line-through;
+    color: @color_discount_price;
+    display: block;
+  }
+
+  .lsdiscountamount {
+    color: red;
+    font-weight: bold;
+  }
+
+  .minicart-items {
+    .product-item-details {
+      .lsdiscountamount {
+        .price {
+          color: red;
+        }
+      }
+
+      .lsdiscountprice {
+        .price {
+          color: @color_discount_price;
+        }
+      }
+    }
+  }
+
+  .lsoriginalprice {
+    font-weight: bold;
+  }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
