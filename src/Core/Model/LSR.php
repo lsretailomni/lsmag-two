@@ -504,12 +504,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getGoogleMapsApiKey()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_GOOGLE_API_KEY,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -518,12 +517,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getDefaultLatitude()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -532,12 +530,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getDefaultLongitude()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -546,12 +543,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getDefaultZoom()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_ZOOM,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -563,11 +559,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         return $this->getStoreConfig(self::SC_CART_CHECK_INVENTORY);
     }
 
-    /*
+    /**
      * This can be used on all frontend areas to dynamically fetch the current storeId.
      * Try not to use it on backend.
      * @return int
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getCurrentStoreId()
     {

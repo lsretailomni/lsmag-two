@@ -11,9 +11,7 @@ use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\Controller\Result\Raw;
 use Magento\Framework\Controller\Result\RawFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -101,13 +99,11 @@ class UpdatePoints extends Action
     public function execute()
     {
         $httpBadRequestCode = 400;
-        /** @var Raw $resultRaw */
-        $resultRaw = $this->resultRawFactory->create();
+        $resultRaw          = $this->resultRawFactory->create();
         if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
 
-        /** @var Json $resultJson */
         $resultJson = $this->resultJsonFactory->create();
         if (!$this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID)) {
             $response = [
@@ -116,7 +112,6 @@ class UpdatePoints extends Action
             ];
             return $resultJson->setData($response);
         }
-        $base_currency = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
         $post          = $this->getRequest()->getContent();
         $postData      = json_decode($post);
         $loyaltyPoints = (int)$postData->loyaltyPoints;

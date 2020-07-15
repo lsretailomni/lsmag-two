@@ -122,6 +122,7 @@ class StockHelper extends AbstractHelper
     }
 
     /**
+     * Call ItemsInStockGet method to check Items in stock or not
      * @param $simpleProductId
      * @param $parentProductSku
      * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStockGetResponse|ResponseInterface|null
@@ -129,29 +130,32 @@ class StockHelper extends AbstractHelper
      */
     public function getAllStoresItemInStock($simpleProductId, $parentProductSku)
     {
-        $simpleProductSku = '';
-        $response         = null;
-        // @codingStandardsIgnoreStart
-        $request   = new Operation\ItemsInStockGet();
-        $itemStock = new Entity\ItemsInStockGet();
-        // @codingStandardsIgnoreEnd
-        if (!empty($simpleProductId)) {
-            $simpleProductSku = $this->productRepository->
-            getById($simpleProductId)->getSku();
-            if (strpos($simpleProductSku, '-') !== false) {
-                $parentProductSku = explode('-', $simpleProductSku)[0];
-                $simpleProductSku = explode('-', $simpleProductSku)[1];
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            $simpleProductSku = '';
+            $response         = null;
+            // @codingStandardsIgnoreStart
+            $request   = new Operation\ItemsInStockGet();
+            $itemStock = new Entity\ItemsInStockGet();
+            // @codingStandardsIgnoreEnd
+            if (!empty($simpleProductId)) {
+                $simpleProductSku = $this->productRepository->getById($simpleProductId)->getSku();
+                if (strpos($simpleProductSku, '-') !== false) {
+                    $parentProductSku = explode('-', $simpleProductSku)[0];
+                    $simpleProductSku = explode('-', $simpleProductSku)[1];
+                }
             }
+            $itemStock->setItemId($parentProductSku)->
+            setVariantId($simpleProductSku);
+            try {
+                $response = $request->execute($itemStock);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            return $response ?
+                $response->getItemsInStockGetResult() : $response;
+        } else {
+            return null;
         }
-        $itemStock->setItemId($parentProductSku)->
-        setVariantId($simpleProductSku);
-        try {
-            $response = $request->execute($itemStock);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        return $response ?
-            $response->getItemsInStockGetResult() : $response;
     }
 
     /**
