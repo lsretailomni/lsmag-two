@@ -3,393 +3,393 @@
 @color_trans_info_bg: #a7a9ac;
 
 & when (@media-common = true) {
-
-  .customer-order-view {
-    .block-order-details-view-loyalty {
-      .custom-box {
-        .box-title {
-          padding-right: 20px;
-          font-weight: 600;
-        }
-      }
-    }
-  }
-
-  .coupons-grid {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    flex-wrap: wrap;
-
-    li.item {
-      flex: auto;
-      max-width: min-content;
-      padding: 0px 25px;
-      list-style: none;
-      min-width: 25%;
-      float: left;
-      -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
-      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
-      border: 0;
-      font-weight: 400;
-      margin-left: 20px;
-      margin-bottom: 20px;
-    }
-
-    li {
-      img {
-        margin-top: 8px;
-        vertical-align: middle;
-      }
-    }
-  }
-
-  .coupons-view {
-    h2 {
-      margin-left: 60px;
-    }
-  }
-
-  .coupon-info {
-    div.coupon-description {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    div {
-      span {
-        display: inline-block;
-        border: 0;
-        font-size: 13px;
-        font-weight: normal;
-        text-align: center;
-        vertical-align: middle;
-        white-space: nowrap;
-      }
-    }
-  }
-
-  /* Order History ============================================================================= */
-
-  .sales-order-history {
-    .orders-history {
-      .dataTables_length {
-        select {
-          width: auto;
-        }
-      }
-
-      .dataTables_filter {
-        input {
-          width: auto;
-        }
-      }
-
-      table {
-        thead {
-          th {
-            padding: 10px 8px;
-          }
-        }
-      }
-    }
-  }
-
-
-  /* Notifications ============================================================================= */
-
-  .notifications-grid {
-    li.item {
-      border-bottom: 1px darkgrey solid;
-    }
-
-    li.last {
-      border-bottom: 1px darkgrey solid;
-    }
-
-    li {
-      table {
-        tr {
-          th.notification-image {
-            img {
-              width: 110px;
+    .customer-order-view {
+        .block-order-details-view-loyalty {
+            .custom-box {
+                .box-title {
+                    padding-right: 20px;
+                    font-weight: 600;
+                }
             }
-          }
         }
-      }
-    }
-  }
-
-  .notification-info {
-    div {
-      padding-top: 10px;
-      bottom: 0px;
-      min-height: 85px;
-      width: 100%;
-
-      span {
-        background: #3399cc;
-        display: inline-block;
-        padding: 7px 15px;
-        border: 0;
-        color: white;
-        font-size: 13px;
-        font-weight: normal;
-        line-height: 19px;
-        text-align: center;
-        text-transform: uppercase;
-        vertical-align: middle;
-        white-space: nowrap;
-      }
     }
 
-    th.notification-title {
-      span {
-        width: 250px;
-        display: block;
-      }
+    .coupons-grid {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+
+        li.item {
+            flex: auto;
+            max-width: min-content;
+            padding: 0 25px;
+            list-style: none;
+            min-width: 25%;
+            float: left;
+            -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+            border: 0;
+            font-weight: 400;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            img {
+                margin-top: 8px;
+                vertical-align: middle;
+            }
+        }
     }
 
-    th.notification-description {
-      span {
-        width: 180px;
-        display: block;
-      }
-    }
-  }
-
-  .white-popup {
-    position: relative;
-    background: #FFF;
-    padding: 20px;
-    width: auto;
-    max-width: 600px;
-    margin: 20px auto;
-  }
-
-
-  /* Dashboard ================================================================================= */
-
-  .club-info {
-    margin: 25px 0;
-
-    table {
-      tr {
-        td {
-          padding: 0 30px 0 0;
+    .coupons-view {
+        h2 {
+            margin-left: 60px;
         }
-      }
-    }
-  }
-
-  .club-next-level {
-    margin: 25px 0;
-
-    table {
-      tr {
-        td {
-          padding: 0 30px 0 0;
-        }
-      }
-    }
-  }
-
-  .club-next-level-benefits {
-    margin: 25px 0;
-
-    table {
-      tr {
-        td {
-          padding: 0 30px 0 0;
-        }
-      }
-    }
-  }
-
-  /* Transactions ================================================================================= */
-
-  .transactions-info {
-    margin: 25px 0;
-
-    table {
-      width: 100%;
-
-      tr {
-        td {
-          width: 33%;
-          padding: 10px;
-          color: @color_trans_info;
-          font-size: larger;
-        }
-      }
     }
 
-    div.rows {
-      table {
-        width: 100%;
-
-        tr {
-          td {
-            width: 33%;
-            padding: 10px;
-            color: @color_trans_info_td;
-          }
-
-          &:hover {
-            background-color: @color_trans_info_bg;
-          }
+    .coupon-info {
+        div.coupon-description {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
         }
-      }
-    }
-  }
 
-  table.transactions-table {
-    tr {
-      td {
-        width: 35%;
-        padding: 5px 20px;
-        font-size: larger;
-        cursor: pointer;
-      }
-
-      th {
-        text-align: center;
-      }
-
-      td.amount {
-        text-align: right;
-      }
-
-      &:hover {
-        background-color: @color_trans_info_bg;
-      }
-    }
-  }
-
-  .transaction-container {
-    div.additional-info {
-      margin: 20px 0;
+        div {
+            span {
+                display: inline-block;
+                border: 0;
+                font-size: 13px;
+                font-weight: normal;
+                text-align: center;
+                vertical-align: middle;
+                white-space: nowrap;
+            }
+        }
     }
 
-    div.sale-lines {
-      display: block;
-      width: 100%;
+    /* Order History ============================================================================= */
 
-      thead {
-        display: block;
+    .sales-order-history {
+        .orders-history {
+            .dataTables_length {
+                select {
+                    width: auto;
+                }
+            }
 
-        th {
-          text-align: center;
+            .dataTables_filter {
+                input {
+                    width: auto;
+                }
+            }
+
+            table {
+                thead {
+                    th {
+                        padding: 10px 8px;
+                    }
+                }
+            }
+        }
+    }
+
+
+    /* Notifications ============================================================================= */
+
+    .notifications-grid {
+        li.item {
+            border-bottom: 1px darkgrey solid;
         }
 
-        th.name {
-          max-width: 350px;
-          width: 350px;
+        li.last {
+            border-bottom: 1px darkgrey solid;
         }
 
-        th.price {
-          max-width: 60px;
-          width: 60px;
+        li {
+            table {
+                tr {
+                    th.notification-image {
+                        img {
+                            width: 110px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .notification-info {
+        div {
+            padding-top: 10px;
+            bottom: 0;
+            min-height: 85px;
+            width: 100%;
+
+            span {
+                background: #39c;
+                display: inline-block;
+                padding: 7px 15px;
+                border: 0;
+                color: white;
+                font-size: 13px;
+                font-weight: normal;
+                line-height: 19px;
+                text-align: center;
+                text-transform: uppercase;
+                vertical-align: middle;
+                white-space: nowrap;
+            }
         }
 
-        th.qty {
-          max-width: 40px;
-          width: 40px;
+        th.notification-title {
+            span {
+                width: 250px;
+                display: block;
+            }
         }
 
-        th.subtotal {
-          max-width: 100px;
-          width: 100px;
+        th.notification-description {
+            span {
+                width: 180px;
+                display: block;
+            }
         }
-      }
+    }
 
-      tbody {
-        display: block;
-        max-height: 250px;
-        overflow-y: auto;
+    .white-popup {
+        position: relative;
+        background: #fff;
+        padding: 20px;
+        width: auto;
+        max-width: 600px;
+        margin: 20px auto;
+    }
 
-        td {
-          text-align: right;
-          padding: 0 15px 0 0;
-        }
 
-        td.name {
-          max-width: 350px;
-          width: 350px;
-          text-align: left;
-        }
+    /* Dashboard ================================================================================= */
 
-        td.price {
-          max-width: 60px;
-          width: 60px;
-        }
-
-        td.qty {
-          max-width: 40px;
-          width: 40px;
-        }
-
-        td.subtotal {
-          max-width: 100px;
-          width: 100px;
-        }
-
-        td.first {
-          max-width: 480px;
-          width: 480px;
-          padding: 0 20px 0 0;
-          vertical-align: baseline !important;
-        }
-
-        td.last {
-          max-width: 100px;
-          width: 100px;
-          padding: 0 25px 0 0;
-          vertical-align: baseline !important;
-        }
-      }
-
-      table.transaction-totals-table {
-        width: 100%;
-        display: block;
+    .club-info {
         margin: 25px 0;
-      }
+
+        table {
+            tr {
+                td {
+                    padding: 0 30px 0 0;
+                }
+            }
+        }
     }
-  }
 
-  /* Customer Form Register Edit ================================================================================= */
+    .club-next-level {
+        margin: 25px 0;
 
-  .form-list {
-    div.profiles {
-      span {
-        margin: 0 10px 0 0;
-      }
+        table {
+            tr {
+                td {
+                    padding: 0 30px 0 0;
+                }
+            }
+        }
     }
-  }
 
-  .header-inline {
-    display: inline;
-  }
+    .club-next-level-benefits {
+        margin: 25px 0;
+
+        table {
+            tr {
+                td {
+                    padding: 0 30px 0 0;
+                }
+            }
+        }
+    }
+
+    /* Transactions ================================================================================= */
+
+    .transactions-info {
+        margin: 25px 0;
+
+        table {
+            width: 100%;
+
+            tr {
+                td {
+                    width: 33%;
+                    padding: 10px;
+                    color: @color_trans_info;
+                    font-size: larger;
+                }
+            }
+        }
+
+        div.rows {
+            table {
+                width: 100%;
+
+                tr {
+                    td {
+                        width: 33%;
+                        padding: 10px;
+                        color: @color_trans_info_td;
+                    }
+
+                    &:hover {
+                        background-color: @color_trans_info_bg;
+                    }
+                }
+            }
+        }
+    }
+
+    table.transactions-table {
+        tr {
+            td {
+                width: 35%;
+                padding: 5px 20px;
+                font-size: larger;
+                cursor: pointer;
+            }
+
+            th {
+                text-align: center;
+            }
+
+            td.amount {
+                text-align: right;
+            }
+
+            &:hover {
+                background-color: @color_trans_info_bg;
+            }
+        }
+    }
+
+    .transaction-container {
+        div.additional-info {
+            margin: 20px 0;
+        }
+
+        div.sale-lines {
+            display: block;
+            width: 100%;
+
+            thead {
+                display: block;
+
+                th {
+                    text-align: center;
+                }
+
+                th.name {
+                    max-width: 350px;
+                    width: 350px;
+                }
+
+                th.price {
+                    max-width: 60px;
+                    width: 60px;
+                }
+
+                th.qty {
+                    max-width: 40px;
+                    width: 40px;
+                }
+
+                th.subtotal {
+                    max-width: 100px;
+                    width: 100px;
+                }
+            }
+
+            tbody {
+                display: block;
+                max-height: 250px;
+                overflow-y: auto;
+
+                td {
+                    text-align: right;
+                    padding: 0 15px 0 0;
+                }
+
+                td.name {
+                    max-width: 350px;
+                    width: 350px;
+                    text-align: left;
+                }
+
+                td.price {
+                    max-width: 60px;
+                    width: 60px;
+                }
+
+                td.qty {
+                    max-width: 40px;
+                    width: 40px;
+                }
+
+                td.subtotal {
+                    max-width: 100px;
+                    width: 100px;
+                }
+
+                td.first {
+                    max-width: 480px;
+                    width: 480px;
+                    padding: 0 20px 0 0;
+                    vertical-align: baseline !important;
+                }
+
+                td.last {
+                    max-width: 100px;
+                    width: 100px;
+                    padding: 0 25px 0 0;
+                    vertical-align: baseline !important;
+                }
+            }
+
+            table.transaction-totals-table {
+                width: 100%;
+                display: block;
+                margin: 25px 0;
+            }
+        }
+    }
+
+    /* Customer Form Register Edit ================================================================================= */
+
+    .form-list {
+        div.profiles {
+            span {
+                margin: 0 10px 0 0;
+            }
+        }
+    }
+
+    .header-inline {
+        display: inline;
+    }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-  .coupons-grid li.item {
-    flex: 50%;
-    max-width: 50%;
-  }
-  .sales-order-history {
-    .sidebar-main {
-      .block-collapsible-nav {
-        position: relative;
-      }
+    .coupons-grid li.item {
+        flex: 50%;
+        max-width: 50%;
     }
-  }
+
+    .sales-order-history {
+        .sidebar-main {
+            .block-collapsible-nav {
+                position: relative;
+            }
+        }
+    }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
-  .coupons-grid li.item {
-    flex: 100%;
-    max-width: 100%;
-  }
+    .coupons-grid li.item {
+        flex: 100%;
+        max-width: 100%;
+    }
 }
