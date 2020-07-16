@@ -1,7 +1,8 @@
 @color_1: white;
 @color_flag_yellow: #ffb000;
-@color_scroll_button:#6f655f;
-@color_scroll_button_forward_back:#fbfbfb;
+@color_scroll_button: #6f655f;
+@color_scroll_button_forward_back: #fbfbfb;
+@color_ls_scroll_bg_button: #514943;
 
 .ls-repl-cron-grid {
     .data-grid-cell-content {
@@ -73,7 +74,7 @@
 
         .ls_scrollbutton_forward {
             width: 100%;
-            background: linear-gradient(to bottom, #514943 0%, #514943 100%);
+            background: linear-gradient(to bottom, @color_ls_scroll_bg_button 0%, @color_ls_scroll_bg_button  100%);
             border: none;
             border-radius: 5px;
             position: relative;
@@ -113,7 +114,7 @@
 
         .ls_scrollbutton_back {
             width: 100%;
-            background: linear-gradient(to bottom, #514943 0%, #514943 100%);
+            background: linear-gradient(to bottom, @color_ls_scroll_bg_button 0%, @color_ls_scroll_bg_button 100%);
             border: none;
             border-radius: 5px;
             position: relative;

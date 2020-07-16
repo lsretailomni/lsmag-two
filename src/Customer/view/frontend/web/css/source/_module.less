@@ -1,6 +1,7 @@
 @color_trans_info: #ff674a;
 @color_trans_info_td: #2a5d75;
 @color_trans_info_bg: #a7a9ac;
+@color_notification_bg: #39c;
 
 & when (@media-common = true) {
     .customer-order-view {
@@ -128,7 +129,7 @@
             width: 100%;
 
             span {
-                background: #39c;
+                background: @color_notification_bg;
                 display: inline-block;
                 padding: 7px 15px;
                 border: 0;
@@ -160,7 +161,7 @@
 
     .white-popup {
         position: relative;
-        background: #fff;
+        background: white;
         padding: 20px;
         width: auto;
         max-width: 600px;

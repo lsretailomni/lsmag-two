@@ -6,6 +6,9 @@
 @color_discount_desc: #C41F3F;
 @color_coupon_desc: #1979c3;
 @color_discount_price: #9e9e9e;
+@color_coupon_major: #1979c30f;
+@color_dropdown_content_wrap: #e8e8e8;
+@color_block_dropdown: #bbb;
 
 & when (@media-common = true) {
     #lsRecommendation {
@@ -42,8 +45,8 @@
             margin: 0;
             padding: 10px;
             list-style: none none;
-            background: #fff;
-            border: 1px solid #bbb;
+            background: white;
+            border: 1px solid @color_block_dropdown;
             min-width: 100%;
             width: 320px;
             z-index: 101;
@@ -161,12 +164,12 @@
             h2 {
                 width: 100%;
                 text-align: center;
-                border-bottom: 1px solid #000;
+                border-bottom: 1px solid black;
                 line-height: .1em;
                 margin: 10px 0 20px;
 
                 span {
-                    background: #fff;
+                    background: white;
                     border: 1px solid black;
                     height: 100px;
                     -moz-border-radius: 75px;
@@ -201,7 +204,7 @@
             }
 
             .coupon-major.active {
-                background: #1979c30f;
+                background: @color_coupon_major;
 
                 .coupon-description-wrapper {
                     color: @color_coupon_desc;
@@ -239,7 +242,7 @@
                     text-decoration: none;
 
                     &:hover {
-                        background: #e8e8e8;
+                        background: @color_dropdown_content_wrap;
                     }
                 }
             }
@@ -535,9 +538,9 @@
 
         .col-md-4 {
             -webkit-box-flex: 0;
-            -ms-flex: 0 0 30%;
-            flex: 0 0 30%;
-            max-width: 30%;
+            -ms-flex: 1 0 33.33%;
+            flex: 1 0 30%;
+            max-width: 33.33%;
             position: relative;
             width: 100%;
             min-height: 1px;
@@ -765,8 +768,8 @@
     .omni-stores-index {
         .col-md-4 {
             -webkit-box-flex: 0;
-            -ms-flex: 0 0 100%;
-            flex: 0 0 100%;
+            -ms-flex: 0 100%;
+            flex: 0 100%;
             max-width: 100%;
             position: relative;
             width: 100%;
@@ -809,9 +812,9 @@
     .omni-stores-index {
         .col-md-4 {
             -webkit-box-flex: 0;
-            -ms-flex: 0 0 90%;
-            flex: 0 0 90%;
-            max-width: 90%;
+            -ms-flex: 0 100%;
+            flex: 0 100%;
+            max-width: 100%;
             position: relative;
             width: 100%;
             min-height: 1px;
