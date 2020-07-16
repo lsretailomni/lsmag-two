@@ -3,8 +3,8 @@
 namespace Ls\Customer\Controller\Adminhtml\Account;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\Backend\App\Action;
 use Magento\Customer\Model\CustomerRegistry;
 use Magento\Framework\Message\ManagerInterface;
