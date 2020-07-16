@@ -1,3 +1,5 @@
+"Are you sure want to save customer to LS Central?","Are you sure want to save customer to LS Central?"
+"Save to LS Central","Save to LS Central"
 "LS Central Membership","LS Central Membership"
 Loyalty,Loyalty
 "Go To Product","Go To Product"
@@ -16,6 +18,8 @@ Save,Save
 "There is no account found with the provided email/username.","There is no account found with the provided email/username."
 "We're unable to send the password reset email.","We're unable to send the password reset email."
 "Please enter your email.","Please enter your email."
+"Customer request has been sent to LS Central successfully.","Customer request has been sent to LS Central successfully."
+"Something went wrong while creating a customer. Please refer log for details.","Something went wrong while creating a customer. Please refer log for details."
 "Coupon Offers","Coupon Offers"
 "General Offers","General Offers"
 "Loyalty Offers","Loyalty Offers"
