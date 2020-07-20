@@ -1,11 +1,10 @@
 <?php
 
-namespace Ls\Customer\Setup;
+namespace Ls\Core\Setup;
 
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\Customer;
-use Magento\Customer\Setup\CustomerSetup;
 use Magento\Customer\Setup\CustomerSetupFactory;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
@@ -19,7 +18,7 @@ use Zend_Validate_Exception;
 
 /**
  * Class InstallData
- * @package Ls\Customer\Setup
+ * @package Ls\Core\Setup
  */
 class InstallData implements InstallDataInterface
 {
@@ -79,8 +78,6 @@ class InstallData implements InstallDataInterface
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
-     * @throws LocalizedException
-     * @throws Zend_Validate_Exception
      */
     protected function createAllCustomerAttributes(
         ModuleDataSetupInterface $setup,
@@ -90,41 +87,33 @@ class InstallData implements InstallDataInterface
         $customerSetup  = $this->customerSetupFactory->create(['setup' => $setup]);
         $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
         $attributeSetId = $customerEntity->getDefaultAttributeSetId();
-        /** @var AttributeSet $attributeSet */
+        /** @var $attributeSet AttributeSet */
         $attributeSet     = $this->attributeSetFactory->create();
         $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
         $customerSetup->addAttribute(Customer::ENTITY, 'lsr_username', [
-            'type'                  => 'varchar',
-            'input'                 => 'text',
-            'label'                 => 'Member Username',
-            'unique'                => false,
-            'visible'               => false,
-            'visible_in_front'      => true,
-            'required'              => false,
-            'user_defined'          => false,
-            'default'               => null,
-            'attribute_set_id'      => $attributeSetId,
-            'attribute_group_id'    => $attributeGroupId,
-            'is_used_in_grid'       => true,
-            'is_visible_in_grid'    => true,
-            'is_filterable_in_grid' => true,
-            'is_searchable_in_grid' => true
+            'type'               => 'varchar',
+            'input'              => 'text',
+            'label'              => 'Member Username',
+            'unique'             => false,
+            'visible'            => false,
+            'visible_in_front'   => true,
+            'required'           => false,
+            'user_defined'       => false,
+            'default'            => null,
+            'attribute_set_id'   => $attributeSetId,
+            'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_id', [
-            'type'                  => 'varchar',
-            'input'                 => 'text',
-            'label'                 => 'Member Id',
-            'unique'                => false,
-            'visible'               => false,
-            'visible_in_front'      => true,
-            'required'              => false,
-            'user_defined'          => false,
-            'default'               => null,
-            'attribute_set_id'      => $attributeSetId,
-            'attribute_group_id'    => $attributeGroupId,
-            'is_used_in_grid'       => true,
-            'is_visible_in_grid'    => true,
-            'is_filterable_in_grid' => true,
-            'is_searchable_in_grid' => true
+            'type'               => 'varchar',
+            'input'              => 'text',
+            'label'              => 'Member Id',
+            'unique'             => false,
+            'visible'            => false,
+            'visible_in_front'   => true,
+            'required'           => false,
+            'user_defined'       => false,
+            'default'            => null,
+            'attribute_set_id'   => $attributeSetId,
+            'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_token', [
             'type'               => 'varchar',
             'input'              => 'text',
@@ -150,27 +139,25 @@ class InstallData implements InstallDataInterface
             'attribute_set_id'   => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
         ])->addAttribute(Customer::ENTITY, 'lsr_cardid', [
-            'type'                  => 'varchar',
-            'input'                 => 'text',
-            'label'                 => 'LSR Card ID',
-            'unique'                => false,
-            'visible'               => false,
-            'visible_in_front'      => true,
-            'required'              => false,
-            'user_defined'          => false,
-            'default'               => null,
-            'attribute_set_id'      => $attributeSetId,
-            'attribute_group_id'    => $attributeGroupId,
-            'is_used_in_grid'       => true,
-            'is_visible_in_grid'    => true,
-            'is_filterable_in_grid' => true,
-            'is_searchable_in_grid' => true
+            'type'               => 'varchar',
+            'input'              => 'text',
+            'label'              => 'LSR Card ID',
+            'unique'             => false,
+            'visible'            => false,
+            'visible_in_front'   => true,
+            'required'           => false,
+            'user_defined'       => false,
+            'default'            => null,
+            'attribute_set_id'   => $attributeSetId,
+            'attribute_group_id' => $attributeGroupId
         ]);
     }
 
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
+     * @throws LocalizedException
+     * @throws Zend_Validate_Exception
      */
     protected function createAllCategoryAttributes(
         ModuleDataSetupInterface $setup,
@@ -198,6 +185,8 @@ class InstallData implements InstallDataInterface
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
+     * @throws LocalizedException
+     * @throws Zend_Validate_Exception
      */
     protected function createAllProductAttributes(
         ModuleDataSetupInterface $setup,
