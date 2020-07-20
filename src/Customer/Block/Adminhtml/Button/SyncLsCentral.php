@@ -9,6 +9,10 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
+/**
+ * Class SyncLsCentral
+ * @package Ls\Customer\Block\Adminhtml\Button
+ */
 class SyncLsCentral extends GenericButton implements ButtonProviderInterface
 {
 
@@ -46,7 +50,7 @@ class SyncLsCentral extends GenericButton implements ButtonProviderInterface
         if ($customerId) {
             $customer = $this->customerRegistry->retrieve($customerId);
             if (empty($customer->getData('lsr_id')) && !empty($customer->getData('lsr_username'))) {
-                $message = __('Are you sure want to save customer to LS Central?');
+                $message = __('Send customer to LS Central?');
                 $data    = [
                     'label'      => __('Save to LS Central'),
                     'class'      => 'sync-ls-central',

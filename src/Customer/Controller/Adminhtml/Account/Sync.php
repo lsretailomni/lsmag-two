@@ -64,6 +64,9 @@ class Sync extends Action
         parent::__construct($context);
     }
 
+    /**
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $customerId     = $this->getRequest()->getParam('customer_id');
