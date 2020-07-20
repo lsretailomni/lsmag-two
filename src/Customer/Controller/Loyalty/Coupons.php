@@ -8,6 +8,7 @@ use Magento\Customer\Controller\AbstractAccount;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
@@ -51,6 +52,7 @@ class Coupons extends AbstractAccount
 
     /**
      * @return ResponseInterface|ResultInterface|Page
+     * @throws NoSuchEntityException
      */
     public function execute()
     {

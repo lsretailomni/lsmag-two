@@ -122,7 +122,7 @@ define([
                             $(".stock-remarks").append("<br/><strong>" + data.remarks + "</strong><br/>");
                         }
                     },
-                    error: function (xhr) { // if error occured
+                    error: function (xhr) { // if any error occurred
                         console.log(xhr.statusText + xhr.responseText);
                     }
                 });

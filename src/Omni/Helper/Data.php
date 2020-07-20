@@ -20,13 +20,13 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Data
@@ -34,8 +34,6 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Data extends AbstractHelper
 {
-    /** @var StoreManagerInterface */
-    public $storeManager;
 
     /** @var ReplStoreRepositoryInterface */
     public $storeRepository;
@@ -99,7 +97,6 @@ class Data extends AbstractHelper
     /**
      * Data constructor.
      * @param Context $context
-     * @param StoreManagerInterface $store_manager
      * @param ReplStoreRepositoryInterface $storeRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SessionManagerInterface $session
@@ -116,7 +113,6 @@ class Data extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        StoreManagerInterface $store_manager,
         ReplStoreRepositoryInterface $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SessionManagerInterface $session,
@@ -131,7 +127,6 @@ class Data extends AbstractHelper
         WriterInterface $configWriter,
         DirectoryList $directoryList
     ) {
-        $this->storeManager          = $store_manager;
         $this->storeRepository       = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->session               = $session;
@@ -202,7 +197,7 @@ class Data extends AbstractHelper
                             if ($r->getType() == StoreHourOpeningType::NORMAL) {
                                 $storeHours[$currentDayOfWeek]['normal'][] =
                                     ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
-                            } elseif($r->getType() == StoreHourOpeningType::TEMPORARY) {
+                            } elseif ($r->getType() == StoreHourOpeningType::TEMPORARY) {
                                 $storeHours[$currentDayOfWeek]['temporary'] =
                                     ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
                             } else {
@@ -471,8 +466,7 @@ class Data extends AbstractHelper
         $ping->setToken($lsKey);
         $client->setClassmap($ping->getClassMap());
         $result = $ping->execute();
-        $pong   = $result->getResult();
-        return $pong;
+        return $result->getResult();
     }
 
     /**
@@ -508,18 +502,23 @@ class Data extends AbstractHelper
     /**
      * @param $area
      * @return string
+     * @throws NoSuchEntityException
      */
     public function isCouponsEnabled($area)
     {
-        if ($area == "cart") {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            if ($area == "cart") {
+                return $this->lsr->getStoreConfig(
+                    LSR::LS_COUPONS_SHOW_ON_CART,
+                    $this->lsr->getCurrentStoreId()
+                );
+            }
             return $this->lsr->getStoreConfig(
-                LSR::LS_COUPONS_SHOW_ON_CART,
+                LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
                 $this->lsr->getCurrentStoreId()
             );
+        } else {
+            return false;
         }
-        return $this->lsr->getStoreConfig(
-            LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
-            $this->lsr->getCurrentStoreId()
-        );
     }
 }

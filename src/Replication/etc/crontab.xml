@@ -49,12 +49,6 @@
             <schedule>*/4 * * * *</schedule>
         </job>
         <!-- Less Important-->
-        <job name="repl_item_category" instance="Ls\Replication\Cron\ReplEcommItemCategoriesTask" method="execute">
-            <schedule>*/5 * * * *</schedule>
-        </job>
-        <job name="repl_product_group" instance="Ls\Replication\Cron\ReplEcommProductGroupsTask" method="execute">
-            <schedule>*/5 * * * *</schedule>
-        </job>
         <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>

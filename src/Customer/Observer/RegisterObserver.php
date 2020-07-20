@@ -64,24 +64,20 @@ class RegisterObserver implements ObserverInterface
 
     /**
      * @param Observer $observer
-     * @return $this
+     * @return $this|void
      */
     public function execute(Observer $observer)
     {
-        /*
-         * Adding condition to only process if LSR is enabled.
-         */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            try {
-                $controller_action = $observer->getData('controller_action');
-                $parameters        = $controller_action->getRequest()->getParams();
-                $session           = $this->customerSession;
+        try {
+            $parameters = $observer->getRequest()->getParams();
+            $session    = $this->customerSession;
 
-                /** @var Customer $customer */
-                $customer = $session->getCustomer();
-                if ($customer->getId()) {
-                    $customer->setData('lsr_username', $parameters['lsr_username']);
-                    $customer->setData('password', $parameters['password']);
+            /** @var Customer $customer */
+            $customer = $session->getCustomer();
+            if ($customer->getId() && !empty($parameters['lsr_username']) && !empty($parameters['password'])) {
+                $customer->setData('lsr_username', $parameters['lsr_username']);
+                $customer->setData('password', $parameters['password']);
+                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                     /** @var Entity\MemberContact $contact */
                     $contact = $this->contactHelper->contact($customer);
                     if (is_object($contact) && $contact->getId()) {
@@ -131,11 +127,14 @@ class RegisterObserver implements ObserverInterface
                             );
                         }
                     }
+                } else {
+                    $this->customerResourceModel->save($customer);
                 }
-            } catch (Exception $e) {
-                $this->logger->error($e->getMessage());
             }
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
         }
+
         return $this;
     }
 }

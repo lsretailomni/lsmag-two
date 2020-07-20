@@ -2,7 +2,7 @@
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <css type="text/html" src="Ls_Omni::css/lsstores.css"/>
+        <css type="text/html" src="https://use.fontawesome.com/releases/v5.10.2/css/all.css" src_type="url"/>
     </head>
     <body>
         <referenceContainer name="content">

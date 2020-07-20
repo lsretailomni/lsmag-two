@@ -2,11 +2,10 @@
 
 namespace Ls\Core\Model;
 
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Core\Helper\Data;
-use \Magento\Framework\Exception\NoSuchEntityException;
+use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -365,6 +364,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public $coreHelper;
 
     /**
+     * @var null
+     */
+    public $validateBaseUrlResponse = null;
+
+    /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
@@ -437,6 +441,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isLSR($store_id = false, $scope = false)
     {
+        if (isset($this->validateBaseUrlResponse)) {
+            return $this->validateBaseUrlResponse;
+        }
+
         if ($scope == 'website') {
             $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
             $store   = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
@@ -445,10 +453,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
         }
         if (empty($baseUrl) || empty($store)) {
-            return false;
+            $this->validateBaseUrlResponse = false;
         } else {
-            return $this->validateBaseUrl($baseUrl);
+            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl);
         }
+
+        return $this->validateBaseUrlResponse;
     }
 
 
@@ -465,6 +475,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getActiveWebStore()
     {
@@ -493,12 +504,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getGoogleMapsApiKey()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_GOOGLE_API_KEY,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -507,12 +517,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getDefaultLatitude()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -521,12 +530,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getDefaultLongitude()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -535,12 +543,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getDefaultZoom()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_ZOOM,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -552,11 +559,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         return $this->getStoreConfig(self::SC_CART_CHECK_INVENTORY);
     }
 
-    /*
+    /**
      * This can be used on all frontend areas to dynamically fetch the current storeId.
      * Try not to use it on backend.
      * @return int
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getCurrentStoreId()
     {
