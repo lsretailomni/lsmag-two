@@ -6,13 +6,12 @@ use Magento\Customer\Setup\CustomerSetup;
 use Magento\Customer\Setup\CustomerSetupFactory;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
-use Magento\Framework\Setup\Patch\PatchVersionInterface;
 
 /**
  * Class UpdateLsCoreCustomerAttributesMetadata
  * @package Ls\Core\Setup\Patch\Data
  */
-class UpdateLsCoreCustomerAttributesMetadata implements DataPatchInterface, PatchVersionInterface
+class UpdateLsCoreCustomerAttributesMetadata implements DataPatchInterface
 {
     /**
      * @var ModuleDataSetupInterface
@@ -79,14 +78,6 @@ class UpdateLsCoreCustomerAttributesMetadata implements DataPatchInterface, Patc
     public static function getDependencies()
     {
         return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getVersion()
-    {
-        return '1.0.2';
     }
 
     /**
