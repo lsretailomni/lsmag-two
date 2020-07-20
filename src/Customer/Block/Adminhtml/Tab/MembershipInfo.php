@@ -6,7 +6,7 @@ use Magento\Backend\Block\Template;
 use Magento\Framework\Phrase;
 use Magento\Backend\Block\Template\Context;
 use Magento\Ui\Component\Layout\Tabs\TabInterface;
-use Magento\Customer\Model\Customer;
+use Magento\Customer\Model\CustomerRegistry;
 
 /**
  * Customer membership view block
@@ -17,22 +17,22 @@ class MembershipInfo extends Template implements TabInterface
 {
 
     /**
-     * @var Customer
+     * @var CustomerRegistry
      */
-    protected $customerObject;
+    protected $customerRegistry;
 
     /**
      * MembershipInfo constructor.
      * @param Context $context
-     * @param Customer $customerObject
+     * @param CustomerRegistry $customerRegistry
      * @param array $data
      */
     public function __construct(
         Context $context,
-        Customer $customerObject,
+        CustomerRegistry $customerRegistry,
         array $data = []
     ) {
-        $this->customerObject = $customerObject;
+        $this->customerRegistry = $customerRegistry;
         parent::__construct($context, $data);
     }
 
@@ -101,7 +101,7 @@ class MembershipInfo extends Template implements TabInterface
     {
         try {
             $data            = $this->_backendSession->getCustomerData();
-            $customerDetails = $this->customerObject->loadByEmail($data['account']['email']);
+            $customerDetails = $this->customerRegistry->retrieveByEmail($data['account']['email'], $data['account']['website_id']);
             return [
                 'lsr_id'       => $customerDetails->getData('lsr_id'),
                 'lsr_cardid'   => $customerDetails->getData('lsr_cardid'),
