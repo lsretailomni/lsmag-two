@@ -30,7 +30,6 @@ use Magento\Directory\Model\Country;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Framework\Api\FilterBuilder;
-use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -61,9 +60,6 @@ class ContactHelper extends AbstractHelper
 
     /** @var FilterBuilder */
     public $filterBuilder;
-
-    /** @var FilterGroupBuilder */
-    public $filterGroupBuilder;
 
     /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
@@ -176,11 +172,11 @@ class ContactHelper extends AbstractHelper
      * @param Wishlist $wishlistResourceModel
      * @param WishlistFactory $wishlistFactory
      * @param ProductRepositoryInterface $productRepository
+     * @param CustomerCollection $customerCollection
      */
     public function __construct(
         Context $context,
         FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         CustomerRepositoryInterface $customerRepository,
         StoreManagerInterface $storeManager,
@@ -207,7 +203,6 @@ class ContactHelper extends AbstractHelper
         CustomerCollection $customerCollection
     ) {
         $this->filterBuilder         = $filterBuilder;
-        $this->filterGroupBuilder    = $filterGroupBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeManager          = $storeManager;
         $this->customerRepository    = $customerRepository;

@@ -13,7 +13,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Class SyncOrders
+ * Class SyncCustomers
  * @package Ls\Replication\Cron
  */
 class SyncCustomers
@@ -53,10 +53,13 @@ class SyncCustomers
     public $cartRepository;
 
     /**
-     * SyncVersion constructor.
+     * SyncCustomers constructor.
      * @param LSR $lsr
      * @param Data $helper
      * @param ReplicationHelper $replicationHelper
+     * @param ContactHelper $contactHelper
+     * @param ManagerInterface $eventManager
+     * @param CartRepositoryInterface $cartRepository
      */
     public function __construct(
         LSR $lsr,
@@ -77,8 +80,9 @@ class SyncCustomers
 
     /**
      * @param null $storeData
-     * @throws NoSuchEntityException
+     * @return array
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
     {

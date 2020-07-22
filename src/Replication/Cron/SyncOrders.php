@@ -52,10 +52,13 @@ class SyncOrders
     public $cartRepository;
 
     /**
-     * SyncVersion constructor.
+     * SyncOrders constructor.
      * @param LSR $lsr
      * @param Data $helper
      * @param ReplicationHelper $replicationHelper
+     * @param OrderHelper $orderHelper
+     * @param ManagerInterface $eventManager
+     * @param CartRepositoryInterface $cartRepository
      */
     public function __construct(
         LSR $lsr,
@@ -76,6 +79,7 @@ class SyncOrders
 
     /**
      * @param null $storeData
+     * @return array
      * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
