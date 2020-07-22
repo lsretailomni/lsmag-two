@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_form">
+            <block class="Ls\Customer\Block\Adminhtml\Tab\MembershipInfo" name="membership_panel"
+                   template="Ls_Customer::tab/membership_info.phtml">
+                <arguments>
+                    <argument name="tab_label" xsi:type="string" translate="true">LS Central Membership</argument>
+                    <argument name="sort_order" xsi:type="number">100</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

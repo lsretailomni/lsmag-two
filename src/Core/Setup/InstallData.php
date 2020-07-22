@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\Customer\Setup;
+namespace Ls\Core\Setup;
 
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
@@ -18,7 +18,7 @@ use Zend_Validate_Exception;
 
 /**
  * Class InstallData
- * @package Ls\Customer\Setup
+ * @package Ls\Core\Setup
  */
 class InstallData implements InstallDataInterface
 {

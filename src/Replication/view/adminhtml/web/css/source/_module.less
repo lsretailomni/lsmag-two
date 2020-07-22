@@ -1,132 +1,161 @@
 @color_1: white;
+@color_flag_yellow: #ffb000;
+@color_scroll_button: #6f655f;
+@color_scroll_button_forward_back: #fbfbfb;
+@color_ls_scroll_bg_button: #514943;
+
 .ls-repl-cron-grid {
-  .data-grid-cell-content {
-    .custom-grid-flag {
-      color: @color_1;
-      border-radius: 5px;
-      padding: 4px;
-      text-align: center;
-      font-size: 10px;
-      font-weight: bold;
-      width: 80px;
-      margin: 0 auto;
-    }
+    .data-grid-cell-content {
+        .custom-grid-flag {
+            color: @color_1;
+            border-radius: 5px;
+            padding: 4px;
+            text-align: center;
+            font-size: 10px;
+            font-weight: bold;
+            width: 80px;
+            margin: 0 auto;
+        }
 
-    .flag-green {
-      background: green;
-    }
+        .flag-green {
+            background: green;
+        }
 
-    .flag-yellow {
-      background: #ffb000;
+        .flag-yellow {
+            background: @color_flag_yellow;
+        }
     }
-  }
 }
 
 .ls-repl-grid-container {
-  .sticky-header {
-    top: 0px;
-  }
-
-  .data-grid {
-    .data-grid-th._sortable {
-      .data-grid-cell-content {
-        white-space: nowrap;
-      }
+    .sticky-header {
+        top: 0;
     }
 
-    .data-grid-cell-content {
-      text-align: center;
+    .data-grid {
+        .data-grid-th._sortable {
+            .data-grid-cell-content {
+                white-space: nowrap;
+            }
+        }
 
-      .custom-grid-flag {
-        color: @color_1;
-        border-radius: 5px;
-        padding: 4px;
-        text-align: center;
-        font-size: 10px;
-        font-weight: bold;
-        width: 80px;
-        margin: 0 auto;
-      }
+        .data-grid-cell-content {
+            text-align: center;
 
-      .flag-green {
-        background: green;
-      }
+            .custom-grid-flag {
+                color: @color_1;
+                border-radius: 5px;
+                padding: 4px;
+                text-align: center;
+                font-size: 10px;
+                font-weight: bold;
+                width: 80px;
+                margin: 0 auto;
+            }
 
-      .flag-yellow {
-        background: #ffb000;
-      }
+            .flag-green {
+                background: green;
+            }
 
-      .flag-red {
-        background: red;
-      }
+            .flag-yellow {
+                background: @color_flag_yellow;
+            }
+
+            .flag-red {
+                background: red;
+            }
+        }
+
+        td:first-child {
+            position: sticky;
+            left: 0;
+            top: auto;
+        }
+
+        .ls_scrollbutton_forward {
+            width: 100%;
+            background: linear-gradient(to bottom, @color_ls_scroll_bg_button 0%, @color_ls_scroll_bg_button  100%);
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            color: @color_scroll_button_forward_back;
+            font-family: 'Open Sans', sans-serif;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, .4);
+            font-size: 12px;
+            text-align: left;
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, .2);
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 5px;
+            margin-right: 10px;
+
+            &:active {
+                box-shadow: 0 2px 0 0 rgba(0, 0, 0, .2);
+                top: 1px;
+            }
+
+            &::after {
+                content: '';
+                width: 0;
+                height: 0;
+                display: block;
+                border-top: 15px solid @color_scroll_button;
+                border-bottom: 13px solid @color_scroll_button;
+                border-left: 13px solid transparent;
+                border-right: 5px solid @color_scroll_button;
+                position: absolute;
+                opacity: .6;
+                right: 0;
+                top: 0;
+                border-radius: 0 5px 5px 0;
+            }
+        }
+
+        .ls_scrollbutton_back {
+            width: 100%;
+            background: linear-gradient(to bottom, @color_ls_scroll_bg_button 0%, @color_ls_scroll_bg_button 100%);
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            color: @color_scroll_button_forward_back;
+            font-family: 'Open Sans', sans-serif;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, .4);
+            font-size: 12px;
+            text-align: left;
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, .2);
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 5px;
+            margin-right: 10px;
+
+            &:active {
+                box-shadow: 0 2px 0 0 rgba(0, 0, 0, .2);
+                top: 1px;
+            }
+        }
+
+        button.ls_scrollbutton_back {
+            text-align: center;
+            padding-right: 12px;
+            box-sizing: border-box;
+
+            &::after {
+                content: '';
+                width: 0;
+                height: 0;
+                display: block;
+                border-top: 15px solid @color_scroll_button;
+                border-bottom: 13px solid @color_scroll_button;
+                border-right: 14px solid transparent;
+                border-left: 5px solid @color_scroll_button;
+                position: absolute;
+                opacity: .6;
+                left: 0;
+                top: 0;
+                border-radius: 5px 0 0 5px;
+            }
+        }
     }
-
-    td:first-child {
-      position: sticky;
-      left: 0;
-      top: auto;
-    }
-
-    .ls_scrollbutton_forward, .ls_scrollbutton_back {
-      width: 100%;
-      background: linear-gradient(to bottom, #514943 0%, #514943 100%);
-      border: none;
-      border-radius: 5px;
-      position: relative;
-      color: #fbfbfb;
-      font-family: 'Open Sans', sans-serif;
-      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-      font-size: 12px;
-      text-align: left;
-      box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      display: block;
-      margin: 0 auto;
-      margin-bottom: 5px;
-      margin-right: 10px;
-    }
-
-    .ls_scrollbutton_forward:active, .ls_scrollbutton_back:active {
-      box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, .2);
-      top: 1px;
-    }
-
-    .ls_scrollbutton_forward:after {
-      content: "";
-      width: 0;
-      height: 0;
-      display: block;
-      border-top: 15px solid #6f655f;
-      border-bottom: 13px solid #6f655f;
-      border-left: 13px solid transparent;
-      border-right: 5px solid #6f655f;
-      position: absolute;
-      opacity: 0.6;
-      right: 0;
-      top: 0;
-      border-radius: 0 5px 5px 0;
-    }
-
-    button.ls_scrollbutton_back {
-      text-align: center;
-      padding-right: 12px;
-      box-sizing: border-box;
-    }
-
-    button.ls_scrollbutton_back:after {
-      content: "";
-      width: 0;
-      height: 0;
-      display: block;
-      border-top: 15px solid #6f655f;
-      border-bottom: 13px solid #6f655f;
-      border-right: 14px solid transparent;
-      border-left: 5px solid #6f655f;
-      position: absolute;
-      opacity: 0.6;
-      left: 0;
-      top: 0;
-      border-radius: 5px 0 0 5px;
-    }
-  }
 }

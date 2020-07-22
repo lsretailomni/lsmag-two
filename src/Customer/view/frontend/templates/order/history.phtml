@@ -147,7 +147,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                     __('View Order') ?></span>
                             </a>
                             <?php
-                            if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($_order->getReorderUrl())) : ?>
+                            if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($_order->getId())) : ?>
                                 <a href="#" data-post='<?php /* @escapeNotVerified */
                                 echo
                                 $this->helper(PostHelper::class)

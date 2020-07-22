@@ -1190,4 +1190,44 @@ class ContactHelper extends AbstractHelper
         }
         return null;
     }
+
+    /**
+     * To sync customer details and address to LS Central
+     * @param Customer $customer
+     * @return bool
+     */
+    public function syncCustomerAndAddress(Customer $customer)
+    {
+        try {
+            $customer->setData('password', LSR::DEFAULT_CUSTOMER_PASSWORD);
+            $contact = $this->contact($customer);
+            if (is_object($contact) && $contact->getId()) {
+                $token = $contact->getLoggedOnToDevice()->getSecurityToken();
+                $customer->setData('lsr_id', $contact->getId());
+                $customer->setData('lsr_token', $token);
+                $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
+                if ($contact->getAccount()->getScheme()->getId()) {
+                    $customerGroupId = $this->getCustomerGroupIdByName(
+                        $contact->getAccount()->getScheme()->getId()
+                    );
+                    $customer->setGroupId($customerGroupId);
+                }
+                $this->customerResourceModel->save($customer);
+                if (!empty($customer->getAddresses())) {
+                    $customerAddress = [];
+                    foreach ($customer->getAddresses() as $address) {
+                        $customerAddress[] = $address;
+                    }
+                    if (!empty($customerAddress)) {
+                        // We only saving one address for now
+                        $this->updateAccount($customerAddress[0]);
+                    }
+                }
+                return true;
+            }
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return false;
+    }
 }

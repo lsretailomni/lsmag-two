@@ -21,8 +21,8 @@ class LSR
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
 Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';
-    const APP_NAME = 'ls-mag';
-    const APP_VERSION = '1.0.0';
+    // Default Customer password for LS Central if customer created from Magento Admin
+    const DEFAULT_CUSTOMER_PASSWORD = "lscentral@123";
     const EXTENSION_COMPOSER_PATH_VENDOR = "vendor/lsretail/lsmag-two/composer.json";
     const EXTENSION_COMPOSER_PATH_APP = "app/code/lsretail/lsmag-two/composer.json";
     const CRON_STATUS_PATH_PREFIX = 'ls_mag/replication/status_';
@@ -517,12 +517,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getGoogleMapsApiKey()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_GOOGLE_API_KEY,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -531,12 +530,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getDefaultLatitude()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -545,12 +543,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getDefaultLongitude()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -559,12 +556,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getDefaultZoom()
     {
-        $configValue = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_ZOOM,
             ScopeConfigInterface::
             SCOPE_TYPE_DEFAULT
         );
-        return $configValue;
     }
 
     /**
@@ -576,11 +572,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         return $this->getStoreConfig(self::SC_CART_CHECK_INVENTORY);
     }
 
-    /*
+    /**
      * This can be used on all frontend areas to dynamically fetch the current storeId.
      * Try not to use it on backend.
      * @return int
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getCurrentStoreId()
     {
