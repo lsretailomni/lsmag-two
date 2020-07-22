@@ -102,4 +102,12 @@
             <schedule>0 0 * * 0</schedule>
         </job>
     </group>
+    <group id="sync_data">
+        <job name="sync_orders" instance="Ls\Replication\Cron\SyncOrders" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
+        <job name="sync_customers" instance="Ls\Replication\Cron\SyncCustomers" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
+    </group>
 </config>

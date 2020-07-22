@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="ls_omni_disaster_recovery_email" label="Omni Disaster Recovery Email" file="disaster_recovery_email.html" type="html" module="Ls_Core" area="frontend"/>
+</config>

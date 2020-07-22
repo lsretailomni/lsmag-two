@@ -340,6 +340,19 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Magento Order Number Prefix
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_number/prefix';
 
+    //Disaster Recovery Enabled/Disabled For Notification
+    const LS_DISASTER_RECOVERY_STATUS = 'ls_mag/ls_disaster_recovery/notification';
+
+    //Disaster Recovery Email Address For Notification
+    const LS_DISASTER_RECOVERY_NOTIFICATION_EMAIL = 'ls_mag/ls_disaster_recovery/email';
+
+    //Disaster Recovery Status For Email Notification
+    const LS_DISASTER_RECOVERY_NOTIFICATION_EMAIL_STATUS = 'ls_mag/ls_disaster_recovery/email_sent';
+
+    const SC_CRON_SYNC_ORDERS_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_orders';
+
+    const SC_CRON_SYNC_CUSTOMERS_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_orders';
+
     /**
      * @var ScopeConfigInterface
      */

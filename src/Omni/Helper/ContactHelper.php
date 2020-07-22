@@ -29,6 +29,7 @@ use Magento\Directory\Model\Country;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -58,6 +59,9 @@ class ContactHelper extends AbstractHelper
 
     /** @var FilterBuilder */
     public $filterBuilder;
+
+    /** @var FilterGroupBuilder */
+    public $filterGroupBuilder;
 
     /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
@@ -169,6 +173,7 @@ class ContactHelper extends AbstractHelper
     public function __construct(
         Context $context,
         FilterBuilder $filterBuilder,
+        FilterGroupBuilder $filterGroupBuilder,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         CustomerRepositoryInterface $customerRepository,
         StoreManagerInterface $storeManager,
@@ -194,6 +199,7 @@ class ContactHelper extends AbstractHelper
         ProductRepositoryInterface $productRepository
     ) {
         $this->filterBuilder         = $filterBuilder;
+        $this->filterGroupBuilder    = $filterGroupBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeManager          = $storeManager;
         $this->customerRepository    = $customerRepository;
@@ -258,7 +264,7 @@ class ContactHelper extends AbstractHelper
             /** @var Operation\ContactGetById $request */
             // @codingStandardsIgnoreStart
             $request = new Operation\ContactSearch();
-            $search = new Entity\ContactSearch();
+            $search  = new Entity\ContactSearch();
             // @codingStandardsIgnoreEnd
             $search->setSearch($email);
             $search->setMaxNumberOfRowsReturned(1);
@@ -1002,11 +1008,11 @@ class ContactHelper extends AbstractHelper
         }
         $customer_email = $customer->getEmail();
         $websiteId      = $this->storeManager->getWebsite()->getWebsiteId();
-        $customer = $this->customerFactory->create()
+        $customer       = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
-        $cards    = $result->getCards()->getCard();
-        $cardId   = $cards[0]->getId();
+        $cards          = $result->getCards()->getCard();
+        $cardId         = $cards[0]->getId();
         if ($customer->getData('lsr_id') === null) {
             $customer->setData('lsr_id', $result->getId());
         }
@@ -1095,6 +1101,38 @@ class ContactHelper extends AbstractHelper
                 ->create()
         ];
         $this->searchCriteriaBuilder->addFilters($filters);
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        return $this->customerRepository->getList($searchCriteria);
+    }
+
+    /**
+     * @param null $websiteId
+     * @return CustomerSearchResultsInterface
+     * @throws LocalizedException
+     */
+    public function getAllCustomers($websiteId = null)
+    {
+
+        $filter1 = $this->filterBuilder
+            ->setField('lsr_id')
+            ->setConditionType('null')
+            ->setValue(true)
+            ->create();
+        $filter2 = $this->filterBuilder
+            ->setField('website_id')
+            ->setConditionType('eq')
+            ->setValue($websiteId)
+            ->create();
+
+        $filterGroup1 = $this->filterGroupBuilder
+            ->addFilter($filter1)
+            ->create();
+
+        $filterGroup2 = $this->filterGroupBuilder
+            ->addFilter($filter2)
+            ->create();
+
+        $this->searchCriteriaBuilder->setFilterGroups([$filterGroup1, $filterGroup2]);
         $searchCriteria = $this->searchCriteriaBuilder->create();
         return $this->customerRepository->getList($searchCriteria);
     }
