@@ -1,39 +1,29 @@
-<!--@subject Omni Service is currently down @-->
-<!--@vars
-{"store url=\"\"":"Store Url",
-"skin url=\"images/logo_email.gif\" _area='frontend'":"Email Logo Image"}
-@-->
-<!--@styles
-body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
-@-->
+<!--@subject Omni service is currently down @-->
 {{template config_path="design/email/header_template"}}
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr>
-        <td align="center" valign="top" style="padding:20px 0 20px 0">
-            <table bgcolor="#FFFFFF" cellspacing="0" cellpadding="10" border="0" width="650" style="border:1px solid #E0E0E0;">
+        <td align="center" valign="top" style="padding:10px 0 10px 0">
+            <table bgcolor="#FFFFFF">
                 <tr>
                     <td valign="top">
-                        <h1 style="font-size:22px;font-weight:normal;line-height:22px;margin:0 0 11px 0;">{{trans "Hello"}},</h1>
+                        <h1 style="font-size:22px;font-weight:normal;margin:0 0 5px 0;">{{trans "Hello"}},</h1>
                     </td>
+                    <br/>
                 </tr>
                 <tr>
                     <td>
-                        <table cellspacing="0" cellpadding="0" border="0" width="650">
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <p style="font-size:12px;margin:0;">
-                                        <strong>{{trans "Omni Service is currently down and is not reachable. Please look out the service"}}</strong>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" valign="top" style="font-size:12px;padding:7px 9px 9px 9px;border:1px solid #EAEAEA;">
-                                    {{var message}}
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <p style="font-size:12px;margin:0;">
+                            <strong>{{trans "Omni Service is currently down and is not reachable. Please
+                                look out the service."}}</strong>
+                        </p>
+                        <br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" valign="middle">
+                        <p style="font-size:12px;margin:0;">
+                            {{var message}}
+                        </p>
                     </td>
                 </tr>
                 <tr>

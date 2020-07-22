@@ -205,7 +205,7 @@
                        showInWebsite="1">
                     <label>Notification Email</label>
                     <depends>
-                        <field id="*/*/disaster_recovery">1</field>
+                        <field id="*/*/notification">1</field>
                     </depends>
                 </field>
             </group>

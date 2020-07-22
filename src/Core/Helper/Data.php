@@ -3,7 +3,8 @@
 namespace Ls\Core\Helper;
 
 use Exception;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
+use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -38,24 +39,32 @@ class Data extends AbstractHelper
     private $configWriter;
 
     /**
+     * @var TypeListInterface
+     */
+    private $cacheTypeList;
+
+    /**
      * Data constructor.
      * @param Context $context
      * @param StoreManagerInterface $storeManager
      * @param TransportBuilder $transportBuilder
      * @param StateInterface $state
      * @param WriterInterface $configWriter
+     * @param TypeListInterface $cacheTypeList
      */
     public function __construct(
         Context $context,
         StoreManagerInterface $storeManager,
         TransportBuilder $transportBuilder,
         StateInterface $state,
-        WriterInterface $configWriter
+        WriterInterface $configWriter,
+        TypeListInterface $cacheTypeList
     ) {
         $this->storeManager      = $storeManager;
         $this->transportBuilder  = $transportBuilder;
         $this->inlineTranslation = $state;
         $this->configWriter      = $configWriter;
+        $this->cacheTypeList     = $cacheTypeList;
         parent::__construct($context);
     }
 
@@ -132,6 +141,19 @@ class Data extends AbstractHelper
     }
 
     /**
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getStoreEmail()
+    {
+        return $this->scopeConfig->getValue(
+            'trans_email/ident_general/email',
+            ScopeInterface::SCOPE_STORES,
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
      * @param $url
      * @return bool
      * @throws NoSuchEntityException
@@ -162,6 +184,7 @@ class Data extends AbstractHelper
             if ($soapClient) {
                 if ($this->isNotificationEmailSent()) {
                     $this->setNotificationEmailSent(0);
+                    $this->flushCache('config');
                 }
                 return true;
             }
@@ -174,12 +197,16 @@ class Data extends AbstractHelper
         return false;
     }
 
+    /**
+     * @param $message
+     * @throws NoSuchEntityException
+     */
     public function sendEmail($message)
     {
         $templateId = 'ls_omni_disaster_recovery_email';
 
-        $toEmail = $this->getNotificationEmail();
-
+        $toEmail    = $this->getNotificationEmail();
+        $storeEmail = $this->getStoreEmail();
         try {
             // template variables pass here
             $templateVars = [
@@ -195,16 +222,30 @@ class Data extends AbstractHelper
                 'area'  => \Magento\Framework\App\Area::AREA_FRONTEND,
                 'store' => $storeId
             ];
+            $sender          = [
+                'name'  => $this->storeManager->getStore()->getName(),
+                'email' => $storeEmail,
+            ];
             $transport       = $this->transportBuilder->setTemplateIdentifier($templateId, $storeScope)
                 ->setTemplateOptions($templateOptions)
                 ->setTemplateVars($templateVars)
                 ->addTo($toEmail)
+                ->setFrom($sender)
                 ->getTransport();
             $transport->sendMessage();
             $this->inlineTranslation->resume();
             $this->setNotificationEmailSent(1);
+            $this->flushCache('config');
         } catch (\Exception $e) {
             $this->_logger->info($e->getMessage());
         }
+    }
+
+    /**
+     * @param $typeCode
+     */
+    public function flushCache($typeCode)
+    {
+        $this->cacheTypeList->cleanType($typeCode);
     }
 }

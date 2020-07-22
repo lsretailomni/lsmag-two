@@ -2,11 +2,12 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Helper\ContactHelper;
-use Ls\Omni\Helper\Data;
-use Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Helper\Data;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Api\Data\StoreInterface;
@@ -77,9 +78,11 @@ class SyncCustomers
     /**
      * @param null $storeData
      * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function execute($storeData = null)
     {
+        $info = [];
         if (!empty($storeData) && $storeData instanceof StoreInterface) {
             $stores = [$storeData];
         } else {
@@ -94,18 +97,32 @@ class SyncCustomers
                     $customers = $this->contactHelper->getAllCustomers($this->store->getWebsiteId());
                     if (!empty($customers)) {
                         foreach ($customers as $customer) {
-
+                            $this->contactHelper->syncCustomerAndAddress($customer);
                         }
-
                         $this->replicationHelper->updateConfigValue(
                             $this->replicationHelper->getDateTime(),
                             LSR::SC_CRON_SYNC_CUSTOMERS_CONFIG_PATH_LAST_EXECUTE,
                             $this->store->getId()
                         );
                     }
+
+                    $info[] = -1;
+                    return $info;
                 }
                 $this->lsr->setStoreId(null);
             }
         }
+    }
+
+    /**
+     * @param null $storeData
+     * @return array
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
+     */
+    public function executeManually($storeData = null)
+    {
+        $info = $this->execute($storeData);
+        return $info;
     }
 }

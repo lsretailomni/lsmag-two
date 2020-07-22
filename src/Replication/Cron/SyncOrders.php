@@ -2,10 +2,10 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Helper\Data;
-use Ls\Omni\Helper\OrderHelper;
-use Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
@@ -80,6 +80,7 @@ class SyncOrders
      */
     public function execute($storeData = null)
     {
+        $info = [];
         if (!empty($storeData) && $storeData instanceof StoreInterface) {
             $stores = [$storeData];
         } else {
@@ -111,9 +112,23 @@ class SyncOrders
                             $this->store->getId()
                         );
                     }
+
+                    $info[] = -1;
+                    return $info;
                 }
                 $this->lsr->setStoreId(null);
             }
         }
+    }
+
+    /**
+     * @param null $storeData
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function executeManually($storeData = null)
+    {
+        $info = $this->execute($storeData);
+        return $info;
     }
 }
