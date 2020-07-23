@@ -156,8 +156,10 @@ Debug,Debug
 "Debug Mode for Omni Client","Debug Mode for Omni Client"
 "Service Timeout","Service Timeout"
 "Max time in seconds to wait for omni response","Max time in seconds to wait for omni response"
-"LS Recommend","LS Recommend"
+"Service Down Notification","Service Down Notification"
 Enabled,Enabled
+"Notification Email","Notification Email"
+"LS Recommend","LS Recommend"
 "Show on Product Page","Show on Product Page"
 "Show on Cart Page","Show on Cart Page"
 "Show on Home Page","Show on Home Page"
@@ -174,8 +176,6 @@ Coupons,Coupons
 "Opening Hours Time Format","Opening Hours Time Format"
 "Magento Order Number Prefix","Magento Order Number Prefix"
 "Prefix for Order Number","Prefix for Order Number"
-"Disaster Recovery Notification","Disaster Recovery Notification"
-"Notification Email","Notification Email"
 "Click And Collect","Click And Collect"
 Title,Title
 "Method Name","Method Name"

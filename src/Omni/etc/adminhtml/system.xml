@@ -61,6 +61,21 @@
                     <comment>Max time in seconds to wait for omni response</comment>
                 </field>
             </group>
+            <group id="ls_disaster_recovery" translate="label" type="text" sortOrder="5" showInWebsite="1">
+                <label>Service Down Notification</label>
+                <field id="notification" translate="label" type="select" sortOrder="1"
+                       showInWebsite="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="email" translate="label" type="text" sortOrder="2"
+                       showInWebsite="1">
+                    <label>Notification Email</label>
+                    <depends>
+                        <field id="*/*/notification">1</field>
+                    </depends>
+                </field>
+            </group>
             <group id="ls_recommend" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>LS Recommend</label>
@@ -192,21 +207,6 @@
                     <label>Prefix for Order Number</label>
                     <comment>Maximum Length 5 Characters</comment>
                     <validate>validate-length maximum-length-5 validate-no-html-tags validate-sequence-number</validate>
-                </field>
-            </group>
-            <group id="ls_disaster_recovery" translate="label" type="text" sortOrder="5" showInWebsite="1">
-                <label>Disaster Recovery Notification</label>
-                <field id="notification" translate="label" type="select" sortOrder="1"
-                       showInWebsite="1">
-                    <label>Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="email" translate="label" type="text" sortOrder="2"
-                       showInWebsite="1">
-                    <label>Notification Email</label>
-                    <depends>
-                        <field id="*/*/notification">1</field>
-                    </depends>
                 </field>
             </group>
         </section>
