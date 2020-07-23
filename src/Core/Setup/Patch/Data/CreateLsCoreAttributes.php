@@ -1,32 +1,35 @@
 <?php
 
-namespace Ls\Core\Setup;
+namespace Ls\Core\Setup\Patch\Data;
 
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Setup\CustomerSetupFactory;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
-use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
 use Magento\Eav\Model\Entity\Attribute\SetFactory as AttributeSetFactory;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Setup\InstallDataInterface;
-use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magento\Framework\Setup\Patch\PatchVersionInterface;
 use Zend_Validate_Exception;
 
 /**
- * Class InstallData
- * @package Ls\Core\Setup
+ * Class CreateLsCoreAttributes
+ * @package Ls\Core\Setup\Patch\Data
  */
-class InstallData implements InstallDataInterface
+class CreateLsCoreAttributes implements DataPatchInterface, PatchVersionInterface
 {
+    /**
+     * @var ModuleDataSetupInterface
+     */
+    private $moduleDataSetup;
 
     /**
      * @var CustomerSetupFactory
      */
-    public $customerSetupFactory;
+    private $customerSetupFactory;
 
     /**
      * @var AttributeSetFactory
@@ -39,15 +42,19 @@ class InstallData implements InstallDataInterface
     private $eavSetupFactory;
 
     /**
+     * CreateLsCoreAttributes constructor.
+     * @param ModuleDataSetupInterface $moduleDataSetup
      * @param CustomerSetupFactory $customerSetupFactory
      * @param AttributeSetFactory $attributeSetFactory
      * @param EavSetupFactory $eavSetupFactory
      */
     public function __construct(
+        ModuleDataSetupInterface $moduleDataSetup,
         CustomerSetupFactory $customerSetupFactory,
         AttributeSetFactory $attributeSetFactory,
         EavSetupFactory $eavSetupFactory
     ) {
+        $this->moduleDataSetup      = $moduleDataSetup;
         $this->customerSetupFactory = $customerSetupFactory;
         $this->attributeSetFactory  = $attributeSetFactory;
         $this->eavSetupFactory      = $eavSetupFactory;
@@ -56,38 +63,39 @@ class InstallData implements InstallDataInterface
     /**
      * {@inheritdoc}
      */
-    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public static function getDependencies()
     {
-
-        $setup->startSetup();
-        /*
-         * Trigger the install data function for Customer
-         */
-        $this->createAllCustomerAttributes($setup, $context);
-        /*
-         * Trigger the install data function for Category
-         */
-        $this->createAllCategoryAttributes($setup, $context);
-        /*
-         * Trigger the install data function for Product
-         */
-        $this->createAllProductAttributes($setup, $context);
-        $setup->endSetup();
+        return [];
     }
 
     /**
-     * @param ModuleDataSetupInterface $setup
-     * @param ModuleContextInterface $context
+     * @inheritdoc
      */
-    protected function createAllCustomerAttributes(
-        ModuleDataSetupInterface $setup,
-        ModuleContextInterface $context
-    ) {
-        /** @var CustomerSetup $customerSetup */
-        $customerSetup  = $this->customerSetupFactory->create(['setup' => $setup]);
-        $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
-        $attributeSetId = $customerEntity->getDefaultAttributeSetId();
-        /** @var $attributeSet AttributeSet */
+    public static function getVersion()
+    {
+        return '1.0.1';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function apply()
+    {
+        $this->moduleDataSetup->getConnection()->startSetup();
+        $this->createAllCustomerAttributes();
+        $this->createAllCategoryAttributes();
+        $this->createAllProductAttributes();
+        $this->moduleDataSetup->getConnection()->endSetup();
+    }
+
+    /**
+     * Trigger the install data function for Customer
+     */
+    private function createAllCustomerAttributes()
+    {
+        $customerSetup    = $this->customerSetupFactory->create(['setup' => $this->moduleDataSetup]);
+        $customerEntity   = $customerSetup->getEavConfig()->getEntityType('customer');
+        $attributeSetId   = $customerEntity->getDefaultAttributeSetId();
         $attributeSet     = $this->attributeSetFactory->create();
         $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
         $customerSetup->addAttribute(Customer::ENTITY, 'lsr_username', [
@@ -154,16 +162,11 @@ class InstallData implements InstallDataInterface
     }
 
     /**
-     * @param ModuleDataSetupInterface $setup
-     * @param ModuleContextInterface $context
-     * @throws LocalizedException
-     * @throws Zend_Validate_Exception
+     * Trigger the install data function for Category
      */
-    protected function createAllCategoryAttributes(
-        ModuleDataSetupInterface $setup,
-        ModuleContextInterface $context
-    ) {
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+    private function createAllCategoryAttributes()
+    {
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
         $eavSetup->addAttribute(
             Category::ENTITY,
             'nav_id',
@@ -183,16 +186,11 @@ class InstallData implements InstallDataInterface
     }
 
     /**
-     * @param ModuleDataSetupInterface $setup
-     * @param ModuleContextInterface $context
-     * @throws LocalizedException
-     * @throws Zend_Validate_Exception
+     * Trigger the install data function for Product
      */
-    protected function createAllProductAttributes(
-        ModuleDataSetupInterface $setup,
-        ModuleContextInterface $context
-    ) {
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+    private function createAllProductAttributes()
+    {
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
         $eavSetup->addAttribute(
             Product::ENTITY,
             'barcode',
@@ -224,5 +222,13 @@ class InstallData implements InstallDataInterface
                 'group'        => 'General Information',
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAliases()
+    {
+        return [];
     }
 }
