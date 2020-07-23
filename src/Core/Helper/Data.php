@@ -4,6 +4,7 @@ namespace Ls\Core\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -103,12 +104,11 @@ class Data extends AbstractHelper
      */
     public function getNotificationEmail()
     {
-        $email = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             LSR::LS_DISASTER_RECOVERY_NOTIFICATION_EMAIL,
             ScopeInterface::SCOPE_STORES,
             $this->storeManager->getStore()->getId()
         );
-        return $email;
     }
 
     /**
@@ -117,12 +117,11 @@ class Data extends AbstractHelper
      */
     public function isNotificationEmailSent()
     {
-        $email = $this->scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             LSR::LS_DISASTER_RECOVERY_NOTIFICATION_EMAIL_STATUS,
             ScopeInterface::SCOPE_STORES,
             $this->storeManager->getStore()->getId()
         );
-        return $email;
     }
 
     /**
@@ -217,9 +216,9 @@ class Data extends AbstractHelper
 
             $this->inlineTranslation->suspend();
 
-            $storeScope      = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+            $storeScope      = ScopeInterface::SCOPE_STORE;
             $templateOptions = [
-                'area'  => \Magento\Framework\App\Area::AREA_FRONTEND,
+                'area'  => Area::AREA_FRONTEND,
                 'store' => $storeId
             ];
             $sender          = [
@@ -230,7 +229,7 @@ class Data extends AbstractHelper
                 ->setTemplateOptions($templateOptions)
                 ->setTemplateVars($templateVars)
                 ->addTo($toEmail)
-                ->setFrom($sender)
+                ->setFromByScope($sender, $storeId)
                 ->getTransport();
             $transport->sendMessage();
             $this->inlineTranslation->resume();

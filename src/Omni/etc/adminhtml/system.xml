@@ -195,7 +195,7 @@
                 </field>
             </group>
             <group id="ls_disaster_recovery" translate="label" type="text" sortOrder="5" showInWebsite="1">
-                <label>Disaster Recovery</label>
+                <label>Disaster Recovery Notification</label>
                 <field id="notification" translate="label" type="select" sortOrder="1"
                        showInWebsite="1">
                     <label>Enabled</label>
