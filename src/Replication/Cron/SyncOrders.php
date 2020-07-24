@@ -8,6 +8,7 @@ use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Message\ManagerInterface as MessageInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Api\Data\StoreInterface;
 
@@ -52,6 +53,11 @@ class SyncOrders
     public $cartRepository;
 
     /**
+     * @var MessageInterface
+     */
+    public $messageInterface;
+
+    /**
      * SyncOrders constructor.
      * @param LSR $lsr
      * @param Data $helper
@@ -59,6 +65,7 @@ class SyncOrders
      * @param OrderHelper $orderHelper
      * @param ManagerInterface $eventManager
      * @param CartRepositoryInterface $cartRepository
+     * @param MessageInterface $messageInterface
      */
     public function __construct(
         LSR $lsr,
@@ -66,7 +73,8 @@ class SyncOrders
         ReplicationHelper $replicationHelper,
         OrderHelper $orderHelper,
         ManagerInterface $eventManager,
-        CartRepositoryInterface $cartRepository
+        CartRepositoryInterface $cartRepository,
+        MessageInterface $messageInterface
     ) {
 
         $this->lsr               = $lsr;
@@ -75,6 +83,7 @@ class SyncOrders
         $this->orderHelper       = $orderHelper;
         $this->eventManager      = $eventManager;
         $this->cartRepository    = $cartRepository;
+        $this->messageInterface  = $messageInterface;
     }
 
     /**
@@ -108,6 +117,7 @@ class SyncOrders
                                 ]
                             );
                             $this->eventManager->dispatch('sales_order_place_after', ['order' => $order]);
+                            $this->messageInterface->getMessages(true);
                         }
 
                         $this->replicationHelper->updateConfigValue(
