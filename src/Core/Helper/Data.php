@@ -202,7 +202,7 @@ class Data extends AbstractHelper
      */
     public function sendEmail($message)
     {
-        $templateId = 'ls_omni_disaster_recovery_email';
+        $templateId = LSR::EMAIL_TEMPLATE_ID_FOR_OMNI_SERVICE_DOWN;
 
         $toEmail    = $this->getNotificationEmail();
         $storeEmail = $this->getStoreEmail();
