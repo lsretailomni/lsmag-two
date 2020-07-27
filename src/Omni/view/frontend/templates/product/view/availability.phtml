@@ -1,0 +1,30 @@
+<?php
+// @codingStandardsIgnoreFile
+use Ls\Omni\Block\Product\View\View;
+
+/** @var $block View */
+$_product = $block->getProduct();
+?>
+<?php if ($_product->isSaleable()): ?>
+    <?php if ($block->isValid()) : ?>
+        <div class="availability-link-container">
+            <a href="javascript:void()" name="checkavailability"
+               class="checkavailability"><?php echo __('Check Availability in Stores') ?></a>
+        </div>
+        <div id="map-canvas"></div>
+        <script type="text/javascript">
+            var googleMapApiKey = "<?php echo $block->getGoogleMapsApiKey();?>";
+            var defaultLat = "<?php echo $block->getDefaultLatitude();?>";
+            var defaultLong = "<?php echo $block->getDefaultLongitude();?>";
+            var defaultZoom = "<?php echo $block->getDefaultZoom();?>";
+        </script>
+
+        <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "lsomni/stock": {}
+        }
+    }
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

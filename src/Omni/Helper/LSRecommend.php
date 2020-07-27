@@ -129,7 +129,7 @@ class LSRecommend extends AbstractHelper
     // @codingStandardsIgnoreStart
     public function getProductRecommendationfromOmni($product_ids)
     {
-        if (is_null($product_ids) || empty($product_ids) || $product_ids == '') {
+        if (is_null($product_ids) || empty($product_ids) || $product_ids == '' || !$this->lsr->isLSR($this->lsr->getCurrentStoreId()) ) {
             return null;
         }
         $webStore = $this->lsr->getActiveWebStore();

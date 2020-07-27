@@ -12,6 +12,7 @@ use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\Locale\FormatInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\StringUtils;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class View
@@ -112,13 +113,10 @@ class View extends \Magento\Catalog\Block\Product\View
     /**
      * Get default default zoom from config
      * @return string
+     * @throws NoSuchEntityException
      */
-    public function isEnable()
+    public function isValid()
     {
-        $configValue = $this->lsr->getStoreConfig(
-            $this->lsr::SC_CART_PRODUCT_AVAILABILITY,
-            $this->lsr->getCurrentStoreId()
-        );
-        return $configValue;
+        return  $this->lsr->isLSR($this->lsr->getCurrentStoreId());
     }
 }
