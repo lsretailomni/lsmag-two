@@ -41,7 +41,7 @@ class UpdateLsCoreCustomerAttributesMetadata implements DataPatchInterface
     public static function getDependencies()
     {
         return [
-            UpdateLastKeysPlusStatusesOfRequiredJobs::class
+            CreateLsCoreAttributes::class
         ];
     }
 

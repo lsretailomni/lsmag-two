@@ -6,6 +6,7 @@
             <module name="Magento_Checkout"/>
             <module name="Magento_Tax"/>
             <module name="Magento_SalesRule"/>
+            <module name="Ls_Core"/>
         </sequence>
     </module>
 </config>

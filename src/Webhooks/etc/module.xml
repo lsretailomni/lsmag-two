@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <config xmlns:x1="http://www.w3.org/2001/XMLSchema-instance"
         x1:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Ls_Webhooks"/>
+    <module name="Ls_Webhooks">
+        <sequence>
+            <module name="Ls_Core"/>
+        </sequence>
+    </module>
 </config>
