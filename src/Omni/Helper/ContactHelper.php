@@ -23,6 +23,7 @@ use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Group;
+use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollection;
 use Magento\Customer\Model\ResourceModel\Group\Collection;
 use Magento\Customer\Model\ResourceModel\Group\CollectionFactory;
 use Magento\Directory\Model\Country;
@@ -33,6 +34,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -139,6 +141,11 @@ class ContactHelper extends AbstractHelper
     public $productRepository;
 
     /**
+     * @var CustomerCollection
+     */
+    public $customerCollection;
+
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder
@@ -165,6 +172,7 @@ class ContactHelper extends AbstractHelper
      * @param Wishlist $wishlistResourceModel
      * @param WishlistFactory $wishlistFactory
      * @param ProductRepositoryInterface $productRepository
+     * @param CustomerCollection $customerCollection
      */
     public function __construct(
         Context $context,
@@ -191,7 +199,8 @@ class ContactHelper extends AbstractHelper
         \Magento\Wishlist\Model\Wishlist $wishlist,
         Wishlist $wishlistResourceModel,
         WishlistFactory $wishlistFactory,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        CustomerCollection $customerCollection
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -217,6 +226,7 @@ class ContactHelper extends AbstractHelper
         $this->wishlistResourceModel = $wishlistResourceModel;
         $this->wishlistFactory       = $wishlistFactory;
         $this->productRepository     = $productRepository;
+        $this->customerCollection    = $customerCollection;
         parent::__construct(
             $context
         );
@@ -1097,6 +1107,23 @@ class ContactHelper extends AbstractHelper
         $this->searchCriteriaBuilder->addFilters($filters);
         $searchCriteria = $this->searchCriteriaBuilder->create();
         return $this->customerRepository->getList($searchCriteria);
+    }
+
+    /**
+     * @param null $websiteId
+     * @return DataObject[]
+     * @throws LocalizedException
+     */
+    public function getAllCustomers($websiteId = null)
+    {
+        $collection = $this->customerCollection->create()
+            ->addAttributeToSelect("*")
+            ->addAttributeToFilter("lsr_id", array('null' => true))
+            ->addAttributeToFilter("lsr_username", array('notnull' => true))
+            ->addAttributeToFilter("website_id", ['eq' => $websiteId])
+            ->load();
+
+        return $collection->getItems();
     }
 
     /**
