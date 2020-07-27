@@ -48,11 +48,11 @@ class Recommend extends AbstractProduct
     /**
      * @return ProductInterface[]|null
      */
-    public function getProductRecommendationforCart()
+    public function getProductRecommendationForCart()
     {
         $response            = null;
         $productSkus         = $this->LSRecommend->getProductSkusFromQuote();
-        $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productSkus);
+        $recommendedProducts = $this->LSRecommend->getProductRecommendationFromOmni($productSkus);
         if ($recommendedProducts instanceof ArrayOfRecommendedItem) {
             return $this->LSRecommend->parseProductRecommendation($recommendedProducts);
         }

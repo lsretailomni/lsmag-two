@@ -127,7 +127,7 @@ class LSRecommend extends AbstractHelper
     }
 
     // @codingStandardsIgnoreStart
-    public function getProductRecommendationfromOmni($product_ids)
+    public function getProductRecommendationFromOmni($product_ids)
     {
         if (is_null($product_ids) || empty($product_ids) || $product_ids == '' || !$this->lsr->isLSR($this->lsr->getCurrentStoreId()) ) {
             return null;
@@ -135,10 +135,8 @@ class LSRecommend extends AbstractHelper
         $webStore = $this->lsr->getActiveWebStore();
         $response = null;
         // @codingStandardsIgnoreStart
-        /** @var Operation\RecommendedItemsGet $request */
         $request = new Operation\RecommendedItemsGet();
 
-        /** @var Entity\RecommendedItemsGet $entity */
         $entity = new Entity\RecommendedItemsGet();
 
         //TODO work with UserID.

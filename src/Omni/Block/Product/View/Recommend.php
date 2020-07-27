@@ -118,7 +118,7 @@ class Recommend extends \Magento\Catalog\Block\Product\View
         if (empty($productId)) {
             return $response;
         }
-        $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productId);
+        $recommendedProducts = $this->LSRecommend->getProductRecommendationFromOmni($productId);
         if ($recommendedProducts instanceof ArrayOfRecommendedItem) {
             return $this->LSRecommend->parseProductRecommendation($recommendedProducts);
         }
