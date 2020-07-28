@@ -95,8 +95,9 @@ class OrderObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         $comment = "";
+        $check   = false;
         $order   = $observer->getEvent()->getData('order');
-        if (empty($order)) {
+        if (empty($order->getIncrementId())) {
             $orderIds = $observer->getEvent()->getOrderIds();
             $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
         }
@@ -104,7 +105,6 @@ class OrderObserver implements ObserverInterface
         * Adding condition to only process if LSR is enabled.
         */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $check = false;
             //checking for Adyen payment gateway
             $adyen_response = $observer->getEvent()->getData('adyen_response');
             if (!empty($adyen_response)) {
@@ -115,7 +115,7 @@ class OrderObserver implements ObserverInterface
                 $this->orderHelper->orderRepository->save($order);
                 $order = $this->orderHelper->orderRepository->get($order->getEntityId());
             }
-            if (!empty($order)) {
+            if (!empty($order->getIncrementId())) {
                 $paymentMethod = $order->getPayment();
                 if (!empty($paymentMethod)) {
                     $paymentMethod = $order->getPayment()->getMethodInstance();
@@ -150,17 +150,19 @@ class OrderObserver implements ObserverInterface
                             $this->checkoutSession->unsetData('last_document_id');
                         }
                     }
+                    $order->addCommentToStatusHistory($comment);
+                    $this->orderResourceModel->save($order);
                 } catch (Exception $e) {
                     $this->logger->error($e->getMessage());
                 }
             }
         } else {
             $comment = __('The service is currently unavailable. Please try again later.');
+            $order->addCommentToStatusHistory($comment);
+            $this->orderResourceModel->save($order);
             $this->logger->critical($comment);
             $this->checkoutSession->unsetData('last_document_id');
         }
-        $order->addCommentToStatusHistory($comment);
-        $this->orderResourceModel->save($order);
         $this->checkoutSession->unsetData('member_points');
         if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
             $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);

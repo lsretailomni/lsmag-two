@@ -10,6 +10,7 @@ use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
@@ -87,6 +88,7 @@ class OrderObserver implements ObserverInterface
     /**
      * @param Observer $observer
      * @return $this|void
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
