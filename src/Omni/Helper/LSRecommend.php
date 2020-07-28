@@ -6,12 +6,15 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item;
 
@@ -68,7 +71,7 @@ class LSRecommend extends AbstractHelper
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function isLsRecommendEnable()
     {
@@ -80,7 +83,7 @@ class LSRecommend extends AbstractHelper
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function isLsRecommendEnableOnProductPage()
     {
@@ -92,7 +95,7 @@ class LSRecommend extends AbstractHelper
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function isLsRecommendEnableOnCartPage()
     {
@@ -104,7 +107,7 @@ class LSRecommend extends AbstractHelper
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function isLsRecommendEnableOnHomePage()
     {
@@ -116,7 +119,7 @@ class LSRecommend extends AbstractHelper
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function isLsRecommendEnableOnCheckoutPage()
     {
@@ -126,9 +129,14 @@ class LSRecommend extends AbstractHelper
         );
     }
 
-    // @codingStandardsIgnoreStart
+    /**
+     * @param $product_ids
+     * @return Entity\ArrayOfRecommendedItem|Entity\RecommendedItemsGetResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
+     */
     public function getProductRecommendationFromOmni($product_ids)
     {
+        // @codingStandardsIgnoreStart
         if (is_null($product_ids) || empty($product_ids) || $product_ids == '' || !$this->lsr->isLSR($this->lsr->getCurrentStoreId()) ) {
             return null;
         }
@@ -149,8 +157,9 @@ class LSRecommend extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getRecommendedItemsGetResult() : $response;
+        // @codingStandardsIgnoreEnd
     }
-    // @codingStandardsIgnoreEnd
+
 
     /**
      * @param Entity\ArrayOfRecommendedItem $recommendedProducts
@@ -203,7 +212,9 @@ class LSRecommend extends AbstractHelper
     }
 
     /**
-     * @return null|string
+     * @return string|null
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function getProductSkusFromQuote()
     {
