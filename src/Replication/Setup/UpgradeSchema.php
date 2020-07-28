@@ -2,12 +2,6 @@
 
 namespace Ls\Replication\Setup;
 
-use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
-use \Ls\Replication\Cron\ReplEcommDiscountsTask;
-use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
-use \Ls\Replication\Cron\ReplEcommItemsTask;
-use \Ls\Replication\Cron\ReplEcommPricesTask;
-use \Ls\Replication\Cron\ReplEcommStoresTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Setup\UpgradeSchema\AbstractUpgradeSchema;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -61,20 +55,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
                     $upgrade->upgrade($setup, $context);
                 }
             }
-        }
-        if (version_compare($context->getVersion(), '1.2.1', '<')) {
-            $this->replicationHelper->updateCronStatus(false, ReplEcommItemsTask::CONFIG_PATH_STATUS);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommItemsTask::CONFIG_PATH);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommInventoryStatusTask::CONFIG_PATH);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommStoresTask::CONFIG_PATH_STATUS);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommStoresTask::CONFIG_PATH);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommAttributeValueTask::CONFIG_PATH_STATUS);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommAttributeValueTask::CONFIG_PATH);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH_STATUS);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH_STATUS);
-            $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH);
         }
         // @codingStandardsIgnoreEnd
         $setup->endSetup();
