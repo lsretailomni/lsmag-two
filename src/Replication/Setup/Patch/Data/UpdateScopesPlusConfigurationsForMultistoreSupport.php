@@ -1,27 +1,35 @@
 <?php
 
-
-namespace Ls\Replication\Setup;
+namespace Ls\Replication\Setup\Patch\Data;
 
 use Exception;
 use \Ls\Replication\Logger\Logger;
-use Magento\Framework\Setup\UpgradeDataInterface;
-use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magento\Framework\Setup\Patch\PatchVersionInterface;
 
-class UpgradeData implements UpgradeDataInterface
+/**
+ * Class UpdateScopesPlusConfigurationsForMultistoreSupport
+ * @package Ls\Core\Setup\Patch\Data
+ */
+class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInterface, PatchVersionInterface
 {
+    /**
+     * @var ModuleDataSetupInterface
+     */
+    private $moduleDataSetup;
+
     /**
      * @var Logger
      */
-    public $logger;
+    private $logger;
 
     /** @var ResourceConnection */
-    public $resource;
+    private $resource;
 
     /** @var array List of all the ls_ tables */
-    public $lsTables = [
+    private $lsTables = [
         "ls_replication_loy_item",
         "ls_replication_repl_attribute",
         "ls_replication_repl_attribute_option_value",
@@ -57,7 +65,7 @@ class UpgradeData implements UpgradeDataInterface
 
 
     /** @var array List of all websiteScopeFields */
-    public $websiteScopeFields = [
+    private $websiteScopeFields = [
         "ls_mag/service/base_url",
         "ls_mag/service/ls_key",
         "ls_mag/service/selected_store",
@@ -67,7 +75,7 @@ class UpgradeData implements UpgradeDataInterface
     ];
 
     /** @var array List of all non websiteScopeFields */
-    public $nonwebsiteScopeFields = [
+    private $nonwebsiteScopeFields = [
         "ls_mag/replication/last_execute_repl_attribute",
         "ls_mag/replication/last_execute_repl_attribute_option_value",
         "ls_mag/replication/last_execute_repl_attribute_value",
@@ -160,31 +168,48 @@ class UpgradeData implements UpgradeDataInterface
         "ls_mag/replication/last_execute_repl_price_status_reset"
     ];
 
-
     /**
-     * UpgradeData constructor.
+     * UpdateScopesPlusConfigurationsForMultistoreSupport constructor.
+     * @param ModuleDataSetupInterface $moduleDataSetup
      * @param ResourceConnection $resource
      * @param Logger $logger
      */
     public function __construct(
+        ModuleDataSetupInterface $moduleDataSetup,
         ResourceConnection $resource,
         Logger $logger
     ) {
-        $this->resource = $resource;
-        $this->logger   = $logger;
+        $this->moduleDataSetup = $moduleDataSetup;
+        $this->resource        = $resource;
+        $this->logger          = $logger;
     }
 
     /**
-     * @param ModuleDataSetupInterface $setup
-     * @param ModuleContextInterface $context
+     * {@inheritdoc}
      */
-    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public static function getDependencies()
     {
-        if (version_compare($context->getVersion(), '1.3.0', '<')) {
-            // only need to run  for existing clients who are using older version then 1.3.0
-            $this->updateFlatTables();
-            $this->updateConfigTable();
-        }
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getVersion()
+    {
+        return '1.3.0';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function apply()
+    {
+        $this->moduleDataSetup->getConnection()->startSetup();
+        // only need to run  for existing clients who are using older version then 1.3.0
+        $this->updateFlatTables();
+        $this->updateConfigTable();
+        $this->moduleDataSetup->getConnection()->endSetup();
     }
 
     /**
@@ -221,5 +246,13 @@ class UpgradeData implements UpgradeDataInterface
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAliases()
+    {
+        return [];
     }
 }

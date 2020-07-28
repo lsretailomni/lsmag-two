@@ -2,7 +2,6 @@
 
 namespace Ls\Core\Setup\Patch\Data;
 
-use Magento\Customer\Setup\CustomerSetup;
 use Magento\Customer\Setup\CustomerSetupFactory;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
@@ -39,20 +38,29 @@ class UpdateLsCoreCustomerAttributesMetadata implements DataPatchInterface
     /**
      * {@inheritdoc}
      */
-    public function apply()
+    public static function getDependencies()
     {
-        /** @var CustomerSetup $customerSetup */
-        $customerSetup = $this->customerSetupFactory->create(['setup' => $this->moduleDataSetup]);
-        $this->updateCustomerAttributesMetadata($customerSetup);
+        return [
+            CreateLsCoreAttributes::class
+        ];
     }
 
     /**
-     * @param CustomerSetup $customerSetup
-     * @return void
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * {@inheritdoc}
      */
-    private function updateCustomerAttributesMetadata($customerSetup)
+    public function apply()
     {
+        $this->moduleDataSetup->getConnection()->startSetup();
+        $this->updateCustomerAttributesMetadata();
+        $this->moduleDataSetup->getConnection()->endSetup();
+    }
+
+    /**
+     * updateCustomerAttributesMetadata
+     */
+    private function updateCustomerAttributesMetadata()
+    {
+        $customerSetup    = $this->customerSetupFactory->create(['setup' => $this->moduleDataSetup]);
         $entityAttributes = [
             'customer' => [
                 'lsr_username' => [
@@ -70,14 +78,6 @@ class UpdateLsCoreCustomerAttributesMetadata implements DataPatchInterface
             ]
         ];
         $customerSetup->upgradeAttributes($entityAttributes);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDependencies()
-    {
-        return [];
     }
 
     /**

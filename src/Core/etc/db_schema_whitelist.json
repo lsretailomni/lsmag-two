@@ -1,0 +1,49 @@
+{
+    "quote": {
+        "column": {
+            "pickup_date": true,
+            "pickup_store": true,
+            "ls_points_earn": true,
+            "ls_points_spent": true,
+            "ls_gift_card_no": true,
+            "ls_gift_card_amount_used": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "pickup_date": true,
+            "pickup_store": true,
+            "ls_points_earn": true,
+            "ls_points_spent": true,
+            "ls_gift_card_no": true,
+            "ls_gift_card_amount_used": true,
+            "document_id": true
+        }
+    },
+    "sales_invoice": {
+        "column": {
+            "ls_points_earn": true,
+            "ls_points_spent": true,
+            "ls_gift_card_no": true,
+            "ls_gift_card_amount_used": true
+        }
+    },
+    "sales_creditmemo": {
+        "column": {
+            "ls_points_earn": true,
+            "ls_points_spent": true,
+            "ls_gift_card_no": true,
+            "ls_gift_card_amount_used": true
+        }
+    },
+    "sales_order_grid": {
+        "column": {
+            "document_id": true
+        }
+    },
+    "cron_schedule": {
+        "column": {
+            "parameters": true
+        }
+    }
+}

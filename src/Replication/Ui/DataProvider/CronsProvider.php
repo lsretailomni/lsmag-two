@@ -193,7 +193,8 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $statusStr   = ($fullReplicationStatus == 1) ?
                     '<div class="flag-green custom-grid-flag">Complete</div>' :
                     '<div class="flag-yellow custom-grid-flag">Pending</div>';
-                if (strpos($cronName, '_reset') !== false || $cronName == "sync_version") {
+                if (strpos($cronName, '_reset') !== false || $cronName == "sync_version" ||
+                    $cronName == "sync_orders" || $cronName == "sync_customers") {
                     $condition = $statusStr = '';
                 }
                 $items[] = [

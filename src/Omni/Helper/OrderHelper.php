@@ -421,8 +421,32 @@ class OrderHelper extends AbstractHelper
         return $order;
     }
 
+
     /**
-     * @return mixed
+     * @param null $storeId
+     * @return array|OrderInterface|mixed
+     */
+    public function getOrders($storeId = null)
+    {
+        $orders = null;
+        try {
+            $orders = $this->orderRepository->getList(
+                $this->basketHelper->searchCriteriaBuilder
+                    ->addFilter('document_id', null, 'null')
+                    ->addFilter('store_id', $storeId, 'eq')
+                    ->create()
+            )->getItems();
+            return $orders;
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $orders;
+    }
+
+
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getActiveWebStore()
     {
