@@ -158,6 +158,18 @@ class CreateLsCoreAttributes implements DataPatchInterface, PatchVersionInterfac
             'default'            => null,
             'attribute_set_id'   => $attributeSetId,
             'attribute_group_id' => $attributeGroupId
+        ])->addAttribute(Customer::ENTITY, 'lsr_password', [
+            'type'               => 'varchar',
+            'input'              => 'text',
+            'label'              => 'LSR Password',
+            'unique'             => false,
+            'visible'            => false,
+            'visible_in_front'   => true,
+            'required'           => false,
+            'user_defined'       => false,
+            'default'            => null,
+            'attribute_set_id'   => $attributeSetId,
+            'attribute_group_id' => $attributeGroupId
         ]);
     }
 

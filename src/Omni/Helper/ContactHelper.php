@@ -35,6 +35,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -146,6 +147,11 @@ class ContactHelper extends AbstractHelper
     public $customerCollection;
 
     /**
+     * @var EncryptorInterface
+     */
+    public $encryptorInterface;
+
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder
@@ -173,6 +179,7 @@ class ContactHelper extends AbstractHelper
      * @param WishlistFactory $wishlistFactory
      * @param ProductRepositoryInterface $productRepository
      * @param CustomerCollection $customerCollection
+     * @param EncryptorInterface $encryptorInterface
      */
     public function __construct(
         Context $context,
@@ -200,7 +207,8 @@ class ContactHelper extends AbstractHelper
         Wishlist $wishlistResourceModel,
         WishlistFactory $wishlistFactory,
         ProductRepositoryInterface $productRepository,
-        CustomerCollection $customerCollection
+        CustomerCollection $customerCollection,
+        EncryptorInterface $encryptorInterface
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -227,6 +235,7 @@ class ContactHelper extends AbstractHelper
         $this->wishlistFactory       = $wishlistFactory;
         $this->productRepository     = $productRepository;
         $this->customerCollection    = $customerCollection;
+        $this->encryptorInterface    = $encryptorInterface;
         parent::__construct(
             $context
         );
@@ -472,13 +481,15 @@ class ContactHelper extends AbstractHelper
         $request       = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
         $contact       = new Entity\MemberContact();
+        $lsrPassword   = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
+        $password      = (!empty($lsrPassword)) ? $lsrPassword : $customer->getData('password');
         // @codingStandardsIgnoreEnd
         $contact->setAlternateId($alternate_id)
             ->setEmail($customer->getData('email'))
             ->setFirstName($customer->getData('firstname'))
             ->setLastName($customer->getData('lastname'))
             ->setMiddleName($customer->getData('middlename') ? $customer->getData('middlename') : null)
-            ->setPassword($customer->getData('password'))
+            ->setPassword($password)
             ->setUserName($customer->getData('lsr_username'))
             ->setAddresses([]);
         $contactCreate->setContact($contact);
@@ -1188,13 +1199,23 @@ class ContactHelper extends AbstractHelper
     public function syncCustomerAndAddress(Customer $customer)
     {
         try {
-            $customer->setData('password', LSR::DEFAULT_CUSTOMER_PASSWORD);
-            $contact = $this->contact($customer);
+            $contact = $this->getCustomerByUsernameFromLsCentral($customer);
+            $contact = (!empty($contact)) ? $contact : $this->getCustomerByEmailFromLsCentral($customer);
+
+            if (!empty($contact)) {
+                $customer->setPassword($contact->getPassword());
+            } else {
+                $contact = $this->contact($customer);
+            }
+
             if (is_object($contact) && $contact->getId()) {
-                $token = $contact->getLoggedOnToDevice()->getSecurityToken();
+                if (!empty($contact->getLoggedOnToDevice())) {
+                    $token = $contact->getLoggedOnToDevice()->getSecurityToken();
+                    $customer->setData('lsr_token', $token);
+                }
                 $customer->setData('lsr_id', $contact->getId());
-                $customer->setData('lsr_token', $token);
                 $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
+                $customer->setData('lsr_password', null);
                 if ($contact->getAccount()->getScheme()->getId()) {
                     $customerGroupId = $this->getCustomerGroupIdByName(
                         $contact->getAccount()->getScheme()->getId()
@@ -1218,5 +1239,67 @@ class ContactHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return false;
+    }
+
+    /**
+     * @param Customer $customer
+     * @return Entity\MemberContact|null
+     * @throws InvalidEnumException
+     */
+    public function getCustomerByUsernameFromLsCentral(Customer $customer)
+    {
+        $response = null;
+        $contact  = null;
+
+        // @codingStandardsIgnoreStart
+        $request       = new Operation\ContactSearch();
+        $contactSearch = new Entity\ContactSearch();
+        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
+        $contactSearch->setSearch($customer->getData('lsr_username'));
+        try {
+            $response = $request->execute($contactSearch);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        if (!empty($response) && !empty($response->getContactSearchResult())) {
+            foreach ($response->getContactSearchResult() as $contact) {
+                if ($contact->getUserName() == $customer->getData('lsr_username')) {
+                    return $contact;
+                }
+            }
+        }
+
+        return $contact;
+    }
+
+    /**
+     * @param Customer $customer
+     * @return Entity\MemberContact|null
+     * @throws InvalidEnumException
+     */
+    public function getCustomerByEmailFromLsCentral(Customer $customer)
+    {
+        $response = null;
+        $contact  = null;
+
+        // @codingStandardsIgnoreStart
+        $request       = new Operation\ContactSearch();
+        $contactSearch = new Entity\ContactSearch();
+        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
+        $contactSearch->setSearch($customer->getEmail());
+        try {
+            $response = $request->execute($contactSearch);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        if (!empty($response) && !empty($response->getContactSearchResult())) {
+            foreach ($response->getContactSearchResult() as $contact) {
+                if ($contact->getEmail() == $customer->getEmail()) {
+                    return $contact;
+                }
+            }
+        }
+
+        return $contact;
     }
 }
