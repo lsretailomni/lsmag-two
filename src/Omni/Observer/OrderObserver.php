@@ -6,8 +6,6 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
-use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
-use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
@@ -38,16 +36,6 @@ class OrderObserver implements ObserverInterface
     private $logger;
 
     /**
-     * @var CustomerProxy
-     */
-    private $customerSession;
-
-    /**
-     * @var CheckoutProxy
-     */
-    private $checkoutSession;
-
-    /**
      * @var Order
      */
     private $orderResourceModel;
@@ -62,8 +50,6 @@ class OrderObserver implements ObserverInterface
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
-     * @param CustomerProxy $customerSession
-     * @param CheckoutProxy $checkoutSession
      * @param Order $orderResourceModel
      * @param LSR $LSR
      */
@@ -71,16 +57,12 @@ class OrderObserver implements ObserverInterface
         BasketHelper $basketHelper,
         OrderHelper $orderHelper,
         LoggerInterface $logger,
-        CustomerProxy $customerSession,
-        CheckoutProxy $checkoutSession,
         Order $orderResourceModel,
         LSR $LSR
     ) {
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
         $this->logger             = $logger;
-        $this->customerSession    = $customerSession;
-        $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
     }
@@ -97,6 +79,7 @@ class OrderObserver implements ObserverInterface
         $comment = "";
         $check   = false;
         $order   = $observer->getEvent()->getData('order');
+        $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
         if (empty($order->getIncrementId())) {
             $orderIds = $observer->getEvent()->getOrderIds();
             $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
@@ -123,37 +106,36 @@ class OrderObserver implements ObserverInterface
                     $check         = $paymentMethod->isOffline();
                 }
             }
-            if (!empty($this->checkoutSession->getOneListCalculation())) {
-                $oneListCalculation = $this->checkoutSession->getOneListCalculation();
-            }
-            if (($check == true || !empty($transId)) && !empty($oneListCalculation)) {
-                $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                $response = $this->orderHelper->placeOrder($request);
-                try {
-                    if (property_exists($response, 'OrderCreateResult')) {
-                        if (!empty($response->getResult()->getId())) {
-                            $documentId = $response->getResult()->getId();
-                            $order->setDocumentId($documentId);
-                            $this->checkoutSession->setLastDocumentId($documentId);
-                        }
-                        $comment = __('Order request has been sent to LS Central successfully');
-                        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                            $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-                            $this->basketHelper->delete($oneList);
-                        }
-                    } else {
-                        if ($response) {
-                            if (!empty($response->getMessage())) {
-                                $comment = $response->getMessage();
-                                $this->logger->critical($comment);
+            if (!empty($oneListCalculation)) {
+                if (($check == true || !empty($transId))) {
+                    $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                    $response = $this->orderHelper->placeOrder($request);
+                    try {
+                        if (property_exists($response, 'OrderCreateResult')) {
+                            if (!empty($response->getResult()->getId())) {
+                                $documentId = $response->getResult()->getId();
+                                $order->setDocumentId($documentId);
+                                $this->basketHelper->setLastDocumentIdInCheckoutSession($documentId);
                             }
-                            $this->checkoutSession->unsetData('last_document_id');
+                            $comment = __('Order request has been sent to LS Central successfully');
+                            $oneList = $this->basketHelper->getOneListFromCustomerSession();
+                            if ($oneList) {
+                                $this->basketHelper->delete($oneList);
+                            }
+                        } else {
+                            if ($response) {
+                                if (!empty($response->getMessage())) {
+                                    $comment = $response->getMessage();
+                                    $this->logger->critical($comment);
+                                }
+                                $this->basketHelper->unSetLastDocumentId();
+                            }
                         }
+                        $order->addCommentToStatusHistory($comment);
+                        $this->orderResourceModel->save($order);
+                    } catch (Exception $e) {
+                        $this->logger->error($e->getMessage());
                     }
-                    $order->addCommentToStatusHistory($comment);
-                    $this->orderResourceModel->save($order);
-                } catch (Exception $e) {
-                    $this->logger->error($e->getMessage());
                 }
             }
         } else {
@@ -161,15 +143,9 @@ class OrderObserver implements ObserverInterface
             $order->addCommentToStatusHistory($comment);
             $this->orderResourceModel->save($order);
             $this->logger->critical($comment);
-            $this->checkoutSession->unsetData('last_document_id');
+            $this->basketHelper->unSetLastDocumentId();
         }
-        $this->checkoutSession->unsetData('member_points');
-        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-            $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
-            // delete checkout session data.
-            $this->basketHelper->unSetOneListCalculation();
-            $this->basketHelper->unsetCouponCode();
-        }
+        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         return $this;
     }
 }
