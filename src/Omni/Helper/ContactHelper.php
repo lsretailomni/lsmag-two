@@ -1256,6 +1256,7 @@ class ContactHelper extends AbstractHelper
         $contactSearch = new Entity\ContactSearch();
         $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
         $contactSearch->setSearch($customer->getData('lsr_username'));
+        $contactSearch->setMaxNumberOfRowsReturned(1);
         try {
             $response = $request->execute($contactSearch);
         } catch (Exception $e) {
@@ -1263,9 +1264,7 @@ class ContactHelper extends AbstractHelper
         }
         if (!empty($response) && !empty($response->getContactSearchResult())) {
             foreach ($response->getContactSearchResult() as $contact) {
-                if ($contact->getUserName() == $customer->getData('lsr_username')) {
-                    return $contact;
-                }
+                return $contact;
             }
         }
 
@@ -1287,6 +1286,7 @@ class ContactHelper extends AbstractHelper
         $contactSearch = new Entity\ContactSearch();
         $contactSearch->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
         $contactSearch->setSearch($customer->getEmail());
+        $contactSearch->setMaxNumberOfRowsReturned(1);
         try {
             $response = $request->execute($contactSearch);
         } catch (Exception $e) {
@@ -1294,9 +1294,7 @@ class ContactHelper extends AbstractHelper
         }
         if (!empty($response) && !empty($response->getContactSearchResult())) {
             foreach ($response->getContactSearchResult() as $contact) {
-                if ($contact->getEmail() == $customer->getEmail()) {
-                    return $contact;
-                }
+                return $contact;
             }
         }
 
