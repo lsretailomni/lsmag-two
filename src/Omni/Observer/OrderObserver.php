@@ -8,7 +8,6 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
@@ -72,13 +71,12 @@ class OrderObserver implements ObserverInterface
      * @return $this|void
      * @throws InputException
      * @throws NoSuchEntityException
-     * @throws AlreadyExistsException
      */
     public function execute(Observer $observer)
     {
-        $comment = "";
-        $check   = false;
-        $order   = $observer->getEvent()->getData('order');
+        $check              = false;
+        $response           = null;
+        $order              = $observer->getEvent()->getData('order');
         $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
         if (empty($order->getIncrementId())) {
             $orderIds = $observer->getEvent()->getOrderIds();
@@ -111,41 +109,45 @@ class OrderObserver implements ObserverInterface
                     $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                     $response = $this->orderHelper->placeOrder($request);
                     try {
-                        if (property_exists($response, 'OrderCreateResult')) {
-                            if (!empty($response->getResult()->getId())) {
-                                $documentId = $response->getResult()->getId();
+                        if ($response) {
+                            $documentId = $response->getResult()->getId();
+                            if (!empty($documentId)) {
                                 $order->setDocumentId($documentId);
                                 $this->basketHelper->setLastDocumentIdInCheckoutSession($documentId);
                             }
-                            $comment = __('Order request has been sent to LS Central successfully');
                             $oneList = $this->basketHelper->getOneListFromCustomerSession();
                             if ($oneList) {
                                 $this->basketHelper->delete($oneList);
                             }
+                            $order->addCommentToStatusHistory(__('Order request has been sent to LS Central successfully'));
+                            $this->orderResourceModel->save($order);
                         } else {
-                            if ($response) {
-                                if (!empty($response->getMessage())) {
-                                    $comment = $response->getMessage();
-                                    $this->logger->critical($comment);
-                                }
-                                $this->basketHelper->unSetLastDocumentId();
-                            }
+                            $this->disasterRecoveryHandler($order);
                         }
-                        $order->addCommentToStatusHistory($comment);
-                        $this->orderResourceModel->save($order);
                     } catch (Exception $e) {
                         $this->logger->error($e->getMessage());
                     }
                 }
             }
         } else {
-            $comment = __('The service is currently unavailable. Please try again later.');
-            $order->addCommentToStatusHistory($comment);
-            $this->orderResourceModel->save($order);
-            $this->logger->critical($comment);
-            $this->basketHelper->unSetLastDocumentId();
+            $this->disasterRecoveryHandler($order);
         }
         $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         return $this;
+    }
+
+    /**
+     * @param $order
+     */
+    public function disasterRecoveryHandler($order)
+    {
+        $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
+        $order->addCommentToStatusHistory(__('The service is currently unavailable. Please try again later.'));
+        try {
+            $this->orderResourceModel->save($order);
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        $this->basketHelper->unSetLastDocumentId();
     }
 }
