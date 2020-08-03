@@ -481,8 +481,12 @@ class ContactHelper extends AbstractHelper
         $request       = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
         $contact       = new Entity\MemberContact();
-        $lsrPassword   = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
-        $password      = (!empty($lsrPassword)) ? $lsrPassword : $customer->getData('password');
+        if (!empty($customer->getData('lsr_password'))) {
+            $lsrPassword = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
+        } else {
+            $lsrPassword = null;
+        }
+        $password = (!empty($lsrPassword)) ? $lsrPassword : $customer->getData('password');
         // @codingStandardsIgnoreEnd
         $contact->setAlternateId($alternate_id)
             ->setEmail($customer->getData('email'))
@@ -1203,7 +1207,14 @@ class ContactHelper extends AbstractHelper
             $contact = (!empty($contact)) ? $contact : $this->getCustomerByEmailFromLsCentral($customer);
 
             if (!empty($contact)) {
-                $customer->setPassword($contact->getPassword());
+                $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
+                if (!empty($password)) {
+                    $customerPost['password'] = $password;
+                    $resetCode                = $this->forgotPassword($customer->getEmail());
+                    $customer->setData('lsr_resetcode', $resetCode);
+                    $this->resetPassword($customer, $customerPost);
+                    $customer->setData('lsr_resetcode', null);
+                }
             } else {
                 $contact = $this->contact($customer);
             }
