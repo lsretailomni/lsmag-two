@@ -70,20 +70,20 @@ class OrderObserver implements ObserverInterface
         BasketHelper $basketHelper,
         OrderHelper $orderHelper,
         LoggerInterface $logger,
+        CustomerProxy $customerSession,
+        CheckoutProxy $checkoutSession,
         Order $orderResourceModel,
         LSR $LSR,
-        ManagerInterface $messageManager,
-        CustomerProxy $customerSession,
-        CheckoutProxy $checkoutSession
+        ManagerInterface $messageManager
     ) {
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
         $this->logger             = $logger;
+        $this->customerSession    = $customerSession;
+        $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
         $this->messageManager     = $messageManager;
-        $this->customerSession    = $customerSession;
-        $this->checkoutSession    = $checkoutSession;
     }
 
     /**
