@@ -11,6 +11,13 @@
             <label>General Configuration</label>
             <tab>ls_retail</tab>
             <resource>Ls_Core::config</resource>
+            <group id="ls_industry" translate="label" type="text" sortOrder="1" showInWebsite="1">
+                <label>Industry</label>
+                <field id="ls_choose_industry" translate="label" type="select" sortOrder="2" showInWebsite="1">
+                    <label>Choose Industry</label>
+                    <source_model>Ls\Core\Model\Config\Source\Industry</source_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>

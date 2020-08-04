@@ -355,6 +355,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const EMAIL_TEMPLATE_ID_FOR_OMNI_SERVICE_DOWN = 'ls_omni_disaster_recovery_email';
 
+    //Choose Industry
+    const LS_INDUSTRY_VALUE_RETAIL = 'retail';
+
+    const LS_INDUSTRY_VALUE_HOSPITALITY = 'hospitality';
+
     /**
      * @var ScopeConfigInterface
      */
