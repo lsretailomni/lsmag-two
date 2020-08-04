@@ -24,7 +24,7 @@
                 comment="UnitsPerParcel"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Blocked"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
-        <column xsi:type="boolean" name="scope_id" nullable="true" comment="Scope ID"/>
+        <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
         <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
         <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
