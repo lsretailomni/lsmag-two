@@ -2,6 +2,7 @@
 
 namespace Ls\Core\Model\Config\Source;
 
+use \Ls\Core\Model\LSR;
 use Magento\Framework\Data\OptionSourceInterface;
 
 /**
@@ -16,8 +17,8 @@ class Industry implements OptionSourceInterface
     public function toOptionArray()
     {
         return [
-            ['value' => 'Retail', 'label' => __('Retail')],
-            ['value' => 'Hospitality', 'label' => __('Hospitality')]
+            ['value' => LSR::LS_INDUSTRY_VALUE_RETAIL, 'label' => __('Retail')],
+            ['value' => LSR::LS_INDUSTRY_VALUE_HOSPITALITY, 'label' => __('Hospitality')]
         ];
     }
 }
