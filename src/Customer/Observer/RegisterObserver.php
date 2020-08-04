@@ -128,9 +128,7 @@ class RegisterObserver implements ObserverInterface
                         }
                     }
                 } else {
-                    $customer->setData('lsr_password', $this->contactHelper->encryptorInterface->encrypt(
-                        $parameters['password']
-                    ));
+                    $customer->setData('lsr_password', $this->contactHelper->encryptPassword($parameters['password']));
                     $this->customerResourceModel->save($customer);
                 }
             }
