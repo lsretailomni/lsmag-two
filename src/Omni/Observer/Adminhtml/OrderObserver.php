@@ -6,8 +6,12 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
+use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
@@ -42,6 +46,16 @@ class OrderObserver implements ObserverInterface
     private $messageManager;
 
     /**
+     * @var CustomerProxy
+     */
+    private $customerSession;
+
+    /**
+     * @var CheckoutProxy
+     */
+    private $checkoutSession;
+
+    /**
      * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
@@ -49,6 +63,8 @@ class OrderObserver implements ObserverInterface
      * @param Order $orderResourceModel
      * @param LSR $LSR
      * @param ManagerInterface $messageManager
+     * @param CustomerProxy $customerSession
+     * @param CheckoutProxy $checkoutSession
      */
     public function __construct(
         BasketHelper $basketHelper,
@@ -56,7 +72,9 @@ class OrderObserver implements ObserverInterface
         LoggerInterface $logger,
         Order $orderResourceModel,
         LSR $LSR,
-        ManagerInterface $messageManager
+        ManagerInterface $messageManager,
+        CustomerProxy $customerSession,
+        CheckoutProxy $checkoutSession
     ) {
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
@@ -64,11 +82,15 @@ class OrderObserver implements ObserverInterface
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
         $this->messageManager     = $messageManager;
+        $this->customerSession    = $customerSession;
+        $this->checkoutSession    = $checkoutSession;
     }
 
     /**
      * @param Observer $observer
      * @return $this|void
+     * @throws AlreadyExistsException
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
@@ -79,8 +101,8 @@ class OrderObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        try {
-            if ($this->lsr->isLSR($order->getStoreId())) {
+        if ($this->lsr->isLSR($order->getStoreId())) {
+            try {
                 if (!empty($oneListCalculation)) {
                     $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                     $response = $this->orderHelper->placeOrder($request);
@@ -99,13 +121,13 @@ class OrderObserver implements ObserverInterface
                         }
                     }
                 }
+            } catch (Exception $e) {
+                $this->logger->error($e->getMessage());
             }
-            if (!$response) {
-                $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
-                $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
-            }
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
+        }
+        if (!$response) {
+            $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
+            $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
         }
         $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         return $this;

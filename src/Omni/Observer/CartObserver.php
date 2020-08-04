@@ -6,12 +6,14 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \LS\Omni\Helper\ItemHelper;
 use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Psr\Log\LoggerInterface;
 
@@ -87,8 +89,9 @@ class CartObserver implements ObserverInterface
      * @param Observer $observer
      * @return $this|void
      * @throws NoSuchEntityException
+     * @throws InvalidEnumException
+     * @throws LocalizedException
      */
-    // @codingStandardsIgnoreLine
     public function execute(Observer $observer)
     {
         /*
@@ -102,6 +105,7 @@ class CartObserver implements ObserverInterface
                     // This will create one list if not created and will return onelist if its already created.
                     /** @var OneList|null $oneList */
                     $oneList = $this->basketHelper->get();
+                    // add items from the quote to the oneList and return the updated onelist
                     $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
                     if (!empty($couponCode)) {
                         $status = $this->basketHelper->setCouponCode($couponCode);

@@ -6,8 +6,11 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
+use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
@@ -45,25 +48,42 @@ class OrderObserver implements ObserverInterface
     private $lsr;
 
     /**
+     * @var CustomerProxy
+     */
+    private $customerSession;
+
+    /**
+     * @var CheckoutProxy
+     */
+    private $checkoutSession;
+
+    /***
      * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
      * @param Order $orderResourceModel
      * @param LSR $LSR
+     * @param CustomerProxy $customerSession
+     * @param CheckoutProxy $checkoutSession
      */
     public function __construct(
         BasketHelper $basketHelper,
         OrderHelper $orderHelper,
         LoggerInterface $logger,
         Order $orderResourceModel,
-        LSR $LSR
+        LSR $LSR,
+        CustomerProxy $customerSession,
+        CheckoutProxy $checkoutSession
     ) {
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
         $this->logger             = $logger;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
+        $this->customerSession    = $customerSession;
+        $this->checkoutSession    = $checkoutSession;
+
     }
 
     /**
@@ -71,10 +91,11 @@ class OrderObserver implements ObserverInterface
      * @return $this|void
      * @throws InputException
      * @throws NoSuchEntityException
+     * @throws AlreadyExistsException
      */
     public function execute(Observer $observer)
     {
-        $check              = false;
+            $check              = false;
         $response           = null;
         $order              = $observer->getEvent()->getData('order');
         $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
@@ -122,7 +143,7 @@ class OrderObserver implements ObserverInterface
                             $order->addCommentToStatusHistory(__('Order request has been sent to LS Central successfully'));
                             $this->orderResourceModel->save($order);
                         } else {
-                            $this->disasterRecoveryHandler($order);
+                            $this->orderHelper->disasterRecoveryHandler($order);
                         }
                     } catch (Exception $e) {
                         $this->logger->error($e->getMessage());
@@ -130,24 +151,9 @@ class OrderObserver implements ObserverInterface
                 }
             }
         } else {
-            $this->disasterRecoveryHandler($order);
+            $this->orderHelper->disasterRecoveryHandler($order);
         }
         $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         return $this;
-    }
-
-    /**
-     * @param $order
-     */
-    public function disasterRecoveryHandler($order)
-    {
-        $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
-        $order->addCommentToStatusHistory(__('The service is currently unavailable. Please try again later.'));
-        try {
-            $this->orderResourceModel->save($order);
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
-        }
-        $this->basketHelper->unSetLastDocumentId();
     }
 }

@@ -4,9 +4,14 @@ namespace Ls\Omni\Controller\Adminhtml\Order;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Backend\App\Action;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
@@ -74,6 +79,11 @@ class Request extends Action
         parent::__construct($context);
     }
 
+    /**
+     * @return ResponseInterface|Redirect|ResultInterface
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
     public function execute()
     {
         $orderId        = $this->getRequest()->getParam('order_id');
@@ -81,8 +91,8 @@ class Request extends Action
         $response       = null;
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
-        try {
-            if ($this->lsr->isLSR($order->getStoreId())) {
+        if ($this->lsr->isLSR($order->getStoreId())) {
+            try {
                 $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
                 $request            = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                 $response           = $this->orderHelper->placeOrder($request);
@@ -94,13 +104,14 @@ class Request extends Action
                     }
                     $this->messageManager->addSuccessMessage(__('Order request has been sent to LS Central successfully'));
                 }
+            } catch (Exception $e) {
+                $this->logger->error($e->getMessage());
+                $this->messageManager->addErrorMessage($e->getMessage());
             }
-            if (!$response) {
-                $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
-                $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
-            }
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
+        }
+        if (!$response) {
+            $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
+            $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
         }
         return $resultRedirect;
     }
