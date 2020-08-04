@@ -1203,10 +1203,11 @@ class ContactHelper extends AbstractHelper
     public function syncCustomerAndAddress(Customer $customer)
     {
         try {
-            $contact = $this->getCustomerByUsernameFromLsCentral($customer);
-            $contact = (!empty($contact)) ? $contact : $this->getCustomerByEmailFromLsCentral($customer);
+            $contactUserName = $this->getCustomerByUsernameFromLsCentral($customer);
+            $contactEmail    = $this->getCustomerByEmailFromLsCentral($customer);
 
-            if (!empty($contact)) {
+            if (!empty($contactUserName) && !empty($contactEmail)) {
+                $contact  = $contactUserName;
                 $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
                 if (!empty($password)) {
                     $customerPost['password'] = $password;
@@ -1249,6 +1250,7 @@ class ContactHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+
         return false;
     }
 
