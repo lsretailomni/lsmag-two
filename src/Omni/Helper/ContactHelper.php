@@ -1203,9 +1203,14 @@ class ContactHelper extends AbstractHelper
     public function syncCustomerAndAddress(Customer $customer)
     {
         try {
-            $contactUserName = $this->getCustomerByUsernameFromLsCentral($customer);
-            $contactEmail    = $this->getCustomerByEmailFromLsCentral($customer);
-
+            $contactUserName = $this->getCustomerByUsernameOrEmailFromLsCentral(
+                $customer->getData('lsr_username'),
+                Entity\Enum\ContactSearchType::USER_NAME
+            );
+            $contactEmail    = $this->getCustomerByUsernameOrEmailFromLsCentral(
+                $customer->getEmail(),
+                Entity\Enum\ContactSearchType::EMAIL
+            );
             if (!empty($contactUserName) && !empty($contactEmail)) {
                 $contact  = $contactUserName;
                 $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
@@ -1255,11 +1260,12 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param Customer $customer
+     * @param $paramValue
+     * @param $type
      * @return Entity\MemberContact|null
      * @throws InvalidEnumException
      */
-    public function getCustomerByUsernameFromLsCentral(Customer $customer)
+    public function getCustomerByUsernameOrEmailFromLsCentral($paramValue, $type)
     {
         $response = null;
         $contact  = null;
@@ -1267,38 +1273,8 @@ class ContactHelper extends AbstractHelper
         // @codingStandardsIgnoreStart
         $request       = new Operation\ContactSearch();
         $contactSearch = new Entity\ContactSearch();
-        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
-        $contactSearch->setSearch($customer->getData('lsr_username'));
-        $contactSearch->setMaxNumberOfRowsReturned(1);
-        try {
-            $response = $request->execute($contactSearch);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (!empty($response) && !empty($response->getContactSearchResult())) {
-            foreach ($response->getContactSearchResult() as $contact) {
-                return $contact;
-            }
-        }
-
-        return $contact;
-    }
-
-    /**
-     * @param Customer $customer
-     * @return Entity\MemberContact|null
-     * @throws InvalidEnumException
-     */
-    public function getCustomerByEmailFromLsCentral(Customer $customer)
-    {
-        $response = null;
-        $contact  = null;
-
-        // @codingStandardsIgnoreStart
-        $request       = new Operation\ContactSearch();
-        $contactSearch = new Entity\ContactSearch();
-        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
-        $contactSearch->setSearch($customer->getEmail());
+        $contactSearch->setSearchType($type);
+        $contactSearch->setSearch($paramValue);
         $contactSearch->setMaxNumberOfRowsReturned(1);
         try {
             $response = $request->execute($contactSearch);
