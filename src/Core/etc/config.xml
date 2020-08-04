@@ -7,7 +7,7 @@
                 <enabled>0</enabled>
             </general>
             <ls_industry>
-                <ls_choose_industry>Retail</ls_choose_industry>
+                <ls_choose_industry>retail</ls_choose_industry>
             </ls_industry>
         </ls_mag>
     </default>
