@@ -4,33 +4,32 @@
     <table name="ls_replication_loy_item" resource="default" engine="innodb" comment="Loy Item">
         <column xsi:type="int" name="loy_item_id" padding="10" unsigned="false" nullable="false" identity="true"
                 comment="Loy_item_id"/>
-        <column xsi:type="int" name="AllowedToSell" nullable="true" padding="10" comment="AllowedToSell"/>
-        <column xsi:type="int" name="BlockDiscount" nullable="true" padding="10" comment="BlockDiscount"/>
-        <column xsi:type="int" name="BlockManualPriceChange" nullable="true" padding="10"
-                comment="BlockManualPriceChange"/>
-        <column xsi:type="int" name="Blocked" nullable="true" padding="11" comment="Blocked"/>
+        <column xsi:type="boolean" name="AllowedToSell" nullable="true" comment="AllowedToSell"/>
+        <column xsi:type="boolean" name="BlockDiscount" nullable="true" comment="BlockDiscount"/>
+        <column xsi:type="boolean" name="BlockManualPriceChange" nullable="true" comment="BlockManualPriceChange"/>
+        <column xsi:type="boolean" name="Blocked" nullable="true" comment="Blocked"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
         <column xsi:type="text" name="Details" nullable="true" comment="Details"/>
         <column xsi:type="decimal" name="GrossWeight" nullable="true" scale="4" precision="20" comment="GrossWeight"/>
-        <column xsi:type="int" name="IsDeleted" nullable="true" comment="IsDeleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" comment="IsDeleted"/>
         <column xsi:type="text" name="ItemCategoryCode" nullable="true" comment="ItemCategoryCode"/>
         <column xsi:type="text" name="ItemFamilyCode" nullable="true" comment="ItemFamilyCode"/>
         <column xsi:type="text" name="Price" nullable="true" comment="Price"/>
         <column xsi:type="text" name="ProductGroupId" nullable="true" comment="ProductGroupId"/>
         <column xsi:type="text" name="SalesUomId" nullable="true" comment="SalesUomId"/>
-        <column xsi:type="int" name="ScaleItem" nullable="true" comment="ScaleItem"/>
+        <column xsi:type="boolean" name="ScaleItem" nullable="true" comment="ScaleItem"/>
         <column xsi:type="text" name="SeasonCode" nullable="true" comment="SeasonCode"/>
         <column xsi:type="decimal" name="UnitVolume" nullable="true" scale="4" precision="20" comment="UnitVolume"/>
         <column xsi:type="decimal" name="UnitsPerParcel" nullable="true" scale="4" precision="20"
                 comment="UnitsPerParcel"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Blocked"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
-        <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="scope_id" nullable="true" comment="Scope ID"/>
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -48,15 +47,15 @@
         <column xsi:type="text" name="Code" nullable="true" comment="Code"/>
         <column xsi:type="text" name="DefaultValue" nullable="true" comment="DefaultValue"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="int" name="ValueType" nullable="true" padding="11" comment="ValueType"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -73,16 +72,16 @@
         <column xsi:type="int" name="repl_attribute_option_value_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="Repl_attribute_option_value_id"/>
         <column xsi:type="text" name="Code" nullable="true" comment="Code"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="int" name="Sequence" nullable="true" padding="11" comment="Sequence"/>
         <column xsi:type="text" name="Value" nullable="true" comment="Value"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -98,7 +97,7 @@
         <column xsi:type="int" name="repl_attribute_value_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="repl_attribute_value_id"/>
         <column xsi:type="text" name="Code" nullable="true" comment="Code"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="LinkField1" nullable="true" comment="LinkField1"/>
         <column xsi:type="text" name="LinkField2" nullable="true" comment="LinkField2"/>
         <column xsi:type="text" name="LinkField3" nullable="true" comment="LinkField3"/>
@@ -109,11 +108,11 @@
         <column xsi:type="text" name="Value" nullable="true" comment="Value"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -131,17 +130,17 @@
         <column xsi:type="int" name="Blocked" nullable="true" padding="11" comment="Blocked"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
         <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="UnitOfMeasure"/>
         <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -157,15 +156,15 @@
         <column xsi:type="int" name="repl_country_code_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="repl_country_code_id"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -184,7 +183,7 @@
         <column xsi:type="text" name="CurrencyPrefix" nullable="true" comment="CurrencyPrefix"/>
         <column xsi:type="text" name="CurrencySuffix" nullable="true" comment="CurrencySuffix"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="decimal" name="RoundOfAmount" scale="4" precision="20" unsigned="false" nullable="true"
                 comment="RoundOfAmount"/>
         <column xsi:type="decimal" name="RoundOfSales" scale="4" precision="20" unsigned="false" nullable="true"
@@ -194,11 +193,11 @@
         <column xsi:type="text" name="Symbol" nullable="true" comment="Symbol"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -217,16 +216,16 @@
         <column xsi:type="text" name="CurrencyCode" nullable="true" comment="CurrencyCode"/>
         <column xsi:type="decimal" name="CurrencyFactor" scale="4" precision="20" unsigned="false" nullable="true"
                 comment="CurrencyFactor"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="RelationalCurrencyCode" nullable="true" comment="RelationalCurrencyCode"/>
         <column xsi:type="text" name="StartingDate" nullable="true" comment="StartingDate"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -253,7 +252,7 @@
         <column xsi:type="text" name="FirstName" nullable="true" comment="FirstName"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
         <column xsi:type="int" name="IncludeTax" nullable="true" padding="11" comment="IncludeTax"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="LastName" nullable="true" comment="LastName"/>
         <column xsi:type="text" name="MiddleName" nullable="true" comment="MiddleName"/>
         <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
@@ -271,11 +270,11 @@
         <column xsi:type="text" name="ZipCode" nullable="true" comment="ZipCode"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -291,18 +290,18 @@
            comment="Repl Data Translation">
         <column xsi:type="int" name="repl_data_translation_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="repl_data_translation_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="Key" nullable="true" comment="Key"/>
         <column xsi:type="text" name="LanguageCode" nullable="true" comment="LanguageCode"/>
         <column xsi:type="text" name="Text" nullable="true" comment="Text"/>
         <column xsi:type="text" name="TranslationId" nullable="true" comment="TranslationId"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -325,7 +324,7 @@
                 comment="DiscountValue"/>
         <column xsi:type="text" name="DiscountValueType" nullable="true" comment="DiscountValueType"/>
         <column xsi:type="text" name="FromDate" nullable="true" comment="FromDate"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
         <column xsi:type="text" name="LoyaltySchemeCode" nullable="true" comment="LoyaltySchemeCode"/>
         <column xsi:type="decimal" name="MinimumQuantity" scale="4" precision="20" unsigned="false" nullable="true"
@@ -341,11 +340,11 @@
         <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -362,65 +361,65 @@
         <column xsi:type="int" name="repl_discount_validation_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="repl_discount_validation_id"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
-        <column xsi:type="tinyint" name="EndAfterMidnight" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="EndAfterMidnight" nullable="true" default="0"
                 comment="EndAfterMidnight"/>
         <column xsi:type="text" name="EndDate" nullable="true" comment="EndDate"/>
         <column xsi:type="text" name="EndTime" nullable="true" comment="EndTime"/>
         <column xsi:type="text" name="FridayEnd" nullable="true" comment="FridayEnd"/>
-        <column xsi:type="tinyint" name="FridayEndAfterMidnight" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="FridayEndAfterMidnight" nullable="true" default="0"
                 comment="FridayEndAfterMidnight"/>
         <column xsi:type="text" name="FridayStart" nullable="true" comment="FridayStart"/>
-        <column xsi:type="tinyint" name="FridayWithinBounds" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="FridayWithinBounds" nullable="true" default="0"
                 comment="FridayWithinBounds"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="MondayEnd" nullable="true" comment="MondayEnd"/>
-        <column xsi:type="tinyint" name="MondayEndAfterMidnight" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="MondayEndAfterMidnight" nullable="true" default="0"
                 comment="MondayEndAfterMidnight"/>
         <column xsi:type="text" name="MondayStart" nullable="true" comment="MondayStart"/>
-        <column xsi:type="tinyint" name="MondayWithinBounds" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="MondayWithinBounds" nullable="true" default="0"
                 comment="MondayWithinBounds"/>
         <column xsi:type="text" name="SaturdayEnd" nullable="true" comment="SaturdayEnd"/>
-        <column xsi:type="tinyint" name="SaturdayEndAfterMidnight" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="SaturdayEndAfterMidnight" nullable="true" default="0"
                 comment="SaturdayEndAfterMidnight"/>
         <column xsi:type="text" name="SaturdayStart" nullable="true" comment="SaturdayStart"/>
-        <column xsi:type="tinyint" name="SaturdayWithinBounds" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="SaturdayWithinBounds" nullable="true" default="0"
                 comment="SaturdayWithinBounds"/>
         <column xsi:type="text" name="StartDate" nullable="true" comment="StartDate"/>
         <column xsi:type="text" name="StartTime" nullable="true" comment="StartTime"/>
         <column xsi:type="text" name="SundayEnd" nullable="true" comment="SundayEnd"/>
-        <column xsi:type="tinyint" name="SundayEndAfterMidnight" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="SundayEndAfterMidnight" nullable="true" default="0"
                 comment="SundayEndAfterMidnight"/>
         <column xsi:type="text" name="SundayStart" nullable="true" comment="SundayStart"/>
-        <column xsi:type="tinyint" name="SundayWithinBounds" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="SundayWithinBounds" nullable="true" default="0"
                 comment="SundayWithinBounds"/>
         <column xsi:type="text" name="ThursdayEnd" nullable="true" comment="ThursdayEnd"/>
-        <column xsi:type="tinyint" name="ThursdayEndAfterMidnight" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="ThursdayEndAfterMidnight" nullable="true" default="0"
                 comment="ThursdayEndAfterMidnight"/>
         <column xsi:type="text" name="ThursdayStart" nullable="true" comment="ThursdayStart"/>
-        <column xsi:type="tinyint" name="ThursdayWithinBounds" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="ThursdayWithinBounds" nullable="true" default="0"
                 comment="ThursdayWithinBounds"/>
-        <column xsi:type="tinyint" name="TimeWithinBounds" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="TimeWithinBounds" nullable="true" default="0"
                 comment="TimeWithinBounds"/>
         <column xsi:type="text" name="TuesdayEnd" nullable="true" comment="TuesdayEnd"/>
-        <column xsi:type="tinyint" name="TuesdayEndAfterMidnight" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="TuesdayEndAfterMidnight" nullable="true" default="0"
                 comment="TuesdayEndAfterMidnight"/>
         <column xsi:type="text" name="TuesdayStart" nullable="true" comment="TuesdayStart"/>
-        <column xsi:type="tinyint" name="TuesdayWithinBounds" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="TuesdayWithinBounds" nullable="true" default="0"
                 comment="TuesdayWithinBounds"/>
         <column xsi:type="text" name="WednesdayEnd" nullable="true" comment="WednesdayEnd"/>
-        <column xsi:type="tinyint" name="WednesdayEndAfterMidnight" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="WednesdayEndAfterMidnight" nullable="true" default="0"
                 comment="WednesdayEndAfterMidnight"/>
         <column xsi:type="text" name="WednesdayStart" nullable="true" comment="WednesdayStart"/>
-        <column xsi:type="tinyint" name="WednesdayWithinBounds" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="WednesdayWithinBounds" nullable="true" default="0"
                 comment="WednesdayWithinBounds"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -441,18 +440,18 @@
                 comment="DimensionLogicalOrder"/>
         <column xsi:type="text" name="Dimensions" nullable="true" comment="Dimensions"/>
         <column xsi:type="text" name="FrameworkCode" nullable="true" comment="FrameworkCode"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
         <column xsi:type="int" name="LogicalOrder" nullable="true" padding="11" comment="LogicalOrder"/>
         <column xsi:type="text" name="Timestamp" nullable="true" comment="Timestamp"/>
         <column xsi:type="text" name="Value" nullable="true" comment="Value"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -469,15 +468,15 @@
                 identity="true" comment="repl_hierarchy_id"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -496,16 +495,16 @@
         <column xsi:type="text" name="HierarchyCode" nullable="true" comment="HierarchyCode"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
         <column xsi:type="text" name="ImageId" nullable="true" comment="ImageId"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="NodeId" nullable="true" comment="NodeId"/>
         <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -526,16 +525,16 @@
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
         <column xsi:type="text" name="ImageId" nullable="true" comment="ImageId"/>
         <column xsi:type="int" name="Indentation" nullable="true" padding="11" comment="Indentation"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ParentNode" nullable="true" comment="ParentNode"/>
         <column xsi:type="int" name="PresentationOrder" nullable="true" padding="11" comment="PresentationOrder"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -553,16 +552,16 @@
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
         <column xsi:type="longblob" name="Image64" nullable="true" comment="Image64"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="Location" nullable="true" comment="Location"/>
         <column xsi:type="text" name="LocationType" nullable="true" comment="LocationType"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -580,16 +579,16 @@
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
         <column xsi:type="int" name="DisplayOrder" nullable="true" padding="11" comment="DisplayOrder"/>
         <column xsi:type="text" name="ImageId" nullable="true" comment="ImageId"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="KeyValue" nullable="true" comment="KeyValue"/>
         <column xsi:type="text" name="TableName" nullable="true" comment="TableName"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -604,7 +603,7 @@
     <table name="ls_replication_repl_inv_status" resource="default" engine="innodb" comment="Repl Inv Status">
         <column xsi:type="int" name="repl_inv_status_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="repl_inv_status_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
         <column xsi:type="decimal" name="Quantity" scale="4" precision="20" unsigned="false" nullable="true"
                 comment="Quantity"/>
@@ -612,11 +611,11 @@
         <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -651,7 +650,7 @@
         <column xsi:type="decimal" name="GrossWeight" scale="4" precision="20" unsigned="false" nullable="true"
                 comment="GrossWeight"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ItemCategoryCode" nullable="true" comment="ItemCategoryCode"/>
         <column xsi:type="text" name="ItemFamilyCode" nullable="true" comment="ItemFamilyCode"/>
         <column xsi:type="int" name="KeyingInPrice" nullable="true" padding="11" comment="KeyingInPrice"/>
@@ -675,11 +674,11 @@
         <column xsi:type="int" name="ZeroPriceValId" nullable="true" padding="11" comment="ZeroPriceValId"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -696,14 +695,14 @@
                 identity="true" comment="repl_item_category_id"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -720,9 +719,9 @@
         <column xsi:type="int" name="repl_item_unit_of_measure_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="repl_item_unit_of_measure_id"/>
         <column xsi:type="text" name="Code" nullable="true" comment="Code"/>
-        <column xsi:type="tinyint" name="CountAsOne" nullable="true" padding="2" default="0" comment="CountAsOne"/>
+        <column xsi:type="boolean" name="CountAsOne" nullable="true" default="0" comment="CountAsOne"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
         <column xsi:type="int" name="Order" nullable="true" padding="11" comment="Order"/>
         <column xsi:type="decimal" name="QtyPrUOM" scale="4" precision="20" unsigned="false" nullable="true"
@@ -731,11 +730,11 @@
         <column xsi:type="text" name="ShortDescription" nullable="true" comment="ShortDescription"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -752,7 +751,7 @@
         <column xsi:type="int" name="repl_item_variant_registration_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="repl_item_variant_registration_id"/>
         <column xsi:type="text" name="FrameworkCode" nullable="true" comment="FrameworkCode"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
         <column xsi:type="text" name="VariantDimension1" nullable="true" comment="VariantDimension1"/>
         <column xsi:type="text" name="VariantDimension2" nullable="true" comment="VariantDimension2"/>
@@ -763,11 +762,11 @@
         <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -783,21 +782,21 @@
            comment="Repl Loy Vendor Item Mapping">
         <column xsi:type="int" name="repl_loy_vendor_item_mapping_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="repl_loy_vendor_item_mapping_id"/>
-        <column xsi:type="tinyint" name="Deleted" nullable="true" padding="2" default="0" comment="Deleted"/>
+        <column xsi:type="boolean" name="Deleted" nullable="true" default="0" comment="Deleted"/>
         <column xsi:type="int" name="DisplayOrder" nullable="true" padding="11" comment="DisplayOrder"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
-        <column xsi:type="tinyint" name="IsFeaturedProduct" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsFeaturedProduct" nullable="true" default="0"
                 comment="IsFeaturedProduct"/>
         <column xsi:type="text" name="NavManufacturerId" nullable="true" comment="NavManufacturerId"/>
         <column xsi:type="text" name="NavManufacturerItemId" nullable="true" comment="NavManufacturerItemId"/>
         <column xsi:type="text" name="NavProductId" nullable="true" comment="NavProductId"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -815,13 +814,13 @@
         <column xsi:type="text" name="CurrencyCode" nullable="true" comment="CurrencyCode"/>
         <column xsi:type="text" name="CustomerDiscountGroup" nullable="true" comment="CustomerDiscountGroup"/>
         <column xsi:type="text" name="EndingDate" nullable="true" comment="EndingDate"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
         <column xsi:type="text" name="LoyaltySchemeCode" nullable="true" comment="LoyaltySchemeCode"/>
         <column xsi:type="decimal" name="MinimumQuantity" scale="4" precision="20" unsigned="false" nullable="true"
                 comment="MinimumQuantity"/>
         <column xsi:type="text" name="ModifyDate" nullable="true" comment="ModifyDate"/>
-        <column xsi:type="tinyint" name="PriceInclVat" nullable="true" padding="2" default="0" comment="PriceInclVat"/>
+        <column xsi:type="boolean" name="PriceInclVat" nullable="true" default="0" comment="PriceInclVat"/>
         <column xsi:type="int" name="Priority" nullable="true" padding="11" comment="Priority"/>
         <column xsi:type="decimal" name="QtyPerUnitOfMeasure" scale="4" precision="20" unsigned="false" nullable="true"
                 comment="QtyPerUnitOfMeasure"/>
@@ -838,11 +837,11 @@
         <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -859,15 +858,15 @@
                 identity="true" comment="repl_product_group_id"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ItemCategoryID" nullable="true" comment="ItemCategoryID"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -885,15 +884,15 @@
         <column xsi:type="text" name="AccountNo" nullable="true" comment="AccountNo"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
         <column xsi:type="text" name="InternetAddress" nullable="true" comment="InternetAddress"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -909,7 +908,7 @@
         <column xsi:type="int" name="repl_store_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="Repl_store_id"/>
         <column xsi:type="text" name="City" nullable="true" comment="City"/>
-        <column xsi:type="tinyint" name="ClickAndCollect" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="ClickAndCollect" nullable="true" default="0"
                 comment="ClickAndCollect"/>
         <column xsi:type="text" name="Country" nullable="true" comment="Country"/>
         <column xsi:type="text" name="County" nullable="true" comment="County"/>
@@ -918,7 +917,7 @@
         <column xsi:type="text" name="DefaultCustomerAccount" nullable="true" comment="DefaultCustomerAccount"/>
         <column xsi:type="text" name="FunctionalityProfile" nullable="true" comment="FunctionalityProfile"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="decimal" name="Latitute" scale="4" precision="20" unsigned="false" nullable="true"
                 comment="Latitute"/>
         <column xsi:type="decimal" name="Longitude" scale="4" precision="20" unsigned="false" nullable="true"
@@ -934,11 +933,11 @@
         <column xsi:type="text" name="ZipCode" nullable="true" comment="ZipCode"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -961,7 +960,7 @@
         <column xsi:type="text" name="ChangeTenderId" nullable="true" comment="ChangeTenderId"/>
         <column xsi:type="int" name="CountingRequired" nullable="true" padding="11" comment="CountingRequired"/>
         <column xsi:type="int" name="ForeignCurrency" nullable="true" padding="11" comment="ForeignCurrency"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="decimal" name="MaximumOverTenderAmount" scale="4" precision="20" unsigned="false"
                 nullable="true"
                 comment="MaximumOverTenderAmount"/>
@@ -976,12 +975,14 @@
         <column xsi:type="text" name="StoreID" nullable="true" comment="StoreID"/>
         <column xsi:type="int" name="TenderFunction" nullable="true" padding="11" comment="TenderFunction"/>
         <column xsi:type="text" name="TenderTypeId" nullable="true" comment="TenderTypeId"/>
+        <column xsi:type="int" name="ValidOnMobilePOS" nullable="true" padding="11" comment="Scope ID"/>
+        <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -997,17 +998,17 @@
         <column xsi:type="int" name="repl_tax_setup_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="Repl_tax_setup_id"/>
         <column xsi:type="text" name="BusinessTaxGroup" nullable="true" comment="BusinessTaxGroup"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ProductTaxGroup" nullable="true" comment="ProductTaxGroup"/>
         <column xsi:type="decimal" name="TaxPercent" scale="4" precision="20" unsigned="false" nullable="true"
                 comment="TaxPercent"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -1024,16 +1025,16 @@
                 identity="true" comment="Repl_unit_of_measure_id"/>
         <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
         <column xsi:type="text" name="ShortDescription" nullable="true" comment="ShortDescription"/>
         <column xsi:type="int" name="UnitDecimals" nullable="true" padding="11" comment="UnitDecimals"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
@@ -1048,26 +1049,27 @@
     <table name="ls_replication_repl_vendor" resource="default" engine="innodb" comment="Repl Vendor">
         <column xsi:type="int" name="repl_vendor_id" padding="10" unsigned="false" nullable="false"
                 identity="true" comment="Repl_vendor_id"/>
-        <column xsi:type="tinyint" name="AllowCustomersToSelectPageSize" nullable="true" padding="2" default="0"
+        <column xsi:type="boolean" name="AllowCustomersToSelectPageSize" nullable="true" default="0"
                 comment="AllowCustomersToSelectPageSize"/>
-        <column xsi:type="tinyint" name="Blocked" nullable="true" padding="2" default="0" comment="Blocked"/>
+        <column xsi:type="boolean" name="Blocked" nullable="true" default="0" comment="Blocked"/>
         <column xsi:type="int" name="DisplayOrder" nullable="true" padding="11" comment="DisplayOrder"/>
         <column xsi:type="text" name="nav_id" nullable="true" comment="Nav_id"/>
-        <column xsi:type="tinyint" name="IsDeleted" nullable="true" padding="2" default="0" comment="Is Deleted"/>
-        <column xsi:type="int" name="ManufacturerTemplateId" nullable="true" padding="11" comment="ManufacturerTemplateId"/>
+        <column xsi:type="boolean" name="IsDeleted" nullable="true" default="0" comment="Is Deleted"/>
+        <column xsi:type="int" name="ManufacturerTemplateId" nullable="true" padding="11"
+                comment="ManufacturerTemplateId"/>
         <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
         <column xsi:type="int" name="PageSize" nullable="true" padding="11" comment="PageSize"/>
         <column xsi:type="text" name="PageSizeOptions" nullable="true" comment="PageSizeOptions"/>
         <column xsi:type="int" name="PictureId" nullable="true" padding="11" comment="PictureId"/>
-        <column xsi:type="tinyint" name="Published" nullable="true" padding="2" default="0" comment="Published"/>
+        <column xsi:type="boolean" name="Published" nullable="true" default="0" comment="Published"/>
         <column xsi:type="text" name="UpdatedOnUtc" nullable="true" comment="UpdatedOnUtc"/>
         <column xsi:type="text" name="scope" nullable="true" comment="Scope"/>
         <column xsi:type="int" name="scope_id" nullable="true" padding="11" comment="Scope ID"/>
-        <column xsi:type="tinyint" name="processed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="processed" default="0" nullable="true"
                 comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables and 1 means already copied"/>
-        <column xsi:type="tinyint" name="is_updated" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_updated" default="0" nullable="true"
                 comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated and 1 means needs to be updated into Magento tables"/>
-        <column xsi:type="tinyint" name="is_failed" padding="2" default="0" nullable="true"
+        <column xsi:type="boolean" name="is_failed" default="0" nullable="true"
                 comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully and 1 means failed to add successfully into Magento tables"/>
         <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
         <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>

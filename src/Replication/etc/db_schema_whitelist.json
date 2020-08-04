@@ -806,6 +806,8 @@
             "StoreID": true,
             "TenderFunction": true,
             "TenderTypeId": true,
+            "ValidOnMobilePOS": true,
+            "scope": true,
             "scope_id": true,
             "processed": true,
             "is_updated": true,
