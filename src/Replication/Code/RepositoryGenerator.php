@@ -12,13 +12,13 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
-use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\DocBlock\Tag\PropertyTag;
-use Zend\Code\Generator\DocBlockGenerator;
-use Zend\Code\Generator\FileGenerator;
-use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\DocBlock\Tag\PropertyTag;
+use Laminas\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\FileGenerator;
+use Laminas\Code\Generator\MethodGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Class RepositoryGenerator

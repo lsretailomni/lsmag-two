@@ -17,29 +17,9 @@ class Ingredient extends Entity
     protected $DisplayOrder = null;
 
     /**
-     * @property string $ExternalIdRO
-     */
-    protected $ExternalIdRO = null;
-
-    /**
-     * @property string $ExternalLineNumberRO
-     */
-    protected $ExternalLineNumberRO = null;
-
-    /**
      * @property MenuItem $Item
      */
     protected $Item = null;
-
-    /**
-     * @property string $KitchenStatusCodeRO
-     */
-    protected $KitchenStatusCodeRO = null;
-
-    /**
-     * @property string $KitchenStatusRO
-     */
-    protected $KitchenStatusRO = null;
 
     /**
      * @property float $MaximumQuantity
@@ -95,42 +75,6 @@ class Ingredient extends Entity
     }
 
     /**
-     * @param string $ExternalIdRO
-     * @return $this
-     */
-    public function setExternalIdRO($ExternalIdRO)
-    {
-        $this->ExternalIdRO = $ExternalIdRO;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExternalIdRO()
-    {
-        return $this->ExternalIdRO;
-    }
-
-    /**
-     * @param string $ExternalLineNumberRO
-     * @return $this
-     */
-    public function setExternalLineNumberRO($ExternalLineNumberRO)
-    {
-        $this->ExternalLineNumberRO = $ExternalLineNumberRO;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExternalLineNumberRO()
-    {
-        return $this->ExternalLineNumberRO;
-    }
-
-    /**
      * @param MenuItem $Item
      * @return $this
      */
@@ -146,42 +90,6 @@ class Ingredient extends Entity
     public function getItem()
     {
         return $this->Item;
-    }
-
-    /**
-     * @param string $KitchenStatusCodeRO
-     * @return $this
-     */
-    public function setKitchenStatusCodeRO($KitchenStatusCodeRO)
-    {
-        $this->KitchenStatusCodeRO = $KitchenStatusCodeRO;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKitchenStatusCodeRO()
-    {
-        return $this->KitchenStatusCodeRO;
-    }
-
-    /**
-     * @param string $KitchenStatusRO
-     * @return $this
-     */
-    public function setKitchenStatusRO($KitchenStatusRO)
-    {
-        $this->KitchenStatusRO = $KitchenStatusRO;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKitchenStatusRO()
-    {
-        return $this->KitchenStatusRO;
     }
 
     /**

@@ -84,7 +84,7 @@ class ReplPriceRepositoryTest extends TestCase
     }
 
     /**
-     * @expectedException \Magento\Framework\Exception\NoSuchEntityException 
+     * @expectedException \Magento\Framework\Exception\NoSuchEntityException
      * @expectedExceptionMessage Object with id 1 does not exist.
      */
     public function testGetWithNoSuchEntityException()
@@ -121,7 +121,7 @@ class ReplPriceRepositoryTest extends TestCase
     }
 
     /**
-     * @expectedException \Magento\Framework\Exception\CouldNotSaveException 
+     * @expectedException \Magento\Framework\Exception\CouldNotSaveException
      * @expectedExceptionMessage Could not save entity
      */
     public function testSaveWithCouldNotSaveException()

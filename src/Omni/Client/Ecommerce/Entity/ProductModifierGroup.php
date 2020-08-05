@@ -17,11 +17,6 @@ class ProductModifierGroup extends ModifierGroup
     protected $ProductModifiers = null;
 
     /**
-     * @property ArrayOfTextModifier $TextModifiers
-     */
-    protected $TextModifiers = null;
-
-    /**
      * @param ArrayOfProductModifier $ProductModifiers
      * @return $this
      */
@@ -37,24 +32,6 @@ class ProductModifierGroup extends ModifierGroup
     public function getProductModifiers()
     {
         return $this->ProductModifiers;
-    }
-
-    /**
-     * @param ArrayOfTextModifier $TextModifiers
-     * @return $this
-     */
-    public function setTextModifiers($TextModifiers)
-    {
-        $this->TextModifiers = $TextModifiers;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfTextModifier
-     */
-    public function getTextModifiers()
-    {
-        return $this->TextModifiers;
     }
 
 

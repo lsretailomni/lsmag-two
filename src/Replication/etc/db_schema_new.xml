@@ -1,0 +1,471 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="ls_replication_repl_barcode" resource="default" engine="innodb" comment="ReplEcommBarcodes">
+    <column name="repl_barcode_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_barcode_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_barcode_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_currency" resource="default" engine="innodb" comment="ReplEcommCurrency">
+    <column name="repl_currency_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_currency_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_currency_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_currency_exch_rate" resource="default" engine="innodb" comment="ReplEcommCurrencyRate">
+    <column name="repl_currency_exch_rate_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_currency_exch_rate_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_currency_exch_rate_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_extended_variant_value" resource="default" engine="innodb" comment="ReplEcommExtendedVariants">
+    <column name="repl_extended_variant_value_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_extended_variant_value_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_extended_variant_value_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_image_link" resource="default" engine="innodb" comment="ReplEcommImageLinks">
+    <column name="repl_image_link_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_image_link_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_image_link_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_image" resource="default" engine="innodb" comment="ReplEcommImages">
+    <column name="repl_image_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_image_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_image_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_item_category" resource="default" engine="innodb" comment="ReplEcommItemCategories">
+    <column name="repl_item_category_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_category_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_item_category_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_item" resource="default" engine="innodb" comment="ReplEcommItems">
+    <column name="repl_item_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_item_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_item_unit_of_measure" resource="default" engine="innodb" comment="ReplEcommItemUnitOfMeasures">
+    <column name="repl_item_unit_of_measure_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_unit_of_measure_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_item_unit_of_measure_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_item_variant_registration" resource="default" engine="innodb" comment="ReplEcommItemVariantRegistrations">
+    <column name="repl_item_variant_registration_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_variant_registration_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_item_variant_registration_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_price" resource="default" engine="innodb" comment="ReplEcommPrices">
+    <column name="repl_price_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_price_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_price_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_product_group" resource="default" engine="innodb" comment="ReplEcommProductGroups">
+    <column name="repl_product_group_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_product_group_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_product_group_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_store" resource="default" engine="innodb" comment="ReplEcommStores">
+    <column name="repl_store_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_store_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_unit_of_measure" resource="default" engine="innodb" comment="ReplEcommUnitOfMeasures">
+    <column name="repl_unit_of_measure_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_unit_of_measure_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_unit_of_measure_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_vendor" resource="default" engine="innodb" comment="ReplEcommVendor">
+    <column name="repl_vendor_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_vendor_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_vendor_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_loy_vendor_item_mapping" resource="default" engine="innodb" comment="ReplEcommVendorItemMapping">
+    <column name="repl_loy_vendor_item_mapping_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_loy_vendor_item_mapping_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_loy_vendor_item_mapping_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_attribute" resource="default" engine="innodb" comment="ReplEcommAttribute">
+    <column name="repl_attribute_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_attribute_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_attribute_value" resource="default" engine="innodb" comment="ReplEcommAttributeValue">
+    <column name="repl_attribute_value_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_value_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_attribute_value_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_attribute_option_value" resource="default" engine="innodb" comment="ReplEcommAttributeOptionValue">
+    <column name="repl_attribute_option_value_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_option_value_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_attribute_option_value_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_data_translation" resource="default" engine="innodb" comment="ReplEcommDataTranslation">
+    <column name="repl_data_translation_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_data_translation_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_data_translation_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_string" resource="default" engine="innodb" comment="ReplEcommDataTranslationLangCode">
+    <column name="string_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="string_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="string_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_hierarchy" resource="default" engine="innodb" comment="ReplEcommHierarchy">
+    <column name="repl_hierarchy_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_hierarchy_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_hierarchy_node" resource="default" engine="innodb" comment="ReplEcommHierarchyNode">
+    <column name="repl_hierarchy_node_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_node_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_hierarchy_node_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_hierarchy_leaf" resource="default" engine="innodb" comment="ReplEcommHierarchyLeaf">
+    <column name="repl_hierarchy_leaf_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_leaf_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_hierarchy_leaf_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_hierarchy_hosp_deal" resource="default" engine="innodb" comment="ReplEcommHierarchyHospDeal">
+    <column name="repl_hierarchy_hosp_deal_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_deal_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_hierarchy_hosp_deal_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_hierarchy_hosp_deal_line" resource="default" engine="innodb" comment="ReplEcommHierarchyHospDealLine">
+    <column name="repl_hierarchy_hosp_deal_line_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_deal_line_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_hierarchy_hosp_deal_line_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_hierarchy_hosp_recipe" resource="default" engine="innodb" comment="ReplEcommHierarchyHospRecipe">
+    <column name="repl_hierarchy_hosp_recipe_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_recipe_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_hierarchy_hosp_recipe_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_loy_item" resource="default" engine="innodb" comment="ReplEcommFullItem">
+    <column name="loy_item_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="loy_item_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="loy_item_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_discount" resource="default" engine="innodb" comment="ReplEcommDiscounts">
+    <column name="repl_discount_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_discount_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_discount_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_discount_validation" resource="default" engine="innodb" comment="ReplEcommDiscountValidations">
+    <column name="repl_discount_validation_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_discount_validation_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_discount_validation_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_shipping_agent" resource="default" engine="innodb" comment="ReplEcommShippingAgent">
+    <column name="repl_shipping_agent_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_shipping_agent_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_shipping_agent_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_customer" resource="default" engine="innodb" comment="ReplEcommMember">
+    <column name="repl_customer_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_customer_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_customer_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_country_code" resource="default" engine="innodb" comment="ReplEcommCountryCode">
+    <column name="repl_country_code_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_country_code_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_country_code_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_store_tender_type" resource="default" engine="innodb" comment="ReplEcommStoreTenderTypes">
+    <column name="repl_store_tender_type_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_tender_type_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_store_tender_type_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_tax_setup" resource="default" engine="innodb" comment="ReplEcommTaxSetup">
+    <column name="repl_tax_setup_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_tax_setup_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_tax_setup_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_inv_status" resource="default" engine="innodb" comment="ReplEcommInventoryStatus">
+    <column name="repl_inv_status_id" xsi:type="int" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_inv_status_id"/>
+    <column name="processed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column name="is_updated" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column name="is_failed" xsi:type="boolean" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column name="checksum" xsi:type="text" nullable="true" comment="Checksum"/>
+    <column name="processed_at" xsi:type="timestamp" nullable="true" comment="Processed At"/>
+    <column name="created_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Created At"/>
+    <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_inv_status_id"/>
+    </constraint>
+  </table>
+</schema>

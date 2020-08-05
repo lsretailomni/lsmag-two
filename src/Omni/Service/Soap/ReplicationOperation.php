@@ -141,8 +141,7 @@ class ReplicationOperation extends Operation
      */
     public function getTableColumnId()
     {
-        $idx = $this->getTableName() . '_id';
-        return $idx;
+        return $this->getTableName() . '_id';
     }
 
     /**

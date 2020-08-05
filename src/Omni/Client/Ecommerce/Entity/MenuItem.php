@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class MenuItem extends Item
+class MenuItem extends Entity
 {
 
     /**
@@ -22,6 +22,16 @@ class MenuItem extends Item
     protected $DefaultMenuType = null;
 
     /**
+     * @property string $Description
+     */
+    protected $Description = null;
+
+    /**
+     * @property string $Detail
+     */
+    protected $Detail = null;
+
+    /**
      * @property string $MenuId
      */
     protected $MenuId = null;
@@ -30,6 +40,21 @@ class MenuItem extends Item
      * @property string $Name
      */
     protected $Name = null;
+
+    /**
+     * @property float $Price
+     */
+    protected $Price = null;
+
+    /**
+     * @property string $UnitOfMeasure
+     */
+    protected $UnitOfMeasure = null;
+
+    /**
+     * @property float $UnitPrice
+     */
+    protected $UnitPrice = null;
 
     /**
      * @property Validation $Validation
@@ -73,6 +98,42 @@ class MenuItem extends Item
     }
 
     /**
+     * @param string $Description
+     * @return $this
+     */
+    public function setDescription($Description)
+    {
+        $this->Description = $Description;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->Description;
+    }
+
+    /**
+     * @param string $Detail
+     * @return $this
+     */
+    public function setDetail($Detail)
+    {
+        $this->Detail = $Detail;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetail()
+    {
+        return $this->Detail;
+    }
+
+    /**
      * @param string $MenuId
      * @return $this
      */
@@ -106,6 +167,60 @@ class MenuItem extends Item
     public function getName()
     {
         return $this->Name;
+    }
+
+    /**
+     * @param float $Price
+     * @return $this
+     */
+    public function setPrice($Price)
+    {
+        $this->Price = $Price;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->Price;
+    }
+
+    /**
+     * @param string $UnitOfMeasure
+     * @return $this
+     */
+    public function setUnitOfMeasure($UnitOfMeasure)
+    {
+        $this->UnitOfMeasure = $UnitOfMeasure;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitOfMeasure()
+    {
+        return $this->UnitOfMeasure;
+    }
+
+    /**
+     * @param float $UnitPrice
+     * @return $this
+     */
+    public function setUnitPrice($UnitPrice)
+    {
+        $this->UnitPrice = $UnitPrice;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getUnitPrice()
+    {
+        return $this->UnitPrice;
     }
 
     /**
