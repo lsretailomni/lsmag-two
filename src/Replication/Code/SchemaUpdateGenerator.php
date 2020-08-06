@@ -5,9 +5,11 @@ namespace Ls\Replication\Code;
 
 use DOMDocument;
 use Laminas\Code\Generator\GeneratorInterface;
+use Laminas\Code\Reflection\ClassReflection;
 use \Ls\Omni\Service\Metadata;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Module\Dir\Reader;
+use ReflectionException;
 
 /**
  * Class SchemaUpdateGenerator
@@ -30,6 +32,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
 
     /**
      * Create dynamic db_schema.xml file and save to etc folder of Replication Module
+     * @throws ReflectionException
      */
     public function generate()
     {
@@ -40,7 +43,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
         $schema->setAttribute('xsi:noNamespaceSchemaLocation', 'urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd');
         $tables = [];
         foreach ($this->metadata->getOperations() as $operationName => $operation) {
-            if (strpos($operationName, 'ReplEcomm') !== false) {
+            if (strpos($operationName, 'ReplEcomm') !== false && strpos($operationName, 'DataTranslationLangCode') != true) {
                 $replicationOperation = $this->metadata->getReplicationOperationByName($operation->getName());
                 $tableName            = "ls_replication_" . $replicationOperation->getTableName();
                 if (!in_array($tableName, $tables)) {
@@ -50,15 +53,15 @@ class SchemaUpdateGenerator implements GeneratorInterface
                     $table->setAttribute('engine', 'innodb');
                     $table->setAttribute('comment', $replicationOperation->getName());
                     $column = $dom->createElement('column');
-                    $column->setAttribute('name', $replicationOperation->getTableColumnId());
                     $column->setAttribute('xsi:type', 'int');
+                    $column->setAttribute('name', $replicationOperation->getTableColumnId());
                     $column->setAttribute('padding', '10');
                     $column->setAttribute('unsigned', 'false');
                     $column->setAttribute('nullable', 'false');
                     $column->setAttribute('identity', 'true');
                     $column->setAttribute('comment', $replicationOperation->getTableColumnId());
                     $table->appendChild($column);
-                    $extraColumnsArray = [
+                    $extraColumnsArray   = [
                         [
                             'name'       => 'processed',
                             'field_type' => 'boolean',
@@ -102,12 +105,71 @@ class SchemaUpdateGenerator implements GeneratorInterface
                             'comment'    => 'Updated At'
                         ]
                     ];
-                    foreach ($extraColumnsArray as $columnValue) {
+                    $restrictions        = $this->metadata->getRestrictions();
+                    $reflectedEntity     = new ClassReflection($replicationOperation->getOmniEntityFqn());
+                    $defaultColumnsArray = $propertyTypes = [];
+                    $simpleTypes         = ['boolean', 'string', 'int', 'float'];
+                    foreach ($reflectedEntity->getProperties() as $property) {
+                        $docblock = $property->getDocBlock()->getContents();
+                        preg_match('/property\s(:?\w+)\s\$(:?\w+)/m', $docblock, $matches);
+                        $type = $matches[1];
+                        $name = $matches[2];
+                        if (array_search($type, $simpleTypes) === false) {
+                            if (array_key_exists($type, $restrictions)) {
+                                $property_types[$name] = $type;
+                            }
+                        } else {
+                            $propertyTypes[$name] = $type;
+                        }
+                    }
+                    foreach ($propertyTypes as $raw_name => $type) {
+                        $name    = $raw_name;
+                        $length  = null;
+                        $default = '';
+
+                        (array_search($type, $simpleTypes) === false) and ($type = 'string');
+                        if ($type == 'int') {
+                            $fieldType = 'int';
+                        } elseif ($type == 'float') {
+                            $fieldType = 'decimal';
+                        } elseif ($type == 'boolean') {
+                            $fieldType = 'boolean';
+                            $default   = '0';
+                        } else {
+                            $lower_name = strtolower($name);
+                            if (strpos($lower_name, 'image64') === false) {
+                                $fieldType = 'text';
+                            } else {
+                                $fieldType = 'blob';
+                            }
+                        }
+                        if ($name == 'Id') {
+                            $name = 'nav_id';
+                        }
+                        $defaultColumnsArray[] = [
+                            'name'       => $name,
+                            'field_type' => $fieldType,
+                            'default'    => $default,
+                            'comment'    => $name
+                        ];
+                    }
+                    $allColumnsArray = array_merge($defaultColumnsArray, $extraColumnsArray);
+                    foreach ($allColumnsArray as $columnValue) {
                         $extraColumn = $dom->createElement('column');
-                        $extraColumn->setAttribute('name', $columnValue['name']);
                         $extraColumn->setAttribute('xsi:type', $columnValue['field_type']);
+                        $extraColumn->setAttribute('name', $columnValue['name']);
+                        if ($columnValue['field_type'] == 'decimal') {
+                            $extraColumn->setAttribute('scale', '4');
+                            $extraColumn->setAttribute('precision', '20');
+                        }
+                        if ($columnValue['field_type'] == 'int')
+                            $extraColumn->setAttribute('padding', '11');
                         if ($columnValue['default'] != '')
                             $extraColumn->setAttribute('default', $columnValue['default']);
+                        if ($columnValue['name'] == 'created_at')
+                            $extraColumn->setAttribute('on_update', 'false');
+                        if ($columnValue['name'] == 'updated_at')
+                            $extraColumn->setAttribute('on_update', 'true');
                         $extraColumn->setAttribute('nullable', 'true');
                         $extraColumn->setAttribute('comment', $columnValue['comment']);
                         $table->appendChild($extraColumn);
@@ -137,6 +199,6 @@ class SchemaUpdateGenerator implements GeneratorInterface
         /** @var  Reader $dirReader */
         $dirReader = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
         $basePath  = $dirReader->getModuleDir('', 'Ls_Replication');
-        return $basePath . "/etc/db_schema_new.xml";
+        return $basePath . "/etc/db_schema.xml";
     }
 }
