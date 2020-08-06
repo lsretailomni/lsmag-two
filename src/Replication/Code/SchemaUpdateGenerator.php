@@ -43,7 +43,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
         $schema->setAttribute('xsi:noNamespaceSchemaLocation', 'urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd');
         $tables = [];
         foreach ($this->metadata->getOperations() as $operationName => $operation) {
-            if (strpos($operationName, 'ReplEcomm') !== false && strpos($operationName, 'DataTranslationLangCode') != true) {
+            if (strpos($operationName, 'ReplEcomm') !== false) {
                 $replicationOperation = $this->metadata->getReplicationOperationByName($operation->getName());
                 $tableName            = "ls_replication_" . $replicationOperation->getTableName();
                 if (!in_array($tableName, $tables)) {

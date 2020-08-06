@@ -125,9 +125,10 @@ class ReplicationGenerate extends OmniCommand
             $schemaUpdateGenerator = new SchemaUpdateGenerator($this->metadata);
             $schemaUpdateGenerator->generate();
         } catch (Exception $e) {
+            $this->output->writeln("\t- - Error Start - -");
             $this->output->writeln("\tSomething went wrong, while creating the db_schema.xml");
             $this->output->writeln($e->getMessage());
-            $this->output->writeln('- - - -');
+            $this->output->writeln("\t- - Error End - -");
         }
         $this->output->writeln('Finish Generating Replication Task Files');
     }
@@ -250,10 +251,11 @@ class ReplicationGenerate extends OmniCommand
                 $this->output->writeln('- - - - ' . $operation->getName() . ' - - - -');
             }
         } catch (Exception $e) {
+            $this->output->writeln("\t- - Error Start - -");
             $this->output->writeln("\tSomething went wrong, please check log directory");
             $this->output->writeln($e->getMessage());
             $this->output->writeln('- FAILED - ' . $operation->getName() . ' - FAILED -');
-            $this->output->writeln('- - - -');
+            $this->output->writeln("\t- - Error End - -");
         }
     }
 }

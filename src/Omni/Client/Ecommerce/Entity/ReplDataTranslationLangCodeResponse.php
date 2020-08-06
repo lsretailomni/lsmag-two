@@ -12,7 +12,7 @@ class ReplDataTranslationLangCodeResponse
 {
 
     /**
-     * @property ArrayOfstring $Codes
+     * @property ArrayOfReplDataTranslationLangCode $Codes
      */
     protected $Codes = null;
 
@@ -32,7 +32,7 @@ class ReplDataTranslationLangCodeResponse
     protected $RecordsRemaining = null;
 
     /**
-     * @param ArrayOfstring $Codes
+     * @param ArrayOfReplDataTranslationLangCode $Codes
      * @return $this
      */
     public function setCodes($Codes)
@@ -42,7 +42,7 @@ class ReplDataTranslationLangCodeResponse
     }
 
     /**
-     * @return ArrayOfstring
+     * @return ArrayOfReplDataTranslationLangCode
      */
     public function getCodes()
     {

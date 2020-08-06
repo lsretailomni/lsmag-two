@@ -511,6 +511,8 @@ class ClassMap
         		'ArrayOfReplDataTranslation' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfReplDataTranslation',
         		'ReplDataTranslation' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ReplDataTranslation',
         		'ReplDataTranslationLangCodeResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ReplDataTranslationLangCodeResponse',
+        		'ArrayOfReplDataTranslationLangCode' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfReplDataTranslationLangCode',
+        		'ReplDataTranslationLangCode' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ReplDataTranslationLangCode',
         		'ReplFullItemResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ReplFullItemResponse',
         		'ReplShippingAgentResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ReplShippingAgentResponse',
         		'ArrayOfReplShippingAgent' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfReplShippingAgent',
