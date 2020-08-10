@@ -5,15 +5,15 @@ namespace Ls\Omni\Service\Soap;
 use DOMDocument;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\ServiceType;
-use Zend\Http\ClientStatic;
-use Zend\Soap\Client as ZendSoapClient;
-use Zend\Uri\Uri;
+use Laminas\Http\ClientStatic;
+use Laminas\Soap\Client as LaminasSoapClient;
+use Laminas\Uri\Uri;
 
 /**
  * Class Client
  * @package Ls\Omni\Service\Soap
  */
-class Client extends ZendSoapClient
+class Client extends LaminasSoapClient
 {
     /** @var Uri */
     public $URL;

@@ -397,9 +397,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         StoreManagerInterface $storeManager,
         Data $coreHelper
     ) {
-        $this->scopeConfig  = $scopeConfig;
-        $this->storeManager = $storeManager;
-        $this->coreHelper   = $coreHelper;
+        $this->scopeConfig          = $scopeConfig;
+        $this->storeManager         = $storeManager;
+        $this->coreHelper           = $coreHelper;
     }
 
     /**

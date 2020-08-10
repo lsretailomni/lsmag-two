@@ -7,10 +7,10 @@ use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use ReflectionClass;
 use ReflectionException;
-use Zend\Code\Generator\DocBlockGenerator;
-use Zend\Code\Generator\FileGenerator;
-use Zend\Code\Generator\GeneratorInterface;
-use Zend\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\FileGenerator;
+use Laminas\Code\Generator\GeneratorInterface;
+use Laminas\Code\Generator\ParameterGenerator;
 
 /**
  * Class RepositoryInterfaceGenerator

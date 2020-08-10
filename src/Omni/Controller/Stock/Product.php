@@ -12,7 +12,7 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\PageFactory;
-
+use Laminas\Json\Json as LaminasJson;
 /**
  * Class Product
  * @package Ls\Omni\Controller\Stock
@@ -108,7 +108,7 @@ class Product extends Action
 
             $stores               = $customResponse->toArray();
             $stores['storesInfo'] = $storesData;
-            $encodedStores        = \Zend_Json::encode($stores);
+            $encodedStores        = LaminasJson::encode($stores);
 
             $result = $result->setData(
                 [

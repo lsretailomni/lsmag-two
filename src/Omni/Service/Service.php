@@ -4,8 +4,8 @@ namespace Ls\Omni\Service;
 
 use \Ls\Core\Model\LSR;
 use Magento\Framework\App\ObjectManager;
-use Zend\Uri\Uri;
-use Zend\Uri\UriFactory;
+use Laminas\Uri\Uri;
+use Laminas\Uri\UriFactory;
 
 /**
  * Class Service

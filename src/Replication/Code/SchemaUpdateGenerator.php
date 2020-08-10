@@ -19,9 +19,9 @@ use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use ReflectionException;
-use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Reflection\ClassReflection;
+use Laminas\Code\Generator\MethodGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Reflection\ClassReflection;
 
 /**
  * Class SchemaUpdateGenerator
