@@ -52,6 +52,9 @@
         <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
+        <job name="repl_data_translation" instance="Ls\Replication\Cron\ReplEcommDataTranslationTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
     </group>
     <group id="replication">
         <job name="repl_attributes" instance="Ls\Replication\Cron\AttributesCreateTask" method="execute">
