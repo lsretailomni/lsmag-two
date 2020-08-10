@@ -21,8 +21,6 @@ class LSR
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
 Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';
-    // Default Customer password for LS Central if customer created from Magento Admin
-    const DEFAULT_CUSTOMER_PASSWORD = "lscentral@123";
     const EXTENSION_COMPOSER_PATH_VENDOR = "vendor/lsretail/lsmag-two/composer.json";
     const EXTENSION_COMPOSER_PATH_APP = "app/code/lsretail/lsmag-two/composer.json";
     const CRON_STATUS_PATH_PREFIX = 'ls_mag/replication/status_';
@@ -354,6 +352,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CRON_SYNC_CUSTOMERS_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_customers';
 
     const EMAIL_TEMPLATE_ID_FOR_OMNI_SERVICE_DOWN = 'ls_omni_disaster_recovery_email';
+
+    //Choose Industry
+    const LS_INDUSTRY_VALUE_RETAIL = 'retail';
+
+    const LS_INDUSTRY_VALUE_HOSPITALITY = 'hospitality';
 
     /**
      * @var ScopeConfigInterface
