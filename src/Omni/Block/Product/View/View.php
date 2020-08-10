@@ -76,8 +76,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getGoogleMapsApiKey()
     {
-        $configValue = $this->lsr->getGoogleMapsApiKey();
-        return $configValue;
+        return $this->lsr->getGoogleMapsApiKey();
     }
 
     /**
@@ -86,8 +85,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultLatitude()
     {
-        $configValue = $this->lsr->getDefaultLatitude();
-        return $configValue;
+        return $this->lsr->getDefaultLatitude();
     }
 
     /**
@@ -96,8 +94,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultLongitude()
     {
-        $configValue = $this->lsr->getDefaultLongitude();
-        return $configValue;
+        return $this->lsr->getDefaultLongitude();
     }
 
     /**
@@ -106,13 +103,11 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultZoom()
     {
-        $configValue = $this->lsr->getDefaultZoom();
-        return $configValue;
+        return $this->lsr->getDefaultZoom();
     }
 
     /**
-     * Get default default zoom from config
-     * @return string
+     * @return bool|null
      * @throws NoSuchEntityException
      */
     public function isValid()
