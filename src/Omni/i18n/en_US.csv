@@ -13,7 +13,8 @@
 Closed,Closed
 Special,Special
 "Order request has been sent to LS Central successfully","Order request has been sent to LS Central successfully"
-"Something terrible happened while placing order","Something terrible happened while placing order"
+"Something terrible happened while placing order %1","Something terrible happened while placing order %1"
+"The service is currently unavailable. Please try again later.","The service is currently unavailable. Please try again later."
 "Please select your hierarchy code","Please select your hierarchy code"
 "No hierarchy code found for the selected store","No hierarchy code found for the selected store"
 "Please select your web store","Please select your web store"
@@ -69,7 +70,6 @@ Subtotal,Subtotal
 "You are using","You are using"
 "Coupon code successfully removed.","Coupon code successfully removed."
 "You used coupon code ""%1"".","You used coupon code ""%1""."
-"The service is currently unavailable. Please try again later.","The service is currently unavailable. Please try again later."
 "Send order to LS Central?","Send order to LS Central?"
 "Send to LS Central","Send to LS Central"
 "Flat No/House No/Building No","Flat No/House No/Building No"

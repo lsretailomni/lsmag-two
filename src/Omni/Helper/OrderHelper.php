@@ -15,6 +15,9 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
+use Magento\Sales\Model\ResourceModel\Order;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class OrderHelper
@@ -53,6 +56,11 @@ class OrderHelper extends AbstractHelper
     public $lsr;
 
     /**
+     * @var Order
+     */
+    public $orderResourceModel;
+
+    /**
      * OrderHelper constructor.
      * @param Context $context
      * @param Model\Order $order
@@ -62,6 +70,7 @@ class OrderHelper extends AbstractHelper
      * @param CustomerSessionProxy $customerSession
      * @param CheckoutSessionProxy $checkoutSession
      * @param LSR $lsr
+     * @param Order $orderResourceModel
      */
     public function __construct(
         Context $context,
@@ -71,7 +80,8 @@ class OrderHelper extends AbstractHelper
         Model\OrderRepository $orderRepository,
         CustomerSessionProxy $customerSession,
         CheckoutSessionProxy $checkoutSession,
-        LSR $lsr
+        LSR $lsr,
+        Order $orderResourceModel
     ) {
         parent::__construct($context);
         $this->order           = $order;
@@ -81,6 +91,7 @@ class OrderHelper extends AbstractHelper
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->lsr             = $lsr;
+        $this->orderResourceModel = $orderResourceModel;
     }
 
     /**
@@ -446,10 +457,26 @@ class OrderHelper extends AbstractHelper
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getActiveWebStore()
     {
         return $this->lsr->getActiveWebStore();
+    }
+
+    /**
+     * @param $order
+     * @throws AlreadyExistsException
+     */
+    public function disasterRecoveryHandler($order)
+    {
+        $this->_logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
+        $order->addCommentToStatusHistory(__('The service is currently unavailable. Please try again later.'));
+        try {
+            $this->orderResourceModel->save($order);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        $this->basketHelper->unSetLastDocumentId();
     }
 }
