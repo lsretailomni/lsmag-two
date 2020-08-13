@@ -3,6 +3,11 @@
 
 namespace Ls\Replication\Code;
 
+use DOMDocument;
+use Laminas\Code\Generator\GeneratorInterface;
+use Laminas\Code\Generator\MethodGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Reflection\ClassReflection;
 use CaseHelper\CaseHelperFactory;
 use CaseHelper\CaseHelperInterface;
 use Exception;
@@ -19,9 +24,6 @@ use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use ReflectionException;
-use Laminas\Code\Generator\MethodGenerator;
-use Laminas\Code\Generator\ParameterGenerator;
-use Laminas\Code\Reflection\ClassReflection;
 
 /**
  * Class SchemaUpdateGenerator
