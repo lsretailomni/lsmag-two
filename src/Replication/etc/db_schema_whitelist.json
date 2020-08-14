@@ -1,108 +1,4 @@
 {
-    "ls_replication_loy_item": {
-        "column": {
-            "loy_item_id": true,
-            "AllowedToSell": true,
-            "BlockDiscount": true,
-            "BlockManualPriceChange": true,
-            "Blocked": true,
-            "Description": true,
-            "Details": true,
-            "GrossWeight": true,
-            "IsDeleted": true,
-            "ItemCategoryCode": true,
-            "ItemFamilyCode": true,
-            "Price": true,
-            "ProductGroupId": true,
-            "SalesUomId": true,
-            "ScaleItem": true,
-            "SeasonCode": true,
-            "UnitVolume": true,
-            "UnitsPerParcel": true,
-            "nav_id": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_attribute": {
-        "column": {
-            "repl_attribute_id": true,
-            "Code": true,
-            "DefaultValue": true,
-            "Description": true,
-            "IsDeleted": true,
-            "ValueType": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_attribute_option_value": {
-        "column": {
-            "repl_attribute_option_value_id": true,
-            "Code": true,
-            "IsDeleted": true,
-            "Sequence": true,
-            "Value": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_attribute_value": {
-        "column": {
-            "repl_attribute_value_id": true,
-            "Code": true,
-            "IsDeleted": true,
-            "LinkField1": true,
-            "LinkField2": true,
-            "LinkField3": true,
-            "LinkType": true,
-            "NumbericValue": true,
-            "Sequence": true,
-            "Value": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
     "ls_replication_repl_barcode": {
         "column": {
             "repl_barcode_id": true,
@@ -113,26 +9,6 @@
             "ItemId": true,
             "UnitOfMeasure": true,
             "VariantId": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_country_code": {
-        "column": {
-            "repl_country_code_id": true,
-            "nav_id": true,
-            "IsDeleted": true,
-            "Name": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -196,164 +72,6 @@
             "PRIMARY": true
         }
     },
-    "ls_replication_repl_customer": {
-        "column": {
-            "repl_customer_id": true,
-            "AccountNumber": true,
-            "Blocked": true,
-            "CellularPhone": true,
-            "City": true,
-            "ClubCode": true,
-            "Country": true,
-            "County": true,
-            "Currency": true,
-            "Email": true,
-            "FirstName": true,
-            "nav_id": true,
-            "IncludeTax": true,
-            "IsDeleted": true,
-            "LastName": true,
-            "MiddleName": true,
-            "Name": true,
-            "NamePrefix": true,
-            "NameSuffix": true,
-            "PhoneLocal": true,
-            "ReceiptEmail": true,
-            "ReceiptOption": true,
-            "SchemeCode": true,
-            "State": true,
-            "Street": true,
-            "TaxGroup": true,
-            "URL": true,
-            "UserName": true,
-            "ZipCode": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_data_translation": {
-        "column": {
-            "repl_data_translation_id": true,
-            "IsDeleted": true,
-            "Key": true,
-            "LanguageCode": true,
-            "Text": true,
-            "TranslationId": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_discount": {
-        "column": {
-            "repl_discount_id": true,
-            "CurrencyCode": true,
-            "CustomerDiscountGroup": true,
-            "Description": true,
-            "Details": true,
-            "DiscountValue": true,
-            "DiscountValueType": true,
-            "FromDate": true,
-            "IsDeleted": true,
-            "ItemId": true,
-            "LoyaltySchemeCode": true,
-            "MinimumQuantity": true,
-            "ModifyDate": true,
-            "OfferNo": true,
-            "PriorityNo": true,
-            "StoreId": true,
-            "ToDate": true,
-            "Type": true,
-            "UnitOfMeasureId": true,
-            "ValidationPeriodId": true,
-            "VariantId": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_discount_validation": {
-        "column": {
-            "repl_discount_validation_id": true,
-            "Description": true,
-            "EndAfterMidnight": true,
-            "EndDate": true,
-            "EndTime": true,
-            "FridayEnd": true,
-            "FridayEndAfterMidnight": true,
-            "FridayStart": true,
-            "FridayWithinBounds": true,
-            "nav_id": true,
-            "IsDeleted": true,
-            "MondayEnd": true,
-            "MondayEndAfterMidnight": true,
-            "MondayStart": true,
-            "MondayWithinBounds": true,
-            "SaturdayEnd": true,
-            "SaturdayEndAfterMidnight": true,
-            "SaturdayStart": true,
-            "SaturdayWithinBounds": true,
-            "StartDate": true,
-            "StartTime": true,
-            "SundayEnd": true,
-            "SundayEndAfterMidnight": true,
-            "SundayStart": true,
-            "SundayWithinBounds": true,
-            "ThursdayEnd": true,
-            "ThursdayEndAfterMidnight": true,
-            "ThursdayStart": true,
-            "ThursdayWithinBounds": true,
-            "TimeWithinBounds": true,
-            "TuesdayEnd": true,
-            "TuesdayEndAfterMidnight": true,
-            "TuesdayStart": true,
-            "TuesdayWithinBounds": true,
-            "WednesdayEnd": true,
-            "WednesdayEndAfterMidnight": true,
-            "WednesdayStart": true,
-            "WednesdayWithinBounds": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
     "ls_replication_repl_extended_variant_value": {
         "column": {
             "repl_extended_variant_value_id": true,
@@ -366,100 +84,6 @@
             "LogicalOrder": true,
             "Timestamp": true,
             "Value": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_hierarchy": {
-        "column": {
-            "repl_hierarchy_id": true,
-            "Description": true,
-            "nav_id": true,
-            "IsDeleted": true,
-            "Type": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_hierarchy_leaf": {
-        "column": {
-            "repl_hierarchy_leaf_id": true,
-            "Description": true,
-            "HierarchyCode": true,
-            "nav_id": true,
-            "ImageId": true,
-            "IsDeleted": true,
-            "NodeId": true,
-            "Type": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_hierarchy_node": {
-        "column": {
-            "repl_hierarchy_node_id": true,
-            "ChildrenOrder": true,
-            "Description": true,
-            "HierarchyCode": true,
-            "nav_id": true,
-            "ImageId": true,
-            "Indentation": true,
-            "IsDeleted": true,
-            "ParentNode": true,
-            "PresentationOrder": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_image": {
-        "column": {
-            "repl_image_id": true,
-            "Description": true,
-            "nav_id": true,
-            "Image64": true,
-            "IsDeleted": true,
-            "Location": true,
-            "LocationType": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -497,14 +121,34 @@
             "PRIMARY": true
         }
     },
-    "ls_replication_repl_inv_status": {
+    "ls_replication_repl_image": {
         "column": {
-            "repl_inv_status_id": true,
+            "repl_image_id": true,
+            "Description": true,
+            "nav_id": true,
+            "Image64": true,
             "IsDeleted": true,
-            "ItemId": true,
-            "Quantity": true,
-            "StoreId": true,
-            "VariantId": true,
+            "Location": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_item_category": {
+        "column": {
+            "repl_item_category_id": true,
+            "Description": true,
+            "nav_id": true,
+            "IsDeleted": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -565,27 +209,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_item_category": {
-        "column": {
-            "repl_item_category_id": true,
-            "Description": true,
-            "nav_id": true,
-            "IsDeleted": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "BlockedOnECom": true
         },
         "constraint": {
             "PRIMARY": true
@@ -630,30 +255,6 @@
             "VariantDimension5": true,
             "VariantDimension6": true,
             "VariantId": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_loy_vendor_item_mapping": {
-        "column": {
-            "repl_loy_vendor_item_mapping_id": true,
-            "Deleted": true,
-            "DisplayOrder": true,
-            "IsDeleted": true,
-            "IsFeaturedProduct": true,
-            "NavManufacturerId": true,
-            "NavManufacturerItemId": true,
-            "NavProductId": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -726,28 +327,6 @@
             "PRIMARY": true
         }
     },
-    "ls_replication_repl_shipping_agent": {
-        "column": {
-            "repl_shipping_agent_id": true,
-            "AccountNo": true,
-            "nav_id": true,
-            "InternetAddress": true,
-            "IsDeleted": true,
-            "Name": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
     "ls_replication_repl_store": {
         "column": {
             "repl_store_id": true,
@@ -771,6 +350,560 @@
             "TaxGroup": true,
             "UserDefaultCustomerAccount": true,
             "ZipCode": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_unit_of_measure": {
+        "column": {
+            "repl_unit_of_measure_id": true,
+            "Description": true,
+            "nav_id": true,
+            "IsDeleted": true,
+            "ShortDescription": true,
+            "UnitDecimals": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_vendor": {
+        "column": {
+            "repl_vendor_id": true,
+            "AllowCustomersToSelectPageSize": true,
+            "Blocked": true,
+            "DisplayOrder": true,
+            "nav_id": true,
+            "IsDeleted": true,
+            "ManufacturerTemplateId": true,
+            "Name": true,
+            "PageSize": true,
+            "PageSizeOptions": true,
+            "PictureId": true,
+            "Published": true,
+            "UpdatedOnUtc": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_loy_vendor_item_mapping": {
+        "column": {
+            "repl_loy_vendor_item_mapping_id": true,
+            "Deleted": true,
+            "DisplayOrder": true,
+            "IsDeleted": true,
+            "IsFeaturedProduct": true,
+            "NavManufacturerId": true,
+            "NavManufacturerItemId": true,
+            "NavProductId": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_attribute": {
+        "column": {
+            "repl_attribute_id": true,
+            "Code": true,
+            "DefaultValue": true,
+            "Description": true,
+            "IsDeleted": true,
+            "ValueType": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_attribute_value": {
+        "column": {
+            "repl_attribute_value_id": true,
+            "Code": true,
+            "IsDeleted": true,
+            "LinkField1": true,
+            "LinkField2": true,
+            "LinkField3": true,
+            "LinkType": true,
+            "NumbericValue": true,
+            "Sequence": true,
+            "Value": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_attribute_option_value": {
+        "column": {
+            "repl_attribute_option_value_id": true,
+            "Code": true,
+            "IsDeleted": true,
+            "Sequence": true,
+            "Value": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_data_translation": {
+        "column": {
+            "repl_data_translation_id": true,
+            "IsDeleted": true,
+            "Key": true,
+            "LanguageCode": true,
+            "Text": true,
+            "TranslationId": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_data_translation_lang_code": {
+        "column": {
+            "repl_data_translation_lang_code_id": true,
+            "Code": true,
+            "IsDeleted": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_hierarchy": {
+        "column": {
+            "repl_hierarchy_id": true,
+            "Description": true,
+            "nav_id": true,
+            "IsDeleted": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_hierarchy_node": {
+        "column": {
+            "repl_hierarchy_node_id": true,
+            "ChildrenOrder": true,
+            "Description": true,
+            "HierarchyCode": true,
+            "nav_id": true,
+            "ImageId": true,
+            "Indentation": true,
+            "IsDeleted": true,
+            "ParentNode": true,
+            "PresentationOrder": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_hierarchy_leaf": {
+        "column": {
+            "repl_hierarchy_leaf_id": true,
+            "Description": true,
+            "HierarchyCode": true,
+            "nav_id": true,
+            "ImageId": true,
+            "IsDeleted": true,
+            "NodeId": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_hierarchy_hosp_deal": {
+        "column": {
+            "repl_hierarchy_hosp_deal_id": true,
+            "DealNo": true,
+            "Description": true,
+            "HierarchyCode": true,
+            "ImageId": true,
+            "IsDeleted": true,
+            "ItemNo": true,
+            "LineNo": true,
+            "MinSelection": true,
+            "ParentNode": true,
+            "Price": true,
+            "PriceWithVat": true,
+            "UnitOfMeasure": true,
+            "VariantCode": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_hierarchy_hosp_deal_line": {
+        "column": {
+            "repl_hierarchy_hosp_deal_line_id": true,
+            "DealLineCode": true,
+            "DealLineNo": true,
+            "DealNo": true,
+            "Description": true,
+            "HierarchyCode": true,
+            "ImageId": true,
+            "IsDeleted": true,
+            "ItemNo": true,
+            "LineNo": true,
+            "MinSelection": true,
+            "ParentNode": true,
+            "Price": true,
+            "PriceWithVat": true,
+            "UnitOfMeasure": true,
+            "VariantCode": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_hierarchy_hosp_recipe": {
+        "column": {
+            "repl_hierarchy_hosp_recipe_id": true,
+            "Description": true,
+            "Exclusion": true,
+            "ExclusionPrice": true,
+            "HierarchyCode": true,
+            "ImageId": true,
+            "IsDeleted": true,
+            "ItemNo": true,
+            "LineNo": true,
+            "ParentNode": true,
+            "QuantityPer": true,
+            "RecipeNo": true,
+            "UnitOfMeasure": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_loy_item": {
+        "column": {
+            "loy_item_id": true,
+            "AllowedToSell": true,
+            "BlockDiscount": true,
+            "BlockManualPriceChange": true,
+            "Blocked": true,
+            "Description": true,
+            "Details": true,
+            "GrossWeight": true,
+            "IsDeleted": true,
+            "ItemCategoryCode": true,
+            "ItemFamilyCode": true,
+            "Price": true,
+            "ProductGroupId": true,
+            "SalesUomId": true,
+            "ScaleItem": true,
+            "SeasonCode": true,
+            "UnitVolume": true,
+            "UnitsPerParcel": true,
+            "nav_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_discount": {
+        "column": {
+            "repl_discount_id": true,
+            "CurrencyCode": true,
+            "CustomerDiscountGroup": true,
+            "Description": true,
+            "Details": true,
+            "DiscountValue": true,
+            "FromDate": true,
+            "IsDeleted": true,
+            "ItemId": true,
+            "LoyaltySchemeCode": true,
+            "MinimumQuantity": true,
+            "ModifyDate": true,
+            "OfferNo": true,
+            "PriorityNo": true,
+            "StoreId": true,
+            "ToDate": true,
+            "UnitOfMeasureId": true,
+            "ValidationPeriodId": true,
+            "VariantId": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_discount_validation": {
+        "column": {
+            "repl_discount_validation_id": true,
+            "Description": true,
+            "EndAfterMidnight": true,
+            "EndDate": true,
+            "EndTime": true,
+            "FridayEnd": true,
+            "FridayEndAfterMidnight": true,
+            "FridayStart": true,
+            "FridayWithinBounds": true,
+            "nav_id": true,
+            "IsDeleted": true,
+            "MondayEnd": true,
+            "MondayEndAfterMidnight": true,
+            "MondayStart": true,
+            "MondayWithinBounds": true,
+            "SaturdayEnd": true,
+            "SaturdayEndAfterMidnight": true,
+            "SaturdayStart": true,
+            "SaturdayWithinBounds": true,
+            "StartDate": true,
+            "StartTime": true,
+            "SundayEnd": true,
+            "SundayEndAfterMidnight": true,
+            "SundayStart": true,
+            "SundayWithinBounds": true,
+            "ThursdayEnd": true,
+            "ThursdayEndAfterMidnight": true,
+            "ThursdayStart": true,
+            "ThursdayWithinBounds": true,
+            "TimeWithinBounds": true,
+            "TuesdayEnd": true,
+            "TuesdayEndAfterMidnight": true,
+            "TuesdayStart": true,
+            "TuesdayWithinBounds": true,
+            "WednesdayEnd": true,
+            "WednesdayEndAfterMidnight": true,
+            "WednesdayStart": true,
+            "WednesdayWithinBounds": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_shipping_agent": {
+        "column": {
+            "repl_shipping_agent_id": true,
+            "AccountNo": true,
+            "nav_id": true,
+            "InternetAddress": true,
+            "IsDeleted": true,
+            "Name": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_customer": {
+        "column": {
+            "repl_customer_id": true,
+            "AccountNumber": true,
+            "Blocked": true,
+            "CellularPhone": true,
+            "City": true,
+            "ClubCode": true,
+            "Country": true,
+            "County": true,
+            "Currency": true,
+            "Email": true,
+            "FirstName": true,
+            "nav_id": true,
+            "IncludeTax": true,
+            "IsDeleted": true,
+            "LastName": true,
+            "MiddleName": true,
+            "Name": true,
+            "NamePrefix": true,
+            "NameSuffix": true,
+            "PhoneLocal": true,
+            "ReceiptEmail": true,
+            "ReceiptOption": true,
+            "SchemeCode": true,
+            "State": true,
+            "Street": true,
+            "TaxGroup": true,
+            "URL": true,
+            "UserName": true,
+            "ZipCode": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_country_code": {
+        "column": {
+            "repl_country_code_id": true,
+            "nav_id": true,
+            "IsDeleted": true,
+            "Name": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -842,43 +975,14 @@
             "PRIMARY": true
         }
     },
-    "ls_replication_repl_unit_of_measure": {
+    "ls_replication_repl_inv_status": {
         "column": {
-            "repl_unit_of_measure_id": true,
-            "Description": true,
-            "nav_id": true,
+            "repl_inv_status_id": true,
             "IsDeleted": true,
-            "ShortDescription": true,
-            "UnitDecimals": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_vendor": {
-        "column": {
-            "repl_vendor_id": true,
-            "AllowCustomersToSelectPageSize": true,
-            "Blocked": true,
-            "DisplayOrder": true,
-            "nav_id": true,
-            "IsDeleted": true,
-            "ManufacturerTemplateId": true,
-            "Name": true,
-            "PageSize": true,
-            "PageSizeOptions": true,
-            "PictureId": true,
-            "Published": true,
-            "UpdatedOnUtc": true,
+            "ItemId": true,
+            "Quantity": true,
+            "StoreId": true,
+            "VariantId": true,
             "scope": true,
             "scope_id": true,
             "processed": true,

@@ -199,7 +199,7 @@ CODE
         $method           = new MethodGenerator();
         $entityRepository = $this->operation->getRepositoryName();
         $method->setName('testGetWithNoSuchEntityException');
-        $method->setDocBlock('@expectedException \Magento\Framework\Exception\NoSuchEntityException 
+        $method->setDocBlock('@expectedException \Magento\Framework\Exception\NoSuchEntityException
 @expectedExceptionMessage Object with id 1 does not exist.');
         $method->setBody(
             <<<CODE
@@ -267,7 +267,7 @@ CODE
         $method           = new MethodGenerator();
         $entityRepository = $this->operation->getRepositoryName();
         $method->setName('testSaveWithCouldNotSaveException');
-        $method->setDocBlock('@expectedException \Magento\Framework\Exception\CouldNotSaveException 
+        $method->setDocBlock('@expectedException \Magento\Framework\Exception\CouldNotSaveException
 @expectedExceptionMessage Could not save entity');
         $method->setBody(
             <<<CODE

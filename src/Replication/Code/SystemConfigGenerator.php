@@ -32,7 +32,7 @@ class SystemConfigGenerator implements GeneratorInterface
     {
 
         $xml = <<<XML
-<field id="{$this->operation->getTableName()}" translate="label" type="text" sortOrder="10" 
+<field id="{$this->operation->getTableName()}" translate="label" type="text" sortOrder="10"
        showInDefault="1" showInWebsite="1" showInStore="1">
   <label>{$this->operation->getEntityName()}</label>
 </field>

@@ -52,6 +52,11 @@ class ReplItem
     protected $Blocked = null;
 
     /**
+     * @property int $BlockedOnECom
+     */
+    protected $BlockedOnECom = null;
+
+    /**
      * @property int $BlockedOnPos
      */
     protected $BlockedOnPos = null;
@@ -338,6 +343,24 @@ class ReplItem
     public function getBlocked()
     {
         return $this->Blocked;
+    }
+
+    /**
+     * @param int $BlockedOnECom
+     * @return $this
+     */
+    public function setBlockedOnECom($BlockedOnECom)
+    {
+        $this->BlockedOnECom = $BlockedOnECom;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlockedOnECom()
+    {
+        return $this->BlockedOnECom;
     }
 
     /**

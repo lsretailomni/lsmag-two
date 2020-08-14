@@ -30,6 +30,11 @@ class SalesEntryLine extends Entity
     protected $DiscountPercent = null;
 
     /**
+     * @property string $ExternalId
+     */
+    protected $ExternalId = null;
+
+    /**
      * @property string $ItemDescription
      */
     protected $ItemDescription = null;
@@ -146,6 +151,24 @@ class SalesEntryLine extends Entity
     public function getDiscountPercent()
     {
         return $this->DiscountPercent;
+    }
+
+    /**
+     * @param string $ExternalId
+     * @return $this
+     */
+    public function setExternalId($ExternalId)
+    {
+        $this->ExternalId = $ExternalId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalId()
+    {
+        return $this->ExternalId;
     }
 
     /**

@@ -6,14 +6,15 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \LS\Omni\Helper\ItemHelper;
 use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Quote\Model\Quote;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -88,8 +89,9 @@ class CartObserver implements ObserverInterface
      * @param Observer $observer
      * @return $this|void
      * @throws NoSuchEntityException
+     * @throws InvalidEnumException
+     * @throws LocalizedException
      */
-    // @codingStandardsIgnoreLine
     public function execute(Observer $observer)
     {
         /*
@@ -98,20 +100,17 @@ class CartObserver implements ObserverInterface
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($this->watchNextSave) {
                 try {
-                    /** @var Quote $quote */
                     $quote      = $this->checkoutSession->getQuote();
-                    $couponCode = $this->checkoutSession->getCouponCode();
+                    $couponCode = $this->basketHelper->getCouponCodeFromCheckoutSession();
                     // This will create one list if not created and will return onelist if its already created.
                     /** @var OneList|null $oneList */
                     $oneList = $this->basketHelper->get();
-                    //TODO if there is any no items, i-e when user only has one item and s/he prefer to remove from cart,
-                    // then dont calculate basket functionality below.
                     // add items from the quote to the oneList and return the updated onelist
                     $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
                     if (!empty($couponCode)) {
                         $status = $this->basketHelper->setCouponCode($couponCode);
                         if (!is_object($status)) {
-                            $this->checkoutSession->setCouponCode('');
+                            $this->basketHelper->setCouponCodeInCheckoutSession('');
                         }
                     }
                     if (count($quote->getAllItems()) == 0) {
