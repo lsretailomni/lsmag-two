@@ -11,11 +11,11 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\Soap\Entity;
 use \Ls\Omni\Service\Soap\SoapType;
-use Zend\Code\Generator\DocBlock\Tag;
-use Zend\Code\Generator\DocBlockGenerator;
-use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\DocBlock\Tag;
+use Laminas\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\MethodGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 use \Ls\Omni\Service\Soap\ComplexTypeDefinition;
 
 /**
@@ -251,7 +251,7 @@ CODE
 
         $content = $this->file->generate();
 
-        // Zend add / in the start of base class which we dont need. so replace this with blah.
+        // Laminas add / in the start of base class which we dont need. so replace this with blah.
         if ($type->getBase()) {
             $content = str_replace("\\meannothing" . $type->getBase(), $type->getBase(), $content);
         }

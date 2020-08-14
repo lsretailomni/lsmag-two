@@ -10,8 +10,8 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Framework\App\ObjectManager;
 use SoapFault;
-use Zend\Log\Logger;
-use Zend\Log\Writer\Stream;
+use Laminas\Log\Logger;
+use Laminas\Log\Writer\Stream;
 
 /**
  * Class AbstractOperation

@@ -19,7 +19,7 @@ use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractController;
-use Zend\Uri\UriFactory;
+use Laminas\Uri\UriFactory;
 
 class CustomerRegistrationTest extends AbstractController
 {

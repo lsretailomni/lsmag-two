@@ -8,7 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ContactSearchResponse;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use PHPUnit\Framework\TestCase;
-use Zend\Uri\UriFactory;
+use Laminas\Uri\UriFactory;
 
 class ContactSearchTest extends TestCase
 {

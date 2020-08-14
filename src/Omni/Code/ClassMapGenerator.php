@@ -4,7 +4,7 @@ namespace Ls\Omni\Code;
 
 use Exception;
 use \Ls\Omni\Service\Metadata;
-use Zend\Code\Generator\MethodGenerator;
+use Laminas\Code\Generator\MethodGenerator;
 
 /**
  * Class ClassMapGenerator

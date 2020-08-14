@@ -17,9 +17,6 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Json\Helper\Data;
 use Psr\Log\LoggerInterface;
-use Zend_Validate;
-use Zend_Validate_EmailAddress;
-use Zend_Validate_Exception;
 
 /**
  * Class AjaxLoginObserver
@@ -87,7 +84,6 @@ class AjaxLoginObserver implements ObserverInterface
      * @param Observer $observer
      * @return $this|void
      * @throws LocalizedException
-     * @throws Zend_Validate_Exception
      */
     public function execute(Observer $observer)
     {
@@ -100,7 +96,7 @@ class AjaxLoginObserver implements ObserverInterface
 
             if (!empty($credentials['username']) && !empty($credentials['password'])) {
                 $email     = $username = $credentials['username'];
-                $is_email  = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
+                $is_email  = $this->contactHelper->isValid($username);
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                     try {
                         // CASE FOR EMAIL LOGIN := TRANSLATION TO USERNAME

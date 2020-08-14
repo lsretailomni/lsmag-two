@@ -15,9 +15,6 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
-use Zend_Validate;
-use Zend_Validate_EmailAddress;
-use Zend_Validate_Exception;
 
 /**
  * Class LoginObserver
@@ -87,14 +84,13 @@ class LoginObserver implements ObserverInterface
      * @param Observer $observer
      * @return $this|void
      * @throws LocalizedException
-     * @throws Zend_Validate_Exception
      */
     public function execute(Observer $observer)
     {
         $login = $observer->getRequest()->getPost('login');
         if (!empty($login['username']) && !empty($login['password'])) {
             $email    = $username = $login['username'];
-            $is_email = Zend_Validate::is($username, Zend_Validate_EmailAddress::class);
+            $is_email = $this->contactHelper->isValid($username);
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                 try {
                     if ($is_email) {

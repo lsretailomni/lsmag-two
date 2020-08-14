@@ -11,10 +11,10 @@ use \Ls\Omni\Service\Service;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client;
 use \Ls\Omni\Service\Soap\Operation;
-use Zend\Code\Generator\DocBlock\Tag;
-use Zend\Code\Generator\DocBlockGenerator;
-use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\DocBlock\Tag;
+use Laminas\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\MethodGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
 
 /**
  * Class OperationGenerator

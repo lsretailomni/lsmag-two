@@ -11,7 +11,7 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use PHPUnit\Framework\TestCase;
 use SoapFault;
-use Zend\Uri\UriFactory;
+use Laminas\Uri\UriFactory;
 
 class LoginWebTest extends TestCase
 {

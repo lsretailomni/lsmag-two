@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Model\Checkout;
 
+use Laminas\Json\Json;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\ConfigProviderInterface;
@@ -10,7 +11,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Zend_Json;
 
 /**
  * Class DataProvider
@@ -83,7 +83,7 @@ class DataProvider implements ConfigProviderInterface
             ->toHtml();
         $stores               = $storesResponse->toArray();
         $stores['storesInfo'] = $storesData;
-        $encodedStores        = Zend_Json::encode($stores);
+        $encodedStores        = Json::encode($stores);
 
         $config                    = [
             'shipping' => [
