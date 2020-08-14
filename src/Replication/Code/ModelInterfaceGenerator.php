@@ -8,7 +8,7 @@ use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use ReflectionClass;
 use ReflectionException;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Class ModelInterfaceGenerator
