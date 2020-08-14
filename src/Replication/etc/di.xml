@@ -35,6 +35,8 @@
                 type="Ls\Replication\Model\ReplBarcodeRepository"/>
     <preference for="Ls\Replication\Api\ReplDataTranslationRepositoryInterface"
                 type="Ls\Replication\Model\ReplDataTranslationRepository"/>
+    <preference for="Ls\Replication\Api\ReplDataTranslationLangCodeRepositoryInterface"
+                type="Ls\Replication\Model\ReplDataTranslationLangCodeRepository"/>
     <preference for="Ls\Replication\Api\ReplDiscountRepositoryInterface"
                 type="Ls\Replication\Model\ReplDiscountRepository"/>
     <preference for="Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface"
@@ -68,6 +70,8 @@
     <preference for="Ls\Replication\Api\Data\ReplBarcodeInterface" type="Ls\Replication\Model\ReplBarcode"/>
     <preference for="Ls\Replication\Api\Data\ReplDataTranslationInterface"
                 type="Ls\Replication\Model\ReplDataTranslation"/>
+    <preference for="Ls\Replication\Api\Data\ReplDataTranslationLangCodeInterface"
+                type="Ls\Replication\Model\ReplDataTranslationLangCode"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountInterface" type="Ls\Replication\Model\ReplDiscount"/>
     <preference for="Ls\Replication\Api\Data\ReplExtendedVariantValueInterface"
                 type="Ls\Replication\Model\ReplExtendedVariantValue"/>
@@ -95,6 +99,8 @@
                 type="Ls\Replication\Model\ReplBarcodeSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplDataTranslationSearchResultsInterface"
                 type="Ls\Replication\Model\ReplDataTranslationSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplDataTranslationLangSearchResultsInterface"
+                type="Ls\Replication\Model\ReplDataTranslationLangCodeSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountSearchResultsInterface"
                 type="Ls\Replication\Model\ReplDiscountSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplExtendedVariantValueSearchResultsInterface"
@@ -140,6 +146,9 @@
                 </item>
                 <item name="ls_repl_grids_data_translation_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplDataTranslation\Grid\Collection
+                </item>
+                <item name="ls_repl_grids_data_translation_lang_code_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplDataTranslationLangCode\Grid\Collection
                 </item>
                 <item name="ls_repl_grids_extendedvariantvalue_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\Grid\Collection

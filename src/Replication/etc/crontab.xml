@@ -50,10 +50,14 @@
         </job>
         <!-- Less Important-->
         <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
-            <schedule>*/5 * * * *</schedule>
+            <schedule>*/15 * * * *</schedule>
         </job>
         <job name="repl_data_translation" instance="Ls\Replication\Cron\ReplEcommDataTranslationTask" method="execute">
-            <schedule>*/5 * * * *</schedule>
+            <schedule>*/15 * * * *</schedule>
+        </job>
+        <job name="repl_data_translation_lang_code" instance="Ls\Replication\Cron\ReplEcommDataTranslationLangCodeTask"
+             method="execute">
+            <schedule>*/15 * * * *</schedule>
         </job>
     </group>
     <group id="replication">
