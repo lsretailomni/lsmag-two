@@ -100,6 +100,17 @@ interface ReplItemInterface
     public function getBlocked();
 
     /**
+     * @param int $BlockedOnECom
+     * @return $this
+     */
+    public function setBlockedOnECom($BlockedOnECom);
+
+    /**
+     * @return int
+     */
+    public function getBlockedOnECom();
+
+    /**
      * @param int $BlockedOnPos
      * @return $this
      */

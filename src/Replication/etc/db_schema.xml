@@ -160,6 +160,7 @@
     <column xsi:type="int" name="BlockPositiveAdjustment" padding="11" nullable="true" comment="BlockPositiveAdjustment"/>
     <column xsi:type="int" name="BlockPurchaseReturn" padding="11" nullable="true" comment="BlockPurchaseReturn"/>
     <column xsi:type="int" name="Blocked" padding="11" nullable="true" comment="Blocked"/>
+    <column xsi:type="int" name="BlockedOnECom" padding="11" nullable="true" comment="BlockedOnECom"/>
     <column xsi:type="int" name="BlockedOnPos" padding="11" nullable="true" comment="BlockedOnPos"/>
     <column xsi:type="int" name="CrossSellingExists" padding="11" nullable="true" comment="CrossSellingExists"/>
     <column xsi:type="text" name="DateBlocked" nullable="true" comment="DateBlocked"/>

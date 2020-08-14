@@ -62,6 +62,11 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     protected $Blocked = null;
 
     /**
+     * @property int $BlockedOnECom
+     */
+    protected $BlockedOnECom = null;
+
+    /**
      * @property int $BlockedOnPos
      */
     protected $BlockedOnPos = null;
@@ -409,6 +414,26 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     public function getBlocked()
     {
         return $this->getData( 'Blocked' );
+    }
+
+    /**
+     * @param int $BlockedOnECom
+     * @return $this
+     */
+    public function setBlockedOnECom($BlockedOnECom)
+    {
+        $this->setData( 'BlockedOnECom', $BlockedOnECom );
+        $this->BlockedOnECom = $BlockedOnECom;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlockedOnECom()
+    {
+        return $this->getData( 'BlockedOnECom' );
     }
 
     /**
