@@ -38,16 +38,6 @@ class OrderObserver implements ObserverInterface
     private $logger;
 
     /**
-     * @var CustomerProxy
-     */
-    private $customerSession;
-
-    /**
-     * @var CheckoutProxy
-     */
-    private $checkoutSession;
-
-    /**
      * @var Order
      */
     private $orderResourceModel;
@@ -58,14 +48,24 @@ class OrderObserver implements ObserverInterface
     private $lsr;
 
     /**
+     * @var CustomerProxy
+     */
+    private $customerSession;
+
+    /**
+     * @var CheckoutProxy
+     */
+    private $checkoutSession;
+
+    /***
      * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
-     * @param CustomerProxy $customerSession
-     * @param CheckoutProxy $checkoutSession
      * @param Order $orderResourceModel
      * @param LSR $LSR
+     * @param CustomerProxy $customerSession
+     * @param CheckoutProxy $checkoutSession
      */
     public function __construct(
         BasketHelper $basketHelper,
@@ -83,6 +83,7 @@ class OrderObserver implements ObserverInterface
         $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
+
     }
 
     /**
@@ -94,9 +95,11 @@ class OrderObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $comment = "";
-        $order   = $observer->getEvent()->getData('order');
-        if (empty($order)) {
+            $check              = false;
+        $response           = null;
+        $order              = $observer->getEvent()->getData('order');
+        $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
+        if (empty($order->getIncrementId())) {
             $orderIds = $observer->getEvent()->getOrderIds();
             $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
         }
@@ -104,7 +107,6 @@ class OrderObserver implements ObserverInterface
         * Adding condition to only process if LSR is enabled.
         */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $check = false;
             //checking for Adyen payment gateway
             $adyen_response = $observer->getEvent()->getData('adyen_response');
             if (!empty($adyen_response)) {
@@ -115,7 +117,7 @@ class OrderObserver implements ObserverInterface
                 $this->orderHelper->orderRepository->save($order);
                 $order = $this->orderHelper->orderRepository->get($order->getEntityId());
             }
-            if (!empty($order)) {
+            if (!empty($order->getIncrementId())) {
                 $paymentMethod = $order->getPayment();
                 if (!empty($paymentMethod)) {
                     $paymentMethod = $order->getPayment()->getMethodInstance();
@@ -123,51 +125,35 @@ class OrderObserver implements ObserverInterface
                     $check         = $paymentMethod->isOffline();
                 }
             }
-            if (!empty($this->checkoutSession->getOneListCalculation())) {
-                $oneListCalculation = $this->checkoutSession->getOneListCalculation();
-            }
-            if (($check == true || !empty($transId)) && !empty($oneListCalculation)) {
-                $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                $response = $this->orderHelper->placeOrder($request);
-                try {
-                    if (property_exists($response, 'OrderCreateResult')) {
-                        if (!empty($response->getResult()->getId())) {
-                            $documentId = $response->getResult()->getId();
-                            $order->setDocumentId($documentId);
-                            $this->checkoutSession->setLastDocumentId($documentId);
-                        }
-                        $comment = __('Order request has been sent to LS Central successfully');
-                        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-                            $oneList = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-                            $this->basketHelper->delete($oneList);
-                        }
-                    } else {
+            if (!empty($oneListCalculation)) {
+                if (($check == true || !empty($transId))) {
+                    $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                    $response = $this->orderHelper->placeOrder($request);
+                    try {
                         if ($response) {
-                            if (!empty($response->getMessage())) {
-                                $comment = $response->getMessage();
-                                $this->logger->critical($comment);
+                            $documentId = $response->getResult()->getId();
+                            if (!empty($documentId)) {
+                                $order->setDocumentId($documentId);
+                                $this->basketHelper->setLastDocumentIdInCheckoutSession($documentId);
                             }
-                            $this->checkoutSession->unsetData('last_document_id');
+                            $oneList = $this->basketHelper->getOneListFromCustomerSession();
+                            if ($oneList) {
+                                $this->basketHelper->delete($oneList);
+                            }
+                            $order->addCommentToStatusHistory(__('Order request has been sent to LS Central successfully'));
+                            $this->orderResourceModel->save($order);
+                        } else {
+                            $this->orderHelper->disasterRecoveryHandler($order);
                         }
+                    } catch (Exception $e) {
+                        $this->logger->error($e->getMessage());
                     }
-                } catch (Exception $e) {
-                    $this->logger->error($e->getMessage());
                 }
             }
         } else {
-            $comment = __('The service is currently unavailable. Please try again later.');
-            $this->logger->critical($comment);
-            $this->checkoutSession->unsetData('last_document_id');
+            $this->orderHelper->disasterRecoveryHandler($order);
         }
-        $order->addCommentToStatusHistory($comment);
-        $this->orderResourceModel->save($order);
-        $this->checkoutSession->unsetData('member_points');
-        if ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-            $this->customerSession->unsetData(LSR::SESSION_CART_ONELIST);
-            // delete checkout session data.
-            $this->basketHelper->unSetOneListCalculation();
-            $this->basketHelper->unsetCouponCode();
-        }
+        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         return $this;
     }
 }

@@ -209,12 +209,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SESSION_CUSTOMER_SECURITYTOKEN = 'lsr-s-c-st';
     const SESSION_CUSTOMER_CARDID = 'lsr-s-c-cid';
     const SESSION_CUSTOMER_LSRID = 'lsr-s-c-lid';
-    const SESSION_CHECKOUT_BASKET = 'lsr-s-l-b';
-    const SESSION_CHECKOUT_BASKETCALCULATION = 'lsr-s-l-bc';
-    const SESSION_CHECKOUT_AVAILABILITY = 'lsr-s-l-ba';
-    const SESSION_CHECKOUT_COUPON = 'lsr-s-l-c';
     const SESSION_CART_ONELIST = 'lsr-s-c-onelist';
     const SESSION_CART_WISHLIST = 'lsr-s-c-wishlist';
+    const SESSION_CHECKOUT_MEMBERPOINTS = 'member_points';
+    const SESSION_CHECKOUT_LAST_DOCUMENT_ID = 'last_document_id';
+    const SESSION_CHECKOUT_ONE_LIST_CALCULATION = 'one_list_calculation';
+    const SESSION_CHECKOUT_COUPON_CODE = 'coupon_code';
 
     // WORKFLOW
     const W_TYPE = 'T';

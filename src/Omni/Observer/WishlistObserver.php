@@ -3,10 +3,12 @@
 namespace Ls\Omni\Observer;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Wishlist\Model\Wishlist;
 use Psr\Log\LoggerInterface;
 
@@ -56,6 +58,7 @@ class WishlistObserver implements ObserverInterface
     /**
      * @param Observer $observer
      * @return $this
+     * @throws NoSuchEntityException|InvalidEnumException
      */
     // @codingStandardsIgnoreLine
     public function execute(Observer $observer)
@@ -70,7 +73,6 @@ class WishlistObserver implements ObserverInterface
             $oneList    = $this->basketHelper->addProductToExistingWishlist($oneList, $wishlist);
             $this->basketHelper->updateWishlistAtOmni($oneList);
         }
-
         return $this;
     }
 }

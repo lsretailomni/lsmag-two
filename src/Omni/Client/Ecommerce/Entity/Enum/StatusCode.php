@@ -46,12 +46,12 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode UPGRADE()
  * @$method static StatusCode CURRENCY_CODE_NOT_FOUND()
  * @$method static StatusCode TASK_STATUS_CANNOT_CHANGE()
- * @$method static StatusCode ORDER_ID_NOT_FOUND()
  * @$method static StatusCode ADDRESS_IS_EMPTY()
  * @$method static StatusCode SECURITY_TOKEN_INVALID()
  * @$method static StatusCode ACCESS_NOT_ALLOWED()
  * @$method static StatusCode USER_NOT_LOGGED_IN()
  * @$method static StatusCode L_S_KEY_INVALID()
+ * @$method static StatusCode L_S_RECOMMEND_SETUP_MISSING()
  * @$method static StatusCode PRIMARY_KEY_DUPLICATION()
  * @$method static StatusCode OBJECT_ID_MISSING()
  * @$method static StatusCode OBJECT_MISSING()
@@ -68,6 +68,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode GIFT_CARD_NOT_FOUND()
  * @$method static StatusCode ACCOUNT_CONTACT_ID_INVALID()
  * @$method static StatusCode ACCOUNT_EXISTS_IN_OTHER_CLUB()
+ * @$method static StatusCode NO_DISCOUNT_AMOUNT()
  * @$method static StatusCode MISSING_ITEM_NUMER()
  * @$method static StatusCode POS_NOT_EXISTS()
  * @$method static StatusCode STORE_NOT_EXISTS()
@@ -93,6 +94,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode SUSP_TRANS_NOT_FOUND()
  * @$method static StatusCode PAYMENT_POINTS_MISSING()
  * @$method static StatusCode N_A_V_WEB_FUNCTION_NOT_FOUND()
+ * @$method static StatusCode MEMBER_POINT_BALANCE_TO_LOW()
  * @$method static StatusCode CUSTOMER_NOT_FOUND()
  * @$method static StatusCode NO_ENTRIES_FOUND()
  * @$method static StatusCode MEMBER_ACCOUNT_NOT_FOUND()
@@ -125,6 +127,9 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode SCHEME_CLUB_INVALID()
  * @$method static StatusCode RECEIPT_NO_MISSING()
  * @$method static StatusCode CONTACT_IS_BLOCKED()
+ * @$method static StatusCode ORDER_ALREADY_EXIST()
+ * @$method static StatusCode ORDER_ID_NOT_FOUND()
+ * @$method static StatusCode PAYMENT_ERROR()
  * @$method static StatusCode SERVER_REFUSING_TO_RESPOND()
  * @$method static StatusCode DINING_TABLE_STATUS_NOT_ABLE_TO_CHANGE()
  * @$method static StatusCode CANNOT_CHANGE_NUMBER_OF_COVER_ON_TABLE_NOT_SEATED()
@@ -157,8 +162,12 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode TRANSFER_ORDER_FETCHED()
  * @$method static StatusCode TRANSFER_ORDER_SENT()
  * @$method static StatusCode TRANSFER_ORDER_REJECTED()
+ * @$method static StatusCode WORKSHEET_NOT_FOUND()
+ * @$method static StatusCode NOT_READY_FOR_NEXT_COUNT()
+ * @$method static StatusCode LINES_NOT_FOUND()
  * @$method static StatusCode INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT()
  * @$method static StatusCode NO_ITEMS_TO_SUSPEND()
+ * @$method static StatusCode CANNOT_MIX_NORMAL_SALE_AND_RETURN()
  * @$method static StatusCode UNKNOWN_USER()
  * @$method static StatusCode NAV_W_S_ERROR()
  */
@@ -235,8 +244,6 @@ class StatusCode extends Enum
 
     const TASK_STATUS_CANNOT_CHANGE = 'TaskStatusCannotChange';
 
-    const ORDER_ID_NOT_FOUND = 'OrderIdNotFound';
-
     const ADDRESS_IS_EMPTY = 'AddressIsEmpty';
 
     const SECURITY_TOKEN_INVALID = 'SecurityTokenInvalid';
@@ -246,6 +253,8 @@ class StatusCode extends Enum
     const USER_NOT_LOGGED_IN = 'UserNotLoggedIn';
 
     const L_S_KEY_INVALID = 'LSKeyInvalid';
+
+    const L_S_RECOMMEND_SETUP_MISSING = 'LSRecommendSetupMissing';
 
     const PRIMARY_KEY_DUPLICATION = 'PrimaryKeyDuplication';
 
@@ -278,6 +287,8 @@ class StatusCode extends Enum
     const ACCOUNT_CONTACT_ID_INVALID = 'AccountContactIdInvalid';
 
     const ACCOUNT_EXISTS_IN_OTHER_CLUB = 'AccountExistsInOtherClub';
+
+    const NO_DISCOUNT_AMOUNT = 'NoDiscountAmount';
 
     const MISSING_ITEM_NUMER = 'MissingItemNumer';
 
@@ -328,6 +339,8 @@ class StatusCode extends Enum
     const PAYMENT_POINTS_MISSING = 'PaymentPointsMissing';
 
     const N_A_V_WEB_FUNCTION_NOT_FOUND = 'NAVWebFunctionNotFound';
+
+    const MEMBER_POINT_BALANCE_TO_LOW = 'MemberPointBalanceToLow';
 
     const CUSTOMER_NOT_FOUND = 'CustomerNotFound';
 
@@ -393,6 +406,12 @@ class StatusCode extends Enum
 
     const CONTACT_IS_BLOCKED = 'ContactIsBlocked';
 
+    const ORDER_ALREADY_EXIST = 'OrderAlreadyExist';
+
+    const ORDER_ID_NOT_FOUND = 'OrderIdNotFound';
+
+    const PAYMENT_ERROR = 'PaymentError';
+
     const SERVER_REFUSING_TO_RESPOND = 'ServerRefusingToRespond';
 
     const DINING_TABLE_STATUS_NOT_ABLE_TO_CHANGE = 'DiningTableStatusNotAbleToChange';
@@ -457,9 +476,17 @@ class StatusCode extends Enum
 
     const TRANSFER_ORDER_REJECTED = 'TransferOrderRejected';
 
+    const WORKSHEET_NOT_FOUND = 'WorksheetNotFound';
+
+    const NOT_READY_FOR_NEXT_COUNT = 'NotReadyForNextCount';
+
+    const LINES_NOT_FOUND = 'LinesNotFound';
+
     const INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT = 'InvalidSuspensionWithPartialPayment';
 
     const NO_ITEMS_TO_SUSPEND = 'NoItemsToSuspend';
+
+    const CANNOT_MIX_NORMAL_SALE_AND_RETURN = 'CannotMixNormalSaleAndReturn';
 
     const UNKNOWN_USER = 'UnknownUser';
 
