@@ -126,4 +126,13 @@ class Recommend extends \Magento\Catalog\Block\Product\View
         }
         return null;
     }
+
+    /**
+     * @return bool|null
+     * @throws NoSuchEntityException
+     */
+    public function isValid()
+    {
+        return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
+    }
 }

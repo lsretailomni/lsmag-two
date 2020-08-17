@@ -6,6 +6,7 @@ use Ls\Omni\Block\Product\View\Discount\Proactive;
 $currentProductSku = $block->getProductSku();
 $ajaxUrl           = $block->getAjaxUrl();
 ?>
+<?php if ($block->isValid()) :?>
 <div id="ls-discounts">
     <div class="loader">
         <img src="<?= /* @escapeNotVerified */
@@ -26,3 +27,4 @@ $ajaxUrl           = $block->getAjaxUrl();
             }
         }
 </script>
+<?php endif; ?>

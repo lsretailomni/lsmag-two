@@ -3,9 +3,9 @@
 
 use \Ls\Omni\Block\Product\Recommend;
 
-if ($block->isEnabled()) {
+if ($block->isEnabled() && $block->isValid()) :
     $ajaxUrl = $block->getAjaxUrl();
-    if ($block->checkCartItems()) {
+    if ($block->checkCartItems()) :
         ?>
         <div id="lsRecommendation">
             <div class="ls-loader">
@@ -25,7 +25,6 @@ if ($block->isEnabled()) {
                 }
             }
         }
-
         </script>
-    <?php }
-} ?>
+    <?php endif;
+endif; ?>

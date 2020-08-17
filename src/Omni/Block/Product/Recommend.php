@@ -89,4 +89,13 @@ class Recommend extends AbstractProduct
             return true;
         }
     }
+
+    /**
+     * @return bool|null
+     * @throws NoSuchEntityException
+     */
+    public function isValid()
+    {
+        return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
+    }
 }
