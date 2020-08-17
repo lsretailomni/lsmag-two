@@ -62,6 +62,15 @@ class DataTranslationTask
      */
     public $cronStatus = false;
 
+    /**
+     * DataTranslationTask constructor.
+     * @param ReplicationHelper $replicationHelper
+     * @param ReplDataTranslationRepositoryInterface $dataTranslationRepository
+     * @param CategoryCollectionFactory $categoryCollectionFactory
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param LSR $LSR
+     * @param Logger $logger
+     */
     public function __construct(
         ReplicationHelper $replicationHelper,
         ReplDataTranslationRepositoryInterface $dataTranslationRepository,
