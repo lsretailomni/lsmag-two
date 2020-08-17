@@ -79,8 +79,8 @@ class QuoteObserver implements ObserverInterface
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR($quote->getStoreId())) {
-            try {
+        try {
+            if ($this->lsr->isLSR($quote->getStoreId())) {
                 $couponCode = $quote->getCouponCode();
                 // This will create one list if not created and will return onelist if its already created.
                 /** @var OneList|null $oneList */
@@ -119,9 +119,9 @@ class QuoteObserver implements ObserverInterface
                         $basketData
                     );
                 }
-            } catch (Exception $e) {
-                $this->logger->error($e->getMessage());
             }
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
         }
         return $this;
     }

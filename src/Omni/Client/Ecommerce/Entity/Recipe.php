@@ -22,11 +22,6 @@ class Recipe extends MenuItem
     protected $ProductModifierGroupIds = null;
 
     /**
-     * @property boolean $Drilldown
-     */
-    protected $Drilldown = null;
-
-    /**
      * @param ArrayOfIngredient $Ingredients
      * @return $this
      */
@@ -60,24 +55,6 @@ class Recipe extends MenuItem
     public function getProductModifierGroupIds()
     {
         return $this->ProductModifierGroupIds;
-    }
-
-    /**
-     * @param boolean $Drilldown
-     * @return $this
-     */
-    public function setDrilldown($Drilldown)
-    {
-        $this->Drilldown = $Drilldown;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getDrilldown()
-    {
-        return $this->Drilldown;
     }
 
 

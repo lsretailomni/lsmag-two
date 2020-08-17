@@ -40,11 +40,6 @@ class ImageView extends Entity
     protected $ImgSize = null;
 
     /**
-     * @property boolean $LoadFromFile
-     */
-    protected $LoadFromFile = null;
-
-    /**
      * @property string $Location
      */
     protected $Location = null;
@@ -53,6 +48,11 @@ class ImageView extends Entity
      * @property LocationType $LocationType
      */
     protected $LocationType = null;
+
+    /**
+     * @property string $StreamURL
+     */
+    protected $StreamURL = null;
 
     /**
      * @param string $AvgColor
@@ -145,24 +145,6 @@ class ImageView extends Entity
     }
 
     /**
-     * @param boolean $LoadFromFile
-     * @return $this
-     */
-    public function setLoadFromFile($LoadFromFile)
-    {
-        $this->LoadFromFile = $LoadFromFile;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getLoadFromFile()
-    {
-        return $this->LoadFromFile;
-    }
-
-    /**
      * @param string $Location
      * @return $this
      */
@@ -206,6 +188,24 @@ class ImageView extends Entity
     public function getLocationType()
     {
         return $this->LocationType;
+    }
+
+    /**
+     * @param string $StreamURL
+     * @return $this
+     */
+    public function setStreamURL($StreamURL)
+    {
+        $this->StreamURL = $StreamURL;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStreamURL()
+    {
+        return $this->StreamURL;
     }
 
 

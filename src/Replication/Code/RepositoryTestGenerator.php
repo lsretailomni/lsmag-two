@@ -14,12 +14,12 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\DocBlock\Tag\PropertyTag;
-use Zend\Code\Generator\DocBlockGenerator;
-use Zend\Code\Generator\FileGenerator;
-use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\DocBlock\Tag\PropertyTag;
+use Laminas\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\FileGenerator;
+use Laminas\Code\Generator\MethodGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Class RepositoryTestGenerator
@@ -199,7 +199,7 @@ CODE
         $method           = new MethodGenerator();
         $entityRepository = $this->operation->getRepositoryName();
         $method->setName('testGetWithNoSuchEntityException');
-        $method->setDocBlock('@expectedException \Magento\Framework\Exception\NoSuchEntityException 
+        $method->setDocBlock('@expectedException \Magento\Framework\Exception\NoSuchEntityException
 @expectedExceptionMessage Object with id 1 does not exist.');
         $method->setBody(
             <<<CODE
@@ -267,7 +267,7 @@ CODE
         $method           = new MethodGenerator();
         $entityRepository = $this->operation->getRepositoryName();
         $method->setName('testSaveWithCouldNotSaveException');
-        $method->setDocBlock('@expectedException \Magento\Framework\Exception\CouldNotSaveException 
+        $method->setDocBlock('@expectedException \Magento\Framework\Exception\CouldNotSaveException
 @expectedExceptionMessage Could not save entity');
         $method->setBody(
             <<<CODE

@@ -3,6 +3,7 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
+use Laminas\Validator\EmailAddress as ValidateEmailAddress;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
@@ -47,9 +48,6 @@ use Magento\Framework\Registry;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
-use Zend_Validate;
-use Zend_Validate_EmailAddress;
-use Zend_Validate_Exception;
 
 /**
  * Class ContactHelper
@@ -152,6 +150,11 @@ class ContactHelper extends AbstractHelper
     public $encryptorInterface;
 
     /**
+     * @var ValidateEmailAddress
+     */
+    public $validateEmailAddress;
+
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder
@@ -180,6 +183,7 @@ class ContactHelper extends AbstractHelper
      * @param ProductRepositoryInterface $productRepository
      * @param CustomerCollection $customerCollection
      * @param EncryptorInterface $encryptorInterface
+     * @param ValidateEmailAddress $validateEmailAddress
      */
     public function __construct(
         Context $context,
@@ -208,7 +212,8 @@ class ContactHelper extends AbstractHelper
         WishlistFactory $wishlistFactory,
         ProductRepositoryInterface $productRepository,
         CustomerCollection $customerCollection,
-        EncryptorInterface $encryptorInterface
+        EncryptorInterface $encryptorInterface,
+        ValidateEmailAddress $validateEmailAddress
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -236,6 +241,7 @@ class ContactHelper extends AbstractHelper
         $this->productRepository     = $productRepository;
         $this->customerCollection    = $customerCollection;
         $this->encryptorInterface    = $encryptorInterface;
+        $this->validateEmailAddress  = $validateEmailAddress;
         parent::__construct(
             $context
         );
@@ -246,11 +252,10 @@ class ContactHelper extends AbstractHelper
      * @return Entity\MemberContact[]|null
      * @throws InvalidEnumException
      * @throws LocalizedException
-     * @throws Zend_Validate_Exception
      */
     public function search($email)
     {
-        $is_email = Zend_Validate::is($email, Zend_Validate_EmailAddress::class);
+        $is_email = $this->isValid($email);
         // load customer data from magento customer database based on lsr_username if we didn't get an email
         if (!$is_email) {
             $filters = [
@@ -314,13 +319,12 @@ class ContactHelper extends AbstractHelper
      * @return Entity\ArrayOfMemberContact|Entity\MemberContact[]|null
      * @throws InvalidEnumException
      * @throws LocalizedException
-     * @throws Zend_Validate_Exception
      */
     public function searchWithUsernameOrEmail($param)
     {
         /** @var Operation\ContactGetById $request */
         // @codingStandardsIgnoreStart
-        if (!Zend_Validate::is($param, Zend_Validate_EmailAddress::class)) {
+        if (!$this->isValid($param)) {
             // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
             if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $param)) {
                 return null;
@@ -1296,5 +1300,15 @@ class ContactHelper extends AbstractHelper
     public function encryptPassword($password)
     {
         $this->encryptorInterface->encrypt($password);
+    }
+
+    /**
+     * For validating email address is correct or not
+     * @param $email
+     * @return bool
+     */
+    public function isValid($email)
+    {
+        return $this->validateEmailAddress->isValid($email);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Model\Checkout;
 
+use Laminas\Json\Json;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
@@ -11,7 +12,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Zend_Json;
 
 /**
  * Class DataProvider
@@ -71,6 +71,7 @@ class DataProvider implements ConfigProviderInterface
      */
     public function getConfig()
     {
+
         if ($this->isValid()) {
             $store                = $this->getStoreId();
             $mapsApiKey           = $this->scopeConfig->getValue(self::XPATH_MAPS_API_KEY, ScopeInterface::SCOPE_STORE, $store);
@@ -93,7 +94,7 @@ class DataProvider implements ConfigProviderInterface
                 ->toHtml();
             $stores               = $storesResponse->toArray();
             $stores['storesInfo'] = $storesData;
-            $encodedStores        = Zend_Json::encode($stores);
+            $encodedStores        = Json::encode($stores);
 
             $config                    = [
                 'shipping' => [

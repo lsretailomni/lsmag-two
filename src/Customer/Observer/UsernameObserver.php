@@ -15,8 +15,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
-use Zend_Validate;
-use Zend_Validate_EmailAddress;
 
 /**
  * Class UsernameObserver
@@ -107,7 +105,7 @@ class UsernameObserver implements ObserverInterface
                         $this->messageManager->addErrorMessage($message);
                         $isNotValid = true;
                     } else {
-                        $isEmailValid = Zend_Validate::is($parameters['email'], Zend_Validate_EmailAddress::class);
+                        $isEmailValid = $this->contactHelper->isValid($parameters['email']);
                         if (!$isEmailValid) {
                             $this->messageManager->addErrorMessage(
                                 __('Your email address is invalid.')

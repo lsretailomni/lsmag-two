@@ -75,7 +75,6 @@ class CreateLsPasswordAttribute implements DataPatchInterface
 
     /**
      * @throws LocalizedException
-     * @throws \Zend_Validate_Exception
      */
     private function createLsPasswordAttribute()
     {

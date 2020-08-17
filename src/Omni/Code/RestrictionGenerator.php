@@ -7,7 +7,7 @@ use Exception;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\Soap\Restriction;
 use MyCLabs\Enum\Enum;
-use Zend\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\DocBlockGenerator;
 
 class RestrictionGenerator extends AbstractOmniGenerator
 {

@@ -3,7 +3,6 @@
 
 namespace Ls\Replication\Console\Command;
 
-use Composer\Autoload\ClassLoader;
 use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Console\Command as OmniCommand;
@@ -42,20 +41,17 @@ class ReplicationGenerate extends OmniCommand
     const SYSTEM = 'system';
     const CRON = 'config';
 
-    /** @var array */
-    private static $known_result_properties = ['LastKey', 'MaxKey', 'RecordsRemaining'];
-
     /** @var boolean */
     public $system = false;
 
     /** @var boolean */
     public $cron = false;
+
     /** @var File */
     public $fileHelper;
+
     /** @var ServiceMetadata */
     private $metadata;
-    /** @var  ClassLoader */
-    private $loader;
 
     /**
      * ReplicationGenerate constructor.
@@ -86,7 +82,6 @@ class ReplicationGenerate extends OmniCommand
         $this->metadata = $client->getMetadata(true);
         $this->system   = !!$this->input->getOption(self::SYSTEM);
         $this->cron     = !!$this->input->getOption(self::CRON);
-        $this->loader   = new ClassLoader();
     }
 
     public function configure()
@@ -125,6 +120,16 @@ class ReplicationGenerate extends OmniCommand
                 $this->processOperation($operation);
             }
         }
+        try {
+            // DECLARATIVE SCHEMA UPDATE Ls\Replication\etc\db_schema.xml
+            $schemaUpdateGenerator = new SchemaUpdateGenerator($this->metadata);
+            $schemaUpdateGenerator->generate();
+        } catch (Exception $e) {
+            $this->output->writeln("\t- - Error Start - -");
+            $this->output->writeln("\tSomething went wrong, while creating the db_schema.xml");
+            $this->output->writeln($e->getMessage());
+            $this->output->writeln("\t- - Error End - -");
+        }
         $this->output->writeln('Finish Generating Replication Task Files');
     }
 
@@ -158,14 +163,6 @@ class ReplicationGenerate extends OmniCommand
                 0755
             );
         }
-
-        // For replication UpgradeSchema
-        if (!is_dir(AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Setup/UpgradeSchema')))) {
-            $this->fileHelper->mkdir(
-                AbstractGenerator::path($replicationBasePath, AbstractGenerator::fqn('Setup/UpgradeSchema')),
-                0755
-            );
-        }
     }
 
     /**
@@ -183,10 +180,6 @@ class ReplicationGenerate extends OmniCommand
                 $cron_job_config_generator = new CronJobConfigGenerator($replication_operation);
                 $this->output->writeln($cron_job_config_generator->generate());
             } else {
-                // SCHEMA UPDATE Ls/Replication/Setup/UpgradeSchema/$classname.php
-                $schema_update_generator = new SchemaUpdateGenerator($replication_operation);
-                file_put_contents($schema_update_generator->getPath(), $schema_update_generator->generate());
-
                 // MODEL INTERFACE Ls\\Replication\\Api\\Data\$classname." ".Interface.php but not the search part
                 $model_interface_generator = new ModelInterfaceGenerator($replication_operation);
                 file_put_contents(
@@ -240,6 +233,7 @@ class ReplicationGenerate extends OmniCommand
                     $replication_operation->getSearchInterfacePath(true),
                     $search_interface_generator->generate()
                 );
+
                 // SEARCH MODEL
                 $search_generator = new SearchGenerator($replication_operation);
                 file_put_contents(
@@ -253,12 +247,15 @@ class ReplicationGenerate extends OmniCommand
                     $replication_operation->getRepositoryTestPath(true),
                     $repositoryTestGenerator->generate()
                 );
+
                 $this->output->writeln('- - - - ' . $operation->getName() . ' - - - -');
             }
         } catch (Exception $e) {
+            $this->output->writeln("\t- - Error Start - -");
             $this->output->writeln("\tSomething went wrong, please check log directory");
             $this->output->writeln($e->getMessage());
-            $this->output->writeln('- - - -');
+            $this->output->writeln('- FAILED - ' . $operation->getName() . ' - FAILED -');
+            $this->output->writeln("\t- - Error End - -");
         }
     }
 }

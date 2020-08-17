@@ -22,16 +22,6 @@ class Product extends MenuItem
     protected $UnitOfMeasures = null;
 
     /**
-     * @property ArrayOfUnknownModifier $UnknownModifiers
-     */
-    protected $UnknownModifiers = null;
-
-    /**
-     * @property ArrayOfUnknownTextModifier $UnknownTextModifiers
-     */
-    protected $UnknownTextModifiers = null;
-
-    /**
      * @property string $DefaultUnitOfMeasure
      */
     protected $DefaultUnitOfMeasure = null;
@@ -70,42 +60,6 @@ class Product extends MenuItem
     public function getUnitOfMeasures()
     {
         return $this->UnitOfMeasures;
-    }
-
-    /**
-     * @param ArrayOfUnknownModifier $UnknownModifiers
-     * @return $this
-     */
-    public function setUnknownModifiers($UnknownModifiers)
-    {
-        $this->UnknownModifiers = $UnknownModifiers;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfUnknownModifier
-     */
-    public function getUnknownModifiers()
-    {
-        return $this->UnknownModifiers;
-    }
-
-    /**
-     * @param ArrayOfUnknownTextModifier $UnknownTextModifiers
-     * @return $this
-     */
-    public function setUnknownTextModifiers($UnknownTextModifiers)
-    {
-        $this->UnknownTextModifiers = $UnknownTextModifiers;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfUnknownTextModifier
-     */
-    public function getUnknownTextModifiers()
-    {
-        return $this->UnknownTextModifiers;
     }
 
     /**

@@ -9,7 +9,7 @@ use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use ReflectionClass;
 use ReflectionException;
-use Zend\Code\Generator\MethodGenerator;
+use Laminas\Code\Generator\MethodGenerator;
 
 /**
  * Class ResourceModelGenerator
