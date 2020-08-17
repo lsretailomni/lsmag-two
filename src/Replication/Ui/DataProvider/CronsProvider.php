@@ -165,6 +165,9 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 if ($cronName == 'repl_discount_create') {
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
                 }
+                if ($cronName == 'repl_data_translation_to_magento') {
+                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO, $storeId);
+                }
                 if ($cronName == 'repl_price_sync') {
                     $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_PRICE, $storeId);
                 }
