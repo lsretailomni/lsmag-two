@@ -1,7 +1,7 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [1.3.3] - 2020-08-17
+## [1.4.0] - 2020-08-18
 
 ### Added
 
