@@ -393,4 +393,13 @@ class Proactive extends View
             $this->lsr->getCurrentStoreId()
         );
     }
+
+    /**
+     * @return bool|null
+     * @throws NoSuchEntityException
+     */
+    public function isValid()
+    {
+        return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
+    }
 }

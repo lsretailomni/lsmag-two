@@ -11,6 +11,7 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Helper\Product;
 use Magento\Catalog\Model\ProductTypes\ConfigInterface;
 use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\Locale\FormatInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
@@ -98,6 +99,7 @@ class Recommend extends \Magento\Catalog\Block\Product\View
 
     /**
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function isEnabled()
     {
@@ -111,17 +113,26 @@ class Recommend extends \Magento\Catalog\Block\Product\View
     /**
      * @param $productId
      * @return ProductInterface[]|null
+     * @throws NoSuchEntityException
      */
     public function getProductRecommendation($productId)
     {
-        $response = null;
         if (empty($productId)) {
-            return $response;
+            return null;
         }
-        $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productId);
+        $recommendedProducts = $this->LSRecommend->getProductRecommendationFromOmni($productId);
         if ($recommendedProducts instanceof ArrayOfRecommendedItem) {
             return $this->LSRecommend->parseProductRecommendation($recommendedProducts);
         }
-        return $response;
+        return null;
+    }
+
+    /**
+     * @return bool|null
+     * @throws NoSuchEntityException
+     */
+    public function isValid()
+    {
+        return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
     }
 }

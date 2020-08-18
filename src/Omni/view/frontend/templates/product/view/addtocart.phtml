@@ -1,11 +1,11 @@
 <?php
 // @codingStandardsIgnoreFile
-use \Ls\Omni\Block\Product\View\View;
+use Ls\Omni\Block\Product\View\View;
 
 /** @var $block View */
 ?>
 <?php $_product = $block->getProduct(); ?>
-<?php $isEnableCheck = $block->isEnable(); ?>
+<?php $isEnableCheck = $block->isValid(); ?>
 <?php $buttonTitle = __('Add to Cart'); ?>
 <?php if ($_product->isSaleable()): ?>
     <div class="box-tocart">
@@ -29,12 +29,9 @@ use \Ls\Omni\Block\Product\View\View;
                 </div>
             <?php endif; ?>
             <div class="actions">
-                <?php if ($isEnableCheck) { ?>
-                    <div class="availability-link-container">
-                        <a href="javascript:void()" name="checkavailability"
-                           class="checkavailability"><?php echo __('Check Availability in Stores') ?></a>
-                    </div>
-                <?php } ?>
+                <?php if ($isEnableCheck) : ?>
+                    <?= $block->getBlockHtml('ls.omni.product.availability'); ?>
+                <?php endif; ?>
                 <button type="submit"
                         title="<?= /* @escapeNotVerified */
                         $buttonTitle ?>"
@@ -49,25 +46,10 @@ use \Ls\Omni\Block\Product\View\View;
     </div>
     <div id="map-canvas"></div>
 <?php endif; ?>
-<script type="text/javascript">
-    var googleMapApiKey = "<?php echo $block->getGoogleMapsApiKey();?>";
-    var defaultLat = "<?php echo $block->getDefaultLatitude();?>";
-    var defaultLong = "<?php echo $block->getDefaultLongitude();?>";
-    var defaultZoom = "<?php echo $block->getDefaultZoom();?>";
-</script>
 <script type="text/x-magento-init">
     {
         "#product_addtocart_form": {
             "Magento_Catalog/js/validate-product": {}
         }
     }
-
-</script>
-<script type="text/x-magento-init">
-    {
-        "#product_addtocart_form": {
-            "lsomni/stock": {}
-        }
-    }
-
 </script>
