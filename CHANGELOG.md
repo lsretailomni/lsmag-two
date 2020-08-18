@@ -1,6 +1,40 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.3.3] - 2020-08-17
+
+### Added
+
+- Applied datatables library from jquery for customer order history to get sorting, pagination and search to work. [OMNI-5229](https://solutions.lsretail.com/jira/browse/OMNI-5229)
+- Customer can proceed with both normal and ajax login even if omni is unreachable and is timed out as part of disaster recovery. [OMNI-5206](https://solutions.lsretail.com/jira/browse/OMNI-5206)
+- Added timeout value which is configurable from admin. Customer can place the order on the checkout even if omni is not reachable and is timed out as part of disaster recovery. [OMNI-5209](https://solutions.lsretail.com/jira/browse/OMNI-5209)
+- Customer can proceed with customer registration even if omni is unreachable and is timed out. [OMNI-5207](https://solutions.lsretail.com/jira/browse/OMNI-5207)
+- As part of disaster recovery, handle basket calculation from Magento if LS Omni is not responding. [OMNI-5208](https://solutions.lsretail.com/jira/browse/OMNI-5208)
+- Support to Sync Customer from Magento Admin, also added separate tab for membership information. [OMNI-5136](https://solutions.lsretail.com/jira/browse/OMNI-5136)
+- Email notification to admin if omni service is down, synchronize customers and orders using cron job. [OMNI-5228](https://solutions.lsretail.com/jira/browse/OMNI-5228)
+- Allow user to use same password that was created when Omni Service is down. [OMNI-5262](https://solutions.lsretail.com/jira/browse/OMNI-5262)
+- Added configurable option for different industry such as Retail, Hospitality. [OMNI-5254](https://solutions.lsretail.com/jira/browse/OMNI-5254)
+ 
+### Changed
+
+- Made things like loyalty points, giftcard, coupon & coupon recommendations, loyalty elements on customer dashboard and signup/login notice on product display page configurable from the admin panel. [OMNI-5217](https://solutions.lsretail.com/jira/browse/OMNI-5217)
+- Convert all CSS to LESS, format LESS according to Magento Standard and remove unnecessary CSS classes. [OMNI-5239](https://solutions.lsretail.com/jira/browse/OMNI-5239)
+- Converted old schema install/upgrade scripts to declarative schema approach. [OMNI-5251](https://solutions.lsretail.com/jira/browse/OMNI-5251)
+- Migrate all Install/Upgrade data classes into data patches. [OMNI-5252](https://solutions.lsretail.com/jira/browse/OMNI-5252)
+- Support dynamic generation of declarative schema for all the replication tables. [OMNI-5253](https://solutions.lsretail.com/jira/browse/OMNI-5253)
+- Replaced Zend Framework deprecated classes with Laminas Framework. [OMNI-5273](https://solutions.lsretail.com/jira/browse/OMNI-5273)
+
+
+### Bugs/Fixes
+
+- Incorporate multiple normal store hours of a day. [OMNI-5230](https://solutions.lsretail.com/jira/browse/OMNI-5230)
+- Fixed issue with Document Id in order email. [OMNI-5236](https://solutions.lsretail.com/jira/browse/OMNI-5236)
+- Fixed pay at store payment method visibility on checkout page for flat shipping method. [OMNI-5238](https://solutions.lsretail.com/jira/browse/OMNI-5238)
+- Fixed issue with coupons not showing on cart page for configurable product. [OMNI-5232](https://solutions.lsretail.com/jira/browse/OMNI-5232)
+- Fixed error on order success page that comes for offline payment methods. [OMNI-5267](https://solutions.lsretail.com/jira/browse/OMNI-5267)
+
+
+
 ## [1.3.2] - 2020-06-17
 
 ### Added
