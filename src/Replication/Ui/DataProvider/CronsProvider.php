@@ -3,8 +3,8 @@
 namespace Ls\Replication\Ui\DataProvider;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
+use Ls\Core\Model\LSR;
+use Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\Request\Http;
@@ -146,53 +146,18 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     $pathNew               = $path . $cronName;
                     $fullReplicationStatus = $this->lsr->getStoreConfig($pathNew, $storeId);
                 }
-                if ($cronName == 'repl_attributes') {
-                    $cronAttributeCheck        = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE, $storeId);
-                    $cronAttributeVariantCheck = $this->lsr->getStoreConfig(
-                        LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
-                        $storeId
-                    );
-                    if ($cronAttributeCheck && $cronAttributeVariantCheck) {
-                        $fullReplicationStatus = 1;
-                    }
-                }
-                if ($cronName == 'repl_category') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY, $storeId);
-                }
-                if ($cronName == 'repl_products') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT, $storeId);
-                }
-                if ($cronName == 'repl_discount_create') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
-                }
-                if ($cronName == 'repl_price_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_PRICE, $storeId);
-                }
-                if ($cronName == 'repl_inventory_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(
-                        LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
-                        $storeId
-                    );
-                }
-                if ($cronName == 'repl_item_updates_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_UPDATES, $storeId);
-                }
-                if ($cronName == 'repl_item_images_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_IMAGES, $storeId);
-                }
-                if ($cronName == 'repl_attributes_value_sync') {
-                    $fullReplicationStatus = $this->lsr->getStoreConfig(
-                        LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
-                        $storeId
-                    );
-                }
-                $lastExecute = $this->rep_helper->convertDateTimeIntoCurrentTimeZone(
+
+                /**
+                 * We need this so that we can add plugin into the hospitality modules for the new crons.
+                 */
+                $fullReplicationStatus = $this->getStatusByCronCode($cronName, $storeId, $fullReplicationStatus);
+                $lastExecute           = $this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                     $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName, $storeId),
                     'd M, Y h:i:s A'
                 );
-                $statusStr   = ($fullReplicationStatus == 1) ?
-                    '<div class="flag-green custom-grid-flag">Complete</div>' :
-                    '<div class="flag-yellow custom-grid-flag">Pending</div>';
+                $statusStr             = ($fullReplicationStatus == 1) ?
+                    '<div class="flag-green custom-grid-flag">' . __("Complete") . '</div>' :
+                    '<div class="flag-yellow custom-grid-flag">' . __("Pending") . '</div>';
                 if (strpos($cronName, '_reset') !== false || $cronName == "sync_version" ||
                     $cronName == "sync_orders" || $cronName == "sync_customers") {
                     $condition = $statusStr = '';
@@ -223,6 +188,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
     }
 
     /**
+     * This is being used in Hospitality module, so do not change the structure of it.
      * @return mixed
      */
     public function readCronFile()
@@ -235,6 +201,9 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         }
     }
 
+    /**
+     *
+     */
     public function prepareUpdateUrl()
     {
         if (!isset($this->data['config']['filter_url_params'])) {
@@ -256,5 +225,67 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 );
             }
         }
+    }
+
+
+    /**
+     * This is being used in Hospitality module, so do not change the structure of it.
+     * @param null $cronName
+     * @param null $storeId
+     * @return bool|int|string
+     */
+    public function getStatusByCronCode($cronName = null, $storeId = null, $fullReplicationStatus)
+    {
+        if ($cronName == 'repl_attributes') {
+            $cronAttributeCheck        = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE, $storeId);
+            $cronAttributeVariantCheck = $this->lsr->getStoreConfig(
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                $storeId
+            );
+            if ($cronAttributeCheck && $cronAttributeVariantCheck) {
+                $fullReplicationStatus = 1;
+            }
+            return $fullReplicationStatus;
+        }
+        if ($cronName == 'repl_category') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY, $storeId);
+            return $fullReplicationStatus;
+        }
+        if ($cronName == 'repl_products') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT, $storeId);
+            return $fullReplicationStatus;
+        }
+        if ($cronName == 'repl_discount_create') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
+            return $fullReplicationStatus;
+        }
+        if ($cronName == 'repl_price_sync') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_PRICE, $storeId);
+            return $fullReplicationStatus;
+        }
+        if ($cronName == 'repl_inventory_sync') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(
+                LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
+                $storeId
+            );
+            return $fullReplicationStatus;
+        }
+        if ($cronName == 'repl_item_updates_sync') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_UPDATES, $storeId);
+            return $fullReplicationStatus;
+        }
+        if ($cronName == 'repl_item_images_sync') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_IMAGES, $storeId);
+            return $fullReplicationStatus;
+        }
+        if ($cronName == 'repl_attributes_value_sync') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(
+                LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
+                $storeId
+            );
+            return $fullReplicationStatus;
+        }
+        return $fullReplicationStatus;
+
     }
 }
