@@ -54,7 +54,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
     /**
      * @var Parser
      */
-    private $parser;
+    public $parser;
 
     /** @var ReplicationHelper */
     public $rep_helper;
