@@ -121,18 +121,22 @@ class DataTranslationTask
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 $langCode    = $this->lsr->getStoreConfig(LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE, $store->getId());
-                if (!empty($langCode)) {
-                    $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
-                    $this->replicationHelper->updateConfigValue(
-                        $this->replicationHelper->getDateTime(),
-                        LSR::SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE,
-                        $store->getId()
-                    );
+                $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
+                if ($langCode != "Default") {
                     $this->updateHierarchyNode($store->getId(), $langCode);
-                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
-                        $store->getId());
-                    $this->logger->debug('DataTranslationTask Completed for Store ' . $store->getName());
+                } else {
+                    $this->cronStatus = true;
                 }
+                $this->replicationHelper->updateConfigValue(
+                    $this->replicationHelper->getDateTime(),
+                    LSR::SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE,
+                    $store->getId()
+                );
+                $this->replicationHelper->updateCronStatus(
+                    $this->cronStatus, LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
+                    $store->getId()
+                );
+                $this->logger->debug('DataTranslationTask Completed for Store ' . $store->getName());
                 $this->lsr->setStoreId(null);
             }
         }
