@@ -56,7 +56,7 @@ class LanguageCode implements OptionSourceInterface
         $scopeIdFilter = [
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq']
         ];
-        $langCodes[]   = ['value' => '', 'label' => __('Default')];
+        $langCodes[]   = ['value' => 'Default', 'label' => __('Default')];
         $criteria      = $this->replicationHelper->buildCriteriaForDirect($scopeIdFilter);
         /** @var ReplDataTranslationLangCodeSearchResults $replData */
         $replData = $this->replDataTranslationLangCodeRepository->getList($criteria);
