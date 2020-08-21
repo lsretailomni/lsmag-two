@@ -116,7 +116,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         $name = $matches[2];
                         if (array_search($type, $simpleTypes) === false) {
                             if (array_key_exists($type, $restrictions)) {
-                                $property_types[$name] = $type;
+                                $propertyTypes[$name] = $type;
                             }
                         } else {
                             $propertyTypes[$name] = $type;
