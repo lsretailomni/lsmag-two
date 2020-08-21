@@ -43,6 +43,13 @@
                         <resource id="Ls_Replication::barcode_grid" title="Barcode Replication"
                                   translate="title"
                                   sortOrder="10"/>
+                        <resource id="Ls_Replication::data_translation_grid" title="Data Translation Replication"
+                                  translate="title"
+                                  sortOrder="10"/>
+                        <resource id="Ls_Replication::data_translation_lang_code_grid"
+                                  title="Data Translation Lang Code Replication"
+                                  translate="title"
+                                  sortOrder="10"/>
                         <resource id="Ls_Replication::extendedvariantvalue_grid"
                                   title="Extended Variant Value Replication" translate="title" sortOrder="10"/>
                         <resource id="Ls_Replication::imagelink_grid" title="Image Link Replication"

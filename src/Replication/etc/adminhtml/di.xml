@@ -50,6 +50,23 @@
             <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplBarcode</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplDataTranslation\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_data_translation</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplDataTranslation
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplDataTranslationLangCode\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_data_translation_lang_code</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Ls\Replication\Model\ResourceModel\ReplDataTranslationLangCode
+            </argument>
+        </arguments>
+    </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>

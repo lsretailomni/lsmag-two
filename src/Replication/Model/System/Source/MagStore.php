@@ -1,23 +1,25 @@
 <?php
+
 namespace Ls\Replication\Model\System\Source;
 
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class MagStore
  * @package Ls\Replication\Model\System\Source
  */
-class MagStore implements ArrayInterface
+class MagStore implements OptionSourceInterface
 {
 
-    /** @var \Magento\Store\Model\StoreManagerInterface */
+    /** @var StoreManagerInterface */
     protected $storeManager;
 
 
     public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager
     ) {
-        $this->storeManager=$storeManager;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -25,12 +27,12 @@ class MagStore implements ArrayInterface
      */
     public function toOptionArray()
     {
-
-        foreach ($this->getStores() as $mag_store) {
-            $option_array[] = [ 'value' => $mag_store->getId(), 'label' => $mag_store->getName() ];
+        $optionArray[] = '';
+        foreach ($this->getStores() as $magStore) {
+            $optionArray[] = ['value' => $magStore->getId(), 'label' => $magStore->getName()];
         }
 
-        return $option_array;
+        return $optionArray;
     }
 
     /**
@@ -38,11 +40,12 @@ class MagStore implements ArrayInterface
      */
     public function toArray()
     {
-        foreach ($this->getStores() as $mag_store) {
-            $option_array[ $mag_store->getId() ] = $mag_store->getName();
+        $optionArray[] = '';
+        foreach ($this->getStores() as $magStore) {
+            $optionArray[$magStore->getId()] = $magStore->getName();
         }
 
-        return $option_array;
+        return $optionArray;
     }
 
     /**
@@ -50,7 +53,6 @@ class MagStore implements ArrayInterface
      */
     protected function getStores()
     {
-        $websites = $this->storeManager->getStores();
-        return $websites;
+        return $this->storeManager->getStores();
     }
 }

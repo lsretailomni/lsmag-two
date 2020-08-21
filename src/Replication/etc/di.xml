@@ -24,7 +24,7 @@
     </type>
     <preference for="Magento\Catalog\Block\Product\View\Attributes"
                 type="Ls\Replication\Block\Product\View\Attributes"/>
-    <!--Replication API Repository Inferfaces-->
+    <!--Replication API Repository Interfaces-->
     <preference for="Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueRepository"/>
     <preference for="Ls\Replication\Api\ReplAttributeRepositoryInterface"
@@ -33,6 +33,10 @@
                 type="Ls\Replication\Model\ReplAttributeValueRepository"/>
     <preference for="Ls\Replication\Api\ReplBarcodeRepositoryInterface"
                 type="Ls\Replication\Model\ReplBarcodeRepository"/>
+    <preference for="Ls\Replication\Api\ReplDataTranslationRepositoryInterface"
+                type="Ls\Replication\Model\ReplDataTranslationRepository"/>
+    <preference for="Ls\Replication\Api\ReplDataTranslationLangCodeRepositoryInterface"
+                type="Ls\Replication\Model\ReplDataTranslationLangCodeRepository"/>
     <preference for="Ls\Replication\Api\ReplDiscountRepositoryInterface"
                 type="Ls\Replication\Model\ReplDiscountRepository"/>
     <preference for="Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface"
@@ -57,13 +61,17 @@
     <preference for="Ls\Replication\Api\ReplProductGroupRepositoryInterface"
                 type="Ls\Replication\Model\ReplProductGroupRepository"/>
     <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface" type="Ls\Replication\Model\ReplStoreRepository"/>
-    <!--Replication API Data Inferfaces-->
+    <!--Replication API Data Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValue"/>
     <preference for="Ls\Replication\Api\Data\ReplAttributeInterface" type="Ls\Replication\Model\ReplAttribute"/>
     <preference for="Ls\Replication\Api\Data\ReplAttributeValueInterface"
                 type="Ls\Replication\Model\ReplAttributeValue"/>
     <preference for="Ls\Replication\Api\Data\ReplBarcodeInterface" type="Ls\Replication\Model\ReplBarcode"/>
+    <preference for="Ls\Replication\Api\Data\ReplDataTranslationInterface"
+                type="Ls\Replication\Model\ReplDataTranslation"/>
+    <preference for="Ls\Replication\Api\Data\ReplDataTranslationLangCodeInterface"
+                type="Ls\Replication\Model\ReplDataTranslationLangCode"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountInterface" type="Ls\Replication\Model\ReplDiscount"/>
     <preference for="Ls\Replication\Api\Data\ReplExtendedVariantValueInterface"
                 type="Ls\Replication\Model\ReplExtendedVariantValue"/>
@@ -80,7 +88,7 @@
     <preference for="Ls\Replication\Api\Data\ReplInvStatusInterface" type="Ls\Replication\Model\ReplInvStatus"/>
     <preference for="Ls\Replication\Api\Data\ReplProductGroupInterface" type="Ls\Replication\Model\ReplProductGroup"/>
     <preference for="Ls\Replication\Api\Data\ReplStoreInterface" type="Ls\Replication\Model\ReplStore"/>
-    <!--Replication API Search Results Inferfaces-->
+    <!--Replication API Search Results Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueSearchResultsInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplAttributeSearchResultsInterface"
@@ -89,6 +97,10 @@
                 type="Ls\Replication\Model\ReplAttributeValueSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplBarcodeSearchResultsInterface"
                 type="Ls\Replication\Model\ReplBarcodeSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplDataTranslationSearchResultsInterface"
+                type="Ls\Replication\Model\ReplDataTranslationSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplDataTranslationLangSearchResultsInterface"
+                type="Ls\Replication\Model\ReplDataTranslationLangCodeSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountSearchResultsInterface"
                 type="Ls\Replication\Model\ReplDiscountSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplExtendedVariantValueSearchResultsInterface"
@@ -131,6 +143,12 @@
                 </item>
                 <item name="ls_repl_grids_barcode_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplBarcode\Grid\Collection
+                </item>
+                <item name="ls_repl_grids_data_translation_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplDataTranslation\Grid\Collection
+                </item>
+                <item name="ls_repl_grids_data_translation_lang_code_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplDataTranslationLangCode\Grid\Collection
                 </item>
                 <item name="ls_repl_grids_extendedvariantvalue_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\Grid\Collection
