@@ -95,7 +95,7 @@ class Invalid implements MessageInterface
      */
     public function getText()
     {
-        $url = $this->urlBuilder->getUrl('admin/system_config/edit/section/ls_mag');
+        $url = $this->urlBuilder->getUrl('adminhtml/system_config/edit/section/ls_mag');
         //@codingStandardsIgnoreStart
         return __(
             '<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href="%1">Stores > Configuration > LS Retail > General Configuration</a>.',
