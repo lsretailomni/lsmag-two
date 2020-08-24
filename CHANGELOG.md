@@ -1,7 +1,18 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [1.4.0] - 2020-08-24
+## [1.4.1] - 2020-08-24
+
+### Changed
+
+- As part of disaster management Inventory lookup on Product display page, LS Recommend, Click & Collect, Coupon recommendations together with there api calls will be disabled if omni goes down. [OMNI-5250](https://solutions.lsretail.com/jira/browse/OMNI-5250)
+
+### Bugs/Fixes
+
+- Fixed issue with maps not showing on product and checkout page. [OMNI-5288](https://solutions.lsretail.com/jira/browse/OMNI-5288)
+- Added missing table columns while creating dynamic db_schema.xml. [OMNI-5285](https://solutions.lsretail.com/jira/browse/OMNI-5285)
+
+## [1.4.0] - 2020-08-18
 
 ### Added
 
@@ -23,8 +34,6 @@ All notable changes to this project will be documented in this file.
 - Migrate all Install/Upgrade data classes into data patches. [OMNI-5252](https://solutions.lsretail.com/jira/browse/OMNI-5252)
 - Support dynamic generation of declarative schema for all the replication tables. [OMNI-5253](https://solutions.lsretail.com/jira/browse/OMNI-5253)
 - Replaced Zend Framework deprecated classes with Laminas Framework. [OMNI-5273](https://solutions.lsretail.com/jira/browse/OMNI-5273)
-- As part of disaster management Inventory lookup on Product display page, LS Recommend, Click & Collect, Coupon recommendations together with there api calls will be disabled if omni goes down. [OMNI-5250](https://solutions.lsretail.com/jira/browse/OMNI-5250)
-
 
 ### Bugs/Fixes
 
@@ -33,8 +42,6 @@ All notable changes to this project will be documented in this file.
 - Fixed pay at store payment method visibility on checkout page for flat shipping method. [OMNI-5238](https://solutions.lsretail.com/jira/browse/OMNI-5238)
 - Fixed issue with coupons not showing on cart page for configurable product. [OMNI-5232](https://solutions.lsretail.com/jira/browse/OMNI-5232)
 - Fixed error on order success page that comes for offline payment methods. [OMNI-5267](https://solutions.lsretail.com/jira/browse/OMNI-5267)
-- Fixed issue with maps not showing on product and checkout page. [OMNI-5288](https://solutions.lsretail.com/jira/browse/OMNI-5288)
-- Added missing table columns while creating dynamic db_schema.xml. [OMNI-5285](https://solutions.lsretail.com/jira/browse/OMNI-5285)
 
 
 
