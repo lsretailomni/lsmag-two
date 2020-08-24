@@ -1,4 +1,4 @@
-# LS Ecommerce - Magento Integration (V1.4.0)
+# LS Ecommerce - Magento Integration (V1.4.1)
 
 ## Compatibility
 1. Magento Open Source 2.3.5
