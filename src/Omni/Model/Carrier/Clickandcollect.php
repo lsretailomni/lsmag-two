@@ -2,8 +2,10 @@
 
 namespace Ls\Omni\Model\Carrier;
 
+use \Ls\Core\Model\LSR;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
 use Magento\Quote\Model\Quote\Address\RateResult\Method;
@@ -36,12 +38,18 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
     public $rateMethodFactory;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * Clickandcollect constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param ErrorFactory $rateErrorFactory
      * @param LoggerInterface $logger
      * @param ResultFactory $rateResultFactory
      * @param MethodFactory $rateMethodFactory
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
@@ -50,10 +58,12 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
         LoggerInterface $logger,
         ResultFactory $rateResultFactory,
         MethodFactory $rateMethodFactory,
+        LSR $lsr,
         array $data = []
     ) {
         $this->rateResultFactory = $rateResultFactory;
         $this->rateMethodFactory = $rateMethodFactory;
+        $this->lsr               = $lsr;
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
     }
 
@@ -67,11 +77,12 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
 
     /**
      * @param RateRequest $request
-     * @return bool|DataObject|Result|null
+     * @return bool|Result|DataObject|null
+     * @throws NoSuchEntityException
      */
     public function collectRates(RateRequest $request)
     {
-        if (!$this->isActive()) {
+        if (!$this->isActive() || !$this->isValid()) {
             return false;
         }
 
@@ -92,5 +103,14 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
         $result->append($method);
 
         return $result;
+    }
+
+    /**
+     * @return bool|null
+     * @throws NoSuchEntityException
+     */
+    public function isValid()
+    {
+        return  $this->lsr->isLSR($this->lsr->getCurrentStoreId());
     }
 }

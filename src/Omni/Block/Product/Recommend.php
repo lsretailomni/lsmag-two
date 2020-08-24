@@ -8,6 +8,8 @@ use \Ls\Omni\Helper\LSRecommend as LSRecommendHelper;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Catalog\Block\Product\Context;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * This file will be used for Shopping Cart/Home/Checkout page
@@ -22,6 +24,13 @@ class Recommend extends AbstractProduct
     /** @var LSRecommendHelper */
     public $LSRecommend;
 
+    /**
+     * Recommend constructor.
+     * @param Context $context
+     * @param LSRecommendHelper $LS_RecommendHelper
+     * @param LSR $lsr
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         LSRecommendHelper $LS_RecommendHelper,
@@ -35,6 +44,7 @@ class Recommend extends AbstractProduct
 
     /**
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function isEnabled()
     {
@@ -47,16 +57,17 @@ class Recommend extends AbstractProduct
 
     /**
      * @return ProductInterface[]|null
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
-    public function getProductRecommendationforCart()
+    public function getProductRecommendationForCart()
     {
-        $response            = null;
         $productSkus         = $this->LSRecommend->getProductSkusFromQuote();
-        $recommendedProducts = $this->LSRecommend->getProductRecommendationfromOmni($productSkus);
+        $recommendedProducts = $this->LSRecommend->getProductRecommendationFromOmni($productSkus);
         if ($recommendedProducts instanceof ArrayOfRecommendedItem) {
             return $this->LSRecommend->parseProductRecommendation($recommendedProducts);
         }
-        return $response;
+        return null;
     }
 
     /**
@@ -77,5 +88,14 @@ class Recommend extends AbstractProduct
         } else {
             return true;
         }
+    }
+
+    /**
+     * @return bool|null
+     * @throws NoSuchEntityException
+     */
+    public function isValid()
+    {
+        return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
     }
 }

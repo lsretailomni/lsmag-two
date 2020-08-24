@@ -119,6 +119,7 @@
     <column xsi:type="blob" name="Image64" nullable="true" comment="Image64"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="text" name="Location" nullable="true" comment="Location"/>
+    <column xsi:type="text" name="LocationType" nullable="true" comment="LocationType"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
@@ -513,6 +514,7 @@
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
     <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
@@ -558,6 +560,7 @@
     <column xsi:type="text" name="ImageId" nullable="true" comment="ImageId"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="text" name="NodeId" nullable="true" comment="NodeId"/>
+    <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
@@ -694,6 +697,7 @@
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
     <column xsi:type="text" name="Details" nullable="true" comment="Details"/>
     <column xsi:type="decimal" name="DiscountValue" scale="4" precision="20" nullable="true" comment="DiscountValue"/>
+    <column xsi:type="text" name="DiscountValueType" nullable="true" comment="DiscountValueType"/>
     <column xsi:type="text" name="FromDate" nullable="true" comment="FromDate"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
@@ -704,6 +708,7 @@
     <column xsi:type="int" name="PriorityNo" padding="11" nullable="true" comment="PriorityNo"/>
     <column xsi:type="text" name="StoreId" nullable="true" comment="StoreId"/>
     <column xsi:type="text" name="ToDate" nullable="true" comment="ToDate"/>
+    <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
     <column xsi:type="text" name="UnitOfMeasureId" nullable="true" comment="UnitOfMeasureId"/>
     <column xsi:type="int" name="ValidationPeriodId" padding="11" nullable="true" comment="ValidationPeriodId"/>
     <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>

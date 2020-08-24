@@ -224,20 +224,23 @@ class LoyaltyHelper extends AbstractHelper
     }
 
     /**
-     * @return int
+     * @return int|null
+     * @throws NoSuchEntityException
      */
     public function getMemberPoints()
     {
-        $points = $this->checkoutSession->getMemberPoints();
-        if (isset($points)) {
-            return $points;
-        }
-        if ($this->customerSession->isLoggedIn()) {
-            $memberProfile = $this->getMemberInfo();
-            if ($memberProfile != null) {
-                $points = $memberProfile->getAccount()->getPointBalance();
-                $this->checkoutSession->setMemberPoints($points);
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            $points = $this->checkoutSession->getMemberPoints();
+            if (isset($points)) {
                 return $points;
+            }
+            if ($this->customerSession->isLoggedIn()) {
+                $memberProfile = $this->getMemberInfo();
+                if ($memberProfile != null) {
+                    $points = $memberProfile->getAccount()->getPointBalance();
+                    $this->checkoutSession->setMemberPoints($points);
+                    return $points;
+                }
             }
         }
         return 0;
@@ -438,51 +441,51 @@ class LoyaltyHelper extends AbstractHelper
      */
     public function getAvailableCouponsForLoggedInCustomers()
     {
-        $memberInfo = $this->getMemberInfo();
-        if (!$memberInfo) {
-            return [];
-        }
-        $publishedOffersObj = $memberInfo->getPublishedOffers();
-        $itemsInCart        = $this->checkoutSession->getQuote()->getAllItems();
-        $itemsSku           = [];
-        $coupons            = [];
-        /** @var Item $item */
-        foreach ($itemsInCart as $item) {
-            if (!empty($item->getParentItemId())) {
-                $parentItem = $item->getParentItem();
-                $parentSku  = $parentItem->getProduct()->getData('sku');
-                if (!empty($parentSku)) {
-                    $itemsSku[] = $parentSku;
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            $memberInfo         = $this->getMemberInfo();
+            $publishedOffersObj = $memberInfo->getPublishedOffers();
+            $itemsInCart        = $this->checkoutSession->getQuote()->getAllItems();
+            $itemsSku           = [];
+            $coupons            = [];
+            /** @var Item $item */
+            foreach ($itemsInCart as $item) {
+                if (!empty($item->getParentItemId())) {
+                    $parentItem = $item->getParentItem();
+                    $parentSku  = $parentItem->getProduct()->getData('sku');
+                    if (!empty($parentSku)) {
+                        $itemsSku[] = $parentSku;
+                    }
+                } else {
+                    $itemsSku[] = $item->getSku();
                 }
-            } else {
-                $itemsSku[] = $item->getSku();
             }
-        }
-        if ($publishedOffersObj) {
-            $publishedOffers = $publishedOffersObj->getPublishedOffer();
-            foreach ($publishedOffers as $each) {
-                $getPublishedOfferLineArray = $each->getOfferLines()->getPublishedOfferLine();
-                if ($each->getCode() == "Coupon" && $each->getOfferLines()) {
-                    foreach ($getPublishedOfferLineArray as $publishedOfferLine) {
-                        if (!empty($publishedOfferLine->getVariant())) {
-                            $itemSku = $publishedOfferLine->getId() . '-' . $publishedOfferLine->getVariant();
-                        } else {
-                            $itemSku = $publishedOfferLine->getId();
-                        }
-                        if (in_array($itemSku, $itemsSku)) {
-                            $coupons[] = $each;
-                        }
-                        if ($publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::PRODUCT_GROUP
-                            || $publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::ITEM_CATEGORY
-                            || $publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::SPECIAL_GROUP
-                        ) {
-                            $coupons[] = $each;
+            if ($publishedOffersObj) {
+                $publishedOffers = $publishedOffersObj->getPublishedOffer();
+                foreach ($publishedOffers as $each) {
+                    $getPublishedOfferLineArray = $each->getOfferLines()->getPublishedOfferLine();
+                    if ($each->getCode() == "Coupon" && $each->getOfferLines()) {
+                        foreach ($getPublishedOfferLineArray as $publishedOfferLine) {
+                            if (!empty($publishedOfferLine->getVariant())) {
+                                $itemSku = $publishedOfferLine->getId() . '-' . $publishedOfferLine->getVariant();
+                            } else {
+                                $itemSku = $publishedOfferLine->getId();
+                            }
+                            if (in_array($itemSku, $itemsSku)) {
+                                $coupons[] = $each;
+                            }
+                            if ($publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::PRODUCT_GROUP
+                                || $publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::ITEM_CATEGORY
+                                || $publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::SPECIAL_GROUP
+                            ) {
+                                $coupons[] = $each;
+                            }
                         }
                     }
                 }
+                return $coupons;
             }
-            return $coupons;
         }
+        return [];
     }
 
     /**

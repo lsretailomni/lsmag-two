@@ -3,7 +3,7 @@
 
 use \Ls\Omni\Block\Product\View\Recommend;
 
-if ($block->isEnabled()) {
+if ($block->isEnabled() && $block->isValid()) :
     $currentProductSku = $block->getProductBySku();
     $ajaxUrl           = $block->getAjaxUrl();
     ?>
@@ -26,6 +26,5 @@ if ($block->isEnabled()) {
                 }
             }
         }
-
     </script>
-<?php } ?>
+<?php endif; ?>

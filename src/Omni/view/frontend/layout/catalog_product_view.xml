@@ -14,21 +14,21 @@
                    template="Ls_Omni::product/recommendation.phtml"
                    after="product.info.details" ifconfig="ls_mag/ls_recommend/product"/>
         </referenceContainer>
-        <referenceBlock name="product.info.addtocart">
-            <action method="setTemplate">
-                <argument name="template" xsi:type="string">Ls_Omni::product/view/addtocart.phtml</argument>
-            </action>
-        </referenceBlock>
-        <referenceBlock name="product.info.addtocart.additional">
-            <action method="setTemplate">
-                <argument name="template" xsi:type="string">Ls_Omni::product/view/addtocart.phtml</argument>
-            </action>
-        </referenceBlock>
+
+        <referenceBlock name="product.info.addtocart" template="Ls_Omni::product/view/addtocart.phtml" />
+
+        <referenceBlock name="product.info.addtocart.additional" template="Ls_Omni::product/view/addtocart.phtml" />
+
+        <block class="Ls\Omni\Block\Product\View\View"
+               name="ls.omni.product.availability"
+               template="Ls_Omni::product/view/availability.phtml"
+               ifconfig="ls_mag/one_list/product_availability"/>
+
         <referenceContainer name="product.info.extrahint">
             <block class="Ls\Omni\Block\Product\View\Discount\Proactive"
                    name="ls.omni.product.discount.proactive"
                    template="Ls_Omni::product/proactive.phtml"
-                   after="product.info.social"/>
+                   after="product.info.social" ifconfig="ls_mag/ls_discounts/discount"/>
         </referenceContainer>
     </body>
 </page>

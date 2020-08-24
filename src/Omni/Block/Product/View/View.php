@@ -12,6 +12,7 @@ use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\Locale\FormatInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\StringUtils;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class View
@@ -75,8 +76,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getGoogleMapsApiKey()
     {
-        $configValue = $this->lsr->getGoogleMapsApiKey();
-        return $configValue;
+        return $this->lsr->getGoogleMapsApiKey();
     }
 
     /**
@@ -85,8 +85,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultLatitude()
     {
-        $configValue = $this->lsr->getDefaultLatitude();
-        return $configValue;
+        return $this->lsr->getDefaultLatitude();
     }
 
     /**
@@ -95,8 +94,7 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultLongitude()
     {
-        $configValue = $this->lsr->getDefaultLongitude();
-        return $configValue;
+        return $this->lsr->getDefaultLongitude();
     }
 
     /**
@@ -105,20 +103,15 @@ class View extends \Magento\Catalog\Block\Product\View
      */
     public function getDefaultZoom()
     {
-        $configValue = $this->lsr->getDefaultZoom();
-        return $configValue;
+        return $this->lsr->getDefaultZoom();
     }
 
     /**
-     * Get default default zoom from config
-     * @return string
+     * @return bool|null
+     * @throws NoSuchEntityException
      */
-    public function isEnable()
+    public function isValid()
     {
-        $configValue = $this->lsr->getStoreConfig(
-            $this->lsr::SC_CART_PRODUCT_AVAILABILITY,
-            $this->lsr->getCurrentStoreId()
-        );
-        return $configValue;
+        return  $this->lsr->isLSR($this->lsr->getCurrentStoreId());
     }
 }
