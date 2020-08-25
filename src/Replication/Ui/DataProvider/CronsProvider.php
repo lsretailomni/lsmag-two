@@ -44,7 +44,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
     public $moduleDirReader;
 
     /**
-     * @var \Magento\Store\Model\System\Store
+     * @var StoreManager
      */
     public $storeManager;
 
@@ -213,11 +213,9 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $counter++;
             }
         }
-        // @codingStandardsIgnoreStart
-        $pageSize    = (int)$this->request->getParam('paging')['pageSize'];
-        $pageCurrent = (int)$this->request->getParam('paging')['current'];
-        // @codingStandardsIgnoreEnd
-        $pageOffset = ($pageCurrent - 1) * $pageSize;
+        $pageSize    = $this->request->getParam('paging') && (int)$this->request->getParam('paging')['pageSize'] ? (int)$this->request->getParam('paging')['pageSize'] : 20;
+        $pageCurrent = $this->request->getParam('paging') && (int)$this->request->getParam('paging')['current'] ? (int)$this->request->getParam('paging')['current'] : 1;
+        $pageOffset  = ($pageCurrent - 1) * $pageSize;
 
         return [
             'totalRecords' => count($items),
