@@ -20,6 +20,8 @@ No,No
 "Attribute Option Value Replication","Attribute Option Value Replication"
 "Attribute Value Replication","Attribute Value Replication"
 "Barcode Replication","Barcode Replication"
+"Data Translation Replication","Data Translation Replication"
+"Data Translation Lang Code Replication","Data Translation Lang Code Replication"
 "Discount Replication","Discount Replication"
 "Extended Variant Value Replication","Extended Variant Value Replication"
 "Hierarchy Replication","Hierarchy Replication"
@@ -38,6 +40,7 @@ No,No
 "File Not Found.","File Not Found."
 "Product Image","Product Image"
 "<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>.","<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>."
+Default,Default
 "Object with id ' . . ' does not exist.","Object with id ' . . ' does not exist."
 "Could not save entity","Could not save entity"
 Execute,Execute
@@ -68,6 +71,8 @@ Item,Item
 Price,Price
 "Inventory Status","Inventory Status"
 Barcode,Barcode
+"Data Translation","Data Translation"
+"Data Translation Lang Code","Data Translation Lang Code"
 "Extended Variant Value","Extended Variant Value"
 "Image Link","Image Link"
 "Item Variant Registration","Item Variant Registration"
@@ -77,10 +82,9 @@ Hierarchy,Hierarchy
 Attribute,Attribute
 "Attribute Value","Attribute Value"
 "Attribute Option Value","Attribute Option Value"
-"Item Category","Item Category"
-"Product Group","Product Group"
 Store,Store
 Replication,Replication
+"Data Translation Language Code","Data Translation Language Code"
 "Manual Cron Grid Default Store","Manual Cron Grid Default Store"
 "Replicate All Stores Items","Replicate All Stores Items"
 "Default Batch Size","Default Batch Size"
@@ -136,6 +140,10 @@ Blocked,Blocked
 "Item Id","Item Id"
 "Unit Of Measure","Unit Of Measure"
 "Variant ID","Variant ID"
+"Language Code","Language Code"
+Key,Key
+Text,Text
+"Translation Id","Translation Id"
 Scroll,Scroll
 "Item ID","Item ID"
 "Discount Value","Discount Value"

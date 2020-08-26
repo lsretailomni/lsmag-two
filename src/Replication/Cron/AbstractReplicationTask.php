@@ -60,9 +60,9 @@ abstract class AbstractReplicationTask
 
     /** @var array List of Replication Tables with unique field */
     private static $jobCodeUniqueFieldArray = [
-        "ls_mag/replication/repl_attribute"                 => ["Code", "scope_id"],
-        "ls_mag/replication/repl_attribute_option_value"    => ["Code", "Sequence", "scope_id"],
-        "ls_mag/replication/repl_attribute_value"           => [
+        "ls_mag/replication/repl_attribute"                  => ["Code", "scope_id"],
+        "ls_mag/replication/repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
+        "ls_mag/replication/repl_attribute_value"            => [
             "Code",
             "LinkField1",
             "LinkField2",
@@ -70,13 +70,14 @@ abstract class AbstractReplicationTask
             "Value",
             "scope_id"
         ],
-        "ls_mag/replication/repl_barcode"                   => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_country_code"              => ["Name", "scope_id"],
-        "ls_mag/replication/repl_currency"                  => ["CurrencyCode", "scope_id"],
-        "ls_mag/replication/repl_currency_exch_rate"        => ["CurrencyCode", "scope_id"],
-        "ls_mag/replication/repl_customer"                  => ["AccountNumber", "scope_id"],
-        "ls_mag/replication/repl_data_translation"          => ["TranslationId", "scope_id"],
-        "ls_mag/replication/repl_discount"                  => [
+        "ls_mag/replication/repl_barcode"                    => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_country_code"               => ["Name", "scope_id"],
+        "ls_mag/replication/repl_currency"                   => ["CurrencyCode", "scope_id"],
+        "ls_mag/replication/repl_currency_exch_rate"         => ["CurrencyCode", "scope_id"],
+        "ls_mag/replication/repl_customer"                   => ["AccountNumber", "scope_id"],
+        "ls_mag/replication/repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_mag/replication/repl_data_translation_lang_code" => ["Code", "scope_id"],
+        "ls_mag/replication/repl_discount"                   => [
             "ItemId",
             "LoyaltySchemeCode",
             "OfferNo",
@@ -85,29 +86,29 @@ abstract class AbstractReplicationTask
             "MinimumQuantity",
             "scope_id"
         ],
-        "ls_mag/replication/repl_discount_validation"       => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_extended_variant_value"    => [
+        "ls_mag/replication/repl_discount_validation"        => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_extended_variant_value"     => [
             "Code",
             "FrameworkCode",
             "ItemId",
             "Value",
             "scope_id"
         ],
-        "ls_mag/replication/repl_hierarchy"                 => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_leaf"            => ["nav_id", "NodeId", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_node"            => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_image"                     => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_image_link"                => ["ImageId", "KeyValue", "scope_id"],
-        "ls_mag/replication/repl_item"                      => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_item_category"             => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_item_unit_of_measure"      => ["Code", "ItemId", "scope_id"],
-        "ls_mag/replication/repl_item_variant_registration" => [
+        "ls_mag/replication/repl_hierarchy"                  => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_leaf"             => ["nav_id", "NodeId", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_node"             => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_image"                      => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_image_link"                 => ["ImageId", "KeyValue", "scope_id"],
+        "ls_mag/replication/repl_item"                       => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_item_category"              => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_item_unit_of_measure"       => ["Code", "ItemId", "scope_id"],
+        "ls_mag/replication/repl_item_variant_registration"  => [
             "ItemId",
             "VariantId",
             "scope_id"
         ],
-        "ls_mag/replication/repl_loy_vendor_item_mapping"   => ["NavManufacturerId", "NavProductId", "scope_id"],
-        "ls_mag/replication/repl_price"                     => [
+        "ls_mag/replication/repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
+        "ls_mag/replication/repl_price"                      => [
             "ItemId",
             "VariantId",
             "StoreId",
@@ -115,14 +116,14 @@ abstract class AbstractReplicationTask
             "UnitOfMeasure",
             "scope_id"
         ],
-        "ls_mag/replication/repl_inv_status"                => ["ItemId", "VariantId", "StoreId", "scope_id"],
-        "ls_mag/replication/repl_product_group"             => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_shipping_agent"            => ["Name", "scope_id"],
-        "ls_mag/replication/repl_store"                     => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_store_tender_type"         => ["StoreID", "TenderTypeId", "scope_id"],
-        "ls_mag/replication/repl_unit_of_measure"           => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_vendor"                    => ["Name", "scope_id"],
-        "ls_mag/replication/loy_item"                       => ["nav_id", "scope_id"]
+        "ls_mag/replication/repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],
+        "ls_mag/replication/repl_product_group"              => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_shipping_agent"             => ["Name", "scope_id"],
+        "ls_mag/replication/repl_store"                      => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
+        "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
+        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
     ];
 
     /** @var Logger */

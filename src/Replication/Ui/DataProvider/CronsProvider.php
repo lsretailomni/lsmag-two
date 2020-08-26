@@ -3,8 +3,8 @@
 namespace Ls\Replication\Ui\DataProvider;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\Request\Http;
@@ -201,9 +201,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         }
     }
 
-    /**
-     *
-     */
     public function prepareUpdateUrl()
     {
         if (!isset($this->data['config']['filter_url_params'])) {
@@ -236,6 +233,11 @@ class CronsProvider extends DataProvider implements DataProviderInterface
      */
     public function getStatusByCronCode($cronName = null, $storeId = null, $fullReplicationStatus)
     {
+        if ($cronName == 'repl_data_translation_to_magento') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO, $storeId);
+            return $fullReplicationStatus;
+        }
+
         if ($cronName == 'repl_attributes') {
             $cronAttributeCheck        = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE, $storeId);
             $cronAttributeVariantCheck = $this->lsr->getStoreConfig(

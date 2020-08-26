@@ -129,6 +129,7 @@
             "Image64": true,
             "IsDeleted": true,
             "Location": true,
+            "LocationType": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -174,6 +175,7 @@
             "BlockPositiveAdjustment": true,
             "BlockPurchaseReturn": true,
             "Blocked": true,
+            "BlockedOnECom": true,
             "BlockedOnPos": true,
             "CrossSellingExists": true,
             "DateBlocked": true,
@@ -209,8 +211,7 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "BlockedOnECom": true
+            "updated_at": true
         },
         "constraint": {
             "PRIMARY": true
@@ -555,6 +556,7 @@
             "Description": true,
             "nav_id": true,
             "IsDeleted": true,
+            "Type": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -604,6 +606,7 @@
             "ImageId": true,
             "IsDeleted": true,
             "NodeId": true,
+            "Type": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -750,6 +753,7 @@
             "Description": true,
             "Details": true,
             "DiscountValue": true,
+            "DiscountValueType": true,
             "FromDate": true,
             "IsDeleted": true,
             "ItemId": true,
@@ -760,6 +764,7 @@
             "PriorityNo": true,
             "StoreId": true,
             "ToDate": true,
+            "Type": true,
             "UnitOfMeasureId": true,
             "ValidationPeriodId": true,
             "VariantId": true,
