@@ -64,7 +64,7 @@ class ResetData extends Column
                             ),
                             'label'   => __('Reset'),
                             'confirm' => [
-                                'title'   => __('Want to Reset Data for %1 Cron Job?', '${ $.$data.label }'),
+                                'title'   => __('Want to Reset Data for %1 Cron Job?', $item['label']),
                                 'message' => __('It will take some time to reset data. Please don\'t close this window.
                                 ')
                             ]
