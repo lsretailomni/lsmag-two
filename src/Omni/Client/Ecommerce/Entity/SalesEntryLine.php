@@ -20,6 +20,11 @@ class SalesEntryLine extends Entity
     protected $Amount = null;
 
     /**
+     * @property boolean $ClickAndCollectLine
+     */
+    protected $ClickAndCollectLine = null;
+
+    /**
      * @property float $DiscountAmount
      */
     protected $DiscountAmount = null;
@@ -80,6 +85,11 @@ class SalesEntryLine extends Entity
     protected $Quantity = null;
 
     /**
+     * @property string $StoreId
+     */
+    protected $StoreId = null;
+
+    /**
      * @property float $TaxAmount
      */
     protected $TaxAmount = null;
@@ -115,6 +125,24 @@ class SalesEntryLine extends Entity
     public function getAmount()
     {
         return $this->Amount;
+    }
+
+    /**
+     * @param boolean $ClickAndCollectLine
+     * @return $this
+     */
+    public function setClickAndCollectLine($ClickAndCollectLine)
+    {
+        $this->ClickAndCollectLine = $ClickAndCollectLine;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getClickAndCollectLine()
+    {
+        return $this->ClickAndCollectLine;
     }
 
     /**
@@ -341,6 +369,24 @@ class SalesEntryLine extends Entity
     public function getQuantity()
     {
         return $this->Quantity;
+    }
+
+    /**
+     * @param string $StoreId
+     * @return $this
+     */
+    public function setStoreId($StoreId)
+    {
+        $this->StoreId = $StoreId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreId()
+    {
+        return $this->StoreId;
     }
 
     /**
