@@ -8,7 +8,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\OperationInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
-use Magento\Config\Model\ResourceModel\Config;q
+use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
