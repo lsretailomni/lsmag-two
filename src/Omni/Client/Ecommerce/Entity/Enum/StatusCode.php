@@ -170,6 +170,9 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode CANNOT_MIX_NORMAL_SALE_AND_RETURN()
  * @$method static StatusCode UNKNOWN_USER()
  * @$method static StatusCode NAV_W_S_ERROR()
+ * @$method static StatusCode CUSTOMER_ORDER_NOT_FOUND()
+ * @$method static StatusCode CUSTOMER_ORDER_ITEM_NOT_FOUND()
+ * @$method static StatusCode CUSTOMER_ORDER_ITEM_ALREADY_IN_BOX()
  */
 class StatusCode extends Enum
 {
@@ -491,6 +494,12 @@ class StatusCode extends Enum
     const UNKNOWN_USER = 'UnknownUser';
 
     const NAV_W_S_ERROR = 'NavWSError';
+
+    const CUSTOMER_ORDER_NOT_FOUND = 'CustomerOrderNotFound';
+
+    const CUSTOMER_ORDER_ITEM_NOT_FOUND = 'CustomerOrderItemNotFound';
+
+    const CUSTOMER_ORDER_ITEM_ALREADY_IN_BOX = 'CustomerOrderItemAlreadyInBox';
 
 
 }

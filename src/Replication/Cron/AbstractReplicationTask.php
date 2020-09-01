@@ -2,7 +2,6 @@
 
 namespace Ls\Replication\Cron;
 
-use Exception;
 use IteratorAggregate;
 use \Ls\Core\Helper\Data as LsHelper;
 use \Ls\Core\Model\LSR;
@@ -123,6 +122,9 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "DealLineNo", "ItemNo", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "LineNo", "ItemNo", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "LineNo", "RecipeNo", "scope_id"],
         "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
     ];
 
