@@ -54,4 +54,17 @@
         <plugin name="ls.order.number.sequence" type="Ls\Omni\Plugin\Order\Sequence"
                 sortOrder="1"/>
     </type>
+    <!-- for changing increment_id to document_id in emails -->
+    <type name="Magento\Sales\Model\Order\Email\Sender\OrderSender">
+        <plugin name="ls_update_order_email_modification" type="Ls\Omni\Plugin\Email\Sender\OrderSender"
+                sortOrder="1"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\Email\Sender\InvoiceSender">
+        <plugin name="ls_update_invoice_email_modification" type="Ls\Omni\Plugin\Email\Sender\InvoiceSender"
+                sortOrder="1"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\Email\Sender\ShipmentSender">
+        <plugin name="ls_update_shipment_email_modification" type="Ls\Omni\Plugin\Email\Sender\ShipmentSender"
+                sortOrder="1"/>
+    </type>
 </config>
