@@ -3,9 +3,6 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="customer_account"/>
     <update handle="customer_order_info_links"/>
-    <head>
-        <css src="Ls_Omni::css/lsdiscountprices.css"/>
-    </head>
     <body>
         <referenceContainer name="page.main.title">
             <block class="Ls\Customer\Block\Order\Info" name="custom.order.status"
