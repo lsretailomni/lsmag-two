@@ -169,6 +169,8 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * @param null $storeData
+     * @throws NoSuchEntityException
      * @throws ReflectionException
      */
     public function execute($storeData = null)
@@ -219,8 +221,7 @@ abstract class AbstractReplicationTask
                         $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
                     }
                     $baseUrl = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store->getId());
-                    $request = $this->makeRequest($lastKey, $fullReplication, $batchSize, $webStoreID,
-                        $maxKey, $baseUrl);
+                    $request = $this->makeRequest($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl);
                     try {
                         $response = $request->execute();
                         if (method_exists($response, 'getResult')) {
@@ -250,7 +251,7 @@ abstract class AbstractReplicationTask
                             $this->persistMaxKey($maxKey, $store->getId());
                             $this->rep_helper->flushByTypeCode('config');
                         } else {
-                            $this->logger->debug('No getResult method found.');
+                            $this->logger->debug('No result found for ' . get_class($this->getMainEntity()) . '. Please refer omniclient log for details.');
                         }
                     } catch (Exception $e) {
                         $this->logger->debug($e->getMessage());
