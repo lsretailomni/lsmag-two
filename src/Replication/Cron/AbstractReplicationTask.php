@@ -122,9 +122,9 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "DealLineNo", "ItemNo", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "LineNo", "ItemNo", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "LineNo", "RecipeNo", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "DealLineNo", "ItemNo","UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "LineNo", "ItemNo","UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "LineNo", "RecipeNo","UnitOfMeasure", "scope_id"],
         "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
     ];
 
@@ -218,8 +218,14 @@ abstract class AbstractReplicationTask
                         $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
                     }
                     $baseUrl                = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store->getId());
-                    $request                = $this->makeRequest($lastKey, $fullReplication, $batchSize, $webStoreID,
-                        $maxKey, $baseUrl);
+                    $request                = $this->makeRequest(
+                        $lastKey,
+                        $fullReplication,
+                        $batchSize,
+                        $webStoreID,
+                        $maxKey,
+                        $baseUrl
+                    );
                     $response               = $request->execute();
                     $result                 = $response->getResult();
                     $lastKey                = $result->getLastKey();
@@ -483,8 +489,10 @@ abstract class AbstractReplicationTask
                 $storeId
             );
         } else {
-            return $this->scope_config->getValue($this->getConfigPathMaxKey(),
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+            return $this->scope_config->getValue(
+                $this->getConfigPathMaxKey(),
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
         }
     }
 
