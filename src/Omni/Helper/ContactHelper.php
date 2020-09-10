@@ -155,6 +155,10 @@ class ContactHelper extends AbstractHelper
     public $validateEmailAddress;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder
@@ -213,7 +217,8 @@ class ContactHelper extends AbstractHelper
         ProductRepositoryInterface $productRepository,
         CustomerCollection $customerCollection,
         EncryptorInterface $encryptorInterface,
-        ValidateEmailAddress $validateEmailAddress
+        ValidateEmailAddress $validateEmailAddress,
+        LSR $lsr
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -242,6 +247,7 @@ class ContactHelper extends AbstractHelper
         $this->customerCollection    = $customerCollection;
         $this->encryptorInterface    = $encryptorInterface;
         $this->validateEmailAddress  = $validateEmailAddress;
+        $this->lsr                   = $lsr;
         parent::__construct(
             $context
         );
@@ -1310,5 +1316,22 @@ class ContactHelper extends AbstractHelper
     public function isValid($email)
     {
         return $this->validateEmailAddress->isValid($email);
+    }
+
+    /**
+     * @param int $length
+     * @return mixed|string
+     * @throws LocalizedException
+     */
+    public function generateRandomUsername($length = 5)
+    {
+        $randomString     = $this->lsr->getWebsiteConfig(
+            LSR::SC_LOYALTY_CUSTOMER_USERNAME_PREFIX_PATH,
+            $this->storeManager->getWebsite()->getWebsiteId()
+        );
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= rand(0, 9);
+        }
+        return $randomString;
     }
 }

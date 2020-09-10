@@ -206,20 +206,6 @@ $_isLSR = true;
             <legend class="legend"><span><?php /* @escapeNotVerified */
                     echo __('Sign-in Information') ?></span></legend>
             <br>
-            <?php if ($_isLSR) : ?>
-                <div class="field required">
-                    <label for="lsr_username" class="label"><span><?php /* @escapeNotVerified */
-                            echo __('Username') ?></span></label>
-                    <div class="control">
-                        <input type="text" name="lsr_username" id="lsr_username"
-                               maxlength="50"
-                               title="<?php /* @escapeNotVerified */
-                               echo __('Username') ?>"
-                               class="input-text"
-                               data-validate="{'maxlength':50, required:true, 'validateUsername':true}">
-                    </div>
-                </div>
-            <?php endif; ?>
             <div class="field required">
                 <label for="email_address" class="label"><span><?php /* @escapeNotVerified */
                         echo __('Email') ?></span></label>
@@ -312,13 +298,6 @@ $_isLSR = true;
                 ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden',
                 <?php endif ?>
             }).find('input:text').attr('autocomplete', 'off');
-            $.validator.addMethod(
-                'validateUsername',
-                function (value) {
-                    return value.match(/^[a-zA-Z0-9-_@.]+$/);
-                },
-                $.mage.__('Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.')
-            );
         });
     </script>
 <?php if ($block->getShowAddressFields()) : ?>
