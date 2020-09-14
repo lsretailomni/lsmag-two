@@ -15,13 +15,13 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\HospOrderCalculate as HospOrderCalculateRequest;
-use Ls\Omni\Client\Ecommerce\Entity\HospOrderCalculateResponse as HospOrderCalculateResponse;
+use Ls\Omni\Client\Ecommerce\Entity\OneListHospCalculate as OneListHospCalculateRequest;
+use Ls\Omni\Client\Ecommerce\Entity\OneListHospCalculateResponse as OneListHospCalculateResponse;
 
-class HospOrderCalculate extends AbstractOperation
+class OneListHospCalculate extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'HOSP_ORDER_CALCULATE';
+    const OPERATION_NAME = 'ONE_LIST_HOSP_CALCULATE';
 
     const SERVICE_TYPE = 'ecommerce';
 
@@ -31,12 +31,12 @@ class HospOrderCalculate extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property HospOrderCalculateRequest $request
+     * @property OneListHospCalculateRequest $request
      */
     protected $request = null;
 
     /**
-     * @property HospOrderCalculateResponse $response
+     * @property OneListHospCalculateResponse $response
      */
     protected $response = null;
 
@@ -65,24 +65,24 @@ class HospOrderCalculate extends AbstractOperation
     }
 
     /**
-     * @param HospOrderCalculateRequest $request
-     * @return ResponseInterface|HospOrderCalculateResponse
+     * @param OneListHospCalculateRequest $request
+     * @return ResponseInterface|OneListHospCalculateResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'HospOrderCalculate' );
+        return $this->makeRequest( 'OneListHospCalculate' );
     }
 
     /**
-     * @return HospOrderCalculateRequest
+     * @return OneListHospCalculateRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new HospOrderCalculateRequest();
+            $this->request = new OneListHospCalculateRequest();
         }
         return $this->request;
     }
@@ -119,7 +119,7 @@ class HospOrderCalculate extends AbstractOperation
     }
 
     /**
-     * @param HospOrderCalculateRequest $request
+     * @param OneListHospCalculateRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -129,7 +129,7 @@ class HospOrderCalculate extends AbstractOperation
     }
 
     /**
-     * @return HospOrderCalculateRequest
+     * @return OneListHospCalculateRequest
      */
     public function getRequest()
     {
@@ -137,7 +137,7 @@ class HospOrderCalculate extends AbstractOperation
     }
 
     /**
-     * @param HospOrderCalculateResponse $response
+     * @param OneListHospCalculateResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -147,7 +147,7 @@ class HospOrderCalculate extends AbstractOperation
     }
 
     /**
-     * @return HospOrderCalculateResponse
+     * @return OneListHospCalculateResponse
      */
     public function getResponse()
     {

@@ -22,6 +22,11 @@ class ReplHierarchyHospDealLine extends AbstractModel implements ReplHierarchyHo
     protected $_eventPrefix = 'ls_replication_repl_hierarchy_hosp_deal_line';
 
     /**
+     * @property float $AddedAmount
+     */
+    protected $AddedAmount = null;
+
+    /**
      * @property string $DealLineCode
      */
     protected $DealLineCode = null;
@@ -67,6 +72,11 @@ class ReplHierarchyHospDealLine extends AbstractModel implements ReplHierarchyHo
     protected $LineNo = null;
 
     /**
+     * @property int $MaxSelection
+     */
+    protected $MaxSelection = null;
+
+    /**
      * @property int $MinSelection
      */
     protected $MinSelection = null;
@@ -75,16 +85,6 @@ class ReplHierarchyHospDealLine extends AbstractModel implements ReplHierarchyHo
      * @property string $ParentNode
      */
     protected $ParentNode = null;
-
-    /**
-     * @property float $Price
-     */
-    protected $Price = null;
-
-    /**
-     * @property float $PriceWithVat
-     */
-    protected $PriceWithVat = null;
 
     /**
      * @property string $UnitOfMeasure
@@ -149,6 +149,26 @@ class ReplHierarchyHospDealLine extends AbstractModel implements ReplHierarchyHo
     public function getIdentities()
     {
         return [ self::CACHE_TAG . '_' . $this->getId() ];
+    }
+
+    /**
+     * @param float $AddedAmount
+     * @return $this
+     */
+    public function setAddedAmount($AddedAmount)
+    {
+        $this->setData( 'AddedAmount', $AddedAmount );
+        $this->AddedAmount = $AddedAmount;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAddedAmount()
+    {
+        return $this->getData( 'AddedAmount' );
     }
 
     /**
@@ -332,6 +352,26 @@ class ReplHierarchyHospDealLine extends AbstractModel implements ReplHierarchyHo
     }
 
     /**
+     * @param int $MaxSelection
+     * @return $this
+     */
+    public function setMaxSelection($MaxSelection)
+    {
+        $this->setData( 'MaxSelection', $MaxSelection );
+        $this->MaxSelection = $MaxSelection;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxSelection()
+    {
+        return $this->getData( 'MaxSelection' );
+    }
+
+    /**
      * @param int $MinSelection
      * @return $this
      */
@@ -369,46 +409,6 @@ class ReplHierarchyHospDealLine extends AbstractModel implements ReplHierarchyHo
     public function getParentNode()
     {
         return $this->getData( 'ParentNode' );
-    }
-
-    /**
-     * @param float $Price
-     * @return $this
-     */
-    public function setPrice($Price)
-    {
-        $this->setData( 'Price', $Price );
-        $this->Price = $Price;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrice()
-    {
-        return $this->getData( 'Price' );
-    }
-
-    /**
-     * @param float $PriceWithVat
-     * @return $this
-     */
-    public function setPriceWithVat($PriceWithVat)
-    {
-        $this->setData( 'PriceWithVat', $PriceWithVat );
-        $this->PriceWithVat = $PriceWithVat;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPriceWithVat()
-    {
-        return $this->getData( 'PriceWithVat' );
     }
 
     /**

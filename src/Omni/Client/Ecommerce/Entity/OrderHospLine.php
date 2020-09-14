@@ -15,19 +15,14 @@ class OrderHospLine extends Entity
 {
 
     /**
-     * @property ArrayOfOrderHospDealLine $DealLines
-     */
-    protected $DealLines = null;
-
-    /**
      * @property ArrayOfOrderDiscountLine $DiscountLines
      */
     protected $DiscountLines = null;
 
     /**
-     * @property ArrayOfOrderHospModifierLine $ModifierLines
+     * @property ArrayOfOrderHospSubLine $SubLines
      */
-    protected $ModifierLines = null;
+    protected $SubLines = null;
 
     /**
      * @property ArrayOfOrderHospTextModifierLine $TextModifierLines
@@ -125,24 +120,6 @@ class OrderHospLine extends Entity
     protected $VariantId = null;
 
     /**
-     * @param ArrayOfOrderHospDealLine $DealLines
-     * @return $this
-     */
-    public function setDealLines($DealLines)
-    {
-        $this->DealLines = $DealLines;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfOrderHospDealLine
-     */
-    public function getDealLines()
-    {
-        return $this->DealLines;
-    }
-
-    /**
      * @param ArrayOfOrderDiscountLine $DiscountLines
      * @return $this
      */
@@ -161,21 +138,21 @@ class OrderHospLine extends Entity
     }
 
     /**
-     * @param ArrayOfOrderHospModifierLine $ModifierLines
+     * @param ArrayOfOrderHospSubLine $SubLines
      * @return $this
      */
-    public function setModifierLines($ModifierLines)
+    public function setSubLines($SubLines)
     {
-        $this->ModifierLines = $ModifierLines;
+        $this->SubLines = $SubLines;
         return $this;
     }
 
     /**
-     * @return ArrayOfOrderHospModifierLine
+     * @return ArrayOfOrderHospSubLine
      */
-    public function getModifierLines()
+    public function getSubLines()
     {
-        return $this->ModifierLines;
+        return $this->SubLines;
     }
 
     /**

@@ -10,21 +10,31 @@ namespace Ls\Replication\Model;
 
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
-use Ls\Replication\Api\Data\ReplHierarchyLeafInterface;
+use Ls\Replication\Api\Data\ReplHierarchyHospModifierInterface;
 
-class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterface, IdentityInterface
+class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHospModifierInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_hierarchy_leaf';
+    const CACHE_TAG = 'ls_replication_repl_hierarchy_hosp_modifier';
 
-    protected $_cacheTag = 'ls_replication_repl_hierarchy_leaf';
+    protected $_cacheTag = 'ls_replication_repl_hierarchy_hosp_modifier';
 
-    protected $_eventPrefix = 'ls_replication_repl_hierarchy_leaf';
+    protected $_eventPrefix = 'ls_replication_repl_hierarchy_hosp_modifier';
 
     /**
-     * @property float $DealPrice
+     * @property boolean $AlwaysCharge
      */
-    protected $DealPrice = null;
+    protected $AlwaysCharge = null;
+
+    /**
+     * @property float $AmountPercent
+     */
+    protected $AmountPercent = null;
+
+    /**
+     * @property string $Code
+     */
+    protected $Code = null;
 
     /**
      * @property string $Description
@@ -37,49 +47,49 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     protected $HierarchyCode = null;
 
     /**
-     * @property string $nav_id
-     */
-    protected $nav_id = null;
-
-    /**
-     * @property string $ImageId
-     */
-    protected $ImageId = null;
-
-    /**
-     * @property boolean $IsActive
-     */
-    protected $IsActive = null;
-
-    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
 
     /**
-     * @property boolean $IsMemberClub
+     * @property string $ItemNo
      */
-    protected $IsMemberClub = null;
+    protected $ItemNo = null;
 
     /**
-     * @property string $MemberValue
+     * @property int $MaxSelection
      */
-    protected $MemberValue = null;
+    protected $MaxSelection = null;
 
     /**
-     * @property string $NodeId
+     * @property int $MinSelection
      */
-    protected $NodeId = null;
+    protected $MinSelection = null;
 
     /**
-     * @property HierarchyLeafType $Type
+     * @property string $ParentItem
      */
-    protected $Type = null;
+    protected $ParentItem = null;
 
     /**
-     * @property int $ValidationPeriod
+     * @property string $ParentNode
      */
-    protected $ValidationPeriod = null;
+    protected $ParentNode = null;
+
+    /**
+     * @property ModifierPriceType $PriceType
+     */
+    protected $PriceType = null;
+
+    /**
+     * @property string $SubCode
+     */
+    protected $SubCode = null;
+
+    /**
+     * @property string $UnitOfMeasure
+     */
+    protected $UnitOfMeasure = null;
 
     /**
      * @property string $scope
@@ -128,7 +138,7 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
 
     public function _construct()
     {
-        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf' );
+        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplHierarchyHospModifier' );
     }
 
     public function getIdentities()
@@ -137,13 +147,33 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     }
 
     /**
-     * @param float $DealPrice
+     * @param boolean $AlwaysCharge
      * @return $this
      */
-    public function setDealPrice($DealPrice)
+    public function setAlwaysCharge($AlwaysCharge)
     {
-        $this->setData( 'DealPrice', $DealPrice );
-        $this->DealPrice = $DealPrice;
+        $this->setData( 'AlwaysCharge', $AlwaysCharge );
+        $this->AlwaysCharge = $AlwaysCharge;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAlwaysCharge()
+    {
+        return $this->getData( 'AlwaysCharge' );
+    }
+
+    /**
+     * @param float $AmountPercent
+     * @return $this
+     */
+    public function setAmountPercent($AmountPercent)
+    {
+        $this->setData( 'AmountPercent', $AmountPercent );
+        $this->AmountPercent = $AmountPercent;
         $this->setDataChanges( TRUE );
         return $this;
     }
@@ -151,9 +181,29 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     /**
      * @return float
      */
-    public function getDealPrice()
+    public function getAmountPercent()
     {
-        return $this->getData( 'DealPrice' );
+        return $this->getData( 'AmountPercent' );
+    }
+
+    /**
+     * @param string $Code
+     * @return $this
+     */
+    public function setCode($Code)
+    {
+        $this->setData( 'Code', $Code );
+        $this->Code = $Code;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->getData( 'Code' );
     }
 
     /**
@@ -197,66 +247,6 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     }
 
     /**
-     * @param string $nav_id
-     * @return $this
-     */
-    public function setNavId($nav_id)
-    {
-        $this->setData( 'nav_id', $nav_id );
-        $this->nav_id = $nav_id;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNavId()
-    {
-        return $this->getData( 'nav_id' );
-    }
-
-    /**
-     * @param string $ImageId
-     * @return $this
-     */
-    public function setImageId($ImageId)
-    {
-        $this->setData( 'ImageId', $ImageId );
-        $this->ImageId = $ImageId;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImageId()
-    {
-        return $this->getData( 'ImageId' );
-    }
-
-    /**
-     * @param boolean $IsActive
-     * @return $this
-     */
-    public function setIsActive($IsActive)
-    {
-        $this->setData( 'IsActive', $IsActive );
-        $this->IsActive = $IsActive;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsActive()
-    {
-        return $this->getData( 'IsActive' );
-    }
-
-    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -277,33 +267,13 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     }
 
     /**
-     * @param boolean $IsMemberClub
+     * @param string $ItemNo
      * @return $this
      */
-    public function setIsMemberClub($IsMemberClub)
+    public function setItemNo($ItemNo)
     {
-        $this->setData( 'IsMemberClub', $IsMemberClub );
-        $this->IsMemberClub = $IsMemberClub;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsMemberClub()
-    {
-        return $this->getData( 'IsMemberClub' );
-    }
-
-    /**
-     * @param string $MemberValue
-     * @return $this
-     */
-    public function setMemberValue($MemberValue)
-    {
-        $this->setData( 'MemberValue', $MemberValue );
-        $this->MemberValue = $MemberValue;
+        $this->setData( 'ItemNo', $ItemNo );
+        $this->ItemNo = $ItemNo;
         $this->setDataChanges( TRUE );
         return $this;
     }
@@ -311,59 +281,19 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     /**
      * @return string
      */
-    public function getMemberValue()
+    public function getItemNo()
     {
-        return $this->getData( 'MemberValue' );
+        return $this->getData( 'ItemNo' );
     }
 
     /**
-     * @param string $NodeId
+     * @param int $MaxSelection
      * @return $this
      */
-    public function setNodeId($NodeId)
+    public function setMaxSelection($MaxSelection)
     {
-        $this->setData( 'NodeId', $NodeId );
-        $this->NodeId = $NodeId;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNodeId()
-    {
-        return $this->getData( 'NodeId' );
-    }
-
-    /**
-     * @param HierarchyLeafType $Type
-     * @return $this
-     */
-    public function setType($Type)
-    {
-        $this->setData( 'Type', $Type );
-        $this->Type = $Type;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return HierarchyLeafType
-     */
-    public function getType()
-    {
-        return $this->getData( 'Type' );
-    }
-
-    /**
-     * @param int $ValidationPeriod
-     * @return $this
-     */
-    public function setValidationPeriod($ValidationPeriod)
-    {
-        $this->setData( 'ValidationPeriod', $ValidationPeriod );
-        $this->ValidationPeriod = $ValidationPeriod;
+        $this->setData( 'MaxSelection', $MaxSelection );
+        $this->MaxSelection = $MaxSelection;
         $this->setDataChanges( TRUE );
         return $this;
     }
@@ -371,9 +301,129 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     /**
      * @return int
      */
-    public function getValidationPeriod()
+    public function getMaxSelection()
     {
-        return $this->getData( 'ValidationPeriod' );
+        return $this->getData( 'MaxSelection' );
+    }
+
+    /**
+     * @param int $MinSelection
+     * @return $this
+     */
+    public function setMinSelection($MinSelection)
+    {
+        $this->setData( 'MinSelection', $MinSelection );
+        $this->MinSelection = $MinSelection;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinSelection()
+    {
+        return $this->getData( 'MinSelection' );
+    }
+
+    /**
+     * @param string $ParentItem
+     * @return $this
+     */
+    public function setParentItem($ParentItem)
+    {
+        $this->setData( 'ParentItem', $ParentItem );
+        $this->ParentItem = $ParentItem;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParentItem()
+    {
+        return $this->getData( 'ParentItem' );
+    }
+
+    /**
+     * @param string $ParentNode
+     * @return $this
+     */
+    public function setParentNode($ParentNode)
+    {
+        $this->setData( 'ParentNode', $ParentNode );
+        $this->ParentNode = $ParentNode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParentNode()
+    {
+        return $this->getData( 'ParentNode' );
+    }
+
+    /**
+     * @param ModifierPriceType $PriceType
+     * @return $this
+     */
+    public function setPriceType($PriceType)
+    {
+        $this->setData( 'PriceType', $PriceType );
+        $this->PriceType = $PriceType;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ModifierPriceType
+     */
+    public function getPriceType()
+    {
+        return $this->getData( 'PriceType' );
+    }
+
+    /**
+     * @param string $SubCode
+     * @return $this
+     */
+    public function setSubCode($SubCode)
+    {
+        $this->setData( 'SubCode', $SubCode );
+        $this->SubCode = $SubCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubCode()
+    {
+        return $this->getData( 'SubCode' );
+    }
+
+    /**
+     * @param string $UnitOfMeasure
+     * @return $this
+     */
+    public function setUnitOfMeasure($UnitOfMeasure)
+    {
+        $this->setData( 'UnitOfMeasure', $UnitOfMeasure );
+        $this->UnitOfMeasure = $UnitOfMeasure;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitOfMeasure()
+    {
+        return $this->getData( 'UnitOfMeasure' );
     }
 
     /**

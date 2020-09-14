@@ -8,13 +8,16 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class OrderHospModifierLine
+use Ls\Omni\Client\Ecommerce\Entity\Enum\SubLineType;
+use Ls\Omni\Exception\InvalidEnumException;
+
+class OrderHospSubLine
 {
 
     /**
-     * @property string $BarcodeId
+     * @property ArrayOfOrderHospTextModifierLine $TextModifiers
      */
-    protected $BarcodeId = null;
+    protected $TextModifiers = null;
 
     /**
      * @property string $DealId
@@ -47,29 +50,9 @@ class OrderHospModifierLine
     protected $DiscountPercent = null;
 
     /**
-     * @property string $ExternalIdRO
-     */
-    protected $ExternalIdRO = null;
-
-    /**
-     * @property string $ExternalLineNumberRO
-     */
-    protected $ExternalLineNumberRO = null;
-
-    /**
      * @property string $ItemId
      */
     protected $ItemId = null;
-
-    /**
-     * @property string $KitchenStatusCodeRO
-     */
-    protected $KitchenStatusCodeRO = null;
-
-    /**
-     * @property string $KitchenStatusRO
-     */
-    protected $KitchenStatusRO = null;
 
     /**
      * @property int $LineNumber
@@ -107,6 +90,11 @@ class OrderHospModifierLine
     protected $NetPrice = null;
 
     /**
+     * @property boolean $ParentIsSubLine
+     */
+    protected $ParentIsSubLine = null;
+
+    /**
      * @property float $Price
      */
     protected $Price = null;
@@ -127,14 +115,14 @@ class OrderHospModifierLine
     protected $TAXAmount = null;
 
     /**
+     * @property SubLineType $Type
+     */
+    protected $Type = null;
+
+    /**
      * @property string $Uom
      */
     protected $Uom = null;
-
-    /**
-     * @property string $UomDescription
-     */
-    protected $UomDescription = null;
 
     /**
      * @property string $VariantDescription
@@ -147,21 +135,21 @@ class OrderHospModifierLine
     protected $VariantId = null;
 
     /**
-     * @param string $BarcodeId
+     * @param ArrayOfOrderHospTextModifierLine $TextModifiers
      * @return $this
      */
-    public function setBarcodeId($BarcodeId)
+    public function setTextModifiers($TextModifiers)
     {
-        $this->BarcodeId = $BarcodeId;
+        $this->TextModifiers = $TextModifiers;
         return $this;
     }
 
     /**
-     * @return string
+     * @return ArrayOfOrderHospTextModifierLine
      */
-    public function getBarcodeId()
+    public function getTextModifiers()
     {
-        return $this->BarcodeId;
+        return $this->TextModifiers;
     }
 
     /**
@@ -273,42 +261,6 @@ class OrderHospModifierLine
     }
 
     /**
-     * @param string $ExternalIdRO
-     * @return $this
-     */
-    public function setExternalIdRO($ExternalIdRO)
-    {
-        $this->ExternalIdRO = $ExternalIdRO;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExternalIdRO()
-    {
-        return $this->ExternalIdRO;
-    }
-
-    /**
-     * @param string $ExternalLineNumberRO
-     * @return $this
-     */
-    public function setExternalLineNumberRO($ExternalLineNumberRO)
-    {
-        $this->ExternalLineNumberRO = $ExternalLineNumberRO;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExternalLineNumberRO()
-    {
-        return $this->ExternalLineNumberRO;
-    }
-
-    /**
      * @param string $ItemId
      * @return $this
      */
@@ -324,42 +276,6 @@ class OrderHospModifierLine
     public function getItemId()
     {
         return $this->ItemId;
-    }
-
-    /**
-     * @param string $KitchenStatusCodeRO
-     * @return $this
-     */
-    public function setKitchenStatusCodeRO($KitchenStatusCodeRO)
-    {
-        $this->KitchenStatusCodeRO = $KitchenStatusCodeRO;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKitchenStatusCodeRO()
-    {
-        return $this->KitchenStatusCodeRO;
-    }
-
-    /**
-     * @param string $KitchenStatusRO
-     * @return $this
-     */
-    public function setKitchenStatusRO($KitchenStatusRO)
-    {
-        $this->KitchenStatusRO = $KitchenStatusRO;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKitchenStatusRO()
-    {
-        return $this->KitchenStatusRO;
     }
 
     /**
@@ -489,6 +405,24 @@ class OrderHospModifierLine
     }
 
     /**
+     * @param boolean $ParentIsSubLine
+     * @return $this
+     */
+    public function setParentIsSubLine($ParentIsSubLine)
+    {
+        $this->ParentIsSubLine = $ParentIsSubLine;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getParentIsSubLine()
+    {
+        return $this->ParentIsSubLine;
+    }
+
+    /**
      * @param float $Price
      * @return $this
      */
@@ -561,6 +495,34 @@ class OrderHospModifierLine
     }
 
     /**
+     * @param SubLineType|string $Type
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setType($Type)
+    {
+        if ( ! $Type instanceof SubLineType ) {
+            if ( SubLineType::isValid( $Type ) )
+                $Type = new SubLineType( $Type );
+            elseif ( SubLineType::isValidKey( $Type ) )
+                $Type = new SubLineType( constant( "SubLineType::$Type" ) );
+            elseif ( ! $Type instanceof SubLineType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return SubLineType
+     */
+    public function getType()
+    {
+        return $this->Type;
+    }
+
+    /**
      * @param string $Uom
      * @return $this
      */
@@ -576,24 +538,6 @@ class OrderHospModifierLine
     public function getUom()
     {
         return $this->Uom;
-    }
-
-    /**
-     * @param string $UomDescription
-     * @return $this
-     */
-    public function setUomDescription($UomDescription)
-    {
-        $this->UomDescription = $UomDescription;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUomDescription()
-    {
-        return $this->UomDescription;
     }
 
     /**

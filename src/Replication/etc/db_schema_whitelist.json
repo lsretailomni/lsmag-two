@@ -615,7 +615,12 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "DealPrice": true,
+            "IsActive": true,
+            "IsMemberClub": true,
+            "MemberValue": true,
+            "ValidationPeriod": true
         },
         "constraint": {
             "PRIMARY": true
@@ -645,7 +650,11 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "AddedAmount": true,
+            "DealModSizeGroupIndex": true,
+            "MaxSelection": true,
+            "ModifierCode": true
         },
         "constraint": {
             "PRIMARY": true
@@ -677,7 +686,9 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "AddedAmount": true,
+            "MaxSelection": true
         },
         "constraint": {
             "PRIMARY": true
@@ -988,6 +999,37 @@
             "Quantity": true,
             "StoreId": true,
             "VariantId": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_hierarchy_hosp_modifier": {
+        "column": {
+            "repl_hierarchy_hosp_modifier_id": true,
+            "AlwaysCharge": true,
+            "AmountPercent": true,
+            "Code": true,
+            "Description": true,
+            "HierarchyCode": true,
+            "IsDeleted": true,
+            "ItemNo": true,
+            "MaxSelection": true,
+            "MinSelection": true,
+            "ParentItem": true,
+            "ParentNode": true,
+            "PriceType": true,
+            "SubCode": true,
+            "UnitOfMeasure": true,
             "scope": true,
             "scope_id": true,
             "processed": true,

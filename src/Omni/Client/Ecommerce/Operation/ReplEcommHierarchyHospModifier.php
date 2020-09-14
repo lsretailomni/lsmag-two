@@ -15,13 +15,13 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\HospOrderCreate as HospOrderCreateRequest;
-use Ls\Omni\Client\Ecommerce\Entity\HospOrderCreateResponse as HospOrderCreateResponse;
+use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospModifier as ReplEcommHierarchyHospModifierRequest;
+use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospModifierResponse as ReplEcommHierarchyHospModifierResponse;
 
-class HospOrderCreate extends AbstractOperation
+class ReplEcommHierarchyHospModifier extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'HOSP_ORDER_CREATE';
+    const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_HOSP_MODIFIER';
 
     const SERVICE_TYPE = 'ecommerce';
 
@@ -31,12 +31,12 @@ class HospOrderCreate extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property HospOrderCreateRequest $request
+     * @property ReplEcommHierarchyHospModifierRequest $request
      */
     protected $request = null;
 
     /**
-     * @property HospOrderCreateResponse $response
+     * @property ReplEcommHierarchyHospModifierResponse $response
      */
     protected $response = null;
 
@@ -65,24 +65,24 @@ class HospOrderCreate extends AbstractOperation
     }
 
     /**
-     * @param HospOrderCreateRequest $request
-     * @return ResponseInterface|HospOrderCreateResponse
+     * @param ReplEcommHierarchyHospModifierRequest $request
+     * @return ResponseInterface|ReplEcommHierarchyHospModifierResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'HospOrderCreate' );
+        return $this->makeRequest( 'ReplEcommHierarchyHospModifier' );
     }
 
     /**
-     * @return HospOrderCreateRequest
+     * @return ReplEcommHierarchyHospModifierRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new HospOrderCreateRequest();
+            $this->request = new ReplEcommHierarchyHospModifierRequest();
         }
         return $this->request;
     }
@@ -119,7 +119,7 @@ class HospOrderCreate extends AbstractOperation
     }
 
     /**
-     * @param HospOrderCreateRequest $request
+     * @param ReplEcommHierarchyHospModifierRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -129,7 +129,7 @@ class HospOrderCreate extends AbstractOperation
     }
 
     /**
-     * @return HospOrderCreateRequest
+     * @return ReplEcommHierarchyHospModifierRequest
      */
     public function getRequest()
     {
@@ -137,7 +137,7 @@ class HospOrderCreate extends AbstractOperation
     }
 
     /**
-     * @param HospOrderCreateResponse $response
+     * @param ReplEcommHierarchyHospModifierResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -147,7 +147,7 @@ class HospOrderCreate extends AbstractOperation
     }
 
     /**
-     * @return HospOrderCreateResponse
+     * @return ReplEcommHierarchyHospModifierResponse
      */
     public function getResponse()
     {

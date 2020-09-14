@@ -12,6 +12,17 @@ interface ReplHierarchyLeafInterface
 {
 
     /**
+     * @param float $DealPrice
+     * @return $this
+     */
+    public function setDealPrice($DealPrice);
+
+    /**
+     * @return float
+     */
+    public function getDealPrice();
+
+    /**
      * @param string $Description
      * @return $this
      */
@@ -56,6 +67,17 @@ interface ReplHierarchyLeafInterface
     public function getImageId();
 
     /**
+     * @param boolean $IsActive
+     * @return $this
+     */
+    public function setIsActive($IsActive);
+
+    /**
+     * @return boolean
+     */
+    public function getIsActive();
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -65,6 +87,28 @@ interface ReplHierarchyLeafInterface
      * @return boolean
      */
     public function getIsDeleted();
+
+    /**
+     * @param boolean $IsMemberClub
+     * @return $this
+     */
+    public function setIsMemberClub($IsMemberClub);
+
+    /**
+     * @return boolean
+     */
+    public function getIsMemberClub();
+
+    /**
+     * @param string $MemberValue
+     * @return $this
+     */
+    public function setMemberValue($MemberValue);
+
+    /**
+     * @return string
+     */
+    public function getMemberValue();
 
     /**
      * @param string $NodeId
@@ -87,6 +131,17 @@ interface ReplHierarchyLeafInterface
      * @return HierarchyLeafType
      */
     public function getType();
+
+    /**
+     * @param int $ValidationPeriod
+     * @return $this
+     */
+    public function setValidationPeriod($ValidationPeriod);
+
+    /**
+     * @return int
+     */
+    public function getValidationPeriod();
 
     /**
      * @param string $scope

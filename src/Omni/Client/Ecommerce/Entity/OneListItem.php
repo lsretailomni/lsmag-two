@@ -17,6 +17,11 @@ class OneListItem extends Entity
     protected $OnelistItemDiscounts = null;
 
     /**
+     * @property ArrayOfOneListItemSubLine $OnelistSubLines
+     */
+    protected $OnelistSubLines = null;
+
+    /**
      * @property float $Amount
      */
     protected $Amount = null;
@@ -55,6 +60,11 @@ class OneListItem extends Entity
      * @property ImageView $Image
      */
     protected $Image = null;
+
+    /**
+     * @property boolean $IsADeal
+     */
+    protected $IsADeal = null;
 
     /**
      * @property string $ItemDescription
@@ -137,6 +147,24 @@ class OneListItem extends Entity
     public function getOnelistItemDiscounts()
     {
         return $this->OnelistItemDiscounts;
+    }
+
+    /**
+     * @param ArrayOfOneListItemSubLine $OnelistSubLines
+     * @return $this
+     */
+    public function setOnelistSubLines($OnelistSubLines)
+    {
+        $this->OnelistSubLines = $OnelistSubLines;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfOneListItemSubLine
+     */
+    public function getOnelistSubLines()
+    {
+        return $this->OnelistSubLines;
     }
 
     /**
@@ -281,6 +309,24 @@ class OneListItem extends Entity
     public function getImage()
     {
         return $this->Image;
+    }
+
+    /**
+     * @param boolean $IsADeal
+     * @return $this
+     */
+    public function setIsADeal($IsADeal)
+    {
+        $this->IsADeal = $IsADeal;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsADeal()
+    {
+        return $this->IsADeal;
     }
 
     /**
