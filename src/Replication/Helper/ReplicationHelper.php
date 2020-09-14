@@ -265,7 +265,8 @@ class ReplicationHelper extends AbstractHelper
      * @param boolean $excludeDeleted
      * @return SearchCriteria
      */
-    public function buildCriteriaForArray(array $filters, $pagesize = 100, $excludeDeleted = true, $parameter = null)
+    public function buildCriteriaForArray(array $filters, $pagesize = 100, $excludeDeleted = true,
+        $parameter = null, $parameter2 = null)
     {
         $filterOr       = null;
         $attr_processed = $this->filterBuilder->setField('processed')
@@ -278,24 +279,46 @@ class ReplicationHelper extends AbstractHelper
             ->setConditionType('eq')
             ->create();
 
-        if (!empty($parameter)) {
-            $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+        if (!empty($parameter) && !empty($parameter2)) {
+
+            $parameter1 = $this->filterBuilder->setField($parameter['field'])
                 ->setValue($parameter['value'])
                 ->setConditionType($parameter['condition_type'])
+                ->create();
+
+            $parameter2 = $this->filterBuilder->setField($parameter2['field'])
+                ->setValue($parameter2['value'])
+                ->setConditionType($parameter2['condition_type'])
                 ->create();
 
             // building OR condition between the above  criteria
             $filterOr = $this->filterGroupBuilder
                 ->addFilter($attr_processed)
                 ->addFilter($attr_is_updated)
-                ->addFilter($ExtraFieldwithOrCondition)
+                ->addFilter($parameter1)
+                ->addFilter($parameter2)
                 ->create();
-        } else {
-            // building OR condition between the above two criteria
-            $filterOr = $this->filterGroupBuilder
-                ->addFilter($attr_processed)
-                ->addFilter($attr_is_updated)
-                ->create();
+        }
+        else {
+            if (!empty($parameter)) {
+                $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+                    ->setValue($parameter['value'])
+                    ->setConditionType($parameter['condition_type'])
+                    ->create();
+
+                // building OR condition between the above  criteria
+                $filterOr = $this->filterGroupBuilder
+                    ->addFilter($attr_processed)
+                    ->addFilter($attr_is_updated)
+                    ->addFilter($ExtraFieldwithOrCondition)
+                    ->create();
+            } else {
+                // building OR condition between the above two criteria
+                $filterOr = $this->filterGroupBuilder
+                    ->addFilter($attr_processed)
+                    ->addFilter($attr_is_updated)
+                    ->create();
+            }
         }
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
         if (!empty($filters)) {
@@ -311,6 +334,7 @@ class ReplicationHelper extends AbstractHelper
         }
         return $criteria->create();
     }
+
 
     /**
      * @param array $filters
@@ -383,6 +407,7 @@ class ReplicationHelper extends AbstractHelper
         }
         return $criteria->create();
     }
+
 
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only

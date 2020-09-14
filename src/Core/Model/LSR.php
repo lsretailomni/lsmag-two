@@ -365,6 +365,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const LS_INDUSTRY_VALUE_HOSPITALITY = 'hospitality';
 
+    const LS_UOM_ATTRIBUTE = 'lsr_uom';
+
+    const LS_UOM_ATTRIBUTE_QTY = 'lsr_uom_qty';
+
     /**
      * @var ScopeConfigInterface
      */

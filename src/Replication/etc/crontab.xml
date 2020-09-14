@@ -26,6 +26,18 @@
              method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
+        <job name="repl_unit_of_measure" instance="Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask"
+             method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_item_unit_of_measure" instance="Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask"
+             method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_item_variant_registration" instance="Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask"
+             method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
         <job name="repl_hierarchy" instance="Ls\Replication\Cron\ReplEcommHierarchyTask" method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>

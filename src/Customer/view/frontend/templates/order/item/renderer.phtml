@@ -10,6 +10,10 @@ if (!empty($_item->getVariantId())) {
     $sku .= '-' . $_item->getVariantId();
 }
 
+if (!empty($_item->getUomId())) {
+    $sku .= '-' . $_item->getUomId();
+}
+
 use \Ls\Customer\Block\Order\Item\Renderer; ?>
 <tr id="order-item-row-<?= /* @escapeNotVerified */
 $_item->getItemId() ?>">

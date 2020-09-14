@@ -76,5 +76,11 @@
         <add id="Ls_Replication::store_grid" title="Store" translate="title" module="Ls_Replication" sortOrder="15"
              resource="Ls_Replication::store_grid" parent="Ls_Replication::replication_grid_group"
              action="ls_repl/grids/store"/>
+        <add id="Ls_Replication::uom_grid" title="Unit Of Measure" translate="title" module="Ls_Replication" sortOrder="15"
+             resource="Ls_Replication::uom_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/uom"/>
+        <add id="Ls_Replication::item_uom_grid" title="Item Unit Of Measure" translate="title" module="Ls_Replication" sortOrder="15"
+             resource="Ls_Replication::item_uom_grid" parent="Ls_Replication::replication_grid_group"
+             action="ls_repl/grids/itemuom"/>
     </menu>
 </config>
