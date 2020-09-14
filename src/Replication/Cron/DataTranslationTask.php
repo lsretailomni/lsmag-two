@@ -10,17 +10,18 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ResourceModel\ReplDataTranslation\CollectionFactory as ReplDataTranslationCollectionFactory;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
+use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
 use Magento\Framework\DataObject;
-use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
  * Class DataTranslationTask
- * @package Ls\Replication\Cron
+ * Data Translation Job for language localization
  */
 class DataTranslationTask
 {
@@ -74,6 +75,16 @@ class DataTranslationTask
     public $replDataTranslationCollectionFactory;
 
     /**
+     * @var Product
+     */
+    public $productResourceModel;
+
+    /**
+     * @var ProductRepositoryInterface
+     */
+    public $productRepository;
+
+    /**
      * DataTranslationTask constructor.
      * @param ReplicationHelper $replicationHelper
      * @param ReplDataTranslationRepositoryInterface $dataTranslationRepository
@@ -83,6 +94,8 @@ class DataTranslationTask
      * @param Logger $logger
      * @param ReplDataTranslationCollectionFactory $replDataTranslationCollectionFactory
      * @param Attribute $eavAttribute
+     * @param Product $productResourceModel
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
@@ -92,7 +105,9 @@ class DataTranslationTask
         LSR $LSR,
         Logger $logger,
         ReplDataTranslationCollectionFactory $replDataTranslationCollectionFactory,
-        Attribute $eavAttribute
+        Attribute $eavAttribute,
+        Product $productResourceModel,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->replicationHelper                    = $replicationHelper;
         $this->dataTranslationRepository            = $dataTranslationRepository;
@@ -102,12 +117,12 @@ class DataTranslationTask
         $this->logger                               = $logger;
         $this->replDataTranslationCollectionFactory = $replDataTranslationCollectionFactory;
         $this->eavAttribute                         = $eavAttribute;
+        $this->productResourceModel                 = $productResourceModel;
+        $this->productRepository                    = $productRepository;
     }
 
     /**
      * @param null $storeData
-     * @throws CouldNotSaveException
-     * @throws LocalizedException
      */
     public function execute($storeData = null)
     {
@@ -124,6 +139,7 @@ class DataTranslationTask
                 $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
                 if ($langCode != "Default") {
                     $this->updateHierarchyNode($store->getId(), $langCode);
+                    $this->updateItem($store->getId(), $langCode);
                 } else {
                     $this->cronStatus = true;
                 }
@@ -133,7 +149,8 @@ class DataTranslationTask
                     $store->getId()
                 );
                 $this->replicationHelper->updateCronStatus(
-                    $this->cronStatus, LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
+                    $this->cronStatus,
+                    LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
                     $store->getId()
                 );
                 $this->logger->debug('DataTranslationTask Completed for Store ' . $store->getName());
@@ -142,12 +159,63 @@ class DataTranslationTask
         }
     }
 
+    /**
+     * @param $storeId
+     * @param $langCode
+     */
+    public function updateItem($storeId, $langCode)
+    {
+        $filters    = [
+            ['field' => 'main_table.scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'main_table.LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
+            [
+                'field'          => 'main_table.TranslationId',
+                'value'          => LSR::SC_TRANSACTION_ID_ITEM_DESCRIPTION,
+                'condition_type' => 'eq'
+            ],
+            ['field' => 'main_table.text', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'main_table.key', 'value' => true, 'condition_type' => 'notnull']
+        ];
+        $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
+        $collection = $this->replDataTranslationCollectionFactory->create();
+        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'key',
+            'catalog_product_entity',
+            'sku',
+            true
+        );
+        /** @var ReplDataTranslation $dataTranslation */
+        foreach ($collection as $dataTranslation) {
+            try {
+                $sku         = $dataTranslation->getKey();
+                $productData = $this->productRepository->get($sku, true, $storeId);
+                if (isset($productData)) {
+                    $productData->setMetaTitle($dataTranslation->getText());
+                    $productData->setName($dataTranslation->getText());
+                    // @codingStandardsIgnoreLine
+                    $this->productResourceModel->saveAttribute($productData, 'name');
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
+                $dataTranslation->setData('is_failed', 1);
+            }
+            $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
+            $dataTranslation->setData('processed', 1);
+            $dataTranslation->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->dataTranslationRepository->save($dataTranslation);
+        }
+        if ($collection->getSize() == 0) {
+            $this->cronStatus = true;
+        }
+    }
 
     /**
      * @param null $storeData
      * @return int[]
-     * @throws CouldNotSaveException
-     * @throws LocalizedException
      */
     public function executeManually($storeData = null)
     {
@@ -158,8 +226,6 @@ class DataTranslationTask
     /**
      * @param $storeId
      * @param $langCode
-     * @throws LocalizedException
-     * @throws CouldNotSaveException
      */
     public function updateHierarchyNode($storeId, $langCode)
     {
@@ -167,13 +233,17 @@ class DataTranslationTask
         $filters      = [
             ['field' => 'main_table.scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
             ['field' => 'main_table.LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
-            ['field' => 'main_table.TranslationId', 'value' => LSR::SC_TRANSACTION_ID_HIERARCHY_NODE, 'condition_type' => 'eq'],
+            [
+                'field'          => 'main_table.TranslationId',
+                'value'          => LSR::SC_TRANSACTION_ID_HIERARCHY_NODE,
+                'condition_type' => 'eq'
+            ],
             ['field' => 'main_table.key', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq'],
             ['field' => 'second.store_id', 'value' => $storeId, 'condition_type' => 'eq'],
         ];
         $criteria     = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
-        $collection = $this->replDataTranslationCollectionFactory->create();
+        $collection   = $this->replDataTranslationCollectionFactory->create();
         $this->replicationHelper->setCollectionPropertiesPlusJoin(
             $collection,
             $criteria,
