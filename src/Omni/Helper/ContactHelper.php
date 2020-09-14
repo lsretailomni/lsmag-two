@@ -1315,7 +1315,7 @@ class ContactHelper extends AbstractHelper
      */
     public function isValid($email)
     {
-        return $this->validateEmailAddress->isValid($email);
+        return $this->validateEmailAddress->isValid($email) && strlen($email) < 80;
     }
 
     /**
