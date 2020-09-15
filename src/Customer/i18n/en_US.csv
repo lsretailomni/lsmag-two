@@ -120,7 +120,7 @@ Subtotal,Subtotal
 "Tracking Number(s):","Tracking Number(s):"
 Name,Name
 "Phone Number","Phone Number"
-"Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.","Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @."
+"Enter a valid username prefix. Valid characters are A-Z a-z 0-9 . _ - @.","Enter a valid username prefix. Valid characters are A-Z a-z 0-9 . _ - @."
 "Customer Dashboard and Loyalty Elements","Customer Dashboard and Loyalty Elements"
 "Show Customer Club Information","Show Customer Club Information"
 "Enable Loyalty Elements","Enable Loyalty Elements"
