@@ -1302,10 +1302,11 @@ class ContactHelper extends AbstractHelper
 
     /**
      * @param $password
+     * @return string
      */
     public function encryptPassword($password)
     {
-        $this->encryptorInterface->encrypt($password);
+        return $this->encryptorInterface->encrypt($password);
     }
 
     /**
