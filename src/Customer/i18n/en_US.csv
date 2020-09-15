@@ -36,6 +36,8 @@ Save,Save
 "Invalid Omni login or Omni password","Invalid Omni login or Omni password"
 "Omni login successful.","Omni login successful."
 "The service is currently unavailable. Please try again later.","The service is currently unavailable. Please try again later."
+"There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.","There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address."
+"Your email address is invalid.","Your email address is invalid."
 "Sorry! No account found with the provided email address.","Sorry! No account found with the provided email address."
 "Invalid LS Central login or password.","Invalid LS Central login or password."
 "Membership Information","Membership Information"
@@ -72,21 +74,6 @@ Email,Email
 Password,Password
 "Sign In","Sign In"
 "Forgot Your Password?","Forgot Your Password?"
-"Personal Information","Personal Information"
-"Sign Up for Newsletter","Sign Up for Newsletter"
-"Address Information","Address Information"
-Company,Company
-"Phone Number","Phone Number"
-"Street Address","Street Address"
-State/Province,State/Province
-"Zip/Postal Code","Zip/Postal Code"
-Country,Country
-"Sign-in Information","Sign-in Information"
-"Password Strength","Password Strength"
-"No Password","No Password"
-"Confirm Password","Confirm Password"
-"Create an Account","Create an Account"
-Back,Back
 "Code: ","Code: "
 "Offer Type: ","Offer Type: "
 "Expiry: ","Expiry: "
@@ -132,6 +119,7 @@ Subtotal,Subtotal
 "Track this shipment","Track this shipment"
 "Tracking Number(s):","Tracking Number(s):"
 Name,Name
+"Phone Number","Phone Number"
 "Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @.","Enter a valid username. Valid characters are A-Z a-z 0-9 . _ - @."
 "Customer Dashboard and Loyalty Elements","Customer Dashboard and Loyalty Elements"
 "Show Customer Club Information","Show Customer Club Information"
