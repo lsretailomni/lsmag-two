@@ -75,7 +75,7 @@ class Grid extends Action
     {
         try {
             $resultPage = $this->resultPageFactory->create();
-            $resultPage->getConfig()->getTitle()->prepend(__('Cron Listing '));
+            $resultPage->getConfig()->getTitle()->prepend(__('Cron Listing'));
             $jobUrl    = $this->_request->getParam('joburl');
             $jobName   = $this->_request->getParam('jobname');
             $storeId   = $this->_request->getParam('store');
@@ -115,6 +115,10 @@ class Grid extends Action
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
+            $this->messageManager->addErrorMessage($e->getMessage());
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            return $resultRedirect;
         }
     }
 }
