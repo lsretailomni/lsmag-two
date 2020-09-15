@@ -9,9 +9,9 @@
     <event name="controller_action_predispatch_customer_ajax_login">
         <observer name="ls_ajax_login_observer" instance="Ls\Customer\Observer\AjaxLoginObserver"/>
     </event>
-    <!-- For Omni Registration - Check if Username is available before registering it in Magento and Omni -->
+    <!-- For Omni Registration - Check if email is available before registering it in Magento and Omni -->
     <event name="controller_action_predispatch_customer_account_createpost">
-        <observer name="ls_register_predispatch_observer" instance="Ls\Customer\Observer\UsernameObserver"/>
+        <observer name="ls_register_predispatch_observer" instance="Ls\Customer\Observer\CustomerRegisterPreDispatchObserver"/>
     </event>
     <!-- For Omni Registration to Magento Post Dispatch Event to register user successfully into the Omni, once we are passed with everything -->
     <event name="controller_action_postdispatch_customer_account_createpost">
