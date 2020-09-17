@@ -8,11 +8,14 @@ use \Ls\Replication\Model\ReplDataTranslation;
 use \Ls\Replication\Api\ReplDataTranslationRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplDataTranslationSearchResults;
 use \Ls\Replication\Model\ResourceModel\ReplDataTranslation\CollectionFactory as ReplDataTranslationCollectionFactory;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
+use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
 use Magento\Framework\DataObject;
@@ -66,7 +69,9 @@ class DataTranslationTask
      */
     public $cronStatus = false;
 
-    /** @var Attribute */
+    /**
+     * @var Attribute
+     */
     public $eavAttribute;
 
     /**
@@ -85,6 +90,16 @@ class DataTranslationTask
     public $productRepository;
 
     /**
+     * @var ProductAttributeRepositoryInterface
+     */
+    public $productAttributeRepository;
+
+    /**
+     * @var AttributeFactory
+     */
+    public $eavAttributeFactory;
+
+    /**
      * DataTranslationTask constructor.
      * @param ReplicationHelper $replicationHelper
      * @param ReplDataTranslationRepositoryInterface $dataTranslationRepository
@@ -96,6 +111,8 @@ class DataTranslationTask
      * @param Attribute $eavAttribute
      * @param Product $productResourceModel
      * @param ProductRepositoryInterface $productRepository
+     * @param ProductAttributeRepositoryInterface $productAttributeRepository
+     * @param AttributeFactory $eavAttributeFactory
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
@@ -107,7 +124,9 @@ class DataTranslationTask
         ReplDataTranslationCollectionFactory $replDataTranslationCollectionFactory,
         Attribute $eavAttribute,
         Product $productResourceModel,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        ProductAttributeRepositoryInterface $productAttributeRepository,
+        AttributeFactory $eavAttributeFactory
     ) {
         $this->replicationHelper                    = $replicationHelper;
         $this->dataTranslationRepository            = $dataTranslationRepository;
@@ -119,6 +138,8 @@ class DataTranslationTask
         $this->eavAttribute                         = $eavAttribute;
         $this->productResourceModel                 = $productResourceModel;
         $this->productRepository                    = $productRepository;
+        $this->productAttributeRepository           = $productAttributeRepository;
+        $this->eavAttributeFactory                  = $eavAttributeFactory;
     }
 
     /**
@@ -140,6 +161,7 @@ class DataTranslationTask
                 if ($langCode != "Default") {
                     $this->updateHierarchyNode($store->getId(), $langCode);
                     $this->updateItem($store->getId(), $langCode);
+                    $this->updateAttributes($store->getId(), $langCode);
                 } else {
                     $this->cronStatus = true;
                 }
@@ -163,6 +185,50 @@ class DataTranslationTask
      * @param $storeId
      * @param $langCode
      */
+    public function updateAttributes($storeId, $langCode)
+    {
+        $filters  = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
+            [
+                'field'          => 'main_table.TranslationId',
+                'value'          => LSR::SC_TRANSLATION_ID_ATTRIBUTE,
+                'condition_type' => 'eq'
+            ],
+            ['field' => 'text', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'key', 'value' => true, 'condition_type' => 'notnull']
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
+        /** @var ReplDataTranslationSearchResults $dataTranslationItems */
+        $dataTranslationItems = $this->dataTranslationRepository->getList($criteria)->getItems();
+        /** @var ReplDataTranslation $dataTranslation */
+        foreach ($dataTranslationItems as $dataTranslation) {
+            try {
+                $formattedCode   = $this->replicationHelper->formatAttributeCode($dataTranslation->getKey());
+                $attribute       = $this->eavAttributeFactory->create();
+                $attributeObject = $attribute->loadByCode(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
+                if (!empty($attributeObject->getId())) {
+                    $labels[$storeId] = $dataTranslation->getText();
+                    $attributeObject->setData('store_labels', $labels);
+                    $this->productAttributeRepository->save($attributeObject);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
+                $dataTranslation->setData('is_failed', 1);
+            }
+            $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
+            $dataTranslation->setData('processed', 1);
+            $dataTranslation->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->dataTranslationRepository->save($dataTranslation);
+        }
+    }
+
+    /**
+     * @param $storeId
+     * @param $langCode
+     */
     public function updateItem($storeId, $langCode)
     {
         $filters    = [
@@ -170,7 +236,7 @@ class DataTranslationTask
             ['field' => 'main_table.LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
             [
                 'field'          => 'main_table.TranslationId',
-                'value'          => LSR::SC_TRANSACTION_ID_ITEM_DESCRIPTION,
+                'value'          => LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION,
                 'condition_type' => 'eq'
             ],
             ['field' => 'main_table.text', 'value' => true, 'condition_type' => 'notnull'],
@@ -235,7 +301,7 @@ class DataTranslationTask
             ['field' => 'main_table.LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
             [
                 'field'          => 'main_table.TranslationId',
-                'value'          => LSR::SC_TRANSACTION_ID_HIERARCHY_NODE,
+                'value'          => LSR::SC_TRANSLATION_ID_HIERARCHY_NODE,
                 'condition_type' => 'eq'
             ],
             ['field' => 'main_table.key', 'value' => true, 'condition_type' => 'notnull'],
