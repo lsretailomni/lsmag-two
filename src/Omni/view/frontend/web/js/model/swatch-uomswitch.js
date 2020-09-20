@@ -20,10 +20,8 @@ define([
             if (allSelected) {
                 var products = this._CalcProducts();
                 uomQty = this.options.jsonConfig.uomQty[products.slice().shift()];
-                if(uomQty>1) {
                     text = $t('contains %1 quantity');
                     text = text.replace('%1', uomQty);
-                }
             }
             $('div.lsr_uom .swatch-attribute-selected-option').html(text);
             return original();

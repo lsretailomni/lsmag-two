@@ -268,15 +268,9 @@ class BasketHelper extends AbstractHelper
             $lsr_id = array_shift($parts);
             // second element, if it exists, is variant id
             $variant_id = count($parts) ? array_shift($parts) : null;
-            /** TODO this will be used for uom prices **/
-            /*
-            $item = $this->itemHelper->get($lsr_id);
-
-            if (!($variant_id == null)) {
-                $variant = $this->itemHelper->getItemVariant($item, $variant_id);
+            if(!is_numeric($variant_id)){
+                $variant_id = null;
             }
-            $uom = $this->itemHelper->uom($item);
-            */
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
                 ->setQuantity($quoteItem->getData('qty'))

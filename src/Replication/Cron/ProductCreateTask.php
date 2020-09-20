@@ -403,6 +403,7 @@ class ProductCreateTask
             /** @var StoreInterface[] $stores */
             $stores = $this->lsr->getAllStores();
         }
+
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
@@ -1049,7 +1050,7 @@ class ProductCreateTask
                 /** @var ReplItemRepository $itemData */
                 $itemData        = $this->_getItem($item);
                 $productVariants = $this->getNewOrUpdatedProductVariants(-1, $item);
-                $uomCodes        = $this->getUomCodes($item->getNavId());
+                $uomCodes        = $this->getUomCodes($item);
                 if (!empty($productVariants) || count($uomCodes) > 1)
                     $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $productVariants, $uomCodes);
             } catch (Exception $e) {
@@ -1266,11 +1267,7 @@ class ProductCreateTask
             foreach ($uomCodes as $uomCode) {
                 /** @var ReplItemVariantRegistration $value */
                 foreach ($variants as $value) {
-                    if ($uomCode->getCode() != $item->getBaseUnitOfMeasure()) {
-                        $sku = $value->getItemId() . '-' . $value->getVariantId() . '-' . $uomCode->getCode();
-                    } else {
-                        $sku = $value->getItemId() . '-' . $value->getVariantId();
-                    }
+                    $sku = $value->getItemId() . '-' . $value->getVariantId() . '-' . $uomCode->getCode();
                     try {
                         $productData = $this->saveProductForWebsite($sku);
                         try {
@@ -1329,7 +1326,7 @@ class ProductCreateTask
                     }
                 } catch (NoSuchEntityException $e) {
 
-                    $associatedProductIds[] = $this->createConfigProduct($name, $item, $value, $uomCode = null, $sku, $configProduct, $attributesCode, $itemBarcodes);
+                    $associatedProductIds[] = $this->createConfigProduct($name, $item, $value, $uomCode, $sku, $configProduct, $attributesCode, $itemBarcodes);
                 }
                 $uomCode->setData('processed_at', $this->replicationHelper->getDateTime());
                 $uomCode->setData('processed', 1);
@@ -1604,7 +1601,7 @@ class ProductCreateTask
             } else {
                 $optionValue = ${'d' . $keyCode};
             }
-            if (isset($keyCode) && $keyCode != '') {
+            if ((isset($keyCode) && $keyCode != '') || $keyCode == 0) {
                 $optionId = $this->_getOptionIDByCode($valueCode, $optionValue);
                 if (isset($optionId)) {
                     $productV->setData($valueCode, $optionId);

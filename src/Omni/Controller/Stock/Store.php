@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Controller\Stock;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\StockHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
@@ -67,29 +68,41 @@ class Store extends Action
     }
 
     /**
-     * execute
-     * @return Json
+     * @return \Magento\Framework\App\ResponseInterface|Json|\Magento\Framework\Controller\ResultInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute()
     {
         $result = $this->resultJsonFactory->create();
         if ($this->getRequest()->isAjax()) {
             $selectedStore      = $this->request->getParam('storeid');
-            $items              = $this->session->getQuote()->getAllVisibleItems();
+            $items              = $this->session->getQuote()->getAllItems();
             $stockCollection    = [];
             $notAvailableNotice = __('Please check other stores or remove the not available item(s) from your ');
             foreach ($items as &$item) {
+                $itemQty = $item->getQty();
+                $uomQty  = $item->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+                if (!empty($uomQty)) {
+                    $itemQty = $itemQty * $uomQty;
+                }
                 $sku              = $item->getSku();
                 $parentProductSku = $childProductSku = "";
                 if (strpos($sku, '-') !== false) {
                     $parentProductSku = explode('-', $sku)[0];
                     $childProductSku  = explode('-', $sku)[1];
+                    if (!is_numeric($childProductSku)) {
+                        $childProductSku = '';
+                    }
                 } else {
                     $parentProductSku = $sku;
                 }
-                $stockCollection[$sku]['name'] = $item->getName();
-                $stockCollection[$sku]['qty']  = $item->getQty();
-                $item                          = ['parent' => $parentProductSku, 'child' => $childProductSku];
+                if (empty($item->getParentItemId())) {
+                    $stockCollection[$sku]['name'] = $item->getName();
+                }
+                $stockCollection[$sku]['qty'] = $itemQty;
+
+                $item = ['parent' => $parentProductSku, 'child' => $childProductSku];
             }
             $response = $this->stockHelper->getAllItemsStockInSingleStore($selectedStore, $items);
             if ($response) {

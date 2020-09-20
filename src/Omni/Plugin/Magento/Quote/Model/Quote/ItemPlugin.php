@@ -30,8 +30,8 @@ class ItemPlugin
         LSR $LSR,
         StockHelper $stockHelper
     ) {
-        $this->lsr               = $LSR;
-        $this->stockHelper       = $stockHelper;
+        $this->lsr         = $LSR;
+        $this->stockHelper = $stockHelper;
     }
 
     /**
@@ -48,12 +48,18 @@ class ItemPlugin
                     $storeId          = $this->lsr->getDefaultWebStore();
                     $simpleProductSku = $result->getSku();
                     $qty              = $result->getQty();
-
+                    $uomQty           = $result->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+                    if (!empty($uomQty)) {
+                        $qty = $qty * $uomQty;
+                    }
                     $parentProductSku = isset(explode('-', $simpleProductSku)[0]) ?
                         explode('-', $simpleProductSku)[0] : "";
                     $childProductSku  = isset(explode('-', $simpleProductSku)[1]) ?
                         explode('-', $simpleProductSku)[1] : "";
-                    $stock            = $this->stockHelper->getItemStockInStore(
+                    if (!is_numeric($childProductSku)) {
+                        $childProductSku = '';
+                    }
+                    $stock = $this->stockHelper->getItemStockInStore(
                         $storeId,
                         $parentProductSku,
                         $childProductSku

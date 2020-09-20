@@ -8,6 +8,7 @@ use \Ls\Replication\Model\ReplInvStatus;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Store\Api\Data\StoreInterface;
 
@@ -70,13 +71,18 @@ class SyncInventory extends ProductCreateTask
                                 } else {
                                     $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
                                 }
-                                $stockItem = $this->stockRegistry->getStockItemBySku($sku);
-                                if (isset($stockItem)) {
-                                    // @codingStandardsIgnoreStart
-                                    $stockItem->setQty($replInvStatus->getQuantity());
-                                    $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
-                                    $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
-                                    // @codingStandardsIgnoreEnd
+                                $uomCodes = $this->getUomCodes($replInvStatus->getItemId());
+                                if (!empty($uomCodes)) {
+                                    if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
+                                        foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
+                                            $skuUom = $sku . "-" . $uomCode;
+                                            $this->updateInventory($skuUom, $replInvStatus);
+                                        }
+                                    } else {
+                                        $this->updateInventory($sku, $replInvStatus);
+                                    }
+                                } else {
+                                    $this->updateInventory($sku, $replInvStatus);
                                 }
                             } catch (Exception $e) {
                                 $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
@@ -121,6 +127,28 @@ class SyncInventory extends ProductCreateTask
         $this->execute($storeData);
         $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
+    }
+
+    /**
+     * @param $sku
+     * @param $replInvStatus
+     * @throws NoSuchEntityException
+     */
+    private function updateInventory($sku, $replInvStatus)
+    {
+        try {
+            $stockItem = $this->stockRegistry->getStockItemBySku($sku);
+            if (isset($stockItem)) {
+                // @codingStandardsIgnoreStart
+                $stockItem->setQty($replInvStatus->getQuantity());
+                $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
+                $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
+                // @codingStandardsIgnoreEnd
+            }
+        } catch (Exception $e) {
+            $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+            $this->logger->debug($e->getMessage());
+        }
     }
 
     /**

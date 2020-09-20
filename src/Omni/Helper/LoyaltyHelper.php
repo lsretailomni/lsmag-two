@@ -453,7 +453,12 @@ class LoyaltyHelper extends AbstractHelper
                     $parentItem = $item->getParentItem();
                     $parentSku  = $parentItem->getProduct()->getData('sku');
                     if (!empty($parentSku)) {
-                        $itemsSku[] = $parentSku;
+                        if (!empty($parentItem)) {
+                            $itemsSku[] = $parentSku;
+                            if(!empty($item->getProduct()->getData('uom'))) {
+                                $itemsSku[] = $parentSku.'-'.$item->getProduct()->getData('uom');
+                            }
+                        }
                     }
                 } else {
                     $itemsSku[] = $item->getSku();
@@ -469,6 +474,9 @@ class LoyaltyHelper extends AbstractHelper
                                 $itemSku = $publishedOfferLine->getId() . '-' . $publishedOfferLine->getVariant();
                             } else {
                                 $itemSku = $publishedOfferLine->getId();
+                            }
+                            if (!empty($publishedOfferLine->getUnitOfMeasure())) {
+                                $itemSku = $itemSku . '-' . $publishedOfferLine->getUnitOfMeasure();
                             }
                             if (in_array($itemSku, $itemsSku)) {
                                 $coupons[] = $each;
