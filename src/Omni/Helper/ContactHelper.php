@@ -158,6 +158,7 @@ class ContactHelper extends AbstractHelper
      * @var LSR
      */
     public $lsr;
+
     /**
      * ContactHelper constructor.
      * @param Context $context
@@ -1061,7 +1062,8 @@ class ContactHelper extends AbstractHelper
 
         if (!empty($result) &&
             !empty($result->getAccount()) &&
-            !empty($result->getAccount()->getScheme())) {
+            !empty($result->getAccount()->getScheme()) &&
+            !empty($result->getAccount()->getScheme()->getId())) {
             $customerGroupId = $this->getCustomerGroupIdByName(
                 $result->getAccount()->getScheme()->getId()
             );
@@ -1326,7 +1328,7 @@ class ContactHelper extends AbstractHelper
      */
     public function generateRandomUsername($length = 5)
     {
-        $randomString     = $this->lsr->getWebsiteConfig(
+        $randomString = $this->lsr->getWebsiteConfig(
             LSR::SC_LOYALTY_CUSTOMER_USERNAME_PREFIX_PATH,
             $this->storeManager->getWebsite()->getWebsiteId()
         );
