@@ -242,7 +242,7 @@ class DataTranslationTask
                     $attributeObject     = $attribute->loadByCode(
                         \Magento\Catalog\Model\Product::ENTITY,
                         $formattedCode
-                    );
+                    )->setData('store_id', 0);
                     $originalOptionValue = $this->getOriginalOptionLabel($keyArray, $storeId);
                     if (!empty($attributeObject->getId()) && $originalOptionValue) {
                         $optionId = $attributeObject->getSource()->getOptionId($originalOptionValue);
