@@ -41,12 +41,16 @@ class Totals extends Template
      */
     public $loyaltyPointAmount = 0;
 
+    /** @var  LSR $lsr */
+    public $lsr;
+
     /**
      * Totals constructor.
      * @param Context $context
      * @param Registry $registry
      * @param PriceCurrencyInterface $priceCurrency
      * @param LoyaltyHelper $loyaltyHelper
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
@@ -54,11 +58,13 @@ class Totals extends Template
         Registry $registry,
         PriceCurrencyInterface $priceCurrency,
         LoyaltyHelper $loyaltyHelper,
+        LSR $lsr,
         array $data = []
     ) {
         $this->priceCurrency = $priceCurrency;
         $this->loyaltyHelper = $loyaltyHelper;
         $this->coreRegistry  = $registry;
+        $this->lsr           = $lsr;
         parent::__construct($context, $data);
     }
 
@@ -139,7 +145,7 @@ class Totals extends Template
         $orderLines = $this->getOrder()->getLines();
         $fee        = 0;
         foreach ($orderLines as $key => $line) {
-            if ($line->getItemId() == LSR::LSR_SHIPMENT_ITEM_ID) {
+            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                 $fee = $line->getAmount();
             }
         }
@@ -166,9 +172,9 @@ class Totals extends Template
     {
         // @codingStandardsIgnoreStart
         $paymentLines = $this->getOrder()->getPayments();
-        $methods      = array();
-        $giftCardInfo = array();
-        $loyaltyInfo  = array();
+        $methods      = [];
+        $giftCardInfo = [];
+        $loyaltyInfo  = [];
         // @codingStandardsIgnoreEnd
         foreach ($paymentLines as $line) {
             if ($line->getTenderType() == '0') {
@@ -196,7 +202,6 @@ class Totals extends Template
      */
     public function convertLoyaltyPointsToAmount($loyaltyPoints)
     {
-
         $points = number_format((float)$loyaltyPoints, 2, '.', '');
         return $points * $this->loyaltyHelper->getPointRate();
     }
