@@ -210,7 +210,8 @@
                 </field>
                 <field id="shipping_item_id" translate="label" type="text" sortOrder="2" showInDefault="1"
                        showInWebsite="1">
-                    <label>Shipment Charge Item Id</label>
+                    <label>Shipping Charge Item Id</label>
+                    <comment>Please make sure this item Id is the same as set in LS Central. This value is used to calculate the flat shipment amount and is sent as a separate orderline with the order.</comment>
                 </field>
             </group>
         </section>

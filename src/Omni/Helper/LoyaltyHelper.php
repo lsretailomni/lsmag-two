@@ -443,12 +443,7 @@ class LoyaltyHelper extends AbstractHelper
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $memberInfo         = $this->getMemberInfo();
-            if ($memberInfo) {
-                $publishedOffersObj = $memberInfo->getPublishedOffers();
-            } else {
-                $publishedOffersObj = null;
-            }
-
+            $publishedOffersObj = $memberInfo->getPublishedOffers();
             $itemsInCart        = $this->checkoutSession->getQuote()->getAllItems();
             $itemsSku           = [];
             $coupons            = [];
