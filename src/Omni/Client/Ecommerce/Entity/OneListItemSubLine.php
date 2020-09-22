@@ -15,19 +15,14 @@ class OneListItemSubLine extends Entity
 {
 
     /**
-     * @property int $DealId
-     */
-    protected $DealId = null;
-
-    /**
      * @property int $DealLineId
      */
     protected $DealLineId = null;
 
     /**
-     * @property string $DealModifierLineCode
+     * @property int $DealModLineId
      */
-    protected $DealModifierLineCode = null;
+    protected $DealModLineId = null;
 
     /**
      * @property string $Description
@@ -40,6 +35,11 @@ class OneListItemSubLine extends Entity
     protected $ItemId = null;
 
     /**
+     * @property int $LineNumber
+     */
+    protected $LineNumber = null;
+
+    /**
      * @property string $ModifierGroupCode
      */
     protected $ModifierGroupCode = null;
@@ -50,9 +50,9 @@ class OneListItemSubLine extends Entity
     protected $ModifierSubCode = null;
 
     /**
-     * @property boolean $ParentIsSubLine
+     * @property int $ParentSubLineId
      */
-    protected $ParentIsSubLine = null;
+    protected $ParentSubLineId = null;
 
     /**
      * @property float $Quantity
@@ -80,24 +80,6 @@ class OneListItemSubLine extends Entity
     protected $VariantId = null;
 
     /**
-     * @param int $DealId
-     * @return $this
-     */
-    public function setDealId($DealId)
-    {
-        $this->DealId = $DealId;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDealId()
-    {
-        return $this->DealId;
-    }
-
-    /**
      * @param int $DealLineId
      * @return $this
      */
@@ -116,21 +98,21 @@ class OneListItemSubLine extends Entity
     }
 
     /**
-     * @param string $DealModifierLineCode
+     * @param int $DealModLineId
      * @return $this
      */
-    public function setDealModifierLineCode($DealModifierLineCode)
+    public function setDealModLineId($DealModLineId)
     {
-        $this->DealModifierLineCode = $DealModifierLineCode;
+        $this->DealModLineId = $DealModLineId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getDealModifierLineCode()
+    public function getDealModLineId()
     {
-        return $this->DealModifierLineCode;
+        return $this->DealModLineId;
     }
 
     /**
@@ -170,6 +152,24 @@ class OneListItemSubLine extends Entity
     }
 
     /**
+     * @param int $LineNumber
+     * @return $this
+     */
+    public function setLineNumber($LineNumber)
+    {
+        $this->LineNumber = $LineNumber;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineNumber()
+    {
+        return $this->LineNumber;
+    }
+
+    /**
      * @param string $ModifierGroupCode
      * @return $this
      */
@@ -206,21 +206,21 @@ class OneListItemSubLine extends Entity
     }
 
     /**
-     * @param boolean $ParentIsSubLine
+     * @param int $ParentSubLineId
      * @return $this
      */
-    public function setParentIsSubLine($ParentIsSubLine)
+    public function setParentSubLineId($ParentSubLineId)
     {
-        $this->ParentIsSubLine = $ParentIsSubLine;
+        $this->ParentSubLineId = $ParentSubLineId;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return int
      */
-    public function getParentIsSubLine()
+    public function getParentSubLineId()
     {
-        return $this->ParentIsSubLine;
+        return $this->ParentSubLineId;
     }
 
     /**

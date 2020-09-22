@@ -9,6 +9,7 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ModifierPriceType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ModifierType;
 use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplHierarchyHospModifier
@@ -78,6 +79,11 @@ class ReplHierarchyHospModifier
      * @property string $SubCode
      */
     protected $SubCode = null;
+
+    /**
+     * @property ModifierType $Type
+     */
+    protected $Type = null;
 
     /**
      * @property string $UnitOfMeasure
@@ -336,6 +342,34 @@ class ReplHierarchyHospModifier
     public function getSubCode()
     {
         return $this->SubCode;
+    }
+
+    /**
+     * @param ModifierType|string $Type
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setType($Type)
+    {
+        if ( ! $Type instanceof ModifierType ) {
+            if ( ModifierType::isValid( $Type ) )
+                $Type = new ModifierType( $Type );
+            elseif ( ModifierType::isValidKey( $Type ) )
+                $Type = new ModifierType( constant( "ModifierType::$Type" ) );
+            elseif ( ! $Type instanceof ModifierType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return ModifierType
+     */
+    public function getType()
+    {
+        return $this->Type;
     }
 
     /**

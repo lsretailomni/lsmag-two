@@ -155,6 +155,17 @@ interface ReplHierarchyHospModifierInterface
     public function getSubCode();
 
     /**
+     * @param ModifierType $Type
+     * @return $this
+     */
+    public function setType($Type);
+
+    /**
+     * @return ModifierType
+     */
+    public function getType();
+
+    /**
      * @param string $UnitOfMeasure
      * @return $this
      */

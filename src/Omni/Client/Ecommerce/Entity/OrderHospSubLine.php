@@ -15,24 +15,19 @@ class OrderHospSubLine
 {
 
     /**
-     * @property ArrayOfOrderHospTextModifierLine $TextModifiers
+     * @property string $DealCode
      */
-    protected $TextModifiers = null;
+    protected $DealCode = null;
 
     /**
-     * @property string $DealId
+     * @property int $DealLineId
      */
-    protected $DealId = null;
+    protected $DealLineId = null;
 
     /**
-     * @property string $DealLineCode
+     * @property int $DealModifierLineId
      */
-    protected $DealLineCode = null;
-
-    /**
-     * @property string $DealModifierLineCode
-     */
-    protected $DealModifierLineCode = null;
+    protected $DealModifierLineId = null;
 
     /**
      * @property string $Description
@@ -90,9 +85,9 @@ class OrderHospSubLine
     protected $NetPrice = null;
 
     /**
-     * @property boolean $ParentIsSubLine
+     * @property int $ParentSubLineId
      */
-    protected $ParentIsSubLine = null;
+    protected $ParentSubLineId = null;
 
     /**
      * @property float $Price
@@ -135,75 +130,57 @@ class OrderHospSubLine
     protected $VariantId = null;
 
     /**
-     * @param ArrayOfOrderHospTextModifierLine $TextModifiers
+     * @param string $DealCode
      * @return $this
      */
-    public function setTextModifiers($TextModifiers)
+    public function setDealCode($DealCode)
     {
-        $this->TextModifiers = $TextModifiers;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfOrderHospTextModifierLine
-     */
-    public function getTextModifiers()
-    {
-        return $this->TextModifiers;
-    }
-
-    /**
-     * @param string $DealId
-     * @return $this
-     */
-    public function setDealId($DealId)
-    {
-        $this->DealId = $DealId;
+        $this->DealCode = $DealCode;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getDealId()
+    public function getDealCode()
     {
-        return $this->DealId;
+        return $this->DealCode;
     }
 
     /**
-     * @param string $DealLineCode
+     * @param int $DealLineId
      * @return $this
      */
-    public function setDealLineCode($DealLineCode)
+    public function setDealLineId($DealLineId)
     {
-        $this->DealLineCode = $DealLineCode;
+        $this->DealLineId = $DealLineId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getDealLineCode()
+    public function getDealLineId()
     {
-        return $this->DealLineCode;
+        return $this->DealLineId;
     }
 
     /**
-     * @param string $DealModifierLineCode
+     * @param int $DealModifierLineId
      * @return $this
      */
-    public function setDealModifierLineCode($DealModifierLineCode)
+    public function setDealModifierLineId($DealModifierLineId)
     {
-        $this->DealModifierLineCode = $DealModifierLineCode;
+        $this->DealModifierLineId = $DealModifierLineId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getDealModifierLineCode()
+    public function getDealModifierLineId()
     {
-        return $this->DealModifierLineCode;
+        return $this->DealModifierLineId;
     }
 
     /**
@@ -405,21 +382,21 @@ class OrderHospSubLine
     }
 
     /**
-     * @param boolean $ParentIsSubLine
+     * @param int $ParentSubLineId
      * @return $this
      */
-    public function setParentIsSubLine($ParentIsSubLine)
+    public function setParentSubLineId($ParentSubLineId)
     {
-        $this->ParentIsSubLine = $ParentIsSubLine;
+        $this->ParentSubLineId = $ParentSubLineId;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return int
      */
-    public function getParentIsSubLine()
+    public function getParentSubLineId()
     {
-        return $this->ParentIsSubLine;
+        return $this->ParentSubLineId;
     }
 
     /**

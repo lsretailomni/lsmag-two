@@ -680,6 +680,7 @@
     <column xsi:type="text" name="ParentNode" nullable="true" comment="ParentNode"/>
     <column xsi:type="text" name="PriceType" nullable="true" comment="PriceType"/>
     <column xsi:type="text" name="SubCode" nullable="true" comment="SubCode"/>
+    <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
     <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="UnitOfMeasure"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>

@@ -1038,7 +1038,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "Type": true
         },
         "constraint": {
             "PRIMARY": true

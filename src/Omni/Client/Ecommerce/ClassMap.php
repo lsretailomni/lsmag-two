@@ -444,8 +444,6 @@ class ClassMap
         		'OrderHospLine' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\OrderHospLine',
         		'ArrayOfOrderHospSubLine' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfOrderHospSubLine',
         		'OrderHospSubLine' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\OrderHospSubLine',
-        		'ArrayOfOrderHospTextModifierLine' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfOrderHospTextModifierLine',
-        		'OrderHospTextModifierLine' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\OrderHospTextModifierLine',
         		'OrderAvailabilityResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\OrderAvailabilityResponse',
         		'ArrayOfOrderLineAvailabilityResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfOrderLineAvailabilityResponse',
         		'OrderLineAvailabilityResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\OrderLineAvailabilityResponse',
@@ -612,6 +610,7 @@ class ClassMap
         		'SubLineType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\SubLineType',
         		'MaritalStatus' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\MaritalStatus',
         		'ModifierPriceType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ModifierPriceType',
+        		'ModifierType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ModifierType',
         		'ProductChargeType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ProductChargeType',
         		'AttributeType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\AttributeType',
         ];

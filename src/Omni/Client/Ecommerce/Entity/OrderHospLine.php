@@ -25,11 +25,6 @@ class OrderHospLine extends Entity
     protected $SubLines = null;
 
     /**
-     * @property ArrayOfOrderHospTextModifierLine $TextModifierLines
-     */
-    protected $TextModifierLines = null;
-
-    /**
      * @property float $Amount
      */
     protected $Amount = null;
@@ -153,24 +148,6 @@ class OrderHospLine extends Entity
     public function getSubLines()
     {
         return $this->SubLines;
-    }
-
-    /**
-     * @param ArrayOfOrderHospTextModifierLine $TextModifierLines
-     * @return $this
-     */
-    public function setTextModifierLines($TextModifierLines)
-    {
-        $this->TextModifierLines = $TextModifierLines;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfOrderHospTextModifierLine
-     */
-    public function getTextModifierLines()
-    {
-        return $this->TextModifierLines;
     }
 
     /**

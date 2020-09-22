@@ -52,11 +52,6 @@ class OneListItem extends Entity
     protected $DiscountPercent = null;
 
     /**
-     * @property int $DisplayOrderId
-     */
-    protected $DisplayOrderId = null;
-
-    /**
      * @property ImageView $Image
      */
     protected $Image = null;
@@ -75,6 +70,11 @@ class OneListItem extends Entity
      * @property string $ItemId
      */
     protected $ItemId = null;
+
+    /**
+     * @property int $LineNumber
+     */
+    protected $LineNumber = null;
 
     /**
      * @property string $Location
@@ -276,24 +276,6 @@ class OneListItem extends Entity
     }
 
     /**
-     * @param int $DisplayOrderId
-     * @return $this
-     */
-    public function setDisplayOrderId($DisplayOrderId)
-    {
-        $this->DisplayOrderId = $DisplayOrderId;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDisplayOrderId()
-    {
-        return $this->DisplayOrderId;
-    }
-
-    /**
      * @param ImageView $Image
      * @return $this
      */
@@ -363,6 +345,24 @@ class OneListItem extends Entity
     public function getItemId()
     {
         return $this->ItemId;
+    }
+
+    /**
+     * @param int $LineNumber
+     * @return $this
+     */
+    public function setLineNumber($LineNumber)
+    {
+        $this->LineNumber = $LineNumber;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineNumber()
+    {
+        return $this->LineNumber;
     }
 
     /**

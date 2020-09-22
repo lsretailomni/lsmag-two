@@ -87,6 +87,11 @@ class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHo
     protected $SubCode = null;
 
     /**
+     * @property ModifierType $Type
+     */
+    protected $Type = null;
+
+    /**
      * @property string $UnitOfMeasure
      */
     protected $UnitOfMeasure = null;
@@ -404,6 +409,26 @@ class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHo
     public function getSubCode()
     {
         return $this->getData( 'SubCode' );
+    }
+
+    /**
+     * @param ModifierType $Type
+     * @return $this
+     */
+    public function setType($Type)
+    {
+        $this->setData( 'Type', $Type );
+        $this->Type = $Type;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ModifierType
+     */
+    public function getType()
+    {
+        return $this->getData( 'Type' );
     }
 
     /**

@@ -20,9 +20,9 @@ class OneListPublishedOffer extends Entity
     protected $CreateDate = null;
 
     /**
-     * @property int $DisplayOrderId
+     * @property int $LineNumber
      */
-    protected $DisplayOrderId = null;
+    protected $LineNumber = null;
 
     /**
      * @property OfferDiscountType $Type
@@ -48,21 +48,21 @@ class OneListPublishedOffer extends Entity
     }
 
     /**
-     * @param int $DisplayOrderId
+     * @param int $LineNumber
      * @return $this
      */
-    public function setDisplayOrderId($DisplayOrderId)
+    public function setLineNumber($LineNumber)
     {
-        $this->DisplayOrderId = $DisplayOrderId;
+        $this->LineNumber = $LineNumber;
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getDisplayOrderId()
+    public function getLineNumber()
     {
-        return $this->DisplayOrderId;
+        return $this->LineNumber;
     }
 
     /**
