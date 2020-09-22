@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Block\Order;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Items\AbstractItems;
