@@ -265,9 +265,10 @@ class ReplicationHelper extends AbstractHelper
      * @param boolean $excludeDeleted
      * @return SearchCriteria
      */
-    public function buildCriteriaForArray(array $filters, $pagesize = 100, $excludeDeleted = true,
-        $parameter = null, $parameter2 = null)
-    {
+    public function buildCriteriaForArray(
+        array $filters, $pagesize = 100, $excludeDeleted = true,
+        $parameter = null, $parameter2 = null
+    ) {
         $filterOr       = null;
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
@@ -298,8 +299,7 @@ class ReplicationHelper extends AbstractHelper
                 ->addFilter($parameter1)
                 ->addFilter($parameter2)
                 ->create();
-        }
-        else {
+        } else {
             if (!empty($parameter)) {
                 $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
                     ->setValue($parameter['value'])
@@ -833,7 +833,7 @@ class ReplicationHelper extends AbstractHelper
         if ($isReplaceJoin) {
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
-                'main_table.' . $primaryTableColumnName . ' = REPLACE(second.' . $secondaryTableColumnName . ',"-",",")',
+                'main_table.' . $primaryTableColumnName . ' like CONCAT("%",REPLACE(second.' . $secondaryTableColumnName . ',"-",","),"%")',
                 []
             );
         } else {
@@ -843,6 +843,7 @@ class ReplicationHelper extends AbstractHelper
                 []
             );
         }
+        $collection->getSelect()->columns('second.' . $secondaryTableColumnName);
         if ($group) {
             $collection->getSelect()->group('main_table.' . $primaryTableColumnName);
         }
@@ -898,7 +899,7 @@ class ReplicationHelper extends AbstractHelper
         if ($isReplaceJoin) {
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
-                'CONCAT_WS("-",main_table.' . $primaryTableColumnName . ',main_table.' . $primaryTableColumnName2 . ') = second.' . $secondaryTableColumnName,
+                'CONCAT_WS("-",main_table.' . $primaryTableColumnName . ',main_table.' . $primaryTableColumnName2 . ') LIKE  CONCAT("%",second.' . $secondaryTableColumnName . ",'%')",
                 []
             );
         } else {
