@@ -8,23 +8,27 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ReplHierarchyHospDeal
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ModifierPriceType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ModifierType;
+use Ls\Omni\Exception\InvalidEnumException;
+
+class ReplHierarchyHospModifier
 {
 
     /**
-     * @property float $AddedAmount
+     * @property boolean $AlwaysCharge
      */
-    protected $AddedAmount = null;
+    protected $AlwaysCharge = null;
 
     /**
-     * @property int $DealModSizeGroupIndex
+     * @property float $AmountPercent
      */
-    protected $DealModSizeGroupIndex = null;
+    protected $AmountPercent = null;
 
     /**
-     * @property string $DealNo
+     * @property string $Code
      */
-    protected $DealNo = null;
+    protected $Code = null;
 
     /**
      * @property string $Description
@@ -37,19 +41,14 @@ class ReplHierarchyHospDeal
     protected $HierarchyCode = null;
 
     /**
-     * @property string $ImageId
-     */
-    protected $ImageId = null;
-
-    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
 
     /**
-     * @property int $LineNo
+     * @property string $ItemNo
      */
-    protected $LineNo = null;
+    protected $ItemNo = null;
 
     /**
      * @property int $MaxSelection
@@ -62,9 +61,9 @@ class ReplHierarchyHospDeal
     protected $MinSelection = null;
 
     /**
-     * @property string $ModifierCode
+     * @property string $ParentItem
      */
-    protected $ModifierCode = null;
+    protected $ParentItem = null;
 
     /**
      * @property string $ParentNode
@@ -72,14 +71,24 @@ class ReplHierarchyHospDeal
     protected $ParentNode = null;
 
     /**
+     * @property ModifierPriceType $PriceType
+     */
+    protected $PriceType = null;
+
+    /**
+     * @property string $SubCode
+     */
+    protected $SubCode = null;
+
+    /**
+     * @property ModifierType $Type
+     */
+    protected $Type = null;
+
+    /**
      * @property string $UnitOfMeasure
      */
     protected $UnitOfMeasure = null;
-
-    /**
-     * @property string $VariantCode
-     */
-    protected $VariantCode = null;
 
     /**
      * @property string $scope
@@ -92,57 +101,57 @@ class ReplHierarchyHospDeal
     protected $scope_id = null;
 
     /**
-     * @param float $AddedAmount
+     * @param boolean $AlwaysCharge
      * @return $this
      */
-    public function setAddedAmount($AddedAmount)
+    public function setAlwaysCharge($AlwaysCharge)
     {
-        $this->AddedAmount = $AddedAmount;
+        $this->AlwaysCharge = $AlwaysCharge;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAlwaysCharge()
+    {
+        return $this->AlwaysCharge;
+    }
+
+    /**
+     * @param float $AmountPercent
+     * @return $this
+     */
+    public function setAmountPercent($AmountPercent)
+    {
+        $this->AmountPercent = $AmountPercent;
         return $this;
     }
 
     /**
      * @return float
      */
-    public function getAddedAmount()
+    public function getAmountPercent()
     {
-        return $this->AddedAmount;
+        return $this->AmountPercent;
     }
 
     /**
-     * @param int $DealModSizeGroupIndex
+     * @param string $Code
      * @return $this
      */
-    public function setDealModSizeGroupIndex($DealModSizeGroupIndex)
+    public function setCode($Code)
     {
-        $this->DealModSizeGroupIndex = $DealModSizeGroupIndex;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDealModSizeGroupIndex()
-    {
-        return $this->DealModSizeGroupIndex;
-    }
-
-    /**
-     * @param string $DealNo
-     * @return $this
-     */
-    public function setDealNo($DealNo)
-    {
-        $this->DealNo = $DealNo;
+        $this->Code = $Code;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getDealNo()
+    public function getCode()
     {
-        return $this->DealNo;
+        return $this->Code;
     }
 
     /**
@@ -182,24 +191,6 @@ class ReplHierarchyHospDeal
     }
 
     /**
-     * @param string $ImageId
-     * @return $this
-     */
-    public function setImageId($ImageId)
-    {
-        $this->ImageId = $ImageId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImageId()
-    {
-        return $this->ImageId;
-    }
-
-    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -218,21 +209,21 @@ class ReplHierarchyHospDeal
     }
 
     /**
-     * @param int $LineNo
+     * @param string $ItemNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setItemNo($ItemNo)
     {
-        $this->LineNo = $LineNo;
+        $this->ItemNo = $ItemNo;
         return $this;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getLineNo()
+    public function getItemNo()
     {
-        return $this->LineNo;
+        return $this->ItemNo;
     }
 
     /**
@@ -272,21 +263,21 @@ class ReplHierarchyHospDeal
     }
 
     /**
-     * @param string $ModifierCode
+     * @param string $ParentItem
      * @return $this
      */
-    public function setModifierCode($ModifierCode)
+    public function setParentItem($ParentItem)
     {
-        $this->ModifierCode = $ModifierCode;
+        $this->ParentItem = $ParentItem;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getModifierCode()
+    public function getParentItem()
     {
-        return $this->ModifierCode;
+        return $this->ParentItem;
     }
 
     /**
@@ -308,6 +299,80 @@ class ReplHierarchyHospDeal
     }
 
     /**
+     * @param ModifierPriceType|string $PriceType
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setPriceType($PriceType)
+    {
+        if ( ! $PriceType instanceof ModifierPriceType ) {
+            if ( ModifierPriceType::isValid( $PriceType ) )
+                $PriceType = new ModifierPriceType( $PriceType );
+            elseif ( ModifierPriceType::isValidKey( $PriceType ) )
+                $PriceType = new ModifierPriceType( constant( "ModifierPriceType::$PriceType" ) );
+            elseif ( ! $PriceType instanceof ModifierPriceType )
+                throw new InvalidEnumException();
+        }
+        $this->PriceType = $PriceType->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return ModifierPriceType
+     */
+    public function getPriceType()
+    {
+        return $this->PriceType;
+    }
+
+    /**
+     * @param string $SubCode
+     * @return $this
+     */
+    public function setSubCode($SubCode)
+    {
+        $this->SubCode = $SubCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubCode()
+    {
+        return $this->SubCode;
+    }
+
+    /**
+     * @param ModifierType|string $Type
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setType($Type)
+    {
+        if ( ! $Type instanceof ModifierType ) {
+            if ( ModifierType::isValid( $Type ) )
+                $Type = new ModifierType( $Type );
+            elseif ( ModifierType::isValidKey( $Type ) )
+                $Type = new ModifierType( constant( "ModifierType::$Type" ) );
+            elseif ( ! $Type instanceof ModifierType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return ModifierType
+     */
+    public function getType()
+    {
+        return $this->Type;
+    }
+
+    /**
      * @param string $UnitOfMeasure
      * @return $this
      */
@@ -323,24 +388,6 @@ class ReplHierarchyHospDeal
     public function getUnitOfMeasure()
     {
         return $this->UnitOfMeasure;
-    }
-
-    /**
-     * @param string $VariantCode
-     * @return $this
-     */
-    public function setVariantCode($VariantCode)
-    {
-        $this->VariantCode = $VariantCode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVariantCode()
-    {
-        return $this->VariantCode;
     }
 
     /**

@@ -8,41 +8,41 @@
 
 namespace Ls\Replication\Api\Data;
 
-interface ReplHierarchyHospDealInterface
+interface ReplHierarchyHospModifierInterface
 {
 
     /**
-     * @param float $AddedAmount
+     * @param boolean $AlwaysCharge
      * @return $this
      */
-    public function setAddedAmount($AddedAmount);
+    public function setAlwaysCharge($AlwaysCharge);
+
+    /**
+     * @return boolean
+     */
+    public function getAlwaysCharge();
+
+    /**
+     * @param float $AmountPercent
+     * @return $this
+     */
+    public function setAmountPercent($AmountPercent);
 
     /**
      * @return float
      */
-    public function getAddedAmount();
+    public function getAmountPercent();
 
     /**
-     * @param int $DealModSizeGroupIndex
+     * @param string $Code
      * @return $this
      */
-    public function setDealModSizeGroupIndex($DealModSizeGroupIndex);
-
-    /**
-     * @return int
-     */
-    public function getDealModSizeGroupIndex();
-
-    /**
-     * @param string $DealNo
-     * @return $this
-     */
-    public function setDealNo($DealNo);
+    public function setCode($Code);
 
     /**
      * @return string
      */
-    public function getDealNo();
+    public function getCode();
 
     /**
      * @param string $Description
@@ -67,17 +67,6 @@ interface ReplHierarchyHospDealInterface
     public function getHierarchyCode();
 
     /**
-     * @param string $ImageId
-     * @return $this
-     */
-    public function setImageId($ImageId);
-
-    /**
-     * @return string
-     */
-    public function getImageId();
-
-    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -89,15 +78,15 @@ interface ReplHierarchyHospDealInterface
     public function getIsDeleted();
 
     /**
-     * @param int $LineNo
+     * @param string $ItemNo
      * @return $this
      */
-    public function setLineNo($LineNo);
+    public function setItemNo($ItemNo);
 
     /**
-     * @return int
+     * @return string
      */
-    public function getLineNo();
+    public function getItemNo();
 
     /**
      * @param int $MaxSelection
@@ -122,15 +111,15 @@ interface ReplHierarchyHospDealInterface
     public function getMinSelection();
 
     /**
-     * @param string $ModifierCode
+     * @param string $ParentItem
      * @return $this
      */
-    public function setModifierCode($ModifierCode);
+    public function setParentItem($ParentItem);
 
     /**
      * @return string
      */
-    public function getModifierCode();
+    public function getParentItem();
 
     /**
      * @param string $ParentNode
@@ -144,6 +133,39 @@ interface ReplHierarchyHospDealInterface
     public function getParentNode();
 
     /**
+     * @param ModifierPriceType $PriceType
+     * @return $this
+     */
+    public function setPriceType($PriceType);
+
+    /**
+     * @return ModifierPriceType
+     */
+    public function getPriceType();
+
+    /**
+     * @param string $SubCode
+     * @return $this
+     */
+    public function setSubCode($SubCode);
+
+    /**
+     * @return string
+     */
+    public function getSubCode();
+
+    /**
+     * @param ModifierType $Type
+     * @return $this
+     */
+    public function setType($Type);
+
+    /**
+     * @return ModifierType
+     */
+    public function getType();
+
+    /**
      * @param string $UnitOfMeasure
      * @return $this
      */
@@ -153,17 +175,6 @@ interface ReplHierarchyHospDealInterface
      * @return string
      */
     public function getUnitOfMeasure();
-
-    /**
-     * @param string $VariantCode
-     * @return $this
-     */
-    public function setVariantCode($VariantCode);
-
-    /**
-     * @return string
-     */
-    public function getVariantCode();
 
     /**
      * @param string $scope

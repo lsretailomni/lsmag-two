@@ -15,6 +15,11 @@ class ReplHierarchyLeaf
 {
 
     /**
+     * @property float $DealPrice
+     */
+    protected $DealPrice = null;
+
+    /**
      * @property string $Description
      */
     protected $Description = null;
@@ -35,9 +40,24 @@ class ReplHierarchyLeaf
     protected $ImageId = null;
 
     /**
+     * @property boolean $IsActive
+     */
+    protected $IsActive = null;
+
+    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
+
+    /**
+     * @property boolean $IsMemberClub
+     */
+    protected $IsMemberClub = null;
+
+    /**
+     * @property string $MemberValue
+     */
+    protected $MemberValue = null;
 
     /**
      * @property string $NodeId
@@ -50,6 +70,11 @@ class ReplHierarchyLeaf
     protected $Type = null;
 
     /**
+     * @property int $ValidationPeriod
+     */
+    protected $ValidationPeriod = null;
+
+    /**
      * @property string $scope
      */
     protected $scope = null;
@@ -58,6 +83,24 @@ class ReplHierarchyLeaf
      * @property int $scope_id
      */
     protected $scope_id = null;
+
+    /**
+     * @param float $DealPrice
+     * @return $this
+     */
+    public function setDealPrice($DealPrice)
+    {
+        $this->DealPrice = $DealPrice;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDealPrice()
+    {
+        return $this->DealPrice;
+    }
 
     /**
      * @param string $Description
@@ -132,6 +175,24 @@ class ReplHierarchyLeaf
     }
 
     /**
+     * @param boolean $IsActive
+     * @return $this
+     */
+    public function setIsActive($IsActive)
+    {
+        $this->IsActive = $IsActive;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->IsActive;
+    }
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -147,6 +208,42 @@ class ReplHierarchyLeaf
     public function getIsDeleted()
     {
         return $this->IsDeleted;
+    }
+
+    /**
+     * @param boolean $IsMemberClub
+     * @return $this
+     */
+    public function setIsMemberClub($IsMemberClub)
+    {
+        $this->IsMemberClub = $IsMemberClub;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsMemberClub()
+    {
+        return $this->IsMemberClub;
+    }
+
+    /**
+     * @param string $MemberValue
+     * @return $this
+     */
+    public function setMemberValue($MemberValue)
+    {
+        $this->MemberValue = $MemberValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberValue()
+    {
+        return $this->MemberValue;
     }
 
     /**
@@ -193,6 +290,24 @@ class ReplHierarchyLeaf
     public function getType()
     {
         return $this->Type;
+    }
+
+    /**
+     * @param int $ValidationPeriod
+     * @return $this
+     */
+    public function setValidationPeriod($ValidationPeriod)
+    {
+        $this->ValidationPeriod = $ValidationPeriod;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getValidationPeriod()
+    {
+        return $this->ValidationPeriod;
     }
 
     /**

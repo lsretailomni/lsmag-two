@@ -12,6 +12,11 @@ class ReplHierarchyHospDealLine
 {
 
     /**
+     * @property float $AddedAmount
+     */
+    protected $AddedAmount = null;
+
+    /**
      * @property string $DealLineCode
      */
     protected $DealLineCode = null;
@@ -57,6 +62,11 @@ class ReplHierarchyHospDealLine
     protected $LineNo = null;
 
     /**
+     * @property int $MaxSelection
+     */
+    protected $MaxSelection = null;
+
+    /**
      * @property int $MinSelection
      */
     protected $MinSelection = null;
@@ -65,16 +75,6 @@ class ReplHierarchyHospDealLine
      * @property string $ParentNode
      */
     protected $ParentNode = null;
-
-    /**
-     * @property float $Price
-     */
-    protected $Price = null;
-
-    /**
-     * @property float $PriceWithVat
-     */
-    protected $PriceWithVat = null;
 
     /**
      * @property string $UnitOfMeasure
@@ -95,6 +95,24 @@ class ReplHierarchyHospDealLine
      * @property int $scope_id
      */
     protected $scope_id = null;
+
+    /**
+     * @param float $AddedAmount
+     * @return $this
+     */
+    public function setAddedAmount($AddedAmount)
+    {
+        $this->AddedAmount = $AddedAmount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAddedAmount()
+    {
+        return $this->AddedAmount;
+    }
 
     /**
      * @param string $DealLineCode
@@ -259,6 +277,24 @@ class ReplHierarchyHospDealLine
     }
 
     /**
+     * @param int $MaxSelection
+     * @return $this
+     */
+    public function setMaxSelection($MaxSelection)
+    {
+        $this->MaxSelection = $MaxSelection;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxSelection()
+    {
+        return $this->MaxSelection;
+    }
+
+    /**
      * @param int $MinSelection
      * @return $this
      */
@@ -292,42 +328,6 @@ class ReplHierarchyHospDealLine
     public function getParentNode()
     {
         return $this->ParentNode;
-    }
-
-    /**
-     * @param float $Price
-     * @return $this
-     */
-    public function setPrice($Price)
-    {
-        $this->Price = $Price;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrice()
-    {
-        return $this->Price;
-    }
-
-    /**
-     * @param float $PriceWithVat
-     * @return $this
-     */
-    public function setPriceWithVat($PriceWithVat)
-    {
-        $this->PriceWithVat = $PriceWithVat;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPriceWithVat()
-    {
-        return $this->PriceWithVat;
     }
 
     /**

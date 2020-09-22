@@ -123,9 +123,9 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "DealLineNo", "ItemNo", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "LineNo", "ItemNo", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "LineNo", "RecipeNo", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "DealLineNo", "ItemNo","UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "LineNo", "ItemNo","UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "LineNo", "RecipeNo","UnitOfMeasure", "scope_id"],
         "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
     ];
 
@@ -493,8 +493,10 @@ abstract class AbstractReplicationTask
                 $storeId
             );
         } else {
-            return $this->scope_config->getValue($this->getConfigPathMaxKey(),
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+            return $this->scope_config->getValue(
+                $this->getConfigPathMaxKey(),
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
         }
     }
 

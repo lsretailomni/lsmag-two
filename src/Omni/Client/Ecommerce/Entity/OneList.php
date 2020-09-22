@@ -50,6 +50,11 @@ class OneList extends Entity
     protected $ExternalType = null;
 
     /**
+     * @property boolean $IsHospitality
+     */
+    protected $IsHospitality = null;
+
+    /**
      * @property ListType $ListType
      */
     protected $ListType = null;
@@ -213,6 +218,24 @@ class OneList extends Entity
     public function getExternalType()
     {
         return $this->ExternalType;
+    }
+
+    /**
+     * @param boolean $IsHospitality
+     * @return $this
+     */
+    public function setIsHospitality($IsHospitality)
+    {
+        $this->IsHospitality = $IsHospitality;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsHospitality()
+    {
+        return $this->IsHospitality;
     }
 
     /**
