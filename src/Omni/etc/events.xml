@@ -1,16 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <!-- for changing increment_id to document_id in emails -->
-    <event name="email_order_set_template_vars_before">
-        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification"/>
-    </event>
-    <event name="email_invoice_set_template_vars_before">
-        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification"/>
-    </event>
-    <event name="email_shipment_set_template_vars_before">
-        <observer name="modify_data_to_transport" instance="Ls\Omni\Observer\EmailModification"/>
-    </event>
     <!-- For coupon code plus all other extension attributes -->
     <event name="sales_model_service_quote_submit_before">
         <observer name="copy_coupon_plus_other_extension_attributes_from_quote_to_order" instance="Ls\Omni\Observer\DataAssignObserver"/>

@@ -90,6 +90,13 @@
                         <field id="*/*/enable_loyalty_elements">1</field>
                     </depends>
                 </field>
+                <field id="prefix" translate="label" type="text" sortOrder="11" showInDefault="1"
+                       showInWebsite="1">
+                    <label>Customer username prefix</label>
+                    <comment>Maximum Length 5 Characters</comment>
+                    <validate>validate-username minimum-length-3 maximum-length-5 validate-no-empty</validate>
+                    <backend_model>Ls\Customer\Model\Config\Backend\Username</backend_model>
+                </field>
             </group>
         </section>
     </system>

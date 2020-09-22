@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class RegisterObserver
- * @package Ls\Customer\Observer
+ * Customer Registration Observer
  */
 class RegisterObserver implements ObserverInterface
 {
@@ -71,7 +71,12 @@ class RegisterObserver implements ObserverInterface
         try {
             $parameters = $observer->getRequest()->getParams();
             $session    = $this->customerSession;
-
+            do {
+                $parameters['lsr_username'] = $this->contactHelper->generateRandomUsername();
+            } while ($this->contactHelper->isUsernameExist($parameters['lsr_username']) ||
+                $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
+                $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username']) : false
+            );
             /** @var Customer $customer */
             $customer = $session->getCustomer();
             if ($customer->getId() && !empty($parameters['lsr_username']) && !empty($parameters['password'])) {

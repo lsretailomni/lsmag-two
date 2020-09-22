@@ -232,6 +232,10 @@ class ProductCreateTask
     public $webStoreId = false;
 
     /**
+     * @var Factory
+     */
+    public $optionsFactory;
+    /**
      * ProductCreateTask constructor.
      * @param Factory $factory
      * @param Item $item
@@ -278,6 +282,7 @@ class ProductCreateTask
      * @param MediaGalleryProcessor $mediaGalleryProcessor
      * @param UpdateHandler $updateHandler
      * @param EntryConverterPool $entryConverterPool
+     * @param Factory $optionsFactory
      */
     public function __construct(
         Factory $factory,
@@ -324,7 +329,8 @@ class ProductCreateTask
         Processor $imageProcessor,
         MediaGalleryProcessor $mediaGalleryProcessor,
         UpdateHandler $updateHandler,
-        EntryConverterPool $entryConverterPool
+        EntryConverterPool $entryConverterPool,
+        Factory $optionsFactory
     ) {
         $this->factory                               = $factory;
         $this->item                                  = $item;
@@ -371,6 +377,7 @@ class ProductCreateTask
         $this->mediaGalleryProcessor                 = $mediaGalleryProcessor;
         $this->updateHandler                         = $updateHandler;
         $this->entryConverterPool                    = $entryConverterPool;
+        $this->optionsFactory                        = $optionsFactory;
     }
 
     /**
@@ -1148,7 +1155,6 @@ class ProductCreateTask
             $associatedProductIds = $configProduct->getTypeInstance()->getUsedProductIds($configProduct);
         }
         $configurableProductsData = [];
-        $storeId                  = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE);
         /** @var ReplItemVariantRegistration $value */
         foreach ($variants as $value) {
             $sku = $value->getItemId() . '-' . $value->getVariantId();
@@ -1265,6 +1271,7 @@ class ProductCreateTask
         }
         $position = 0;
         if ($configProduct->getTypeId() == Type::TYPE_SIMPLE) {
+            $attributeData = [];
             foreach ($attributesCode as $value) {
                 /** @var Interceptor $attribute */
                 $attribute       = $this->eavConfig->getAttribute('catalog_product', $value);
@@ -1274,6 +1281,8 @@ class ProductCreateTask
                     'product_id'   => $productId,
                     'position'     => $position
                 ];
+
+                $attributeData[] = $this->getConfigurableAttributeData($attribute, $position);
                 try {
                     // @codingStandardsIgnoreLine
                     $this->attribute->setData($data)->save();
@@ -1282,8 +1291,9 @@ class ProductCreateTask
                 }
                 $position++;
             }
+            $options = $this->optionsFactory->create($attributeData);
+            $configProduct->getExtensionAttributes()->setConfigurableProductOptions($options);
         }
-
         $configProduct->setTypeId(Configurable::TYPE_CODE); // Setting Product Type As Configurable
         $configProduct->setAffectConfigurableProductAttributes(4);
         $this->configurable->setUsedProductAttributes($configProduct, $attributesIds);
@@ -1372,5 +1382,30 @@ class ProductCreateTask
             $this->remainingRecords = $this->itemRepository->getList($criteria)->getTotalCount();
         }
         return $this->remainingRecords;
+    }
+
+    /**
+     * @param $attribute
+     * @param $position
+     * @return array
+     */
+    public function getConfigurableAttributeData($attribute, $position)
+    {
+        $attributeValues = [];
+        foreach ($attribute->getOptions() as $option) {
+            if ($option->getValue()) {
+                $attributeValues[] = [
+                    'label'        => $option->getLabel(),
+                    'attribute_id' => $attribute->getId(),
+                    'value_index'  => $option->getValue(),
+                ];
+            }
+        }
+        return [
+            'position'     => $position,
+            'attribute_id' => $attribute->getId(),
+            'label'        => $attribute->getName(),
+            'values'       => $attributeValues
+        ];
     }
 }
