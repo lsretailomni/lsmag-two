@@ -17,6 +17,11 @@ class OneListItem extends Entity
     protected $OnelistItemDiscounts = null;
 
     /**
+     * @property ArrayOfOneListItemSubLine $OnelistSubLines
+     */
+    protected $OnelistSubLines = null;
+
+    /**
      * @property float $Amount
      */
     protected $Amount = null;
@@ -47,14 +52,14 @@ class OneListItem extends Entity
     protected $DiscountPercent = null;
 
     /**
-     * @property int $DisplayOrderId
-     */
-    protected $DisplayOrderId = null;
-
-    /**
      * @property ImageView $Image
      */
     protected $Image = null;
+
+    /**
+     * @property boolean $IsADeal
+     */
+    protected $IsADeal = null;
 
     /**
      * @property string $ItemDescription
@@ -65,6 +70,11 @@ class OneListItem extends Entity
      * @property string $ItemId
      */
     protected $ItemId = null;
+
+    /**
+     * @property int $LineNumber
+     */
+    protected $LineNumber = null;
 
     /**
      * @property string $Location
@@ -137,6 +147,24 @@ class OneListItem extends Entity
     public function getOnelistItemDiscounts()
     {
         return $this->OnelistItemDiscounts;
+    }
+
+    /**
+     * @param ArrayOfOneListItemSubLine $OnelistSubLines
+     * @return $this
+     */
+    public function setOnelistSubLines($OnelistSubLines)
+    {
+        $this->OnelistSubLines = $OnelistSubLines;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfOneListItemSubLine
+     */
+    public function getOnelistSubLines()
+    {
+        return $this->OnelistSubLines;
     }
 
     /**
@@ -248,24 +276,6 @@ class OneListItem extends Entity
     }
 
     /**
-     * @param int $DisplayOrderId
-     * @return $this
-     */
-    public function setDisplayOrderId($DisplayOrderId)
-    {
-        $this->DisplayOrderId = $DisplayOrderId;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDisplayOrderId()
-    {
-        return $this->DisplayOrderId;
-    }
-
-    /**
      * @param ImageView $Image
      * @return $this
      */
@@ -281,6 +291,24 @@ class OneListItem extends Entity
     public function getImage()
     {
         return $this->Image;
+    }
+
+    /**
+     * @param boolean $IsADeal
+     * @return $this
+     */
+    public function setIsADeal($IsADeal)
+    {
+        $this->IsADeal = $IsADeal;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsADeal()
+    {
+        return $this->IsADeal;
     }
 
     /**
@@ -317,6 +345,24 @@ class OneListItem extends Entity
     public function getItemId()
     {
         return $this->ItemId;
+    }
+
+    /**
+     * @param int $LineNumber
+     * @return $this
+     */
+    public function setLineNumber($LineNumber)
+    {
+        $this->LineNumber = $LineNumber;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineNumber()
+    {
+        return $this->LineNumber;
     }
 
     /**

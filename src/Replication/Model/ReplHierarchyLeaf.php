@@ -22,6 +22,11 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     protected $_eventPrefix = 'ls_replication_repl_hierarchy_leaf';
 
     /**
+     * @property float $DealPrice
+     */
+    protected $DealPrice = null;
+
+    /**
      * @property string $Description
      */
     protected $Description = null;
@@ -42,9 +47,24 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     protected $ImageId = null;
 
     /**
+     * @property boolean $IsActive
+     */
+    protected $IsActive = null;
+
+    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
+
+    /**
+     * @property boolean $IsMemberClub
+     */
+    protected $IsMemberClub = null;
+
+    /**
+     * @property string $MemberValue
+     */
+    protected $MemberValue = null;
 
     /**
      * @property string $NodeId
@@ -55,6 +75,11 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
      * @property HierarchyLeafType $Type
      */
     protected $Type = null;
+
+    /**
+     * @property int $ValidationPeriod
+     */
+    protected $ValidationPeriod = null;
 
     /**
      * @property string $scope
@@ -109,6 +134,26 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     public function getIdentities()
     {
         return [ self::CACHE_TAG . '_' . $this->getId() ];
+    }
+
+    /**
+     * @param float $DealPrice
+     * @return $this
+     */
+    public function setDealPrice($DealPrice)
+    {
+        $this->setData( 'DealPrice', $DealPrice );
+        $this->DealPrice = $DealPrice;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDealPrice()
+    {
+        return $this->getData( 'DealPrice' );
     }
 
     /**
@@ -192,6 +237,26 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     }
 
     /**
+     * @param boolean $IsActive
+     * @return $this
+     */
+    public function setIsActive($IsActive)
+    {
+        $this->setData( 'IsActive', $IsActive );
+        $this->IsActive = $IsActive;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->getData( 'IsActive' );
+    }
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -209,6 +274,46 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     public function getIsDeleted()
     {
         return $this->getData( 'IsDeleted' );
+    }
+
+    /**
+     * @param boolean $IsMemberClub
+     * @return $this
+     */
+    public function setIsMemberClub($IsMemberClub)
+    {
+        $this->setData( 'IsMemberClub', $IsMemberClub );
+        $this->IsMemberClub = $IsMemberClub;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsMemberClub()
+    {
+        return $this->getData( 'IsMemberClub' );
+    }
+
+    /**
+     * @param string $MemberValue
+     * @return $this
+     */
+    public function setMemberValue($MemberValue)
+    {
+        $this->setData( 'MemberValue', $MemberValue );
+        $this->MemberValue = $MemberValue;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberValue()
+    {
+        return $this->getData( 'MemberValue' );
     }
 
     /**
@@ -249,6 +354,26 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     public function getType()
     {
         return $this->getData( 'Type' );
+    }
+
+    /**
+     * @param int $ValidationPeriod
+     * @return $this
+     */
+    public function setValidationPeriod($ValidationPeriod)
+    {
+        $this->setData( 'ValidationPeriod', $ValidationPeriod );
+        $this->ValidationPeriod = $ValidationPeriod;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getValidationPeriod()
+    {
+        return $this->getData( 'ValidationPeriod' );
     }
 
     /**

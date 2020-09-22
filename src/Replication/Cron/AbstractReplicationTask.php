@@ -2,6 +2,7 @@
 
 namespace Ls\Replication\Cron;
 
+use Exception;
 use IteratorAggregate;
 use \Ls\Core\Helper\Data as LsHelper;
 use \Ls\Core\Model\LSR;
@@ -122,9 +123,9 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "DealLineNo", "ItemNo", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "LineNo", "ItemNo", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "LineNo", "RecipeNo", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "DealLineNo", "ItemNo","UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "LineNo", "ItemNo","UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "LineNo", "RecipeNo","UnitOfMeasure", "scope_id"],
         "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
     ];
 
@@ -168,6 +169,8 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * @param null $storeData
+     * @throws NoSuchEntityException
      * @throws ReflectionException
      */
     public function execute($storeData = null)
@@ -184,7 +187,7 @@ abstract class AbstractReplicationTask
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $lsr = $this->getLsrModel();
-                // Need to check if is_lsr is enabled on each store and only process the relevent store.
+                // Need to check if is_lsr is enabled on each store and only process the relevant store.
                 if ($lsr->isLSR($store->getId())) {
                     $this->rep_helper->updateConfigValue(
                         $this->rep_helper->getDateTime(),
@@ -217,35 +220,42 @@ abstract class AbstractReplicationTask
                     } else {
                         $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
                     }
-                    $baseUrl                = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store->getId());
-                    $request                = $this->makeRequest($lastKey, $fullReplication, $batchSize, $webStoreID,
-                        $maxKey, $baseUrl);
-                    $response               = $request->execute();
-                    $result                 = $response->getResult();
-                    $lastKey                = $result->getLastKey();
-                    $maxKey                 = $result->getMaxKey();
-                    $remaining              = $result->getRecordsRemaining();
-                    $this->recordsRemaining = $remaining;
-                    $traversable            = $this->getIterator($result);
-                    if ($traversable != null) {
-                        // @codingStandardsIgnoreLine
-                        if (count($traversable) > 0) {
-                            foreach ($traversable as $source) {
-                                //TODO need to understand this before we modify it.
-                                $source->setScope(ScopeInterface::SCOPE_STORES)
-                                    ->setScopeId($store->getId());
+                    $baseUrl = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store->getId());
+                    $request = $this->makeRequest($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl);
+                    try {
+                        $response = $request->execute();
+                        if (method_exists($response, 'getResult')) {
+                            $result                 = $response->getResult();
+                            $lastKey                = $result->getLastKey();
+                            $maxKey                 = $result->getMaxKey();
+                            $remaining              = $result->getRecordsRemaining();
+                            $this->recordsRemaining = $remaining;
+                            $traversable            = $this->getIterator($result);
+                            if ($traversable != null) {
+                                // @codingStandardsIgnoreLine
+                                if (count($traversable) > 0) {
+                                    foreach ($traversable as $source) {
+                                        //TODO need to understand this before we modify it.
+                                        $source->setScope(ScopeInterface::SCOPE_STORES)
+                                            ->setScopeId($store->getId());
 
-                                $this->saveSource($properties, $source);
+                                        $this->saveSource($properties, $source);
+                                    }
+                                    $this->updateSuccessStatus($store->getId());
+                                }
+                                $this->persistLastKey($lastKey, $store->getId());
+                                if ($remaining == 0) {
+                                    $this->saveReplicationStatus(1, $store->getId());
+                                }
                             }
-                            $this->updateSuccessStatus($store->getId());
+                            $this->persistMaxKey($maxKey, $store->getId());
+                            $this->rep_helper->flushByTypeCode('config');
+                        } else {
+                            $this->logger->debug('No result found for ' . get_class($this->getMainEntity()) . '. Please refer omniclient log for details.');
                         }
-                        $this->persistLastKey($lastKey, $store->getId());
-                        if ($remaining == 0) {
-                            $this->saveReplicationStatus(1, $store->getId());
-                        }
+                    } catch (Exception $e) {
+                        $this->logger->debug($e->getMessage());
                     }
-                    $this->persistMaxKey($maxKey, $store->getId());
-                    $this->rep_helper->flushByTypeCode('config');
                 } else {
                     $this->logger->debug('LS Retail validation failed for store id ' . $store->getId());
                 }
@@ -266,7 +276,7 @@ abstract class AbstractReplicationTask
 
     /**
      * Update the Custom Replication Success Status
-     * @param bool $store_id
+     * @param bool $storeId
      */
     public function updateSuccessStatus($storeId = false)
     {
@@ -483,8 +493,10 @@ abstract class AbstractReplicationTask
                 $storeId
             );
         } else {
-            return $this->scope_config->getValue($this->getConfigPathMaxKey(),
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+            return $this->scope_config->getValue(
+                $this->getConfigPathMaxKey(),
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
         }
     }
 

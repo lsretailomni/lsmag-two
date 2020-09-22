@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp/etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="style-src">
+            <values>
+                <value id="fontawesome" type="host">*.fontawesome.com</value>
+                <value id="googleapis" type="host">*.googleapis.com</value>
+            </values>
+        </policy>
+        <policy id="script-src">
+            <values>
+                <value id="googleapis" type="host">*.googleapis.com</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="fontawesome" type="host">*.fontawesome.com</value>
+                <value id="gstatic" type="host">*.gstatic.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="gstatic" type="host">*.gstatic.com</value>
+                <value id="googleapis" type="host">*.googleapis.com</value>
+                <value id="data-image" type="host">'self' data:</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

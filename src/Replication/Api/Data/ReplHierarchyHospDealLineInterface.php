@@ -12,6 +12,17 @@ interface ReplHierarchyHospDealLineInterface
 {
 
     /**
+     * @param float $AddedAmount
+     * @return $this
+     */
+    public function setAddedAmount($AddedAmount);
+
+    /**
+     * @return float
+     */
+    public function getAddedAmount();
+
+    /**
      * @param string $DealLineCode
      * @return $this
      */
@@ -111,6 +122,17 @@ interface ReplHierarchyHospDealLineInterface
     public function getLineNo();
 
     /**
+     * @param int $MaxSelection
+     * @return $this
+     */
+    public function setMaxSelection($MaxSelection);
+
+    /**
+     * @return int
+     */
+    public function getMaxSelection();
+
+    /**
      * @param int $MinSelection
      * @return $this
      */
@@ -131,28 +153,6 @@ interface ReplHierarchyHospDealLineInterface
      * @return string
      */
     public function getParentNode();
-
-    /**
-     * @param float $Price
-     * @return $this
-     */
-    public function setPrice($Price);
-
-    /**
-     * @return float
-     */
-    public function getPrice();
-
-    /**
-     * @param float $PriceWithVat
-     * @return $this
-     */
-    public function setPriceWithVat($PriceWithVat);
-
-    /**
-     * @return float
-     */
-    public function getPriceWithVat();
 
     /**
      * @param string $UnitOfMeasure

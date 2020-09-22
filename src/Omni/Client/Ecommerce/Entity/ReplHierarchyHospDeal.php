@@ -12,6 +12,16 @@ class ReplHierarchyHospDeal
 {
 
     /**
+     * @property float $AddedAmount
+     */
+    protected $AddedAmount = null;
+
+    /**
+     * @property int $DealModSizeGroupIndex
+     */
+    protected $DealModSizeGroupIndex = null;
+
+    /**
      * @property string $DealNo
      */
     protected $DealNo = null;
@@ -37,14 +47,14 @@ class ReplHierarchyHospDeal
     protected $IsDeleted = null;
 
     /**
-     * @property string $ItemNo
-     */
-    protected $ItemNo = null;
-
-    /**
      * @property int $LineNo
      */
     protected $LineNo = null;
+
+    /**
+     * @property int $MaxSelection
+     */
+    protected $MaxSelection = null;
 
     /**
      * @property int $MinSelection
@@ -52,19 +62,14 @@ class ReplHierarchyHospDeal
     protected $MinSelection = null;
 
     /**
+     * @property string $ModifierCode
+     */
+    protected $ModifierCode = null;
+
+    /**
      * @property string $ParentNode
      */
     protected $ParentNode = null;
-
-    /**
-     * @property float $Price
-     */
-    protected $Price = null;
-
-    /**
-     * @property float $PriceWithVat
-     */
-    protected $PriceWithVat = null;
 
     /**
      * @property string $UnitOfMeasure
@@ -85,6 +90,42 @@ class ReplHierarchyHospDeal
      * @property int $scope_id
      */
     protected $scope_id = null;
+
+    /**
+     * @param float $AddedAmount
+     * @return $this
+     */
+    public function setAddedAmount($AddedAmount)
+    {
+        $this->AddedAmount = $AddedAmount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAddedAmount()
+    {
+        return $this->AddedAmount;
+    }
+
+    /**
+     * @param int $DealModSizeGroupIndex
+     * @return $this
+     */
+    public function setDealModSizeGroupIndex($DealModSizeGroupIndex)
+    {
+        $this->DealModSizeGroupIndex = $DealModSizeGroupIndex;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDealModSizeGroupIndex()
+    {
+        return $this->DealModSizeGroupIndex;
+    }
 
     /**
      * @param string $DealNo
@@ -177,24 +218,6 @@ class ReplHierarchyHospDeal
     }
 
     /**
-     * @param string $ItemNo
-     * @return $this
-     */
-    public function setItemNo($ItemNo)
-    {
-        $this->ItemNo = $ItemNo;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getItemNo()
-    {
-        return $this->ItemNo;
-    }
-
-    /**
      * @param int $LineNo
      * @return $this
      */
@@ -210,6 +233,24 @@ class ReplHierarchyHospDeal
     public function getLineNo()
     {
         return $this->LineNo;
+    }
+
+    /**
+     * @param int $MaxSelection
+     * @return $this
+     */
+    public function setMaxSelection($MaxSelection)
+    {
+        $this->MaxSelection = $MaxSelection;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxSelection()
+    {
+        return $this->MaxSelection;
     }
 
     /**
@@ -231,6 +272,24 @@ class ReplHierarchyHospDeal
     }
 
     /**
+     * @param string $ModifierCode
+     * @return $this
+     */
+    public function setModifierCode($ModifierCode)
+    {
+        $this->ModifierCode = $ModifierCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModifierCode()
+    {
+        return $this->ModifierCode;
+    }
+
+    /**
      * @param string $ParentNode
      * @return $this
      */
@@ -246,42 +305,6 @@ class ReplHierarchyHospDeal
     public function getParentNode()
     {
         return $this->ParentNode;
-    }
-
-    /**
-     * @param float $Price
-     * @return $this
-     */
-    public function setPrice($Price)
-    {
-        $this->Price = $Price;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrice()
-    {
-        return $this->Price;
-    }
-
-    /**
-     * @param float $PriceWithVat
-     * @return $this
-     */
-    public function setPriceWithVat($PriceWithVat)
-    {
-        $this->PriceWithVat = $PriceWithVat;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPriceWithVat()
-    {
-        return $this->PriceWithVat;
     }
 
     /**

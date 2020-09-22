@@ -22,6 +22,16 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     protected $_eventPrefix = 'ls_replication_repl_hierarchy_hosp_deal';
 
     /**
+     * @property float $AddedAmount
+     */
+    protected $AddedAmount = null;
+
+    /**
+     * @property int $DealModSizeGroupIndex
+     */
+    protected $DealModSizeGroupIndex = null;
+
+    /**
      * @property string $DealNo
      */
     protected $DealNo = null;
@@ -47,14 +57,14 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     protected $IsDeleted = null;
 
     /**
-     * @property string $ItemNo
-     */
-    protected $ItemNo = null;
-
-    /**
      * @property int $LineNo
      */
     protected $LineNo = null;
+
+    /**
+     * @property int $MaxSelection
+     */
+    protected $MaxSelection = null;
 
     /**
      * @property int $MinSelection
@@ -62,19 +72,14 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     protected $MinSelection = null;
 
     /**
+     * @property string $ModifierCode
+     */
+    protected $ModifierCode = null;
+
+    /**
      * @property string $ParentNode
      */
     protected $ParentNode = null;
-
-    /**
-     * @property float $Price
-     */
-    protected $Price = null;
-
-    /**
-     * @property float $PriceWithVat
-     */
-    protected $PriceWithVat = null;
 
     /**
      * @property string $UnitOfMeasure
@@ -139,6 +144,46 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     public function getIdentities()
     {
         return [ self::CACHE_TAG . '_' . $this->getId() ];
+    }
+
+    /**
+     * @param float $AddedAmount
+     * @return $this
+     */
+    public function setAddedAmount($AddedAmount)
+    {
+        $this->setData( 'AddedAmount', $AddedAmount );
+        $this->AddedAmount = $AddedAmount;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAddedAmount()
+    {
+        return $this->getData( 'AddedAmount' );
+    }
+
+    /**
+     * @param int $DealModSizeGroupIndex
+     * @return $this
+     */
+    public function setDealModSizeGroupIndex($DealModSizeGroupIndex)
+    {
+        $this->setData( 'DealModSizeGroupIndex', $DealModSizeGroupIndex );
+        $this->DealModSizeGroupIndex = $DealModSizeGroupIndex;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDealModSizeGroupIndex()
+    {
+        return $this->getData( 'DealModSizeGroupIndex' );
     }
 
     /**
@@ -242,26 +287,6 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     }
 
     /**
-     * @param string $ItemNo
-     * @return $this
-     */
-    public function setItemNo($ItemNo)
-    {
-        $this->setData( 'ItemNo', $ItemNo );
-        $this->ItemNo = $ItemNo;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getItemNo()
-    {
-        return $this->getData( 'ItemNo' );
-    }
-
-    /**
      * @param int $LineNo
      * @return $this
      */
@@ -279,6 +304,26 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     public function getLineNo()
     {
         return $this->getData( 'LineNo' );
+    }
+
+    /**
+     * @param int $MaxSelection
+     * @return $this
+     */
+    public function setMaxSelection($MaxSelection)
+    {
+        $this->setData( 'MaxSelection', $MaxSelection );
+        $this->MaxSelection = $MaxSelection;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxSelection()
+    {
+        return $this->getData( 'MaxSelection' );
     }
 
     /**
@@ -302,6 +347,26 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     }
 
     /**
+     * @param string $ModifierCode
+     * @return $this
+     */
+    public function setModifierCode($ModifierCode)
+    {
+        $this->setData( 'ModifierCode', $ModifierCode );
+        $this->ModifierCode = $ModifierCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModifierCode()
+    {
+        return $this->getData( 'ModifierCode' );
+    }
+
+    /**
      * @param string $ParentNode
      * @return $this
      */
@@ -319,46 +384,6 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     public function getParentNode()
     {
         return $this->getData( 'ParentNode' );
-    }
-
-    /**
-     * @param float $Price
-     * @return $this
-     */
-    public function setPrice($Price)
-    {
-        $this->setData( 'Price', $Price );
-        $this->Price = $Price;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrice()
-    {
-        return $this->getData( 'Price' );
-    }
-
-    /**
-     * @param float $PriceWithVat
-     * @return $this
-     */
-    public function setPriceWithVat($PriceWithVat)
-    {
-        $this->setData( 'PriceWithVat', $PriceWithVat );
-        $this->PriceWithVat = $PriceWithVat;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPriceWithVat()
-    {
-        return $this->getData( 'PriceWithVat' );
     }
 
     /**

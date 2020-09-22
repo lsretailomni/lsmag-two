@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class HospOrderCreate implements RequestInterface
+class OrderHospCreate implements RequestInterface
 {
 
     /**

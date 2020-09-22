@@ -172,6 +172,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_PAGE_IMAGE_WIDTH = 'ls_mag/loyalty/set_image_size_width_for_loyalty_page';
     const SC_LOYALTY_PAGE_IMAGE_HEIGHT = 'ls_mag/loyalty/set_image_size_height_for_loyalty_page';
     const SC_LOYALTY_EXPIRY_DATE_FORMAT = 'ls_mag/loyalty/loyalty_expiry_date_format';
+    const SC_LOYALTY_CUSTOMER_USERNAME_PREFIX_PATH = 'ls_mag/loyalty/prefix';
 
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';

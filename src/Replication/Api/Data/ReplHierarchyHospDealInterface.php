@@ -12,6 +12,28 @@ interface ReplHierarchyHospDealInterface
 {
 
     /**
+     * @param float $AddedAmount
+     * @return $this
+     */
+    public function setAddedAmount($AddedAmount);
+
+    /**
+     * @return float
+     */
+    public function getAddedAmount();
+
+    /**
+     * @param int $DealModSizeGroupIndex
+     * @return $this
+     */
+    public function setDealModSizeGroupIndex($DealModSizeGroupIndex);
+
+    /**
+     * @return int
+     */
+    public function getDealModSizeGroupIndex();
+
+    /**
      * @param string $DealNo
      * @return $this
      */
@@ -67,17 +89,6 @@ interface ReplHierarchyHospDealInterface
     public function getIsDeleted();
 
     /**
-     * @param string $ItemNo
-     * @return $this
-     */
-    public function setItemNo($ItemNo);
-
-    /**
-     * @return string
-     */
-    public function getItemNo();
-
-    /**
      * @param int $LineNo
      * @return $this
      */
@@ -87,6 +98,17 @@ interface ReplHierarchyHospDealInterface
      * @return int
      */
     public function getLineNo();
+
+    /**
+     * @param int $MaxSelection
+     * @return $this
+     */
+    public function setMaxSelection($MaxSelection);
+
+    /**
+     * @return int
+     */
+    public function getMaxSelection();
 
     /**
      * @param int $MinSelection
@@ -100,6 +122,17 @@ interface ReplHierarchyHospDealInterface
     public function getMinSelection();
 
     /**
+     * @param string $ModifierCode
+     * @return $this
+     */
+    public function setModifierCode($ModifierCode);
+
+    /**
+     * @return string
+     */
+    public function getModifierCode();
+
+    /**
      * @param string $ParentNode
      * @return $this
      */
@@ -109,28 +142,6 @@ interface ReplHierarchyHospDealInterface
      * @return string
      */
     public function getParentNode();
-
-    /**
-     * @param float $Price
-     * @return $this
-     */
-    public function setPrice($Price);
-
-    /**
-     * @return float
-     */
-    public function getPrice();
-
-    /**
-     * @param float $PriceWithVat
-     * @return $this
-     */
-    public function setPriceWithVat($PriceWithVat);
-
-    /**
-     * @return float
-     */
-    public function getPriceWithVat();
 
     /**
      * @param string $UnitOfMeasure
