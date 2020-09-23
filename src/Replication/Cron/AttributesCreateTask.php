@@ -200,9 +200,6 @@ class AttributesCreateTask
                     $this->processVariantAttributes($store);
                     //Process Attribute Option Values
                     $this->updateAttributeOptionValues($store);
-                    //Process UOM Attributes
-                    $this->createUomAttribute();
-                    $this->createUomQtyAttribute();
                     //Process UOM Attribute Options
                     $this->addUomAttributeOptions($store);
                     $this->replicationHelper->updateCronStatus(
@@ -705,110 +702,6 @@ class AttributesCreateTask
             }
         }
         return $optimizedArray;
-    }
-
-    /**
-     * @throws LocalizedException
-     */
-    public function createUomAttribute()
-    {
-        $formattedCode = LSR::LS_UOM_ATTRIBUTE;
-        /** @var AttributeInterface $attribute */
-        $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
-
-        $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
-
-        $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
-
-        //  create attribute if not exist.
-        if (!$attribute || !$attribute->getAttributeId()) {
-            $attributeData = [
-                'frontend_label'                => [__('Unit Of Measure')],
-                'frontend_input'                => 'select',
-                'backend_type'                  => 'int',
-                'is_required'                   => '0',
-                'attribute_code'                => $formattedCode,
-                'is_global'                     => '1',
-                'is_user_defined'               => 1,
-                'is_unique'                     => 0,
-                'is_searchable'                 => 1,
-                'is_comparable'                 => 1,
-                'is_filterable'                 => 1,
-                'is_configurable'               => 1,
-                'is_visible_in_advanced_search' => 1,
-                'is_filterable_in_search'       => '0',
-                'is_used_for_promo_rules'       => '0',
-                'is_html_allowed_on_front'      => '1',
-                'used_in_product_listing'       => '0',
-                'used_for_sort_by'              => '1',
-                'attribute_set_id'              => $defaultAttributeSetId,
-                'attribute_group_id'            => $defaultGroupId,
-                'backend_model'                 => ArrayBackend::class,
-                'source_model'                  => Table::class,
-                'swatch_input_type'             => 'text'
-            ];
-
-            try {
-                $this->eavAttributeFactory->create()
-                    ->addData($attributeData)
-                    ->setEntityTypeId($this->getEntityTypeId(Product::ENTITY))
-                    ->save();
-                $this->logger->debug('Successfully created attribute : ' . $formattedCode);
-            } catch (Exception $e) {
-                $this->logger->debug('Failed with Exception : ' . $e->getMessage());
-            }
-        }
-    }
-
-    /**
-     * @throws LocalizedException
-     */
-    public function createUomQtyAttribute()
-    {
-        $formattedCode = LSR::LS_UOM_ATTRIBUTE_QTY;
-        /** @var AttributeInterface $attribute */
-        $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
-
-        $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
-
-        $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
-
-        //  create attribute if not exist.
-        if (!$attribute || !$attribute->getAttributeId()) {
-            $attributeData = [
-                'frontend_label'                => [__('Quantity Unit Of Measure')],
-                'frontend_input'                => 'text',
-                'backend_type'                  => 'varchar',
-                'is_required'                   => '0',
-                'attribute_code'                => $formattedCode,
-                'is_global'                     => '1',
-                'is_user_defined'               => 1,
-                'is_unique'                     => 0,
-                'is_searchable'                 => 1,
-                'is_comparable'                 => 1,
-                'is_filterable'                 => 1,
-                'is_visible_in_advanced_search' => 1,
-                'is_filterable_in_search'       => '0',
-                'is_used_for_promo_rules'       => '0',
-                'is_html_allowed_on_front'      => '1',
-                'used_in_product_listing'       => '1',
-                'used_for_sort_by'              => '1',
-                'attribute_set_id'              => $defaultAttributeSetId,
-                'attribute_group_id'            => $defaultGroupId,
-                'backend_model'                 => ArrayBackend::class,
-                'source_model'                  => Table::class,
-            ];
-
-            try {
-                $this->eavAttributeFactory->create()
-                    ->addData($attributeData)
-                    ->setEntityTypeId($this->getEntityTypeId(Product::ENTITY))
-                    ->save();
-                $this->logger->debug('Successfully created attribute : ' . $formattedCode);
-            } catch (Exception $e) {
-                $this->logger->debug('Failed with Exception : ' . $e->getMessage());
-            }
-        }
     }
 
     /**

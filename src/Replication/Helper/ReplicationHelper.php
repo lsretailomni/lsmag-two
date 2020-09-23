@@ -391,9 +391,47 @@ class ReplicationHelper extends AbstractHelper
      * @param boolean $excludeDeleted
      * @return SearchCriteria
      */
-    public function buildCriteriaForDirect(array $filters, $pagesize = 100, $excludeDeleted = true)
-    {
-        $criteria = $this->searchCriteriaBuilder->setFilterGroups([]);
+    public function buildCriteriaForDirect(
+        array $filters, $pagesize = 100, $excludeDeleted = true,
+        $parameter = null, $parameter2 = null
+    ) {
+        $filterOr = null;
+        if (!empty($parameter) && !empty($parameter2)) {
+
+            $parameter1 = $this->filterBuilder->setField($parameter['field'])
+                ->setValue($parameter['value'])
+                ->setConditionType($parameter['condition_type'])
+                ->create();
+
+            $parameter2 = $this->filterBuilder->setField($parameter2['field'])
+                ->setValue($parameter2['value'])
+                ->setConditionType($parameter2['condition_type'])
+                ->create();
+
+            // building OR condition between the above  criteria
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($parameter1)
+                ->addFilter($parameter2)
+                ->create();
+        } else {
+            if (!empty($parameter)) {
+                $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+                    ->setValue($parameter['value'])
+                    ->setConditionType($parameter['condition_type'])
+                    ->create();
+
+                // building OR condition between the above  criteria
+                $filterOr = $this->filterGroupBuilder
+                    ->addFilter($ExtraFieldwithOrCondition)
+                    ->create();
+            }
+        }
+
+        if (!empty($filterOr)) {
+            $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
+        } else {
+            $criteria = $this->searchCriteriaBuilder->setFilterGroups([]);
+        }
         if (!empty($filters)) {
             foreach ($filters as $filter) {
                 $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
@@ -915,6 +953,51 @@ class ReplicationHelper extends AbstractHelper
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
     }
+
+    /**
+     * @param $collection
+     * @param SearchCriteriaInterface $criteria
+     * @param $resultFactory
+     * @param null $fieldToSelect
+     * @return mixed
+     */
+    public function setCollection(
+        $collection,
+        SearchCriteriaInterface $criteria,
+        $resultFactory,
+        $fieldToSort = null
+    ) {
+        foreach ($criteria->getFilterGroups() as $filter_group) {
+            $fields = $conditions = [];
+            foreach ($filter_group->getFilters() as $filter) {
+                $condition    = $filter->getConditionType() ?: 'eq';
+                $fields[]     = $filter->getField();
+                $conditions[] = [$condition => $filter->getValue()];
+            }
+            if ($fields) {
+                $collection->addFieldToFilter($fields, $conditions);
+            }
+        }
+        if ($fieldToSort) {
+            $collection->getSelect()->order('main_table.' . $fieldToSort);
+        }
+
+        // @codingStandardsIgnoreEnd
+        $collection->getSelect()->limit($criteria->getPageSize());
+
+        /** @var For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
+
+        $objects = [];
+        foreach ($collection as $object_model) {
+            $objects[] = $object_model;
+        }
+        $resultFactory->setItems($objects);
+        $resultFactory->setItems($objects);
+
+        return $resultFactory->getItems();
+    }
+
 
     /**
      * To be used only for Processing attributes and variants in the AttributeCreate Task
