@@ -16,8 +16,6 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class LSR
 {
-    // DEFAULT SHIPMENT ITEM ID
-    const LSR_SHIPMENT_ITEM_ID = 66010;
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
 Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';
@@ -343,8 +341,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
 
-    //Magento Order Number Prefix
-    const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_number/prefix';
+    //Order Management
+    const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
+    const LSR_SHIPMENT_ITEM_ID = 'ls_mag/ls_order_management/shipping_item_id';
 
     //Disaster Recovery Enabled/Disabled For Notification
     const LS_DISASTER_RECOVERY_STATUS = 'ls_mag/ls_disaster_recovery/notification';

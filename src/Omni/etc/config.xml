@@ -30,6 +30,9 @@
             <ls_stores>
                 <timeformat>h:i A</timeformat>
             </ls_stores>
+            <ls_order_management>
+                <shipping_item_id>66010</shipping_item_id>
+            </ls_order_management>
         </ls_mag>
         <!-- For Click and Collect -->
         <omni_clickandcollect>

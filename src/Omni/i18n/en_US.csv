@@ -145,6 +145,7 @@ Configuration,Configuration
 Version,Version
 "Service Base URL","Service Base URL"
 "LS Key","LS Key"
+"For Multi Tenant Web Services","For Multi Tenant Web Services"
 "Please validate your base url by clicking on button above","Please validate your base url by clicking on button above"
 "Omni Service Version","Omni Service Version"
 "LS Central Version","LS Central Version"
@@ -172,10 +173,16 @@ Coupons,Coupons
 "Show Promotions on Product Page","Show Promotions on Product Page"
 "Show Login/Register Notice","Show Login/Register Notice"
 "Mix and Match Products Limit on Popup","Mix and Match Products Limit on Popup"
+"This will display the number of mix and match discounts product on promotions in product
+                        page. Set value to -1 to display all products.","This will display the number of mix and match discounts product on promotions in product
+                        page. Set value to -1 to display all products."
 "Stores Listing","Stores Listing"
 "Opening Hours Time Format","Opening Hours Time Format"
+"Order Management","Order Management"
 "Magento Order Number Prefix","Magento Order Number Prefix"
-"Prefix for Order Number","Prefix for Order Number"
+"Maximum Length 5 Characters","Maximum Length 5 Characters"
+"Shipping Charge Item Id","Shipping Charge Item Id"
+"Please make sure this item Id is the same as set in LS Central. This value is used to calculate the flat shipment amount and is sent as a separate orderline with the order.","Please make sure this item Id is the same as set in LS Central. This value is used to calculate the flat shipment amount and is sent as a separate orderline with the order."
 "Click And Collect","Click And Collect"
 Title,Title
 "Method Name","Method Name"
