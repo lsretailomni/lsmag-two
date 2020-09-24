@@ -1081,10 +1081,10 @@ class ProductCreateTask
                 $itemData             = $this->_getItem($item);
                 $productVariants      = $this->getNewOrUpdatedProductVariants(-1, $item);
                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item);
-                if (!empty($uomCodesNotProcessed)) {
+                $totalUomCodes = $this->getUomCodes($itemData->getNavId());
+                if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
                     $productVariants = $this->getProductVariants($itemData->getNavId());
                 }
-                $totalUomCodes = $this->getUomCodes($itemData->getNavId());
                 if (!empty($productVariants) || count($totalUomCodes[$itemData->getNavId()]) > 1)
                     $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $productVariants, $totalUomCodes, $uomCodesNotProcessed);
             } catch (Exception $e) {
