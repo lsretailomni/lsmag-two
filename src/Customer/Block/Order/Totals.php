@@ -147,6 +147,7 @@ class Totals extends Template
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                 $fee = $line->getAmount();
+                break;
             }
         }
         return $fee;

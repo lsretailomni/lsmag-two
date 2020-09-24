@@ -51,6 +51,7 @@ class Items extends AbstractItems
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                 unset($orderLines[$key]);
+                break;
             }
         }
         return $orderLines;
