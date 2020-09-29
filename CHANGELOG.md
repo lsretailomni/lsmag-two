@@ -7,16 +7,16 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Added compatibility for Magento 2.4.0 version [OMNI-5282](https://solutions.lsretail.com/jira/browse/OMNI-5282)
-- Added support to control the status(Enable/Disable) of Product from LS Central. [OMNI-5178](https://solutions.lsretail.com/jira/browse/OMNI-5178)
+- Added support to control the status (enable/disable) of product from LS Central. [OMNI-5178](https://solutions.lsretail.com/jira/browse/OMNI-5178)
 - Added support for data translation of product categories (hierarchy nodes) from LS Central. [OMNI-5269](https://solutions.lsretail.com/jira/browse/OMNI-5269)
 - Added support for data translation of product name from LS Central. [OMNI-5296](https://solutions.lsretail.com/jira/browse/OMNI-5296)
 - Added support for data translation of product attributes and product attributes option from LS Central. [OMNI-5294](https://solutions.lsretail.com/jira/browse/OMNI-5294)
-- Added admin interface to dynamically control the Shipping item Id from Magento admin panel. [OMNI-5299](https://solutions.lsretail.com/jira/browse/OMNI-5299)
+- Added admin interface to dynamically control the shipping item Id from Magento admin panel. [OMNI-5299](https://solutions.lsretail.com/jira/browse/OMNI-5299)
 - Added policies to whitelist external resources like fonts, scripts, images, styles being used in the repository using csp_whitelist.xml. [OMNI-5287](https://solutions.lsretail.com/jira/browse/OMNI-5287)
  
 ### Changed
 
-- Added LS Central Exception handling when running manual crons from the admin panel. [OMNI-5291](https://solutions.lsretail.com/jira/browse/OMNI-5291)
+- Added exception returned from LS Central when running manual cron from the admin panel. [OMNI-5291](https://solutions.lsretail.com/jira/browse/OMNI-5291)
 - Removed unused less file being loaded from the layout.xml. [OMNI-5293](https://solutions.lsretail.com/jira/browse/OMNI-5293)
 - Removed username field from the customer registration form on frontend. [OMNI-5272](https://solutions.lsretail.com/jira/browse/OMNI-5272)
 
