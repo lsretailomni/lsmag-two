@@ -1,6 +1,33 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [1.5.0] - 2020-09-30
+
+### Added
+
+- Added compatibility for Magento 2.4.0 version [OMNI-5282](https://solutions.lsretail.com/jira/browse/OMNI-5282)
+- Added support to control the status(Enable/Disable) of Product from LS Central. [OMNI-5178](https://solutions.lsretail.com/jira/browse/OMNI-5178)
+- Added support for data translation of product categories (hierarchy nodes) from LS Central. [OMNI-5269](https://solutions.lsretail.com/jira/browse/OMNI-5269)
+- Added support for data translation of product name from LS Central. [OMNI-5296](https://solutions.lsretail.com/jira/browse/OMNI-5296)
+- Added support for data translation of product attributes and product attributes option from LS Central. [OMNI-5294](https://solutions.lsretail.com/jira/browse/OMNI-5294)
+- Added admin interface to dynamically control the Shipping item Id from Magento admin panel. [OMNI-5299](https://solutions.lsretail.com/jira/browse/OMNI-5299)
+- Added policies to whitelist external resources like fonts, scripts, images, styles being used in the repository using csp_whitelist.xml. [OMNI-5287](https://solutions.lsretail.com/jira/browse/OMNI-5287)
+ 
+### Changed
+
+- Added LS Central Exception handling when running manual crons from the admin panel. [OMNI-5291](https://solutions.lsretail.com/jira/browse/OMNI-5291)
+- Removed unused less file being loaded from the layout.xml. [OMNI-5293](https://solutions.lsretail.com/jira/browse/OMNI-5293)
+- Removed username field from the customer registration form on frontend. [OMNI-5272](https://solutions.lsretail.com/jira/browse/OMNI-5272)
+
+### Bugs/Fixes
+
+- Fixed issue with the creation of configuratble products on Magento 2.4.0 version. [OMNI-5281](https://solutions.lsretail.com/jira/browse/OMNI-5281)
+- Fixed anchor link for LS Retail setup section appear on the admin notice. [OMNI-5284](https://solutions.lsretail.com/jira/browse/OMNI-5284)
+- Fixed issue when empty scheme Id is returned from LS Central[OMNI-5301](https://solutions.lsretail.com/jira/browse/OMNI-5301)
+
+
+
 ## [1.4.1] - 2020-08-24
 
 ### Changed
@@ -11,6 +38,8 @@ All notable changes to this project will be documented in this file.
 
 - Fixed issue with maps not showing on product and checkout page. [OMNI-5288](https://solutions.lsretail.com/jira/browse/OMNI-5288)
 - Added missing table columns while creating dynamic db_schema.xml. [OMNI-5285](https://solutions.lsretail.com/jira/browse/OMNI-5285)
+
+
 
 ## [1.4.0] - 2020-08-18
 
