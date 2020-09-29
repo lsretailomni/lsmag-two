@@ -29,11 +29,11 @@ use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ReplItemSearchResults;
 use \Ls\Replication\Model\ReplItemVariantRegistration;
+use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
-use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -235,6 +235,7 @@ class ProductCreateTask
      * @var Factory
      */
     public $optionsFactory;
+
     /**
      * ProductCreateTask constructor.
      * @param Factory $factory
@@ -462,7 +463,8 @@ class ProductCreateTask
                                 $productData->setDescription($item->getDetails());
                                 $productData->setWeight($item->getGrossWeight());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-                                $product = $this->getProductAttributes($productData, $item);
+                                $productData = $this->setProductStatus($productData, $item->getBlockedOnECom());
+                                $product     = $this->getProductAttributes($productData, $item);
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $this->productRepository->save($product);
@@ -493,7 +495,7 @@ class ProductCreateTask
                                     $product->setPrice($item->getUnitPrice());
                                 }
                                 $product->setAttributeSetId(4);
-                                $product->setStatus(Status::STATUS_ENABLED);
+                                $product = $this->setProductStatus($product, $item->getBlockedOnECom());
                                 $product->setTypeId(Type::TYPE_SIMPLE);
                                 $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 /** @var ReplBarcodeRepository $itemBarcodes */
@@ -976,7 +978,7 @@ class ProductCreateTask
             foreach ($items->getItems() as $value) {
                 $sku         = $value->getNavId();
                 $productData = $this->productRepository->get($sku, true, $this->store->getId());
-                $productData->setStatus(Status::STATUS_DISABLED);
+                $productData = $this->setProductStatus($productData, 1);
                 try {
                     $this->productRepository->save($productData);
                 } catch (Exception $e) {
@@ -1028,9 +1030,7 @@ class ProductCreateTask
                     }
                     $associatedSimpleProduct = $this->getConfAssoProductId($productData, $configurableAttributes);
                     if ($associatedSimpleProduct != null) {
-                        $associatedSimpleProduct->setStatus(
-                            Status::STATUS_DISABLED
-                        );
+                        $associatedSimpleProduct = $this->setProductStatus($associatedSimpleProduct, 1);
                         // @codingStandardsIgnoreLine
                         $this->productRepository->save($associatedSimpleProduct);
                     }
@@ -1176,7 +1176,7 @@ class ProductCreateTask
                     $productData->setDescription($item->getDetails());
                     $productData->setWeight($item->getGrossWeight());
                     $productData->setCustomAttribute("uom", $value->getBaseUnitOfMeasure());
-                    $productData->setStatus(Status::STATUS_ENABLED);
+                    $productData = $this->setProductStatus($productData, 0);
                     // @codingStandardsIgnoreLine
                     $productSaved           = $this->productRepository->save($productData);
                     $associatedProductIds[] = $productSaved->getId();
@@ -1232,7 +1232,7 @@ class ProductCreateTask
                 }
                 $productV->setAttributeSetId(4);
                 $productV->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-                $productV->setStatus(Status::STATUS_ENABLED);
+                $productV = $this->setProductStatus($productV, 0);
                 $productV->setTypeId(Type::TYPE_SIMPLE);
                 foreach ($attributesCode as $keyCode => $valueCode) {
                     if (isset($keyCode) && $keyCode != '') {
@@ -1407,5 +1407,25 @@ class ProductCreateTask
             'label'        => $attribute->getName(),
             'values'       => $attributeValues
         ];
+    }
+
+    /**
+     * @param $product
+     * @param $disableStatus
+     * @return mixed
+     */
+    public function setProductStatus($product, $disableStatus)
+    {
+        if ($disableStatus == 1) {
+            $product->setStatus(Status::STATUS_DISABLED);
+
+        } else {
+            $product->setStatus(Status::STATUS_ENABLED);
+        }
+        $productData = clone $product;
+        $productData->setStoreId(0);
+        $productData->getResource()->saveAttribute($productData, 'status');
+
+        return $product;
     }
 }
