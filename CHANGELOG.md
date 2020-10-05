@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Bugs/Fixes
 
-- Fixed issue with replication of oroduct status during first time replication. [OMNI-5318](https://solutions.lsretail.com/jira/browse/OMNI-5318)
+- Fixed issue with replication of product status during first time replication. [OMNI-5318](https://solutions.lsretail.com/jira/browse/OMNI-5318)
 
 
 
