@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplHierarchyHospDealInterface;
 class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDealInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_hierarchy_hosp_deal';
+    public const CACHE_TAG = 'ls_replication_repl_hierarchy_hosp_deal';
 
     protected $_cacheTag = 'ls_replication_repl_hierarchy_hosp_deal';
 

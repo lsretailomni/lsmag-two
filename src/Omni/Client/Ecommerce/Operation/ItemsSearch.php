@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ItemsSearchResponse as ItemsSearchResponse;
 class ItemsSearch extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ITEMS_SEARCH';
+    public const OPERATION_NAME = 'ITEMS_SEARCH';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

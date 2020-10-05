@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class StoreHourOpeningType extends Enum
 {
 
-    const NORMAL = 'Normal';
+    public const NORMAL = 'Normal';
 
-    const TEMPORARY = 'Temporary';
+    public const TEMPORARY = 'Temporary';
 
-    const CLOSED = 'Closed';
+    public const CLOSED = 'Closed';
 
 
 }

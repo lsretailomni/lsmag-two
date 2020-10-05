@@ -15,6 +15,11 @@ class OrderHospSubLine
 {
 
     /**
+     * @property float $Amount
+     */
+    protected $Amount = null;
+
+    /**
      * @property string $DealCode
      */
     protected $DealCode = null;
@@ -128,6 +133,24 @@ class OrderHospSubLine
      * @property string $VariantId
      */
     protected $VariantId = null;
+
+    /**
+     * @param float $Amount
+     * @return $this
+     */
+    public function setAmount($Amount)
+    {
+        $this->Amount = $Amount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        return $this->Amount;
+    }
 
     /**
      * @param string $DealCode

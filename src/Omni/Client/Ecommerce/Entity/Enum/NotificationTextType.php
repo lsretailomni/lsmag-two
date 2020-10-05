@@ -17,9 +17,9 @@ use MyCLabs\Enum\Enum;
 class NotificationTextType extends Enum
 {
 
-    const PLAIN = 'Plain';
+    public const PLAIN = 'Plain';
 
-    const HTML = 'Html';
+    public const HTML = 'Html';
 
 
 }

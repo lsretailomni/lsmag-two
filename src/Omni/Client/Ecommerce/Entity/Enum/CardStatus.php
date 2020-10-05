@@ -19,13 +19,13 @@ use MyCLabs\Enum\Enum;
 class CardStatus extends Enum
 {
 
-    const FREE = 'Free';
+    public const FREE = 'Free';
 
-    const ALLOCATED = 'Allocated';
+    public const ALLOCATED = 'Allocated';
 
-    const ACTIVE = 'Active';
+    public const ACTIVE = 'Active';
 
-    const BLOCKED = 'Blocked';
+    public const BLOCKED = 'Blocked';
 
 
 }

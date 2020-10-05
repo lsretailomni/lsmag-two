@@ -22,19 +22,19 @@ use MyCLabs\Enum\Enum;
 class OfferDiscountLineType extends Enum
 {
 
-    const ITEM = 'Item';
+    public const ITEM = 'Item';
 
-    const PRODUCT_GROUP = 'ProductGroup';
+    public const PRODUCT_GROUP = 'ProductGroup';
 
-    const ITEM_CATEGORY = 'ItemCategory';
+    public const ITEM_CATEGORY = 'ItemCategory';
 
-    const ALL = 'All';
+    public const ALL = 'All';
 
-    const SPECIAL_GROUP = 'SpecialGroup';
+    public const SPECIAL_GROUP = 'SpecialGroup';
 
-    const P_L_U_MENU = 'PLUMenu';
+    public const P_L_U_MENU = 'PLUMenu';
 
-    const DEAL_MODIFIER = 'DealModifier';
+    public const DEAL_MODIFIER = 'DealModifier';
 
 
 }

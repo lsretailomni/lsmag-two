@@ -20,15 +20,15 @@ use MyCLabs\Enum\Enum;
 class MaritalStatus extends Enum
 {
 
-    const UNKNOWN = 'Unknown';
+    public const UNKNOWN = 'Unknown';
 
-    const SINGLE = 'Single';
+    public const SINGLE = 'Single';
 
-    const MARRIED = 'Married';
+    public const MARRIED = 'Married';
 
-    const DIVORCED = 'Divorced';
+    public const DIVORCED = 'Divorced';
 
-    const WIDOWED = 'Widowed';
+    public const WIDOWED = 'Widowed';
 
 
 }

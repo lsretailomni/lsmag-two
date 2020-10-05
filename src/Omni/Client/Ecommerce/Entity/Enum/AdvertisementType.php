@@ -20,15 +20,15 @@ use MyCLabs\Enum\Enum;
 class AdvertisementType extends Enum
 {
 
-    const NONE = 'None';
+    public const NONE = 'None';
 
-    const ITEM_ID = 'ItemId';
+    public const ITEM_ID = 'ItemId';
 
-    const URL = 'Url';
+    public const URL = 'Url';
 
-    const MENU_NODE_ID = 'MenuNodeId';
+    public const MENU_NODE_ID = 'MenuNodeId';
 
-    const DEAL = 'Deal';
+    public const DEAL = 'Deal';
 
 
 }

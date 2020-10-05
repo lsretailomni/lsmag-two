@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemVariantRegistrationsResponse as
 class ReplEcommItemVariantRegistrations extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_ITEM_VARIANT_REGISTRATIONS';
+    public const OPERATION_NAME = 'REPL_ECOMM_ITEM_VARIANT_REGISTRATIONS';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

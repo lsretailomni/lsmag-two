@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\OrderCancelResponse as OrderCancelResponse;
 class OrderCancel extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ORDER_CANCEL';
+    public const OPERATION_NAME = 'ORDER_CANCEL';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client
