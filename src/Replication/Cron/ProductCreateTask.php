@@ -467,7 +467,8 @@ class ProductCreateTask
                                 $product     = $this->getProductAttributes($productData, $item);
                                 try {
                                     // @codingStandardsIgnoreLine
-                                    $this->productRepository->save($product);
+                                    $productSaved = $this->productRepository->save($product);
+                                    $this->updateProductStatusGlobal($productSaved);
                                 } catch (Exception $e) {
                                     $this->logger->debug($e->getMessage());
                                     $item->setData('is_failed', 1);
@@ -1422,10 +1423,20 @@ class ProductCreateTask
         } else {
             $product->setStatus(Status::STATUS_ENABLED);
         }
-        $productData = clone $product;
-        $productData->setStoreId(0);
-        $productData->getResource()->saveAttribute($productData, 'status');
 
         return $product;
+    }
+
+    /**
+     * @param $product
+     */
+    public function updateProductStatusGlobal($product)
+    {
+        try {
+            $product->setStoreId(0);
+            $product->getResource()->saveAttribute($product, 'status');
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
     }
 }
