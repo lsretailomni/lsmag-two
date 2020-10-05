@@ -7,11 +7,12 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 
 /**
- * Class Renderer
- * @package Ls\Omni\Block\Cart\Item
+ * Overriding the default item renderer
+ *
  */
 class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
 {
@@ -32,7 +33,6 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
     public function getOneListCalculateData($item)
     {
         try {
-
             $this->basketHelper = $this->getBasketHelper();
             $this->itemHelper   = $this->getBasketHelper()->getItemHelper();
             if ($item->getPrice() <= 0) {
@@ -76,6 +76,7 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
      * @param $item
      * @return string
      * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
     public function getItemRowTotal($item)
     {

@@ -13,15 +13,15 @@ use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
 use Magento\Sales\Model\ResourceModel\Order;
-use Magento\Framework\Exception\AlreadyExistsException;
-use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Class OrderHelper
- * @package Ls\Omni\Helper
+ * Useful helper functions for order
+ *
  */
 class OrderHelper extends AbstractHelper
 {
@@ -106,11 +106,12 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
      * @param Model\Order $order
-     * @param Entity\Order $oneListCalculateResponse
+     * @param $oneListCalculateResponse
      * @return Entity\OrderCreate
      */
-    public function prepareOrder(Model\Order $order, Entity\Order $oneListCalculateResponse)
+    public function prepareOrder(Model\Order $order, $oneListCalculateResponse)
     {
         try {
             $storeId       = $oneListCalculateResponse->getStoreId();
@@ -208,10 +209,11 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @param Entity\OrderCreate $request
-     * @return Entity\OrderCreateResponse|Entity\SalesEntry|ResponseInterface
+     * This function is overriding in hospitality module
+     * @param $request
+     * @return Entity\OrderCreateResponse|ResponseInterface
      */
-    public function placeOrder(Entity\OrderCreate $request)
+    public function placeOrder($request)
     {
         $response = null;
         // @codingStandardsIgnoreLine
@@ -371,6 +373,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
      * @param $docId
      * @param string $type
      * @return Entity\SalesEntry|Entity\SalesEntryGetResponse|ResponseInterface|null
@@ -432,7 +435,6 @@ class OrderHelper extends AbstractHelper
         return $order;
     }
 
-
     /**
      * @param null $storeId
      * @return array|OrderInterface|mixed
@@ -453,7 +455,6 @@ class OrderHelper extends AbstractHelper
         }
         return $orders;
     }
-
 
     /**
      * @return string

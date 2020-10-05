@@ -11,8 +11,8 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * Class LSR
- * @package Ls\Core\Model
+ * LSR Model
+ *
  */
 class LSR
 {
@@ -364,8 +364,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //Choose Industry
     const LS_INDUSTRY_VALUE_RETAIL = 'retail';
-
     const LS_INDUSTRY_VALUE_HOSPITALITY = 'hospitality';
+    const LS_INDUSTRY_VALUE = 'ls_mag/ls_industry/ls_choose_industry';
 
     /**
      * @var ScopeConfigInterface
@@ -636,5 +636,14 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getOmniTimeout()
     {
         return $this->getStoreConfig(self::SC_SERVICE_TIMEOUT, $this->getCurrentStoreId());
+    }
+
+    /**
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getCurrentIndustry()
+    {
+        return $this->getStoreConfig(self::LS_INDUSTRY_VALUE, $this->getCurrentStoreId());
     }
 }
