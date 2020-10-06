@@ -406,14 +406,9 @@ class ContactHelper extends AbstractHelper
         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
         $customer  = $this->customerFactory->create();
         try {
-            $cards  = $contact->getCards()->getCard();
-            $cardId = $cards[0]->getId();
             $customer->setPassword($password)
                 ->setData('website_id', $websiteId)
                 ->setData('email', $contact->getEmail())
-                ->setData('lsr_id', $contact->getId())
-                ->setData('lsr_username', $contact->getUserName())
-                ->setData('lsr_cardid', $cardId)
                 ->setData('firstname', $contact->getFirstName())
                 ->setData('lastname', $contact->getLastName());
             $this->customerResourceModel->save($customer);
@@ -1041,43 +1036,12 @@ class ContactHelper extends AbstractHelper
         $customer       = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
-        $cards          = $result->getCards()->getCard();
-        $cardId         = $cards[0]->getId();
-        if ($customer->getData('lsr_id') === null) {
-            $customer->setData('lsr_id', $result->getId());
-        }
-        if (!$is_email && empty($customer->getData('lsr_username'))) {
-            $customer->setData('lsr_username', $credentials['username']);
-        }
-        if ($customer->getData('lsr_cardid') === null) {
-            $customer->setData('lsr_cardid', $cardId);
-        }
-        $token = $result->getLoggedOnToDevice()->getSecurityToken();
-
-        $customer->setData('lsr_token', $token);
-        $customer->setData(
-            'attribute_set_id',
-            CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER
-        );
-
-        if (!empty($result) &&
-            !empty($result->getAccount()) &&
-            !empty($result->getAccount()->getScheme()) &&
-            !empty($result->getAccount()->getScheme()->getId())) {
-            $customerGroupId = $this->getCustomerGroupIdByName(
-                $result->getAccount()->getScheme()->getId()
-            );
-            $customer->setGroupId($customerGroupId);
-        }
+        $customer = $this->setCustomerAttributesValues($result, $customer);
         $this->customerResourceModel->save($customer);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $result->getId());
-
-        if ($cardId !== null) {
-            $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $cardId);
-        }
-
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
         $this->customerSession->setCustomerAsLoggedIn($customer);
     }
 
@@ -1336,5 +1300,42 @@ class ContactHelper extends AbstractHelper
             $randomString .= rand(0, 9);
         }
         return $randomString;
+    }
+
+    /**
+     * @param \Ls\Omni\Client\Ecommerce\Entity\MemberContact $contact
+     * @param \Magento\Customer\Model\Customer $customer
+     * @return mixed
+     * @throws InputException
+     * @throws InvalidTransitionException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function setCustomerAttributesValues($contact, $customer)
+    {
+        $customer->setData('lsr_id', $contact->getId());
+        if (!empty($contact->getUserName())) {
+            $customer->setData('lsr_username', $contact->getUserName());
+        }
+        if (!empty($contact->getLoggedOnToDevice()) &&
+            !empty($contact->getLoggedOnToDevice()->getSecurityToken())) {
+            $token = $contact->getLoggedOnToDevice()->getSecurityToken();
+            $customer->setData('lsr_token', $token);
+        }
+        if (!empty($contact->getCards()) &&
+            !empty($contact->getCards()->getCard()[0]) &&
+            !empty($contact->getCards()->getCard()[0]->getId())) {
+            $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
+        }
+        if (!empty($contact->getAccount()) &&
+            !empty($contact->getAccount()->getScheme()) &&
+            !empty($contact->getAccount()->getScheme()->getId())) {
+            $customerGroupId = $this->getCustomerGroupIdByName(
+                $contact->getAccount()->getScheme()->getId()
+            );
+            $customer->setGroupId($customerGroupId);
+            $this->customerSession->setCustomerGroupId($customerGroupId);
+        }
+        return $customer;
     }
 }
