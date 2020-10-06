@@ -12,7 +12,6 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Customer\Api\AddressRepositoryInterface;
-use Magento\Customer\Api\CustomerMetadataInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\AddressInterfaceFactory;
 use Magento\Customer\Api\Data\CustomerInterface;
@@ -50,8 +49,7 @@ use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
 
 /**
- * Class ContactHelper
- * @package Ls\Omni\Helper
+ * Helper functions for member contact
  */
 class ContactHelper extends AbstractHelper
 {
@@ -540,7 +538,6 @@ class ContactHelper extends AbstractHelper
         }
     }
 
-
     /**
      * Check username exist in LS Central or not
      * @param $username
@@ -569,7 +566,6 @@ class ContactHelper extends AbstractHelper
         }
         return false;
     }
-
 
     /**
      * Check email exist in LS Central or not
@@ -607,7 +603,6 @@ class ContactHelper extends AbstractHelper
      */
     public function changePassword($customer, $customer_post)
     {
-
         $response = null;
         // @codingStandardsIgnoreStart
         $request        = new Operation\ChangePassword();
@@ -635,7 +630,6 @@ class ContactHelper extends AbstractHelper
      */
     public function forgotPassword($email)
     {
-
         $response = null;
         // @codingStandardsIgnoreStart
         $request        = new Operation\ForgotPassword();
@@ -836,7 +830,6 @@ class ContactHelper extends AbstractHelper
 
     public function getCustomerGroupIdByName($groupname = '')
     {
-
         if ($groupname == null or $groupname == '') {
             return false;
         }
@@ -1109,8 +1102,8 @@ class ContactHelper extends AbstractHelper
     {
         $collection = $this->customerCollection->create()
             ->addAttributeToSelect("*")
-            ->addAttributeToFilter("lsr_id", array('null' => true))
-            ->addAttributeToFilter("lsr_username", array('notnull' => true))
+            ->addAttributeToFilter("lsr_id", ['null' => true])
+            ->addAttributeToFilter("lsr_username", ['notnull' => true])
             ->addAttributeToFilter("website_id", ['eq' => $websiteId])
             ->load();
 
@@ -1125,7 +1118,6 @@ class ContactHelper extends AbstractHelper
      */
     public function matchCustomerByRpToken(string $rpToken): CustomerInterface
     {
-
         $this->searchCriteriaBuilder->addFilter(
             'rp_token',
             $rpToken
