@@ -462,6 +462,9 @@ class LoyaltyHelper extends AbstractHelper
                     }
                 } else {
                     $itemsSku[] = $item->getSku();
+                    if(!empty($item->getProduct()->getData('uom'))) {
+                        $itemsSku[] = $item->getSku().'-'.$item->getProduct()->getData('uom');
+                    }
                 }
             }
             if ($publishedOffersObj) {

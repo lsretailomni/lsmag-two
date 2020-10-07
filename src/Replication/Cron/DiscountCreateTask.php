@@ -211,16 +211,22 @@ class DiscountCreateTask
                                     );
                                 }
                                 $discountValue = (string)$replDiscount->getDiscountValue();
-                                $appendUom = (!empty($replDiscount->getUnitOfMeasureId())?'-'.
-                                    $replDiscount->getUnitOfMeasureId():'');
+
+                                if (!empty($replDiscount->getUnitOfMeasureId())) {
+                                    // @codingStandardsIgnoreLine
+                                    $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($replDiscount->getItemId());
+                                    if ($baseUnitOfMeasure != $replDiscount->getUnitOfMeasureId()) {
+                                        $appendUom = '-' . $replDiscount->getUnitOfMeasureId();
+                                    }
+                                }
 
                                 if ($replDiscount->getVariantId() == '' ||
                                     $replDiscount->getVariantId() == null
                                 ) {
-                                    $skuAmountArray[$discountValue][] = $replDiscount->getItemId().$appendUom;
+                                    $skuAmountArray[$discountValue][] = $replDiscount->getItemId() . $appendUom;
                                 } else {
                                     $skuAmountArray[$discountValue][] = $replDiscount->getItemId() . '-' .
-                                        $replDiscount->getVariantId().$appendUom;
+                                        $replDiscount->getVariantId() . $appendUom;
                                 }
                                 $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
                                 $replDiscount->setData('processed', '1');

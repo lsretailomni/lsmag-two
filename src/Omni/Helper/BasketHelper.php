@@ -268,7 +268,7 @@ class BasketHelper extends AbstractHelper
             $lsr_id = array_shift($parts);
             // second element, if it exists, is variant id
             $variant_id = count($parts) ? array_shift($parts) : null;
-            if(!is_numeric($variant_id)){
+            if (!is_numeric($variant_id)) {
                 $variant_id = null;
             }
             // @codingStandardsIgnoreLine
@@ -334,15 +334,6 @@ class BasketHelper extends AbstractHelper
             $lsr_id = array_shift($parts);
             // second element, if it exists, is variant id
             $variant_id = count($parts) ? array_shift($parts) : null;
-            /** TODO this will be used for uom prices **/
-            /*
-            $item = $this->itemHelper->get($lsr_id);
-
-            if (!($variant_id == null)) {
-                $variant = $this->itemHelper->getItemVariant($item, $variant_id);
-            }
-            $uom = $this->itemHelper->uom($item);
-            */
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
                 ->setQuantity($qty)
@@ -878,15 +869,19 @@ class BasketHelper extends AbstractHelper
     public function getItemRowTotal($item)
     {
         $itemSku = explode("-", $item->getSku());
+        $uom     = '';
         // @codingStandardsIgnoreLine
         if (count($itemSku) < 2) {
             $itemSku[1] = null;
+        }
+        if (count($itemSku) > 2) {
+            $uom = $itemSku[2];
         }
         $rowTotal   = "";
         $basketData = $this->getOneListCalculation();
         $orderLines = $basketData->getOrderLines()->getOrderLine();
         foreach ($orderLines as $line) {
-            if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
+            if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId() && $uom == $line->getUomId()) {
                 $rowTotal = $line->getAmount();
                 break;
             }
@@ -947,7 +942,7 @@ class BasketHelper extends AbstractHelper
         $items              = new ArrayOfOrderLine();
         $items->setOrderLine($orderLines);
         $oneListCalculation->setOrderLines($items);
-        $websiteId     = $order->getStore()->getWebsiteId();
+        $websiteId = $order->getStore()->getWebsiteId();
         if (!$order->getCustomerIsGuest()) {
             $customerEmail = $order->getCustomerEmail();
             $customer      = $this->customerFactory->create()
@@ -956,7 +951,7 @@ class BasketHelper extends AbstractHelper
             $cardId        = $customer->getData('lsr_cardid');
             $oneListCalculation->setCardId($cardId);
         }
-        $webStore      = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $oneListCalculation->setStoreId($webStore);
         $oneListCalculation->setTotalAmount($order->getGrandTotal());
         $oneListCalculation->setTotalDiscount(abs($order->getDiscountAmount()));

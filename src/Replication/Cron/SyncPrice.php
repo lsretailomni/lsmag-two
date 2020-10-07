@@ -69,31 +69,34 @@ class SyncPrice extends ProductCreateTask
                         /** @var ReplPrice $replPrice */
                         foreach ($collection as $replPrice) {
                             try {
-                                if (!empty($replPrice->getVariantId()) && !empty($replPrice->getUnitOfMeasure())) {
-                                    $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' . $replPrice->getUnitOfMeasure();
-                                } elseif (!$replPrice->getVariantId()) {
+                                $baseUnitOfMeasure = null;
+                                if (!$replPrice->getVariantId() || !empty($replPrice->getUnitOfMeasure())) {
                                     $sku = $replPrice->getItemId();
                                 } else {
                                     $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
                                 }
                                 $productData = $this->productRepository->get($sku, true, $this->store->getId());
                                 if (isset($productData)) {
-                                    if ($replPrice->getQtyPerUnitOfMeasure()==0) {
+                                    if ($replPrice->getQtyPerUnitOfMeasure() == 0) {
+                                        $baseUnitOfMeasure = $productData->getData('uom');
                                         $productData->setPrice($replPrice->getUnitPrice());
+                                        // @codingStandardsIgnoreStart
+                                        $this->productResourceModel->saveAttribute($productData, 'price');
                                     }
-                                    // @codingStandardsIgnoreStart
-                                    $this->productResourceModel->saveAttribute($productData, 'price');
                                     // @codingStandardsIgnoreEnd
                                     if ($productData->getTypeId() == 'configurable') {
                                         $_children = $productData->getTypeInstance()->getUsedProducts($productData);
                                         foreach ($_children as $child) {
                                             $childProductData = $this->productRepository->get($child->getSKU());
-                                            if ($this->validateChildPriceUpdate($childProductData, $replPrice)) {
+                                            if ($this->validateChildPriceUpdate(
+                                                $childProductData,
+                                                $replPrice,
+                                                $baseUnitOfMeasure)) {
                                                 $childProductData->setPrice($replPrice->getUnitPrice());
+                                                // @codingStandardsIgnoreStart
+                                                $this->productResourceModel->saveAttribute($childProductData, 'price');
+                                                // @codingStandardsIgnoreEnd
                                             }
-                                            // @codingStandardsIgnoreStart
-                                            $this->productResourceModel->saveAttribute($childProductData, 'price');
-                                            // @codingStandardsIgnoreEnd
                                         }
                                     }
                                 }
@@ -144,12 +147,13 @@ class SyncPrice extends ProductCreateTask
     /**
      * @param $productData
      * @param $replPrice
+     * @param $baseUnitOfMeasure
      * @return bool
      */
-    private function validateChildPriceUpdate($productData, $replPrice)
+    private function validateChildPriceUpdate($productData, $replPrice, $baseUnitOfMeasure = null)
     {
         $needsPriceUpdate = false;
-        if ($productData->getData(LSR::LS_UOM_ATTRIBUTE_QTY) == 1 && empty($replPrice->getUnitOfMeasure())) {
+        if ($productData->getData('uom') == $baseUnitOfMeasure) {
             $needsPriceUpdate = true;
         } elseif ($productData->getData('uom') == $replPrice->getUnitOfMeasure()) {
             $needsPriceUpdate = true;

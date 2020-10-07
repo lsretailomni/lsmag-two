@@ -66,23 +66,28 @@ class SyncInventory extends ProductCreateTask
                         /** @var ReplInvStatus $replInvStatus */
                         foreach ($collection as $replInvStatus) {
                             try {
+                                $variants = null;
+                                $checkIsNotVariant = true;
                                 if (!$replInvStatus->getVariantId()) {
                                     $sku = $replInvStatus->getItemId();
                                 } else {
-                                    $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
+                                    $sku               = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
+                                    $checkIsNotVariant = false;
                                 }
-                                $uomCodes = $this->getUomCodes($replInvStatus->getItemId());
+                                $this->updateInventory($sku, $replInvStatus);
+                                $uomCodes = $this->getUomCodesProcessed($replInvStatus->getItemId());
                                 if (!empty($uomCodes)) {
                                     if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
+                                        // @codingStandardsIgnoreLine
+                                        $baseUnitOfMeasure = $uomCodes[$replInvStatus->getItemId() . '-' . 'BaseUnitOfMeasure'];
+                                        $variants          = $this->getProductVariants($sku);
                                         foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
-                                            $skuUom = $sku . "-" . $uomCode;
-                                            $this->updateInventory($skuUom, $replInvStatus);
+                                            if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) && empty($variants)) {
+                                                $skuUom = $sku . "-" . $uomCode;
+                                                $this->updateInventory($skuUom, $replInvStatus);
+                                            }
                                         }
-                                    } else {
-                                        $this->updateInventory($sku, $replInvStatus);
                                     }
-                                } else {
-                                    $this->updateInventory($sku, $replInvStatus);
                                 }
                             } catch (Exception $e) {
                                 $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);

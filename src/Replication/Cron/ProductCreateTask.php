@@ -56,6 +56,7 @@ use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute\Interceptor;
 use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\CatalogInventory\Model\Stock\Item;
+use Magento\ConfigurableProduct\Api\Data\OptionInterface;
 use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
@@ -532,15 +533,23 @@ class ProductCreateTask
                                 ]);
                                 $product = $this->getProductAttributes($product, $item);
                                 try {
+                                    // @codingStandardsIgnoreLine
                                     $this->logger->debug('Trying to save product ' . $item->getNavId() . ' in store ' . $store->getName());
                                     /** @var ProductRepositoryInterface $productSaved */
                                     $productSaved         = $this->productRepository->save($product);
+                                    // @codingStandardsIgnoreLine
                                     $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                     $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                     $totalUomCodes        = $this->getUomCodes($item->getNavId());
                                     if (!empty($variants) || count($totalUomCodes) > 1) {
-                                        $this->createConfigurableProducts($productSaved, $item, $itemBarcodes,
-                                            $variants, $totalUomCodes, $uomCodesNotProcessed);
+                                        $this->createConfigurableProducts(
+                                            $productSaved,
+                                            $item,
+                                            $itemBarcodes,
+                                            $variants,
+                                            $totalUomCodes,
+                                            $uomCodesNotProcessed
+                                        );
                                     }
                                     $this->assignProductToCategories($productSaved);
                                 } catch (Exception $e) {
@@ -561,6 +570,7 @@ class ProductCreateTask
                             if ($fullReplicationVariantStatus == 1) {
                                 $this->updateVariantsOnly();
                                 $this->caterVariantsRemoval();
+                                $this->caterUomsRemoval();
                             }
                             $this->updateBarcodeOnly();
                         }
@@ -569,6 +579,7 @@ class ProductCreateTask
                         }
                         $this->logger->debug('End ProductCreateTask for Store ' . $store->getName());
                     } else {
+                        // @codingStandardsIgnoreLine
                         $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully for Store ' . $store->getName() .
                             "\n Status cron CategoryCheck = " . $cronCategoryCheck .
                             "\n Status cron AttributeCheck = " . $cronAttributeCheck .
@@ -578,6 +589,7 @@ class ProductCreateTask
                             "\n Status full ReplicationPriceStatus = " . $fullReplicationPriceStatus .
                             "\n Status full ReplicationInvStatus = " . $fullReplicationInvStatus);
                     }
+                    // @codingStandardsIgnoreLine
                     $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT, $store->getId());
                 }
                 $this->lsr->setStoreId(null);
@@ -824,7 +836,7 @@ class ProductCreateTask
      * @param null $itemId
      * @return mixed
      */
-    private function getProductVariants($itemId = null)
+    public function getProductVariants($itemId = null)
     {
         $filters = [
             ['field' => 'VariantId', 'value' => true, 'condition_type' => 'notnull'],
@@ -889,6 +901,18 @@ class ProductCreateTask
     }
 
     /**
+     * Return all updated variants only
+     * @param array $filters
+     * @return type
+     */
+    private function getDeletedUomsOnly($filters)
+    {
+        /** @var SearchCriteria $criteria */
+        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters);
+        return $this->replItemUomRepository->getList($criteria)->getItems();
+    }
+
+    /**
      * @param $code
      * @param $value
      * @return null|string
@@ -945,8 +969,14 @@ class ProductCreateTask
         foreach ($itemBarcodes as $itemBarcode) {
             $sku               = $itemBarcode->getItemId() .
                 (($itemBarcode->getVariantId()) ? '-' . $itemBarcode->getVariantId() : '');
-            $sku               = $sku .
-                (($itemBarcode->getUnitOfMeasure()) ? '-' . $itemBarcode->getUnitOfMeasure() : '');
+
+            if (!empty($itemBarcode->getUnitOfMeasure())) {
+                $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemBarcode->getItemId());
+                if ($itemBarcode->getUnitOfMeasure() != $baseUnitOfMeasure) {
+                    $sku = $sku . '-' . $itemBarcode->getUnitOfMeasure();
+                }
+            }
+
             $allBarCodes[$sku] = $itemBarcode->getNavId();
         }
         return $allBarCodes;
@@ -1052,15 +1082,64 @@ class ProductCreateTask
         return $itemUom;
     }
 
+    /**
+     * @param $itemId
+     * @param null $variantId
+     * @return mixed
+     */
+    public function getUomCodesProcessed($itemId)
+    {
+        $filters = [
+            ['field' => 'main_table.ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'main_table.processed', 'value' => 1, 'condition_type' => 'eq'],
+            ['field' => 'main_table.is_updated', 'value' => 0, 'condition_type' => 'eq'],
+        ];
+
+        $itemUom = [];
+        /** @var  $collection */
+        $collection = $this->replItemUomCollectionFactory->create();
+        $criteria   = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+
+        /** we only need unique product Id's which has any images to modify */
+        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'ItemId',
+            'ls_replication_repl_item',
+            'nav_id',
+            false,
+            false
+        );
+
+        $collection->getSelect()->columns('second.BaseUnitOfMeasure');
+
+        /** @var ReplItemUnitOfMeasure $items */
+        try {
+            if ($collection->getSize() > 0) {
+                foreach ($collection->getItems() as $item) {
+                    /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
+                    $itemUom[$itemId][$item->getDescription()]    = $item->getCode();
+                    $itemUom[$itemId . '-' . 'BaseUnitOfMeasure'] = $item->getData('BaseUnitOfMeasure');
+                }
+            }
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
+        return $itemUom;
+    }
+
 
     /**
      * Update/Add the modified/added variants of the item
+     * @throws InputException
      */
     public function updateVariantsOnly()
     {
         $batchSize          = $this->replicationHelper->getVariantBatchSize();
         $allUpdatedVariants = $this->getNewOrUpdatedProductVariants($batchSize);
         $uomCodes           = $this->getNewOrUpdatedProductUoms($batchSize);
+        $items              = [];
         if (!empty($allUpdatedVariants)) {
             foreach ($allUpdatedVariants as $variant) {
                 $items[] = $variant->getItemId();
@@ -1081,18 +1160,24 @@ class ProductCreateTask
                 $itemData             = $this->_getItem($item);
                 $productVariants      = $this->getNewOrUpdatedProductVariants(-1, $item);
                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item);
-                $totalUomCodes = $this->getUomCodes($itemData->getNavId());
+                $totalUomCodes        = $this->getUomCodes($itemData->getNavId());
                 if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
                     $productVariants = $this->getProductVariants($itemData->getNavId());
                 }
                 if (!empty($productVariants) || count($totalUomCodes[$itemData->getNavId()]) > 1)
-                    $this->createConfigurableProducts($productData, $itemData, $itemBarcodes, $productVariants, $totalUomCodes, $uomCodesNotProcessed);
+                    $this->createConfigurableProducts(
+                        $productData,
+                        $itemData,
+                        $itemBarcodes,
+                        $productVariants,
+                        $totalUomCodes,
+                        $uomCodesNotProcessed
+                    );
             } catch (Exception $e) {
                 $this->logger->debug('Problem with sku: ' . $item . ' in ' . __METHOD__);
                 $this->logger->debug($e->getMessage());
             }
         }
-
     }
 
     /**
@@ -1181,6 +1266,51 @@ class ProductCreateTask
         }
     }
 
+
+    /**
+     * Cater SimpleProducts Removal for Uoms
+     */
+    public function caterUomsRemoval()
+    {
+        $filters = [
+            ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+
+        ];
+        $uoms    = $this->getDeletedUomsOnly($filters);
+
+        if (!empty($uoms)) {
+            /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $uom */
+            foreach ($uoms as $uom) {
+                $itemId = $uom->getItemId();
+                try {
+                    $productData = $this->productRepository->get($itemId, true, $this->store->getId());
+                    $children    = $productData->getTypeInstance()->getUsedProducts($productData);
+                    foreach ($children as $child) {
+                        $childProductData = $this->productRepository->get($child->getSKU());
+                        if ($childProductData->getData('uom') == $uom->getCode()) {
+                            $childProductData->setStatus(
+                                Status::STATUS_DISABLED
+                            );
+                            // @codingStandardsIgnoreLine
+                            $this->productRepository->save($childProductData);
+                        }
+                    }
+                } catch (Exception $e) {
+                    $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                    $this->logger->debug($e->getMessage());
+                    $uom->setData('is_failed', 1);
+                }
+                $uom->setData('is_updated', 0);
+                $uom->setData('IsDeleted', 0);
+                $uom->setData('processed_at', $this->replicationHelper->getDateTime());
+                $uom->setData('processed', 1);
+                // @codingStandardsIgnoreLine
+                $this->replItemUomRepository->save($uom);
+            }
+        }
+    }
+
     /**
      * @param $product
      * @param $nameValueList
@@ -1248,6 +1378,13 @@ class ProductCreateTask
                         } else {
                             $sku = $replBarcode->getItemId() . '-' . $replBarcode->getVariantId();
                         }
+                        if (!empty($replBarcode->getUnitOfMeasure())) {
+                            // @codingStandardsIgnoreLine
+                            $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($replBarcode->getItemId());
+                            if ($replBarcode->getUnitOfMeasure() != $baseUnitOfMeasure) {
+                                $sku = $sku . '-' . $replBarcode->getUnitOfMeasure();
+                            }
+                        }
                         $productData = $this->productRepository->get($sku, true, $this->store->getId());
                         if (isset($productData)) {
                             $productData->setBarcode($replBarcode->getNavId());
@@ -1281,7 +1418,11 @@ class ProductCreateTask
      * @throws StateException
      */
     public function createConfigurableProducts(
-        $configProduct, $item, $itemBarcodes, $variants, $totalUomCodes = null,
+        $configProduct,
+        $item,
+        $itemBarcodes,
+        $variants,
+        $totalUomCodes = null,
         $uomCodesNotProcessed = null
     ) {
         // Get those attribute codes which are assigned to product.
@@ -1305,14 +1446,19 @@ class ProductCreateTask
             foreach ($uomCodesNotProcessed as $uomCode) {
                 /** @var ReplItemVariantRegistration $value */
                 foreach ($variants as $value) {
-                    $sku = $value->getItemId() . '-' . $value->getVariantId() . '-' . $uomCode->getCode();
+                    if ($uomCode->getCode() != $item->getBaseUnitOfMeasure()) {
+                        $sku = $value->getItemId() . '-' . $value->getVariantId() . '-' . $uomCode->getCode();
+                    } else {
+                        $sku = $value->getItemId() . '-' . $value->getVariantId();
+                    }
+
                     try {
                         $productData = $this->saveProductForWebsite($sku);
                         try {
 
                             $name                   = $this->getNameForVariant($value, $item);
                             $name                   = $this->getNameForUom($name, $uomCode->getDescription());
-                            $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name);
+                            $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name, $uomCode);
                             $associatedProductIds   = array_unique($associatedProductIds);
 
                         } catch (Exception $e) {
@@ -1333,7 +1479,16 @@ class ProductCreateTask
 
                         $name                   = $this->getNameForVariant($value, $item);
                         $name                   = $this->getNameForUom($name, $uomCode->getDescription());
-                        $associatedProductIds[] = $this->createConfigProduct($name, $item, $value, $uomCode, $sku, $configProduct, $attributesCode, $itemBarcodes);
+                        $associatedProductIds[] = $this->createConfigProduct(
+                            $name,
+                            $item,
+                            $value,
+                            $uomCode,
+                            $sku,
+                            $configProduct,
+                            $attributesCode,
+                            $itemBarcodes
+                        );
                     }
                     $value->setData('processed_at', $this->replicationHelper->getDateTime());
                     $value->setData('processed', 1);
@@ -1346,7 +1501,7 @@ class ProductCreateTask
                 $uomCode->setData('is_updated', 0);
                 $this->replItemUomRepository->save($uomCode);
             }
-        } else if (!empty($uomCodesNotProcessed) && empty($variants)) {
+        } elseif (!empty($uomCodesNotProcessed) && empty($variants)) {
             /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $uomCode */
             foreach ($uomCodesNotProcessed as $uomCode) {
                 $value = null;
@@ -1364,7 +1519,16 @@ class ProductCreateTask
                     }
                 } catch (NoSuchEntityException $e) {
 
-                    $associatedProductIds[] = $this->createConfigProduct($name, $item, $value, $uomCode, $sku, $configProduct, $attributesCode, $itemBarcodes);
+                    $associatedProductIds[] = $this->createConfigProduct(
+                        $name,
+                        $item,
+                        $value,
+                        $uomCode,
+                        $sku,
+                        $configProduct,
+                        $attributesCode,
+                        $itemBarcodes
+                    );
                 }
                 $uomCode->setData('processed_at', $this->replicationHelper->getDateTime());
                 $uomCode->setData('processed', 1);
@@ -1401,7 +1565,16 @@ class ProductCreateTask
                     }
 
                     $name                   = $this->getNameForVariant($value, $item);
-                    $associatedProductIds[] = $this->createConfigProduct($name, $item, $value, $uomCode, $sku, $configProduct, $attributesCode, $itemBarcodes);
+                    $associatedProductIds[] = $this->createConfigProduct(
+                        $name,
+                        $item,
+                        $value,
+                        $uomCode,
+                        $sku,
+                        $configProduct,
+                        $attributesCode,
+                        $itemBarcodes
+                    );
                 }
                 $value->setData('processed_at', $this->replicationHelper->getDateTime());
                 $value->setData('processed', 1);
@@ -1417,8 +1590,9 @@ class ProductCreateTask
             $productId = $configProduct->getId();
         }
         $position = 0;
-        if ($configProduct->getTypeId() == Type::TYPE_SIMPLE) {
-            $attributeData = [];
+        if ($configProduct->getTypeId() == Type::TYPE_SIMPLE || !empty($uomCodesNotProcessed)) {
+            $attributeData     = [];
+            $attributeIdsArray = $this->validateConfigurableAttributes($configProduct);
             foreach ($attributesCode as $value) {
                 /** @var Interceptor $attribute */
                 $attribute       = $this->eavConfig->getAttribute('catalog_product', $value);
@@ -1431,9 +1605,12 @@ class ProductCreateTask
 
                 $attributeData[] = $this->getConfigurableAttributeData($attribute, $position);
                 try {
-                    // @codingStandardsIgnoreLine
-                    $this->attribute->setData($data)->save();
+                    if (!in_array($attribute->getId(), $attributeIdsArray)) {
+                        // @codingStandardsIgnoreLine
+                        $this->attribute->setData($data)->save();
+                    }
                 } catch (Exception $e) {
+                    // @codingStandardsIgnoreLine
                     $this->logger->debug('Issue while saving Attribute Id : ' . $attribute->getId() . " and Product Id : $productId - " . $e->getMessage());
                 }
                 $position++;
@@ -1551,10 +1728,12 @@ class ProductCreateTask
      * @param $productData
      * @param $item
      * @param $name
+     * @param $attributesCode
      * @param $uomCode
      * @return int|null
      * @throws CouldNotSaveException
      * @throws InputException
+     * @throws LocalizedException
      * @throws StateException
      */
     private function updateConfigProduct($productData, $item, $name, $uomCode = null)
@@ -1567,6 +1746,8 @@ class ProductCreateTask
         if (!empty($uomCode)) {
             $productData->setCustomAttribute("uom", $uomCode->getCode());
             $productData->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
+            $optionId = $this->_getOptionIDByCode(LSR::LS_UOM_ATTRIBUTE, $uomCode->getDescription());
+            $productData->setData(LSR::LS_UOM_ATTRIBUTE, $optionId);
         } else {
             $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
         }
@@ -1591,8 +1772,16 @@ class ProductCreateTask
      * @throws LocalizedException
      * @throws StateException
      */
-    private function createConfigProduct($name, $item, $value, $uomCode, $sku, $configProduct, $attributesCode, $itemBarcodes)
-    {
+    private function createConfigProduct(
+        $name,
+        $item,
+        $value,
+        $uomCode,
+        $sku,
+        $configProduct,
+        $attributesCode,
+        $itemBarcodes
+    ) {
         $productV = $this->productFactory->create();
         $productV->setName($name);
         $productV->setStoreId($this->store->getId());
@@ -1609,8 +1798,12 @@ class ProductCreateTask
         }
         if (isset($uomCode) && isset($value)) {
             $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId(), $unitOfMeasure);
-        } else if (isset($uomCode)) {
+            $itemSku   = $value->getItemId() . '-' . $value->getVariantId();
+            $this->syncImagesForUom($itemSku, $productV);
+        } elseif (isset($uomCode)) {
             $itemPrice = $this->getItemPrice($uomCode->getItemId(), null, $unitOfMeasure);
+            $itemSku   = $value->getItemId();
+            $this->syncImagesForUom($itemSku, $productV);
         } else {
             $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId(), $unitOfMeasure);
         }
@@ -1619,7 +1812,10 @@ class ProductCreateTask
         } else {
             // Just in-case if we don't have price for Variant then in that case,
             // we are using the price of main product.
-            $productV->setPrice($configProduct->getPrice());
+            $price = $this->getItemPrice($value->getItemId());
+            if (!empty($price)) {
+                $productV->setPrice($price->getUnitPrice());
+            }
         }
         $productV->setAttributeSetId(4);
         $productV->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
@@ -1686,6 +1882,7 @@ class ProductCreateTask
         /** Check if all configurable attributes have value or not. */
         foreach ($attributesCode as $keyCode => $valueCode) {
             if (${'d' . $keyCode} == '' && $valueCode != LSR::LS_UOM_ATTRIBUTE) {
+                // @codingStandardsIgnoreLine
                 // Validation failed, that attribute contain some crappy data or null attribute which we does not need to process
                 $isVariantContainNull = true;
                 break;
@@ -1734,4 +1931,51 @@ class ProductCreateTask
             'values'       => $attributeValues
         ];
     }
+
+    /**
+     * @param $configProduct
+     * @return array|null
+     */
+    public function validateConfigurableAttributes($configProduct)
+    {
+        $attributeIds        = [];
+        $extensionAttributes = $configProduct->getExtensionAttributes();
+        if ($extensionAttributes === null) {
+            return $attributeIds;
+        }
+        $configurableOptions = (array)$extensionAttributes->getConfigurableProductOptions();
+
+        /** @var OptionInterface $configurableOption */
+        foreach ($configurableOptions as $configurableOption) {
+            $attributeIds[] = $configurableOption->getAttributeId();
+        }
+        return $attributeIds;
+    }
+
+    /**
+     * @param $existingProduct
+     * @param $uomProduct
+     * @throws NoSuchEntityException
+     */
+    public function syncImagesForUom($existingProduct, $uomProduct)
+    {
+        try {
+            $product = $this->productRepository->get($existingProduct);
+            //Assign image from the already created product to the uom product
+            $images = $product->getMediaGalleryImages();
+            foreach ($images as $image) {
+                if ($path = $image->getPath()) {
+                    $uomProduct->addImageToMediaGallery(
+                        $path,
+                        array('image', 'thumbnail', 'small_image'),
+                        false,
+                        false
+                    );
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->info($e->getMessage());
+        }
+    }
+
 }

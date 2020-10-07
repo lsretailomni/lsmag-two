@@ -232,11 +232,16 @@ class ItemHelper extends AbstractHelper
         try {
             $discountInfo = [];
             $customPrice  = 0;
+            $uom          = '';
             if ($type == 2) {
                 $itemSku = $item->getItemId();
                 $itemSku = explode("-", $itemSku);
                 if (count($itemSku) < 2) {
                     $itemSku[1] = $item->getVariantId();
+                }
+                // @codingStandardsIgnoreLine
+                if (count($itemSku) > 2) {
+                    $uom = $itemSku[2];
                 }
                 $customPrice = $item->getDiscountAmount();
             } else {
@@ -244,6 +249,10 @@ class ItemHelper extends AbstractHelper
                 $itemSku = explode("-", $itemSku);
                 if (count($itemSku) < 2) {
                     $itemSku[1] = '';
+                }
+                // @codingStandardsIgnoreLine
+                if (count($itemSku) > 2) {
+                    $uom = $itemSku[2];
                 }
                 $customPrice = $item->getCustomPrice();
             }
@@ -258,7 +267,7 @@ class ItemHelper extends AbstractHelper
                 $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
             }
             foreach ($basketData as $basket) {
-                if ($basket->getItemId() == $itemSku[0] && $basket->getVariantId() == $itemSku[1]) {
+                if ($basket->getItemId() == $itemSku[0] && $basket->getVariantId() == $itemSku[1] && $uom == $basket->getUomId()) {
                     if ($customPrice > 0 && $customPrice != null) {
                         // @codingStandardsIgnoreLine
                         foreach ($discountsLines as $orderDiscountLine) {
@@ -294,20 +303,27 @@ class ItemHelper extends AbstractHelper
                 $orderLines     = $basketData->getOrderLines()->getOrderLine();
                 $oldItemVariant = [];
                 $itemSku        = explode("-", $item->getSku());
+                $uom            = '';
                 // @codingStandardsIgnoreLine
                 if (count($itemSku) < 2) {
                     $itemSku[1] = null;
                 }
+
+                // @codingStandardsIgnoreLine
+                if (count($itemSku) > 2) {
+                    $uom = $itemSku[2];
+                }
+
                 if (is_array($orderLines)) {
                     foreach ($orderLines as $line) {
-                        if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
+                        if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId() && $uom == $line->getUomId()) {
                             $unitPrice = $line->getAmount() / $line->getQuantity();
-                            if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
+                            if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()]['Amount'])) {
                                 // @codingStandardsIgnoreLine
-                                $item->setCustomPrice($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount());
+                                $item->setCustomPrice($oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()] ['Amount'] + $line->getAmount());
                                 $item->setDiscountAmount(
                                 // @codingStandardsIgnoreLine
-                                    $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount()
+                                    $oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()]['Discount'] + $line->getDiscountAmount()
                                 );
                                 $item->setOriginalCustomPrice($line->getPrice());
                             } else {
@@ -326,14 +342,14 @@ class ItemHelper extends AbstractHelper
                             }
                         }
                         // @codingStandardsIgnoreStart
-                        if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount']    =
-                                $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount();
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] ['Discount'] =
-                                $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount();
+                        if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()]['Amount'])) {
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()]['Amount']    =
+                                $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()]['Amount'] + $line->getAmount();
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()] ['Discount'] =
+                                $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()] ['Discount'] + $line->getDiscountAmount();
                         } else {
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount']   = $line->getAmount();
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] = $line->getDiscountAmount();
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()]['Amount']   = $line->getAmount();
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()]['Discount'] = $line->getDiscountAmount();
                         }
                         // @codingStandardsIgnoreEnd
                     }

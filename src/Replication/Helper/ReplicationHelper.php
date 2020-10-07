@@ -8,6 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Eav\Model\Config;
@@ -107,6 +108,11 @@ class ReplicationHelper extends AbstractHelper
     public $_logger;
 
     /**
+     * @var ReplItemRepository
+     */
+    public $itemRepository;
+
+    /**
      * ReplicationHelper constructor.
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -125,6 +131,7 @@ class ReplicationHelper extends AbstractHelper
      * @param DateTime $date
      * @param TimezoneInterface $timezone
      * @param Logger $_logger
+     * @param ReplItemRepository $itemRepository
      */
     public function __construct(
         Context $context,
@@ -143,7 +150,8 @@ class ReplicationHelper extends AbstractHelper
         SortOrder $sortOrder,
         DateTime $date,
         TimezoneInterface $timezone,
-        Logger $_logger
+        Logger $_logger,
+        ReplItemRepository $itemRepository
     ) {
         $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
         $this->filterBuilder                    = $filterBuilder;
@@ -161,6 +169,7 @@ class ReplicationHelper extends AbstractHelper
         $this->dateTime                         = $date;
         $this->timezone                         = $timezone;
         $this->_logger                          = $_logger;
+        $this->itemRepository                   = $itemRepository;
         parent::__construct(
             $context
         );
@@ -389,6 +398,8 @@ class ReplicationHelper extends AbstractHelper
      * @param array $filters
      * @param int $pagesize
      * @param boolean $excludeDeleted
+     * @param null $parameter
+     * @param null $parameter2
      * @return SearchCriteria
      */
     public function buildCriteriaForDirect(
@@ -438,7 +449,7 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         if ($excludeDeleted) {
-            $criteria->addFilter('IsDeleted', 0, 'eq');
+            $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
         }
         if ($pagesize != -1) {
             $criteria->setPageSize($pagesize);
@@ -871,7 +882,7 @@ class ReplicationHelper extends AbstractHelper
         if ($isReplaceJoin) {
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
-                'main_table.' . $primaryTableColumnName . ' like CONCAT("%",REPLACE(second.' . $secondaryTableColumnName . ',"-",","),"%")',
+                'main_table.' . $primaryTableColumnName . ' = REPLACE(second.' . $secondaryTableColumnName . ',"-",",")',
                 []
             );
         } else {
@@ -881,12 +892,11 @@ class ReplicationHelper extends AbstractHelper
                 []
             );
         }
-        $collection->getSelect()->columns('second.' . $secondaryTableColumnName);
         if ($group) {
             $collection->getSelect()->group('main_table.' . $primaryTableColumnName);
         }
         /** @var For Xdebug only to check the query $query */
-        //$query = $collection->getSelect()->__toString();
+        $query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
@@ -937,7 +947,7 @@ class ReplicationHelper extends AbstractHelper
         if ($isReplaceJoin) {
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
-                'CONCAT_WS("-",main_table.' . $primaryTableColumnName . ',main_table.' . $primaryTableColumnName2 . ') LIKE  CONCAT("%",second.' . $secondaryTableColumnName . ",'%')",
+                'CONCAT_WS("-",main_table.' . $primaryTableColumnName . ',main_table.' . $primaryTableColumnName2 . ') = second.' . $secondaryTableColumnName,
                 []
             );
         } else {
@@ -948,7 +958,7 @@ class ReplicationHelper extends AbstractHelper
             );
         }
         /** @var For Xdebug only to check the query $query */
-        //$query = $collection->getSelect()->__toString();
+        $query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
@@ -980,6 +990,7 @@ class ReplicationHelper extends AbstractHelper
         }
         if ($fieldToSort) {
             $collection->getSelect()->order('main_table.' . $fieldToSort);
+            $collection->getSelect()->order('main_table.QtyPrUom');
         }
 
         // @codingStandardsIgnoreEnd
@@ -1181,5 +1192,26 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         return;
+    }
+
+    /**
+     * @param $itemId
+     * @return mixed
+     */
+    public function getBaseUnitOfMeasure($itemId)
+    {
+        $baseUnitOfMeasure = null;
+        $filters           = [
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+
+        ];
+        $criteria          = $this->buildCriteriaForDirect($filters, 1);
+        $items             = $this->itemRepository->getList($criteria)->getItems();
+        foreach ($items as $item) {
+            return $item->getBaseUnitOfMeasure();
+        }
+
+        return $baseUnitOfMeasure;
     }
 }
