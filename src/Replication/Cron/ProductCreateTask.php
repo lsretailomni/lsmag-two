@@ -486,10 +486,12 @@ class ProductCreateTask
                                 $productData->setDescription($item->getDetails());
                                 $productData->setWeight($item->getGrossWeight());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-                                $product = $this->getProductAttributes($productData, $item);
+                                $productData = $this->setProductStatus($productData, $item->getBlockedOnECom());
+                                $product     = $this->getProductAttributes($productData, $item);
                                 try {
                                     // @codingStandardsIgnoreLine
-                                    $this->productRepository->save($product);
+                                    $productSaved = $this->productRepository->save($product);
+                                    $this->updateProductStatusGlobal($productSaved);
                                 } catch (Exception $e) {
                                     $this->logger->debug($e->getMessage());
                                     $item->setData('is_failed', 1);
@@ -517,7 +519,7 @@ class ProductCreateTask
                                     $product->setPrice($item->getUnitPrice());
                                 }
                                 $product->setAttributeSetId(4);
-                                $product->setStatus(Status::STATUS_ENABLED);
+                                $product = $this->setProductStatus($product, $item->getBlockedOnECom());
                                 $product->setTypeId(Type::TYPE_SIMPLE);
                                 $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 /** @var ReplBarcodeRepository $itemBarcodes */
@@ -536,7 +538,7 @@ class ProductCreateTask
                                     // @codingStandardsIgnoreLine
                                     $this->logger->debug('Trying to save product ' . $item->getNavId() . ' in store ' . $store->getName());
                                     /** @var ProductRepositoryInterface $productSaved */
-                                    $productSaved         = $this->productRepository->save($product);
+                                    $productSaved = $this->productRepository->save($product);
                                     // @codingStandardsIgnoreLine
                                     $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                     $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
@@ -967,7 +969,7 @@ class ProductCreateTask
         /** @var ReplBarcodeRepository $itemBarcodes */
         $itemBarcodes = $this->replBarcodeRepository->getList($searchCriteria)->getItems();
         foreach ($itemBarcodes as $itemBarcode) {
-            $sku               = $itemBarcode->getItemId() .
+            $sku = $itemBarcode->getItemId() .
                 (($itemBarcode->getVariantId()) ? '-' . $itemBarcode->getVariantId() : '');
 
             if (!empty($itemBarcode->getUnitOfMeasure())) {
@@ -1194,7 +1196,7 @@ class ProductCreateTask
             foreach ($items->getItems() as $value) {
                 $sku         = $value->getNavId();
                 $productData = $this->productRepository->get($sku, true, $this->store->getId());
-                $productData->setStatus(Status::STATUS_DISABLED);
+                $productData = $this->setProductStatus($productData, 1);
                 try {
                     $this->productRepository->save($productData);
                 } catch (Exception $e) {
@@ -1246,9 +1248,7 @@ class ProductCreateTask
                     }
                     $associatedSimpleProduct = $this->getConfAssoProductId($productData, $configurableAttributes);
                     if ($associatedSimpleProduct != null) {
-                        $associatedSimpleProduct->setStatus(
-                            Status::STATUS_DISABLED
-                        );
+                        $associatedSimpleProduct = $this->setProductStatus($associatedSimpleProduct, 1);
                         // @codingStandardsIgnoreLine
                         $this->productRepository->save($associatedSimpleProduct);
                     }
@@ -1289,9 +1289,7 @@ class ProductCreateTask
                     foreach ($children as $child) {
                         $childProductData = $this->productRepository->get($child->getSKU());
                         if ($childProductData->getData('uom') == $uom->getCode()) {
-                            $childProductData->setStatus(
-                                Status::STATUS_DISABLED
-                            );
+                            $childProductData = $this->setProductStatus($childProductData, 1);
                             // @codingStandardsIgnoreLine
                             $this->productRepository->save($childProductData);
                         }
@@ -1518,7 +1516,6 @@ class ProductCreateTask
                         $uomCode->setData('is_failed', 1);
                     }
                 } catch (NoSuchEntityException $e) {
-
                     $associatedProductIds[] = $this->createConfigProduct(
                         $name,
                         $item,
@@ -1930,6 +1927,36 @@ class ProductCreateTask
             'label'        => $attribute->getName(),
             'values'       => $attributeValues
         ];
+    }
+
+    /**
+     * @param $product
+     * @param $disableStatus
+     * @return mixed
+     */
+    public function setProductStatus($product, $disableStatus)
+    {
+        if ($disableStatus == 1) {
+            $product->setStatus(Status::STATUS_DISABLED);
+
+        } else {
+            $product->setStatus(Status::STATUS_ENABLED);
+        }
+
+        return $product;
+    }
+
+    /**
+     * @param $product
+     */
+    public function updateProductStatusGlobal($product)
+    {
+        try {
+            $product->setStoreId(0);
+            $product->getResource()->saveAttribute($product, 'status');
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
     }
 
     /**

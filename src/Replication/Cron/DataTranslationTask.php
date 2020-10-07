@@ -4,16 +4,25 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
+use \Ls\Replication\Model\ReplAttributeOptionValue;
+use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
 use \Ls\Replication\Model\ReplDataTranslation;
 use \Ls\Replication\Api\ReplDataTranslationRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplDataTranslationSearchResults;
 use \Ls\Replication\Model\ResourceModel\ReplDataTranslation\CollectionFactory as ReplDataTranslationCollectionFactory;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
+use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Catalog\Model\ResourceModel\Product;
+use Magento\Eav\Api\AttributeOptionManagementInterface;
+use Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory;
+use Magento\Eav\Model\Entity\Attribute\OptionLabel;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
@@ -66,7 +75,9 @@ class DataTranslationTask
      */
     public $cronStatus = false;
 
-    /** @var Attribute */
+    /**
+     * @var Attribute
+     */
     public $eavAttribute;
 
     /**
@@ -85,6 +96,31 @@ class DataTranslationTask
     public $productRepository;
 
     /**
+     * @var ProductAttributeRepositoryInterface
+     */
+    public $productAttributeRepository;
+
+    /**
+     * @var AttributeFactory
+     */
+    public $eavAttributeFactory;
+
+    /**
+     * @var AttributeOptionManagementInterface
+     */
+    public $attributeOptionManagement;
+
+    /**
+     * @var AttributeOptionLabelInterfaceFactory
+     */
+    public $optionLabelFactory;
+
+    /**
+     * @var ReplAttributeOptionValueRepositoryInterface
+     */
+    public $replAttributeOptionValueRepositoryInterface;
+
+    /**
      * DataTranslationTask constructor.
      * @param ReplicationHelper $replicationHelper
      * @param ReplDataTranslationRepositoryInterface $dataTranslationRepository
@@ -96,6 +132,11 @@ class DataTranslationTask
      * @param Attribute $eavAttribute
      * @param Product $productResourceModel
      * @param ProductRepositoryInterface $productRepository
+     * @param ProductAttributeRepositoryInterface $productAttributeRepository
+     * @param AttributeFactory $eavAttributeFactory
+     * @param AttributeOptionManagementInterface $attributeOptionManagement
+     * @param AttributeOptionLabelInterfaceFactory $optionLabelFactory
+     * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
@@ -107,18 +148,28 @@ class DataTranslationTask
         ReplDataTranslationCollectionFactory $replDataTranslationCollectionFactory,
         Attribute $eavAttribute,
         Product $productResourceModel,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        ProductAttributeRepositoryInterface $productAttributeRepository,
+        AttributeFactory $eavAttributeFactory,
+        AttributeOptionManagementInterface $attributeOptionManagement,
+        AttributeOptionLabelInterfaceFactory $optionLabelFactory,
+        ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
     ) {
-        $this->replicationHelper                    = $replicationHelper;
-        $this->dataTranslationRepository            = $dataTranslationRepository;
-        $this->categoryCollectionFactory            = $categoryCollectionFactory;
-        $this->categoryRepository                   = $categoryRepository;
-        $this->lsr                                  = $LSR;
-        $this->logger                               = $logger;
-        $this->replDataTranslationCollectionFactory = $replDataTranslationCollectionFactory;
-        $this->eavAttribute                         = $eavAttribute;
-        $this->productResourceModel                 = $productResourceModel;
-        $this->productRepository                    = $productRepository;
+        $this->replicationHelper                           = $replicationHelper;
+        $this->dataTranslationRepository                   = $dataTranslationRepository;
+        $this->categoryCollectionFactory                   = $categoryCollectionFactory;
+        $this->categoryRepository                          = $categoryRepository;
+        $this->lsr                                         = $LSR;
+        $this->logger                                      = $logger;
+        $this->replDataTranslationCollectionFactory        = $replDataTranslationCollectionFactory;
+        $this->eavAttribute                                = $eavAttribute;
+        $this->productResourceModel                        = $productResourceModel;
+        $this->productRepository                           = $productRepository;
+        $this->productAttributeRepository                  = $productAttributeRepository;
+        $this->eavAttributeFactory                         = $eavAttributeFactory;
+        $this->attributeOptionManagement                   = $attributeOptionManagement;
+        $this->optionLabelFactory                          = $optionLabelFactory;
+        $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
     }
 
     /**
@@ -140,6 +191,8 @@ class DataTranslationTask
                 if ($langCode != "Default") {
                     $this->updateHierarchyNode($store->getId(), $langCode);
                     $this->updateItem($store->getId(), $langCode);
+                    $this->updateAttributes($store->getId(), $langCode);
+                    $this->updateAttributeOptionValue($store->getId(), $langCode);
                 } else {
                     $this->cronStatus = true;
                 }
@@ -163,6 +216,117 @@ class DataTranslationTask
      * @param $storeId
      * @param $langCode
      */
+    public function updateAttributeOptionValue($storeId, $langCode)
+    {
+        $filters  = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
+            [
+                'field'          => 'main_table.TranslationId',
+                'value'          => LSR::SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE,
+                'condition_type' => 'eq'
+            ],
+            ['field' => 'text', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'key', 'value' => true, 'condition_type' => 'notnull']
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
+        /** @var ReplDataTranslationSearchResults $dataTranslationItems */
+        $dataTranslationItems = $this->dataTranslationRepository->getList($criteria)->getItems();
+        /** @var ReplDataTranslation $dataTranslation */
+        foreach ($dataTranslationItems as $dataTranslation) {
+            try {
+                $keyArray = explode(';', $dataTranslation->getKey());
+                if (count($keyArray) == 2) {
+                    $formattedCode       = $this->replicationHelper->formatAttributeCode($keyArray[0]);
+                    $attribute           = $this->eavAttributeFactory->create();
+                    $attributeObject     = $attribute->loadByCode(
+                        \Magento\Catalog\Model\Product::ENTITY,
+                        $formattedCode
+                    )->setData('store_id', 0);
+                    $originalOptionValue = $this->getOriginalOptionLabel($keyArray, $storeId);
+                    if (!empty($attributeObject->getId()) && $originalOptionValue) {
+                        $optionId = $attributeObject->getSource()->getOptionId($originalOptionValue);
+                        if (!empty($optionId)) {
+                            $options = $attributeObject->getOptions();
+                            foreach ($options as $option) {
+                                if ($option->getValue() == $optionId) {
+                                    /** @var OptionLabel $optionLabel */
+                                    $optionLabel = $this->optionLabelFactory->create();
+                                    $optionLabel->setStoreId($storeId);
+                                    $optionLabel->setLabel($dataTranslation->getText());
+                                    $option->setStoreLabels([$optionLabel]);
+                                    $attributeObject->setOptions([$option]);
+                                    $this->productAttributeRepository->save($attributeObject);
+                                    $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
+                                    $dataTranslation->setData('processed', 1);
+                                    $dataTranslation->setData('is_updated', 0);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    $this->logger->debug('Translation Key is not valid for ' . $dataTranslation->getKey());
+                    $dataTranslation->setData('is_failed', 1);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
+                $dataTranslation->setData('is_failed', 1);
+            }
+            // @codingStandardsIgnoreLine
+            $this->dataTranslationRepository->save($dataTranslation);
+        }
+    }
+
+    /**
+     * @param $storeId
+     * @param $langCode
+     */
+    public function updateAttributes($storeId, $langCode)
+    {
+        $filters  = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
+            [
+                'field'          => 'main_table.TranslationId',
+                'value'          => LSR::SC_TRANSLATION_ID_ATTRIBUTE,
+                'condition_type' => 'eq'
+            ],
+            ['field' => 'text', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'key', 'value' => true, 'condition_type' => 'notnull']
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
+        /** @var ReplDataTranslationSearchResults $dataTranslationItems */
+        $dataTranslationItems = $this->dataTranslationRepository->getList($criteria)->getItems();
+        /** @var ReplDataTranslation $dataTranslation */
+        foreach ($dataTranslationItems as $dataTranslation) {
+            try {
+                $formattedCode   = $this->replicationHelper->formatAttributeCode($dataTranslation->getKey());
+                $attribute       = $this->eavAttributeFactory->create();
+                $attributeObject = $attribute->loadByCode(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
+                if (!empty($attributeObject->getId())) {
+                    $labels[$storeId] = $dataTranslation->getText();
+                    $attributeObject->setData('store_labels', $labels);
+                    $this->productAttributeRepository->save($attributeObject);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
+                $dataTranslation->setData('is_failed', 1);
+            }
+            $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
+            $dataTranslation->setData('processed', 1);
+            $dataTranslation->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->dataTranslationRepository->save($dataTranslation);
+        }
+    }
+
+    /**
+     * @param $storeId
+     * @param $langCode
+     */
     public function updateItem($storeId, $langCode)
     {
         $filters    = [
@@ -170,7 +334,7 @@ class DataTranslationTask
             ['field' => 'main_table.LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
             [
                 'field'          => 'main_table.TranslationId',
-                'value'          => LSR::SC_TRANSACTION_ID_ITEM_DESCRIPTION,
+                'value'          => LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION,
                 'condition_type' => 'eq'
             ],
             ['field' => 'main_table.text', 'value' => true, 'condition_type' => 'notnull'],
@@ -214,16 +378,6 @@ class DataTranslationTask
     }
 
     /**
-     * @param null $storeData
-     * @return int[]
-     */
-    public function executeManually($storeData = null)
-    {
-        $this->execute($storeData);
-        return [0];
-    }
-
-    /**
      * @param $storeId
      * @param $langCode
      */
@@ -235,7 +389,7 @@ class DataTranslationTask
             ['field' => 'main_table.LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
             [
                 'field'          => 'main_table.TranslationId',
-                'value'          => LSR::SC_TRANSACTION_ID_HIERARCHY_NODE,
+                'value'          => LSR::SC_TRANSLATION_ID_HIERARCHY_NODE,
                 'condition_type' => 'eq'
             ],
             ['field' => 'main_table.key', 'value' => true, 'condition_type' => 'notnull'],
@@ -277,6 +431,16 @@ class DataTranslationTask
     }
 
     /**
+     * @param null $storeData
+     * @return int[]
+     */
+    public function executeManually($storeData = null)
+    {
+        $this->execute($storeData);
+        return [0];
+    }
+
+    /**
      * Check if the category already exist or not
      * @param $navId
      * @param false $store
@@ -296,5 +460,29 @@ class DataTranslationTask
             // @codingStandardsIgnoreEnd
         }
         return false;
+    }
+
+    /**
+     * @param $keyArray
+     * @param $storeId
+     * @return false|string
+     */
+    public function getOriginalOptionLabel($keyArray, $storeId)
+    {
+        $filters  = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'Code', 'value' => $keyArray[0], 'condition_type' => 'eq'],
+            ['field' => 'Sequence', 'value' => $keyArray[1], 'condition_type' => 'eq']
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
+        /** @var ReplAttributeOptionValueSearchResults $replAttributeOptionValues */
+        $replAttributeOptionValues = $this->replAttributeOptionValueRepositoryInterface->getList($criteria);
+        /** @var ReplAttributeOptionValue $item */
+        $item = current($replAttributeOptionValues->getItems());
+        if (isset($item)) {
+            return $item->getValue();
+        } else {
+            return false;
+        }
     }
 }

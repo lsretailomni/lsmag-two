@@ -20,18 +20,24 @@ class Items extends AbstractItems
      */
     public $coreRegistry = null;
 
+    /** @var  LSR $lsr */
+    public $lsr;
+
     /**
      * Items constructor.
      * @param Context $context
      * @param Registry $registry
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
         Context $context,
         Registry $registry,
+        LSR $lsr,
         array $data = []
     ) {
         $this->coreRegistry = $registry;
+        $this->lsr          = $lsr;
         parent::__construct($context, $data);
     }
 
@@ -43,8 +49,9 @@ class Items extends AbstractItems
         $orderLines = $this->getOrder()->getLines()->getSalesEntryLine();
         $this->getChildBlock("custom_order_item_renderer")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {
-            if ($line->getItemId() == LSR::LSR_SHIPMENT_ITEM_ID) {
+            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                 unset($orderLines[$key]);
+                break;
             }
         }
         return $orderLines;

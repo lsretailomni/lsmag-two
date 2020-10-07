@@ -177,7 +177,7 @@ class OrderHelper extends AbstractHelper
      */
     public function updateShippingAmount($orderLines, $order)
     {
-        $shipmentFeeId = LSR::LSR_SHIPMENT_ITEM_ID;
+        $shipmentFeeId = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID);
         if ($order->getShippingAmount() > 0) {
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
