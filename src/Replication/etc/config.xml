@@ -17,6 +17,7 @@
                 <product_barcode_batch_size>1000</product_barcode_batch_size>
                 <variant_batch_size>2000</variant_batch_size>
                 <product_assignment_to_category_batch_size>100</product_assignment_to_category_batch_size>
+                <attribute_sets_mechanism>0</attribute_sets_mechanism>
                 <replicate_category>1</replicate_category>
                 <advanced>0</advanced>
                 <create_attribute_set>1</create_attribute_set>

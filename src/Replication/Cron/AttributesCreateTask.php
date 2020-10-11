@@ -292,8 +292,8 @@ class AttributesCreateTask
     {
         $variantBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $this->logger->debug('Running variants create task for store ' . $store->getName());
-        $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
-        $defaultGroupId        = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
+//        $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
+//        $defaultGroupId        = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
         $criteria              = $this->replicationHelper->buildCriteriaForNewItems(
             'scope_id',
             $store->getId(),
@@ -352,8 +352,8 @@ class AttributesCreateTask
                         'is_used_in_grid'               => 1,
                         'is_visible_in_grid'            => 1,
                         'is_filterable_in_grid'         => 1,
-                        'attribute_set_id'              => $defaultAttributeSetId,
-                        'attribute_group_id'            => $defaultGroupId
+//                        'attribute_set_id'              => $defaultAttributeSetId,
+//                        'attribute_group_id'            => $defaultGroupId
                     ];
                     try {
                         // @codingStandardsIgnoreStart
@@ -469,8 +469,8 @@ class AttributesCreateTask
                 'used_in_product_listing'       => 0,
                 'used_for_sort_by'              => 1,
                 'backend_type'                  => 'varchar',
-                'attribute_set_id'              => $attributeSetId,
-                'attribute_group_id'            => $attributeGroupId,
+//                'attribute_set_id'              => $attributeSetId,
+//                'attribute_group_id'            => $attributeGroupId,
                 'backend_model'                 => ArrayBackend::class,
                 'is_filterable'                 => ($frontendInput === 'multiselect') ? 1 : 0,
                 'is_filterable_in_search'       => ($frontendInput === 'multiselect') ? 1 : 0
