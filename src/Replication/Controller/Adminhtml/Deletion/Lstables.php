@@ -102,13 +102,13 @@ class Lstables extends Action
         $jobName = $this->_request->getParam('jobname');
         if ($jobName != "") {
             $tableName = 'ls_replication_' . $jobName;
-            $tableName = $connection->getTableName($tableName);
+            $tableName = $this->resource->getTableName($tableName);
             try {
                 $connection->truncateTable($tableName);
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
-            $coreConfigTableName = $connection->getTableName('core_config_data');
+            $coreConfigTableName = $this->resource->getTableName('core_config_data');
             $connection->query('DELETE FROM ' . $coreConfigTableName .
                 ' WHERE path = "ls_mag/replication/' . $jobName . '"');
             $connection->query('DELETE FROM ' . $coreConfigTableName . ' 
@@ -122,14 +122,14 @@ class Lstables extends Action
             $this->_redirect('ls_repl/cron/grid/');
         } else {
             foreach ($this->lsTables as $lsTables) {
-                $tableName = $connection->getTableName($lsTables);
+                $tableName = $this->resource->getTableName($lsTables);
                 try {
                     $connection->truncateTable($tableName);
                 } catch (Exception $e) {
                     $this->logger->debug($e->getMessage());
                 }
             }
-            $coreConfigTableName = $connection->getTableName('core_config_data');
+            $coreConfigTableName = $this->resource->getTableName('core_config_data');
             $connection->query('DELETE FROM ' . $coreConfigTableName . ' WHERE path LIKE "ls_mag/replication/%";');
             $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
             $this->replHelper->flushByTypeCode('config');
