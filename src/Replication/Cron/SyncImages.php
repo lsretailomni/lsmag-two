@@ -117,23 +117,30 @@ class SyncImages extends ProductCreateTask
                     $checkIsNotVariant = true;
                     $itemSku           = $itemImage->getKeyValue();
                     $itemSku           = str_replace(',', '-', $itemSku);
-                    $this->processImages($itemImage, $sortOrder, $itemSku);
+
                     $explodeSku = explode("-", $itemSku);
                     if (count($explodeSku) > 1) {
                         $checkIsNotVariant = false;
                     }
-                    $sku = $explodeSku[0];
-                    $uomCodes = $this->getUomCodesProcessed($sku);
-                    if (!empty($uomCodes)) {
-                        if (count($uomCodes[$sku]) > 1) {
-                            $baseUnitOfMeasure = $uomCodes[$sku . '-' . 'BaseUnitOfMeasure'];
-                            $variants          = $this->getProductVariants($sku);
-                            foreach ($uomCodes[$sku] as $uomCode) {
-                                if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) && empty($variants)) {
-                                    $this->processImages($itemImage, $sortOrder, $itemSku, $uomCode);
+                    $sku           = $explodeSku[0];
+                    $uomCodesTotal = $this->getUomCodes($sku);
+                    if (!empty($uomCodesTotal)) {
+                        if (count($uomCodesTotal[$sku]) > 1) {
+                            $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $sku);
+                            if (count($uomCodesNotProcessed) == 0) {
+                                $this->processImages($itemImage, $sortOrder, $itemSku);
+                                $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($sku);
+                                foreach ($uomCodesTotal[$sku] as $uomCode) {
+                                    if ($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) {
+                                        $this->processImages($itemImage, $sortOrder, $itemSku, $uomCode);
+                                    }
                                 }
                             }
+                        } else {
+                            $this->processImages($itemImage, $sortOrder, $itemSku);
                         }
+                    } else {
+                        $this->processImages($itemImage, $sortOrder, $itemSku);
                     }
                 } catch (Exception $e) {
                     $this->logger->debug(

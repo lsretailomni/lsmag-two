@@ -211,11 +211,13 @@ class DiscountCreateTask
                                     );
                                 }
                                 $discountValue = (string)$replDiscount->getDiscountValue();
-
+                                $appendUom     = '';
                                 if (!empty($replDiscount->getUnitOfMeasureId())) {
                                     // @codingStandardsIgnoreLine
                                     $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($replDiscount->getItemId());
-                                    if ($baseUnitOfMeasure != $replDiscount->getUnitOfMeasureId()) {
+                                    if (($baseUnitOfMeasure != $replDiscount->getUnitOfMeasureId()) ||
+                                        ($replDiscount->getVariantId() == '' ||
+                                            $replDiscount->getVariantId() == null)) {
                                         $appendUom = '-' . $replDiscount->getUnitOfMeasureId();
                                     }
                                 }

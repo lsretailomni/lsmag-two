@@ -874,13 +874,14 @@ class BasketHelper extends AbstractHelper
         if (count($itemSku) < 2) {
             $itemSku[1] = null;
         }
-        if (count($itemSku) > 2) {
-            $uom = $itemSku[2];
-        }
+        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
+        // @codingStandardsIgnoreLine
+        $uom = $this->itemHelper->getUom($itemSku, $baseUnitOfMeasure);
         $rowTotal   = "";
         $basketData = $this->getOneListCalculation();
         $orderLines = $basketData->getOrderLines()->getOrderLine();
         foreach ($orderLines as $line) {
+            // @codingStandardsIgnoreLine
             if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId() && $uom == $line->getUomId()) {
                 $rowTotal = $line->getAmount();
                 break;
@@ -912,6 +913,7 @@ class BasketHelper extends AbstractHelper
      * @param $order
      * @return Order
      * @throws InvalidEnumException
+     * @throws LocalizedException
      */
     public function calculateOneListFromOrder($order)
     {

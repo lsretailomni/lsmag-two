@@ -896,7 +896,7 @@ class ReplicationHelper extends AbstractHelper
             $collection->getSelect()->group('main_table.' . $primaryTableColumnName);
         }
         /** @var For Xdebug only to check the query $query */
-        $query = $collection->getSelect()->__toString();
+        //$query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
@@ -958,7 +958,7 @@ class ReplicationHelper extends AbstractHelper
             );
         }
         /** @var For Xdebug only to check the query $query */
-        $query = $collection->getSelect()->__toString();
+        //$query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
@@ -997,7 +997,7 @@ class ReplicationHelper extends AbstractHelper
         $collection->getSelect()->limit($criteria->getPageSize());
 
         /** @var For Xdebug only to check the query $query */
-        $query = $collection->getSelect()->__toString();
+        //$query = $collection->getSelect()->__toString();
 
         $objects = [];
         foreach ($collection as $object_model) {
@@ -1202,9 +1202,7 @@ class ReplicationHelper extends AbstractHelper
     {
         $baseUnitOfMeasure = null;
         $filters           = [
-            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
-
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq']
         ];
         $criteria          = $this->buildCriteriaForDirect($filters, 1);
         $items             = $this->itemRepository->getList($criteria)->getItems();

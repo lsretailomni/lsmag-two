@@ -77,7 +77,7 @@ class Store extends Action
         $result = $this->resultJsonFactory->create();
         if ($this->getRequest()->isAjax()) {
             $selectedStore      = $this->request->getParam('storeid');
-            $items              = $this->session->getQuote()->getAllItems();
+            $items              = $this->session->getQuote()->getAllVisibleItems();
             $stockCollection    = [];
             $notAvailableNotice = __('Please check other stores or remove the not available item(s) from your ');
             foreach ($items as &$item) {
@@ -91,8 +91,12 @@ class Store extends Action
                 if (strpos($sku, '-') !== false) {
                     $parentProductSku = explode('-', $sku)[0];
                     $childProductSku  = explode('-', $sku)[1];
+                    $sku              = null;
+                    $sku              = $parentProductSku . '-' . $childProductSku;
                     if (!is_numeric($childProductSku)) {
                         $childProductSku = '';
+                        $sku             = null;
+                        $sku             = $parentProductSku;
                     }
                 } else {
                     $parentProductSku = $sku;

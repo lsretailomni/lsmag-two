@@ -860,7 +860,7 @@ class ProductCreateTask
      * @return mixed
      * @throws InputException
      */
-    private function getNewOrUpdatedProductUoms($pageSize = 100, $itemId = null)
+    public function getNewOrUpdatedProductUoms($pageSize = 100, $itemId = null)
     {
         $filters = [
             ['field' => 'Code', 'value' => true, 'condition_type' => 'notnull'],
@@ -1504,7 +1504,7 @@ class ProductCreateTask
             foreach ($uomCodesNotProcessed as $uomCode) {
                 $value = null;
                 $sku   = $uomCode->getItemId() . '-' . $uomCode->getCode();
-                $name  = $this->getNameForUom($item->getName(), $uomCode->getDescription());
+                $name  = $this->getNameForUom($item->getDescription(), $uomCode->getDescription());
                 try {
                     $productData = $this->saveProductForWebsite($sku);
                     try {
@@ -1799,7 +1799,7 @@ class ProductCreateTask
             $this->syncImagesForUom($itemSku, $productV);
         } elseif (isset($uomCode)) {
             $itemPrice = $this->getItemPrice($uomCode->getItemId(), null, $unitOfMeasure);
-            $itemSku   = $value->getItemId();
+            $itemSku   = $uomCode->getItemId();
             $this->syncImagesForUom($itemSku, $productV);
         } else {
             $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId(), $unitOfMeasure);
@@ -1809,9 +1809,11 @@ class ProductCreateTask
         } else {
             // Just in-case if we don't have price for Variant then in that case,
             // we are using the price of main product.
-            $price = $this->getItemPrice($value->getItemId());
+            $price = $this->getItemPrice($item->getNavId());
             if (!empty($price)) {
                 $productV->setPrice($price->getUnitPrice());
+            } else {
+                $productV->setPrice($item->getUnitPrice());
             }
         }
         $productV->setAttributeSetId(4);
@@ -1987,7 +1989,11 @@ class ProductCreateTask
     public function syncImagesForUom($existingProduct, $uomProduct)
     {
         try {
-            $product = $this->productRepository->get($existingProduct);
+            try {
+                $product = $this->productRepository->get($existingProduct);
+            } catch (NoSuchEntityException $e) {
+                return;
+            }
             //Assign image from the already created product to the uom product
             $images = $product->getMediaGalleryImages();
             foreach ($images as $image) {
@@ -2001,7 +2007,7 @@ class ProductCreateTask
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->info($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
     }
 

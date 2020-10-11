@@ -157,7 +157,8 @@ class SyncPrice extends ProductCreateTask
             $needsPriceUpdate = true;
         } elseif ($productData->getData('uom') == $replPrice->getUnitOfMeasure()) {
             $needsPriceUpdate = true;
-        } elseif (empty($productData->getData(LSR::LS_UOM_ATTRIBUTE_QTY))) {
+        } elseif (empty($productData->getData(LSR::LS_UOM_ATTRIBUTE_QTY))
+            && ($replPrice->getQtyPerUnitOfMeasure() == 0)) {
             $needsPriceUpdate = true;
         }
 
