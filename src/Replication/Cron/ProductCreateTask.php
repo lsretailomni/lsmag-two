@@ -1579,14 +1579,15 @@ class ProductCreateTask
     {
         $attributeSetsMechanism = $this->replicationHelper->getAttributeSetsMechanism();
         $attributeSetId = 4;
-        if ($attributeSetsMechanism == '0') {
+        if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
             $itemCategoryCode = $item->getItemCategoryCode();
-            if ($this->getAttributeSetByName($itemCategoryCode)) {
-                $attributeSetId = $this->getAttributeSetByName($itemCategoryCode);
+            $formattedItemCategoryCode = $this->replicationHelper->formatAttributeCode($itemCategoryCode);
+            if ($this->getAttributeSetByName($formattedItemCategoryCode)) {
+                $attributeSetId = $this->getAttributeSetByName($formattedItemCategoryCode);
             } else {
                 $attributes     = $this->getRelatedAttributesAssignedToItemCategoryCode($itemCategoryCode);
                 $attributeSetId = $this->createAttributeSetAndGroupsAndReturnAttributeSetId(
-                    $itemCategoryCode,
+                    $formattedItemCategoryCode,
                     $attributes
                 );
             }

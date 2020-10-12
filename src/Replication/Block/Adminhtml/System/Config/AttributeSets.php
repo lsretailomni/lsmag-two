@@ -3,6 +3,7 @@
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
 use Magento\Framework\Data\OptionSourceInterface;
+use \LS\Core\Model\LSR;
 
 /**
  *
@@ -16,8 +17,8 @@ class AttributeSets implements OptionSourceInterface
     public function toOptionArray()
     {
         return [
-            ['value' => 1, 'label' => __('Product Group Id')],
-            ['value' => 0, 'label' => __('Item Category Code')]
+            ['value' => LSR::SC_REPLICATION_ATTRIBUTE_SET_PRODUCT_GROUP_ID, 'label' => __('Product Group Id')],
+            ['value' => LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE, 'label' => __('Item Category Code')]
         ];
     }
 }
