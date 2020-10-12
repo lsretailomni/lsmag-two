@@ -45,6 +45,7 @@ use Magento\Framework\Exception\State\ExpiredException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
 use Magento\Framework\Phrase;
 use Magento\Framework\Registry;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
@@ -160,6 +161,11 @@ class ContactHelper extends AbstractHelper
     public $lsr;
 
     /**
+     * @var DateTime
+     */
+    public $date;
+
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder
@@ -189,6 +195,8 @@ class ContactHelper extends AbstractHelper
      * @param CustomerCollection $customerCollection
      * @param EncryptorInterface $encryptorInterface
      * @param ValidateEmailAddress $validateEmailAddress
+     * @param LSR $lsr
+     * @param DateTime $date
      */
     public function __construct(
         Context $context,
@@ -219,7 +227,8 @@ class ContactHelper extends AbstractHelper
         CustomerCollection $customerCollection,
         EncryptorInterface $encryptorInterface,
         ValidateEmailAddress $validateEmailAddress,
-        LSR $lsr
+        LSR $lsr,
+        DateTime $date
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -249,6 +258,7 @@ class ContactHelper extends AbstractHelper
         $this->encryptorInterface    = $encryptorInterface;
         $this->validateEmailAddress  = $validateEmailAddress;
         $this->lsr                   = $lsr;
+        $this->date                  = $date;
         parent::__construct(
             $context
         );
@@ -701,7 +711,12 @@ class ContactHelper extends AbstractHelper
             $request->setToken($customer->getData('lsr_token'));
             // @codingStandardsIgnoreLine
             $memberContact = new Entity\MemberContact();
+            if (!empty($customer->getData('dob'))) {
+                $dob = $this->date->date("Y-m-d\T00:00:00", strtotime($customer->getData('dob')));
+                $memberContact->setBirthDay($dob);
+            }
             $memberContact->setFirstName($customerAddress->getFirstname())
+                ->setGender($this->getGenderStringById($customer->getData('gender')))
                 ->setLastName($customerAddress->getLastname())
                 ->setPhone($customerAddress->getTelephone())
                 ->setUserName($customer->getData('lsr_username'))
@@ -719,6 +734,20 @@ class ContactHelper extends AbstractHelper
             }
             return $response ? $response->getResult() : $response;
         }
+    }
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public function getGenderStringById($id)
+    {
+        if ($id == 1)
+            return Entity\Enum\Gender::MALE;
+        elseif ($id == 2)
+            return Entity\Enum\Gender::FEMALE;
+        else
+            return Entity\Enum\Gender::UNKNOWN;
     }
 
     /**
@@ -1054,6 +1083,13 @@ class ContactHelper extends AbstractHelper
         }
         $token = $result->getLoggedOnToDevice()->getSecurityToken();
 
+        if (!empty($result->getBirthDay()) && $result->getBirthDay() != '1753-01-01T00:00:00' && $result->getBirthDay() != '1970-01-01T00:00:00Z') {
+            $customer->setData('dob', $this->date->date("Y-m-d", strtotime($result->getBirthDay())));
+        }
+        if (!empty($result->getGender())) {
+            $genderValue = ($result->getGender() == Entity\Enum\Gender::MALE) ? 1 : (($result->getGender() == Entity\Enum\Gender::FEMALE) ? 2 : '');
+            $customer->setData('gender', $genderValue);
+        }
         $customer->setData('lsr_token', $token);
         $customer->setData(
             'attribute_set_id',
