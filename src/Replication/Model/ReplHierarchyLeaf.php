@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplHierarchyLeafInterface;
 class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_hierarchy_leaf';
+    public const CACHE_TAG = 'ls_replication_repl_hierarchy_leaf';
 
     protected $_cacheTag = 'ls_replication_repl_hierarchy_leaf';
 

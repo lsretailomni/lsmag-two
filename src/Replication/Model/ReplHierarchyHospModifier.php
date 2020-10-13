@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplHierarchyHospModifierInterface;
 class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHospModifierInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_hierarchy_hosp_modifier';
+    public const CACHE_TAG = 'ls_replication_repl_hierarchy_hosp_modifier';
 
     protected $_cacheTag = 'ls_replication_repl_hierarchy_hosp_modifier';
 

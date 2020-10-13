@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\GiftCardGetBalanceResponse as GiftCardGetBal
 class GiftCardGetBalance extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'GIFT_CARD_GET_BALANCE';
+    public const OPERATION_NAME = 'GIFT_CARD_GET_BALANCE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

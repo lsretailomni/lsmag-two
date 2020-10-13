@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\RecommendedItemsGetResponse as RecommendedIt
 class RecommendedItemsGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'RECOMMENDED_ITEMS_GET';
+    public const OPERATION_NAME = 'RECOMMENDED_ITEMS_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

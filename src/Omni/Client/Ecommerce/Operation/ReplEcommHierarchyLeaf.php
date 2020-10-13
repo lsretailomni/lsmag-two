@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyLeafResponse as ReplEcommH
 class ReplEcommHierarchyLeaf extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_LEAF';
+    public const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_LEAF';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

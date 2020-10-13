@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ContactUpdateResponse as ContactUpdateRespon
 class ContactUpdate extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'CONTACT_UPDATE';
+    public const OPERATION_NAME = 'CONTACT_UPDATE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

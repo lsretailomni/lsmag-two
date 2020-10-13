@@ -19,13 +19,13 @@ use MyCLabs\Enum\Enum;
 class ModifierPriceType extends Enum
 {
 
-    const NONE = 'None';
+    public const NONE = 'None';
 
-    const FROM_ITEM = 'FromItem';
+    public const FROM_ITEM = 'FromItem';
 
-    const AMOUNT = 'Amount';
+    public const AMOUNT = 'Amount';
 
-    const PERCENT = 'Percent';
+    public const PERCENT = 'Percent';
 
 
 }

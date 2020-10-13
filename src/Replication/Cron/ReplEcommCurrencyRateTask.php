@@ -22,15 +22,15 @@ use Ls\Replication\Api\Data\ReplCurrencyExchRateInterface;
 class ReplEcommCurrencyRateTask extends AbstractReplicationTask
 {
 
-    const JOB_CODE = 'replication_repl_currency_exch_rate';
+    public const JOB_CODE = 'replication_repl_currency_exch_rate';
 
-    const CONFIG_PATH = 'ls_mag/replication/repl_currency_exch_rate';
+    public const CONFIG_PATH = 'ls_mag/replication/repl_currency_exch_rate';
 
-    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_currency_exch_rate';
+    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_currency_exch_rate';
 
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_currency_exch_rate';
+    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_currency_exch_rate';
 
-    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_currency_exch_rate';
+    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_currency_exch_rate';
 
     /**
      * @property ReplCurrencyExchRateRepository $repository

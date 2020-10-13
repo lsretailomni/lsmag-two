@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityConfirmResponse as ActivityConfirmRe
 class ActivityConfirm extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_CONFIRM';
+    public const OPERATION_NAME = 'ACTIVITY_CONFIRM';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

@@ -20,15 +20,15 @@ use MyCLabs\Enum\Enum;
 class ProfileDataType extends Enum
 {
 
-    const TEXT = 'Text';
+    public const TEXT = 'Text';
 
-    const INTEGER = 'Integer';
+    public const INTEGER = 'Integer';
 
-    const NUMBER = 'Number';
+    public const NUMBER = 'Number';
 
-    const DATE = 'Date';
+    public const DATE = 'Date';
 
-    const BOOLEAN = 'Boolean';
+    public const BOOLEAN = 'Boolean';
 
 
 }

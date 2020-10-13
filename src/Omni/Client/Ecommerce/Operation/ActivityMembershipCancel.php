@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityMembershipCancelResponse as Activity
 class ActivityMembershipCancel extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_MEMBERSHIP_CANCEL';
+    public const OPERATION_NAME = 'ACTIVITY_MEMBERSHIP_CANCEL';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

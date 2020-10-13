@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <event name="checkout_cart_product_add_after">
-        <observer name="WatchNextCartSaveObserver" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
-    </event>
-    <event name="checkout_cart_update_items_after">
-        <observer name="WatchNextCartSaveObserver" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
-    </event>
-    <event name="sales_quote_remove_item">
-        <observer name="WatchNextCartSaveObserver" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
-    </event>
     <!-- For Wishlist  -->
     <event name="controller_action_postdispatch_wishlist_index_add">
         <observer name="WishlistAddObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
@@ -32,10 +23,6 @@
     <!-- For Coupon Code -->
     <event name="controller_action_predispatch_checkout_cart_couponPost">
         <observer name="coupon_code" instance="Ls\Omni\Observer\CouponCodeObserver"/>
-    </event>
-    <!-- When edit item on product page -->
-    <event name="controller_action_predispatch_checkout_cart_updateitemoptions">
-        <observer name="coupon_code" instance="Ls\Omni\Observer\WatchNextCartSaveObserver"/>
     </event>
     <event name="checkout_cart_save_after">
         <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>

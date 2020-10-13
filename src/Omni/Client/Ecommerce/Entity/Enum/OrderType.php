@@ -19,13 +19,13 @@ use MyCLabs\Enum\Enum;
 class OrderType extends Enum
 {
 
-    const SALE = 'Sale';
+    public const SALE = 'Sale';
 
-    const CLICK_AND_COLLECT = 'ClickAndCollect';
+    public const CLICK_AND_COLLECT = 'ClickAndCollect';
 
-    const SCAN_PAY_GO = 'ScanPayGo';
+    public const SCAN_PAY_GO = 'ScanPayGo';
 
-    const SCAN_PAY_GO_SUSPEND = 'ScanPayGoSuspend';
+    public const SCAN_PAY_GO_SUSPEND = 'ScanPayGoSuspend';
 
 
 }

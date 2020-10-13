@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommCountryCodeResponse as ReplEcommCou
 class ReplEcommCountryCode extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_COUNTRY_CODE';
+    public const OPERATION_NAME = 'REPL_ECOMM_COUNTRY_CODE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

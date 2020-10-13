@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityReservationsGetResponse as ActivityR
 class ActivityReservationsGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_RESERVATIONS_GET';
+    public const OPERATION_NAME = 'ACTIVITY_RESERVATIONS_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

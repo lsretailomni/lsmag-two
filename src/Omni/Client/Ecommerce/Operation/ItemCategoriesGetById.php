@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ItemCategoriesGetByIdResponse as ItemCategor
 class ItemCategoriesGetById extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ITEM_CATEGORIES_GET_BY_ID';
+    public const OPERATION_NAME = 'ITEM_CATEGORIES_GET_BY_ID';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

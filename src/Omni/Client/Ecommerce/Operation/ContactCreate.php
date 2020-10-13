@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ContactCreateResponse as ContactCreateRespon
 class ContactCreate extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'CONTACT_CREATE';
+    public const OPERATION_NAME = 'CONTACT_CREATE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

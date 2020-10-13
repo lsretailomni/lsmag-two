@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityReservationInsertResponse as Activit
 class ActivityReservationInsert extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_RESERVATION_INSERT';
+    public const OPERATION_NAME = 'ACTIVITY_RESERVATION_INSERT';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

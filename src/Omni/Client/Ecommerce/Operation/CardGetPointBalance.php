@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\CardGetPointBalanceResponse as CardGetPointB
 class CardGetPointBalance extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'CARD_GET_POINT_BALANCE';
+    public const OPERATION_NAME = 'CARD_GET_POINT_BALANCE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client
