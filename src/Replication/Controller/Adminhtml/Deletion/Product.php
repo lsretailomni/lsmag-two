@@ -183,7 +183,7 @@ class Product extends Action
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->catalog_products_tables as $catalogTable) {
-            $tableName = $connection->getTableName($catalogTable);
+            $tableName = $this->resource->getTableName($catalogTable);
             try {
                 if ($connection->isTableExists($tableName)) {
                     $connection->truncateTable($tableName);
@@ -194,7 +194,7 @@ class Product extends Action
         }
         // Update all dependent ls tables to not processed
         foreach ($this->ls_tables as $lsTable) {
-            $lsTableName = $connection->getTableName($lsTable);
+            $lsTableName = $this->resource->getTableName($lsTable);
             $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
             try {
                 $connection->query($lsQuery);

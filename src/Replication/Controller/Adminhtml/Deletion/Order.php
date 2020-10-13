@@ -122,7 +122,7 @@ class Order extends Action
         }
         foreach ($this->order_tables as $orderTable) {
             try {
-                $tableName = $connection->getTableName($orderTable);
+                $tableName = $this->resource->getTableName($orderTable);
                 if ($connection->isTableExists($tableName)) {
                     $connection->truncateTable($tableName);
                 }
