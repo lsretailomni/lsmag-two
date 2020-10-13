@@ -22,19 +22,19 @@ use MyCLabs\Enum\Enum;
 class AttributeLinkType extends Enum
 {
 
-    const ITEM = 'Item';
+    public const ITEM = 'Item';
 
-    const VARIANT = 'Variant';
+    public const VARIANT = 'Variant';
 
-    const DIM_BASE_VALUE = 'DimBaseValue';
+    public const DIM_BASE_VALUE = 'DimBaseValue';
 
-    const CUSTOMER = 'Customer';
+    public const CUSTOMER = 'Customer';
 
-    const STORE = 'Store';
+    public const STORE = 'Store';
 
-    const DEAL = 'Deal';
+    public const DEAL = 'Deal';
 
-    const UNKNOWN = 'Unknown';
+    public const UNKNOWN = 'Unknown';
 
 
 }

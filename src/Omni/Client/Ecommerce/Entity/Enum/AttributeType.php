@@ -19,13 +19,13 @@ use MyCLabs\Enum\Enum;
 class AttributeType extends Enum
 {
 
-    const RESERVATION = 'Reservation';
+    public const RESERVATION = 'Reservation';
 
-    const ACTIVITY = 'Activity';
+    public const ACTIVITY = 'Activity';
 
-    const ACTIVITY_PRODUCT = 'ActivityProduct';
+    public const ACTIVITY_PRODUCT = 'ActivityProduct';
 
-    const RESOURCE = 'Resource';
+    public const RESOURCE = 'Resource';
 
 
 }

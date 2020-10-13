@@ -14,12 +14,12 @@ class OrderHospCreateResponse implements ResponseInterface
 {
 
     /**
-     * @property OrderHosp $OrderHospCreateResult
+     * @property SalesEntry $OrderHospCreateResult
      */
     protected $OrderHospCreateResult = null;
 
     /**
-     * @param OrderHosp $OrderHospCreateResult
+     * @param SalesEntry $OrderHospCreateResult
      * @return $this
      */
     public function setOrderHospCreateResult($OrderHospCreateResult)
@@ -29,7 +29,7 @@ class OrderHospCreateResponse implements ResponseInterface
     }
 
     /**
-     * @return OrderHosp
+     * @return SalesEntry
      */
     public function getOrderHospCreateResult()
     {
@@ -37,7 +37,7 @@ class OrderHospCreateResponse implements ResponseInterface
     }
 
     /**
-     * @return OrderHosp
+     * @return SalesEntry
      */
     public function getResult()
     {

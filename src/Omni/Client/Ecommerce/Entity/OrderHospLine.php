@@ -90,6 +90,11 @@ class OrderHospLine extends Entity
     protected $Price = null;
 
     /**
+     * @property boolean $PriceModified
+     */
+    protected $PriceModified = null;
+
+    /**
      * @property float $Quantity
      */
     protected $Quantity = null;
@@ -392,6 +397,24 @@ class OrderHospLine extends Entity
     public function getPrice()
     {
         return $this->Price;
+    }
+
+    /**
+     * @param boolean $PriceModified
+     * @return $this
+     */
+    public function setPriceModified($PriceModified)
+    {
+        $this->PriceModified = $PriceModified;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPriceModified()
+    {
+        return $this->PriceModified;
     }
 
     /**

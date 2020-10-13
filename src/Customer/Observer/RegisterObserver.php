@@ -86,23 +86,13 @@ class RegisterObserver implements ObserverInterface
                     /** @var Entity\MemberContact $contact */
                     $contact = $this->contactHelper->contact($customer);
                     if (is_object($contact) && $contact->getId()) {
-                        $token = $contact->getLoggedOnToDevice()->getSecurityToken();
-                        $customer->setData('lsr_id', $contact->getId());
-                        $customer->setData('lsr_token', $token);
-                        $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
-                        if ($contact->getAccount()->getScheme()->getId()) {
-                            $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
-                                $contact->getAccount()->getScheme()->getId()
-                            );
-                            $customer->setGroupId($customerGroupId);
-                        }
+                        $customer = $this->contactHelper->setCustomerAttributesValues($contact, $customer);
                         $this->customerResourceModel->save($customer);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $contact);
-                        $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
+                        $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
                         $session->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
                         $session->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
                     }
-
                     $loginResult = $this->contactHelper->login(
                         $customer->getData('lsr_username'),
                         $parameters['password']

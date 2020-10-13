@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ForgotPasswordResponse as ForgotPasswordResp
 class ForgotPassword extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'FORGOT_PASSWORD';
+    public const OPERATION_NAME = 'FORGOT_PASSWORD';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

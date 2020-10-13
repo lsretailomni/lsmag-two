@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\DeviceSaveResponse as DeviceSaveResponse;
 class DeviceSave extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'DEVICE_SAVE';
+    public const OPERATION_NAME = 'DEVICE_SAVE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

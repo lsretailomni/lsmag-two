@@ -19,13 +19,13 @@ use MyCLabs\Enum\Enum;
 class PushPlatform extends Enum
 {
 
-    const UNKNOWN = 'Unknown';
+    public const UNKNOWN = 'Unknown';
 
-    const APPLE = 'Apple';
+    public const APPLE = 'Apple';
 
-    const ANDROID = 'Android';
+    public const ANDROID = 'Android';
 
-    const WINDOWS = 'Windows';
+    public const WINDOWS = 'Windows';
 
 
 }

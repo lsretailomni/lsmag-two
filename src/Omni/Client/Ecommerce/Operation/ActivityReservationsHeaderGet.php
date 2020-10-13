@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityReservationsHeaderGetResponse as Act
 class ActivityReservationsHeaderGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_RESERVATIONS_HEADER_GET';
+    public const OPERATION_NAME = 'ACTIVITY_RESERVATIONS_HEADER_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

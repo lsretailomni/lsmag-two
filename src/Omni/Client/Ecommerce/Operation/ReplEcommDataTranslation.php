@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommDataTranslationResponse as ReplEcom
 class ReplEcommDataTranslation extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_DATA_TRANSLATION';
+    public const OPERATION_NAME = 'REPL_ECOMM_DATA_TRANSLATION';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

@@ -78,6 +78,11 @@
                     <label>Product Assignment to Category Batch Size</label>
                     <comment>Product Assignment to Category Batch Size</comment>
                 </field>
+                <field id="attribute_sets_mechanism" translate="label" type="select" sortOrder="10" showInDefault="40"
+                       showInWebsite="0" showInStore="0">
+                    <label>Create attribute sets on the basis of</label>
+                    <source_model>Ls\Replication\Block\Adminhtml\System\Config\AttributeSets</source_model>
+                </field>
             </group>
             <group id="one_list" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1"
                    showInStore="1">

@@ -29,33 +29,33 @@ use MyCLabs\Enum\Enum;
 class DiscountType extends Enum
 {
 
-    const PERIODIC_DISC = 'PeriodicDisc';
+    public const PERIODIC_DISC = 'PeriodicDisc';
 
-    const CUSTOMER = 'Customer';
+    public const CUSTOMER = 'Customer';
 
-    const INFO_CODE = 'InfoCode';
+    public const INFO_CODE = 'InfoCode';
 
-    const TOTAL = 'Total';
+    public const TOTAL = 'Total';
 
-    const LINE = 'Line';
+    public const LINE = 'Line';
 
-    const PROMOTION = 'Promotion';
+    public const PROMOTION = 'Promotion';
 
-    const DEAL = 'Deal';
+    public const DEAL = 'Deal';
 
-    const TOTAL_DISCOUNT = 'TotalDiscount';
+    public const TOTAL_DISCOUNT = 'TotalDiscount';
 
-    const TENDER_TYPE = 'TenderType';
+    public const TENDER_TYPE = 'TenderType';
 
-    const ITEM_POINT = 'ItemPoint';
+    public const ITEM_POINT = 'ItemPoint';
 
-    const LINE_DISCOUNT = 'LineDiscount';
+    public const LINE_DISCOUNT = 'LineDiscount';
 
-    const MEMBER_POINT = 'MemberPoint';
+    public const MEMBER_POINT = 'MemberPoint';
 
-    const COUPON = 'Coupon';
+    public const COUPON = 'Coupon';
 
-    const UNKNOWN = 'Unknown';
+    public const UNKNOWN = 'Unknown';
 
 
 }

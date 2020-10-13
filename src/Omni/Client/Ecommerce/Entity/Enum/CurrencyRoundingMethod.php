@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class CurrencyRoundingMethod extends Enum
 {
 
-    const ROUND_NEAREST = 'RoundNearest';
+    public const ROUND_NEAREST = 'RoundNearest';
 
-    const ROUND_DOWN = 'RoundDown';
+    public const ROUND_DOWN = 'RoundDown';
 
-    const ROUND_UP = 'RoundUp';
+    public const ROUND_UP = 'RoundUp';
 
 
 }

@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\NotificationsUpdateStatusResponse as Notific
 class NotificationsUpdateStatus extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'NOTIFICATIONS_UPDATE_STATUS';
+    public const OPERATION_NAME = 'NOTIFICATIONS_UPDATE_STATUS';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

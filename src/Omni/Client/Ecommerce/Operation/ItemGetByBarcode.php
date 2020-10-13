@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ItemGetByBarcodeResponse as ItemGetByBarcode
 class ItemGetByBarcode extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ITEM_GET_BY_BARCODE';
+    public const OPERATION_NAME = 'ITEM_GET_BY_BARCODE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

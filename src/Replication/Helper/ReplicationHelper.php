@@ -896,7 +896,7 @@ class ReplicationHelper extends AbstractHelper
             $collection->getSelect()->group('main_table.' . $primaryTableColumnName);
         }
         /** @var For Xdebug only to check the query $query */
-        //$query = $collection->getSelect()->__toString();
+        $query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
@@ -1192,6 +1192,14 @@ class ReplicationHelper extends AbstractHelper
             }
         }
         return;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAttributeSetsMechanism()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM);
     }
 
     /**

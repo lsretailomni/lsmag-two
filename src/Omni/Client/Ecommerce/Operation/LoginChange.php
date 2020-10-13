@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\LoginChangeResponse as LoginChangeResponse;
 class LoginChange extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'LOGIN_CHANGE';
+    public const OPERATION_NAME = 'LOGIN_CHANGE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client
