@@ -345,8 +345,7 @@ class ContactHelper extends AbstractHelper
                 return null;
             }
             $request = new Operation\ContactSearch();
-            /** @var Entity\ContactSearch $search */
-            $search = new Entity\ContactSearch();
+            $search  = new Entity\ContactSearch();
             // @codingStandardsIgnoreEnd
             $search->setSearch($param);
             $search->setMaxNumberOfRowsReturned(1);
@@ -731,12 +730,8 @@ class ContactHelper extends AbstractHelper
      */
     public function getGenderStringById($id)
     {
-        if ($id == 1)
-            return Entity\Enum\Gender::MALE;
-        elseif ($id == 2)
-            return Entity\Enum\Gender::FEMALE;
-        else
-            return Entity\Enum\Gender::UNKNOWN;
+        return ($id == 1) ? Entity\Enum\Gender::MALE :
+            (($id == 2) ? Entity\Enum\Gender::FEMALE : Entity\Enum\Gender::UNKNOWN);
     }
 
     /**
@@ -773,7 +768,7 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param null $card
+     * @param null $cardId
      * @return Entity\Card|null
      */
     private function setCard($cardId = null)
@@ -859,7 +854,7 @@ class ContactHelper extends AbstractHelper
 
     public function getCustomerGroupIdByName($groupname = '')
     {
-        if ($groupname == null or $groupname == '') {
+        if ($groupname == null || $groupname == '') {
             return false;
         }
 
@@ -980,12 +975,12 @@ class ContactHelper extends AbstractHelper
                 $buyRequest['qty'] = $qty;
                 if ($item->getVariantId()) {
                     $simSku                        = $sku . '-' . $item->getVariantId();
-                    $simProuduct                   = $this->productRepository->get($simSku);
+                    $simProduct                    = $this->productRepository->get($simSku);
                     $optionsData                   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
                     $buyRequest['super_attribute'] = [];
                     foreach ($optionsData as $key => $option) {
                         $code                                = $option['attribute_code'];
-                        $value                               = $simProuduct->getData($code);
+                        $value                               = $simProduct->getData($code);
                         $buyRequest['super_attribute'][$key] = $value;
                     }
                 }
@@ -1018,7 +1013,6 @@ class ContactHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
-
         // @codingStandardsIgnoreEnd
     }
 
@@ -1058,7 +1052,7 @@ class ContactHelper extends AbstractHelper
         $customer       = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
-        $customer = $this->setCustomerAttributesValues($result, $customer);
+        $customer       = $this->setCustomerAttributesValues($result, $customer);
         $this->customerResourceModel->save($customer);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
@@ -1335,6 +1329,13 @@ class ContactHelper extends AbstractHelper
     public function setCustomerAttributesValues($contact, $customer)
     {
         $customer->setData('lsr_id', $contact->getId());
+        if (!empty($contact->getBirthDay()) && $contact->getBirthDay() != '1753-01-01T00:00:00') {
+            $customer->setData('dob', $this->date->date("Y-m-d", strtotime($contact->getBirthDay())));
+        }
+        if (!empty($contact->getGender())) {
+            $genderValue = ($contact->getGender() == Entity\Enum\Gender::MALE) ? 1 : (($contact->getGender() == Entity\Enum\Gender::FEMALE) ? 2 : '');
+            $customer->setData('gender', $genderValue);
+        }
         if (!empty($contact->getUserName())) {
             $customer->setData('lsr_username', $contact->getUserName());
         }
