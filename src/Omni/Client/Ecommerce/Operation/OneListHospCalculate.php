@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListHospCalculateResponse as OneListHospC
 class OneListHospCalculate extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ONE_LIST_HOSP_CALCULATE';
+    public const OPERATION_NAME = 'ONE_LIST_HOSP_CALCULATE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

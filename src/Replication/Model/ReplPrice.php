@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplPriceInterface;
 class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_price';
+    public const CACHE_TAG = 'ls_replication_repl_price';
 
     protected $_cacheTag = 'ls_replication_repl_price';
 

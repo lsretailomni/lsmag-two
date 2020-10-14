@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospRecipeResponse as Repl
 class ReplEcommHierarchyHospRecipe extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_HOSP_RECIPE';
+    public const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_HOSP_RECIPE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplExtendedVariantValueInterface;
 class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVariantValueInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_extended_variant_value';
+    public const CACHE_TAG = 'ls_replication_repl_extended_variant_value';
 
     protected $_cacheTag = 'ls_replication_repl_extended_variant_value';
 

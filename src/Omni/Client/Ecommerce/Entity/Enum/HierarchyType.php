@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class HierarchyType extends Enum
 {
 
-    const ITEM_DEAL = 'ItemDeal';
+    public const ITEM_DEAL = 'ItemDeal';
 
-    const STORE_WAREHOUSE_CUSTOMER = 'StoreWarehouseCustomer';
+    public const STORE_WAREHOUSE_CUSTOMER = 'StoreWarehouseCustomer';
 
-    const VENDOR = 'Vendor';
+    public const VENDOR = 'Vendor';
 
 
 }

@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class ModifierType extends Enum
 {
 
-    const ITEM = 'Item';
+    public const ITEM = 'Item';
 
-    const TIME = 'Time';
+    public const TIME = 'Time';
 
-    const TEXT = 'Text';
+    public const TEXT = 'Text';
 
 
 }

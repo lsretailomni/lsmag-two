@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.1] - 2020-10-05
+
+### Bugs/Fixes
+
+- Fixed issue with replication of product status during first time replication. [OMNI-5318](https://solutions.lsretail.com/jira/browse/OMNI-5318)
+
+
+
 ## [1.5.0] - 2020-09-30
 
 ### Added

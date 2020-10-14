@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse as SalesEntryGetRespon
 class SalesEntryGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'SALES_ENTRY_GET';
+    public const OPERATION_NAME = 'SALES_ENTRY_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

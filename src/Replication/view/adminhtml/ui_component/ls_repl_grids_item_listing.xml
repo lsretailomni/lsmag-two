@@ -174,14 +174,14 @@
                 </item>
             </argument>
         </column>
-        <column name="BaseUnitOfMeasure">
+        <column name="BlockedOnECom">
             <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ls\Replication\Model\BlockedStatus</item>
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Base Unit Of Measure</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
                     <item name="sortOrder" xsi:type="number">8</item>
+                    <item name="label" xsi:type="string" translate="true">Blocked On eCommerce</item>
                 </item>
             </argument>
         </column>
@@ -193,6 +193,17 @@
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Details</item>
                     <item name="sortOrder" xsi:type="number">9</item>
+                </item>
+            </argument>
+        </column>
+        <column name="BaseUnitOfMeasure">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Base Unit Of Measure</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
                 </item>
             </argument>
         </column>

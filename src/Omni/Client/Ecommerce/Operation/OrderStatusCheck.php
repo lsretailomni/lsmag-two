@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\OrderStatusCheckResponse as OrderStatusCheck
 class OrderStatusCheck extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ORDER_STATUS_CHECK';
+    public const OPERATION_NAME = 'ORDER_STATUS_CHECK';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

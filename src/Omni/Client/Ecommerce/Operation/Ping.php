@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\PingResponse as PingResponse;
 class Ping extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'PING';
+    public const OPERATION_NAME = 'PING';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

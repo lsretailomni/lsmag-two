@@ -32,8 +32,8 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item;
 
 /**
- * Class BasketHelper
- * @package Ls\Omni\Helper
+ * Useful helper functions for basket
+ *
  */
 class BasketHelper extends AbstractHelper
 {
@@ -299,7 +299,7 @@ class BasketHelper extends AbstractHelper
     /**
      * @return Entity\ArrayOfOneListPublishedOffer
      */
-    private function _offers()
+    public function _offers()
     {
         // @codingStandardsIgnoreLine
         return new Entity\ArrayOfOneListPublishedOffer();
@@ -503,6 +503,7 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
      * @param $couponCode
      * @return Entity\OneListCalculateResponse|Phrase|string|null
      * @throws InvalidEnumException
@@ -597,6 +598,7 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
      * @param Entity\OneList $oneList
      * @return Entity\OneListCalculateResponse|Order
      * @throws InvalidEnumException
@@ -634,6 +636,7 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
      * @param Entity\OneList $oneList
      * @return Entity\OneListCalculateResponse|Entity\Order
      * @throws InvalidEnumException|NoSuchEntityException
@@ -876,6 +879,7 @@ class BasketHelper extends AbstractHelper
 
 
     /**
+     * This function is overriding in hospitality module
      * @param $item
      * @return string
      * @throws InvalidEnumException

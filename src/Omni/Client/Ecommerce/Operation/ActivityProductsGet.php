@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityProductsGetResponse as ActivityProdu
 class ActivityProductsGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_PRODUCTS_GET';
+    public const OPERATION_NAME = 'ACTIVITY_PRODUCTS_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

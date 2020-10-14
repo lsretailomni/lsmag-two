@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\HierarchyGetResponse as HierarchyGetResponse
 class HierarchyGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'HIERARCHY_GET';
+    public const OPERATION_NAME = 'HIERARCHY_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

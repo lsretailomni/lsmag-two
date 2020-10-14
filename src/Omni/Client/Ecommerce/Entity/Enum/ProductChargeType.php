@@ -17,9 +17,9 @@ use MyCLabs\Enum\Enum;
 class ProductChargeType extends Enum
 {
 
-    const ITEM = 'Item';
+    public const ITEM = 'Item';
 
-    const DEAL = 'Deal';
+    public const DEAL = 'Deal';
 
 
 }

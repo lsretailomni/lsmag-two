@@ -22,8 +22,8 @@ use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
 
 /**
- * Class ItemHelper
- * @package Ls\Omni\Helper
+ * Useful helper functions for item
+ *
  */
 class ItemHelper extends AbstractHelper
 {
@@ -222,6 +222,7 @@ class ItemHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
      * @param $item
      * @param Order|SalesEntry $orderData
      * @return array|null
@@ -283,6 +284,7 @@ class ItemHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
      * @param $quote
      * @param Order $basketData
      */
