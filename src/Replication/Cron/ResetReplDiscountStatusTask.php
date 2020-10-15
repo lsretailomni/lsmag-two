@@ -113,7 +113,7 @@ class ResetReplDiscountStatusTask
                     // truncating the discount table.
                     $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
                     $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
-                    $tableName = $connection->getTableName(self::DISCOUNT_TABLE_NAME);
+                    $tableName = $this->resource->getTableName(self::DISCOUNT_TABLE_NAME);
                     try {
                         $connection->truncateTable($tableName);
                     } catch (\Exception $e) {
@@ -123,7 +123,7 @@ class ResetReplDiscountStatusTask
                     // Process for Magento tables.
                     // deleting the catalog rules data
                     foreach ($this->magento_discount_tables as $discountTable) {
-                        $tableName = $connection->getTableName($discountTable);
+                        $tableName = $this->resource->getTableName($discountTable);
                         try {
                             $connection->truncateTable($tableName);
                         } catch (\Exception $e) {

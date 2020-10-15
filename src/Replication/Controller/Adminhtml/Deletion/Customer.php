@@ -77,7 +77,7 @@ class Customer extends Action
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->customer_tables as $customerTable) {
-            $tableName = $connection->getTableName($customerTable);
+            $tableName = $this->resource->getTableName($customerTable);
             try {
                 $connection->truncateTable($tableName);
             } catch (Exception $e) {
