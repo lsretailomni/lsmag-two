@@ -587,15 +587,15 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * @param string $attributeset
+     * @param string $attributeSet
      * @return int|null
      */
-    public function getDefaultGroupIdOfAttributeSet($attributeset = '')
+    public function getDefaultGroupIdOfAttributeSet($attributeSet = '')
     {
-        if ($attributeset == '') {
-            $attributeset = 4;
+        if ($attributeSet == '') {
+            $attributeSet = 4;
         }
-        return $this->attributeSet->getDefaultGroupId($attributeset);
+        return $this->attributeSet->getDefaultGroupId($attributeSet);
     }
 
     /**
@@ -651,7 +651,8 @@ class ReplicationHelper extends AbstractHelper
             $this->configWriter->save(
                 $path,
                 ($data) ? 1 : 0,
-                ScopeInterface::SCOPE_STORES, $storeId
+                ScopeInterface::SCOPE_STORES,
+                $storeId
             );
         } else {
             $this->configWriter->save(
@@ -663,7 +664,6 @@ class ReplicationHelper extends AbstractHelper
         }
         $this->flushByTypeCode('config');
     }
-
 
     /**
      * USE THIS WHEN YOU WANT TO RESET STATUS FOR ALL THE STORES WITHOUT PASSING ANY STORE ID
@@ -678,7 +678,8 @@ class ReplicationHelper extends AbstractHelper
                 $this->configWriter->save(
                     $path,
                     ($data) ? 1 : 0,
-                    ScopeInterface::SCOPE_STORES, $store->getId()
+                    ScopeInterface::SCOPE_STORES,
+                    $store->getId()
                 );
 
             }
@@ -703,7 +704,8 @@ class ReplicationHelper extends AbstractHelper
             $this->configWriter->save(
                 $path,
                 $value,
-                ScopeInterface::SCOPE_STORES, $storeId
+                ScopeInterface::SCOPE_STORES,
+                $storeId
             );
         } else {
             $this->configWriter->save(
@@ -724,7 +726,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * This websiteId is the id of scope website in the Magento system. and webStore is the LS Central store id stored in the core_config_data
+     * This websiteId is the id of scope website in the Magento system
+     * and webStore is the LS Central store id stored in the core_config_data
      * Trigger the disposable Hierarchy replication job to get Hierarchy based on stores.
      * @param string $websiteId
      * @return array|Entity\ReplEcommHierarchyResponse|Entity\ReplHierarchyResponse|ResponseInterface
@@ -736,13 +739,8 @@ class ReplicationHelper extends AbstractHelper
         $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $base_url = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
         // @codingStandardsIgnoreStart
-        /** @var Entity\ReplEcommHierarchy $hierarchy */
         $hierarchy = new Entity\ReplEcommHierarchy();
-
-        /** @var  Entity\ReplRequest $request */
-        $request = new Entity\ReplRequest();
-
-        /** @var Operation\ReplEcommHierarchy $operation */
+        $request   = new Entity\ReplRequest();
         $operation = new Operation\ReplEcommHierarchy($base_url);
         // @codingStandardsIgnoreEnd
 
