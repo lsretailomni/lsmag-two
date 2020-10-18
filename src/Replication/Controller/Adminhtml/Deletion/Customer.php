@@ -60,10 +60,9 @@ class Customer extends Action
         ResourceConnection $resource,
         Logger $logger,
         Context $context
-    )
-    {
+    ) {
         $this->resource = $resource;
-        $this->logger = $logger;
+        $this->logger   = $logger;
         parent::__construct($context);
     }
 

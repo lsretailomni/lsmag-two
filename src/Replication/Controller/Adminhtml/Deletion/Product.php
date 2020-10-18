@@ -218,7 +218,6 @@ class Product extends Action
         }
         $this->replicationHelper->updateCronStatusForAllStores(
             false,
-
             LSR::SC_SUCCESS_CRON_PRODUCT
         );
         $this->replicationHelper->updateCronStatusForAllStores(
