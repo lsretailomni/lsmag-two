@@ -255,7 +255,9 @@ class CategoryCreateTask
                         $category->setImage($image, $mediaAttribute, true, false);
                     }
                     // @codingStandardsIgnoreLine
-                    $this->categoryRepository->save($category);
+                    $cat = $this->categoryRepository->save($category);
+                    $cat->setStoreId($this->store->getId());
+                    $cat->getResource()->saveAttribute($cat, 'nav_id');
                 } else {
                     if ($hierarchyNode->getIsUpdated() == 1) {
                         $categoryExistData->setData(
@@ -276,6 +278,9 @@ class CategoryCreateTask
                         );
                         // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($categoryExistData);
+                    } else {
+                        $categoryExistData->setStoreId($this->store->getId());
+                        $categoryExistData->getResource()->saveAttribute($categoryExistData, 'nav_id');
                     }
                 }
             } catch (Exception $e) {
@@ -364,7 +369,9 @@ class CategoryCreateTask
                         $categorysub->setImage($imageSub, $mediaAttribute, true, false);
                     }
                     // @codingStandardsIgnoreLine
-                    $this->categoryRepository->save($categorysub);
+                    $catsub = $this->categoryRepository->save($categorysub);
+                    $catsub->setStoreId($this->store->getId());
+                    $catsub->getResource()->saveAttribute($catsub, 'nav_id');
                 } else {
                     if ($hierarchyNodeSub->getIsUpdated() == 1) {
                         $subCategoryExistData->setData(
@@ -391,6 +398,9 @@ class CategoryCreateTask
                         );
                         // @codingStandardsIgnoreStart
                         $this->categoryRepository->save($subCategoryExistData);
+                    } else {
+                        $subCategoryExistData->setStoreId($this->store->getId());
+                        $subCategoryExistData->getResource()->saveAttribute($subCategoryExistData, 'nav_id');
                     }
                 }
             } catch (Exception $e) {

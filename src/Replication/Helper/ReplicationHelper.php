@@ -770,7 +770,9 @@ class ReplicationHelper extends AbstractHelper
      * @param $secondaryTableName
      * @param $secondaryTableColumnName
      * @param bool $group
-     * @param $isReplaceJoin
+     * @param bool $isReplaceJoin
+     * @param bool $isCatJoin
+     * @param null $websiteId
      */
     public function setCollectionPropertiesPlusJoin(
         &$collection,
@@ -779,7 +781,9 @@ class ReplicationHelper extends AbstractHelper
         $secondaryTableName,
         $secondaryTableColumnName,
         $group = false,
-        $isReplaceJoin = false
+        $isReplaceJoin = false,
+        $isCatJoin = false,
+        $websiteId = null
     ) {
         foreach ($criteria->getFilterGroups() as $filter_group) {
             $fields = $conditions = [];
@@ -811,6 +815,16 @@ class ReplicationHelper extends AbstractHelper
                 'main_table.' . $primaryTableColumnName . ' = REPLACE(second.' . $secondaryTableColumnName . ',"-",",")',
                 []
             );
+        } elseif ($isCatJoin) {
+            $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $websiteId);
+            $hierarchyCode = $hierarchyCode . ';';
+            $collection->getSelect()->joinInner(
+                ['second' => $second_table_name],
+                'REPLACE(main_table.' . $primaryTableColumnName . ',"' . $hierarchyCode . '","")= second.' . $secondaryTableColumnName,
+                []
+            );
+            $collection->getSelect()->columns('second.' . $secondaryTableColumnName);
+
         } else {
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
