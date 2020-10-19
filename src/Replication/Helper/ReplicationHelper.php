@@ -36,8 +36,8 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
 
 /**
- * Class ReplicationHelper
- * @package Ls\Replication\Helper
+ * Useful helper functions for replication
+ *
  */
 class ReplicationHelper extends AbstractHelper
 {
@@ -781,27 +781,8 @@ class ReplicationHelper extends AbstractHelper
         $group = false,
         $isReplaceJoin = false
     ) {
-        foreach ($criteria->getFilterGroups() as $filter_group) {
-            $fields = $conditions = [];
-            foreach ($filter_group->getFilters() as $filter) {
-                $condition    = $filter->getConditionType() ?: 'eq';
-                $fields[]     = $filter->getField();
-                $conditions[] = [$condition => $filter->getValue()];
-            }
-            if ($fields) {
-                $collection->addFieldToFilter($fields, $conditions);
-            }
-        }
-        $sort_orders = $criteria->getSortOrders();
-        if ($sort_orders) {
-            /** @var SortOrder $sort_order */
-            foreach ($sort_orders as $sort_order) {
-                $collection->addOrder(
-                    $sort_order->getField(),
-                    ($sort_order->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
-                );
-            }
-        }
+        $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
+        $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $second_table_name = $this->resource->getTableName($secondaryTableName);
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
@@ -846,27 +827,8 @@ class ReplicationHelper extends AbstractHelper
         $secondaryTableColumnName,
         $isReplaceJoin = false
     ) {
-        foreach ($criteria->getFilterGroups() as $filter_group) {
-            $fields = $conditions = [];
-            foreach ($filter_group->getFilters() as $filter) {
-                $condition    = $filter->getConditionType() ?: 'eq';
-                $fields[]     = $filter->getField();
-                $conditions[] = [$condition => $filter->getValue()];
-            }
-            if ($fields) {
-                $collection->addFieldToFilter($fields, $conditions);
-            }
-        }
-        $sort_orders = $criteria->getSortOrders();
-        if ($sort_orders) {
-            /** @var SortOrder $sort_order */
-            foreach ($sort_orders as $sort_order) {
-                $collection->addOrder(
-                    $sort_order->getField(),
-                    ($sort_order->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
-                );
-            }
-        }
+        $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
+        $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $second_table_name = $this->resource->getTableName($secondaryTableName);
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
@@ -888,6 +850,68 @@ class ReplicationHelper extends AbstractHelper
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
+     * @param $collection
+     * @param SearchCriteriaInterface $criteria
+     */
+    public function setCollectionPropertiesPlusJoinsForInventory(&$collection, SearchCriteriaInterface $criteria)
+    {
+        $secondTableName = $this->resource->getTableName('catalog_product_entity');
+        $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
+        $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
+        $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
+        $collection->getSelect()->joinInner(
+            ['second' => $secondTableName],
+            'CONCAT_WS("-",main_table.ItemId' . ',main_table.VariantId' . ') = second.sku',
+            []
+        )->joinInner(
+            ['third' => $thirdTableName],
+            'main_table.ItemId' . ' = third.nav_id' . ' AND main_table.scope_id' . ' = third.scope_id',
+            []
+        );
+        /** @var For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
+     * @param $collection
+     * @param SearchCriteriaInterface $criteria
+     */
+    public function setFiltersOnTheBasisOfCriteria(&$collection, SearchCriteriaInterface $criteria)
+    {
+        foreach ($criteria->getFilterGroups() as $filter_group) {
+            $fields = $conditions = [];
+            foreach ($filter_group->getFilters() as $filter) {
+                $condition    = $filter->getConditionType() ?: 'eq';
+                $fields[]     = $filter->getField();
+                $conditions[] = [$condition => $filter->getValue()];
+            }
+            if ($fields) {
+                $collection->addFieldToFilter($fields, $conditions);
+            }
+        }
+    }
+
+    /**
+     * @param $collection
+     * @param SearchCriteriaInterface $criteria
+     */
+    public function setSortOrdersOnTheBasisOfCriteria(&$collection, SearchCriteriaInterface $criteria)
+    {
+        $sort_orders = $criteria->getSortOrders();
+        if ($sort_orders) {
+            /** @var SortOrder $sort_order */
+            foreach ($sort_orders as $sort_order) {
+                $collection->addOrder(
+                    $sort_order->getField(),
+                    ($sort_order->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
+                );
+            }
+        }
     }
 
     /**

@@ -5,15 +5,11 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplInvStatus;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\StateException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Class SyncInventory
- * @package Ls\Replication\Cron
+ * Sync items Inventory
  */
 class SyncInventory extends ProductCreateTask
 {
@@ -23,6 +19,10 @@ class SyncInventory extends ProductCreateTask
     /** @var int */
     public $remainingRecords;
 
+    /**
+     * @param null $storeData
+     * @throws NoSuchEntityException
+     */
     public function execute($storeData = null)
     {
         if (!empty($storeData) && $storeData instanceof StoreInterface) {
@@ -52,15 +52,7 @@ class SyncInventory extends ProductCreateTask
                         1
                     );
                     $collection                = $this->replInvStatusCollectionFactory->create();
-                    $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
-                        $collection,
-                        $criteria,
-                        'ItemId',
-                        'VariantId',
-                        'catalog_product_entity',
-                        'sku',
-                        true
-                    );
+                    $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
                     if ($collection->getSize() > 0) {
                         /** @var ReplInvStatus $replInvStatus */
                         foreach ($collection as $replInvStatus) {
@@ -110,11 +102,8 @@ class SyncInventory extends ProductCreateTask
 
     /**
      * @param null $storeData
-     * @return array
-     * @throws CouldNotSaveException
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws StateException
+     * @return array|int[]
+     * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {
@@ -139,15 +128,7 @@ class SyncInventory extends ProductCreateTask
                 1
             );
             $collection = $this->replInvStatusCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
-                $collection,
-                $criteria,
-                'ItemId',
-                'VariantId',
-                'catalog_product_entity',
-                'sku',
-                true
-            );
+            $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
