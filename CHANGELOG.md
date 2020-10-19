@@ -32,7 +32,7 @@ All notable changes to this project will be documented in this file.
 
 - Fixed issue with the creation of configuratble products on Magento 2.4.0 version. [OMNI-5281](https://solutions.lsretail.com/jira/browse/OMNI-5281)
 - Fixed anchor link for LS Retail setup section appear on the admin notice. [OMNI-5284](https://solutions.lsretail.com/jira/browse/OMNI-5284)
-- Fixed issue when empty scheme Id is returned from LS Central[OMNI-5301](https://solutions.lsretail.com/jira/browse/OMNI-5301)
+- Fixed issue when empty scheme Id is returned from LS Central. [OMNI-5301](https://solutions.lsretail.com/jira/browse/OMNI-5301)
 
 
 
