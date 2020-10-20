@@ -9,10 +9,7 @@ use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -39,11 +36,6 @@ class Product extends Action
      * @var AttributeSetRepositoryInterface
      */
     public $attributeSetRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    public $searchCriteriaBuilder;
 
     /** @var array List of ls tables required in products */
     public $ls_tables = [
@@ -170,7 +162,6 @@ class Product extends Action
      * @param ReplicationHelper $replicationHelper
      * @param Filesystem $filesystem
      * @param AttributeSetRepositoryInterface $attributeSetRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      */
     public function __construct(
         ResourceConnection $resource,
@@ -179,8 +170,7 @@ class Product extends Action
         LSR $LSR,
         ReplicationHelper $replicationHelper,
         Filesystem $filesystem,
-        AttributeSetRepositoryInterface $attributeSetRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        AttributeSetRepositoryInterface $attributeSetRepository
     ) {
         $this->resource               = $resource;
         $this->logger                 = $logger;
@@ -188,7 +178,6 @@ class Product extends Action
         $this->replicationHelper      = $replicationHelper;
         $this->filesystem             = $filesystem;
         $this->attributeSetRepository = $attributeSetRepository;
-        $this->searchCriteriaBuilder  = $searchCriteriaBuilder;
         parent::__construct($context);
     }
 
@@ -235,15 +224,17 @@ class Product extends Action
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-        $searchResult = $this->attributeSetRepository->getList($this->searchCriteriaBuilder->create());
+        $filters      = [
+            ['field' => 'attribute_set_name', 'value' => 'ls_%', 'condition_type' => 'like'],
+            ['field' => 'entity_type_id', 'value' => 4, 'condition_type' => 'eq']
+        ];
+        $criteria     = $this->replicationHelper->buildCriteriaForDirect($filters, -1, false);
+        $searchResult = $this->attributeSetRepository->getList($criteria);
         foreach ($searchResult->getItems() as $attributeSet) {
-            $attributeName = $attributeSet->getAttributeSetName();
-            if (substr($attributeName, 0, 3) == 'ls_') {
-                try {
-                    $this->attributeSetRepository->deleteById($attributeSet->getAttributeSetId());
-                } catch (Exception $e) {
-                    $this->logger->debug($e->getMessage());
-                }
+            try {
+                $this->attributeSetRepository->deleteById($attributeSet->getAttributeSetId());
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
             }
         }
         $this->replicationHelper->updateCronStatusForAllStores(
