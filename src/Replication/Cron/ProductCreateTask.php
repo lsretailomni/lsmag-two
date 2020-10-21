@@ -3,38 +3,38 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\ImageSize;
-use Ls\Omni\Helper\LoyaltyHelper;
-use Ls\Omni\Helper\StockHelper;
-use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
-use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
-use Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
-use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
-use Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Logger\Logger;
-use Ls\Replication\Model\ReplAttributeValue;
-use Ls\Replication\Model\ReplAttributeValueSearchResults;
-use Ls\Replication\Model\ReplBarcode;
-use Ls\Replication\Model\ReplBarcodeSearchResults;
-use Ls\Replication\Model\ReplExtendedVariantValue;
-use Ls\Replication\Model\ReplImageLink;
-use Ls\Replication\Model\ReplInvStatus;
-use Ls\Replication\Model\ReplItem;
-use Ls\Replication\Model\ReplItemSearchResults;
-use Ls\Replication\Model\ReplItemVariantRegistration;
-use Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ImageSize;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\StockHelper;
+use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplImageRepositoryInterface as ReplImageRepository;
+use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
+use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplAttributeValue;
+use \Ls\Replication\Model\ReplAttributeValueSearchResults;
+use \Ls\Replication\Model\ReplBarcode;
+use \Ls\Replication\Model\ReplBarcodeSearchResults;
+use \Ls\Replication\Model\ReplExtendedVariantValue;
+use \Ls\Replication\Model\ReplImageLink;
+use \Ls\Replication\Model\ReplInvStatus;
+use \Ls\Replication\Model\ReplItem;
+use \Ls\Replication\Model\ReplItemSearchResults;
+use \Ls\Replication\Model\ReplItemVariantRegistration;
+use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
@@ -82,7 +82,8 @@ use Magento\Framework\Exception\StateException;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Class ProductCreateTask
+ * Create Items in magento
+ * replicated from omni
  */
 class ProductCreateTask
 {
@@ -1578,33 +1579,52 @@ class ProductCreateTask
     public function getAttributeSetId(ReplItem $item)
     {
         $attributeSetsMechanism = $this->replicationHelper->getAttributeSetsMechanism();
-        $attributeSetId = 4;
         if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
-            $itemCategoryCode = $item->getItemCategoryCode();
-            $formattedItemCategoryCode = $this->replicationHelper->formatAttributeCode($itemCategoryCode);
-            if ($this->getAttributeSetByName($formattedItemCategoryCode)) {
-                $attributeSetId = $this->getAttributeSetByName($formattedItemCategoryCode);
-            } else {
-                $attributes     = $this->getRelatedAttributesAssignedToItemCategoryCode($itemCategoryCode);
-                $attributeSetId = $this->createAttributeSetAndGroupsAndReturnAttributeSetId(
-                    $formattedItemCategoryCode,
-                    $attributes
-                );
-            }
+            $identifier = $item->getItemCategoryCode();
+        } else {
+            $identifier = $item->getProductGroupId();
+        }
+        if (!$identifier) {
+            $identifier = LSR::SC_REPLICATION_ATTRIBUTE_SET_EXTRAS;
+        }
+        $formattedIdentifier = $this->replicationHelper->formatAttributeCode($identifier);
+        if ($this->getAttributeSetByName($formattedIdentifier)) {
+            $attributeSetId = $this->getAttributeSetByName($formattedIdentifier);
+        } else {
+            $attributes     = $this->getRelatedAttributesAssignedToGivenIdentifier(
+                $attributeSetsMechanism,
+                $identifier
+            );
+            $attributeSetId = $this->createAttributeSetAndGroupsAndReturnAttributeSetId(
+                $formattedIdentifier,
+                $attributes
+            );
         }
         return $attributeSetId;
     }
 
     /**
-     * @param $itemCategoryCode
+     * @param $attributeSetsMechanism
+     * @param $param
      * @return array
      */
-    public function getRelatedAttributesAssignedToItemCategoryCode($itemCategoryCode)
+    public function getRelatedAttributesAssignedToGivenIdentifier($attributeSetsMechanism, $param)
     {
         $attributes  = [];
-        $filters     = [
-            ['field' => 'second.ItemCategoryCode', 'value' => $itemCategoryCode, 'condition_type' => 'eq']
-        ];
+        if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
+            if ($param == LSR::SC_REPLICATION_ATTRIBUTE_SET_EXTRAS) {
+                $filter = ['field' => 'second.ItemCategoryCode', 'value' => true, 'condition_type' => 'null'];
+            } else {
+                $filter = ['field' => 'second.ItemCategoryCode', 'value' => $param, 'condition_type' => 'eq'];
+            }
+        } else {
+            if ($param == LSR::SC_REPLICATION_ATTRIBUTE_SET_EXTRAS) {
+                $filter = ['field' => 'second.ProductGroupId', 'value' => true, 'condition_type' => 'null'];
+            } else {
+                $filter = ['field' => 'second.ProductGroupId', 'value' => $param, 'condition_type' => 'eq'];
+            }
+        }
+        $filters = [$filter];
         $criteria    = $this->replicationHelper->buildCriteriaForDirect($filters, -1, false);
         $collection1 = $this->replAttributeValueCollectionFactory->create();
         $collection2 = $this->replExtendedVariantValueCollectionFactory->create();
@@ -1665,11 +1685,11 @@ class ProductCreateTask
         $attributeSet   = $this->attributeSetManagement->create($entityTypeCode, $attributeSet, $defaultSetId);
         $attributeGroup = $this->attributeSetGroupFactory->create();
         $attributeGroup->setAttributeSetId($attributeSet->getAttributeSetId());
-        $attributeGroup->setAttributeGroupName('LS Central Attributes');
+        $attributeGroup->setAttributeGroupName(LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP);
         $softAttributesGroup = $this->attributeGroupRepository->save($attributeGroup);
         $attributeGroup = $this->attributeSetGroupFactory->create();
         $attributeGroup->setAttributeSetId($attributeSet->getAttributeSetId());
-        $attributeGroup->setAttributeGroupName('LS Central Variants');
+        $attributeGroup->setAttributeGroupName(LSR::SC_REPLICATION_ATTRIBUTE_SET_VARIANTS_ATTRIBUTES_GROUP);
         $hardAttributesGroup = $this->attributeGroupRepository->save($attributeGroup);
 
         foreach ($attributes as $type => $types) {
