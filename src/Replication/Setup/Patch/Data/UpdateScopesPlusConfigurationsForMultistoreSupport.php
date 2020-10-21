@@ -220,7 +220,7 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         // Update all
         foreach ($this->lsTables as $lsTable) {
-            $lsTableName = $connection->getTableName($lsTable);
+            $lsTableName = $this->resource->getTableName($lsTable);
             $lsQuery     = "UPDATE $lsTableName SET scope = 'stores', scope_id = 1";
             try {
                 $connection->query($lsQuery);
@@ -236,7 +236,7 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
     private function updateConfigTable()
     {
         $connection   = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $lsTableName  = $connection->getTableName('core_config_data');
+        $lsTableName  = $this->resource->getTableName('core_config_data');
         $websiteQuery = "UPDATE $lsTableName set scope = 'websites', scope_id = 1 WHERE path IN ('" . implode("','", $this->websiteScopeFields) . "')";
         $storeQuery   = "UPDATE $lsTableName set scope = 'stores', scope_id = 1 WHERE path IN ('" . implode("','", $this->nonwebsiteScopeFields) . "')";
         try {

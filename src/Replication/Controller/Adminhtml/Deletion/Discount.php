@@ -79,7 +79,7 @@ class Discount extends Action
         $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
         foreach ($this->discount_tables as $discountTable) {
-            $tableName = $connection->getTableName($discountTable);
+            $tableName = $this->resource->getTableName($discountTable);
             try {
                 if ($connection->isTableExists($tableName)) {
                     $connection->truncateTable($tableName);
@@ -89,7 +89,7 @@ class Discount extends Action
             }
         }
         $connection  = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $lsTableName = $connection->getTableName('ls_replication_repl_discount');
+        $lsTableName = $this->resource->getTableName('ls_replication_repl_discount');
         $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
         try {
             $connection->query($lsQuery);
