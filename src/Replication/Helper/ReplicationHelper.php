@@ -898,7 +898,7 @@ class ReplicationHelper extends AbstractHelper
             );
         }
         /** @var For Xdebug only to check the query $query */
-        $query = $collection->getSelect()->__toString();
+        //$query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
