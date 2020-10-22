@@ -139,6 +139,7 @@ Close,Close
 "Your points are successfully removed.","Your points are successfully removed."
 "Gift card successfully applied.","Gift card successfully applied."
 "Your points are successfully redeemed.","Your points are successfully redeemed."
+"contains %1 quantity","contains %1 quantity"
 cart,cart
 "Please provide where (if suitable) you prefer to pick your order.","Please provide where (if suitable) you prefer to pick your order."
 Configuration,Configuration

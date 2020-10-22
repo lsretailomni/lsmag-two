@@ -8,6 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Eav\Model\Config;
@@ -107,6 +108,11 @@ class ReplicationHelper extends AbstractHelper
     public $_logger;
 
     /**
+     * @var ReplItemRepository
+     */
+    public $itemRepository;
+
+    /**
      * ReplicationHelper constructor.
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -125,6 +131,7 @@ class ReplicationHelper extends AbstractHelper
      * @param DateTime $date
      * @param TimezoneInterface $timezone
      * @param Logger $_logger
+     * @param ReplItemRepository $itemRepository
      */
     public function __construct(
         Context $context,
@@ -143,7 +150,8 @@ class ReplicationHelper extends AbstractHelper
         SortOrder $sortOrder,
         DateTime $date,
         TimezoneInterface $timezone,
-        Logger $_logger
+        Logger $_logger,
+        ReplItemRepository $itemRepository
     ) {
         $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
         $this->filterBuilder                    = $filterBuilder;
@@ -161,6 +169,7 @@ class ReplicationHelper extends AbstractHelper
         $this->dateTime                         = $date;
         $this->timezone                         = $timezone;
         $this->_logger                          = $_logger;
+        $this->itemRepository                   = $itemRepository;
         parent::__construct(
             $context
         );
@@ -265,8 +274,10 @@ class ReplicationHelper extends AbstractHelper
      * @param boolean $excludeDeleted
      * @return SearchCriteria
      */
-    public function buildCriteriaForArray(array $filters, $pagesize = 100, $excludeDeleted = true, $parameter = null)
-    {
+    public function buildCriteriaForArray(
+        array $filters, $pagesize = 100, $excludeDeleted = true,
+        $parameter = null, $parameter2 = null
+    ) {
         $filterOr       = null;
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
@@ -278,24 +289,45 @@ class ReplicationHelper extends AbstractHelper
             ->setConditionType('eq')
             ->create();
 
-        if (!empty($parameter)) {
-            $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+        if (!empty($parameter) && !empty($parameter2)) {
+
+            $parameter1 = $this->filterBuilder->setField($parameter['field'])
                 ->setValue($parameter['value'])
                 ->setConditionType($parameter['condition_type'])
+                ->create();
+
+            $parameter2 = $this->filterBuilder->setField($parameter2['field'])
+                ->setValue($parameter2['value'])
+                ->setConditionType($parameter2['condition_type'])
                 ->create();
 
             // building OR condition between the above  criteria
             $filterOr = $this->filterGroupBuilder
                 ->addFilter($attr_processed)
                 ->addFilter($attr_is_updated)
-                ->addFilter($ExtraFieldwithOrCondition)
+                ->addFilter($parameter1)
+                ->addFilter($parameter2)
                 ->create();
         } else {
-            // building OR condition between the above two criteria
-            $filterOr = $this->filterGroupBuilder
-                ->addFilter($attr_processed)
-                ->addFilter($attr_is_updated)
-                ->create();
+            if (!empty($parameter)) {
+                $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+                    ->setValue($parameter['value'])
+                    ->setConditionType($parameter['condition_type'])
+                    ->create();
+
+                // building OR condition between the above  criteria
+                $filterOr = $this->filterGroupBuilder
+                    ->addFilter($attr_processed)
+                    ->addFilter($attr_is_updated)
+                    ->addFilter($ExtraFieldwithOrCondition)
+                    ->create();
+            } else {
+                // building OR condition between the above two criteria
+                $filterOr = $this->filterGroupBuilder
+                    ->addFilter($attr_processed)
+                    ->addFilter($attr_is_updated)
+                    ->create();
+            }
         }
         $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
         if (!empty($filters)) {
@@ -311,6 +343,7 @@ class ReplicationHelper extends AbstractHelper
         }
         return $criteria->create();
     }
+
 
     /**
      * @param array $filters
@@ -365,24 +398,65 @@ class ReplicationHelper extends AbstractHelper
      * @param array $filters
      * @param int $pagesize
      * @param boolean $excludeDeleted
+     * @param null $parameter
+     * @param null $parameter2
      * @return SearchCriteria
      */
-    public function buildCriteriaForDirect(array $filters, $pagesize = 100, $excludeDeleted = true)
-    {
-        $criteria = $this->searchCriteriaBuilder->setFilterGroups([]);
+    public function buildCriteriaForDirect(
+        array $filters, $pagesize = 100, $excludeDeleted = true,
+        $parameter = null, $parameter2 = null
+    ) {
+        $filterOr = null;
+        if (!empty($parameter) && !empty($parameter2)) {
+
+            $parameter1 = $this->filterBuilder->setField($parameter['field'])
+                ->setValue($parameter['value'])
+                ->setConditionType($parameter['condition_type'])
+                ->create();
+
+            $parameter2 = $this->filterBuilder->setField($parameter2['field'])
+                ->setValue($parameter2['value'])
+                ->setConditionType($parameter2['condition_type'])
+                ->create();
+
+            // building OR condition between the above  criteria
+            $filterOr = $this->filterGroupBuilder
+                ->addFilter($parameter1)
+                ->addFilter($parameter2)
+                ->create();
+        } else {
+            if (!empty($parameter)) {
+                $ExtraFieldwithOrCondition = $this->filterBuilder->setField($parameter['field'])
+                    ->setValue($parameter['value'])
+                    ->setConditionType($parameter['condition_type'])
+                    ->create();
+
+                // building OR condition between the above  criteria
+                $filterOr = $this->filterGroupBuilder
+                    ->addFilter($ExtraFieldwithOrCondition)
+                    ->create();
+            }
+        }
+
+        if (!empty($filterOr)) {
+            $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
+        } else {
+            $criteria = $this->searchCriteriaBuilder->setFilterGroups([]);
+        }
         if (!empty($filters)) {
             foreach ($filters as $filter) {
                 $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
         if ($excludeDeleted) {
-            $criteria->addFilter('IsDeleted', 0, 'eq');
+            $criteria->addFilter('main_table.IsDeleted', 0, 'eq');
         }
         if ($pagesize != -1) {
             $criteria->setPageSize($pagesize);
         }
         return $criteria->create();
     }
+
 
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
@@ -915,6 +989,52 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * @param $collection
+     * @param SearchCriteriaInterface $criteria
+     * @param $resultFactory
+     * @param null $fieldToSelect
+     * @return mixed
+     */
+    public function setCollection(
+        $collection,
+        SearchCriteriaInterface $criteria,
+        $resultFactory,
+        $fieldToSort = null
+    ) {
+        foreach ($criteria->getFilterGroups() as $filter_group) {
+            $fields = $conditions = [];
+            foreach ($filter_group->getFilters() as $filter) {
+                $condition    = $filter->getConditionType() ?: 'eq';
+                $fields[]     = $filter->getField();
+                $conditions[] = [$condition => $filter->getValue()];
+            }
+            if ($fields) {
+                $collection->addFieldToFilter($fields, $conditions);
+            }
+        }
+        if ($fieldToSort) {
+            $collection->getSelect()->order('main_table.' . $fieldToSort);
+            $collection->getSelect()->order('main_table.QtyPrUom');
+        }
+
+        // @codingStandardsIgnoreEnd
+        $collection->getSelect()->limit($criteria->getPageSize());
+
+        /** @var For Xdebug only to check the query $query */
+        //$query = $collection->getSelect()->__toString();
+
+        $objects = [];
+        foreach ($collection as $object_model) {
+            $objects[] = $object_model;
+        }
+        $resultFactory->setItems($objects);
+        $resultFactory->setItems($objects);
+
+        return $resultFactory->getItems();
+    }
+
+
+    /**
      * To be used only for Processing attributes and variants in the AttributeCreate Task
      * @return string
      */
@@ -1104,5 +1224,24 @@ class ReplicationHelper extends AbstractHelper
     public function getAttributeSetsMechanism()
     {
         return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM);
+    }
+
+    /**
+     * @param $itemId
+     * @return mixed
+     */
+    public function getBaseUnitOfMeasure($itemId)
+    {
+        $baseUnitOfMeasure = null;
+        $filters           = [
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq']
+        ];
+        $criteria          = $this->buildCriteriaForDirect($filters, 1);
+        $items             = $this->itemRepository->getList($criteria)->getItems();
+        foreach ($items as $item) {
+            return $item->getBaseUnitOfMeasure();
+        }
+
+        return $baseUnitOfMeasure;
     }
 }

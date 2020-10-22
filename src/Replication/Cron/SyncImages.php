@@ -9,6 +9,7 @@ use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Store\Api\Data\StoreInterface;
 
@@ -27,6 +28,7 @@ class SyncImages extends ProductCreateTask
     /**
      * @param null $storeData
      * @throws InputException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute($storeData = null)
     {
@@ -41,13 +43,19 @@ class SyncImages extends ProductCreateTask
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $this->replicationHelper->updateConfigValue($this->replicationHelper->getDateTime(),
-                        LSR::SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE, $this->store->getId());
+                    $this->replicationHelper->updateConfigValue(
+                        $this->replicationHelper->getDateTime(),
+                        LSR::SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE,
+                        $this->store->getId()
+                    );
                     $this->replicationHelper->setEnvVariables();
                     $this->logger->debug('Running SyncImages Task for store ' . $this->store->getName());
                     $this->syncItemImages();
-                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_IMAGES,
-                        $this->store->getId());
+                    $this->replicationHelper->updateCronStatus(
+                        $this->cronStatus,
+                        LSR::SC_SUCCESS_CRON_ITEM_IMAGES,
+                        $this->store->getId()
+                    );
                     $this->logger->debug('End SyncImages Task with remaining : ' . $this->getRemainingRecords($this->store));
                 }
                 $this->lsr->setStoreId(null);
@@ -59,6 +67,7 @@ class SyncImages extends ProductCreateTask
      * @param null $storeData
      * @return array
      * @throws InputException
+     * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {
@@ -105,26 +114,33 @@ class SyncImages extends ProductCreateTask
             /** @var ReplImageLink $itemImage */
             foreach ($collection->getItems() as $itemImage) {
                 try {
-                    $itemSku = $itemImage->getKeyValue();
-                    $itemSku = str_replace(',', '-', $itemSku);
-                    /* @var ProductInterface $productData */
-                    $productData = $this->productRepository->get($itemSku, true, $this->store->getId(), true);
-                    $productData->setData('store_id',0);
-                    // Check for all images.
-                    $filtersForAllImages  = [
-                        ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
-                        ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq'],
-                        ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
-                    ];
-                    $criteriaForAllImages = $this->replicationHelper->buildCriteriaForDirect(
-                        $filtersForAllImages,
-                        -1,
-                        false
-                    )->setSortOrders([$sortOrder]);
-                    /** @var ReplImageLinkSearchResults $newImagestoProcess */
-                    $newImagesToProcess = $this->replImageLinkRepositoryInterface->getList($criteriaForAllImages);
-                    if ($newImagesToProcess->getTotalCount() > 0) {
-                        $this->processMediaGalleryImages($newImagesToProcess, $productData);
+                    $checkIsNotVariant = true;
+                    $itemSku           = $itemImage->getKeyValue();
+                    $itemSku           = str_replace(',', '-', $itemSku);
+
+                    $explodeSku = explode("-", $itemSku);
+                    if (count($explodeSku) > 1) {
+                        $checkIsNotVariant = false;
+                    }
+                    $sku           = $explodeSku[0];
+                    $uomCodesTotal = $this->getUomCodes($sku);
+                    if (!empty($uomCodesTotal)) {
+                        if (count($uomCodesTotal[$sku]) > 1) {
+                            $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $sku);
+                            if (count($uomCodesNotProcessed) == 0) {
+                                $this->processImages($itemImage, $sortOrder, $itemSku);
+                                $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($sku);
+                                foreach ($uomCodesTotal[$sku] as $uomCode) {
+                                    if ($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) {
+                                        $this->processImages($itemImage, $sortOrder, $itemSku, $uomCode);
+                                    }
+                                }
+                            }
+                        } else {
+                            $this->processImages($itemImage, $sortOrder, $itemSku);
+                        }
+                    } else {
+                        $this->processImages($itemImage, $sortOrder, $itemSku);
                     }
                 } catch (Exception $e) {
                     $this->logger->debug(
@@ -218,6 +234,46 @@ class SyncImages extends ProductCreateTask
                 );
                 $this->logger->debug($e->getMessage());
             }
+        }
+    }
+
+    /**
+     * @param $itemImage
+     * @param $sortOrder
+     * @param $itemSku
+     * @param null $uomCode
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws StateException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function processImages($itemImage, $sortOrder, $itemSku, $uomCode = null)
+    {
+        if (!empty($uomCode)) {
+            $itemSku = $itemSku . '-' . $uomCode;
+        }
+        try {
+            $productData = $this->productRepository->get($itemSku, true, $this->store->getId(), true);
+            $productData->setData('store_id', 0);
+        } catch (NoSuchEntityException $e) {
+            return;
+        }
+
+        // Check for all images.
+        $filtersForAllImages  = [
+            ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
+            ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+        ];
+        $criteriaForAllImages = $this->replicationHelper->buildCriteriaForDirect(
+            $filtersForAllImages,
+            -1,
+            false
+        )->setSortOrders([$sortOrder]);
+        /** @var ReplImageLinkSearchResults $newImagestoProcess */
+        $newImagesToProcess = $this->replImageLinkRepositoryInterface->getList($criteriaForAllImages);
+        if ($newImagesToProcess->getTotalCount() > 0) {
+            $this->processMediaGalleryImages($newImagesToProcess, $productData);
         }
     }
 
