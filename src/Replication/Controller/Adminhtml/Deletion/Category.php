@@ -61,6 +61,9 @@ class Category extends Action
         "ls_replication_repl_hierarchy_leaf"
     ];
 
+    public $lsTranslationTables = [
+        "ls_replication_repl_data_translation"
+    ];
 
     /** @var array List of magento tables required in categories */
     public $categoryTables = [
@@ -135,6 +138,7 @@ class Category extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
 
         // Update dependent ls tables to not processed
         foreach ($this->lsTables as $lsTable) {
@@ -147,6 +151,19 @@ class Category extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
+
+        // Update translation ls tables to not processed for hierarchy
+        foreach ($this->lsTranslationTables as $lsTranslationTable) {
+            $lsTableName = $this->resource->getTableName($lsTable);
+            $lsQuery = 'UPDATE ' . $lsTranslationTable . ' SET processed = 0, is_updated = 0, is_failed = 0,
+            processed_at = NULL where TranslationId ="' . LSR::SC_TRANSLATION_ID_HIERARCHY_NODE . '"';
+            try {
+                $connection->query($lsQuery);
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
+        }
+
         $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();
         $mediaDirectory .= 'catalog' . DIRECTORY_SEPARATOR . 'category' . DIRECTORY_SEPARATOR;
         try {
@@ -162,6 +179,14 @@ class Category extends Action
         $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_CATEGORY
+        );
+        $this->replicationHelper->updateCronStatusForAllStores(
+            false,
+            LSR::SC_SUCCESS_CRON_ITEM_UPDATES
+        );
+        $this->replicationHelper->updateCronStatusForAllStores(
+            false,
+            LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
         );
         $this->messageManager->addSuccessMessage(__('Categories deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
