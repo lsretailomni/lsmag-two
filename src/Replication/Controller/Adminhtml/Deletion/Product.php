@@ -47,7 +47,7 @@ class Product extends Action
         "ls_replication_repl_hierarchy_leaf",
         "ls_replication_repl_attribute_value",
         "ls_replication_repl_image_link",
-		"ls_replication_repl_item_unit_of_measure"
+        "ls_replication_repl_item_unit_of_measure"
     ];
 
     /** @var array List of all the Catalog Product tables */
@@ -270,6 +270,10 @@ class Product extends Action
         $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE
+        );
+        $this->replicationHelper->updateCronStatusForAllStores(
+            false,
+            LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
         );
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');

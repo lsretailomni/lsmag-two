@@ -106,6 +106,10 @@ class Attribute extends Action
             false,
             LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT
         );
+        $this->replicationHelper->updateCronStatusForAllStores(
+            false,
+            LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
+        );
         // @codingStandardsIgnoreEnd
         $this->messageManager->addSuccessMessage(__('LS Attributes deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
