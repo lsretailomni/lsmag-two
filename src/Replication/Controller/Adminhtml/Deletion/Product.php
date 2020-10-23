@@ -207,6 +207,14 @@ class Product extends Action
 
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
+        $lsTableName = $this->resource->getTableName("ls_replication_repl_data_translation");
+        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
+            processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION . '"';
+        try {
+            $connection->query($lsQuery);
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
         $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();
         $mediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
         try {
