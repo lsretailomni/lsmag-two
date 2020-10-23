@@ -100,7 +100,6 @@ class Category extends Action
         $this->filesystem            = $filesystem;
         $this->categoryRepository    = $categoryRepository;
         $this->categoryResourceModel = $categoryResourceModel;
-
         parent::__construct($context);
     }
 
@@ -120,7 +119,7 @@ class Category extends Action
                     $this->categoryResourceModel->deleteChildren($rootCategory);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
 
@@ -154,9 +153,9 @@ class Category extends Action
 
         // Update translation ls tables to not processed for hierarchy
         foreach ($this->lsTranslationTables as $lsTranslationTable) {
-            $lsTableName = $this->resource->getTableName($lsTable);
-            $lsQuery = 'UPDATE ' . $lsTranslationTable . ' SET processed = 0, is_updated = 0, is_failed = 0,
-            processed_at = NULL where TranslationId ="' . LSR::SC_TRANSLATION_ID_HIERARCHY_NODE . '"';
+            $lsTableName = $this->resource->getTableName($lsTranslationTable);
+            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
+            processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_HIERARCHY_NODE . '"';
             try {
                 $connection->query($lsQuery);
             } catch (Exception $e) {
