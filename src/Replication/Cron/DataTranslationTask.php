@@ -380,6 +380,7 @@ class DataTranslationTask
     /**
      * @param $storeId
      * @param $langCode
+     * @param null $websiteId
      */
     public function updateHierarchyNode($storeId, $langCode, $websiteId = null)
     {
