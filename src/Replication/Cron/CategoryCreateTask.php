@@ -27,8 +27,8 @@ use Magento\Framework\Filesystem\Io\File;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Class CategoryCreateTask
- * @package Ls\Replication\Cron
+ *
+ * Create categories in magento
  */
 class CategoryCreateTask
 {
@@ -647,9 +647,7 @@ class CategoryCreateTask
      */
     public function getHierarchyCode($storeData)
     {
-        if (!$this->hierarchyCode) {
-            $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $storeData->getId());
-        }
+        $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $storeData->getId());
         return $this->hierarchyCode;
     }
 }

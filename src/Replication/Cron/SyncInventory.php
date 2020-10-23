@@ -5,15 +5,11 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplInvStatus;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\StateException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Class SyncInventory
- * @package Ls\Replication\Cron
+ * Sync items Inventory
  */
 class SyncInventory extends ProductCreateTask
 {
@@ -23,6 +19,10 @@ class SyncInventory extends ProductCreateTask
     /** @var int */
     public $remainingRecords;
 
+    /**
+     * @param null $storeData
+     * @throws NoSuchEntityException
+     */
     public function execute($storeData = null)
     {
         if (!empty($storeData) && $storeData instanceof StoreInterface) {
@@ -52,31 +52,33 @@ class SyncInventory extends ProductCreateTask
                         1
                     );
                     $collection                = $this->replInvStatusCollectionFactory->create();
-                    $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
-                        $collection,
-                        $criteria,
-                        'ItemId',
-                        'VariantId',
-                        'catalog_product_entity',
-                        'sku',
-                        true
-                    );
+                    $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
                     if ($collection->getSize() > 0) {
                         /** @var ReplInvStatus $replInvStatus */
                         foreach ($collection as $replInvStatus) {
                             try {
+                                $variants = null;
+                                $checkIsNotVariant = true;
                                 if (!$replInvStatus->getVariantId()) {
                                     $sku = $replInvStatus->getItemId();
                                 } else {
-                                    $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
+                                    $sku               = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
+                                    $checkIsNotVariant = false;
                                 }
-                                $stockItem = $this->stockRegistry->getStockItemBySku($sku);
-                                if (isset($stockItem)) {
-                                    // @codingStandardsIgnoreStart
-                                    $stockItem->setQty($replInvStatus->getQuantity());
-                                    $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
-                                    $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
-                                    // @codingStandardsIgnoreEnd
+                                $this->updateInventory($sku, $replInvStatus);
+                                $uomCodes = $this->getUomCodesProcessed($replInvStatus->getItemId());
+                                if (!empty($uomCodes)) {
+                                    if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
+                                        // @codingStandardsIgnoreLine
+                                        $baseUnitOfMeasure = $uomCodes[$replInvStatus->getItemId() . '-' . 'BaseUnitOfMeasure'];
+                                        $variants          = $this->getProductVariants($sku);
+                                        foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
+                                            if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) && empty($variants)) {
+                                                $skuUom = $sku . "-" . $uomCode;
+                                                $this->updateInventory($skuUom, $replInvStatus);
+                                            }
+                                        }
+                                    }
                                 }
                             } catch (Exception $e) {
                                 $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
@@ -110,17 +112,36 @@ class SyncInventory extends ProductCreateTask
 
     /**
      * @param null $storeData
-     * @return array
-     * @throws CouldNotSaveException
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws StateException
+     * @return array|int[]
+     * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {
         $this->execute($storeData);
         $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
+    }
+
+    /**
+     * @param $sku
+     * @param $replInvStatus
+     * @throws NoSuchEntityException
+     */
+    private function updateInventory($sku, $replInvStatus)
+    {
+        try {
+            $stockItem = $this->stockRegistry->getStockItemBySku($sku);
+            if (isset($stockItem)) {
+                // @codingStandardsIgnoreStart
+                $stockItem->setQty($replInvStatus->getQuantity());
+                $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
+                $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
+                // @codingStandardsIgnoreEnd
+            }
+        } catch (Exception $e) {
+            $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+            $this->logger->debug($e->getMessage());
+        }
     }
 
     /**
@@ -139,15 +160,7 @@ class SyncInventory extends ProductCreateTask
                 1
             );
             $collection = $this->replInvStatusCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
-                $collection,
-                $criteria,
-                'ItemId',
-                'VariantId',
-                'catalog_product_entity',
-                'sku',
-                true
-            );
+            $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;

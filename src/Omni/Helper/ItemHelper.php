@@ -233,12 +233,14 @@ class ItemHelper extends AbstractHelper
         try {
             $discountInfo = [];
             $customPrice  = 0;
+            $uom  = '';
             if ($type == 2) {
                 $itemSku = $item->getItemId();
                 $itemSku = explode("-", $itemSku);
                 if (count($itemSku) < 2) {
                     $itemSku[1] = $item->getVariantId();
                 }
+                $uom = $item->getUomId();
                 $customPrice = $item->getDiscountAmount();
             } else {
                 $itemSku = $item->getSku();
@@ -246,8 +248,12 @@ class ItemHelper extends AbstractHelper
                 if (count($itemSku) < 2) {
                     $itemSku[1] = '';
                 }
+                // @codingStandardsIgnoreLine
                 $customPrice = $item->getCustomPrice();
+                $baseUnitOfMeasure = $item->getProduct()->getData('uom');
+                $uom               = $this->getUom($itemSku, $baseUnitOfMeasure);
             }
+
             $check        = false;
             $basketData   = [];
             $discountText = __("Save");
@@ -259,7 +265,7 @@ class ItemHelper extends AbstractHelper
                 $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
             }
             foreach ($basketData as $basket) {
-                if ($basket->getItemId() == $itemSku[0] && $basket->getVariantId() == $itemSku[1]) {
+                if ($basket->getItemId() == $itemSku[0] && $basket->getVariantId() == $itemSku[1] && $uom == $basket->getUomId()) {
                     if ($customPrice > 0 && $customPrice != null) {
                         // @codingStandardsIgnoreLine
                         foreach ($discountsLines as $orderDiscountLine) {
@@ -293,23 +299,24 @@ class ItemHelper extends AbstractHelper
         try {
             $itemlist = $this->cart->getQuote()->getAllVisibleItems();
             foreach ($itemlist as $item) {
-                $orderLines     = $basketData->getOrderLines()->getOrderLine();
-                $oldItemVariant = [];
-                $itemSku        = explode("-", $item->getSku());
-                // @codingStandardsIgnoreLine
-                if (count($itemSku) < 2) {
-                    $itemSku[1] = null;
-                }
+                $orderLines        = $basketData->getOrderLines()->getOrderLine();
+                $oldItemVariant    = [];
+                $itemSku           = explode("-", $item->getSku());
+                $baseUnitOfMeasure = $item->getProduct()->getData('uom');
+                $uom               = $this->getUom($itemSku, $baseUnitOfMeasure);
+
+
                 if (is_array($orderLines)) {
                     foreach ($orderLines as $line) {
-                        if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId()) {
+                        // @codingStandardsIgnoreLine
+                        if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId() && $uom == $line->getUomId()) {
                             $unitPrice = $line->getAmount() / $line->getQuantity();
-                            if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
+                            if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()]['Amount'])) {
                                 // @codingStandardsIgnoreLine
-                                $item->setCustomPrice($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount());
+                                $item->setCustomPrice($oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()] ['Amount'] + $line->getAmount());
                                 $item->setDiscountAmount(
                                 // @codingStandardsIgnoreLine
-                                    $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount()
+                                    $oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()]['Discount'] + $line->getDiscountAmount()
                                 );
                                 $item->setOriginalCustomPrice($line->getPrice());
                             } else {
@@ -328,14 +335,14 @@ class ItemHelper extends AbstractHelper
                             }
                         }
                         // @codingStandardsIgnoreStart
-                        if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'])) {
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount']    =
-                                $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount'] + $line->getAmount();
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] ['Discount'] =
-                                $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] + $line->getDiscountAmount();
+                        if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()]['Amount'])) {
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()]['Amount']    =
+                                $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()]['Amount'] + $line->getAmount();
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()] ['Discount'] =
+                                $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()] ['Discount'] + $line->getDiscountAmount();
                         } else {
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Amount']   = $line->getAmount();
-                            $oldItemVariant[$line->getItemId()][$line->getVariantId()]['Discount'] = $line->getDiscountAmount();
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()]['Amount']   = $line->getAmount();
+                            $oldItemVariant[$line->getItemId()][$line->getVariantId()] [$line->getUomId()]['Discount'] = $line->getDiscountAmount();
                         }
                         // @codingStandardsIgnoreEnd
                     }
@@ -391,5 +398,34 @@ class ItemHelper extends AbstractHelper
             $this->_logger->debug($e->getMessage());
         }
         return $productData;
+    }
+
+    /**
+     * @param $itemSku
+     * @param $baseUnitOfMeasure
+     * @return string|null
+     */
+    public function getUom(&$itemSku, $baseUnitOfMeasure)
+    {
+        $uom = '';
+        if (count($itemSku) < 2) {
+            $itemSku[1] = null;
+        }
+        // @codingStandardsIgnoreLine
+        if (count($itemSku) > 1) {
+            if (!is_numeric($itemSku[1])) {
+                if ($baseUnitOfMeasure != $itemSku[1]) {
+                    $uom = $itemSku[1];
+                }
+                $itemSku[1] = null;
+            }
+            if (count($itemSku) > 2) {
+                if ($baseUnitOfMeasure != $itemSku[1]) {
+                    $uom = $itemSku[2];
+                }
+            }
+        }
+
+        return $uom;
     }
 }
