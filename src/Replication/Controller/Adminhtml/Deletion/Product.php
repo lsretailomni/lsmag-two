@@ -216,6 +216,7 @@ class Product extends Action
         $this->replicationHelper->resetUrlRewriteByType('product');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
+        // Reset Data Translation Table for product name
         $lsTableName = $this->resource->getTableName("ls_replication_repl_data_translation");
         $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
             processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION . '"';
