@@ -8,6 +8,7 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Framework\App\ResourceConnection;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -31,6 +32,11 @@ class Product extends Action
     /** @var Filesystem */
     public $filesystem;
 
+    /**
+     * @var AttributeSetRepositoryInterface
+     */
+    public $attributeSetRepository;
+
     /** @var array List of ls tables required in products */
     public $ls_tables = [
         "ls_replication_repl_item",
@@ -41,7 +47,7 @@ class Product extends Action
         "ls_replication_repl_hierarchy_leaf",
         "ls_replication_repl_attribute_value",
         "ls_replication_repl_image_link",
-        "ls_replication_repl_item_unit_of_measure"
+		"ls_replication_repl_item_unit_of_measure"
     ];
 
     /** @var array List of all the Catalog Product tables */
@@ -156,6 +162,7 @@ class Product extends Action
      * @param LSR $LSR
      * @param ReplicationHelper $replicationHelper
      * @param Filesystem $filesystem
+     * @param AttributeSetRepositoryInterface $attributeSetRepository
      */
     public function __construct(
         ResourceConnection $resource,
@@ -163,13 +170,15 @@ class Product extends Action
         Context $context,
         LSR $LSR,
         ReplicationHelper $replicationHelper,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        AttributeSetRepositoryInterface $attributeSetRepository
     ) {
-        $this->resource          = $resource;
-        $this->logger            = $logger;
-        $this->lsr               = $LSR;
-        $this->replicationHelper = $replicationHelper;
-        $this->filesystem        = $filesystem;
+        $this->resource               = $resource;
+        $this->logger                 = $logger;
+        $this->lsr                    = $LSR;
+        $this->replicationHelper      = $replicationHelper;
+        $this->filesystem             = $filesystem;
+        $this->attributeSetRepository = $attributeSetRepository;
         parent::__construct($context);
     }
 
@@ -203,9 +212,8 @@ class Product extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
-        // remove the url keys from url_rewrite table.
+        // Remove the url keys from url_rewrite table
         $this->replicationHelper->resetUrlRewriteByType('product');
-
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
         $lsTableName = $this->resource->getTableName("ls_replication_repl_data_translation");
@@ -224,6 +232,19 @@ class Product extends Action
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
+        }
+        $filters      = [
+            ['field' => 'attribute_set_name', 'value' => 'ls_%', 'condition_type' => 'like'],
+            ['field' => 'entity_type_id', 'value' => 4, 'condition_type' => 'eq']
+        ];
+        $criteria     = $this->replicationHelper->buildCriteriaForDirect($filters, -1, false);
+        $searchResult = $this->attributeSetRepository->getList($criteria);
+        foreach ($searchResult->getItems() as $attributeSet) {
+            try {
+                $this->attributeSetRepository->deleteById($attributeSet->getAttributeSetId());
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
         }
         $this->replicationHelper->updateCronStatusForAllStores(
             false,
