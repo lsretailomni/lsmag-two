@@ -203,28 +203,4 @@ class SyncAttributesValue extends ProductCreateTask
             $sortOrder
         );
     }
-
-    /**
-     * @param $attributeSetId
-     * @param $attributeCode
-     * @return bool
-     * @throws NoSuchEntityException
-     */
-    public function checkAttributeExistInAttributeSet($attributeSetId, $attributeCode)
-    {
-        $attributes = $this->attributeManagement->getAttributes(
-            Product::ENTITY,
-            $attributeSetId
-        );
-        $counter    = 1;
-        foreach ($attributes as $attrCode) {
-            if ($attrCode->getAttributeCode() == $attributeCode) {
-                return false;
-            }
-
-            $counter++;
-        }
-
-        return true;
-    }
 }
