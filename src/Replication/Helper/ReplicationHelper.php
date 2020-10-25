@@ -954,34 +954,6 @@ class ReplicationHelper extends AbstractHelper
      * @param $collection
      * @param SearchCriteriaInterface $criteria
      */
-    public function setCollectionPropertiesPlusJoinsForAttributeValue(&$collection, SearchCriteriaInterface $criteria)
-    {
-        $secondTableName = $this->resource->getTableName('catalog_product_entity');
-        $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
-        $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
-        $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
-        $collection->getSelect()->joinInner(
-            ['second' => $secondTableName],
-            'main_table.LinkField1 = second.sku',
-            []
-        )->joinInner(
-            ['third' => $thirdTableName],
-            'main_table.LinkField1' . ' = third.nav_id' . ' AND main_table.scope_id' . ' = third.scope_id',
-            []
-        );
-        $collection->getSelect()->columns('third.ItemCategoryCode');
-        $collection->getSelect()->columns('third.ProductGroupId');
-
-        /** @var For Xdebug only to check the query $query */
-        $query = $collection->getSelect()->__toString();
-        $collection->setCurPage($criteria->getCurrentPage());
-        $collection->setPageSize($criteria->getPageSize());
-    }
-
-    /**
-     * @param $collection
-     * @param SearchCriteriaInterface $criteria
-     */
     public function setFiltersOnTheBasisOfCriteria(&$collection, SearchCriteriaInterface $criteria)
     {
         foreach ($criteria->getFilterGroups() as $filter_group) {

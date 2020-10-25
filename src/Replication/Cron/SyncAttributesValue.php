@@ -4,6 +4,7 @@ namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplAttributeValue;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Setup\Exception;
@@ -94,20 +95,40 @@ class SyncAttributesValue extends ProductCreateTask
         );
         $collection         = $this->replAttributeValueCollectionFactory->create();
 
-        $this->replicationHelper->setCollectionPropertiesPlusJoinsForAttributeValue($collection, $criteria);
+        $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
+            $collection,
+            $criteria,
+            'LinkField1',
+            null,
+            'catalog_product_entity',
+            'sku'
+        );
 
         if ($collection->getSize() > 0) {
             /** @var ReplAttributeValue $attributeValue */
             foreach ($collection as $attributeValue) {
                 try {
-                    $itemId                    = $attributeValue->getLinkField1();
-                    $product                   = $this->productRepository->get($itemId);
-                    $formattedCode             = $this->replicationHelper->formatAttributeCode($attributeValue->getCode());
-                    $attributeSetCode          = $this->getAttributeSetCode($attributeValue);
-                    $formattedAttributeSetCode = $this->replicationHelper->formatAttributeCode($attributeSetCode);
-                    $attributeSetId            = $this->getAttributeSetByName($formattedAttributeSetCode);
-                    if (!$this->checkAttributeExistsInAttributeSet($attributeSetId, $formattedCode)) {
-
+                    $itemId         = $attributeValue->getLinkField1();
+                    $product        = $this->productRepository->get($itemId);
+                    $formattedCode  = $this->replicationHelper->formatAttributeCode(
+                        $attributeValue->getCode()
+                    );
+                    $attributeSetId = $product->getAttributeSetId();
+                    if ($this->checkAttributeInAttributeSet($attributeSetId, $formattedCode)) {
+                        $attributeGroupId = $this->getAttributeGroup(
+                            LSR::LS_ATTRIBUTE_SET_GROUP_SOFT,
+                            $attributeSetId
+                        );
+                        $sortOrder        = $this->getAttributeSortOrderInAttributeSet(
+                            $attributeSetId,
+                            $attributeGroupId
+                        );
+                        $this->assignAttributeToAttributeSet(
+                            $attributeSetId,
+                            $attributeGroupId,
+                            $formattedCode,
+                            $sortOrder
+                        );
                     }
                     $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
                     if ($attribute->getFrontendInput() == 'multiselect') {
@@ -166,25 +187,16 @@ class SyncAttributesValue extends ProductCreateTask
 
     /**
      * @param $attributeSetId
+     * @param $attributeGroupId
      * @param $attributeCode
+     * @param $sortOrder
      * @throws NoSuchEntityException
-     */
-    public function checkAttributeExistsInAttributeSet($attributeSetId, $attributeCode)
-    {
-        $attributes = $this->attributeManagement->getAttributes(
-            'catalog_product',
-            $attributeSetId
-        );
-    }
-
-    /**
-     * @param $attributeSetId
-     * @throws NoSuchEntityException
+     * @throws \Magento\Framework\Exception\InputException
      */
     public function assignAttributeToAttributeSet($attributeSetId, $attributeGroupId, $attributeCode, $sortOrder)
     {
-        $attributes = $this->attributeManagement->assign(
-            'catalog_product',
+        $this->attributeManagement->assign(
+            Product::ENTITY,
             $attributeSetId,
             $attributeGroupId,
             $attributeCode,
@@ -193,22 +205,26 @@ class SyncAttributesValue extends ProductCreateTask
     }
 
     /**
-     * @param $attributeValue
-     * @return string
+     * @param $attributeSetId
+     * @param $attributeCode
+     * @return bool
+     * @throws NoSuchEntityException
      */
-    public function getAttributeSetCode($attributeValue)
+    public function checkAttributeExistInAttributeSet($attributeSetId, $attributeCode)
     {
-        $attributeSetsMechanism = $this->replicationHelper->getAttributeSetsMechanism();
-        $attributeSetCode       = 'Default';
-        if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
-            $attributeSetCode = $attributeValue->getData('ItemCategoryCode');
-        } else {
-            $attributeSetCode = $attributeValue->getData('ProductGroupId');
-        }
-        if (empty($attributeSetCode)) {
-            $attributeSetCode = 'extras';
+        $attributes = $this->attributeManagement->getAttributes(
+            Product::ENTITY,
+            $attributeSetId
+        );
+        $counter    = 1;
+        foreach ($attributes as $attrCode) {
+            if ($attrCode->getAttributeCode() == $attributeCode) {
+                return false;
+            }
+
+            $counter++;
         }
 
-        return $attributeSetCode;
+        return true;
     }
 }
