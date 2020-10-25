@@ -31,13 +31,16 @@ No,No
 "Inventory Status Replication","Inventory Status Replication"
 "Item Replication","Item Replication"
 "Item Category Replication","Item Category Replication"
+"Item Unit Of Measure","Item Unit Of Measure"
 "Item Variant Registration Replication","Item Variant Registration Replication"
 "Item Price Replication","Item Price Replication"
 "Product Group Replication","Product Group Replication"
 "Store Replication","Store Replication"
+"Unit Of Measure","Unit Of Measure"
 "Logs ","Logs "
 "No Data Found File is Empty.","No Data Found File is Empty."
 "File Not Found.","File Not Found."
+"Quantity Unit Of Measure","Quantity Unit Of Measure"
 "Product Image","Product Image"
 "<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>.","<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>."
 Default,Default
@@ -55,6 +58,8 @@ Reset,Reset
 Forward,Forward
 Back,Back
 "Flat to Magento","Flat to Magento"
+Complete,Complete
+Pending,Pending
 " Cron has been executed. "," Cron has been executed. "
 "Remaining entries ","Remaining entries "
 "Do you want to execute More Data?","Do you want to execute More Data?"
@@ -138,7 +143,6 @@ Value,Value
 "Numberic Value","Numberic Value"
 Blocked,Blocked
 "Item Id","Item Id"
-"Unit Of Measure","Unit Of Measure"
 "Variant ID","Variant ID"
 "Language Code","Language Code"
 Key,Key
@@ -194,6 +198,7 @@ Quantity,Quantity
 "Vendor Id","Vendor Id"
 "Vendor Item Id","Vendor Item Id"
 "Zero Price ValId","Zero Price ValId"
+"Quantity Per Unit Of Measure","Quantity Per Unit Of Measure"
 "Variant Dimension 1","Variant Dimension 1"
 "Variant Dimension 2","Variant Dimension 2"
 "Variant Dimension 3","Variant Dimension 3"
@@ -216,3 +221,4 @@ State,State
 Street,Street
 TaxGroup,TaxGroup
 "Zip Code","Zip Code"
+"Unit Decimals","Unit Decimals"

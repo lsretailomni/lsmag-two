@@ -4,9 +4,11 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ReplUnitOfMeasure;
 use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
 use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttribute;
@@ -15,10 +17,14 @@ use \Ls\Replication\Model\ReplAttributeOptionValueSearchResults;
 use \Ls\Replication\Model\ReplAttributeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
+use \Ls\Replication\Model\ReplUnitOfMeasureSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Attribute\OptionManagement;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Eav\Api\Data\AttributeInterface;
+use Magento\Eav\Api\Data\AttributeOptionInterfaceFactory;
+use Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity;
 use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
@@ -96,6 +102,23 @@ class AttributesCreateTask
     /** @var StoreInterface $store */
     public $store;
 
+    /** @var ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface */
+    public $replUnitOfMeasureRepositoryInterface;
+
+    /** @var AttributeOptionLabelInterfaceFactory\ $optionLabelFactory */
+    public $optionLabelFactory;
+
+    /**
+     * @var AttributeOptionInterfaceFactory
+     */
+    public $optionFactory;
+
+
+    /**
+     * @var \Magento\Eav\Api\AttributeOptionManagementInterface
+     */
+    public $attributeOptionManagement;
+
     /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
@@ -106,6 +129,7 @@ class AttributesCreateTask
      * @param Entity $eav_entity
      * @param ReplAttributeRepositoryInterface $replAttributeRepositoryInterface
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
+     * @param ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface
      * @param Config $eavConfig
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
@@ -119,8 +143,12 @@ class AttributesCreateTask
         Entity $eav_entity,
         ReplAttributeRepositoryInterface $replAttributeRepositoryInterface,
         ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
+        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface,
         Config $eavConfig,
         ReplicationHelper $replicationHelper,
+        AttributeOptionLabelInterfaceFactory $optionLabelFactory,
+        AttributeOptionInterfaceFactory $optionFactory,
+        OptionManagement $attributeOptionManagement,
         LSR $LSR
     ) {
         $this->replExtendedVariantValueRepository          = $replExtendedVariantValueRepository;
@@ -134,6 +162,10 @@ class AttributesCreateTask
         $this->eavConfig                                   = $eavConfig;
         $this->replicationHelper                           = $replicationHelper;
         $this->lsr                                         = $LSR;
+        $this->replUnitOfMeasureRepositoryInterface        = $replUnitOfMeasureRepositoryInterface;
+        $this->optionLabelFactory                          = $optionLabelFactory;
+        $this->optionFactory                               = $optionFactory;
+        $this->attributeOptionManagement                   = $attributeOptionManagement;
     }
 
     /**
@@ -168,6 +200,8 @@ class AttributesCreateTask
                     $this->processVariantAttributes($store);
                     //Process Attribute Option Values
                     $this->updateAttributeOptionValues($store);
+                    //Process UOM Attribute Options
+                    $this->addUomAttributeOptions($store);
                     $this->replicationHelper->updateCronStatus(
                         $this->successCronAttribute,
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE,
@@ -669,6 +703,72 @@ class AttributesCreateTask
         }
         return $optimizedArray;
     }
+
+    /**
+     * @param $store
+     * @return array
+     * @throws LocalizedException
+     */
+    public function getUomOptions($store)
+    {
+        $optionArray = [];
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', -1, true);
+        /** @var ReplUnitOfMeasureSearchResults $replUomOptionValues */
+        $replUomOptionValues = $this->replUnitOfMeasureRepositoryInterface->getList($criteria);
+
+        // Get existing options array
+        $formattedCode   = LSR::LS_UOM_ATTRIBUTE;
+        $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
+
+        /** @var ReplUnitOfMeasure $item */
+        foreach ($replUomOptionValues->getItems() as $item) {
+            $item->setIsUpdated(0);
+            $item->setProcessed(1);
+            if (empty($item->getNavId())) {
+                $item->setIsFailed(1);
+            }
+            $item->setProcessedAt($this->replicationHelper->getDateTime());
+            // @codingStandardsIgnoreLine
+            $this->replUnitOfMeasureRepositoryInterface->save($item);
+            // If have existing option and current value is a part of existing option then don't do anything
+            if (empty($item->getDescription()) || (!empty($existingOptions)
+                    && in_array($item->getDescription(), $existingOptions, true))) {
+                continue;
+            }
+            $optionArray[$item->getNavId()] = $item->getDescription();
+            $existingOptions[]              = $item->getDescription();
+        }
+        return $optionArray;
+    }
+
+
+    /**
+     * @param $store
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function addUomAttributeOptions($store)
+    {
+        $optionData = $this->getUomOptions($store);
+        foreach ($optionData as $value => $label) {
+            $optionLabel = $this->optionLabelFactory->create();
+            $optionLabel->setStoreId(0);
+            $optionLabel->setLabel($label);
+
+            $option = $this->optionFactory->create();
+            $option->setLabel($label);
+            $option->setValue($value);
+            $option->setStoreLabels([$optionLabel]);
+            $option->setSortOrder(0);
+            $option->setIsDefault(false);
+
+            $this->attributeOptionManagement->add(
+                LSR::LS_UOM_ATTRIBUTE,
+                $option
+            );
+        }
+    }
+
 
     /**
      * @param $storeId

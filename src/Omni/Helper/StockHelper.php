@@ -3,13 +3,13 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Replication\Model\ResourceModel\ReplStore\Collection;
+use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -142,6 +142,9 @@ class StockHelper extends AbstractHelper
                 if (strpos($simpleProductSku, '-') !== false) {
                     $parentProductSku = explode('-', $simpleProductSku)[0];
                     $simpleProductSku = explode('-', $simpleProductSku)[1];
+                    if (!is_numeric($simpleProductSku)) {
+                        $simpleProductSku = '';
+                    }
                 }
             }
             $itemStock->setItemId($parentProductSku)->

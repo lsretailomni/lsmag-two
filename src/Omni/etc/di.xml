@@ -67,4 +67,13 @@
         <plugin name="ls_update_shipment_email_modification" type="Ls\Omni\Plugin\Email\Sender\ShipmentSender"
                 sortOrder="1"/>
     </type>
+    <type name="Magento\ConfigurableProduct\Block\Product\View\Type\Configurable">
+        <plugin disabled="false" name="Ls_Omni_Plugin_ConfigurableProduct_Block_Product_View_Type_Configurable"
+                sortOrder="10" type="Ls\Omni\Plugin\ConfigurableProduct\Block\Product\View\Type\Configurable"/>
+    </type>
+    <type name="Magento\Swatches\Block\Product\Renderer\Configurable">
+        <plugin disabled="false"
+                name="Ls_Omni_ConfigurableSkuSwitch_Plugin_Magento_Swatches_Block_Product_Renderer_Configurable"
+                sortOrder="10" type="Ls\Omni\Plugin\Swatches\Block\Product\Renderer\Configurable"/>
+    </type>
 </config>

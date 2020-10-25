@@ -57,18 +57,28 @@ class SyncInventory extends ProductCreateTask
                         /** @var ReplInvStatus $replInvStatus */
                         foreach ($collection as $replInvStatus) {
                             try {
+                                $variants = null;
+                                $checkIsNotVariant = true;
                                 if (!$replInvStatus->getVariantId()) {
                                     $sku = $replInvStatus->getItemId();
                                 } else {
-                                    $sku = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
+                                    $sku               = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
+                                    $checkIsNotVariant = false;
                                 }
-                                $stockItem = $this->stockRegistry->getStockItemBySku($sku);
-                                if (isset($stockItem)) {
-                                    // @codingStandardsIgnoreStart
-                                    $stockItem->setQty($replInvStatus->getQuantity());
-                                    $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
-                                    $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
-                                    // @codingStandardsIgnoreEnd
+                                $this->updateInventory($sku, $replInvStatus);
+                                $uomCodes = $this->getUomCodesProcessed($replInvStatus->getItemId());
+                                if (!empty($uomCodes)) {
+                                    if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
+                                        // @codingStandardsIgnoreLine
+                                        $baseUnitOfMeasure = $uomCodes[$replInvStatus->getItemId() . '-' . 'BaseUnitOfMeasure'];
+                                        $variants          = $this->getProductVariants($sku);
+                                        foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
+                                            if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) && empty($variants)) {
+                                                $skuUom = $sku . "-" . $uomCode;
+                                                $this->updateInventory($skuUom, $replInvStatus);
+                                            }
+                                        }
+                                    }
                                 }
                             } catch (Exception $e) {
                                 $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
@@ -110,6 +120,28 @@ class SyncInventory extends ProductCreateTask
         $this->execute($storeData);
         $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
+    }
+
+    /**
+     * @param $sku
+     * @param $replInvStatus
+     * @throws NoSuchEntityException
+     */
+    private function updateInventory($sku, $replInvStatus)
+    {
+        try {
+            $stockItem = $this->stockRegistry->getStockItemBySku($sku);
+            if (isset($stockItem)) {
+                // @codingStandardsIgnoreStart
+                $stockItem->setQty($replInvStatus->getQuantity());
+                $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
+                $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
+                // @codingStandardsIgnoreEnd
+            }
+        } catch (Exception $e) {
+            $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+            $this->logger->debug($e->getMessage());
+        }
     }
 
     /**

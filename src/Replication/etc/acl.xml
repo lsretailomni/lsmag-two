@@ -81,6 +81,10 @@
                                   translate="title" sortOrder="10"/>
                         <resource id="Ls_Replication::store_grid" title="Store Replication" translate="title"
                                   sortOrder="10"/>
+                        <resource id="Ls_Replication::uom_grid" title="Unit Of Measure" translate="title"
+                                  sortOrder="10"/>
+                        <resource id="Ls_Replication::item_uom_grid" title="Item Unit Of Measure" translate="title"
+                                  sortOrder="10"/>
                     </resource>
                 </resource>
             </resource>

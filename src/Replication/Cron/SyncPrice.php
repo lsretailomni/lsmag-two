@@ -5,7 +5,6 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplPrice;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -48,8 +47,7 @@ class SyncPrice extends ProductCreateTask
 
                     /** Get list of only those prices whose items are already processed */
                     $filters = [
-                        ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
-                        ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
+                        ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
                     ];
 
                     $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -71,25 +69,34 @@ class SyncPrice extends ProductCreateTask
                         /** @var ReplPrice $replPrice */
                         foreach ($collection as $replPrice) {
                             try {
-                                if (!$replPrice->getVariantId()) {
+                                $baseUnitOfMeasure = null;
+                                if (!$replPrice->getVariantId() || !empty($replPrice->getUnitOfMeasure())) {
                                     $sku = $replPrice->getItemId();
                                 } else {
                                     $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
                                 }
                                 $productData = $this->productRepository->get($sku, true, $this->store->getId());
                                 if (isset($productData)) {
-                                    $productData->setPrice($replPrice->getUnitPrice());
-                                    // @codingStandardsIgnoreStart
-                                    $this->productResourceModel->saveAttribute($productData, 'price');
+                                    if ($replPrice->getQtyPerUnitOfMeasure() == 0) {
+                                        $baseUnitOfMeasure = $productData->getData('uom');
+                                        $productData->setPrice($replPrice->getUnitPrice());
+                                        // @codingStandardsIgnoreStart
+                                        $this->productResourceModel->saveAttribute($productData, 'price');
+                                    }
                                     // @codingStandardsIgnoreEnd
                                     if ($productData->getTypeId() == 'configurable') {
                                         $_children = $productData->getTypeInstance()->getUsedProducts($productData);
                                         foreach ($_children as $child) {
                                             $childProductData = $this->productRepository->get($child->getSKU());
-                                            $childProductData->setPrice($replPrice->getUnitPrice());
-                                            // @codingStandardsIgnoreStart
-                                            $this->productResourceModel->saveAttribute($childProductData, 'price');
-                                            // @codingStandardsIgnoreEnd
+                                            if ($this->validateChildPriceUpdate(
+                                                $childProductData,
+                                                $replPrice,
+                                                $baseUnitOfMeasure)) {
+                                                $childProductData->setPrice($replPrice->getUnitPrice());
+                                                // @codingStandardsIgnoreStart
+                                                $this->productResourceModel->saveAttribute($childProductData, 'price');
+                                                // @codingStandardsIgnoreEnd
+                                            }
                                         }
                                     }
                                 }
@@ -110,8 +117,11 @@ class SyncPrice extends ProductCreateTask
                     } else {
                         $this->cronStatus = true;
                     }
-                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,
-                        $this->store->getId());
+                    $this->replicationHelper->updateCronStatus(
+                        $this->cronStatus,
+                        LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,
+                        $this->store->getId()
+                    );
                     $this->logger->debug('End SyncPrice Task for store ' . $this->store->getName());
                 }
                 $this->lsr->setStoreId(null);
@@ -132,6 +142,27 @@ class SyncPrice extends ProductCreateTask
         $this->execute($storeData);
         $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
+    }
+
+    /**
+     * @param $productData
+     * @param $replPrice
+     * @param $baseUnitOfMeasure
+     * @return bool
+     */
+    private function validateChildPriceUpdate($productData, $replPrice, $baseUnitOfMeasure = null)
+    {
+        $needsPriceUpdate = false;
+        if ($productData->getData('uom') == $baseUnitOfMeasure) {
+            $needsPriceUpdate = true;
+        } elseif ($productData->getData('uom') == $replPrice->getUnitOfMeasure()) {
+            $needsPriceUpdate = true;
+        } elseif (empty($productData->getData(LSR::LS_UOM_ATTRIBUTE_QTY))
+            && ($replPrice->getQtyPerUnitOfMeasure() == 0)) {
+            $needsPriceUpdate = true;
+        }
+
+        return $needsPriceUpdate;
     }
 
     /**

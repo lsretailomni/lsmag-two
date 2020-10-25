@@ -18,6 +18,9 @@ var config = {
         mixins: {
             'Magento_Checkout/js/view/shipping': {
                 'Ls_Omni/js/view/plugin/shipping': true
+            },
+            'Magento_Swatches/js/swatch-renderer': {
+                'Ls_Omni/js/model/swatch-uomswitch': true
             }
         }
     },
