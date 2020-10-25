@@ -370,6 +370,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_INDUSTRY_VALUE_HOSPITALITY = 'hospitality';
     const LS_INDUSTRY_VALUE = 'ls_mag/ls_industry/ls_choose_industry';
 
+    //Attribute set group
+    const  LS_ATTRIBUTE_SET_GROUP_SOFT = 'LS Central Attributes';
+    const LS_ATTRIBUTE_SET_GROUP_HARD  = 'LS Central Variants';
+
     /**
      * @var ScopeConfigInterface
      */

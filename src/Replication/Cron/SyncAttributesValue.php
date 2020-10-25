@@ -94,24 +94,22 @@ class SyncAttributesValue extends ProductCreateTask
         );
         $collection         = $this->replAttributeValueCollectionFactory->create();
 
-        $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
-            $collection,
-            $criteria,
-            'LinkField1',
-            null,
-            'catalog_product_entity',
-            'sku'
-        );
-
+        $this->replicationHelper->setCollectionPropertiesPlusJoinsForAttributeValue($collection, $criteria);
 
         if ($collection->getSize() > 0) {
             /** @var ReplAttributeValue $attributeValue */
             foreach ($collection as $attributeValue) {
                 try {
-                    $itemId        = $attributeValue->getLinkField1();
-                    $product       = $this->productRepository->get($itemId);
-                    $formattedCode = $this->replicationHelper->formatAttributeCode($attributeValue->getCode());
-                    $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                    $itemId                    = $attributeValue->getLinkField1();
+                    $product                   = $this->productRepository->get($itemId);
+                    $formattedCode             = $this->replicationHelper->formatAttributeCode($attributeValue->getCode());
+                    $attributeSetCode          = $this->getAttributeSetCode($attributeValue);
+                    $formattedAttributeSetCode = $this->replicationHelper->formatAttributeCode($attributeSetCode);
+                    $attributeSetId            = $this->getAttributeSetByName($formattedAttributeSetCode);
+                    if (!$this->checkAttributeExistsInAttributeSet($attributeSetId, $formattedCode)) {
+
+                    }
+                    $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
                     if ($attribute->getFrontendInput() == 'multiselect') {
                         $value = $this->_getOptionIDByCode($formattedCode, $attributeValue->getValue());
                     } elseif ($attribute->getFrontendInput() == 'boolean') {
@@ -164,5 +162,53 @@ class SyncAttributesValue extends ProductCreateTask
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
+    }
+
+    /**
+     * @param $attributeSetId
+     * @param $attributeCode
+     * @throws NoSuchEntityException
+     */
+    public function checkAttributeExistsInAttributeSet($attributeSetId, $attributeCode)
+    {
+        $attributes = $this->attributeManagement->getAttributes(
+            'catalog_product',
+            $attributeSetId
+        );
+    }
+
+    /**
+     * @param $attributeSetId
+     * @throws NoSuchEntityException
+     */
+    public function assignAttributeToAttributeSet($attributeSetId, $attributeGroupId, $attributeCode, $sortOrder)
+    {
+        $attributes = $this->attributeManagement->assign(
+            'catalog_product',
+            $attributeSetId,
+            $attributeGroupId,
+            $attributeCode,
+            $sortOrder
+        );
+    }
+
+    /**
+     * @param $attributeValue
+     * @return string
+     */
+    public function getAttributeSetCode($attributeValue)
+    {
+        $attributeSetsMechanism = $this->replicationHelper->getAttributeSetsMechanism();
+        $attributeSetCode       = 'Default';
+        if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
+            $attributeSetCode = $attributeValue->getData('ItemCategoryCode');
+        } else {
+            $attributeSetCode = $attributeValue->getData('ProductGroupId');
+        }
+        if (empty($attributeSetCode)) {
+            $attributeSetCode = 'extras';
+        }
+
+        return $attributeSetCode;
     }
 }

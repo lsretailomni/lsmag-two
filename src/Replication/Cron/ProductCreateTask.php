@@ -1569,6 +1569,37 @@ class ProductCreateTask
     }
 
     /**
+     * @param $name
+     * @param $attributeSetId
+     * @return int|null
+     */
+    public function getAttributeGroup($name, $attributeSetId)
+    {
+        $filters   = [];
+        $filters[] = $this->filterBuilder
+            ->setField('attribute_group_name')
+            ->setValue($name)
+            ->setConditionType('eq');
+
+        $filters[] = $this->filterBuilder
+            ->setField('attribute_set_id')
+            ->setValue($attributeSetId)
+            ->setConditionType('eq');
+
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilters($filters)
+            ->setPageSize(1)
+            ->setCurrentPage(1);
+
+        $result = $this->attributeGroupRepository->getList($searchCriteria->create());
+        if ($result->getTotalCount()) {
+            $items = $result->getItems();
+            return reset($items)->getAttributeGroupId();
+        }
+        return null;
+    }
+
+    /**
      * @param ReplItem $item
      * @return int|null
      * @throws InputException
@@ -1578,9 +1609,9 @@ class ProductCreateTask
     public function getAttributeSetId(ReplItem $item)
     {
         $attributeSetsMechanism = $this->replicationHelper->getAttributeSetsMechanism();
-        $attributeSetId = 4;
+        $attributeSetId         = 4;
         if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
-            $itemCategoryCode = $item->getItemCategoryCode();
+            $itemCategoryCode          = $item->getItemCategoryCode();
             $formattedItemCategoryCode = $this->replicationHelper->formatAttributeCode($itemCategoryCode);
             if ($this->getAttributeSetByName($formattedItemCategoryCode)) {
                 $attributeSetId = $this->getAttributeSetByName($formattedItemCategoryCode);
@@ -1665,11 +1696,11 @@ class ProductCreateTask
         $attributeSet   = $this->attributeSetManagement->create($entityTypeCode, $attributeSet, $defaultSetId);
         $attributeGroup = $this->attributeSetGroupFactory->create();
         $attributeGroup->setAttributeSetId($attributeSet->getAttributeSetId());
-        $attributeGroup->setAttributeGroupName('LS Central Attributes');
+        $attributeGroup->setAttributeGroupName(LSR::LS_ATTRIBUTE_SET_GROUP_SOFT);
         $softAttributesGroup = $this->attributeGroupRepository->save($attributeGroup);
-        $attributeGroup = $this->attributeSetGroupFactory->create();
+        $attributeGroup      = $this->attributeSetGroupFactory->create();
         $attributeGroup->setAttributeSetId($attributeSet->getAttributeSetId());
-        $attributeGroup->setAttributeGroupName('LS Central Variants');
+        $attributeGroup->setAttributeGroupName(LSR::LS_ATTRIBUTE_SET_GROUP_HARD);
         $hardAttributesGroup = $this->attributeGroupRepository->save($attributeGroup);
 
         foreach ($attributes as $type => $types) {
