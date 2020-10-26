@@ -173,6 +173,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode CUSTOMER_ORDER_NOT_FOUND()
  * @$method static StatusCode CUSTOMER_ORDER_ITEM_NOT_FOUND()
  * @$method static StatusCode CUSTOMER_ORDER_ITEM_ALREADY_IN_BOX()
+ * @$method static StatusCode CUSTOMER_ORDER_ITEM_QUANTITY_TOO_HIGH()
  */
 class StatusCode extends Enum
 {
@@ -500,6 +501,8 @@ class StatusCode extends Enum
     public const CUSTOMER_ORDER_ITEM_NOT_FOUND = 'CustomerOrderItemNotFound';
 
     public const CUSTOMER_ORDER_ITEM_ALREADY_IN_BOX = 'CustomerOrderItemAlreadyInBox';
+
+    public const CUSTOMER_ORDER_ITEM_QUANTITY_TOO_HIGH = 'CustomerOrderItemQuantityTooHigh';
 
 
 }

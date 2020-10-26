@@ -44,6 +44,11 @@ class ActivityAvailabilityGet implements RequestInterface
     protected $promoCode = null;
 
     /**
+     * @property string $activityNo
+     */
+    protected $activityNo = null;
+
+    /**
      * @param string $locationNo
      * @return $this
      */
@@ -149,6 +154,24 @@ class ActivityAvailabilityGet implements RequestInterface
     public function getPromoCode()
     {
         return $this->promoCode;
+    }
+
+    /**
+     * @param string $activityNo
+     * @return $this
+     */
+    public function setActivityNo($activityNo)
+    {
+        $this->activityNo = $activityNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActivityNo()
+    {
+        return $this->activityNo;
     }
 
 
