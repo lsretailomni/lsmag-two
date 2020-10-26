@@ -47,7 +47,7 @@ class Product extends Action
         "ls_replication_repl_hierarchy_leaf",
         "ls_replication_repl_attribute_value",
         "ls_replication_repl_image_link",
-		"ls_replication_repl_item_unit_of_measure"
+        "ls_replication_repl_item_unit_of_measure"
     ];
 
     /** @var array List of all the Catalog Product tables */
@@ -216,6 +216,15 @@ class Product extends Action
         $this->replicationHelper->resetUrlRewriteByType('product');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         // @codingStandardsIgnoreEnd
+        // Reset Data Translation Table for product name
+        $lsTableName = $this->resource->getTableName("ls_replication_repl_data_translation");
+        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
+            processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION . '"';
+        try {
+            $connection->query($lsQuery);
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
         $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();
         $mediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
         try {
@@ -261,6 +270,10 @@ class Product extends Action
         $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE
+        );
+        $this->replicationHelper->updateCronStatusForAllStores(
+            false,
+            LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
         );
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
