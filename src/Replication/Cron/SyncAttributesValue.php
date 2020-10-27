@@ -116,7 +116,7 @@ class SyncAttributesValue extends ProductCreateTask
                     $attributeSetId = $product->getAttributeSetId();
                     if ($this->checkAttributeInAttributeSet($attributeSetId, $formattedCode)) {
                         $attributeGroupId = $this->getAttributeGroup(
-                            LSR::LS_ATTRIBUTE_SET_GROUP_SOFT,
+                            LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP,
                             $attributeSetId
                         );
                         $sortOrder        = $this->getAttributeSortOrderInAttributeSet(

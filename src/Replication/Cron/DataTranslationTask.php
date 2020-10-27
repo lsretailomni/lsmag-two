@@ -189,7 +189,7 @@ class DataTranslationTask
                 $langCode    = $this->lsr->getStoreConfig(LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE, $store->getId());
                 $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
                 if ($langCode != "Default") {
-                    $this->updateHierarchyNode($store->getId(), $langCode);
+                    $this->updateHierarchyNode($store->getId(), $langCode, $store->getWebsiteId());
                     $this->updateItem($store->getId(), $langCode);
                     $this->updateAttributes($store->getId(), $langCode);
                     $this->updateAttributeOptionValue($store->getId(), $langCode);
@@ -380,8 +380,9 @@ class DataTranslationTask
     /**
      * @param $storeId
      * @param $langCode
+     * @param null $websiteId
      */
-    public function updateHierarchyNode($storeId, $langCode)
+    public function updateHierarchyNode($storeId, $langCode, $websiteId = null)
     {
         $attribute_id = $this->eavAttribute->getIdByCode(Category::ENTITY, 'nav_id');
         $filters      = [
@@ -394,7 +395,7 @@ class DataTranslationTask
             ],
             ['field' => 'main_table.key', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq'],
-            ['field' => 'second.store_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'second.store_id', 'value' => $storeId, 'condition_type' => 'eq']
         ];
         $criteria     = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
         $collection   = $this->replDataTranslationCollectionFactory->create();
@@ -403,12 +404,16 @@ class DataTranslationTask
             $criteria,
             'key',
             'catalog_category_entity_varchar',
-            'value'
+            'value',
+            false,
+            false,
+            true,
+            $websiteId
         );
         /** @var ReplDataTranslation $dataTranslation */
         foreach ($collection as $dataTranslation) {
             try {
-                $categoryExistData = $this->isCategoryExist($dataTranslation->getKey(), true);
+                $categoryExistData = $this->isCategoryExist($dataTranslation->getValue(), true);
                 if ($categoryExistData) {
                     $categoryExistData->setData('name', $dataTranslation->getText());
                     // @codingStandardsIgnoreLine

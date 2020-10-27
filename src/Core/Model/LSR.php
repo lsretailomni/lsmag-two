@@ -98,6 +98,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Attribute Set
     const SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE = 'ITEM_CATEGORY_CODE';
     const SC_REPLICATION_ATTRIBUTE_SET_PRODUCT_GROUP_ID = 'PRODUCT_GROUP_ID';
+    const SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP = 'LS Central Attributes';
+    const SC_REPLICATION_ATTRIBUTE_SET_VARIANTS_ATTRIBUTES_GROUP = 'LS Central Variants';
+    const SC_REPLICATION_ATTRIBUTE_SET_EXTRAS = 'Extras';
 
     //check for Attribute
     const SC_SUCCESS_CRON_ATTRIBUTE = 'ls_mag/replication/success_repl_attribute';
@@ -373,10 +376,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_UOM_ATTRIBUTE = 'lsr_uom';
 
     const LS_UOM_ATTRIBUTE_QTY = 'lsr_uom_qty';
-
-    //Attribute set group
-    const  LS_ATTRIBUTE_SET_GROUP_SOFT = 'LS Central Attributes';
-    const LS_ATTRIBUTE_SET_GROUP_HARD  = 'LS Central Variants';
 
     /**
      * @var ScopeConfigInterface

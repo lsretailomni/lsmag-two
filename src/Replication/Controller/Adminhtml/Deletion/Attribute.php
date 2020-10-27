@@ -89,6 +89,15 @@ class Attribute extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
+        // Reset Data Translation Table for attributes
+        $lsTableName = $this->resource->getTableName("ls_replication_repl_data_translation");
+        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
+            processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE . '" OR TranslationId ="' . LSR::SC_TRANSLATION_ID_ATTRIBUTE . '"';
+        try {
+            $connection->query($lsQuery);
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
         $this->replicationHelper->updateCronStatus(
             false,
             LSR::SC_SUCCESS_CRON_ATTRIBUTE
@@ -96,6 +105,10 @@ class Attribute extends Action
         $this->replicationHelper->updateCronStatus(
             false,
             LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT
+        );
+        $this->replicationHelper->updateCronStatusForAllStores(
+            false,
+            LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
         );
         // @codingStandardsIgnoreEnd
         $this->messageManager->addSuccessMessage(__('LS Attributes deleted successfully.'));
