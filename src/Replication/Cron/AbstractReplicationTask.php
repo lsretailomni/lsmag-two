@@ -4,11 +4,11 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use IteratorAggregate;
-use \Ls\Core\Helper\Data as LsHelper;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\OperationInterface;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
+use Ls\Core\Helper\Data as LsHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\OperationInterface;
+use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
@@ -123,9 +123,10 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "DealLineNo", "ItemNo","UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "LineNo", "ItemNo","UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "LineNo", "RecipeNo","UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "ItemNo","LineNo", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo","UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_modifier"    => ["ItemNo","ParentItem", "Code", "SubCode", "UnitOfMeasure", "scope_id"],
         "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
     ];
 

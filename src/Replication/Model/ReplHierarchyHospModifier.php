@@ -77,7 +77,7 @@ class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHo
     protected $ParentNode = null;
 
     /**
-     * @property ModifierPriceType $PriceType
+     * @property HierarchyModifierPriceType $PriceType
      */
     protected $PriceType = null;
 
@@ -87,7 +87,7 @@ class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHo
     protected $SubCode = null;
 
     /**
-     * @property ModifierType $Type
+     * @property HierarchyModifierType $Type
      */
     protected $Type = null;
 
@@ -372,7 +372,7 @@ class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHo
     }
 
     /**
-     * @param ModifierPriceType $PriceType
+     * @param HierarchyModifierPriceType $PriceType
      * @return $this
      */
     public function setPriceType($PriceType)
@@ -384,7 +384,7 @@ class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHo
     }
 
     /**
-     * @return ModifierPriceType
+     * @return HierarchyModifierPriceType
      */
     public function getPriceType()
     {
@@ -412,7 +412,7 @@ class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHo
     }
 
     /**
-     * @param ModifierType $Type
+     * @param HierarchyModifierType $Type
      * @return $this
      */
     public function setType($Type)
@@ -424,7 +424,7 @@ class ReplHierarchyHospModifier extends AbstractModel implements ReplHierarchyHo
     }
 
     /**
-     * @return ModifierType
+     * @return HierarchyModifierType
      */
     public function getType()
     {
