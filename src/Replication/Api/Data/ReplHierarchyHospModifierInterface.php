@@ -133,13 +133,13 @@ interface ReplHierarchyHospModifierInterface
     public function getParentNode();
 
     /**
-     * @param ModifierPriceType $PriceType
+     * @param HierarchyModifierPriceType $PriceType
      * @return $this
      */
     public function setPriceType($PriceType);
 
     /**
-     * @return ModifierPriceType
+     * @return HierarchyModifierPriceType
      */
     public function getPriceType();
 
@@ -155,13 +155,13 @@ interface ReplHierarchyHospModifierInterface
     public function getSubCode();
 
     /**
-     * @param ModifierType $Type
+     * @param HierarchyModifierType $Type
      * @return $this
      */
     public function setType($Type);
 
     /**
-     * @return ModifierType
+     * @return HierarchyModifierType
      */
     public function getType();
 

@@ -72,14 +72,19 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     protected $MinSelection = null;
 
     /**
-     * @property string $ModifierCode
+     * @property string $No
      */
-    protected $ModifierCode = null;
+    protected $No = null;
 
     /**
      * @property string $ParentNode
      */
     protected $ParentNode = null;
+
+    /**
+     * @property HierarchyDealType $Type
+     */
+    protected $Type = null;
 
     /**
      * @property string $UnitOfMeasure
@@ -347,13 +352,13 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     }
 
     /**
-     * @param string $ModifierCode
+     * @param string $No
      * @return $this
      */
-    public function setModifierCode($ModifierCode)
+    public function setNo($No)
     {
-        $this->setData( 'ModifierCode', $ModifierCode );
-        $this->ModifierCode = $ModifierCode;
+        $this->setData( 'No', $No );
+        $this->No = $No;
         $this->setDataChanges( TRUE );
         return $this;
     }
@@ -361,9 +366,9 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     /**
      * @return string
      */
-    public function getModifierCode()
+    public function getNo()
     {
-        return $this->getData( 'ModifierCode' );
+        return $this->getData( 'No' );
     }
 
     /**
@@ -384,6 +389,26 @@ class ReplHierarchyHospDeal extends AbstractModel implements ReplHierarchyHospDe
     public function getParentNode()
     {
         return $this->getData( 'ParentNode' );
+    }
+
+    /**
+     * @param HierarchyDealType $Type
+     * @return $this
+     */
+    public function setType($Type)
+    {
+        $this->setData( 'Type', $Type );
+        $this->Type = $Type;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return HierarchyDealType
+     */
+    public function getType()
+    {
+        return $this->getData( 'Type' );
     }
 
     /**

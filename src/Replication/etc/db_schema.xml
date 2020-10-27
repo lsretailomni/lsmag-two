@@ -591,8 +591,9 @@
     <column xsi:type="int" name="LineNo" padding="11" nullable="true" comment="LineNo"/>
     <column xsi:type="int" name="MaxSelection" padding="11" nullable="true" comment="MaxSelection"/>
     <column xsi:type="int" name="MinSelection" padding="11" nullable="true" comment="MinSelection"/>
-    <column xsi:type="text" name="ModifierCode" nullable="true" comment="ModifierCode"/>
+    <column xsi:type="text" name="No" nullable="true" comment="No"/>
     <column xsi:type="text" name="ParentNode" nullable="true" comment="ParentNode"/>
+    <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
     <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="UnitOfMeasure"/>
     <column xsi:type="text" name="VariantCode" nullable="true" comment="VariantCode"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
