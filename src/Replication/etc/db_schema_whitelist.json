@@ -654,7 +654,9 @@
             "AddedAmount": true,
             "DealModSizeGroupIndex": true,
             "MaxSelection": true,
-            "ModifierCode": true
+            "ModifierCode": true,
+            "No": true,
+            "Type": true
         },
         "constraint": {
             "PRIMARY": true

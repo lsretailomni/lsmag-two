@@ -122,15 +122,15 @@ interface ReplHierarchyHospDealInterface
     public function getMinSelection();
 
     /**
-     * @param string $ModifierCode
+     * @param string $No
      * @return $this
      */
-    public function setModifierCode($ModifierCode);
+    public function setNo($No);
 
     /**
      * @return string
      */
-    public function getModifierCode();
+    public function getNo();
 
     /**
      * @param string $ParentNode
@@ -142,6 +142,17 @@ interface ReplHierarchyHospDealInterface
      * @return string
      */
     public function getParentNode();
+
+    /**
+     * @param HierarchyDealType $Type
+     * @return $this
+     */
+    public function setType($Type);
+
+    /**
+     * @return HierarchyDealType
+     */
+    public function getType();
 
     /**
      * @param string $UnitOfMeasure

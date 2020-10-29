@@ -592,6 +592,7 @@ class ClassMap
         		'StoreHourType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\StoreHourType',
         		'StoreHourOpeningType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\StoreHourOpeningType',
         		'StoreServiceType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\StoreServiceType',
+        		'HierarchyDealType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\HierarchyDealType',
         		'DiscountValueType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\DiscountValueType',
         		'ReplDiscountType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ReplDiscountType',
         		'AttributeLinkType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\AttributeLinkType',
@@ -609,8 +610,8 @@ class ClassMap
         		'ProactiveDiscountType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ProactiveDiscountType',
         		'SubLineType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\SubLineType',
         		'MaritalStatus' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\MaritalStatus',
-        		'ModifierPriceType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ModifierPriceType',
-        		'ModifierType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ModifierType',
+        		'HierarchyModifierPriceType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\HierarchyModifierPriceType',
+        		'HierarchyModifierType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\HierarchyModifierType',
         		'ProductChargeType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ProductChargeType',
         		'AttributeType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\AttributeType',
         ];

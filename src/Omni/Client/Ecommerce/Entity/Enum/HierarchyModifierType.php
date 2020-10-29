@@ -11,11 +11,11 @@ namespace Ls\Omni\Client\Ecommerce\Entity\Enum;
 use MyCLabs\Enum\Enum;
 
 /**
- * @$method static ModifierType ITEM()
- * @$method static ModifierType TIME()
- * @$method static ModifierType TEXT()
+ * @$method static HierarchyModifierType ITEM()
+ * @$method static HierarchyModifierType TIME()
+ * @$method static HierarchyModifierType TEXT()
  */
-class ModifierType extends Enum
+class HierarchyModifierType extends Enum
 {
 
     public const ITEM = 'Item';

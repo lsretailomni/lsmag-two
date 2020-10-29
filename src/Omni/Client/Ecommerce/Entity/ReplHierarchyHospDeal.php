@@ -8,6 +8,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
+use Ls\Omni\Exception\InvalidEnumException;
+
 class ReplHierarchyHospDeal
 {
 
@@ -62,14 +65,19 @@ class ReplHierarchyHospDeal
     protected $MinSelection = null;
 
     /**
-     * @property string $ModifierCode
+     * @property string $No
      */
-    protected $ModifierCode = null;
+    protected $No = null;
 
     /**
      * @property string $ParentNode
      */
     protected $ParentNode = null;
+
+    /**
+     * @property HierarchyDealType $Type
+     */
+    protected $Type = null;
 
     /**
      * @property string $UnitOfMeasure
@@ -272,21 +280,21 @@ class ReplHierarchyHospDeal
     }
 
     /**
-     * @param string $ModifierCode
+     * @param string $No
      * @return $this
      */
-    public function setModifierCode($ModifierCode)
+    public function setNo($No)
     {
-        $this->ModifierCode = $ModifierCode;
+        $this->No = $No;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getModifierCode()
+    public function getNo()
     {
-        return $this->ModifierCode;
+        return $this->No;
     }
 
     /**
@@ -305,6 +313,34 @@ class ReplHierarchyHospDeal
     public function getParentNode()
     {
         return $this->ParentNode;
+    }
+
+    /**
+     * @param HierarchyDealType|string $Type
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setType($Type)
+    {
+        if ( ! $Type instanceof HierarchyDealType ) {
+            if ( HierarchyDealType::isValid( $Type ) )
+                $Type = new HierarchyDealType( $Type );
+            elseif ( HierarchyDealType::isValidKey( $Type ) )
+                $Type = new HierarchyDealType( constant( "HierarchyDealType::$Type" ) );
+            elseif ( ! $Type instanceof HierarchyDealType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return HierarchyDealType
+     */
+    public function getType()
+    {
+        return $this->Type;
     }
 
     /**

@@ -8,8 +8,8 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ModifierPriceType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ModifierType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyModifierPriceType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyModifierType;
 use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplHierarchyHospModifier
@@ -71,7 +71,7 @@ class ReplHierarchyHospModifier
     protected $ParentNode = null;
 
     /**
-     * @property ModifierPriceType $PriceType
+     * @property HierarchyModifierPriceType $PriceType
      */
     protected $PriceType = null;
 
@@ -81,7 +81,7 @@ class ReplHierarchyHospModifier
     protected $SubCode = null;
 
     /**
-     * @property ModifierType $Type
+     * @property HierarchyModifierType $Type
      */
     protected $Type = null;
 
@@ -299,18 +299,18 @@ class ReplHierarchyHospModifier
     }
 
     /**
-     * @param ModifierPriceType|string $PriceType
+     * @param HierarchyModifierPriceType|string $PriceType
      * @return $this
      * @throws InvalidEnumException
      */
     public function setPriceType($PriceType)
     {
-        if ( ! $PriceType instanceof ModifierPriceType ) {
-            if ( ModifierPriceType::isValid( $PriceType ) )
-                $PriceType = new ModifierPriceType( $PriceType );
-            elseif ( ModifierPriceType::isValidKey( $PriceType ) )
-                $PriceType = new ModifierPriceType( constant( "ModifierPriceType::$PriceType" ) );
-            elseif ( ! $PriceType instanceof ModifierPriceType )
+        if ( ! $PriceType instanceof HierarchyModifierPriceType ) {
+            if ( HierarchyModifierPriceType::isValid( $PriceType ) )
+                $PriceType = new HierarchyModifierPriceType( $PriceType );
+            elseif ( HierarchyModifierPriceType::isValidKey( $PriceType ) )
+                $PriceType = new HierarchyModifierPriceType( constant( "HierarchyModifierPriceType::$PriceType" ) );
+            elseif ( ! $PriceType instanceof HierarchyModifierPriceType )
                 throw new InvalidEnumException();
         }
         $this->PriceType = $PriceType->getValue();
@@ -319,7 +319,7 @@ class ReplHierarchyHospModifier
     }
 
     /**
-     * @return ModifierPriceType
+     * @return HierarchyModifierPriceType
      */
     public function getPriceType()
     {
@@ -345,18 +345,18 @@ class ReplHierarchyHospModifier
     }
 
     /**
-     * @param ModifierType|string $Type
+     * @param HierarchyModifierType|string $Type
      * @return $this
      * @throws InvalidEnumException
      */
     public function setType($Type)
     {
-        if ( ! $Type instanceof ModifierType ) {
-            if ( ModifierType::isValid( $Type ) )
-                $Type = new ModifierType( $Type );
-            elseif ( ModifierType::isValidKey( $Type ) )
-                $Type = new ModifierType( constant( "ModifierType::$Type" ) );
-            elseif ( ! $Type instanceof ModifierType )
+        if ( ! $Type instanceof HierarchyModifierType ) {
+            if ( HierarchyModifierType::isValid( $Type ) )
+                $Type = new HierarchyModifierType( $Type );
+            elseif ( HierarchyModifierType::isValidKey( $Type ) )
+                $Type = new HierarchyModifierType( constant( "HierarchyModifierType::$Type" ) );
+            elseif ( ! $Type instanceof HierarchyModifierType )
                 throw new InvalidEnumException();
         }
         $this->Type = $Type->getValue();
@@ -365,7 +365,7 @@ class ReplHierarchyHospModifier
     }
 
     /**
-     * @return ModifierType
+     * @return HierarchyModifierType
      */
     public function getType()
     {
