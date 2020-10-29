@@ -39,6 +39,8 @@
                 type="Ls\Replication\Model\ReplDataTranslationLangCodeRepository"/>
     <preference for="Ls\Replication\Api\ReplDiscountRepositoryInterface"
                 type="Ls\Replication\Model\ReplDiscountRepository"/>
+    <preference for="Ls\Replication\Api\ReplDiscountValidationRepositoryInterface"
+                type="Ls\Replication\Model\ReplDiscountValidationRepository"/>
     <preference for="Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface"
                 type="Ls\Replication\Model\ReplExtendedVariantValueRepository"/>
     <preference for="Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface"
@@ -61,8 +63,10 @@
     <preference for="Ls\Replication\Api\ReplProductGroupRepositoryInterface"
                 type="Ls\Replication\Model\ReplProductGroupRepository"/>
     <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface" type="Ls\Replication\Model\ReplStoreRepository"/>
-    <preference for="Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface" type="Ls\Replication\Model\ReplUnitOfMeasureRepository"/>
-    <preference for="Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface" type="Ls\Replication\Model\ReplItemUnitOfMeasureRepository"/>
+    <preference for="Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface"
+                type="Ls\Replication\Model\ReplUnitOfMeasureRepository"/>
+    <preference for="Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface"
+                type="Ls\Replication\Model\ReplItemUnitOfMeasureRepository"/>
     <!--Replication API Data Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValue"/>
@@ -75,6 +79,8 @@
     <preference for="Ls\Replication\Api\Data\ReplDataTranslationLangCodeInterface"
                 type="Ls\Replication\Model\ReplDataTranslationLangCode"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountInterface" type="Ls\Replication\Model\ReplDiscount"/>
+    <preference for="Ls\Replication\Api\Data\ReplDiscountValidationInterface"
+                type="Ls\Replication\Model\ReplDiscountValidation"/>
     <preference for="Ls\Replication\Api\Data\ReplExtendedVariantValueInterface"
                 type="Ls\Replication\Model\ReplExtendedVariantValue"/>
     <preference for="Ls\Replication\Api\Data\ReplHierarchyLeafInterface" type="Ls\Replication\Model\ReplHierarchyLeaf"/>
@@ -91,7 +97,8 @@
     <preference for="Ls\Replication\Api\Data\ReplProductGroupInterface" type="Ls\Replication\Model\ReplProductGroup"/>
     <preference for="Ls\Replication\Api\Data\ReplStoreInterface" type="Ls\Replication\Model\ReplStore"/>
     <preference for="Ls\Replication\Api\Data\ReplUnitOfMeasureInterface" type="Ls\Replication\Model\ReplUnitOfMeasure"/>
-    <preference for="Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface" type="Ls\Replication\Model\ReplItemUnitOfMeasure"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface"
+                type="Ls\Replication\Model\ReplItemUnitOfMeasure"/>
     <!--Replication API Search Results Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueSearchResultsInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueSearchResults"/>
@@ -107,6 +114,8 @@
                 type="Ls\Replication\Model\ReplDataTranslationLangCodeSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountSearchResultsInterface"
                 type="Ls\Replication\Model\ReplDiscountSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplDiscountValidationSearchResultsInterface"
+                type="Ls\Replication\Model\ReplDiscountValidationSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplExtendedVariantValueSearchResultsInterface"
                 type="Ls\Replication\Model\ReplExtendedVariantValueSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplHierarchyLeafSearchResultsInterface"
@@ -187,6 +196,9 @@
                 </item>
                 <item name="ls_repl_grids_discount_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplDiscount\Grid\Collection
+                </item>
+                <item name="ls_repl_grids_discount_validation_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplDiscountValidation\Grid\Collection
                 </item>
                 <item name="ls_repl_grids_itemcategory_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplItemCategory\Grid\Collection
