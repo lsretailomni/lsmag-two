@@ -4,6 +4,7 @@ namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplAttributeValue;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Setup\Exception;
@@ -103,15 +104,33 @@ class SyncAttributesValue extends ProductCreateTask
             'sku'
         );
 
-
         if ($collection->getSize() > 0) {
             /** @var ReplAttributeValue $attributeValue */
             foreach ($collection as $attributeValue) {
                 try {
-                    $itemId        = $attributeValue->getLinkField1();
-                    $product       = $this->productRepository->get($itemId);
-                    $formattedCode = $this->replicationHelper->formatAttributeCode($attributeValue->getCode());
-                    $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                    $itemId         = $attributeValue->getLinkField1();
+                    $product        = $this->productRepository->get($itemId);
+                    $formattedCode  = $this->replicationHelper->formatAttributeCode(
+                        $attributeValue->getCode()
+                    );
+                    $attributeSetId = $product->getAttributeSetId();
+                    if ($this->checkAttributeInAttributeSet($attributeSetId, $formattedCode)) {
+                        $attributeGroupId = $this->getAttributeGroup(
+                            LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP,
+                            $attributeSetId
+                        );
+                        $sortOrder        = $this->getAttributeSortOrderInAttributeSet(
+                            $attributeSetId,
+                            $attributeGroupId
+                        );
+                        $this->assignAttributeToAttributeSet(
+                            $attributeSetId,
+                            $attributeGroupId,
+                            $formattedCode,
+                            $sortOrder
+                        );
+                    }
+                    $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
                     if ($attribute->getFrontendInput() == 'multiselect') {
                         $value = $this->_getOptionIDByCode($formattedCode, $attributeValue->getValue());
                     } elseif ($attribute->getFrontendInput() == 'boolean') {
@@ -164,5 +183,24 @@ class SyncAttributesValue extends ProductCreateTask
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
+    }
+
+    /**
+     * @param $attributeSetId
+     * @param $attributeGroupId
+     * @param $attributeCode
+     * @param $sortOrder
+     * @throws NoSuchEntityException
+     * @throws \Magento\Framework\Exception\InputException
+     */
+    public function assignAttributeToAttributeSet($attributeSetId, $attributeGroupId, $attributeCode, $sortOrder)
+    {
+        $this->attributeManagement->assign(
+            Product::ENTITY,
+            $attributeSetId,
+            $attributeGroupId,
+            $attributeCode,
+            $sortOrder
+        );
     }
 }

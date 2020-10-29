@@ -69,6 +69,7 @@ use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\GroupFactory;
 use Magento\Eav\Model\Entity\Attribute\SetFactory;
 use Magento\Eav\Model\Entity\TypeFactory;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory as EavAttributeCollectionFactory;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
@@ -292,6 +293,11 @@ class ProductCreateTask
     public $replItemUnitOfMeasureSearchResultsFactory;
 
     /**
+     * @var EavAttributeCollectionFactory
+     */
+    public $eavAttributeCollectionFactory;
+
+    /**
      * ProductCreateTask constructor.
      * @param Factory $factory
      * @param Item $item
@@ -350,6 +356,7 @@ class ProductCreateTask
      * @param GroupFactory $attributeSetGroupFactory
      * @param AttributeGroupRepositoryInterface $attributeGroupRepository
      * @param ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory
+     * @param EavAttributeCollectionFactory $eavAttributeCollectionFactory
      */
     public function __construct(
         Factory $factory,
@@ -408,7 +415,8 @@ class ProductCreateTask
         AttributeManagement $attributeManagement,
         GroupFactory $attributeSetGroupFactory,
         AttributeGroupRepositoryInterface $attributeGroupRepository,
-        ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory
+        ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory,
+        EavAttributeCollectionFactory $eavAttributeCollectionFactory
     ) {
         $this->factory                                   = $factory;
         $this->item                                      = $item;
@@ -467,6 +475,7 @@ class ProductCreateTask
         $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
         $this->attributeGroupRepository                  = $attributeGroupRepository;
         $this->replItemUnitOfMeasureSearchResultsFactory = $replItemUnitOfMeasureSearchResultsFactory;
+        $this->eavAttributeCollectionFactory             = $eavAttributeCollectionFactory;
     }
 
     /**
@@ -2064,6 +2073,67 @@ class ProductCreateTask
     }
 
     /**
+     * @param $name
+     * @param $attributeSetId
+     * @return int|null
+     */
+    public function getAttributeGroup($name, $attributeSetId)
+    {
+        $criteria = $this->searchCriteriaBuilder->setFilterGroups([]);
+        $criteria->addFilter('attribute_group_name', $name, 'eq');
+        $criteria->addFilter('attribute_set_id', $attributeSetId, 'eq');
+        $criteria->setPageSize(1)->setCurrentPage(1);
+        $searchCriteria = $criteria->create();
+
+        $result = $this->attributeGroupRepository->getList($searchCriteria);
+        if ($result->getTotalCount()) {
+            $items = $result->getItems();
+            return reset($items)->getAttributeGroupId();
+        }
+        return null;
+    }
+
+    /**
+     * @param $attributeSetId
+     * @param $attributeId
+     * @return bool
+     * @throws LocalizedException
+     */
+    public function checkAttributeInAttributeSet($attributeSetId, $attributeCode)
+    {
+        $collection = $this->eavAttributeCollectionFactory->create();
+        $collection->setAttributeSetFilter($attributeSetId, Product::ENTITY);
+        $collection->addFieldToFilter(
+            'attribute_code',
+            $attributeCode
+        );
+        if ($collection->getSize() > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param $attributeSetId
+     * @param $attributeGroupId
+     * @return bool
+     */
+    public function getAttributeSortOrderInAttributeSet($attributeSetId, $attributeGroupId)
+    {
+        $collection = $this->eavAttributeCollectionFactory->create();
+        $collection->setAttributeSetFilter($attributeSetId, Product::ENTITY);
+        $collection->addFieldToFilter(
+            'attribute_group_id',
+            $attributeGroupId
+        );
+        $collection->setOrder('entity_attribute.sort_order', SortOrder::SORT_DESC);
+        if ($collection->getSize() > 0) {
+            $items = $collection->getItems();
+            return reset($items)->getSortOrder() + 1;
+        }
+    }
+
+    /**
      * @param ReplItem $item
      * @return int|null
      * @throws InputException
@@ -2165,7 +2235,7 @@ class ProductCreateTask
      */
     public function createAttributeSetAndGroupsAndReturnAttributeSetId($itemCategoryCode, array $attributes)
     {
-        $entityTypeCode = 'catalog_product';
+        $entityTypeCode = Product::ENTITY;
         $entityType     = $this->eavTypeFactory->create()->loadByCode($entityTypeCode);
         $defaultSetId   = $entityType->getDefaultAttributeSetId();
 
@@ -2191,7 +2261,7 @@ class ProductCreateTask
                 $formattedCode = $this->replicationHelper->formatAttributeCode($attribute);
                 if ($type == 'soft') {
                     $this->attributeManagement->assign(
-                        'catalog_product',
+                        Product::ENTITY,
                         $attributeSet->getId(),
                         $softAttributesGroup->getAttributeGroupId(),
                         $formattedCode,
@@ -2199,7 +2269,7 @@ class ProductCreateTask
                     );
                 } else {
                     $this->attributeManagement->assign(
-                        'catalog_product',
+                        Product::ENTITY,
                         $attributeSet->getId(),
                         $hardAttributesGroup->getAttributeGroupId(),
                         $formattedCode,
