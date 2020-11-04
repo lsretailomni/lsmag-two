@@ -90,7 +90,6 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $total->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
-            $quote->getBillingAddress()->setTaxAmount(0)->save();
         }
 
         return $this;
