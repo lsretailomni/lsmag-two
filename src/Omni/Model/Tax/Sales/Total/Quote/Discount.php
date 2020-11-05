@@ -99,7 +99,8 @@ class Discount extends AbstractTotal
         ShippingAssignmentInterface $shippingAssignment,
         Total $total
     ) {
-        if ($shippingAssignment->getShipping()->getAddress()->getAddressType() == 'billing') {
+        $items = $shippingAssignment->getItems();
+        if (!count($items)) {
             return $this;
         }
         $discountAmount  = $this->getTotalDiscount($quote);

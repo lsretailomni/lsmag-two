@@ -84,7 +84,8 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         ShippingAssignmentInterface $shippingAssignment,
         Total $total
     ) {
-        if ($shippingAssignment->getShipping()->getAddress()->getAddressType() == 'billing') {
+        $items = $shippingAssignment->getItems();
+        if (!count($items)) {
             return $this;
         }
         $basketData = $this->basketHelper->getBasketSessionValue();
