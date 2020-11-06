@@ -75,6 +75,9 @@
                         <resource id="Ls_Replication::discount_grid" title="Discount Replication"
                                   translate="title"
                                   sortOrder="10"/>
+                        <resource id="Ls_Replication::discount_validation_grid" title="Discount Validation Replication"
+                                  translate="title"
+                                  sortOrder="10"/>
                         <resource id="Ls_Replication::itemcategory_grid" title="Item Category Replication"
                                   translate="title" sortOrder="10"/>
                         <resource id="Ls_Replication::productgroup_grid" title="Product Group Replication"
