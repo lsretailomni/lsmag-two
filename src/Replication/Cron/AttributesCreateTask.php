@@ -21,7 +21,7 @@ use \Ls\Replication\Model\ReplUnitOfMeasureSearchResults;
 use \LS\Replication\Api\ReplVendorRepositoryInterface;
 use \Ls\Replication\Model\ReplVendor;
 use \Ls\Replication\Model\ReplVendorRepository;
-use Ls\Replication\Model\ReplVendorSearchResults;
+use \Ls\Replication\Model\ReplVendorSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\OptionManagement;
