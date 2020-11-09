@@ -56,6 +56,9 @@
         <job name="repl_discount" instance="Ls\Replication\Cron\ReplEcommDiscountsTask" method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
+        <job name="repl_discount_validation" instance="Ls\Replication\Cron\ReplEcommDiscountValidationsTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
         <!-- Less Important-->
         <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
             <schedule>*/15 * * * *</schedule>
