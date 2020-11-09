@@ -946,7 +946,7 @@ class ReplicationHelper extends AbstractHelper
     public function setCollectionPropertiesPlusJoinsForInventory(&$collection, SearchCriteriaInterface $criteria)
     {
         $secondTableName = $this->resource->getTableName('catalog_product_entity');
-        $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
+        $thirdTableName  = $this->resource->getTableName('ls_replication_repl_item');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
@@ -958,6 +958,33 @@ class ReplicationHelper extends AbstractHelper
             'main_table.ItemId' . ' = third.nav_id' . ' AND main_table.scope_id' . ' = third.scope_id',
             []
         );
+        /** @var For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
+     * @param $collection
+     * @param SearchCriteriaInterface $criteria
+     */
+    public function setCollectionPropertiesPlusJoinsForVendor(&$collection, SearchCriteriaInterface $criteria)
+    {
+        $secondTableName = $this->resource->getTableName('catalog_product_entity');
+        $thirdTableName  = $this->resource->getTableName('ls_replication_repl_vendor');
+        $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
+        $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
+        $collection->getSelect()->joinInner(
+            ['second' => $secondTableName],
+            'main_table.NavProductId' . '= second.sku',
+            []
+        )->joinInner(
+            ['third' => $thirdTableName],
+            'main_table.NavManufacturerId' . ' = third.nav_id' . ' AND main_table.scope_id' . ' = third.scope_id' .
+            ' AND third.processed' . ' = 1',
+            []
+        );
+        $collection->getSelect()->columns('third.name');
         /** @var For Xdebug only to check the query $query */
         $query = $collection->getSelect()->__toString();
         $collection->setCurPage($criteria->getCurrentPage());

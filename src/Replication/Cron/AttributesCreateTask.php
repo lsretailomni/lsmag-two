@@ -18,6 +18,10 @@ use \Ls\Replication\Model\ReplAttributeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use \Ls\Replication\Model\ReplUnitOfMeasureSearchResults;
+use \LS\Replication\Api\ReplVendorRepositoryInterface;
+use \Ls\Replication\Model\ReplVendor;
+use \Ls\Replication\Model\ReplVendorRepository;
+use Ls\Replication\Model\ReplVendorSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\OptionManagement;
@@ -113,11 +117,15 @@ class AttributesCreateTask
      */
     public $optionFactory;
 
-
     /**
      * @var \Magento\Eav\Api\AttributeOptionManagementInterface
      */
     public $attributeOptionManagement;
+
+    /**
+     * @var ReplVendorRepositoryInterface
+     */
+    public $replVendorRepositoryInterface;
 
     /**
      * AttributesCreateTask constructor.
@@ -130,8 +138,12 @@ class AttributesCreateTask
      * @param ReplAttributeRepositoryInterface $replAttributeRepositoryInterface
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
      * @param ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface
+     * @param ReplVendorRepositoryInterface $replVendorRepositoryInterface
      * @param Config $eavConfig
      * @param ReplicationHelper $replicationHelper
+     * @param AttributeOptionLabelInterfaceFactory $optionLabelFactory
+     * @param AttributeOptionInterfaceFactory $optionFactory
+     * @param OptionManagement $attributeOptionManagement
      * @param LSR $LSR
      */
     public function __construct(
@@ -144,6 +156,7 @@ class AttributesCreateTask
         ReplAttributeRepositoryInterface $replAttributeRepositoryInterface,
         ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
         ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface,
+        ReplVendorRepositoryInterface $replVendorRepositoryInterface,
         Config $eavConfig,
         ReplicationHelper $replicationHelper,
         AttributeOptionLabelInterfaceFactory $optionLabelFactory,
@@ -163,6 +176,7 @@ class AttributesCreateTask
         $this->replicationHelper                           = $replicationHelper;
         $this->lsr                                         = $LSR;
         $this->replUnitOfMeasureRepositoryInterface        = $replUnitOfMeasureRepositoryInterface;
+        $this->replVendorRepositoryInterface               = $replVendorRepositoryInterface;
         $this->optionLabelFactory                          = $optionLabelFactory;
         $this->optionFactory                               = $optionFactory;
         $this->attributeOptionManagement                   = $attributeOptionManagement;
@@ -202,6 +216,8 @@ class AttributesCreateTask
                     $this->updateAttributeOptionValues($store);
                     //Process UOM Attribute Options
                     $this->addUomAttributeOptions($store);
+                    //Process Vendor Options
+                    $this->addVendorAttributeOptions($store);
                     $this->replicationHelper->updateCronStatus(
                         $this->successCronAttribute,
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE,
@@ -328,7 +344,7 @@ class AttributesCreateTask
         $this->logger->debug('Running variants create task for store ' . $store->getName());
 //        $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
 //        $defaultGroupId        = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
-        $criteria              = $this->replicationHelper->buildCriteriaForNewItems(
+        $criteria = $this->replicationHelper->buildCriteriaForNewItems(
             'scope_id',
             $store->getId(),
             'eq',
@@ -741,6 +757,43 @@ class AttributesCreateTask
         return $optionArray;
     }
 
+    /**
+     * @param $store
+     * @return array
+     * @throws LocalizedException
+     */
+    public function getVendorOptions($store)
+    {
+        $optionArray = [];
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', -1, true);
+        /** @var ReplVendorSearchResults $replVendorOptionValues */
+        $replVendorOptionValues = $this->replVendorRepositoryInterface->getList($criteria);
+
+        // Get existing options array
+        $formattedCode   = LSR::LS_VENDOR_ATTRIBUTE;
+        $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
+
+        /** @var ReplVendor $item */
+        foreach ($replVendorOptionValues->getItems() as $item) {
+            $item->setIsUpdated(0);
+            $item->setProcessed(1);
+            if (empty($item->getNavId())) {
+                $item->setIsFailed(1);
+            }
+            $item->setProcessedAt($this->replicationHelper->getDateTime());
+            // @codingStandardsIgnoreLine
+            $this->replVendorRepositoryInterface->save($item);
+            // If have existing option and current value is a part of existing option then don't do anything
+            if (empty($item->getName()) || (!empty($existingOptions)
+                    && in_array($item->getName(), $existingOptions, true))) {
+                continue;
+            }
+            $optionArray[$item->getNavId()] = $item->getName();
+            $existingOptions[]              = $item->getName();
+        }
+        return $optionArray;
+    }
+
 
     /**
      * @param $store
@@ -767,6 +820,40 @@ class AttributesCreateTask
                 $option
             );
         }
+    }
+
+
+    /**
+     * @param $store
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function addVendorAttributeOptions($store)
+    {
+        $optionData       = $this->getVendorOptions($store);
+        foreach ($optionData as $value => $label) {
+            $optionLabel = $this->optionLabelFactory->create();
+            $optionLabel->setStoreId(0);
+            $optionLabel->setLabel($label);
+
+            $option = $this->optionFactory->create();
+            $option->setLabel($label);
+            $option->setValue($value);
+            $option->setStoreLabels([$optionLabel]);
+            $option->setSortOrder(0);
+            $option->setIsDefault(false);
+
+            $this->attributeOptionManagement->add(
+                LSR::LS_VENDOR_ATTRIBUTE,
+                $option
+            );
+        }
+
+        $this->replicationHelper->updateCronStatus(
+            true,
+            LSR::SC_SUCCESS_CRON_VENDOR,
+            $this->store->getId()
+        );
     }
 
 

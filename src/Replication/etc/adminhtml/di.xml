@@ -173,14 +173,32 @@
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_item_unit_of_measure</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemUnitOfMeasure</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplItemUnitOfMeasure
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_unit_of_measure</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplVendor\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_vendor</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplVendor</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplLoyVendorItemMapping\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_loy_vendor_item_mapping</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Ls\Replication\Model\ResourceModel\ReplLoyVendorItemMapping
+            </argument>
         </arguments>
     </virtualType>
 </config>

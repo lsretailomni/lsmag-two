@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplLoyVendorItemMappingRepositoryInterface;
 use \Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
@@ -31,6 +32,7 @@ use \Ls\Replication\Model\ReplItemSearchResults;
 use \Ls\Replication\Model\ReplItemUnitOfMeasureSearchResultsFactory;
 use \Ls\Replication\Model\ReplItemVariantRegistration;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplLoyVendorItemMapping\CollectionFactory as ReplItemVendorCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
@@ -298,6 +300,16 @@ class ProductCreateTask
     public $eavAttributeCollectionFactory;
 
     /**
+     * @var ReplItemVendorCollectionFactory
+     */
+    public $replItemVendorCollectionFactory;
+
+    /**
+     * @var ReplLoyVendorItemMappingRepositoryInterface
+     */
+    public $replVendorItemMappingRepositoryInterface;
+
+    /**
      * ProductCreateTask constructor.
      * @param Factory $factory
      * @param Item $item
@@ -327,6 +339,7 @@ class ProductCreateTask
      * @param LoyaltyHelper $loyaltyHelper
      * @param ReplicationHelper $replicationHelper
      * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
+     * @param ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface
      * @param Logger $logger
      * @param LSR $LSR
      * @param ConfigurableProTypeModel $configurableProTypeModel
@@ -357,6 +370,7 @@ class ProductCreateTask
      * @param AttributeGroupRepositoryInterface $attributeGroupRepository
      * @param ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory
      * @param EavAttributeCollectionFactory $eavAttributeCollectionFactory
+     * @param ReplItemVendorCollectionFactory $replItemVendorCollectionFactory
      */
     public function __construct(
         Factory $factory,
@@ -387,6 +401,7 @@ class ProductCreateTask
         LoyaltyHelper $loyaltyHelper,
         ReplicationHelper $replicationHelper,
         ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
+        ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface,
         Logger $logger,
         LSR $LSR,
         ConfigurableProTypeModel $configurableProTypeModel,
@@ -416,7 +431,8 @@ class ProductCreateTask
         GroupFactory $attributeSetGroupFactory,
         AttributeGroupRepositoryInterface $attributeGroupRepository,
         ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory,
-        EavAttributeCollectionFactory $eavAttributeCollectionFactory
+        EavAttributeCollectionFactory $eavAttributeCollectionFactory,
+        ReplItemVendorCollectionFactory $replItemVendorCollectionFactory
     ) {
         $this->factory                                   = $factory;
         $this->item                                      = $item;
@@ -447,6 +463,7 @@ class ProductCreateTask
         $this->loyaltyHelper                             = $loyaltyHelper;
         $this->replicationHelper                         = $replicationHelper;
         $this->replAttributeValueRepositoryInterface     = $replAttributeValueRepositoryInterface;
+        $this->replVendorItemMappingRepositoryInterface  = $replVendorItemMappingRepositoryInterface;
         $this->lsr                                       = $LSR;
         $this->configurableProTypeModel                  = $configurableProTypeModel;
         $this->stockHelper                               = $stockHelper;
@@ -476,6 +493,7 @@ class ProductCreateTask
         $this->attributeGroupRepository                  = $attributeGroupRepository;
         $this->replItemUnitOfMeasureSearchResultsFactory = $replItemUnitOfMeasureSearchResultsFactory;
         $this->eavAttributeCollectionFactory             = $eavAttributeCollectionFactory;
+        $this->replItemVendorCollectionFactory           = $replItemVendorCollectionFactory;
     }
 
     /**

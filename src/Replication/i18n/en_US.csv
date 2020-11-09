@@ -1,13 +1,256 @@
+Retail,Retail
+Hospitality,Hospitality
+"LS Retail Setup Incomplete","LS Retail Setup Incomplete"
+"Please define the LS Retail Service Base URL and Web Store to proceed","Please define the LS Retail Service Base URL and Web Store to proceed"
+"Go to Stores > Configuration > LS Retail > General Configuration.","Go to Stores > Configuration > LS Retail > General Configuration."
+"Send customer to LS Central?","Send customer to LS Central?"
+"Save to LS Central","Save to LS Central"
+"LS Central Membership","LS Central Membership"
+Loyalty,Loyalty
+"Go To Product","Go To Product"
+"Go To Category","Go To Category"
+"%1 # %2","%1 # %2"
+"Click and Collect","Click and Collect"
+"Flat Rate - Fixed","Flat Rate - Fixed"
+Cash,Cash
+Card,Card
+Coupon,Coupon
+"Loyalty Points","Loyalty Points"
+"Gift Card","Gift Card"
+Unknown,Unknown
+"Pay At Store","Pay At Store"
+Save,Save
+"There is no account found with the provided email/username.","There is no account found with the provided email/username."
+"We're unable to send the password reset email.","We're unable to send the password reset email."
+"Please enter your email.","Please enter your email."
+"Customer request has been sent to LS Central successfully.","Customer request has been sent to LS Central successfully."
+"Something went wrong while creating a customer. Please refer log for details.","Something went wrong while creating a customer. Please refer log for details."
+"Omni service is down.","Omni service is down."
+"Coupon Offers","Coupon Offers"
+"General Offers","General Offers"
+"Loyalty Offers","Loyalty Offers"
+"Member Offers","Member Offers"
+"Point Offers","Point Offers"
+"Enter a valid %1. Valid characters are A-Z a-z 0-9 . _ - @","Enter a valid %1. Valid characters are A-Z a-z 0-9 . _ - @"
+"Enter a valid %1. It can only have a min of length 3 and a max of length 5","Enter a valid %1. It can only have a min of length 3 and a max of length 5"
+"Something went wrong, Please try again later.","Something went wrong, Please try again later."
+"Your password has been updated.","Your password has been updated."
+"You have entered an invalid current password.","You have entered an invalid current password."
+"Confirm password did not match.","Confirm password did not match."
+"Sorry. No account found with the provided email address","Sorry. No account found with the provided email address"
+"Invalid Omni login or Omni password","Invalid Omni login or Omni password"
+"Omni login successful.","Omni login successful."
+"The service is currently unavailable. Please try again later.","The service is currently unavailable. Please try again later."
+"There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.","There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address."
+"Your email address is invalid.","Your email address is invalid."
+"Sorry! No account found with the provided email address.","Sorry! No account found with the provided email address."
+"Invalid LS Central login or password.","Invalid LS Central login or password."
+"Membership Information","Membership Information"
+"Member Contact No.:","Member Contact No.:"
+"Member Card No.:","Member Card No.:"
+"Member Username:","Member Username:"
+"* Required Fields","* Required Fields"
+"Contact Information","Contact Information"
+Address,Address
+"Street Address %1","Street Address %1"
+City,City
+"Please select a region, state or province.","Please select a region, state or province."
+"It's a default billing address.","It's a default billing address."
+"Use as my default billing address","Use as my default billing address"
+"It's a default shipping address.","It's a default shipping address."
+"Use as my default shipping address","Use as my default shipping address"
+"Save Address","Save Address"
+"Go back","Go back"
+"Member Information","Member Information"
+"Club Name:","Club Name:"
+"Loyalty Points Earned:","Loyalty Points Earned:"
+"Loyalty Level:","Loyalty Level:"
+"Next Level","Next Level"
+Level:,Level:
+"Points Needed:","Points Needed:"
+"Benefits of Next Level:","Benefits of Next Level:"
+"You are at the top level.","You are at the top level."
+"Please enter your email address below to receive a password reset link.","Please enter your email address below to receive a password reset link."
+Username/Email,Username/Email
+"Reset My Password","Reset My Password"
+"Registered Customers","Registered Customers"
+"If you have an account, sign in with your email address.","If you have an account, sign in with your email address."
+Email,Email
+Password,Password
+"Sign In","Sign In"
+"Forgot Your Password?","Forgot Your Password?"
+"Code: ","Code: "
+"Offer Type: ","Offer Type: "
+"Expiry: ","Expiry: "
+"No offers","No offers"
+Orders,Orders
+"Doc ID","Doc ID"
+Date,Date
+"Ship To","Ship To"
+"Store Name","Store Name"
+Total,Total
+Status,Status
+Action,Action
+"Document ID #","Document ID #"
+"Not Applicable","Not Applicable"
+Actions,Actions
+"View Order","View Order"
+Reorder,Reorder
+"Order #","Order #"
+"You have placed no orders.","You have placed no orders."
+"Order Information","Order Information"
+"Shipping Address","Shipping Address"
+"Shipping Method","Shipping Method"
+"Billing Address","Billing Address"
+"Payment Method","Payment Method"
+"Print Order","Print Order"
+"Product Name","Product Name"
+SKU,SKU
+Price,Price
+Qty,Qty
+Subtotal,Subtotal
+"Items Ordered","Items Ordered"
+"<span class=""label"">Order Date:</span> %1","<span class=""label"">Order Date:</span> %1"
+"Recent Orders","Recent Orders"
+"View All","View All"
+"Qty Shipped","Qty Shipped"
+"Useful Information","Useful Information"
+"Store Name:","Store Name:"
+"Click & Collect:","Click & Collect:"
+"Loyalty Points Rewarded:","Loyalty Points Rewarded:"
+"Gift Card Code:","Gift Card Code:"
+"Print Invoice","Print Invoice"
+"Print Shipment","Print Shipment"
+"Track this shipment","Track this shipment"
+"Tracking Number(s):","Tracking Number(s):"
+Name,Name
+"Phone Number","Phone Number"
+"Loyalty Points Redeemed","Loyalty Points Redeemed"
+"Gift Card Redeemed ","Gift Card Redeemed "
+"Validate Base URL","Validate Base URL"
+"12 Hours","12 Hours"
+"24 Hours","24 Hours"
+"Valid till","Valid till"
+"Minimum Qty :","Minimum Qty :"
+"Avail %1 Off ","Avail %1 Off "
+"Click Here to see the items","Click Here to see the items"
+"if Buy with any of these items: ","if Buy with any of these items: "
+"Expiry :","Expiry :"
+"Coupon Code :","Coupon Code :"
+Closed,Closed
+Special,Special
+"Order request has been sent to LS Central successfully","Order request has been sent to LS Central successfully"
+"Something terrible happened while placing order %1","Something terrible happened while placing order %1"
+"Please select your hierarchy code","Please select your hierarchy code"
+"No hierarchy code found for the selected store","No hierarchy code found for the selected store"
+"Please select your web store","Please select your web store"
+"No store found for entered omni api url","No store found for entered omni api url"
+"The gift card code %1 is not valid.","The gift card code %1 is not valid."
+"You have successfully cancelled the gift card.","You have successfully cancelled the gift card."
+"The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).","The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2)."
+"The gift card amount ""%1"" is not valid.","The gift card amount ""%1"" is not valid."
+"Totals calculation is not applicable to empty cart.","Totals calculation is not applicable to empty cart."
+"Customer session not found.","Customer session not found."
+"The loyalty points ""%1"" are not valid.","The loyalty points ""%1"" are not valid."
+"The gift card Amount ""%1"" is not valid.","The gift card Amount ""%1"" is not valid."
+"You have used ""%1"" amount from gift card.","You have used ""%1"" amount from gift card."
+"Gift Card cannot be applied.","Gift Card cannot be applied."
+"You have redeemed ""%1"" loyalty points.","You have redeemed ""%1"" loyalty points."
+"The loyalty points can't be redeemed.","The loyalty points can't be redeemed."
+"You have successfully canceled the points redemption.","You have successfully canceled the points redemption."
+"We cannot redeem the points.","We cannot redeem the points."
+"Check Your Gift Card Balance","Check Your Gift Card Balance"
+Notice,Notice
+"This item is only available online.","This item is only available online."
+"Please check other stores or remove the not available item(s) from your ","Please check other stores or remove the not available item(s) from your "
+"This item is available","This item is available"
+"You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart.","You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart."
+"This item is not available","This item is not available"
+"Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
+"Our Stores","Our Stores"
+"Coupon Code is not valid for these item(s)","Coupon Code is not valid for these item(s)"
+"Reset password token expired.","Reset password token expired."
+"The gift card amount ""%1"" and loyalty points ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points ""%2"" are not valid."
+Products,Products
+Discount,Discount
+"Total Discount:","Total Discount:"
+"Loyalty Points Redeemed:","Loyalty Points Redeemed:"
+"GiftCard Redeemed ","GiftCard Redeemed "
+"Invoice # ","Invoice # "
+"Excl. Tax","Excl. Tax"
+"Incl. Tax","Incl. Tax"
+"Tax (Inclusive Total)","Tax (Inclusive Total)"
+"Gift Card Redeemed","Gift Card Redeemed"
+"Gift Card No","Gift Card No"
+"You will earn","You will earn"
+"Login to earn","Login to earn"
+"You are using","You are using"
+"Coupon code successfully removed.","Coupon code successfully removed."
+"You used coupon code ""%1"".","You used coupon code ""%1""."
+"Send order to LS Central?","Send order to LS Central?"
+"Send to LS Central","Send to LS Central"
+"Flat No/House No/Building No","Flat No/House No/Building No"
+"Street Name/Landmark","Street Name/Landmark"
+"Cart %1 doesn't contain products","Cart %1 doesn't contain products"
+"Cart isn't assigned to correct store","Cart isn't assigned to correct store"
+"Could not delete coupon code","Could not delete coupon code"
+"Product that you are trying to add is not available.","Product that you are trying to add is not available."
+"Max quantity available for this item is %1","Max quantity available for this item is %1"
+"Make Check payable to:","Make Check payable to:"
+"Send Check to:","Send Check to:"
+"Make Check payable to: %1","Make Check payable to: %1"
+"Ls Central Order Reference ID:","Ls Central Order Reference ID:"
+"Loyalty Points Earned","Loyalty Points Earned"
+"Coupon Code Redeemed","Coupon Code Redeemed"
+"Gift Card Code","Gift Card Code"
+"Chosen Store","Chosen Store"
+OR,OR
+Loading...,Loading...
+"Loading Coupons...","Loading Coupons..."
+"Apply Discount Code","Apply Discount Code"
+"Enter discount code","Enter discount code"
+"Apply Discount","Apply Discount"
+"Cancel Coupon","Cancel Coupon"
+"Apply Gift Card","Apply Gift Card"
+Apply,Apply
+Update,Update
+Cancel,Cancel
+Item,Item
+"See price before order confirmation.","See price before order confirmation."
+"What's this?","What's this?"
+"Apply Loyalty Points","Apply Loyalty Points"
+"You have %1 loyalty points. Each of 10 Points gets %2 discount.","You have %1 loyalty points. Each of 10 Points gets %2 discount."
+Redeem,Redeem
+"Loading recommended products for you...","Loading recommended products for you..."
+"Recommended Products for you","Recommended Products for you"
+"Add to Cart","Add to Cart"
+"In stock","In stock"
+"Out of stock","Out of stock"
+"Make Check payable to","Make Check payable to"
+"Send Check to","Send Check to"
+"Loading Product Discounts...","Loading Product Discounts..."
+"Check Availability in Stores","Check Availability in Stores"
+"Please <a href=""%1"">Login</a> / <a href=""%2"">Register</a> to view available discounts on this product.","Please <a href=""%1"">Login</a> / <a href=""%2"">Register</a> to view available discounts on this product."
+"Offers and Promotions:","Offers and Promotions:"
+"Find Discounts","Find Discounts"
+Store,Store
+Phone,Phone
+Hours,Hours
+"Product Group Id","Product Group Id"
+"Item Category Code","Item Category Code"
 "Show all the stores","Show all the stores"
 "Show the Click and Collect stores only","Show the Click and Collect stores only"
-"Please select your hierarchy code","Please select your hierarchy code"
 "Inventory Per Store","Inventory Per Store"
 "Inventory Totals","Inventory Totals"
 "On Demand","On Demand"
 "Batch Job","Batch Job"
 N/A,N/A
 No,No
-"Cron Listing ","Cron Listing "
+"Cron Listing","Cron Listing"
 "LS Attributes deleted successfully.","LS Attributes deleted successfully."
 "Categories deleted successfully.","Categories deleted successfully."
 "Customers deleted successfully.","Customers deleted successfully."
@@ -33,17 +276,19 @@ No,No
 "Item Category Replication","Item Category Replication"
 "Item Unit Of Measure","Item Unit Of Measure"
 "Item Variant Registration Replication","Item Variant Registration Replication"
+"Item Vendor","Item Vendor"
 "Item Price Replication","Item Price Replication"
 "Product Group Replication","Product Group Replication"
 "Store Replication","Store Replication"
 "Unit Of Measure","Unit Of Measure"
+Vendor,Vendor
 "Logs ","Logs "
 "No Data Found File is Empty.","No Data Found File is Empty."
 "File Not Found.","File Not Found."
-"Quantity Unit Of Measure","Quantity Unit Of Measure"
 "Product Image","Product Image"
 "<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>.","<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>."
 Default,Default
+"Quantity Unit Of Measure","Quantity Unit Of Measure"
 "Object with id ' . . ' does not exist.","Object with id ' . . ' does not exist."
 "Could not save entity","Could not save entity"
 Execute,Execute
@@ -64,7 +309,114 @@ Pending,Pending
 "Remaining entries ","Remaining entries "
 "Do you want to execute More Data?","Do you want to execute More Data?"
 "Click Here","Click Here"
+Hello,Hello
+"Omni Service is currently down and is not reachable. Please
+                                look out the service.","Omni Service is currently down and is not reachable. Please
+                                look out the service."
+"Select Store by map ","Select Store by map "
+"Search for a Store ","Search for a Store "
+"View Details","View Details"
+"Options Details","Options Details"
+"Check Balance","Check Balance"
+"See Details","See Details"
+Edit,Edit
+Remove,Remove
+"Cancel coupon","Cancel coupon"
+"Enter Gift Card","Enter Gift Card"
+"Place Order","Place Order"
+"Enter a valid username prefix. Valid characters are A-Z a-z 0-9 . _ - @.","Enter a valid username prefix. Valid characters are A-Z a-z 0-9 . _ - @."
+Items,Items
+Close,Close
+"Gift card successfully removed.","Gift card successfully removed."
+"Your points are successfully removed.","Your points are successfully removed."
+"Gift card successfully applied.","Gift card successfully applied."
+"Your points are successfully redeemed.","Your points are successfully redeemed."
+"contains %1 quantity","contains %1 quantity"
+cart,cart
+"Please provide where (if suitable) you prefer to pick your order.","Please provide where (if suitable) you prefer to pick your order."
+"LS Retail","LS Retail"
+"General Configuration","General Configuration"
+Industry,Industry
+"Choose Industry","Choose Industry"
+"LS Central Order ID","LS Central Order ID"
+"Customer Dashboard and Loyalty Elements","Customer Dashboard and Loyalty Elements"
+"Show Customer Club Information","Show Customer Club Information"
+"Enable Loyalty Elements","Enable Loyalty Elements"
+"Show Loyalty Offers","Show Loyalty Offers"
+"Use Static Block for Loyalty Offers Page","Use Static Block for Loyalty Offers Page"
+"Show Point Offers","Show Point Offers"
+"Show Member Offers","Show Member Offers"
+"Show General Offers","Show General Offers"
+"Show Coupon Offers","Show Coupon Offers"
+"Loyalty Page Image Width","Loyalty Page Image Width"
+"Loyalty Page Image Height","Loyalty Page Image Height"
+"Expiry Date Format","Expiry Date Format"
+"Customer username prefix","Customer username prefix"
+"Member Card No.","Member Card No."
+"Member Username","Member Username"
+Invoices,Invoices
+"Order Shipments","Order Shipments"
 Configuration,Configuration
+Version,Version
+"Service Base URL","Service Base URL"
+"LS Key","LS Key"
+"For Multi Tenant Web Services","For Multi Tenant Web Services"
+"Please validate your base url by clicking on button above","Please validate your base url by clicking on button above"
+"Omni Service Version","Omni Service Version"
+"LS Central Version","LS Central Version"
+"Select Store","Select Store"
+"Choose the web store","Choose the web store"
+"Select Hierarchy Code","Select Hierarchy Code"
+"Required to get hierarchy node and leaf from omni","Required to get hierarchy node and leaf from omni"
+Debug,Debug
+"Debug Mode for Omni Client","Debug Mode for Omni Client"
+"Service Timeout","Service Timeout"
+"Max time in seconds to wait for omni response","Max time in seconds to wait for omni response"
+"Service Down Notification","Service Down Notification"
+Enabled,Enabled
+"Notification Email","Notification Email"
+"LS Recommend","LS Recommend"
+"Show on Product Page","Show on Product Page"
+"Show on Cart Page","Show on Cart Page"
+"Show on Home Page","Show on Home Page"
+"Show on Checkout Page","Show on Checkout Page"
+Coupons,Coupons
+"Show Coupon Recommendations on Cart/Checkout Page","Show Coupon Recommendations on Cart/Checkout Page"
+"Discount Management","Discount Management"
+"Show Promotions on Product Page","Show Promotions on Product Page"
+"Show Login/Register Notice","Show Login/Register Notice"
+"Mix and Match Products Limit on Popup","Mix and Match Products Limit on Popup"
+"This will display the number of mix and match discounts product on promotions in product
+                        page. Set value to -1 to display all products.","This will display the number of mix and match discounts product on promotions in product
+                        page. Set value to -1 to display all products."
+"Stores Listing","Stores Listing"
+"Opening Hours Time Format","Opening Hours Time Format"
+"Order Management","Order Management"
+"Magento Order Number Prefix","Magento Order Number Prefix"
+"Maximum Length 5 Characters","Maximum Length 5 Characters"
+"Shipping Charge Item Id","Shipping Charge Item Id"
+"Please make sure this item Id is the same as set in LS Central. This value is used to calculate the flat shipment amount and is sent as a separate orderline with the order.","Please make sure this item Id is the same as set in LS Central. This value is used to calculate the flat shipment amount and is sent as a separate orderline with the order."
+"Click And Collect","Click And Collect"
+Title,Title
+"Method Name","Method Name"
+"Allowed Payment Methods","Allowed Payment Methods"
+"Shipping Cost","Shipping Cost"
+"Displayed Error Message","Displayed Error Message"
+"Ship to Applicable Countries","Ship to Applicable Countries"
+"Ship to Specific Countries","Ship to Specific Countries"
+"Show Method if Not Applicable","Show Method if Not Applicable"
+"Sort Order","Sort Order"
+"Pay at the Store","Pay at the Store"
+"Google Maps API Key","Google Maps API Key"
+"Default Latitude","Default Latitude"
+"Default Longitude","Default Longitude"
+"Default Zoom","Default Zoom"
+"LS eCommerce Cache","LS eCommerce Cache"
+"LS eCommerce cache for storing the response objects","LS eCommerce cache for storing the response objects"
+"Subtotal (Inc.Tax)","Subtotal (Inc.Tax)"
+"Order Balance","Order Balance"
+Stores,Stores
+"Check Gift Card Balance","Check Gift Card Balance"
 "LS Retail Configuration","LS Retail Configuration"
 "Manual Crons","Manual Crons"
 "Crons Listing","Crons Listing"
@@ -72,8 +424,6 @@ Logs,Logs
 Report,Report
 "Replication Status","Replication Status"
 "Price Replication","Price Replication"
-Item,Item
-Price,Price
 "Inventory Status","Inventory Status"
 Barcode,Barcode
 "Data Translation","Data Translation"
@@ -87,7 +437,6 @@ Hierarchy,Hierarchy
 Attribute,Attribute
 "Attribute Value","Attribute Value"
 "Attribute Option Value","Attribute Option Value"
-Store,Store
 Replication,Replication
 "Data Translation Language Code","Data Translation Language Code"
 "Manual Cron Grid Default Store","Manual Cron Grid Default Store"
@@ -102,6 +451,7 @@ Replication,Replication
 "Product Barcode Batch Size","Product Barcode Batch Size"
 "Variant Batch Size","Variant Batch Size"
 "Product Assignment to Category Batch Size","Product Assignment to Category Batch Size"
+"Create attribute sets on the basis of","Create attribute sets on the basis of"
 "Item Availability","Item Availability"
 "Availability Check","Availability Check"
 "Product Availability in Stores","Product Availability in Stores"
@@ -117,11 +467,9 @@ Replication,Replication
 "Nav ID","Nav ID"
 ID,ID
 "Job Code","Job Code"
-Status,Status
 "Last Executed","Last Executed"
 "Cron Class","Cron Class"
 Area,Area
-Action,Action
 "Reset Data","Reset Data"
 "All Store Views","All Store Views"
 "Store View","Store View"
@@ -183,10 +531,10 @@ ParentNode,ParentNode
 "Variant Id","Variant Id"
 Quantity,Quantity
 "Store Id","Store Id"
+"Blocked On eCommerce","Blocked On eCommerce"
 "Base Unit Of Measure","Base Unit Of Measure"
 "Unit Price","Unit Price"
 "Gross Weight","Gross Weight"
-"Item Category Code","Item Category Code"
 "Item Family Code","Item Family Code"
 "Product Group ID","Product Group ID"
 "Purch Unit Of Measure","Purch Unit Of Measure"
@@ -198,6 +546,7 @@ Quantity,Quantity
 "Vendor Id","Vendor Id"
 "Vendor Item Id","Vendor Item Id"
 "Zero Price ValId","Zero Price ValId"
+Order,Order
 "Quantity Per Unit Of Measure","Quantity Per Unit Of Measure"
 "Variant Dimension 1","Variant Dimension 1"
 "Variant Dimension 2","Variant Dimension 2"
@@ -206,9 +555,6 @@ Quantity,Quantity
 "Variant Dimension 5","Variant Dimension 5"
 "Variant Dimension 6","Variant Dimension 6"
 "Item Category ID","Item Category ID"
-Name,Name
-City,City
-"Click And Collect","Click And Collect"
 Country,Country
 County,County
 Currency,Currency
@@ -216,7 +562,6 @@ DefaultCustomerAccount,DefaultCustomerAccount
 "Functionality Profile","Functionality Profile"
 Latitude,Latitude
 Longitude,Longitude
-Phone,Phone
 State,State
 Street,Street
 TaxGroup,TaxGroup

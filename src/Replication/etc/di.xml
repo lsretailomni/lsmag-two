@@ -63,6 +63,8 @@
     <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface" type="Ls\Replication\Model\ReplStoreRepository"/>
     <preference for="Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface" type="Ls\Replication\Model\ReplUnitOfMeasureRepository"/>
     <preference for="Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface" type="Ls\Replication\Model\ReplItemUnitOfMeasureRepository"/>
+    <preference for="Ls\Replication\Api\ReplVendorRepositoryInterface" type="Ls\Replication\Model\ReplVendorRepository"/>
+    <preference for="Ls\Replication\Api\ReplLoyVendorItemMappingRepositoryInterface" type="Ls\Replication\Model\ReplLoyVendorItemMappingRepository"/>
     <!--Replication API Data Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValue"/>
@@ -92,6 +94,8 @@
     <preference for="Ls\Replication\Api\Data\ReplStoreInterface" type="Ls\Replication\Model\ReplStore"/>
     <preference for="Ls\Replication\Api\Data\ReplUnitOfMeasureInterface" type="Ls\Replication\Model\ReplUnitOfMeasure"/>
     <preference for="Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface" type="Ls\Replication\Model\ReplItemUnitOfMeasure"/>
+    <preference for="Ls\Replication\Api\Data\ReplVendorInterface" type="Ls\Replication\Model\ReplVendor"/>
+    <preference for="Ls\Replication\Api\Data\ReplLoyVendorItemMappingInterface" type="Ls\Replication\Model\ReplLoyVendorItemMapping"/>
     <!--Replication API Search Results Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueSearchResultsInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueSearchResults"/>
@@ -137,6 +141,10 @@
                 type="Ls\Replication\Model\ReplItemUnitOfMeasureSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplUnitOfMeasureSearchResultsInterface"
                 type="Ls\Replication\Model\ReplUnitOfMeasureSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplVendorSearchResultsInterface"
+                type="Ls\Replication\Model\ReplVendorSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplLoyVendorItemMappingSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLoyVendorItemMappingSearchResults"/>
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
@@ -202,6 +210,12 @@
                 </item>
                 <item name="ls_repl_grids_uom_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure\Grid\Collection
+                </item>
+                <item name="ls_repl_grids_vendor_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplVendor\Grid\Collection
+                </item>
+                <item name="ls_repl_grids_item_vendor_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplLoyVendorItemMapping\Grid\Collection
                 </item>
             </argument>
         </arguments>
