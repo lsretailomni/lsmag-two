@@ -1046,5 +1046,41 @@
         "constraint": {
             "PRIMARY": true
         }
+    },
+    "ls_replication_repl_item_modifier": {
+        "column": {
+            "repl_item_modifier_id": true,
+            "AlwaysCharge": true,
+            "AmountPercent": true,
+            "Code": true,
+            "Description": true,
+            "ExplanatoryHeaderText": true,
+            "nav_id": true,
+            "IsDeleted": true,
+            "MaxSelection": true,
+            "MinSelection": true,
+            "PriceType": true,
+            "Prompt": true,
+            "SubCode": true,
+            "TimeModifierMinutes": true,
+            "TriggerCode": true,
+            "TriggerFunction": true,
+            "Type": true,
+            "UnitOfMeasure": true,
+            "UsageCategory": true,
+            "VariantCode": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
     }
 }
