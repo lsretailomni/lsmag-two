@@ -15,13 +15,13 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospModifier as ReplEcommHierarchyHospModifierRequest;
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospModifierResponse as ReplEcommHierarchyHospModifierResponse;
+use Ls\Omni\Client\Ecommerce\Entity\ReturnPolicyGet as ReturnPolicyGetRequest;
+use Ls\Omni\Client\Ecommerce\Entity\ReturnPolicyGetResponse as ReturnPolicyGetResponse;
 
-class ReplEcommHierarchyHospModifier extends AbstractOperation
+class ReturnPolicyGet extends AbstractOperation
 {
 
-    public const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_HOSP_MODIFIER';
+    public const OPERATION_NAME = 'RETURN_POLICY_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -31,12 +31,12 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property ReplEcommHierarchyHospModifierRequest $request
+     * @property ReturnPolicyGetRequest $request
      */
     protected $request = null;
 
     /**
-     * @property ReplEcommHierarchyHospModifierResponse $response
+     * @property ReturnPolicyGetResponse $response
      */
     protected $response = null;
 
@@ -65,24 +65,24 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     }
 
     /**
-     * @param ReplEcommHierarchyHospModifierRequest $request
-     * @return ResponseInterface|ReplEcommHierarchyHospModifierResponse
+     * @param ReturnPolicyGetRequest $request
+     * @return ResponseInterface|ReturnPolicyGetResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'ReplEcommHierarchyHospModifier' );
+        return $this->makeRequest( 'ReturnPolicyGet' );
     }
 
     /**
-     * @return ReplEcommHierarchyHospModifierRequest
+     * @return ReturnPolicyGetRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new ReplEcommHierarchyHospModifierRequest();
+            $this->request = new ReturnPolicyGetRequest();
         }
         return $this->request;
     }
@@ -119,7 +119,7 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     }
 
     /**
-     * @param ReplEcommHierarchyHospModifierRequest $request
+     * @param ReturnPolicyGetRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -129,7 +129,7 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     }
 
     /**
-     * @return ReplEcommHierarchyHospModifierRequest
+     * @return ReturnPolicyGetRequest
      */
     public function getRequest()
     {
@@ -137,7 +137,7 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     }
 
     /**
-     * @param ReplEcommHierarchyHospModifierResponse $response
+     * @param ReturnPolicyGetResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -147,7 +147,7 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     }
 
     /**
-     * @return ReplEcommHierarchyHospModifierResponse
+     * @return ReturnPolicyGetResponse
      */
     public function getResponse()
     {

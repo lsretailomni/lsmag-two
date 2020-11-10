@@ -8,11 +8,11 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ReplHierarchyHospModifierResponse
+class ReplItemModifierResponse
 {
 
     /**
-     * @property ArrayOfReplHierarchyHospModifier $Modifiers
+     * @property ArrayOfReplItemModifier $Modifiers
      */
     protected $Modifiers = null;
 
@@ -32,7 +32,7 @@ class ReplHierarchyHospModifierResponse
     protected $RecordsRemaining = null;
 
     /**
-     * @param ArrayOfReplHierarchyHospModifier $Modifiers
+     * @param ArrayOfReplItemModifier $Modifiers
      * @return $this
      */
     public function setModifiers($Modifiers)
@@ -42,7 +42,7 @@ class ReplHierarchyHospModifierResponse
     }
 
     /**
-     * @return ArrayOfReplHierarchyHospModifier
+     * @return ArrayOfReplItemModifier
      */
     public function getModifiers()
     {

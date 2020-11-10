@@ -20,6 +20,11 @@ class OrderLine extends Entity
     protected $Amount = null;
 
     /**
+     * @property boolean $ClickAndCollectLine
+     */
+    protected $ClickAndCollectLine = null;
+
+    /**
      * @property float $DiscountAmount
      */
     protected $DiscountAmount = null;
@@ -95,6 +100,11 @@ class OrderLine extends Entity
     protected $QuantityToShip = null;
 
     /**
+     * @property string $StoreId
+     */
+    protected $StoreId = null;
+
+    /**
      * @property float $TaxAmount
      */
     protected $TaxAmount = null;
@@ -130,6 +140,24 @@ class OrderLine extends Entity
     public function getAmount()
     {
         return $this->Amount;
+    }
+
+    /**
+     * @param boolean $ClickAndCollectLine
+     * @return $this
+     */
+    public function setClickAndCollectLine($ClickAndCollectLine)
+    {
+        $this->ClickAndCollectLine = $ClickAndCollectLine;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getClickAndCollectLine()
+    {
+        return $this->ClickAndCollectLine;
     }
 
     /**
@@ -410,6 +438,24 @@ class OrderLine extends Entity
     public function getQuantityToShip()
     {
         return $this->QuantityToShip;
+    }
+
+    /**
+     * @param string $StoreId
+     * @return $this
+     */
+    public function setStoreId($StoreId)
+    {
+        $this->StoreId = $StoreId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreId()
+    {
+        return $this->StoreId;
     }
 
     /**

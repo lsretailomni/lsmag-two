@@ -11,12 +11,12 @@ namespace Ls\Omni\Client\Ecommerce\Entity\Enum;
 use MyCLabs\Enum\Enum;
 
 /**
- * @$method static HierarchyModifierPriceType NONE()
- * @$method static HierarchyModifierPriceType FROM_ITEM()
- * @$method static HierarchyModifierPriceType AMOUNT()
- * @$method static HierarchyModifierPriceType PERCENT()
+ * @$method static ItemModifierPriceType NONE()
+ * @$method static ItemModifierPriceType FROM_ITEM()
+ * @$method static ItemModifierPriceType AMOUNT()
+ * @$method static ItemModifierPriceType PERCENT()
  */
-class HierarchyModifierPriceType extends Enum
+class ItemModifierPriceType extends Enum
 {
 
     public const NONE = 'None';
