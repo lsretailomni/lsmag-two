@@ -84,6 +84,10 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         ShippingAssignmentInterface $shippingAssignment,
         Total $total
     ) {
+        $items = $shippingAssignment->getItems();
+        if (!count($items)) {
+            return $this;
+        }
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $total->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
