@@ -22,15 +22,15 @@ use Ls\Replication\Api\Data\ReplLoyVendorItemMappingInterface;
 class ReplEcommVendorItemMappingTask extends AbstractReplicationTask
 {
 
-    public const JOB_CODE = 'replication_repl_loy_vendor_item_mapping';
+    const JOB_CODE = 'replication_repl_loy_vendor_item_mapping';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_loy_vendor_item_mapping';
+    const CONFIG_PATH = 'ls_mag/replication/repl_loy_vendor_item_mapping';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_loy_vendor_item_mapping';
+    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_loy_vendor_item_mapping';
 
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_loy_vendor_item_mapping';
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_loy_vendor_item_mapping';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_loy_vendor_item_mapping';
+    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_loy_vendor_item_mapping';
 
     /**
      * @property ReplLoyVendorItemMappingRepository $repository

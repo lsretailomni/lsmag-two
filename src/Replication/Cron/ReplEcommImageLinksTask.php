@@ -22,15 +22,15 @@ use Ls\Replication\Api\Data\ReplImageLinkInterface;
 class ReplEcommImageLinksTask extends AbstractReplicationTask
 {
 
-    public const JOB_CODE = 'replication_repl_image_link';
+    const JOB_CODE = 'replication_repl_image_link';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_image_link';
+    const CONFIG_PATH = 'ls_mag/replication/repl_image_link';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_image_link';
+    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_image_link';
 
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_image_link';
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_image_link';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_image_link';
+    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_image_link';
 
     /**
      * @property ReplImageLinkRepository $repository

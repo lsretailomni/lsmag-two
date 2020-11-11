@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplAttributeValueInterface;
 class ReplAttributeValue extends AbstractModel implements ReplAttributeValueInterface, IdentityInterface
 {
 
-    public const CACHE_TAG = 'ls_replication_repl_attribute_value';
+    const CACHE_TAG = 'ls_replication_repl_attribute_value';
 
     protected $_cacheTag = 'ls_replication_repl_attribute_value';
 

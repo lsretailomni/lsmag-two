@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplLoyVendorItemMappingInterface;
 class ReplLoyVendorItemMapping extends AbstractModel implements ReplLoyVendorItemMappingInterface, IdentityInterface
 {
 
-    public const CACHE_TAG = 'ls_replication_repl_loy_vendor_item_mapping';
+    const CACHE_TAG = 'ls_replication_repl_loy_vendor_item_mapping';
 
     protected $_cacheTag = 'ls_replication_repl_loy_vendor_item_mapping';
 

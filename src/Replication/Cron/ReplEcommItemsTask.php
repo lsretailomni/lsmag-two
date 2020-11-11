@@ -22,15 +22,15 @@ use Ls\Replication\Api\Data\ReplItemInterface;
 class ReplEcommItemsTask extends AbstractReplicationTask
 {
 
-    public const JOB_CODE = 'replication_repl_item';
+    const JOB_CODE = 'replication_repl_item';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_item';
+    const CONFIG_PATH = 'ls_mag/replication/repl_item';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_item';
+    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_item';
 
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item';
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_item';
+    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_item';
 
     /**
      * @property ReplItemRepository $repository

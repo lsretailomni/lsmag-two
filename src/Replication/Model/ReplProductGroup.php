@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplProductGroupInterface;
 class ReplProductGroup extends AbstractModel implements ReplProductGroupInterface, IdentityInterface
 {
 
-    public const CACHE_TAG = 'ls_replication_repl_product_group';
+    const CACHE_TAG = 'ls_replication_repl_product_group';
 
     protected $_cacheTag = 'ls_replication_repl_product_group';
 

@@ -666,23 +666,27 @@
       <column name="repl_hierarchy_hosp_recipe_id"/>
     </constraint>
   </table>
-  <table name="ls_replication_repl_hierarchy_hosp_modifier" resource="default" engine="innodb" comment="ReplEcommHierarchyHospModifier">
-    <column xsi:type="int" name="repl_hierarchy_hosp_modifier_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_modifier_id"/>
-    <column xsi:type="boolean" name="AlwaysCharge" default="0" nullable="true" comment="AlwaysCharge"/>
+  <table name="ls_replication_repl_item_modifier" resource="default" engine="innodb" comment="ReplEcommItemModifier">
+    <column xsi:type="int" name="repl_item_modifier_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_modifier_id"/>
+    <column xsi:type="text" name="AlwaysCharge" nullable="true" comment="AlwaysCharge"/>
     <column xsi:type="decimal" name="AmountPercent" scale="4" precision="20" nullable="true" comment="AmountPercent"/>
     <column xsi:type="text" name="Code" nullable="true" comment="Code"/>
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
-    <column xsi:type="text" name="HierarchyCode" nullable="true" comment="HierarchyCode"/>
+    <column xsi:type="text" name="ExplanatoryHeaderText" nullable="true" comment="ExplanatoryHeaderText"/>
+    <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
-    <column xsi:type="text" name="ItemNo" nullable="true" comment="ItemNo"/>
     <column xsi:type="int" name="MaxSelection" padding="11" nullable="true" comment="MaxSelection"/>
     <column xsi:type="int" name="MinSelection" padding="11" nullable="true" comment="MinSelection"/>
-    <column xsi:type="text" name="ParentItem" nullable="true" comment="ParentItem"/>
-    <column xsi:type="text" name="ParentNode" nullable="true" comment="ParentNode"/>
     <column xsi:type="text" name="PriceType" nullable="true" comment="PriceType"/>
+    <column xsi:type="text" name="Prompt" nullable="true" comment="Prompt"/>
     <column xsi:type="text" name="SubCode" nullable="true" comment="SubCode"/>
+    <column xsi:type="decimal" name="TimeModifierMinutes" scale="4" precision="20" nullable="true" comment="TimeModifierMinutes"/>
+    <column xsi:type="text" name="TriggerCode" nullable="true" comment="TriggerCode"/>
+    <column xsi:type="text" name="TriggerFunction" nullable="true" comment="TriggerFunction"/>
     <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
     <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="UnitOfMeasure"/>
+    <column xsi:type="text" name="UsageCategory" nullable="true" comment="UsageCategory"/>
+    <column xsi:type="text" name="VariantCode" nullable="true" comment="VariantCode"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
@@ -693,7 +697,7 @@
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_hierarchy_hosp_modifier_id"/>
+      <column name="repl_item_modifier_id"/>
     </constraint>
   </table>
   <table name="ls_replication_loy_item" resource="default" engine="innodb" comment="ReplEcommFullItem">

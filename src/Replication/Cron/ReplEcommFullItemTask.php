@@ -22,15 +22,15 @@ use Ls\Replication\Api\Data\LoyItemInterface;
 class ReplEcommFullItemTask extends AbstractReplicationTask
 {
 
-    public const JOB_CODE = 'replication_loy_item';
+    const JOB_CODE = 'replication_loy_item';
 
-    public const CONFIG_PATH = 'ls_mag/replication/loy_item';
+    const CONFIG_PATH = 'ls_mag/replication/loy_item';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_loy_item';
+    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_loy_item';
 
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_loy_item';
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_loy_item';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_loy_item';
+    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_loy_item';
 
     /**
      * @property LoyItemRepository $repository

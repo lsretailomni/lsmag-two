@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplCurrencyExchRateInterface;
 class ReplCurrencyExchRate extends AbstractModel implements ReplCurrencyExchRateInterface, IdentityInterface
 {
 
-    public const CACHE_TAG = 'ls_replication_repl_currency_exch_rate';
+    const CACHE_TAG = 'ls_replication_repl_currency_exch_rate';
 
     protected $_cacheTag = 'ls_replication_repl_currency_exch_rate';
 

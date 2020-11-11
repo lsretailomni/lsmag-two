@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\LoyItemInterface;
 class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterface
 {
 
-    public const CACHE_TAG = 'ls_replication_loy_item';
+    const CACHE_TAG = 'ls_replication_loy_item';
 
     protected $_cacheTag = 'ls_replication_loy_item';
 

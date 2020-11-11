@@ -22,15 +22,15 @@ use Ls\Replication\Api\Data\ReplVendorInterface;
 class ReplEcommVendorTask extends AbstractReplicationTask
 {
 
-    public const JOB_CODE = 'replication_repl_vendor';
+    const JOB_CODE = 'replication_repl_vendor';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_vendor';
+    const CONFIG_PATH = 'ls_mag/replication/repl_vendor';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_vendor';
+    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_vendor';
 
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_vendor';
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_vendor';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_vendor';
+    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_vendor';
 
     /**
      * @property ReplVendorRepository $repository

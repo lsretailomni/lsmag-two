@@ -14,41 +14,41 @@ use Magento\Config\Model\ResourceModel\Config;
 use Ls\Core\Helper\Data as LsHelper;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Client\Ecommerce\Operation\ReplEcommTaxSetup;
-use Ls\Replication\Api\ReplTaxSetupRepositoryInterface as ReplTaxSetupRepository;
-use Ls\Replication\Model\ReplTaxSetupFactory;
-use Ls\Replication\Api\Data\ReplTaxSetupInterface;
+use Ls\Omni\Client\Ecommerce\Operation\ReplEcommItemModifier;
+use Ls\Replication\Api\ReplItemModifierRepositoryInterface as ReplItemModifierRepository;
+use Ls\Replication\Model\ReplItemModifierFactory;
+use Ls\Replication\Api\Data\ReplItemModifierInterface;
 
-class ReplEcommTaxSetupTask extends AbstractReplicationTask
+class ReplEcommItemModifierTask extends AbstractReplicationTask
 {
 
-    const JOB_CODE = 'replication_repl_tax_setup';
+    const JOB_CODE = 'replication_repl_item_modifier';
 
-    const CONFIG_PATH = 'ls_mag/replication/repl_tax_setup';
+    const CONFIG_PATH = 'ls_mag/replication/repl_item_modifier';
 
-    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_tax_setup';
+    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_item_modifier';
 
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_tax_setup';
+    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_modifier';
 
-    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_tax_setup';
+    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_item_modifier';
 
     /**
-     * @property ReplTaxSetupRepository $repository
+     * @property ReplItemModifierRepository $repository
      */
     protected $repository = null;
 
     /**
-     * @property ReplTaxSetupFactory $factory
+     * @property ReplItemModifierFactory $factory
      */
     protected $factory = null;
 
     /**
-     * @property ReplTaxSetupInterface $data_interface
+     * @property ReplItemModifierInterface $data_interface
      */
     protected $data_interface = null;
 
     /**
-     * @param ReplTaxSetupRepository $repository
+     * @param ReplItemModifierRepository $repository
      * @return $this
      */
     public function setRepository($repository)
@@ -58,7 +58,7 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplTaxSetupRepository
+     * @return ReplItemModifierRepository
      */
     public function getRepository()
     {
@@ -66,7 +66,7 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
     }
 
     /**
-     * @param ReplTaxSetupFactory $factory
+     * @param ReplItemModifierFactory $factory
      * @return $this
      */
     public function setFactory($factory)
@@ -76,7 +76,7 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplTaxSetupFactory
+     * @return ReplItemModifierFactory
      */
     public function getFactory()
     {
@@ -84,7 +84,7 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
     }
 
     /**
-     * @param ReplTaxSetupInterface $data_interface
+     * @param ReplItemModifierInterface $data_interface
      * @return $this
      */
     public function setDataInterface($data_interface)
@@ -94,14 +94,14 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplTaxSetupInterface
+     * @return ReplItemModifierInterface
      */
     public function getDataInterface()
     {
         return $this->data_interface;
     }
 
-    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplTaxSetupFactory $factory, ReplTaxSetupRepository $repository, ReplTaxSetupInterface $data_interface)
+    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplItemModifierFactory $factory, ReplItemModifierRepository $repository, ReplItemModifierInterface $data_interface)
     {
         parent::__construct($scope_config, $resource_config, $logger, $helper, $repHelper);
         $this->repository = $repository;
@@ -111,7 +111,7 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
 
     public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '')
     {
-        $request = new ReplEcommTaxSetup($baseUrl);
+        $request = new ReplEcommItemModifier($baseUrl);
         $request->getOperationInput()
                  ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
                                                         ->setFullReplication($fullReplication)

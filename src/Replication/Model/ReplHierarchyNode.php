@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplHierarchyNodeInterface;
 class ReplHierarchyNode extends AbstractModel implements ReplHierarchyNodeInterface, IdentityInterface
 {
 
-    public const CACHE_TAG = 'ls_replication_repl_hierarchy_node';
+    const CACHE_TAG = 'ls_replication_repl_hierarchy_node';
 
     protected $_cacheTag = 'ls_replication_repl_hierarchy_node';
 

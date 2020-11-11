@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplShippingAgentInterface;
 class ReplShippingAgent extends AbstractModel implements ReplShippingAgentInterface, IdentityInterface
 {
 
-    public const CACHE_TAG = 'ls_replication_repl_shipping_agent';
+    const CACHE_TAG = 'ls_replication_repl_shipping_agent';
 
     protected $_cacheTag = 'ls_replication_repl_shipping_agent';
 
