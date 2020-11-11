@@ -20,15 +20,15 @@ use MyCLabs\Enum\Enum;
 class SalesEntryStatus extends Enum
 {
 
-    public const CREATED = 'Created';
+    const CREATED = 'Created';
 
-    public const PENDING = 'Pending';
+    const PENDING = 'Pending';
 
-    public const PROCESSING = 'Processing';
+    const PROCESSING = 'Processing';
 
-    public const COMPLETE = 'Complete';
+    const COMPLETE = 'Complete';
 
-    public const CANCELED = 'Canceled';
+    const CANCELED = 'Canceled';
 
 
 }

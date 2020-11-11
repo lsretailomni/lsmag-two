@@ -22,19 +22,19 @@ use MyCLabs\Enum\Enum;
 class HierarchyLeafType extends Enum
 {
 
-    public const ITEM = 'Item';
+    const ITEM = 'Item';
 
-    public const DEAL = 'Deal';
+    const DEAL = 'Deal';
 
-    public const STORE = 'Store';
+    const STORE = 'Store';
 
-    public const STORE_GROUP = 'StoreGroup';
+    const STORE_GROUP = 'StoreGroup';
 
-    public const WAREHOUSE_LOCATION = 'WarehouseLocation';
+    const WAREHOUSE_LOCATION = 'WarehouseLocation';
 
-    public const CUSTOMER = 'Customer';
+    const CUSTOMER = 'Customer';
 
-    public const CUSTOMER_GROUP = 'CustomerGroup';
+    const CUSTOMER_GROUP = 'CustomerGroup';
 
 
 }

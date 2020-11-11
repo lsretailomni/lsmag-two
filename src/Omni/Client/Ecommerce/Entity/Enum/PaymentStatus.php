@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class PaymentStatus extends Enum
 {
 
-    public const PRE_APPROVED = 'PreApproved';
+    const PRE_APPROVED = 'PreApproved';
 
-    public const APPROVED = 'Approved';
+    const APPROVED = 'Approved';
 
-    public const POSTED = 'Posted';
+    const POSTED = 'Posted';
 
 
 }

@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class OfferLineVariantType extends Enum
 {
 
-    public const NONE = 'None';
+    const NONE = 'None';
 
-    public const VARIANT = 'Variant';
+    const VARIANT = 'Variant';
 
-    public const DIMENSION = 'Dimension';
+    const DIMENSION = 'Dimension';
 
 
 }

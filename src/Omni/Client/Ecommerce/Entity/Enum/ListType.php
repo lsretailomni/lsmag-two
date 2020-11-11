@@ -17,9 +17,9 @@ use MyCLabs\Enum\Enum;
 class ListType extends Enum
 {
 
-    public const BASKET = 'Basket';
+    const BASKET = 'Basket';
 
-    public const WISH = 'Wish';
+    const WISH = 'Wish';
 
 
 }

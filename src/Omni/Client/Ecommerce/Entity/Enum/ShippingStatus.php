@@ -20,15 +20,15 @@ use MyCLabs\Enum\Enum;
 class ShippingStatus extends Enum
 {
 
-    public const SHIPPIG_NOT_REQUIRED = 'ShippigNotRequired';
+    const SHIPPIG_NOT_REQUIRED = 'ShippigNotRequired';
 
-    public const NOT_YET_SHIPPED = 'NotYetShipped';
+    const NOT_YET_SHIPPED = 'NotYetShipped';
 
-    public const PARTIALLY_SHIPPED = 'PartiallyShipped';
+    const PARTIALLY_SHIPPED = 'PartiallyShipped';
 
-    public const SHIPPED = 'Shipped';
+    const SHIPPED = 'Shipped';
 
-    public const DELIVERED = 'Delivered';
+    const DELIVERED = 'Delivered';
 
 
 }

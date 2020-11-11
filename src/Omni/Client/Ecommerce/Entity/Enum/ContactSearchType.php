@@ -21,17 +21,17 @@ use MyCLabs\Enum\Enum;
 class ContactSearchType extends Enum
 {
 
-    public const CARD_ID = 'CardId';
+    const CARD_ID = 'CardId';
 
-    public const CONTACT_NUMBER = 'ContactNumber';
+    const CONTACT_NUMBER = 'ContactNumber';
 
-    public const PHONE_NUMBER = 'PhoneNumber';
+    const PHONE_NUMBER = 'PhoneNumber';
 
-    public const EMAIL = 'Email';
+    const EMAIL = 'Email';
 
-    public const NAME = 'Name';
+    const NAME = 'Name';
 
-    public const USER_NAME = 'UserName';
+    const USER_NAME = 'UserName';
 
 
 }

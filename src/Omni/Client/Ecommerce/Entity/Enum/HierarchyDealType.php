@@ -22,19 +22,19 @@ use MyCLabs\Enum\Enum;
 class HierarchyDealType extends Enum
 {
 
-    public const ITEM = 'Item';
+    const ITEM = 'Item';
 
-    public const PRODUCT_GROUP = 'ProductGroup';
+    const PRODUCT_GROUP = 'ProductGroup';
 
-    public const ITEM_CATEGORY = 'ItemCategory';
+    const ITEM_CATEGORY = 'ItemCategory';
 
-    public const ALL = 'All';
+    const ALL = 'All';
 
-    public const PLU_MENU = 'PluMenu';
+    const PLU_MENU = 'PluMenu';
 
-    public const MODIFIER = 'Modifier';
+    const MODIFIER = 'Modifier';
 
-    public const SPECIAL_GROUP = 'SpecialGroup';
+    const SPECIAL_GROUP = 'SpecialGroup';
 
 
 }

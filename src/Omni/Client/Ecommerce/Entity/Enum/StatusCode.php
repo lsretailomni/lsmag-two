@@ -178,331 +178,331 @@ use MyCLabs\Enum\Enum;
 class StatusCode extends Enum
 {
 
-    public const O_K = 'OK';
+    const O_K = 'OK';
 
-    public const ERROR = 'Error';
+    const ERROR = 'Error';
 
-    public const AUTH_FAILED = 'AuthFailed';
+    const AUTH_FAILED = 'AuthFailed';
 
-    public const USER_NAME_EXISTS = 'UserNameExists';
+    const USER_NAME_EXISTS = 'UserNameExists';
 
-    public const USER_NAME_PASSWORD_INVALID = 'UserNamePasswordInvalid';
+    const USER_NAME_PASSWORD_INVALID = 'UserNamePasswordInvalid';
 
-    public const PARAMETER_INVALID = 'ParameterInvalid';
+    const PARAMETER_INVALID = 'ParameterInvalid';
 
-    public const ITEM_NOT_FOUND = 'ItemNotFound';
+    const ITEM_NOT_FOUND = 'ItemNotFound';
 
-    public const ACCOUNT_NOT_FOUND = 'AccountNotFound';
+    const ACCOUNT_NOT_FOUND = 'AccountNotFound';
 
-    public const DEVICE_ID_MISSING = 'DeviceIdMissing';
+    const DEVICE_ID_MISSING = 'DeviceIdMissing';
 
-    public const CONTACT_ID_NOT_FOUND = 'ContactIdNotFound';
+    const CONTACT_ID_NOT_FOUND = 'ContactIdNotFound';
 
-    public const CURRENT_LIST_DELETE_NOT_ALLOWED = 'CurrentListDeleteNotAllowed';
+    const CURRENT_LIST_DELETE_NOT_ALLOWED = 'CurrentListDeleteNotAllowed';
 
-    public const PASSWORD_INVALID = 'PasswordInvalid';
+    const PASSWORD_INVALID = 'PasswordInvalid';
 
-    public const PASSWORD_OLD_INVALID = 'PasswordOldInvalid';
+    const PASSWORD_OLD_INVALID = 'PasswordOldInvalid';
 
-    public const USER_NAME_INVALID = 'UserNameInvalid';
+    const USER_NAME_INVALID = 'UserNameInvalid';
 
-    public const EMAIL_INVALID = 'EmailInvalid';
+    const EMAIL_INVALID = 'EmailInvalid';
 
-    public const DEVICE_IS_BLOCKED = 'DeviceIsBlocked';
+    const DEVICE_IS_BLOCKED = 'DeviceIsBlocked';
 
-    public const EMAIL_EXISTS = 'EmailExists';
+    const EMAIL_EXISTS = 'EmailExists';
 
-    public const MISSING_LAST_NAME = 'MissingLastName';
+    const MISSING_LAST_NAME = 'MissingLastName';
 
-    public const MISSING_FIRST_NAME = 'MissingFirstName';
+    const MISSING_FIRST_NAME = 'MissingFirstName';
 
-    public const MISSING_ITEM_ID = 'MissingItemId';
+    const MISSING_ITEM_ID = 'MissingItemId';
 
-    public const MISSING_STORE_ID = 'MissingStoreId';
+    const MISSING_STORE_ID = 'MissingStoreId';
 
-    public const TENANT_CONFIG_NOT_FOUND = 'TenantConfigNotFound';
+    const TENANT_CONFIG_NOT_FOUND = 'TenantConfigNotFound';
 
-    public const ORDER_QUEUE_ID_NOT_FOUND = 'OrderQueueIdNotFound';
+    const ORDER_QUEUE_ID_NOT_FOUND = 'OrderQueueIdNotFound';
 
-    public const CONFIG_NOT_FOUND = 'ConfigNotFound';
+    const CONFIG_NOT_FOUND = 'ConfigNotFound';
 
-    public const ONE_ACCOUNT_INVALID = 'OneAccountInvalid';
+    const ONE_ACCOUNT_INVALID = 'OneAccountInvalid';
 
-    public const PRIVATE_ACCOUNT_INVALID = 'PrivateAccountInvalid';
+    const PRIVATE_ACCOUNT_INVALID = 'PrivateAccountInvalid';
 
-    public const CLUB_OR_SCHEME_INVALID = 'ClubOrSchemeInvalid';
+    const CLUB_OR_SCHEME_INVALID = 'ClubOrSchemeInvalid';
 
-    public const RESET_PASSWORD_CODE_NOT_FOUND = 'ResetPasswordCodeNotFound';
+    const RESET_PASSWORD_CODE_NOT_FOUND = 'ResetPasswordCodeNotFound';
 
-    public const RESET_PASSWORD_CODE_EXPIRED = 'ResetPasswordCodeExpired';
+    const RESET_PASSWORD_CODE_EXPIRED = 'ResetPasswordCodeExpired';
 
-    public const TERMINAL_TYPE_NOT_MOBILE = 'TerminalTypeNotMobile';
+    const TERMINAL_TYPE_NOT_MOBILE = 'TerminalTypeNotMobile';
 
-    public const RESET_PASSWORD_CODE_INVALID = 'ResetPasswordCodeInvalid';
+    const RESET_PASSWORD_CODE_INVALID = 'ResetPasswordCodeInvalid';
 
-    public const ONE_LIST_NOT_FOUND = 'OneListNotFound';
+    const ONE_LIST_NOT_FOUND = 'OneListNotFound';
 
-    public const UPGRADE = 'Upgrade';
+    const UPGRADE = 'Upgrade';
 
-    public const CURRENCY_CODE_NOT_FOUND = 'CurrencyCodeNotFound';
+    const CURRENCY_CODE_NOT_FOUND = 'CurrencyCodeNotFound';
 
-    public const TASK_STATUS_CANNOT_CHANGE = 'TaskStatusCannotChange';
+    const TASK_STATUS_CANNOT_CHANGE = 'TaskStatusCannotChange';
 
-    public const ADDRESS_IS_EMPTY = 'AddressIsEmpty';
+    const ADDRESS_IS_EMPTY = 'AddressIsEmpty';
 
-    public const SECURITY_TOKEN_INVALID = 'SecurityTokenInvalid';
+    const SECURITY_TOKEN_INVALID = 'SecurityTokenInvalid';
 
-    public const ACCESS_NOT_ALLOWED = 'AccessNotAllowed';
+    const ACCESS_NOT_ALLOWED = 'AccessNotAllowed';
 
-    public const USER_NOT_LOGGED_IN = 'UserNotLoggedIn';
+    const USER_NOT_LOGGED_IN = 'UserNotLoggedIn';
 
-    public const L_S_KEY_INVALID = 'LSKeyInvalid';
+    const L_S_KEY_INVALID = 'LSKeyInvalid';
 
-    public const L_S_RECOMMEND_SETUP_MISSING = 'LSRecommendSetupMissing';
+    const L_S_RECOMMEND_SETUP_MISSING = 'LSRecommendSetupMissing';
 
-    public const PRIMARY_KEY_DUPLICATION = 'PrimaryKeyDuplication';
+    const PRIMARY_KEY_DUPLICATION = 'PrimaryKeyDuplication';
 
-    public const OBJECT_ID_MISSING = 'ObjectIdMissing';
+    const OBJECT_ID_MISSING = 'ObjectIdMissing';
 
-    public const OBJECT_MISSING = 'ObjectMissing';
+    const OBJECT_MISSING = 'ObjectMissing';
 
-    public const COMMUNICATION_FAILURE = 'CommunicationFailure';
+    const COMMUNICATION_FAILURE = 'CommunicationFailure';
 
-    public const GENERAL_ERROR_CODE = 'GeneralErrorCode';
+    const GENERAL_ERROR_CODE = 'GeneralErrorCode';
 
-    public const MISSING_TENDER_LINES = 'MissingTenderLines';
+    const MISSING_TENDER_LINES = 'MissingTenderLines';
 
-    public const USER_NAME_NOT_FOUND = 'UserNameNotFound';
+    const USER_NAME_NOT_FOUND = 'UserNameNotFound';
 
-    public const QTY_MUST_BE_POSITIVE = 'QtyMustBePositive';
+    const QTY_MUST_BE_POSITIVE = 'QtyMustBePositive';
 
-    public const LINE_NO_MISSION = 'LineNoMission';
+    const LINE_NO_MISSION = 'LineNoMission';
 
-    public const CARD_ID_INVALID = 'CardIdInvalid';
+    const CARD_ID_INVALID = 'CardIdInvalid';
 
-    public const LOGIN_ID_NOT_MEMBER_OF_CLUB = 'LoginIdNotMemberOfClub';
+    const LOGIN_ID_NOT_MEMBER_OF_CLUB = 'LoginIdNotMemberOfClub';
 
-    public const DEVICE_ID_NOT_FOUND = 'DeviceIdNotFound';
+    const DEVICE_ID_NOT_FOUND = 'DeviceIdNotFound';
 
-    public const COUPON_NOT_FOUND = 'CouponNotFound';
+    const COUPON_NOT_FOUND = 'CouponNotFound';
 
-    public const GIFT_CARD_NOT_FOUND = 'GiftCardNotFound';
+    const GIFT_CARD_NOT_FOUND = 'GiftCardNotFound';
 
-    public const ACCOUNT_CONTACT_ID_INVALID = 'AccountContactIdInvalid';
+    const ACCOUNT_CONTACT_ID_INVALID = 'AccountContactIdInvalid';
 
-    public const ACCOUNT_EXISTS_IN_OTHER_CLUB = 'AccountExistsInOtherClub';
+    const ACCOUNT_EXISTS_IN_OTHER_CLUB = 'AccountExistsInOtherClub';
 
-    public const NO_DISCOUNT_AMOUNT = 'NoDiscountAmount';
+    const NO_DISCOUNT_AMOUNT = 'NoDiscountAmount';
 
-    public const MISSING_ITEM_NUMER = 'MissingItemNumer';
+    const MISSING_ITEM_NUMER = 'MissingItemNumer';
 
-    public const POS_NOT_EXISTS = 'PosNotExists';
+    const POS_NOT_EXISTS = 'PosNotExists';
 
-    public const STORE_NOT_EXISTS = 'StoreNotExists';
+    const STORE_NOT_EXISTS = 'StoreNotExists';
 
-    public const STAFF_NOT_EXISTS = 'StaffNotExists';
+    const STAFF_NOT_EXISTS = 'StaffNotExists';
 
-    public const ITEM_NOT_EXISTS = 'ItemNotExists';
+    const ITEM_NOT_EXISTS = 'ItemNotExists';
 
-    public const V_A_T_SETUP_MISSING = 'VATSetupMissing';
+    const V_A_T_SETUP_MISSING = 'VATSetupMissing';
 
-    public const INVALID_UOM = 'InvalidUom';
+    const INVALID_UOM = 'InvalidUom';
 
-    public const ITEM_BLOCKED = 'ItemBlocked';
+    const ITEM_BLOCKED = 'ItemBlocked';
 
-    public const INVALID_VARIANT = 'InvalidVariant';
+    const INVALID_VARIANT = 'InvalidVariant';
 
-    public const INVALID_PRICE_CHANGE = 'InvalidPriceChange';
+    const INVALID_PRICE_CHANGE = 'InvalidPriceChange';
 
-    public const PRICE_CHANGE_NOT_ALLOWED = 'PriceChangeNotAllowed';
+    const PRICE_CHANGE_NOT_ALLOWED = 'PriceChangeNotAllowed';
 
-    public const PRICE_TOO_HIGH = 'PriceTooHigh';
+    const PRICE_TOO_HIGH = 'PriceTooHigh';
 
-    public const INVALID_DISC_PERCENT = 'InvalidDiscPercent';
+    const INVALID_DISC_PERCENT = 'InvalidDiscPercent';
 
-    public const INC_EXP_NOT_FOUND = 'IncExpNotFound';
+    const INC_EXP_NOT_FOUND = 'IncExpNotFound';
 
-    public const TENDER_TYPE_NOT_FOUND = 'TenderTypeNotFound';
+    const TENDER_TYPE_NOT_FOUND = 'TenderTypeNotFound';
 
-    public const INVALID_T_O_T_DISCOUNT = 'InvalidTOTDiscount';
+    const INVALID_T_O_T_DISCOUNT = 'InvalidTOTDiscount';
 
-    public const NOT_MOBILE_POS = 'NotMobilePos';
+    const NOT_MOBILE_POS = 'NotMobilePos';
 
-    public const INVALID_POSTING_BALANCE = 'InvalidPostingBalance';
+    const INVALID_POSTING_BALANCE = 'InvalidPostingBalance';
 
-    public const SUSPEND_WITH_PAYMENT = 'SuspendWithPayment';
+    const SUSPEND_WITH_PAYMENT = 'SuspendWithPayment';
 
-    public const UNKNOWN_SUSP_ERROR = 'UnknownSuspError';
+    const UNKNOWN_SUSP_ERROR = 'UnknownSuspError';
 
-    public const SUSP_KEY_NOT_FOUND = 'SuspKeyNotFound';
+    const SUSP_KEY_NOT_FOUND = 'SuspKeyNotFound';
 
-    public const TRANS_SERV_ERROR = 'TransServError';
+    const TRANS_SERV_ERROR = 'TransServError';
 
-    public const SUSP_TRANS_NOT_FOUND = 'SuspTransNotFound';
+    const SUSP_TRANS_NOT_FOUND = 'SuspTransNotFound';
 
-    public const PAYMENT_POINTS_MISSING = 'PaymentPointsMissing';
+    const PAYMENT_POINTS_MISSING = 'PaymentPointsMissing';
 
-    public const N_A_V_WEB_FUNCTION_NOT_FOUND = 'NAVWebFunctionNotFound';
+    const N_A_V_WEB_FUNCTION_NOT_FOUND = 'NAVWebFunctionNotFound';
 
-    public const MEMBER_POINT_BALANCE_TO_LOW = 'MemberPointBalanceToLow';
+    const MEMBER_POINT_BALANCE_TO_LOW = 'MemberPointBalanceToLow';
 
-    public const CUSTOMER_NOT_FOUND = 'CustomerNotFound';
+    const CUSTOMER_NOT_FOUND = 'CustomerNotFound';
 
-    public const NO_ENTRIES_FOUND = 'NoEntriesFound';
+    const NO_ENTRIES_FOUND = 'NoEntriesFound';
 
-    public const MEMBER_ACCOUNT_NOT_FOUND = 'MemberAccountNotFound';
+    const MEMBER_ACCOUNT_NOT_FOUND = 'MemberAccountNotFound';
 
-    public const MEMBER_CARD_NOT_FOUND = 'MemberCardNotFound';
+    const MEMBER_CARD_NOT_FOUND = 'MemberCardNotFound';
 
-    public const NO_ENTRIES_FOUND_2 = 'NoEntriesFound2';
+    const NO_ENTRIES_FOUND_2 = 'NoEntriesFound2';
 
-    public const NO_ENTRIES_FOUND_3 = 'NoEntriesFound3';
+    const NO_ENTRIES_FOUND_3 = 'NoEntriesFound3';
 
-    public const NO_ENTRIES_FOUND_4 = 'NoEntriesFound4';
+    const NO_ENTRIES_FOUND_4 = 'NoEntriesFound4';
 
-    public const CARD_INVALID_IN_USE = 'CardInvalidInUse';
+    const CARD_INVALID_IN_USE = 'CardInvalidInUse';
 
-    public const CARD_INVALID_STATUS = 'CardInvalidStatus';
+    const CARD_INVALID_STATUS = 'CardInvalidStatus';
 
-    public const INVALID_PRINTER_ID = 'InvalidPrinterId';
+    const INVALID_PRINTER_ID = 'InvalidPrinterId';
 
-    public const INVALID_PRINT_METHOD = 'InvalidPrintMethod';
+    const INVALID_PRINT_METHOD = 'InvalidPrintMethod';
 
-    public const LOGINID_EXISTS = 'LoginidExists';
+    const LOGINID_EXISTS = 'LoginidExists';
 
-    public const INVALID_LOGINID = 'InvalidLoginid';
+    const INVALID_LOGINID = 'InvalidLoginid';
 
-    public const INVALID_PASSWORD = 'InvalidPassword';
+    const INVALID_PASSWORD = 'InvalidPassword';
 
-    public const INVALID_EMAIL = 'InvalidEmail';
+    const INVALID_EMAIL = 'InvalidEmail';
 
-    public const MISSING_LASTNAME = 'MissingLastname';
+    const MISSING_LASTNAME = 'MissingLastname';
 
-    public const MISSING_FIRSTNAME = 'MissingFirstname';
+    const MISSING_FIRSTNAME = 'MissingFirstname';
 
-    public const INVALID_ACCOUNT = 'InvalidAccount';
+    const INVALID_ACCOUNT = 'InvalidAccount';
 
-    public const INVALID_ONEACCOUNT = 'InvalidOneaccount';
+    const INVALID_ONEACCOUNT = 'InvalidOneaccount';
 
-    public const INVALID_PRIVATE = 'InvalidPrivate';
+    const INVALID_PRIVATE = 'InvalidPrivate';
 
-    public const INVALID_CLUB = 'InvalidClub';
+    const INVALID_CLUB = 'InvalidClub';
 
-    public const INVALID_SCHEME = 'InvalidScheme';
+    const INVALID_SCHEME = 'InvalidScheme';
 
-    public const INVALID_CLUB_SCHEME = 'InvalidClubScheme';
+    const INVALID_CLUB_SCHEME = 'InvalidClubScheme';
 
-    public const INVALID_SCHEME_CLUB = 'InvalidSchemeClub';
+    const INVALID_SCHEME_CLUB = 'InvalidSchemeClub';
 
-    public const TERMINAL_ID_MISSING = 'TerminalIdMissing';
+    const TERMINAL_ID_MISSING = 'TerminalIdMissing';
 
-    public const TRANSACITION_ID_MISSING = 'TransacitionIdMissing';
+    const TRANSACITION_ID_MISSING = 'TransacitionIdMissing';
 
-    public const EMAIL_MISSING = 'EmailMissing';
+    const EMAIL_MISSING = 'EmailMissing';
 
-    public const CLUB_INVALID = 'ClubInvalid';
+    const CLUB_INVALID = 'ClubInvalid';
 
-    public const SCHEME_INVALID = 'SchemeInvalid';
+    const SCHEME_INVALID = 'SchemeInvalid';
 
-    public const SCHEME_CLUB_INVALID = 'SchemeClubInvalid';
+    const SCHEME_CLUB_INVALID = 'SchemeClubInvalid';
 
-    public const RECEIPT_NO_MISSING = 'ReceiptNoMissing';
+    const RECEIPT_NO_MISSING = 'ReceiptNoMissing';
 
-    public const CONTACT_IS_BLOCKED = 'ContactIsBlocked';
+    const CONTACT_IS_BLOCKED = 'ContactIsBlocked';
 
-    public const ORDER_ALREADY_EXIST = 'OrderAlreadyExist';
+    const ORDER_ALREADY_EXIST = 'OrderAlreadyExist';
 
-    public const ORDER_ID_NOT_FOUND = 'OrderIdNotFound';
+    const ORDER_ID_NOT_FOUND = 'OrderIdNotFound';
 
-    public const PAYMENT_ERROR = 'PaymentError';
+    const PAYMENT_ERROR = 'PaymentError';
 
-    public const SERVER_REFUSING_TO_RESPOND = 'ServerRefusingToRespond';
+    const SERVER_REFUSING_TO_RESPOND = 'ServerRefusingToRespond';
 
-    public const DINING_TABLE_STATUS_NOT_ABLE_TO_CHANGE = 'DiningTableStatusNotAbleToChange';
+    const DINING_TABLE_STATUS_NOT_ABLE_TO_CHANGE = 'DiningTableStatusNotAbleToChange';
 
-    public const CANNOT_CHANGE_NUMBER_OF_COVER_ON_TABLE_NOT_SEATED = 'CannotChangeNumberOfCoverOnTableNotSeated';
+    const CANNOT_CHANGE_NUMBER_OF_COVER_ON_TABLE_NOT_SEATED = 'CannotChangeNumberOfCoverOnTableNotSeated';
 
-    public const CANNOT_CHANGE_NUMBER_OF_COVER_ON_TABLE_NO_SETUP = 'CannotChangeNumberOfCoverOnTableNoSetup';
+    const CANNOT_CHANGE_NUMBER_OF_COVER_ON_TABLE_NO_SETUP = 'CannotChangeNumberOfCoverOnTableNoSetup';
 
-    public const SEATING_NOT_USED_IN_HOSP_TYPE = 'SeatingNotUsedInHospType';
+    const SEATING_NOT_USED_IN_HOSP_TYPE = 'SeatingNotUsedInHospType';
 
-    public const STATUS_OF_TABLE_ALREDY_SEATED = 'StatusOfTableAlredySeated';
+    const STATUS_OF_TABLE_ALREDY_SEATED = 'StatusOfTableAlredySeated';
 
-    public const SEATING_NOT_POSSIBLE = 'SeatingNotPossible';
+    const SEATING_NOT_POSSIBLE = 'SeatingNotPossible';
 
-    public const P_O_S_TRANS_NOT_FOUND_FOR_ACTIVE_ORDER = 'POSTransNotFoundForActiveOrder';
+    const P_O_S_TRANS_NOT_FOUND_FOR_ACTIVE_ORDER = 'POSTransNotFoundForActiveOrder';
 
-    public const NO_KITCHEN_STATUS_FOUND = 'NoKitchenStatusFound';
+    const NO_KITCHEN_STATUS_FOUND = 'NoKitchenStatusFound';
 
-    public const OPEN_P_O_S_NOT_A_LLOWED = 'OpenPOSNotALlowed';
+    const OPEN_P_O_S_NOT_A_LLOWED = 'OpenPOSNotALlowed';
 
-    public const MAIN_STATUS_NOR_CORRECT = 'MainStatusNorCorrect';
+    const MAIN_STATUS_NOR_CORRECT = 'MainStatusNorCorrect';
 
-    public const TABLE_ALREADY_LOCKED = 'TableAlreadyLocked';
+    const TABLE_ALREADY_LOCKED = 'TableAlreadyLocked';
 
-    public const SUSPEND_FAILURE = 'SuspendFailure';
+    const SUSPEND_FAILURE = 'SuspendFailure';
 
-    public const NO_H_M_P_MENU_FOUND = 'NoHMPMenuFound';
+    const NO_H_M_P_MENU_FOUND = 'NoHMPMenuFound';
 
-    public const H_M_P_MENU_NOT_ENABLED = 'HMPMenuNotEnabled';
+    const H_M_P_MENU_NOT_ENABLED = 'HMPMenuNotEnabled';
 
-    public const H_M_P_MENU_NO_DYNAMIC_CONTENT_FOUND_TODAY = 'HMPMenuNoDynamicContentFoundToday';
+    const H_M_P_MENU_NO_DYNAMIC_CONTENT_FOUND_TODAY = 'HMPMenuNoDynamicContentFoundToday';
 
-    public const VENDOR_NOT_FOUND = 'VendorNotFound';
+    const VENDOR_NOT_FOUND = 'VendorNotFound';
 
-    public const DOCUMENT_ERROR = 'DocumentError';
+    const DOCUMENT_ERROR = 'DocumentError';
 
-    public const TEMPLATE_NOT_FOUND = 'TemplateNotFound';
+    const TEMPLATE_NOT_FOUND = 'TemplateNotFound';
 
-    public const DOCUMENT_NOT_FOUND = 'DocumentNotFound';
+    const DOCUMENT_NOT_FOUND = 'DocumentNotFound';
 
-    public const MISSING_UNIT_CONVERSION = 'MissingUnitConversion';
+    const MISSING_UNIT_CONVERSION = 'MissingUnitConversion';
 
-    public const NO_LINES_TO_POST = 'NoLinesToPost';
+    const NO_LINES_TO_POST = 'NoLinesToPost';
 
-    public const ALREADY_POSTED = 'AlreadyPosted';
+    const ALREADY_POSTED = 'AlreadyPosted';
 
-    public const ALREADY_PROCESSING = 'AlreadyProcessing';
+    const ALREADY_PROCESSING = 'AlreadyProcessing';
 
-    public const INVALID_RECEIVING_QTY = 'InvalidReceivingQty';
+    const INVALID_RECEIVING_QTY = 'InvalidReceivingQty';
 
-    public const NO_VENDOR_ITEMS = 'NoVendorItems';
+    const NO_VENDOR_ITEMS = 'NoVendorItems';
 
-    public const TRANSFER_ORDER_NOT_FOUND = 'TransferOrderNotFound';
+    const TRANSFER_ORDER_NOT_FOUND = 'TransferOrderNotFound';
 
-    public const TRANSFER_ORDER_PROCESSING = 'TransferOrderProcessing';
+    const TRANSFER_ORDER_PROCESSING = 'TransferOrderProcessing';
 
-    public const TRANSFER_ORDER_RECEIVED = 'TransferOrderReceived';
+    const TRANSFER_ORDER_RECEIVED = 'TransferOrderReceived';
 
-    public const TRANSFER_ORDER_FETCHED = 'TransferOrderFetched';
+    const TRANSFER_ORDER_FETCHED = 'TransferOrderFetched';
 
-    public const TRANSFER_ORDER_SENT = 'TransferOrderSent';
+    const TRANSFER_ORDER_SENT = 'TransferOrderSent';
 
-    public const TRANSFER_ORDER_REJECTED = 'TransferOrderRejected';
+    const TRANSFER_ORDER_REJECTED = 'TransferOrderRejected';
 
-    public const WORKSHEET_NOT_FOUND = 'WorksheetNotFound';
+    const WORKSHEET_NOT_FOUND = 'WorksheetNotFound';
 
-    public const NOT_READY_FOR_NEXT_COUNT = 'NotReadyForNextCount';
+    const NOT_READY_FOR_NEXT_COUNT = 'NotReadyForNextCount';
 
-    public const LINES_NOT_FOUND = 'LinesNotFound';
+    const LINES_NOT_FOUND = 'LinesNotFound';
 
-    public const INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT = 'InvalidSuspensionWithPartialPayment';
+    const INVALID_SUSPENSION_WITH_PARTIAL_PAYMENT = 'InvalidSuspensionWithPartialPayment';
 
-    public const NO_ITEMS_TO_SUSPEND = 'NoItemsToSuspend';
+    const NO_ITEMS_TO_SUSPEND = 'NoItemsToSuspend';
 
-    public const CANNOT_MIX_NORMAL_SALE_AND_RETURN = 'CannotMixNormalSaleAndReturn';
+    const CANNOT_MIX_NORMAL_SALE_AND_RETURN = 'CannotMixNormalSaleAndReturn';
 
-    public const UNKNOWN_USER = 'UnknownUser';
+    const UNKNOWN_USER = 'UnknownUser';
 
-    public const NAV_W_S_ERROR = 'NavWSError';
+    const NAV_W_S_ERROR = 'NavWSError';
 
-    public const CUSTOMER_ORDER_NOT_FOUND = 'CustomerOrderNotFound';
+    const CUSTOMER_ORDER_NOT_FOUND = 'CustomerOrderNotFound';
 
-    public const CUSTOMER_ORDER_ITEM_NOT_FOUND = 'CustomerOrderItemNotFound';
+    const CUSTOMER_ORDER_ITEM_NOT_FOUND = 'CustomerOrderItemNotFound';
 
-    public const CUSTOMER_ORDER_ITEM_ALREADY_IN_BOX = 'CustomerOrderItemAlreadyInBox';
+    const CUSTOMER_ORDER_ITEM_ALREADY_IN_BOX = 'CustomerOrderItemAlreadyInBox';
 
-    public const CUSTOMER_ORDER_ITEM_QUANTITY_TOO_HIGH = 'CustomerOrderItemQuantityTooHigh';
+    const CUSTOMER_ORDER_ITEM_QUANTITY_TOO_HIGH = 'CustomerOrderItemQuantityTooHigh';
 
 
 }

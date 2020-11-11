@@ -15,15 +15,15 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospModifier as ReplEcommHierarchyHospModifierRequest;
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospModifierResponse as ReplEcommHierarchyHospModifierResponse;
+use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemModifier as ReplEcommItemModifierRequest;
+use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemModifierResponse as ReplEcommItemModifierResponse;
 
-class ReplEcommHierarchyHospModifier extends AbstractOperation
+class ReplEcommItemModifier extends AbstractOperation
 {
 
-    public const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_HOSP_MODIFIER';
+    const OPERATION_NAME = 'REPL_ECOMM_ITEM_MODIFIER';
 
-    public const SERVICE_TYPE = 'ecommerce';
+    const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client
@@ -31,12 +31,12 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property ReplEcommHierarchyHospModifierRequest $request
+     * @property ReplEcommItemModifierRequest $request
      */
     protected $request = null;
 
     /**
-     * @property ReplEcommHierarchyHospModifierResponse $response
+     * @property ReplEcommItemModifierResponse $response
      */
     protected $response = null;
 
@@ -59,30 +59,30 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     {
         $service_type = new ServiceType( self::SERVICE_TYPE );
         parent::__construct( $service_type );
-        $url = OmniService::getUrl( $service_type,$baseUrl ); 
+        $url = OmniService::getUrl( $service_type,$baseUrl );
         $this->client = new OmniClient( $url, $service_type );
         $this->client->setClassmap( $this->getClassMap() );
     }
 
     /**
-     * @param ReplEcommHierarchyHospModifierRequest $request
-     * @return ResponseInterface|ReplEcommHierarchyHospModifierResponse
+     * @param ReplEcommItemModifierRequest $request
+     * @return ResponseInterface|ReplEcommItemModifierResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'ReplEcommHierarchyHospModifier' );
+        return $this->makeRequest( 'ReplEcommItemModifier' );
     }
 
     /**
-     * @return ReplEcommHierarchyHospModifierRequest
+     * @return ReplEcommItemModifierRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new ReplEcommHierarchyHospModifierRequest();
+            $this->request = new ReplEcommItemModifierRequest();
         }
         return $this->request;
     }
@@ -119,7 +119,7 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     }
 
     /**
-     * @param ReplEcommHierarchyHospModifierRequest $request
+     * @param ReplEcommItemModifierRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -129,7 +129,7 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     }
 
     /**
-     * @return ReplEcommHierarchyHospModifierRequest
+     * @return ReplEcommItemModifierRequest
      */
     public function getRequest()
     {
@@ -137,7 +137,7 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     }
 
     /**
-     * @param ReplEcommHierarchyHospModifierResponse $response
+     * @param ReplEcommItemModifierResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -147,7 +147,7 @@ class ReplEcommHierarchyHospModifier extends AbstractOperation
     }
 
     /**
-     * @return ReplEcommHierarchyHospModifierResponse
+     * @return ReplEcommItemModifierResponse
      */
     public function getResponse()
     {

@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class DiscountValueType extends Enum
 {
 
-    public const DEAL_PRICE = 'DealPrice';
+    const DEAL_PRICE = 'DealPrice';
 
-    public const PERCENT = 'Percent';
+    const PERCENT = 'Percent';
 
-    public const AMOUNT = 'Amount';
+    const AMOUNT = 'Amount';
 
 
 }

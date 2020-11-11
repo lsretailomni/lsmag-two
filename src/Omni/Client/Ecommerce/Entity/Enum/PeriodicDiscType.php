@@ -21,17 +21,17 @@ use MyCLabs\Enum\Enum;
 class PeriodicDiscType extends Enum
 {
 
-    public const UNKNOWN = 'Unknown';
+    const UNKNOWN = 'Unknown';
 
-    public const MULTIBUY = 'Multibuy';
+    const MULTIBUY = 'Multibuy';
 
-    public const MIX_MATCH = 'MixMatch';
+    const MIX_MATCH = 'MixMatch';
 
-    public const DISC_OFFER = 'DiscOffer';
+    const DISC_OFFER = 'DiscOffer';
 
-    public const ITEM_POINT = 'ItemPoint';
+    const ITEM_POINT = 'ItemPoint';
 
-    public const LINE_DISCOUNT = 'LineDiscount';
+    const LINE_DISCOUNT = 'LineDiscount';
 
 
 }

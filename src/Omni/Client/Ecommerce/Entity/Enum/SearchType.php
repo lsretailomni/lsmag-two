@@ -26,27 +26,27 @@ use MyCLabs\Enum\Enum;
 class SearchType extends Enum
 {
 
-    public const ITEM = 'Item';
+    const ITEM = 'Item';
 
-    public const PRODUCT_GROUP = 'ProductGroup';
+    const PRODUCT_GROUP = 'ProductGroup';
 
-    public const ITEM_CATEGORY = 'ItemCategory';
+    const ITEM_CATEGORY = 'ItemCategory';
 
-    public const SALES_ENTRY = 'SalesEntry';
+    const SALES_ENTRY = 'SalesEntry';
 
-    public const STORE = 'Store';
+    const STORE = 'Store';
 
-    public const PROFILE = 'Profile';
+    const PROFILE = 'Profile';
 
-    public const NOTIFICATION = 'Notification';
+    const NOTIFICATION = 'Notification';
 
-    public const OFFER = 'Offer';
+    const OFFER = 'Offer';
 
-    public const COUPON = 'Coupon';
+    const COUPON = 'Coupon';
 
-    public const ONE_LIST = 'OneList';
+    const ONE_LIST = 'OneList';
 
-    public const ALL = 'All';
+    const ALL = 'All';
 
 
 }

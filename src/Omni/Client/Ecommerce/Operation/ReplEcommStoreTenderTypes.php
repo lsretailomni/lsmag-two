@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommStoreTenderTypesResponse as ReplEco
 class ReplEcommStoreTenderTypes extends AbstractOperation
 {
 
-    public const OPERATION_NAME = 'REPL_ECOMM_STORE_TENDER_TYPES';
+    const OPERATION_NAME = 'REPL_ECOMM_STORE_TENDER_TYPES';
 
-    public const SERVICE_TYPE = 'ecommerce';
+    const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client
@@ -59,7 +59,7 @@ class ReplEcommStoreTenderTypes extends AbstractOperation
     {
         $service_type = new ServiceType( self::SERVICE_TYPE );
         parent::__construct( $service_type );
-        $url = OmniService::getUrl( $service_type,$baseUrl ); 
+        $url = OmniService::getUrl( $service_type,$baseUrl );
         $this->client = new OmniClient( $url, $service_type );
         $this->client->setClassmap( $this->getClassMap() );
     }

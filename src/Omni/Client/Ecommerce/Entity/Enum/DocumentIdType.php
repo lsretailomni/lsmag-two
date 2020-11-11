@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class DocumentIdType extends Enum
 {
 
-    public const ORDER = 'Order';
+    const ORDER = 'Order';
 
-    public const EXTERNAL = 'External';
+    const EXTERNAL = 'External';
 
-    public const RECEIPT = 'Receipt';
+    const RECEIPT = 'Receipt';
 
 
 }

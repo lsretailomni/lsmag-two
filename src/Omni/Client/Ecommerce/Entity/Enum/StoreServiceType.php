@@ -22,19 +22,19 @@ use MyCLabs\Enum\Enum;
 class StoreServiceType extends Enum
 {
 
-    public const NONE = 'None';
+    const NONE = 'None';
 
-    public const GARDEN = 'Garden';
+    const GARDEN = 'Garden';
 
-    public const FREE_WI_FI = 'FreeWiFi';
+    const FREE_WI_FI = 'FreeWiFi';
 
-    public const DRIVE_THRU_WINDOW = 'DriveThruWindow';
+    const DRIVE_THRU_WINDOW = 'DriveThruWindow';
 
-    public const GIFT_CARD = 'GiftCard';
+    const GIFT_CARD = 'GiftCard';
 
-    public const PLAY_PLACE = 'PlayPlace';
+    const PLAY_PLACE = 'PlayPlace';
 
-    public const FREE_REFILL = 'FreeRefill';
+    const FREE_REFILL = 'FreeRefill';
 
 
 }

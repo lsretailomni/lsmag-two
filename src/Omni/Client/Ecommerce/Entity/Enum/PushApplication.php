@@ -20,15 +20,15 @@ use MyCLabs\Enum\Enum;
 class PushApplication extends Enum
 {
 
-    public const UNKNOWN = 'Unknown';
+    const UNKNOWN = 'Unknown';
 
-    public const LOYALTY = 'Loyalty';
+    const LOYALTY = 'Loyalty';
 
-    public const HOSP_LOY = 'HospLoy';
+    const HOSP_LOY = 'HospLoy';
 
-    public const M_P_O_S = 'MPOS';
+    const M_P_O_S = 'MPOS';
 
-    public const INVENTORY = 'Inventory';
+    const INVENTORY = 'Inventory';
 
 
 }

@@ -24,23 +24,23 @@ use MyCLabs\Enum\Enum;
 class AttributeValueType extends Enum
 {
 
-    public const TEXT = 'Text';
+    const TEXT = 'Text';
 
-    public const NUMERIC = 'Numeric';
+    const NUMERIC = 'Numeric';
 
-    public const AMOUNT = 'Amount';
+    const AMOUNT = 'Amount';
 
-    public const DATE = 'Date';
+    const DATE = 'Date';
 
-    public const FILE = 'File';
+    const FILE = 'File';
 
-    public const OPTION_VALUE = 'OptionValue';
+    const OPTION_VALUE = 'OptionValue';
 
-    public const TABLE_LINK = 'TableLink';
+    const TABLE_LINK = 'TableLink';
 
-    public const WEIGHTED_OPTION = 'WeightedOption';
+    const WEIGHTED_OPTION = 'WeightedOption';
 
-    public const UNKNOWN = 'Unknown';
+    const UNKNOWN = 'Unknown';
 
 
 }

@@ -21,17 +21,17 @@ use MyCLabs\Enum\Enum;
 class AddressType extends Enum
 {
 
-    public const RESIDENTIAL = 'Residential';
+    const RESIDENTIAL = 'Residential';
 
-    public const COMMERCIAL = 'Commercial';
+    const COMMERCIAL = 'Commercial';
 
-    public const STORE = 'Store';
+    const STORE = 'Store';
 
-    public const SHIPPING = 'Shipping';
+    const SHIPPING = 'Shipping';
 
-    public const BILLING = 'Billing';
+    const BILLING = 'Billing';
 
-    public const WORK = 'Work';
+    const WORK = 'Work';
 
 
 }

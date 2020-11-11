@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommExtendedVariantsResponse as ReplEco
 class ReplEcommExtendedVariants extends AbstractOperation
 {
 
-    public const OPERATION_NAME = 'REPL_ECOMM_EXTENDED_VARIANTS';
+    const OPERATION_NAME = 'REPL_ECOMM_EXTENDED_VARIANTS';
 
-    public const SERVICE_TYPE = 'ecommerce';
+    const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client
@@ -59,7 +59,7 @@ class ReplEcommExtendedVariants extends AbstractOperation
     {
         $service_type = new ServiceType( self::SERVICE_TYPE );
         parent::__construct( $service_type );
-        $url = OmniService::getUrl( $service_type,$baseUrl ); 
+        $url = OmniService::getUrl( $service_type,$baseUrl );
         $this->client = new OmniClient( $url, $service_type );
         $this->client->setClassmap( $this->getClassMap() );
     }

@@ -24,23 +24,23 @@ use MyCLabs\Enum\Enum;
 class LineType extends Enum
 {
 
-    public const ITEM = 'Item';
+    const ITEM = 'Item';
 
-    public const PAYMENT = 'Payment';
+    const PAYMENT = 'Payment';
 
-    public const PER_DISCOUNT = 'PerDiscount';
+    const PER_DISCOUNT = 'PerDiscount';
 
-    public const TOTAL_DISCOUNT = 'TotalDiscount';
+    const TOTAL_DISCOUNT = 'TotalDiscount';
 
-    public const INCOME_EXPENSE = 'IncomeExpense';
+    const INCOME_EXPENSE = 'IncomeExpense';
 
-    public const FREE_TEXT = 'FreeText';
+    const FREE_TEXT = 'FreeText';
 
-    public const COUPON = 'Coupon';
+    const COUPON = 'Coupon';
 
-    public const SHIPPING = 'Shipping';
+    const SHIPPING = 'Shipping';
 
-    public const UNKNOWN = 'Unknown';
+    const UNKNOWN = 'Unknown';
 
 
 }

@@ -23,21 +23,21 @@ use MyCLabs\Enum\Enum;
 class ReplDiscountType extends Enum
 {
 
-    public const MULTIBUY = 'Multibuy';
+    const MULTIBUY = 'Multibuy';
 
-    public const MIX_AND_MATCH = 'MixAndMatch';
+    const MIX_AND_MATCH = 'MixAndMatch';
 
-    public const DISC_OFFER = 'DiscOffer';
+    const DISC_OFFER = 'DiscOffer';
 
-    public const TOTAL_DISCOUNT = 'TotalDiscount';
+    const TOTAL_DISCOUNT = 'TotalDiscount';
 
-    public const TENDER_TYPE = 'TenderType';
+    const TENDER_TYPE = 'TenderType';
 
-    public const ITEM_POINT = 'ItemPoint';
+    const ITEM_POINT = 'ItemPoint';
 
-    public const LINE_DISCOUNT = 'LineDiscount';
+    const LINE_DISCOUNT = 'LineDiscount';
 
-    public const UNKNOWN = 'Unknown';
+    const UNKNOWN = 'Unknown';
 
 
 }

@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityLocationsGetResponse as ActivityLoca
 class ActivityLocationsGet extends AbstractOperation
 {
 
-    public const OPERATION_NAME = 'ACTIVITY_LOCATIONS_GET';
+    const OPERATION_NAME = 'ACTIVITY_LOCATIONS_GET';
 
-    public const SERVICE_TYPE = 'ecommerce';
+    const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client
@@ -59,7 +59,7 @@ class ActivityLocationsGet extends AbstractOperation
     {
         $service_type = new ServiceType( self::SERVICE_TYPE );
         parent::__construct( $service_type );
-        $url = OmniService::getUrl( $service_type,$baseUrl ); 
+        $url = OmniService::getUrl( $service_type,$baseUrl );
         $this->client = new OmniClient( $url, $service_type );
         $this->client->setClassmap( $this->getClassMap() );
     }
