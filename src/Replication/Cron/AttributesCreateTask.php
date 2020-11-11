@@ -18,7 +18,7 @@ use \Ls\Replication\Model\ReplAttributeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use \Ls\Replication\Model\ReplUnitOfMeasureSearchResults;
-use \LS\Replication\Api\ReplVendorRepositoryInterface;
+use \Ls\Replication\Api\ReplVendorRepositoryInterface;
 use \Ls\Replication\Model\ReplVendor;
 use \Ls\Replication\Model\ReplVendorRepository;
 use \Ls\Replication\Model\ReplVendorSearchResults;
