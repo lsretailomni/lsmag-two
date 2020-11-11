@@ -18,7 +18,7 @@ class ArrayOfReplItemModifier implements IteratorAggregate
      * @property ReplItemModifier[] $ReplItemModifier
      */
     protected $ReplItemModifier = [
-
+        
     ];
 
     /**

@@ -18,7 +18,7 @@ class ArrayOfReturnPolicy implements IteratorAggregate
      * @property ReturnPolicy[] $ReturnPolicy
      */
     protected $ReturnPolicy = [
-
+        
     ];
 
     /**
