@@ -4,7 +4,7 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\ReplUnitOfMeasure;
+use \Ls\Replication\Api\Data\ReplUnitOfMeasureInterface;
 use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
 use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
@@ -20,12 +20,12 @@ use \Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use \Ls\Replication\Model\ReplUnitOfMeasureSearchResults;
 use \Ls\Replication\Api\ReplVendorRepositoryInterface;
 use \Ls\Replication\Model\ReplVendor;
-use \Ls\Replication\Model\ReplVendorRepository;
 use \Ls\Replication\Model\ReplVendorSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\OptionManagement;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
+use Magento\Eav\Api\AttributeOptionManagementInterface;
 use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Api\Data\AttributeOptionInterfaceFactory;
 use Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory;
@@ -40,7 +40,7 @@ use Magento\Store\Api\Data\StoreInterface;
 
 /**
  * Class AttributesCreateTask
- * @package Ls\Replication\Cron
+ * This job creates Soft and Hard Attributes from LS Central
  */
 class AttributesCreateTask
 {
@@ -109,7 +109,7 @@ class AttributesCreateTask
     /** @var ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface */
     public $replUnitOfMeasureRepositoryInterface;
 
-    /** @var AttributeOptionLabelInterfaceFactory\ $optionLabelFactory */
+    /** @var AttributeOptionLabelInterfaceFactory $optionLabelFactory */
     public $optionLabelFactory;
 
     /**
@@ -118,7 +118,7 @@ class AttributesCreateTask
     public $optionFactory;
 
     /**
-     * @var \Magento\Eav\Api\AttributeOptionManagementInterface
+     * @var AttributeOptionManagementInterface
      */
     public $attributeOptionManagement;
 
@@ -445,7 +445,9 @@ class AttributesCreateTask
                     }
                 }
             }
-            /** fetching the list again to get the remaining records yet to process in order to set the cron job status */
+            /** fetching the list again to get the remaining records yet to process in order
+             * to set the cron job status
+             */
             $remainingVariants = (int)$this->getRemainingVariantsToProcess($store->getId());
             if ($remainingVariants == 0) {
                 $this->successCronAttributeVariant = true;
@@ -622,7 +624,8 @@ class AttributesCreateTask
                         try {
                             $this->eavSetupFactory->create()->addAttributeOption($data);
                         } catch (Exception $e) {
-                            $this->logger->debug("Update attribute - $attributeCode failed with exception : " . $e->getMessage());
+                            $this->logger->debug("Update attribute - $attributeCode failed with exception : "
+                                . $e->getMessage());
                         }
                     }
                 }
@@ -736,7 +739,7 @@ class AttributesCreateTask
         $formattedCode   = LSR::LS_UOM_ATTRIBUTE;
         $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
 
-        /** @var ReplUnitOfMeasure $item */
+        /** @var ReplUnitOfMeasureInterface $item */
         foreach ($replUomOptionValues->getItems() as $item) {
             $item->setIsUpdated(0);
             $item->setProcessed(1);
@@ -794,11 +797,9 @@ class AttributesCreateTask
         return $optionArray;
     }
 
-
     /**
      * @param $store
      * @throws LocalizedException
-     * @throws NoSuchEntityException
      */
     public function addUomAttributeOptions($store)
     {
@@ -822,15 +823,13 @@ class AttributesCreateTask
         }
     }
 
-
     /**
      * @param $store
      * @throws LocalizedException
-     * @throws NoSuchEntityException
      */
     public function addVendorAttributeOptions($store)
     {
-        $optionData       = $this->getVendorOptions($store);
+        $optionData = $this->getVendorOptions($store);
         foreach ($optionData as $value => $label) {
             $optionLabel = $this->optionLabelFactory->create();
             $optionLabel->setStoreId(0);
@@ -855,7 +854,6 @@ class AttributesCreateTask
             $this->store->getId()
         );
     }
-
 
     /**
      * @param $storeId
