@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommDiscountValidationsResponse as Repl
 class ReplEcommDiscountValidations extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_DISCOUNT_VALIDATIONS';
+    public const OPERATION_NAME = 'REPL_ECOMM_DISCOUNT_VALIDATIONS';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

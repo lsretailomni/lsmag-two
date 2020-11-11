@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommBasePricesResponse as ReplEcommBase
 class ReplEcommBasePrices extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_BASE_PRICES';
+    public const OPERATION_NAME = 'REPL_ECOMM_BASE_PRICES';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

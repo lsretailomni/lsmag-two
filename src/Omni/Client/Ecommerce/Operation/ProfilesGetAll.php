@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ProfilesGetAllResponse as ProfilesGetAllResp
 class ProfilesGetAll extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'PROFILES_GET_ALL';
+    public const OPERATION_NAME = 'PROFILES_GET_ALL';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

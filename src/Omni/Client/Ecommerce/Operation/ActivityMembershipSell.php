@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityMembershipSellResponse as ActivityMe
 class ActivityMembershipSell extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_MEMBERSHIP_SELL';
+    public const OPERATION_NAME = 'ACTIVITY_MEMBERSHIP_SELL';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

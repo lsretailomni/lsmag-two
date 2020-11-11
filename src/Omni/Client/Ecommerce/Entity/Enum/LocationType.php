@@ -19,13 +19,13 @@ use MyCLabs\Enum\Enum;
 class LocationType extends Enum
 {
 
-    const FILE = 'File';
+    public const FILE = 'File';
 
-    const IMAGE = 'Image';
+    public const IMAGE = 'Image';
 
-    const URL = 'Url';
+    public const URL = 'Url';
 
-    const NO_IMAGE = 'NoImage';
+    public const NO_IMAGE = 'NoImage';
 
 
 }

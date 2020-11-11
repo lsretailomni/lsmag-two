@@ -22,15 +22,15 @@ use Ls\Replication\Api\Data\ReplCustomerInterface;
 class ReplEcommMemberTask extends AbstractReplicationTask
 {
 
-    const JOB_CODE = 'replication_repl_customer';
+    public const JOB_CODE = 'replication_repl_customer';
 
-    const CONFIG_PATH = 'ls_mag/replication/repl_customer';
+    public const CONFIG_PATH = 'ls_mag/replication/repl_customer';
 
-    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_customer';
+    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_customer';
 
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_customer';
+    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_customer';
 
-    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_customer';
+    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_customer';
 
     /**
      * @property ReplCustomerRepository $repository

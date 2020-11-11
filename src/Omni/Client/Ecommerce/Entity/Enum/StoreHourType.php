@@ -17,9 +17,9 @@ use MyCLabs\Enum\Enum;
 class StoreHourType extends Enum
 {
 
-    const MAIN_STORE = 'MainStore';
+    public const MAIN_STORE = 'MainStore';
 
-    const DRIVE_THRU_WINDOW = 'DriveThruWindow';
+    public const DRIVE_THRU_WINDOW = 'DriveThruWindow';
 
 
 }

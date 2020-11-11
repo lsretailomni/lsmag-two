@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommAttributeOptionValueResponse as Rep
 class ReplEcommAttributeOptionValue extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_ATTRIBUTE_OPTION_VALUE';
+    public const OPERATION_NAME = 'REPL_ECOMM_ATTRIBUTE_OPTION_VALUE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

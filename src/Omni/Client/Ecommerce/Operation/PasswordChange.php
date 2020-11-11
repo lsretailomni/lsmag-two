@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\PasswordChangeResponse as PasswordChangeResp
 class PasswordChange extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'PASSWORD_CHANGE';
+    public const OPERATION_NAME = 'PASSWORD_CHANGE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

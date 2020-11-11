@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdExResponse as SalesEn
 class SalesEntriesGetByCardIdEx extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'SALES_ENTRIES_GET_BY_CARD_ID_EX';
+    public const OPERATION_NAME = 'SALES_ENTRIES_GET_BY_CARD_ID_EX';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

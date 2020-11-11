@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommInventoryStatusResponse as ReplEcom
 class ReplEcommInventoryStatus extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_INVENTORY_STATUS';
+    public const OPERATION_NAME = 'REPL_ECOMM_INVENTORY_STATUS';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

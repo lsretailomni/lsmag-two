@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class ItemModifierPriceHandling extends Enum
 {
 
-    const NONE = 'None';
+    public const NONE = 'None';
 
-    const ALWAYS_CHARGE = 'AlwaysCharge';
+    public const ALWAYS_CHARGE = 'AlwaysCharge';
 
-    const NO_CHARGE = 'NoCharge';
+    public const NO_CHARGE = 'NoCharge';
 
 
 }

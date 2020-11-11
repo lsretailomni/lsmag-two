@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListLinkingResponse as OneListLinkingResp
 class OneListLinking extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ONE_LIST_LINKING';
+    public const OPERATION_NAME = 'ONE_LIST_LINKING';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplTaxSetupInterface;
 class ReplTaxSetup extends AbstractModel implements ReplTaxSetupInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_tax_setup';
+    public const CACHE_TAG = 'ls_replication_repl_tax_setup';
 
     protected $_cacheTag = 'ls_replication_repl_tax_setup';
 

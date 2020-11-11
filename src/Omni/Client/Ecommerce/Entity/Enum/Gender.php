@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class Gender extends Enum
 {
 
-    const UNKNOWN = 'Unknown';
+    public const UNKNOWN = 'Unknown';
 
-    const MALE = 'Male';
+    public const MALE = 'Male';
 
-    const FEMALE = 'Female';
+    public const FEMALE = 'Female';
 
 
 }

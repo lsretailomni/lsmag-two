@@ -22,15 +22,15 @@ use Ls\Replication\Api\Data\ReplCountryCodeInterface;
 class ReplEcommCountryCodeTask extends AbstractReplicationTask
 {
 
-    const JOB_CODE = 'replication_repl_country_code';
+    public const JOB_CODE = 'replication_repl_country_code';
 
-    const CONFIG_PATH = 'ls_mag/replication/repl_country_code';
+    public const CONFIG_PATH = 'ls_mag/replication/repl_country_code';
 
-    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_country_code';
+    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_country_code';
 
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_country_code';
+    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_country_code';
 
-    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_country_code';
+    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_country_code';
 
     /**
      * @property ReplCountryCodeRepository $repository

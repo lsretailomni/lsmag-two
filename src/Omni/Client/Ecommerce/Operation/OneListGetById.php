@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListGetByIdResponse as OneListGetByIdResp
 class OneListGetById extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ONE_LIST_GET_BY_ID';
+    public const OPERATION_NAME = 'ONE_LIST_GET_BY_ID';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\StoresGetbyItemInStockResponse as StoresGetb
 class StoresGetbyItemInStock extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'STORES_GETBY_ITEM_IN_STOCK';
+    public const OPERATION_NAME = 'STORES_GETBY_ITEM_IN_STOCK';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

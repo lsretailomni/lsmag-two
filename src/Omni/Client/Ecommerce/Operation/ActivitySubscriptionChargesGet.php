@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivitySubscriptionChargesGetResponse as Ac
 class ActivitySubscriptionChargesGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_SUBSCRIPTION_CHARGES_GET';
+    public const OPERATION_NAME = 'ACTIVITY_SUBSCRIPTION_CHARGES_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

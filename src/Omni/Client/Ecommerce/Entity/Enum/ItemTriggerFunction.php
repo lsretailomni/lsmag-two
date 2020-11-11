@@ -24,23 +24,23 @@ use MyCLabs\Enum\Enum;
 class ItemTriggerFunction extends Enum
 {
 
-    const DEFAULT = 'Default';
+    public const DEFAULT = 'Default';
 
-    const ITEM = 'Item';
+    public const ITEM = 'Item';
 
-    const DISCOUNT_GROUP = 'DiscountGroup';
+    public const DISCOUNT_GROUP = 'DiscountGroup';
 
-    const RUN_OBJECT = 'RunObject';
+    public const RUN_OBJECT = 'RunObject';
 
-    const V_A_T_BUS_POSTING_GROUP = 'VATBusPostingGroup';
+    public const V_A_T_BUS_POSTING_GROUP = 'VATBusPostingGroup';
 
-    const INFOCODE = 'Infocode';
+    public const INFOCODE = 'Infocode';
 
-    const TIME_MODIFIER = 'TimeModifier';
+    public const TIME_MODIFIER = 'TimeModifier';
 
-    const TEXT_MODIFIER = 'TextModifier';
+    public const TEXT_MODIFIER = 'TextModifier';
 
-    const TAX_AREA_CODE = 'TaxAreaCode';
+    public const TAX_AREA_CODE = 'TaxAreaCode';
 
 
 }

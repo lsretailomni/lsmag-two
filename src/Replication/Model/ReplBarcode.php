@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplBarcodeInterface;
 class ReplBarcode extends AbstractModel implements ReplBarcodeInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_barcode';
+    public const CACHE_TAG = 'ls_replication_repl_barcode';
 
     protected $_cacheTag = 'ls_replication_repl_barcode';
 

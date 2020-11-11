@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ContactAddCardResponse as ContactAddCardResp
 class ContactAddCard extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'CONTACT_ADD_CARD';
+    public const OPERATION_NAME = 'CONTACT_ADD_CARD';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

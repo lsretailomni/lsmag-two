@@ -22,15 +22,15 @@ use Ls\Replication\Api\Data\ReplAttributeOptionValueInterface;
 class ReplEcommAttributeOptionValueTask extends AbstractReplicationTask
 {
 
-    const JOB_CODE = 'replication_repl_attribute_option_value';
+    public const JOB_CODE = 'replication_repl_attribute_option_value';
 
-    const CONFIG_PATH = 'ls_mag/replication/repl_attribute_option_value';
+    public const CONFIG_PATH = 'ls_mag/replication/repl_attribute_option_value';
 
-    const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_attribute_option_value';
+    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_attribute_option_value';
 
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_attribute_option_value';
+    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_attribute_option_value';
 
-    const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_attribute_option_value';
+    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_attribute_option_value';
 
     /**
      * @property ReplAttributeOptionValueRepository $repository

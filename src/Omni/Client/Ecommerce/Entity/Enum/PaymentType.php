@@ -19,13 +19,13 @@ use MyCLabs\Enum\Enum;
 class PaymentType extends Enum
 {
 
-    const NONE = 'None';
+    public const NONE = 'None';
 
-    const PAYMENT = 'Payment';
+    public const PAYMENT = 'Payment';
 
-    const PRE_AUTHORIZATION = 'PreAuthorization';
+    public const PRE_AUTHORIZATION = 'PreAuthorization';
 
-    const REFUND = 'Refund';
+    public const REFUND = 'Refund';
 
 
 }

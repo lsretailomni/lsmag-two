@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommShippingAgentResponse as ReplEcommS
 class ReplEcommShippingAgent extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_SHIPPING_AGENT';
+    public const OPERATION_NAME = 'REPL_ECOMM_SHIPPING_AGENT';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

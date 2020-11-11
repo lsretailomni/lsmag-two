@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ItemsPageResponse as ItemsPageResponse;
 class ItemsPage extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ITEMS_PAGE';
+    public const OPERATION_NAME = 'ITEMS_PAGE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

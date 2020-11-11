@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplItemInterface;
 class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_item';
+    public const CACHE_TAG = 'ls_replication_repl_item';
 
     protected $_cacheTag = 'ls_replication_repl_item';
 

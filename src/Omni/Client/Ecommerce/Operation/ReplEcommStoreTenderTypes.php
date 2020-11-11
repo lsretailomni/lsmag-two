@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommStoreTenderTypesResponse as ReplEco
 class ReplEcommStoreTenderTypes extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_STORE_TENDER_TYPES';
+    public const OPERATION_NAME = 'REPL_ECOMM_STORE_TENDER_TYPES';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

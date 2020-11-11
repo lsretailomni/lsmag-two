@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\PasswordResetResponse as PasswordResetRespon
 class PasswordReset extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'PASSWORD_RESET';
+    public const OPERATION_NAME = 'PASSWORD_RESET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

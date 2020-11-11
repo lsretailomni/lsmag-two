@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplHierarchyInterface;
 class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_hierarchy';
+    public const CACHE_TAG = 'ls_replication_repl_hierarchy';
 
     protected $_cacheTag = 'ls_replication_repl_hierarchy';
 

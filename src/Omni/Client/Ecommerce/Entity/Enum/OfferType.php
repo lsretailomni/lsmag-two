@@ -20,15 +20,15 @@ use MyCLabs\Enum\Enum;
 class OfferType extends Enum
 {
 
-    const GENERAL = 'General';
+    public const GENERAL = 'General';
 
-    const SPECIAL_MEMBER = 'SpecialMember';
+    public const SPECIAL_MEMBER = 'SpecialMember';
 
-    const POINT_OFFER = 'PointOffer';
+    public const POINT_OFFER = 'PointOffer';
 
-    const CLUB = 'Club';
+    public const CLUB = 'Club';
 
-    const UNKNOWN = 'Unknown';
+    public const UNKNOWN = 'Unknown';
 
 
 }

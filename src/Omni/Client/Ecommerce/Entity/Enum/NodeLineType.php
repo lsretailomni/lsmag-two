@@ -20,15 +20,15 @@ use MyCLabs\Enum\Enum;
 class NodeLineType extends Enum
 {
 
-    const UNKNOWN = 'Unknown';
+    public const UNKNOWN = 'Unknown';
 
-    const RECIPE = 'Recipe';
+    public const RECIPE = 'Recipe';
 
-    const PRODUCT = 'Product';
+    public const PRODUCT = 'Product';
 
-    const DEAL = 'Deal';
+    public const DEAL = 'Deal';
 
-    const PRODUCT_OR_RECIPE = 'ProductOrRecipe';
+    public const PRODUCT_OR_RECIPE = 'ProductOrRecipe';
 
 
 }

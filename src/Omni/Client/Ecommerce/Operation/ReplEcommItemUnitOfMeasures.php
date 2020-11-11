@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemUnitOfMeasuresResponse as ReplE
 class ReplEcommItemUnitOfMeasures extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_ITEM_UNIT_OF_MEASURES';
+    public const OPERATION_NAME = 'REPL_ECOMM_ITEM_UNIT_OF_MEASURES';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

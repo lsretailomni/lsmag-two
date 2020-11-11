@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse as OneListCalculate
 class OneListCalculate extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ONE_LIST_CALCULATE';
+    public const OPERATION_NAME = 'ONE_LIST_CALCULATE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

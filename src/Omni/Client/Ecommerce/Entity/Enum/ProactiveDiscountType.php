@@ -21,17 +21,17 @@ use MyCLabs\Enum\Enum;
 class ProactiveDiscountType extends Enum
 {
 
-    const UNKNOWN = 'Unknown';
+    public const UNKNOWN = 'Unknown';
 
-    const MULTIBUY = 'Multibuy';
+    public const MULTIBUY = 'Multibuy';
 
-    const MIX_MATCH = 'MixMatch';
+    public const MIX_MATCH = 'MixMatch';
 
-    const DISC_OFFER = 'DiscOffer';
+    public const DISC_OFFER = 'DiscOffer';
 
-    const ITEM_POINT = 'ItemPoint';
+    public const ITEM_POINT = 'ItemPoint';
 
-    const LINE_DISCOUNT = 'LineDiscount';
+    public const LINE_DISCOUNT = 'LineDiscount';
 
 
 }

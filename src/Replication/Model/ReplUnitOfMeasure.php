@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplUnitOfMeasureInterface;
 class ReplUnitOfMeasure extends AbstractModel implements ReplUnitOfMeasureInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_unit_of_measure';
+    public const CACHE_TAG = 'ls_replication_repl_unit_of_measure';
 
     protected $_cacheTag = 'ls_replication_repl_unit_of_measure';
 

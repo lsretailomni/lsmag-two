@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\PushNotificationSaveResponse as PushNotifica
 class PushNotificationSave extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'PUSH_NOTIFICATION_SAVE';
+    public const OPERATION_NAME = 'PUSH_NOTIFICATION_SAVE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

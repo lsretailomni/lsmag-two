@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommVendorItemMappingResponse as ReplEc
 class ReplEcommVendorItemMapping extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_VENDOR_ITEM_MAPPING';
+    public const OPERATION_NAME = 'REPL_ECOMM_VENDOR_ITEM_MAPPING';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

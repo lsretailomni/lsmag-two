@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityReservationUpdateResponse as Activit
 class ActivityReservationUpdate extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_RESERVATION_UPDATE';
+    public const OPERATION_NAME = 'ACTIVITY_RESERVATION_UPDATE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

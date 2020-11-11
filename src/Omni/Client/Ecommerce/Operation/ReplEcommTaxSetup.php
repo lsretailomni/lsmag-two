@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommTaxSetupResponse as ReplEcommTaxSet
 class ReplEcommTaxSetup extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_TAX_SETUP';
+    public const OPERATION_NAME = 'REPL_ECOMM_TAX_SETUP';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

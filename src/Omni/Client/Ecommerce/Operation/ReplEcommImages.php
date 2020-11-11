@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommImagesResponse as ReplEcommImagesRe
 class ReplEcommImages extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_IMAGES';
+    public const OPERATION_NAME = 'REPL_ECOMM_IMAGES';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

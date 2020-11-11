@@ -18,11 +18,11 @@ use MyCLabs\Enum\Enum;
 class ItemUsageCategory extends Enum
 {
 
-    const DEFAULT = 'Default';
+    public const DEFAULT = 'Default';
 
-    const CROSS_SELLING = 'CrossSelling';
+    public const CROSS_SELLING = 'CrossSelling';
 
-    const ITEM_MODIFIER = 'ItemModifier';
+    public const ITEM_MODIFIER = 'ItemModifier';
 
 
 }

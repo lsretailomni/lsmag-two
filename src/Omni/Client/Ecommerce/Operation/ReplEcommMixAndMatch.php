@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommMixAndMatchResponse as ReplEcommMix
 class ReplEcommMixAndMatch extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_MIX_AND_MATCH';
+    public const OPERATION_NAME = 'REPL_ECOMM_MIX_AND_MATCH';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

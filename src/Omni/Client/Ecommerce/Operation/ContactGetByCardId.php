@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ContactGetByCardIdResponse as ContactGetByCa
 class ContactGetByCardId extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'CONTACT_GET_BY_CARD_ID';
+    public const OPERATION_NAME = 'CONTACT_GET_BY_CARD_ID';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

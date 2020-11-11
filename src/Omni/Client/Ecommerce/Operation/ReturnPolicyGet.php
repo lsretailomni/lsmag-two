@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReturnPolicyGetResponse as ReturnPolicyGetRe
 class ReturnPolicyGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'RETURN_POLICY_GET';
+    public const OPERATION_NAME = 'RETURN_POLICY_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

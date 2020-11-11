@@ -15,7 +15,7 @@ use Ls\Replication\Api\Data\ReplCustomerInterface;
 class ReplCustomer extends AbstractModel implements ReplCustomerInterface, IdentityInterface
 {
 
-    const CACHE_TAG = 'ls_replication_repl_customer';
+    public const CACHE_TAG = 'ls_replication_repl_customer';
 
     protected $_cacheTag = 'ls_replication_repl_customer';
 

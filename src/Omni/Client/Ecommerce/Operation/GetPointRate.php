@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse as GetPointRateResponse
 class GetPointRate extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'GET_POINT_RATE';
+    public const OPERATION_NAME = 'GET_POINT_RATE';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

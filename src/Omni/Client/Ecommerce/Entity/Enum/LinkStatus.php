@@ -19,13 +19,13 @@ use MyCLabs\Enum\Enum;
 class LinkStatus extends Enum
 {
 
-    const REQUESTING = 'Requesting';
+    public const REQUESTING = 'Requesting';
 
-    const ACTIVE = 'Active';
+    public const ACTIVE = 'Active';
 
-    const BLOCKED = 'Blocked';
+    public const BLOCKED = 'Blocked';
 
-    const REMOVE = 'Remove';
+    public const REMOVE = 'Remove';
 
 
 }

@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\MenuGetResponse as MenuGetResponse;
 class MenuGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'MENU_GET';
+    public const OPERATION_NAME = 'MENU_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

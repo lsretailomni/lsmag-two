@@ -26,27 +26,27 @@ use MyCLabs\Enum\Enum;
 class OfferDiscountType extends Enum
 {
 
-    const PROMOTION = 'Promotion';
+    public const PROMOTION = 'Promotion';
 
-    const DEAL = 'Deal';
+    public const DEAL = 'Deal';
 
-    const MULTIBUY = 'Multibuy';
+    public const MULTIBUY = 'Multibuy';
 
-    const MIX_AND_MATCH = 'MixAndMatch';
+    public const MIX_AND_MATCH = 'MixAndMatch';
 
-    const DISCOUNT_OFFER = 'DiscountOffer';
+    public const DISCOUNT_OFFER = 'DiscountOffer';
 
-    const TOTAL_DISCOUNT = 'TotalDiscount';
+    public const TOTAL_DISCOUNT = 'TotalDiscount';
 
-    const TENDER_TYPE = 'TenderType';
+    public const TENDER_TYPE = 'TenderType';
 
-    const ITEM_POINT = 'ItemPoint';
+    public const ITEM_POINT = 'ItemPoint';
 
-    const LINE_DISCOUNT = 'LineDiscount';
+    public const LINE_DISCOUNT = 'LineDiscount';
 
-    const COUPON = 'Coupon';
+    public const COUPON = 'Coupon';
 
-    const UNKNOWN = 'Unknown';
+    public const UNKNOWN = 'Unknown';
 
 
 }

@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommVendorResponse as ReplEcommVendorRe
 class ReplEcommVendor extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_VENDOR';
+    public const OPERATION_NAME = 'REPL_ECOMM_VENDOR';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

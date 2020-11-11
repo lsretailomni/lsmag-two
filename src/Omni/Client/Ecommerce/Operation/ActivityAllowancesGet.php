@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityAllowancesGetResponse as ActivityAll
 class ActivityAllowancesGet extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'ACTIVITY_ALLOWANCES_GET';
+    public const OPERATION_NAME = 'ACTIVITY_ALLOWANCES_GET';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client

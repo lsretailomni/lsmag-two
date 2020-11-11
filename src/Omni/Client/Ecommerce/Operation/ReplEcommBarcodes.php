@@ -21,9 +21,9 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommBarcodesResponse as ReplEcommBarcod
 class ReplEcommBarcodes extends AbstractOperation
 {
 
-    const OPERATION_NAME = 'REPL_ECOMM_BARCODES';
+    public const OPERATION_NAME = 'REPL_ECOMM_BARCODES';
 
-    const SERVICE_TYPE = 'ecommerce';
+    public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client
