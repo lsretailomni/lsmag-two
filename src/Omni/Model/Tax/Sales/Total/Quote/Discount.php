@@ -99,16 +99,16 @@ class Discount extends AbstractTotal
         ShippingAssignmentInterface $shippingAssignment,
         Total $total
     ) {
+        $items = $shippingAssignment->getItems();
+        if (!count($items)) {
+            return $this;
+        }
         $discountAmount  = $this->getTotalDiscount($quote);
         $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
-        if ($discountAmount < 0) {
-            $total->addTotalAmount('discount', $discountAmount);
-            $total->addTotalAmount('grand_total', $paymentDiscount);
-        } else {
-            $total->addTotalAmount('discount', $discountAmount);
-            $total->addTotalAmount('grand_total', $paymentDiscount);
-            $quote->getBillingAddress()->setDiscountAmount(0)->save();
-        }
+        $total->addTotalAmount('discount', $discountAmount);
+        $total->addTotalAmount('grand_total', $paymentDiscount);
+        $total->addBaseTotalAmount('discount', $discountAmount);
+        $total->addBaseTotalAmount('grand_total', $paymentDiscount);
         return $this;
     }
 

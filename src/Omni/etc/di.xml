@@ -47,7 +47,7 @@
     <preference for="Magento\Sales\Model\Order\Pdf\Invoice" type="Ls\Omni\Model\Order\Pdf\Invoice"/>
     <!-- To Override Subtotal Calculation for Paypal -->
     <type name="Magento\Paypal\Model\Cart">
-        <plugin name="ls_update_paypal_amount_order" type="Ls\Omni\Plugin\Checkout\Model\UpdateAmountPayPal"/>
+        <plugin name="ls_update_paypal_amount_order" type="Ls\Omni\Plugin\Checkout\Model\UpdateAmountPaypal"/>
     </type>
     <!-- Magento order number prefix. -->
     <type name="Magento\SalesSequence\Model\Sequence">
