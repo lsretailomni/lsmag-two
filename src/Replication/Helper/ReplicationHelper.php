@@ -275,8 +275,11 @@ class ReplicationHelper extends AbstractHelper
      * @return SearchCriteria
      */
     public function buildCriteriaForArray(
-        array $filters, $pagesize = 100, $excludeDeleted = true,
-        $parameter = null, $parameter2 = null
+        array $filters,
+        $pagesize = 100,
+        $excludeDeleted = true,
+        $parameter = null,
+        $parameter2 = null
     ) {
         $filterOr       = null;
         $attr_processed = $this->filterBuilder->setField('processed')
@@ -290,7 +293,6 @@ class ReplicationHelper extends AbstractHelper
             ->create();
 
         if (!empty($parameter) && !empty($parameter2)) {
-
             $parameter1 = $this->filterBuilder->setField($parameter['field'])
                 ->setValue($parameter['value'])
                 ->setConditionType($parameter['condition_type'])
@@ -343,7 +345,6 @@ class ReplicationHelper extends AbstractHelper
         }
         return $criteria->create();
     }
-
 
     /**
      * @param array $filters
@@ -403,12 +404,14 @@ class ReplicationHelper extends AbstractHelper
      * @return SearchCriteria
      */
     public function buildCriteriaForDirect(
-        array $filters, $pagesize = 100, $excludeDeleted = true,
-        $parameter = null, $parameter2 = null
+        array $filters,
+        $pagesize = 100,
+        $excludeDeleted = true,
+        $parameter = null,
+        $parameter2 = null
     ) {
         $filterOr = null;
         if (!empty($parameter) && !empty($parameter2)) {
-
             $parameter1 = $this->filterBuilder->setField($parameter['field'])
                 ->setValue($parameter['value'])
                 ->setConditionType($parameter['condition_type'])
@@ -456,7 +459,6 @@ class ReplicationHelper extends AbstractHelper
         }
         return $criteria->create();
     }
-
 
     /**
      * Create Build Criteria with Array of filters as a parameters and return Updated Only
@@ -725,7 +727,8 @@ class ReplicationHelper extends AbstractHelper
             $this->configWriter->save(
                 $path,
                 ($data) ? 1 : 0,
-                ScopeInterface::SCOPE_STORES, $storeId
+                ScopeInterface::SCOPE_STORES,
+                $storeId
             );
         } else {
             $this->configWriter->save(
@@ -737,7 +740,6 @@ class ReplicationHelper extends AbstractHelper
         }
         $this->flushByTypeCode('config');
     }
-
 
     /**
      * USE THIS WHEN YOU WANT TO RESET STATUS FOR ALL THE STORES WITHOUT PASSING ANY STORE ID
@@ -755,11 +757,9 @@ class ReplicationHelper extends AbstractHelper
                     ScopeInterface::SCOPE_STORES,
                     $store->getId()
                 );
-
             }
             $this->flushByTypeCode('config');
         }
-
     }
 
     /**
@@ -878,7 +878,6 @@ class ReplicationHelper extends AbstractHelper
                 []
             );
             $collection->getSelect()->columns('second.' . $secondaryTableColumnName);
-
         } else {
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
@@ -995,6 +994,31 @@ class ReplicationHelper extends AbstractHelper
      * @param $collection
      * @param SearchCriteriaInterface $criteria
      */
+    public function setCollectionPropertiesPlusJoinsForImages(&$collection, SearchCriteriaInterface $criteria)
+    {
+        $secondTableName = $this->resource->getTableName('catalog_product_entity');
+        $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
+        $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
+        $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
+        $collection->getSelect()->joinInner(
+            ['second' => $secondTableName],
+            'main_table.KeyValue = REPLACE(second.sku,"-",",")',
+            []
+        )->joinInner(
+            ['third' => $thirdTableName],
+            'main_table.KeyValue' . ' = REPLACE(third.nav_id,"-",",")' . ' AND main_table.scope_id' . ' = third.scope_id',
+            []
+        );
+        /** @var For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
+     * @param $collection
+     * @param SearchCriteriaInterface $criteria
+     */
     public function setFiltersOnTheBasisOfCriteria(&$collection, SearchCriteriaInterface $criteria)
     {
         foreach ($criteria->getFilterGroups() as $filter_group) {
@@ -1072,7 +1096,6 @@ class ReplicationHelper extends AbstractHelper
 
         return $resultFactory->getItems();
     }
-
 
     /**
      * To be used only for Processing attributes and variants in the AttributeCreate Task
