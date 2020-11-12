@@ -285,6 +285,13 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+        if ($cronName == 'repl_vendor_attributes_sync') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(
+                LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE,
+                $storeId
+            );
+            return $fullReplicationStatus;
+        }
         return $fullReplicationStatus;
 
     }

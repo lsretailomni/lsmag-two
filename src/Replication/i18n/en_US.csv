@@ -1,3 +1,5 @@
+"Product Group Id","Product Group Id"
+"Item Category Code","Item Category Code"
 "Show all the stores","Show all the stores"
 "Show the Click and Collect stores only","Show the Click and Collect stores only"
 "Please select your hierarchy code","Please select your hierarchy code"
@@ -7,7 +9,7 @@
 "Batch Job","Batch Job"
 N/A,N/A
 No,No
-"Cron Listing ","Cron Listing "
+"Cron Listing","Cron Listing"
 "LS Attributes deleted successfully.","LS Attributes deleted successfully."
 "Categories deleted successfully.","Categories deleted successfully."
 "Customers deleted successfully.","Customers deleted successfully."
@@ -33,17 +35,19 @@ No,No
 "Item Category Replication","Item Category Replication"
 "Item Unit Of Measure","Item Unit Of Measure"
 "Item Variant Registration Replication","Item Variant Registration Replication"
+"Item Vendor","Item Vendor"
 "Item Price Replication","Item Price Replication"
 "Product Group Replication","Product Group Replication"
 "Store Replication","Store Replication"
 "Unit Of Measure","Unit Of Measure"
+Vendor,Vendor
 "Logs ","Logs "
 "No Data Found File is Empty.","No Data Found File is Empty."
 "File Not Found.","File Not Found."
-"Quantity Unit Of Measure","Quantity Unit Of Measure"
 "Product Image","Product Image"
 "<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>.","<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>."
 Default,Default
+"Quantity Unit Of Measure","Quantity Unit Of Measure"
 "Object with id ' . . ' does not exist.","Object with id ' . . ' does not exist."
 "Could not save entity","Could not save entity"
 Execute,Execute
@@ -102,6 +106,7 @@ Replication,Replication
 "Product Barcode Batch Size","Product Barcode Batch Size"
 "Variant Batch Size","Variant Batch Size"
 "Product Assignment to Category Batch Size","Product Assignment to Category Batch Size"
+"Create attribute sets on the basis of","Create attribute sets on the basis of"
 "Item Availability","Item Availability"
 "Availability Check","Availability Check"
 "Product Availability in Stores","Product Availability in Stores"
@@ -183,10 +188,10 @@ ParentNode,ParentNode
 "Variant Id","Variant Id"
 Quantity,Quantity
 "Store Id","Store Id"
+"Blocked On eCommerce","Blocked On eCommerce"
 "Base Unit Of Measure","Base Unit Of Measure"
 "Unit Price","Unit Price"
 "Gross Weight","Gross Weight"
-"Item Category Code","Item Category Code"
 "Item Family Code","Item Family Code"
 "Product Group ID","Product Group ID"
 "Purch Unit Of Measure","Purch Unit Of Measure"
@@ -198,6 +203,7 @@ Quantity,Quantity
 "Vendor Id","Vendor Id"
 "Vendor Item Id","Vendor Item Id"
 "Zero Price ValId","Zero Price ValId"
+Order,Order
 "Quantity Per Unit Of Measure","Quantity Per Unit Of Measure"
 "Variant Dimension 1","Variant Dimension 1"
 "Variant Dimension 2","Variant Dimension 2"

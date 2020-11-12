@@ -47,7 +47,8 @@ class Product extends Action
         "ls_replication_repl_hierarchy_leaf",
         "ls_replication_repl_attribute_value",
         "ls_replication_repl_image_link",
-        "ls_replication_repl_item_unit_of_measure"
+        "ls_replication_repl_item_unit_of_measure",
+        "ls_replication_repl_loy_vendor_item_mapping"
     ];
 
     /** @var array List of all the Catalog Product tables */

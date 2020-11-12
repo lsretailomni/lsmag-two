@@ -122,12 +122,12 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_store"                      => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
         "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "ItemNo","LineNo", "UnitOfMeasure", "scope_id"],
         "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo","UnitOfMeasure", "scope_id"],
         "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
         "ls_mag/replication/repl_hierarchy_hosp_modifier"    => ["ItemNo","ParentItem", "Code", "SubCode", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
+        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_vendor"                     => ["nav_id", "scope_id"]
     ];
 
     /** @var Logger */
@@ -295,6 +295,10 @@ abstract class AbstractReplicationTask
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT, ($storeId) ?: false);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ITEM_UPDATES, ($storeId) ?: false);
+        } elseif ($confPath == "ls_mag/replication/repl_vendor") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR, ($storeId) ?: false);
+        } elseif ($confPath == "ls_mag/replication/repl_loy_vendor_item_mapping") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE, ($storeId) ?: false);
         }
     }
 
@@ -402,7 +406,6 @@ abstract class AbstractReplicationTask
         $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
         // @codingStandardsIgnoreEnd
         foreach ($uniqueAttributes as $attribute) {
-
             $field_name_optimized   = str_replace('_', ' ', $attribute);
             $field_name_capitalized = ucwords($field_name_optimized);
             $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
