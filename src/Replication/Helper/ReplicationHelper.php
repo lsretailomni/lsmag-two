@@ -1091,6 +1091,14 @@ class ReplicationHelper extends AbstractHelper
     /**
      * @return string
      */
+    public function getItemModifiersBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_ITEM_MODIFIER_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
     public function getProductBarcodeBatchSize()
     {
         return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BARCODE_BATCH_SIZE);
