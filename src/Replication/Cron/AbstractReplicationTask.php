@@ -122,12 +122,12 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_store"                      => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "ItemNo","LineNo", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo","UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "ItemNo", "LineNo", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
         "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_modifier"    => ["ItemNo","ParentItem", "Code", "SubCode", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_vendor"                     => ["nav_id", "scope_id"]
+        "ls_mag/replication/repl_item_modifier"              => ["nav_id", "VariantCode", "Code", "SubCode", "TriggerCode", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
     ];
 
     /** @var Logger */
