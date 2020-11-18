@@ -11,7 +11,6 @@ use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
-use Ls\Replication\Model\ReplItemModifierRepository;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
 use Magento\Framework\Api\AbstractExtensibleObject;
@@ -114,11 +113,6 @@ class ReplicationHelper extends AbstractHelper
     public $itemRepository;
 
     /**
-     * @var ReplItemModifierRepository
-     */
-    public $itemModifierRepository;
-
-    /**
      * ReplicationHelper constructor.
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -138,7 +132,6 @@ class ReplicationHelper extends AbstractHelper
      * @param TimezoneInterface $timezone
      * @param Logger $_logger
      * @param ReplItemRepository $itemRepository
-     * @param ReplItemModifierRepository $itemModifierRepository
      */
     public function __construct(
         Context $context,
@@ -158,8 +151,7 @@ class ReplicationHelper extends AbstractHelper
         DateTime $date,
         TimezoneInterface $timezone,
         Logger $_logger,
-        ReplItemRepository $itemRepository,
-        ReplItemModifierRepository $itemModifierRepository
+        ReplItemRepository $itemRepository
     ) {
         $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
         $this->filterBuilder                    = $filterBuilder;
@@ -178,7 +170,6 @@ class ReplicationHelper extends AbstractHelper
         $this->timezone                         = $timezone;
         $this->_logger                          = $_logger;
         $this->itemRepository                   = $itemRepository;
-        $this->itemModifierRepository           = $itemModifierRepository;
         parent::__construct(
             $context
         );
@@ -1292,35 +1283,5 @@ class ReplicationHelper extends AbstractHelper
         }
 
         return $baseUnitOfMeasure;
-    }
-
-    /**
-     * @param $label
-     * @return mixed|string
-     */
-    public function getItemSubLineCode($label)
-    {
-        $subString = explode('ls_mod_', $label);
-        return strtoupper(str_replace("_", " ", end($subString)));
-    }
-
-    /**
-     * @param $navId
-     * @param $code
-     * @param $value
-     * @param $uom
-     * @return mixed
-     */
-    public function getItemModifier($navId, $code, $value, $uom)
-    {
-        $itemModifier = $this->itemModifierRepository->getList(
-            $this->searchCriteriaBuilder->addFilter('nav_id', $navId)
-            ->addFilter('Code', $code)
-            ->addFilter('Description', $value)
-            ->addFilter('UnitOfMeasure', $uom)
-            ->setPageSize(1)->setCurrentPage(1)
-            ->create()
-        );
-        return $itemModifier->getItems();
     }
 }
