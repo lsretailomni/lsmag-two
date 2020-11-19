@@ -601,6 +601,7 @@ class ProductCreateTask
                                 $productData->setMetaTitle($item->getDescription());
                                 $productData->setDescription($item->getDetails());
                                 $productData->setWeight($item->getGrossWeight());
+                                $productData->setAttributeSetId($productData->getAttributeSetId());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData = $this->setProductStatus($productData, $item->getBlockedOnECom());
                                 $product     = $this->getProductAttributes($productData, $item);
@@ -660,7 +661,7 @@ class ProductCreateTask
                                     $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                     $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                     $totalUomCodes        = $this->getUomCodes($item->getNavId());
-                                    if (!empty($variants) || count($totalUomCodes) > 1) {
+                                    if (!empty($variants) || count($totalUomCodes[$item->getNavId()]) > 1) {
                                         $this->createConfigurableProducts(
                                             $productSaved,
                                             $item,
@@ -889,10 +890,14 @@ class ProductCreateTask
             }
         }
         if (!empty($resultantCategoryIds)) {
-            $this->categoryLinkManagement->assignProductToCategories(
-                $product->getSku(),
-                $resultantCategoryIds
-            );
+            try {
+                $this->categoryLinkManagement->assignProductToCategories(
+                    $product->getSku(),
+                    $resultantCategoryIds
+                );
+            } catch (Exception $e) {
+                $this->logger->info("Product deleted from admin configuration. Things will re-run again");
+            }
         }
     }
 
@@ -1177,8 +1182,9 @@ class ProductCreateTask
             ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
         ];
 
-        $itemUom        = [];
-        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        $itemUom          = [];
+        $itemUom[$itemId] = [];
+        $searchCriteria   = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
         /** @var ReplItemUnitOfMeasure $items */
         try {
             $items = $this->replItemUomRepository->getList($searchCriteria)->getItems();
@@ -1719,9 +1725,9 @@ class ProductCreateTask
             $configProduct->getExtensionAttributes()->setConfigurableProductOptions($options);
         }
         $configProduct->setTypeId(Configurable::TYPE_CODE); // Setting Product Type As Configurable
-        $configProduct->setAffectConfigurableProductAttributes(4);
+        $configProduct->setAffectConfigurableProductAttributes($configProduct->getAttributeSetId());
         $this->configurable->setUsedProductAttributes($configProduct, $attributesIds);
-        $configProduct->setNewVariationsAttributeSetId(4); // Setting Attribute Set Id
+        $configProduct->setNewVariationsAttributeSetId($configProduct->getAttributeSetId()); // Setting Attribute Set Id
         $configProduct->setConfigurableProductsData($configurableProductsData);
         $configProduct->setCanSaveConfigurableAttributes(true);
         $configProduct->setAssociatedProductIds($associatedProductIds); // Setting Associated Products
@@ -1852,9 +1858,13 @@ class ProductCreateTask
             $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
         }
         $productData->setStatus(Status::STATUS_ENABLED);
-        // @codingStandardsIgnoreLine
-        $productSaved = $this->productRepository->save($productData);
-        return $productSaved->getId();
+        try {
+            // @codingStandardsIgnoreLine
+            $productSaved = $this->productRepository->save($productData);
+            return $productSaved->getId();
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
     }
 
     /**
@@ -1964,11 +1974,15 @@ class ProductCreateTask
             'is_qty_decimal'          => 0,
             'qty'                     => $itemStock
         ]);
-        /** @var ProductInterface $productSaved */
-        // @codingStandardsIgnoreStart
-        $productSaved = $this->productRepository->save($productV);
-        return $productSaved->getId();
-        // @codingStandardsIgnoreEnd
+        try {
+            /** @var ProductInterface $productSaved */
+            // @codingStandardsIgnoreStart
+            $productSaved = $this->productRepository->save($productV);
+            return $productSaved->getId();
+            // @codingStandardsIgnoreEnd
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
     }
 
     /**

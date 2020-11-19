@@ -11,8 +11,7 @@ use Magento\Setup\Exception;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Class SyncAttributesValue
- * @package Ls\Replication\Cron
+ * For sync soft attribute value
  */
 class SyncAttributesValue extends ProductCreateTask
 {
@@ -41,12 +40,15 @@ class SyncAttributesValue extends ProductCreateTask
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $cronAttributeCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE,
-                        $this->store->getId());
+                    $cronAttributeCheck = $this->lsr->getStoreConfig(
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+                        $this->store->getId()
+                    );
                     if ($cronAttributeCheck == 1) {
                         $this->replicationHelper->updateConfigValue(
                             $this->replicationHelper->getDateTime(),
-                            LSR::LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE, $this->store->getId()
+                            LSR::LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE,
+                            $this->store->getId()
                         );
                         $this->logger->debug('Running Sync Attributes Value Task for store ' . $this->store->getName());
                         $this->processAttributesValue();
@@ -57,8 +59,11 @@ class SyncAttributesValue extends ProductCreateTask
                     } else {
                         $this->cronStatus = false;
                     }
-                    $this->replicationHelper->updateCronStatus($this->cronStatus,
-                        LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE, $this->store->getId());
+                    $this->replicationHelper->updateCronStatus(
+                        $this->cronStatus,
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
+                        $this->store->getId()
+                    );
                     $this->logger->debug('End Sync Attributes Value Task for store ' . $this->store->getName());
                 }
                 $this->lsr->setStoreId(null);
@@ -90,8 +95,7 @@ class SyncAttributesValue extends ProductCreateTask
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
-            $attributeBatchSize,
-            1
+            $attributeBatchSize
         );
         $collection         = $this->replAttributeValueCollectionFactory->create();
 
@@ -157,7 +161,6 @@ class SyncAttributesValue extends ProductCreateTask
             }
         }
     }
-
 
     /**
      * @param $storeData
