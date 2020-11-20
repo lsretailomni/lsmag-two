@@ -76,7 +76,7 @@ class CreateLsVendorAttributes implements DataPatchInterface
                 'required'                => false,
                 'user_defined'            => true,
                 'searchable'              => true,
-                'filterable'              => true,
+                'filterable'              => false,
                 'visible_on_front'        => true,
                 'used_in_product_listing' => true,
                 'default'                 => null,
