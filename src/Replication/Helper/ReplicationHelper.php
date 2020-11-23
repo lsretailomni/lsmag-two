@@ -997,7 +997,7 @@ class ReplicationHelper extends AbstractHelper
     public function setCollectionPropertiesPlusJoinsForImages(&$collection, SearchCriteriaInterface $criteria)
     {
         $secondTableName = $this->resource->getTableName('catalog_product_entity');
-        $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
+        $thirdTableName  = $this->resource->getTableName('ls_replication_repl_item');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
@@ -1006,7 +1006,8 @@ class ReplicationHelper extends AbstractHelper
             []
         )->joinInner(
             ['third' => $thirdTableName],
-            'main_table.KeyValue' . ' = REPLACE(third.nav_id,"-",",")' . ' AND main_table.scope_id' . ' = third.scope_id',
+            'third.nav_id' . ' = SUBSTRING_INDEX(main_table.KeyValue,",",1)' . '
+            AND main_table.scope_id' . ' = third.scope_id',
             []
         );
         /** @var For Xdebug only to check the query $query */

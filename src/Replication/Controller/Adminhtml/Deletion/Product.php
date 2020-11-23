@@ -203,29 +203,9 @@ class Product extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
-        // Update all dependent ls tables to not processed
-        foreach ($this->ls_tables as $lsTable) {
-            $lsTableName = $this->resource->getTableName($lsTable);
-            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
-            try {
-                $connection->query($lsQuery);
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
-        }
         // Remove the url keys from url_rewrite table
         $this->replicationHelper->resetUrlRewriteByType('product');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
-        // @codingStandardsIgnoreEnd
-        // Reset Data Translation Table for product name
-        $lsTableName = $this->resource->getTableName("ls_replication_repl_data_translation");
-        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
-            processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION . '"';
-        try {
-            $connection->query($lsQuery);
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
         $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();
         $mediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
         try {
@@ -248,6 +228,29 @@ class Product extends Action
                 $this->logger->debug($e->getMessage());
             }
         }
+
+        // Update all dependent ls tables to not processed
+        foreach ($this->ls_tables as $lsTable) {
+            $lsTableName = $this->resource->getTableName($lsTable);
+            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
+            try {
+                $connection->query($lsQuery);
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
+        }
+
+        // @codingStandardsIgnoreEnd
+        // Reset Data Translation Table for product name
+        $lsTableName = $this->resource->getTableName("ls_replication_repl_data_translation");
+        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
+            processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION . '"';
+        try {
+            $connection->query($lsQuery);
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
+
         $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_PRODUCT
@@ -276,6 +279,7 @@ class Product extends Action
             false,
             LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
         );
+        $this->replicationHelper->flushByTypeCode('config');
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
