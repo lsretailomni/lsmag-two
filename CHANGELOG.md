@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.1] - 2020-11-23
+
+### Added
+
+- Added support to replicate and display vendor information on product detail page. [OMNI-5177](https://solutions.lsretail.com/jira/browse/OMNI-5177)
+ 
+### Bugs/Fixes
+
+- Fixed issue with syncing order to LS Order when the order payment is declined. [OMNI-5348](https://solutions.lsretail.com/jira/browse/OMNI-5348)
+- Fixed issue in processing deleted product attribute values in Magento. [OMNI-5348](https://solutions.lsretail.com/jira/browse/OMNI-5348)
+
+
+
 ## [1.6.0] - 2020-11-19
 
 ### Added
