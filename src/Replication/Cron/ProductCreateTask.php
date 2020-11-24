@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplLoyVendorItemMappingRepositoryInterface;
 use \Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
@@ -31,6 +32,7 @@ use \Ls\Replication\Model\ReplItemSearchResults;
 use \Ls\Replication\Model\ReplItemUnitOfMeasureSearchResultsFactory;
 use \Ls\Replication\Model\ReplItemVariantRegistration;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplLoyVendorItemMapping\CollectionFactory as ReplItemVendorCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
@@ -298,6 +300,16 @@ class ProductCreateTask
     public $eavAttributeCollectionFactory;
 
     /**
+     * @var ReplItemVendorCollectionFactory
+     */
+    public $replItemVendorCollectionFactory;
+
+    /**
+     * @var ReplLoyVendorItemMappingRepositoryInterface
+     */
+    public $replVendorItemMappingRepositoryInterface;
+
+    /**
      * ProductCreateTask constructor.
      * @param Factory $factory
      * @param Item $item
@@ -327,6 +339,7 @@ class ProductCreateTask
      * @param LoyaltyHelper $loyaltyHelper
      * @param ReplicationHelper $replicationHelper
      * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
+     * @param ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface
      * @param Logger $logger
      * @param LSR $LSR
      * @param ConfigurableProTypeModel $configurableProTypeModel
@@ -357,6 +370,7 @@ class ProductCreateTask
      * @param AttributeGroupRepositoryInterface $attributeGroupRepository
      * @param ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory
      * @param EavAttributeCollectionFactory $eavAttributeCollectionFactory
+     * @param ReplItemVendorCollectionFactory $replItemVendorCollectionFactory
      */
     public function __construct(
         Factory $factory,
@@ -387,6 +401,7 @@ class ProductCreateTask
         LoyaltyHelper $loyaltyHelper,
         ReplicationHelper $replicationHelper,
         ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
+        ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface,
         Logger $logger,
         LSR $LSR,
         ConfigurableProTypeModel $configurableProTypeModel,
@@ -416,7 +431,8 @@ class ProductCreateTask
         GroupFactory $attributeSetGroupFactory,
         AttributeGroupRepositoryInterface $attributeGroupRepository,
         ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory,
-        EavAttributeCollectionFactory $eavAttributeCollectionFactory
+        EavAttributeCollectionFactory $eavAttributeCollectionFactory,
+        ReplItemVendorCollectionFactory $replItemVendorCollectionFactory
     ) {
         $this->factory                                   = $factory;
         $this->item                                      = $item;
@@ -447,6 +463,7 @@ class ProductCreateTask
         $this->loyaltyHelper                             = $loyaltyHelper;
         $this->replicationHelper                         = $replicationHelper;
         $this->replAttributeValueRepositoryInterface     = $replAttributeValueRepositoryInterface;
+        $this->replVendorItemMappingRepositoryInterface  = $replVendorItemMappingRepositoryInterface;
         $this->lsr                                       = $LSR;
         $this->configurableProTypeModel                  = $configurableProTypeModel;
         $this->stockHelper                               = $stockHelper;
@@ -476,6 +493,7 @@ class ProductCreateTask
         $this->attributeGroupRepository                  = $attributeGroupRepository;
         $this->replItemUnitOfMeasureSearchResultsFactory = $replItemUnitOfMeasureSearchResultsFactory;
         $this->eavAttributeCollectionFactory             = $eavAttributeCollectionFactory;
+        $this->replItemVendorCollectionFactory           = $replItemVendorCollectionFactory;
     }
 
     /**
@@ -583,6 +601,7 @@ class ProductCreateTask
                                 $productData->setMetaTitle($item->getDescription());
                                 $productData->setDescription($item->getDetails());
                                 $productData->setWeight($item->getGrossWeight());
+                                $productData->setAttributeSetId($productData->getAttributeSetId());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData = $this->setProductStatus($productData, $item->getBlockedOnECom());
                                 $product     = $this->getProductAttributes($productData, $item);
@@ -642,7 +661,7 @@ class ProductCreateTask
                                     $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                     $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                     $totalUomCodes        = $this->getUomCodes($item->getNavId());
-                                    if (!empty($variants) || count($totalUomCodes) > 1) {
+                                    if (!empty($variants) || count($totalUomCodes[$item->getNavId()]) > 1) {
                                         $this->createConfigurableProducts(
                                             $productSaved,
                                             $item,
@@ -871,10 +890,14 @@ class ProductCreateTask
             }
         }
         if (!empty($resultantCategoryIds)) {
-            $this->categoryLinkManagement->assignProductToCategories(
-                $product->getSku(),
-                $resultantCategoryIds
-            );
+            try {
+                $this->categoryLinkManagement->assignProductToCategories(
+                    $product->getSku(),
+                    $resultantCategoryIds
+                );
+            } catch (Exception $e) {
+                $this->logger->info("Product deleted from admin configuration. Things will re-run again");
+            }
         }
     }
 
@@ -1159,8 +1182,9 @@ class ProductCreateTask
             ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
         ];
 
-        $itemUom        = [];
-        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        $itemUom          = [];
+        $itemUom[$itemId] = [];
+        $searchCriteria   = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
         /** @var ReplItemUnitOfMeasure $items */
         try {
             $items = $this->replItemUomRepository->getList($searchCriteria)->getItems();
@@ -1701,9 +1725,9 @@ class ProductCreateTask
             $configProduct->getExtensionAttributes()->setConfigurableProductOptions($options);
         }
         $configProduct->setTypeId(Configurable::TYPE_CODE); // Setting Product Type As Configurable
-        $configProduct->setAffectConfigurableProductAttributes(4);
+        $configProduct->setAffectConfigurableProductAttributes($configProduct->getAttributeSetId());
         $this->configurable->setUsedProductAttributes($configProduct, $attributesIds);
-        $configProduct->setNewVariationsAttributeSetId(4); // Setting Attribute Set Id
+        $configProduct->setNewVariationsAttributeSetId($configProduct->getAttributeSetId()); // Setting Attribute Set Id
         $configProduct->setConfigurableProductsData($configurableProductsData);
         $configProduct->setCanSaveConfigurableAttributes(true);
         $configProduct->setAssociatedProductIds($associatedProductIds); // Setting Associated Products
@@ -1834,9 +1858,13 @@ class ProductCreateTask
             $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
         }
         $productData->setStatus(Status::STATUS_ENABLED);
-        // @codingStandardsIgnoreLine
-        $productSaved = $this->productRepository->save($productData);
-        return $productSaved->getId();
+        try {
+            // @codingStandardsIgnoreLine
+            $productSaved = $this->productRepository->save($productData);
+            return $productSaved->getId();
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
     }
 
     /**
@@ -1946,11 +1974,15 @@ class ProductCreateTask
             'is_qty_decimal'          => 0,
             'qty'                     => $itemStock
         ]);
-        /** @var ProductInterface $productSaved */
-        // @codingStandardsIgnoreStart
-        $productSaved = $this->productRepository->save($productV);
-        return $productSaved->getId();
-        // @codingStandardsIgnoreEnd
+        try {
+            /** @var ProductInterface $productSaved */
+            // @codingStandardsIgnoreStart
+            $productSaved = $this->productRepository->save($productV);
+            return $productSaved->getId();
+            // @codingStandardsIgnoreEnd
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
     }
 
     /**

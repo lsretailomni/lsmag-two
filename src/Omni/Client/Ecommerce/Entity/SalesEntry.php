@@ -48,6 +48,31 @@ class SalesEntry extends Entity
     protected $ClickAndCollectOrder = null;
 
     /**
+     * @property Address $ContactAddress
+     */
+    protected $ContactAddress = null;
+
+    /**
+     * @property string $ContactDayTimePhoneNo
+     */
+    protected $ContactDayTimePhoneNo = null;
+
+    /**
+     * @property string $ContactEmail
+     */
+    protected $ContactEmail = null;
+
+    /**
+     * @property string $ContactName
+     */
+    protected $ContactName = null;
+
+    /**
+     * @property string $CustomerId
+     */
+    protected $CustomerId = null;
+
+    /**
      * @property string $CustomerOrderNo
      */
     protected $CustomerOrderNo = null;
@@ -106,11 +131,6 @@ class SalesEntry extends Entity
      * @property string $ShipToName
      */
     protected $ShipToName = null;
-
-    /**
-     * @property string $ShipToPhoneNumber
-     */
-    protected $ShipToPhoneNumber = null;
 
     /**
      * @property string $ShippingAgentCode
@@ -268,6 +288,96 @@ class SalesEntry extends Entity
     public function getClickAndCollectOrder()
     {
         return $this->ClickAndCollectOrder;
+    }
+
+    /**
+     * @param Address $ContactAddress
+     * @return $this
+     */
+    public function setContactAddress($ContactAddress)
+    {
+        $this->ContactAddress = $ContactAddress;
+        return $this;
+    }
+
+    /**
+     * @return Address
+     */
+    public function getContactAddress()
+    {
+        return $this->ContactAddress;
+    }
+
+    /**
+     * @param string $ContactDayTimePhoneNo
+     * @return $this
+     */
+    public function setContactDayTimePhoneNo($ContactDayTimePhoneNo)
+    {
+        $this->ContactDayTimePhoneNo = $ContactDayTimePhoneNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactDayTimePhoneNo()
+    {
+        return $this->ContactDayTimePhoneNo;
+    }
+
+    /**
+     * @param string $ContactEmail
+     * @return $this
+     */
+    public function setContactEmail($ContactEmail)
+    {
+        $this->ContactEmail = $ContactEmail;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactEmail()
+    {
+        return $this->ContactEmail;
+    }
+
+    /**
+     * @param string $ContactName
+     * @return $this
+     */
+    public function setContactName($ContactName)
+    {
+        $this->ContactName = $ContactName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactName()
+    {
+        return $this->ContactName;
+    }
+
+    /**
+     * @param string $CustomerId
+     * @return $this
+     */
+    public function setCustomerId($CustomerId)
+    {
+        $this->CustomerId = $CustomerId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->CustomerId;
     }
 
     /**
@@ -504,24 +614,6 @@ class SalesEntry extends Entity
     public function getShipToName()
     {
         return $this->ShipToName;
-    }
-
-    /**
-     * @param string $ShipToPhoneNumber
-     * @return $this
-     */
-    public function setShipToPhoneNumber($ShipToPhoneNumber)
-    {
-        $this->ShipToPhoneNumber = $ShipToPhoneNumber;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getShipToPhoneNumber()
-    {
-        return $this->ShipToPhoneNumber;
     }
 
     /**

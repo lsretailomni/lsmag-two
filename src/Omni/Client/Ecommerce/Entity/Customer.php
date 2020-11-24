@@ -17,11 +17,6 @@ class Customer extends Entity
     protected $Address = null;
 
     /**
-     * @property string $CellularPhone
-     */
-    protected $CellularPhone = null;
-
-    /**
      * @property Currency $Currency
      */
     protected $Currency = null;
@@ -72,11 +67,6 @@ class Customer extends Entity
     protected $NameSuffix = null;
 
     /**
-     * @property string $PhoneLocal
-     */
-    protected $PhoneLocal = null;
-
-    /**
      * @property string $ReceiptEmail
      */
     protected $ReceiptEmail = null;
@@ -112,24 +102,6 @@ class Customer extends Entity
     public function getAddress()
     {
         return $this->Address;
-    }
-
-    /**
-     * @param string $CellularPhone
-     * @return $this
-     */
-    public function setCellularPhone($CellularPhone)
-    {
-        $this->CellularPhone = $CellularPhone;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCellularPhone()
-    {
-        return $this->CellularPhone;
     }
 
     /**
@@ -310,24 +282,6 @@ class Customer extends Entity
     public function getNameSuffix()
     {
         return $this->NameSuffix;
-    }
-
-    /**
-     * @param string $PhoneLocal
-     * @return $this
-     */
-    public function setPhoneLocal($PhoneLocal)
-    {
-        $this->PhoneLocal = $PhoneLocal;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPhoneLocal()
-    {
-        return $this->PhoneLocal;
     }
 
     /**

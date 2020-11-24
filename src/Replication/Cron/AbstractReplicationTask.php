@@ -295,6 +295,10 @@ abstract class AbstractReplicationTask
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT, ($storeId) ?: false);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ITEM_UPDATES, ($storeId) ?: false);
+        } elseif ($confPath == "ls_mag/replication/repl_vendor") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR, ($storeId) ?: false);
+        } elseif ($confPath == "ls_mag/replication/repl_loy_vendor_item_mapping") {
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE, ($storeId) ?: false);
         }
     }
 
@@ -402,7 +406,6 @@ abstract class AbstractReplicationTask
         $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
         // @codingStandardsIgnoreEnd
         foreach ($uniqueAttributes as $attribute) {
-
             $field_name_optimized   = str_replace('_', ' ', $attribute);
             $field_name_capitalized = ucwords($field_name_optimized);
             $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);

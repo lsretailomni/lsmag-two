@@ -50,6 +50,11 @@ class ImageView extends Entity
     protected $LocationType = null;
 
     /**
+     * @property string $MediaId
+     */
+    protected $MediaId = null;
+
+    /**
      * @property string $StreamURL
      */
     protected $StreamURL = null;
@@ -188,6 +193,24 @@ class ImageView extends Entity
     public function getLocationType()
     {
         return $this->LocationType;
+    }
+
+    /**
+     * @param string $MediaId
+     * @return $this
+     */
+    public function setMediaId($MediaId)
+    {
+        $this->MediaId = $MediaId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMediaId()
+    {
+        return $this->MediaId;
     }
 
     /**

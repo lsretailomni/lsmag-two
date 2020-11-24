@@ -84,13 +84,13 @@ class OrderHelper extends AbstractHelper
         Order $orderResourceModel
     ) {
         parent::__construct($context);
-        $this->order           = $order;
-        $this->basketHelper    = $basketHelper;
-        $this->loyaltyHelper   = $loyaltyHelper;
-        $this->orderRepository = $orderRepository;
-        $this->customerSession = $customerSession;
-        $this->checkoutSession = $checkoutSession;
-        $this->lsr             = $lsr;
+        $this->order              = $order;
+        $this->basketHelper       = $basketHelper;
+        $this->loyaltyHelper      = $loyaltyHelper;
+        $this->orderRepository    = $orderRepository;
+        $this->customerSession    = $customerSession;
+        $this->checkoutSession    = $checkoutSession;
+        $this->lsr                = $lsr;
         $this->orderResourceModel = $orderResourceModel;
     }
 
@@ -447,6 +447,7 @@ class OrderHelper extends AbstractHelper
                 $this->basketHelper->searchCriteriaBuilder
                     ->addFilter('document_id', null, 'null')
                     ->addFilter('store_id', $storeId, 'eq')
+                    ->addFilter('status', 'canceled', 'neq')
                     ->create()
             )->getItems();
             return $orders;

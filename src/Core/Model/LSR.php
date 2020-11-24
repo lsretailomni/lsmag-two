@@ -149,6 +149,13 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //execute time for sync attributes value
     const LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE = 'ls_mag/replication/last_execute_repl_attributes_value_sync';
 
+    //check for Vendor Attributes Value Sync
+    const SC_SUCCESS_CRON_VENDOR = 'ls_mag/replication/success_repl_vendor';
+    const SC_SUCCESS_CRON_VENDOR_ATTRIBUTE = 'ls_mag/replication/success_sync_repl_vendor_attributes';
+
+    //execute time for sync vendor attributes value
+    const LAST_EXECUTE_REPL_SYNC_VENDOR_ATTRIBUTES = 'ls_mag/replication/last_execute_repl_vendor_attributes_sync';
+
     //check for Data Translation
     const SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO = 'ls_mag/replication/success_repl_data_translation_to_magento';
     const SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_data_translation_to_magento';
@@ -379,8 +386,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_INDUSTRY_VALUE = 'ls_mag/ls_industry/ls_choose_industry';
 
     const LS_UOM_ATTRIBUTE = 'lsr_uom';
-
     const LS_UOM_ATTRIBUTE_QTY = 'lsr_uom_qty';
+
+    const LS_VENDOR_ATTRIBUTE = 'lsr_vendor';
+    const LS_ITEM_VENDOR_ATTRIBUTE = 'lsr_item_vendor';
 
     /**
      * @var ScopeConfigInterface

@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.1] - 2020-11-23
+
+### Added
+
+- Added support to replicate and display vendor information on product detail page. [OMNI-5177](https://solutions.lsretail.com/jira/browse/OMNI-5177)
+ 
+### Bugs/Fixes
+
+- Fixed issue with syncing order to LS Order when the order payment is declined. [OMNI-5348](https://solutions.lsretail.com/jira/browse/OMNI-5348)
+- Fixed issue in processing deleted product attribute values in Magento. [OMNI-5348](https://solutions.lsretail.com/jira/browse/OMNI-5348)
+
+
+
+## [1.6.0] - 2020-11-19
+
+### Added
+
+- Added support to dynamically create attribute sets based on Item Category code or Product Group ID. [OMNI-5319](https://solutions.lsretail.com/jira/browse/OMNI-5319)
+- Added configurable option in the admin panel to choose attribute set configuration. [OMNI-5321](https://solutions.lsretail.com/jira/browse/OMNI-5321)
+- Added support for item distribution and prices based on multiple Unit of Measures (UoM). [OMNI-5295](https://solutions.lsretail.com/jira/browse/OMNI-5295)
+- Added support to save Member Birthday & Gender in Magento and sync back to LS Central. [OMNI-5302](https://solutions.lsretail.com/jira/browse/OMNI-5302)
+- Added BlockedOnEcommerce option in the Item Grid in the backend and in grid Filter. [OMNI-5318](https://solutions.lsretail.com/jira/browse/OMNI-5318)
+ 
+### Changed
+
+- Now all items will be assigned to the dynamic attribute set created against the Item Category code or Product Group ID instead of default attribute set.
+- Now the same product can be available and sold in multiple Unit of Measures.
+
+### Bugs/Fixes
+
+- Fixed issue with resetting and deleting data using table prefix.. [OMNI-5322](https://solutions.lsretail.com/jira/browse/OMNI-5322)
+- Fixed stock and hierarchy code issues when a multi store with different industries is configured in a same magento instance. [OMNI-5323](https://solutions.lsretail.com/jira/browse/OMNI-5323)
+- Fixed issues with hierarchy data translation in multi store instance. [OMNI-5324](https://solutions.lsretail.com/jira/browse/OMNI-5324)
+- Fixed issue in syncing order to LS Central using PayPal express checkout. [OMNI-5336](https://solutions.lsretail.com/jira/browse/OMNI-5336)
+- Fixed issues with product images not showing on product listing page / Search results. [OMNI-5340](https://solutions.lsretail.com/jira/browse/OMNI-5340)
+
+
+
 ## [1.5.1] - 2020-10-05
 
 ### Bugs/Fixes

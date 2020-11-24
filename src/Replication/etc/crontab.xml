@@ -70,6 +70,13 @@
              method="execute">
             <schedule>*/15 * * * *</schedule>
         </job>
+        <job name="repl_vendor" instance="Ls\Replication\Cron\ReplEcommVendorTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_loy_vendor_item_mapping" instance="Ls\Replication\Cron\ReplEcommVendorItemMappingTask"
+             method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
     </group>
     <group id="replication">
         <job name="repl_attributes" instance="Ls\Replication\Cron\AttributesCreateTask" method="execute">
@@ -84,7 +91,8 @@
         <job name="repl_discount_create" instance="Ls\Replication\Cron\DiscountCreateTask" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
-        <job name="repl_data_translation_to_magento" instance="Ls\Replication\Cron\DataTranslationTask" method="execute">
+        <job name="repl_data_translation_to_magento" instance="Ls\Replication\Cron\DataTranslationTask"
+             method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
         <job name="repl_price_sync" instance="Ls\Replication\Cron\SyncPrice" method="execute">
@@ -97,6 +105,9 @@
             <schedule>*/5 * * * *</schedule>
         </job>
         <job name="repl_attributes_value_sync" instance="Ls\Replication\Cron\SyncAttributesValue" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="repl_vendor_attributes_sync" instance="Ls\Replication\Cron\SyncVendorAttributesValue" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
     </group>

@@ -138,7 +138,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "MediaId": true
         },
         "constraint": {
             "PRIMARY": true

@@ -78,6 +78,28 @@ interface ReplImageInterface
     public function getLocationType();
 
     /**
+     * @param string $MediaId
+     * @return $this
+     */
+    public function setMediaId($MediaId);
+
+    /**
+     * @return string
+     */
+    public function getMediaId();
+
+    /**
+     * @param ImageSize $Size
+     * @return $this
+     */
+    public function setSize($Size);
+
+    /**
+     * @return ImageSize
+     */
+    public function getSize();
+
+    /**
      * @param string $scope
      * @return $this
      */

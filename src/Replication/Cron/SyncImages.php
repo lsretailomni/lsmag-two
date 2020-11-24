@@ -14,8 +14,8 @@ use Magento\Framework\Exception\StateException;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Class SyncInventory
- * @package Ls\Replication\Cron
+ * Creates images
+ * for items and variants
  */
 class SyncImages extends ProductCreateTask
 {
@@ -28,7 +28,7 @@ class SyncImages extends ProductCreateTask
     /**
      * @param null $storeData
      * @throws InputException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
     {
@@ -94,19 +94,13 @@ class SyncImages extends ProductCreateTask
             $batchSize,
             false
         );
-
         /** @var  $collection */
         $collection = $this->replImageLinkCollectionFactory->create();
 
         /** we only need unique product Id's which has any images to modify */
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+        $this->replicationHelper->setCollectionPropertiesPlusJoinsForImages(
             $collection,
-            $criteria,
-            'KeyValue',
-            'catalog_product_entity',
-            'sku',
-            true,
-            true
+            $criteria
         );
         $collection->getSelect()->order('main_table.processed ASC');
         if ($collection->getSize() > 0) {
@@ -185,14 +179,9 @@ class SyncImages extends ProductCreateTask
             /** @var  $collection */
             $collection = $this->replImageLinkCollectionFactory->create();
             /** We only need sku which has any images to modify */
-            $this->replicationHelper->setCollectionPropertiesPlusJoin(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinsForImages(
                 $collection,
-                $criteria,
-                'KeyValue',
-                'catalog_product_entity',
-                'sku',
-                true,
-                true
+                $criteria
             );
             $this->remainingRecords = $collection->getSize();
         }
@@ -245,7 +234,7 @@ class SyncImages extends ProductCreateTask
      * @throws InputException
      * @throws LocalizedException
      * @throws StateException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function processImages($itemImage, $sortOrder, $itemSku, $uomCode = null)
     {
@@ -253,8 +242,7 @@ class SyncImages extends ProductCreateTask
             $itemSku = $itemSku . '-' . $uomCode;
         }
         try {
-            $productData = $this->productRepository->get($itemSku, true, $this->store->getId(), true);
-            $productData->setData('store_id', 0);
+            $productData = $this->productRepository->get($itemSku, true, 0, true);
         } catch (NoSuchEntityException $e) {
             return;
         }
