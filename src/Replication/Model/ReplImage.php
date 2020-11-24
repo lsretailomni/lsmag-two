@@ -52,6 +52,16 @@ class ReplImage extends AbstractModel implements ReplImageInterface, IdentityInt
     protected $LocationType = null;
 
     /**
+     * @property string $MediaId
+     */
+    protected $MediaId = null;
+
+    /**
+     * @property ImageSize $Size
+     */
+    protected $Size = null;
+
+    /**
      * @property string $scope
      */
     protected $scope = null;
@@ -224,6 +234,46 @@ class ReplImage extends AbstractModel implements ReplImageInterface, IdentityInt
     public function getLocationType()
     {
         return $this->getData( 'LocationType' );
+    }
+
+    /**
+     * @param string $MediaId
+     * @return $this
+     */
+    public function setMediaId($MediaId)
+    {
+        $this->setData( 'MediaId', $MediaId );
+        $this->MediaId = $MediaId;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMediaId()
+    {
+        return $this->getData( 'MediaId' );
+    }
+
+    /**
+     * @param ImageSize $Size
+     * @return $this
+     */
+    public function setSize($Size)
+    {
+        $this->setData( 'Size', $Size );
+        $this->Size = $Size;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ImageSize
+     */
+    public function getSize()
+    {
+        return $this->getData( 'Size' );
     }
 
     /**

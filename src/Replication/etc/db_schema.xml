@@ -120,6 +120,7 @@
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="text" name="Location" nullable="true" comment="Location"/>
     <column xsi:type="text" name="LocationType" nullable="true" comment="LocationType"/>
+    <column xsi:type="text" name="MediaId" nullable="true" comment="MediaId"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>

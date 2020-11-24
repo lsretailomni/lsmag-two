@@ -111,11 +111,6 @@ class MemberContact extends Entity
     protected $MiddleName = null;
 
     /**
-     * @property string $MobilePhone
-     */
-    protected $MobilePhone = null;
-
-    /**
      * @property string $Name
      */
     protected $Name = null;
@@ -124,11 +119,6 @@ class MemberContact extends Entity
      * @property string $Password
      */
     protected $Password = null;
-
-    /**
-     * @property string $Phone
-     */
-    protected $Phone = null;
 
     /**
      * @property string $UserName
@@ -498,24 +488,6 @@ class MemberContact extends Entity
     }
 
     /**
-     * @param string $MobilePhone
-     * @return $this
-     */
-    public function setMobilePhone($MobilePhone)
-    {
-        $this->MobilePhone = $MobilePhone;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMobilePhone()
-    {
-        return $this->MobilePhone;
-    }
-
-    /**
      * @param string $Name
      * @return $this
      */
@@ -549,24 +521,6 @@ class MemberContact extends Entity
     public function getPassword()
     {
         return $this->Password;
-    }
-
-    /**
-     * @param string $Phone
-     * @return $this
-     */
-    public function setPhone($Phone)
-    {
-        $this->Phone = $Phone;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPhone()
-    {
-        return $this->Phone;
     }
 
     /**

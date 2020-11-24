@@ -58,6 +58,11 @@ class Order extends Entity
     protected $ContactName = null;
 
     /**
+     * @property string $CustomerId
+     */
+    protected $CustomerId = null;
+
+    /**
      * @property string $DayPhoneNumber
      */
     protected $DayPhoneNumber = null;
@@ -83,11 +88,6 @@ class Order extends Entity
     protected $LineItemCount = null;
 
     /**
-     * @property string $MobileNumber
-     */
-    protected $MobileNumber = null;
-
-    /**
      * @property SalesEntryStatus $OrderStatus
      */
     protected $OrderStatus = null;
@@ -101,11 +101,6 @@ class Order extends Entity
      * @property PaymentStatus $PaymentStatus
      */
     protected $PaymentStatus = null;
-
-    /**
-     * @property string $PhoneNumber
-     */
-    protected $PhoneNumber = null;
 
     /**
      * @property float $PointAmount
@@ -156,11 +151,6 @@ class Order extends Entity
      * @property string $ShipToName
      */
     protected $ShipToName = null;
-
-    /**
-     * @property string $ShipToPhoneNumber
-     */
-    protected $ShipToPhoneNumber = null;
 
     /**
      * @property string $ShippingAgentCode
@@ -342,6 +332,24 @@ class Order extends Entity
     }
 
     /**
+     * @param string $CustomerId
+     * @return $this
+     */
+    public function setCustomerId($CustomerId)
+    {
+        $this->CustomerId = $CustomerId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->CustomerId;
+    }
+
+    /**
      * @param string $DayPhoneNumber
      * @return $this
      */
@@ -432,24 +440,6 @@ class Order extends Entity
     }
 
     /**
-     * @param string $MobileNumber
-     * @return $this
-     */
-    public function setMobileNumber($MobileNumber)
-    {
-        $this->MobileNumber = $MobileNumber;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMobileNumber()
-    {
-        return $this->MobileNumber;
-    }
-
-    /**
      * @param SalesEntryStatus|string $OrderStatus
      * @return $this
      * @throws InvalidEnumException
@@ -531,24 +521,6 @@ class Order extends Entity
     public function getPaymentStatus()
     {
         return $this->PaymentStatus;
-    }
-
-    /**
-     * @param string $PhoneNumber
-     * @return $this
-     */
-    public function setPhoneNumber($PhoneNumber)
-    {
-        $this->PhoneNumber = $PhoneNumber;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPhoneNumber()
-    {
-        return $this->PhoneNumber;
     }
 
     /**
@@ -729,24 +701,6 @@ class Order extends Entity
     public function getShipToName()
     {
         return $this->ShipToName;
-    }
-
-    /**
-     * @param string $ShipToPhoneNumber
-     * @return $this
-     */
-    public function setShipToPhoneNumber($ShipToPhoneNumber)
-    {
-        $this->ShipToPhoneNumber = $ShipToPhoneNumber;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getShipToPhoneNumber()
-    {
-        return $this->ShipToPhoneNumber;
     }
 
     /**

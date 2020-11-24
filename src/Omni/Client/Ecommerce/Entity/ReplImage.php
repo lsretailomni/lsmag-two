@@ -45,6 +45,16 @@ class ReplImage
     protected $LocationType = null;
 
     /**
+     * @property string $MediaId
+     */
+    protected $MediaId = null;
+
+    /**
+     * @property ImageSize $Size
+     */
+    protected $Size = null;
+
+    /**
      * @property string $scope
      */
     protected $scope = null;
@@ -170,6 +180,42 @@ class ReplImage
     public function getLocationType()
     {
         return $this->LocationType;
+    }
+
+    /**
+     * @param string $MediaId
+     * @return $this
+     */
+    public function setMediaId($MediaId)
+    {
+        $this->MediaId = $MediaId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMediaId()
+    {
+        return $this->MediaId;
+    }
+
+    /**
+     * @param ImageSize $Size
+     * @return $this
+     */
+    public function setSize($Size)
+    {
+        $this->Size = $Size;
+        return $this;
+    }
+
+    /**
+     * @return ImageSize
+     */
+    public function getSize()
+    {
+        return $this->Size;
     }
 
     /**
