@@ -87,6 +87,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_PRODUCT_INVENTORY_BATCH_SIZE = 'ls_mag/replication/product_inventory_batch_size';
     const SC_REPLICATION_PRODUCT_PRICES_BATCH_SIZE = 'ls_mag/replication/product_prices_batch_size';
     const SC_REPLICATION_PRODUCT_IMAGES_BATCH_SIZE = 'ls_mag/replication/product_images_batch_size';
+    const SC_REPLICATION_ITEM_MODIFIER_BATCH_SIZE = 'ls_mag/replication/item_modifier_batch_size';
     const SC_REPLICATION_PRODUCT_BARCODE_BATCH_SIZE = 'ls_mag/replication/product_barcode_batch_size';
     const SC_REPLICATION_VARIANT_BATCH_SIZE = 'ls_mag/replication/variant_batch_size';
     const SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE =
@@ -140,6 +141,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //check for Product Attributes Value Sync
     const SC_SUCCESS_CRON_ATTRIBUTES_VALUE = 'ls_mag/replication/success_sync_attributes_value';
+
+    //For Item Modifiers in Hospitality
+    const SC_SUCCESS_CRON_ITEM_MODIFIER = 'ls_mag/replication/success_process_item_modifier';
+    const SC_ITEM_MODIFIER_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_process_item_modifier';
 
     //execute time for sync attributes value
     const LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE = 'ls_mag/replication/last_execute_repl_attributes_value_sync';
@@ -607,7 +612,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * This can be used on all frontend areas to dynamically fetch the current storeId.
-     * Try not to use it on backend.
+     * Try not to use it on backend or through Crons.
      * @return int
      * @throws NoSuchEntityException
      */
@@ -643,26 +648,54 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @return string
      * @throws NoSuchEntityException
      */
-    public function getOmniVersion()
+    public function getOmniVersion($storeId = null)
     {
-        return $this->getStoreConfig(self::SC_SERVICE_VERSION, $this->getCurrentStoreId());
+        //If StoreID is not passed they retrieve it from the global area.
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+        return $this->getStoreConfig(self::SC_SERVICE_VERSION, $storeId);
     }
 
     /**
      * @return string
      * @throws NoSuchEntityException
      */
-    public function getOmniTimeout()
+    public function getOmniTimeout($storeId = null)
     {
-        return $this->getStoreConfig(self::SC_SERVICE_TIMEOUT, $this->getCurrentStoreId());
+        //If StoreID is not passed they retrieve it from the global area.
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+
+        return $this->getStoreConfig(self::SC_SERVICE_TIMEOUT, $storeId);
     }
 
     /**
      * @return string
      * @throws NoSuchEntityException
      */
-    public function getCurrentIndustry()
+    public function getCurrentIndustry($storeId = null)
     {
-        return $this->getStoreConfig(self::LS_INDUSTRY_VALUE, $this->getCurrentStoreId());
+        //If StoreID is not passed they retrieve it from the global area.
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+
+        return $this->getStoreConfig(self::LS_INDUSTRY_VALUE, $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function isHospitalityStore($storeId = null)
+    {
+        //If StoreID is not passed they retrieve it from the global area.
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+        return ($this->getCurrentIndustry($storeId) == self::LS_INDUSTRY_VALUE_HOSPITALITY);
     }
 }
