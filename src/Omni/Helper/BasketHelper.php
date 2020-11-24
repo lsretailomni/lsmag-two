@@ -231,6 +231,7 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
      * @param Quote $quote
      * @param Entity\OneList $oneList
      * @return Entity\OneList
