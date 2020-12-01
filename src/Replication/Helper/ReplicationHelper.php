@@ -689,6 +689,20 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Format the Item Modifier and Recipe
+     * @param $code
+     * @return mixed|string
+     */
+    public function formatMidifier($code)
+    {
+        $code = strtolower(trim($code));
+        $code = str_replace(' ', '_', $code);
+        // convert all special characters and replace it with _
+        $code = preg_replace('/[^a-zA-Z0-9_.]/', '_', $code);
+        return $code;
+    }
+
+    /**
      * @return array
      */
     public function getAllWebsitesIds()
