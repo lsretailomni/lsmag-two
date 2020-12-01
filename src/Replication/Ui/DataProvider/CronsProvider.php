@@ -299,6 +299,14 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
+        if ($cronName == 'process_item_recipe') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(
+                LSR::SC_SUCCESS_CRON_ITEM_RECIPE,
+                $storeId
+            );
+            return $fullReplicationStatus;
+        }
         return $fullReplicationStatus;
 
     }
