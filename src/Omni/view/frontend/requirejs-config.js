@@ -21,12 +21,11 @@ var config = {
             'Magento_Swatches/js/swatch-renderer': {
                 'Ls_Omni/js/model/swatch-uomswitch': true
             }
+            'Magento_Checkout/js/model/shipping-save-processor/payload-extender': {
+                'Ls_Omni/js/model/shipping-save-processor/default': true
+            }
         },
-        'Magento_Checkout/js/model/shipping-save-processor/payload-extender': {
-            'Ls_Hospitality/js/model/shipping-save-processor/default': true
+        shim: {
+            'Ls_Omni/js/owl.carousel.min': ['jquery', 'jquery/ui']
         }
-    },
-    shim: {
-        'Ls_Omni/js/owl.carousel.min': ['jquery', 'jquery/ui']
-    }
-};
+    };
