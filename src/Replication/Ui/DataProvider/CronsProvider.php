@@ -3,8 +3,8 @@
 namespace Ls\Replication\Ui\DataProvider;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
+use Ls\Core\Model\LSR;
+use Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\Request\Http;
@@ -288,6 +288,21 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         if ($cronName == 'repl_vendor_attributes_sync') {
             $fullReplicationStatus = $this->lsr->getStoreConfig(
                 LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE,
+                $storeId
+            );
+            return $fullReplicationStatus;
+        }
+        if ($cronName == 'process_item_modifier') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(
+                LSR::SC_SUCCESS_CRON_ITEM_MODIFIER,
+                $storeId
+            );
+            return $fullReplicationStatus;
+        }
+
+        if ($cronName == 'process_item_recipe') {
+            $fullReplicationStatus = $this->lsr->getStoreConfig(
+                LSR::SC_SUCCESS_CRON_ITEM_RECIPE,
                 $storeId
             );
             return $fullReplicationStatus;

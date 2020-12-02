@@ -689,6 +689,20 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Format the Item Modifier and Recipe
+     * @param $code
+     * @return mixed|string
+     */
+    public function formatMidifier($code)
+    {
+        $code = strtolower(trim($code));
+        $code = str_replace(' ', '_', $code);
+        // convert all special characters and replace it with _
+        $code = preg_replace('/[^a-zA-Z0-9_.]/', '_', $code);
+        return $code;
+    }
+
+    /**
      * @return array
      */
     public function getAllWebsitesIds()
@@ -1145,6 +1159,14 @@ class ReplicationHelper extends AbstractHelper
     public function getItemModifiersBatchSize()
     {
         return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_ITEM_MODIFIER_BATCH_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemRecipeBatchSize()
+    {
+        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_ITEM_RECIPE_BATCH_SIZE);
     }
 
     /**
