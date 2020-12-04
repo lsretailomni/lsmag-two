@@ -134,8 +134,11 @@ class Info extends Template
             $address .= $shipToAddress->getPostCode() ? $shipToAddress->getPostCode() . '<br/>' : '';
             $address .= $this->getCountryName($shipToAddress->getCountry()) ?
                 $this->getCountryName($shipToAddress->getCountry()) . '<br/>' : '';
+            /** TODO update with Address Phone Number */
+            /** Removing this field to resolve the Omni 4.13 compatibility
             $address .= $order->getShipToPhoneNumber() ?
                 "<a href='tel:" . $order->getShipToPhoneNumber() . "'>" . $order->getShipToPhoneNumber() . '</a>' : '';
+             */
         }
         return $address;
     }

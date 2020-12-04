@@ -119,7 +119,6 @@ class OrderHelper extends AbstractHelper
             $customerEmail = $order->getCustomerEmail();
             $customerName  = $order->getShippingAddress()->getFirstname() .
                 ' ' . $order->getShippingAddress()->getLastname();
-            $mobileNumber  = $order->getShippingAddress()->getTelephone();
             if ($this->customerSession->isLoggedIn()) {
                 $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
             } else {
@@ -141,8 +140,6 @@ class OrderHelper extends AbstractHelper
                 ->setShipToEmail($customerEmail)
                 ->setContactName($customerName)
                 ->setShipToName($customerName)
-                ->setMobileNumber($mobileNumber)
-                ->setShipToPhoneNumber($mobileNumber)
                 ->setContactAddress($this->convertAddress($order->getBillingAddress()))
                 ->setShipToAddress($this->convertAddress($order->getShippingAddress()))
                 ->setStoreId($storeId);
@@ -247,7 +244,8 @@ class OrderHelper extends AbstractHelper
             ->setCity($magentoAddress->getCity())
             ->setCountry($magentoAddress->getCountryId())
             ->setStateProvinceRegion($region)
-            ->setPostCode($magentoAddress->getPostcode());
+            ->setPostCode($magentoAddress->getPostcode())
+            ->setPhoneNumber($magentoAddress->getTelephone());
 
         return $omniAddress;
     }
