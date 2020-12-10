@@ -373,6 +373,8 @@ class CategoryCreateTask
                     $catsub->setStoreId($this->store->getId());
                     $catsub->getResource()->saveAttribute($catsub, 'nav_id');
                 } else {
+                    if (empty($subCategoryExistData))
+                        continue;
                     if ($hierarchyNodeSub->getIsUpdated() == 1) {
                         $subCategoryExistData->setData(
                             'name',
