@@ -435,7 +435,7 @@ class ContactHelper extends AbstractHelper
                     ->setCountryId($this->getCountryId($addressInfo->getCountry()))
                     ->setPostcode($addressInfo->getPostCode())
                     ->setCity($addressInfo->getCity())
-                    ->setTelephone($contact->getMobilePhone())
+                    ->setTelephone($addressInfo->getPhoneNumber())
                     ->setStreet([$addressInfo->getAddress1(), $addressInfo->getAddress2()])
                     ->setIsDefaultBilling('1')
                     ->setIsDefaultShipping('1');
