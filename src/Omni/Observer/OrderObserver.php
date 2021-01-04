@@ -113,7 +113,9 @@ class OrderObserver implements ObserverInterface
                 $order->getPayment()->setLastTransId($adyen_response['pspReference']);
                 $order->getPayment()->setCcTransId($adyen_response['pspReference']);
                 $order->getPayment()->setCcType($adyen_response['paymentMethod']);
-                $order->getPayment()->setCcStatus($adyen_response['authResult']);
+                if(isset($adyen_response['authResult'])) {
+                    $order->getPayment()->setCcStatus($adyen_response['authResult']);
+                }
                 $this->orderHelper->orderRepository->save($order);
                 $order = $this->orderHelper->orderRepository->get($order->getEntityId());
             }

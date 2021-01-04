@@ -95,7 +95,8 @@ class SyncAttributesValue extends ProductCreateTask
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
-            $attributeBatchSize
+            $attributeBatchSize,
+            false
         );
         $collection         = $this->replAttributeValueCollectionFactory->create();
 

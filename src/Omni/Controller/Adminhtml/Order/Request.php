@@ -7,12 +7,14 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
+use Ls\Omni\Plugin\Checkout\CustomerData\Cart;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -49,6 +51,11 @@ class Request extends Action
     public $messageManager;
 
     /**
+     * @var CartRepositoryInterface
+     */
+    public $cartRepository;
+
+    /**
      * @var LSR
      */
     private $lsr;
@@ -60,6 +67,7 @@ class Request extends Action
      * @param BasketHelper $basketHelper
      * @param LoggerInterface $logger
      * @param OrderHelper $orderHelper
+     * @param CartRepositoryInterface $cartRepository
      * @param LSR $lsr
      */
     public function __construct(
@@ -68,6 +76,7 @@ class Request extends Action
         BasketHelper $basketHelper,
         LoggerInterface $logger,
         OrderHelper $orderHelper,
+        CartRepositoryInterface $cartRepository,
         LSR $lsr
     ) {
         $this->orderRepository = $orderRepository;
@@ -76,6 +85,7 @@ class Request extends Action
         $this->orderHelper     = $orderHelper;
         $this->messageManager  = $context->getMessageManager();
         $this->lsr             = $lsr;
+        $this->cartRepository  = $cartRepository;
         parent::__construct($context);
     }
 
@@ -93,17 +103,15 @@ class Request extends Action
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
-                $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
-                $request            = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                $response           = $this->orderHelper->placeOrder($request);
-                if ($response) {
-                    if (!empty($response->getResult()->getId())) {
-                        $documentId = $response->getResult()->getId();
-                        $order->setDocumentId($documentId);
-                        $this->orderRepository->save($order);
-                    }
-                    $this->messageManager->addSuccessMessage(__('Order request has been sent to LS Central successfully'));
-                }
+                $quote = $this->cartRepository->get($order->getQuoteId());
+                $this->_eventManager->dispatch(
+                    'sales_model_service_quote_submit_before',
+                    [
+                        'order' => $order,
+                        'quote' => $quote
+                    ]
+                );
+                $this->_eventManager->dispatch('sales_order_place_after', ['order' => $order]);
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->messageManager->addErrorMessage($e->getMessage());

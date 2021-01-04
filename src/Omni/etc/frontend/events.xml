@@ -36,6 +36,6 @@
     </event>
     <!-- for fixing grand total and base grand total -->
     <event name="sales_quote_address_collect_totals_after">
-        <observer name="sales_quote_totals_after" instance="Ls\Omni\Observer\SalesObserver"/>
+        <observer name="sales_quote_totals_after" disabled="true" instance="Ls\Omni\Observer\SalesObserver"/>
     </event>
 </config>
