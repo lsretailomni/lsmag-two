@@ -884,7 +884,7 @@ class BasketHelper extends AbstractHelper
         $uom = $this->itemHelper->getUom($itemSku, $baseUnitOfMeasure);
         $rowTotal   = "";
         $basketData = $this->getOneListCalculation();
-        $orderLines = $basketData->getOrderLines()->getOrderLine();
+        $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
         foreach ($orderLines as $line) {
             // @codingStandardsIgnoreLine
             if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId() && $uom == $line->getUomId()) {
