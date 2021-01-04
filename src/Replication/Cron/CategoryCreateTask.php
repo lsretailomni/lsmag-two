@@ -347,63 +347,65 @@ class CategoryCreateTask
                     ->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/')
                     ->setPageSize(1);
                 $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(), $this->store);
-                if ($collection->getSize() && !$subCategoryExistData) {
-                    /** @var CategoryFactory $categorysub */
-                    $categorysub = $this->categoryFactory->create();
-                    $data        = [
-                        // @codingStandardsIgnoreStart
-                        'parent_id'       => $collection->getFirstItem()->getId(),
-                        // @codingStandardsIgnoreEnd
-                        'name'            => ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId(),
-                        'url_key'         => $this->oSlug($hierarchyNodeSub->getNavId()),
-                        'is_active'       => true,
-                        'is_anchor'       => true,
-                        'include_in_menu' => true,
-                        'meta_title'      => ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId(),
-                        'nav_id'          => $hierarchyNodeSub->getNavId(),
-                        'position'        => $hierarchyNodeSub->getChildrenOrder()
-                    ];
-                    $categorysub->setData($data)->setAttributeSetId($categorysub->getDefaultAttributeSetId());
-                    if ($hierarchyNodeSub->getImageId()) {
-                        $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
-                        $categorysub->setImage($imageSub, $mediaAttribute, true, false);
-                    }
-                    // @codingStandardsIgnoreLine
-                    $catsub = $this->categoryRepository->save($categorysub);
-                    $catsub->setStoreId($this->store->getId());
-                    $catsub->getResource()->saveAttribute($catsub, 'nav_id');
-                } else {
-                    if (empty($subCategoryExistData))
-                        continue;
-                    if ($hierarchyNodeSub->getIsUpdated() == 1) {
-                        $subCategoryExistData->setData(
-                            'name',
-                            ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId()
-                        );
-                        $parentCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getParentNode());
-                        if ($parentCategoryExistData) {
-                            $newParentId = $parentCategoryExistData->getId();
-                            if ($newParentId != $subCategoryExistData->getData('parent_id')) {
-                                $subCategoryExistData->move($newParentId, null);
-                            }
-                        } else {
-                            $this->logger->debug('Parent Category not found for Nav Id : ' . $hierarchyNodeSub->getNavId());
-                        }
-                        $subCategoryExistData->setData('is_active', 1);
+                if ($collection->getSize() > 0) {
+                    if (!$subCategoryExistData) {
+                        /** @var CategoryFactory $categorysub */
+                        $categorysub = $this->categoryFactory->create();
+                        $data        = [
+                            // @codingStandardsIgnoreStart
+                            'parent_id'       => $collection->getFirstItem()->getId(),
+                            // @codingStandardsIgnoreEnd
+                            'name'            => ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId(),
+                            'url_key'         => $this->oSlug($hierarchyNodeSub->getNavId()),
+                            'is_active'       => true,
+                            'is_anchor'       => true,
+                            'include_in_menu' => true,
+                            'meta_title'      => ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId(),
+                            'nav_id'          => $hierarchyNodeSub->getNavId(),
+                            'position'        => $hierarchyNodeSub->getChildrenOrder()
+                        ];
+                        $categorysub->setData($data)->setAttributeSetId($categorysub->getDefaultAttributeSetId());
                         if ($hierarchyNodeSub->getImageId()) {
                             $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
-                            $subCategoryExistData->setImage($imageSub, $mediaAttribute, true, false);
+                            $categorysub->setImage($imageSub, $mediaAttribute, true, false);
                         }
-                        $subCategoryExistData->setData(
-                            'position',
-                            $hierarchyNodeSub->getChildrenOrder()
-                        );
-                        // @codingStandardsIgnoreStart
-                        $this->categoryRepository->save($subCategoryExistData);
+                        // @codingStandardsIgnoreLine
+                        $catsub = $this->categoryRepository->save($categorysub);
+                        $catsub->setStoreId($this->store->getId());
+                        $catsub->getResource()->saveAttribute($catsub, 'nav_id');
                     } else {
-                        $subCategoryExistData->setStoreId($this->store->getId());
-                        $subCategoryExistData->getResource()->saveAttribute($subCategoryExistData, 'nav_id');
+                        if ($hierarchyNodeSub->getIsUpdated() == 1) {
+                            $subCategoryExistData->setData(
+                                'name',
+                                ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId()
+                            );
+                            $parentCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getParentNode());
+                            if ($parentCategoryExistData) {
+                                $newParentId = $parentCategoryExistData->getId();
+                                if ($newParentId != $subCategoryExistData->getData('parent_id')) {
+                                    $subCategoryExistData->move($newParentId, null);
+                                }
+                            } else {
+                                $this->logger->debug('Parent Category not found for Nav Id : ' . $hierarchyNodeSub->getNavId());
+                            }
+                            $subCategoryExistData->setData('is_active', 1);
+                            if ($hierarchyNodeSub->getImageId()) {
+                                $imageSub = $this->getImage($hierarchyNodeSub->getImageId());
+                                $subCategoryExistData->setImage($imageSub, $mediaAttribute, true, false);
+                            }
+                            $subCategoryExistData->setData(
+                                'position',
+                                $hierarchyNodeSub->getChildrenOrder()
+                            );
+                            // @codingStandardsIgnoreStart
+                            $this->categoryRepository->save($subCategoryExistData);
+                        } else {
+                            $subCategoryExistData->setStoreId($this->store->getId());
+                            $subCategoryExistData->getResource()->saveAttribute($subCategoryExistData, 'nav_id');
+                        }
                     }
+                } else {
+                    $hierarchyNodeSub->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
