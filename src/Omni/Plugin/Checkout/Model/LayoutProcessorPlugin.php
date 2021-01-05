@@ -45,8 +45,7 @@ class LayoutProcessorPlugin
         LoyaltyHelper $loyaltyHelper,
         GiftCardHelper $giftCardHelper,
         LSR $lsr
-    )
-    {
+    ) {
         $this->data = $data;
         $this->loyaltyHelper = $loyaltyHelper;
         $this->giftCardHelper = $giftCardHelper;
@@ -62,8 +61,7 @@ class LayoutProcessorPlugin
     public function afterProcess(
         LayoutProcessor $subject,
         array $jsLayout
-    )
-    {
+    ) {
         if ($this->data->isCouponsEnabled('checkout') == '0') {
             unset($jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['afterMethods']['children']['discount']);
         }
