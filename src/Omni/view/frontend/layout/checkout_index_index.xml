@@ -16,27 +16,6 @@
                             <item name="children" xsi:type="array">
                                 <item name="steps" xsi:type="array">
                                     <item name="children" xsi:type="array">
-                                        <item name="shipping-step" xsi:type="array">
-                                            <item name="children" xsi:type="array">
-                                                <item name="shippingAddress" xsi:type="array">
-                                                    <item name="children" xsi:type="array">
-                                                        <item name="shippingAdditional" xsi:type="array">
-                                                            <item name="component" xsi:type="string">uiComponent</item>
-                                                            <item name="displayArea" xsi:type="string">
-                                                                shippingAdditional
-                                                            </item>
-                                                            <item name="children" xsi:type="array">
-                                                                <item name="select_store" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">
-                                                                        Ls_Omni/js/view/checkout/shipping/select-store
-                                                                    </item>
-                                                                </item>
-                                                            </item>
-                                                        </item>
-                                                    </item>
-                                                </item>
-                                            </item>
-                                        </item>
                                         <item name="billing-step" xsi:type="array">
                                             <item name="children" xsi:type="array">
                                                 <item name="payment" xsi:type="array">
