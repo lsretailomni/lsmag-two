@@ -7,7 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
-use Ls\Omni\Plugin\Checkout\CustomerData\Cart;
+use \Ls\Omni\Plugin\Checkout\CustomerData\Cart;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
@@ -18,10 +18,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class Request
- * @package Ls\Omni\Controller\Adminhtml\Order
- */
+/** Class for sending order request */
 class Request extends Action
 {
     /**
@@ -33,7 +30,6 @@ class Request extends Action
      * @var BasketHelper
      */
     public $basketHelper;
-
 
     /**
      * @var LoggerInterface
@@ -116,9 +112,7 @@ class Request extends Action
                 $this->logger->error($e->getMessage());
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
-        }
-        if (!$response) {
-            $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
+        } else {
             $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
         }
         return $resultRedirect;

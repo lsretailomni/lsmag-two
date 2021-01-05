@@ -7,7 +7,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
-use Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Sales\Model\ResourceModel\Order as OrderResourceModel;
 use \Ls\Replication\Helper\ReplicationHelper;
@@ -16,10 +16,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class SyncOrders
- * @package Ls\Replication\Cron
- */
+/** Syncng order */
 class SyncOrders
 {
 

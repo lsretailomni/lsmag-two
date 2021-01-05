@@ -16,10 +16,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class OrderObserver
- * @package Ls\Omni\Observer
- */
+/** Class for order process*/
 class OrderObserver implements ObserverInterface
 {
     /**
@@ -83,7 +80,6 @@ class OrderObserver implements ObserverInterface
         $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
-
     }
 
     /**
@@ -95,7 +91,7 @@ class OrderObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-            $check              = false;
+        $check              = false;
         $response           = null;
         $order              = $observer->getEvent()->getData('order');
         $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
@@ -110,10 +106,14 @@ class OrderObserver implements ObserverInterface
             //checking for Adyen payment gateway
             $adyen_response = $observer->getEvent()->getData('adyen_response');
             if (!empty($adyen_response)) {
-                $order->getPayment()->setLastTransId($adyen_response['pspReference']);
-                $order->getPayment()->setCcTransId($adyen_response['pspReference']);
-                $order->getPayment()->setCcType($adyen_response['paymentMethod']);
-                if(isset($adyen_response['authResult'])) {
+                if (isset($adyen_response['pspReference'])) {
+                    $order->getPayment()->setLastTransId($adyen_response['pspReference']);
+                    $order->getPayment()->setCcTransId($adyen_response['pspReference']);
+                }
+                if (isset($adyen_response['paymentMethod'])) {
+                    $order->getPayment()->setCcType($adyen_response['paymentMethod']);
+                }
+                if (isset($adyen_response['authResult'])) {
                     $order->getPayment()->setCcStatus($adyen_response['authResult']);
                 }
                 $this->orderHelper->orderRepository->save($order);
@@ -142,7 +142,9 @@ class OrderObserver implements ObserverInterface
                             if ($oneList) {
                                 $this->basketHelper->delete($oneList);
                             }
-                            $order->addCommentToStatusHistory(__('Order request has been sent to LS Central successfully'));
+                            $order->addCommentToStatusHistory(
+                                __('Order request has been sent to LS Central successfully')
+                            );
                             $this->orderResourceModel->save($order);
                         } else {
                             $this->orderHelper->disasterRecoveryHandler($order);
