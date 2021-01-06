@@ -35,6 +35,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
+use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
 
 /**
  * Useful helper functions for replication
@@ -113,6 +114,11 @@ class ReplicationHelper extends AbstractHelper
     public $itemRepository;
 
     /**
+     * @var FileSystemDirectory
+     */
+    public $fileSystemDirectory;
+
+    /**
      * ReplicationHelper constructor.
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -132,6 +138,7 @@ class ReplicationHelper extends AbstractHelper
      * @param TimezoneInterface $timezone
      * @param Logger $_logger
      * @param ReplItemRepository $itemRepository
+     * @param FileSystemDirectory $fileSystemDirectory
      */
     public function __construct(
         Context $context,
@@ -151,7 +158,8 @@ class ReplicationHelper extends AbstractHelper
         DateTime $date,
         TimezoneInterface $timezone,
         Logger $_logger,
-        ReplItemRepository $itemRepository
+        ReplItemRepository $itemRepository,
+        FileSystemDirectory $fileSystemDirectory
     ) {
         $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
         $this->filterBuilder                    = $filterBuilder;
@@ -170,6 +178,7 @@ class ReplicationHelper extends AbstractHelper
         $this->timezone                         = $timezone;
         $this->_logger                          = $_logger;
         $this->itemRepository                   = $itemRepository;
+        $this->fileSystemDirectory              = $fileSystemDirectory;
         parent::__construct(
             $context
         );
@@ -1200,6 +1209,16 @@ class ReplicationHelper extends AbstractHelper
     public function getMediaPathtoStore()
     {
         return $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
+    }
+
+    /**
+     * @param $mediaDirectory
+     */
+    public function removeDirectory($mediaDirectory)
+    {
+        if ($this->fileSystemDirectory->exists($mediaDirectory)) {
+            $this->fileSystemDirectory->remove($mediaDirectory);
+        }
     }
 
     /**

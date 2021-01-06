@@ -640,17 +640,15 @@
       <column name="repl_hierarchy_hosp_deal_line_id"/>
     </constraint>
   </table>
-  <table name="ls_replication_repl_hierarchy_hosp_recipe" resource="default" engine="innodb" comment="ReplEcommHierarchyHospRecipe">
-    <column xsi:type="int" name="repl_hierarchy_hosp_recipe_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_recipe_id"/>
+  <table name="ls_replication_repl_item_recipe" resource="default" engine="innodb" comment="ReplEcommItemRecipe">
+    <column xsi:type="int" name="repl_item_recipe_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_recipe_id"/>
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
     <column xsi:type="boolean" name="Exclusion" default="0" nullable="true" comment="Exclusion"/>
     <column xsi:type="decimal" name="ExclusionPrice" scale="4" precision="20" nullable="true" comment="ExclusionPrice"/>
-    <column xsi:type="text" name="HierarchyCode" nullable="true" comment="HierarchyCode"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="ImageId"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="text" name="ItemNo" nullable="true" comment="ItemNo"/>
     <column xsi:type="int" name="LineNo" padding="11" nullable="true" comment="LineNo"/>
-    <column xsi:type="text" name="ParentNode" nullable="true" comment="ParentNode"/>
     <column xsi:type="decimal" name="QuantityPer" scale="4" precision="20" nullable="true" comment="QuantityPer"/>
     <column xsi:type="text" name="RecipeNo" nullable="true" comment="RecipeNo"/>
     <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="UnitOfMeasure"/>
@@ -664,7 +662,7 @@
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_hierarchy_hosp_recipe_id"/>
+      <column name="repl_item_recipe_id"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_item_modifier" resource="default" engine="innodb" comment="ReplEcommItemModifier">

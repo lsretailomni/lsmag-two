@@ -6,7 +6,7 @@
  */
 
 
-namespace Ls\Replication\Model\ResourceModel\ReplHierarchyHospModifier;
+namespace Ls\Replication\Model\ResourceModel\ReplItemRecipe;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
@@ -15,7 +15,7 @@ class Collection extends AbstractCollection
 
     public function _construct()
     {
-        $this->_init( 'Ls\Replication\Model\ReplHierarchyHospModifier', 'Ls\Replication\Model\ResourceModel\ReplHierarchyHospModifier' );
+        $this->_init( 'Ls\Replication\Model\ReplItemRecipe', 'Ls\Replication\Model\ResourceModel\ReplItemRecipe' );
     }
 
 

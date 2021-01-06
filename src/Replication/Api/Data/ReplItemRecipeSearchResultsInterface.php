@@ -10,7 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 use Magento\Framework\Api\SearchResultsInterface;
 
-interface ReplHierarchyHospModifierSearchResultsInterface extends SearchResultsInterface
+interface ReplItemRecipeSearchResultsInterface extends SearchResultsInterface
 {
 
     public function getItems();

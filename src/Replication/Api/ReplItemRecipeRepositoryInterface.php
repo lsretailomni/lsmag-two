@@ -2,7 +2,7 @@
 
 namespace Ls\Replication\Api;
 
-use Ls\Replication\Api\Data\ReplHierarchyHospModifierInterface;
+use Ls\Replication\Api\Data\ReplItemRecipeInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 
 /**
@@ -10,14 +10,14 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  * DO NOT MODIFY
  * @codingStandardsIgnoreFile
  */
-interface ReplHierarchyHospModifierRepositoryInterface
+interface ReplItemRecipeRepositoryInterface
 {
 
     public function getList(SearchCriteriaInterface $criteria);
 
-    public function save(ReplHierarchyHospModifierInterface $page);
+    public function save(ReplItemRecipeInterface $page);
 
-    public function delete(ReplHierarchyHospModifierInterface $page);
+    public function delete(ReplItemRecipeInterface $page);
 
     public function getById($id);
 

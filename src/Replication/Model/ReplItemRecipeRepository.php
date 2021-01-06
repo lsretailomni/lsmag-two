@@ -15,18 +15,18 @@ use Magento\Framework\Api\SearchCriteriaInterface;
 use Exception;
 use Magento\Framework\Phrase;
 use Magento\Framework\Api\SortOrder;
-use Ls\Replication\Model\ResourceModel\ReplHierarchyHospRecipe\Collection;
-use Ls\Replication\Model\ResourceModel\ReplHierarchyHospRecipe\CollectionFactory;
-use Ls\Replication\Api\ReplHierarchyHospRecipeRepositoryInterface;
-use Ls\Replication\Api\Data\ReplHierarchyHospRecipeInterface;
-use Ls\Replication\Model\ReplHierarchyHospRecipeFactory;
-use Ls\Replication\Model\ReplHierarchyHospRecipeSearchResultsFactory;
+use Ls\Replication\Model\ResourceModel\ReplItemRecipe\Collection;
+use Ls\Replication\Model\ResourceModel\ReplItemRecipe\CollectionFactory;
+use Ls\Replication\Api\ReplItemRecipeRepositoryInterface;
+use Ls\Replication\Api\Data\ReplItemRecipeInterface;
+use Ls\Replication\Model\ReplItemRecipeFactory;
+use Ls\Replication\Model\ReplItemRecipeSearchResultsFactory;
 
-class ReplHierarchyHospRecipeRepository implements ReplHierarchyHospRecipeRepositoryInterface
+class ReplItemRecipeRepository implements ReplItemRecipeRepositoryInterface
 {
 
     /**
-     * @property ReplHierarchyHospRecipeFactory $object_factory
+     * @property ReplItemRecipeFactory $object_factory
      */
     protected $object_factory = null;
 
@@ -36,11 +36,11 @@ class ReplHierarchyHospRecipeRepository implements ReplHierarchyHospRecipeReposi
     protected $collection_factory = null;
 
     /**
-     * @property ReplHierarchyHospRecipeSearchResultsFactory $result_factory
+     * @property ReplItemRecipeSearchResultsFactory $result_factory
      */
     protected $result_factory = null;
 
-    public function __construct(ReplHierarchyHospRecipeFactory $object_factory, CollectionFactory $collection_factory, ReplHierarchyHospRecipeSearchResultsFactory $result_factory)
+    public function __construct(ReplItemRecipeFactory $object_factory, CollectionFactory $collection_factory, ReplItemRecipeSearchResultsFactory $result_factory)
     {
         $this->object_factory = $object_factory;
         $this->collection_factory = $collection_factory;
@@ -90,7 +90,7 @@ class ReplHierarchyHospRecipeRepository implements ReplHierarchyHospRecipeReposi
         return $results;
     }
 
-    public function save(ReplHierarchyHospRecipeInterface $object)
+    public function save(ReplItemRecipeInterface $object)
     {
         try {
             $object->save();
@@ -112,7 +112,7 @@ class ReplHierarchyHospRecipeRepository implements ReplHierarchyHospRecipeReposi
         return $object;
     }
 
-    public function delete(ReplHierarchyHospRecipeInterface $object)
+    public function delete(ReplItemRecipeInterface $object)
     {
         try {
             $object->delete();

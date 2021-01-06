@@ -4,11 +4,11 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use IteratorAggregate;
-use Ls\Core\Helper\Data as LsHelper;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\OperationInterface;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Logger\Logger;
+use \Ls\Core\Helper\Data as LsHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\OperationInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
@@ -20,8 +20,8 @@ use ReflectionException;
 use Traversable;
 
 /**
- * Class AbstractReplicationTask
- * @package Ls\Replication\Cron
+ * Abstract replication class for all
+ * the flat tables
  */
 abstract class AbstractReplicationTask
 {
@@ -125,7 +125,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
         "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "ItemNo", "LineNo", "UnitOfMeasure", "scope_id"],
         "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_recipe"      => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
         "ls_mag/replication/repl_item_modifier"              => ["nav_id", "VariantCode", "Code", "SubCode", "TriggerCode", "UnitOfMeasure", "scope_id"],
         "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
     ];

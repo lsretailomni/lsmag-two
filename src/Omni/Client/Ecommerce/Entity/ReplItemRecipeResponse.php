@@ -8,11 +8,11 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ReplHierarchyHospRecipeResponse
+class ReplItemRecipeResponse
 {
 
     /**
-     * @property ArrayOfReplHierarchyHospRecipe $Items
+     * @property ArrayOfReplItemRecipe $Items
      */
     protected $Items = null;
 
@@ -32,7 +32,7 @@ class ReplHierarchyHospRecipeResponse
     protected $RecordsRemaining = null;
 
     /**
-     * @param ArrayOfReplHierarchyHospRecipe $Items
+     * @param ArrayOfReplItemRecipe $Items
      * @return $this
      */
     public function setItems($Items)
@@ -42,7 +42,7 @@ class ReplHierarchyHospRecipeResponse
     }
 
     /**
-     * @return ArrayOfReplHierarchyHospRecipe
+     * @return ArrayOfReplItemRecipe
      */
     public function getItems()
     {

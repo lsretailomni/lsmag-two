@@ -8,41 +8,8 @@
 
 namespace Ls\Replication\Api\Data;
 
-interface ReplHierarchyHospModifierInterface
+interface ReplItemRecipeInterface
 {
-
-    /**
-     * @param boolean $AlwaysCharge
-     * @return $this
-     */
-    public function setAlwaysCharge($AlwaysCharge);
-
-    /**
-     * @return boolean
-     */
-    public function getAlwaysCharge();
-
-    /**
-     * @param float $AmountPercent
-     * @return $this
-     */
-    public function setAmountPercent($AmountPercent);
-
-    /**
-     * @return float
-     */
-    public function getAmountPercent();
-
-    /**
-     * @param string $Code
-     * @return $this
-     */
-    public function setCode($Code);
-
-    /**
-     * @return string
-     */
-    public function getCode();
 
     /**
      * @param string $Description
@@ -56,15 +23,37 @@ interface ReplHierarchyHospModifierInterface
     public function getDescription();
 
     /**
-     * @param string $HierarchyCode
+     * @param boolean $Exclusion
      * @return $this
      */
-    public function setHierarchyCode($HierarchyCode);
+    public function setExclusion($Exclusion);
+
+    /**
+     * @return boolean
+     */
+    public function getExclusion();
+
+    /**
+     * @param float $ExclusionPrice
+     * @return $this
+     */
+    public function setExclusionPrice($ExclusionPrice);
+
+    /**
+     * @return float
+     */
+    public function getExclusionPrice();
+
+    /**
+     * @param string $ImageId
+     * @return $this
+     */
+    public function setImageId($ImageId);
 
     /**
      * @return string
      */
-    public function getHierarchyCode();
+    public function getImageId();
 
     /**
      * @param boolean $IsDeleted
@@ -89,81 +78,37 @@ interface ReplHierarchyHospModifierInterface
     public function getItemNo();
 
     /**
-     * @param int $MaxSelection
+     * @param int $LineNo
      * @return $this
      */
-    public function setMaxSelection($MaxSelection);
+    public function setLineNo($LineNo);
 
     /**
      * @return int
      */
-    public function getMaxSelection();
+    public function getLineNo();
 
     /**
-     * @param int $MinSelection
+     * @param float $QuantityPer
      * @return $this
      */
-    public function setMinSelection($MinSelection);
+    public function setQuantityPer($QuantityPer);
 
     /**
-     * @return int
+     * @return float
      */
-    public function getMinSelection();
+    public function getQuantityPer();
 
     /**
-     * @param string $ParentItem
+     * @param string $RecipeNo
      * @return $this
      */
-    public function setParentItem($ParentItem);
+    public function setRecipeNo($RecipeNo);
 
     /**
      * @return string
      */
-    public function getParentItem();
-
-    /**
-     * @param string $ParentNode
-     * @return $this
-     */
-    public function setParentNode($ParentNode);
-
-    /**
-     * @return string
-     */
-    public function getParentNode();
-
-    /**
-     * @param HierarchyModifierPriceType $PriceType
-     * @return $this
-     */
-    public function setPriceType($PriceType);
-
-    /**
-     * @return HierarchyModifierPriceType
-     */
-    public function getPriceType();
-
-    /**
-     * @param string $SubCode
-     * @return $this
-     */
-    public function setSubCode($SubCode);
-
-    /**
-     * @return string
-     */
-    public function getSubCode();
-
-    /**
-     * @param HierarchyModifierType $Type
-     * @return $this
-     */
-    public function setType($Type);
-
-    /**
-     * @return HierarchyModifierType
-     */
-    public function getType();
+    public function getRecipeNo();
 
     /**
      * @param string $UnitOfMeasure
