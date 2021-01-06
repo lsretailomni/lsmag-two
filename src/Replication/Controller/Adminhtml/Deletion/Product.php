@@ -10,7 +10,6 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Framework\App\ResourceConnection;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class Product Deletion
@@ -29,9 +28,6 @@ class Product extends Action
     /** @var ReplicationHelper */
     public $replicationHelper;
 
-    /** @var Filesystem */
-    public $filesystem;
-
     /**
      * @var AttributeSetRepositoryInterface
      */
@@ -48,7 +44,11 @@ class Product extends Action
         "ls_replication_repl_attribute_value",
         "ls_replication_repl_image_link",
         "ls_replication_repl_item_unit_of_measure",
-        "ls_replication_repl_loy_vendor_item_mapping"
+        "ls_replication_repl_loy_vendor_item_mapping",
+        "ls_replication_repl_item_modifier",
+        "ls_replication_repl_item_recipe",
+        "ls_replication_repl_hierarchy_hosp_deal",
+        "ls_replication_repl_hierarchy_hosp_deal_line"
     ];
 
     /** @var array List of all the Catalog Product tables */
@@ -162,7 +162,6 @@ class Product extends Action
      * @param Context $context
      * @param LSR $LSR
      * @param ReplicationHelper $replicationHelper
-     * @param Filesystem $filesystem
      * @param AttributeSetRepositoryInterface $attributeSetRepository
      */
     public function __construct(
@@ -171,14 +170,12 @@ class Product extends Action
         Context $context,
         LSR $LSR,
         ReplicationHelper $replicationHelper,
-        Filesystem $filesystem,
         AttributeSetRepositoryInterface $attributeSetRepository
     ) {
         $this->resource               = $resource;
         $this->logger                 = $logger;
         $this->lsr                    = $LSR;
         $this->replicationHelper      = $replicationHelper;
-        $this->filesystem             = $filesystem;
         $this->attributeSetRepository = $attributeSetRepository;
         parent::__construct($context);
     }
@@ -206,15 +203,16 @@ class Product extends Action
         // Remove the url keys from url_rewrite table
         $this->replicationHelper->resetUrlRewriteByType('product');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
-        $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();
-        $mediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
+        $mediaDirectory        = $this->replicationHelper->getMediaPathtoStore();
+        $catalogMediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
+        $mediaTmpDirectory     = $mediaDirectory . "tmp";
         try {
-            if ($this->filesystem->exists($mediaDirectory)) {
-                $this->filesystem->remove($mediaDirectory);
-            }
+            $this->replicationHelper->removeDirectory($catalogMediaDirectory);
+            $this->replicationHelper->removeDirectory($mediaTmpDirectory);
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
+
         $filters      = [
             ['field' => 'attribute_set_name', 'value' => 'ls_%', 'condition_type' => 'like'],
             ['field' => 'entity_type_id', 'value' => 4, 'condition_type' => 'eq']

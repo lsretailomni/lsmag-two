@@ -17,20 +17,20 @@ use Magento\Framework\Phrase;
 use Magento\Framework\Api\SortOrder;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
-use \Ls\Replication\Model\ReplHierarchyHospRecipeRepository;
-use \Ls\Replication\Model\ResourceModel\ReplHierarchyHospRecipe\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplHierarchyHospRecipe\CollectionFactory;
-use \Ls\Replication\Api\ReplHierarchyHospRecipeRepositoryInterface;
-use \Ls\Replication\Api\Data\ReplHierarchyHospRecipeInterface;
-use \Ls\Replication\Api\Data\ReplHierarchyHospRecipeSearchResultsInterface;
-use \Ls\Replication\Model\ReplHierarchyHospRecipeFactory;
-use \Ls\Replication\Model\ReplHierarchyHospRecipeSearchResultsFactory;
+use \Ls\Replication\Model\ReplItemRecipeRepository;
+use \Ls\Replication\Model\ResourceModel\ReplItemRecipe\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplItemRecipe\CollectionFactory;
+use \Ls\Replication\Api\ReplItemRecipeRepositoryInterface;
+use \Ls\Replication\Api\Data\ReplItemRecipeInterface;
+use \Ls\Replication\Api\Data\ReplItemRecipeSearchResultsInterface;
+use \Ls\Replication\Model\ReplItemRecipeFactory;
+use \Ls\Replication\Model\ReplItemRecipeSearchResultsFactory;
 
-class ReplHierarchyHospRecipeRepositoryTest extends TestCase
+class ReplItemRecipeRepositoryTest extends TestCase
 {
 
     /**
-     * @property ReplHierarchyHospRecipeFactory $objectFactory
+     * @property ReplItemRecipeFactory $objectFactory
      */
     protected $objectFactory = null;
 
@@ -40,34 +40,33 @@ class ReplHierarchyHospRecipeRepositoryTest extends TestCase
     protected $collectionFactory = null;
 
     /**
-     * @property ReplHierarchyHospRecipeSearchResultsFactory $resultFactory
+     * @property ReplItemRecipeSearchResultsFactory $resultFactory
      */
     protected $resultFactory = null;
 
     /**
-     * @property ReplHierarchyHospRecipeRepository $model
+     * @property ReplItemRecipeRepository $model
      */
     private $model = null;
 
     /**
-     * @property ReplHierarchyHospRecipeInterface $entityInterface
+     * @property ReplItemRecipeInterface $entityInterface
      */
     private $entityInterface = null;
 
     /**
-     * @property ReplHierarchyHospRecipeSearchResultsInterface
-     * $entitySearchResultsInterface
+     * @property ReplItemRecipeSearchResultsInterface $entitySearchResultsInterface
      */
     private $entitySearchResultsInterface = null;
 
     public function setUp()
     {
-        $this->objectFactory = $this->createPartialMock(ReplHierarchyHospRecipeFactory::class, ['create']);
+        $this->objectFactory = $this->createPartialMock(ReplItemRecipeFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);
-        $this->resultFactory = $this->createMock(ReplHierarchyHospRecipeSearchResultsFactory::class);
-        $this->entityInterface = $this->createMock(ReplHierarchyHospRecipeInterface::class);
-        $this->entitySearchResultsInterface = $this->createMock(ReplHierarchyHospRecipeSearchResultsInterface::class);
-        $this->model = new ReplHierarchyHospRecipeRepository(
+        $this->resultFactory = $this->createMock(ReplItemRecipeSearchResultsFactory::class);
+        $this->entityInterface = $this->createMock(ReplItemRecipeInterface::class);
+        $this->entitySearchResultsInterface = $this->createMock(ReplItemRecipeSearchResultsInterface::class);
+        $this->model = new ReplItemRecipeRepository(
                 $this->objectFactory,
                 $this->collectionFactory,
                 $this->resultFactory
@@ -77,7 +76,7 @@ class ReplHierarchyHospRecipeRepositoryTest extends TestCase
     public function testGetById()
     {
         $entityId = 1;
-        $entityMock = $this->createMock(ReplHierarchyHospRecipeRepository::class);
+        $entityMock = $this->createMock(ReplItemRecipeRepository::class);
         $entityMock->method('getById')
              ->with($entityId)
              ->willReturn($entityId);
@@ -91,7 +90,7 @@ class ReplHierarchyHospRecipeRepositoryTest extends TestCase
     public function testGetWithNoSuchEntityException()
     {
         $entityId = 1;
-        $entityMock = $this->createMock(ReplHierarchyHospRecipeRepository::class);
+        $entityMock = $this->createMock(ReplItemRecipeRepository::class);
         $entityMock->method('getById')
              ->with($entityId)
              ->willThrowException(
@@ -105,7 +104,7 @@ class ReplHierarchyHospRecipeRepositoryTest extends TestCase
     public function testGetListWithSearchCriteria()
     {
         $searchCriteria = $this->getMockBuilder(SearchCriteriaInterface::class)->getMock();
-        $entityMock = $this->createMock(ReplHierarchyHospRecipeRepository::class);
+        $entityMock = $this->createMock(ReplItemRecipeRepository::class);
         $entityMock->method('getList')
              ->with($searchCriteria)
              ->willReturn($this->entitySearchResultsInterface);
@@ -114,7 +113,7 @@ class ReplHierarchyHospRecipeRepositoryTest extends TestCase
 
     public function testSave()
     {
-        $entityMock = $this->createMock(ReplHierarchyHospRecipeRepository::class);
+        $entityMock = $this->createMock(ReplItemRecipeRepository::class);
         $entityMock->method('save')
              ->with($this->entityInterface)
              ->willReturn($this->entityInterface);
@@ -127,7 +126,7 @@ class ReplHierarchyHospRecipeRepositoryTest extends TestCase
      */
     public function testSaveWithCouldNotSaveException()
     {
-        $entityMock = $this->createMock(ReplHierarchyHospRecipeRepository::class);
+        $entityMock = $this->createMock(ReplItemRecipeRepository::class);
         $entityMock->method('save')
              ->with($this->entityInterface)
              ->willThrowException(
