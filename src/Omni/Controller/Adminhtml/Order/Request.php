@@ -5,9 +5,6 @@ namespace Ls\Omni\Controller\Adminhtml\Order;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\OrderHelper;
-use \Ls\Omni\Plugin\Checkout\CustomerData\Cart;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
@@ -27,19 +24,9 @@ class Request extends Action
     public $orderRepository;
 
     /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
      * @var LoggerInterface
      */
     public $logger;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
 
     /**
      * @var ManagerInterface
@@ -60,26 +47,20 @@ class Request extends Action
      * Request constructor.
      * @param Action\Context $context
      * @param OrderRepositoryInterface $orderRepository
-     * @param BasketHelper $basketHelper
      * @param LoggerInterface $logger
-     * @param OrderHelper $orderHelper
      * @param CartRepositoryInterface $cartRepository
      * @param LSR $lsr
      */
     public function __construct(
         Action\Context $context,
         OrderRepositoryInterface $orderRepository,
-        BasketHelper $basketHelper,
         LoggerInterface $logger,
-        OrderHelper $orderHelper,
         CartRepositoryInterface $cartRepository,
         LSR $lsr
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->basketHelper    = $basketHelper;
-        $this->logger          = $logger;
-        $this->orderHelper     = $orderHelper;
         $this->messageManager  = $context->getMessageManager();
+        $this->orderRepository = $orderRepository;
+        $this->logger          = $logger;
         $this->lsr             = $lsr;
         $this->cartRepository  = $cartRepository;
         parent::__construct($context);
