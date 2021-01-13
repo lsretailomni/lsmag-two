@@ -2,7 +2,7 @@
 
 namespace Ls\CustomerGraphQl\Plugin;
 
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\Data\CustomerInterface;
 
 /**
