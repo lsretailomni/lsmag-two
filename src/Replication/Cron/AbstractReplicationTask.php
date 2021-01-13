@@ -55,7 +55,9 @@ abstract class AbstractReplicationTask
             "VariantDimension4",
             "VariantDimension5",
             "VariantDimension6"
-        ]
+        ],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo","DealLineNo", "LineNo", "scope_id"],
+
     ];
 
     /** @var array List of Replication Tables with unique field */
