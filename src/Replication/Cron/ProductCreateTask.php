@@ -625,7 +625,9 @@ class ProductCreateTask
                                 $product->setName($item->getDescription());
                                 $product->setMetaTitle($item->getDescription());
                                 $product->setSku($item->getNavId());
-                                $product->setUrlKey($this->oSlug($item->getDescription() . '-' . $item->getNavId()));
+                                $product->setUrlKey(
+                                    $this->replicationHelper->oSlug($item->getDescription() . '-' . $item->getNavId())
+                                );
                                 $product->setVisibility(Visibility::VISIBILITY_BOTH);
                                 $product->setWeight($item->getGrossWeight());
                                 $product->setDescription($item->getDetails());
@@ -671,7 +673,7 @@ class ProductCreateTask
                                             $uomCodesNotProcessed
                                         );
                                     }
-                                    $this->assignProductToCategories($productSaved);
+                                    $this->replicationHelper->assignProductToCategories($productSaved, $this->store);
                                 } catch (Exception $e) {
                                     $this->logger->debug($e->getMessage());
                                     $item->setData('is_failed', 1);
@@ -806,7 +808,7 @@ class ProductCreateTask
                 if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
                     $imageContent = $this->imageContent->create()
                         ->setBase64EncodedData($result['image'])
-                        ->setName($this->oSlug($image->getImageId()))
+                        ->setName($this->replicationHelper->oSlug($image->getImageId()))
                         ->setType($mimeType);
                     $this->attributeMediaGalleryEntry->setMediaType('image')
                         ->setLabel(($image->getDescription()) ?: __('Product Image'))
@@ -837,71 +839,6 @@ class ProductCreateTask
     }
 
     /**
-     * @param $productGroupId
-     * @return mixed
-     * @throws LocalizedException
-     */
-    public function findCategoryIdFromFactory($productGroupId)
-    {
-        $categoryCollection = $this->categoryCollectionFactory->create()->addAttributeToFilter(
-            'nav_id',
-            $productGroupId
-        )
-            ->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/')
-            ->setPageSize(1);
-        if ($categoryCollection->getSize()) {
-            // @codingStandardsIgnoreStart
-            return [
-                $categoryCollection->getFirstItem()->getParentId(),
-                $categoryCollection->getFirstItem()->getId()
-            ];
-            // @codingStandardsIgnoreEnd
-        }
-    }
-
-    /**
-     * @param $product
-     * @throws LocalizedException
-     */
-    public function assignProductToCategories(&$product)
-    {
-        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $this->store->getId());
-        if (empty($hierarchyCode)) {
-            $this->logger->debug('Hierarchy Code not defined in the configuration for store ' . $this->store->getName());
-            return;
-        }
-        $filters              = [
-            ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
-            ['field' => 'nav_id', 'value' => $product->getSku(), 'condition_type' => 'eq']
-        ];
-        $criteria             = $this->replicationHelper->buildCriteriaForDirect($filters);
-        $hierarchyLeafs       = $this->replHierarchyLeafRepository->getList($criteria);
-        $resultantCategoryIds = [];
-        foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
-            $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId());
-            if (!empty($categoryIds)) {
-                $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $categoryIds));
-                $hierarchyLeaf->setData('processed_at', $this->replicationHelper->getDateTime());
-                $hierarchyLeaf->setData('processed', 1);
-                $hierarchyLeaf->setData('is_updated', 0);
-                $this->replHierarchyLeafRepository->save($hierarchyLeaf);
-            }
-        }
-        if (!empty($resultantCategoryIds)) {
-            try {
-                $this->categoryLinkManagement->assignProductToCategories(
-                    $product->getSku(),
-                    $resultantCategoryIds
-                );
-            } catch (Exception $e) {
-                $this->logger->info("Product deleted from admin configuration. Things will re-run again");
-            }
-        }
-    }
-
-    /**
      * @param $image64
      * @return string
      */
@@ -909,29 +846,6 @@ class ProductCreateTask
     {
         // @codingStandardsIgnoreLine
         return finfo_buffer(finfo_open(), base64_decode($image64), FILEINFO_MIME_TYPE);
-    }
-
-    /**
-     * @param $string
-     * @return string
-     */
-    public function oSlug($string)
-    {
-        // @codingStandardsIgnoreStart
-        return strtolower(trim(preg_replace(
-            '~[^0-9a-z]+~i',
-            '-',
-            html_entity_decode(
-                preg_replace(
-                    '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
-                    '$1',
-                    htmlentities($string, ENT_QUOTES, 'UTF-8')
-                ),
-                ENT_QUOTES,
-                'UTF-8'
-            )
-        ), '-'));
-        // @codingStandardsIgnoreEnd
     }
 
     /**

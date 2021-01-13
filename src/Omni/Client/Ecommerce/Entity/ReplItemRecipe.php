@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ReplHierarchyHospRecipe
+class ReplItemRecipe
 {
 
     /**
@@ -25,11 +25,6 @@ class ReplHierarchyHospRecipe
      * @property float $ExclusionPrice
      */
     protected $ExclusionPrice = null;
-
-    /**
-     * @property string $HierarchyCode
-     */
-    protected $HierarchyCode = null;
 
     /**
      * @property string $ImageId
@@ -50,11 +45,6 @@ class ReplHierarchyHospRecipe
      * @property int $LineNo
      */
     protected $LineNo = null;
-
-    /**
-     * @property string $ParentNode
-     */
-    protected $ParentNode = null;
 
     /**
      * @property float $QuantityPer
@@ -136,24 +126,6 @@ class ReplHierarchyHospRecipe
     }
 
     /**
-     * @param string $HierarchyCode
-     * @return $this
-     */
-    public function setHierarchyCode($HierarchyCode)
-    {
-        $this->HierarchyCode = $HierarchyCode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHierarchyCode()
-    {
-        return $this->HierarchyCode;
-    }
-
-    /**
      * @param string $ImageId
      * @return $this
      */
@@ -223,24 +195,6 @@ class ReplHierarchyHospRecipe
     public function getLineNo()
     {
         return $this->LineNo;
-    }
-
-    /**
-     * @param string $ParentNode
-     * @return $this
-     */
-    public function setParentNode($ParentNode)
-    {
-        $this->ParentNode = $ParentNode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getParentNode()
-    {
-        return $this->ParentNode;
     }
 
     /**

@@ -3,14 +3,17 @@
 namespace Ls\Replication\Helper;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use \Ls\Replication\Logger\Logger;
-use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use Ls\Replication\Logger\Logger;
+use Ls\Replication\Model\ReplImageLinkSearchResults;
+use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity\Attribute\Set;
 use Magento\Framework\Api\AbstractExtensibleObject;
@@ -35,6 +38,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
+use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
 
 /**
  * Useful helper functions for replication
@@ -113,6 +117,20 @@ class ReplicationHelper extends AbstractHelper
     public $itemRepository;
 
     /**
+     * @var FileSystemDirectory
+     */
+    public $fileSystemDirectory;
+
+    /** @var CollectionFactory */
+    public $categoryCollectionFactory;
+
+    /** @var ReplHierarchyLeafRepository */
+    public $replHierarchyLeafRepository;
+
+    /** @var CategoryLinkManagementInterface */
+    public $categoryLinkManagement;
+
+    /**
      * ReplicationHelper constructor.
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -132,6 +150,10 @@ class ReplicationHelper extends AbstractHelper
      * @param TimezoneInterface $timezone
      * @param Logger $_logger
      * @param ReplItemRepository $itemRepository
+     * @param FileSystemDirectory $fileSystemDirectory
+     * @param CollectionFactory $categoryCollectionFactory
+     * @param ReplHierarchyLeafRepository $replHierarchyLeafRepository
+     * @param CategoryLinkManagementInterface $categoryLinkManagement
      */
     public function __construct(
         Context $context,
@@ -151,7 +173,11 @@ class ReplicationHelper extends AbstractHelper
         DateTime $date,
         TimezoneInterface $timezone,
         Logger $_logger,
-        ReplItemRepository $itemRepository
+        ReplItemRepository $itemRepository,
+        FileSystemDirectory $fileSystemDirectory,
+        CollectionFactory $categoryCollectionFactory,
+        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
+        CategoryLinkManagementInterface $categoryLinkManagement
     ) {
         $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
         $this->filterBuilder                    = $filterBuilder;
@@ -170,6 +196,10 @@ class ReplicationHelper extends AbstractHelper
         $this->timezone                         = $timezone;
         $this->_logger                          = $_logger;
         $this->itemRepository                   = $itemRepository;
+        $this->fileSystemDirectory              = $fileSystemDirectory;
+        $this->categoryCollectionFactory        = $categoryCollectionFactory;
+        $this->replHierarchyLeafRepository      = $replHierarchyLeafRepository;
+        $this->categoryLinkManagement           = $categoryLinkManagement;
         parent::__construct(
             $context
         );
@@ -1156,22 +1186,6 @@ class ReplicationHelper extends AbstractHelper
     /**
      * @return string
      */
-    public function getItemModifiersBatchSize()
-    {
-        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_ITEM_MODIFIER_BATCH_SIZE);
-    }
-
-    /**
-     * @return string
-     */
-    public function getItemRecipeBatchSize()
-    {
-        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_ITEM_RECIPE_BATCH_SIZE);
-    }
-
-    /**
-     * @return string
-     */
     public function getProductBarcodeBatchSize()
     {
         return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_BARCODE_BATCH_SIZE);
@@ -1200,6 +1214,16 @@ class ReplicationHelper extends AbstractHelper
     public function getMediaPathtoStore()
     {
         return $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
+    }
+
+    /**
+     * @param $mediaDirectory
+     */
+    public function removeDirectory($mediaDirectory)
+    {
+        if ($this->fileSystemDirectory->exists($mediaDirectory)) {
+            $this->fileSystemDirectory->remove($mediaDirectory);
+        }
     }
 
     /**
@@ -1337,5 +1361,95 @@ class ReplicationHelper extends AbstractHelper
         }
 
         return $baseUnitOfMeasure;
+    }
+
+    /**
+     * @param $product
+     * @param $store
+     * @throws LocalizedException
+     */
+    public function assignProductToCategories(&$product, $store)
+    {
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $store->getId());
+        if (empty($hierarchyCode)) {
+            $this->_logger->debug('Hierarchy Code not defined in the configuration for store ' . $this->store->getName());
+            return;
+        }
+        $filters              = [
+            ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'nav_id', 'value' => $product->getSku(), 'condition_type' => 'eq']
+        ];
+        $criteria             = $this->buildCriteriaForDirect($filters);
+        $hierarchyLeafs       = $this->replHierarchyLeafRepository->getList($criteria);
+        $resultantCategoryIds = [];
+        foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
+            $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId(), $store);
+            if (!empty($categoryIds)) {
+                $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $categoryIds));
+                $hierarchyLeaf->setData('processed_at', $this->getDateTime());
+                $hierarchyLeaf->setData('processed', 1);
+                $hierarchyLeaf->setData('is_updated', 0);
+                $this->replHierarchyLeafRepository->save($hierarchyLeaf);
+            }
+        }
+        if (!empty($resultantCategoryIds)) {
+            try {
+                $this->categoryLinkManagement->assignProductToCategories(
+                    $product->getSku(),
+                    $resultantCategoryIds
+                );
+            } catch (Exception $e) {
+                $this->_logger->info("Product deleted from admin configuration. Things will re-run again");
+            }
+        }
+    }
+
+    /**
+     * @param $productGroupId
+     * @param $store
+     * @return array
+     * @throws LocalizedException
+     */
+    public function findCategoryIdFromFactory($productGroupId, $store)
+    {
+        $categoryCollection = $this->categoryCollectionFactory->create()->addAttributeToFilter(
+            'nav_id',
+            $productGroupId
+        )
+            ->addPathsFilter('1/' . $store->getRootCategoryId() . '/')
+            ->setPageSize(1);
+        if ($categoryCollection->getSize()) {
+            // @codingStandardsIgnoreStart
+            return [
+                $categoryCollection->getFirstItem()->getParentId(),
+                $categoryCollection->getFirstItem()->getId()
+            ];
+            // @codingStandardsIgnoreEnd
+        }
+    }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public function oSlug($string)
+    {
+        // @codingStandardsIgnoreStart
+        return strtolower(trim(preg_replace(
+            '~[^0-9a-z]+~i',
+            '-',
+            html_entity_decode(
+                preg_replace(
+                    '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+                    '$1',
+                    htmlentities($string, ENT_QUOTES, 'UTF-8')
+                ),
+                ENT_QUOTES,
+                'UTF-8'
+            )
+        ), '-'));
+        // @codingStandardsIgnoreEnd
     }
 }

@@ -222,7 +222,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         }
     }
 
-
     /**
      * This is being used in Hospitality module, so do not change the structure of it.
      * @param null $cronName
@@ -292,22 +291,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
-        if ($cronName == 'process_item_modifier') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(
-                LSR::SC_SUCCESS_CRON_ITEM_MODIFIER,
-                $storeId
-            );
-            return $fullReplicationStatus;
-        }
-
-        if ($cronName == 'process_item_recipe') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(
-                LSR::SC_SUCCESS_CRON_ITEM_RECIPE,
-                $storeId
-            );
-            return $fullReplicationStatus;
-        }
         return $fullReplicationStatus;
-
     }
 }

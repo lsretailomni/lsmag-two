@@ -10,16 +10,16 @@ namespace Ls\Replication\Model;
 
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
-use Ls\Replication\Api\Data\ReplHierarchyHospRecipeInterface;
+use Ls\Replication\Api\Data\ReplItemRecipeInterface;
 
-class ReplHierarchyHospRecipe extends AbstractModel implements ReplHierarchyHospRecipeInterface, IdentityInterface
+class ReplItemRecipe extends AbstractModel implements ReplItemRecipeInterface, IdentityInterface
 {
 
-    public const CACHE_TAG = 'ls_replication_repl_hierarchy_hosp_recipe';
+    public const CACHE_TAG = 'ls_replication_repl_item_recipe';
 
-    protected $_cacheTag = 'ls_replication_repl_hierarchy_hosp_recipe';
+    protected $_cacheTag = 'ls_replication_repl_item_recipe';
 
-    protected $_eventPrefix = 'ls_replication_repl_hierarchy_hosp_recipe';
+    protected $_eventPrefix = 'ls_replication_repl_item_recipe';
 
     /**
      * @property string $Description
@@ -35,11 +35,6 @@ class ReplHierarchyHospRecipe extends AbstractModel implements ReplHierarchyHosp
      * @property float $ExclusionPrice
      */
     protected $ExclusionPrice = null;
-
-    /**
-     * @property string $HierarchyCode
-     */
-    protected $HierarchyCode = null;
 
     /**
      * @property string $ImageId
@@ -60,11 +55,6 @@ class ReplHierarchyHospRecipe extends AbstractModel implements ReplHierarchyHosp
      * @property int $LineNo
      */
     protected $LineNo = null;
-
-    /**
-     * @property string $ParentNode
-     */
-    protected $ParentNode = null;
 
     /**
      * @property float $QuantityPer
@@ -128,7 +118,7 @@ class ReplHierarchyHospRecipe extends AbstractModel implements ReplHierarchyHosp
 
     public function _construct()
     {
-        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplHierarchyHospRecipe' );
+        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplItemRecipe' );
     }
 
     public function getIdentities()
@@ -194,26 +184,6 @@ class ReplHierarchyHospRecipe extends AbstractModel implements ReplHierarchyHosp
     public function getExclusionPrice()
     {
         return $this->getData( 'ExclusionPrice' );
-    }
-
-    /**
-     * @param string $HierarchyCode
-     * @return $this
-     */
-    public function setHierarchyCode($HierarchyCode)
-    {
-        $this->setData( 'HierarchyCode', $HierarchyCode );
-        $this->HierarchyCode = $HierarchyCode;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHierarchyCode()
-    {
-        return $this->getData( 'HierarchyCode' );
     }
 
     /**
@@ -294,26 +264,6 @@ class ReplHierarchyHospRecipe extends AbstractModel implements ReplHierarchyHosp
     public function getLineNo()
     {
         return $this->getData( 'LineNo' );
-    }
-
-    /**
-     * @param string $ParentNode
-     * @return $this
-     */
-    public function setParentNode($ParentNode)
-    {
-        $this->setData( 'ParentNode', $ParentNode );
-        $this->ParentNode = $ParentNode;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getParentNode()
-    {
-        return $this->getData( 'ParentNode' );
     }
 
     /**

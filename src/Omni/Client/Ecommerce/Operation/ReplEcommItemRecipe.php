@@ -15,13 +15,13 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospRecipe as ReplEcommHierarchyHospRecipeRequest;
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospRecipeResponse as ReplEcommHierarchyHospRecipeResponse;
+use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemRecipe as ReplEcommItemRecipeRequest;
+use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemRecipeResponse as ReplEcommItemRecipeResponse;
 
-class ReplEcommHierarchyHospRecipe extends AbstractOperation
+class ReplEcommItemRecipe extends AbstractOperation
 {
 
-    public const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_HOSP_RECIPE';
+    public const OPERATION_NAME = 'REPL_ECOMM_ITEM_RECIPE';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -31,12 +31,12 @@ class ReplEcommHierarchyHospRecipe extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property ReplEcommHierarchyHospRecipeRequest $request
+     * @property ReplEcommItemRecipeRequest $request
      */
     protected $request = null;
 
     /**
-     * @property ReplEcommHierarchyHospRecipeResponse $response
+     * @property ReplEcommItemRecipeResponse $response
      */
     protected $response = null;
 
@@ -65,24 +65,24 @@ class ReplEcommHierarchyHospRecipe extends AbstractOperation
     }
 
     /**
-     * @param ReplEcommHierarchyHospRecipeRequest $request
-     * @return ResponseInterface|ReplEcommHierarchyHospRecipeResponse
+     * @param ReplEcommItemRecipeRequest $request
+     * @return ResponseInterface|ReplEcommItemRecipeResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'ReplEcommHierarchyHospRecipe' );
+        return $this->makeRequest( 'ReplEcommItemRecipe' );
     }
 
     /**
-     * @return ReplEcommHierarchyHospRecipeRequest
+     * @return ReplEcommItemRecipeRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new ReplEcommHierarchyHospRecipeRequest();
+            $this->request = new ReplEcommItemRecipeRequest();
         }
         return $this->request;
     }
@@ -119,7 +119,7 @@ class ReplEcommHierarchyHospRecipe extends AbstractOperation
     }
 
     /**
-     * @param ReplEcommHierarchyHospRecipeRequest $request
+     * @param ReplEcommItemRecipeRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -129,7 +129,7 @@ class ReplEcommHierarchyHospRecipe extends AbstractOperation
     }
 
     /**
-     * @return ReplEcommHierarchyHospRecipeRequest
+     * @return ReplEcommItemRecipeRequest
      */
     public function getRequest()
     {
@@ -137,7 +137,7 @@ class ReplEcommHierarchyHospRecipe extends AbstractOperation
     }
 
     /**
-     * @param ReplEcommHierarchyHospRecipeResponse $response
+     * @param ReplEcommItemRecipeResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -147,7 +147,7 @@ class ReplEcommHierarchyHospRecipe extends AbstractOperation
     }
 
     /**
-     * @return ReplEcommHierarchyHospRecipeResponse
+     * @return ReplEcommItemRecipeResponse
      */
     public function getResponse()
     {

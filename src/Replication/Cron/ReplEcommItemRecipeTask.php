@@ -14,41 +14,41 @@ use Magento\Config\Model\ResourceModel\Config;
 use Ls\Core\Helper\Data as LsHelper;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Client\Ecommerce\Operation\ReplEcommHierarchyHospRecipe;
-use Ls\Replication\Api\ReplHierarchyHospRecipeRepositoryInterface as ReplHierarchyHospRecipeRepository;
-use Ls\Replication\Model\ReplHierarchyHospRecipeFactory;
-use Ls\Replication\Api\Data\ReplHierarchyHospRecipeInterface;
+use Ls\Omni\Client\Ecommerce\Operation\ReplEcommItemRecipe;
+use Ls\Replication\Api\ReplItemRecipeRepositoryInterface as ReplItemRecipeRepository;
+use Ls\Replication\Model\ReplItemRecipeFactory;
+use Ls\Replication\Api\Data\ReplItemRecipeInterface;
 
-class ReplEcommHierarchyHospRecipeTask extends AbstractReplicationTask
+class ReplEcommItemRecipeTask extends AbstractReplicationTask
 {
 
-    public const JOB_CODE = 'replication_repl_hierarchy_hosp_recipe';
+    public const JOB_CODE = 'replication_repl_item_recipe';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_hierarchy_hosp_recipe';
+    public const CONFIG_PATH = 'ls_mag/replication/repl_item_recipe';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_hierarchy_hosp_recipe';
+    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_item_recipe';
 
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_hierarchy_hosp_recipe';
+    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_recipe';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_hierarchy_hosp_recipe';
+    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_item_recipe';
 
     /**
-     * @property ReplHierarchyHospRecipeRepository $repository
+     * @property ReplItemRecipeRepository $repository
      */
     protected $repository = null;
 
     /**
-     * @property ReplHierarchyHospRecipeFactory $factory
+     * @property ReplItemRecipeFactory $factory
      */
     protected $factory = null;
 
     /**
-     * @property ReplHierarchyHospRecipeInterface $data_interface
+     * @property ReplItemRecipeInterface $data_interface
      */
     protected $data_interface = null;
 
     /**
-     * @param ReplHierarchyHospRecipeRepository $repository
+     * @param ReplItemRecipeRepository $repository
      * @return $this
      */
     public function setRepository($repository)
@@ -58,7 +58,7 @@ class ReplEcommHierarchyHospRecipeTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplHierarchyHospRecipeRepository
+     * @return ReplItemRecipeRepository
      */
     public function getRepository()
     {
@@ -66,7 +66,7 @@ class ReplEcommHierarchyHospRecipeTask extends AbstractReplicationTask
     }
 
     /**
-     * @param ReplHierarchyHospRecipeFactory $factory
+     * @param ReplItemRecipeFactory $factory
      * @return $this
      */
     public function setFactory($factory)
@@ -76,7 +76,7 @@ class ReplEcommHierarchyHospRecipeTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplHierarchyHospRecipeFactory
+     * @return ReplItemRecipeFactory
      */
     public function getFactory()
     {
@@ -84,7 +84,7 @@ class ReplEcommHierarchyHospRecipeTask extends AbstractReplicationTask
     }
 
     /**
-     * @param ReplHierarchyHospRecipeInterface $data_interface
+     * @param ReplItemRecipeInterface $data_interface
      * @return $this
      */
     public function setDataInterface($data_interface)
@@ -94,14 +94,14 @@ class ReplEcommHierarchyHospRecipeTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplHierarchyHospRecipeInterface
+     * @return ReplItemRecipeInterface
      */
     public function getDataInterface()
     {
         return $this->data_interface;
     }
 
-    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplHierarchyHospRecipeFactory $factory, ReplHierarchyHospRecipeRepository $repository, ReplHierarchyHospRecipeInterface $data_interface)
+    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplItemRecipeFactory $factory, ReplItemRecipeRepository $repository, ReplItemRecipeInterface $data_interface)
     {
         parent::__construct($scope_config, $resource_config, $logger, $helper, $repHelper);
         $this->repository = $repository;
@@ -111,7 +111,7 @@ class ReplEcommHierarchyHospRecipeTask extends AbstractReplicationTask
 
     public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '')
     {
-        $request = new ReplEcommHierarchyHospRecipe($baseUrl);
+        $request = new ReplEcommItemRecipe($baseUrl);
         $request->getOperationInput()
                  ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
                                                         ->setFullReplication($fullReplication)
