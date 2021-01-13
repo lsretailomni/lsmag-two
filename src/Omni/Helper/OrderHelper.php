@@ -3,12 +3,12 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Exception\InvalidEnumException;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Exception\InvalidEnumException;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -117,8 +117,13 @@ class OrderHelper extends AbstractHelper
             $storeId       = $oneListCalculateResponse->getStoreId();
             $cardId        = $oneListCalculateResponse->getCardId();
             $customerEmail = $order->getCustomerEmail();
-            $customerName  = $order->getBillingAddress()->getFirstname() .
-+                ' ' . $order->getBillingAddress()->getLastname();
+
+            if ($order->getShippingAddress()) {
+                $customerName = $order->getShippingAddress()->getFirstname() . ' ' . $order->getShippingAddress()->getLastname();
+            } else {
+                $customerName = $order->getBillingAddress()->getFirstname() . ' ' . $order->getBillingAddress()->getLastname();
+            }
+
             if ($this->customerSession->isLoggedIn()) {
                 $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
             } else {
@@ -139,8 +144,8 @@ class OrderHelper extends AbstractHelper
             }
 
             //if the shipping address is empty, we use the contact address as shipping address.
-            $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()): null;
-            $shipToAddress = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()): $contactAddress;
+            $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
+            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) : $contactAddress;
 
             $oneListCalculateResponse
                 ->setId($order->getIncrementId())
