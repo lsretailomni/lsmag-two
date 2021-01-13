@@ -6,7 +6,7 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
-use Magento\Framework\Locale\ResolverInterface;
+use Magento\Store\Model\App\Emulation;
 use Magento\Framework\Pricing\Helper\Data;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Stdlib\StringUtils;
@@ -42,9 +42,9 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
     public $storeManager;
 
     /**
-     * @var ResolverInterface
+     * @var Emulation
      */
-    public $localeResolver;
+    public $emulation;
 
     /**
      * \Ls\Omni\Helper\LoyaltyHelper
@@ -69,7 +69,7 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
      * @param StateInterface $inlineTranslation
      * @param Renderer $addressRenderer
      * @param StoreManagerInterface $storeManager
-     * @param ResolverInterface $localeResolver
+     * @param Emulation $emulation
      * @param LoyaltyHelper $loyaltyHelper
      * @param Data $priceHelper
      * @param array $data
@@ -86,13 +86,13 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
         StateInterface $inlineTranslation,
         Renderer $addressRenderer,
         StoreManagerInterface $storeManager,
-        ResolverInterface $localeResolver,
+        Emulation $emulation,
         LoyaltyHelper $loyaltyHelper,
         Data $priceHelper,
         array $data = []
     ) {
         $this->storeManager   = $storeManager;
-        $this->localeResolver = $localeResolver;
+        $this->emulation = $emulation;
         $this->loyaltyHelper  = $loyaltyHelper;
         $this->priceHelper    = $priceHelper;
         parent::__construct(
@@ -107,7 +107,7 @@ class Invoice extends \Magento\Sales\Model\Order\Pdf\Invoice
             $inlineTranslation,
             $addressRenderer,
             $storeManager,
-            $localeResolver,
+            $emulation,
             $data
         );
     }
