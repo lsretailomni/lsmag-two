@@ -205,7 +205,7 @@ class Product extends Action
         $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
         $mediaDirectory        = $this->replicationHelper->getMediaPathtoStore();
         $catalogMediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
-        $mediaTmpDirectory     = $mediaDirectory . "tmp";
+        $mediaTmpDirectory     = $mediaDirectory . "tmp". DIRECTORY_SEPARATOR. "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
         try {
             $this->replicationHelper->removeDirectory($catalogMediaDirectory);
             $this->replicationHelper->removeDirectory($mediaTmpDirectory);
