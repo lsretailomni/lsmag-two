@@ -10,12 +10,12 @@ namespace Ls\Replication\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
-class ReplHierarchyHospModifier extends AbstractDb
+class ReplItemRecipe extends AbstractDb
 {
 
     public function _construct()
     {
-        $this->_init( 'ls_replication_repl_hierarchy_hosp_modifier', 'repl_hierarchy_hosp_modifier_id' );
+        $this->_init( 'ls_replication_repl_item_recipe', 'repl_item_recipe_id' );
     }
 
 

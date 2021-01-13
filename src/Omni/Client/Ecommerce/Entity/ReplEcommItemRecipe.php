@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class ReplEcommHierarchyHospRecipe implements RequestInterface
+class ReplEcommItemRecipe implements RequestInterface
 {
 
     /**
