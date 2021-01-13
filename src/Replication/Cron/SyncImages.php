@@ -247,6 +247,7 @@ class SyncImages extends ProductCreateTask
     }
 
     /**
+     * This function is overriding in hospitality module
      * @param false $totalCount
      * @return Collection
      */
