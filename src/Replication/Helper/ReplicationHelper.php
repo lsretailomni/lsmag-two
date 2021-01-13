@@ -3,15 +3,15 @@
 namespace Ls\Replication\Helper;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use Ls\Replication\Logger\Logger;
-use Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Eav\Model\Config;
@@ -1037,11 +1037,17 @@ class ReplicationHelper extends AbstractHelper
     /**
      * @param $collection
      * @param SearchCriteriaInterface $criteria
+     * @param $type
      */
-    public function setCollectionPropertiesPlusJoinsForImages(&$collection, SearchCriteriaInterface $criteria)
+    public function setCollectionPropertiesPlusJoinsForImages(&$collection, SearchCriteriaInterface $criteria, $type)
     {
         $secondTableName = $this->resource->getTableName('catalog_product_entity');
-        $thirdTableName  = $this->resource->getTableName('ls_replication_repl_item');
+        if ($type == 'Item') {
+            $thirdTableName  = $this->resource->getTableName('ls_replication_repl_item');
+        } else {
+            $thirdTableName  = $this->resource->getTableName('ls_replication_repl_hierarchy_leaf');
+        }
+
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
