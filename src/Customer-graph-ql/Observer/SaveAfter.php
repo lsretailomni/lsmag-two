@@ -83,6 +83,7 @@ class SaveAfter implements ObserverInterface
                     }
                 } else {
                     $customer->setData('lsr_password', $customer->getData('ls_password'));
+                    $customer->setData('ls_password', null);
                     $this->customerResourceModel->save($customer);
                 }
             }
