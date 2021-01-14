@@ -5,6 +5,7 @@ namespace Ls\Replication\Cron;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplAttributeValue;
 use Magento\Catalog\Model\Product;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Setup\Exception;
@@ -136,7 +137,10 @@ class SyncAttributesValue extends ProductCreateTask
                     }
                     $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
                     if ($attribute->getFrontendInput() == 'multiselect') {
-                        $value = $this->_getOptionIDByCode($formattedCode, $attributeValue->getValue());
+                        $value = $this->replicationHelper->_getOptionIDByCode(
+                            $formattedCode,
+                            $attributeValue->getValue()
+                        );
                     } elseif ($attribute->getFrontendInput() == 'boolean') {
                         if (strtolower($attributeValue->getValue()) == 'yes') {
                             $value = 1;
@@ -194,7 +198,7 @@ class SyncAttributesValue extends ProductCreateTask
      * @param $attributeCode
      * @param $sortOrder
      * @throws NoSuchEntityException
-     * @throws \Magento\Framework\Exception\InputException
+     * @throws InputException
      */
     public function assignAttributeToAttributeSet($attributeSetId, $attributeGroupId, $attributeCode, $sortOrder)
     {
