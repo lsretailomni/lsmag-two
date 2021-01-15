@@ -697,35 +697,6 @@
             "PRIMARY": true
         }
     },
-    "ls_replication_repl_hierarchy_hosp_recipe": {
-        "column": {
-            "repl_hierarchy_hosp_recipe_id": true,
-            "Description": true,
-            "Exclusion": true,
-            "ExclusionPrice": true,
-            "HierarchyCode": true,
-            "ImageId": true,
-            "IsDeleted": true,
-            "ItemNo": true,
-            "LineNo": true,
-            "ParentNode": true,
-            "QuantityPer": true,
-            "RecipeNo": true,
-            "UnitOfMeasure": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
     "ls_replication_loy_item": {
         "column": {
             "loy_item_id": true,
@@ -1070,6 +1041,33 @@
             "UnitOfMeasure": true,
             "UsageCategory": true,
             "VariantCode": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_item_recipe": {
+        "column": {
+            "repl_item_recipe_id": true,
+            "Description": true,
+            "Exclusion": true,
+            "ExclusionPrice": true,
+            "ImageId": true,
+            "IsDeleted": true,
+            "ItemNo": true,
+            "LineNo": true,
+            "QuantityPer": true,
+            "RecipeNo": true,
+            "UnitOfMeasure": true,
             "scope": true,
             "scope_id": true,
             "processed": true,

@@ -12,6 +12,7 @@ use Magento\Framework\App\ResourceConnection;
 
 /**
  * Class Lstables
+ * for truncating all flat tables
  */
 class Lstables extends Action
 {
@@ -33,17 +34,22 @@ class Lstables extends Action
         "ls_replication_repl_currency_exch_rate",
         "ls_replication_repl_customer",
         "ls_replication_repl_data_translation",
+        "ls_replication_repl_data_translation_lang_code",
         "ls_replication_repl_discount",
         "ls_replication_repl_discount_validation",
+        "ls_replication_repl_extended_variant_value",
         "ls_replication_repl_hierarchy",
+        "ls_replication_repl_hierarchy_hosp_deal",
+        "ls_replication_repl_hierarchy_hosp_deal_line",
         "ls_replication_repl_hierarchy_leaf",
         "ls_replication_repl_hierarchy_node",
-        "ls_replication_repl_extended_variant_value",
         "ls_replication_repl_image",
         "ls_replication_repl_image_link",
         "ls_replication_repl_inv_status",
         "ls_replication_repl_item",
         "ls_replication_repl_item_category",
+        "ls_replication_repl_item_modifier",
+        "ls_replication_repl_item_recipe",
         "ls_replication_repl_item_unit_of_measure",
         "ls_replication_repl_item_variant_registration",
         "ls_replication_repl_loy_vendor_item_mapping",
@@ -52,6 +58,7 @@ class Lstables extends Action
         "ls_replication_repl_shipping_agent",
         "ls_replication_repl_store",
         "ls_replication_repl_store_tender_type",
+        "ls_replication_repl_tax_setup",
         "ls_replication_repl_unit_of_measure",
         "ls_replication_repl_vendor"
     ];
@@ -111,9 +118,9 @@ class Lstables extends Action
             $coreConfigTableName = $this->resource->getTableName('core_config_data');
             $connection->query('DELETE FROM ' . $coreConfigTableName .
                 ' WHERE path = "ls_mag/replication/' . $jobName . '"');
-            $connection->query('DELETE FROM ' . $coreConfigTableName . ' 
+            $connection->query('DELETE FROM ' . $coreConfigTableName . '
             WHERE path = "ls_mag/replication/last_execute_' . $jobName . '"');
-            $connection->query('DELETE FROM ' . $coreConfigTableName . ' 
+            $connection->query('DELETE FROM ' . $coreConfigTableName . '
             WHERE path = "ls_mag/replication/status_' . $jobName . '"');
             $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
             $this->replHelper->flushByTypeCode('config');

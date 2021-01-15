@@ -3,12 +3,12 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Exception\InvalidEnumException;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Exception\InvalidEnumException;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -117,8 +117,13 @@ class OrderHelper extends AbstractHelper
             $storeId       = $oneListCalculateResponse->getStoreId();
             $cardId        = $oneListCalculateResponse->getCardId();
             $customerEmail = $order->getCustomerEmail();
-            $customerName  = $order->getShippingAddress()->getFirstname() .
-                ' ' . $order->getShippingAddress()->getLastname();
+
+            if ($order->getShippingAddress()) {
+                $customerName = $order->getShippingAddress()->getFirstname() . ' ' . $order->getShippingAddress()->getLastname();
+            } else {
+                $customerName = $order->getBillingAddress()->getFirstname() . ' ' . $order->getBillingAddress()->getLastname();
+            }
+
             if ($this->customerSession->isLoggedIn()) {
                 $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
             } else {
@@ -126,12 +131,22 @@ class OrderHelper extends AbstractHelper
             }
             $shippingMethod = $order->getShippingMethod(true);
             //TODO work on condition
-            $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
+            $isClickCollect = false;
+
+            if ($shippingMethod !== null) {
+                $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
+            }
+
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
             $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
             if (!empty($this->checkoutSession->getCouponCode())) {
                 $order->setCouponCode($this->checkoutSession->getCouponCode());
             }
+
+            //if the shipping address is empty, we use the contact address as shipping address.
+            $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
+            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) : $contactAddress;
+
             $oneListCalculateResponse
                 ->setId($order->getIncrementId())
                 ->setContactId($contactId)
@@ -140,8 +155,8 @@ class OrderHelper extends AbstractHelper
                 ->setShipToEmail($customerEmail)
                 ->setContactName($customerName)
                 ->setShipToName($customerName)
-                ->setContactAddress($this->convertAddress($order->getBillingAddress()))
-                ->setShipToAddress($this->convertAddress($order->getShippingAddress()))
+                ->setContactAddress($contactAddress)
+                ->setShipToAddress($shipToAddress)
                 ->setStoreId($storeId);
             if ($isClickCollect) {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);

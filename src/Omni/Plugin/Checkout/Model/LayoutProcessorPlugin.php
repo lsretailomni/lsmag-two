@@ -46,10 +46,10 @@ class LayoutProcessorPlugin
         GiftCardHelper $giftCardHelper,
         LSR $lsr
     ) {
-        $this->data           = $data;
-        $this->loyaltyHelper  = $loyaltyHelper;
+        $this->data = $data;
+        $this->loyaltyHelper = $loyaltyHelper;
         $this->giftCardHelper = $giftCardHelper;
-        $this->lsr               = $lsr;
+        $this->lsr = $lsr;
     }
 
     /**
@@ -73,7 +73,23 @@ class LayoutProcessorPlugin
             unset($jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['afterMethods']['children']['gift-card']);
         }
 
-        if(!$this->isValid()) {
+        if (isset($jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']['shippingAdditional']['children'])) {
+            $jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']
+            ['shippingAdditional']['children']['select_store'] = ['component' => 'Ls_Omni/js/view/checkout/shipping/select-store'];
+        } else {
+            $jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']['shippingAdditional'] =
+                [
+                    'component' => "uiComponent",
+                    'displayArea' => 'shippingAdditional',
+                    'children' => [
+                        'select_store' => [
+                            'component' => 'Ls_Omni/js/view/checkout/shipping/select-store'
+                        ]
+                    ]
+                ];
+        }
+
+        if (!$this->isValid()) {
             unset($jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']['shippingAdditional']['children']['select_store']);
         }
         return $jsLayout;
@@ -85,6 +101,6 @@ class LayoutProcessorPlugin
      */
     public function isValid()
     {
-        return  $this->lsr->isLSR($this->lsr->getCurrentStoreId());
+        return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
     }
 }

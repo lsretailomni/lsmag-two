@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] - 2021-01-13
+
+### Added
+
+- Added support for [LS eCommerce for hospitality.](https://github.com/lsretailomni/hospitality)
+- Added support for Omni v4.14.x [OMNI-5340](https://solutions.lsretail.com/jira/browse/OMNI-5340)
+ 
+### Bugs/Fixes
+
+- Fixed issue in handling the crappy data for Hierarchy nodes - Adding a condition in order to make sure we only update the child category when we do have the parent for it for crappy and inconsistent data. [OMNI-5364](https://solutions.lsretail.com/jira/browse/OMNI-5364)
+- Github Issue [#28](https://github.com/lsretailomni/lsmag-two/issues/28)
+- Github Issue [#30](https://github.com/lsretailomni/lsmag-two/issues/30)
+- Github Issue [#32](https://github.com/lsretailomni/lsmag-two/issues/32)
+- Github Issue [#27](https://github.com/lsretailomni/lsmag-two/issues/27)
+
+
+
 ## [1.6.1] - 2020-11-23
 
 ### Added

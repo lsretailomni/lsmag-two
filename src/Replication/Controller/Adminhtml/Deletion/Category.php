@@ -8,10 +8,10 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\Registry;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Category as ResourceModelCategory;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Registry;
 use Magento\Store\Api\Data\StoreInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -163,12 +163,13 @@ class Category extends Action
             }
         }
 
-        $mediaDirectory = $this->replicationHelper->getMediaPathtoStore();
-        $mediaDirectory .= 'catalog' . DIRECTORY_SEPARATOR . 'category' . DIRECTORY_SEPARATOR;
+        $mediaDirectory    = $this->replicationHelper->getMediaPathtoStore();
+        $mediaDirectory    .= 'catalog' . DIRECTORY_SEPARATOR . 'category' . DIRECTORY_SEPARATOR;
+        $mediaTmpDirectory = $mediaDirectory . "tmp" . DIRECTORY_SEPARATOR . "catalog" . DIRECTORY_SEPARATOR . "category" . DIRECTORY_SEPARATOR;
         try {
-            if ($this->filesystem->exists($mediaDirectory)) {
-                $this->filesystem->remove($mediaDirectory);
-            }
+            $this->filesystem->remove($mediaDirectory);
+            $this->filesystem->remove($mediaTmpDirectory);
+
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
