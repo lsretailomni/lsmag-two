@@ -5,17 +5,21 @@ namespace Ls\Omni\Controller\Adminhtml\Order;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
-/** Class for sending order request */
+/**
+ * Class Request
+ * @package Ls\Omni\Controller\Adminhtml\Order
+ */
 class Request extends Action
 {
     /**
@@ -24,19 +28,25 @@ class Request extends Action
     public $orderRepository;
 
     /**
+     * @var BasketHelper
+     */
+    public $basketHelper;
+
+
+    /**
      * @var LoggerInterface
      */
     public $logger;
 
     /**
+     * @var OrderHelper
+     */
+    public $orderHelper;
+
+    /**
      * @var ManagerInterface
      */
     public $messageManager;
-
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $cartRepository;
 
     /**
      * @var LSR
@@ -47,22 +57,25 @@ class Request extends Action
      * Request constructor.
      * @param Action\Context $context
      * @param OrderRepositoryInterface $orderRepository
+     * @param BasketHelper $basketHelper
      * @param LoggerInterface $logger
-     * @param CartRepositoryInterface $cartRepository
+     * @param OrderHelper $orderHelper
      * @param LSR $lsr
      */
     public function __construct(
         Action\Context $context,
         OrderRepositoryInterface $orderRepository,
+        BasketHelper $basketHelper,
         LoggerInterface $logger,
-        CartRepositoryInterface $cartRepository,
+        OrderHelper $orderHelper,
         LSR $lsr
     ) {
-        $this->messageManager  = $context->getMessageManager();
         $this->orderRepository = $orderRepository;
+        $this->basketHelper    = $basketHelper;
         $this->logger          = $logger;
+        $this->orderHelper     = $orderHelper;
+        $this->messageManager  = $context->getMessageManager();
         $this->lsr             = $lsr;
-        $this->cartRepository  = $cartRepository;
         parent::__construct($context);
     }
 
@@ -80,20 +93,24 @@ class Request extends Action
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
-                $quote = $this->cartRepository->get($order->getQuoteId());
-                $this->_eventManager->dispatch(
-                    'sales_model_service_quote_submit_before',
-                    [
-                        'order' => $order,
-                        'quote' => $quote
-                    ]
-                );
-                $this->_eventManager->dispatch('sales_order_place_after', ['order' => $order]);
+                $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
+                $request            = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                $response           = $this->orderHelper->placeOrder($request);
+                if ($response) {
+                    if (!empty($response->getResult()->getId())) {
+                        $documentId = $response->getResult()->getId();
+                        $order->setDocumentId($documentId);
+                        $this->orderRepository->save($order);
+                    }
+                    $this->messageManager->addSuccessMessage(__('Order request has been sent to LS Central successfully'));
+                }
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
-        } else {
+        }
+        if (!$response) {
+            $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
             $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
         }
         return $resultRedirect;
