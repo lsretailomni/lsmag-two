@@ -152,12 +152,12 @@ class OrderObserver implements ObserverInterface
                     } catch (Exception $e) {
                         $this->logger->error($e->getMessage());
                     }
+                    $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
                 }
             }
         } else {
             $this->orderHelper->disasterRecoveryHandler($order);
         }
-        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         return $this;
     }
 }

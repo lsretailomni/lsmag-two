@@ -493,5 +493,6 @@ class OrderHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         $this->basketHelper->unSetLastDocumentId();
+        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
     }
 }
