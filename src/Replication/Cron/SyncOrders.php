@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
