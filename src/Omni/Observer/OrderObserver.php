@@ -104,21 +104,8 @@ class OrderObserver implements ObserverInterface
         */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             //checking for Adyen payment gateway
-            $adyen_response = $observer->getEvent()->getData('adyen_response');
-            if (!empty($adyen_response)) {
-                if (isset($adyen_response['pspReference'])) {
-                    $order->getPayment()->setLastTransId($adyen_response['pspReference']);
-                    $order->getPayment()->setCcTransId($adyen_response['pspReference']);
-                }
-                if (isset($adyen_response['paymentMethod'])) {
-                    $order->getPayment()->setCcType($adyen_response['paymentMethod']);
-                }
-                if (isset($adyen_response['authResult'])) {
-                    $order->getPayment()->setCcStatus($adyen_response['authResult']);
-                }
-                $this->orderHelper->orderRepository->save($order);
-                $order = $this->orderHelper->orderRepository->get($order->getEntityId());
-            }
+            $adyenResponse = $observer->getEvent()->getData('adyen_response');
+            $order         = $this->orderHelper->setAdyenParameters($adyenResponse, $order);
             if (!empty($order->getIncrementId())) {
                 $paymentMethod = $order->getPayment();
                 if (!empty($paymentMethod)) {
@@ -127,7 +114,7 @@ class OrderObserver implements ObserverInterface
                     $check         = $paymentMethod->isOffline();
                 }
             }
-            if (0) {
+            if (!empty($oneListCalculation)) {
                 if (($check == true || !empty($transId))) {
                     $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                     $response = $this->orderHelper->placeOrder($request);
