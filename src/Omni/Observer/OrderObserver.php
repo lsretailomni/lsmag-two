@@ -127,7 +127,7 @@ class OrderObserver implements ObserverInterface
                     $check         = $paymentMethod->isOffline();
                 }
             }
-            if (!empty($oneListCalculation)) {
+            if (0) {
                 if (($check == true || !empty($transId))) {
                     $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                     $response = $this->orderHelper->placeOrder($request);

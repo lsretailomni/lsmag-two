@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
@@ -124,50 +125,33 @@ class SyncOrders
                     if (!empty($orders)) {
                         foreach ($orders as $order) {
                             try {
-                                $quote      = $this->cartRepository->get($order->getQuoteId());
-                                $couponCode = $quote->getCouponCode();
+                                $quote = $this->cartRepository->get($order->getQuoteId());
+                                $couponCode = $order->getCouponCode();
                                 /** @var OneList|null $oneList */
                                 $oneList = $this->basketHelper->getOneListAdmin(
-                                    $quote->getCustomerEmail(),
-                                    $quote->getStore()->getWebsiteId()
+                                    $order->getCustomerEmail(),
+                                    $order->getStore()->getWebsiteId()
                                 );
                                 $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-                                if (!empty($couponCode)) {
-                                    $status = $this->basketHelper->setCouponCode($couponCode);
-                                    if (!is_object($status)) {
-                                        $quote->setCouponCode('');
-                                    }
-                                }
+                                $this->basketHelper->setCouponCodeInAdmin($couponCode);
                                 /** @var Order $basketData */
                                 $basketData = $this->basketHelper->update($oneList);
-                                $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
                                 if (!empty($basketData)) {
-                                    $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
-                                }
-                                if ($quote->getLsGiftCardAmountUsed() > 0 ||
-                                    $quote->getLsPointsSpent() > 0) {
-                                    $this->data->orderBalanceCheck(
-                                        $quote->getLsGiftCardNo(),
-                                        $quote->getLsGiftCardAmountUsed(),
-                                        $quote->getLsPointsSpent(),
-                                        $basketData
-                                    );
-                                }
-                                $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
-                                $request            = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                                $response           = $this->orderHelper->placeOrder($request);
-                                if ($response) {
-                                    if (!empty($response->getResult()->getId())) {
-                                        $documentId = $response->getResult()->getId();
-                                        $order->setDocumentId($documentId);
-                                        $this->orderResourceModel->save($order);
-                                    }
-                                    $oneList = $this->basketHelper->getOneListFromCustomerSession();
-                                    if ($oneList) {
-                                        $this->basketHelper->delete($oneList);
+                                    $orderSession  = $this->basketHelper->getOneListCalculationFromCheckoutSession();
+                                    $request            = $this->orderHelper->prepareOrder($order, $orderSession);
+                                    $response           = $this->orderHelper->placeOrder($request);
+                                    if ($response) {
+                                        if (!empty($response->getResult()->getId())) {
+                                            $documentId = $response->getResult()->getId();
+                                            $order->setDocumentId($documentId);
+                                            $this->orderResourceModel->save($order);
+                                        }
+                                        $oneList = $this->basketHelper->getOneListFromCustomerSession();
+                                        if ($oneList) {
+                                            $this->basketHelper->delete($oneList);
+                                        }
                                     }
                                 }
-
                             } catch (\Exception $e) {
                                 $this->logger->critical($e->getMessage());
                             }
