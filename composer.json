@@ -54,7 +54,7 @@
       "Ls\\Omni\\": "src/Omni/",
       "Ls\\Replication\\": "src/Replication/",
       "Ls\\Customer\\": "src/Customer/",
-      "Ls\\Customer-graph-ql\\": "src/Customer-graph-ql/",
+      "Ls\\CustomerGraphQl\\": "src/Customer-graph-ql/",
 	  "Ls\\Webhooks\\": "src/Webhooks/"
     },
     "files": [
