@@ -3,19 +3,20 @@
 namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\OneList;
+use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Sales\Model\ResourceModel\Order as OrderResourceModel;
 use \Ls\Replication\Helper\ReplicationHelper;
-use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface as MessageInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Api\Data\StoreInterface;
+use Psr\Log\LoggerInterface;
 
-/**
- * Class SyncOrders
- * @package Ls\Replication\Cron
- */
+/** Syncng order */
 class SyncOrders
 {
 
@@ -43,9 +44,17 @@ class SyncOrders
     public $orderHelper;
 
     /**
-     * @var ManagerInterface
+     * @var BasketHelper
      */
-    public $eventManager;
+    private $basketHelper;
+
+    /** @var OrderResourceModel $orderResourceModel */
+    private $orderResourceModel;
+
+    /**
+     * @var ItemHelper
+     */
+    private $itemHelper;
 
     /**
      * @var CartRepositoryInterface
@@ -53,9 +62,9 @@ class SyncOrders
     public $cartRepository;
 
     /**
-     * @var MessageInterface
+     * @var LoggerInterface
      */
-    public $messageInterface;
+    public $logger;
 
     /**
      * SyncOrders constructor.
@@ -63,27 +72,33 @@ class SyncOrders
      * @param Data $helper
      * @param ReplicationHelper $replicationHelper
      * @param OrderHelper $orderHelper
-     * @param ManagerInterface $eventManager
+     * @param BasketHelper $basketHelper
+     * @param ItemHelper $itemHelper
+     * @param OrderResourceModel $orderResourceModel
      * @param CartRepositoryInterface $cartRepository
-     * @param MessageInterface $messageInterface
+     * @param LoggerInterface $logger
      */
     public function __construct(
         LSR $lsr,
         Data $helper,
         ReplicationHelper $replicationHelper,
         OrderHelper $orderHelper,
-        ManagerInterface $eventManager,
+        BasketHelper $basketHelper,
+        ItemHelper $itemHelper,
+        OrderResourceModel $orderResourceModel,
         CartRepositoryInterface $cartRepository,
-        MessageInterface $messageInterface
+        LoggerInterface $logger
     ) {
 
-        $this->lsr               = $lsr;
-        $this->helper            = $helper;
-        $this->replicationHelper = $replicationHelper;
-        $this->orderHelper       = $orderHelper;
-        $this->eventManager      = $eventManager;
-        $this->cartRepository    = $cartRepository;
-        $this->messageInterface  = $messageInterface;
+        $this->lsr                = $lsr;
+        $this->helper             = $helper;
+        $this->replicationHelper  = $replicationHelper;
+        $this->orderHelper        = $orderHelper;
+        $this->basketHelper       = $basketHelper;
+        $this->itemHelper         = $itemHelper;
+        $this->orderResourceModel = $orderResourceModel;
+        $this->cartRepository     = $cartRepository;
+        $this->logger             = $logger;
     }
 
     /**
@@ -108,16 +123,37 @@ class SyncOrders
                     $orders = $this->orderHelper->getOrders($this->store->getId());
                     if (!empty($orders)) {
                         foreach ($orders as $order) {
-                            $quote = $this->cartRepository->get($order->getQuoteId());
-                            $this->eventManager->dispatch(
-                                'sales_model_service_quote_submit_before',
-                                [
-                                    'order' => $order,
-                                    'quote' => $quote
-                                ]
-                            );
-                            $this->eventManager->dispatch('sales_order_place_after', ['order' => $order]);
-                            $this->messageInterface->getMessages(true);
+                            try {
+                                $quote = $this->cartRepository->get($order->getQuoteId());
+                                $couponCode = $order->getCouponCode();
+                                /** @var OneList|null $oneList */
+                                $oneList = $this->basketHelper->getOneListAdmin(
+                                    $order->getCustomerEmail(),
+                                    $order->getStore()->getWebsiteId()
+                                );
+                                $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
+                                $this->basketHelper->setCouponCodeInAdmin($couponCode);
+                                /** @var Order $basketData */
+                                $basketData = $this->basketHelper->update($oneList);
+                                if (!empty($basketData)) {
+                                    $orderSession  = $this->basketHelper->getOneListCalculationFromCheckoutSession();
+                                    $request            = $this->orderHelper->prepareOrder($order, $orderSession);
+                                    $response           = $this->orderHelper->placeOrder($request);
+                                    if ($response) {
+                                        if (!empty($response->getResult()->getId())) {
+                                            $documentId = $response->getResult()->getId();
+                                            $order->setDocumentId($documentId);
+                                            $this->orderResourceModel->save($order);
+                                        }
+                                        $oneList = $this->basketHelper->getOneListFromCustomerSession();
+                                        if ($oneList) {
+                                            $this->basketHelper->delete($oneList);
+                                        }
+                                    }
+                                }
+                            } catch (\Exception $e) {
+                                $this->logger->critical($e->getMessage());
+                            }
                         }
 
                         $this->replicationHelper->updateConfigValue(
@@ -126,12 +162,12 @@ class SyncOrders
                             $this->store->getId()
                         );
                     }
-
-                    $info[] = -1;
-                    return $info;
                 }
                 $this->lsr->setStoreId(null);
             }
+
+            $info[] = -1;
+            return $info;
         }
     }
 

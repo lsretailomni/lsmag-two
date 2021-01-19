@@ -707,8 +707,11 @@ class BasketHelper extends AbstractHelper
     {
         /** @var Entity\OneList $list */
         $list     = null;
+        $cardId   = null;
         $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
-        $cardId   = $customer->getData('lsr_cardid');
+        if (!empty($customer)) {
+            $cardId = $customer->getData('lsr_cardid');
+        }
         $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         // @codingStandardsIgnoreStart
         $list = (new Entity\OneList())
@@ -881,7 +884,7 @@ class BasketHelper extends AbstractHelper
         }
         $baseUnitOfMeasure = $item->getProduct()->getData('uom');
         // @codingStandardsIgnoreLine
-        $uom = $this->itemHelper->getUom($itemSku, $baseUnitOfMeasure);
+        $uom        = $this->itemHelper->getUom($itemSku, $baseUnitOfMeasure);
         $rowTotal   = "";
         $basketData = $this->getOneListCalculation();
         $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
@@ -1119,5 +1122,13 @@ class BasketHelper extends AbstractHelper
         $this->unSetOneList();
         $this->unSetOneListCalculation();
         $this->unsetCouponCode();
+    }
+
+    /**
+     * @param $couponCode
+     */
+    public function setCouponCodeInAdmin($couponCode)
+    {
+        $this->couponCode = $couponCode;
     }
 }

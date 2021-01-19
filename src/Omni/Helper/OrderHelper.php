@@ -274,7 +274,7 @@ class OrderHelper extends AbstractHelper
     public function setOrderPayments(Model\Order $order, $cardId)
     {
         $transId          = $order->getPayment()->getLastTransId();
-        $ccType           = $order->getPayment()->getCcType();
+        $ccType           = substr($order->getPayment()->getCcType(), 0, 10);
         $cardNumber       = $order->getPayment()->getCcLast4();
         $paidAmount       = $order->getPayment()->getAmountPaid();
         $authorizedAmount = $order->getPayment()->getAmountAuthorized();
@@ -493,5 +493,33 @@ class OrderHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         $this->basketHelper->unSetLastDocumentId();
+        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
+    }
+
+    /**
+     * @param $adyenResponse
+     * @param $order
+     * @return OrderInterface|mixed
+     * @throws AlreadyExistsException
+     * @throws NoSuchEntityException
+     * @throws \Magento\Framework\Exception\InputException
+     */
+    public function setAdyenParameters($adyenResponse, $order)
+    {
+        if (!empty($adyenResponse)) {
+            if (isset($adyenResponse['pspReference'])) {
+                $order->getPayment()->setLastTransId($adyenResponse['pspReference']);
+                $order->getPayment()->setCcTransId($adyenResponse['pspReference']);
+            }
+            if (isset($adyenResponse['paymentMethod'])) {
+                $order->getPayment()->setCcType($adyenResponse['paymentMethod']);
+            }
+            if (isset($adyenResponse['authResult'])) {
+                $order->getPayment()->setCcStatus($adyenResponse['authResult']);
+            }
+            $this->orderRepository->save($order);
+            $order = $this->orderRepository->get($order->getEntityId());
+        }
+        return $order;
     }
 }

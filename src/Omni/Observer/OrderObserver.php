@@ -16,10 +16,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class OrderObserver
- * @package Ls\Omni\Observer
- */
+/** Class for order process*/
 class OrderObserver implements ObserverInterface
 {
     /**
@@ -83,7 +80,6 @@ class OrderObserver implements ObserverInterface
         $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
-
     }
 
     /**
@@ -95,7 +91,7 @@ class OrderObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-            $check              = false;
+        $check              = false;
         $response           = null;
         $order              = $observer->getEvent()->getData('order');
         $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
@@ -108,15 +104,8 @@ class OrderObserver implements ObserverInterface
         */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             //checking for Adyen payment gateway
-            $adyen_response = $observer->getEvent()->getData('adyen_response');
-            if (!empty($adyen_response)) {
-                $order->getPayment()->setLastTransId($adyen_response['pspReference']);
-                $order->getPayment()->setCcTransId($adyen_response['pspReference']);
-                $order->getPayment()->setCcType($adyen_response['paymentMethod']);
-                $order->getPayment()->setCcStatus($adyen_response['authResult']);
-                $this->orderHelper->orderRepository->save($order);
-                $order = $this->orderHelper->orderRepository->get($order->getEntityId());
-            }
+            $adyenResponse = $observer->getEvent()->getData('adyen_response');
+            $order         = $this->orderHelper->setAdyenParameters($adyenResponse, $order);
             if (!empty($order->getIncrementId())) {
                 $paymentMethod = $order->getPayment();
                 if (!empty($paymentMethod)) {
@@ -140,7 +129,9 @@ class OrderObserver implements ObserverInterface
                             if ($oneList) {
                                 $this->basketHelper->delete($oneList);
                             }
-                            $order->addCommentToStatusHistory(__('Order request has been sent to LS Central successfully'));
+                            $order->addCommentToStatusHistory(
+                                __('Order request has been sent to LS Central successfully')
+                            );
                             $this->orderResourceModel->save($order);
                         } else {
                             $this->orderHelper->disasterRecoveryHandler($order);
@@ -148,12 +139,12 @@ class OrderObserver implements ObserverInterface
                     } catch (Exception $e) {
                         $this->logger->error($e->getMessage());
                     }
+                    $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
                 }
             }
         } else {
             $this->orderHelper->disasterRecoveryHandler($order);
         }
-        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         return $this;
     }
 }
