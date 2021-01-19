@@ -54,7 +54,7 @@
       "Ls\\Omni\\": "src/Omni/",
       "Ls\\Replication\\": "src/Replication/",
       "Ls\\Customer\\": "src/Customer/",
-      "Ls\\CustomerGraphQl\\": "src/Customer-graph-ql/",
+      "Ls\\CustomerGraphQl\\": "src/CustomerGraphQl/",
 	  "Ls\\Webhooks\\": "src/Webhooks/"
     },
     "files": [
@@ -62,7 +62,7 @@
       "src/Omni/registration.php",
       "src/Replication/registration.php",
       "src/Customer/registration.php",
-      "src/Customer-graph-ql/registration.php",
+      "src/CustomerGraphQl/registration.php",
 	  "src/Webhooks/registration.php"
     ]
   },
