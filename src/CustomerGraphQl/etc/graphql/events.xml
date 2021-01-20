@@ -5,4 +5,7 @@
     <event name="customer_save_after">
         <observer name="ls_customer_graphql_save_after" instance="Ls\CustomerGraphQl\Observer\SaveAfter"/>
     </event>
+    <event name="customer_customer_authenticated">
+        <observer name="customer_authentication_observer" instance="Ls\CustomerGraphQl\Observer\LoginAuthentication" />
+    </event>
 </config>
