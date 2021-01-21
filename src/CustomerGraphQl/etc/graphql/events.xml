@@ -1,4 +1,5 @@
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="customer_save_before">
         <observer name="ls_customer_graphql_save_before" instance="Ls\CustomerGraphQl\Observer\SaveBefore"/>
     </event>
@@ -6,6 +7,6 @@
         <observer name="ls_customer_graphql_save_after" instance="Ls\CustomerGraphQl\Observer\SaveAfter"/>
     </event>
     <event name="customer_customer_authenticated">
-        <observer name="customer_authentication_observer" instance="Ls\CustomerGraphQl\Observer\LoginAuthentication" />
+        <observer name="ls_customer_graphql_authentication" instance="Ls\CustomerGraphQl\Observer\LoginAuthentication"/>
     </event>
 </config>
