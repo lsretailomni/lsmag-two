@@ -79,9 +79,9 @@ class AccountManagement
     ) {
         $email = $username;
         if (!empty($username) && !empty($password)) {
-            $is_email = $this->contactHelper->isValid($username);
+            $isEmail           = $this->contactHelper->isValid($username);
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-                if ($is_email) {
+                if ($isEmail) {
                     $search = $this->contactHelper->search($username);
                     $found  = $search !== null
                         && ($search instanceof MemberContact)
@@ -103,7 +103,13 @@ class AccountManagement
                 if ($result instanceof MemberContact) {
                     $login['username'] = $username;
                     $login['password'] = $password;
-                    $this->contactHelper->processCustomerLogin($result, $login, $is_email);
+                    $this->contactHelper->processCustomerLogin($result, $login, $isEmail);
+                    $email = $result->getEmail();
+                }
+            } else {
+                $emailValue = $this->contactHelper->loginCustomerIfOmniServiceDown($isEmail, $email, null, false, true);
+                if (!empty($emailValue)) {
+                    $email = $emailValue;
                 }
             }
 
