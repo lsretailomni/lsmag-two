@@ -1062,12 +1062,19 @@ class ContactHelper extends AbstractHelper
     /**
      * @param $isEmail
      * @param $userNameOrEmail
-     * @param RequestInterface $request
-     * @param bool $isAjax
+     * @param $request
+     * @param false $isAjax
+     * @param false $isGraphQl
+     * @return string
      * @throws LocalizedException
      */
-    public function loginCustomerIfOmniServiceDown($isEmail, $userNameOrEmail, $request, $isAjax = false)
-    {
+    public function loginCustomerIfOmniServiceDown(
+        $isEmail,
+        $userNameOrEmail,
+        $request,
+        $isAjax = false,
+        $isGraphQl = false
+    ) {
         if (!$isEmail) {
             $filters = [
                 $this->filterBuilder
@@ -1086,6 +1093,8 @@ class ContactHelper extends AbstractHelper
                     $credentials             = json_decode($request->getContent(), true);
                     $credentials['username'] = $email;
                     $request->setContent(json_encode($credentials));
+                } elseif ($isGraphQl == true) {
+                    return $email;
                 } else {
                     $login             = $request->getPost("login");
                     $login['username'] = $email;

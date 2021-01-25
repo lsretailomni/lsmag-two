@@ -2,7 +2,8 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Customer\Model\AccountManagement">
-        <plugin name="ls_customer_graphql_before_create_customer" type="Ls\CustomerGraphQl\Plugin\CreateCustomerAccount"
+        <plugin name="ls_customer_graphql_account_management"
+                type="Ls\CustomerGraphQl\Plugin\AccountManagement"
                 sortOrder="1"/>
     </type>
 </config>
