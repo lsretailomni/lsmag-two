@@ -168,6 +168,6 @@ class AccountManagement extends \Magento\Customer\Model\AccountManagement
             $email    = $customer->getEmail();
             $this->registry->register(LSR::REGISTRY_CURRENT_RESETPASSWORD_EMAIL, $email);
         }
-        parent::resetPassword($email, $resetToken, $newPassword);
+        return parent::resetPassword($email, $resetToken, $newPassword);
     }
 }
