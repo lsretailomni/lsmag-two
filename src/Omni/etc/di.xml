@@ -44,7 +44,10 @@
     <!-- To Override Invoice Pdf -->
     <preference for="Magento\Sales\Model\Order\Pdf\Items\Invoice\DefaultInvoice"
                 type="Ls\Omni\Model\Order\Pdf\Items\Invoice\DefaultInvoice"/>
-    <preference for="Magento\Sales\Model\Order\Pdf\Invoice" type="Ls\Omni\Model\Order\Pdf\Invoice"/>
+    <type name="Magento\Sales\Model\Order\Pdf\Invoice">
+        <plugin name="ls.omni.pdf.invoice" type="Ls\Omni\Plugin\Order\Pdf\Invoice"
+                sortOrder="1"/>
+    </type>
     <!-- To Override Subtotal Calculation for Paypal -->
     <type name="Magento\Paypal\Model\Cart">
         <plugin name="ls_update_paypal_amount_order" type="Ls\Omni\Plugin\Checkout\Model\UpdateAmountPaypal"/>
