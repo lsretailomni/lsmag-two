@@ -45,6 +45,7 @@ class UpdateAccount
         callable $proceed,
         CustomerInterface $customer
     ) {
+        $result = $proceed($customer);
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $response = $this->contactHelper->updateCustomerAccount($customer);
             if (empty($response)) {
@@ -53,6 +54,7 @@ class UpdateAccount
                 );
             }
         }
-        return $proceed($customer);
+
+        return $result;
     }
 }
