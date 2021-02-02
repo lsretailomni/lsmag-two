@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/pdf_file.xsd">
+    <totals>
+        <total name="loyalty_points">
+            <title translate="true">Loyalty Points Redeemed</title>
+            <source_field>ls_points_spent</source_field>
+            <font_size>7</font_size>
+            <display_zero>false</display_zero>
+            <sort_order>610</sort_order>
+        </total>
+        <total name="gift_card">
+            <title translate="true">GiftCard Redeemed</title>
+            <source_field>ls_gift_card_amount_used</source_field>
+            <title_source_field>ls_gift_card_no</title_source_field>
+            <font_size>7</font_size>
+            <display_zero>false</display_zero>
+            <sort_order>620</sort_order>
+        </total>
+    </totals>
+</config>
