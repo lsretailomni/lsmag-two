@@ -112,8 +112,12 @@ class OrderObserver implements ObserverInterface
                     $paymentMethod = $order->getPayment()->getMethodInstance();
                     $transId       = $order->getPayment()->getLastTransId();
                     $check         = $paymentMethod->isOffline();
+                    if($paymentMethod->getCode() === 'free'){
+                        $check = true;
+                    }
                 }
             }
+            //add condition for free payment method when nothing is required i-e Payment is done through Loyalty Points/Giftcard
             if (!empty($oneListCalculation)) {
                 if (($check == true || !empty($transId))) {
                     $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
