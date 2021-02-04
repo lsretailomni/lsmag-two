@@ -130,27 +130,6 @@ class AccountManagement
                     $login['password'] = $password;
                     $this->contactHelper->processCustomerLogin($result, $login, $isEmail);
                     $email = $result->getEmail();
-                    $oneListBasket = $this->contactHelper->getOneListTypeObject(
-                        $result->getOneLists()->getOneList(),
-                        ListType::BASKET
-                    );
-                    if ($oneListBasket) {
-                        /** Update Basket to Omni */
-                        $this->contactHelper->updateBasketAfterLogin(
-                            $oneListBasket,
-                            $result->getId(),
-                            $result->getCards()->getCard()[0]->getId()
-                        );
-                    }
-                    $oneListWish = $this->contactHelper->getOneListTypeObject(
-                        $result->getOneLists()->getOneList(),
-                        ListType::WISH
-                    );
-                    if ($oneListWish) {
-                        $this->contactHelper->updateWishlistAfterLogin(
-                            $oneListWish
-                        );
-                    }
                 }
             } else {
                 $emailValue = $this->contactHelper->loginCustomerIfOmniServiceDown(

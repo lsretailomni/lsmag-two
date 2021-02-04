@@ -19,7 +19,6 @@ class Order implements ResolverInterface
     private $dataHelper;
 
     /**
-     * Order constructor.
      * @param DataHelper $dataHelper
      */
     public function __construct(
@@ -29,6 +28,7 @@ class Order implements ResolverInterface
     }
 
     /**
+     * Order document_id resolver
      * @param Field $field
      * @param $context
      * @param ResolveInfo $info
@@ -38,8 +38,8 @@ class Order implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-        if (isset($value['order_number']) && $this->dataHelper->getOrderIdByIncrementId($value['order_number'])) {
-            $order = $this->dataHelper->getOrderIdByIncrementId($value['order_number']);
+        if (isset($value['order_number']) && $this->dataHelper->getOrderByIncrementId($value['order_number'])) {
+            $order = $this->dataHelper->getOrderByIncrementId($value['order_number']);
         }
         return !empty($order) ? $order->getDocumentId() : 'N\A';
     }

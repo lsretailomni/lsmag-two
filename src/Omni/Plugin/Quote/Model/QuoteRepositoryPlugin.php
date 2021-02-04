@@ -25,7 +25,6 @@ class QuoteRepositoryPlugin
     private $basketHelper;
 
     /**
-     * DataAssignObserver constructor.
      * @param BasketHelper $basketHelper
      * @param CheckoutSession $checkoutSession
      */
@@ -38,6 +37,7 @@ class QuoteRepositoryPlugin
     }
 
     /**
+     * Setting ls_one_list_id into quote only if its not there and there are items in the cart
      * @param QuoteRepository $subject
      * @param CartInterface $quote
      * @return CartInterface[]

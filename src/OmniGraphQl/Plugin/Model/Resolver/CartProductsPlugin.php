@@ -6,7 +6,6 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Quote\Model\QuoteFactory;
 
 /**
  * For sending cart updates to omni
@@ -20,24 +19,16 @@ class CartProductsPlugin
     private $dataHelper;
 
     /**
-     * @var QuoteFactory
-     */
-    private $quoteFactory;
-
-    /**
-     * CartProductsPlugin constructor.
      * @param DataHelper $dataHelper
-     * @param QuoteFactory $quoteFactory
      */
     public function __construct(
-        DataHelper $dataHelper,
-        QuoteFactory $quoteFactory
+        DataHelper $dataHelper
     ) {
         $this->dataHelper = $dataHelper;
-        $this->quoteFactory = $quoteFactory;
     }
 
     /**
+     * Sending cart updates to omni
      * @param $subject
      * @param $result
      * @return mixed

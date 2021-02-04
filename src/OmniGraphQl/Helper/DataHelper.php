@@ -48,7 +48,6 @@ class DataHelper extends AbstractHelper
     private $searchCriteriaBuilder;
 
     /**
-     * DataHelper constructor.
      * @param Context $context
      * @param ManagerInterface $eventManager
      * @param BasketHelper $basketHelper
@@ -92,10 +91,11 @@ class DataHelper extends AbstractHelper
     }
 
     /**
+     * Gives order based on the given increment_id
      * @param $incrementId
      * @return OrderInterface
      */
-    public function getOrderIdByIncrementId($incrementId)
+    public function getOrderByIncrementId($incrementId)
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('increment_id', $incrementId)->create()
