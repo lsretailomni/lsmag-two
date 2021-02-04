@@ -79,4 +79,14 @@
                 name="Ls_Omni_ConfigurableSkuSwitch_Plugin_Magento_Swatches_Block_Product_Renderer_Configurable"
                 sortOrder="10" type="Ls\Omni\Plugin\Swatches\Block\Product\Renderer\Configurable"/>
     </type>
+    <!-- For setting one list id in quote -->
+    <type name="Magento\Quote\Model\QuoteRepository">
+        <plugin name="save_ls_one_list_id"
+                type="Ls\Omni\Plugin\Quote\Model\QuoteRepositoryPlugin"/>
+    </type>
+    <!-- To stop magento for calculating tax -->
+    <type name="Magento\Tax\Model\Sales\Total\Quote\Subtotal">
+        <plugin name="ls.checkout.cart.tax.subtotal" type="Ls\Omni\Model\Sales\Total\Quote\Subtotal"
+                sortOrder="1"/>
+    </type>
 </config>

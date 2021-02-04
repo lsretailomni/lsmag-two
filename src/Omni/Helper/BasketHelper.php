@@ -738,19 +738,25 @@ class BasketHelper extends AbstractHelper
 
         //check if onelist is created and stored in session. if it is, than return it.
         if ($this->getOneListFromCustomerSession()) {
-            return $this->getOneListFromCustomerSession();
+            if ($id) {
+                if ($id == $this->getOneListFromCustomerSession()->getId()) {
+                    return $this->getOneListFromCustomerSession();
+                }
+            } else {
+                return $this->getOneListFromCustomerSession();
+            }
         }
 
         /** @var Entity\MemberContact $loginContact */
         // For logged in users check if onelist is already stored in registry.
         if ($loginContact = $this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT)) {
             try {
-                if ($loginContact->getBasket() instanceof Entity\OneList) {
-                    $this->setOneListInCustomerSession($loginContact->getBasket());
-                    return $loginContact->getBasket();
+                if ($loginContact->getOneLists()->getOneList() instanceof Entity\OneList) {
+                    $this->setOneListInCustomerSession($loginContact->getOneLists()->getOneList());
+                    return $loginContact->getOneLists()->getOneList();
                 } else {
-                    if ($loginContact->getBasket() instanceof Entity\ArrayOfOneList) {
-                        foreach ($loginContact->getBasket()->getIterator() as $list) {
+                    if ($loginContact->getOneLists() instanceof Entity\ArrayOfOneList) {
+                        foreach ($loginContact->getOneLists()->getIterator() as $list) {
                             if ($list->getIsDefaultList()) {
                                 $this->setOneListInCustomerSession($list);
                                 return $list;
