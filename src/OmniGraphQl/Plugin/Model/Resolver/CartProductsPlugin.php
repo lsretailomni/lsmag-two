@@ -2,10 +2,12 @@
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
-use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\OmniGraphQl\Helper\DataHelper;
+use Ls\Omni\Exception\InvalidEnumException;
+use Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 /**
  * For sending cart updates to omni
@@ -38,13 +40,22 @@ class CartProductsPlugin
      */
     public function afterResolve(
         $subject,
-        $result
+        $result,
+        Field $field,
+        $context,
+        ResolveInfo $info,
+        array $value = null,
+        array $args = null
     ) {
+        $websiteId = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
+        $userId    = $context->getUserId();
+        $this->dataHelper->setCustomerValuesInSession($userId, $websiteId);
+
         if (isset($result['cart']) && isset($result['cart']['model'])) {
-            $quote = $result['cart']['model'];
+            $quote                   = $result['cart']['model'];
             $result['cart']['model'] = $this->dataHelper->triggerEventForCartChange($quote);
         } elseif (isset($result['model'])) {
-            $quote = $result['model'];
+            $quote           = $result['model'];
             $result['model'] = $this->dataHelper->triggerEventForCartChange($quote);
         }
         return $result;

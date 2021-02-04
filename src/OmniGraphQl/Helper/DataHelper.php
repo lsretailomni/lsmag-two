@@ -2,9 +2,12 @@
 
 namespace Ls\OmniGraphQl\Helper;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Event\ManagerInterface;
@@ -47,6 +50,15 @@ class DataHelper extends AbstractHelper
      */
     private $searchCriteriaBuilder;
 
+    /** @var CustomerRepositoryInterface */
+    public $customerRepository;
+
+    /** @var CustomerFactory */
+    public $customerFactory;
+
+    /** @var \Magento\Customer\Model\Session\Proxy */
+    public $customerSession;
+
     /**
      * @param Context $context
      * @param ManagerInterface $eventManager
@@ -61,7 +73,10 @@ class DataHelper extends AbstractHelper
         BasketHelper $basketHelper,
         CheckoutSession $checkoutSession,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        CustomerRepositoryInterface $customerRepository,
+        CustomerFactory $customerFactory,
+        \Magento\Customer\Model\Session\Proxy $customerSession
     ) {
         parent::__construct($context);
         $this->eventManager = $eventManager;
@@ -69,6 +84,9 @@ class DataHelper extends AbstractHelper
         $this->checkoutSession = $checkoutSession;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
+        $this->customerRepository    = $customerRepository;
+        $this->customerFactory       = $customerFactory;
+        $this->customerSession       = $customerSession;
     }
 
     /**
@@ -106,5 +124,22 @@ class DataHelper extends AbstractHelper
             $orderData = current($order->getItems());
         }
         return $orderData;
+    }
+
+    public function setCustomerValuesInSession($customerId = 0, $websiteId = 0){
+        if($customerId === 0){
+            return ;
+        }
+        try{
+            $customer = $this->customerRepository->getById($customerId);
+        }catch(\Exception $e){
+
+        }
+        $customer       = $this->customerFactory->create()
+            ->setWebsiteId($websiteId)
+            ->loadByEmail($customer->getEmail());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
     }
 }
