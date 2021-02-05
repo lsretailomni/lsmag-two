@@ -304,8 +304,6 @@ class ItemHelper extends AbstractHelper
                 $itemSku           = explode("-", $item->getSku());
                 $baseUnitOfMeasure = $item->getProduct()->getData('uom');
                 $uom               = $this->getUom($itemSku, $baseUnitOfMeasure);
-
-
                 if (is_array($orderLines)) {
                     foreach ($orderLines as $line) {
                         // @codingStandardsIgnoreLine
@@ -318,15 +316,15 @@ class ItemHelper extends AbstractHelper
                                 // @codingStandardsIgnoreLine
                                     $oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()]['Discount'] + $line->getDiscountAmount()
                                 );
-                                $item->setOriginalCustomPrice($line->getPrice());
+                                $item->setOriginalCustomPrice($unitPrice);
                             } else {
                                 if ($line->getDiscountAmount() > 0) {
                                     $item->setCustomPrice($unitPrice);
                                     $item->setDiscountAmount($line->getDiscountAmount());
-                                    $item->setOriginalCustomPrice($line->getPrice());
+                                    $item->setOriginalCustomPrice($unitPrice);
                                 } elseif ($line->getAmount() != $item->getProduct()->getPrice()) {
                                     $item->setCustomPrice($unitPrice);
-                                    $item->setOriginalCustomPrice($line->getPrice());
+                                    $item->setOriginalCustomPrice($unitPrice);
                                 } else {
                                     $item->setCustomPrice(null);
                                     $item->setDiscountAmount(null);
@@ -375,7 +373,7 @@ class ItemHelper extends AbstractHelper
                 $couponCode = $this->checkoutSession->getCouponCode();
                 $cartQuote->setCouponCode($couponCode);
                 $cartQuote->getShippingAddress()->setCouponCode($couponCode);
-                $cartQuote->collectTotals();
+                $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
                 $this->quoteResourceModel->save($cartQuote);
             }
         } catch (Exception $e) {

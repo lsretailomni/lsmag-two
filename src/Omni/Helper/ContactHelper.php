@@ -1094,6 +1094,8 @@ class ContactHelper extends AbstractHelper
         $customer       = $this->setCustomerAttributesValues($result, $customer);
         $this->customerResourceModel->save($customer);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
+        $this->basketHelper->unSetOneList();
+        $this->basketHelper->unSetOneListCalculation();
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));

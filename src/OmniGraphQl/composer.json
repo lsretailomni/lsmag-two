@@ -1,0 +1,21 @@
+{
+  "name": "lsretail/omnigraphql",
+  "description": "LS Omni Graph Ql",
+  "type": "magento2-module",
+  "license": "proprietary",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "LS Retail",
+      "email": "lsomnikl@lsretail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ls\\OmniGraphQl\\": ""
+    },
+    "files": [
+      "registration.php"
+    ]
+  }
+}

@@ -2,6 +2,7 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="quote" resource="checkout" engine="innodb" comment="Sales Flat Quote">
+        <column xsi:type="text" name="ls_one_list_id" nullable="true"  comment="Ls One List ID"/>
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
         <column xsi:type="text" name="pickup_store" nullable="true" comment="Pick Up Store"/>
         <column xsi:type="int" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>

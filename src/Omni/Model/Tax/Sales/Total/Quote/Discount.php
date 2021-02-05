@@ -99,6 +99,7 @@ class Discount extends AbstractTotal
         ShippingAssignmentInterface $shippingAssignment,
         Total $total
     ) {
+        $total->setData('discount_description', ''); //For fixing explode issue on graph ql
         $items = $shippingAssignment->getItems();
         if (!count($items)) {
             return $this;

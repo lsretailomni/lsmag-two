@@ -6,7 +6,8 @@
             "ls_points_earn": true,
             "ls_points_spent": true,
             "ls_gift_card_no": true,
-            "ls_gift_card_amount_used": true
+            "ls_gift_card_amount_used": true,
+            "ls_one_list_id": true
         }
     },
     "sales_order": {

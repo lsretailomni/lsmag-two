@@ -8,8 +8,7 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
 /**
- * Class SalesObserver
- * @package Ls\Omni\Observer
+ * Setting grand_total & base_grand_total coming from omni
  */
 class SalesObserver implements ObserverInterface
 {
