@@ -3,7 +3,6 @@
 namespace Ls\CustomerGraphQl\Plugin;
 
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\ForgotPasswordResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
 use \Ls\Omni\Exception\InvalidEnumException;

@@ -2,8 +2,8 @@
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
-use Ls\Omni\Exception\InvalidEnumException;
-use Ls\OmniGraphQl\Helper\DataHelper;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
@@ -33,10 +33,15 @@ class CartProductsPlugin
      * Sending cart updates to omni
      * @param $subject
      * @param $result
+     * @param Field $field
+     * @param $context
+     * @param ResolveInfo $info
+     * @param array|null $value
+     * @param array|null $args
      * @return mixed
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function afterResolve(
         $subject,
@@ -58,6 +63,7 @@ class CartProductsPlugin
             $quote           = $result['model'];
             $result['model'] = $this->dataHelper->triggerEventForCartChange($quote);
         }
+
         return $result;
     }
 }

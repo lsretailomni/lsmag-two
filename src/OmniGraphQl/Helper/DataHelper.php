@@ -8,15 +8,17 @@ use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\Session;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\CartInterface;
+use Magento\Quote\Model\Quote;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 
 /**
  * Useful helper functions for the module
@@ -56,7 +58,9 @@ class DataHelper extends AbstractHelper
     /** @var CustomerFactory */
     public $customerFactory;
 
-    /** @var \Magento\Customer\Model\Session\Proxy */
+    /**
+     * @var Session
+     */
     public $customerSession;
 
     /**
@@ -66,6 +70,9 @@ class DataHelper extends AbstractHelper
      * @param CheckoutSession $checkoutSession
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param CustomerFactory $customerFactory
+     * @param Session $customerSession
      */
     public function __construct(
         Context $context,
@@ -76,7 +83,7 @@ class DataHelper extends AbstractHelper
         OrderRepositoryInterface $orderRepository,
         CustomerRepositoryInterface $customerRepository,
         CustomerFactory $customerFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession
+        Session $customerSession
     ) {
         parent::__construct($context);
         $this->eventManager = $eventManager;
@@ -84,15 +91,15 @@ class DataHelper extends AbstractHelper
         $this->checkoutSession = $checkoutSession;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
-        $this->customerRepository    = $customerRepository;
-        $this->customerFactory       = $customerFactory;
-        $this->customerSession       = $customerSession;
+        $this->customerRepository = $customerRepository;
+        $this->customerFactory = $customerFactory;
+        $this->customerSession = $customerSession;
     }
 
     /**
      * Setting quote id and ls_one_list in the session and calling the required event
      * @param $quote
-     * @return CartInterface|\Magento\Quote\Model\Quote
+     * @return CartInterface|Quote
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      * @throws LocalizedException
@@ -100,11 +107,14 @@ class DataHelper extends AbstractHelper
     public function triggerEventForCartChange($quote)
     {
         $basketHelper = $this->basketHelper->get($quote->getLsOneListId());
+
         if ($basketHelper) {
             $this->basketHelper->setOneListInCustomerSession($basketHelper);
         }
+
         $this->checkoutSession->setQuoteId($quote->getId());
         $this->eventManager->dispatch('checkout_cart_save_after');
+
         return $this->checkoutSession->getQuote();
     }
 
@@ -120,22 +130,29 @@ class DataHelper extends AbstractHelper
             ->setPageSize(1)->setCurrentPage(1);
         $orderData = null;
         $order = $this->orderRepository->getList($searchCriteria);
+
         if ($order->getTotalCount()) {
             $orderData = current($order->getItems());
         }
+
         return $orderData;
     }
 
-    public function setCustomerValuesInSession($customerId = 0, $websiteId = 0){
-        if($customerId === 0){
-            return ;
+    /**
+     * Setting required values in the customer session that will be used later
+     * @param int $customerId
+     * @param int $websiteId
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function setCustomerValuesInSession($customerId = 0, $websiteId = 0)
+    {
+        if ($customerId === 0) {
+            return;
         }
-        try{
-            $customer = $this->customerRepository->getById($customerId);
-        }catch(\Exception $e){
 
-        }
-        $customer       = $this->customerFactory->create()
+        $customer = $this->customerRepository->getById($customerId);
+        $customer = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer->getEmail());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
