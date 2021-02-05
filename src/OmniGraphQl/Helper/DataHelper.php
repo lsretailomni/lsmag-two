@@ -155,6 +155,9 @@ class DataHelper extends AbstractHelper
         $customer = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer->getEmail());
+        $this->customerSession->setCustomer($customer);
+        //$this->customerSession->setCustomerAsLoggedIn($customer)
+
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
