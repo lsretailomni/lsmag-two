@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
  
 ### Bugs/Fixes
 
-- Fixed issue for constructor paramter in inoice object. [OMNI-5390](https://solutions.lsretail.com/jira/browse/OMNI-5390)
+- Fixed issue for constructor paramter in invoice object. [OMNI-5390](https://solutions.lsretail.com/jira/browse/OMNI-5390)
 
 
 ## [1.7.0] - 2021-01-13
