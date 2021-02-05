@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0] - 2020-02-05
+
+### Added
+
+- Added support to sync customer to LS Central created through GraphQl interface. [OMNI-5371](https://solutions.lsretail.com/jira/browse/OMNI-5371)
+- Added support to authenticate login from LS Central using GraphQl interface. [OMNI-5372](https://solutions.lsretail.com/jira/browse/OMNI-5372)
+- Added support to sync customer operation (account update, address creation, address update, password change, password reset) to LS Central through GraphQl interface. [OMNI-5373](https://solutions.lsretail.com/jira/browse/OMNI-5373)
+- Added support to calculate basket from LS Central through GraphQl interface. [OMNI-5374](https://solutions.lsretail.com/jira/browse/OMNI-5374)
+- Added support to sync order to LS Central through GraphQl interface. [OMNI-5389](https://solutions.lsretail.com/jira/browse/OMNI-5389)
+- Added support to accept full payment of order made through loyalty points or gift card or incombination of those. [OMNI-5389](https://solutions.lsretail.com/jira/browse/OMNI-5389)
+
+ 
+### Bugs/Fixes
+
+- Fixed issue for constructor paramter in inoice object. [OMNI-5390](https://solutions.lsretail.com/jira/browse/OMNI-5390)
+
+
 ## [1.7.0] - 2021-01-13
 
 ### Added

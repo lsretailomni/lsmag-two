@@ -1,4 +1,4 @@
-# LS Ecommerce - Magento Integration (V1.7.0)
+# LS Ecommerce - Magento Integration (V1.8.0)
 
 ## Compatibility
 1. Magento Open Source 2.3.5 - 2.4.1
@@ -10,7 +10,7 @@
 1. Navigate to your magento2 installation directory and run `composer require "lsretail/lsmag-two"`
 2. Run `composer update` to install all the dependencies of the package.
 3. Once done, you will see the list of our LS retail modules in disable section once you triggered the  `php bin/magento module:status` command from the root directory.
-4. To enable all our modules, run `php bin/magento module:enable Ls_Core Ls_Omni Ls_Customer Ls_Replication Ls_Webhooks` from the root directory.
+4. To enable all our modules, run `php bin/magento module:enable Ls_Core Ls_Omni Ls_Customer Ls_Replication Ls_Webhooks Ls_CustomerGraphQl Ls_OmniGraphQl` from the root directory.
 5. Run `php bin/magento setup:upgrade ` and  `php bin/magento setup:di:compile` from root directory to update magento2 database with the schema and generate interceptor files.
 6. Once done, you will see the list of our modules in enabled section by running `php bin/magento module:status`.
 7. Configure the connection with LS Central by navigating to LS Retail -> Configuration from Magento Admin panel, enter the base url of the Omni server and choose the store and Hierarchy code to replicate data. Make sure to do all the configurations which are required on the Omni server for ecommerce i-e disabling security token for authentication.
