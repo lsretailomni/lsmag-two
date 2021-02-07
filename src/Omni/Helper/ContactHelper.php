@@ -1176,7 +1176,6 @@ class ContactHelper extends AbstractHelper
         $collection = $this->customerCollection->create()
             ->addAttributeToSelect("*")
             ->addAttributeToFilter("lsr_id", ['null' => true])
-            ->addAttributeToFilter("lsr_username", ['notnull' => true])
             ->addAttributeToFilter("website_id", ['eq' => $websiteId])
             ->load();
 
