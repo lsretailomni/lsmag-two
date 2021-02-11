@@ -10,8 +10,8 @@ use Magento\Setup\Exception;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Class SyncVendorAttributesValue
- * @package Ls\Replication\Cron
+ * Sync Vendor
+ * attributes values
  */
 class SyncVendorAttributesValue extends ProductCreateTask
 {
@@ -112,7 +112,10 @@ class SyncVendorAttributesValue extends ProductCreateTask
                 try {
                     $vendorName = $attributeValue->getData('name');
                     $product    = $this->productRepository->get($itemId);
-                    $value      = $this->_getOptionIDByCode(LSR::LS_VENDOR_ATTRIBUTE, $vendorName);
+                    $value      = $this->replicationHelper->_getOptionIDByCode(
+                        LSR::LS_VENDOR_ATTRIBUTE,
+                        $vendorName
+                    );
                     $product->setData(LSR::LS_VENDOR_ATTRIBUTE, $value);
                     $product->getResource()->saveAttribute($product, LSR::LS_VENDOR_ATTRIBUTE);
                     $product->setData(LSR::LS_ITEM_VENDOR_ATTRIBUTE, $attributeValue->getNavManufacturerItemId());
