@@ -11,23 +11,19 @@ use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 class RemoveGiftCard extends AbstractGiftCard
 {
     /**
-     * @param array $args
-     * @param $context
-     * @return array[]
-     * @throws GraphQlInputException
-     * @throws GraphQlAuthorizationException
+     * @inheritdoc
      */
     protected function handleArgs(array $args, $context)
     {
         try {
             $maskedCartId = $args['input']['cart_id'];
-            $storeId      = (int)$context->getExtensionAttributes()->getStore()->getId();
-            $cart         = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
-            $cartId       = $cart->getId();
-            $result       = $this->giftCardManagement->remove($cartId);
+            $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
+            $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
+            $cartId = $cart->getId();
+            $result = $this->giftCardManagement->remove($cartId);
             if ($result == true) {
                 $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-                $cart    = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
+                $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
             }
         } catch (\Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));

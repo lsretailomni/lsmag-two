@@ -2,14 +2,12 @@
 
 namespace Ls\Omni\Model\GiftCard;
 
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
+use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * GiftCardManagement class to handle gift card
@@ -29,45 +27,28 @@ class GiftCardManagement
     public $giftCardHelper;
 
     /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var \Magento\Framework\Pricing\Helper\Data
+     * @var PriceHelper
      */
     public $priceHelper;
 
     /**
-     * @var Data
-     */
-    public $data;
-
-    /**
      * GiftCardManagement constructor.
-     * @param StoreManagerInterface $storeManager
      * @param CartRepositoryInterface $quoteRepository
      * @param GiftCardHelper $giftCardHelper
-     * @param BasketHelper $basketHelper
-     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
-     * @param Data $data
+     * @param PriceHelper $priceHelper
      */
     public function __construct(
-        StoreManagerInterface $storeManager,
         CartRepositoryInterface $quoteRepository,
         GiftCardHelper $giftCardHelper,
-        BasketHelper $basketHelper,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        Data $data
+        PriceHelper $priceHelper
     ) {
         $this->quoteRepository = $quoteRepository;
-        $this->giftCardHelper  = $giftCardHelper;
-        $this->priceHelper     = $priceHelper;
-        $this->basketHelper    = $basketHelper;
-        $this->data            = $data;
+        $this->giftCardHelper = $giftCardHelper;
+        $this->priceHelper = $priceHelper;
     }
 
     /**
+     * Get the gift card info from quote
      * @param $cartId
      * @return array
      * @throws NoSuchEntityException
@@ -75,8 +56,8 @@ class GiftCardManagement
     public function get($cartId)
     {
         /** @var  Quote $quote */
-        $quote         = $this->quoteRepository->getActive($cartId);
-        $giftCardNo    = $quote->getLsGiftCardNo();
+        $quote = $this->quoteRepository->getActive($cartId);
+        $giftCardNo = $quote->getLsGiftCardNo();
         $giftCardArray = [];
         if (!empty($giftCardNo)) {
             $giftCardArray = ['code' => $giftCardNo, 'amount' => $quote->getLsGiftCardAmountUsed()];
@@ -85,6 +66,7 @@ class GiftCardManagement
     }
 
     /**
+     * Apply the gift card to the quote
      * @param $cartId
      * @param $giftCardNo
      * @param $giftCardAmount
@@ -126,7 +108,7 @@ class GiftCardManagement
             throw new CouldNotSaveException(__('The gift card code %1 is not valid.', $giftCardNo));
         }
 
-        $itemsCount   = $cartQuote->getItemsCount();
+        $itemsCount = $cartQuote->getItemsCount();
         $orderBalance = $cartQuote->getData('grand_total');
 
         $isGiftCardAmountValid = $this->giftCardHelper->isGiftCardAmountValid(
@@ -161,14 +143,15 @@ class GiftCardManagement
         }
         if ($itemsCount && !empty($giftCardResponse) && $isGiftCardAmountValid) {
             $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->collectTotals();
-            $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
+            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo);
+            $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
             $this->quoteRepository->save($cartQuote);
         }
         return true;
     }
 
     /**
+     * Remove the gift card from quote
      * @param $cartId
      * @return bool
      * @throws NoSuchEntityException
@@ -185,10 +168,10 @@ class GiftCardManagement
         }
         if ($cartQuote->getLsGiftCardNo()) {
             $giftCardAmount = 0;
-            $giftCardNo     = null;
+            $giftCardNo = null;
             $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->collectTotals();
-            $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
+            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo);
+            $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
             $this->quoteRepository->save($cartQuote);
         }
         return true;

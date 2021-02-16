@@ -42,9 +42,9 @@ abstract class AbstractGiftCard implements ResolverInterface
         GiftCardManagement $giftCardManagement,
         GetCartForUser $getCartForUser
     ) {
-        $this->helper             = $helper;
+        $this->helper = $helper;
         $this->giftCardManagement = $giftCardManagement;
-        $this->getCartForUser     = $getCartForUser;
+        $this->getCartForUser = $getCartForUser;
     }
 
     /**
@@ -64,6 +64,7 @@ abstract class AbstractGiftCard implements ResolverInterface
     }
 
     /**
+     * For handle operation for gift card
      * @param array $args
      * @param $context
      * @return mixed

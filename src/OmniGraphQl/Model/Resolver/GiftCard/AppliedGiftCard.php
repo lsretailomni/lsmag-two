@@ -35,8 +35,8 @@ class AppliedGiftCard implements ResolverInterface
         if (!isset($value['model'])) {
             throw new LocalizedException(__('"model" value should be specified'));
         }
-        $cart     = $value['model'];
-        $cartId   = $cart->getId();
+        $cart = $value['model'];
+        $cartId = $cart->getId();
         $giftCard = $this->giftCardManagement->get($cartId);
         return !empty($giftCard) ? $giftCard : null;
     }
