@@ -78,12 +78,12 @@ class Discount extends AbstractTotal
         Proxy $checkoutSession
     ) {
         $this->setCode('discount');
-        $this->eventManager    = $eventManager;
-        $this->calculator      = $validator;
-        $this->storeManager    = $storeManager;
-        $this->priceCurrency   = $priceCurrency;
-        $this->basketHelper    = $basketHelper;
-        $this->loyaltyHelper   = $loyaltyHelper;
+        $this->eventManager = $eventManager;
+        $this->calculator = $validator;
+        $this->storeManager = $storeManager;
+        $this->priceCurrency = $priceCurrency;
+        $this->basketHelper = $basketHelper;
+        $this->loyaltyHelper = $loyaltyHelper;
         $this->checkoutSession = $checkoutSession;
     }
 
@@ -104,12 +104,15 @@ class Discount extends AbstractTotal
         if (!count($items)) {
             return $this;
         }
-        $discountAmount  = $this->getTotalDiscount($quote);
+        $discountAmount = $this->getTotalDiscount($quote);
         $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
         $total->addTotalAmount('discount', $discountAmount);
         $total->addTotalAmount('grand_total', $paymentDiscount);
         $total->addBaseTotalAmount('discount', $discountAmount);
         $total->addBaseTotalAmount('grand_total', $paymentDiscount);
+        if ($this->basketHelper->getCouponCodeFromCheckoutSession()) {
+            $total->setCouponCode($this->basketHelper->getCouponCodeFromCheckoutSession());
+        }
         return $this;
     }
 
@@ -123,7 +126,7 @@ class Discount extends AbstractTotal
     {
         $result = null;
         $amount = $this->getTotalDiscount($quote);
-        $title  = __('Discount');
+        $title = __('Discount');
         if ($amount < 0) {
             $result = [
                 'code'  => $this->getCode(),
@@ -167,7 +170,7 @@ class Discount extends AbstractTotal
      */
     public function getTotalDiscount($quote)
     {
-        $amount     = 0;
+        $amount = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $amount = -$basketData->getTotalDiscount();
@@ -181,10 +184,10 @@ class Discount extends AbstractTotal
      */
     public function getGiftCardLoyaltyDiscount($quote)
     {
-        $amount     = 0;
+        $amount = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
-            $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $giftCardAmount = $quote->getLsGiftCardAmountUsed();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);
