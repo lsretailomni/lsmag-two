@@ -30,6 +30,9 @@
     <event name="checkout_onepage_controller_success_action">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
     </event>
+    <event name="controller_action_postdispatch_sales_order_reorder">
+        <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
+    </event>
     <!-- event for Adyen -->
     <event name="adyen_payment_process_resulturl_after">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>
