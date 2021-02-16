@@ -24,7 +24,7 @@ class RemoveGiftCard extends AbstractGiftCard
             $storeId      = (int)$context->getExtensionAttributes()->getStore()->getId();
             $cart         = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
             $cartId       = $cart->getId();
-            $result       = $this->giftCardManagement->remove($cartId, $args['input']['code']);
+            $result       = $this->giftCardManagement->remove($cartId);
             if ($result == true) {
                 $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
                 $cart    = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);

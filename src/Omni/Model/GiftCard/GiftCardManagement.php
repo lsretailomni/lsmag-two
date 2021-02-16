@@ -170,11 +170,10 @@ class GiftCardManagement
 
     /**
      * @param $cartId
-     * @param $giftCardNo
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function remove($cartId, $giftCardNo)
+    public function remove($cartId)
     {
         try {
             /** @var Quote $cart */
