@@ -2,7 +2,6 @@
 
 namespace Ls\OmniGraphQl\Model\Resolver\GiftCard;
 
-use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 
 /**

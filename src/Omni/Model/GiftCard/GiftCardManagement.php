@@ -76,6 +76,8 @@ class GiftCardManagement
      */
     public function apply($cartId, $giftCardNo, $giftCardAmount)
     {
+        $giftCardBalanceAmount = 0;
+
         try {
             /** @var Quote $cart */
             $cartQuote = $this->quoteRepository->get($cartId);
@@ -141,7 +143,7 @@ class GiftCardManagement
                 )
             );
         }
-        if ($itemsCount && !empty($giftCardResponse) && $isGiftCardAmountValid) {
+        if ($itemsCount) {
             $cartQuote->getShippingAddress()->setCollectShippingRates(true);
             $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo);
             $cartQuote->setTotalsCollectedFlag(false)->collectTotals();

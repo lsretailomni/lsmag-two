@@ -65,9 +65,11 @@ abstract class AbstractGiftCard implements ResolverInterface
 
     /**
      * For handle operation for gift card
+     *
      * @param array $args
      * @param $context
      * @return mixed
+     * @throws GraphQlInputException
      */
     abstract protected function handleArgs(array $args, $context);
 }
