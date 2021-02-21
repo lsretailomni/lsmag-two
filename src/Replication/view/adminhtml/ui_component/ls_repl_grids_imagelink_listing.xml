@@ -196,12 +196,12 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Unit Of Measure</item>
+                    <item name="label" xsi:type="string" translate="true">TableName</item>
                     <item name="sortOrder" xsi:type="number">10</item>
                 </item>
             </argument>
         </column>
-        <column name="VariantId">
+<!--        <column name="VariantId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -211,7 +211,7 @@
                     <item name="sortOrder" xsi:type="number">11</item>
                 </item>
             </argument>
-        </column>
+        </column>-->
         <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date"
                 component="Magento_Ui/js/grid/columns/date">
             <settings>

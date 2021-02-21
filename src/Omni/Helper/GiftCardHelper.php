@@ -13,8 +13,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem;
 
 /**
- * Class GiftCardHelper
- * @package Ls\Omni\Helper
+ * Class GiftCardHelper for gift card support
  */
 class GiftCardHelper extends AbstractHelper
 {
