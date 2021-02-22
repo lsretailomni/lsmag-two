@@ -9,4 +9,8 @@
     <event name="sales_quote_address_collect_totals_after">
         <observer name="sales_quote_totals_after" instance="Ls\Omni\Observer\SalesObserver"/>
     </event>
+    <!-- for cancel the order -->
+    <event name="order_cancel_after">
+        <observer name="ls_omni_order_cancel_after" instance="Ls\Omni\Observer\OrderCancelObserver"/>
+    </event>
 </config>
