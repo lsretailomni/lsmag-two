@@ -386,8 +386,8 @@ class ContactHelper extends AbstractHelper
         }
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\LoginWeb();
-        $login   = new Entity\LoginWeb();
+        $request = new Operation\Login();
+        $login   = new Entity\Login();
         // @codingStandardsIgnoreEnd
         $login->setUserName($user)
             ->setPassword($pass);
@@ -397,7 +397,7 @@ class ContactHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getLoginWebResult() : $response;
+        return $response ? $response->getLoginResult() : $response;
     }
 
     /**
