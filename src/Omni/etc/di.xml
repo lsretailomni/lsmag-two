@@ -89,4 +89,7 @@
         <plugin name="ls.checkout.cart.tax.subtotal" type="Ls\Omni\Model\Sales\Total\Quote\Subtotal"
                 sortOrder="1"/>
     </type>
+    <type name="Magento\Sales\Api\OrderManagementInterface">
+        <plugin name="ls_omni_around_cancel_order_operation" type="Ls\Omni\Plugin\Order\OrderManagement" sortOrder="1"/>
+    </type>
 </config>

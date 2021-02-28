@@ -534,7 +534,7 @@ class OrderHelper extends AbstractHelper
      * @param $storeId
      * @return string
      */
-    public function OrderCancel($documentId, $storeId)
+    public function orderCancel($documentId, $storeId)
     {
         $response = null;
         $request = new Entity\OrderCancel();
@@ -547,6 +547,6 @@ class OrderHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getOrderCancelResult() : $response;
+        return $response;
     }
 }
