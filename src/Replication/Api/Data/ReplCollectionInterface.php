@@ -8,30 +8,8 @@
 
 namespace Ls\Replication\Api\Data;
 
-interface ReplHierarchyInterface
+interface ReplCollectionInterface
 {
-
-    /**
-     * @param string $Description
-     * @return $this
-     */
-    public function setDescription($Description);
-
-    /**
-     * @return string
-     */
-    public function getDescription();
-
-    /**
-     * @param string $nav_id
-     * @return $this
-     */
-    public function setNavId($nav_id);
-
-    /**
-     * @return string
-     */
-    public function getNavId();
 
     /**
      * @param boolean $IsDeleted
@@ -45,26 +23,48 @@ interface ReplHierarchyInterface
     public function getIsDeleted();
 
     /**
-     * @param string $StartDate
+     * @param string $ItemId
      * @return $this
      */
-    public function setStartDate($StartDate);
+    public function setItemId($ItemId);
 
     /**
      * @return string
      */
-    public function getStartDate();
+    public function getItemId();
 
     /**
-     * @param HierarchyType $Type
+     * @param float $Quantity
      * @return $this
      */
-    public function setType($Type);
+    public function setQuantity($Quantity);
 
     /**
-     * @return HierarchyType
+     * @return float
      */
-    public function getType();
+    public function getQuantity();
+
+    /**
+     * @param string $UnitOfMeasureId
+     * @return $this
+     */
+    public function setUnitOfMeasureId($UnitOfMeasureId);
+
+    /**
+     * @return string
+     */
+    public function getUnitOfMeasureId();
+
+    /**
+     * @param string $VariantId
+     * @return $this
+     */
+    public function setVariantId($VariantId);
+
+    /**
+     * @return string
+     */
+    public function getVariantId();
 
     /**
      * @param string $scope

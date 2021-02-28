@@ -10,26 +10,16 @@ namespace Ls\Replication\Model;
 
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
-use Ls\Replication\Api\Data\ReplHierarchyInterface;
+use Ls\Replication\Api\Data\ReplCollectionInterface;
 
-class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, IdentityInterface
+class ReplCollection extends AbstractModel implements ReplCollectionInterface, IdentityInterface
 {
 
-    public const CACHE_TAG = 'ls_replication_repl_hierarchy';
+    public const CACHE_TAG = 'ls_replication_repl_collection';
 
-    protected $_cacheTag = 'ls_replication_repl_hierarchy';
+    protected $_cacheTag = 'ls_replication_repl_collection';
 
-    protected $_eventPrefix = 'ls_replication_repl_hierarchy';
-
-    /**
-     * @property string $Description
-     */
-    protected $Description = null;
-
-    /**
-     * @property string $nav_id
-     */
-    protected $nav_id = null;
+    protected $_eventPrefix = 'ls_replication_repl_collection';
 
     /**
      * @property boolean $IsDeleted
@@ -37,14 +27,24 @@ class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, Ide
     protected $IsDeleted = null;
 
     /**
-     * @property string $StartDate
+     * @property string $ItemId
      */
-    protected $StartDate = null;
+    protected $ItemId = null;
 
     /**
-     * @property HierarchyType $Type
+     * @property float $Quantity
      */
-    protected $Type = null;
+    protected $Quantity = null;
+
+    /**
+     * @property string $UnitOfMeasureId
+     */
+    protected $UnitOfMeasureId = null;
+
+    /**
+     * @property string $VariantId
+     */
+    protected $VariantId = null;
 
     /**
      * @property string $scope
@@ -93,52 +93,12 @@ class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, Ide
 
     public function _construct()
     {
-        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplHierarchy' );
+        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplCollection' );
     }
 
     public function getIdentities()
     {
         return [ self::CACHE_TAG . '_' . $this->getId() ];
-    }
-
-    /**
-     * @param string $Description
-     * @return $this
-     */
-    public function setDescription($Description)
-    {
-        $this->setData( 'Description', $Description );
-        $this->Description = $Description;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->getData( 'Description' );
-    }
-
-    /**
-     * @param string $nav_id
-     * @return $this
-     */
-    public function setNavId($nav_id)
-    {
-        $this->setData( 'nav_id', $nav_id );
-        $this->nav_id = $nav_id;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNavId()
-    {
-        return $this->getData( 'nav_id' );
     }
 
     /**
@@ -162,13 +122,13 @@ class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, Ide
     }
 
     /**
-     * @param string $StartDate
+     * @param string $ItemId
      * @return $this
      */
-    public function setStartDate($StartDate)
+    public function setItemId($ItemId)
     {
-        $this->setData( 'StartDate', $StartDate );
-        $this->StartDate = $StartDate;
+        $this->setData( 'ItemId', $ItemId );
+        $this->ItemId = $ItemId;
         $this->setDataChanges( TRUE );
         return $this;
     }
@@ -176,29 +136,69 @@ class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, Ide
     /**
      * @return string
      */
-    public function getStartDate()
+    public function getItemId()
     {
-        return $this->getData( 'StartDate' );
+        return $this->getData( 'ItemId' );
     }
 
     /**
-     * @param HierarchyType $Type
+     * @param float $Quantity
      * @return $this
      */
-    public function setType($Type)
+    public function setQuantity($Quantity)
     {
-        $this->setData( 'Type', $Type );
-        $this->Type = $Type;
+        $this->setData( 'Quantity', $Quantity );
+        $this->Quantity = $Quantity;
         $this->setDataChanges( TRUE );
         return $this;
     }
 
     /**
-     * @return HierarchyType
+     * @return float
      */
-    public function getType()
+    public function getQuantity()
     {
-        return $this->getData( 'Type' );
+        return $this->getData( 'Quantity' );
+    }
+
+    /**
+     * @param string $UnitOfMeasureId
+     * @return $this
+     */
+    public function setUnitOfMeasureId($UnitOfMeasureId)
+    {
+        $this->setData( 'UnitOfMeasureId', $UnitOfMeasureId );
+        $this->UnitOfMeasureId = $UnitOfMeasureId;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitOfMeasureId()
+    {
+        return $this->getData( 'UnitOfMeasureId' );
+    }
+
+    /**
+     * @param string $VariantId
+     * @return $this
+     */
+    public function setVariantId($VariantId)
+    {
+        $this->setData( 'VariantId', $VariantId );
+        $this->VariantId = $VariantId;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantId()
+    {
+        return $this->getData( 'VariantId' );
     }
 
     /**

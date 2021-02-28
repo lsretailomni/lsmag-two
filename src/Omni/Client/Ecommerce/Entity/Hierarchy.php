@@ -30,6 +30,11 @@ class Hierarchy extends Entity
     protected $Description = null;
 
     /**
+     * @property string $StartDate
+     */
+    protected $StartDate = null;
+
+    /**
      * @property HierarchyType $Type
      */
     protected $Type = null;
@@ -86,6 +91,24 @@ class Hierarchy extends Entity
     public function getDescription()
     {
         return $this->Description;
+    }
+
+    /**
+     * @param string $StartDate
+     * @return $this
+     */
+    public function setStartDate($StartDate)
+    {
+        $this->StartDate = $StartDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartDate()
+    {
+        return $this->StartDate;
     }
 
     /**

@@ -8,9 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentStatus;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use Ls\Omni\Exception\InvalidEnumException;
 
@@ -68,39 +66,14 @@ class Order extends Entity
     protected $DayPhoneNumber = null;
 
     /**
-     * @property string $DocumentId
-     */
-    protected $DocumentId = null;
-
-    /**
-     * @property string $DocumentRegTime
-     */
-    protected $DocumentRegTime = null;
-
-    /**
      * @property string $Email
      */
     protected $Email = null;
 
     /**
-     * @property int $LineItemCount
-     */
-    protected $LineItemCount = null;
-
-    /**
-     * @property SalesEntryStatus $OrderStatus
-     */
-    protected $OrderStatus = null;
-
-    /**
      * @property OrderType $OrderType
      */
     protected $OrderType = null;
-
-    /**
-     * @property PaymentStatus $PaymentStatus
-     */
-    protected $PaymentStatus = null;
 
     /**
      * @property float $PointAmount
@@ -126,11 +99,6 @@ class Order extends Entity
      * @property float $PointsUsedInOrder
      */
     protected $PointsUsedInOrder = null;
-
-    /**
-     * @property boolean $Posted
-     */
-    protected $Posted = null;
 
     /**
      * @property string $ReceiptNo
@@ -368,42 +336,6 @@ class Order extends Entity
     }
 
     /**
-     * @param string $DocumentId
-     * @return $this
-     */
-    public function setDocumentId($DocumentId)
-    {
-        $this->DocumentId = $DocumentId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDocumentId()
-    {
-        return $this->DocumentId;
-    }
-
-    /**
-     * @param string $DocumentRegTime
-     * @return $this
-     */
-    public function setDocumentRegTime($DocumentRegTime)
-    {
-        $this->DocumentRegTime = $DocumentRegTime;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDocumentRegTime()
-    {
-        return $this->DocumentRegTime;
-    }
-
-    /**
      * @param string $Email
      * @return $this
      */
@@ -419,52 +351,6 @@ class Order extends Entity
     public function getEmail()
     {
         return $this->Email;
-    }
-
-    /**
-     * @param int $LineItemCount
-     * @return $this
-     */
-    public function setLineItemCount($LineItemCount)
-    {
-        $this->LineItemCount = $LineItemCount;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLineItemCount()
-    {
-        return $this->LineItemCount;
-    }
-
-    /**
-     * @param SalesEntryStatus|string $OrderStatus
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setOrderStatus($OrderStatus)
-    {
-        if ( ! $OrderStatus instanceof SalesEntryStatus ) {
-            if ( SalesEntryStatus::isValid( $OrderStatus ) )
-                $OrderStatus = new SalesEntryStatus( $OrderStatus );
-            elseif ( SalesEntryStatus::isValidKey( $OrderStatus ) )
-                $OrderStatus = new SalesEntryStatus( constant( "SalesEntryStatus::$OrderStatus" ) );
-            elseif ( ! $OrderStatus instanceof SalesEntryStatus )
-                throw new InvalidEnumException();
-        }
-        $this->OrderStatus = $OrderStatus->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return SalesEntryStatus
-     */
-    public function getOrderStatus()
-    {
-        return $this->OrderStatus;
     }
 
     /**
@@ -493,34 +379,6 @@ class Order extends Entity
     public function getOrderType()
     {
         return $this->OrderType;
-    }
-
-    /**
-     * @param PaymentStatus|string $PaymentStatus
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setPaymentStatus($PaymentStatus)
-    {
-        if ( ! $PaymentStatus instanceof PaymentStatus ) {
-            if ( PaymentStatus::isValid( $PaymentStatus ) )
-                $PaymentStatus = new PaymentStatus( $PaymentStatus );
-            elseif ( PaymentStatus::isValidKey( $PaymentStatus ) )
-                $PaymentStatus = new PaymentStatus( constant( "PaymentStatus::$PaymentStatus" ) );
-            elseif ( ! $PaymentStatus instanceof PaymentStatus )
-                throw new InvalidEnumException();
-        }
-        $this->PaymentStatus = $PaymentStatus->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return PaymentStatus
-     */
-    public function getPaymentStatus()
-    {
-        return $this->PaymentStatus;
     }
 
     /**
@@ -611,24 +469,6 @@ class Order extends Entity
     public function getPointsUsedInOrder()
     {
         return $this->PointsUsedInOrder;
-    }
-
-    /**
-     * @param boolean $Posted
-     * @return $this
-     */
-    public function setPosted($Posted)
-    {
-        $this->Posted = $Posted;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getPosted()
-    {
-        return $this->Posted;
     }
 
     /**

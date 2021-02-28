@@ -14,6 +14,7 @@ use MyCLabs\Enum\Enum;
  * @$method static DocumentIdType ORDER()
  * @$method static DocumentIdType EXTERNAL()
  * @$method static DocumentIdType RECEIPT()
+ * @$method static DocumentIdType HOSP_ORDER()
  */
 class DocumentIdType extends Enum
 {
@@ -23,6 +24,8 @@ class DocumentIdType extends Enum
     public const EXTERNAL = 'External';
 
     public const RECEIPT = 'Receipt';
+
+    public const HOSP_ORDER = 'HospOrder';
 
 
 }

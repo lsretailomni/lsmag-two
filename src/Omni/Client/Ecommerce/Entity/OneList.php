@@ -8,6 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HospMode;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use Ls\Omni\Exception\InvalidEnumException;
 
@@ -50,9 +51,9 @@ class OneList extends Entity
     protected $ExternalType = null;
 
     /**
-     * @property boolean $IsHospitality
+     * @property HospMode $HospitalityMode
      */
-    protected $IsHospitality = null;
+    protected $HospitalityMode = null;
 
     /**
      * @property ListType $ListType
@@ -221,21 +222,31 @@ class OneList extends Entity
     }
 
     /**
-     * @param boolean $IsHospitality
+     * @param HospMode|string $HospitalityMode
      * @return $this
+     * @throws InvalidEnumException
      */
-    public function setIsHospitality($IsHospitality)
+    public function setHospitalityMode($HospitalityMode)
     {
-        $this->IsHospitality = $IsHospitality;
+        if ( ! $HospitalityMode instanceof HospMode ) {
+            if ( HospMode::isValid( $HospitalityMode ) )
+                $HospitalityMode = new HospMode( $HospitalityMode );
+            elseif ( HospMode::isValidKey( $HospitalityMode ) )
+                $HospitalityMode = new HospMode( constant( "HospMode::$HospitalityMode" ) );
+            elseif ( ! $HospitalityMode instanceof HospMode )
+                throw new InvalidEnumException();
+        }
+        $this->HospitalityMode = $HospitalityMode->getValue();
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return HospMode
      */
-    public function getIsHospitality()
+    public function getHospitalityMode()
     {
-        return $this->IsHospitality;
+        return $this->HospitalityMode;
     }
 
     /**
