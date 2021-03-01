@@ -16,8 +16,7 @@ use Magento\SalesRule\Model\Validator;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * Class Discount
- * @package Ls\Omni\Model\Tax\Sales\Total\Quote
+ * Class Discount to apply different type of discounts
  */
 class Discount extends AbstractTotal
 {
@@ -182,15 +181,16 @@ class Discount extends AbstractTotal
     public function getGiftCardLoyaltyDiscount($quote)
     {
         $amount     = 0;
+        $pointDiscount = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
         if (isset($basketData)) {
             $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-            $giftCardAmount = $quote->getLsGiftCardAmountUsed();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);
             }
-            $amount = -$pointDiscount - $giftCardAmount;
         }
+        $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+        $amount = -$pointDiscount - $giftCardAmount;
         return $amount;
     }
 }

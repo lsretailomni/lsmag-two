@@ -1,3 +1,31 @@
+type Mutation {
+applyLsGiftCard(input: ApplyLsGiftCardInput): LsGiftCardOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\ApplyGiftCard") @doc(description: "Redeem gift card code")
+removeLsGiftCard(input: RemoveLsGiftCardInput): LsGiftCardOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\RemoveGiftCard") @doc(description: "Remove gift card code")
+}
+
+input ApplyLsGiftCardInput {
+      cart_id: String! @doc(description: "Specifies the quote id and set the gift card code.")
+      code: String! @doc(description: "Specifies the gift card code.")
+      amount: Float! @doc(description: "Specifies how much gift card amount will be applied.")
+}
+
+input RemoveLsGiftCardInput {
+      cart_id: String! @doc(description: "Specifies the quote id and remove the gift card code.")
+}
+
+type LsGiftCardOutput {
+    cart: Cart!
+}
+
+type AppliedGiftCard {
+    code: String
+    amount: Float
+}
+
+type Cart {
+     applied_gift_card: AppliedGiftCard @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\AppliedGiftCard") @doc(description:"An array of `Gift Card` object.")
+}
+
 type Order {
     document_id: String! @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\Order")
 }
