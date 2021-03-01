@@ -944,7 +944,6 @@ class BasketHelper extends AbstractHelper
             $orderLine->setItemId($itemId)
                 ->setVariantId($variantId)
                 ->setQuantity($qty)
-                ->setQuantityToInvoice($qty)
                 ->setAmount($amount)
                 ->setDiscountAmount($orderItem->getDiscountAmount())
                 ->setNetPrice($orderItem->getOriginalPrice())

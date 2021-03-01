@@ -4,6 +4,7 @@ namespace Ls\Omni\Plugin\Order;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -49,15 +50,17 @@ class OrderManagement
 
     /**
      * Around plugin to cancel the order
+     *
      * @param OrderManagementInterface $subject
      * @param $proceed
-     * @param int $id (order id)
-     * @return $this
-     * @throws LocalizedException
+     * @param $id
+     * @return mixed
+     * @throws AlreadyExistsException
      * @throws InputException
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function aroundCancel(OrderManagementInterface $subject, $proceed, int $id)
+    public function aroundCancel(OrderManagementInterface $subject, $proceed, $id)
     {
         /** @var Order $order */
         $order = $this->orderRepository->get($id);

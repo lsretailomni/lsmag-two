@@ -27,6 +27,11 @@ class Price
     protected $ItemId = null;
 
     /**
+     * @property float $NetAmt
+     */
+    protected $NetAmt = null;
+
+    /**
      * @property string $StoreId
      */
     protected $StoreId = null;
@@ -93,6 +98,24 @@ class Price
     public function getItemId()
     {
         return $this->ItemId;
+    }
+
+    /**
+     * @param float $NetAmt
+     * @return $this
+     */
+    public function setNetAmt($NetAmt)
+    {
+        $this->NetAmt = $NetAmt;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getNetAmt()
+    {
+        return $this->NetAmt;
     }
 
     /**

@@ -30,6 +30,11 @@ class ReplHierarchy
     protected $IsDeleted = null;
 
     /**
+     * @property string $StartDate
+     */
+    protected $StartDate = null;
+
+    /**
      * @property HierarchyType $Type
      */
     protected $Type = null;
@@ -96,6 +101,24 @@ class ReplHierarchy
     public function getIsDeleted()
     {
         return $this->IsDeleted;
+    }
+
+    /**
+     * @param string $StartDate
+     * @return $this
+     */
+    public function setStartDate($StartDate)
+    {
+        $this->StartDate = $StartDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartDate()
+    {
+        return $this->StartDate;
     }
 
     /**

@@ -85,21 +85,6 @@ class OrderLine extends Entity
     protected $Quantity = null;
 
     /**
-     * @property float $QuantityOutstanding
-     */
-    protected $QuantityOutstanding = null;
-
-    /**
-     * @property float $QuantityToInvoice
-     */
-    protected $QuantityToInvoice = null;
-
-    /**
-     * @property float $QuantityToShip
-     */
-    protected $QuantityToShip = null;
-
-    /**
      * @property string $StoreId
      */
     protected $StoreId = null;
@@ -384,60 +369,6 @@ class OrderLine extends Entity
     public function getQuantity()
     {
         return $this->Quantity;
-    }
-
-    /**
-     * @param float $QuantityOutstanding
-     * @return $this
-     */
-    public function setQuantityOutstanding($QuantityOutstanding)
-    {
-        $this->QuantityOutstanding = $QuantityOutstanding;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getQuantityOutstanding()
-    {
-        return $this->QuantityOutstanding;
-    }
-
-    /**
-     * @param float $QuantityToInvoice
-     * @return $this
-     */
-    public function setQuantityToInvoice($QuantityToInvoice)
-    {
-        $this->QuantityToInvoice = $QuantityToInvoice;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getQuantityToInvoice()
-    {
-        return $this->QuantityToInvoice;
-    }
-
-    /**
-     * @param float $QuantityToShip
-     * @return $this
-     */
-    public function setQuantityToShip($QuantityToShip)
-    {
-        $this->QuantityToShip = $QuantityToShip;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getQuantityToShip()
-    {
-        return $this->QuantityToShip;
     }
 
     /**
