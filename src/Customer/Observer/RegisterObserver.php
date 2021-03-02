@@ -3,9 +3,9 @@
 namespace Ls\Customer\Observer;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Event\Observer;
