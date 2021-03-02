@@ -48,6 +48,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
+use Magento\Customer\Model\CustomerRegistry;
 
 /**
  * Helper functions for member contact
@@ -164,6 +165,11 @@ class ContactHelper extends AbstractHelper
     public $date;
 
     /**
+     * @var CustomerRegistry
+     */
+    public $customerRegistry;
+
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder
@@ -195,6 +201,7 @@ class ContactHelper extends AbstractHelper
      * @param ValidateEmailAddress $validateEmailAddress
      * @param LSR $lsr
      * @param DateTime $date
+     * @param CustomerRegistry $customerRegistry
      */
     public function __construct(
         Context $context,
@@ -226,7 +233,8 @@ class ContactHelper extends AbstractHelper
         EncryptorInterface $encryptorInterface,
         ValidateEmailAddress $validateEmailAddress,
         LSR $lsr,
-        DateTime $date
+        DateTime $date,
+        CustomerRegistry $customerRegistry
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -257,6 +265,7 @@ class ContactHelper extends AbstractHelper
         $this->validateEmailAddress  = $validateEmailAddress;
         $this->lsr                   = $lsr;
         $this->date                  = $date;
+        $this->customerRegistry      = $customerRegistry;
         parent::__construct(
             $context
         );
@@ -1086,12 +1095,24 @@ class ContactHelper extends AbstractHelper
                 break;
             }
         }
-        $customer_email = $customer->getEmail();
-        $websiteId      = $this->storeManager->getWebsite()->getWebsiteId();
-        $customer       = $this->customerFactory->create()
+        $customer_email   = $customer->getEmail();
+        $websiteId        = $this->storeManager->getWebsite()->getWebsiteId();
+        $customer         = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
-        $customer       = $this->setCustomerAttributesValues($result, $customer);
+        $customer         = $this->setCustomerAttributesValues($result, $customer);
+        $customerSecure   = $this->customerRegistry->retrieveSecureData($customer->getId());
+        $validatePassword = $this->encryptorInterface->validateHash(
+            $credentials['password'],
+            $customerSecure->getPasswordHash()
+        );
+        if (!$validatePassword) {
+            $passwordHash = $this->encryptorInterface->getHash($credentials['password'], true);
+            $customerSecure->setRpToken(null);
+            $customerSecure->setRpTokenCreatedAt(null);
+            $customerSecure->setPasswordHash($passwordHash);
+            $customer->setPasswordHash($passwordHash);
+        }
         $this->customerResourceModel->save($customer);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->basketHelper->unSetOneList();
@@ -1176,7 +1197,6 @@ class ContactHelper extends AbstractHelper
         $collection = $this->customerCollection->create()
             ->addAttributeToSelect("*")
             ->addAttributeToFilter("lsr_id", ['null' => true])
-            ->addAttributeToFilter("lsr_username", ['notnull' => true])
             ->addAttributeToFilter("website_id", ['eq' => $websiteId])
             ->load();
 
@@ -1244,6 +1264,20 @@ class ContactHelper extends AbstractHelper
     public function syncCustomerAndAddress(Customer $customer)
     {
         try {
+            $userName = $customer->getData('lsr_username');
+            if (empty($userName)) {
+                do {
+                    $userName = $this->generateRandomUsername();
+                } while ($this->isUsernameExist($userName) ?
+                    $this->isUsernameExistInLsCentral($userName) : false
+                );
+                $customer->setData('lsr_username', $userName);
+            }
+            //Incase if lsr_password not set due to some exception from LS Central/ Migrating the existing customer.
+            // Setting username as password.
+            if (empty($customer->getData('lsr_password'))) {
+                $customer->setData('lsr_password', $this->encryptorInterface->encrypt($userName));
+            }
             $contactUserName = $this->getCustomerByUsernameOrEmailFromLsCentral(
                 $customer->getData('lsr_username'),
                 Entity\Enum\ContactSearchType::USER_NAME

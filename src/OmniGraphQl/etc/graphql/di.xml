@@ -31,4 +31,10 @@
         <plugin name="correcting_line_price" type="Ls\OmniGraphQl\Plugin\Model\Resolver\CartItemPricesPlugin"
                 sortOrder="1"/>
     </type>
+    <!-- Plugin to remove coupon -->
+    <type name="Magento\QuoteGraphQl\Model\Resolver\RemoveCouponFromCart">
+        <plugin name="ls_omnigraphql_remove_coupon"
+                type="Ls\OmniGraphQl\Plugin\Model\Resolver\RemoveCouponFromCartPlugin"
+                sortOrder="1"/>
+    </type>
 </config>

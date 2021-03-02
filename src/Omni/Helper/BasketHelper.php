@@ -532,7 +532,7 @@ class BasketHelper extends AbstractHelper
                 $this->get()
             );
             $this->setCouponQuote($this->couponCode);
-
+            $status = __("Coupon Code is not valid");
             return $status;
         } elseif (!empty($status->getOrderDiscountLines()->getOrderDiscountLine())) {
             if (is_array($status->getOrderDiscountLines()->getOrderDiscountLine())) {

@@ -74,7 +74,7 @@ class RegisterObserver implements ObserverInterface
             do {
                 $parameters['lsr_username'] = $this->contactHelper->generateRandomUsername();
             } while ($this->contactHelper->isUsernameExist($parameters['lsr_username']) ||
-                $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
+            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
                 $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username']) : false
             );
             /** @var Customer $customer */
