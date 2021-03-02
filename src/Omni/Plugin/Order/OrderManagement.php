@@ -71,7 +71,6 @@ class OrderManagement
          */
         if ($this->lsr->isLSR($websiteId, 'website')) {
             if (!empty($documentId)) {
-                $websiteId = $order->getStore()->getWebsiteId();
                 $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
                 $response = $this->orderHelper->orderCancel($documentId, $webStore);
                 if ($response == null) {
