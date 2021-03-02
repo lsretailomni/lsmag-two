@@ -75,6 +75,11 @@ class SalesEntryLine extends Entity
     protected $NetPrice = null;
 
     /**
+     * @property int $ParentLine
+     */
+    protected $ParentLine = null;
+
+    /**
      * @property float $Price
      */
     protected $Price = null;
@@ -333,6 +338,24 @@ class SalesEntryLine extends Entity
     public function getNetPrice()
     {
         return $this->NetPrice;
+    }
+
+    /**
+     * @param int $ParentLine
+     * @return $this
+     */
+    public function setParentLine($ParentLine)
+    {
+        $this->ParentLine = $ParentLine;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getParentLine()
+    {
+        return $this->ParentLine;
     }
 
     /**
