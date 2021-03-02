@@ -64,7 +64,7 @@ class CouponInformationManagement
         if ($status == "success") {
             return true;
         } else {
-            throw new CouldNotSaveException(__($status));
+            throw new NoSuchEntityException(__($status));
         }
     }
 
