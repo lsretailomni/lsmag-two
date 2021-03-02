@@ -17,8 +17,7 @@ use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class LoginObserver
- * @package Ls\Customer\Observer
+ * Observer responsible for customer login
  */
 class LoginObserver implements ObserverInterface
 {
@@ -112,27 +111,7 @@ class LoginObserver implements ObserverInterface
                     }
                     if ($result instanceof Entity\MemberContact) {
                         $this->contactHelper->processCustomerLogin($result, $login, $is_email);
-                        $oneListBasket = $this->contactHelper->getOneListTypeObject(
-                            $result->getOneLists()->getOneList(),
-                            Entity\Enum\ListType::BASKET
-                        );
-                        if ($oneListBasket) {
-                            /** Update Basket to Omni */
-                            $this->contactHelper->updateBasketAfterLogin(
-                                $oneListBasket,
-                                $result->getId(),
-                                $result->getCards()->getCard()[0]->getId()
-                            );
-                        }
-                        $oneListWish = $this->contactHelper->getOneListTypeObject(
-                            $result->getOneLists()->getOneList(),
-                            Entity\Enum\ListType::WISH
-                        );
-                        if ($oneListWish) {
-                            $this->contactHelper->updateWishlistAfterLogin(
-                                $oneListWish
-                            );
-                        }
+                        $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
                     } else {
                         $this->customerSession->addError(
                             __('The service is currently unavailable. Please try again later.')
