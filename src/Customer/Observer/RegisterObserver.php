@@ -3,9 +3,9 @@
 namespace Ls\Customer\Observer;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Helper\ContactHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Event\Observer;
@@ -69,11 +69,11 @@ class RegisterObserver implements ObserverInterface
     {
         try {
             $parameters = $observer->getRequest()->getParams();
-            $session    = $this->customerSession;
+            $session = $this->customerSession;
             do {
                 $parameters['lsr_username'] = $this->contactHelper->generateRandomUsername();
             } while ($this->contactHelper->isUsernameExist($parameters['lsr_username']) ||
-            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
+                $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
                 $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username']) : false
             );
             /** @var Customer $customer */
