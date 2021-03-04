@@ -91,14 +91,14 @@ class SyncAttributesValue extends ProductCreateTask
     public function processAttributesValue()
     {
         /** Get list of only those Attribute Value whose items are already processed */
-        $filters            = [];
+        $filters = [];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
-        $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
             $attributeBatchSize,
             false
         );
-        $collection         = $this->replAttributeValueCollectionFactory->create();
+        $collection = $this->replAttributeValueCollectionFactory->create();
 
         $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
@@ -113,28 +113,17 @@ class SyncAttributesValue extends ProductCreateTask
             /** @var ReplAttributeValue $attributeValue */
             foreach ($collection as $attributeValue) {
                 try {
-                    $itemId         = $attributeValue->getLinkField1();
-                    $product        = $this->productRepository->get($itemId);
-                    $formattedCode  = $this->replicationHelper->formatAttributeCode(
+                    $itemId = $attributeValue->getLinkField1();
+                    $product = $this->productRepository->get($itemId);
+                    $formattedCode = $this->replicationHelper->formatAttributeCode(
                         $attributeValue->getCode()
                     );
                     $attributeSetId = $product->getAttributeSetId();
-                    if ($this->checkAttributeInAttributeSet($attributeSetId, $formattedCode)) {
-                        $attributeGroupId = $this->getAttributeGroup(
-                            LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP,
-                            $attributeSetId
-                        );
-                        $sortOrder        = $this->getAttributeSortOrderInAttributeSet(
-                            $attributeSetId,
-                            $attributeGroupId
-                        );
-                        $this->assignAttributeToAttributeSet(
-                            $attributeSetId,
-                            $attributeGroupId,
-                            $formattedCode,
-                            $sortOrder
-                        );
-                    }
+                    $this->attributeAssignmentToAttributeSet(
+                        $attributeSetId,
+                        $formattedCode,
+                        LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP
+                    );
                     $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
                     if ($attribute->getFrontendInput() == 'multiselect') {
                         $value = $this->_getOptionIDByCode($formattedCode, $attributeValue->getValue());
@@ -171,8 +160,8 @@ class SyncAttributesValue extends ProductCreateTask
     {
         if (!$this->remainingRecords) {
             /** Get list of only those attribute value whose items are already processed */
-            $filters    = [];
-            $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+            $filters = [];
+            $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters
             );
             $collection = $this->replAttributeValueCollectionFactory->create();

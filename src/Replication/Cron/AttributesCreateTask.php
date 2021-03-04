@@ -402,8 +402,8 @@ class AttributesCreateTask
                         'is_used_in_grid'               => 1,
                         'is_visible_in_grid'            => 1,
                         'is_filterable_in_grid'         => 1,
-//                        'attribute_set_id'              => $defaultAttributeSetId,
-//                        'attribute_group_id'            => $defaultGroupId
+                       // 'attribute_set_id'              => $defaultAttributeSetId,
+                       // 'attribute_group_id'            => $defaultGroupId
                     ];
                     try {
                         // @codingStandardsIgnoreStart
