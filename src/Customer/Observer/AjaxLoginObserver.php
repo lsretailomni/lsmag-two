@@ -19,8 +19,7 @@ use Magento\Framework\Json\Helper\Data;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class AjaxLoginObserver
- * @package Ls\Customer\Observer
+ * Observer responsible for customer ajax login from checkout
  */
 class AjaxLoginObserver implements ObserverInterface
 {
@@ -125,18 +124,7 @@ class AjaxLoginObserver implements ObserverInterface
                              * Fetch customer related info from omni and create user in magento
                              */
                             $this->contactHelper->processCustomerLogin($result, $credentials, $is_email);
-                            $oneListBasket = $this->contactHelper->getOneListTypeObject(
-                                $result->getOneLists()->getOneList(),
-                                Entity\Enum\ListType::BASKET
-                            );
-                            if ($oneListBasket) {
-                                /** Update Basket to Omni */
-                                $this->contactHelper->updateBasketAfterLogin(
-                                    $oneListBasket,
-                                    $result->getId(),
-                                    $result->getCards()->getCard()[0]->getId()
-                                );
-                            }
+                            $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
                             $this->customerSession->regenerateId();
                             $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
                             return $resultJson->setData($response);
