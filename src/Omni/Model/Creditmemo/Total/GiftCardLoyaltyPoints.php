@@ -2,7 +2,6 @@
 
 namespace Ls\Omni\Model\Creditmemo\Total;
 
-use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Creditmemo\Total\AbstractTotal;
@@ -19,23 +18,15 @@ class GiftCardLoyaltyPoints extends AbstractTotal
     public $loyaltyHelper;
 
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
      * GiftCardLoyaltyPoints constructor.
      * @param LoyaltyHelper $loyaltyHelper
-     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
-        LSR $lsr,
         array $data = []
     ) {
         $this->loyaltyHelper = $loyaltyHelper;
-        $this->lsr = $lsr;
         parent::__construct(
             $data
         );
