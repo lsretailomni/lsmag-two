@@ -2,13 +2,13 @@
 
 namespace Ls\Omni\Model\Creditmemo\Total;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Creditmemo\Total\AbstractTotal;
 
 /**
- * Class GiftCardLoyaltyPoints
- * @package Ls\Omni\Model
+ * Class for handling gift card and loyalty points in credit memo
  */
 class GiftCardLoyaltyPoints extends AbstractTotal
 {
@@ -19,49 +19,80 @@ class GiftCardLoyaltyPoints extends AbstractTotal
     public $loyaltyHelper;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * GiftCardLoyaltyPoints constructor.
      * @param LoyaltyHelper $loyaltyHelper
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
+        LSR $lsr,
         array $data = []
     ) {
         $this->loyaltyHelper = $loyaltyHelper;
+        $this->lsr = $lsr;
         parent::__construct(
             $data
         );
     }
 
     /**
+     * Calculation for loyalty points and gift card amount in credit memo.
      * @param Creditmemo $creditmemo
-     * @return $this|AbstractTotal
+     * @return $this|GiftCardLoyaltyPoints
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function collect(Creditmemo $creditmemo)
     {
-        $creditmemo->setLsPointsSpent(0);
-        $creditmemo->setLsGiftCardAmountUsed(0);
-        $creditmemo->setLsGiftCardNo(null);
-
         $pointsSpent = $creditmemo->getOrder()->getLsPointsSpent();
-        $creditmemo->setLsPointsSpent($pointsSpent);
-
-        $pointsEarn = $creditmemo->getOrder()->getLsPointsEarn();
-        $creditmemo->setLsPointsEarn($pointsEarn);
-
         $giftCardAmount = $creditmemo->getOrder()->getLsGiftCardAmountUsed();
-        $creditmemo->setLsGiftCardAmountUsed($giftCardAmount);
+        if ($pointsSpent > 0 || $giftCardAmount > 0) {
+            $totalItemsQuantities = 0;
+            $totalItemsInvoice = 0;
+            $totalPointsAmount = 0;
 
-        $giftCardNo = $creditmemo->getOrder()->getLsGiftCardNo();
-        $creditmemo->setLsGiftCardNo($giftCardNo);
+            $creditmemo->setLsPointsSpent(0);
+            $creditmemo->setLsGiftCardAmountUsed(0);
+            $creditmemo->setLsGiftCardNo(null);
 
-        $pointsSpent          *= $this->loyaltyHelper->getPointRate();
-        $grandTotalAmount     = $creditmemo->getOrder()->getGrandTotal()
-            - $creditmemo->getOrder()->getShippingAmount() - $creditmemo->getOrder()->getTaxAmount();
-        $baseGrandTotalAmount = $creditmemo->getOrder()->getBaseGrandTotal()
-            - $creditmemo->getOrder()->getShippingAmount() - $creditmemo->getOrder()->getTaxAmount();
-        $creditmemo->setGrandTotal($grandTotalAmount);
-        $creditmemo->setBaseGrandTotal($baseGrandTotalAmount);
+            $pointsEarn = $creditmemo->getOrder()->getLsPointsEarn();
+            $creditmemo->setLsPointsEarn($pointsEarn);
+
+            /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
+            foreach ($creditmemo->getOrder()->getAllVisibleItems() as $item) {
+                $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
+            }
+
+            foreach ($creditmemo->getAllItems() as $item) {
+                $orderItem = $item->getOrderItem();
+                if ($orderItem->getData('product_type') == 'simple') {
+                    $totalItemsInvoice += $item->getQty() - $orderItem->getQtyRefunded();
+                }
+            }
+
+            $pointRate = ($this->loyaltyHelper->getPointRate()) ? $this->loyaltyHelper->getPointRate() : 0;
+            $totalPointsAmount = $pointsSpent * $pointRate;
+            $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
+            $pointsSpent = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
+
+            $giftCardAmount = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
+
+            $creditmemo->setLsPointsSpent($pointsSpent);
+            $creditmemo->setLsGiftCardAmountUsed($giftCardAmount);
+
+            $giftCardNo = $creditmemo->getOrder()->getLsGiftCardNo();
+            $creditmemo->setLsGiftCardNo($giftCardNo);
+
+            $grandTotalAmount = $creditmemo->getGrandTotal() - $totalPointsAmount - $giftCardAmount;
+            $baseGrandTotalAmount = $creditmemo->getBaseGrandTotal() - $totalPointsAmount - $giftCardAmount;
+            $creditmemo->setGrandTotal($grandTotalAmount);
+            $creditmemo->setBaseGrandTotal($baseGrandTotalAmount);
+        }
 
         return $this;
     }
