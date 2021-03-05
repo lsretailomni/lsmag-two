@@ -1542,6 +1542,14 @@ class ProductCreateTask
         // Get those attribute codes which are assigned to product.
         $attributesCode = $this->_getAttributesCodes($item->getNavId());
 
+        foreach ($attributesCode as $attributeCode) {
+            $this->attributeAssignmentToAttributeSet(
+                $configProduct->getAttributeSetId(),
+                $attributeCode,
+                LSR::SC_REPLICATION_ATTRIBUTE_SET_VARIANTS_ATTRIBUTES_GROUP
+            );
+        }
+
         if (!empty($totalUomCodes)) {
             if (count($totalUomCodes[$item->getNavId()]) > 1 && !empty($uomCodesNotProcessed)) {
                 $attributesCode [] = LSR::LS_UOM_ATTRIBUTE;
@@ -1697,35 +1705,32 @@ class ProductCreateTask
             $productId = $configProduct->getId();
         }
         $position = 0;
-        if ($configProduct->getTypeId() == Type::TYPE_SIMPLE || !empty($uomCodesNotProcessed)) {
-            $attributeData = [];
-            $attributeIdsArray = $this->validateConfigurableAttributes($configProduct);
-            foreach ($attributesCode as $value) {
-                $this->assignVariantToAttributeSet($configProduct->getAttributeSetId(), $value);
-                /** @var Interceptor $attribute */
-                $attribute = $this->eavConfig->getAttribute('catalog_product', $value);
-                $attributesIds[] = $attribute->getId();
-                $data = [
-                    'attribute_id' => $attribute->getId(),
-                    'product_id'   => $productId,
-                    'position'     => $position
-                ];
+        $attributeData = [];
+        $attributeIdsArray = $this->validateConfigurableAttributes($configProduct);
+        foreach ($attributesCode as $value) {
+            /** @var Interceptor $attribute */
+            $attribute = $this->eavConfig->getAttribute('catalog_product', $value);
+            $attributesIds[] = $attribute->getId();
+            $data = [
+                'attribute_id' => $attribute->getId(),
+                'product_id'   => $productId,
+                'position'     => $position
+            ];
 
-                $attributeData[] = $this->getConfigurableAttributeData($attribute, $position);
-                try {
-                    if (!in_array($attribute->getId(), $attributeIdsArray)) {
-                        // @codingStandardsIgnoreLine
-                        $this->attribute->setData($data)->save();
-                    }
-                } catch (Exception $e) {
+            $attributeData[] = $this->getConfigurableAttributeData($attribute, $position);
+            try {
+                if (!in_array($attribute->getId(), $attributeIdsArray)) {
                     // @codingStandardsIgnoreLine
-                    $this->logger->debug('Issue while saving Attribute Id : ' . $attribute->getId() . " and Product Id : $productId - " . $e->getMessage());
+                    $this->attribute->setData($data)->save();
                 }
-                $position++;
+            } catch (Exception $e) {
+                // @codingStandardsIgnoreLine
+                $this->logger->debug('Issue while saving Attribute Id : ' . $attribute->getId() . " and Product Id : $productId - " . $e->getMessage());
             }
-            $options = $this->optionsFactory->create($attributeData);
-            $configProduct->getExtensionAttributes()->setConfigurableProductOptions($options);
+            $position++;
         }
+        $options = $this->optionsFactory->create($attributeData);
+        $configProduct->getExtensionAttributes()->setConfigurableProductOptions($options);
         $configProduct->setTypeId(Configurable::TYPE_CODE); // Setting Product Type As Configurable
         $configProduct->setAffectConfigurableProductAttributes($configProduct->getAttributeSetId());
         $this->configurable->setUsedProductAttributes($configProduct, $attributesIds);
@@ -2364,7 +2369,7 @@ class ProductCreateTask
     }
 
     /*
-     * Attribute assignment to attribute set
+     * Attribute assignment to attribute set and handle attribute set group
      * @param $attributeSetId
      * @param $formattedCode
      * @param $groupName
@@ -2414,5 +2419,25 @@ class ProductCreateTask
             $this->logger->error($e->getMessage());
         }
         return $attributesGroup;
+    }
+
+    /**
+     * assign attribute to attribute set
+     * @param $attributeSetId
+     * @param $attributeGroupId
+     * @param $attributeCode
+     * @param $sortOrder
+     * @throws NoSuchEntityException
+     * @throws InputException
+     */
+    public function assignAttributeToAttributeSet($attributeSetId, $attributeGroupId, $attributeCode, $sortOrder)
+    {
+        $this->attributeManagement->assign(
+            Product::ENTITY,
+            $attributeSetId,
+            $attributeGroupId,
+            $attributeCode,
+            $sortOrder
+        );
     }
 }

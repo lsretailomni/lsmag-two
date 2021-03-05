@@ -85,6 +85,7 @@ class SyncAttributesValue extends ProductCreateTask
     }
 
     /**
+     * For syncing attribute value
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -178,22 +179,4 @@ class SyncAttributesValue extends ProductCreateTask
         return $this->remainingRecords;
     }
 
-    /**
-     * @param $attributeSetId
-     * @param $attributeGroupId
-     * @param $attributeCode
-     * @param $sortOrder
-     * @throws NoSuchEntityException
-     * @throws \Magento\Framework\Exception\InputException
-     */
-    public function assignAttributeToAttributeSet($attributeSetId, $attributeGroupId, $attributeCode, $sortOrder)
-    {
-        $this->attributeManagement->assign(
-            Product::ENTITY,
-            $attributeSetId,
-            $attributeGroupId,
-            $attributeCode,
-            $sortOrder
-        );
-    }
 }
