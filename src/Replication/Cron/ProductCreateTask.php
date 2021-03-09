@@ -650,8 +650,8 @@ class ProductCreateTask
                                 $itemStock = $this->getInventoryStatus($item->getNavId(), $storeId);
                                 $product->setStockData([
                                     'use_config_manage_stock' => 1,
-                                    'is_in_stock' => ($itemStock > 0) ? 1 : 0,
-                                    'qty' => $itemStock
+                                    'is_in_stock'             => ($itemStock > 0) ? 1 : 0,
+                                    'qty'                     => $itemStock
                                 ]);
                                 $product = $this->getProductAttributes($product, $item);
                                 try {
@@ -801,10 +801,10 @@ class ProductCreateTask
                 $this->replImageLinkRepositoryInterface->save($image);
                 continue;
             }
-            $types           = [];
-            $imageSize       = [
+            $types     = [];
+            $imageSize = [
                 'height' => LSR::DEFAULT_ITEM_IMAGE_HEIGHT,
-                'width' => LSR::DEFAULT_ITEM_IMAGE_WIDTH
+                'width'  => LSR::DEFAULT_ITEM_IMAGE_WIDTH
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             $result          = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
@@ -1480,7 +1480,7 @@ class ProductCreateTask
             $superAttrList[]                           = [
                 'name' => $option['frontend_label'],
                 'code' => $option['attribute_code'],
-                'id' => $option['attribute_id']
+                'id'   => $option['attribute_id']
             ];
             $superAttrOptions[$option['attribute_id']] = $option['options'];
             foreach ($nameValueList as $nameValue) {
@@ -1749,8 +1749,8 @@ class ProductCreateTask
             $attributesIds[] = $attribute->getId();
             $data            = [
                 'attribute_id' => $attribute->getId(),
-                'product_id' => $productId,
-                'position' => $position
+                'product_id'   => $productId,
+                'position'     => $position
             ];
 
             $attributeData[] = $this->getConfigurableAttributeData($attribute, $position);
@@ -2018,9 +2018,9 @@ class ProductCreateTask
         }
         $productV->setStockData([
             'use_config_manage_stock' => 1,
-            'is_in_stock' => ($itemStock > 0) ? 1 : 0,
-            'is_qty_decimal' => 0,
-            'qty' => $itemStock
+            'is_in_stock'             => ($itemStock > 0) ? 1 : 0,
+            'is_qty_decimal'          => 0,
+            'qty'                     => $itemStock
         ]);
         try {
             /** @var ProductInterface $productSaved */
@@ -2096,17 +2096,17 @@ class ProductCreateTask
         foreach ($attribute->getOptions() as $option) {
             if ($option->getValue()) {
                 $attributeValues[] = [
-                    'label' => $option->getLabel(),
+                    'label'        => $option->getLabel(),
                     'attribute_id' => $attribute->getId(),
-                    'value_index' => $option->getValue(),
+                    'value_index'  => $option->getValue(),
                 ];
             }
         }
         return [
-            'position' => $position,
+            'position'     => $position,
             'attribute_id' => $attribute->getId(),
-            'label' => $attribute->getName(),
-            'values' => $attributeValues
+            'label'        => $attribute->getName(),
+            'values'       => $attributeValues
         ];
     }
 
@@ -2342,8 +2342,8 @@ class ProductCreateTask
         $attributeSet = $this->attributeSetFactory->create();
         $data         = [
             'attribute_set_name' => $itemCategoryCode,
-            'entity_type_id' => $entityType->getId(),
-            'sort_order' => 200,
+            'entity_type_id'     => $entityType->getId(),
+            'sort_order'         => 200,
         ];
         $attributeSet->setData($data);
         $attributeSet        = $this->attributeSetManagement->create($entityTypeCode, $attributeSet, $defaultSetId);
