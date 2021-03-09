@@ -4,7 +4,6 @@ namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplAttributeValue;
-use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Setup\Exception;
@@ -92,14 +91,14 @@ class SyncAttributesValue extends ProductCreateTask
     public function processAttributesValue()
     {
         /** Get list of only those Attribute Value whose items are already processed */
-        $filters = [];
+        $filters            = [];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
-        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+        $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
             $attributeBatchSize,
             false
         );
-        $collection = $this->replAttributeValueCollectionFactory->create();
+        $collection         = $this->replAttributeValueCollectionFactory->create();
 
         $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
@@ -114,9 +113,9 @@ class SyncAttributesValue extends ProductCreateTask
             /** @var ReplAttributeValue $attributeValue */
             foreach ($collection as $attributeValue) {
                 try {
-                    $itemId = $attributeValue->getLinkField1();
-                    $product = $this->productRepository->get($itemId);
-                    $formattedCode = $this->replicationHelper->formatAttributeCode(
+                    $itemId         = $attributeValue->getLinkField1();
+                    $product        = $this->productRepository->get($itemId);
+                    $formattedCode  = $this->replicationHelper->formatAttributeCode(
                         $attributeValue->getCode()
                     );
                     $attributeSetId = $product->getAttributeSetId();
@@ -161,8 +160,8 @@ class SyncAttributesValue extends ProductCreateTask
     {
         if (!$this->remainingRecords) {
             /** Get list of only those attribute value whose items are already processed */
-            $filters = [];
-            $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+            $filters    = [];
+            $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters
             );
             $collection = $this->replAttributeValueCollectionFactory->create();
