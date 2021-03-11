@@ -207,7 +207,7 @@ class SyncImages extends ProductCreateTask
             $itemSku = $itemSku . '-' . $uomCode;
         }
         try {
-            $productData = $this->productRepository->get($itemSku, true, null, true);
+            $productData = $this->productRepository->get($itemSku, true, 0, true);
         } catch (NoSuchEntityException $e) {
             return;
         }

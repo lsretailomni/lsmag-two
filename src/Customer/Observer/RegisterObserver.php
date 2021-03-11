@@ -14,8 +14,7 @@ use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class RegisterObserver
- * Customer Registration Observer
+ * Observer responsible for customer registration
  */
 class RegisterObserver implements ObserverInterface
 {
@@ -70,7 +69,7 @@ class RegisterObserver implements ObserverInterface
     {
         try {
             $parameters = $observer->getRequest()->getParams();
-            $session    = $this->customerSession;
+            $session = $this->customerSession;
             do {
                 $parameters['lsr_username'] = $this->contactHelper->generateRandomUsername();
             } while ($this->contactHelper->isUsernameExist($parameters['lsr_username']) ||
@@ -103,24 +102,7 @@ class RegisterObserver implements ObserverInterface
                     } else {
                         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
-                        $oneListBasket = $this->contactHelper->getOneListTypeObject(
-                            $loginResult->getOneLists()->getOneList(),
-                            Entity\Enum\ListType::BASKET
-                        );
-                        $this->contactHelper->updateBasketAfterLogin(
-                            $oneListBasket,
-                            $customer->getData('lsr_id'),
-                            $customer->getData('lsr_cardid')
-                        );
-                        $oneListWish = $this->contactHelper->getOneListTypeObject(
-                            $loginResult->getOneLists()->getOneList(),
-                            Entity\Enum\ListType::WISH
-                        );
-                        if ($oneListWish) {
-                            $this->contactHelper->updateWishlistAfterLogin(
-                                $oneListWish
-                            );
-                        }
+                        $this->contactHelper->updateBasketAndWishlistAfterLogin($loginResult);
                     }
                 } else {
                     $customer->setData('lsr_password', $this->contactHelper->encryptPassword($parameters['password']));

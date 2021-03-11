@@ -56,6 +56,7 @@ use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable\Attribute;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
+use Magento\Eav\Api\Data\AttributeGroupInterface;
 use Magento\Eav\Model\AttributeManagement;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory as EavAttributeCollectionFactory;
@@ -63,16 +64,14 @@ use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Api\SortOrderBuilder;
-use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Exception\StateException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Eav\Model\Entity\Attribute\GroupFactory;
 
 /**
- * Create Items in magento
- * replicated from omni
+ * Create Items in magento replicated from omni
  */
 class ProductCreateTask
 {
@@ -243,6 +242,11 @@ class ProductCreateTask
     public $replVendorItemMappingRepositoryInterface;
 
     /**
+     * @var GroupFactory
+     */
+    public $attributeSetGroupFactory;
+
+    /**
      * ProductCreateTask constructor.
      * @param Config $eavConfig
      * @param ConfigurableProTypeModel $configurable
@@ -289,6 +293,7 @@ class ProductCreateTask
      * @param ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory
      * @param EavAttributeCollectionFactory $eavAttributeCollectionFactory
      * @param ReplItemVendorCollectionFactory $replItemVendorCollectionFactory
+     * @param GroupFactory $attributeSetGroupFactory
      */
     public function __construct(
         Config $eavConfig,
@@ -335,7 +340,8 @@ class ProductCreateTask
         AttributeGroupRepositoryInterface $attributeGroupRepository,
         ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory,
         EavAttributeCollectionFactory $eavAttributeCollectionFactory,
-        ReplItemVendorCollectionFactory $replItemVendorCollectionFactory
+        ReplItemVendorCollectionFactory $replItemVendorCollectionFactory,
+        GroupFactory $attributeSetGroupFactory
     ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
@@ -382,13 +388,15 @@ class ProductCreateTask
         $this->replItemUnitOfMeasureSearchResultsFactory = $replItemUnitOfMeasureSearchResultsFactory;
         $this->eavAttributeCollectionFactory             = $eavAttributeCollectionFactory;
         $this->replItemVendorCollectionFactory           = $replItemVendorCollectionFactory;
+        $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
     }
 
     /**
+     * Method responsible for creating items
+     *
      * @param null $storeData
      * @throws InputException
      * @throws LocalizedException
-     * @throws StateException
      */
     public function execute($storeData = null)
     {
@@ -525,7 +533,7 @@ class ProductCreateTask
                                 $product->setDescription($item->getDetails());
                                 $itemPrice = $this->getItemPrice($item->getNavId());
                                 if (isset($itemPrice)) {
-                                    $product->setPrice($itemPrice->getUnitPrice());
+                                    $product->setPrice($itemPrice->getUnitPriceInclVat());
                                 } else {
                                     $product->setPrice($item->getUnitPrice());
                                 }
@@ -632,11 +640,12 @@ class ProductCreateTask
     }
 
     /**
+     * Method responsible for executing cron manually from admin cron grid
+     *
      * @param null $storeData
      * @return array
      * @throws InputException
      * @throws LocalizedException
-     * @throws StateException
      */
     public function executeManually($storeData = null)
     {
@@ -646,6 +655,8 @@ class ProductCreateTask
     }
 
     /**
+     * Fetching base64 images from Central
+     *
      * @param $productImages
      * @return array
      * @throws Exception
@@ -664,8 +675,8 @@ class ProductCreateTask
                 $this->replImageLinkRepositoryInterface->save($image);
                 continue;
             }
-            $types           = [];
-            $imageSize       = [
+            $types     = [];
+            $imageSize = [
                 'height' => LSR::DEFAULT_ITEM_IMAGE_HEIGHT,
                 'width'  => LSR::DEFAULT_ITEM_IMAGE_WIDTH
             ];
@@ -707,6 +718,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting mime type
+     *
      * @param $image64
      * @return string
      */
@@ -717,6 +730,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting new or updated product variants
+     *
      * @param int $pageSize
      * @param null $itemId
      * @return mixed
@@ -737,6 +752,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting all available product variants
+     *
      * @param null $itemId
      * @return mixed
      */
@@ -756,6 +773,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting new or updated product uoms
+     *
      * @param int $pageSize
      * @param null $itemId
      * @return mixed
@@ -778,7 +797,8 @@ class ProductCreateTask
     }
 
     /**
-     * Return all updated variants only
+     * Return all deleted items only
+     *
      * @param type $filters
      * @return type
      */
@@ -789,7 +809,8 @@ class ProductCreateTask
     }
 
     /**
-     * Return all updated variants only
+     * Return all deleted variants only
+     *
      * @param array $filters
      * @return type
      */
@@ -800,7 +821,8 @@ class ProductCreateTask
     }
 
     /**
-     * Return all updated variants only
+     * Return all deleted uom variants only
+     *
      * @param array $filters
      * @return type
      */
@@ -811,6 +833,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting all configurable attribute codes
+     *
      * @param $itemId
      * @return array
      */
@@ -889,6 +913,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting given item/variant price
+     *
      * @param $itemId
      * @param null $variantId
      * @param null $unitOfMeasure
@@ -942,6 +968,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting all available uom codes
+     *
      * @param $itemId
      * @return array
      */
@@ -969,6 +997,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting only processed uom codes of the item
+     *
      * @param $itemId
      * @return array
      */
@@ -1191,6 +1221,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting associated simple product id of the configurable product
+     *
      * @param $product
      * @param $nameValueList
      * @return Product|null
@@ -1289,13 +1321,17 @@ class ProductCreateTask
     }
 
     /**
+     * Convert main product into configurable and associate all the simple products
+     *
      * @param $configProduct
      * @param $item
      * @param $itemBarcodes
      * @param $variants
      * @param null $totalUomCodes
      * @param null $uomCodesNotProcessed
+     * @throws InputException
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function createConfigurableProducts(
         $configProduct,
@@ -1307,6 +1343,14 @@ class ProductCreateTask
     ) {
         // Get those attribute codes which are assigned to product.
         $attributesCode = $this->_getAttributesCodes($item->getNavId());
+
+        foreach ($attributesCode as $attributeCode) {
+            $this->attributeAssignmentToAttributeSet(
+                $configProduct->getAttributeSetId(),
+                $attributeCode,
+                LSR::SC_REPLICATION_ATTRIBUTE_SET_VARIANTS_ATTRIBUTES_GROUP
+            );
+        }
 
         if (!empty($totalUomCodes)) {
             if (count($totalUomCodes[$item->getNavId()]) > 1 && !empty($uomCodesNotProcessed)) {
@@ -1462,35 +1506,33 @@ class ProductCreateTask
         if (empty($productId)) {
             $productId = $configProduct->getId();
         }
-        $position = 0;
-        if ($configProduct->getTypeId() == Type::TYPE_SIMPLE || !empty($uomCodesNotProcessed)) {
-            $attributeData     = [];
-            $attributeIdsArray = $this->validateConfigurableAttributes($configProduct);
-            foreach ($attributesCode as $value) {
-                /** @var Interceptor $attribute */
-                $attribute       = $this->eavConfig->getAttribute('catalog_product', $value);
-                $attributesIds[] = $attribute->getId();
-                $data            = [
-                    'attribute_id' => $attribute->getId(),
-                    'product_id'   => $productId,
-                    'position'     => $position
-                ];
+        $position          = 0;
+        $attributeData     = [];
+        $attributeIdsArray = $this->validateConfigurableAttributes($configProduct);
+        foreach ($attributesCode as $value) {
+            /** @var Interceptor $attribute */
+            $attribute       = $this->eavConfig->getAttribute('catalog_product', $value);
+            $attributesIds[] = $attribute->getId();
+            $data            = [
+                'attribute_id' => $attribute->getId(),
+                'product_id'   => $productId,
+                'position'     => $position
+            ];
 
-                $attributeData[] = $this->getConfigurableAttributeData($attribute, $position);
-                try {
-                    if (!in_array($attribute->getId(), $attributeIdsArray)) {
-                        // @codingStandardsIgnoreLine
-                        $this->attribute->setData($data)->save();
-                    }
-                } catch (Exception $e) {
+            $attributeData[] = $this->getConfigurableAttributeData($attribute, $position);
+            try {
+                if (!in_array($attribute->getId(), $attributeIdsArray)) {
                     // @codingStandardsIgnoreLine
-                    $this->logger->debug('Issue while saving Attribute Id : ' . $attribute->getId() . " and Product Id : $productId - " . $e->getMessage());
+                    $this->attribute->setData($data)->save();
                 }
-                $position++;
+            } catch (Exception $e) {
+                // @codingStandardsIgnoreLine
+                $this->logger->debug('Issue while saving Attribute Id : ' . $attribute->getId() . " and Product Id : $productId - " . $e->getMessage());
             }
-            $options = $this->optionsFactory->create($attributeData);
-            $configProduct->getExtensionAttributes()->setConfigurableProductOptions($options);
+            $position++;
         }
+        $options = $this->optionsFactory->create($attributeData);
+        $configProduct->getExtensionAttributes()->setConfigurableProductOptions($options);
         $configProduct->setTypeId(Configurable::TYPE_CODE); // Setting Product Type As Configurable
         $configProduct->setAffectConfigurableProductAttributes($configProduct->getAttributeSetId());
         $this->configurable->setUsedProductAttributes($configProduct, $attributesIds);
@@ -1506,6 +1548,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting inventory information for the item/variant
+     *
      * @param $itemId
      * @param $storeId
      * @param null $variantId
@@ -1545,6 +1589,8 @@ class ProductCreateTask
     }
 
     /**
+     * Formulate name for the variant
+     *
      * @param $value
      * @param $item
      * @return string
@@ -1568,6 +1614,8 @@ class ProductCreateTask
     }
 
     /**
+     * Formulate name on the basis of uom
+     *
      * @param $name
      * @param $description
      * @return string
@@ -1579,6 +1627,8 @@ class ProductCreateTask
     }
 
     /**
+     * Setting website id for the item
+     *
      * @param $sku
      * @return ProductInterface
      * @throws NoSuchEntityException
@@ -1598,16 +1648,14 @@ class ProductCreateTask
     }
 
     /**
+     * Update config product
+     *
      * @param $productData
      * @param $item
      * @param $name
-     * @param $attributesCode
-     * @param $uomCode
+     * @param null $uomCode
      * @return int|null
-     * @throws CouldNotSaveException
-     * @throws InputException
      * @throws LocalizedException
-     * @throws StateException
      */
     private function updateConfigProduct($productData, $item, $name, $uomCode = null)
     {
@@ -1638,6 +1686,8 @@ class ProductCreateTask
     }
 
     /**
+     * Create associated simple product given data
+     *
      * @param $name
      * @param $item
      * @param $value
@@ -1685,13 +1735,13 @@ class ProductCreateTask
             $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId(), $unitOfMeasure);
         }
         if (isset($itemPrice)) {
-            $productV->setPrice($itemPrice->getUnitPrice());
+            $productV->setPrice($itemPrice->getUnitPriceInclVat());
         } else {
             // Just in-case if we don't have price for Variant then in that case,
             // we are using the price of main product.
             $price = $this->getItemPrice($item->getNavId());
             if (!empty($price)) {
-                $productV->setPrice($price->getUnitPrice());
+                $productV->setPrice($price->getUnitPriceInclVat());
             } else {
                 $productV->setPrice($item->getUnitPrice());
             }
@@ -1756,6 +1806,8 @@ class ProductCreateTask
     }
 
     /**
+     * Validate data for the simple product
+     *
      * @param $attributesCode
      * @param $value
      * @return bool
@@ -1784,6 +1836,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting remaining records
+     *
      * @param $storeData
      * @return int
      */
@@ -1802,6 +1856,8 @@ class ProductCreateTask
     }
 
     /**
+     * Getting configurable attribute data
+     *
      * @param $attribute
      * @param $position
      * @return array
@@ -1827,6 +1883,8 @@ class ProductCreateTask
     }
 
     /**
+     * Setting product status as enable/disable
+     *
      * @param $product
      * @param $disableStatus
      * @return mixed
@@ -1843,6 +1901,8 @@ class ProductCreateTask
     }
 
     /**
+     * Updating the product status on global level
+     *
      * @param $product
      */
     public function updateProductStatusGlobal($product)
@@ -1856,6 +1916,8 @@ class ProductCreateTask
     }
 
     /**
+     * Get attribute group
+     *
      * @param $name
      * @param $attributeSetId
      * @return string|null
@@ -1878,6 +1940,8 @@ class ProductCreateTask
     }
 
     /**
+     * Check if attribute already exists in the attribute set
+     *
      * @param $attributeSetId
      * @param $attributeCode
      * @return bool
@@ -1890,13 +1954,13 @@ class ProductCreateTask
             'attribute_code',
             $attributeCode
         );
-        if ($collection->getSize() > 0) {
-            return false;
-        }
-        return true;
+
+        return $collection->getSize() === 0;
     }
 
     /**
+     * Get attribute sort order in attribute set
+     *
      * @param $attributeSetId
      * @param $attributeGroupId
      * @return bool
@@ -1917,6 +1981,8 @@ class ProductCreateTask
     }
 
     /**
+     * Validating configurable attributes
+     *
      * @param $configProduct
      * @return array|null
      */
@@ -1937,6 +2003,8 @@ class ProductCreateTask
     }
 
     /**
+     * Syncing image for uom
+     *
      * @param $existingProduct
      * @param $uomProduct
      */
@@ -1963,5 +2031,84 @@ class ProductCreateTask
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
+    }
+
+    /**
+     * Attribute assignment to attribute set and handle attribute set group
+     *
+     * @param $attributeSetId
+     * @param $formattedCode
+     * @param $groupName
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function attributeAssignmentToAttributeSet($attributeSetId, $formattedCode, $groupName)
+    {
+        if ($this->checkAttributeInAttributeSet($attributeSetId, $formattedCode)) {
+            $attributeGroupId = $this->getAttributeGroup(
+                $groupName,
+                $attributeSetId
+            );
+            if ($attributeGroupId == null) {
+                $attributeGroup = $this->createAttributeGroup($attributeSetId, $groupName);
+                if (!empty($attributeGroup)) {
+                    $attributeGroupId = $attributeGroup->getId();
+                }
+            }
+            $sortOrder = $this->getAttributeSortOrderInAttributeSet(
+                $attributeSetId,
+                $attributeGroupId
+            );
+            $this->assignAttributeToAttributeSet(
+                $attributeSetId,
+                $attributeGroupId,
+                $formattedCode,
+                $sortOrder
+            );
+            $this->eavConfig->clear(); //Clearing attribute set cache in case if new attribute has been added
+        }
+    }
+
+    /**
+     * Creating attribute group
+     *
+     * @param $attributeSetId
+     * @param $groupName
+     * @return AttributeGroupInterface|null
+     */
+    public function createAttributeGroup($attributeSetId, $groupName)
+    {
+        $attributesGroup = null;
+        try {
+            $attributeGroup = $this->attributeSetGroupFactory->create();
+            $attributeGroup->setAttributeSetId($attributeSetId);
+            $attributeGroup->setAttributeGroupName($groupName);
+            $attributesGroup = $this->attributeGroupRepository->save($attributeGroup);
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        return $attributesGroup;
+    }
+
+    /**
+     * assign attribute to attribute set
+     *
+     * @param $attributeSetId
+     * @param $attributeGroupId
+     * @param $attributeCode
+     * @param $sortOrder
+     * @throws NoSuchEntityException
+     * @throws InputException
+     */
+    public function assignAttributeToAttributeSet($attributeSetId, $attributeGroupId, $attributeCode, $sortOrder)
+    {
+        $this->attributeManagement->assign(
+            Product::ENTITY,
+            $attributeSetId,
+            $attributeGroupId,
+            $attributeCode,
+            $sortOrder
+        );
     }
 }

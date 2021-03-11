@@ -6,6 +6,7 @@ use Exception;
 use Laminas\Validator\EmailAddress as ValidateEmailAddress;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -33,7 +34,6 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\DataObject;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
@@ -48,6 +48,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
+use Magento\Customer\Model\CustomerRegistry;
 
 /**
  * Helper functions for member contact
@@ -164,6 +165,11 @@ class ContactHelper extends AbstractHelper
     public $date;
 
     /**
+     * @var CustomerRegistry
+     */
+    public $customerRegistry;
+
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder
@@ -195,6 +201,7 @@ class ContactHelper extends AbstractHelper
      * @param ValidateEmailAddress $validateEmailAddress
      * @param LSR $lsr
      * @param DateTime $date
+     * @param CustomerRegistry $customerRegistry
      */
     public function __construct(
         Context $context,
@@ -226,7 +233,8 @@ class ContactHelper extends AbstractHelper
         EncryptorInterface $encryptorInterface,
         ValidateEmailAddress $validateEmailAddress,
         LSR $lsr,
-        DateTime $date
+        DateTime $date,
+        CustomerRegistry $customerRegistry
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -257,6 +265,7 @@ class ContactHelper extends AbstractHelper
         $this->validateEmailAddress  = $validateEmailAddress;
         $this->lsr                   = $lsr;
         $this->date                  = $date;
+        $this->customerRegistry      = $customerRegistry;
         parent::__construct(
             $context
         );
@@ -264,7 +273,7 @@ class ContactHelper extends AbstractHelper
 
     /**
      * @param $email
-     * @return Entity\MemberContact[]|null
+     * @return MemberContact[]|null
      * @throws InvalidEnumException
      * @throws LocalizedException
      */
@@ -322,7 +331,7 @@ class ContactHelper extends AbstractHelper
             } else {
                 return $contact_pos->getMemberContact();
             }
-        } elseif ($contact_pos instanceof Entity\MemberContact) {
+        } elseif ($contact_pos instanceof MemberContact) {
             return $contact_pos;
         } else {
             return null;
@@ -331,7 +340,7 @@ class ContactHelper extends AbstractHelper
 
     /**
      * @param $param
-     * @return Entity\ArrayOfMemberContact|Entity\MemberContact[]|null
+     * @return Entity\ArrayOfMemberContact|MemberContact[]|null
      * @throws InvalidEnumException
      * @throws LocalizedException
      */
@@ -363,7 +372,7 @@ class ContactHelper extends AbstractHelper
                 } else {
                     return $contact_pos->getMemberContact();
                 }
-            } elseif ($contact_pos instanceof Entity\MemberContact) {
+            } elseif ($contact_pos instanceof MemberContact) {
                 return $contact_pos;
             } else {
                 return null;
@@ -376,7 +385,7 @@ class ContactHelper extends AbstractHelper
     /**
      * @param $user
      * @param $pass
-     * @return Entity\LoginWebResponse|Entity\MemberContact|ResponseInterface|null
+     * @return Entity\LoginWebResponse|MemberContact|ResponseInterface|null
      */
     public function login($user, $pass)
     {
@@ -386,8 +395,8 @@ class ContactHelper extends AbstractHelper
         }
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\LoginWeb();
-        $login   = new Entity\LoginWeb();
+        $request = new Operation\Login();
+        $login   = new Entity\Login();
         // @codingStandardsIgnoreEnd
         $login->setUserName($user)
             ->setPassword($pass);
@@ -397,11 +406,11 @@ class ContactHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getLoginWebResult() : $response;
+        return $response ? $response->getLoginResult() : $response;
     }
 
     /**
-     * @param Entity\MemberContact $contact
+     * @param MemberContact $contact
      * @param $password
      * @return Customer
      * @throws Exception
@@ -484,7 +493,7 @@ class ContactHelper extends AbstractHelper
 
     /**
      * @param Customer $customer
-     * @return Entity\ContactCreateResponse|Entity\MemberContact|ResponseInterface|null
+     * @return Entity\ContactCreateResponse|MemberContact|ResponseInterface|null
      */
     public function contact(Customer $customer)
     {
@@ -493,7 +502,7 @@ class ContactHelper extends AbstractHelper
         $alternate_id  = 'LSM' . str_pad(md5(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
         $request       = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
-        $contact       = new Entity\MemberContact();
+        $contact       = new MemberContact();
         if (!empty($customer->getData('lsr_password'))) {
             $lsrPassword = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
         } else {
@@ -686,7 +695,7 @@ class ContactHelper extends AbstractHelper
 
     /**
      * @param null $customerAddress
-     * @return Entity\ContactUpdateResponse|Entity\MemberContact|ResponseInterface|null
+     * @return Entity\ContactUpdateResponse|MemberContact|ResponseInterface|null
      * @throws InvalidEnumException
      */
     public function updateAccount($customerAddress = null)
@@ -702,7 +711,7 @@ class ContactHelper extends AbstractHelper
             $customer = $customerAddress->getCustomer();
             $request->setToken($customer->getData('lsr_token'));
             // @codingStandardsIgnoreLine
-            $memberContact = new Entity\MemberContact();
+            $memberContact = new MemberContact();
             if (!empty($customer->getData('dob'))) {
                 $dob = $this->date->date("Y-m-d\T00:00:00", strtotime($customer->getData('dob')));
                 $memberContact->setBirthDay($dob);
@@ -728,7 +737,7 @@ class ContactHelper extends AbstractHelper
 
     /**
      * @param null $customer
-     * @return Entity\ContactUpdateResponse|Entity\MemberContact|ResponseInterface|null
+     * @return Entity\ContactUpdateResponse|MemberContact|ResponseInterface|null
      * @throws InvalidEnumException
      */
     public function updateCustomerAccount($customerData = null)
@@ -741,7 +750,7 @@ class ContactHelper extends AbstractHelper
         $customer = $this->customerFactory->create()->load($customerData->getId());
         $request->setToken($customer->getData('lsr_token'));
         // @codingStandardsIgnoreLine
-        $memberContact = new Entity\MemberContact();
+        $memberContact = new MemberContact();
         if (!empty($customer->getData('dob'))) {
             $dob = $this->date->date("Y-m-d\T00:00:00", strtotime($customer->getData('dob')));
             $memberContact->setBirthDay($dob);
@@ -935,13 +944,15 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Update basket after login, if oneListBasket is null then recreate it
+     *
      * @param Entity\OneList $oneListBasket
-     * @param $contactId
      * @param $cardId
      * @throws InvalidEnumException
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function updateBasketAfterLogin($oneListBasket, $contactId, $cardId)
+    public function updateBasketAfterLogin($oneListBasket, $cardId)
     {
         $quote = $this->checkoutSession->getQuote();
         if (!is_array($oneListBasket) &&
@@ -1056,7 +1067,7 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param Entity\MemberContact $result
+     * @param MemberContact $result
      * @param $credentials
      * @param $is_email
      * @throws AlreadyExistsException
@@ -1065,7 +1076,7 @@ class ContactHelper extends AbstractHelper
      * @throws NoSuchEntityException
      * @throws InvalidTransitionException
      */
-    public function processCustomerLogin(Entity\MemberContact $result, $credentials, $is_email)
+    public function processCustomerLogin(MemberContact $result, $credentials, $is_email)
     {
         $filters = [
             $this->filterBuilder
@@ -1086,12 +1097,24 @@ class ContactHelper extends AbstractHelper
                 break;
             }
         }
-        $customer_email = $customer->getEmail();
-        $websiteId      = $this->storeManager->getWebsite()->getWebsiteId();
-        $customer       = $this->customerFactory->create()
+        $customer_email   = $customer->getEmail();
+        $websiteId        = $this->storeManager->getWebsite()->getWebsiteId();
+        $customer         = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
-        $customer       = $this->setCustomerAttributesValues($result, $customer);
+        $customer         = $this->setCustomerAttributesValues($result, $customer);
+        $customerSecure   = $this->customerRegistry->retrieveSecureData($customer->getId());
+        $validatePassword = $this->encryptorInterface->validateHash(
+            $credentials['password'],
+            $customerSecure->getPasswordHash()
+        );
+        if (!$validatePassword) {
+            $passwordHash = $this->encryptorInterface->getHash($credentials['password'], true);
+            $customerSecure->setRpToken(null);
+            $customerSecure->setRpTokenCreatedAt(null);
+            $customerSecure->setPasswordHash($passwordHash);
+            $customer->setPasswordHash($passwordHash);
+        }
         $this->customerResourceModel->save($customer);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->basketHelper->unSetOneList();
@@ -1176,7 +1199,6 @@ class ContactHelper extends AbstractHelper
         $collection = $this->customerCollection->create()
             ->addAttributeToSelect("*")
             ->addAttributeToFilter("lsr_id", ['null' => true])
-            ->addAttributeToFilter("lsr_username", ['notnull' => true])
             ->addAttributeToFilter("website_id", ['eq' => $websiteId])
             ->load();
 
@@ -1244,6 +1266,20 @@ class ContactHelper extends AbstractHelper
     public function syncCustomerAndAddress(Customer $customer)
     {
         try {
+            $userName = $customer->getData('lsr_username');
+            if (empty($userName)) {
+                do {
+                    $userName = $this->generateRandomUsername();
+                } while ($this->isUsernameExist($userName) ?
+                    $this->isUsernameExistInLsCentral($userName) : false
+                );
+                $customer->setData('lsr_username', $userName);
+            }
+            //Incase if lsr_password not set due to some exception from LS Central/ Migrating the existing customer.
+            // Setting username as password.
+            if (empty($customer->getData('lsr_password'))) {
+                $customer->setData('lsr_password', $this->encryptorInterface->encrypt($userName));
+            }
             $contactUserName = $this->getCustomerByUsernameOrEmailFromLsCentral(
                 $customer->getData('lsr_username'),
                 Entity\Enum\ContactSearchType::USER_NAME
@@ -1303,7 +1339,7 @@ class ContactHelper extends AbstractHelper
     /**
      * @param $paramValue
      * @param $type
-     * @return Entity\MemberContact|null
+     * @return MemberContact|null
      * @throws InvalidEnumException
      */
     public function getCustomerByUsernameOrEmailFromLsCentral($paramValue, $type)
@@ -1368,8 +1404,8 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param \Ls\Omni\Client\Ecommerce\Entity\MemberContact $contact
-     * @param \Magento\Customer\Model\Customer $customer
+     * @param MemberContact $contact
+     * @param Customer $customer
      * @return mixed
      * @throws InputException
      * @throws InvalidTransitionException
@@ -1409,5 +1445,37 @@ class ContactHelper extends AbstractHelper
             $this->customerSession->setCustomerGroupId($customerGroupId);
         }
         return $customer;
+    }
+
+    /**
+     * Update both basket and wishlist after login given login result
+     *
+     * @param $result
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws Exception
+     */
+    public function updateBasketAndWishlistAfterLogin($result)
+    {
+        $oneListBasket = $this->getOneListTypeObject(
+            $result->getOneLists()->getOneList(),
+            Entity\Enum\ListType::BASKET
+        );
+        /** Update Basket to Omni */
+        $this->updateBasketAfterLogin(
+            $oneListBasket,
+            $result->getCards()->getCard()[0]->getId()
+        );
+        $oneListWish = $this->getOneListTypeObject(
+            $result->getOneLists()->getOneList(),
+            Entity\Enum\ListType::WISH
+        );
+        if ($oneListWish) {
+            /** Update Wishlist to Omni */
+            $this->updateWishlistAfterLogin(
+                $oneListWish
+            );
+        }
     }
 }

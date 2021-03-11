@@ -1463,6 +1463,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Assigning product to categories
+     *
      * @param $product
      * @param $store
      * @throws LocalizedException
@@ -1506,6 +1508,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Getting product category id
+     *
      * @param $productGroupId
      * @param $store
      * @return array
@@ -1530,6 +1534,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Utility function to format given input
+     *
      * @param $string
      * @return string
      */
@@ -1553,6 +1559,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Getting attribute set id for the given item
+     *
      * @param $attributeSetsMechanism
      * @param $joiningTableName
      * @param $storeId
@@ -1583,6 +1591,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Getting all soft and hard attribute depending upon current configuration
+     *
      * @param $attributeSetsMechanism
      * @param $joiningTableName
      * @param $storeId
@@ -1652,6 +1662,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Creating new attribute set, group and getting its id
+     *
      * @param $itemCategoryCode
      * @param array $attributes
      * @return int|null
@@ -1708,6 +1720,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Getting attribute set id given name
+     *
      * @param $name
      * @return int|null
      */
@@ -1727,6 +1741,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Setting product attributes in the product model
+     *
      * @param ProductInterface $product
      * @param $navId
      * @param $storeId
@@ -1772,6 +1788,8 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Getting attribute option id given value
+     *
      * @param $code
      * @param $value
      * @return null|string

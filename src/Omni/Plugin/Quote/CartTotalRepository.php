@@ -129,7 +129,8 @@ class CartTotalRepository
                     if (!empty($couponCode)) {
                         $quoteTotals->setCouponCode($couponCode);
                         $quote->setCouponCode($couponCode);
-                        $quote->getShippingAddress()->setCouponCode($couponCode);
+                        $quote->setShippingAddress($quote->getShippingAddress())->setCouponCode($couponCode);
+                        $quote->setBillingAddress($quote->getBillingAddress())->setCouponCode($couponCode);
                     }
                     $quote->getShippingAddress()->setTaxAmount(
                         $basketData->getTotalAmount() - $basketData->getTotalNetAmount()

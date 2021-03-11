@@ -4,7 +4,6 @@ namespace Ls\Replication\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplAttributeValue;
-use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -25,6 +24,7 @@ class SyncAttributesValue extends ProductCreateTask
 
     /**
      * @param null $storeData
+     * @throws InputException
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -74,7 +74,8 @@ class SyncAttributesValue extends ProductCreateTask
 
     /**
      * @param null $storeData
-     * @return array
+     * @return array|int[]
+     * @throws InputException
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -86,8 +87,11 @@ class SyncAttributesValue extends ProductCreateTask
     }
 
     /**
+     * For syncing attribute value
+     *
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws InputException
      */
     public function processAttributesValue()
     {
@@ -120,22 +124,11 @@ class SyncAttributesValue extends ProductCreateTask
                         $attributeValue->getCode()
                     );
                     $attributeSetId = $product->getAttributeSetId();
-                    if ($this->checkAttributeInAttributeSet($attributeSetId, $formattedCode)) {
-                        $attributeGroupId = $this->getAttributeGroup(
-                            LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP,
-                            $attributeSetId
-                        );
-                        $sortOrder        = $this->getAttributeSortOrderInAttributeSet(
-                            $attributeSetId,
-                            $attributeGroupId
-                        );
-                        $this->assignAttributeToAttributeSet(
-                            $attributeSetId,
-                            $attributeGroupId,
-                            $formattedCode,
-                            $sortOrder
-                        );
-                    }
+                    $this->attributeAssignmentToAttributeSet(
+                        $attributeSetId,
+                        $formattedCode,
+                        LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP
+                    );
                     $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
                     if ($attribute->getFrontendInput() == 'multiselect') {
                         $value = $this->replicationHelper->_getOptionIDByCode(
@@ -191,24 +184,5 @@ class SyncAttributesValue extends ProductCreateTask
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
-    }
-
-    /**
-     * @param $attributeSetId
-     * @param $attributeGroupId
-     * @param $attributeCode
-     * @param $sortOrder
-     * @throws NoSuchEntityException
-     * @throws InputException
-     */
-    public function assignAttributeToAttributeSet($attributeSetId, $attributeGroupId, $attributeCode, $sortOrder)
-    {
-        $this->attributeManagement->assign(
-            Product::ENTITY,
-            $attributeSetId,
-            $attributeGroupId,
-            $attributeCode,
-            $sortOrder
-        );
     }
 }
