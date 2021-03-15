@@ -5,8 +5,7 @@ namespace Ls\Webhooks\Logger;
 use Magento\Framework\Logger\Handler\Base;
 
 /**
- * Class Handler
- * @package Ls\Webhooks\Logger
+ * Class for handing error
  */
 class Handler extends Base
 {
