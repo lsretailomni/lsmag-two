@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\WebHooks\Helper;
+namespace Ls\Webhooks\Helper;
 
 use Exception;
 use \Ls\Webhooks\Logger\Logger;
@@ -13,8 +13,7 @@ use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Service\InvoiceService;
 
 /**
- * Class Data
- * @package Ls\WebHooks\Helper
+ * Helper class to handle webhooks function
  */
 class Data
 {
@@ -75,8 +74,9 @@ class Data
     }
 
     /**
+     * Generate invoice based on webhook call from Ls Central
      * @param $data
-     * @return array
+     * @return array[]
      */
     public function generateInvoice($data)
     {
@@ -88,16 +88,9 @@ class Data
             $validateOrder   = $this->validateOrder($order, $amount, $documentId, $token);
             $validateInvoice = false;
             $invoice         = null;
-            if ($validateOrder) {
+            if ($validateOrder['data']['success']) {
                 $invoice         = $this->invoiceService->prepareInvoice($order);
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
-            } else {
-                return [
-                    "data" => [
-                        'success' => false,
-                        'message' => 'Validate order failed at Magento end.'
-                    ]
-                ];
             }
             if ($validateInvoice) {
                 $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
@@ -117,7 +110,8 @@ class Data
                     return [
                         "data" => [
                             'success' => true,
-                            'message' => 'Order posted successfully and invoice sent to customer for document id #' . $documentId
+                            'message' => 'Order posted successfully and invoice sent to customer for document id #'
+                                . $documentId
                         ]
                     ];
                 } catch (Exception $e) {
@@ -130,12 +124,12 @@ class Data
                     ];
                 }
             }
-            return [
-                "data" => [
-                    'success' => false,
-                    'message' => 'Validate invoice failed at Magento end.'
-                ]
-            ];
+
+            $hasInvoices = $this->hasInvoices($order, $documentId);
+            if ($hasInvoices['data']['success']) {
+                return $hasInvoices;
+            }
+            return $validateOrder;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return [
@@ -147,8 +141,8 @@ class Data
         }
     }
 
-
     /**
+     * Get order by document Id
      * @param $documentId
      * @return array|OrderInterface|OrderInterface[]
      */
@@ -169,37 +163,63 @@ class Data
     }
 
     /**
+     * validate order
      * @param $order
      * @param $amount
      * @param $documentId
      * @param $token
-     * @return bool
+     * @return array[]
      */
     public function validateOrder($order, $amount, $documentId, $token)
     {
         $validate = true;
+        $message  = '';
         if (!$order->getId() || $order->getPayment()->getLastTransId() != $token) {
-            $this->logger->error(
-                'The order does not exist or token does not match for document id #' . $documentId
-            );
+            $message = "The order does not exist or token does not match for document id #" . $documentId;
+            $this->logger->error($message);
             $validate = false;
         }
-        if ($order->hasInvoices()) {
-            $this->logger->error(
-                'Invoice already created for document id #' . $documentId
-            );
-            $validate = false;
-        }
+
         if ($order->getGrandTotal() < $amount) {
-            $this->logger->error(
-                'Invoice amount is greater than order amount for document id #' . $documentId
-            );
+            $message = "Invoice amount is greater than order amount for document id #" . $documentId;
+            $this->logger->error($message);
             $validate = false;
         }
-        return $validate;
+
+        return [
+            "data" => [
+                'success' => $validate,
+                'message' => $message
+            ]
+        ];
     }
 
     /**
+     * check if invoice is already created at magento end
+     * @param $order
+     * @param $documentId
+     * @return array[]
+     */
+    public function hasInvoices($order, $documentId)
+    {
+        $validate = false;
+        $message  = '';
+        if ($order->hasInvoices()) {
+            $message = "Invoice already created for document id #" . $documentId;
+            $this->logger->info($message);
+            $validate = true;
+        }
+
+        return [
+            "data" => [
+                'success' => $validate,
+                'message' => $message
+            ]
+        ];
+    }
+
+    /**
+     * validate invoice
      * @param $invoice
      * @param $documentId
      * @return bool
