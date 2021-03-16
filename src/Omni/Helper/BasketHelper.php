@@ -924,6 +924,7 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * calculate onelist to sync order from admin
      * @param $order
      * @return Order
      * @throws InvalidEnumException
@@ -939,10 +940,18 @@ class BasketHelper extends AbstractHelper
             $parts     = explode('-', $sku);
             $itemId    = array_shift($parts);
             $variantId = count($parts) ? array_shift($parts) : null;
-            $qty       = $orderItem->getQtyOrdered();
-            $amount    = $orderItem->getPrice() * $qty;
+            if (!is_numeric($variantId)) {
+                $variantId = null;
+            }
+            $uom = $orderItem->getProduct()->getData('uom');
+            foreach ($orderItem->getChildrenItems() as $item) {
+                $uom = $item->getProduct()->getData('uom');
+            }
+            $qty    = $orderItem->getQtyOrdered();
+            $amount = $orderItem->getPrice() * $qty;
             $orderLine->setItemId($itemId)
                 ->setVariantId($variantId)
+                ->setUomId($uom)
                 ->setQuantity($qty)
                 ->setAmount($amount)
                 ->setDiscountAmount($orderItem->getDiscountAmount())
