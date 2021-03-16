@@ -2,10 +2,8 @@
 
 namespace Ls\Omni\Model\Invoice\Total;
 
-use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\Data as Helper;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Sales\Model\Order\Creditmemo;
-use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Invoice\Total\AbstractTotal;
 
 /**
@@ -15,20 +13,20 @@ class GiftCardLoyaltyPoints extends AbstractTotal
 {
 
     /**
-     * @var LoyaltyHelper
+     * @var Helper
      */
-    public $loyaltyHelper;
+    private $helper;
 
     /**
      * GiftCardLoyaltyPoints constructor.
-     * @param LoyaltyHelper $loyaltyHelper
+     * @param Helper $helper
      * @param array $data
      */
     public function __construct(
-        LoyaltyHelper $loyaltyHelper,
+        Helper $helper,
         array $data = []
     ) {
-        $this->loyaltyHelper = $loyaltyHelper;
+        $this->helper = $helper;
         parent::__construct(
             $data
         );
@@ -42,51 +40,7 @@ class GiftCardLoyaltyPoints extends AbstractTotal
      */
     public function collect(Invoice $invoice)
     {
-        $pointsSpent = $invoice->getOrder()->getLsPointsSpent();
-        $giftCardAmount = $invoice->getOrder()->getLsGiftCardAmountUsed();
-        if ($pointsSpent > 0 || $giftCardAmount > 0) {
-            $totalItemsQuantities = 0;
-            $totalItemsInvoice = 0;
-            $totalPointsAmount = 0;
-
-            $invoice->setLsPointsSpent(0);
-            $invoice->setLsGiftCardAmountUsed(0);
-            $invoice->setLsGiftCardNo(null);
-
-            $pointsEarn = $invoice->getOrder()->getLsPointsEarn();
-            $invoice->setLsPointsEarn($pointsEarn);
-
-            /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
-            foreach ($invoice->getOrder()->getAllVisibleItems() as $item) {
-                $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
-            }
-
-            foreach ($invoice->getAllItems() as $item) {
-                $orderItem = $item->getOrderItem();
-                if ($orderItem->getData('product_type') == 'simple') {
-                    $totalItemsInvoice += $item->getQty() - $orderItem->getQtyInvoiced();
-                }
-            }
-
-            $pointRate = ($this->loyaltyHelper->getPointRate()) ? $this->loyaltyHelper->getPointRate() : 0;
-            $totalPointsAmount = $pointsSpent * $pointRate;
-            $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
-            $pointsSpent = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
-
-            $giftCardAmount = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
-
-            $invoice->setLsPointsSpent($pointsSpent);
-            $invoice->setLsGiftCardAmountUsed($giftCardAmount);
-
-            $giftCardNo = $invoice->getOrder()->getLsGiftCardNo();
-            $invoice->setLsGiftCardNo($giftCardNo);
-
-            $grandTotalAmount = $invoice->getGrandTotal() - $totalPointsAmount - $giftCardAmount;
-            $baseGrandTotalAmount = $invoice->getBaseGrandTotal() - $totalPointsAmount - $giftCardAmount;
-            $invoice->setGrandTotal($grandTotalAmount);
-            $invoice->setBaseGrandTotal($baseGrandTotalAmount);
-        }
-
+        $this->helper->calculateInvoiceCreditMemoTotal($invoice);
         return $this;
     }
 }

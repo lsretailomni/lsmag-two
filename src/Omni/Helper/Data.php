@@ -521,4 +521,52 @@ class Data extends AbstractHelper
             return false;
         }
     }
+
+    /**
+     * Function to calculate invoice and credit memo total for gift card and loyalty points
+     * @param $invoiceCreditMemo
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function calculateInvoiceCreditMemoTotal($invoiceCreditMemo)
+    {
+        $pointsSpent    = $invoiceCreditMemo->getOrder()->getLsPointsSpent();
+        $giftCardAmount = $invoiceCreditMemo->getOrder()->getLsGiftCardAmountUsed();
+        if ($pointsSpent > 0 || $giftCardAmount > 0) {
+            $totalItemsQuantities = $totalItemsInvoice;
+            $pointsEarn           = $invoiceCreditMemo->getOrder()->getLsPointsEarn();
+            $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
+
+            /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
+            foreach ($invoiceCreditMemo->getOrder()->getAllVisibleItems() as $item) {
+                $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
+            }
+
+            foreach ($invoiceCreditMemo->getAllItems() as $item) {
+                $orderItem = $item->getOrderItem();
+                if ($orderItem->getData('product_type') == 'simple') {
+                    $totalItemsInvoice += $item->getQty() - $orderItem->getQtyInvoiced();
+                }
+            }
+
+            $pointRate         = ($this->loyaltyHelper->getPointRate()) ? $this->loyaltyHelper->getPointRate() : 0;
+            $totalPointsAmount = $pointsSpent * $pointRate;
+            $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
+            $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
+
+            $giftCardAmount = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
+
+            $invoiceCreditMemo->setLsPointsSpent($pointsSpent);
+            $invoiceCreditMemo->setLsGiftCardAmountUsed($giftCardAmount);
+
+            $giftCardNo = $invoiceCreditMemo->getOrder()->getLsGiftCardNo();
+            $invoiceCreditMemo->setLsGiftCardNo($giftCardNo);
+
+            $grandTotalAmount     = $invoiceCreditMemo->getGrandTotal() - $totalPointsAmount - $giftCardAmount;
+            $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $totalPointsAmount - $giftCardAmount;
+            $invoiceCreditMemo->setGrandTotal($grandTotalAmount);
+            $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
+        }
+        return $invoiceCreditMemo;
+    }
 }
