@@ -83,7 +83,9 @@ class SyncItemUpdates extends ProductCreateTask
     {
         $assignProductToCategoryBatchSize = $this->replicationHelper->getProductCategoryAssignmentBatchSize();
 
-        $filters = [];
+        $filters = [
+            ['field' => 'Type', 'value' => 'Deal', 'condition_type' => 'neq']
+        ];
 
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -100,12 +102,13 @@ class SyncItemUpdates extends ProductCreateTask
             'sku'
         );
         $sku = '';
+        $query = $collection->getSelect()->__toString();
         if ($collection->getSize() > 0) {
             foreach ($collection as $hierarchyLeaf) {
                 try {
                     $sku     = $hierarchyLeaf->getNavId();
                     $product = $this->productRepository->get($hierarchyLeaf->getNavId());
-                    $this->assignProductToCategories($product);
+                    $this->replicationHelper->assignProductToCategories($product, $this->store);
                 } catch (Exception $e) {
                     $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());
