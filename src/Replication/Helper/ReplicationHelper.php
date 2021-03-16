@@ -7,12 +7,29 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplAttributeValue;
+use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
+use Magento\Catalog\Api\AttributeSetRepositoryInterface;
+use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
+use Magento\Eav\Api\AttributeGroupRepositoryInterface;
+use Magento\Eav\Model\AttributeManagement;
+use Magento\Eav\Model\AttributeSetManagement;
 use Magento\Eav\Model\Config;
+use Magento\Eav\Model\Entity\Attribute\GroupFactory;
 use Magento\Eav\Model\Entity\Attribute\Set;
+use Magento\Eav\Model\Entity\Attribute\SetFactory;
+use Magento\Eav\Model\Entity\TypeFactory;
 use Magento\Framework\Api\AbstractExtensibleObject;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
@@ -29,6 +46,8 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -118,6 +137,63 @@ class ReplicationHelper extends AbstractHelper
      */
     public $fileSystemDirectory;
 
+    /** @var CollectionFactory */
+    public $categoryCollectionFactory;
+
+    /** @var ReplHierarchyLeafRepository */
+    public $replHierarchyLeafRepository;
+
+    /** @var CategoryLinkManagementInterface */
+    public $categoryLinkManagement;
+
+    /**  @var ReplAttributeValueCollectionFactory */
+    public $replAttributeValueCollectionFactory;
+
+    /**
+     * @var ReplExtendedVariantValueCollectionFactory
+     */
+    public $replExtendedVariantValueCollectionFactory;
+
+    /**
+     * @var TypeFactory
+     */
+    public $eavTypeFactory;
+
+    /**
+     * @var SetFactory
+     */
+    public $attributeSetFactory;
+
+    /**
+     * @var AttributeSetManagement
+     */
+    public $attributeSetManagement;
+
+    /**
+     * @var AttributeManagement
+     */
+    public $attributeManagement;
+
+    /**
+     * @var GroupFactory
+     */
+    public $attributeSetGroupFactory;
+
+    /**
+     * @var AttributeGroupRepositoryInterface
+     */
+    public $attributeGroupRepository;
+
+    /**
+     * @var AttributeSetRepositoryInterface
+     */
+    public $attributeSetRepository;
+
+    /**
+     * @var ReplAttributeValueRepositoryInterface
+     */
+    public $replAttributeValueRepositoryInterface;
+
     /**
      * ReplicationHelper constructor.
      * @param Context $context
@@ -139,6 +215,19 @@ class ReplicationHelper extends AbstractHelper
      * @param Logger $_logger
      * @param ReplItemRepository $itemRepository
      * @param FileSystemDirectory $fileSystemDirectory
+     * @param CollectionFactory $categoryCollectionFactory
+     * @param ReplHierarchyLeafRepository $replHierarchyLeafRepository
+     * @param CategoryLinkManagementInterface $categoryLinkManagement
+     * @param ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory
+     * @param ReplExtendedVariantValueCollectionFactory $replExtendedVariantValueCollectionFactory
+     * @param TypeFactory $eavTypeFactory
+     * @param SetFactory $attributeSetFactory
+     * @param AttributeSetManagement $attributeSetManagement
+     * @param AttributeManagement $attributeManagement
+     * @param GroupFactory $attributeSetGroupFactory
+     * @param AttributeGroupRepositoryInterface $attributeGroupRepository
+     * @param AttributeSetRepositoryInterface $attributeSetRepository
+     * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
      */
     public function __construct(
         Context $context,
@@ -159,26 +248,52 @@ class ReplicationHelper extends AbstractHelper
         TimezoneInterface $timezone,
         Logger $_logger,
         ReplItemRepository $itemRepository,
-        FileSystemDirectory $fileSystemDirectory
+        FileSystemDirectory $fileSystemDirectory,
+        CollectionFactory $categoryCollectionFactory,
+        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
+        CategoryLinkManagementInterface $categoryLinkManagement,
+        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
+        ReplExtendedVariantValueCollectionFactory $replExtendedVariantValueCollectionFactory,
+        TypeFactory $eavTypeFactory,
+        SetFactory $attributeSetFactory,
+        AttributeSetManagement $attributeSetManagement,
+        AttributeManagement $attributeManagement,
+        GroupFactory $attributeSetGroupFactory,
+        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        AttributeSetRepositoryInterface $attributeSetRepository,
+        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
     ) {
-        $this->searchCriteriaBuilder            = $searchCriteriaBuilder;
-        $this->filterBuilder                    = $filterBuilder;
-        $this->filterGroupBuilder               = $filterGroupBuilder;
-        $this->storeManager                     = $storeManager;
-        $this->filesystem                       = $Filesystem;
-        $this->replImageLinkRepositoryInterface = $replImageLinkRepositoryInterface;
-        $this->eavConfig                        = $eavConfig;
-        $this->configWriter                     = $configWriter;
-        $this->attributeSet                     = $attributeSet;
-        $this->cacheTypeList                    = $cacheTypeList;
-        $this->lsr                              = $LSR;
-        $this->resource                         = $resource;
-        $this->sortOrder                        = $sortOrder;
-        $this->dateTime                         = $date;
-        $this->timezone                         = $timezone;
-        $this->_logger                          = $_logger;
-        $this->itemRepository                   = $itemRepository;
-        $this->fileSystemDirectory              = $fileSystemDirectory;
+        $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
+        $this->filterBuilder                             = $filterBuilder;
+        $this->filterGroupBuilder                        = $filterGroupBuilder;
+        $this->storeManager                              = $storeManager;
+        $this->filesystem                                = $Filesystem;
+        $this->replImageLinkRepositoryInterface          = $replImageLinkRepositoryInterface;
+        $this->eavConfig                                 = $eavConfig;
+        $this->configWriter                              = $configWriter;
+        $this->attributeSet                              = $attributeSet;
+        $this->cacheTypeList                             = $cacheTypeList;
+        $this->lsr                                       = $LSR;
+        $this->resource                                  = $resource;
+        $this->sortOrder                                 = $sortOrder;
+        $this->dateTime                                  = $date;
+        $this->timezone                                  = $timezone;
+        $this->_logger                                   = $_logger;
+        $this->itemRepository                            = $itemRepository;
+        $this->fileSystemDirectory                       = $fileSystemDirectory;
+        $this->categoryCollectionFactory                 = $categoryCollectionFactory;
+        $this->replHierarchyLeafRepository               = $replHierarchyLeafRepository;
+        $this->categoryLinkManagement                    = $categoryLinkManagement;
+        $this->replAttributeValueCollectionFactory       = $replAttributeValueCollectionFactory;
+        $this->replExtendedVariantValueCollectionFactory = $replExtendedVariantValueCollectionFactory;
+        $this->eavTypeFactory                            = $eavTypeFactory;
+        $this->attributeSetFactory                       = $attributeSetFactory;
+        $this->attributeSetManagement                    = $attributeSetManagement;
+        $this->attributeManagement                       = $attributeManagement;
+        $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
+        $this->attributeGroupRepository                  = $attributeGroupRepository;
+        $this->attributeSetRepository                    = $attributeSetRepository;
+        $this->replAttributeValueRepositoryInterface     = $replAttributeValueRepositoryInterface;
         parent::__construct(
             $context
         );
@@ -264,7 +379,6 @@ class ReplicationHelper extends AbstractHelper
         if ($scope_id) {
             $criteria->addFilter('scope_id', $scope_id, 'eq');
         }
-        $criteria->addFilter('LinkType', 0, 'eq');
         $criteria->addFilter('LinkField1', $item_id, 'eq');
 
         if ($excludeDeleted) {
@@ -955,7 +1069,7 @@ class ReplicationHelper extends AbstractHelper
             );
         }
         /** @var For Xdebug only to check the query $query */
-        //$query = $collection->getSelect()->__toString();
+        $query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
@@ -1016,11 +1130,17 @@ class ReplicationHelper extends AbstractHelper
     /**
      * @param $collection
      * @param SearchCriteriaInterface $criteria
+     * @param $type
      */
-    public function setCollectionPropertiesPlusJoinsForImages(&$collection, SearchCriteriaInterface $criteria)
+    public function setCollectionPropertiesPlusJoinsForImages(&$collection, SearchCriteriaInterface $criteria, $type)
     {
         $secondTableName = $this->resource->getTableName('catalog_product_entity');
-        $thirdTableName  = $this->resource->getTableName('ls_replication_repl_item');
+        if ($type == 'Item') {
+            $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
+        } else {
+            $thirdTableName = $this->resource->getTableName('ls_replication_repl_hierarchy_leaf');
+        }
+
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
@@ -1160,22 +1280,6 @@ class ReplicationHelper extends AbstractHelper
     public function getProductImagesBatchSize()
     {
         return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_PRODUCT_IMAGES_BATCH_SIZE);
-    }
-
-    /**
-     * @return string
-     */
-    public function getItemModifiersBatchSize()
-    {
-        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_ITEM_MODIFIER_BATCH_SIZE);
-    }
-
-    /**
-     * @return string
-     */
-    public function getItemRecipeBatchSize()
-    {
-        return $this->lsr->getStoreConfig(LSR::SC_REPLICATION_ITEM_RECIPE_BATCH_SIZE);
     }
 
     /**
@@ -1356,5 +1460,344 @@ class ReplicationHelper extends AbstractHelper
         }
 
         return $baseUnitOfMeasure;
+    }
+
+    /**
+     * Assigning product to categories
+     *
+     * @param $product
+     * @param $store
+     * @throws LocalizedException
+     */
+    public function assignProductToCategories(&$product, $store)
+    {
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $store->getId());
+        if (empty($hierarchyCode)) {
+            $this->_logger->debug('Hierarchy Code not defined in the configuration for store ' . $this->store->getName());
+            return;
+        }
+        $filters              = [
+            ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'nav_id', 'value' => $product->getSku(), 'condition_type' => 'eq']
+        ];
+        $criteria             = $this->buildCriteriaForDirect($filters);
+        $hierarchyLeafs       = $this->replHierarchyLeafRepository->getList($criteria);
+        $resultantCategoryIds = [];
+        foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
+            $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId(), $store);
+            if (!empty($categoryIds)) {
+                $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $categoryIds));
+                $hierarchyLeaf->setData('processed_at', $this->getDateTime());
+                $hierarchyLeaf->setData('processed', 1);
+                $hierarchyLeaf->setData('is_updated', 0);
+                $this->replHierarchyLeafRepository->save($hierarchyLeaf);
+            }
+        }
+        if (!empty($resultantCategoryIds)) {
+            try {
+                $this->categoryLinkManagement->assignProductToCategories(
+                    $product->getSku(),
+                    $resultantCategoryIds
+                );
+            } catch (Exception $e) {
+                $this->_logger->info("Product deleted from admin configuration. Things will re-run again");
+            }
+        }
+    }
+
+    /**
+     * Getting product category id
+     *
+     * @param $productGroupId
+     * @param $store
+     * @return array
+     * @throws LocalizedException
+     */
+    public function findCategoryIdFromFactory($productGroupId, $store)
+    {
+        $categoryCollection = $this->categoryCollectionFactory->create()->addAttributeToFilter(
+            'nav_id',
+            $productGroupId
+        )
+            ->addPathsFilter('1/' . $store->getRootCategoryId() . '/')
+            ->setPageSize(1);
+        if ($categoryCollection->getSize()) {
+            // @codingStandardsIgnoreStart
+            return [
+                $categoryCollection->getFirstItem()->getParentId(),
+                $categoryCollection->getFirstItem()->getId()
+            ];
+            // @codingStandardsIgnoreEnd
+        }
+    }
+
+    /**
+     * Utility function to format given input
+     *
+     * @param $string
+     * @return string
+     */
+    public function oSlug($string)
+    {
+        // @codingStandardsIgnoreStart
+        return strtolower(trim(preg_replace(
+            '~[^0-9a-z]+~i',
+            '-',
+            html_entity_decode(
+                preg_replace(
+                    '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+                    '$1',
+                    htmlentities($string, ENT_QUOTES, 'UTF-8')
+                ),
+                ENT_QUOTES,
+                'UTF-8'
+            )
+        ), '-'));
+        // @codingStandardsIgnoreEnd
+    }
+
+    /**
+     * Getting attribute set id for the given item
+     *
+     * @param $attributeSetsMechanism
+     * @param $joiningTableName
+     * @param $storeId
+     * @param $identifier
+     * @return int|null
+     * @throws InputException
+     * @throws NoSuchEntityException
+     * @throws StateException
+     */
+    public function getAttributeSetId($attributeSetsMechanism, $joiningTableName, $storeId, $identifier)
+    {
+        $formattedIdentifier = $this->formatAttributeCode($identifier);
+        if ($this->getAttributeSetByName($formattedIdentifier)) {
+            $attributeSetId = $this->getAttributeSetByName($formattedIdentifier);
+        } else {
+            $attributes     = $this->getRelatedAttributesAssignedToGivenIdentifier(
+                $attributeSetsMechanism,
+                $joiningTableName,
+                $storeId,
+                $identifier
+            );
+            $attributeSetId = $this->createAttributeSetAndGroupsAndReturnAttributeSetId(
+                $formattedIdentifier,
+                $attributes
+            );
+        }
+        return $attributeSetId;
+    }
+
+    /**
+     * Getting all soft and hard attribute depending upon current configuration
+     *
+     * @param $attributeSetsMechanism
+     * @param $joiningTableName
+     * @param $storeId
+     * @param $identifier
+     * @return array
+     */
+    public function getRelatedAttributesAssignedToGivenIdentifier(
+        $attributeSetsMechanism,
+        $joiningTableName,
+        $storeId,
+        $identifier
+    ) {
+        $attributes = [];
+        if ($joiningTableName == 'ls_replication_repl_item') {
+            if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
+                if ($identifier == LSR::SC_REPLICATION_ATTRIBUTE_SET_EXTRAS . '_' . $storeId) {
+                    $filter = ['field' => 'second.ItemCategoryCode', 'value' => true, 'condition_type' => 'null'];
+                } else {
+                    $filter = ['field' => 'second.ItemCategoryCode', 'value' => $identifier, 'condition_type' => 'eq'];
+                }
+            } else {
+                if ($identifier == LSR::SC_REPLICATION_ATTRIBUTE_SET_EXTRAS . '_' . $storeId) {
+                    $filter = ['field' => 'second.ProductGroupId', 'value' => true, 'condition_type' => 'null'];
+                } else {
+                    $filter = ['field' => 'second.ProductGroupId', 'value' => $identifier, 'condition_type' => 'eq'];
+                }
+            }
+        } else {
+            $filter = ['field' => 'Type', 'value' => 'Deal', 'condition_type' => 'eq'];
+        }
+
+        $filters     = [$filter];
+        $criteria    = $this->buildCriteriaForDirect($filters, -1, false);
+        $collection1 = $this->replAttributeValueCollectionFactory->create();
+        $collection2 = $this->replExtendedVariantValueCollectionFactory->create();
+        $this->setCollectionPropertiesPlusJoin(
+            $collection1,
+            $criteria,
+            'LinkField1',
+            $joiningTableName,
+            'nav_id'
+        );
+        $this->setCollectionPropertiesPlusJoin(
+            $collection2,
+            $criteria,
+            'ItemId',
+            $joiningTableName,
+            'nav_id'
+        );
+        $collection1->addFieldToSelect('Code');
+        $collection1->getSelect()->group('main_table.Code');
+        $collection2->addFieldToSelect('Code');
+        $collection2->getSelect()->group('main_table.Code');
+        $query1 = $collection1->getSelect()->__toString();
+        $query2 = $collection2->getSelect()->__toString();
+        if ($collection1->getSize() > 0) {
+            foreach ($collection1 as $attribute) {
+                $attributes['soft'][] = $attribute->getCode();
+            }
+        }
+        if ($collection2->getSize() > 0) {
+            foreach ($collection2 as $attribute) {
+                $attributes['hard'][] = $attribute->getCode();
+            }
+        }
+        return $attributes;
+    }
+
+    /**
+     * Creating new attribute set, group and getting its id
+     *
+     * @param $itemCategoryCode
+     * @param array $attributes
+     * @return int|null
+     * @throws InputException
+     * @throws NoSuchEntityException
+     * @throws StateException
+     */
+    public function createAttributeSetAndGroupsAndReturnAttributeSetId($itemCategoryCode, array $attributes)
+    {
+        $entityTypeCode = Product::ENTITY;
+        $entityType     = $this->eavTypeFactory->create()->loadByCode($entityTypeCode);
+        $defaultSetId   = $entityType->getDefaultAttributeSetId();
+
+        $attributeSet = $this->attributeSetFactory->create();
+        $data         = [
+            'attribute_set_name' => $itemCategoryCode,
+            'entity_type_id'     => $entityType->getId(),
+            'sort_order'         => 200,
+        ];
+        $attributeSet->setData($data);
+        $attributeSet   = $this->attributeSetManagement->create($entityTypeCode, $attributeSet, $defaultSetId);
+        $attributeGroup = $this->attributeSetGroupFactory->create();
+        $attributeGroup->setAttributeSetId($attributeSet->getAttributeSetId());
+        $attributeGroup->setAttributeGroupName(LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP);
+        $softAttributesGroup = $this->attributeGroupRepository->save($attributeGroup);
+        $attributeGroup      = $this->attributeSetGroupFactory->create();
+        $attributeGroup->setAttributeSetId($attributeSet->getAttributeSetId());
+        $attributeGroup->setAttributeGroupName(LSR::SC_REPLICATION_ATTRIBUTE_SET_VARIANTS_ATTRIBUTES_GROUP);
+        $hardAttributesGroup = $this->attributeGroupRepository->save($attributeGroup);
+
+        foreach ($attributes as $type => $types) {
+            foreach ($types as $attribute) {
+                $formattedCode = $this->formatAttributeCode($attribute);
+                if ($type == 'soft') {
+                    $this->attributeManagement->assign(
+                        Product::ENTITY,
+                        $attributeSet->getId(),
+                        $softAttributesGroup->getAttributeGroupId(),
+                        $formattedCode,
+                        $attributeSet->getCollection()->count() * 10
+                    );
+                } else {
+                    $this->attributeManagement->assign(
+                        Product::ENTITY,
+                        $attributeSet->getId(),
+                        $hardAttributesGroup->getAttributeGroupId(),
+                        $formattedCode,
+                        $attributeSet->getCollection()->count() * 10
+                    );
+                }
+            }
+        }
+        return $attributeSet->getAttributeSetId();
+    }
+
+    /**
+     * Getting attribute set id given name
+     *
+     * @param $name
+     * @return int|null
+     */
+    public function getAttributeSetByName($name)
+    {
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter(
+            'attribute_set_name',
+            $name,
+            'eq'
+        )->setPageSize(1)->setCurrentPage(1);
+        $result         = $this->attributeSetRepository->getList($searchCriteria->create());
+        if ($result->getTotalCount()) {
+            $items = $result->getItems();
+            return reset($items)->getAttributeSetId();
+        }
+        return null;
+    }
+
+    /**
+     * Setting product attributes in the product model
+     *
+     * @param ProductInterface $product
+     * @param $navId
+     * @param $storeId
+     * @return ProductInterface
+     * @throws LocalizedException
+     */
+    public function getProductAttributes(
+        ProductInterface $product,
+        $navId,
+        $storeId
+    ) {
+        $criteria = $this->buildCriteriaForProductAttributes(
+            $navId,
+            -1,
+            true,
+            $storeId
+        );
+        /** @var ReplAttributeValueSearchResults $items */
+        $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
+        /** @var ReplAttributeValue $item */
+        foreach ($items->getItems() as $item) {
+            $formattedCode = $this->formatAttributeCode($item->getCode());
+            $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+            if ($attribute->getFrontendInput() == 'multiselect') {
+                $value = $this->_getOptionIDByCode($formattedCode, $item->getValue());
+            } elseif ($attribute->getFrontendInput() == 'boolean') {
+                if (strtolower($item->getValue()) == 'yes') {
+                    $value = 1;
+                } else {
+                    $value = 0;
+                }
+            } else {
+                $value = $item->getValue();
+            }
+            $product->setData($formattedCode, $value);
+            $item->setData('processed_at', $this->getDateTime());
+            $item->setData('processed', 1);
+            $item->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->replAttributeValueRepositoryInterface->save($item);
+        }
+        return $product;
+    }
+
+    /**
+     * Getting attribute option id given value
+     *
+     * @param $code
+     * @param $value
+     * @return null|string
+     * @throws LocalizedException
+     */
+    public function _getOptionIDByCode($code, $value)
+    {
+        $attribute = $this->eavConfig->getAttribute('catalog_product', $code);
+        return $attribute->getSource()->getOptionId($value);
     }
 }

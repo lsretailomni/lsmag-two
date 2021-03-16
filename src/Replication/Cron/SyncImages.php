@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Replication\Model\ResourceModel\ReplImageLink\Collection;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -81,28 +82,8 @@ class SyncImages extends ProductCreateTask
      */
     public function syncItemImages()
     {
-        $batchSize = $this->replicationHelper->getProductImagesBatchSize();
-        $sortOrder = $this->replicationHelper->getSortOrderObject();
-        /** Get Images for only those items which are already processed */
-        $filters  = [
-            ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
-            ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
-        ];
-        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-            $filters,
-            $batchSize,
-            false
-        );
-        /** @var  $collection */
-        $collection = $this->replImageLinkCollectionFactory->create();
-
-        /** we only need unique product Id's which has any images to modify */
-        $this->replicationHelper->setCollectionPropertiesPlusJoinsForImages(
-            $collection,
-            $criteria
-        );
-        $collection->getSelect()->order('main_table.processed ASC');
+        $sortOrder  = $this->replicationHelper->getSortOrderObject();
+        $collection = $this->getRecordsForImagesToProcess();
         if ($collection->getSize() > 0) {
             // Right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
@@ -165,24 +146,8 @@ class SyncImages extends ProductCreateTask
      */
     public function getRemainingRecords($storeData)
     {
-        if (!$this->remainingRecords) {
-            $filters  = [
-                ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
-                ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
-                ['field' => 'main_table.scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq']
-            ];
-            $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-                $filters,
-                -1,
-                false
-            );
-            /** @var  $collection */
-            $collection = $this->replImageLinkCollectionFactory->create();
-            /** We only need sku which has any images to modify */
-            $this->replicationHelper->setCollectionPropertiesPlusJoinsForImages(
-                $collection,
-                $criteria
-            );
+        if ($this->remainingRecords === null) {
+            $collection             = $this->getRecordsForImagesToProcess(true);
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
@@ -279,5 +244,41 @@ class SyncImages extends ProductCreateTask
                 ->convertFrom($entry);
         }
         return $images;
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     * @param false $totalCount
+     * @return Collection
+     */
+    public function getRecordsForImagesToProcess($totalCount = false)
+    {
+        if (!$totalCount) {
+            $batchSize = $this->replicationHelper->getProductImagesBatchSize();
+        } else {
+            $batchSize = -1;
+        }
+        /** Get Images for only those items which are already processed */
+        $filters = [
+            ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
+            ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+            $filters,
+            $batchSize,
+            false
+        );
+        /** @var  $collection */
+        $collection = $this->replImageLinkCollectionFactory->create();
+
+        /** we only need unique product Id's which has any images to modify */
+        $this->replicationHelper->setCollectionPropertiesPlusJoinsForImages(
+            $collection,
+            $criteria,
+            'Item'
+        );
+        $collection->getSelect()->order('main_table.processed ASC');
+        return $collection;
     }
 }
