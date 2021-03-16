@@ -533,7 +533,7 @@ class Data extends AbstractHelper
         $pointsSpent    = $invoiceCreditMemo->getOrder()->getLsPointsSpent();
         $giftCardAmount = $invoiceCreditMemo->getOrder()->getLsGiftCardAmountUsed();
         if ($pointsSpent > 0 || $giftCardAmount > 0) {
-            $totalItemsQuantities = $totalItemsInvoice;
+            $totalItemsQuantities = $totalItemsInvoice = 0;
             $pointsEarn           = $invoiceCreditMemo->getOrder()->getLsPointsEarn();
             $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
 
