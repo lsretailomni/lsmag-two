@@ -4,7 +4,6 @@ namespace Ls\Webhooks\Api;
 
 /**
  * Interface OrderStatusInterface
- * @package Ls\Webhooks\Api
  * @api
  */
 interface OrderStatusInterface

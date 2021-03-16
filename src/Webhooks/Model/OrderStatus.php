@@ -1,14 +1,13 @@
 <?php
 
-namespace Ls\WebHooks\Model;
+namespace Ls\Webhooks\Model;
 
 use Exception;
 use \Ls\Webhooks\Api\OrderStatusInterface;
 use \Ls\Webhooks\Logger\Logger;
 
 /**
- * Class OrderStatus
- * @package Ls\WebHooks\Api\Model
+ * Class for handling OrderStatus
  */
 class OrderStatus implements OrderStatusInterface
 {

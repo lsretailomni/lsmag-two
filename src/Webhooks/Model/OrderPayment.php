@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\WebHooks\Model;
+namespace Ls\Webhooks\Model;
 
 use Exception;
 use \Ls\Webhooks\Api\OrderPaymentInterface;
@@ -13,8 +13,7 @@ use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Service\InvoiceService;
 
 /**
- * Class OrderPayment
- * @package Ls\WebHooks\Api\Model
+ * Class for handling order payment and invoice
  */
 class OrderPayment implements OrderPaymentInterface
 {

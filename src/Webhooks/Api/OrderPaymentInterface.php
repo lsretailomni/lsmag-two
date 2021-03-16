@@ -4,7 +4,6 @@ namespace Ls\Webhooks\Api;
 
 /**
  * Interface OrderPaymentInterface
- * @package Ls\Webhooks\Api
  * @api
  */
 interface OrderPaymentInterface
