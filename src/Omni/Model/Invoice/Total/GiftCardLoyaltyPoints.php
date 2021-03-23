@@ -3,6 +3,7 @@
 namespace Ls\Omni\Model\Invoice\Total;
 
 use \Ls\Omni\Helper\Data as Helper;
+use Magento\Sales\Model\Order\Invoice;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\Order\Invoice\Total\AbstractTotal;
 

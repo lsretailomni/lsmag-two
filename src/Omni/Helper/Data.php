@@ -27,6 +27,7 @@ use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Sales\Model\Order\Creditmemo;
 
 /**
  * Class Data
@@ -545,7 +546,11 @@ class Data extends AbstractHelper
             foreach ($invoiceCreditMemo->getAllItems() as $item) {
                 $orderItem = $item->getOrderItem();
                 if ($orderItem->getData('product_type') == 'simple') {
-                    $totalItemsInvoice += $item->getQty() - $orderItem->getQtyInvoiced();
+                    if ($invoiceCreditMemo instanceof Creditmemo) {
+                        $totalItemsInvoice += $item->getQty() - $orderItem->getQtyRefunded();
+                    } else {
+                        $totalItemsInvoice += $item->getQty() - $orderItem->getQtyInvoiced();
+                    }
                 }
             }
 

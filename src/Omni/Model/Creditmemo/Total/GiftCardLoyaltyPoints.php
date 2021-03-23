@@ -3,6 +3,7 @@
 namespace Ls\Omni\Model\Creditmemo\Total;
 
 use \Ls\Omni\Helper\Data as Helper;
+use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\Order\Creditmemo\Total\AbstractTotal;
 
@@ -13,7 +14,7 @@ class GiftCardLoyaltyPoints extends AbstractTotal
 {
 
     /**
-     * @var Helpercd
+     * @var Helper
      */
     private $helper;
 
