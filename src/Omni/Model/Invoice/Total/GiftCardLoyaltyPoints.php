@@ -2,64 +2,46 @@
 
 namespace Ls\Omni\Model\Invoice\Total;
 
-use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Sales\Model\Order\Creditmemo;
+use \Ls\Omni\Helper\Data as Helper;
 use Magento\Sales\Model\Order\Invoice;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\Order\Invoice\Total\AbstractTotal;
 
 /**
- * Class GiftCardLoyaltyPoints
- * @package Ls\Omni\Model
+ * Class for handling gift card and loyalty points invoice
  */
 class GiftCardLoyaltyPoints extends AbstractTotal
 {
 
     /**
-     * @var LoyaltyHelper
+     * @var Helper
      */
-    public $loyaltyHelper;
+    private $helper;
 
     /**
      * GiftCardLoyaltyPoints constructor.
-     * @param LoyaltyHelper $loyaltyHelper
+     * @param Helper $helper
      * @param array $data
      */
     public function __construct(
-        LoyaltyHelper $loyaltyHelper,
+        Helper $helper,
         array $data = []
     ) {
-        $this->loyaltyHelper = $loyaltyHelper;
+        $this->helper = $helper;
         parent::__construct(
             $data
         );
     }
 
     /**
-     * @param Creditmemo $creditmemo
+     * Calculation for loyalty points and gift card amount in invoice.
+     * @param Invoice $invoice
      * @return $this|AbstractTotal
+     * @throws NoSuchEntityException
      */
     public function collect(Invoice $invoice)
     {
-        $invoice->setLsPointsSpent(0);
-        $invoice->setLsGiftCardAmountUsed(0);
-        $invoice->setLsGiftCardNo(null);
-
-        $pointsSpent = $invoice->getOrder()->getLsPointsSpent();
-        $invoice->setLsPointsSpent($pointsSpent);
-
-        $pointsEarn = $invoice->getOrder()->getLsPointsEarn();
-        $invoice->setLsPointsEarn($pointsEarn);
-
-        $giftCardAmount = $invoice->getOrder()->getLsGiftCardAmountUsed();
-        $invoice->setLsGiftCardAmountUsed($giftCardAmount);
-
-        $giftCardNo = $invoice->getOrder()->getLsGiftCardNo();
-        $invoice->setLsGiftCardNo($giftCardNo);
-
-        $grandTotalAmount     = $invoice->getOrder()->getGrandTotal();
-        $baseGrandTotalAmount = $invoice->getOrder()->getBaseGrandTotal();
-        $invoice->setGrandTotal($grandTotalAmount);
-        $invoice->setBaseGrandTotal($baseGrandTotalAmount);
+        $this->helper->calculateInvoiceCreditMemoTotal($invoice);
         return $this;
     }
 }
