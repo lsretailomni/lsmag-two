@@ -566,7 +566,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "StartDate": true
         },
         "constraint": {
             "PRIMARY": true
@@ -1068,6 +1069,28 @@
             "QuantityPer": true,
             "RecipeNo": true,
             "UnitOfMeasure": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_collection": {
+        "column": {
+            "repl_collection_id": true,
+            "IsDeleted": true,
+            "ItemId": true,
+            "Quantity": true,
+            "UnitOfMeasureId": true,
+            "VariantId": true,
             "scope": true,
             "scope_id": true,
             "processed": true,

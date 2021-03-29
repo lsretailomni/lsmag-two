@@ -15,11 +15,6 @@ class OrderHospLine extends Entity
 {
 
     /**
-     * @property ArrayOfOrderDiscountLine $DiscountLines
-     */
-    protected $DiscountLines = null;
-
-    /**
      * @property ArrayOfOrderHospSubLine $SubLines
      */
     protected $SubLines = null;
@@ -118,24 +113,6 @@ class OrderHospLine extends Entity
      * @property string $VariantId
      */
     protected $VariantId = null;
-
-    /**
-     * @param ArrayOfOrderDiscountLine $DiscountLines
-     * @return $this
-     */
-    public function setDiscountLines($DiscountLines)
-    {
-        $this->DiscountLines = $DiscountLines;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfOrderDiscountLine
-     */
-    public function getDiscountLines()
-    {
-        return $this->DiscountLines;
-    }
 
     /**
      * @param ArrayOfOrderHospSubLine $SubLines

@@ -30,6 +30,16 @@ class ReplHierarchy
     protected $IsDeleted = null;
 
     /**
+     * @property int $Priority
+     */
+    protected $Priority = null;
+
+    /**
+     * @property string $SalesType
+     */
+    protected $SalesType = null;
+
+    /**
      * @property string $StartDate
      */
     protected $StartDate = null;
@@ -38,6 +48,11 @@ class ReplHierarchy
      * @property HierarchyType $Type
      */
     protected $Type = null;
+
+    /**
+     * @property string $ValidationScheduleId
+     */
+    protected $ValidationScheduleId = null;
 
     /**
      * @property string $scope
@@ -104,6 +119,42 @@ class ReplHierarchy
     }
 
     /**
+     * @param int $Priority
+     * @return $this
+     */
+    public function setPriority($Priority)
+    {
+        $this->Priority = $Priority;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->Priority;
+    }
+
+    /**
+     * @param string $SalesType
+     * @return $this
+     */
+    public function setSalesType($SalesType)
+    {
+        $this->SalesType = $SalesType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalesType()
+    {
+        return $this->SalesType;
+    }
+
+    /**
      * @param string $StartDate
      * @return $this
      */
@@ -147,6 +198,24 @@ class ReplHierarchy
     public function getType()
     {
         return $this->Type;
+    }
+
+    /**
+     * @param string $ValidationScheduleId
+     * @return $this
+     */
+    public function setValidationScheduleId($ValidationScheduleId)
+    {
+        $this->ValidationScheduleId = $ValidationScheduleId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValidationScheduleId()
+    {
+        return $this->ValidationScheduleId;
     }
 
     /**

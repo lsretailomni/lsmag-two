@@ -37,6 +37,16 @@ class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, Ide
     protected $IsDeleted = null;
 
     /**
+     * @property int $Priority
+     */
+    protected $Priority = null;
+
+    /**
+     * @property string $SalesType
+     */
+    protected $SalesType = null;
+
+    /**
      * @property string $StartDate
      */
     protected $StartDate = null;
@@ -45,6 +55,11 @@ class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, Ide
      * @property HierarchyType $Type
      */
     protected $Type = null;
+
+    /**
+     * @property string $ValidationScheduleId
+     */
+    protected $ValidationScheduleId = null;
 
     /**
      * @property string $scope
@@ -162,6 +177,46 @@ class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, Ide
     }
 
     /**
+     * @param int $Priority
+     * @return $this
+     */
+    public function setPriority($Priority)
+    {
+        $this->setData( 'Priority', $Priority );
+        $this->Priority = $Priority;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->getData( 'Priority' );
+    }
+
+    /**
+     * @param string $SalesType
+     * @return $this
+     */
+    public function setSalesType($SalesType)
+    {
+        $this->setData( 'SalesType', $SalesType );
+        $this->SalesType = $SalesType;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalesType()
+    {
+        return $this->getData( 'SalesType' );
+    }
+
+    /**
      * @param string $StartDate
      * @return $this
      */
@@ -199,6 +254,26 @@ class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, Ide
     public function getType()
     {
         return $this->getData( 'Type' );
+    }
+
+    /**
+     * @param string $ValidationScheduleId
+     * @return $this
+     */
+    public function setValidationScheduleId($ValidationScheduleId)
+    {
+        $this->setData( 'ValidationScheduleId', $ValidationScheduleId );
+        $this->ValidationScheduleId = $ValidationScheduleId;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValidationScheduleId()
+    {
+        return $this->getData( 'ValidationScheduleId' );
     }
 
     /**

@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0] - 2021-03-23
+
+### Added
+
+- Added support for replication and synchronization of hospitality deals. [OMNI-5350](https://solutions.lsretail.com/jira/browse/OMNI-5350)
+- Added support for basket calculation and order creation for hospitality deals. [OMNI-5351](https://solutions.lsretail.com/jira/browse/OMNI-5351)
+- Added support for Omni 4.16.x. [OMNI-5413](https://solutions.lsretail.com/jira/browse/OMNI-5413)
+- Added support to sync order cancellation request to LS Central from Magento admin panel.[OMNI-4759](https://solutions.lsretail.com/jira/browse/OMNI-4759)
+- Added support to add/update/remove Giftcard through GraphQl. [OMNI-5375](https://solutions.lsretail.com/jira/browse/OMNI-5375)
+- Added support to redeem/apply LS Central coupon through GraphQl Interface. [OMNI-5393](https://solutions.lsretail.com/jira/browse/OMNI-5393)
+- Added support for Magento 2.4.2 and Composer V2. [OMNI-5401](https://solutions.lsretail.com/jira/browse/OMNI-5401)
+
+
+### Changed
+
+- Replace [LoginWeb](http://mobiledemo.lsretail.com/LSOmniHelp/html/M_LSOmni_Service_IUCService_LoginWeb.htm) with [Login](http://mobiledemo.lsretail.com/LSOmniHelp/html/M_LSOmni_Service_IUCService_Login.htm) for all the authentication calls sent to LS Central.
+
+### Bugs/Fixes
+
+- Fixed issue in merging the shopping cart after customer login. [OMNI-5404](https://solutions.lsretail.com/jira/browse/OMNI-5404)
+- Fixed issue in automatically assigning new variant frameworks into the existing attribute set. [OMNI-5396](https://solutions.lsretail.com/jira/browse/OMNI-5396)
+- Fixed totals in partial invoice and partial refund when giftcard or loyalty points are used as part of payment. [OMNI-5403](https://solutions.lsretail.com/jira/browse/OMNI-5403)
+- Fixed issue in automatically adding new variant framework to existing products. [OMNI-5408](https://solutions.lsretail.com/jira/browse/OMNI-5408)
+- Fixed issue in posting the order from LS Central when invoice is already created in Magento. [OMNI-5406](https://solutions.lsretail.com/jira/browse/OMNI-5406)
+- Github Issue [#35](https://github.com/lsretailomni/lsmag-two/issues/35)
+- Github Issue [#36](https://github.com/lsretailomni/lsmag-two/issues/36)
+
+
+
 ## [1.8.0] - 2020-02-05
 
 ### Added
@@ -12,11 +41,11 @@ All notable changes to this project will be documented in this file.
 - Added support to calculate basket from LS Central through GraphQl interface. [OMNI-5374](https://solutions.lsretail.com/jira/browse/OMNI-5374)
 - Added support to sync order to LS Central through GraphQl interface. [OMNI-5389](https://solutions.lsretail.com/jira/browse/OMNI-5389)
 - Added support to accept full payment of order made through loyalty points or gift card or incombination of those. [OMNI-5389](https://solutions.lsretail.com/jira/browse/OMNI-5389)
-
  
 ### Bugs/Fixes
 
 - Fixed issue for constructor paramter in invoice object. [OMNI-5390](https://solutions.lsretail.com/jira/browse/OMNI-5390)
+
 
 
 ## [1.7.0] - 2021-01-13
@@ -66,7 +95,7 @@ All notable changes to this project will be documented in this file.
 
 ### Bugs/Fixes
 
-- Fixed issue with resetting and deleting data using table prefix.. [OMNI-5322](https://solutions.lsretail.com/jira/browse/OMNI-5322)
+- Fixed issue with resetting and deleting data using table prefix. [OMNI-5322](https://solutions.lsretail.com/jira/browse/OMNI-5322)
 - Fixed stock and hierarchy code issues when a multi store with different industries is configured in a same magento instance. [OMNI-5323](https://solutions.lsretail.com/jira/browse/OMNI-5323)
 - Fixed issues with hierarchy data translation in multi store instance. [OMNI-5324](https://solutions.lsretail.com/jira/browse/OMNI-5324)
 - Fixed issue in syncing order to LS Central using PayPal express checkout. [OMNI-5336](https://solutions.lsretail.com/jira/browse/OMNI-5336)
