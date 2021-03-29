@@ -16,6 +16,11 @@ class OrderHosp extends Entity
 {
 
     /**
+     * @property ArrayOfOrderDiscountLine $OrderDiscountLines
+     */
+    protected $OrderDiscountLines = null;
+
+    /**
      * @property ArrayOfOrderHospLine $OrderLines
      */
     protected $OrderLines = null;
@@ -119,6 +124,24 @@ class OrderHosp extends Entity
      * @property float $TotalNetAmount
      */
     protected $TotalNetAmount = null;
+
+    /**
+     * @param ArrayOfOrderDiscountLine $OrderDiscountLines
+     * @return $this
+     */
+    public function setOrderDiscountLines($OrderDiscountLines)
+    {
+        $this->OrderDiscountLines = $OrderDiscountLines;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfOrderDiscountLine
+     */
+    public function getOrderDiscountLines()
+    {
+        return $this->OrderDiscountLines;
+    }
 
     /**
      * @param ArrayOfOrderHospLine $OrderLines

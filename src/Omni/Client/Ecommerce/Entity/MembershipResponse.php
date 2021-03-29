@@ -12,6 +12,11 @@ class MembershipResponse extends Entity
 {
 
     /**
+     * @property string $BookingRef
+     */
+    protected $BookingRef = null;
+
+    /**
      * @property float $Discount
      */
     protected $Discount = null;
@@ -30,6 +35,24 @@ class MembershipResponse extends Entity
      * @property float $Quantity
      */
     protected $Quantity = null;
+
+    /**
+     * @param string $BookingRef
+     * @return $this
+     */
+    public function setBookingRef($BookingRef)
+    {
+        $this->BookingRef = $BookingRef;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBookingRef()
+    {
+        return $this->BookingRef;
+    }
 
     /**
      * @param float $Discount

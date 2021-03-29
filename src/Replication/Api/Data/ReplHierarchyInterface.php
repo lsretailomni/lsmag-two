@@ -45,6 +45,28 @@ interface ReplHierarchyInterface
     public function getIsDeleted();
 
     /**
+     * @param int $Priority
+     * @return $this
+     */
+    public function setPriority($Priority);
+
+    /**
+     * @return int
+     */
+    public function getPriority();
+
+    /**
+     * @param string $SalesType
+     * @return $this
+     */
+    public function setSalesType($SalesType);
+
+    /**
+     * @return string
+     */
+    public function getSalesType();
+
+    /**
      * @param string $StartDate
      * @return $this
      */
@@ -65,6 +87,17 @@ interface ReplHierarchyInterface
      * @return HierarchyType
      */
     public function getType();
+
+    /**
+     * @param string $ValidationScheduleId
+     * @return $this
+     */
+    public function setValidationScheduleId($ValidationScheduleId);
+
+    /**
+     * @return string
+     */
+    public function getValidationScheduleId();
 
     /**
      * @param string $scope

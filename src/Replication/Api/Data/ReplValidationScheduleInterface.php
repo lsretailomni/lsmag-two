@@ -8,19 +8,19 @@
 
 namespace Ls\Replication\Api\Data;
 
-interface ReplHierarchyLeafInterface
+interface ReplValidationScheduleInterface
 {
 
     /**
-     * @param float $DealPrice
+     * @param ArrayOfValidationScheduleLine $Lines
      * @return $this
      */
-    public function setDealPrice($DealPrice);
+    public function setLines($Lines);
 
     /**
-     * @return float
+     * @return ArrayOfValidationScheduleLine
      */
-    public function getDealPrice();
+    public function getLines();
 
     /**
      * @param string $Description
@@ -34,17 +34,6 @@ interface ReplHierarchyLeafInterface
     public function getDescription();
 
     /**
-     * @param string $HierarchyCode
-     * @return $this
-     */
-    public function setHierarchyCode($HierarchyCode);
-
-    /**
-     * @return string
-     */
-    public function getHierarchyCode();
-
-    /**
      * @param string $nav_id
      * @return $this
      */
@@ -56,28 +45,6 @@ interface ReplHierarchyLeafInterface
     public function getNavId();
 
     /**
-     * @param string $ImageId
-     * @return $this
-     */
-    public function setImageId($ImageId);
-
-    /**
-     * @return string
-     */
-    public function getImageId();
-
-    /**
-     * @param boolean $IsActive
-     * @return $this
-     */
-    public function setIsActive($IsActive);
-
-    /**
-     * @return boolean
-     */
-    public function getIsActive();
-
-    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -87,83 +54,6 @@ interface ReplHierarchyLeafInterface
      * @return boolean
      */
     public function getIsDeleted();
-
-    /**
-     * @param boolean $IsMemberClub
-     * @return $this
-     */
-    public function setIsMemberClub($IsMemberClub);
-
-    /**
-     * @return boolean
-     */
-    public function getIsMemberClub();
-
-    /**
-     * @param string $ItemUOM
-     * @return $this
-     */
-    public function setItemUOM($ItemUOM);
-
-    /**
-     * @return string
-     */
-    public function getItemUOM();
-
-    /**
-     * @param string $MemberValue
-     * @return $this
-     */
-    public function setMemberValue($MemberValue);
-
-    /**
-     * @return string
-     */
-    public function getMemberValue();
-
-    /**
-     * @param string $NodeId
-     * @return $this
-     */
-    public function setNodeId($NodeId);
-
-    /**
-     * @return string
-     */
-    public function getNodeId();
-
-    /**
-     * @param int $SortOrder
-     * @return $this
-     */
-    public function setSortOrder($SortOrder);
-
-    /**
-     * @return int
-     */
-    public function getSortOrder();
-
-    /**
-     * @param HierarchyLeafType $Type
-     * @return $this
-     */
-    public function setType($Type);
-
-    /**
-     * @return HierarchyLeafType
-     */
-    public function getType();
-
-    /**
-     * @param int $ValidationPeriod
-     * @return $this
-     */
-    public function setValidationPeriod($ValidationPeriod);
-
-    /**
-     * @return int
-     */
-    public function getValidationPeriod();
 
     /**
      * @param string $scope

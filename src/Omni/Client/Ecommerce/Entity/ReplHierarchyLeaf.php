@@ -55,6 +55,11 @@ class ReplHierarchyLeaf
     protected $IsMemberClub = null;
 
     /**
+     * @property string $ItemUOM
+     */
+    protected $ItemUOM = null;
+
+    /**
      * @property string $MemberValue
      */
     protected $MemberValue = null;
@@ -63,6 +68,11 @@ class ReplHierarchyLeaf
      * @property string $NodeId
      */
     protected $NodeId = null;
+
+    /**
+     * @property int $SortOrder
+     */
+    protected $SortOrder = null;
 
     /**
      * @property HierarchyLeafType $Type
@@ -229,6 +239,24 @@ class ReplHierarchyLeaf
     }
 
     /**
+     * @param string $ItemUOM
+     * @return $this
+     */
+    public function setItemUOM($ItemUOM)
+    {
+        $this->ItemUOM = $ItemUOM;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemUOM()
+    {
+        return $this->ItemUOM;
+    }
+
+    /**
      * @param string $MemberValue
      * @return $this
      */
@@ -262,6 +290,24 @@ class ReplHierarchyLeaf
     public function getNodeId()
     {
         return $this->NodeId;
+    }
+
+    /**
+     * @param int $SortOrder
+     * @return $this
+     */
+    public function setSortOrder($SortOrder)
+    {
+        $this->SortOrder = $SortOrder;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->SortOrder;
     }
 
     /**
