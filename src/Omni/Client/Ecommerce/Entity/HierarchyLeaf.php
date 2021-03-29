@@ -15,9 +15,55 @@ class HierarchyLeaf extends HierarchyPoint
 {
 
     /**
+     * @property string $ItemUOM
+     */
+    protected $ItemUOM = null;
+
+    /**
+     * @property int $SortOrder
+     */
+    protected $SortOrder = null;
+
+    /**
      * @property HierarchyLeafType $Type
      */
     protected $Type = null;
+
+    /**
+     * @param string $ItemUOM
+     * @return $this
+     */
+    public function setItemUOM($ItemUOM)
+    {
+        $this->ItemUOM = $ItemUOM;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemUOM()
+    {
+        return $this->ItemUOM;
+    }
+
+    /**
+     * @param int $SortOrder
+     * @return $this
+     */
+    public function setSortOrder($SortOrder)
+    {
+        $this->SortOrder = $SortOrder;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->SortOrder;
+    }
 
     /**
      * @param HierarchyLeafType|string $Type

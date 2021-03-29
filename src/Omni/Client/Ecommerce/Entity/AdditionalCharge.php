@@ -20,6 +20,11 @@ class AdditionalCharge
     protected $ActivityNo = null;
 
     /**
+     * @property string $Description
+     */
+    protected $Description = null;
+
+    /**
      * @property float $DiscountPercentage
      */
     protected $DiscountPercentage = null;
@@ -85,6 +90,24 @@ class AdditionalCharge
     public function getActivityNo()
     {
         return $this->ActivityNo;
+    }
+
+    /**
+     * @param string $Description
+     * @return $this
+     */
+    public function setDescription($Description)
+    {
+        $this->Description = $Description;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->Description;
     }
 
     /**
