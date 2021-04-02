@@ -12,7 +12,7 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 /**
- * For returning account information coming from the Ls Central
+ * For returning account information
  */
 class Account implements ResolverInterface
 {
@@ -32,6 +32,7 @@ class Account implements ResolverInterface
     }
 
     /**
+     * for returning member contact information
      * @param Field $field
      * @param ContextInterface $context
      * @param ResolveInfo $info

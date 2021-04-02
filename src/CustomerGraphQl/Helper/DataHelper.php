@@ -3,10 +3,10 @@
 namespace Ls\CustomerGraphQl\Helper;
 
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Address;
+use \Ls\Omni\Client\Ecommerce\Entity\Address;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntryLine;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntryPayment;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntryLine;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntryPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\ResponseInterface;
