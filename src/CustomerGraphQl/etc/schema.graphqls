@@ -1,0 +1,97 @@
+type Customer {
+   lsAccount: LsAccount @doc(description: "Containing account details from LS Central") @resolver(class: "\\Ls\\CustomerGraphQl\\Model\\Resolver\\Account")
+   lsSalesEntries(
+           filter: SalesEntryFilterInput @doc(description: "Defines the filter to use for searching sales entries for particular document id. If not defined all entries will return"),
+           pageSize: Int @doc(description: "Specifies the maximum number of results to return optional"),
+       ): [SalesEntry] @resolver(class: "Ls\\CustomerGraphQl\\Model\\Resolver\\SalesEntries") @cache(cacheable: false)
+}
+type LsAccount @doc(description: "Member Contact details from LS Central"){
+    card_id: String @doc(description: "Card Id")
+    contact_id: String @doc(description: "Contact Id")
+    username: String @doc(description: "UserName")
+    scheme: Scheme
+}
+type Scheme {
+    club_name: String @doc(description: "Club Name")
+    loyalty_level: String @doc(description: "Loyalty Level")
+    point_balance: Float @doc(description: "Loyalty Points Balance")
+    next_level: NextLevel
+}
+type NextLevel {
+    club_name: String @doc(description: "Next Level Club Name")
+    loyalty_level: String @doc(description: "Next Level Description")
+    benefits: String @doc(description: "Next Level Benefits")
+    points_needed: String @doc(description: "Next Level Points Needed")
+ }
+
+type SalesEntry @doc(description: "Sales entry information") {
+    id: String @doc(description: "Id is receipt Id or Document Id")
+    click_and_collect_order: String @doc(description: "Click and Collect Item")
+    document_reg_time: String @doc(description: "Order Registration Time")
+    external_id: String @doc(description: "Magento Order Id")
+    payment_status: String @doc(description: "Order Payment status")
+    id_type: String @doc(description: "Order Type")
+    line_item_count: String @doc(description: "No of items")
+    points_rewarded: String @doc(description: "Loyalty Points Rewarded")
+    posted: String @doc(description: "Order is posted or not")
+    ship_to_name: String @doc(description: "Ship to Name")
+    ship_to_email: String @doc(description: "Ship to Email")
+    status: String @doc(description: "Order Status")
+    store_id: String @doc(description: "Store Id")
+    store_name: String @doc(description: "Store Name")
+    total_amount: Float @doc(description: "Total Amount")
+    total_net_amount: Float @doc(description: "Total Net Amount")
+    total_discount: Float @doc(description: "Total Discount")
+    contact_address : Address @doc(description: "Contact Address")
+    ship_to_address: Address @doc(description: "ship to Address")
+    payments: [SalesEntryPayment] @doc(description: "Array of Payment Information")
+    items: [SalesEntryLine] @doc(description: "Array of Items")
+}
+
+type Address @doc(description: "shipping or billing address") {
+    address1: String @doc(description: "Address First line")
+    address2: String @doc(description: "Address Second Line")
+    cell_phone_number: String @doc(description: "Phone Number")
+    city: String @doc(description: "City")
+    country: String @doc(description: "Country")
+    house_no: String @doc(description: "House No")
+    post_code: String @doc(description: "Post Code")
+    state_province_region: String @doc(description: "State or Province")
+    type: String @doc(description: "Type of Address")
+}
+
+type SalesEntryPayment @doc(description: "Payment lines for the order") {
+    amount: Float @doc(description: "Amount")
+    card_no: String @doc(description: "Card No")
+    currency_code: String @doc(description: "Currency Code")
+    currency_factor: String @doc(description: "Currency Factor")
+    line_number: String @doc(description: "Line Number")
+    tender_type: String @doc(description: "Tender Type")
+}
+
+type SalesEntryLine @doc(description: "Item Information") {
+    amount: Float @doc(description: "Amount")
+    click_and_collect_line: String @doc(description: "Click and Collect Line")
+    discount_amount: Float @doc(description: "Discount Amount")
+    discount_percent: Float @doc(description: "Discount Percent")
+    item_description: String @doc(description: "Item Description")
+    item_id: String @doc(description: "Item Id")
+    item_image_id: String @doc(description: "Item Image Id")
+    line_number: String @doc(description: "Line Number")
+    line_type: String @doc(description: "Line Type")
+    net_amount: Float @doc(description: "Net Amount")
+    net_price: Float @doc(description: "Net Price")
+    parent_line: String @doc(description: "Parent Line")
+    price: Float @doc(description: "Price")
+    quantity: Int @doc(description: "Quantity")
+    store_id: String @doc(description: "Store Id")
+    tax_amount: Float @doc(description: "Tax Amount")
+    uom_id: String @doc(description: "Unit of Measure Id")
+    variant_description: String @doc(description: "Variant Description")
+    variant_id: String @doc(description: "Variant Id")
+}
+
+input SalesEntryFilterInput @doc(description: "Identifies the filter to use for filtering orders.") {
+    id: String @doc(description: "Filter by Document Id")
+    type: String @doc(description: "Order type such as receipt e.t.c")
+}

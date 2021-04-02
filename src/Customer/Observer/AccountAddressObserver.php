@@ -71,8 +71,8 @@ class AccountAddressObserver implements ObserverInterface
             if ($customerAddress->getCustomer()->getData('lsr_username')
                 && $customerAddress->getCustomer()->getData('lsr_token')
             ) {
-                $defaultShipping = $customerAddress->getCustomer()->getDefaultShippingAddress();
-                if ($customerAddress->getData('is_default_shipping')) {
+                $defaultBillingAddress = $customerAddress->getCustomer()->getDefaultBillingAddress();
+                if ($customerAddress->getData('is_default_billing')) {
                     $result = $this->contactHelper->updateAccount($customerAddress);
                     if (empty($result)) {
                         //Generate Message only when Variable is either empty, null, 0 or undefined.
@@ -80,8 +80,8 @@ class AccountAddressObserver implements ObserverInterface
                             __('Something went wrong, Please try again later.')
                         );
                     }
-                } elseif ($defaultShipping) {
-                    if ($defaultShipping->getId() == $customerAddress->getId()) {
+                } elseif ($defaultBillingAddress) {
+                    if ($defaultBillingAddress->getId() == $customerAddress->getId()) {
                         $result = $this->contactHelper->updateAccount($customerAddress);
                         if (empty($result)) {
                             $this->messageManager->addErrorMessage(
