@@ -145,7 +145,7 @@ class DataHelper
             $websiteId = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
             $userId    = $context->getUserId();
             $this->helper->setCustomerValuesInSession($userId, $websiteId);
-            $salesEntry = $this->orderHelper->getOrderDetailsAgainstId($documentId, $type);
+            $salesEntry           = $this->orderHelper->getOrderDetailsAgainstId($documentId, $type);
             $salesEntriesArray [] = $this->getSaleEntry($salesEntry);
         }
 
@@ -168,6 +168,7 @@ class DataHelper
             'id_type'                 => $salesEntry->getIdType(),
             'line_item_count'         => $salesEntry->getLineItemCount(),
             'points_rewarded'         => $salesEntry->getPointsRewarded(),
+            'points_used'             => $salesEntry->getPointsUsedInOrder(),
             'posted'                  => $salesEntry->getPosted(),
             'ship_to_name'            => $salesEntry->getShipToName(),
             'ship_to_email'           => $salesEntry->getShipToEmail(),

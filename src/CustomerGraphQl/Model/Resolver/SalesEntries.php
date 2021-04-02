@@ -11,7 +11,7 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 /**
- * For returning account information coming from the Ls Central
+ * For returning sales orders related to customers
  */
 class SalesEntries implements ResolverInterface
 {

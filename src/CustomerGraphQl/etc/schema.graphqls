@@ -33,6 +33,7 @@ type SalesEntry @doc(description: "Sales entry information") {
     id_type: String @doc(description: "Order Type")
     line_item_count: String @doc(description: "No of items")
     points_rewarded: String @doc(description: "Loyalty Points Rewarded")
+    points_used: String @doc(description: "Loyalty Points used during order")
     posted: String @doc(description: "Order is posted or not")
     ship_to_name: String @doc(description: "Ship to Name")
     ship_to_email: String @doc(description: "Ship to Email")
