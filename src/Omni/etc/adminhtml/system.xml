@@ -28,7 +28,7 @@
                     <comment>Please validate your base url by clicking on button above</comment>
                 </field>
                 <field id="version" translate="label" type="label" sortOrder="10" showInWebsite="1">
-                    <label>Omni Service Version</label>
+                    <label>LS Commerce Service Version</label>
                 </field>
                 <field id="ls_central_version" translate="label" type="label" sortOrder="10"
                        showInWebsite="1">
