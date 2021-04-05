@@ -756,10 +756,13 @@ class BasketHelper extends AbstractHelper
                     return $loginContact->getOneLists()->getOneList();
                 } else {
                     if ($loginContact->getOneLists() instanceof Entity\ArrayOfOneList) {
-                        foreach ($loginContact->getOneLists()->getIterator() as $list) {
-                            if ($list->getIsDefaultList()) {
-                                $this->setOneListInCustomerSession($list);
-                                return $list;
+                        foreach ($loginContact->getOneLists()->getOneList() as $oneList) {
+                            if ($oneList->getListType() == Entity\Enum\ListType::BASKET
+                                && $oneList->getStoreId() == $this->getDefaultWebStore()
+                            ) {
+                                $this->setOneListInCustomerSession($oneList);
+
+                                return $oneList;
                             }
                         }
                     }
