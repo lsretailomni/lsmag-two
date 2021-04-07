@@ -54,6 +54,7 @@ class DataHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param OrderHelper $orderHelper
      * @param Helper $helper
+     * @param PriceHelper $priceHelper
      * @param LSR $lsr
      */
     public function __construct(
