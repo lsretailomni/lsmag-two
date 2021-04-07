@@ -14,7 +14,7 @@ type LsAccount @doc(description: "Member Contact details from LS Central"){
 type Scheme {
     club_name: String @doc(description: "Club Name")
     loyalty_level: String @doc(description: "Loyalty Level")
-    point_balance: Float @doc(description: "Loyalty Points Balance")
+    point_balance: String @doc(description: "Loyalty Points Balance")
     next_level: NextLevel
 }
 type NextLevel {
@@ -40,9 +40,9 @@ type SalesEntry @doc(description: "Sales entry information") {
     status: String @doc(description: "Order Status")
     store_id: String @doc(description: "Store Id")
     store_name: String @doc(description: "Store Name")
-    total_amount: Float @doc(description: "Total Amount")
-    total_net_amount: Float @doc(description: "Total Net Amount")
-    total_discount: Float @doc(description: "Total Discount")
+    total_amount: String @doc(description: "Total Amount")
+    total_net_amount: String @doc(description: "Total Net Amount")
+    total_discount: String @doc(description: "Total Discount")
     contact_address : Address @doc(description: "Contact Address")
     ship_to_address: Address @doc(description: "ship to Address")
     payments: [SalesEntryPayment] @doc(description: "Array of Payment Information")
@@ -62,7 +62,7 @@ type Address @doc(description: "shipping or billing address") {
 }
 
 type SalesEntryPayment @doc(description: "Payment lines for the order") {
-    amount: Float @doc(description: "Amount")
+    amount: String @doc(description: "Amount")
     card_no: String @doc(description: "Card No")
     currency_code: String @doc(description: "Currency Code")
     currency_factor: String @doc(description: "Currency Factor")
@@ -71,22 +71,22 @@ type SalesEntryPayment @doc(description: "Payment lines for the order") {
 }
 
 type SalesEntryLine @doc(description: "Item Information") {
-    amount: Float @doc(description: "Amount")
+    amount: String @doc(description: "Amount")
     click_and_collect_line: String @doc(description: "Click and Collect Line")
-    discount_amount: Float @doc(description: "Discount Amount")
-    discount_percent: Float @doc(description: "Discount Percent")
+    discount_amount: String @doc(description: "Discount Amount")
+    discount_percent: String @doc(description: "Discount Percent")
     item_description: String @doc(description: "Item Description")
     item_id: String @doc(description: "Item Id")
     item_image_id: String @doc(description: "Item Image Id")
     line_number: String @doc(description: "Line Number")
     line_type: String @doc(description: "Line Type")
-    net_amount: Float @doc(description: "Net Amount")
-    net_price: Float @doc(description: "Net Price")
+    net_amount: String @doc(description: "Net Amount")
+    net_price: String @doc(description: "Net Price")
     parent_line: String @doc(description: "Parent Line")
-    price: Float @doc(description: "Price")
-    quantity: Int @doc(description: "Quantity")
+    price: String @doc(description: "Price")
+    quantity: String @doc(description: "Quantity")
     store_id: String @doc(description: "Store Id")
-    tax_amount: Float @doc(description: "Tax Amount")
+    tax_amount: String @doc(description: "Tax Amount")
     uom_id: String @doc(description: "Unit of Measure Id")
     variant_description: String @doc(description: "Variant Description")
     variant_id: String @doc(description: "Variant Id")

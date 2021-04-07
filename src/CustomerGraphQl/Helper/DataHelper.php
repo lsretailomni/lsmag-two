@@ -16,6 +16,7 @@ use \Ls\OmniGraphQl\Helper\DataHelper as Helper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 
 /**
  * Data Helper for getting customer related information
@@ -44,6 +45,11 @@ class DataHelper
     private $lsr;
 
     /**
+     * @var PriceHelper
+     */
+    public $priceHelper;
+
+    /**
      * DataHelper constructor.
      * @param LoyaltyHelper $loyaltyHelper
      * @param OrderHelper $orderHelper
@@ -54,11 +60,13 @@ class DataHelper
         LoyaltyHelper $loyaltyHelper,
         OrderHelper $orderHelper,
         Helper $helper,
+        PriceHelper $priceHelper,
         LSR $lsr
     ) {
         $this->loyaltyHelper = $loyaltyHelper;
         $this->orderHelper   = $orderHelper;
         $this->helper        = $helper;
+        $this->priceHelper   = $priceHelper;
         $this->lsr           = $lsr;
     }
 
@@ -175,9 +183,9 @@ class DataHelper
             'status'                  => $salesEntry->getStatus(),
             'store_id'                => $salesEntry->getStoreId(),
             'store_name'              => $salesEntry->getStoreName(),
-            'total_amount'            => $salesEntry->getTotalAmount(),
-            'total_net_amount'        => $salesEntry->getTotalNetAmount(),
-            'total_discount'          => $salesEntry->getTotalDiscount(),
+            'total_amount'            => $this->formatValue($salesEntry->getTotalAmount()),
+            'total_net_amount'        => $this->formatValue($salesEntry->getTotalNetAmount()),
+            'total_discount'          => $this->formatValue($salesEntry->getTotalDiscount()),
             'contact_address'         => $this->getAddress($salesEntry->getContactAddress()),
             'ship_to_address'         => $this->getAddress($salesEntry->getShipToAddress()),
             'payments'                => $this->getPayments($salesEntry->getPayments()),
@@ -215,10 +223,10 @@ class DataHelper
         $paymentsArray = [];
         foreach ($payments->getSalesEntryPayment() as $payment) {
             $paymentsArray[] = [
-                'amount'          => $payment->getAmount(),
+                'amount'          => $this->formatValue($payment->getAmount()),
                 'card_no'         => $payment->getCardNo(),
                 'currency_code'   => $payment->getCurrencyCode(),
-                'currency_factor' => $payment->getCurrencyFactor(),
+                'currency_factor' => $this->formatValue($payment->getCurrencyFactor()),
                 'line_number'     => $payment->getLineNumber(),
                 'tender_type'     => $payment->getTenderType(),
             ];
@@ -237,22 +245,22 @@ class DataHelper
         $itemsArray = [];
         foreach ($items->getSalesEntryLine() as $item) {
             $itemsArray[] = [
-                'amount'                 => $item->getAmount(),
+                'amount'                 => $this->formatValue($item->getAmount()),
                 'click_and_collect_line' => $item->getClickAndCollectLine(),
-                'discount_amount'        => $item->getDiscountAmount(),
-                'discount_percent'       => $item->getDiscountPercent(),
+                'discount_amount'        => $this->formatValue($item->getDiscountAmount()),
+                'discount_percent'       => $this->formatValue($item->getDiscountPercent()),
                 'item_description'       => $item->getItemDescription(),
                 'item_id'                => $item->getItemId(),
                 'item_image_id'          => $item->getItemImageId(),
                 'line_number'            => $item->getLineNumber(),
                 'line_type'              => $item->getLineType(),
-                'net_amount'             => $item->getNetAmount(),
-                'net_price'              => $item->getNetPrice(),
+                'net_amount'             => $this->formatValue($item->getNetAmount()),
+                'net_price'              => $this->formatValue($item->getNetPrice()),
                 'parent_line'            => $item->getParentLine(),
-                'price'                  => $item->getPrice(),
-                'quantity'               => $item->getQuantity(),
+                'price'                  => $this->formatValue($item->getPrice()),
+                'quantity'               => $this->formatValue($item->getQuantity()),
                 'store_id'               => $item->getStoreId(),
-                'tax_amount'             => $item->getTaxAmount(),
+                'tax_amount'             => $this->formatValue($item->getTaxAmount()),
                 'uom_id'                 => $item->getUomId(),
                 'variant_description'    => $item->getVariantDescription(),
                 'variant_id'             => $item->getVariantId()
@@ -260,5 +268,15 @@ class DataHelper
         }
 
         return $itemsArray;
+    }
+
+    /**
+     * Format value to two decimal places
+     * @param $value
+     * @return float|string
+     */
+    public function formatValue($value)
+    {
+        return $this->priceHelper->currency($value, false, false);
     }
 }

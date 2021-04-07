@@ -12,8 +12,7 @@ use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class AccountAddressObserver
- * @package Ls\Customer\Observer
+ * Class AccountAddressObserver for adding and updating address
  */
 class AccountAddressObserver implements ObserverInterface
 {
