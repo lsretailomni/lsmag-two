@@ -3,11 +3,13 @@
 namespace Ls\Customer\Observer;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -55,7 +57,9 @@ class AccountAddressObserver implements ObserverInterface
 
     /**
      * @param Observer $observer
-     * @return $this
+     * @return $this|void
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
