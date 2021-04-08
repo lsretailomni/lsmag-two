@@ -86,14 +86,14 @@ class DataHelper extends AbstractHelper
         Session $customerSession
     ) {
         parent::__construct($context);
-        $this->eventManager = $eventManager;
-        $this->basketHelper = $basketHelper;
-        $this->checkoutSession = $checkoutSession;
+        $this->eventManager          = $eventManager;
+        $this->basketHelper          = $basketHelper;
+        $this->checkoutSession       = $checkoutSession;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->orderRepository = $orderRepository;
-        $this->customerRepository = $customerRepository;
-        $this->customerFactory = $customerFactory;
-        $this->customerSession = $customerSession;
+        $this->orderRepository       = $orderRepository;
+        $this->customerRepository    = $customerRepository;
+        $this->customerFactory       = $customerFactory;
+        $this->customerSession       = $customerSession;
     }
 
     /**
@@ -128,8 +128,8 @@ class DataHelper extends AbstractHelper
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('increment_id', $incrementId)->create()
             ->setPageSize(1)->setCurrentPage(1);
-        $orderData = null;
-        $order = $this->orderRepository->getList($searchCriteria);
+        $orderData      = null;
+        $order          = $this->orderRepository->getList($searchCriteria);
 
         if ($order->getTotalCount()) {
             $orderData = current($order->getItems());
@@ -161,5 +161,14 @@ class DataHelper extends AbstractHelper
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
+    }
+
+    /**
+     * Getting customer session
+     * @return Session
+     */
+    public function getCustomerSession()
+    {
+        return $this->customerSession;
     }
 }
