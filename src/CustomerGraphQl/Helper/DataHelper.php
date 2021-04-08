@@ -14,9 +14,9 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\OmniGraphQl\Helper\DataHelper as Helper;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Directory\Model\Currency;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 
 /**
  * Data Helper for getting customer related information
@@ -45,29 +45,29 @@ class DataHelper
     private $lsr;
 
     /**
-     * @var PriceHelper
+     * @var Currency
      */
-    public $priceHelper;
+    public $currencyHelper;
 
     /**
      * DataHelper constructor.
      * @param LoyaltyHelper $loyaltyHelper
      * @param OrderHelper $orderHelper
      * @param Helper $helper
-     * @param PriceHelper $priceHelper
+     * @param Currency $currencyHelper
      * @param LSR $lsr
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
         OrderHelper $orderHelper,
         Helper $helper,
-        PriceHelper $priceHelper,
+        Currency $currencyHelper,
         LSR $lsr
     ) {
         $this->loyaltyHelper = $loyaltyHelper;
         $this->orderHelper   = $orderHelper;
         $this->helper        = $helper;
-        $this->priceHelper   = $priceHelper;
+        $this->currencyHelper   = $currencyHelper;
         $this->lsr           = $lsr;
     }
 
@@ -98,13 +98,14 @@ class DataHelper
                         $schemeArray                  = [];
                         $schemeArray['club_name']     = $scheme->getClub()->getName();
                         $schemeArray['loyalty_level'] = $scheme->getDescription();
-                        $schemeArray['point_balance'] = $result->getAccount()->getPointBalance();
+                        $schemeArray['point_balance'] = $this->formatValue($result->getAccount()->getPointBalance());
                         $nextSchemeLevel              = $scheme->getNextScheme();
                         if (!empty($nextSchemeLevel)) {
                             $schemeArray['next_level']['club_name']     = $nextSchemeLevel->getClub()->getName();
                             $schemeArray['next_level']['loyalty_level'] = $nextSchemeLevel->getDescription();
                             $schemeArray['next_level']['benefits']      = $nextSchemeLevel->getPerks();
-                            $schemeArray['next_level']['points_needed'] = $nextSchemeLevel->getPointsNeeded();
+                            $schemeArray['next_level']['points_needed'] =
+                                $this->formatValue($nextSchemeLevel->getPointsNeeded());
                         }
                         $customerAccount['scheme'] = $schemeArray;
                     }
@@ -175,9 +176,9 @@ class DataHelper
             'external_id'             => $salesEntry->getExternalId(),
             'payment_status'          => $salesEntry->getPaymentStatus(),
             'id_type'                 => $salesEntry->getIdType(),
-            'line_item_count'         => $salesEntry->getLineItemCount(),
-            'points_rewarded'         => $salesEntry->getPointsRewarded(),
-            'points_used'             => $salesEntry->getPointsUsedInOrder(),
+            'line_item_count'         => $this->formatValue($salesEntry->getLineItemCount()),
+            'points_rewarded'         => $this->formatValue($salesEntry->getPointsRewarded()),
+            'points_used'             => $this->formatValue($salesEntry->getPointsUsedInOrder()),
             'posted'                  => $salesEntry->getPosted(),
             'ship_to_name'            => $salesEntry->getShipToName(),
             'ship_to_email'           => $salesEntry->getShipToEmail(),
@@ -278,6 +279,6 @@ class DataHelper
      */
     public function formatValue($value)
     {
-        return $this->priceHelper->currency($value, false, false);
+        return $this->currencyHelper->format($value, ['display'=>\Zend_Currency::NO_SYMBOL], false);
     }
 }
