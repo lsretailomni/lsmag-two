@@ -716,9 +716,9 @@ class ContactHelper extends AbstractHelper
                 $dob = $this->date->date("Y-m-d\T00:00:00", strtotime($customer->getData('dob')));
                 $memberContact->setBirthDay($dob);
             }
-            $memberContact->setFirstName($customerAddress->getFirstname())
+            $memberContact->setFirstName($customer->getFirstname())
                 ->setGender($this->getGenderStringById($customer->getData('gender')))
-                ->setLastName($customerAddress->getLastname())
+                ->setLastName($customer->getLastname())
                 ->setUserName($customer->getData('lsr_username'))
                 ->setEmail($customer->getEmail())
                 ->setMiddleName('  ')
