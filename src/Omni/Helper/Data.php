@@ -376,8 +376,14 @@ class Data extends AbstractHelper
         $bothVersion = [];
         try {
             $results = explode('LS:', $pingResponseText);
+
             if (!empty($results)) {
-                $versions = explode('OMNI:', $results[1]);
+                if (!$this->lsr->getOmniVersion() || version_compare($this->lsr->getOmniVersion(), '4.16.0', '>=')) {
+                    $versions = explode('LS Commerce Service:', $results[1]);
+                } else {
+                    $versions = explode('OMNI:', $results[1]);
+                }
+
                 if (!empty($versions)) {
                     $serviceVersion                 = trim($versions[1]);
                     $bothVersion['service_version'] = $serviceVersion;
