@@ -716,6 +716,8 @@
     <column xsi:type="text" name="Code" nullable="true" comment="Code"/>
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
     <column xsi:type="text" name="ExplanatoryHeaderText" nullable="true" comment="ExplanatoryHeaderText"/>
+    <column xsi:type="int" name="GroupMaxSelection" padding="11" nullable="true" comment="GroupMaxSelection"/>
+    <column xsi:type="int" name="GroupMinSelection" padding="11" nullable="true" comment="GroupMinSelection"/>
     <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="int" name="MaxSelection" padding="11" nullable="true" comment="MaxSelection"/>
