@@ -21,6 +21,78 @@ class SchemaUpdateGenerator implements GeneratorInterface
     /** @var Metadata */
     protected $metadata;
 
+    /** @var array List of Replication Tables with unique field */
+    public static $indexerColumnLists = [
+        "ls_replication_repl_attribute"                  => ["Code", "scope_id"],
+        "ls_replication_repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
+        "ls_replication_repl_attribute_value"            => [
+            "Code",
+            "LinkField1",
+            "LinkField2",
+            "LinkField3",
+            "Value",
+            "scope_id"
+        ],
+        "ls_replication_repl_barcode"                    => ["nav_id", "scope_id"],
+        "ls_replication_repl_country_code"               => ["Name", "scope_id"],
+        "ls_replication_repl_currency"                   => ["CurrencyCode", "scope_id"],
+        "ls_replication_repl_currency_exch_rate"         => ["CurrencyCode", "scope_id"],
+        "ls_replication_repl_customer"                   => ["AccountNumber", "scope_id"],
+        "ls_replication_repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_replication_repl_data_translation_lang_code" => ["Code", "scope_id"],
+        "ls_replication_repl_discount"                   => [
+            "ItemId",
+            "LoyaltySchemeCode",
+            "OfferNo",
+            "StoreId",
+            "VariantId",
+            "MinimumQuantity",
+            "scope_id"
+        ],
+        "ls_replication_repl_discount_validation"        => ["nav_id", "scope_id"],
+        "ls_replication_repl_extended_variant_value"     => [
+            "Code",
+            "FrameworkCode",
+            "ItemId",
+            "Value",
+            "scope_id"
+        ],
+        "ls_replication_repl_hierarchy"                  => ["nav_id", "scope_id"],
+        "ls_replication_repl_hierarchy_leaf"             => ["nav_id", "NodeId", "scope_id"],
+        "ls_replication_repl_hierarchy_node"             => ["nav_id", "scope_id"],
+        "ls_replication_repl_image"                      => ["nav_id", "scope_id"],
+        "ls_replication_repl_image_link"                 => ["ImageId", "KeyValue", "scope_id"],
+        "ls_replication_repl_item"                       => ["nav_id", "scope_id"],
+        "ls_replication_repl_item_category"              => ["nav_id", "scope_id"],
+        "ls_replication_repl_item_unit_of_measure"       => ["Code", "ItemId", "scope_id"],
+        "ls_replication_repl_item_variant_registration"  => [
+            "ItemId",
+            "VariantId",
+            "scope_id"
+        ],
+        "ls_replication_repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
+        "ls_replication_repl_price"                      => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
+            "QtyPerUnitOfMeasure",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
+        "ls_replication_repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],
+        "ls_replication_repl_product_group"              => ["nav_id", "scope_id"],
+        "ls_replication_repl_shipping_agent"             => ["Name", "scope_id"],
+        "ls_replication_repl_store"                      => ["nav_id", "scope_id"],
+        "ls_replication_repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
+        "ls_replication_repl_unit_of_measure"            => ["nav_id", "scope_id"],
+        "ls_replication_repl_vendor"                     => ["Name", "scope_id"],
+        "ls_replication_repl_hierarchy_hosp_deal_line"   => ["DealNo", "ItemNo", "LineNo", "UnitOfMeasure", "scope_id"],
+        "ls_replication_repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
+        "ls_replication_repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
+        "ls_replication_repl_item_modifier"              => ["nav_id", "VariantCode", "Code", "SubCode", "TriggerCode", "UnitOfMeasure", "scope_id"],
+        "ls_replication_loy_item"                        => ["nav_id"]
+    ];
+
     /**
      * SchemaUpdateGenerator constructor.
      * @param Metadata $metadata
@@ -46,6 +118,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             if (strpos($operationName, 'ReplEcomm') !== false) {
                 $replicationOperation = $this->metadata->getReplicationOperationByName($operation->getName());
                 $tableName            = "ls_replication_" . $replicationOperation->getTableName();
+                $tableIncludedInIndex = (array_key_exists($tableName, self::$indexerColumnLists) ? true : false);
                 if (!in_array($tableName, $tables)) {
                     $table = $dom->createElement('table');
                     $table->setAttribute('name', $tableName);
@@ -146,6 +219,14 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         if ($name == 'Id') {
                             $name = 'nav_id';
                         }
+
+                        /** OMNI-5424, all indexer columns should be varchar 100 */
+                        if($tableIncludedInIndex){
+                            if(in_array($name,self::$indexerColumnLists[$tableName])){
+                                $fieldType = 'varchar';
+                            }
+                        }
+
                         $defaultColumnsArray[] = [
                             'name'       => $name,
                             'field_type' => $fieldType,
@@ -164,6 +245,8 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         }
                         if ($columnValue['field_type'] == 'int')
                             $extraColumn->setAttribute('padding', '11');
+                        if($columnValue['field_type'] == 'varchar')
+                            $extraColumn->setAttribute('length',150);
                         if ($columnValue['default'] != '')
                             $extraColumn->setAttribute('default', $columnValue['default']);
                         if ($columnValue['name'] == 'created_at')
@@ -174,6 +257,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         $extraColumn->setAttribute('comment', $columnValue['comment']);
                         $table->appendChild($extraColumn);
                     }
+                    // for primary key
                     $constraint = $dom->createElement('constraint');
                     $constraint->setAttribute('xsi:type', 'primary');
                     $constraint->setAttribute('referenceId', 'PRIMARY');
@@ -181,8 +265,32 @@ class SchemaUpdateGenerator implements GeneratorInterface
                     $column->setAttribute('name', $replicationOperation->getTableColumnId());
                     $constraint->appendChild($column);
                     $table->appendChild($constraint);
+                    //indexer based on the searchable column and add here
+                    /**
+                     * this will be the final outcome
+                     *  <index referenceId="CATALOG_PRODUCT_ENTITY_SKU" indexType="btree">
+                     *       <column name="sku"/>
+                     *  </index>
+                     */
+                    if(array_key_exists($tableName, self::$indexerColumnLists)){
+                        $indexerColumns = self::$indexerColumnLists[$tableName];
+                        if($indexerColumns && !empty($indexerColumns)){
+                            foreach ($indexerColumns as $indexerColumn){
+                                $referenceId = strtoupper(implode("_", array($tableName, $indexerColumn)));
+                                $indexColumnNode = $dom->createElement('index');
+                                $indexColumnNode->setAttribute('indexType', 'btree');
+                                $indexColumnNode->setAttribute('referenceId', $referenceId);
+                                $column = $dom->createElement('column');
+                                $column->setAttribute('name', $indexerColumn);
+                                $indexColumnNode->appendChild($column);
+                                $table->appendChild($indexColumnNode);
+                            }
+                        }
+                    }
+
                     $schema->appendChild($table);
                     array_push($tables, $tableName);
+
                 }
             }
         }

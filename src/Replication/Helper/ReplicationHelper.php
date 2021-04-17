@@ -3,20 +3,20 @@
 namespace Ls\Replication\Helper;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use \Ls\Replication\Logger\Logger;
-use \Ls\Replication\Model\ReplAttributeValue;
-use \Ls\Replication\Model\ReplAttributeValueSearchResults;
-use \Ls\Replication\Model\ReplImageLinkSearchResults;
-use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
-use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use Ls\Replication\Logger\Logger;
+use Ls\Replication\Model\ReplAttributeValue;
+use Ls\Replication\Model\ReplAttributeValueSearchResults;
+use Ls\Replication\Model\ReplImageLinkSearchResults;
+use Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
+use Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
@@ -857,25 +857,35 @@ class ReplicationHelper extends AbstractHelper
      */
     public function updateCronStatus($data, $path, $storeId = false)
     {
+
         /**
-         * Added the condition to update config value based on specific store id.
+         * add a check here to see if new value is different from old one in order to avoid unnecessory flushing.
          */
-        if ($storeId) {
-            $this->configWriter->save(
-                $path,
-                ($data) ? 1 : 0,
-                ScopeInterface::SCOPE_STORES,
-                $storeId
-            );
+        $existingData = $this->lsr->getStoreConfig($path, $storeId);
+
+        if ($existingData && $existingData === $data) {
+            return;
         } else {
-            $this->configWriter->save(
-                $path,
-                ($data) ? 1 : 0,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                0
-            );
+            /**
+             * Added the condition to update config value based on specific store id.
+             */
+            if ($storeId) {
+                $this->configWriter->save(
+                    $path,
+                    ($data) ? 1 : 0,
+                    ScopeInterface::SCOPE_STORES,
+                    $storeId
+                );
+            } else {
+                $this->configWriter->save(
+                    $path,
+                    ($data) ? 1 : 0,
+                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                    0
+                );
+            }
+            $this->flushByTypeCode('config');
         }
-        $this->flushByTypeCode('config');
     }
 
     /**
