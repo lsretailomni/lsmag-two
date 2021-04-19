@@ -56,7 +56,7 @@ abstract class AbstractReplicationTask
             "VariantDimension5",
             "VariantDimension6"
         ],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo","DealLineNo", "LineNo", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"  => ["DealNo", "DealLineNo", "LineNo", "scope_id"],
 
     ];
 
@@ -148,6 +148,10 @@ abstract class AbstractReplicationTask
     public $rep_helper;
     /** @var integer */
     public $recordsRemaining = 0;
+    /** @var bool */
+    public $isConfigChanged = false;
+    /** @var bool */
+    public $cronStatus = false;
 
     /**
      * AbstractReplicationTask constructor.
@@ -229,8 +233,8 @@ abstract class AbstractReplicationTask
                         $response = $request->execute();
                         if (method_exists($response, 'getResult')) {
                             $result                 = $response->getResult();
-                            $lastKey                = $result->getLastKey();
-                            $maxKey                 = $result->getMaxKey();
+                            $newLastKey             = $result->getLastKey();
+                            $newMaxKey              = $result->getMaxKey();
                             $remaining              = $result->getRecordsRemaining();
                             $this->recordsRemaining = $remaining;
                             $traversable            = $this->getIterator($result);
@@ -244,15 +248,30 @@ abstract class AbstractReplicationTask
 
                                         $this->saveSource($properties, $source);
                                     }
-                                    $this->updateSuccessStatus($store->getId());
+                                    $this->isConfigChanged = true;
                                 }
-                                $this->persistLastKey($lastKey, $store->getId());
-                                if ($remaining == 0) {
-                                    $this->saveReplicationStatus(1, $store->getId());
-                                }
+
                             }
-                            $this->persistMaxKey($maxKey, $store->getId());
-                            $this->rep_helper->flushByTypeCode('config');
+                            if ($remaining == 0) {
+                                $this->cronStatus = true;
+                            }
+                            if ($lastKey != $newLastKey) {
+                                $this->isConfigChanged = true;
+                                $this->persistLastKey($newLastKey, $store->getId());
+                            }
+                            if ($maxKey != $newMaxKey) {
+                                $this->isConfigChanged = true;
+                                $this->persistMaxKey($newMaxKey, $store->getId());
+                            }
+                            $existingCronStatus = $lsr->getStoreConfig($this->getConfigPathStatus(), $store->getId());
+                            if ($existingCronStatus != $this->cronStatus) {
+                                $this->rep_helper->updateCronStatus($this->cronStatus, $this->getConfigPathStatus(), $store->getId(), false);
+                                $this->isConfigChanged = true;
+                            }
+                            $this->updateSuccessStatus($store->getId());
+                            if ($this->isConfigChanged) {
+                                $this->rep_helper->flushByTypeCode('config');
+                            }
                         } else {
                             $this->logger->debug('No result found for ' . get_class($this->getMainEntity()) . '. Please refer omniclient log for details.');
                         }
@@ -286,21 +305,21 @@ abstract class AbstractReplicationTask
         $confPath = $this->getConfigPath();
         if ($confPath == "ls_mag/replication/repl_attribute" ||
             $confPath == "ls_mag/replication/repl_attribute_option_value") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE, ($storeId) ?: false);
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT, ($storeId) ?: false);
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY, ($storeId) ?: false);
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_discount") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT, ($storeId) ?: false);
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_item") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT, ($storeId) ?: false);
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ITEM_UPDATES, ($storeId) ?: false);
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ITEM_UPDATES, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_vendor") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR, ($storeId) ?: false);
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_loy_vendor_item_mapping") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE, ($storeId) ?: false);
+            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE, ($storeId) ?: false, false);
         }
     }
 

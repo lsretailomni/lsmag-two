@@ -67,6 +67,28 @@ interface ReplItemModifierInterface
     public function getExplanatoryHeaderText();
 
     /**
+     * @param int $GroupMaxSelection
+     * @return $this
+     */
+    public function setGroupMaxSelection($GroupMaxSelection);
+
+    /**
+     * @return int
+     */
+    public function getGroupMaxSelection();
+
+    /**
+     * @param int $GroupMinSelection
+     * @return $this
+     */
+    public function setGroupMinSelection($GroupMinSelection);
+
+    /**
+     * @return int
+     */
+    public function getGroupMinSelection();
+
+    /**
      * @param string $nav_id
      * @return $this
      */

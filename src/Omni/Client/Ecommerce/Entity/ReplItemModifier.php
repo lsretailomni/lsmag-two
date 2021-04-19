@@ -44,6 +44,16 @@ class ReplItemModifier
     protected $ExplanatoryHeaderText = null;
 
     /**
+     * @property int $GroupMaxSelection
+     */
+    protected $GroupMaxSelection = null;
+
+    /**
+     * @property int $GroupMinSelection
+     */
+    protected $GroupMinSelection = null;
+
+    /**
      * @property string $Id
      */
     protected $Id = null;
@@ -221,6 +231,42 @@ class ReplItemModifier
     public function getExplanatoryHeaderText()
     {
         return $this->ExplanatoryHeaderText;
+    }
+
+    /**
+     * @param int $GroupMaxSelection
+     * @return $this
+     */
+    public function setGroupMaxSelection($GroupMaxSelection)
+    {
+        $this->GroupMaxSelection = $GroupMaxSelection;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGroupMaxSelection()
+    {
+        return $this->GroupMaxSelection;
+    }
+
+    /**
+     * @param int $GroupMinSelection
+     * @return $this
+     */
+    public function setGroupMinSelection($GroupMinSelection)
+    {
+        $this->GroupMinSelection = $GroupMinSelection;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGroupMinSelection()
+    {
+        return $this->GroupMinSelection;
     }
 
     /**

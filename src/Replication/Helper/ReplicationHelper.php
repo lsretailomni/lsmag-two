@@ -854,28 +854,41 @@ class ReplicationHelper extends AbstractHelper
      * @param $data
      * @param $path
      * @param bool $storeId
+     * @param bool $flushCache
      */
-    public function updateCronStatus($data, $path, $storeId = false)
+    public function updateCronStatus($data, $path, $storeId = false, $flushCache = true)
     {
+
         /**
-         * Added the condition to update config value based on specific store id.
+         * add a check here to see if new value is different from old one in order to avoid unnecessory flushing.
          */
-        if ($storeId) {
-            $this->configWriter->save(
-                $path,
-                ($data) ? 1 : 0,
-                ScopeInterface::SCOPE_STORES,
-                $storeId
-            );
+        $existingData = $this->lsr->getStoreConfig($path, $storeId);
+
+        if ($existingData == $data) {
+            return;
         } else {
-            $this->configWriter->save(
-                $path,
-                ($data) ? 1 : 0,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                0
-            );
+            /**
+             * Added the condition to update config value based on specific store id.
+             */
+            if ($storeId) {
+                $this->configWriter->save(
+                    $path,
+                    ($data) ? 1 : 0,
+                    ScopeInterface::SCOPE_STORES,
+                    $storeId
+                );
+            } else {
+                $this->configWriter->save(
+                    $path,
+                    ($data) ? 1 : 0,
+                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                    0
+                );
+            }
+            if($flushCache) {
+                $this->flushByTypeCode('config');
+            }
         }
-        $this->flushByTypeCode('config');
     }
 
     /**
