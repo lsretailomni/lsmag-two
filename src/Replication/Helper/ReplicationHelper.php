@@ -3,20 +3,20 @@
 namespace Ls\Replication\Helper;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use Ls\Replication\Logger\Logger;
-use Ls\Replication\Model\ReplAttributeValue;
-use Ls\Replication\Model\ReplAttributeValueSearchResults;
-use Ls\Replication\Model\ReplImageLinkSearchResults;
-use Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplAttributeValue;
+use \Ls\Replication\Model\ReplAttributeValueSearchResults;
+use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
@@ -854,6 +854,7 @@ class ReplicationHelper extends AbstractHelper
      * @param $data
      * @param $path
      * @param bool $storeId
+     * @param bool $flushCache
      */
     public function updateCronStatus($data, $path, $storeId = false, $flushCache = true)
     {

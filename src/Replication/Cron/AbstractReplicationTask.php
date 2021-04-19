@@ -249,18 +249,15 @@ abstract class AbstractReplicationTask
                                         $this->saveSource($properties, $source);
                                     }
                                     $this->isConfigChanged = true;
-                                    $this->updateSuccessStatus($store->getId());
                                 }
-                                if ($lastKey != $newLastKey) {
-                                    $this->isConfigChanged = true;
-                                    $this->persistLastKey($newLastKey, $store->getId());
-                                }
-                                //$this->persistLastKey($lastKey, $store->getId());
 
                             }
                             if ($remaining == 0) {
                                 $this->cronStatus = true;
-                                //$this->saveReplicationStatus(1, $store->getId());
+                            }
+                            if ($lastKey != $newLastKey) {
+                                $this->isConfigChanged = true;
+                                $this->persistLastKey($newLastKey, $store->getId());
                             }
                             if ($maxKey != $newMaxKey) {
                                 $this->isConfigChanged = true;
@@ -271,8 +268,7 @@ abstract class AbstractReplicationTask
                                 $this->rep_helper->updateCronStatus($this->cronStatus, $this->getConfigPathStatus(), $store->getId(), false);
                                 $this->isConfigChanged = true;
                             }
-
-                            //$this->persistMaxKey($maxKey, $store->getId());
+                            $this->updateSuccessStatus($store->getId());
                             if ($this->isConfigChanged) {
                                 $this->rep_helper->flushByTypeCode('config');
                             }
