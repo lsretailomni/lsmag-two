@@ -222,7 +222,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
 
                         /** OMNI-5424, all indexer columns should be varchar 100 */
                         if($tableIncludedInIndex){
-                            if(in_array($name,self::$indexerColumnLists[$tableName])){
+                            if(in_array($name,self::$indexerColumnLists[$tableName]) && $fieldType == 'text'){
                                 $fieldType = 'varchar';
                             }
                         }
@@ -246,7 +246,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         if ($columnValue['field_type'] == 'int')
                             $extraColumn->setAttribute('padding', '11');
                         if($columnValue['field_type'] == 'varchar')
-                            $extraColumn->setAttribute('length',150);
+                            $extraColumn->setAttribute('length',200);
                         if ($columnValue['default'] != '')
                             $extraColumn->setAttribute('default', $columnValue['default']);
                         if ($columnValue['name'] == 'created_at')

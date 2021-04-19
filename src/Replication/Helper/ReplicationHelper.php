@@ -855,7 +855,7 @@ class ReplicationHelper extends AbstractHelper
      * @param $path
      * @param bool $storeId
      */
-    public function updateCronStatus($data, $path, $storeId = false)
+    public function updateCronStatus($data, $path, $storeId = false, $flushCache = true)
     {
 
         /**
@@ -863,7 +863,7 @@ class ReplicationHelper extends AbstractHelper
          */
         $existingData = $this->lsr->getStoreConfig($path, $storeId);
 
-        if ($existingData && $existingData === $data) {
+        if ($existingData == $data) {
             return;
         } else {
             /**
@@ -884,7 +884,9 @@ class ReplicationHelper extends AbstractHelper
                     0
                 );
             }
-            $this->flushByTypeCode('config');
+            if($flushCache) {
+                $this->flushByTypeCode('config');
+            }
         }
     }
 
