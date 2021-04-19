@@ -1,6 +1,8 @@
 type Mutation {
 applyLsGiftCard(input: ApplyLsGiftCardInput): LsGiftCardOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\ApplyGiftCard") @doc(description: "Redeem gift card code")
 removeLsGiftCard(input: RemoveLsGiftCardInput): LsGiftCardOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\RemoveGiftCard") @doc(description: "Remove gift card code")
+applyLsLoyaltyPoints(input: ApplyLsLoyaltyPointsInput): LsLoyaltyPointsOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\LoyaltyPoints\\ApplyLoyaltyPoints") @doc(description: "Redeem loyalty points")
+removeLsLoyaltyPoints(input: RemoveLsLoyaltyPointsInput): LsLoyaltyPointsOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\LoyaltyPoints\\RemoveLoyaltyPoints") @doc(description: "Remove loyalty points")
 }
 
 input ApplyLsGiftCardInput {
@@ -17,13 +19,34 @@ type LsGiftCardOutput {
     cart: Cart!
 }
 
+type LsLoyaltyPointsOutput {
+    cart: Cart!
+}
+
 type AppliedGiftCard {
     code: String
     amount: Float
 }
 
+input ApplyLsLoyaltyPointsInput {
+      cart_id: String! @doc(description: "Specifies the quote id and set the gift card code.")
+      loyalty_points: Int! @doc(description: "Specifies the loyalty points to be redeemed")
+}
+
+input RemoveLsLoyaltyPointsInput {
+      cart_id: String! @doc(description: "Specifies the quote id and remove the loyalty points.")
+}
+
+type AppliedLoyaltyPoints {
+    points_earn: String
+    points_spent: String
+    points_discount: String
+    point_rate: String
+}
+
 type Cart {
      applied_gift_card: AppliedGiftCard @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\AppliedGiftCard") @doc(description:"An array of `Gift Card` object.")
+     loyalty_points_info: AppliedLoyaltyPoints @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\LoyaltyPoints\\LoyaltyPointsInfo") @doc(description:"An array of `Loyalty Point` object.")
 }
 
 type Order {
