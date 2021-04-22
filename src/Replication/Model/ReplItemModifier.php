@@ -47,6 +47,16 @@ class ReplItemModifier extends AbstractModel implements ReplItemModifierInterfac
     protected $ExplanatoryHeaderText = null;
 
     /**
+     * @property int $GroupMaxSelection
+     */
+    protected $GroupMaxSelection = null;
+
+    /**
+     * @property int $GroupMinSelection
+     */
+    protected $GroupMinSelection = null;
+
+    /**
      * @property string $nav_id
      */
     protected $nav_id = null;
@@ -269,6 +279,46 @@ class ReplItemModifier extends AbstractModel implements ReplItemModifierInterfac
     public function getExplanatoryHeaderText()
     {
         return $this->getData( 'ExplanatoryHeaderText' );
+    }
+
+    /**
+     * @param int $GroupMaxSelection
+     * @return $this
+     */
+    public function setGroupMaxSelection($GroupMaxSelection)
+    {
+        $this->setData( 'GroupMaxSelection', $GroupMaxSelection );
+        $this->GroupMaxSelection = $GroupMaxSelection;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGroupMaxSelection()
+    {
+        return $this->getData( 'GroupMaxSelection' );
+    }
+
+    /**
+     * @param int $GroupMinSelection
+     * @return $this
+     */
+    public function setGroupMinSelection($GroupMinSelection)
+    {
+        $this->setData( 'GroupMinSelection', $GroupMinSelection );
+        $this->GroupMinSelection = $GroupMinSelection;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGroupMinSelection()
+    {
+        return $this->getData( 'GroupMinSelection' );
     }
 
     /**
