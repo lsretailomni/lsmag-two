@@ -14,6 +14,7 @@ use Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider;
 use Magento\Framework\View\Element\UiComponent\DataProvider\DataProviderInterface;
 use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
 use Magento\Framework\Xml\Parser;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\System\Store as StoreManager;
 use Magento\Ui\DataProvider\AddFieldToCollectionInterface;
 use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
@@ -121,7 +122,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $cronsGroupListing = $this->readCronFile();
         $items             = [];
         $counter           = 1;
-        $this->rep_helper->flushByTypeCode('config');
         $storeId = $this->request->getParam('store');
         if (empty($storeId)) {
             $storeId = 1;
@@ -144,7 +144,11 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $cronName              = $joblist['_attribute']['name'];
                 if ($path != '') {
                     $pathNew               = $path . $cronName;
-                    $fullReplicationStatus = $this->lsr->getStoreConfig($pathNew, $storeId);
+                    $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                        $pathNew,
+                        ScopeInterface::SCOPE_STORES,
+                        $storeId
+                    );
                 }
 
                 /**
@@ -152,7 +156,11 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                  */
                 $fullReplicationStatus = $this->getStatusByCronCode($cronName, $storeId, $fullReplicationStatus);
                 $lastExecute           = $this->rep_helper->convertDateTimeIntoCurrentTimeZone(
-                    $this->lsr->getStoreConfig('ls_mag/replication/last_execute_' . $cronName, $storeId),
+                    $this->lsr->getConfigValueFromDb(
+                        'ls_mag/replication/last_execute_' . $cronName,
+                        ScopeInterface::SCOPE_STORES,
+                        $storeId
+                    ),
                     'd M, Y h:i:s A'
                 );
                 $statusStr             = ($fullReplicationStatus == 1) ?
@@ -231,14 +239,22 @@ class CronsProvider extends DataProvider implements DataProviderInterface
     public function getStatusByCronCode($cronName = null, $storeId = null, $fullReplicationStatus)
     {
         if ($cronName == 'repl_data_translation_to_magento') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO, $storeId);
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
+                ScopeInterface::SCOPE_STORES,
+                $storeId);
             return $fullReplicationStatus;
         }
 
         if ($cronName == 'repl_attributes') {
-            $cronAttributeCheck        = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ATTRIBUTE, $storeId);
-            $cronAttributeVariantCheck = $this->lsr->getStoreConfig(
+            $cronAttributeCheck        = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
+            $cronAttributeVariantCheck = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                ScopeInterface::SCOPE_STORES,
                 $storeId
             );
             if ($cronAttributeCheck && $cronAttributeVariantCheck) {
@@ -247,46 +263,73 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             return $fullReplicationStatus;
         }
         if ($cronName == 'repl_category') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_CATEGORY, $storeId);
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_CATEGORY,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
             return $fullReplicationStatus;
         }
         if ($cronName == 'repl_products') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT, $storeId);
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_PRODUCT,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
             return $fullReplicationStatus;
         }
         if ($cronName == 'repl_discount_create') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_DISCOUNT,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
             return $fullReplicationStatus;
         }
         if ($cronName == 'repl_price_sync') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT_PRICE, $storeId);
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
             return $fullReplicationStatus;
         }
         if ($cronName == 'repl_inventory_sync') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
+                ScopeInterface::SCOPE_STORES,
                 $storeId
             );
             return $fullReplicationStatus;
         }
         if ($cronName == 'repl_item_updates_sync') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_UPDATES, $storeId);
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
             return $fullReplicationStatus;
         }
         if ($cronName == 'repl_item_images_sync') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_ITEM_IMAGES, $storeId);
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_ITEM_IMAGES,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
             return $fullReplicationStatus;
         }
         if ($cronName == 'repl_attributes_value_sync') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
+                ScopeInterface::SCOPE_STORES,
                 $storeId
             );
             return $fullReplicationStatus;
         }
         if ($cronName == 'repl_vendor_attributes_sync') {
-            $fullReplicationStatus = $this->lsr->getStoreConfig(
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE,
+                ScopeInterface::SCOPE_STORES,
                 $storeId
             );
             return $fullReplicationStatus;

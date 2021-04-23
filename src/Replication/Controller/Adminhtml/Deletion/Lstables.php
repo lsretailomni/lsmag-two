@@ -123,7 +123,6 @@ class Lstables extends Action
             $connection->query('DELETE FROM ' . $coreConfigTableName . '
             WHERE path = "ls_mag/replication/status_' . $jobName . '"');
             $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
-            $this->replHelper->flushByTypeCode('config');
             // @codingStandardsIgnoreEnd
             $this->messageManager->addSuccessMessage(__('%1 table truncated successfully.', $jobName));
             $this->_redirect('ls_repl/cron/grid/');
@@ -139,7 +138,6 @@ class Lstables extends Action
             $coreConfigTableName = $this->resource->getTableName('core_config_data');
             $connection->query('DELETE FROM ' . $coreConfigTableName . ' WHERE path LIKE "ls_mag/replication/%";');
             $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
-            $this->replHelper->flushByTypeCode('config');
             // @codingStandardsIgnoreEnd
             $this->messageManager->addSuccessMessage(__('All ls_ tables truncated successfully.'));
             $this->_redirect('adminhtml/system_config/edit/section/ls_mag');

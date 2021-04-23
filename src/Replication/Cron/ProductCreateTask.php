@@ -59,6 +59,7 @@ use Magento\Eav\Api\AttributeGroupRepositoryInterface;
 use Magento\Eav\Api\Data\AttributeGroupInterface;
 use Magento\Eav\Model\AttributeManagement;
 use Magento\Eav\Model\Config;
+use Magento\Eav\Model\Entity\Attribute\GroupFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory as EavAttributeCollectionFactory;
 use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -68,7 +69,7 @@ use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Eav\Model\Entity\Attribute\GroupFactory;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Create Items in magento replicated from omni
@@ -416,32 +417,39 @@ class ProductCreateTask
                         LSR::SC_CRON_PRODUCT_CONFIG_PATH_LAST_EXECUTE,
                         $store->getId()
                     );
-                    $fullReplicationImageLinkStatus = $this->lsr->getStoreConfig(
+                    $fullReplicationImageLinkStatus = $this->lsr->getConfigValueFromDb(
                         ReplEcommImageLinksTask::CONFIG_PATH_STATUS,
+                        ScopeInterface::SCOPE_STORES,
                         $store->getId()
                     );
-                    $fullReplicationBarcodeStatus   = $this->lsr->getStoreConfig(
+                    $fullReplicationBarcodeStatus   = $this->lsr->getConfigValueFromDb(
                         ReplEcommBarcodesTask::CONFIG_PATH_STATUS,
+                        ScopeInterface::SCOPE_STORES,
                         $store->getId()
                     );
-                    $fullReplicationPriceStatus     = $this->lsr->getStoreConfig(
+                    $fullReplicationPriceStatus     = $this->lsr->getConfigValueFromDb(
                         ReplEcommPricesTask::CONFIG_PATH_STATUS,
+                        ScopeInterface::SCOPE_STORES,
                         $store->getId()
                     );
-                    $fullReplicationInvStatus       = $this->lsr->getStoreConfig(
+                    $fullReplicationInvStatus       = $this->lsr->getConfigValueFromDb(
                         ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS,
+                        ScopeInterface::SCOPE_STORES,
                         $store->getId()
                     );
-                    $cronCategoryCheck              = $this->lsr->getStoreConfig(
+                    $cronCategoryCheck              = $this->lsr->getConfigValueFromDb(
                         LSR::SC_SUCCESS_CRON_CATEGORY,
+                        ScopeInterface::SCOPE_STORES,
                         $store->getId()
                     );
-                    $cronAttributeCheck             = $this->lsr->getStoreConfig(
+                    $cronAttributeCheck             = $this->lsr->getConfigValueFromDb(
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+                        ScopeInterface::SCOPE_STORES,
                         $store->getId()
                     );
-                    $cronAttributeVariantCheck      = $this->lsr->getStoreConfig(
+                    $cronAttributeVariantCheck      = $this->lsr->getConfigValueFromDb(
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                        ScopeInterface::SCOPE_STORES,
                         $store->getId()
                     );
                     if ($cronCategoryCheck == 1 &&
@@ -605,8 +613,9 @@ class ProductCreateTask
                         }
                         if ($items->getTotalCount() == 0) {
                             $this->caterItemsRemoval();
-                            $fullReplicationVariantStatus = $this->lsr->getStoreConfig(
+                            $fullReplicationVariantStatus = $this->lsr->getConfigValueFromDb(
                                 ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS,
+                                ScopeInterface::SCOPE_STORES,
                                 $store->getId()
                             );
                             if ($fullReplicationVariantStatus == 1) {
@@ -675,8 +684,8 @@ class ProductCreateTask
                 $this->replImageLinkRepositoryInterface->save($image);
                 continue;
             }
-            $types     = [];
-            $imageSize = [
+            $types           = [];
+            $imageSize       = [
                 'height' => LSR::DEFAULT_ITEM_IMAGE_HEIGHT,
                 'width'  => LSR::DEFAULT_ITEM_IMAGE_WIDTH
             ];
@@ -1273,7 +1282,11 @@ class ProductCreateTask
      */
     public function updateBarcodeOnly()
     {
-        $cronProductCheck = $this->lsr->getStoreConfig(LSR::SC_SUCCESS_CRON_PRODUCT, $this->store->getId());
+        $cronProductCheck = $this->lsr->getConfigValueFromDb(
+            LSR::SC_SUCCESS_CRON_PRODUCT,
+            ScopeInterface::SCOPE_STORES,
+            $this->store->getId()
+        );
         $barcodeBatchSize = $this->replicationHelper->getProductBarcodeBatchSize();
         if ($cronProductCheck == 1) {
             $criteria = $this->replicationHelper->buildCriteriaForNewItems(

@@ -9,7 +9,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-
+use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory as ConfigCollectionFactory;
+use Magento\Config\Model\ResourceModel\Config\Data\Collection as ConfigDataCollection;
 /**
  * LSR Model
  *
@@ -414,6 +415,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public $validateBaseUrlResponse = null;
 
+    /** @var ConfigCollectionFactory  */
+    public $configDataCollectionFactory;
+
     /**
      * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
@@ -423,11 +427,13 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
-        Data $coreHelper
+        Data $coreHelper,
+        ConfigCollectionFactory $configDataCollectionFactory
     ) {
         $this->scopeConfig  = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->coreHelper   = $coreHelper;
+        $this->configDataCollectionFactory = $configDataCollectionFactory;
     }
 
     /**
@@ -444,6 +450,25 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $sc = $this->scopeConfig->getValue($path);
         }
         return $sc;
+    }
+
+    /**
+     * @param $path
+     * @param string $scope
+     * @param int $scopeId
+     * @return mixed|null
+     */
+    public function getConfigValueFromDb($path, $scope = 'default', $scopeId = 0)
+    {
+        /** @var ConfigDataCollection $configDataCollection */
+        $configDataCollection = $this->configDataCollectionFactory->create();
+        $configDataCollection->addFieldToFilter('scope', $scope);
+        $configDataCollection->addFieldToFilter('scope_id', $scopeId);
+        $configDataCollection->addFieldToFilter('path', $path);
+        if ($configDataCollection->count() !== 0) {
+            return $configDataCollection->getFirstItem()->getValue();
+        }
+        return null;
     }
 
     /**
