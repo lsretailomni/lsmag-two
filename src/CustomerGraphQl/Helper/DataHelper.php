@@ -64,11 +64,11 @@ class DataHelper
         Currency $currencyHelper,
         LSR $lsr
     ) {
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->orderHelper   = $orderHelper;
-        $this->helper        = $helper;
-        $this->currencyHelper   = $currencyHelper;
-        $this->lsr           = $lsr;
+        $this->loyaltyHelper  = $loyaltyHelper;
+        $this->orderHelper    = $orderHelper;
+        $this->helper         = $helper;
+        $this->currencyHelper = $currencyHelper;
+        $this->lsr            = $lsr;
     }
 
     /**
@@ -93,6 +93,7 @@ class DataHelper
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                 $result = $this->loyaltyHelper->getMemberInfo();
                 if ($result) {
+                    $customerAccount['account_id']   = $result->getAccount()->getId();
                     $scheme = $result->getAccount()->getScheme();
                     if (!empty($scheme)) {
                         $schemeArray                  = [];
@@ -173,6 +174,7 @@ class DataHelper
             'id'                      => $salesEntry->getId(),
             'click_and_collect_order' => $salesEntry->getClickAndCollectOrder(),
             'document_reg_time'       => $salesEntry->getDocumentRegTime(),
+            'document_id'             => $salesEntry->getCustomerOrderNo(),
             'external_id'             => $salesEntry->getExternalId(),
             'payment_status'          => $salesEntry->getPaymentStatus(),
             'id_type'                 => $salesEntry->getIdType(),
@@ -279,6 +281,6 @@ class DataHelper
      */
     public function formatValue($value)
     {
-        return $this->currencyHelper->format($value, ['display'=>\Zend_Currency::NO_SYMBOL], false);
+        return $this->currencyHelper->format($value, ['display' => \Zend_Currency::NO_SYMBOL], false);
     }
 }
