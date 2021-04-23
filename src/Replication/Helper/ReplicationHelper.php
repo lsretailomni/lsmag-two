@@ -862,7 +862,11 @@ class ReplicationHelper extends AbstractHelper
         /**
          * add a check here to see if new value is different from old one in order to avoid unnecessory flushing.
          */
-        $existingData = $this->lsr->getStoreConfig($path, $storeId);
+        $existingData = $this->lsr->getConfigValueFromDb(
+            $path,
+            ScopeInterface::SCOPE_STORES,
+            $storeId
+        );
 
         if ($existingData == $data) {
             return;
@@ -885,7 +889,7 @@ class ReplicationHelper extends AbstractHelper
                     0
                 );
             }
-            if($flushCache) {
+            if ($flushCache) {
                 $this->flushByTypeCode('config');
             }
         }
@@ -908,7 +912,6 @@ class ReplicationHelper extends AbstractHelper
                     $store->getId()
                 );
             }
-            $this->flushByTypeCode('config');
         }
     }
 

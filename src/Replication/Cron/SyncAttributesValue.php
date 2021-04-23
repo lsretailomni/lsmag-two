@@ -9,6 +9,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Setup\Exception;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * For sync soft attribute value
@@ -41,8 +42,9 @@ class SyncAttributesValue extends ProductCreateTask
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $cronAttributeCheck = $this->lsr->getStoreConfig(
+                    $cronAttributeCheck = $this->lsr->getConfigValueFromDb(
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+                        ScopeInterface::SCOPE_STORES,
                         $this->store->getId()
                     );
                     if ($cronAttributeCheck == 1) {

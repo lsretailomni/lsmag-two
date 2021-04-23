@@ -277,7 +277,6 @@ class Product extends Action
             false,
             LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
         );
-        $this->replicationHelper->flushByTypeCode('config');
         $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
         $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }

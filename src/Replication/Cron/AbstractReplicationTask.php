@@ -149,8 +149,6 @@ abstract class AbstractReplicationTask
     /** @var integer */
     public $recordsRemaining = 0;
     /** @var bool */
-    public $isConfigChanged = false;
-    /** @var bool */
     public $cronStatus = false;
 
     /**
@@ -233,8 +231,8 @@ abstract class AbstractReplicationTask
                         $response = $request->execute();
                         if (method_exists($response, 'getResult')) {
                             $result                 = $response->getResult();
-                            $newLastKey             = $result->getLastKey();
-                            $newMaxKey              = $result->getMaxKey();
+                            $lastKey                = $result->getLastKey();
+                            $maxKey                 = $result->getMaxKey();
                             $remaining              = $result->getRecordsRemaining();
                             $this->recordsRemaining = $remaining;
                             $traversable            = $this->getIterator($result);
@@ -248,30 +246,15 @@ abstract class AbstractReplicationTask
 
                                         $this->saveSource($properties, $source);
                                     }
-                                    $this->isConfigChanged = true;
+                                    $this->updateSuccessStatus($store->getId());
                                 }
-
                             }
                             if ($remaining == 0) {
                                 $this->cronStatus = true;
                             }
-                            if ($lastKey != $newLastKey) {
-                                $this->isConfigChanged = true;
-                                $this->persistLastKey($newLastKey, $store->getId());
-                            }
-                            if ($maxKey != $newMaxKey) {
-                                $this->isConfigChanged = true;
-                                $this->persistMaxKey($newMaxKey, $store->getId());
-                            }
-                            $existingCronStatus = $lsr->getStoreConfig($this->getConfigPathStatus(), $store->getId());
-                            if ($existingCronStatus != $this->cronStatus) {
-                                $this->rep_helper->updateCronStatus($this->cronStatus, $this->getConfigPathStatus(), $store->getId(), false);
-                                $this->isConfigChanged = true;
-                            }
-                            $this->updateSuccessStatus($store->getId());
-                            if ($this->isConfigChanged) {
-                                $this->rep_helper->flushByTypeCode('config');
-                            }
+                            $this->persistLastKey($lastKey, $store->getId());
+                            $this->persistMaxKey($maxKey, $store->getId());
+                            $this->rep_helper->updateCronStatus($this->cronStatus, $this->getConfigPathStatus(), $store->getId(), false);
                         } else {
                             $this->logger->debug('No result found for ' . get_class($this->getMainEntity()) . '. Please refer omniclient log for details.');
                         }
@@ -494,14 +477,18 @@ abstract class AbstractReplicationTask
      */
     public function getLastKey($storeId = false)
     {
+        $lsrModel = $this->getLsrModel();
         if ($storeId) {
-            return $this->scope_config->getValue(
+            return $lsrModel->getConfigValueFromDb(
                 $this->getConfigPath(),
                 ScopeInterface::SCOPE_STORES,
                 $storeId
             );
         } else {
-            return $this->scope_config->getValue($this->getConfigPath(), ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+            return $lsrModel->getConfigValueFromDb(
+                $this->getConfigPath(),
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+            );
         }
     }
 
@@ -511,14 +498,15 @@ abstract class AbstractReplicationTask
      */
     public function getMaxKey($storeId = false)
     {
+        $lsrModel = $this->getLsrModel();
         if ($storeId) {
-            return $this->scope_config->getValue(
+            return $lsrModel->getConfigValueFromDb(
                 $this->getConfigPathMaxKey(),
                 ScopeInterface::SCOPE_STORES,
                 $storeId
             );
         } else {
-            return $this->scope_config->getValue(
+            return $lsrModel->getConfigValueFromDb(
                 $this->getConfigPathMaxKey(),
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             );
@@ -531,14 +519,15 @@ abstract class AbstractReplicationTask
      */
     public function isFirstTime($storeId = false)
     {
+        $lsrModel = $this->getLsrModel();
         if ($storeId) {
-            return $this->scope_config->getValue(
+            return $lsrModel->getConfigValueFromDb(
                 $this->getConfigPathStatus(),
                 ScopeInterface::SCOPE_STORES,
                 $storeId
             );
         } else {
-            return $this->scope_config->getValue(
+            return $lsrModel->getConfigValueFromDb(
                 $this->getConfigPathStatus(),
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT
             );
