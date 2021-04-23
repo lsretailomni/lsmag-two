@@ -26,6 +26,10 @@
         <plugin name="dispatch_cart_changes_event" type="Ls\OmniGraphQl\Plugin\Model\Resolver\CartProductsPlugin"
                 sortOrder="1"/>
     </type>
+    <type name="Magento\SalesGraphQl\Model\Resolver\Reorder">
+        <plugin name="dispatch_cart_changes_event" type="Ls\OmniGraphQl\Plugin\Model\Resolver\CartProductsPlugin"
+                sortOrder="1"/>
+    </type>
     <!-- Plugin that updates the price of the item in the minicart/cart page   -->
     <type name="Magento\QuoteGraphQl\Model\Resolver\CartItemPrices">
         <plugin name="correcting_line_price" type="Ls\OmniGraphQl\Plugin\Model\Resolver\CartItemPricesPlugin"
