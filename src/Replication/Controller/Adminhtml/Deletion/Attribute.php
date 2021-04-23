@@ -98,11 +98,11 @@ class Attribute extends Action
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-        $this->replicationHelper->updateCronStatus(
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_ATTRIBUTE
         );
-        $this->replicationHelper->updateCronStatus(
+        $this->replicationHelper->updateCronStatusForAllStores(
             false,
             LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT
         );

@@ -248,7 +248,10 @@ class CronsProvider extends DataProvider implements DataProviderInterface
 
         if ($cronName == 'repl_attributes') {
             $cronAttributeCheck        = $this->lsr->getConfigValueFromDb(
-                LSR::SC_SUCCESS_CRON_ATTRIBUTE, $storeId);
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
             $cronAttributeVariantCheck = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
                 ScopeInterface::SCOPE_STORES,
