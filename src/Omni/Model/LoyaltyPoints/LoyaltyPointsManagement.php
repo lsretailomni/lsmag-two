@@ -78,6 +78,8 @@ class LoyaltyPointsManagement
      * @param $cartId
      * @param $loyaltyPoints
      * @return bool
+     * @throws CouldNotSaveException
+     * @throws GraphQlInputException
      * @throws NoSuchEntityException
      */
     public function apply($cartId, $loyaltyPoints)

@@ -21,7 +21,6 @@ class RemoveLoyaltyPoints extends AbstractLoyaltyPoints
             $cartId       = $cart->getId();
             $result       = $this->loyaltyPointsManagement->remove($cartId);
             if ($result == true) {
-                $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
                 $cart    = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
             }
         } catch (\Exception $e) {
