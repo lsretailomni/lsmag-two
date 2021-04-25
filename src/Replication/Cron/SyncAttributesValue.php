@@ -121,7 +121,7 @@ class SyncAttributesValue extends ProductCreateTask
             foreach ($collection as $attributeValue) {
                 try {
                     $itemId         = $attributeValue->getLinkField1();
-                    $product        = $this->productRepository->get($itemId);
+                    $product        = $this->productRepository->get($itemId, true, 0);
                     $formattedCode  = $this->replicationHelper->formatAttributeCode(
                         $attributeValue->getCode()
                     );
