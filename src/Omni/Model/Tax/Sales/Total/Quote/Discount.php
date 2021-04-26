@@ -185,8 +185,7 @@ class Discount extends AbstractTotal
     {
         $amount = 0;
         $pointDiscount = 0;
-        $basketData = $this->basketHelper->getBasketSessionValue();
-        if (isset($basketData)) {
+        if ($quote->getLsPointsSpent() > 0) {
             $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);
