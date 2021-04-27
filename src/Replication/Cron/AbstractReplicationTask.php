@@ -69,7 +69,7 @@ abstract class AbstractReplicationTask
             "LinkField1",
             "LinkField2",
             "LinkField3",
-            "Value",
+            "Sequence",
             "scope_id"
         ],
         "ls_mag/replication/repl_barcode"                    => ["nav_id", "scope_id"],

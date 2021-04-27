@@ -30,7 +30,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "LinkField1",
             "LinkField2",
             "LinkField3",
-            "Value",
+            "Sequence",
             "scope_id"
         ],
         "ls_replication_repl_barcode"                    => ["nav_id", "scope_id"],
