@@ -9,6 +9,7 @@ type LsAccount @doc(description: "Member Contact details from LS Central"){
     card_id: String @doc(description: "Card Id")
     contact_id: String @doc(description: "Contact Id")
     username: String @doc(description: "UserName")
+    account_id: String @doc(description: "Account Id")
     scheme: Scheme
 }
 type Scheme {
@@ -28,6 +29,7 @@ type SalesEntry @doc(description: "Sales entry information") {
     id: String @doc(description: "Id is receipt Id or Document Id")
     click_and_collect_order: String @doc(description: "Click and Collect Item")
     document_reg_time: String @doc(description: "Order Registration Time")
+    document_id: String @doc(description: "Document Id")
     external_id: String @doc(description: "Magento Order Id")
     payment_status: String @doc(description: "Order Payment status")
     id_type: String @doc(description: "Order Type")
