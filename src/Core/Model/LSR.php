@@ -237,6 +237,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SESSION_CHECKOUT_LAST_DOCUMENT_ID = 'last_document_id';
     const SESSION_CHECKOUT_ONE_LIST_CALCULATION = 'one_list_calculation';
     const SESSION_CHECKOUT_COUPON_CODE = 'coupon_code';
+    const SESSION_CHECKOUT_CORRECT_STORE_ID = 'correct_store_id';
 
     // WORKFLOW
     const W_TYPE = 'T';
@@ -692,6 +693,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Get configured industry for given store
+     *
+     * @param null $storeId
      * @return string
      * @throws NoSuchEntityException
      */
