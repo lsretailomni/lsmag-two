@@ -4,12 +4,12 @@ namespace Ls\Omni\Helper;
 
 use Exception;
 use Laminas\Validator\EmailAddress as ValidateEmailAddress;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\MemberContact;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Customer\Api\AddressRepositoryInterface;
