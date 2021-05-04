@@ -79,7 +79,7 @@ class SyncPrice extends ProductCreateTask
                                 if (isset($productData)) {
                                     if ($replPrice->getQtyPerUnitOfMeasure() == 0) {
                                         $baseUnitOfMeasure = $productData->getData('uom');
-                                        $productData->setPrice($replPrice->getUnitPrice());
+                                        $productData->setPrice($replPrice->getUnitPriceInclVat());
                                         // @codingStandardsIgnoreStart
                                         $this->productResourceModel->saveAttribute($productData, 'price');
                                     }
@@ -91,8 +91,9 @@ class SyncPrice extends ProductCreateTask
                                             if ($this->validateChildPriceUpdate(
                                                 $childProductData,
                                                 $replPrice,
-                                                $baseUnitOfMeasure)) {
-                                                $childProductData->setPrice($replPrice->getUnitPrice());
+                                                $baseUnitOfMeasure
+                                            )) {
+                                                $childProductData->setPrice($replPrice->getUnitPriceInclVat());
                                                 // @codingStandardsIgnoreStart
                                                 $this->productResourceModel->saveAttribute($childProductData, 'price');
                                                 // @codingStandardsIgnoreEnd
