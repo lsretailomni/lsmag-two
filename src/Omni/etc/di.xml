@@ -89,6 +89,15 @@
         <plugin name="ls.checkout.cart.tax.subtotal" type="Ls\Omni\Model\Sales\Total\Quote\Subtotal"
                 sortOrder="1"/>
     </type>
+    <!-- To stop magento for calculating tax -->
+    <type name="Magento\Tax\Model\Sales\Total\Quote\Tax">
+        <plugin name="ls.checkout.cart.tax.tax" type="Ls\Omni\Model\Sales\Total\Quote\Subtotal"
+                sortOrder="1"/>
+    </type>
+    <type name="Magento\Weee\Block\Item\Price\Renderer">
+        <plugin name="ls.row.total.renderer.sales.order.admin" type="Ls\Omni\Plugin\Block\Item\Price\RendererPlugin"
+                sortOrder="1"/>
+    </type>
     <type name="Magento\Sales\Api\OrderManagementInterface">
         <plugin name="ls_omni_around_cancel_order_operation" type="Ls\Omni\Plugin\Order\OrderManagement" sortOrder="1"/>
     </type>
