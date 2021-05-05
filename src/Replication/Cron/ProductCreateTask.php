@@ -541,7 +541,7 @@ class ProductCreateTask
                                 $product->setDescription($item->getDetails());
                                 $itemPrice = $this->getItemPrice($item->getNavId());
                                 if (isset($itemPrice)) {
-                                    $product->setPrice($itemPrice->getUnitPrice());
+                                    $product->setPrice($itemPrice->getUnitPriceInclVat());
                                 } else {
                                     $product->setPrice($item->getUnitPrice());
                                 }
@@ -1748,13 +1748,13 @@ class ProductCreateTask
             $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId(), $unitOfMeasure);
         }
         if (isset($itemPrice)) {
-            $productV->setPrice($itemPrice->getUnitPrice());
+            $productV->setPrice($itemPrice->getUnitPriceInclVat());
         } else {
             // Just in-case if we don't have price for Variant then in that case,
             // we are using the price of main product.
             $price = $this->getItemPrice($item->getNavId());
             if (!empty($price)) {
-                $productV->setPrice($price->getUnitPrice());
+                $productV->setPrice($price->getUnitPriceInclVat());
             } else {
                 $productV->setPrice($item->getUnitPrice());
             }
