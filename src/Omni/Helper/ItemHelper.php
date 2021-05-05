@@ -330,15 +330,15 @@ class ItemHelper extends AbstractHelper
                                     $item->setDiscountAmount(null);
                                     $item->setOriginalCustomPrice(null);
                                 }
-                                $item->setTaxAmount($line->getTaxAmount())
-                                    ->setBaseTaxAmount($line->getTaxAmount())
-                                    ->setPriceInclTax($unitPrice)
-                                    ->setBasePriceInclTax($unitPrice)
-                                    ->setRowTotal($line->getNetAmount())
-                                    ->setBaseRowTotal($line->getNetAmount())
-                                    ->setRowTotalInclTax($line->getAmount())
-                                    ->setBaseRowTotalInclTax($line->getAmount());
                             }
+                            $item->setTaxAmount($line->getTaxAmount())
+                                ->setBaseTaxAmount($line->getTaxAmount())
+                                ->setPriceInclTax($unitPrice)
+                                ->setBasePriceInclTax($unitPrice)
+                                ->setRowTotal($line->getNetAmount())
+                                ->setBaseRowTotal($line->getNetAmount())
+                                ->setRowTotalInclTax($line->getAmount())
+                                ->setBaseRowTotalInclTax($line->getAmount());
                         }
                         // @codingStandardsIgnoreStart
                         if (!empty($oldItemVariant[$line->getItemId()][$line->getVariantId()][$line->getUomId()]['Amount'])) {
