@@ -29,14 +29,10 @@ class OrderStatus implements OrderStatusInterface
     /**
      * @inheritdoc
      */
-    public function set($documentId, $status)
+    public function set($orderMessage)
     {
         try {
-            $data = [
-                'documentId' => $documentId,
-                'status'     => $status
-            ];
-            $this->logger->info('OrderStatus', $data);
+            $this->logger->info('OrderStatus', $orderMessage);
             return [
                 "data" => [
                     'success' => true,

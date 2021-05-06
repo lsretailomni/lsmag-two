@@ -10,9 +10,8 @@ interface OrderStatusInterface
 {
     /**
      * Set order status API
-     * @param string $documentId
-     * @param string $status
+     * @param mixed $orderMessage
      * @return mixed
      */
-    public function set($documentId, $status);
+    public function set($orderMessage);
 }
