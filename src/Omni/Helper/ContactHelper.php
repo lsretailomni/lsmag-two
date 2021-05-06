@@ -20,9 +20,12 @@ use Magento\Customer\Api\Data\CustomerSearchResultsInterface;
 use Magento\Customer\Api\Data\GroupInterfaceFactory;
 use Magento\Customer\Api\Data\RegionInterfaceFactory;
 use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Customer\Model\AccountConfirmation;
 use Magento\Customer\Model\Address;
+use Magento\Customer\Model\Authentication;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\CustomerRegistry;
 use Magento\Customer\Model\Group;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollection;
 use Magento\Customer\Model\ResourceModel\Group\Collection;
@@ -37,18 +40,19 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\DataObject;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\EmailNotConfirmedException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\ExpiredException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
+use Magento\Framework\Exception\State\UserLockedException;
 use Magento\Framework\Phrase;
 use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
-use Magento\Customer\Model\CustomerRegistry;
 
 /**
  * Helper functions for member contact
@@ -170,6 +174,16 @@ class ContactHelper extends AbstractHelper
     public $customerRegistry;
 
     /**
+     * @var Authentication
+     */
+    public $authentication;
+
+    /**
+     * @var AccountConfirmation
+     */
+    public $accountConfirmation;
+
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder
@@ -202,6 +216,8 @@ class ContactHelper extends AbstractHelper
      * @param LSR $lsr
      * @param DateTime $date
      * @param CustomerRegistry $customerRegistry
+     * @param Authentication $authentication
+     * @param AccountConfirmation $accountConfirmation
      */
     public function __construct(
         Context $context,
@@ -234,7 +250,9 @@ class ContactHelper extends AbstractHelper
         ValidateEmailAddress $validateEmailAddress,
         LSR $lsr,
         DateTime $date,
-        CustomerRegistry $customerRegistry
+        CustomerRegistry $customerRegistry,
+        Authentication $authentication,
+        AccountConfirmation $accountConfirmation
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -266,6 +284,8 @@ class ContactHelper extends AbstractHelper
         $this->lsr                   = $lsr;
         $this->date                  = $date;
         $this->customerRegistry      = $customerRegistry;
+        $this->authentication        = $authentication;
+        $this->accountConfirmation   = $accountConfirmation;
         parent::__construct(
             $context
         );
@@ -1067,6 +1087,7 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Process customer login
      * @param MemberContact $result
      * @param $credentials
      * @param $is_email
@@ -1097,11 +1118,12 @@ class ContactHelper extends AbstractHelper
                 break;
             }
         }
-        $customer_email   = $customer->getEmail();
-        $websiteId        = $this->storeManager->getWebsite()->getWebsiteId();
-        $customer         = $this->customerFactory->create()
+        $customer_email = $customer->getEmail();
+        $websiteId      = $this->storeManager->getWebsite()->getWebsiteId();
+        $customer       = $this->customerFactory->create()
             ->setWebsiteId($websiteId)
             ->loadByEmail($customer_email);
+        $this->authentication($customer, $websiteId);
         $customer         = $this->setCustomerAttributesValues($result, $customer);
         $customerSecure   = $this->customerRegistry->retrieveSecureData($customer->getId());
         $validatePassword = $this->encryptorInterface->validateHash(
@@ -1476,6 +1498,42 @@ class ContactHelper extends AbstractHelper
             $this->updateWishlistAfterLogin(
                 $oneListWish
             );
+        }
+    }
+
+    /**
+     * Get customer by email
+     * @param $email
+     * @return mixed
+     * @throws LocalizedException
+     */
+    public function getCustomerByEmail($email)
+    {
+        $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
+        return $this->customerFactory->create()
+            ->setWebsiteId($websiteId)
+            ->loadByEmail($email);
+    }
+
+    /**
+     * To authenticate user login
+     * @param $customer
+     * @param null $websiteId
+     * @throws EmailNotConfirmedException
+     * @throws UserLockedException
+     */
+    public function authentication($customer, $websiteId = null)
+    {
+        $customerId = $customer->getId();
+        if ($this->authentication->isLocked($customerId)) {
+            throw new UserLockedException(__('The account is locked.'));
+        }
+        if ($customer->getConfirmation() && $this->accountConfirmation->isConfirmationRequired(
+                $websiteId,
+                $customerId,
+                $customer->getEmail()
+            )) {
+            throw new EmailNotConfirmedException(__("This account isn't confirmed. Verify and try again."));
         }
     }
 }
