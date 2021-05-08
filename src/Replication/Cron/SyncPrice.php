@@ -193,7 +193,6 @@ class SyncPrice extends ProductCreateTask
             ['field' => 'StoreId', 'value' => $webStoreId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
         ];
-        $item           = null;
         $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
         try {
             $itemsCount = $this->replPriceRepository->getList($searchCriteria)->getTotalCount();
