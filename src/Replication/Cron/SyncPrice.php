@@ -70,6 +70,7 @@ class SyncPrice extends ProductCreateTask
                         foreach ($collection as $replPrice) {
                             try {
                                 $baseUnitOfMeasure = null;
+                                $itemPriceCount    = null;
                                 if (!$replPrice->getVariantId() || !empty($replPrice->getUnitOfMeasure())) {
                                     $sku = $replPrice->getItemId();
                                 } else {
@@ -79,19 +80,21 @@ class SyncPrice extends ProductCreateTask
                                 if (isset($productData)) {
                                     if ($replPrice->getQtyPerUnitOfMeasure() == 0) {
                                         $baseUnitOfMeasure = $productData->getData('uom');
+                                        $itemPriceCount    = $this->getItemPriceCount($replPrice->getItemId());
                                         $productData->setPrice($replPrice->getUnitPriceInclVat());
                                         // @codingStandardsIgnoreStart
                                         $this->productResourceModel->saveAttribute($productData, 'price');
                                     }
                                     // @codingStandardsIgnoreEnd
                                     if ($productData->getTypeId() == 'configurable') {
-                                        $_children = $productData->getTypeInstance()->getUsedProducts($productData);
-                                        foreach ($_children as $child) {
+                                        $children = $productData->getTypeInstance()->getUsedProducts($productData);
+                                        foreach ($children as $child) {
                                             $childProductData = $this->productRepository->get($child->getSKU());
                                             if ($this->validateChildPriceUpdate(
                                                 $childProductData,
                                                 $replPrice,
-                                                $baseUnitOfMeasure
+                                                $baseUnitOfMeasure,
+                                                $itemPriceCount
                                             )) {
                                                 $childProductData->setPrice($replPrice->getUnitPriceInclVat());
                                                 // @codingStandardsIgnoreStart
@@ -146,13 +149,19 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
+     * Validate child product price update
      * @param $productData
      * @param $replPrice
-     * @param $baseUnitOfMeasure
+     * @param null $baseUnitOfMeasure
+     * @param null $itemPriceCount
      * @return bool
      */
-    private function validateChildPriceUpdate($productData, $replPrice, $baseUnitOfMeasure = null)
-    {
+    private function validateChildPriceUpdate(
+        $productData,
+        $replPrice,
+        $baseUnitOfMeasure = null,
+        $itemPriceCount = null
+    ) {
         $needsPriceUpdate = false;
         if ($productData->getData('uom') == $baseUnitOfMeasure) {
             $needsPriceUpdate = true;
@@ -161,9 +170,36 @@ class SyncPrice extends ProductCreateTask
         } elseif (empty($productData->getData(LSR::LS_UOM_ATTRIBUTE_QTY))
             && ($replPrice->getQtyPerUnitOfMeasure() == 0)) {
             $needsPriceUpdate = true;
+        } elseif ($itemPriceCount == 1 && $baseUnitOfMeasure != null) {
+            $needsPriceUpdate = true;
         }
-
         return $needsPriceUpdate;
+    }
+
+    /**
+     * Getting total entries of price in price table
+     * @param $itemId
+     * @return int
+     */
+    public function getItemPriceCount($itemId)
+    {
+        $itemsCount     = 0;
+        $webStoreId     = $this->lsr->getStoreConfig(
+            LSR::SC_SERVICE_STORE,
+            $this->store->getId()
+        );
+        $filters        = [
+            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'StoreId', 'value' => $webStoreId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+        ];
+        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        try {
+            $itemsCount = $this->replPriceRepository->getList($searchCriteria)->getTotalCount();
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
+        return $itemsCount;
     }
 
     /**

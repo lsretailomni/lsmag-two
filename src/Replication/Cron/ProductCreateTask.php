@@ -1205,13 +1205,15 @@ class ProductCreateTask
                 $itemId = $uom->getItemId();
                 try {
                     $productData = $this->productRepository->get($itemId, true, $this->store->getId());
-                    $children    = $productData->getTypeInstance()->getUsedProducts($productData);
-                    foreach ($children as $child) {
-                        $childProductData = $this->productRepository->get($child->getSKU());
-                        if ($childProductData->getData('uom') == $uom->getCode()) {
-                            $childProductData = $this->setProductStatus($childProductData, 1);
-                            // @codingStandardsIgnoreLine
-                            $this->productRepository->save($childProductData);
+                    if ($productData->getTypeId() == 'configurable') {
+                        $children = $productData->getTypeInstance()->getUsedProducts($productData);
+                        foreach ($children as $child) {
+                            $childProductData = $this->productRepository->get($child->getSKU());
+                            if ($childProductData->getData('uom') == $uom->getCode()) {
+                                $childProductData = $this->setProductStatus($childProductData, 1);
+                                // @codingStandardsIgnoreLine
+                                $this->productRepository->save($childProductData);
+                            }
                         }
                     }
                 } catch (Exception $e) {
