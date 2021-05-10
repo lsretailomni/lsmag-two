@@ -5,9 +5,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Client\Ecommerce\Entity\OrderLine;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -56,8 +54,8 @@ class BasketHelper extends AbstractHelper
     /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
-    /** @var
-     * Type\Configurable $catalogProductTypeConfigurable
+    /**
+     * @var \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable
      */
     public $catalogProductTypeConfigurable;
 
@@ -108,6 +106,11 @@ class BasketHelper extends AbstractHelper
     public $customerFactory;
 
     /**
+     * @var CartRepositoryInterface
+     */
+    public $cartRepository;
+
+    /**
      * BasketHelper constructor.
      * @param Context $context
      * @param Cart $cart
@@ -125,6 +128,7 @@ class BasketHelper extends AbstractHelper
      * @param CartRepositoryInterface $quoteRepository
      * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      * @param CustomerFactory $customerFactory
+     * @param CartRepositoryInterface $cartRepository
      */
     public function __construct(
         Context $context,
@@ -142,7 +146,8 @@ class BasketHelper extends AbstractHelper
         SessionManagerInterface $session,
         CartRepositoryInterface $quoteRepository,
         \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel,
-        CustomerFactory $customerFactory
+        CustomerFactory $customerFactory,
+        CartRepositoryInterface $cartRepository
     ) {
         parent::__construct($context);
         $this->cart                           = $cart;
@@ -160,6 +165,7 @@ class BasketHelper extends AbstractHelper
         $this->quoteRepository                = $quoteRepository;
         $this->quoteResourceModel             = $quoteResourceModel;
         $this->customerFactory                = $customerFactory;
+        $this->cartRepository                 = $cartRepository;
     }
 
     /**
@@ -697,23 +703,32 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * Create a new oneList for syncing from admin/cron
+     *
      * @param $customerEmail
      * @param $websiteId
+     * @param $isGuest
      * @return bool|Entity\OneList
      * @throws InvalidEnumException
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
-    public function getOneListAdmin($customerEmail, $websiteId)
+    public function getOneListAdmin($customerEmail, $websiteId, $isGuest)
     {
-        /** @var Entity\OneList $list */
         $list     = null;
         $cardId   = null;
-        $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
-        if (!empty($customer)) {
-            $cardId = $customer->getData('lsr_cardid');
+
+        if (!$isGuest) {
+            $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
+
+            if (!empty($customer->getData('lsr_cardid'))) {
+                $cardId = $customer->getData('lsr_cardid');
+            }
         }
         $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+        $this->store_id = $webStore;
         // @codingStandardsIgnoreStart
+        /** @var Entity\OneList $list */
         $list = (new Entity\OneList())
             ->setCardId($cardId)
             ->setDescription('OneList Magento')
@@ -721,6 +736,7 @@ class BasketHelper extends AbstractHelper
             ->setItems(new Entity\ArrayOfOneListItem())
             ->setPublishedOffers($this->_offers())
             ->setStoreId($webStore);
+
         return $this->saveToOmni($list);
         // @codingStandardsIgnoreEnd
     }
@@ -927,7 +943,8 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * calculate onelist to sync order from admin
+     * Calculate oneList to sync order from admin/cron
+     *
      * @param $order
      * @return Order
      * @throws InvalidEnumException
@@ -935,54 +952,17 @@ class BasketHelper extends AbstractHelper
      */
     public function calculateOneListFromOrder($order)
     {
-        $orderLines = [];
-        $orderItems = $order->getAllVisibleItems();
-        foreach ($orderItems as $index => $orderItem) {
-            $orderLine = new OrderLine();
-            $sku       = $orderItem->getSku();
-            $parts     = explode('-', $sku);
-            $itemId    = array_shift($parts);
-            $variantId = count($parts) ? array_shift($parts) : null;
-            if (!is_numeric($variantId)) {
-                $variantId = null;
-            }
-            $uom = $orderItem->getProduct()->getData('uom');
-            foreach ($orderItem->getChildrenItems() as $item) {
-                $uom = $item->getProduct()->getData('uom');
-            }
-            $qty    = $orderItem->getQtyOrdered();
-            $amount = $orderItem->getPrice() * $qty;
-            $orderLine->setItemId($itemId)
-                ->setVariantId($variantId)
-                ->setUomId($uom)
-                ->setQuantity($qty)
-                ->setAmount($amount)
-                ->setDiscountAmount($orderItem->getDiscountAmount())
-                ->setNetPrice($orderItem->getOriginalPrice())
-                ->setNetAmount($amount)
-                ->setPrice($orderItem->getOriginalPrice())
-                ->setLineNumber(++$index)
-                ->setLineType('Item');
-            $orderLines[] = $orderLine;
-        }
-        $oneListCalculation = new Order();
-        $items              = new ArrayOfOrderLine();
-        $items->setOrderLine($orderLines);
-        $oneListCalculation->setOrderLines($items);
-        $websiteId = $order->getStore()->getWebsiteId();
-        if (!$order->getCustomerIsGuest()) {
-            $customerEmail = $order->getCustomerEmail();
-            $customer      = $this->customerFactory->create()
-                ->setWebsiteId($websiteId)
-                ->loadByEmail($customerEmail);
-            $cardId        = $customer->getData('lsr_cardid');
-            $oneListCalculation->setCardId($cardId);
-        }
-        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
-        $oneListCalculation->setStoreId($webStore);
-        $oneListCalculation->setTotalAmount($order->getGrandTotal());
-        $oneListCalculation->setTotalDiscount(abs($order->getDiscountAmount()));
-        return $oneListCalculation;
+        $couponCode = $order->getCouponCode();
+        $quote = $this->cartRepository->get($order->getQuoteId());
+        $oneList = $this->getOneListAdmin(
+            $order->getCustomerEmail(),
+            $order->getStore()->getWebsiteId(),
+            $order->getCustomerIsGuest()
+        );
+        $oneList = $this->setOneListQuote($quote, $oneList);
+        $this->setCouponCodeInAdmin($couponCode);
+
+        return $this->update($oneList);
     }
 
     /**
@@ -1091,6 +1071,34 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * Set correct_store_id in checkout session being used in case of admin
+     *
+     * @param $storeId
+     */
+    public function setCorrectStoreIdInCheckoutSession($storeId)
+    {
+        $this->checkoutSession->setData(LSR::SESSION_CHECKOUT_CORRECT_STORE_ID, $storeId);
+    }
+
+    /**
+     * Get correct_store_id from checkout session being used in case of admin
+     *
+     * @return mixed|null
+     */
+    public function getCorrectStoreIdFromCheckoutSession()
+    {
+        return $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_CORRECT_STORE_ID);
+    }
+
+    /**
+     * clear correct_store_id from checkout session being used in case of admin
+     */
+    public function unSetCorrectStoreId()
+    {
+        $this->checkoutSession->unsetData(LSR::SESSION_CHECKOUT_CORRECT_STORE_ID);
+    }
+
+    /**
      * clear coupon code from checkout session
      */
     public function unSetCouponCode()
@@ -1139,6 +1147,7 @@ class BasketHelper extends AbstractHelper
         $this->unSetOneList();
         $this->unSetOneListCalculation();
         $this->unsetCouponCode();
+        $this->unSetCorrectStoreId();
     }
 
     /**

@@ -86,7 +86,8 @@ class QuoteObserver implements ObserverInterface
                 /** @var OneList|null $oneList */
                 $oneList = $this->basketHelper->getOneListAdmin(
                     $quote->getCustomerEmail(),
-                    $quote->getStore()->getWebsiteId()
+                    $quote->getStore()->getWebsiteId(),
+                    false
                 );
                 $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
                 if (!empty($couponCode)) {
