@@ -102,7 +102,7 @@
         <plugin name="ls_omni_around_cancel_order_operation" type="Ls\Omni\Plugin\Order\OrderManagement" sortOrder="1"/>
     </type>
     <!-- To stop magento for appending dashes for custom options product skus -->
-    <type name="Magento\Catalog\Model\Product\Type\AbstractType">
-        <plugin name="ls_omni_remove_dashes_for_custom_options" type="Ls\Omni\Plugin\Product\Type\AbstractTypePlugin" sortOrder="1"/>
+    <type name="Magento\Catalog\Model\Product\Option\Type\Select">
+        <plugin name="ls_omni_remove_dashes_for_custom_options" type="Ls\Omni\Plugin\Product\Type\SelectPlugin" sortOrder="1"/>
     </type>
 </config>
