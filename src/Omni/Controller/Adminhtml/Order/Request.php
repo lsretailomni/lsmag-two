@@ -4,7 +4,6 @@ namespace Ls\Omni\Controller\Adminhtml\Order;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Backend\App\Action;
@@ -17,8 +16,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class Request
- * @package Ls\Omni\Controller\Adminhtml\Order
+ * Send order to Ls Central admin controller
  */
 class Request extends Action
 {
@@ -70,49 +68,65 @@ class Request extends Action
         OrderHelper $orderHelper,
         LSR $lsr
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->basketHelper    = $basketHelper;
-        $this->logger          = $logger;
-        $this->orderHelper     = $orderHelper;
-        $this->messageManager  = $context->getMessageManager();
-        $this->lsr             = $lsr;
+        $this->orderRepository    = $orderRepository;
+        $this->basketHelper       = $basketHelper;
+        $this->logger             = $logger;
+        $this->orderHelper        = $orderHelper;
+        $this->messageManager     = $context->getMessageManager();
+        $this->lsr                = $lsr;
         parent::__construct($context);
     }
 
     /**
+     * Send order to Ls Central admin controller execute
+     *
      * @return ResponseInterface|Redirect|ResultInterface
-     * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
     public function execute()
     {
         $orderId        = $this->getRequest()->getParam('order_id');
         $order          = $this->orderRepository->get($orderId);
+        $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
         $response       = null;
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
+
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
                 $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
-                $request            = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                $response           = $this->orderHelper->placeOrder($request);
-                if ($response) {
-                    if (!empty($response->getResult()->getId())) {
-                        $documentId = $response->getResult()->getId();
-                        $order->setDocumentId($documentId);
-                        $this->orderRepository->save($order);
+
+                if (!empty($oneListCalculation)) {
+                    $request            = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                    $response           = $this->orderHelper->placeOrder($request);
+
+                    if ($response) {
+                        if (!empty($response->getResult()->getId())) {
+                            $documentId = $response->getResult()->getId();
+                            $order->setDocumentId($documentId);
+                            $this->orderRepository->save($order);
+                        }
+                        $oneList = $this->basketHelper->getOneListFromCustomerSession();
+
+                        if ($oneList) {
+                            $this->basketHelper->delete($oneList);
+                        }
+                        $this->messageManager->addSuccessMessage(__('Order request has been sent to LS Central successfully'));
                     }
-                    $this->messageManager->addSuccessMessage(__('Order request has been sent to LS Central successfully'));
                 }
+
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
         }
+
         if (!$response) {
             $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
             $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
         }
+        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
+
         return $resultRedirect;
     }
 }
