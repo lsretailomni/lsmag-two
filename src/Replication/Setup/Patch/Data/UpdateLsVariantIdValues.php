@@ -99,9 +99,6 @@ class UpdateLsVariantIdValues implements DataPatchInterface
                 $itemId = $value->getItemId();
 
                 try {
-                    if ($itemId == '43140') {
-                        $x = 1;
-                    }
                     $productData             = $this->productRepository->get($itemId);
                     $associatedSimpleProduct = $this->replicationHelper->getRelatedVariantGivenConfAttributesValues(
                         $productData,
