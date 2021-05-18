@@ -3,25 +3,30 @@
 namespace Ls\Replication\Helper;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use \Ls\Replication\Logger\Logger;
-use \Ls\Replication\Model\ReplAttributeValue;
-use \Ls\Replication\Model\ReplAttributeValueSearchResults;
-use \Ls\Replication\Model\ReplImageLinkSearchResults;
-use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
-use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
+use Ls\Replication\Logger\Logger;
+use Ls\Replication\Model\ReplAttributeValue;
+use Ls\Replication\Model\ReplAttributeValueSearchResults;
+use Ls\Replication\Model\ReplExtendedVariantValue;
+use Ls\Replication\Model\ReplImageLinkSearchResults;
+use Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
+use Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
 use Magento\Eav\Model\AttributeManagement;
 use Magento\Eav\Model\AttributeSetManagement;
@@ -194,6 +199,15 @@ class ReplicationHelper extends AbstractHelper
      */
     public $replAttributeValueRepositoryInterface;
 
+    /** @var ConfigurableProTypeModel */
+    public $configurableProTypeModel;
+
+    /** @var ReplExtendedVariantValueRepository */
+    public $extendedVariantValueRepository;
+
+    /** @var ReplItemUnitOfMeasure */
+    public $replItemUomRepository;
+
     /**
      * ReplicationHelper constructor.
      * @param Context $context
@@ -228,6 +242,9 @@ class ReplicationHelper extends AbstractHelper
      * @param AttributeGroupRepositoryInterface $attributeGroupRepository
      * @param AttributeSetRepositoryInterface $attributeSetRepository
      * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
+     * @param ConfigurableProTypeModel $configurableProTypeModel
+     * @param ReplExtendedVariantValueRepository $extendedVariantValueRepository
+     * @param ReplItemUnitOfMeasure $replItemUomRepository
      */
     public function __construct(
         Context $context,
@@ -261,7 +278,10 @@ class ReplicationHelper extends AbstractHelper
         GroupFactory $attributeSetGroupFactory,
         AttributeGroupRepositoryInterface $attributeGroupRepository,
         AttributeSetRepositoryInterface $attributeSetRepository,
-        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
+        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
+        ConfigurableProTypeModel $configurableProTypeModel,
+        ReplExtendedVariantValueRepository $extendedVariantValueRepository,
+        ReplItemUnitOfMeasure $replItemUomRepository
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -294,6 +314,9 @@ class ReplicationHelper extends AbstractHelper
         $this->attributeGroupRepository                  = $attributeGroupRepository;
         $this->attributeSetRepository                    = $attributeSetRepository;
         $this->replAttributeValueRepositoryInterface     = $replAttributeValueRepositoryInterface;
+        $this->configurableProTypeModel                  = $configurableProTypeModel;
+        $this->extendedVariantValueRepository            = $extendedVariantValueRepository;
+        $this->replItemUomRepository                     = $replItemUomRepository;
         parent::__construct(
             $context
         );
@@ -1815,5 +1838,190 @@ class ReplicationHelper extends AbstractHelper
     {
         $attribute = $this->eavConfig->getAttribute('catalog_product', $code);
         return $attribute->getSource()->getOptionId($value);
+    }
+
+    /**
+     * Get related variant attached to the parent product
+     *
+     * @param $parentProduct
+     * @param $variant
+     * @param $storeId
+     * @return array
+     */
+    public function getRelatedVariantGivenConfAttributesValues($parentProduct, $variant, $storeId)
+    {
+        $configurableAttributesFinal = $this->getAllConfigurableAttributesGivenProduct(
+            $parentProduct,
+            $variant,
+            $storeId
+        );
+        $availableUnitOfMeasures     = $this->getUomCodes($parentProduct->getSku(), $storeId);
+        $simpleProducts              = [];
+
+        if (count($availableUnitOfMeasures[$parentProduct->getSku()]) > 1) {
+            foreach ($availableUnitOfMeasures[$parentProduct->getSku()] as $uom => $code) {
+                $configurableAttributes   = $configurableAttributesFinal;
+                $configurableAttributes[] = ['code' => LSR::LS_UOM_ATTRIBUTE, 'value' => $uom];
+                $resultant                = $this->getConfAssoProduct($parentProduct, $configurableAttributes);
+                if ($resultant) {
+                    $simpleProducts[] = $resultant;
+                }
+            }
+        } else {
+            $resultant = $this->getConfAssoProduct($parentProduct, $configurableAttributesFinal);
+            if ($resultant) {
+                $simpleProducts[] = $resultant;
+            }
+        }
+
+        return $simpleProducts;
+    }
+
+    /**
+     * Get related configurable attributes attached to the parent product
+     *
+     * @param $parentProduct
+     * @param $variant
+     * @param $storeId
+     * @return array
+     */
+    public function getAllConfigurableAttributesGivenProduct($parentProduct, $variant, $storeId)
+    {
+        $d1 = (($variant->getVariantDimension1()) ?: '');
+        $d2 = (($variant->getVariantDimension2()) ?: '');
+        $d3 = (($variant->getVariantDimension3()) ?: '');
+        $d4 = (($variant->getVariantDimension4()) ?: '');
+        $d5 = (($variant->getVariantDimension5()) ?: '');
+        $d6 = (($variant->getVariantDimension6()) ?: '');
+
+        $attributeCodes         = $this->_getAttributesCodes($parentProduct->getSku(), $storeId);
+        $configurableAttributes = [];
+
+        foreach ($attributeCodes as $keyCode => $valueCode) {
+            if (isset($keyCode) && $keyCode != '') {
+                $code                     = $valueCode;
+                $codeValue                = ${'d' . $keyCode};
+                $configurableAttributes[] = ['code' => $code, 'value' => $codeValue];
+            }
+        }
+
+        return $configurableAttributes;
+    }
+
+
+    /**
+     * Getting associated simple product id of the configurable product
+     *
+     * @param $product
+     * @param $nameValueList
+     * @return Product|null
+     */
+    public function getConfAssoProduct($product, $nameValueList)
+    {
+        //get configurable products attributes array with all values
+        // with label (super attribute which use for configuration)
+        $assPro = null;
+
+        if ($product->getTypeId() != Configurable::TYPE_CODE) {
+            // to bypass situation when simple products are not being properly converted into configurable.
+            return $assPro;
+        }
+        $optionsData   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+        $superAttrList = $superAttrOptions = $attributeValues = [];
+
+        // prepare array with attribute values
+        foreach ($optionsData as $option) {
+            $superAttrList[]                           = [
+                'name' => $option['frontend_label'],
+                'code' => $option['attribute_code'],
+                'id' => $option['attribute_id']
+            ];
+            $superAttrOptions[$option['attribute_id']] = $option['options'];
+
+            foreach ($nameValueList as $nameValue) {
+                if ($nameValue['code'] == $option['attribute_code']) {
+                    foreach ($option['options'] as $attrOpt) {
+                        if ($nameValue['value'] == $attrOpt['label']) {
+                            $attributeValues[$option['attribute_id']] = $attrOpt['value'];
+                        }
+                    }
+                }
+            }
+        }
+
+        if (count($attributeValues) == count($nameValueList)) {
+            // pass this prepared array with $product
+            $assPro = $this->configurableProTypeModel->getProductByAttributes($attributeValues, $product);
+            // it return complete product according to attribute values which you pass
+        }
+
+        return $assPro;
+    }
+
+    /**
+     * Getting all configurable attribute codes
+     *
+     * @param $itemId
+     * @param $storeId
+     * @return array
+     */
+    public function _getAttributesCodes($itemId, $storeId)
+    {
+        $finalCodes = [];
+        try {
+            $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
+                ->addFilter('scope_id', $storeId, 'eq')->create();
+            $sortOrder      = $this->sortOrder->setField('DimensionLogicalOrder')->setDirection(SortOrder::SORT_ASC);
+            $searchCriteria->setSortOrders([$sortOrder]);
+            $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
+
+            /** @var ReplExtendedVariantValue $valueCode */
+            foreach ($attributeCodes as $valueCode) {
+                $formattedCode                           = $this->formatAttributeCode($valueCode->getCode());
+                $finalCodes[$valueCode->getDimensions()] = $formattedCode;
+                $valueCode->setData('processed_at', $this->getDateTime());
+                $valueCode->setData('processed', 1);
+                $valueCode->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
+                $this->extendedVariantValueRepository->save($valueCode);
+            }
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+
+        return $finalCodes;
+    }
+
+    /**
+     * Getting all available uom codes
+     *
+     * @param $itemId
+     * @param $storeId
+     * @return array
+     */
+    public function getUomCodes($itemId, $storeId)
+    {
+        $filters = [
+            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+        ];
+
+        $itemUom          = [];
+        $itemUom[$itemId] = [];
+        $searchCriteria   = $this->buildCriteriaForDirect($filters, -1);
+
+        /** @var ReplItemUnitOfMeasure $items */
+        try {
+            $items = $this->replItemUomRepository->getList($searchCriteria)->getItems();
+
+            foreach ($items as $item) {
+                /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
+                $itemUom[$itemId][$item->getDescription()] = $item->getCode();
+            }
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+
+        return $itemUom;
     }
 }
