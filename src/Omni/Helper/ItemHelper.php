@@ -407,28 +407,25 @@ class ItemHelper extends AbstractHelper
 
     /**
      * @param $itemSku
-     * @param $baseUnitOfMeasure
      * @return string|null
      */
-    public function getUom(&$itemSku, $baseUnitOfMeasure)
+    public function getUom(&$itemSku)
     {
         $uom = '';
-        if (count($itemSku) < 2) {
-            $itemSku[1] = null;
-        }
-        // @codingStandardsIgnoreLine
+
         if (count($itemSku) > 1) {
             if (!is_numeric($itemSku[1])) {
-                if ($baseUnitOfMeasure != $itemSku[1]) {
-                    $uom = $itemSku[1];
-                }
+                $uom = $itemSku[1];
                 $itemSku[1] = null;
             }
+
             if (count($itemSku) > 2) {
-                if ($baseUnitOfMeasure != $itemSku[1]) {
+                if (!is_numeric($itemSku[2])) {
                     $uom = $itemSku[2];
                 }
             }
+        } else {
+            $itemSku[1] = null;
         }
 
         return $uom;

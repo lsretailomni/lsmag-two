@@ -902,14 +902,7 @@ class BasketHelper extends AbstractHelper
     public function getItemRowTotal($item)
     {
         $itemSku = explode("-", $item->getSku());
-        $uom     = '';
-        // @codingStandardsIgnoreLine
-        if (count($itemSku) < 2) {
-            $itemSku[1] = null;
-        }
-        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-        // @codingStandardsIgnoreLine
-        $uom        = $this->itemHelper->getUom($itemSku, $baseUnitOfMeasure);
+        $uom        = $this->itemHelper->getUom($itemSku);
         $rowTotal   = "";
         $basketData = $this->getOneListCalculation();
         $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
