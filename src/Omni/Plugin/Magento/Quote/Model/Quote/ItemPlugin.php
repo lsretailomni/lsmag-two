@@ -45,7 +45,7 @@ class ItemPlugin
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
                 if (!$result->getParentItem() || !$result->getId()) {
-                    $storeId          = $this->lsr->getDefaultWebStore();
+                    $storeId          = $this->lsr->getActiveWebStore();
                     $simpleProductSku = $result->getSku();
                     $qty              = $result->getQty();
                     $uomQty           = $result->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);

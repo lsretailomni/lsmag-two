@@ -46,13 +46,16 @@ class QuoteRepositoryPlugin
      */
     public function beforeSave(QuoteRepository $subject, CartInterface $quote)
     {
-        if (!$quote->getLsOneListId() && !empty($quote->getAllVisibleItems())) {
-            $basketHelper = $this->basketHelper->get();
-            if ($basketHelper) {
-                $this->basketHelper->setOneListInCustomerSession($basketHelper);
-                $quote->setLsOneListId($basketHelper->getId());
+        if ($this->basketHelper->lsr->isLSR($this->basketHelper->lsr->getCurrentStoreId())) {
+            if (!$quote->getLsOneListId() && !empty($quote->getAllVisibleItems())) {
+                $basketHelper = $this->basketHelper->get();
+                if ($basketHelper) {
+                    $this->basketHelper->setOneListInCustomerSession($basketHelper);
+                    $quote->setLsOneListId($basketHelper->getId());
+                }
             }
         }
+
         return [$quote];
     }
 }
