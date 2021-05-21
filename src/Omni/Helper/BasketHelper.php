@@ -891,9 +891,11 @@ class BasketHelper extends AbstractHelper
         return $this->itemHelper;
     }
 
-
     /**
      * This function is overriding in hospitality module
+     *
+     * Get Correct Item Row Total for minicart after comparison
+     *
      * @param $item
      * @return string
      * @throws InvalidEnumException
@@ -901,18 +903,18 @@ class BasketHelper extends AbstractHelper
      */
     public function getItemRowTotal($item)
     {
-        $itemSku = explode("-", $item->getSku());
-        $uom        = $this->itemHelper->getUom($itemSku);
+        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues($item);
         $rowTotal   = "";
         $basketData = $this->getOneListCalculation();
         $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+
         foreach ($orderLines as $line) {
-            // @codingStandardsIgnoreLine
-            if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId() && $uom == $line->getUomId()) {
+            if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() && $uom == $line->getUomId()) {
                 $rowTotal = $line->getAmount();
                 break;
             }
         }
+
         return $rowTotal;
     }
 
