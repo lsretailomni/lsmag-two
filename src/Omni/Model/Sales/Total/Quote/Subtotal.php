@@ -28,7 +28,7 @@ class Subtotal
 
     /**
      * Around plugin to check if price is including tax then no need for any further tax calculation
-     * @param \Magento\Tax\Model\Sales\Total\Quote\Subtotal $subject
+     * @param $subject
      * @param $proceed
      * @param Quote $quote
      * @param ShippingAssignmentInterface $shippingAssignment
@@ -36,7 +36,7 @@ class Subtotal
      * @return $this
      */
     public function aroundCollect(
-        \Magento\Tax\Model\Sales\Total\Quote\Subtotal $subject,
+        $subject,
         $proceed,
         Quote $quote,
         ShippingAssignmentInterface $shippingAssignment,
