@@ -123,6 +123,7 @@ class StockHelper extends AbstractHelper
 
     /**
      * Call ItemsInStockGet method to check Items in stock or not
+     *
      * @param $simpleProductId
      * @param $parentProductSku
      * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStockGetResponse|ResponseInterface|null
@@ -137,15 +138,10 @@ class StockHelper extends AbstractHelper
             $request   = new Operation\ItemsInStockGet();
             $itemStock = new Entity\ItemsInStockGet();
             // @codingStandardsIgnoreEnd
+
             if (!empty($simpleProductId)) {
-                $simpleProductSku = $this->productRepository->getById($simpleProductId)->getSku();
-                if (strpos($simpleProductSku, '-') !== false) {
-                    $parentProductSku = explode('-', $simpleProductSku)[0];
-                    $simpleProductSku = explode('-', $simpleProductSku)[1];
-                    if (!is_numeric($simpleProductSku)) {
-                        $simpleProductSku = '';
-                    }
-                }
+                $simpleProductSku = $this->productRepository->getById($simpleProductId)
+                    ->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
             }
             $itemStock->setItemId($parentProductSku)->
             setVariantId($simpleProductSku);
@@ -154,6 +150,7 @@ class StockHelper extends AbstractHelper
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
+
             return $response ?
                 $response->getItemsInStockGetResult() : $response;
         } else {

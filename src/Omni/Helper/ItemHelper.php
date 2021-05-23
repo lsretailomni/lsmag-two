@@ -3,6 +3,7 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\ItemGetByIdResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
@@ -18,6 +19,7 @@ use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
@@ -382,29 +384,21 @@ class ItemHelper extends AbstractHelper
     /**
      * Get comparison values
      *
-     * @param $quoteItem
+     * @param $item
      * @return array
+     * @throws NoSuchEntityException
      */
-    public function getComparisonValues($quoteItem)
+    public function getComparisonValues($item)
     {
-        $variantId      = '';
-        $sku            = $quoteItem->getSku();
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $item->getSku(), 'eq')->create();
         $productList    = $this->productRepository->getList($searchCriteria)->getItems();
         /** @var Product $product */
-        $product = array_pop($productList);
-        $uom     = $product->getData('uom');
-        $parts   = explode('-', $sku);
-        $itemId  = $parts[0];
-        unset($parts[0]);
+        $product   = array_pop($productList);
+        $itemId    = $this->productRepository->getById($item->getProductId())->getSku();
+        $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+        $uom       = $product->getData('uom');
+        $barCode   = $product->getData('barcode');
 
-        foreach ($parts as $i) {
-            if (is_numeric($i)) {
-                $variantId = $i;
-                break;
-            }
-        }
-
-        return [$itemId, $variantId, $uom];
+        return [$itemId, $variantId, $uom, $barCode];
     }
 }
