@@ -532,6 +532,8 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * For cancelling the order in LS central
      * @param $documentId
      * @param $storeId
