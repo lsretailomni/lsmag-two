@@ -236,9 +236,10 @@ class ItemHelper extends AbstractHelper
      */
     public function getOrderDiscountLinesForItem($item, $orderData, $type = 1)
     {
-        $check        = false;
-        $discountInfo = $orderLines = $discountsLines = [];
-        $discountText = __("Save");
+        $check             = false;
+        $baseUnitOfMeasure = "";
+        $discountInfo      = $orderLines = $discountsLines = [];
+        $discountText      = __("Save");
 
         try {
             if ($type == 2) {
@@ -247,6 +248,7 @@ class ItemHelper extends AbstractHelper
                 $uom         = $item->getUomId();
                 $customPrice = $item->getDiscountAmount();
             } else {
+                $baseUnitOfMeasure = $item->getProduct()->getData('uom');
                 list($itemId, $variantId, $uom) = $this->getComparisonValues($item);
                 $customPrice = $item->getCustomPrice();
             }
@@ -260,10 +262,7 @@ class ItemHelper extends AbstractHelper
             }
 
             foreach ($orderLines as $line) {
-                if ($line->getItemId() == $itemId
-                    && $line->getVariantId() == $variantId
-                    && $line->getUomId() == $uom
-                ) {
+                if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                     if ($customPrice > 0 && $customPrice != null) {
                         foreach ($discountsLines as $orderDiscountLine) {
                             if ($line->getLineNumber() == $orderDiscountLine->getLineNumber()) {
@@ -306,13 +305,11 @@ class ItemHelper extends AbstractHelper
             }
 
             foreach ($quoteItemList as $quoteItem) {
+                $baseUnitOfMeasure = $quoteItem->getProduct()->getData('uom');
                 list($itemId, $variantId, $uom) = $this->getComparisonValues($quoteItem);
 
                 foreach ($orderLines as $index => $line) {
-                    if ($itemId == $line->getItemId() &&
-                        $variantId == $line->getVariantId() &&
-                        $uom == $line->getUomId()
-                    ) {
+                    if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                         $unitPrice = $line->getAmount() / $line->getQuantity();
                         if ($line->getDiscountAmount() > 0) {
                             $quoteItem->setCustomPrice($unitPrice);
@@ -400,5 +397,21 @@ class ItemHelper extends AbstractHelper
         $barCode   = $product->getData('barcode');
 
         return [$itemId, $variantId, $uom, $barCode];
+    }
+
+    /**
+     * Test if same quote_item as given line
+     *
+     * @param $line
+     * @param $itemId
+     * @param $variantId
+     * @param $uom
+     * @param $baseUnitOfMeasure
+     * @return bool
+     */
+    public function isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)
+    {
+        return (($itemId == $line->getItemId() && $variantId == $line->getVariantId()) &&
+            ($uom == $line->getUomId() || (empty($line->getUomId()) && $uom == $baseUnitOfMeasure)));
     }
 }

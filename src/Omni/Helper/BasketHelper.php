@@ -863,7 +863,7 @@ class BasketHelper extends AbstractHelper
     /**
      * This function is overriding in hospitality module
      *
-     * Get Correct Item Row Total for minicart after comparison
+     * Get Correct Item Row Total for mini-cart after comparison
      *
      * @param $item
      * @return string
@@ -872,13 +872,14 @@ class BasketHelper extends AbstractHelper
      */
     public function getItemRowTotal($item)
     {
+        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
         list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues($item);
         $rowTotal   = $item->getRowTotal();
         $basketData = $this->getOneListCalculation();
         $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 
         foreach ($orderLines as $line) {
-            if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() && $uom == $line->getUomId()) {
+            if ($this->itemHelper->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                 $rowTotal = $line->getAmount();
                 break;
             }
