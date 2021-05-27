@@ -873,7 +873,7 @@ class BasketHelper extends AbstractHelper
     public function getItemRowTotal($item)
     {
         list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues($item);
-        $rowTotal   = "";
+        $rowTotal   = $item->getRowTotal();
         $basketData = $this->getOneListCalculation();
         $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 
