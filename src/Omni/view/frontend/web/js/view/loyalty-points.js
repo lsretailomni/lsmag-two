@@ -7,7 +7,7 @@ define([
     'Magento_Checkout/js/model/totals',
     'Ls_Omni/js/action/set-loyalty-points',
     'Ls_Omni/js/action/cancel-points',
-    'mage/translate',
+    'mage/translate'
 ], function ($, ko, Component, quote, points, totals, setLoyaltyPointsAction, cancelPointsAction, $t) {
     'use strict';
 
@@ -16,8 +16,10 @@ define([
 
     if (totals) {
         var pointSpent = totals.getSegment('ls_points_spent');
-        if (pointSpent)
+
+        if (pointSpent) {
             loyaltyPoints(pointSpent.value);
+        }
     }
     isApplied = ko.observable(loyaltyPoints() != null);
 
@@ -26,10 +28,10 @@ define([
             template: 'Ls_Omni/payment/loyaltypoints'
         },
 
-
         balanceFormatted: ko.computed(function () {
             var label = $t('You have %1 loyalty points. Each of 10 Points gets %2 discount.');
             label = label.replace('%1', '<strong>' + points.format(points.balance) + '</strong>');
+
             return label.replace('%2', '<strong>' + points.rateLabel + '</strong>');
         }),
 
@@ -57,6 +59,15 @@ define([
                 loyaltyPoints('');
                 cancelPointsAction(isApplied);
             }
+        },
+
+        /**
+         * Check the validity of loyalty_points
+         *
+         * @returns {Boolean}
+         */
+        isBalanceAvailable: function () {
+            return points.balance > 0;
         },
 
         /**
