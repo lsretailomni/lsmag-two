@@ -3,9 +3,12 @@
 namespace Ls\CustomerGraphQl\Plugin;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\CustomerGraphQl\Model\Customer\SaveCustomer;
 use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\CustomerGraphQl\Model\Customer\SaveCustomer;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 
 /**
@@ -33,12 +36,16 @@ class UpdateAccount
     }
 
     /**
+     * Around plugin to intercepting SaveCustomer Execute method
+     *
      * @param SaveCustomer $subject
      * @param callable $proceed
      * @param CustomerInterface $customer
      * @return mixed
      * @throws GraphQlInputException
-     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function aroundExecute(
         SaveCustomer $subject,
@@ -46,12 +53,21 @@ class UpdateAccount
         CustomerInterface $customer
     ) {
         $result = $proceed($customer);
+
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $response = $this->contactHelper->updateCustomerAccount($customer);
-            if (empty($response)) {
-                throw new GraphQlInputException(
-                    __('Cannot update account')
-                );
+            $customer = $this->contactHelper->loadCustomerByEmailAndWebsiteId(
+                $customer->getEmail(),
+                $customer->getWebsiteId()
+            );
+
+            if (!$customer->getDefaultBillingAddress()) {
+                $response = $this->contactHelper->updateCustomerAccount($customer);
+
+                if (empty($response)) {
+                    throw new GraphQlInputException(
+                        __('Cannot update account')
+                    );
+                }
             }
         }
 
