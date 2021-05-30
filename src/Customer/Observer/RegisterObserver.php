@@ -69,15 +69,18 @@ class RegisterObserver implements ObserverInterface
     {
         try {
             $parameters = $observer->getRequest()->getParams();
-            $session = $this->customerSession;
+            $session    = $this->customerSession;
             do {
                 $parameters['lsr_username'] = $this->contactHelper->generateRandomUsername();
             } while ($this->contactHelper->isUsernameExist($parameters['lsr_username']) ||
-                $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
+            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
                 $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username']) : false
             );
             /** @var Customer $customer */
             $customer = $session->getCustomer();
+            if (empty($customer->getId())) {
+                $customer = $this->contactHelper->getCustomerByEmail($parameters['email']);
+            }
             if ($customer->getId() && !empty($parameters['lsr_username']) && !empty($parameters['password'])) {
                 $customer->setData('lsr_username', $parameters['lsr_username']);
                 $customer->setData('password', $parameters['password']);

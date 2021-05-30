@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.0] - 2021-05-07
+
+### Added
+
+- Added indexer in all the replication table. [OMNI-5424](https://solutions.lsretail.com/jira/browse/OMNI-5424)
+- New mutation in GraphQl to support adding/updating/removing of loyalty points. [OMNI-5376](https://solutions.lsretail.com/jira/browse/OMNI-5376)
+- Added customer meta information (cardId, lsr_username,LSR ID, Member Account Id, sales history) in the customer interface in GraphQl. [OMNI-5419](https://solutions.lsretail.com/jira/browse/OMNI-5419)
+- Added document_id in response of sales_entry data of Customer Query in GraphQl. [OMNI-5432](https://solutions.lsretail.com/jira/browse/OMNI-5432)
+- Added support to fire basket calculation from LS Central for reorder through GraphQl Interface. [OMNI-5399](https://solutions.lsretail.com/jira/browse/OMNI-5399)
+- Added support to choose multiple modifiers in the same group for specific product. [OMNI-5421](https://solutions.lsretail.com/jira/browse/OMNI-5421)
+
+
+### Changed
+
+- Changed config retrieving through collection objects to retrieve real time config value and avoid cache issue. [OMNI-5433](https://solutions.lsretail.com/jira/browse/OMNI-5433)
+- Changed the logic to sync Customer account firstname and lastname with LS Central instead of Customer Address firstname and lastname. [OMNI-5419](https://solutions.lsretail.com/jira/browse/OMNI-5419)
+- Changed the logic to sync default billing address with LS Central instead of default shipping address. [OMNI-5419](https://solutions.lsretail.com/jira/browse/OMNI-5419)
+
+### Bugs/Fixes
+
+- Improve replication performance by writing the config values only when the new values are different from the existing one. [OMNI-5424](https://solutions.lsretail.com/jira/browse/OMNI-5424)
+- Fixed issue in merging the defaultonelist when the shopping carts are merged after customer login. [OMNI-5423](https://solutions.lsretail.com/jira/browse/OMNI-5423)
+- Fixed issue with synchronization of empty attribute values in Magento. [OMNI-5436](https://solutions.lsretail.com/jira/browse/OMNI-5436)
+- Fixed customer registration issue when "Require email confirmation"  is set to true. [OMNI-5439](https://solutions.lsretail.com/jira/browse/OMNI-5439)
+
+
+
 ## [1.9.0] - 2021-03-23
 
 ### Added

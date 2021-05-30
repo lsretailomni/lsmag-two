@@ -378,9 +378,10 @@ class Data extends AbstractHelper
             $results = explode('LS:', $pingResponseText);
 
             if (!empty($results)) {
-                if (!$this->lsr->getOmniVersion() || version_compare($this->lsr->getOmniVersion(), '4.16.0', '>=')) {
-                    $versions = explode('LS Commerce Service:', $results[1]);
-                } else {
+                // for Omni 4.16 or higher
+                $versions = explode('LS Commerce Service:', $results[1]);
+                if(!empty($versions) && count($versions) < 2){
+                    // for Omni lower then 4.16
                     $versions = explode('OMNI:', $results[1]);
                 }
 
