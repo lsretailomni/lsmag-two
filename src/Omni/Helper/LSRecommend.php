@@ -19,9 +19,7 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item;
 
 /**
- * All Functionality related to LS Recommend will go here.
- * Class BasketHelper
- * @package Ls\Omni\Helper
+ * All Functionality related to LS Recommend will go here
  */
 class LSRecommend extends AbstractHelper
 {
@@ -44,14 +42,17 @@ class LSRecommend extends AbstractHelper
     /** @var array */
     public $basketDataResponse;
 
+    /** @var ItemHelper $itemHelper */
+    private $itemHelper;
+
     /**
-     * LSRecommend constructor.
      * @param Context $context
      * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param Proxy $customerSession
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param ProductRepositoryInterface $productRepository
      * @param LSR $Lsr
+     * @param ItemHelper $itemHelper
      */
     public function __construct(
         Context $context,
@@ -59,7 +60,8 @@ class LSRecommend extends AbstractHelper
         Proxy $customerSession,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         ProductRepositoryInterface $productRepository,
-        LSR $Lsr
+        LSR $Lsr,
+        ItemHelper $itemHelper
     ) {
         parent::__construct($context);
         $this->checkoutSession       = $checkoutSession;
@@ -67,6 +69,7 @@ class LSRecommend extends AbstractHelper
         $this->lsr                   = $Lsr;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->productRepository     = $productRepository;
+        $this->itemHelper            = $itemHelper;
     }
 
     /**
@@ -212,6 +215,8 @@ class LSRecommend extends AbstractHelper
     }
 
     /**
+     * Get entire collection of product skus in quote
+     *
      * @return string|null
      * @throws NoSuchEntityException
      * @throws LocalizedException
@@ -221,18 +226,20 @@ class LSRecommend extends AbstractHelper
         /** @var Quote $quote */
         $itemsSkus = null;
         $quote     = $this->checkoutSession->getQuote();
+
         if ($quote->hasItems()) {
             $quoteItems = $this->checkoutSession->getQuote()->getAllVisibleItems();
             /** @var Item $quoteItem */
             //resetting back to null.
-            $itemsSkusArray = array();
+            $itemsSkusArray = [];
+
             foreach ($quoteItems as $quoteItem) {
-                $skuArray  = explode('-', $quoteItem->getSku());
-                $sku       = array_shift($skuArray);
+                list($sku) = $this->itemHelper->getComparisonValues($quoteItem);
                 $itemsSkus .= $sku . ',';
             }
             $itemsSkus = implode(',', $itemsSkusArray);
         }
+
         return $itemsSkus;
     }
 }

@@ -9,7 +9,6 @@ use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
-use Magento\Catalog\Model\Product\Interceptor;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
@@ -238,9 +237,12 @@ class BasketHelper extends AbstractHelper
 
     /**
      * This function is overriding in hospitality module
+     *
+     * Populating items in the oneList from magneto quote
      * @param Quote $quote
      * @param Entity\OneList $oneList
      * @return Entity\OneList
+     * @throws NoSuchEntityException
      */
     public function setOneListQuote(Quote $quote, Entity\OneList $oneList)
     {
@@ -255,36 +257,16 @@ class BasketHelper extends AbstractHelper
         $itemsArray = [];
 
         foreach ($quoteItems as $quoteItem) {
-            // initialize the default null value
-            $variant = $barcode = null;
 
-            $sku = $quoteItem->getSku();
+            list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues($quoteItem);
 
-            $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
-
-            $productList = $this->productRepository->getList($searchCriteria)->getItems();
-
-            /** @var Interceptor $product */
-            $product = array_pop($productList);
-
-            $barcode = $product->getData('barcode');
-
-            $uom   = $product->getData('uom');
-            $parts = explode('-', $sku);
-            // first element is lsr_id
-            $lsr_id = array_shift($parts);
-            // second element, if it exists, is variant id
-            $variant_id = count($parts) ? array_shift($parts) : null;
-            if (!is_numeric($variant_id)) {
-                $variant_id = null;
-            }
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
                 ->setQuantity($quoteItem->getData('qty'))
-                ->setItemId($lsr_id)
+                ->setItemId($itemId)
                 ->setId('')
-                ->setBarcodeId($barcode)
-                ->setVariantId($variant_id)
+                ->setBarcodeId($barCode)
+                ->setVariantId($variantId)
                 ->setUnitOfMeasureId($uom);
 
             $itemsArray[] = $list_item;
@@ -307,6 +289,8 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * Generating commerce services wishlist from magento wishlist
+     *
      * @param Entity\OneList $oneList
      * @param $wishlistItems
      * @return Entity\OneList
@@ -316,44 +300,29 @@ class BasketHelper extends AbstractHelper
         // @codingStandardsIgnoreLine
         $items      = new Entity\ArrayOfOneListItem();
         $itemsArray = [];
+
         foreach ($wishlistItems as $item) {
             if ($item->getOptionByCode('simple_product')) {
                 $product = $item->getOptionByCode('simple_product')->getProduct();
             } else {
                 $product = $item->getProduct();
             }
-            $sku            = $product->getSku();
-            $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
-
-            $productList = $this->productRepository->getList($searchCriteria)->getItems();
-
-            /** @var Interceptor $product */
-            $product = array_pop($productList);
+            list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues($product);
             $qty     = $item->getData('qty');
-            // initialize the default null value
-            $barcode = $product->getData('barcode');
-
-            $sku = $product->getSku();
-
-            $uom   = $product->getData('uom');
-            $parts = explode('-', $sku);
-            // first element is lsr_id
-            $lsr_id = array_shift($parts);
-            // second element, if it exists, is variant id
-            $variant_id = count($parts) ? array_shift($parts) : null;
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
                 ->setQuantity($qty)
-                ->setItemId($lsr_id)
+                ->setItemId($itemId)
                 ->setId('')
-                ->setBarcodeId($barcode)
-                ->setVariantId($variant_id)
+                ->setBarcodeId($barCode)
+                ->setVariantId($variantId)
                 ->setUnitOfMeasureId($uom);
 
             $itemsArray[] = $list_item;
         }
         $items->setOneListItem($itemsArray);
         $oneList->setItems($items);
+
         return $oneList;
     }
 
@@ -891,9 +860,11 @@ class BasketHelper extends AbstractHelper
         return $this->itemHelper;
     }
 
-
     /**
      * This function is overriding in hospitality module
+     *
+     * Get Correct Item Row Total for mini-cart after comparison
+     *
      * @param $item
      * @return string
      * @throws InvalidEnumException
@@ -901,25 +872,19 @@ class BasketHelper extends AbstractHelper
      */
     public function getItemRowTotal($item)
     {
-        $itemSku = explode("-", $item->getSku());
-        $uom     = '';
-        // @codingStandardsIgnoreLine
-        if (count($itemSku) < 2) {
-            $itemSku[1] = null;
-        }
         $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-        // @codingStandardsIgnoreLine
-        $uom        = $this->itemHelper->getUom($itemSku, $baseUnitOfMeasure);
-        $rowTotal   = "";
+        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues($item);
+        $rowTotal   = $item->getRowTotal();
         $basketData = $this->getOneListCalculation();
         $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+
         foreach ($orderLines as $line) {
-            // @codingStandardsIgnoreLine
-            if ($itemSku[0] == $line->getItemId() && $itemSku[1] == $line->getVariantId() && $uom == $line->getUomId()) {
+            if ($this->itemHelper->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                 $rowTotal = $line->getAmount();
                 break;
             }
         }
+
         return $rowTotal;
     }
 

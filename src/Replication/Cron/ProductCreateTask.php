@@ -7,7 +7,6 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
-use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
@@ -20,7 +19,6 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplBarcode;
 use \Ls\Replication\Model\ReplBarcodeSearchResults;
-use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ReplItem;
@@ -64,7 +62,6 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory as EavAtt
 use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrder;
-use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -94,9 +91,6 @@ class ProductCreateTask
     /** @var ReplItemRepository */
     public $itemRepository;
 
-    /** @var ReplExtendedVariantValueRepository */
-    public $extendedVariantValueRepository;
-
     /** @var ReplBarcodeRepository */
     public $replBarcodeRepository;
 
@@ -124,9 +118,6 @@ class ProductCreateTask
     /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
-    /** @var SortOrderBuilder */
-    public $sortOrder;
-
     /** @var Logger */
     public $logger;
 
@@ -147,9 +138,6 @@ class ProductCreateTask
 
     /** @var ReplItemVariantRegistrationRepository */
     public $replItemVariantRegistrationRepository;
-
-    /** @var ConfigurableProTypeModel */
-    public $configurableProTypeModel;
 
     /**  @var ReplInvStatusCollectionFactory */
     public $replInvStatusCollectionFactory;
@@ -258,14 +246,12 @@ class ProductCreateTask
      * @param ImageContentFactory $imageContent
      * @param ReplItemRepository $itemRepository
      * @param ReplItemVariantRegistrationRepository $replItemVariantRegistrationRepository
-     * @param ReplExtendedVariantValueRepository $extendedVariantValueRepository
      * @param ReplHierarchyLeafRepository $replHierarchyLeafRepository
      * @param ReplBarcodeRepository $replBarcodeRepository
      * @param ReplPriceRepository $replPriceRepository
      * @param ReplItemUnitOfMeasure $replItemUnitOfMeasureRepository
      * @param ReplInvStatusRepository $replInvStatusRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param SortOrder $sortOrder
      * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
      * @param LoyaltyHelper $loyaltyHelper
      * @param ReplicationHelper $replicationHelper
@@ -273,7 +259,6 @@ class ProductCreateTask
      * @param ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface
      * @param Logger $logger
      * @param LSR $LSR
-     * @param ConfigurableProTypeModel $configurableProTypeModel
      * @param ReplInvStatusCollectionFactory $replInvStatusCollectionFactory
      * @param ReplPriceCollectionFactory $replPriceCollectionFactory
      * @param ReplItemUomCollectionFactory $replItemUomCollectionFactory
@@ -306,14 +291,12 @@ class ProductCreateTask
         ImageContentFactory $imageContent,
         ReplItemRepository $itemRepository,
         ReplItemVariantRegistrationRepository $replItemVariantRegistrationRepository,
-        ReplExtendedVariantValueRepository $extendedVariantValueRepository,
         ReplHierarchyLeafRepository $replHierarchyLeafRepository,
         ReplBarcodeRepository $replBarcodeRepository,
         ReplPriceRepository $replPriceRepository,
         ReplItemUnitOfMeasure $replItemUnitOfMeasureRepository,
         ReplInvStatusRepository $replInvStatusRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        SortOrder $sortOrder,
         ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
         LoyaltyHelper $loyaltyHelper,
         ReplicationHelper $replicationHelper,
@@ -321,7 +304,6 @@ class ProductCreateTask
         ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface,
         Logger $logger,
         LSR $LSR,
-        ConfigurableProTypeModel $configurableProTypeModel,
         ReplInvStatusCollectionFactory $replInvStatusCollectionFactory,
         ReplPriceCollectionFactory $replPriceCollectionFactory,
         ReplItemUomCollectionFactory $replItemUomCollectionFactory,
@@ -353,14 +335,12 @@ class ProductCreateTask
         $this->imageContent                              = $imageContent;
         $this->itemRepository                            = $itemRepository;
         $this->replItemVariantRegistrationRepository     = $replItemVariantRegistrationRepository;
-        $this->extendedVariantValueRepository            = $extendedVariantValueRepository;
         $this->replHierarchyLeafRepository               = $replHierarchyLeafRepository;
         $this->replBarcodeRepository                     = $replBarcodeRepository;
         $this->replPriceRepository                       = $replPriceRepository;
         $this->replItemUomRepository                     = $replItemUnitOfMeasureRepository;
         $this->replInvStatusRepository                   = $replInvStatusRepository;
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
-        $this->sortOrder                                 = $sortOrder;
         $this->logger                                    = $logger;
         $this->replImageLinkRepositoryInterface          = $replImageLinkRepositoryInterface;
         $this->loyaltyHelper                             = $loyaltyHelper;
@@ -368,7 +348,6 @@ class ProductCreateTask
         $this->replAttributeValueRepositoryInterface     = $replAttributeValueRepositoryInterface;
         $this->replVendorItemMappingRepositoryInterface  = $replVendorItemMappingRepositoryInterface;
         $this->lsr                                       = $LSR;
-        $this->configurableProTypeModel                  = $configurableProTypeModel;
         $this->replInvStatusCollectionFactory            = $replInvStatusCollectionFactory;
         $this->replPriceCollectionFactory                = $replPriceCollectionFactory;
         $this->replItemUomCollectionFactory              = $replItemUomCollectionFactory;
@@ -589,7 +568,10 @@ class ProductCreateTask
                                     // @codingStandardsIgnoreLine
                                     $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                     $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
-                                    $totalUomCodes        = $this->getUomCodes($item->getNavId());
+                                    $totalUomCodes        = $this->replicationHelper->getUomCodes(
+                                        $item->getNavId(),
+                                        $this->store->getId()
+                                    );
                                     if (!empty($variants) || count($totalUomCodes[$item->getNavId()]) > 1) {
                                         $this->createConfigurableProducts(
                                             $productSaved,
@@ -842,37 +824,6 @@ class ProductCreateTask
     }
 
     /**
-     * Getting all configurable attribute codes
-     *
-     * @param $itemId
-     * @return array
-     */
-    public function _getAttributesCodes($itemId)
-    {
-        $finalCodes = [];
-        try {
-            $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
-                ->addFilter('scope_id', $this->store->getId(), 'eq')->create();
-            $sortOrder      = $this->sortOrder->setField('DimensionLogicalOrder')->setDirection(SortOrder::SORT_ASC);
-            $searchCriteria->setSortOrders([$sortOrder]);
-            $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
-            /** @var ReplExtendedVariantValue $valueCode */
-            foreach ($attributeCodes as $valueCode) {
-                $formattedCode                           = $this->replicationHelper->formatAttributeCode($valueCode->getCode());
-                $finalCodes[$valueCode->getDimensions()] = $formattedCode;
-                $valueCode->setData('processed_at', $this->replicationHelper->getDateTime());
-                $valueCode->setData('processed', 1);
-                $valueCode->setData('is_updated', 0);
-                // @codingStandardsIgnoreLine
-                $this->extendedVariantValueRepository->save($valueCode);
-            }
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
-        return $finalCodes;
-    }
-
-    /**
      * Return all the barcodes including the variant
      *
      * @param $itemId
@@ -977,35 +928,6 @@ class ProductCreateTask
     }
 
     /**
-     * Getting all available uom codes
-     *
-     * @param $itemId
-     * @return array
-     */
-    public function getUomCodes($itemId)
-    {
-        $filters = [
-            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
-        ];
-
-        $itemUom          = [];
-        $itemUom[$itemId] = [];
-        $searchCriteria   = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
-        /** @var ReplItemUnitOfMeasure $items */
-        try {
-            $items = $this->replItemUomRepository->getList($searchCriteria)->getItems();
-            foreach ($items as $item) {
-                /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
-                $itemUom[$itemId][$item->getDescription()] = $item->getCode();
-            }
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
-        return $itemUom;
-    }
-
-    /**
      * Getting only processed uom codes of the item
      *
      * @param $itemId
@@ -1082,7 +1004,10 @@ class ProductCreateTask
                 $itemData             = $this->_getItem($item);
                 $productVariants      = $this->getNewOrUpdatedProductVariants(-1, $item);
                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item);
-                $totalUomCodes        = $this->getUomCodes($itemData->getNavId());
+                $totalUomCodes        = $this->replicationHelper->getUomCodes(
+                    $itemData->getNavId(),
+                    $this->store->getId()
+                );
                 if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
                     $productVariants = $this->getProductVariants($itemData->getNavId());
                 }
@@ -1149,29 +1074,19 @@ class ProductCreateTask
         if (!empty($variants)) {
             /** @var ReplItemVariantRegistration $value */
             foreach ($variants as $value) {
-                $d1     = (($value->getVariantDimension1()) ?: '');
-                $d2     = (($value->getVariantDimension2()) ?: '');
-                $d3     = (($value->getVariantDimension3()) ?: '');
-                $d4     = (($value->getVariantDimension4()) ?: '');
-                $d5     = (($value->getVariantDimension5()) ?: '');
-                $d6     = (($value->getVariantDimension6()) ?: '');
                 $itemId = $value->getItemId();
                 try {
                     $productData            = $this->productRepository->get($itemId, true, $this->store->getId());
-                    $attributeCodes         = $this->_getAttributesCodes($productData->getSku());
-                    $configurableAttributes = [];
-                    foreach ($attributeCodes as $keyCode => $valueCode) {
-                        if (isset($keyCode) && $keyCode != '') {
-                            $code                     = $valueCode;
-                            $codeValue                = ${'d' . $keyCode};
-                            $configurableAttributes[] = ['code' => $code, 'value' => $codeValue];
-                        }
-                    }
-                    $associatedSimpleProduct = $this->getConfAssoProductId($productData, $configurableAttributes);
-                    if ($associatedSimpleProduct != null) {
-                        $associatedSimpleProduct = $this->setProductStatus($associatedSimpleProduct, 1);
+                    $associatedSimpleProduct = $this->replicationHelper->getRelatedVariantGivenConfAttributesValues(
+                        $productData,
+                        $value,
+                        $this->store->getId()
+                    );
+
+                    foreach($associatedSimpleProduct as $item) {
+                        $item = $this->setProductStatus($item, 1);
                         // @codingStandardsIgnoreLine
-                        $this->productRepository->save($associatedSimpleProduct);
+                        $this->productRepository->save($item);
                     }
                 } catch (Exception $e) {
                     $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
@@ -1229,54 +1144,6 @@ class ProductCreateTask
                 $this->replItemUomRepository->save($uom);
             }
         }
-    }
-
-    /**
-     * Getting associated simple product id of the configurable product
-     *
-     * @param $product
-     * @param $nameValueList
-     * @return Product|null
-     */
-    public function getConfAssoProductId($product, $nameValueList)
-    {
-        //get configurable products attributes array with all values
-        // with label (super attribute which use for configuration)
-        $assPro = null;
-        if ($product->getTypeId() != Configurable::TYPE_CODE) {
-            // to bypass situation when simple products are not being properly converted into configurable.
-            return $assPro;
-        }
-        $optionsData      = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
-        $superAttrList    = [];
-        $superAttrOptions = [];
-        $attributeValues  = [];
-
-        // prepare array with attribute values
-        foreach ($optionsData as $option) {
-            $superAttrList[]                           = [
-                'name' => $option['frontend_label'],
-                'code' => $option['attribute_code'],
-                'id'   => $option['attribute_id']
-            ];
-            $superAttrOptions[$option['attribute_id']] = $option['options'];
-            foreach ($nameValueList as $nameValue) {
-                if ($nameValue['code'] == $option['attribute_code']) {
-                    foreach ($option['options'] as $attrOpt) {
-                        if ($nameValue['value'] == $attrOpt['label']) {
-                            $attributeValues[$option['attribute_id']] = $attrOpt['value'];
-                        }
-                    }
-                }
-            }
-        }
-
-        if (count($attributeValues) == count($nameValueList)) {
-            // pass this prepared array with $product
-            $assPro = $this->configurableProTypeModel->getProductByAttributes($attributeValues, $product);
-            // it return complete product according to attribute values which you pass
-        }
-        return $assPro;
     }
 
     /**
@@ -1357,7 +1224,7 @@ class ProductCreateTask
         $uomCodesNotProcessed = null
     ) {
         // Get those attribute codes which are assigned to product.
-        $attributesCode = $this->_getAttributesCodes($item->getNavId());
+        $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->store->getId());
 
         foreach ($attributesCode as $attributeCode) {
             $this->attributeAssignmentToAttributeSet(
@@ -1396,7 +1263,7 @@ class ProductCreateTask
                         try {
                             $name                   = $this->getNameForVariant($value, $item);
                             $name                   = $this->getNameForUom($name, $uomCode->getDescription());
-                            $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name, $uomCode);
+                            $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name, $uomCode, $value);
                             $associatedProductIds   = array_unique($associatedProductIds);
                         } catch (Exception $e) {
                             $this->logger->debug($e->getMessage());
@@ -1479,7 +1346,7 @@ class ProductCreateTask
                     $productData = $this->saveProductForWebsite($sku);
                     try {
                         $name                   = $this->getNameForVariant($value, $item);
-                        $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name, $uomCode);
+                        $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name, $uomCode, $value);
                         $associatedProductIds   = array_unique($associatedProductIds);
                     } catch (Exception $e) {
                         $this->logger->debug($e->getMessage());
@@ -1669,10 +1536,11 @@ class ProductCreateTask
      * @param $item
      * @param $name
      * @param null $uomCode
+     * @param null $value
      * @return int|null
      * @throws LocalizedException
      */
-    private function updateConfigProduct($productData, $item, $name, $uomCode = null)
+    private function updateConfigProduct($productData, $item, $name, $uomCode = null, $value = null)
     {
         $productData->setStoreId($this->store->getId());
         $productData->setName($name);
@@ -1689,6 +1557,10 @@ class ProductCreateTask
             $productData->setData(LSR::LS_UOM_ATTRIBUTE, $optionId);
         } else {
             $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
+        }
+
+        if ($value) {
+            $productData->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
         }
         $productData->setStatus(Status::STATUS_ENABLED);
         try {
@@ -1800,6 +1672,10 @@ class ProductCreateTask
         }
         if ($value) {
             $itemStock = $this->getInventoryStatus($value->getItemId(), $this->webStoreId, $value->getVariantId());
+
+            if ($value->getVariantId()) {
+                $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
+            }
         } else {
             $itemStock = $this->getInventoryStatus($item->getNavId(), $this->webStoreId, null);
         }

@@ -2,18 +2,17 @@
 
 namespace Ls\Omni\Controller\Stock;
 
-use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\StockHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Class Store
- * @package Ls\Omni\Controller\Stock
+ * Controller to accept request for stock lookup for each item in the quote
  */
 class Store extends Action
 {
@@ -21,11 +20,6 @@ class Store extends Action
      * @var \Magento\Framework\App\Request\Http\Proxy
      */
     public $request;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    public $scopeConfig;
 
     /**
      * @var Proxy
@@ -42,65 +36,57 @@ class Store extends Action
      */
     public $resultJsonFactory;
 
+    /** @var ItemHelper $itemHelper */
+    public $itemHelper;
+
     /**
-     * Store constructor.
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param \Magento\Framework\App\Request\Http\Proxy $request
-     * @param ScopeConfigInterface $scopeConfig
      * @param Proxy $session
      * @param StockHelper $stockHelper
+     * @param ItemHelper $itemHelper
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
         \Magento\Framework\App\Request\Http\Proxy $request,
-        ScopeConfigInterface $scopeConfig,
         Proxy $session,
-        StockHelper $stockHelper
+        StockHelper $stockHelper,
+        ItemHelper $itemHelper
     ) {
         $this->request           = $request;
-        $this->scopeConfig       = $scopeConfig;
         $this->session           = $session;
         $this->stockHelper       = $stockHelper;
         $this->resultJsonFactory = $resultJsonFactory;
+        $this->itemHelper        = $itemHelper;
         parent::__construct($context);
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|Json|\Magento\Framework\Controller\ResultInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @inheritDoc
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function execute()
     {
         $result = $this->resultJsonFactory->create();
+
         if ($this->getRequest()->isAjax()) {
             $selectedStore      = $this->request->getParam('storeid');
             $items              = $this->session->getQuote()->getAllVisibleItems();
             $stockCollection    = [];
             $notAvailableNotice = __('Please check other stores or remove the not available item(s) from your ');
+
             foreach ($items as &$item) {
                 $itemQty = $item->getQty();
-                $uomQty  = $item->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+                list($parentProductSku, $childProductSku, , , $uomQty) = $this->itemHelper->getComparisonValues($item);
+
                 if (!empty($uomQty)) {
                     $itemQty = $itemQty * $uomQty;
                 }
-                $sku              = $item->getSku();
-                $parentProductSku = $childProductSku = "";
-                if (strpos($sku, '-') !== false) {
-                    $parentProductSku = explode('-', $sku)[0];
-                    $childProductSku  = explode('-', $sku)[1];
-                    $sku              = null;
-                    $sku              = $parentProductSku . '-' . $childProductSku;
-                    if (!is_numeric($childProductSku)) {
-                        $childProductSku = '';
-                        $sku             = null;
-                        $sku             = $parentProductSku;
-                    }
-                } else {
-                    $parentProductSku = $sku;
-                }
+                $sku = $parentProductSku . (($childProductSku) ? '-' . $childProductSku : '');
+
                 if (empty($item->getParentItemId())) {
                     $stockCollection[$sku]['name'] = $item->getName();
                 }
@@ -109,19 +95,23 @@ class Store extends Action
                 $item = ['parent' => $parentProductSku, 'child' => $childProductSku];
             }
             $response = $this->stockHelper->getAllItemsStockInSingleStore($selectedStore, $items);
+
             if ($response) {
                 if (!is_array($response->getInventoryResponse())) {
                     $response = [$response->getInventoryResponse()];
                 } else {
                     $response = $response->getInventoryResponse();
                 }
+
                 foreach ($response as $item) {
                     $actualQty = ceil($item->getQtyInventory());
                     $sku       = $item->getItemId() .
                         (($item->getVariantId()) ? '-' . $item->getVariantId() : '');
+
                     if ($actualQty > 0) {
                         $stockCollection[$sku]['status']  = '1';
                         $stockCollection[$sku]['display'] = __('This item is available');
+
                         if ($stockCollection[$sku]['qty'] > $actualQty) {
                             $stockCollection[$sku]['status']  = '0';
                             $stockCollection[$sku]['display'] = __(
@@ -147,6 +137,7 @@ class Store extends Action
                 );
             }
         }
+
         return $result;
     }
 }
