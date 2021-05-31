@@ -4,12 +4,36 @@
 @color_notification_bg: #39c;
 
 & when (@media-common = true) {
-    .customer-order-view {
+    .customer-order-view,
+    .customer-order-invoice {
         .block-order-details-view-loyalty {
             .custom-box {
                 .box-title {
                     padding-right: 20px;
                     font-weight: 600;
+                }
+            }
+        }
+
+        .order-details-items {
+            .item-options {
+                display: inline-block;
+                width: 100%;
+                margin-top: 10px;
+
+                dt {
+                    float: left;
+                    margin: 0 10px 10px 0;
+                    clear: both;
+
+                    &:after {
+                        content: ':';
+                    }
+                }
+
+                dd {
+                    float: left;
+                    margin: 0 0 10px;
                 }
             }
         }

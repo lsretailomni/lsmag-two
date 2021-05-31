@@ -159,7 +159,9 @@ class Info extends Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $this->pageConfig->getTitle()->set(__('%1 # %2', $this->getOrder()->getIdType(), $this->getOrder()->getId()));
+        if ($this->getOrder()) {
+            $this->pageConfig->getTitle()->set(__('Order # %1', $this->getOrder()->getId()));
+        }
     }
     // @codingStandardsIgnoreEnd
 

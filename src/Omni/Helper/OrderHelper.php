@@ -432,13 +432,17 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @param $documentId
-     * @return OrderInterface[]
+     * Get respective magento order given commerce service sales entry
+     *
+     * @param $salesEntry
+     * @return array|OrderInterface
      */
-    public function getOrderByDocumentId($documentId)
+    public function getOrderByDocumentId($salesEntry)
     {
         $order = [];
         try {
+            $documentId = $this->getDocumentIdGivenSalesEntry($salesEntry);
+
             if (!empty($documentId)) {
                 $customerId = $this->customerSession->getCustomerId();
                 $orderList  = $this->orderRepository->getList(
@@ -551,5 +555,24 @@ class OrderHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return $response;
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
+     * Get respective document_id given commerce service sales entry
+     *
+     * @param $salesEntry
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getDocumentIdGivenSalesEntry($salesEntry)
+    {
+        // This is to support backward compatibility of Omni
+        if (version_compare($this->lsr->getOmniVersion(), '4.6.0', '>')) {
+            return $salesEntry->getCustomerOrderNo();
+        }
+
+        return $salesEntry->getId();
     }
 }

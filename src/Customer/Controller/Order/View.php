@@ -13,15 +13,13 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class View
- * @package Ls\Customer\Controller\Order
+ * Controller being used for customer order detail
  */
 class View extends Action
 {
@@ -90,7 +88,8 @@ class View extends Action
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|ResultInterface|Page
+     * @inheritDoc
+     *
      * @throws InvalidEnumException
      */
     public function execute()
@@ -107,12 +106,7 @@ class View extends Action
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
-            // This is to support backward compatibility of Omni
-            if (version_compare($this->lsr->getOmniVersion(), '4.6.0', '>')) {
-                $this->setCurrentMagOrderInRegistry($response->getCustomerOrderNo());
-            } elseif ($type === DocumentIdType::ORDER) {
-                $this->setCurrentMagOrderInRegistry($docId);
-            }
+            $this->setCurrentMagOrderInRegistry($response);
             $this->registry->register('current_invoice_option', false);
         }
         /** @var Page $resultPage */
@@ -121,9 +115,11 @@ class View extends Action
     }
 
     /**
+     * Set currentOrder into registry
+     *
      * @param $docId
      * @param $type
-     * @return SalesEntryGetResponse|ResponseInterface|null
+     * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
      * @throws InvalidEnumException
      */
     public function setCurrentOrderInRegistry($docId, $type)
@@ -144,11 +140,13 @@ class View extends Action
     }
 
     /**
-     * @param $orderId
+     * Get respective magento order given Central sales entry Object
+     *
+     * @param $salesEntry
      */
-    public function setCurrentMagOrderInRegistry($orderId)
+    public function setCurrentMagOrderInRegistry($salesEntry)
     {
-        $order = $this->orderHelper->getOrderByDocumentId($orderId);
+        $order = $this->orderHelper->getOrderByDocumentId($salesEntry);
         $this->registry->register('current_mag_order', $order);
     }
 }
