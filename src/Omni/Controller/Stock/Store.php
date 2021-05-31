@@ -2,13 +2,14 @@
 
 namespace Ls\Omni\Controller\Stock;
 
-use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\StockHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Controller to accept request for stock lookup for each item in the quote
@@ -64,6 +65,8 @@ class Store extends Action
 
     /**
      * @inheritDoc
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function execute()
     {
@@ -77,13 +80,12 @@ class Store extends Action
 
             foreach ($items as &$item) {
                 $itemQty = $item->getQty();
-                $uomQty  = $item->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+                list($parentProductSku, $childProductSku, , , $uomQty) = $this->itemHelper->getComparisonValues($item);
 
                 if (!empty($uomQty)) {
                     $itemQty = $itemQty * $uomQty;
                 }
-                list($parentProductSku, $childProductSku) = $this->itemHelper->getComparisonValues($item);
-                $sku = $item->getSku();
+                $sku = $parentProductSku . (($childProductSku) ? '-' . $childProductSku : '');
 
                 if (empty($item->getParentItemId())) {
                     $stockCollection[$sku]['name'] = $item->getName();
