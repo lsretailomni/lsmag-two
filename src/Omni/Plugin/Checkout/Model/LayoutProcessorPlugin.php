@@ -81,7 +81,7 @@ class LayoutProcessorPlugin
         }
 
         if ($this->loyaltyHelper->isLoyaltyPointsEnabled('checkout') == '0' ||
-            $this->contactHelper->getCardIdFromCustomerSession()) {
+            empty($this->contactHelper->getCardIdFromCustomerSession())) {
             unset($billingStep['children']['payment']['children']['afterMethods']['children']['loyalty-points']);
             unset($sideBar['children']['summary']['children']['totals']['children']['loyalty_points_label']);
         }

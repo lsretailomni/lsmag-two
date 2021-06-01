@@ -1563,7 +1563,7 @@ class ContactHelper extends AbstractHelper
      */
     public function getCardIdFromCustomerSession()
     {
-        $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
     }
 
     /**
@@ -1571,7 +1571,7 @@ class ContactHelper extends AbstractHelper
      */
     public function getLsrIdFromCustomerSession()
     {
-        $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
     }
 
     /**
@@ -1579,6 +1579,6 @@ class ContactHelper extends AbstractHelper
      */
     public function getSecurityTokenFromCustomerSession()
     {
-        $this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN);
+        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN);
     }
 }
