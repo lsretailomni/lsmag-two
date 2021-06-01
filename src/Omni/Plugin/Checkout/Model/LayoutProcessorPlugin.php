@@ -3,6 +3,7 @@
 namespace Ls\Omni\Plugin\Checkout\Model;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -33,21 +34,29 @@ class LayoutProcessorPlugin
     public $lsr;
 
     /**
+     * @var ContactHelper
+     */
+    public $contactHelper;
+
+    /**
      * @param Data $data
      * @param LoyaltyHelper $loyaltyHelper
      * @param GiftCardHelper $giftCardHelper
      * @param LSR $lsr
+     * @param ContactHelper $contactHelper
      */
     public function __construct(
         Data $data,
         LoyaltyHelper $loyaltyHelper,
         GiftCardHelper $giftCardHelper,
-        LSR $lsr
+        LSR $lsr,
+        ContactHelper $contactHelper
     ) {
-        $this->data = $data;
-        $this->loyaltyHelper = $loyaltyHelper;
+        $this->data           = $data;
+        $this->loyaltyHelper  = $loyaltyHelper;
         $this->giftCardHelper = $giftCardHelper;
-        $this->lsr = $lsr;
+        $this->lsr            = $lsr;
+        $this->contactHelper  = $contactHelper;
     }
 
     /**
@@ -71,7 +80,8 @@ class LayoutProcessorPlugin
             unset($billingStep['children']['payment']['children']['afterMethods']['children']['discount']);
         }
 
-        if ($this->loyaltyHelper->isLoyaltyPointsEnabled('checkout') == '0') {
+        if ($this->loyaltyHelper->isLoyaltyPointsEnabled('checkout') == '0' ||
+            $this->contactHelper->getCardIdFromCustomerSession()) {
             unset($billingStep['children']['payment']['children']['afterMethods']['children']['loyalty-points']);
             unset($sideBar['children']['summary']['children']['totals']['children']['loyalty_points_label']);
         }

@@ -46,4 +46,8 @@
     <event name="customer_address_save_after">
         <observer name="ls_account_address_observer" instance="Ls\Customer\Observer\AccountAddressObserver"/>
     </event>
+    <!-- For setting required values in customer session when service is down -->
+    <event name="customer_data_object_login">
+        <observer name="post_customer_login_observer" instance="Ls\Customer\Observer\PostLoginObserver"/>
+    </event>
 </config>
