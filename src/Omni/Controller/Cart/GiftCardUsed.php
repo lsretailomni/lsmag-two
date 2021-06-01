@@ -16,7 +16,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * Gift card controller
  */
 class GiftCardUsed extends \Magento\Checkout\Controller\Cart
 {
@@ -148,7 +148,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $this->messageManager->addErrorMessage(
                     __(
                         'The applied amount %3' .
-                        ' is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).',
+                        ' is greater than gift card balance amount (%1) or it is greater than order balance (%2).',
                         $this->priceHelper->currency(
                             $giftCardBalanceAmount,
                             true,

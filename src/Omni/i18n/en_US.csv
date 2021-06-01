@@ -21,7 +21,7 @@ Special,Special
 "No store found for entered omni api url","No store found for entered omni api url"
 "The gift card code %1 is not valid.","The gift card code %1 is not valid."
 "You have successfully cancelled the gift card.","You have successfully cancelled the gift card."
-"The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).","The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2)."
+"The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (%2).","The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (%2)."
 "The gift card amount ""%1"" is not valid.","The gift card amount ""%1"" is not valid."
 "Totals calculation is not applicable to empty cart.","Totals calculation is not applicable to empty cart."
 "Customer session not found.","Customer session not found."

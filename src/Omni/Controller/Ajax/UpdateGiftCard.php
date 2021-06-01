@@ -21,8 +21,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
 
 /**
- * Class UpdatePoints
- * @package Ls\Omni\Controller\Ajax
+ * Update gift card controller
  */
 class UpdateGiftCard extends Action
 {
@@ -179,7 +178,7 @@ class UpdateGiftCard extends Action
                 'error'   => 'true',
                 'message' => __(
                     'The applied amount %3' .
-                    ' is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).',
+                    ' is greater than gift card balance amount (%1) or it is greater than order balance (%2).',
                     $this->priceHelper->currency($giftCardBalanceAmount, true, false),
                     $this->priceHelper->currency($orderBalance, true, false),
                     $this->priceHelper->currency($giftCardAmount, true, false)

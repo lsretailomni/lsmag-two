@@ -288,7 +288,9 @@ class Data extends AbstractHelper
         try {
             $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
             if (!empty($basketData)) {
-                $totalAmount = $basketData->getTotalAmount();
+                $cartId      = $this->checkoutSession->getQuoteId();
+                $quote       = $this->cartRepository->get($cartId);
+                $totalAmount = $basketData->getTotalAmount() + $quote->getShippingAddress()->getShippingAmount();
                 return $totalAmount - $giftCardAmount - $loyaltyAmount;
             }
         } catch (Exception $e) {
@@ -307,11 +309,12 @@ class Data extends AbstractHelper
     public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData)
     {
         try {
-            $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
-            $cartId        = $this->checkoutSession->getQuoteId();
-            $quote         = $this->cartRepository->get($cartId);
             if (!empty($basketData) && is_object($basketData)) {
-                $totalAmount                   = $basketData->getTotalAmount();
+                $loyaltyAmount                 = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+                $cartId                        = $this->checkoutSession->getQuoteId();
+                $quote                         = $this->cartRepository->get($cartId);
+                $shippingAmount                = $quote->getShippingAddress()->getShippingAmount();
+                $totalAmount                   = $basketData->getTotalAmount() + $shippingAmount;
                 $discountAmount                = $basketData->getTotalDiscount();
                 $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount;
                 $combinedDiscountPaymentamount = $discountAmount + $combinedTotalLoyalGiftCard;
@@ -380,7 +383,7 @@ class Data extends AbstractHelper
             if (!empty($results)) {
                 // for Omni 4.16 or higher
                 $versions = explode('LS Commerce Service:', $results[1]);
-                if(!empty($versions) && count($versions) < 2){
+                if (!empty($versions) && count($versions) < 2) {
                     // for Omni lower then 4.16
                     $versions = explode('OMNI:', $results[1]);
                 }
@@ -455,7 +458,6 @@ class Data extends AbstractHelper
             $this->_logger->debug($e->getMessage());
         }
     }
-
 
     /**
      * @param $baseUrl
