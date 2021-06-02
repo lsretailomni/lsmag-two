@@ -30,8 +30,7 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Sales\Model\Order\Creditmemo;
 
 /**
- * Class Data
- * @package Ls\Omni\Helper
+ * Helper class that is used on multiple areas
  */
 class Data extends AbstractHelper
 {
@@ -277,6 +276,7 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Validating total on gift card or loyalty points
      * @param $giftCardAmount
      * @param $loyaltyPoints
      * @param $basketData
@@ -286,7 +286,9 @@ class Data extends AbstractHelper
     {
         $loyaltyAmount = 0;
         try {
-            $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+            if ($loyaltyPoints > 0) {
+                $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+            }
             if (!empty($basketData)) {
                 $cartId      = $this->checkoutSession->getQuoteId();
                 $quote       = $this->cartRepository->get($cartId);
@@ -300,73 +302,59 @@ class Data extends AbstractHelper
     }
 
     /**
+     * For checking order total against loyalty points,gift card amount and coupon discount amount
      * @param $giftCardNo
      * @param $giftCardAmount
      * @param $loyaltyPoints
      * @param $basketData
-     * @return bool
+     * @param bool $showMessage
+     * @return \Magento\Framework\Phrase|string
      */
-    public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData)
+    public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData, $showMessage = true)
     {
         try {
+            $message       = '';
+            $loyaltyAmount = 0;
             if (!empty($basketData) && is_object($basketData)) {
-                $loyaltyAmount                 = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+                if ($loyaltyPoints > 0) {
+                    $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+                }
                 $cartId                        = $this->checkoutSession->getQuoteId();
                 $quote                         = $this->cartRepository->get($cartId);
                 $shippingAmount                = $quote->getShippingAddress()->getShippingAmount();
                 $totalAmount                   = $basketData->getTotalAmount() + $shippingAmount;
                 $discountAmount                = $basketData->getTotalDiscount();
                 $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount;
-                $combinedDiscountPaymentamount = $discountAmount + $combinedTotalLoyalGiftCard;
+                $combinedDiscountPaymentAmount = $discountAmount + $combinedTotalLoyalGiftCard;
                 if ($loyaltyAmount > $totalAmount) {
-                    $quote->setLsPointsSpent(0);
-                    $this->cartRepository->save($quote);
-                    $this->messageManager->addErrorMessage(
-                        __(
-                            'The loyalty points "%1" are not valid.',
-                            $loyaltyPoints
-                        )
-                    );
+                    $message = __('The loyalty points "%1" are not valid.', $loyaltyPoints);
                 } elseif ($giftCardAmount > $totalAmount) {
-                    $quote->setLsGiftCardAmountUsed(0);
-                    $quote->setLsGiftCardNo(null);
-                    $quote->collectTotals();
-                    $this->cartRepository->save($quote);
-                    $this->messageManager->addErrorMessage(
-                        __(
-                            'The gift card amount "%1" is not valid.',
-                            $this->priceHelper->currency($giftCardAmount, true, false)
-                        )
+                    $message = __(
+                        'The amount "%1" of gift card code %2 is not valid.',
+                        $this->priceHelper->currency($giftCardAmount, true, false),
+                        $giftCardNo
                     );
                 } elseif ($combinedTotalLoyalGiftCard > $totalAmount) {
-                    $quote->setLsPointsSpent(0);
-                    $quote->setLsGiftCardAmountUsed(0);
-                    $quote->setLsGiftCardNo(null);
-                    $quote->collectTotals();
-                    $this->cartRepository->save($quote);
-                    $this->messageManager->addErrorMessage(
-                        __(
-                            'The gift card amount "%1" and loyalty points "%2" are not valid.',
-                            $this->priceHelper->currency(
-                                $giftCardAmount,
-                                true,
-                                false
-                            ),
-                            $loyaltyPoints
-                        )
+                    $message = __(
+                        'The gift card amount "%1" or loyalty points "%2" are not valid.',
+                        $this->priceHelper->currency(
+                            $giftCardAmount,
+                            true,
+                            false
+                        ),
+                        $loyaltyPoints
                     );
-                } elseif ($combinedDiscountPaymentamount > $totalAmount) {
-                    return false;
-                } else {
-                    return true;
+                } elseif ($combinedDiscountPaymentAmount > $totalAmount) {
+                    $message = __('Coupon discount is exceeding total amount');
                 }
-            } else {
-                return true;
             }
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return true;
+        if ($showMessage == true) {
+            $this->messageManager->addErrorMessage($message);
+        }
+        return $message;
     }
 
     /**

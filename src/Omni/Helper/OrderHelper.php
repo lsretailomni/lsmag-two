@@ -117,11 +117,12 @@ class OrderHelper extends AbstractHelper
             $storeId       = $oneListCalculateResponse->getStoreId();
             $cardId        = $oneListCalculateResponse->getCardId();
             $customerEmail = $order->getCustomerEmail();
+            $customerName   = $order->getBillingAddress()->getFirstname() . ' ' . $order->getBillingAddress()->getLastname();
 
             if ($order->getShippingAddress()) {
-                $customerName = $order->getShippingAddress()->getFirstname() . ' ' . $order->getShippingAddress()->getLastname();
+                $shipToName = $order->getShippingAddress()->getFirstname() . ' ' . $order->getShippingAddress()->getLastname();
             } else {
-                $customerName = $order->getBillingAddress()->getFirstname() . ' ' . $order->getBillingAddress()->getLastname();
+                $shipToName = $customerName;
             }
 
             if ($this->customerSession->isLoggedIn()) {
@@ -154,7 +155,7 @@ class OrderHelper extends AbstractHelper
                 ->setEmail($customerEmail)
                 ->setShipToEmail($customerEmail)
                 ->setContactName($customerName)
-                ->setShipToName($customerName)
+                ->setShipToName($shipToName)
                 ->setContactAddress($contactAddress)
                 ->setShipToAddress($shipToAddress)
                 ->setStoreId($storeId);

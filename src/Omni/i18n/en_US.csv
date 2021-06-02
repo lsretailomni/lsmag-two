@@ -22,7 +22,7 @@ Special,Special
 "The gift card code %1 is not valid.","The gift card code %1 is not valid."
 "You have successfully cancelled the gift card.","You have successfully cancelled the gift card."
 "The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (%2).","The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (%2)."
-"The gift card amount ""%1"" is not valid.","The gift card amount ""%1"" is not valid."
+"The amount "%1" of gift card code %2 is not valid.","The amount "%1" of gift card code %2 is not valid."
 "Totals calculation is not applicable to empty cart.","Totals calculation is not applicable to empty cart."
 "Customer session not found.","Customer session not found."
 "The loyalty points ""%1"" are not valid.","The loyalty points ""%1"" are not valid."
