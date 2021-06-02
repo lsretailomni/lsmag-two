@@ -19,8 +19,7 @@ use Magento\Framework\View\Element\Template\Context as TemplateContext;
 use Magento\Sales\Model\OrderRepository;
 
 /**
- * Class Info
- * @package Ls\Customer\Block\Order
+ * Block being used for various sections on order detail
  */
 class Info extends Template
 {
