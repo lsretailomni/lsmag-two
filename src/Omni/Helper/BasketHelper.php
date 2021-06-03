@@ -532,7 +532,7 @@ class BasketHelper extends AbstractHelper
             $status
         );
 
-        if (!is_object($status) && $checkCouponAmount) {
+        if (!is_object($status) || $checkCouponAmount) {
             $this->couponCode = '';
             $this->update(
                 $this->get()

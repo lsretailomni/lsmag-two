@@ -290,8 +290,7 @@ class Data extends AbstractHelper
                 $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
             }
             if (!empty($basketData)) {
-                $cartId      = $this->checkoutSession->getQuoteId();
-                $quote       = $this->cartRepository->get($cartId);
+                $quote       = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $totalAmount = $basketData->getTotalAmount() + $quote->getShippingAddress()->getShippingAmount();
                 return $totalAmount - $giftCardAmount - $loyaltyAmount;
             }
@@ -319,8 +318,7 @@ class Data extends AbstractHelper
                 if ($loyaltyPoints > 0) {
                     $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
                 }
-                $cartId                        = $this->checkoutSession->getQuoteId();
-                $quote                         = $this->cartRepository->get($cartId);
+                $quote                         = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $shippingAmount                = $quote->getShippingAddress()->getShippingAmount();
                 $totalAmount                   = $basketData->getTotalAmount() + $shippingAmount;
                 $discountAmount                = $basketData->getTotalDiscount();

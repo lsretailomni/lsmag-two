@@ -90,11 +90,8 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     }
 
     /**
-     * Initialize coupon
-     *
+     * Add and remove gift card from cart page
      * @return Redirect
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function execute()
     {

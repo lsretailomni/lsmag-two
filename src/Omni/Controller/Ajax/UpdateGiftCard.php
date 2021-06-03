@@ -46,11 +46,6 @@ class UpdateGiftCard extends Action
     public $checkoutSession;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
-     */
-    public $customerSession;
-
-    /**
      * @var CartRepositoryInterface
      */
     public $cartRepository;
@@ -70,7 +65,6 @@ class UpdateGiftCard extends Action
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param GiftCardHelper $giftCardHelper
      * @param BasketHelper $basketHelper
      * @param Proxy $checkoutSession
@@ -82,7 +76,6 @@ class UpdateGiftCard extends Action
         Context $context,
         JsonFactory $resultJsonFactory,
         RawFactory $resultRawFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
         GiftCardHelper $giftCardHelper,
         BasketHelper $basketHelper,
         Proxy $checkoutSession,
@@ -96,13 +89,13 @@ class UpdateGiftCard extends Action
         $this->giftCardHelper    = $giftCardHelper;
         $this->basketHelper      = $basketHelper;
         $this->checkoutSession   = $checkoutSession;
-        $this->customerSession   = $customerSession;
         $this->cartRepository    = $cartRepository;
         $this->priceHelper       = $priceHelper;
         $this->data              = $data;
     }
 
     /**
+     * For updating gift card amount
      * @return ResponseInterface|Json|Raw|ResultInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException

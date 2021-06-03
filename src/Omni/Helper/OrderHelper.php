@@ -117,10 +117,12 @@ class OrderHelper extends AbstractHelper
             $storeId       = $oneListCalculateResponse->getStoreId();
             $cardId        = $oneListCalculateResponse->getCardId();
             $customerEmail = $order->getCustomerEmail();
-            $customerName   = $order->getBillingAddress()->getFirstname() . ' ' . $order->getBillingAddress()->getLastname();
+            $customerName  = $order->getBillingAddress()->getFirstname() . ' ' .
+                $order->getBillingAddress()->getLastname();
 
             if ($order->getShippingAddress()) {
-                $shipToName = $order->getShippingAddress()->getFirstname() . ' ' . $order->getShippingAddress()->getLastname();
+                $shipToName = $order->getShippingAddress()->getFirstname() . ' ' .
+                    $order->getShippingAddress()->getLastname();
             } else {
                 $shipToName = $customerName;
             }
@@ -146,7 +148,8 @@ class OrderHelper extends AbstractHelper
 
             //if the shipping address is empty, we use the contact address as shipping address.
             $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
-            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) : $contactAddress;
+            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) :
+                $contactAddress;
 
             $oneListCalculateResponse
                 ->setId($order->getIncrementId())
