@@ -495,7 +495,7 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * This function is overriding in hospitality module
+     * Send coupon code to basket calculation
      * @param $couponCode
      * @return Entity\OneListCalculateResponse|Phrase|string|null
      * @throws InvalidEnumException
