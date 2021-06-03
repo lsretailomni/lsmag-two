@@ -395,9 +395,8 @@ class ItemHelper extends AbstractHelper
         $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
         $uom       = $product->getData('uom');
         $barCode   = $product->getData('barcode');
-        $uomQty    = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
-        return [$itemId, $variantId, $uom, $barCode, $uomQty];
+        return [$itemId, $variantId, $uom, $barCode];
     }
 
     /**
