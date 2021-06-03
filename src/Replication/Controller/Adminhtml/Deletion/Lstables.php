@@ -78,7 +78,7 @@ class Lstables extends Action
         Context $context
     ) {
         $this->resource = $resource;
-        $this->logger = $logger;
+        $this->logger   = $logger;
         parent::__construct($context);
     }
 
@@ -89,10 +89,10 @@ class Lstables extends Action
      */
     public function execute()
     {
-        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $arguments = [];
-        $jobName = $this->_request->getParam('jobname');
-        $storeId = $this->_request->getParam('store');
+        $connection          = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        $arguments           = [];
+        $jobName             = $this->_request->getParam('jobname');
+        $storeId             = $this->_request->getParam('store');
         $coreConfigTableName = $this->resource->getTableName('core_config_data');
         $connection->startSetup();
 
@@ -112,9 +112,9 @@ class Lstables extends Action
                     ['path = ?' => $config . $jobName, 'scope_id = ?' => $storeId]
                 );
             }
-            $message = __('%1 table truncated successfully.', $jobName);
+            $message      = __('%1 table truncated successfully.', $jobName);
             $redirectPath = 'ls_repl/cron/grid/';
-            $arguments = ['store' => $storeId];
+            $arguments    = ['store' => $storeId];
         } else {
             foreach (self::LS_TABLES as $lsTables) {
                 $tableName = $this->resource->getTableName($lsTables);
@@ -126,7 +126,7 @@ class Lstables extends Action
                 }
             }
             $connection->delete($coreConfigTableName, ['path like ?' => 'ls_mag/replication/%']);
-            $message = __('All ls_ tables truncated successfully.');
+            $message      = __('All ls_ tables truncated successfully.');
             $redirectPath = 'adminhtml/system_config/edit/section/ls_mag';
         }
 
