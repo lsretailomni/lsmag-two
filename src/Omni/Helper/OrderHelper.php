@@ -292,7 +292,6 @@ class OrderHelper extends AbstractHelper
 
         $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
 
-
         if (!in_array($paymentCode, $noOrderPayment)) {
             // @codingStandardsIgnoreStart
             $orderPayment = new Entity\OrderPayment();
@@ -358,6 +357,7 @@ class OrderHelper extends AbstractHelper
             //default values for all payment typoes.
             $orderPaymentGiftCard
                 ->setCurrencyFactor(1)
+                ->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
                 ->setAmount($order->getLsGiftCardAmountUsed())
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())
