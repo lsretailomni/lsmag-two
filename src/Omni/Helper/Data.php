@@ -320,8 +320,9 @@ class Data extends AbstractHelper
                 }
                 $quote                         = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $shippingAmount                = $quote->getShippingAddress()->getShippingAmount();
-                $totalAmount                   = $basketData->getTotalAmount() + $shippingAmount;
                 $discountAmount                = $basketData->getTotalDiscount();
+                $totalAmount                   = $basketData->getTotalAmount() + $discountAmount + $shippingAmount;
+
                 $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount;
                 $combinedDiscountPaymentAmount = $discountAmount + $combinedTotalLoyalGiftCard;
                 if ($loyaltyAmount > $totalAmount) {
