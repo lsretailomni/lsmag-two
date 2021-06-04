@@ -98,7 +98,7 @@ class SyncImages extends ProductCreateTask
                         $checkIsNotVariant = false;
                     }
                     $sku           = $explodeSku[0];
-                    $uomCodesTotal = $this->getUomCodes($sku);
+                    $uomCodesTotal = $this->replicationHelper->getUomCodes($sku, $this->store->getId());
                     if (!empty($uomCodesTotal)) {
                         if (count($uomCodesTotal[$sku]) > 1) {
                             $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $sku);
