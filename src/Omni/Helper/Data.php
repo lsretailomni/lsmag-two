@@ -349,7 +349,7 @@ class Data extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if ($showMessage == true) {
+        if ($showMessage == true && $message) {
             $this->messageManager->addErrorMessage($message);
         }
         return $message;
