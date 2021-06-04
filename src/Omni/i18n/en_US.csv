@@ -53,7 +53,7 @@ Notice,Notice
 "This account isn't confirmed. Verify and try again.","This account isn't confirmed. Verify and try again."
 "The amount ""%1"" of gift card code %2 is not valid.","The amount ""%1"" of gift card code %2 is not valid."
 "The gift card amount ""%1"" or loyalty points ""%2"" are not valid.","The gift card amount ""%1"" or loyalty points ""%2"" are not valid."
-"Coupon discount is exceeding total amount","Coupon discount is exceeding total amount"
+"Coupon discount is exceeding total amount.","Coupon discount is exceeding total amount."
 Save,Save
 "Could not find a cart with ID %1","Could not find a cart with ID %1"
 "The loyalty points '%1' are not valid.","The loyalty points '%1' are not valid."

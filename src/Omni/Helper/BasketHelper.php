@@ -529,7 +529,8 @@ class BasketHelper extends AbstractHelper
             $this->checkoutSession->getQuote()->getLsGiftCardNo(),
             $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
             $this->checkoutSession->getQuote()->getLsPointsSpent(),
-            $status
+            $status,
+            false
         );
 
         if (!is_object($status) || $checkCouponAmount) {
@@ -539,6 +540,9 @@ class BasketHelper extends AbstractHelper
             );
             $this->setCouponQuote($this->couponCode);
             $status = __("Coupon Code is not valid");
+            if ($checkCouponAmount) {
+                $status = $checkCouponAmount;
+            }
             return $status;
         } elseif (!empty($status->getOrderDiscountLines()->getOrderDiscountLine())) {
             if (is_array($status->getOrderDiscountLines()->getOrderDiscountLine())) {
@@ -715,8 +719,8 @@ class BasketHelper extends AbstractHelper
      */
     public function getOneListAdmin($customerEmail, $websiteId, $isGuest)
     {
-        $list     = null;
-        $cardId   = null;
+        $list   = null;
+        $cardId = null;
 
         if (!$isGuest) {
             $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
@@ -725,7 +729,7 @@ class BasketHelper extends AbstractHelper
                 $cardId = $customer->getData('lsr_cardid');
             }
         }
-        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+        $webStore       = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $this->store_id = $webStore;
         // @codingStandardsIgnoreStart
         /** @var Entity\OneList $list */
@@ -953,13 +957,13 @@ class BasketHelper extends AbstractHelper
     public function calculateOneListFromOrder($order)
     {
         $couponCode = $order->getCouponCode();
-        $quote = $this->cartRepository->get($order->getQuoteId());
-        $oneList = $this->getOneListAdmin(
+        $quote      = $this->cartRepository->get($order->getQuoteId());
+        $oneList    = $this->getOneListAdmin(
             $order->getCustomerEmail(),
             $order->getStore()->getWebsiteId(),
             $order->getCustomerIsGuest()
         );
-        $oneList = $this->setOneListQuote($quote, $oneList);
+        $oneList    = $this->setOneListQuote($quote, $oneList);
         $this->setCouponCodeInAdmin($couponCode);
 
         return $this->update($oneList);

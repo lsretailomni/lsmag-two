@@ -344,7 +344,7 @@ class Data extends AbstractHelper
                         $loyaltyPoints
                     );
                 } elseif ($combinedDiscountPaymentAmount > $totalAmount) {
-                    $message = __('Coupon discount is exceeding total amount');
+                    $message = __('Coupon discount is exceeding total amount.');
                 }
             }
         } catch (Exception $e) {
