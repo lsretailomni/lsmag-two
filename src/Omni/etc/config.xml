@@ -72,6 +72,9 @@
                 <apply_tax_on>1</apply_tax_on>
                 <price_includes_tax>1</price_includes_tax>
             </calculation>
+            <sales_display>
+                <subtotal>2</subtotal>
+            </sales_display>
         </tax>
     </default>
 </config>

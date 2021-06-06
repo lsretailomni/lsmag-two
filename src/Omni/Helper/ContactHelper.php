@@ -714,63 +714,24 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Syncing updated customer information to central side
+     *
+     * @param $customer
      * @param null $customerAddress
      * @return Entity\ContactUpdateResponse|MemberContact|ResponseInterface|null
      * @throws InvalidEnumException
      */
-    public function updateAccount($customerAddress = null)
+    public function updateCustomerAccount($customer, $customerAddress = null)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ContactUpdate();
-        $entity  = new Entity\ContactUpdate();
-        // @codingStandardsIgnoreEnd
-
-        // only process if the pass object is the instance of Customer Address
-        if ($customerAddress instanceof Address) {
-            $customer = $customerAddress->getCustomer();
-            $request->setToken($customer->getData('lsr_token'));
-            // @codingStandardsIgnoreLine
-            $memberContact = new MemberContact();
-            if (!empty($customer->getData('dob'))) {
-                $dob = $this->date->date("Y-m-d\T00:00:00", strtotime($customer->getData('dob')));
-                $memberContact->setBirthDay($dob);
-            }
-            $memberContact->setFirstName($customer->getFirstname())
-                ->setGender($this->getGenderStringById($customer->getData('gender')))
-                ->setLastName($customer->getLastname())
-                ->setUserName($customer->getData('lsr_username'))
-                ->setEmail($customer->getEmail())
-                ->setMiddleName('  ')
-                ->setId($customer->getData('lsr_id'))
-                ->setCards($this->setCards($this->setCard($customer->getData('lsr_cardid'))))
-                ->setAddresses($this->setAddresses($this->setAddress($customerAddress)));
-            $entity->setContact($memberContact);
-            try {
-                $response = $request->execute($entity);
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-            return $response ? $response->getResult() : $response;
-        }
-    }
-
-    /**
-     * @param null $customer
-     * @return Entity\ContactUpdateResponse|MemberContact|ResponseInterface|null
-     * @throws InvalidEnumException
-     */
-    public function updateCustomerAccount($customerData = null)
-    {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $request = new Operation\ContactUpdate();
-        $entity  = new Entity\ContactUpdate();
-        // @codingStandardsIgnoreEnd
-        $customer = $this->customerFactory->create()->load($customerData->getId());
-        $request->setToken($customer->getData('lsr_token'));
-        // @codingStandardsIgnoreLine
+        $request       = new Operation\ContactUpdate();
+        $entity        = new Entity\ContactUpdate();
         $memberContact = new MemberContact();
+        // @codingStandardsIgnoreEnd
+
+        $request->setToken($customer->getData('lsr_token'));
+
         if (!empty($customer->getData('dob'))) {
             $dob = $this->date->date("Y-m-d\T00:00:00", strtotime($customer->getData('dob')));
             $memberContact->setBirthDay($dob);
@@ -783,9 +744,11 @@ class ContactHelper extends AbstractHelper
             ->setMiddleName('  ')
             ->setId($customer->getData('lsr_id'))
             ->setCards($this->setCards($this->setCard($customer->getData('lsr_cardid'))));
-        if (count($customer->getAddresses()) > 0) {
-            $memberContact->setAddresses($this->setAddresses($this->setAddress($customer->getAddresses()[0])));
+
+        if ($customerAddress instanceof Address) {
+            $memberContact->setAddresses($this->setAddresses($this->setAddress($customerAddress)));
         }
+
         $entity->setContact($memberContact);
         $response = $request->execute($entity);
 
@@ -1342,11 +1305,10 @@ class ContactHelper extends AbstractHelper
                 if (!empty($customer->getAddresses())) {
                     $customerAddress = [];
                     foreach ($customer->getAddresses() as $address) {
-                        $customerAddress[] = $address;
-                    }
-                    if (!empty($customerAddress)) {
-                        // We only saving one address for now
-                        $this->updateAccount($customerAddress[0]);
+                        if ($this->isBillingAddress($address)) {
+                            // We only saving one address for now
+                            $this->updateCustomerAccount($customer, $customerAddress);
+                        }
                     }
                 }
                 return true;
@@ -1535,5 +1497,34 @@ class ContactHelper extends AbstractHelper
             )) {
             throw new EmailNotConfirmedException(__("This account isn't confirmed. Verify and try again."));
         }
+    }
+
+    /**
+     * Loading customer with all custom attributes given email and website_id
+     *
+     * @param $email
+     * @param $websiteId
+     * @return Customer
+     * @throws LocalizedException
+     */
+    public function loadCustomerByEmailAndWebsiteId($email, $websiteId)
+    {
+        return $this->customerFactory->create()
+            ->setWebsiteId($websiteId)
+            ->loadByEmail($email);
+    }
+
+    /**
+     * Validate if given customer address is a billing_address
+     *
+     * @param $customerAddress
+     * @return bool
+     */
+    public function isBillingAddress($customerAddress)
+    {
+        $defaultBillingAddress = $customerAddress->getCustomer()->getDefaultBillingAddress();
+
+        return $customerAddress->getData('is_default_billing') ||
+            ($defaultBillingAddress && $defaultBillingAddress->getId() == $customerAddress->getId());
     }
 }
