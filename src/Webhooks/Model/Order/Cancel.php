@@ -3,6 +3,7 @@
 namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Webhooks\Logger\Logger;
+use \Ls\Webhooks\Helper\Data;
 use Magento\Sales\Api\OrderManagementInterface;
 use Magento\Sales\Model\Order\Item;
 
@@ -22,15 +23,24 @@ class Cancel
     public $orderManagement;
 
     /**
+     * @var Data
+     */
+    public $helper;
+
+    /**
      * Cancel constructor.
      * @param OrderManagementInterface $orderManagement
+     * @param Data $helper
+     * @param Logger $logger
      */
     public function __construct(
         OrderManagementInterface $orderManagement,
+        Data $helper,
         Logger $logger
     ) {
         $this->orderManagement = $orderManagement;
         $this->logger          = $logger;
+        $this->helper          = $helper;
     }
 
     /**
@@ -43,20 +53,6 @@ class Cancel
             $this->orderManagement->cancel($orderId);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-        }
-    }
-
-    public function cancelPartialItem($magOrder, $skus)
-    {
-        /** @var Item $item */
-        foreach ($magOrder->getAllItems() as $item) {
-            if ($item->getParentItem()) {
-                continue;
-            }
-            if (array_key_exists($item->getSku(), $skus)) {
-                $item->cancel();
-                $item->save();
-            }
         }
     }
 

@@ -6,9 +6,9 @@
         <ls_mag>
             <webhooks>
                 <notification_pickup>1</notification_pickup>
-                <template_pickup>ls_order_pickup_click_and_collect_email</template_pickup>
+                <template_pickup>ls_mag_webhooks_template_pickup</template_pickup>
                 <notification_collected>1</notification_collected>
-                <template_collected>ls_order_collected_click_and_collect_email</template_collected>
+                <template_collected>ls_mag_webhooks_template_collected</template_collected>
             </webhooks>
         </ls_mag>
     </default>

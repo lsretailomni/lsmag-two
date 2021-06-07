@@ -62,7 +62,7 @@ class Notify
         $storeId      = $order->getStoreId();
         $toEmail      = $order->getCustomerEmail();
         $storeEmail   = $this->helper->getStoreEmail($storeId);
-        $magStoreName = $order->getStoreName();
+        $magStoreName = $order->getStore()->getFrontEndName();
         try {
             $this->inlineTranslation->suspend();
 
@@ -94,24 +94,18 @@ class Notify
      * @param $skus
      * @return array
      */
-    public function setClickAndCollectTemplateVars($order, $skus)
+    public function setClickAndCollectTemplateVars($order, $itemsInfo)
     {
-        $items = [];
-        $ccStoreName = $this->helper->getStoreName($order->getPickupStore());
-        foreach ($order->getAllItems() as $orderItem) {
-            if (!$orderItem->getParentItem()) {
-                continue;
-            }
-            if (array_key_exists($orderItem->getSku(), $skus)) {
-                $items[] = $orderItem;
-            }
-        }
 
-        $magStoreName = $order->getStoreName();
+        $items = $this->helper->getItems($order, $itemsInfo);
+
+        $magStoreName = $order->getStore()->getFrontEndName();
+        $ccStoreName  = $this->helper->getStoreName($order->getPickupStore());
         return [
             'order'         => $order,
             'items'         => $items,
             'order_id'      => $order->getId(),
+            'store'         => $order->getStore(),
             'store_name'    => $magStoreName,
             'cc_store_name' => $ccStoreName,
             'order_data'    => [

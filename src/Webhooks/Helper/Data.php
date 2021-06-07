@@ -8,8 +8,10 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryLine;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data as OmniHelper;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
@@ -50,6 +52,11 @@ class Data
     public $omniHelper;
 
     /**
+     * @var ItemHelper
+     */
+    public $itemHelper;
+
+    /**
      * Data constructor.
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
@@ -57,6 +64,7 @@ class Data
      * @param OrderHelper $orderHelper
      * @param LSR $lsr
      * @param OmniHelper $omniHelper
+     * @param ItemHelper $itemHelper
      */
     public function __construct(
         Logger $logger,
@@ -64,7 +72,8 @@ class Data
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderHelper $orderHelper,
         LSR $lsr,
-        OmniHelper $omniHelper
+        OmniHelper $omniHelper,
+        ItemHelper $itemHelper
     ) {
 
         $this->logger                = $logger;
@@ -73,6 +82,7 @@ class Data
         $this->orderHelper           = $orderHelper;
         $this->lsr                   = $lsr;
         $this->omniHelper            = $omniHelper;
+        $this->itemHelper            = $itemHelper;
     }
 
     /**
@@ -104,21 +114,27 @@ class Data
      */
     public function matchLineNumberWithSalesEntry($salesEntry, $lines)
     {
-        $skuStatus = null;
+        $itemInfoArray = null;
+        $count         = 0;
         if (!empty($salesEntry)) {
             /** @var SalesEntryLine $salesEntryLine */
             foreach ($salesEntry->getLines() as $salesEntryLine) {
                 if ($salesEntryLine->getItemId() != $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                     $key = array_search($salesEntryLine->getLineNumber(), array_column($lines, 'LineNo'));
-                    if ($key) {
-                        $sku                                        = $this->implodeSku($salesEntryLine);
-                        $skuStatus[$lines[$key]['NewStatus']][$sku] = $salesEntryLine->getQuantity();
+                    if ($key !== false) {
+                        $statusKey                                      = $lines[$key]['NewStatus'];
+                        $itemInfoArray[$statusKey][$count]['itemId']    = $salesEntryLine->getItemId();
+                        $itemInfoArray[$statusKey][$count]['qty']       = $salesEntryLine->getQuantity();
+                        $itemInfoArray[$statusKey][$count]['uom']       = $salesEntryLine->getUomId();
+                        $itemInfoArray[$statusKey][$count]['variantId'] = $salesEntryLine->getVariantId();
+                        $count++;
                     }
                 }
+
             }
         }
 
-        return $skuStatus;
+        return $itemInfoArray;
     }
 
     /**
@@ -130,23 +146,6 @@ class Data
     public function getSalesEntry($documentId)
     {
         return $this->orderHelper->getOrderDetailsAgainstId($documentId);
-    }
-
-    /**
-     * Implode sku for item
-     * @param $itemLine
-     */
-    public function implodeSku($item)
-    {
-        $sku = $item->getItemId();
-        if (!empty($item->getVariantId())) {
-            $sku .= '-' . $item->getVariantId();
-        }
-        if (!empty($item->getUomId())) {
-            $sku .= '-' . $item->getUomId();
-        }
-
-        return $sku;
     }
 
     /**
@@ -207,5 +206,38 @@ class Data
     public function getStoreName($storeId)
     {
         return $this->omniHelper->getStoreNameById($storeId);
+    }
+
+    /**
+     * Get product values for item
+     * @param $pickupStoreId
+     * @return mixed|string
+     * @throws NoSuchEntityException
+     */
+    public function getComparisonValues($item)
+    {
+        return $this->itemHelper->getComparisonValues($item);
+    }
+
+    /**
+     * Get items detail
+     * @param $order
+     * @param $itemsInfo
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getItems($order, $itemsInfo)
+    {
+        $items = [];
+        foreach ($order->getAllVisibleItems() as $orderItem) {
+            list($itemId, $variantId, $uom) = $this->getComparisonValues($orderItem);
+            foreach ($itemsInfo as $skuValues) {
+                if ($itemId = $skuValues['itemId'] && $uom == $skuValues['uom'] &&
+                    $variantId == $skuValues['variantId']) {
+                    $items[] = $orderItem;
+                }
+            }
+        }
+        return $items;
     }
 }

@@ -1,25 +1,43 @@
 <?php $items = $block->getItems() ?>
-<table class="email-items">
-    <thead>
-    <tr>
-        <th class="item-info">
-            <?= /* @escapeNotVerified */  __('Items'); ?>
-        </th>
-        <th class="item-qty">
-            <?= /* @escapeNotVerified */  __('Qty'); ?>
-        </th>
-        <th class="item-price">
-            <?= /* @escapeNotVerified */  __('Price'); ?>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($items as $item): ?>
+<?php if ($items) : ?>
+    <table class="email-items">
+        <thead>
         <tr>
-            <td><?= $item->getName() ?></td>
-            <td><?= $item->getSku() ?></td>
-            <td><?= $item->getPrice() ?></td>
+            <th class="item-info">
+                <?= /* @escapeNotVerified */
+                __('Items'); ?>
+            </th>
+            <th class="item-info"">
+                <?= /* @escapeNotVerified */
+                __('Sku'); ?>
+            </th>
+            <th class="item-info"">
+                <?= /* @escapeNotVerified */
+                __('Qty'); ?>
+            </th>
         </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <?php foreach ($items as $item): ?>
+            <tr>
+                <td class="item-info">
+                    <?= /* @escapeNotVerified */
+                    $item->getName() ?>
+                    <table class="item-info">
+                        <?php if ($options = $item->getProductOptions()): ?>
+                            <?php if (isset($options['attributes_info'])): ?>
+                                <?php foreach ($options['attributes_info'] as $option): ?>
+                                    <br/><strong><em><small><?php echo $option['label'] ?></small></em></strong>
+                                    <br/><?php echo(isset($option['print_value']) ? $option['print_value'] : nl2br($this->escapeHtml($option['value']))) ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </table>
+                </td>
+                <td class="item-info"><?= $item->getSku() ?></td>
+                <td class="item-info"><?= (float)$item->getQtyOrdered() ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
