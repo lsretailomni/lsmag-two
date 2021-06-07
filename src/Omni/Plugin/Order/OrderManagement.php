@@ -3,6 +3,7 @@
 namespace Ls\Omni\Plugin\Order;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
@@ -33,19 +34,27 @@ class OrderManagement
     private $orderRepository;
 
     /**
+     * @var BasketHelper
+     */
+    private $basketHelper;
+
+    /**
      * OrderManagement constructor.
      * @param LSR $lsr
      * @param OrderHelper $orderHelper
      * @param OrderRepository $orderRepository
+     * @param BasketHelper $basketHelper
      */
     public function __construct(
         LSR $lsr,
         OrderHelper $orderHelper,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        BasketHelper $basketHelper
     ) {
         $this->lsr = $lsr;
         $this->orderHelper = $orderHelper;
         $this->orderRepository = $orderRepository;
+        $this->basketHelper = $basketHelper;
     }
 
     /**
@@ -64,6 +73,7 @@ class OrderManagement
     {
         /** @var Order $order */
         $order = $this->orderRepository->get($id);
+        $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
         $documentId = $order->getDocumentId();
         $websiteId = $order->getStore()->getWebsiteId();
         /**
@@ -73,6 +83,7 @@ class OrderManagement
             if (!empty($documentId)) {
                 $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
                 $response = $this->orderHelper->orderCancel($documentId, $webStore);
+
                 if ($response == null) {
                     $message = 'Order cannot be canceled from LS Central';
                     $order->addCommentToStatusHistory($message);
@@ -81,6 +92,7 @@ class OrderManagement
                 }
             }
         }
+        $this->basketHelper->unSetCorrectStoreId();
 
         return $proceed($id);
     }
