@@ -3,6 +3,8 @@
 namespace Ls\Omni\Model\GiftCard;
 
 use \Ls\Omni\Helper\GiftCardHelper;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -27,6 +29,16 @@ class GiftCardManagement
     public $giftCardHelper;
 
     /**
+     * @var Data
+     */
+    public $dataHelper;
+
+    /**
+     * @var BasketHelper
+     */
+    public $basketHelper;
+
+    /**
      * @var PriceHelper
      */
     public $priceHelper;
@@ -35,16 +47,22 @@ class GiftCardManagement
      * GiftCardManagement constructor.
      * @param CartRepositoryInterface $quoteRepository
      * @param GiftCardHelper $giftCardHelper
+     * @param Data $dataHelper
+     * @param BasketHelper $basketHelper
      * @param PriceHelper $priceHelper
      */
     public function __construct(
         CartRepositoryInterface $quoteRepository,
         GiftCardHelper $giftCardHelper,
+        Data $dataHelper,
+        BasketHelper $basketHelper,
         PriceHelper $priceHelper
     ) {
         $this->quoteRepository = $quoteRepository;
-        $this->giftCardHelper = $giftCardHelper;
-        $this->priceHelper = $priceHelper;
+        $this->giftCardHelper  = $giftCardHelper;
+        $this->dataHelper      = $dataHelper;
+        $this->basketHelper    = $basketHelper;
+        $this->priceHelper     = $priceHelper;
     }
 
     /**
@@ -56,8 +74,8 @@ class GiftCardManagement
     public function get($cartId)
     {
         /** @var  Quote $quote */
-        $quote = $this->quoteRepository->getActive($cartId);
-        $giftCardNo = $quote->getLsGiftCardNo();
+        $quote         = $this->quoteRepository->getActive($cartId);
+        $giftCardNo    = $quote->getLsGiftCardNo();
         $giftCardArray = [];
         if (!empty($giftCardNo)) {
             $giftCardArray = ['code' => $giftCardNo, 'amount' => $quote->getLsGiftCardAmountUsed()];
@@ -110,9 +128,12 @@ class GiftCardManagement
             throw new CouldNotSaveException(__('The gift card code %1 is not valid.', $giftCardNo));
         }
 
-        $itemsCount = $cartQuote->getItemsCount();
-        $orderBalance = $cartQuote->getData('grand_total');
-
+        $itemsCount   = $cartQuote->getItemsCount();
+        $orderBalance = $this->dataHelper->getOrderBalance(
+            0,
+            $cartQuote->getLsPointsSpent(),
+            $this->basketHelper->getBasketSessionValue()
+        );
         $isGiftCardAmountValid = $this->giftCardHelper->isGiftCardAmountValid(
             $orderBalance,
             $giftCardAmount,
@@ -124,7 +145,7 @@ class GiftCardManagement
                 __(
                     'The applied amount %3' .
                     ' is greater than gift card balance amount (%1) or it is greater' .
-                    ' than order balance (Excl. Shipping Amount) (%2).',
+                    ' than order balance (%2).',
                     $this->priceHelper->currency(
                         $giftCardBalanceAmount,
                         true,
@@ -170,7 +191,7 @@ class GiftCardManagement
         }
         if ($cartQuote->getLsGiftCardNo()) {
             $giftCardAmount = 0;
-            $giftCardNo = null;
+            $giftCardNo     = null;
             $cartQuote->getShippingAddress()->setCollectShippingRates(true);
             $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo);
             $cartQuote->setTotalsCollectedFlag(false)->collectTotals();

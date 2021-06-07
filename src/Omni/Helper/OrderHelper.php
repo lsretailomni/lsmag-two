@@ -117,11 +117,14 @@ class OrderHelper extends AbstractHelper
             $storeId       = $oneListCalculateResponse->getStoreId();
             $cardId        = $oneListCalculateResponse->getCardId();
             $customerEmail = $order->getCustomerEmail();
+            $customerName  = $order->getBillingAddress()->getFirstname() . ' ' .
+                $order->getBillingAddress()->getLastname();
 
             if ($order->getShippingAddress()) {
-                $customerName = $order->getShippingAddress()->getFirstname() . ' ' . $order->getShippingAddress()->getLastname();
+                $shipToName = $order->getShippingAddress()->getFirstname() . ' ' .
+                    $order->getShippingAddress()->getLastname();
             } else {
-                $customerName = $order->getBillingAddress()->getFirstname() . ' ' . $order->getBillingAddress()->getLastname();
+                $shipToName = $customerName;
             }
 
             if ($this->customerSession->isLoggedIn()) {
@@ -145,7 +148,8 @@ class OrderHelper extends AbstractHelper
 
             //if the shipping address is empty, we use the contact address as shipping address.
             $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
-            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) : $contactAddress;
+            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) :
+                $contactAddress;
 
             $oneListCalculateResponse
                 ->setId($order->getIncrementId())
@@ -154,7 +158,7 @@ class OrderHelper extends AbstractHelper
                 ->setEmail($customerEmail)
                 ->setShipToEmail($customerEmail)
                 ->setContactName($customerName)
-                ->setShipToName($customerName)
+                ->setShipToName($shipToName)
                 ->setContactAddress($contactAddress)
                 ->setShipToAddress($shipToAddress)
                 ->setStoreId($storeId);
@@ -288,7 +292,6 @@ class OrderHelper extends AbstractHelper
 
         $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
 
-
         if (!in_array($paymentCode, $noOrderPayment)) {
             // @codingStandardsIgnoreStart
             $orderPayment = new Entity\OrderPayment();
@@ -354,6 +357,7 @@ class OrderHelper extends AbstractHelper
             //default values for all payment typoes.
             $orderPaymentGiftCard
                 ->setCurrencyFactor(1)
+                ->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
                 ->setAmount($order->getLsGiftCardAmountUsed())
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())

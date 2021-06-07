@@ -21,7 +21,7 @@ Special,Special
 "No store found for entered omni api url","No store found for entered omni api url"
 "The gift card code %1 is not valid.","The gift card code %1 is not valid."
 "You have successfully cancelled the gift card.","You have successfully cancelled the gift card."
-"The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).","The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2)."
+"The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (%2).","The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (%2)."
 "The gift card amount ""%1"" is not valid.","The gift card amount ""%1"" is not valid."
 "Totals calculation is not applicable to empty cart.","Totals calculation is not applicable to empty cart."
 "Customer session not found.","Customer session not found."
@@ -46,22 +46,20 @@ Notice,Notice
 "This item is not available","This item is not available"
 "Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
 "Our Stores","Our Stores"
+"Coupon Code is not valid","Coupon Code is not valid"
 "Coupon Code is not valid for these item(s)","Coupon Code is not valid for these item(s)"
 "Reset password token expired.","Reset password token expired."
-"The gift card amount ""%1"" and loyalty points ""%2"" are not valid.","The gift card amount ""%1"" and loyalty points ""%2"" are not valid."
+"The account is locked.","The account is locked."
+"This account isn't confirmed. Verify and try again.","This account isn't confirmed. Verify and try again."
+"The amount ""%1"" of gift card code %2 is not valid.","The amount ""%1"" of gift card code %2 is not valid."
+"The gift card amount ""%1"" or loyalty points ""%2"" are not valid.","The gift card amount ""%1"" or loyalty points ""%2"" are not valid."
+"Coupon discount is exceeding total amount.","Coupon discount is exceeding total amount."
 Save,Save
-Products,Products
-SKU,SKU
-Qty,Qty
-Price,Price
-Discount,Discount
-Subtotal,Subtotal
-"Total Discount:","Total Discount:"
-"Loyalty Points Redeemed:","Loyalty Points Redeemed:"
-"GiftCard Redeemed ","GiftCard Redeemed "
-"Invoice # ","Invoice # "
+"Could not find a cart with ID %1","Could not find a cart with ID %1"
+"The loyalty points '%1' are not valid.","The loyalty points '%1' are not valid."
 "Excl. Tax","Excl. Tax"
 "Incl. Tax","Incl. Tax"
+Discount,Discount
 "Tax (Inclusive Total)","Tax (Inclusive Total)"
 "Gift Card Redeemed","Gift Card Redeemed"
 "Gift Card No","Gift Card No"
@@ -99,8 +97,11 @@ Apply,Apply
 Update,Update
 Cancel,Cancel
 Item,Item
+Price,Price
 "See price before order confirmation.","See price before order confirmation."
 "What's this?","What's this?"
+Qty,Qty
+Subtotal,Subtotal
 "Apply Loyalty Points","Apply Loyalty Points"
 "You have %1 loyalty points. Each of 10 Points gets %2 discount.","You have %1 loyalty points. Each of 10 Points gets %2 discount."
 Redeem,Redeem
@@ -148,7 +149,7 @@ Version,Version
 "LS Key","LS Key"
 "For Multi Tenant Web Services","For Multi Tenant Web Services"
 "Please validate your base url by clicking on button above","Please validate your base url by clicking on button above"
-"Omni Service Version","Omni Service Version"
+"LS Commerce Service Version","LS Commerce Service Version"
 "LS Central Version","LS Central Version"
 "Select Store","Select Store"
 "Choose the web store","Choose the web store"
@@ -201,9 +202,8 @@ Title,Title
 "Default Zoom","Default Zoom"
 "LS eCommerce Cache","LS eCommerce Cache"
 "LS eCommerce cache for storing the response objects","LS eCommerce cache for storing the response objects"
+"GiftCard Redeemed","GiftCard Redeemed"
 "Subtotal (Inc.Tax)","Subtotal (Inc.Tax)"
 "Order Balance","Order Balance"
 Stores,Stores
 "Check Gift Card Balance","Check Gift Card Balance"
-"Coupon Code is not valid","Coupon Code is not valid"
-"Order Cannot be canceled from LS Central","Order Cannot be canceled from LS Central"
