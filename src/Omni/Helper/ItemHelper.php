@@ -391,7 +391,7 @@ class ItemHelper extends AbstractHelper
         $productList    = $this->productRepository->getList($searchCriteria)->getItems();
         /** @var Product $product */
         $product   = array_pop($productList);
-        $itemId    = $this->productRepository->getById($item->getProductId())->getSku();
+        $itemId    = $this->productRepository->getById($item->getProductId(), false, null, true)->getSku();
         $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
         $uom       = $product->getData('uom');
         $barCode   = $product->getData('barcode');
