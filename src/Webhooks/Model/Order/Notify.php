@@ -5,9 +5,9 @@ namespace Ls\Webhooks\Model\Order;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Logger\Logger;
 use Magento\Framework\App\Area;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Translate\Inline\StateInterface;
-use Magento\Store\Model\ScopeInterface;
 
 /**
  * Notification email
@@ -66,7 +66,6 @@ class Notify
         try {
             $this->inlineTranslation->suspend();
 
-            $storeScope      = ScopeInterface::SCOPE_STORE;
             $templateOptions = [
                 'area'  => Area::AREA_FRONTEND,
                 'store' => $storeId
@@ -75,7 +74,7 @@ class Notify
                 'name'  => $magStoreName,
                 'email' => $storeEmail,
             ];
-            $transport       = $this->transportBuilder->setTemplateIdentifier($templateId, $storeScope)
+            $transport       = $this->transportBuilder->setTemplateIdentifier($templateId)
                 ->setTemplateOptions($templateOptions)
                 ->setTemplateVars($templateVars)
                 ->addTo($toEmail)
@@ -91,8 +90,9 @@ class Notify
     /**
      * Set template variable for click and collect email
      * @param $order
-     * @param $skus
+     * @param $itemsInfo
      * @return array
+     * @throws NoSuchEntityException
      */
     public function setClickAndCollectTemplateVars($order, $itemsInfo)
     {

@@ -3,11 +3,11 @@
 namespace Ls\Webhooks\Model\Order;
 
 use Exception;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
-use \Ls\Webhooks\Model\Order\CreditMemo;
-use \Ls\Webhooks\Model\Order\Notify;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\Order;
 
 /**
@@ -40,8 +40,8 @@ class Status
      * Status constructor.
      * @param Data $helper
      * @param Cancel $orderCancel
-     * @param \Ls\Webhooks\Model\Order\CreditMemo $creditMemo
-     * @param \Ls\Webhooks\Model\Order\Notify $notify
+     * @param CreditMemo $creditMemo
+     * @param Notify $notify
      */
     public function __construct(
         Data $helper,
@@ -58,6 +58,7 @@ class Status
     /**
      * Process order status based on webhook call from Ls Central
      * @param $data
+     * @throws InvalidEnumException|NoSuchEntityException
      */
     public function process($data)
     {
@@ -70,7 +71,7 @@ class Status
                 $itemInfoArray = $this->helper->matchLineNumberWithSalesEntry($salesEntry, $lines);
                 if (!empty($itemInfoArray)) {
                     foreach ($itemInfoArray as $status => $itemsInfo) {
-                        $this->checkAndProcessStatus($status, $itemsInfo, $magOrder);
+                        $this->checkAndProcessStatus($status, $itemsInfo, $magOrder, $salesEntry);
                     }
                 }
             }
@@ -82,23 +83,24 @@ class Status
      * @param $status
      * @param $itemsInfo
      * @param $magOrder
-     * @throws Exception
+     * @param $salesEntry
+     * @throws NoSuchEntityException
      */
-    public function checkAndProcessStatus($status, $itemsInfo, $magOrder)
+    public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $salesEntry)
     {
         $storeId = $magOrder->getStoreId();
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
             $this->cancel($magOrder, $itemsInfo);
         }
-        if ($status == LSR::LS_STATE_PICKED && $this->helper->isPickupNotifyEnabled($storeId)) {
-            $templateId   = $this->helper->getPickupTemplate($storeId);
-            $templateVars = $this->notify->setClickAndCollectTemplateVars($magOrder, $itemsInfo);
-            $this->notify->sendEmail($templateId, $templateVars, $magOrder);
+        if ($status == LSR::LS_STATE_PICKED && $this->helper->isPickupNotifyEnabled($storeId) &&
+            $salesEntry->getClickAndCollectOrder() == true) {
+            $templateId = $this->helper->getPickupTemplate($storeId);
+            $this->processClickAndCollectOrder($magOrder, $itemsInfo, $templateId);
         }
-        if ($status == LSR::LS_STATE_COLLECTED && $this->helper->isCollectedNotifyEnabled($storeId)) {
-            $templateId   = $this->helper->getCollectedTemplate($storeId);
-            $templateVars = $this->notify->setClickAndCollectTemplateVars($magOrder, $itemsInfo);
-            $this->notify->sendEmail($templateId, $templateVars, $magOrder);
+        if ($status == LSR::LS_STATE_COLLECTED && $this->helper->isCollectedNotifyEnabled($storeId) &&
+            $salesEntry->getClickAndCollectOrder() == true) {
+            $templateId = $this->helper->getCollectedTemplate($storeId);
+            $this->processClickAndCollectOrder($magOrder, $itemsInfo, $templateId);
         }
     }
 
@@ -116,6 +118,22 @@ class Status
             $this->creditMemo->refund($magOrder, $itemsInfo, $creditMemoData);
         } elseif (count($magOrder->getAllVisibleItems()) == count($itemsInfo)) {
             $this->orderCancel->cancelOrder($magOrder->getEntityId());
+        } else {
+            $this->orderCancel->cancelItems($magOrder, $itemsInfo);
+        }
+    }
+
+    /** Process click and collect order
+     * @param $magOrder
+     * @param $itemsInfo
+     * @param $templateId
+     * @throws NoSuchEntityException
+     */
+    public function processClickAndCollectOrder($magOrder, $itemsInfo, $templateId)
+    {
+        $templateVars = $this->notify->setClickAndCollectTemplateVars($magOrder, $itemsInfo);
+        if (!empty($templateVars['items'])) {
+            $this->notify->sendEmail($templateId, $templateVars, $magOrder);
         }
     }
 }

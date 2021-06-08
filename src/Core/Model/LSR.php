@@ -382,7 +382,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_CANCELED = 'CANCELED';
     const LS_STATE_CLOSED = 'CLOSED';
     const LS_STATE_COLLECTED = 'COLLECTED';
-    const LS_STATE_PICKED = 'PICKED';
+    const LS_STATE_PICKED = 'PICKED'; //Ready to Pick
     const LS_STATE_SHIPPED = 'SHIPPED';
     const LS_STATE_SHORTAGE = 'SHORTAGE';
 

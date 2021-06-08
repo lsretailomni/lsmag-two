@@ -200,7 +200,7 @@ class Data
 
     /**
      * Get store name by store id
-     * @param $pickupStoreId
+     * @param $storeId
      * @return mixed|string
      */
     public function getStoreName($storeId)
@@ -232,12 +232,32 @@ class Data
         foreach ($order->getAllVisibleItems() as $orderItem) {
             list($itemId, $variantId, $uom) = $this->getComparisonValues($orderItem);
             foreach ($itemsInfo as $skuValues) {
-                if ($itemId = $skuValues['itemId'] && $uom == $skuValues['uom'] &&
+                if ($itemId == $skuValues['itemId'] && $uom == $skuValues['uom'] &&
                     $variantId == $skuValues['variantId']) {
                     $items[] = $orderItem;
                 }
             }
         }
         return $items;
+    }
+
+    /**
+     * For returning order repository object
+     * @return OrderRepositoryInterface
+     */
+    public function getOrderRepository()
+    {
+        return $this->orderRepository;
+    }
+
+    /**
+     * Set status and return order
+     * @param $order
+     * @param $state
+     * @return void
+     */
+    public function updateOrderStatus($order, $state, $status)
+    {
+        $order->setState($state)->setStatus($status);
     }
 }
