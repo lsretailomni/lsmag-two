@@ -6,6 +6,7 @@
 $order = $block->getMagOrder();
 
 use \Ls\Customer\Block\Order\Items;
+use Magento\Sales\Model\Order\Item;
 
 ?>
 <div class="table-wrapper order-items">
@@ -34,9 +35,16 @@ use \Ls\Customer\Block\Order\Items;
         <?php $items = $block->getItems(); ?>
         <?php $giftMessage = '' ?>
         <?php foreach ($items as $item):
+            if ($item instanceof Item  && $item->getParentItem()) :
+                continue;
+            endif;
             ?>
             <tbody>
-            <?php echo $block->getCustomItemRenderer($item); ?>
+            <?php if ($item instanceof Item): ?>
+                <?= $block->getItemHtml($item)?>
+            <?php else:?>
+                <?= $block->getCustomItemRenderer($item); ?>
+            <?php endif; ?>
             </tbody>
         <?php endforeach; ?>
         <tfoot>

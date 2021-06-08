@@ -19,8 +19,7 @@ use Magento\Framework\View\Element\Template\Context as TemplateContext;
 use Magento\Sales\Model\OrderRepository;
 
 /**
- * Class Info
- * @package Ls\Customer\Block\Order
+ * Block being used for various sections on order detail
  */
 class Info extends Template
 {
@@ -159,7 +158,9 @@ class Info extends Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $this->pageConfig->getTitle()->set(__('%1 # %2', $this->getOrder()->getIdType(), $this->getOrder()->getId()));
+        if ($this->getOrder()) {
+            $this->pageConfig->getTitle()->set(__('%1 # %2', $this->getOrder()->getIdType(), $this->getOrder()->getId()));
+        }
     }
     // @codingStandardsIgnoreEnd
 
