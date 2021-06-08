@@ -44,7 +44,7 @@ use Magento\Sales\Model\Order\Item;
                 <?= $block->getItemHtml($item)?>
             <?php else:?>
                 <?= $block->getCustomItemRenderer($item); ?>
-            <? endif; ?>
+            <?php endif; ?>
             </tbody>
         <?php endforeach; ?>
         <tfoot>
