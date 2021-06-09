@@ -258,7 +258,10 @@ class BasketHelper extends AbstractHelper
 
         foreach ($quoteItems as $quoteItem) {
 
-            list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues($quoteItem);
+            list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
+                $quoteItem->getProductId(),
+                $quoteItem->getSku()
+            );
 
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
@@ -307,7 +310,10 @@ class BasketHelper extends AbstractHelper
             } else {
                 $product = $item->getProduct();
             }
-            list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues($product);
+            list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
+                $product->getId(),
+                $product->getSku()
+            );
             $qty     = $item->getData('qty');
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
@@ -877,7 +883,10 @@ class BasketHelper extends AbstractHelper
     public function getItemRowTotal($item)
     {
         $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues($item);
+        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+            $item->getProductId(),
+            $item->getSku()
+        );
         $rowTotal   = $item->getRowTotal();
         $basketData = $this->getOneListCalculation();
         $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];

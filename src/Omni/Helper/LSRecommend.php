@@ -234,7 +234,10 @@ class LSRecommend extends AbstractHelper
             $itemsSkusArray = [];
 
             foreach ($quoteItems as $quoteItem) {
-                list($sku) = $this->itemHelper->getComparisonValues($quoteItem);
+                list($sku) = $this->itemHelper->getComparisonValues(
+                    $quoteItem->getProductId(),
+                    $quoteItem->getSku()
+                );
                 $itemsSkus .= $sku . ',';
             }
             $itemsSkus = implode(',', $itemsSkusArray);
