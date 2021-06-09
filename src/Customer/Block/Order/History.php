@@ -9,6 +9,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -18,8 +19,7 @@ use Magento\Sales\Model\ResourceModel\Order\Collection;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 
 /**
- * Class History
- * @package Ls\Customer\Block\Order
+ * Block being used for order history grid
  */
 class History extends \Magento\Sales\Block\Order\History
 {
@@ -39,7 +39,7 @@ class History extends \Magento\Sales\Block\Order\History
     public $lsr;
 
     /**
-     * @var Order Repository
+     * @var OrderRepository
      */
     public $orderRepository;
 
@@ -132,7 +132,7 @@ class History extends \Magento\Sales\Block\Order\History
      * @param object $order
      * @param null $magOrder
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getViewUrl($order, $magOrder = null)
     {
@@ -181,12 +181,14 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
-     * @param $documentId
-     * @return OrderInterface[]
+     * Get respective magento order given Central sales entry Object
+     *
+     * @param $order
+     * @return array|OrderInterface
      */
-    public function getOrderByDocumentId($documentId)
+    public function getOrderByDocumentId($order)
     {
-        return $this->orderHelper->getOrderByDocumentId($documentId);
+        return $this->orderHelper->getOrderByDocumentId($order);
     }
 
     /**

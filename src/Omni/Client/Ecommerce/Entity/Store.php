@@ -67,6 +67,16 @@ class Store extends Entity
     protected $IsClickAndCollect = null;
 
     /**
+     * @property boolean $IsLoyalty
+     */
+    protected $IsLoyalty = null;
+
+    /**
+     * @property boolean $IsWebStore
+     */
+    protected $IsWebStore = null;
+
+    /**
      * @property double $Latitude
      */
     protected $Latitude = null;
@@ -90,6 +100,16 @@ class Store extends Entity
      * @property string $UseDefaultCustomer
      */
     protected $UseDefaultCustomer = null;
+
+    /**
+     * @property string $WebOmniStaff
+     */
+    protected $WebOmniStaff = null;
+
+    /**
+     * @property string $WebOmniTerminal
+     */
+    protected $WebOmniTerminal = null;
 
     /**
      * @param ArrayOfImageView $Images
@@ -290,6 +310,42 @@ class Store extends Entity
     }
 
     /**
+     * @param boolean $IsLoyalty
+     * @return $this
+     */
+    public function setIsLoyalty($IsLoyalty)
+    {
+        $this->IsLoyalty = $IsLoyalty;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsLoyalty()
+    {
+        return $this->IsLoyalty;
+    }
+
+    /**
+     * @param boolean $IsWebStore
+     * @return $this
+     */
+    public function setIsWebStore($IsWebStore)
+    {
+        $this->IsWebStore = $IsWebStore;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsWebStore()
+    {
+        return $this->IsWebStore;
+    }
+
+    /**
      * @param double $Latitude
      * @return $this
      */
@@ -377,6 +433,42 @@ class Store extends Entity
     public function getUseDefaultCustomer()
     {
         return $this->UseDefaultCustomer;
+    }
+
+    /**
+     * @param string $WebOmniStaff
+     * @return $this
+     */
+    public function setWebOmniStaff($WebOmniStaff)
+    {
+        $this->WebOmniStaff = $WebOmniStaff;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebOmniStaff()
+    {
+        return $this->WebOmniStaff;
+    }
+
+    /**
+     * @param string $WebOmniTerminal
+     * @return $this
+     */
+    public function setWebOmniTerminal($WebOmniTerminal)
+    {
+        $this->WebOmniTerminal = $WebOmniTerminal;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebOmniTerminal()
+    {
+        return $this->WebOmniTerminal;
     }
 
 
