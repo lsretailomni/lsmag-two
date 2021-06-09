@@ -8,6 +8,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
+use Ls\Omni\Exception\InvalidEnumException;
+
 class HierarchyNode extends HierarchyPoint
 {
 
@@ -22,9 +25,19 @@ class HierarchyNode extends HierarchyPoint
     protected $Nodes = null;
 
     /**
+     * @property float $AddedAmount
+     */
+    protected $AddedAmount = null;
+
+    /**
      * @property int $ChildrenOrder
      */
     protected $ChildrenOrder = null;
+
+    /**
+     * @property int $DealModSizeGroupIndex
+     */
+    protected $DealModSizeGroupIndex = null;
 
     /**
      * @property int $Indentation
@@ -32,9 +45,39 @@ class HierarchyNode extends HierarchyPoint
     protected $Indentation = null;
 
     /**
+     * @property int $MaxSelection
+     */
+    protected $MaxSelection = null;
+
+    /**
+     * @property int $MinSelection
+     */
+    protected $MinSelection = null;
+
+    /**
+     * @property string $No
+     */
+    protected $No = null;
+
+    /**
      * @property int $PresentationOrder
      */
     protected $PresentationOrder = null;
+
+    /**
+     * @property HierarchyDealType $Type
+     */
+    protected $Type = null;
+
+    /**
+     * @property string $UnitOfMeasure
+     */
+    protected $UnitOfMeasure = null;
+
+    /**
+     * @property string $VariantCode
+     */
+    protected $VariantCode = null;
 
     /**
      * @param ArrayOfHierarchyLeaf $Leafs
@@ -73,6 +116,24 @@ class HierarchyNode extends HierarchyPoint
     }
 
     /**
+     * @param float $AddedAmount
+     * @return $this
+     */
+    public function setAddedAmount($AddedAmount)
+    {
+        $this->AddedAmount = $AddedAmount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAddedAmount()
+    {
+        return $this->AddedAmount;
+    }
+
+    /**
      * @param int $ChildrenOrder
      * @return $this
      */
@@ -88,6 +149,24 @@ class HierarchyNode extends HierarchyPoint
     public function getChildrenOrder()
     {
         return $this->ChildrenOrder;
+    }
+
+    /**
+     * @param int $DealModSizeGroupIndex
+     * @return $this
+     */
+    public function setDealModSizeGroupIndex($DealModSizeGroupIndex)
+    {
+        $this->DealModSizeGroupIndex = $DealModSizeGroupIndex;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDealModSizeGroupIndex()
+    {
+        return $this->DealModSizeGroupIndex;
     }
 
     /**
@@ -109,6 +188,60 @@ class HierarchyNode extends HierarchyPoint
     }
 
     /**
+     * @param int $MaxSelection
+     * @return $this
+     */
+    public function setMaxSelection($MaxSelection)
+    {
+        $this->MaxSelection = $MaxSelection;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxSelection()
+    {
+        return $this->MaxSelection;
+    }
+
+    /**
+     * @param int $MinSelection
+     * @return $this
+     */
+    public function setMinSelection($MinSelection)
+    {
+        $this->MinSelection = $MinSelection;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinSelection()
+    {
+        return $this->MinSelection;
+    }
+
+    /**
+     * @param string $No
+     * @return $this
+     */
+    public function setNo($No)
+    {
+        $this->No = $No;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNo()
+    {
+        return $this->No;
+    }
+
+    /**
      * @param int $PresentationOrder
      * @return $this
      */
@@ -124,6 +257,70 @@ class HierarchyNode extends HierarchyPoint
     public function getPresentationOrder()
     {
         return $this->PresentationOrder;
+    }
+
+    /**
+     * @param HierarchyDealType|string $Type
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setType($Type)
+    {
+        if ( ! $Type instanceof HierarchyDealType ) {
+            if ( HierarchyDealType::isValid( $Type ) )
+                $Type = new HierarchyDealType( $Type );
+            elseif ( HierarchyDealType::isValidKey( $Type ) )
+                $Type = new HierarchyDealType( constant( "HierarchyDealType::$Type" ) );
+            elseif ( ! $Type instanceof HierarchyDealType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return HierarchyDealType
+     */
+    public function getType()
+    {
+        return $this->Type;
+    }
+
+    /**
+     * @param string $UnitOfMeasure
+     * @return $this
+     */
+    public function setUnitOfMeasure($UnitOfMeasure)
+    {
+        $this->UnitOfMeasure = $UnitOfMeasure;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitOfMeasure()
+    {
+        return $this->UnitOfMeasure;
+    }
+
+    /**
+     * @param string $VariantCode
+     * @return $this
+     */
+    public function setVariantCode($VariantCode)
+    {
+        $this->VariantCode = $VariantCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantCode()
+    {
+        return $this->VariantCode;
     }
 
 

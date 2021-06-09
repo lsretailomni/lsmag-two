@@ -15,13 +15,13 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\HospOrderKotStatus as HospOrderKotStatusRequest;
-use Ls\Omni\Client\Ecommerce\Entity\HospOrderKotStatusResponse as HospOrderKotStatusResponse;
+use Ls\Omni\Client\Ecommerce\Entity\HospOrderStatus as HospOrderStatusRequest;
+use Ls\Omni\Client\Ecommerce\Entity\HospOrderStatusResponse as HospOrderStatusResponse;
 
-class HospOrderKotStatus extends AbstractOperation
+class HospOrderStatus extends AbstractOperation
 {
 
-    public const OPERATION_NAME = 'HOSP_ORDER_KOT_STATUS';
+    public const OPERATION_NAME = 'HOSP_ORDER_STATUS';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -31,12 +31,12 @@ class HospOrderKotStatus extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property HospOrderKotStatusRequest $request
+     * @property HospOrderStatusRequest $request
      */
     protected $request = null;
 
     /**
-     * @property HospOrderKotStatusResponse $response
+     * @property HospOrderStatusResponse $response
      */
     protected $response = null;
 
@@ -65,24 +65,24 @@ class HospOrderKotStatus extends AbstractOperation
     }
 
     /**
-     * @param HospOrderKotStatusRequest $request
-     * @return ResponseInterface|HospOrderKotStatusResponse
+     * @param HospOrderStatusRequest $request
+     * @return ResponseInterface|HospOrderStatusResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'HospOrderKotStatus' );
+        return $this->makeRequest( 'HospOrderStatus' );
     }
 
     /**
-     * @return HospOrderKotStatusRequest
+     * @return HospOrderStatusRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new HospOrderKotStatusRequest();
+            $this->request = new HospOrderStatusRequest();
         }
         return $this->request;
     }
@@ -119,7 +119,7 @@ class HospOrderKotStatus extends AbstractOperation
     }
 
     /**
-     * @param HospOrderKotStatusRequest $request
+     * @param HospOrderStatusRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -129,7 +129,7 @@ class HospOrderKotStatus extends AbstractOperation
     }
 
     /**
-     * @return HospOrderKotStatusRequest
+     * @return HospOrderStatusRequest
      */
     public function getRequest()
     {
@@ -137,7 +137,7 @@ class HospOrderKotStatus extends AbstractOperation
     }
 
     /**
-     * @param HospOrderKotStatusResponse $response
+     * @param HospOrderStatusResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -147,7 +147,7 @@ class HospOrderKotStatus extends AbstractOperation
     }
 
     /**
-     * @return HospOrderKotStatusResponse
+     * @return HospOrderStatusResponse
      */
     public function getResponse()
     {

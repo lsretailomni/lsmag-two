@@ -593,6 +593,11 @@ class BasketHelper extends AbstractHelper
         // @codingStandardsIgnoreLine
         $operation = new Operation\OneListSave();
         $list->setStoreId($this->getDefaultWebStore());
+
+        if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
+            $list->setSalesType(LSR::SALE_TYPE_POS);
+        }
+
         // @codingStandardsIgnoreLine
         $request = (new Entity\OneListSave())
             ->setOneList($list)
@@ -642,6 +647,12 @@ class BasketHelper extends AbstractHelper
                 ->setListType(Entity\Enum\ListType::BASKET)
                 ->setItems($listItems)
                 ->setStoreId($storeId);
+
+            if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
+                $oneListRequest
+                    ->setIsHospitality(false)
+                    ->setSalesType(LSR::SALE_TYPE_POS);
+            }
 
             /** @var Entity\OneListCalculate $entity */
             if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {

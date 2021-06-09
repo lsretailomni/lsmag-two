@@ -12,6 +12,11 @@ class Store extends Entity
 {
 
     /**
+     * @property ArrayOfSalesType $HospSalesTypes
+     */
+    protected $HospSalesTypes = null;
+
+    /**
      * @property ArrayOfImageView $Images
      */
     protected $Images = null;
@@ -110,6 +115,24 @@ class Store extends Entity
      * @property string $WebOmniTerminal
      */
     protected $WebOmniTerminal = null;
+
+    /**
+     * @param ArrayOfSalesType $HospSalesTypes
+     * @return $this
+     */
+    public function setHospSalesTypes($HospSalesTypes)
+    {
+        $this->HospSalesTypes = $HospSalesTypes;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfSalesType
+     */
+    public function getHospSalesTypes()
+    {
+        return $this->HospSalesTypes;
+    }
 
     /**
      * @param ArrayOfImageView $Images

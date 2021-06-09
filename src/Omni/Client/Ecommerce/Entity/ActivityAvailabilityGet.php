@@ -34,6 +34,11 @@ class ActivityAvailabilityGet implements RequestInterface
     protected $contactNo = null;
 
     /**
+     * @property string $contactAccount
+     */
+    protected $contactAccount = null;
+
+    /**
      * @property string $optionalResource
      */
     protected $optionalResource = null;
@@ -123,6 +128,24 @@ class ActivityAvailabilityGet implements RequestInterface
     public function getContactNo()
     {
         return $this->contactNo;
+    }
+
+    /**
+     * @param string $contactAccount
+     * @return $this
+     */
+    public function setContactAccount($contactAccount)
+    {
+        $this->contactAccount = $contactAccount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactAccount()
+    {
+        return $this->contactAccount;
     }
 
     /**
