@@ -171,11 +171,21 @@ class Data
     /**
      * Get configuration for collected email
      * @param $storeId
-     * @return mixed
+     * @return string
      */
     public function isCollectedNotifyEnabled($storeId)
     {
         return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_COLLECTED, $storeId);
+    }
+
+    /**
+     * Get configuration for collected email
+     * @param $storeId
+     * @return string
+     */
+    public function isCancelNotifyEnabled($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_CANCEL, $storeId);
     }
 
     /**
@@ -199,6 +209,16 @@ class Data
     }
 
     /**
+     * Get configuration for collected email template
+     * @param $storeId
+     * @return string
+     */
+    public function getCancelTemplate($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL, $storeId);
+    }
+
+    /**
      * Get store name by store id
      * @param $storeId
      * @return mixed|string
@@ -206,17 +226,6 @@ class Data
     public function getStoreName($storeId)
     {
         return $this->omniHelper->getStoreNameById($storeId);
-    }
-
-    /**
-     * Get product values for item
-     * @param $pickupStoreId
-     * @return mixed|string
-     * @throws NoSuchEntityException
-     */
-    public function getComparisonValues($item)
-    {
-        return $this->itemHelper->getComparisonValues($item);
     }
 
     /**
@@ -230,11 +239,15 @@ class Data
     {
         $items = [];
         foreach ($order->getAllVisibleItems() as $orderItem) {
-            list($itemId, $variantId, $uom) = $this->getComparisonValues($orderItem);
+            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                $orderItem->getProductId(),
+                $orderItem->getSku()
+            );
             foreach ($itemsInfo as $skuValues) {
                 if ($itemId == $skuValues['itemId'] && $uom == $skuValues['uom'] &&
                     $variantId == $skuValues['variantId']) {
-                    $items[] = $orderItem;
+                    $items[$itemId]['item'] = $orderItem;
+                    $items[$itemId]['qty']  = $skuValues['qty'];
                 }
             }
         }

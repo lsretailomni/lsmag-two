@@ -9,6 +9,8 @@
                 <template_pickup>ls_mag_webhooks_template_pickup</template_pickup>
                 <notification_collected>1</notification_collected>
                 <template_collected>ls_mag_webhooks_template_collected</template_collected>
+                <notification_cancel>1</notification_cancel>
+                <template_cancel>ls_mag_webhooks_template_cancel</template_cancel>
             </webhooks>
         </ls_mag>
     </default>

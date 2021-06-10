@@ -26,11 +26,11 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($items as $item): ?>
+        <?php foreach ($items as $itemInfo):
+            $item = $itemInfo['item'] ?>
             <tr>
                 <td class="item-info">
-                    <?= /* @escapeNotVerified */
-                    $item->getName() ?>
+                    <?= $escaper->escapeHtml($item->getName()) ?>
                     <table class="item-info">
                         <?php if ($options = $item->getProductOptions()): ?>
                             <?php if (isset($options['attributes_info'])): ?>
@@ -44,7 +44,7 @@
                     </table>
                 </td>
                 <td class="item-info"><?= $escaper->escapeHtml($item->getSku()) ?></td>
-                <td class="item-info"><?= (float)$escaper->escapeHtml($item->getQtyOrdered()) ?></td>
+                <td class="item-info"><?= (float)$escaper->escapeHtml($itemInfo['qty']) ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

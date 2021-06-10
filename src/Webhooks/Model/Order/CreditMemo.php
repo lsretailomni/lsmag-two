@@ -3,14 +3,13 @@
 namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Webhooks\Logger\Logger;
-use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Sales\Api\CreditmemoManagementInterface;
 use Magento\Sales\Model\Order\Email\Sender\CreditmemoSender;
 use Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader;
 
 /**
- * class to cancel order through webhook
+ * class to issue credit memo
  */
 class CreditMemo
 {
@@ -35,47 +34,38 @@ class CreditMemo
     private $logger;
 
     /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
      * CreditMemo constructor.
      * @param CreditmemoSender $creditMemoSender
      * @param CreditmemoLoader $creditMemoLoader
      * @param CreditmemoManagementInterface $creditMemoManagement
-     * @param Data $helper
      * @param Logger $logger
      */
     public function __construct(
         CreditmemoSender $creditMemoSender,
         CreditmemoLoader $creditMemoLoader,
         CreditmemoManagementInterface $creditMemoManagement,
-        Data $helper,
         Logger $logger
     ) {
         $this->creditMemoSender     = $creditMemoSender;
         $this->creditMemoLoader     = $creditMemoLoader;
         $this->creditMemoManagement = $creditMemoManagement;
-        $this->helper               = $helper;
         $this->logger               = $logger;
     }
 
     /**
      * To process refund for that item which is cancelled
      * @param $magOrder
-     * @param $skus
-     * @throws \Exception
+     * @param $items
+     * @param $creditMemoData
      */
-    public function refund($magOrder, $itemsInfo, $creditMemoData)
+    public function refund($magOrder, $items, $creditMemoData)
     {
         $orderId             = $magOrder->getEntityId();
-        $items               = $this->helper->getItems($magOrder, $itemsInfo);
         $itemsTaxAmountTotal = $creditMemoData['adjustment_negative'];
-        foreach ($items as $item) {
-
+        foreach ($items as $itemData) {
+            $item                       = $itemData['item'];
             $orderItemId                = $item->getItemId();
-            $itemToCredit[$orderItemId] = ['qty' => $item->getQtyInvoiced()];
+            $itemToCredit[$orderItemId] = ['qty' => $itemData['qty']];
             $creditMemoData['items']    = $itemToCredit;
             $itemsTaxAmountTotal        += $item->getTaxAmount();
         }

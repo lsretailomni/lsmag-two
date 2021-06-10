@@ -35,6 +35,19 @@
                         <field id="notification_collected">1</field>
                     </depends>
                 </field>
+                <field id="notification_cancel" translate="label" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1">
+                    <label>Order Cancelled Notification</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template_cancel" translate="label comment" type="select" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" canRestore="1">
+                    <label>Email template For Order Cancellation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="notification_cancel">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>

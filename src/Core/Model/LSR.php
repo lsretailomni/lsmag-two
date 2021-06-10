@@ -378,7 +378,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const EMAIL_TEMPLATE_ID_FOR_OMNI_SERVICE_DOWN = 'ls_omni_disaster_recovery_email';
 
-    //Order Status through webhooks
+    //Order status through webhook
     const LS_STATE_CANCELED = 'CANCELED';
     const LS_STATE_CLOSED = 'CLOSED';
     const LS_STATE_COLLECTED = 'COLLECTED';
@@ -386,11 +386,13 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_SHIPPED = 'SHIPPED';
     const LS_STATE_SHORTAGE = 'SHORTAGE';
 
-    //Email notification for click and collect status like picked and collected
+    //Email notification through webhook
     const LS_NOTIFICATION_PICKUP = 'ls_mag/webhooks/notification_pickup';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP = 'ls_mag/webhooks/template_pickup';
     const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_pickup';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_COLLECTED = 'ls_mag/webhooks/template_collected';
+    const LS_NOTIFICATION_CANCEL = 'ls_mag/webhooks/notification_cancel';
+    const LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL = 'ls_mag/webhooks/template_cancel';
 
     //Choose Industry
     const LS_INDUSTRY_VALUE_RETAIL = 'retail';

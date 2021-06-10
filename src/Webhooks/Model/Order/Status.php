@@ -2,7 +2,6 @@
 
 namespace Ls\Webhooks\Model\Order;
 
-use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Webhooks\Helper\Data;
@@ -11,7 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\Order;
 
 /**
- * class to create invoice through webhook
+ * class to process status through webhook
  */
 class Status
 {
@@ -89,18 +88,19 @@ class Status
     public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $salesEntry)
     {
         $storeId = $magOrder->getStoreId();
+        $items   = $this->helper->getItems($magOrder, $itemsInfo);
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
-            $this->cancel($magOrder, $itemsInfo);
+            $this->cancel($magOrder, $itemsInfo, $items, $storeId);
         }
         if ($status == LSR::LS_STATE_PICKED && $this->helper->isPickupNotifyEnabled($storeId) &&
             $salesEntry->getClickAndCollectOrder() == true) {
             $templateId = $this->helper->getPickupTemplate($storeId);
-            $this->processClickAndCollectOrder($magOrder, $itemsInfo, $templateId);
+            $this->processSendEmail($magOrder, $items, $templateId);
         }
         if ($status == LSR::LS_STATE_COLLECTED && $this->helper->isCollectedNotifyEnabled($storeId) &&
             $salesEntry->getClickAndCollectOrder() == true) {
             $templateId = $this->helper->getCollectedTemplate($storeId);
-            $this->processClickAndCollectOrder($magOrder, $itemsInfo, $templateId);
+            $this->processSendEmail($magOrder, $items, $templateId);
         }
     }
 
@@ -108,30 +108,38 @@ class Status
      * Handling operation regarding cancelling the order
      * @param $magOrder
      * @param $itemsInfo
-     * @throws Exception
+     * @param $items
+     * @param $storeId
      */
-    public function cancel($magOrder, $itemsInfo)
+    public function cancel($magOrder, $itemsInfo, $items, $storeId)
     {
+        $sendEmail = false;
         /** @var Order $magOrder */
         if ($magOrder->hasInvoices()) {
             $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder);
             $this->creditMemo->refund($magOrder, $itemsInfo, $creditMemoData);
         } elseif (count($magOrder->getAllVisibleItems()) == count($itemsInfo)) {
             $this->orderCancel->cancelOrder($magOrder->getEntityId());
+            $sendEmail = true;
         } else {
-            $this->orderCancel->cancelItems($magOrder, $itemsInfo);
+            $this->orderCancel->cancelItems($magOrder, $items);
+            $sendEmail = true;
+        }
+
+        if ($sendEmail && $this->helper->isCancelNotifyEnabled($storeId)) {
+            $templateId = $this->helper->getCancelTemplate($storeId);
+            $this->processSendEmail($magOrder, $items, $templateId);
         }
     }
 
     /** Process click and collect order
      * @param $magOrder
-     * @param $itemsInfo
+     * @param $items
      * @param $templateId
-     * @throws NoSuchEntityException
      */
-    public function processClickAndCollectOrder($magOrder, $itemsInfo, $templateId)
+    public function processSendEmail($magOrder, $items, $templateId)
     {
-        $templateVars = $this->notify->setClickAndCollectTemplateVars($magOrder, $itemsInfo);
+        $templateVars = $this->notify->setTemplateVars($magOrder, $items);
         if (!empty($templateVars['items'])) {
             $this->notify->sendEmail($templateId, $templateVars, $magOrder);
         }

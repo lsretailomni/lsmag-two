@@ -5,7 +5,6 @@ namespace Ls\Webhooks\Model\Order;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Logger\Logger;
 use Magento\Framework\App\Area;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Translate\Inline\StateInterface;
 
@@ -90,15 +89,11 @@ class Notify
     /**
      * Set template variable for click and collect email
      * @param $order
-     * @param $itemsInfo
+     * @param $items
      * @return array
-     * @throws NoSuchEntityException
      */
-    public function setClickAndCollectTemplateVars($order, $itemsInfo)
+    public function setTemplateVars($order, $items)
     {
-
-        $items = $this->helper->getItems($order, $itemsInfo);
-
         $magStoreName = $order->getStore()->getFrontEndName();
         $ccStoreName  = $this->helper->getStoreName($order->getPickupStore());
         return [

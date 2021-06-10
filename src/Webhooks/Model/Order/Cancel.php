@@ -4,7 +4,6 @@ namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderManagementInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\ItemRepository;
@@ -69,15 +68,15 @@ class Cancel
     /**
      * For cancelling order item
      * @param $magOrder
-     * @param $itemsInfo
-     * @throws NoSuchEntityException
+     * @param $items
+     * @return void
      */
-    public function cancelItems($magOrder, $itemsInfo)
+    public function cancelItems($magOrder, $items)
     {
         if ($magOrder->canCancel()) {
-            $items = $this->helper->getItems($magOrder, $itemsInfo);
-            foreach ($items as $item) {
-                $item->cancel();
+            foreach ($items as $itemData) {
+                $item = $itemData['item'];
+                $item->setQtyCanceled($itemData['qty']);
                 $this->itemRepository->save($item);
 
                 $magOrder->setSubtotalCanceled($magOrder->getSubtotalCanceled() + $item->getRowTotal());
