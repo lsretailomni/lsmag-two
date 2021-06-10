@@ -249,7 +249,10 @@ class ItemHelper extends AbstractHelper
                 $customPrice = $item->getDiscountAmount();
             } else {
                 $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-                list($itemId, $variantId, $uom) = $this->getComparisonValues($item);
+                list($itemId, $variantId, $uom) = $this->getComparisonValues(
+                    $item->getProductId(),
+                    $item->getSku()
+                );
                 $customPrice = $item->getCustomPrice();
             }
 
@@ -306,7 +309,10 @@ class ItemHelper extends AbstractHelper
 
             foreach ($quoteItemList as $quoteItem) {
                 $baseUnitOfMeasure = $quoteItem->getProduct()->getData('uom');
-                list($itemId, $variantId, $uom) = $this->getComparisonValues($quoteItem);
+                list($itemId, $variantId, $uom) = $this->getComparisonValues(
+                    $quoteItem->getProductId(),
+                    $quoteItem->getSku()
+                );
 
                 foreach ($orderLines as $index => $line) {
                     if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
@@ -381,22 +387,24 @@ class ItemHelper extends AbstractHelper
     /**
      * Get comparison values
      *
-     * @param $item
+     * @param $productId
+     * @param $sku
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getComparisonValues($item)
+    public function getComparisonValues($productId, $sku)
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $item->getSku(), 'eq')->create();
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
         $productList    = $this->productRepository->getList($searchCriteria)->getItems();
         /** @var Product $product */
         $product   = array_pop($productList);
-        $itemId    = $this->productRepository->getById($item->getProductId(), false, null, true)->getSku();
+        $itemId    = $this->productRepository->getById($productId, false, null, true)->getSku();
         $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
         $uom       = $product->getData('uom');
         $barCode   = $product->getData('barcode');
+        $uomQty    = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
-        return [$itemId, $variantId, $uom, $barCode];
+        return [$itemId, $variantId, $uom, $barCode, $uomQty];
     }
 
     /**
