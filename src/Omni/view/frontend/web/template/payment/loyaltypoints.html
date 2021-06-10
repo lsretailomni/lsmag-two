@@ -1,55 +1,67 @@
-<div class="payment-option _collapsible opc-payment-additional loyaltypoints"
-     data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
-    <div class="payment-option-title field choice" data-role="title">
-        <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
-            <!-- ko i18n: 'Apply Loyalty Points'--><!-- /ko -->
-        </span>
-    </div>
-    <div class="payment-option-content" data-role="content">
-        <!-- ko foreach: getRegion('messages') -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
-        <!--/ko-->
-        <form class="form form-discount" id="loyalty-form">
-            <div class="loyalty-points-label">
-                <label>
-                    <span data-bind="html: balanceFormatted"></span>
-                </label>
-            </div>
-            <div class="payment-option-inner">
-                <div class="field">
-                    <label class="label" for="loyalty-points">
-                        <span data-bind="i18n: 'Enter discount code'"></span>
+<!-- ko if: isBalanceAvailable() -->
+    <div class="payment-option _collapsible opc-payment-additional loyaltypoints"
+         data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
+        <div class="payment-option-title field choice" data-role="title">
+            <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
+                <!-- ko i18n: 'Apply Loyalty Points'--><!-- /ko -->
+            </span>
+        </div>
+        <div class="payment-option-content" data-role="content">
+            <!-- ko foreach: getRegion('messages') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+            <form class="form form-discount" id="loyalty-form">
+                <div class="loyalty-points-label">
+                    <label>
+                        <span data-bind="html: balanceFormatted"></span>
                     </label>
-                    <div class="control">
-                        <input class="input-text"
-                               type="number"
-                               id="loyalty-points"
-                               name="loyalty_points"
-                               data-validate="{'required-entry':true, 'required-number':true, 'validate-not-negative-number':true}"
-                               data-bind="value: loyaltyPoints, attr:{placeholder: $t('Enter points to redeem')} "/>
+                </div>
+                <div class="payment-option-inner">
+                    <div class="field">
+                        <label class="label" for="loyalty-points">
+                            <span data-bind="i18n: 'Enter discount code'"></span>
+                        </label>
+                        <div class="control">
+                            <input class="input-text"
+                                   type="number"
+                                   id="loyalty-points"
+                                   name="loyalty_points"
+                                   data-validate="{
+                                   'required-entry':true,
+                                    'required-number':true,
+                                     'validate-not-negative-number':true
+                                     }"
+                                   data-bind="
+                                   value: loyaltyPoints,
+                                   attr:{placeholder: $t('Enter points to redeem')} "
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="actions-toolbar">
-                <div class="primary">
-                    <!-- ko ifnot: isApplied() -->
-                    <button class="action action-apply" type="submit"
-                            data-bind="'value': $t('Redeem'), click: applyPoints">
-                        <span><!-- ko i18n: 'Redeem'--><!-- /ko --></span>
-                    </button>
-                    <!-- /ko -->
-                    <!-- ko if: isApplied() -->
-                    <button class="action action-apply" type="submit"
-                            data-bind="'value': $t('Update'), click: applyPoints">
-                        <span><!-- ko i18n: 'Update'--><!-- /ko --></span>
-                    </button>
-                    <button class="action action-cancel" type="submit"
-                            data-bind="'value': $t('Cancel'), click: cancelPoints">
-                        <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
-                    </button>
-                    <!-- /ko -->
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <!-- ko ifnot: isApplied() -->
+                            <button class="action action-apply"
+                                    type="submit"
+                                    data-bind="'value': $t('Redeem'), click: applyPoints">
+                                <span><!-- ko i18n: 'Redeem'--><!-- /ko --></span>
+                            </button>
+                        <!-- /ko -->
+                        <!-- ko if: isApplied() -->
+                            <button class="action action-apply"
+                                    type="submit"
+                                    data-bind="'value': $t('Update'), click: applyPoints">
+                                <span><!-- ko i18n: 'Update'--><!-- /ko --></span>
+                            </button>
+                            <button class="action action-cancel"
+                                    type="submit"
+                                    data-bind="'value': $t('Cancel'), click: cancelPoints">
+                                <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
+                            </button>
+                        <!-- /ko -->
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
+<!-- /ko -->

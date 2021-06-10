@@ -62,6 +62,11 @@ class OneListItem extends Entity
     protected $IsADeal = null;
 
     /**
+     * @property string $ItemCategory
+     */
+    protected $ItemCategory = null;
+
+    /**
      * @property string $ItemDescription
      */
     protected $ItemDescription = null;
@@ -100,6 +105,11 @@ class OneListItem extends Entity
      * @property boolean $PriceModified
      */
     protected $PriceModified = null;
+
+    /**
+     * @property string $ProductGroup
+     */
+    protected $ProductGroup = null;
 
     /**
      * @property float $Quantity
@@ -317,6 +327,24 @@ class OneListItem extends Entity
     }
 
     /**
+     * @param string $ItemCategory
+     * @return $this
+     */
+    public function setItemCategory($ItemCategory)
+    {
+        $this->ItemCategory = $ItemCategory;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemCategory()
+    {
+        return $this->ItemCategory;
+    }
+
+    /**
      * @param string $ItemDescription
      * @return $this
      */
@@ -458,6 +486,24 @@ class OneListItem extends Entity
     public function getPriceModified()
     {
         return $this->PriceModified;
+    }
+
+    /**
+     * @param string $ProductGroup
+     * @return $this
+     */
+    public function setProductGroup($ProductGroup)
+    {
+        $this->ProductGroup = $ProductGroup;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductGroup()
+    {
+        return $this->ProductGroup;
     }
 
     /**

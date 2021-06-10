@@ -59,7 +59,10 @@ class ItemPlugin
                     if (!empty($uomQty)) {
                         $qty = $qty * $uomQty;
                     }
-                    list($parentProductSku, $childProductSku) = $this->itemHelper->getComparisonValues($result);
+                    list($parentProductSku, $childProductSku) = $this->itemHelper->getComparisonValues(
+                        $result->getProductId(),
+                        $result->getSku()
+                    );
 
                     $stock = $this->stockHelper->getItemStockInStore(
                         $storeId,

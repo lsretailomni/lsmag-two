@@ -12,8 +12,7 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Invoice;
 
 /**
- * Class Link
- * @package Ls\Customer\Block\Order
+ * Block being used for order detail links
  */
 class Link extends Current
 {
@@ -75,15 +74,6 @@ class Link extends Current
     public function getHref()
     {
         return $this->getUrl($this->getPath(), ['order_id' => $this->getOrder()->getId()]);
-    }
-
-    /**
-     * @param $documentId
-     * @return OrderInterface[]
-     */
-    public function getOrderByDocumentId($documentId)
-    {
-        return $this->orderHelper->getOrderByDocumentId($documentId);
     }
 
     /**

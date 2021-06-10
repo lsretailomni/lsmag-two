@@ -1527,4 +1527,58 @@ class ContactHelper extends AbstractHelper
         return $customerAddress->getData('is_default_billing') ||
             ($defaultBillingAddress && $defaultBillingAddress->getId() == $customerAddress->getId());
     }
+
+    /**
+     * Setting current card_id in customer session
+     *
+     * @param $cardId
+     */
+    public function setCardIdInCustomerSession($cardId)
+    {
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $cardId);
+    }
+
+    /**
+     * Setting current lsr_id in customer session
+     *
+     * @param $lsrId
+     */
+    public function setLsrIdInCustomerSession($lsrId)
+    {
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $lsrId);
+    }
+
+    /**
+     * Setting current security_token in customer session
+     *
+     * @param $token
+     */
+    public function setSecurityTokenInCustomerSession($token)
+    {
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
+    }
+
+    /**
+     * Getting current card_id in customer session
+     */
+    public function getCardIdFromCustomerSession()
+    {
+        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+    }
+
+    /**
+     * Getting current lsr_id in customer session
+     */
+    public function getLsrIdFromCustomerSession()
+    {
+        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+    }
+
+    /**
+     * Getting current security_token in customer session
+     */
+    public function getSecurityTokenFromCustomerSession()
+    {
+        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN);
+    }
 }

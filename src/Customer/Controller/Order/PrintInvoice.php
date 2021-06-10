@@ -2,9 +2,10 @@
 
 namespace Ls\Customer\Controller\Order;
 
-use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Client\Ecommerce\Entity\OrderGetByIdResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -17,8 +18,7 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class Index
- * @package Ls\Customer\Controller\Order
+ * Controller being used for customer order invoice print
  */
 class PrintInvoice extends Action
 {
@@ -79,36 +79,47 @@ class PrintInvoice extends Action
     }
 
     /**
+     * @inheritDoc
+     *
      * @return \Magento\Framework\App\ResponseInterface|ResultInterface|Page
+     * @throws InvalidEnumException
      */
     public function execute()
     {
         $response = null;
+
         if ($this->request->getParam('order_id')) {
             $orderId  = $this->request->getParam('order_id');
             $response = $this->setCurrentOrderInRegistry($orderId);
+
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
-            $this->setCurrentMagOrderInRegistry($orderId);
+            $this->setCurrentMagOrderInRegistry($response);
             $this->setInvoiceId();
             $this->registry->register('current_invoice_option', false);
         }
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
+
         return $resultPage;
     }
 
     /**
+     * Set currentOrder into registry
+     *
      * @param $orderId
-     * @return Order|OrderGetByIdResponse|ResponseInterface|null
+     * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
+     * @throws InvalidEnumException
      */
     public function setCurrentOrderInRegistry($orderId)
     {
         $response = $this->orderHelper->getOrderDetailsAgainstId($orderId);
+
         if ($response) {
             $this->setOrderInRegistry($response);
         }
+
         return $response;
     }
 
@@ -121,11 +132,13 @@ class PrintInvoice extends Action
     }
 
     /**
-     * @param $orderId
+     * Get respective magento order given Central sales entry object
+     *
+     * @param $salesEntry
      */
-    public function setCurrentMagOrderInRegistry($orderId)
+    public function setCurrentMagOrderInRegistry($salesEntry)
     {
-        $order = $this->orderHelper->getOrderByDocumentId($orderId);
+        $order = $this->orderHelper->getOrderByDocumentId($salesEntry);
         $this->registry->unregister('current_mag_order');
         $this->registry->register('current_mag_order', $order);
     }
@@ -140,5 +153,4 @@ class PrintInvoice extends Action
             $this->registry->register('current_invoice_id', $invoice->getIncrementId());
         }
     }
-
 }

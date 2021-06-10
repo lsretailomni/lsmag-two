@@ -21,8 +21,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
 
 /**
- * Class UpdatePoints
- * @package Ls\Omni\Controller\Ajax
+ * Update gift card controller
  */
 class UpdateGiftCard extends Action
 {
@@ -47,11 +46,6 @@ class UpdateGiftCard extends Action
     public $checkoutSession;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
-     */
-    public $customerSession;
-
-    /**
      * @var CartRepositoryInterface
      */
     public $cartRepository;
@@ -71,7 +65,6 @@ class UpdateGiftCard extends Action
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param GiftCardHelper $giftCardHelper
      * @param BasketHelper $basketHelper
      * @param Proxy $checkoutSession
@@ -83,7 +76,6 @@ class UpdateGiftCard extends Action
         Context $context,
         JsonFactory $resultJsonFactory,
         RawFactory $resultRawFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
         GiftCardHelper $giftCardHelper,
         BasketHelper $basketHelper,
         Proxy $checkoutSession,
@@ -97,13 +89,13 @@ class UpdateGiftCard extends Action
         $this->giftCardHelper    = $giftCardHelper;
         $this->basketHelper      = $basketHelper;
         $this->checkoutSession   = $checkoutSession;
-        $this->customerSession   = $customerSession;
         $this->cartRepository    = $cartRepository;
         $this->priceHelper       = $priceHelper;
         $this->data              = $data;
     }
 
     /**
+     * For updating gift card amount
      * @return ResponseInterface|Json|Raw|ResultInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -179,7 +171,7 @@ class UpdateGiftCard extends Action
                 'error'   => 'true',
                 'message' => __(
                     'The applied amount %3' .
-                    ' is greater than gift card balance amount (%1) or it is greater than order balance (Excl. Shipping Amount) (%2).',
+                    ' is greater than gift card balance amount (%1) or it is greater than order balance (%2).',
                     $this->priceHelper->currency($giftCardBalanceAmount, true, false),
                     $this->priceHelper->currency($orderBalance, true, false),
                     $this->priceHelper->currency($giftCardAmount, true, false)

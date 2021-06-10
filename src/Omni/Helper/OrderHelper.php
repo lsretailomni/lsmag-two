@@ -117,11 +117,14 @@ class OrderHelper extends AbstractHelper
             $storeId       = $oneListCalculateResponse->getStoreId();
             $cardId        = $oneListCalculateResponse->getCardId();
             $customerEmail = $order->getCustomerEmail();
+            $customerName  = $order->getBillingAddress()->getFirstname() . ' ' .
+                $order->getBillingAddress()->getLastname();
 
             if ($order->getShippingAddress()) {
-                $customerName = $order->getShippingAddress()->getFirstname() . ' ' . $order->getShippingAddress()->getLastname();
+                $shipToName = $order->getShippingAddress()->getFirstname() . ' ' .
+                    $order->getShippingAddress()->getLastname();
             } else {
-                $customerName = $order->getBillingAddress()->getFirstname() . ' ' . $order->getBillingAddress()->getLastname();
+                $shipToName = $customerName;
             }
 
             if ($this->customerSession->isLoggedIn()) {
@@ -145,7 +148,8 @@ class OrderHelper extends AbstractHelper
 
             //if the shipping address is empty, we use the contact address as shipping address.
             $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
-            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) : $contactAddress;
+            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) :
+                $contactAddress;
 
             $oneListCalculateResponse
                 ->setId($order->getIncrementId())
@@ -154,7 +158,7 @@ class OrderHelper extends AbstractHelper
                 ->setEmail($customerEmail)
                 ->setShipToEmail($customerEmail)
                 ->setContactName($customerName)
-                ->setShipToName($customerName)
+                ->setShipToName($shipToName)
                 ->setContactAddress($contactAddress)
                 ->setShipToAddress($shipToAddress)
                 ->setStoreId($storeId);
@@ -288,7 +292,6 @@ class OrderHelper extends AbstractHelper
 
         $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
 
-
         if (!in_array($paymentCode, $noOrderPayment)) {
             // @codingStandardsIgnoreStart
             $orderPayment = new Entity\OrderPayment();
@@ -354,6 +357,7 @@ class OrderHelper extends AbstractHelper
             //default values for all payment typoes.
             $orderPaymentGiftCard
                 ->setCurrencyFactor(1)
+                ->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
                 ->setAmount($order->getLsGiftCardAmountUsed())
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())
@@ -432,13 +436,17 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @param $documentId
-     * @return OrderInterface[]
+     * Get respective magento order given commerce service sales entry
+     *
+     * @param $salesEntry
+     * @return array|OrderInterface
      */
-    public function getOrderByDocumentId($documentId)
+    public function getOrderByDocumentId($salesEntry)
     {
         $order = [];
         try {
+            $documentId = $this->getDocumentIdGivenSalesEntry($salesEntry);
+
             if (!empty($documentId)) {
                 $customerId = $this->customerSession->getCustomerId();
                 $orderList  = $this->orderRepository->getList(
@@ -553,5 +561,24 @@ class OrderHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return $response;
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
+     * Get respective document_id given commerce service sales entry
+     *
+     * @param $salesEntry
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getDocumentIdGivenSalesEntry($salesEntry)
+    {
+        // This is to support backward compatibility of Omni
+        if (version_compare($this->lsr->getOmniVersion(), '4.6.0', '>')) {
+            return $salesEntry->getCustomerOrderNo();
+        }
+
+        return $salesEntry->getId();
     }
 }

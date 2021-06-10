@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.1] - 2021-06-10
+
+### Bugs/Fixes
+
+- Fixed issue in inventory lookup for UoM based products. [OMNI-5463](https://solutions.lsretail.com/jira/browse/OMNI-5463)
+
+
+
+## [1.11.0] - 2021-06-09
+
+### Added
+
+- Added support to allow gift card/loyalty points to be applied on whole order including the shipping amount. [OMNI-5454](https://solutions.lsretail.com/jira/browse/OMNI-5454)
+- Added support for replication of items/variants with special characters in it. Earlier we were not supporting replication of items with hyphen in it. [OMNI-5425](https://solutions.lsretail.com/jira/browse/OMNI-5425)
+- Added support to store tax informaiton in Magento once the basket is being calculated from LS Central. [OMNI-5429](https://solutions.lsretail.com/jira/browse/OMNI-5429)
+- Added support to sync order cancellation from admin panel for hospitality stores. [OMNI-5438](https://solutions.lsretail.com/jira/browse/OMNI-5438)
+- Added support to display order kitchen status in order detail page for hospitality store. [OMNI-5441](https://solutions.lsretail.com/jira/browse/OMNI-5441)
+- Added support to reset replication data for specific store. [OMNI-5446](https://solutions.lsretail.com/jira/browse/OMNI-5446)
+
+
+### Changed
+
+- Change UnitPrice to UnitPriceInclTax in Item price replication. [OMNI-5428](https://solutions.lsretail.com/jira/browse/OMNI-5428)
+
+### Bugs/Fixes
+
+- Fixed issue in syncing order from admin panel for hospitality stores. [OMNI-5434](https://solutions.lsretail.com/jira/browse/OMNI-5434)
+- Fixed issue in applying loyalty points on checkout due to session issue. [OMNI-5453](https://solutions.lsretail.com/jira/browse/OMNI-5453)
+- Fixed the layout of order items in order detail page for hospitality stores. [OMNI-5453](https://solutions.lsretail.com/jira/browse/OMNI-5453)
+- Fixed issue in replication of modifiers and recipes once we reset the data from admin. [OMNI-5453](https://solutions.lsretail.com/jira/browse/OMNI-5453)
+- Fixed issue of associative array while updating customer account through GraphQl. [OMNI-5425](https://solutions.lsretail.com/jira/browse/OMNI-5425)
+
+
+
 ## [1.10.0] - 2021-05-07
 
 ### Added

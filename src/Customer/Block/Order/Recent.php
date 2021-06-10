@@ -15,8 +15,7 @@ use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Api\Data\OrderInterface;
 
 /**
- * Class Recent
- * @package Ls\Customer\Block\Order
+ * Block being used for recent orders grid
  */
 class Recent extends Template
 {
@@ -162,12 +161,14 @@ class Recent extends Template
     }
 
     /**
-     * @param $documentId
-     * @return OrderInterface[]
+     * Get respective magento order given Central sales entry Object
+     *
+     * @param $salesEntry
+     * @return array|OrderInterface
      */
-    public function getOrderByDocumentId($documentId)
+    public function getOrderByDocumentId($salesEntry)
     {
-        return $this->orderHelper->getOrderByDocumentId($documentId);
+        return $this->orderHelper->getOrderByDocumentId($salesEntry);
     }
 
     /**

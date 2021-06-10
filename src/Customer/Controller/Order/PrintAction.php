@@ -2,9 +2,10 @@
 
 namespace Ls\Customer\Controller\Order;
 
-use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Client\Ecommerce\Entity\OrderGetByIdResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -17,8 +18,7 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class Index
- * @package Ls\Customer\Controller\Order
+ * Controller being used for customer order print action
  */
 class PrintAction extends Action
 {
@@ -79,14 +79,19 @@ class PrintAction extends Action
     }
 
     /**
+     * @inheritDoc
+     *
      * @return \Magento\Framework\App\ResponseInterface|ResultInterface|Page
+     * @throws InvalidEnumException
      */
     public function execute()
     {
         $response = null;
+
         if ($this->request->getParam('order_id')) {
             $orderId  = $this->request->getParam('order_id');
             $response = $this->setCurrentOrderInRegistry($orderId);
+
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
@@ -94,19 +99,25 @@ class PrintAction extends Action
         }
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
+
         return $resultPage;
     }
 
     /**
+     * Set currentOrder into registry
+     *
      * @param $orderId
-     * @return Order|OrderGetByIdResponse|ResponseInterface|null
+     * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
+     * @throws InvalidEnumException
      */
     public function setCurrentOrderInRegistry($orderId)
     {
         $response = $this->orderHelper->getOrderDetailsAgainstId($orderId);
+
         if ($response) {
             $this->setOrderInRegistry($response);
         }
+
         return $response;
     }
 
@@ -116,14 +127,5 @@ class PrintAction extends Action
     public function setOrderInRegistry($order)
     {
         $this->registry->register('current_order', $order);
-    }
-
-    /**
-     * @param $orderId
-     */
-    public function setCurrentMagOrderInRegistry($orderId)
-    {
-        $order = $this->orderHelper->getOrderByDocumentId($orderId);
-        $this->registry->register('current_mag_order', $order);
     }
 }
