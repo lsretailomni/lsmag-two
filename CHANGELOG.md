@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.1] - 2021-06-10
+
+### Bugs/Fixes
+
+- Fixed issue in inventory lookup for UoM based products. [OMNI-5463](https://solutions.lsretail.com/jira/browse/OMNI-5463)
+
+
+
 ## [1.11.0] - 2021-06-09
 
 ### Added
