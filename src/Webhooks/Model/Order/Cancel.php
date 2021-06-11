@@ -48,8 +48,8 @@ class Cancel
     ) {
         $this->orderManagement = $orderManagement;
         $this->itemRepository  = $itemRepository;
-        $this->logger          = $logger;
         $this->helper          = $helper;
+        $this->logger          = $logger;
     }
 
     /**
@@ -94,6 +94,8 @@ class Cancel
                 $this->helper->getOrderRepository()->save($magOrder);
             }
             if (!$magOrder->canCancel()) {
+
+                $magOrder->getPayment()->cancel();
                 $magOrder->setShippingCanceled($magOrder->getShippingAmount());
                 $magOrder->setBaseShippingCanceled($magOrder->getShippingAmount());
 
