@@ -8,7 +8,6 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\HospMode;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use Ls\Omni\Exception\InvalidEnumException;
 
@@ -51,9 +50,9 @@ class OneList extends Entity
     protected $ExternalType = null;
 
     /**
-     * @property HospMode $HospitalityMode
+     * @property boolean $IsHospitality
      */
-    protected $HospitalityMode = null;
+    protected $IsHospitality = null;
 
     /**
      * @property ListType $ListType
@@ -64,6 +63,11 @@ class OneList extends Entity
      * @property float $PointAmount
      */
     protected $PointAmount = null;
+
+    /**
+     * @property string $SalesType
+     */
+    protected $SalesType = null;
 
     /**
      * @property float $ShippingAmount
@@ -222,31 +226,21 @@ class OneList extends Entity
     }
 
     /**
-     * @param HospMode|string $HospitalityMode
+     * @param boolean $IsHospitality
      * @return $this
-     * @throws InvalidEnumException
      */
-    public function setHospitalityMode($HospitalityMode)
+    public function setIsHospitality($IsHospitality)
     {
-        if ( ! $HospitalityMode instanceof HospMode ) {
-            if ( HospMode::isValid( $HospitalityMode ) )
-                $HospitalityMode = new HospMode( $HospitalityMode );
-            elseif ( HospMode::isValidKey( $HospitalityMode ) )
-                $HospitalityMode = new HospMode( constant( "HospMode::$HospitalityMode" ) );
-            elseif ( ! $HospitalityMode instanceof HospMode )
-                throw new InvalidEnumException();
-        }
-        $this->HospitalityMode = $HospitalityMode->getValue();
-
+        $this->IsHospitality = $IsHospitality;
         return $this;
     }
 
     /**
-     * @return HospMode
+     * @return boolean
      */
-    public function getHospitalityMode()
+    public function getIsHospitality()
     {
-        return $this->HospitalityMode;
+        return $this->IsHospitality;
     }
 
     /**
@@ -293,6 +287,24 @@ class OneList extends Entity
     public function getPointAmount()
     {
         return $this->PointAmount;
+    }
+
+    /**
+     * @param string $SalesType
+     * @return $this
+     */
+    public function setSalesType($SalesType)
+    {
+        $this->SalesType = $SalesType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalesType()
+    {
+        return $this->SalesType;
     }
 
     /**

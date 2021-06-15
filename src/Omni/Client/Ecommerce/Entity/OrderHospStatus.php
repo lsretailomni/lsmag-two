@@ -8,6 +8,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\KOTStatus;
+use Ls\Omni\Exception\InvalidEnumException;
+
 class OrderHospStatus
 {
 
@@ -15,6 +18,11 @@ class OrderHospStatus
      * @property boolean $Confirmed
      */
     protected $Confirmed = null;
+
+    /**
+     * @property int $EstimatedTime
+     */
+    protected $EstimatedTime = null;
 
     /**
      * @property string $KotNo
@@ -32,7 +40,7 @@ class OrderHospStatus
     protected $ReceiptNo = null;
 
     /**
-     * @property string $Status
+     * @property KOTStatus $Status
      */
     protected $Status = null;
 
@@ -52,6 +60,24 @@ class OrderHospStatus
     public function getConfirmed()
     {
         return $this->Confirmed;
+    }
+
+    /**
+     * @param int $EstimatedTime
+     * @return $this
+     */
+    public function setEstimatedTime($EstimatedTime)
+    {
+        $this->EstimatedTime = $EstimatedTime;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEstimatedTime()
+    {
+        return $this->EstimatedTime;
     }
 
     /**
@@ -109,17 +135,27 @@ class OrderHospStatus
     }
 
     /**
-     * @param string $Status
+     * @param KOTStatus|string $Status
      * @return $this
+     * @throws InvalidEnumException
      */
     public function setStatus($Status)
     {
-        $this->Status = $Status;
+        if ( ! $Status instanceof KOTStatus ) {
+            if ( KOTStatus::isValid( $Status ) )
+                $Status = new KOTStatus( $Status );
+            elseif ( KOTStatus::isValidKey( $Status ) )
+                $Status = new KOTStatus( constant( "KOTStatus::$Status" ) );
+            elseif ( ! $Status instanceof KOTStatus )
+                throw new InvalidEnumException();
+        }
+        $this->Status = $Status->getValue();
+
         return $this;
     }
 
     /**
-     * @return string
+     * @return KOTStatus
      */
     public function getStatus()
     {

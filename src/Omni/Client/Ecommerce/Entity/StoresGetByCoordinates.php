@@ -29,11 +29,6 @@ class StoresGetByCoordinates implements RequestInterface
     protected $maxDistance = null;
 
     /**
-     * @property int $maxNumberOfStores
-     */
-    protected $maxNumberOfStores = null;
-
-    /**
      * @param double $latitude
      * @return $this
      */
@@ -85,24 +80,6 @@ class StoresGetByCoordinates implements RequestInterface
     public function getMaxDistance()
     {
         return $this->maxDistance;
-    }
-
-    /**
-     * @param int $maxNumberOfStores
-     * @return $this
-     */
-    public function setMaxNumberOfStores($maxNumberOfStores)
-    {
-        $this->maxNumberOfStores = $maxNumberOfStores;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMaxNumberOfStores()
-    {
-        return $this->maxNumberOfStores;
     }
 
 

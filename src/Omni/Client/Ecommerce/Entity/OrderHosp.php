@@ -106,6 +106,11 @@ class OrderHosp extends Entity
     protected $RestaurantNo = null;
 
     /**
+     * @property string $SalesType
+     */
+    protected $SalesType = null;
+
+    /**
      * @property string $StoreId
      */
     protected $StoreId = null;
@@ -467,6 +472,24 @@ class OrderHosp extends Entity
     public function getRestaurantNo()
     {
         return $this->RestaurantNo;
+    }
+
+    /**
+     * @param string $SalesType
+     * @return $this
+     */
+    public function setSalesType($SalesType)
+    {
+        $this->SalesType = $SalesType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalesType()
+    {
+        return $this->SalesType;
     }
 
     /**
