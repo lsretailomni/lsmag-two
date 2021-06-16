@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="ls_mag_webhooks_template_pickup" label="Click and Collect Order Pickup Email"
+              file="order_pickup.html" type="html" module="Ls_Webhooks" area="frontend"/>
+    <template id="ls_mag_webhooks_template_collected" label="Click and Collect Order Collected Email"
+              file="order_collected.html" type="html" module="Ls_Webhooks" area="frontend"/>
+    <template id="ls_mag_webhooks_template_cancel" label="Order Cancellation Email"
+              file="order_cancel.html" type="html" module="Ls_Webhooks" area="frontend"/>
+</config>

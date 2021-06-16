@@ -5,6 +5,7 @@ namespace Ls\Webhooks\Model;
 use Exception;
 use \Ls\Webhooks\Api\OrderStatusInterface;
 use \Ls\Webhooks\Logger\Logger;
+use \Ls\Webhooks\Model\Order\Status;
 
 /**
  * Class for handling OrderStatus
@@ -14,43 +15,44 @@ class OrderStatus implements OrderStatusInterface
     /**
      * @var Logger
      */
-    public $logger;
+    private $logger;
+
+    /**
+     * @var Status
+     */
+    private $status;
 
     /**
      * OrderStatus constructor.
      * @param Logger $logger
      */
     public function __construct(
+        Status $status,
         Logger $logger
     ) {
+        $this->status = $status;
         $this->logger = $logger;
     }
 
     /**
      * @inheritdoc
      */
-    public function set($documentId, $status)
+    public function set($orderId, $cardId, $headerStatus, $msgSubject, $msgDetail, $lines)
     {
         try {
             $data = [
-                'documentId' => $documentId,
-                'status'     => $status
+                'OrderId'      => $orderId,
+                'CardId'       => $cardId,
+                'HeaderStatus' => $headerStatus,
+                'MsgSubject'   => $msgSubject,
+                'MsgDetail'    => $msgDetail,
+                'Lines'        => $lines,
+
             ];
             $this->logger->info('OrderStatus', $data);
-            return [
-                "data" => [
-                    'success' => true,
-                    'message' => 'Status updated successfully.'
-                ]
-            ];
+            $this->status->process($data);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return [
-                "data" => [
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]
-            ];
         }
     }
 }

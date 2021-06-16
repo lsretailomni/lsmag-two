@@ -3,20 +3,24 @@
 namespace Ls\Webhooks\Helper;
 
 use Exception;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryLine;
 use \Ls\Webhooks\Logger\Logger;
+use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Helper\Data as OmniHelper;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\DB\TransactionFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
-use Magento\Sales\Model\Order\Invoice;
-use Magento\Sales\Model\Service\InvoiceService;
 
 /**
  * Helper class to handle webhooks function
  */
 class Data
 {
+
     /**
      * @var Logger
      */
@@ -28,117 +32,57 @@ class Data
     public $orderRepository;
 
     /**
-     * @var InvoiceService
-     */
-    public $invoiceService;
-
-    /**
-     * @var TransactionFactory
-     */
-    public $transactionFactory;
-
-    /**
-     * @var InvoiceSender
-     */
-    public $invoiceSender;
-
-    /**
      * @var SearchCriteriaBuilder
      */
     public $searchCriteriaBuilder;
 
     /**
+     * @var OrderHelper
+     */
+    public $orderHelper;
+
+    /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
+     * @var OmniHelper
+     */
+    public $omniHelper;
+
+    /**
+     * @var ItemHelper
+     */
+    public $itemHelper;
+
+    /**
      * Data constructor.
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
-     * @param InvoiceService $invoiceService
-     * @param TransactionFactory $transactionFactory
-     * @param InvoiceSender $invoiceSender
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param OrderHelper $orderHelper
+     * @param LSR $lsr
+     * @param OmniHelper $omniHelper
+     * @param ItemHelper $itemHelper
      */
     public function __construct(
         Logger $logger,
         OrderRepositoryInterface $orderRepository,
-        InvoiceService $invoiceService,
-        TransactionFactory $transactionFactory,
-        InvoiceSender $invoiceSender,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        OrderHelper $orderHelper,
+        LSR $lsr,
+        OmniHelper $omniHelper,
+        ItemHelper $itemHelper
     ) {
 
         $this->logger                = $logger;
         $this->orderRepository       = $orderRepository;
-        $this->invoiceService        = $invoiceService;
-        $this->transactionFactory    = $transactionFactory;
-        $this->invoiceSender         = $invoiceSender;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-    }
-
-    /**
-     * Generate invoice based on webhook call from Ls Central
-     * @param $data
-     * @return array[]
-     */
-    public function generateInvoice($data)
-    {
-        $documentId = $data['documentId'];
-        $amount     = $data['amount'];
-        $token      = $data['token'];
-        try {
-            $order           = $this->getOrderByDocumentId($documentId);
-            $validateOrder   = $this->validateOrder($order, $amount, $documentId, $token);
-            $validateInvoice = false;
-            $invoice         = null;
-            if ($validateOrder['data']['success']) {
-                $invoice         = $this->invoiceService->prepareInvoice($order);
-                $validateInvoice = $this->validateInvoice($invoice, $documentId);
-            }
-            if ($validateInvoice) {
-                $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
-                $invoice->register();
-                $invoice->getOrder()->setCustomerNoteNotify(false);
-                $invoice->getOrder()->setIsInProcess(true);
-                $invoice->setGrandTotal($amount);
-                $invoice->setBaseGrandTotal($amount);
-                $invoice->getOrder()->setTotalPaid($amount);
-                $invoice->getOrder()->setBaseTotalPaid($amount);
-                $order->addCommentToStatusHistory('INVOICED FROM LS CENTRAL THROUGH WEBHOOK', false);
-                $transactionSave = $this->transactionFactory->create()->addObject($invoice)->
-                addObject($invoice->getOrder());
-                $transactionSave->save();
-                try {
-                    $this->invoiceSender->send($invoice);
-                    return [
-                        "data" => [
-                            'success' => true,
-                            'message' => 'Order posted successfully and invoice sent to customer for document id #'
-                                . $documentId
-                        ]
-                    ];
-                } catch (Exception $e) {
-                    $this->logger->error('We can\'t send the invoice email right now for document id #' . $documentId);
-                    return [
-                        "data" => [
-                            'success' => false,
-                            'message' => "We can\'t send the invoice email right now for document id #" . $documentId
-                        ]
-                    ];
-                }
-            }
-
-            $hasInvoices = $this->hasInvoices($order, $documentId);
-            if ($hasInvoices['data']['success']) {
-                return $hasInvoices;
-            }
-            return $validateOrder;
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
-            return [
-                "data" => [
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]
-            ];
-        }
+        $this->orderHelper           = $orderHelper;
+        $this->lsr                   = $lsr;
+        $this->omniHelper            = $omniHelper;
+        $this->itemHelper            = $itemHelper;
     }
 
     /**
@@ -163,76 +107,170 @@ class Data
     }
 
     /**
-     * validate order
-     * @param $order
-     * @param $amount
-     * @param $documentId
-     * @param $token
-     * @return array[]
+     * Match sales entry line with line number
+     * @param $salesEntry
+     * @param $lines
+     * @return array
      */
-    public function validateOrder($order, $amount, $documentId, $token)
+    public function matchLineNumberWithSalesEntry($salesEntry, $lines)
     {
-        $validate = true;
-        $message  = '';
-        if (!$order->getId() || $order->getPayment()->getLastTransId() != $token) {
-            $message = "The order does not exist or token does not match for document id #" . $documentId;
-            $this->logger->error($message);
-            $validate = false;
+        $itemInfoArray = null;
+        $count         = 0;
+        if (!empty($salesEntry)) {
+            /** @var SalesEntryLine $salesEntryLine */
+            foreach ($salesEntry->getLines() as $salesEntryLine) {
+                if ($salesEntryLine->getItemId() != $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
+                    $key = array_search($salesEntryLine->getLineNumber(), array_column($lines, 'LineNo'));
+                    if ($key !== false) {
+                        $statusKey                                      = $lines[$key]['NewStatus'];
+                        $itemInfoArray[$statusKey][$count]['itemId']    = $salesEntryLine->getItemId();
+                        $itemInfoArray[$statusKey][$count]['qty']       = $salesEntryLine->getQuantity();
+                        $itemInfoArray[$statusKey][$count]['uom']       = $salesEntryLine->getUomId();
+                        $itemInfoArray[$statusKey][$count]['variantId'] = $salesEntryLine->getVariantId();
+                        $count++;
+                    }
+                }
+
+            }
         }
 
-        if ($order->getGrandTotal() < $amount) {
-            $message = "Invoice amount is greater than order amount for document id #" . $documentId;
-            $this->logger->error($message);
-            $validate = false;
-        }
-
-        return [
-            "data" => [
-                'success' => $validate,
-                'message' => $message
-            ]
-        ];
+        return $itemInfoArray;
     }
 
     /**
-     * check if invoice is already created at magento end
-     * @param $order
+     * Get sales entry
      * @param $documentId
-     * @return array[]
+     * @return SalesEntry|\Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse|\Ls\Omni\Client\ResponseInterface|null
+     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
-    public function hasInvoices($order, $documentId)
+    public function getSalesEntry($documentId)
     {
-        $validate = false;
-        $message  = '';
-        if ($order->hasInvoices()) {
-            $message = "Invoice already created for document id #" . $documentId;
-            $this->logger->info($message);
-            $validate = true;
-        }
-
-        return [
-            "data" => [
-                'success' => $validate,
-                'message' => $message
-            ]
-        ];
+        return $this->orderHelper->getOrderDetailsAgainstId($documentId);
     }
 
     /**
-     * validate invoice
-     * @param $invoice
-     * @param $documentId
-     * @return bool
+     * Getting store email
+     * @param $storeId
+     * @return string
      */
-    public function validateInvoice($invoice, $documentId)
+    public function getStoreEmail($storeId)
     {
-        $validate = true;
-        if (!$invoice || !$invoice->getTotalQty()) {
-            $this->logger->error(
-                'We can\'t save the invoice right now for document id #' . $documentId
+        return $this->lsr->getStoreConfig('trans_email/ident_general/email', $storeId);
+    }
+
+    /**
+     * Get configuration for pickup email
+     * @param $storeId
+     * @return string
+     */
+    public function isPickupNotifyEnabled($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_PICKUP, $storeId);
+    }
+
+    /**
+     * Get configuration for collected email
+     * @param $storeId
+     * @return string
+     */
+    public function isCollectedNotifyEnabled($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_COLLECTED, $storeId);
+    }
+
+    /**
+     * Get configuration for collected email
+     * @param $storeId
+     * @return string
+     */
+    public function isCancelNotifyEnabled($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_CANCEL, $storeId);
+    }
+
+    /**
+     * Get configuration for pickup email template
+     * @param $storeId
+     * @return string
+     */
+    public function getPickupTemplate($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP, $storeId);
+    }
+
+    /**
+     * Get configuration for collected email template
+     * @param $storeId
+     * @return string
+     */
+    public function getCollectedTemplate($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_EMAIL_TEMPLATE_COLLECTED, $storeId);
+    }
+
+    /**
+     * Get configuration for collected email template
+     * @param $storeId
+     * @return string
+     */
+    public function getCancelTemplate($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL, $storeId);
+    }
+
+    /**
+     * Get store name by store id
+     * @param $storeId
+     * @return mixed|string
+     */
+    public function getStoreName($storeId)
+    {
+        return $this->omniHelper->getStoreNameById($storeId);
+    }
+
+    /**
+     * Get items detail
+     * @param $order
+     * @param $itemsInfo
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getItems($order, $itemsInfo)
+    {
+        $items = [];
+        foreach ($order->getAllVisibleItems() as $orderItem) {
+            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                $orderItem->getProductId(),
+                $orderItem->getSku()
             );
-            $validate = false;
+            foreach ($itemsInfo as $skuValues) {
+                if ($itemId == $skuValues['itemId'] && $uom == $skuValues['uom'] &&
+                    $variantId == $skuValues['variantId']) {
+                    $items[$itemId]['item'] = $orderItem;
+                    $items[$itemId]['qty']  = $skuValues['qty'];
+                }
+            }
         }
-        return $validate;
+        return $items;
+    }
+
+    /**
+     * For returning order repository object
+     * @return OrderRepositoryInterface
+     */
+    public function getOrderRepository()
+    {
+        return $this->orderRepository;
+    }
+
+    /**
+     * Set status and return order
+     * @param $order
+     * @param $state
+     * @return void
+     */
+    public function updateOrderStatus($order, $state, $status)
+    {
+        $order->setState($state)->setStatus($status);
     }
 }

@@ -5,4 +5,8 @@
     <type name="Magento\Sales\Block\Adminhtml\Order\View">
         <plugin name="addMyButton" type="Ls\Omni\Plugin\Block\Adminhtml\Order\View"/>
     </type>
+    <!-- for cancelling the order from admin -->
+    <type name="Magento\Sales\Api\OrderManagementInterface">
+        <plugin name="ls_omni_around_cancel_order_operation" type="Ls\Omni\Plugin\Order\OrderManagement" sortOrder="1"/>
+    </type>
 </config>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ls_mag>
+            <webhooks>
+                <notification_pickup>1</notification_pickup>
+                <template_pickup>ls_mag_webhooks_template_pickup</template_pickup>
+                <notification_collected>1</notification_collected>
+                <template_collected>ls_mag_webhooks_template_collected</template_collected>
+                <notification_cancel>1</notification_cancel>
+                <template_cancel>ls_mag_webhooks_template_cancel</template_cancel>
+            </webhooks>
+        </ls_mag>
+    </default>
+</config>
