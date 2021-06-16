@@ -62,8 +62,8 @@ class Status
     public function process($data)
     {
         if (!empty($data)) {
-            $documentId = $data['orderId'];
-            $lines      = $data['lines'];
+            $documentId = $data['OrderId'];
+            $lines      = $data['Lines'];
             $magOrder   = $this->helper->getOrderByDocumentId($documentId);
             if (!empty($magOrder)) {
                 $salesEntry    = $this->helper->getSalesEntry($documentId);
@@ -117,7 +117,7 @@ class Status
         /** @var Order $magOrder */
         if ($magOrder->hasInvoices()) {
             $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder);
-            $this->creditMemo->refund($magOrder, $itemsInfo, $creditMemoData);
+            $this->creditMemo->refund($magOrder, $items, $creditMemoData);
         } elseif (count($magOrder->getAllVisibleItems()) == count($itemsInfo)) {
             $this->orderCancel->cancelOrder($magOrder->getEntityId());
             $sendEmail = true;

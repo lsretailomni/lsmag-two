@@ -41,12 +41,12 @@ class OrderStatus implements OrderStatusInterface
     {
         try {
             $data = [
-                'orderId'      => $orderId,
-                'cardId'       => $cardId,
-                'headerStatus' => $headerStatus,
-                'msgSubject'   => $msgSubject,
-                'msgDetail'    => $msgDetail,
-                'lines'        => $lines,
+                'OrderId'      => $orderId,
+                'CardId'       => $cardId,
+                'HeaderStatus' => $headerStatus,
+                'MsgSubject'   => $msgSubject,
+                'MsgDetail'    => $msgDetail,
+                'Lines'        => $lines,
 
             ];
             $this->logger->info('OrderStatus', $data);
