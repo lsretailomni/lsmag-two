@@ -391,6 +391,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_VARIANT_ID_ATTRIBUTE_CODE = 'lsr_variant_id';
     const LS_VARIANT_ID_ATTRIBUTE_LABEL = 'Variant ID';
 
+    const SALE_TYPE_POS = 'POS';
+
     /**
      * @var ScopeConfigInterface
      */

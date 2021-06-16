@@ -17,6 +17,11 @@ class ActivityRequest
     protected $ActivityTime = null;
 
     /**
+     * @property string $ContactAccount
+     */
+    protected $ContactAccount = null;
+
+    /**
      * @property string $ContactName
      */
     protected $ContactName = null;
@@ -92,6 +97,24 @@ class ActivityRequest
     public function getActivityTime()
     {
         return $this->ActivityTime;
+    }
+
+    /**
+     * @param string $ContactAccount
+     * @return $this
+     */
+    public function setContactAccount($ContactAccount)
+    {
+        $this->ContactAccount = $ContactAccount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactAccount()
+    {
+        return $this->ContactAccount;
     }
 
     /**

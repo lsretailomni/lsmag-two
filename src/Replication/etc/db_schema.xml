@@ -595,7 +595,7 @@
     <column xsi:type="int" name="LinkType" padding="11" nullable="true" comment="LinkType"/>
     <column xsi:type="decimal" name="NumbericValue" scale="4" precision="20" nullable="true" comment="NumbericValue"/>
     <column xsi:type="int" name="Sequence" padding="11" nullable="true" comment="Sequence"/>
-    <column xsi:type="varchar" name="Value" length="200" nullable="true" comment="Value"/>
+    <column xsi:type="text" name="Value" nullable="true" comment="Value"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
@@ -620,8 +620,8 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_LINKFIELD3">
       <column name="LinkField3"/>
     </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_VALUE">
-      <column name="Value"/>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SEQUENCE">
+      <column name="Sequence"/>
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SCOPE_ID">
       <column name="scope_id"/>

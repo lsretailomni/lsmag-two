@@ -15,9 +15,44 @@ class HierarchyLeaf extends HierarchyPoint
 {
 
     /**
+     * @property float $AddedAmount
+     */
+    protected $AddedAmount = null;
+
+    /**
+     * @property string $DealLineCode
+     */
+    protected $DealLineCode = null;
+
+    /**
+     * @property int $DealLineNo
+     */
+    protected $DealLineNo = null;
+
+    /**
+     * @property string $ItemNo
+     */
+    protected $ItemNo = null;
+
+    /**
      * @property string $ItemUOM
      */
     protected $ItemUOM = null;
+
+    /**
+     * @property int $LineNo
+     */
+    protected $LineNo = null;
+
+    /**
+     * @property int $MaxSelection
+     */
+    protected $MaxSelection = null;
+
+    /**
+     * @property int $MinSelection
+     */
+    protected $MinSelection = null;
 
     /**
      * @property int $SortOrder
@@ -28,6 +63,83 @@ class HierarchyLeaf extends HierarchyPoint
      * @property HierarchyLeafType $Type
      */
     protected $Type = null;
+
+    /**
+     * @property string $VariantCode
+     */
+    protected $VariantCode = null;
+
+    /**
+     * @param float $AddedAmount
+     * @return $this
+     */
+    public function setAddedAmount($AddedAmount)
+    {
+        $this->AddedAmount = $AddedAmount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAddedAmount()
+    {
+        return $this->AddedAmount;
+    }
+
+    /**
+     * @param string $DealLineCode
+     * @return $this
+     */
+    public function setDealLineCode($DealLineCode)
+    {
+        $this->DealLineCode = $DealLineCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDealLineCode()
+    {
+        return $this->DealLineCode;
+    }
+
+    /**
+     * @param int $DealLineNo
+     * @return $this
+     */
+    public function setDealLineNo($DealLineNo)
+    {
+        $this->DealLineNo = $DealLineNo;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDealLineNo()
+    {
+        return $this->DealLineNo;
+    }
+
+    /**
+     * @param string $ItemNo
+     * @return $this
+     */
+    public function setItemNo($ItemNo)
+    {
+        $this->ItemNo = $ItemNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemNo()
+    {
+        return $this->ItemNo;
+    }
 
     /**
      * @param string $ItemUOM
@@ -45,6 +157,60 @@ class HierarchyLeaf extends HierarchyPoint
     public function getItemUOM()
     {
         return $this->ItemUOM;
+    }
+
+    /**
+     * @param int $LineNo
+     * @return $this
+     */
+    public function setLineNo($LineNo)
+    {
+        $this->LineNo = $LineNo;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineNo()
+    {
+        return $this->LineNo;
+    }
+
+    /**
+     * @param int $MaxSelection
+     * @return $this
+     */
+    public function setMaxSelection($MaxSelection)
+    {
+        $this->MaxSelection = $MaxSelection;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxSelection()
+    {
+        return $this->MaxSelection;
+    }
+
+    /**
+     * @param int $MinSelection
+     * @return $this
+     */
+    public function setMinSelection($MinSelection)
+    {
+        $this->MinSelection = $MinSelection;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinSelection()
+    {
+        return $this->MinSelection;
     }
 
     /**
@@ -91,6 +257,24 @@ class HierarchyLeaf extends HierarchyPoint
     public function getType()
     {
         return $this->Type;
+    }
+
+    /**
+     * @param string $VariantCode
+     * @return $this
+     */
+    public function setVariantCode($VariantCode)
+    {
+        $this->VariantCode = $VariantCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantCode()
+    {
+        return $this->VariantCode;
     }
 
 

@@ -15,13 +15,13 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\HospOrderEstimatedTime as HospOrderEstimatedTimeRequest;
-use Ls\Omni\Client\Ecommerce\Entity\HospOrderEstimatedTimeResponse as HospOrderEstimatedTimeResponse;
+use Ls\Omni\Client\Ecommerce\Entity\CheckAvailability as CheckAvailabilityRequest;
+use Ls\Omni\Client\Ecommerce\Entity\CheckAvailabilityResponse as CheckAvailabilityResponse;
 
-class HospOrderEstimatedTime extends AbstractOperation
+class CheckAvailability extends AbstractOperation
 {
 
-    public const OPERATION_NAME = 'HOSP_ORDER_ESTIMATED_TIME';
+    public const OPERATION_NAME = 'CHECK_AVAILABILITY';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -31,12 +31,12 @@ class HospOrderEstimatedTime extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property HospOrderEstimatedTimeRequest $request
+     * @property CheckAvailabilityRequest $request
      */
     protected $request = null;
 
     /**
-     * @property HospOrderEstimatedTimeResponse $response
+     * @property CheckAvailabilityResponse $response
      */
     protected $response = null;
 
@@ -65,24 +65,24 @@ class HospOrderEstimatedTime extends AbstractOperation
     }
 
     /**
-     * @param HospOrderEstimatedTimeRequest $request
-     * @return ResponseInterface|HospOrderEstimatedTimeResponse
+     * @param CheckAvailabilityRequest $request
+     * @return ResponseInterface|CheckAvailabilityResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'HospOrderEstimatedTime' );
+        return $this->makeRequest( 'CheckAvailability' );
     }
 
     /**
-     * @return HospOrderEstimatedTimeRequest
+     * @return CheckAvailabilityRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new HospOrderEstimatedTimeRequest();
+            $this->request = new CheckAvailabilityRequest();
         }
         return $this->request;
     }
@@ -119,7 +119,7 @@ class HospOrderEstimatedTime extends AbstractOperation
     }
 
     /**
-     * @param HospOrderEstimatedTimeRequest $request
+     * @param CheckAvailabilityRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -129,7 +129,7 @@ class HospOrderEstimatedTime extends AbstractOperation
     }
 
     /**
-     * @return HospOrderEstimatedTimeRequest
+     * @return CheckAvailabilityRequest
      */
     public function getRequest()
     {
@@ -137,7 +137,7 @@ class HospOrderEstimatedTime extends AbstractOperation
     }
 
     /**
-     * @param HospOrderEstimatedTimeResponse $response
+     * @param CheckAvailabilityResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -147,7 +147,7 @@ class HospOrderEstimatedTime extends AbstractOperation
     }
 
     /**
-     * @return HospOrderEstimatedTimeResponse
+     * @return CheckAvailabilityResponse
      */
     public function getResponse()
     {
