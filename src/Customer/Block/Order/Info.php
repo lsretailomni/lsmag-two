@@ -2,11 +2,10 @@
 
 namespace Ls\Customer\Block\Order;
 
-use Exception;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Helper\OrderHelper;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Client\Ecommerce\Entity\Order;
+use Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -16,6 +15,7 @@ use Magento\Framework\Pricing\Helper\Data;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context as TemplateContext;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\OrderRepository;
 
 /**
@@ -245,31 +245,44 @@ class Info extends Template
     }
 
     /**
-     * Get url for printing order
+     * Formulating order printing url
      *
-     * @param \Magento\Sales\Model\Order $order
+     * @param SalesEntry $order
      * @return string
      */
-    public function getPrintUrl($order)
+    public function getPrintUrl(SalesEntry $order)
     {
-        if ($order->getId() != null) {
-            return $this->getUrl('customer/order/print', ['order_id' => $order->getId()]);
-        }
+        return $order ? $this->getUrl('customer/order/print', ['order_id' => $order->getId()]) : '';
     }
 
     /**
+     * Formulating reordering url
+     *
      * @param $order
      * @return string
      */
     public function getReorderUrl($order)
     {
-        try {
-            if ($order->getDocumentId() != null) {
-                return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
-            }
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
+        return $order ? $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]) : '';
+    }
+
+    /**
+     * Formulating order canceling url
+     *
+     * @param OrderInterface $magentoOrder
+     * @param SalesEntry $centralOrder
+     * @return string
+     */
+    public function getCancelUrl(OrderInterface $magentoOrder, SalesEntry $centralOrder)
+    {
+        return $magentoOrder && $centralOrder ? $this->getUrl(
+            'customer/order/cancel',
+            [
+                'magento_order_id' => $magentoOrder->getId(),
+                'central_order_id' => $centralOrder->getId(),
+                'id_type'          => $centralOrder->getIdType()
+            ]
+        ) : '';
     }
 
     /**

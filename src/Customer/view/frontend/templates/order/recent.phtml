@@ -85,9 +85,18 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                             <span><?= /* @escapeNotVerified */
                                                 __('Reorder') ?></span>
                                         </a>
-                                    <?php endif;
-                                endif;
-                                ?>
+                                    <?php endif; ?>
+                                    <?php if ($magOrder->canCancel()): ?>
+                                        <a href="#"
+                                           class="action order cancel"
+                                           data-post='<?= /* @escapeNotVerified */
+                                           $this->helper(PostHelper::class)->getPostData(
+                                               $block->getCancelUrl($magOrder, $_order)
+                                           ) ?>'>
+                                            <span><?= /* @escapeNotVerified */ __('Cancel') ?></span>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

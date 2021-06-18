@@ -144,20 +144,35 @@ class Recent extends Template
     }
 
     /**
-     * @param $order
+     * Formulating reordering url
+     *
+     * @param object $order
      * @return string
      */
     public function getReorderUrl($order)
     {
-        try {
-            if ($order->getDocumentId() != null) {
-                return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
-            } else {
-                return parent::getReorderUrl($order);
-            }
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
+        return $order->getDocumentId() ?
+            $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]) :
+            parent::getReorderUrl($order);
+    }
+
+    /**
+     * Formulating order canceling url
+     *
+     * @param OrderInterface $magentoOrder
+     * @param SalesEntry $centralOrder
+     * @return string
+     */
+    public function getCancelUrl(OrderInterface $magentoOrder, SalesEntry $centralOrder)
+    {
+        return $magentoOrder && $centralOrder ? $this->getUrl(
+            'customer/order/cancel',
+            [
+                'magento_order_id' => $magentoOrder->getId(),
+                'central_order_id' => $centralOrder->getId(),
+                'id_type'          => $centralOrder->getIdType()
+            ]
+        ) : '';
     }
 
     /**

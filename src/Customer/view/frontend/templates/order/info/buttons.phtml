@@ -1,32 +1,40 @@
 <?php
 // @codingStandardsIgnoreFile
-/** @var  $block \Ls\Customer\Block\Order\Info */
+/** @var  $block Info */
 
+use Ls\Customer\Block\Order\Info;
 use Magento\Framework\Data\Helper\PostHelper;
 
 ?>
+<?php
+$centralOrder   = $block->getOrder();
+$magOrder = $block->getMagOrder();
+?>
 <div class="actions">
-    <?php $_order = $block->getOrder();
-    $magOrder     = $block->getMagOrder();
-    if (!empty($magOrder)) {
-        ?>
-        <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getEntityId())) : ?>
-            <a href="#" data-post='<?php /* @escapeNotVerified */
-            echo
-            $this->helper(PostHelper::class)
-                ->getPostData($block->getReorderUrl($magOrder))
-            ?>' class="action order">
-                <span><?= /* @escapeNotVerified */
-                    __('Reorder') ?></span>
+    <?php if (!empty($magOrder)) : ?>
+        <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($magOrder->getId())) : ?>
+            <a href="#"
+               class="action order reorder"
+               data-post='<?= /* @escapeNotVerified */
+               $this->helper(PostHelper::class)->getPostData($block->getReorderUrl($magOrder))
+            ?>'>
+                <span><?= /* @escapeNotVerified */ __('Reorder') ?></span>
             </a>
         <?php endif ?>
-        <a class="action print"
-           href="<?= /* @escapeNotVerified */
-           $block->getPrintUrl($_order) ?>"
+        <?php if ($magOrder->canCancel()): ?>
+            <a href="#"
+               class="action order cancel"
+               data-post='<?= /* @escapeNotVerified */
+               $this->helper(PostHelper::class)->getPostData($block->getCancelUrl($magOrder, $centralOrder))
+               ?>'>
+                <span><?= /* @escapeNotVerified */ __('Cancel') ?></span>
+            </a>
+        <?php endif; ?>
+        <a class="action order print"
+           href="<?= /* @escapeNotVerified */ $block->getPrintUrl($centralOrder) ?>"
            onclick="this.target='_blank';">
-            <span><?= /* @escapeNotVerified */
-                __('Print Order') ?></span>
+            <span><?= /* @escapeNotVerified */ __('Print Order') ?></span>
         </a>
         <?= $block->getChildHtml() ?>
-    <?php } ?>
+    <?php endif; ?>
 </div>
