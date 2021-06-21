@@ -25,7 +25,13 @@ $magOrder = $block->getMagOrder();
             <a href="#"
                class="action order cancel"
                data-post='<?= /* @escapeNotVerified */
-               $this->helper(PostHelper::class)->getPostData($block->getCancelUrl($magOrder, $centralOrder))
+               $this->helper(PostHelper::class)->getPostData(
+                   $block->getCancelUrl($magOrder, $centralOrder),
+                   [
+                       'confirmation' => 1,
+                       'confirmationMessage' => __('Do you wish to cancel this order?')
+                   ]
+               )
                ?>'>
                 <span><?= /* @escapeNotVerified */ __('Cancel') ?></span>
             </a>

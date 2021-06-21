@@ -92,6 +92,7 @@ Action,Action
 Actions,Actions
 "View Order","View Order"
 Reorder,Reorder
+"Do you wish to cancel this order?","Do you wish to cancel this order?"
 Cancel,Cancel
 "Order #","Order #"
 "You have placed no orders.","You have placed no orders."

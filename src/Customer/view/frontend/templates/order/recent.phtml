@@ -92,7 +92,11 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                            class="action order cancel"
                                            data-post='<?= /* @escapeNotVerified */
                                            $this->helper(PostHelper::class)->getPostData(
-                                               $block->getCancelUrl($magOrder, $_order)
+                                               $block->getCancelUrl($magOrder, $_order),
+                                               [
+                                                   'confirmation' => 1,
+                                                   'confirmationMessage' => __('Do you wish to cancel this order?')
+                                               ]
                                            ) ?>'>
                                             <span><?= /* @escapeNotVerified */ __('Cancel') ?></span>
                                         </a>
