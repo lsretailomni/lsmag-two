@@ -197,6 +197,17 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
+     * Check if order cancellation on frontend is enabled or not
+     *
+     * @return bool|string
+     * @throws NoSuchEntityException
+     */
+    public function orderCancellationOnFrontendIsEnabled()
+    {
+        return $this->lsr->orderCancellationOnFrontendIsEnabled();
+    }
+
+    /**
      * Get respective magento order given Central sales entry Object
      *
      * @param $order

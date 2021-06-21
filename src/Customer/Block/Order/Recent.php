@@ -9,6 +9,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
@@ -173,6 +174,17 @@ class Recent extends Template
                 'id_type'          => $centralOrder->getIdType()
             ]
         ) : '';
+    }
+
+    /**
+     * Check if order cancellation on frontend is enabled or not
+     *
+     * @return bool|string
+     * @throws NoSuchEntityException
+     */
+    public function orderCancellationOnFrontendIsEnabled()
+    {
+        return $this->lsr->orderCancellationOnFrontendIsEnabled();
     }
 
     /**

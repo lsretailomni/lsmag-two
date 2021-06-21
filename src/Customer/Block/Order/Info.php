@@ -2,6 +2,7 @@
 
 namespace Ls\Customer\Block\Order;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -10,6 +11,7 @@ use Magento\Customer\Model\Session\Proxy;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Http\Context;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
 use Magento\Framework\Pricing\Helper\Data;
 use Magento\Framework\Registry;
@@ -72,6 +74,9 @@ class Info extends Template
      */
     public $httpContext;
 
+    /** @var LSR $lsr */
+    public $lsr;
+
     /**
      * Info constructor.
      * @param TemplateContext $context
@@ -83,6 +88,7 @@ class Info extends Template
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param Proxy $customerSession
      * @param Context $httpContext
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
@@ -95,6 +101,7 @@ class Info extends Template
         SearchCriteriaBuilder $searchCriteriaBuilder,
         Proxy $customerSession,
         Context $httpContext,
+        LSR $lsr,
         array $data = []
     ) {
         $this->coreRegistry          = $registry;
@@ -105,6 +112,7 @@ class Info extends Template
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerSession       = $customerSession;
         $this->httpContext           = $httpContext;
+        $this->lsr                   = $lsr;
         parent::__construct($context, $data);
     }
 
@@ -283,6 +291,17 @@ class Info extends Template
                 'id_type'          => $centralOrder->getIdType()
             ]
         ) : '';
+    }
+
+    /**
+     * Check if order cancellation on frontend is enabled or not
+     *
+     * @return bool|string
+     * @throws NoSuchEntityException
+     */
+    public function orderCancellationOnFrontendIsEnabled()
+    {
+        return $this->lsr->orderCancellationOnFrontendIsEnabled();
     }
 
     /**

@@ -85,7 +85,7 @@ class Cancel implements ActionInterface, HttpPostActionInterface
             try {
                 $order = $this->orderRepository->get($magentoOrderId);
                 $this->orderManagement->cancel($order->getEntityId());
-                $this->messageManager->addSuccessMessage(__('You canceled the order.'));
+                $this->messageManager->addSuccessMessage(__('You canceled the order'));
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
                 $this->logger->error($e->getMessage());

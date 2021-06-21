@@ -21,7 +21,7 @@ $magOrder = $block->getMagOrder();
                 <span><?= /* @escapeNotVerified */ __('Reorder') ?></span>
             </a>
         <?php endif ?>
-        <?php if ($magOrder->canCancel()): ?>
+        <?php if ($magOrder->canCancel() && $block->orderCancellationOnFrontendIsEnabled()): ?>
             <a href="#"
                class="action order cancel"
                data-post='<?= /* @escapeNotVerified */
