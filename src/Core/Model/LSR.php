@@ -11,6 +11,7 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory as ConfigCollectionFactory;
 use Magento\Config\Model\ResourceModel\Config\Data\Collection as ConfigDataCollection;
+
 /**
  * LSR Model
  *
@@ -377,6 +378,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const EMAIL_TEMPLATE_ID_FOR_OMNI_SERVICE_DOWN = 'ls_omni_disaster_recovery_email';
 
+    //Order status through webhook
+    const LS_STATE_CANCELED = 'CANCELED';
+    const LS_STATE_CLOSED = 'CLOSED';
+    const LS_STATE_COLLECTED = 'COLLECTED';
+    const LS_STATE_PICKED = 'PICKED'; //Ready to Pick
+    const LS_STATE_SHIPPED = 'SHIPPED';
+    const LS_STATE_SHORTAGE = 'SHORTAGE';
+
+    //Email notification through webhook
+    const LS_NOTIFICATION_PICKUP = 'ls_mag/webhooks/notification_pickup';
+    const LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP = 'ls_mag/webhooks/template_pickup';
+    const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_pickup';
+    const LS_NOTIFICATION_EMAIL_TEMPLATE_COLLECTED = 'ls_mag/webhooks/template_collected';
+    const LS_NOTIFICATION_CANCEL = 'ls_mag/webhooks/notification_cancel';
+    const LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL = 'ls_mag/webhooks/template_cancel';
+
     //Choose Industry
     const LS_INDUSTRY_VALUE_RETAIL = 'retail';
     const LS_INDUSTRY_VALUE_HOSPITALITY = 'hospitality';
@@ -421,7 +438,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public $validateBaseUrlResponse = null;
 
-    /** @var ConfigCollectionFactory  */
+    /** @var ConfigCollectionFactory */
     public $configDataCollectionFactory;
 
     /**
@@ -436,9 +453,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         Data $coreHelper,
         ConfigCollectionFactory $configDataCollectionFactory
     ) {
-        $this->scopeConfig  = $scopeConfig;
-        $this->storeManager = $storeManager;
-        $this->coreHelper   = $coreHelper;
+        $this->scopeConfig                 = $scopeConfig;
+        $this->storeManager                = $storeManager;
+        $this->coreHelper                  = $coreHelper;
         $this->configDataCollectionFactory = $configDataCollectionFactory;
     }
 

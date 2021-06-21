@@ -3,7 +3,7 @@
         x1:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="Ls_Webhooks">
         <sequence>
-            <module name="Ls_Core"/>
+            <module name="Ls_Omni"/>
         </sequence>
     </module>
 </config>

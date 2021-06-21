@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="ls_mag">
+            <tab>ls_retail</tab>
+            <resource>Ls_Core::config</resource>
+            <group id="webhooks" translate="label" type="text" sortOrder="90" showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Webhooks Configuration</label>
+                <field id="notification_pickup" translate="label" type="select" sortOrder="1" showInDefault="1"
+                       showInWebsite="1">
+                    <label>Order Pickup Notification For Click And Collect</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template_pickup" translate="label comment" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" canRestore="1">
+                    <label>Email Template For Order Pickup</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="notification_pickup">1</field>
+                    </depends>
+                </field>
+                <field id="notification_collected" translate="label" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1">
+                    <label>Order Collected Notification For Click And Collect</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template_collected" translate="label comment" type="select" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" canRestore="1">
+                    <label>Email template For Order Collected</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="notification_collected">1</field>
+                    </depends>
+                </field>
+                <field id="notification_cancel" translate="label" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1">
+                    <label>Order Cancelled Notification</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template_cancel" translate="label comment" type="select" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" canRestore="1">
+                    <label>Email template For Order Cancellation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="notification_cancel">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

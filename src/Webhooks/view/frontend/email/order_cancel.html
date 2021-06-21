@@ -1,0 +1,44 @@
+<!--@subject {{trans "Your %store_name product is cancelled" store_name=$store_name}} @-->
+<!--@vars {
+"var order.document_id":"LS Central Document ID",
+"var order_date.customer_name":"Customer Name",
+"var store_email":"Store Email",
+"var order_data.email_customer_note":"Email customer note",
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "%customer_name," customer_name=$order_data.customer_name}}</p>
+            <p>
+                {{trans "Below are the item(s) which are cancelled."}}
+            </p>
+            <p>
+                {{trans 'If you have questions about your order, you can email us at <a href="mailto:%store_email">%store_email</a>' store_email=$store_email |raw}}{{depend store_phone}} {{trans 'or call us at <a href="tel:%store_phone">%store_phone</a>' store_phone=$store_phone |raw}}{{/depend}}
+            </p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+            <h1>{{trans 'Your Order <span class="no-link">#%increment_id</span>' increment_id=$order.document_id |raw}}</h1>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            {{depend order_data.email_customer_note}}
+            <table class="message-info">
+                <tr>
+                    <td>
+                        {{var order_data.email_customer_note|escape|nl2br}}
+                    </td>
+                </tr>
+            </table>
+            {{/depend}}
+        </td>
+        {{layout handle="webhooks_email_order_items"  items=$items }}
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}
