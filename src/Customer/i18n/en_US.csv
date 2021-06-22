@@ -26,6 +26,7 @@ Save,Save
 "Loyalty Offers","Loyalty Offers"
 "Member Offers","Member Offers"
 "Point Offers","Point Offers"
+"You canceled the order","You canceled the order"
 "Enter a valid %1. Valid characters are A-Z a-z 0-9 . _ - @","Enter a valid %1. Valid characters are A-Z a-z 0-9 . _ - @"
 "Enter a valid %1. It can only have a min of length 3 and a max of length 5","Enter a valid %1. It can only have a min of length 3 and a max of length 5"
 "Something went wrong, Please try again later.","Something went wrong, Please try again later."
@@ -91,6 +92,8 @@ Action,Action
 Actions,Actions
 "View Order","View Order"
 Reorder,Reorder
+"Do you wish to cancel this order?","Do you wish to cancel this order?"
+Cancel,Cancel
 "Order #","Order #"
 "You have placed no orders.","You have placed no orders."
 "Order Information","Order Information"
@@ -104,6 +107,10 @@ SKU,SKU
 Price,Price
 Qty,Qty
 Subtotal,Subtotal
+Ordered,Ordered
+Shipped,Shipped
+Canceled,Canceled
+Refunded,Refunded
 "Items Ordered","Items Ordered"
 "<span class=""label"">Order Date:</span> %1","<span class=""label"">Order Date:</span> %1"
 "Recent Orders","Recent Orders"
@@ -134,6 +141,7 @@ Name,Name
 "Loyalty Page Image Height","Loyalty Page Image Height"
 "Expiry Date Format","Expiry Date Format"
 "Customer username prefix","Customer username prefix"
+"Allow Order Cancellation on Frontend","Allow Order Cancellation on Frontend"
 "Member Card No.","Member Card No."
 "Member Username","Member Username"
 Invoices,Invoices

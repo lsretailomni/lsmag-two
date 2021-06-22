@@ -18,7 +18,6 @@ use Magento\Sales\Model\OrderRepository;
  */
 class OrderManagement
 {
-
     /**
      * @var LSR
      */
@@ -51,10 +50,10 @@ class OrderManagement
         OrderRepository $orderRepository,
         BasketHelper $basketHelper
     ) {
-        $this->lsr = $lsr;
-        $this->orderHelper = $orderHelper;
+        $this->lsr             = $lsr;
+        $this->orderHelper     = $orderHelper;
         $this->orderRepository = $orderRepository;
-        $this->basketHelper = $basketHelper;
+        $this->basketHelper    = $basketHelper;
     }
 
     /**
@@ -72,28 +71,46 @@ class OrderManagement
     public function aroundCancel(OrderManagementInterface $subject, $proceed, $id)
     {
         /** @var Order $order */
-        $order = $this->orderRepository->get($id);
-        $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
+        $order      = $this->orderRepository->get($id);
         $documentId = $order->getDocumentId();
-        $websiteId = $order->getStore()->getWebsiteId();
+        $websiteId  = $order->getStore()->getWebsiteId();
+
         /**
          * Adding condition to only process if LSR is enabled.
          */
         if ($this->lsr->isLSR($websiteId, 'website')) {
             if (!empty($documentId)) {
+                $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
                 $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
                 $response = $this->orderHelper->orderCancel($documentId, $webStore);
 
                 if ($response == null) {
-                    $message = 'Order cannot be canceled from LS Central';
-                    $order->addCommentToStatusHistory($message);
-                    $this->orderRepository->save($order);
-                    throw new LocalizedException(__($message));
+                    $this->formulateException($order);
                 }
+                $this->basketHelper->unSetCorrectStoreId();
+
+                return $proceed($id);
             }
         }
-        $this->basketHelper->unSetCorrectStoreId();
+        $this->formulateException($order);
 
-        return $proceed($id);
+        return false;
+    }
+
+    /**
+     * Formulate Exception in case of error
+     *
+     * @param $order
+     * @throws AlreadyExistsException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function formulateException($order)
+    {
+        $message = __('Order could not be canceled from LS Central. Try again later.');
+        $order->addCommentToStatusHistory($message);
+        $this->orderRepository->save($order);
+        throw new LocalizedException(__($message));
     }
 }
