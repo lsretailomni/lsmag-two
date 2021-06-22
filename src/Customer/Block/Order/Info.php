@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Block\Order;
 
-use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -11,11 +11,13 @@ use Magento\Customer\Model\Session\Proxy;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Http\Context;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
 use Magento\Framework\Pricing\Helper\Data;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context as TemplateContext;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\OrderRepository;
 
 /**
@@ -72,6 +74,9 @@ class Info extends Template
      */
     public $httpContext;
 
+    /** @var LSR $lsr */
+    public $lsr;
+
     /**
      * Info constructor.
      * @param TemplateContext $context
@@ -83,6 +88,7 @@ class Info extends Template
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param Proxy $customerSession
      * @param Context $httpContext
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
@@ -95,6 +101,7 @@ class Info extends Template
         SearchCriteriaBuilder $searchCriteriaBuilder,
         Proxy $customerSession,
         Context $httpContext,
+        LSR $lsr,
         array $data = []
     ) {
         $this->coreRegistry          = $registry;
@@ -105,6 +112,7 @@ class Info extends Template
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerSession       = $customerSession;
         $this->httpContext           = $httpContext;
+        $this->lsr                   = $lsr;
         parent::__construct($context, $data);
     }
 
@@ -245,31 +253,55 @@ class Info extends Template
     }
 
     /**
-     * Get url for printing order
+     * Formulating order printing url
      *
-     * @param \Magento\Sales\Model\Order $order
+     * @param SalesEntry $order
      * @return string
      */
-    public function getPrintUrl($order)
+    public function getPrintUrl(SalesEntry $order)
     {
-        if ($order->getId() != null) {
-            return $this->getUrl('customer/order/print', ['order_id' => $order->getId()]);
-        }
+        return $order ? $this->getUrl('customer/order/print', ['order_id' => $order->getId()]) : '';
     }
 
     /**
+     * Formulating reordering url
+     *
      * @param $order
      * @return string
      */
     public function getReorderUrl($order)
     {
-        try {
-            if ($order->getDocumentId() != null) {
-                return $this->getUrl('sales/order/reorder', ['order_id' => $order->getEntityId()]);
-            }
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
+        return $order ? $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]) : '';
+    }
+
+    /**
+     * Formulating order canceling url
+     *
+     * @param OrderInterface $magentoOrder
+     * @param SalesEntry $centralOrder
+     * @return string
+     */
+    public function getCancelUrl(OrderInterface $magentoOrder, SalesEntry $centralOrder)
+    {
+        return $magentoOrder && $centralOrder ? $this->getUrl(
+            'customer/order/cancel',
+            [
+                'magento_order_id' => $magentoOrder->getId(),
+                'central_order_id' => $centralOrder->getId(),
+                'id_type'          => $centralOrder->getIdType()
+            ]
+        ) : '';
+    }
+
+    /**
+     * Check if order cancellation on frontend is enabled or not
+     *
+     * @return bool|string
+     * @throws NoSuchEntityException
+     */
+    public function orderCancellationOnFrontendIsEnabled()
+    {
+        return $this->lsr->orderCancellationOnFrontendIsEnabled();
     }
 
     /**
