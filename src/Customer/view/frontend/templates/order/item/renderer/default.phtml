@@ -15,7 +15,6 @@ list($discountInfo, $line) = $viewModel->getDiscountInfoGivenOrderItem($_item);
 
 if (!empty($discountInfo)) {
     $discountDescription = $discountInfo[0] ?? '';
-    $discountLabel = $discountInfo[1] ?? '';
 }
 ?>
 <tr id="order-item-row-<?= (int) $_item->getId() ?>">
@@ -62,11 +61,9 @@ if (!empty($discountInfo)) {
             <?= $viewModel->getFormattedPrice($line->getAmount()); ?>
             <div class="lsdiscountprice2">
                 <span><?= $viewModel->getFormattedPrice($line->getPrice() * $line->getQuantity()); ?></span></div>
-            <?php if ($discountLabel) : ?>
                 <div class="lsdiscountamount">
-                    <?= '(' . __($discountLabel) . ' ' . $viewModel->getFormattedPrice($line->getDiscountAmount()) . ')'; ?>
+                    <?= '(' . __('Save') . ' ' . $viewModel->getFormattedPrice($line->getDiscountAmount()) . ')'; ?>
                 </div>
-            <?php endif; ?>
         <?php else: ?>
             <?= $block->getItemPriceHtml() ?>
         <?php endif; ?>
