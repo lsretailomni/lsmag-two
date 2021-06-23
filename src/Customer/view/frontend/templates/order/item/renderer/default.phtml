@@ -62,9 +62,11 @@ if (!empty($discountInfo)) {
             <?= $viewModel->getFormattedPrice($line->getAmount()); ?>
             <div class="lsdiscountprice2">
                 <span><?= $viewModel->getFormattedPrice($line->getPrice() * $line->getQuantity()); ?></span></div>
-            <div class="lsdiscountamount">
-                <?= '(' . __($discountLabel) . ' ' . $viewModel->getFormattedPrice($line->getDiscountAmount()) . ')'; ?>
-            </div>
+            <?php if ($discountLabel) : ?>
+                <div class="lsdiscountamount">
+                    <?= '(' . __($discountLabel) . ' ' . $viewModel->getFormattedPrice($line->getDiscountAmount()) . ')'; ?>
+                </div>
+            <?php endif; ?>
         <?php else: ?>
             <?= $block->getItemPriceHtml() ?>
         <?php endif; ?>
