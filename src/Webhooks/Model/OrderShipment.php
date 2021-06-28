@@ -3,7 +3,7 @@
 namespace Ls\Webhooks\Model;
 
 use Exception;
-use Ls\Webhooks\Api\OrderShipmentInterface;
+use \Ls\Webhooks\Api\OrderShipmentInterface;
 use \Ls\Webhooks\Model\Order\Shipment;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Logger\Logger;
