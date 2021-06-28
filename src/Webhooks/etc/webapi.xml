@@ -14,4 +14,10 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
+    <route url="/V1/ordershipment" method="POST">
+        <service class="Ls\Webhooks\Api\OrderShipmentInterface" method="set"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
 </routes>

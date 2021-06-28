@@ -1,0 +1,21 @@
+"The credit memo's total must be positive.","The credit memo's total must be positive."
+"Shipment added from LS Central","Shipment added from LS Central"
+Items,Items
+Sku,Sku
+Qty,Qty
+"Your %store_name product is cancelled","Your %store_name product is cancelled"
+"%customer_name,","%customer_name,"
+"Below are the item(s) which are cancelled.","Below are the item(s) which are cancelled."
+"If you have questions about your order, you can email us at <a href=""mailto:%store_email"">%store_email</a>","If you have questions about your order, you can email us at <a href=""mailto:%store_email"">%store_email</a>"
+"Your Order <span class=""no-link"">#%increment_id</span>","Your Order <span class=""no-link"">#%increment_id</span>"
+"Your %store_name order is collected","Your %store_name order is collected"
+"You have collected your order from store %pickup_store_name.","You have collected your order from store %pickup_store_name."
+"Your %store_name order is ready for pickup","Your %store_name order is ready for pickup"
+"Your order is ready for pickup at store %pickup_store_name.","Your order is ready for pickup at store %pickup_store_name."
+"Webhooks Configuration","Webhooks Configuration"
+"Order Pickup Notification For Click And Collect","Order Pickup Notification For Click And Collect"
+"Email Template For Order Pickup","Email Template For Order Pickup"
+"Order Collected Notification For Click And Collect","Order Collected Notification For Click And Collect"
+"Email template For Order Collected","Email template For Order Collected"
+"Order Cancelled Notification","Order Cancelled Notification"
+"Email template For Order Cancellation","Email template For Order Cancellation"
