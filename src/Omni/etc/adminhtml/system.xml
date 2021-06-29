@@ -213,6 +213,12 @@
                     <label>Shipping Charge Item Id</label>
                     <comment>Please make sure this item Id is the same as set in LS Central. This value is used to calculate the flat shipment amount and is sent as a separate orderline with the order.</comment>
                 </field>
+                <field id="shipping_tax" translate="label comment" type="select" sortOrder="10"
+                       showInWebsite="1">
+                    <label>Shipping Tax</label>
+                    <comment>Shipping tax while placing the order</comment>
+                    <source_model>Ls\Replication\Block\Adminhtml\System\Config\Tax</source_model>
+                </field>
             </group>
         </section>
         <!-- For shipment Method -->

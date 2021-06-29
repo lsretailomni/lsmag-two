@@ -1013,6 +1013,39 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * For getting tax setup information
+     * @param string $websiteId
+     * @return array|Entity\ReplEcommTaxSetupResponse|Entity\ReplTaxSetupResponse|ResponseInterface|null
+     */
+    public function getTaxSetup($websiteId = '')
+    {
+        $response = [];
+
+        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+        $baseUrl  = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
+        // @codingStandardsIgnoreStart
+        $taxSetup = new Entity\ReplEcommTaxSetup();
+
+        $request   = new Entity\ReplRequest();
+        $operation = new Operation\ReplEcommTaxSetup($baseUrl);
+        // @codingStandardsIgnoreEnd
+
+        $request->setStoreId($webStore)
+            ->setBatchSize($this->getProductInventoryBatchSize())
+            ->setFullReplication(true)
+            ->setLastKey(0)
+            ->setMaxKey(0)
+            ->setTerminalId('');
+
+        try {
+            $response = $operation->execute($taxSetup->setReplRequest($request));
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getResult() : $response;
+    }
+
+    /**
      * @param $collection
      * @param SearchCriteriaInterface $criteria
      * @param $primaryTableColumnName
@@ -1934,7 +1967,7 @@ class ReplicationHelper extends AbstractHelper
             $superAttrList[]                           = [
                 'name' => $option['frontend_label'],
                 'code' => $option['attribute_code'],
-                'id' => $option['attribute_id']
+                'id'   => $option['attribute_id']
             ];
             $superAttrOptions[$option['attribute_id']] = $option['options'];
 
