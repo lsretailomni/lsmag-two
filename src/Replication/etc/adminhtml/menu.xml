@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Ls_Replication::ls_retail" title="LS Retail" module="Ls_Replication" sortOrder="30"
+        <add id="Ls_Replication::ls_retail" title="LS Retail" module="Ls_Replication" sortOrder="20"
              resource="Ls_Replication::ls_retail"/>
         <add id="Ls_Replication::ls_retail_conf_group" title="Configuration" translate="title" module="Ls_Replication"
              sortOrder="10" parent="Ls_Replication::ls_retail" resource="Ls_Replication::ls_retail_conf_group"/>

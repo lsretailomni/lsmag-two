@@ -185,7 +185,9 @@ Coupons,Coupons
 "Magento Order Number Prefix","Magento Order Number Prefix"
 "Maximum Length 5 Characters","Maximum Length 5 Characters"
 "Shipping Charge Item Id","Shipping Charge Item Id"
-"Please make sure this item Id is the same as set in LS Central. This value is used to calculate the flat shipment amount and is sent as a separate orderline with the order.","Please make sure this item Id is the same as set in LS Central. This value is used to calculate the flat shipment amount and is sent as a separate orderline with the order."
+"Please make sure this item Id is the same as set in LS Central. This value is used to
+                        calculate the flat shipment amount and is sent as a separate orderline with the order.","Please make sure this item Id is the same as set in LS Central. This value is used to
+                        calculate the flat shipment amount and is sent as a separate orderline with the order."
 "Shipping Tax","Shipping Tax"
 "Shipping tax while placing the order","Shipping tax while placing the order"
 "Click And Collect","Click And Collect"

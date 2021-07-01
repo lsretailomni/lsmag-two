@@ -7,6 +7,7 @@
 "Inventory Totals","Inventory Totals"
 "On Demand","On Demand"
 "Batch Job","Batch Job"
+DEFAULT,DEFAULT
 N/A,N/A
 No,No
 "Cron Listing","Cron Listing"
@@ -25,6 +26,7 @@ No,No
 "Data Translation Replication","Data Translation Replication"
 "Data Translation Lang Code Replication","Data Translation Lang Code Replication"
 "Discount Replication","Discount Replication"
+"Discount Validation Replication","Discount Validation Replication"
 "Extended Variant Value Replication","Extended Variant Value Replication"
 "Hierarchy Replication","Hierarchy Replication"
 "Hierarchy Leaf Replication","Hierarchy Leaf Replication"
@@ -39,6 +41,7 @@ No,No
 "Item Price Replication","Item Price Replication"
 "Product Group Replication","Product Group Replication"
 "Store Replication","Store Replication"
+"Tax Setup","Tax Setup"
 "Unit Of Measure","Unit Of Measure"
 Vendor,Vendor
 "Logs ","Logs "
@@ -171,6 +174,41 @@ Details,Details
 Type,Type
 "Unit Of Measure ID","Unit Of Measure ID"
 "Validation Period ID","Validation Period ID"
+"LS Central Id","LS Central Id"
+"End After Midnight","End After Midnight"
+"Start Date","Start Date"
+"Start Time","Start Time"
+"End Date","End Date"
+"End Time","End Time"
+"Time Within Bonds","Time Within Bonds"
+"Thursday End","Thursday End"
+"Thursday End After Midnight","Thursday End After Midnight"
+"Thursday Start","Thursday Start"
+"Thursday Within Bounds","Thursday Within Bounds"
+"Friday End","Friday End"
+"Friday End After Midnight","Friday End After Midnight"
+"Friday Start","Friday Start"
+"Friday Within Bounds","Friday Within Bounds"
+"Saturday End","Saturday End"
+"Saturday End After Midnight","Saturday End After Midnight"
+"Saturday Start","Saturday Start"
+"Saturday Within Bounds","Saturday Within Bounds"
+"Sunday End","Sunday End"
+"Sunday End After Midnight","Sunday End After Midnight"
+"Sunday Start","Sunday Start"
+"Sunday Within Bounds","Sunday Within Bounds"
+"Monday End","Monday End"
+"Monday End After Midnight","Monday End After Midnight"
+"Monday Start","Monday Start"
+"Monday Within Bounds","Monday Within Bounds"
+"Tuesday End","Tuesday End"
+"Tuesday End After Midnight","Tuesday End After Midnight"
+"Tuesday Start","Tuesday Start"
+"Tuesday Within Bounds","Tuesday Within Bounds"
+"Wednesday End","Wednesday End"
+"Wednesday End After Midnight","Wednesday End After Midnight"
+"Wednesday Start","Wednesday Start"
+"Wednesday Within Bounds","Wednesday Within Bounds"
 "Dimension Logical Order","Dimension Logical Order"
 Dimensions,Dimensions
 "Framework Code","Framework Code"
@@ -185,6 +223,7 @@ ParentNode,ParentNode
 "Presentation Order","Presentation Order"
 "Display Order","Display Order"
 "Key Value","Key Value"
+TableName,TableName
 "Variant Id","Variant Id"
 Quantity,Quantity
 "Store Id","Store Id"
@@ -203,6 +242,7 @@ Quantity,Quantity
 "Vendor Id","Vendor Id"
 "Vendor Item Id","Vendor Item Id"
 "Zero Price ValId","Zero Price ValId"
+"Price Inc.Tax","Price Inc.Tax"
 Order,Order
 "Quantity Per Unit Of Measure","Quantity Per Unit Of Measure"
 "Variant Dimension 1","Variant Dimension 1"
@@ -227,4 +267,7 @@ State,State
 Street,Street
 TaxGroup,TaxGroup
 "Zip Code","Zip Code"
+"Business Tax Group","Business Tax Group"
+"Product Tax Group","Product Tax Group"
+"Tax Percent","Tax Percent"
 "Unit Decimals","Unit Decimals"
