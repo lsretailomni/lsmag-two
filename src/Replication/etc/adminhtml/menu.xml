@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Ls_Replication::ls_retail" title="LS Retail" module="Ls_Replication" sortOrder="20"
+        <add id="Ls_Replication::ls_retail" title="LS Retail" module="Ls_Replication" sortOrder="30"
              resource="Ls_Replication::ls_retail"/>
         <add id="Ls_Replication::ls_retail_conf_group" title="Configuration" translate="title" module="Ls_Replication"
              sortOrder="10" parent="Ls_Replication::ls_retail" resource="Ls_Replication::ls_retail_conf_group"/>
@@ -98,5 +98,9 @@
              sortOrder="9"
              resource="Ls_Replication::item_vendor_grid" parent="Ls_Replication::replication_grid_group_second"
              action="ls_repl/grids/itemvendor"/>
+        <add id="Ls_Replication::tax_setup" title="Tax Setup" translate="title" module="Ls_Replication"
+             sortOrder="10"
+             resource="Ls_Replication::tax_setup" parent="Ls_Replication::replication_grid_group_second"
+             action="ls_repl/grids/taxsetup"/>
     </menu>
 </config>

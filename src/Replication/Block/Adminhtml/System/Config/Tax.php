@@ -54,19 +54,15 @@ class Tax implements OptionSourceInterface
             'label' => __('DEFAULT') . ' - ' . "0.00" . '%'
         ];
         if ($this->lsr->isLSR($websiteId, 'website')) {
-            $taxData = $this->replicationHelper->getTaxSetup($websiteId);
-            if ($taxData) {
-                $data = $taxData->getTaxSetups()->getReplTaxSetup();
-                foreach ($data as $item) {
-                    if ($item instanceof ReplTaxSetup && $item->getIsDeleted() == false && $item->getTaxPercent() > 0 &&
-                        !empty($item->getProductTaxGroup()) && !empty($item->getBusinessTaxGroup())) {
-                        $taxPercent = number_format($item->getTaxPercent(), 2);
-                        $taxCodes[] = [
-                            'value' => $taxPercent,
-                            'label' => __($item->getBusinessTaxGroup()) . ' - ' . __($item->getProductTaxGroup()) .
-                                ' - ' . $taxPercent . '%'
-                        ];
-                    }
+            $taxDataArray = $this->replicationHelper->getTaxSetup();
+            if (!empty($taxDataArray)) {
+                foreach ($taxDataArray as $taxData) {
+                    $taxPercent = number_format($taxData->getTaxPercent(), 2);
+                    $taxCodes[] = [
+                        'value' => $taxPercent,
+                        'label' => __($taxData->getBusinessTaxGroup()) . ' - ' . __($taxData->getProductTaxGroup()) .
+                            ' - ' . $taxPercent . '%'
+                    ];
                 }
             }
         }
