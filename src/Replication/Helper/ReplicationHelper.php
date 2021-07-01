@@ -1021,7 +1021,6 @@ class ReplicationHelper extends AbstractHelper
 
     /**
      * For getting tax setup information
-     * @param string $websiteId
      * @return array|Entity\ReplEcommTaxSetupResponse|Entity\ReplTaxSetupResponse|ResponseInterface|null
      */
     public function getTaxSetup()
