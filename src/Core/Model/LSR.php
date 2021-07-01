@@ -153,8 +153,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //execute time for sync vendor attributes value
     const LAST_EXECUTE_REPL_SYNC_VENDOR_ATTRIBUTES = 'ls_mag/replication/last_execute_repl_vendor_attributes_sync';
 
-    const SC_SUCCESS_TAX_SETUP = 'ls_mag/replication/success_tax_setup';
-
     //check for Data Translation
     const SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO = 'ls_mag/replication/success_repl_data_translation_to_magento';
     const SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_data_translation_to_magento';
