@@ -8,7 +8,7 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class TaxSetup for taxt setup cron job */
+ * Class for tax setup cron job */
 class TaxSetup extends Action
 {
     /**
