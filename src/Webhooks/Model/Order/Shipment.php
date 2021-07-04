@@ -94,7 +94,7 @@ class Shipment
                 foreach ($shipmentItems as $orderItemId => $qty) {
                     $itemCreation = $this->shipmentItemCreationInterface;
                     $itemCreation->setOrderItemId($orderItemId)->setQty($qty);
-                    $shipItem[] = $itemCreation;
+                    $shipItem[] = clone $itemCreation;
 
                 }
                 $shipmentItem = $this->shipmentInterface->setItems($shipItem);
@@ -103,8 +103,9 @@ class Shipment
                 if (count($shipmentItem->getItems()) > 0) {
                     $items = $shipmentItem->getItems();
                 }
+
+                $shipmentTracks = $this->trackFactory->create();
                 if (!empty($trackingId)) {
-                    $shipmentTracks = $this->trackFactory->create();
                     $shipmentTracks->setCarrierCode($data['shipmentProvider']);
                     $shipmentTracks->setTitle($data['service']);
                     $shipmentTracks->setDescription($data['service']);
@@ -125,9 +126,30 @@ class Shipment
             }
         }
 
-        return $this->helper->outputMessage(
+        $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder);
+
+        return $this->helper->outputShipmentMessage(
             true,
-            'Shipment created successfully for document id ' . $orderId
+            $shipmentDetails
         );
+    }
+
+    /** Get shipment details
+     * @param $magOrder
+     * @return array
+     */
+    public function getShipmentDetailsByOrder($magOrder)
+    {
+        $trackDataArray  = [];
+        $trackData       = [];
+        $shipmentDetails = $magOrder->getTracksCollection();
+        foreach ($shipmentDetails->getItems() as $trackInfo) {
+            $trackData ['Tracking Id']       = $trackInfo->getTrackNumber();
+            $trackData ['Shipment Provider'] = $trackInfo->getCarrierCode();
+            $trackData ['Service']           = $trackInfo->getTitle();
+            $trackDataArray []               = $trackData;
+        }
+
+        return $trackDataArray;
     }
 }

@@ -289,4 +289,20 @@ class Data
             ]
         ];
     }
+
+    /**
+     * Return message to Ls Central
+     * @param $status
+     * @param $message
+     * @return array[]
+     */
+    public function outputShipmentMessage($status, $message)
+    {
+        return [
+            "data" => [
+                'success'      => $status,
+                'trackingInfo' => $message
+            ]
+        ];
+    }
 }
