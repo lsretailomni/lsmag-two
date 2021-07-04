@@ -1021,7 +1021,7 @@ class ReplicationHelper extends AbstractHelper
 
     /**
      * For getting tax setup information
-     * @return array|Entity\ReplEcommTaxSetupResponse|Entity\ReplTaxSetupResponse|ResponseInterface|null
+     * @return array|null
      */
     public function getTaxSetup()
     {
@@ -1029,7 +1029,7 @@ class ReplicationHelper extends AbstractHelper
         $filters = [
             ['field' => 'ProductTaxGroup', 'value' => '', 'condition_type' => 'neq'],
             ['field' => 'BusinessTaxGroup', 'value' => '', 'condition_type' => 'neq'],
-            ['field' => 'TaxPercent', 'value' => 0, 'condition_type' => 'gt'],
+            ['field' => 'TaxPercent', 'value' => 0, 'condition_type' => 'gt']
         ];
 
         $searchCriteria = $this->buildCriteriaForDirect($filters, -1, true);

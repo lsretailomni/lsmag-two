@@ -143,7 +143,7 @@ abstract class AbstractReplicationTask
             "scope_id"
         ],
         "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_tax_setup"                  => ["BusinessTaxGroup", "ProductTaxGroup", "TaxPercent"]
+        "ls_mag/replication/repl_tax_setup"                  => ["BusinessTaxGroup", "ProductTaxGroup", "scope_id"]
     ];
 
     /** @var Logger */

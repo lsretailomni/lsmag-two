@@ -194,18 +194,19 @@ class OrderHelper extends AbstractHelper
      */
     public function updateShippingAmount($orderLines, $order)
     {
-        $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID);
-        $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX);
+        $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
+        $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
         $shippingAmount     = $order->getShippingAmount();
         if ($shippingAmount > 0) {
-            $taxAmount = $shippingAmount * $shipmentTaxPercent / 100;
-            $ShippingAmountIncTax  = $shippingAmount + $taxAmount;
+            $netPriceFormula = 1 + $shipmentTaxPercent / 100;
+            $netPrice        = $this->loyaltyHelper->formatValue($shippingAmount / $netPriceFormula);
+            $taxAmount       = $this->loyaltyHelper->formatValue($shippingAmount - $netPrice);
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
-            $shipmentOrderLine->setPrice($ShippingAmountIncTax)
-                ->setAmount($ShippingAmountIncTax)
-                ->setNetPrice($shippingAmount)
-                ->setNetAmount($shippingAmount)
+            $shipmentOrderLine->setPrice($shippingAmount)
+                ->setAmount($shippingAmount)
+                ->setNetPrice($netPrice)
+                ->setNetAmount($netPrice)
                 ->setTaxAmount($taxAmount)
                 ->setItemId($shipmentFeeId)
                 ->setLineType(Entity\Enum\LineType::ITEM)

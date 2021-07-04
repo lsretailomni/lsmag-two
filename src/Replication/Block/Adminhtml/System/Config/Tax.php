@@ -46,24 +46,20 @@ class Tax implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        // Get current Website Id.
-        $websiteId  = (int)$this->request->getParam('website');
-        $taxCodes   = [];
-        $taxCodes[] = [
+        $taxCodes     = [];
+        $taxCodes[]   = [
             'value' => 0.00,
             'label' => __('DEFAULT') . ' - ' . "0.00" . '%'
         ];
-        if ($this->lsr->isLSR($websiteId, 'website')) {
-            $taxDataArray = $this->replicationHelper->getTaxSetup();
-            if (!empty($taxDataArray)) {
-                foreach ($taxDataArray as $taxData) {
-                    $taxPercent = number_format($taxData->getTaxPercent(), 2);
-                    $taxCodes[] = [
-                        'value' => $taxPercent,
-                        'label' => __($taxData->getBusinessTaxGroup()) . ' - ' . __($taxData->getProductTaxGroup()) .
-                            ' - ' . $taxPercent . '%'
-                    ];
-                }
+        $taxDataArray = $this->replicationHelper->getTaxSetup();
+        if (!empty($taxDataArray)) {
+            foreach ($taxDataArray as $taxData) {
+                $taxPercent = number_format($taxData->getTaxPercent(), 2);
+                $taxCodes[] = [
+                    'value' => $taxPercent,
+                    'label' => __($taxData->getBusinessTaxGroup()) . ' - ' . __($taxData->getProductTaxGroup()) .
+                        ' - ' . $taxPercent . '%'
+                ];
             }
         }
         return $taxCodes;

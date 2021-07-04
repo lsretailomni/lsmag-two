@@ -8,7 +8,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
-use Magento\Directory\Model\Currency;
 
 /**
  * LoyaltyPointsManagement class to handle Loyalty points
@@ -28,24 +27,16 @@ class LoyaltyPointsManagement
     public $loyaltyHelper;
 
     /**
-     * @var Currency
-     */
-    public $currencyHelper;
-
-    /**
      * LoyaltyPointsManagement constructor.
      * @param CartRepositoryInterface $quoteRepository
      * @param LoyaltyHelper $loyaltyHelper
-     * @param Currency $currencyHelper
      */
     public function __construct(
         CartRepositoryInterface $quoteRepository,
-        LoyaltyHelper $loyaltyHelper,
-        Currency $currencyHelper
+        LoyaltyHelper $loyaltyHelper
     ) {
         $this->quoteRepository = $quoteRepository;
         $this->loyaltyHelper   = $loyaltyHelper;
-        $this->currencyHelper  = $currencyHelper;
     }
 
     /**
@@ -68,8 +59,8 @@ class LoyaltyPointsManagement
         return $lsPointsArray = [
             'points_earn'     => $lsPointsEarn,
             'points_spent'    => $lsPointsSpent,
-            'points_discount' => $this->formatValue($pointDiscount),
-            'point_rate'      => $this->formatValue($pointRate)
+            'points_discount' => $this->loyaltyHelper->formatValue($pointDiscount),
+            'point_rate'      => $this->loyaltyHelper->formatValue($pointRate)
         ];
     }
 
@@ -142,15 +133,5 @@ class LoyaltyPointsManagement
             $this->quoteRepository->save($cartQuote);
         }
         return true;
-    }
-
-    /**
-     * Format value to two decimal places
-     * @param $value
-     * @return float|string
-     */
-    public function formatValue($value)
-    {
-        return $this->currencyHelper->format($value, ['display' => \Zend_Currency::NO_SYMBOL], false);
     }
 }

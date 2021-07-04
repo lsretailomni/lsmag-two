@@ -203,7 +203,7 @@
                    showInWebsite="1"
                    showInStore="1">
                 <label>Order Management</label>
-                <field id="prefix" translate="label comment" type="text" sortOrder="2" showInDefault="1"
+                <field id="prefix" translate="label comment" type="text" sortOrder="1" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
                     <label>Magento Order Number Prefix</label>
@@ -211,14 +211,14 @@
                     <validate>validate-length maximum-length-5 validate-no-html-tags validate-sequence-number</validate>
                 </field>
                 <field id="shipping_item_id" translate="label comment" type="text" sortOrder="2"
-                       showInWebsite="1">
+                       showInDefault="1" showInWebsite="1" >
                     <label>Shipping Charge Item Id</label>
                     <comment>Please make sure this item Id is the same as set in LS Central. This value is used to
                         calculate the flat shipment amount and is sent as a separate orderline with the order.
                     </comment>
                 </field>
-                <field id="shipping_tax" translate="label comment" type="select" sortOrder="10"
-                       showInWebsite="1">
+                <field id="shipping_tax" translate="label comment" type="select" sortOrder="3"
+                       showInDefault="1" showInWebsite="1">
                     <label>Shipping Tax</label>
                     <comment>Shipping tax while placing the order</comment>
                     <source_model>Ls\Replication\Block\Adminhtml\System\Config\Tax</source_model>
