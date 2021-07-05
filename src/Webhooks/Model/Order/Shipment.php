@@ -153,10 +153,10 @@ class Shipment
         $trackData       = [];
         $shipmentDetails = $magOrder->getTracksCollection();
         foreach ($shipmentDetails->getItems() as $trackInfo) {
-            $trackData ['Tracking Id']       = $trackInfo->getTrackNumber();
-            $trackData ['Tracking URL']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
-            $trackData ['Shipment Provider'] = $trackInfo->getCarrierCode();
-            $trackData ['Service']           = $trackInfo->getTitle();
+            $trackData ['trackingId']       = $trackInfo->getTrackNumber();
+            $trackData ['trackingUrl']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
+            $trackData ['shipmentProvider'] = $trackInfo->getCarrierCode();
+            $trackData ['service']           = $trackInfo->getTitle();
             $trackDataArray []               = $trackData;
         }
 
