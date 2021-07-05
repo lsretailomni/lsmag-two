@@ -87,14 +87,6 @@ class View extends Template
     /**
      * @return mixed
      */
-    public function getShipmentId()
-    {
-        return $this->coreRegistry->registry('current_shipment_id');
-    }
-
-    /**
-     * @return mixed
-     */
     public function getShipmentOption()
     {
         return $this->coreRegistry->registry('current_shipment_option');

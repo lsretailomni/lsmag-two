@@ -87,10 +87,11 @@ class Shipment
      */
     public function createShipment($data)
     {
-        $orderId       = $data['orderId'];
-        $trackingId    = $data['trackingId'];
-        $magOrder      = $this->helper->getOrderByDocumentId($orderId);
-        $shipmentItems = [];
+        $orderId         = $data['orderId'];
+        $trackingId      = $data['trackingId'];
+        $magOrder        = $this->helper->getOrderByDocumentId($orderId);
+        $shipmentItems   = [];
+        $shipmentDetails = [];
         if ($magOrder->canShip()) {
             $items    = $this->helper->getItems($magOrder, $data['lines']);
             $shipItem = [];
@@ -106,12 +107,8 @@ class Shipment
                     $shipItem[] = clone $itemCreation;
 
                 }
-                $shipmentItem = $this->shipmentInterface->setItems($shipItem);
 
-                $items = [];
-                if (count($shipmentItem->getItems()) > 0) {
-                    $items = $shipmentItem->getItems();
-                }
+                $shipmentItemArray = $this->shipmentInterface->setItems($shipItem)->getItems();
 
                 $shipmentTracks = $this->trackFactory->create();
                 if (!empty($trackingId)) {
@@ -124,18 +121,18 @@ class Shipment
                 $this->shipmentCommentCreation->setComment(__("Shipment added from LS Central"))
                     ->setIsVisibleOnFront(0);
 
-                $this->shipOrderInterface->execute(
+                $shipmentId = $this->shipOrderInterface->execute(
                     $magOrder->getEntityId(),
-                    $items,
+                    $shipmentItemArray,
                     true,
-                    $appendComment = false,
+                    false,
                     $this->shipmentCommentCreation,
                     [$shipmentTracks]
                 );
+
+                $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId);
             }
         }
-
-        $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder);
 
         return $this->helper->outputShipmentMessage(
             true,
@@ -145,19 +142,22 @@ class Shipment
 
     /** Get shipment details
      * @param $magOrder
+     * @param $shipmentId
      * @return array
      */
-    public function getShipmentDetailsByOrder($magOrder)
+    public function getShipmentDetailsByOrder($magOrder, $shipmentId)
     {
         $trackDataArray  = [];
         $trackData       = [];
         $shipmentDetails = $magOrder->getTracksCollection();
         foreach ($shipmentDetails->getItems() as $trackInfo) {
-            $trackData ['trackingId']       = $trackInfo->getTrackNumber();
-            $trackData ['trackingUrl']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
-            $trackData ['shipmentProvider'] = $trackInfo->getCarrierCode();
-            $trackData ['service']           = $trackInfo->getTitle();
-            $trackDataArray []               = $trackData;
+            if ($shipmentId == $trackInfo->getParentId()) {
+                $trackData ['trackingId']       = $trackInfo->getTrackNumber();
+                $trackData ['trackingUrl']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
+                $trackData ['shipmentProvider'] = $trackInfo->getCarrierCode();
+                $trackData ['service']          = $trackInfo->getTitle();
+            }
+            $trackDataArray [] = $trackData;
         }
 
         return $trackDataArray;

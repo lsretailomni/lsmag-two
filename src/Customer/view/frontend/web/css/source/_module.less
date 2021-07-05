@@ -418,3 +418,16 @@
         max-width: 100%;
     }
 }
+
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__s) {
+    .order-details-items {
+        .order-title {
+            .action {
+                &.track {
+                    margin-top: 0px;
+                }
+            }
+        }
+    }
+}
