@@ -4,6 +4,7 @@ namespace Ls\Webhooks\Model;
 
 use \Ls\Webhooks\Api\OrderPaymentInterface;
 use \Ls\Webhooks\Model\Order\Payment;
+use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Logger\Logger;
 
 /**
@@ -23,16 +24,24 @@ class OrderPayment implements OrderPaymentInterface
     public $payment;
 
     /**
+     * @var Data
+     */
+    public $helper;
+
+    /**
      * OrderPayment constructor.
      * @param Logger $logger
      * @param Payment $payment
+     * @param Data $helper
      */
     public function __construct(
         Logger $logger,
-        Payment $payment
+        Payment $payment,
+        Data $helper
     ) {
         $this->logger  = $logger;
         $this->payment = $payment;
+        $this->helper  = $helper;
     }
 
     /**
@@ -51,20 +60,10 @@ class OrderPayment implements OrderPaymentInterface
             if (!empty($documentId)) {
                 return $this->payment->generateInvoice($data);
             }
-            return [
-                "data" => [
-                    'success' => false,
-                    'message' => 'Document Id is not valid.'
-                ]
-            ];
+            return $this->helper->outputMessage(false, 'Document Id is not valid.');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-            return [
-                "data" => [
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]
-            ];
+            return $this->helper->outputMessage(false, $e->getMessage());
         }
     }
 }

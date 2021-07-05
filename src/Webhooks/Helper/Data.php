@@ -122,11 +122,11 @@ class Data
                 if ($salesEntryLine->getItemId() != $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                     $key = array_search($salesEntryLine->getLineNumber(), array_column($lines, 'LineNo'));
                     if ($key !== false) {
-                        $statusKey                                      = $lines[$key]['NewStatus'];
-                        $itemInfoArray[$statusKey][$count]['itemId']    = $salesEntryLine->getItemId();
-                        $itemInfoArray[$statusKey][$count]['qty']       = $salesEntryLine->getQuantity();
-                        $itemInfoArray[$statusKey][$count]['uom']       = $salesEntryLine->getUomId();
-                        $itemInfoArray[$statusKey][$count]['variantId'] = $salesEntryLine->getVariantId();
+                        $statusKey                                            = $lines[$key]['NewStatus'];
+                        $itemInfoArray[$statusKey][$count]['ItemId']          = $salesEntryLine->getItemId();
+                        $itemInfoArray[$statusKey][$count]['Quantity']        = $salesEntryLine->getQuantity();
+                        $itemInfoArray[$statusKey][$count]['UnitOfMeasureId'] = $salesEntryLine->getUomId();
+                        $itemInfoArray[$statusKey][$count]['VariantId']       = $salesEntryLine->getVariantId();
                         $count++;
                     }
                 }
@@ -244,10 +244,10 @@ class Data
                 $orderItem->getSku()
             );
             foreach ($itemsInfo as $skuValues) {
-                if ($itemId == $skuValues['itemId'] && $uom == $skuValues['uom'] &&
-                    $variantId == $skuValues['variantId']) {
+                if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
+                    $variantId == $skuValues['VariantId']) {
                     $items[$itemId]['item'] = $orderItem;
-                    $items[$itemId]['qty']  = $skuValues['qty'];
+                    $items[$itemId]['qty']  = $skuValues['Quantity'];
                 }
             }
         }
@@ -272,5 +272,37 @@ class Data
     public function updateOrderStatus($order, $state, $status)
     {
         $order->setState($state)->setStatus($status);
+    }
+
+    /**
+     * Return message to Ls Central
+     * @param $status
+     * @param $message
+     * @return array[]
+     */
+    public function outputMessage($status, $message)
+    {
+        return [
+            "data" => [
+                'success' => $status,
+                'message' => __($message)
+            ]
+        ];
+    }
+
+    /**
+     * Return message to Ls Central
+     * @param $status
+     * @param $message
+     * @return array[]
+     */
+    public function outputShipmentMessage($status, $message)
+    {
+        return [
+            "data" => [
+                'success'      => $status,
+                'trackingInfo' => $message
+            ]
+        ];
     }
 }
