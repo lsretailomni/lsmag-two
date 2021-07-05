@@ -188,10 +188,7 @@ class Info extends Template
     public function getShippingDescription()
     {
         $status = $this->getOrder()->getClickAndCollectOrder();
-        $type   = $this->getOrder()->getIdType();
-        if ($type !== DocumentIdType::ORDER) {
-            return '';
-        }
+
         if ($status) {
             return __('Click and Collect');
         } else {
