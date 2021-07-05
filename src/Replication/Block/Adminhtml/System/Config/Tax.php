@@ -61,7 +61,10 @@ class Tax implements OptionSourceInterface
                         ' - ' . $taxPercent . '%'
                 ];
             }
+
+            return array_unique($taxCodes, SORT_REGULAR);
         }
+
         return $taxCodes;
     }
 }
