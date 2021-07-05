@@ -8,6 +8,7 @@ use Magento\Sales\Api\Data\ShipmentItemCreationInterface;
 use Magento\Sales\Api\Data\ShipmentInterface;
 use Magento\Sales\Model\Order\Shipment\TrackFactory;
 use Magento\Sales\Api\Data\ShipmentCommentCreationInterface;
+use Magento\Shipping\Helper\Data as ShippingHelper;
 use \Ls\Webhooks\Helper\Data;
 
 /**
@@ -46,6 +47,11 @@ class Shipment
     private $shipmentCommentCreation;
 
     /**
+     * @var ShippingHelper
+     */
+    private $shippingHelper;
+
+    /**
      * Shipment constructor.
      * @param ShipOrderInterface $shipOrderInterface
      * @param ShipmentItemCreationInterface $shipmentItemCreationInterface
@@ -53,6 +59,7 @@ class Shipment
      * @param TrackFactory $trackFactory
      * @param ShipmentCommentCreationInterface $shipmentCommentCreation
      * @param Data $helper
+     * @param ShippingHelper $shippingHelper
      */
     public function __construct(
         ShipOrderInterface $shipOrderInterface,
@@ -60,7 +67,8 @@ class Shipment
         ShipmentInterface $shipmentInterface,
         TrackFactory $trackFactory,
         ShipmentCommentCreationInterface $shipmentCommentCreation,
-        Data $helper
+        Data $helper,
+        ShippingHelper $shippingHelper
     ) {
         $this->shipOrderInterface            = $shipOrderInterface;
         $this->shipmentItemCreationInterface = $shipmentItemCreationInterface;
@@ -68,6 +76,7 @@ class Shipment
         $this->trackFactory                  = $trackFactory;
         $this->shipmentCommentCreation       = $shipmentCommentCreation;
         $this->helper                        = $helper;
+        $this->shippingHelper                = $shippingHelper;
     }
 
     /**
@@ -145,6 +154,7 @@ class Shipment
         $shipmentDetails = $magOrder->getTracksCollection();
         foreach ($shipmentDetails->getItems() as $trackInfo) {
             $trackData ['Tracking Id']       = $trackInfo->getTrackNumber();
+            $trackData ['Tracking URL']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
             $trackData ['Shipment Provider'] = $trackInfo->getCarrierCode();
             $trackData ['Service']           = $trackInfo->getTitle();
             $trackDataArray []               = $trackData;
