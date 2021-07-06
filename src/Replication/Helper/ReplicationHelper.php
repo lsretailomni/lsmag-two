@@ -13,6 +13,7 @@ use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLea
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
+use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -208,6 +209,9 @@ class ReplicationHelper extends AbstractHelper
     /** @var ReplItemUnitOfMeasure */
     public $replItemUomRepository;
 
+    /** @var ReplTaxSetupRepositoryInterface */
+    public $replTaxSetupRepository;
+
     /**
      * ReplicationHelper constructor.
      * @param Context $context
@@ -245,6 +249,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ConfigurableProTypeModel $configurableProTypeModel
      * @param ReplExtendedVariantValueRepository $extendedVariantValueRepository
      * @param ReplItemUnitOfMeasure $replItemUomRepository
+     * @param ReplTaxSetupRepositoryInterface $replTaxSetupRepository
      */
     public function __construct(
         Context $context,
@@ -281,7 +286,8 @@ class ReplicationHelper extends AbstractHelper
         ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
         ConfigurableProTypeModel $configurableProTypeModel,
         ReplExtendedVariantValueRepository $extendedVariantValueRepository,
-        ReplItemUnitOfMeasure $replItemUomRepository
+        ReplItemUnitOfMeasure $replItemUomRepository,
+        ReplTaxSetupRepositoryInterface $replTaxSetupRepository
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -317,6 +323,7 @@ class ReplicationHelper extends AbstractHelper
         $this->configurableProTypeModel                  = $configurableProTypeModel;
         $this->extendedVariantValueRepository            = $extendedVariantValueRepository;
         $this->replItemUomRepository                     = $replItemUomRepository;
+        $this->replTaxSetupRepository                    = $replTaxSetupRepository;
         parent::__construct(
             $context
         );
@@ -1010,6 +1017,31 @@ class ReplicationHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
+    }
+
+    /**
+     * For getting tax setup information
+     * @return array|null
+     */
+    public function getTaxSetup()
+    {
+        $items   = null;
+        $filters = [
+            ['field' => 'ProductTaxGroup', 'value' => '', 'condition_type' => 'neq'],
+            ['field' => 'BusinessTaxGroup', 'value' => '', 'condition_type' => 'neq'],
+            ['field' => 'TaxPercent', 'value' => 0, 'condition_type' => 'gt']
+        ];
+
+        $searchCriteria = $this->buildCriteriaForDirect($filters, -1, true);
+
+        try {
+            $items = $this->replTaxSetupRepository->getList($searchCriteria)->getItems();
+
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+
+        return $items;
     }
 
     /**
@@ -1908,7 +1940,6 @@ class ReplicationHelper extends AbstractHelper
         return $configurableAttributes;
     }
 
-
     /**
      * Getting associated simple product id of the configurable product
      *
@@ -1934,7 +1965,7 @@ class ReplicationHelper extends AbstractHelper
             $superAttrList[]                           = [
                 'name' => $option['frontend_label'],
                 'code' => $option['attribute_code'],
-                'id' => $option['attribute_id']
+                'id'   => $option['attribute_id']
             ];
             $superAttrOptions[$option['attribute_id']] = $option['options'];
 

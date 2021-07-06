@@ -194,14 +194,20 @@ class OrderHelper extends AbstractHelper
      */
     public function updateShippingAmount($orderLines, $order)
     {
-        $shipmentFeeId = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID);
-        if ($order->getShippingAmount() > 0) {
+        $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
+        $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
+        $shippingAmount     = $order->getShippingAmount();
+        if ($shippingAmount > 0) {
+            $netPriceFormula = 1 + $shipmentTaxPercent / 100;
+            $netPrice        = $this->loyaltyHelper->formatValue($shippingAmount / $netPriceFormula);
+            $taxAmount       = $this->loyaltyHelper->formatValue($shippingAmount - $netPrice);
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
-            $shipmentOrderLine->setPrice($order->getShippingAmount())
-                ->setNetPrice($order->getBaseShippingAmount())
-                ->setNetAmount($order->getBaseShippingAmount())
-                ->setAmount($order->getBaseShippingAmount())
+            $shipmentOrderLine->setPrice($shippingAmount)
+                ->setAmount($shippingAmount)
+                ->setNetPrice($netPrice)
+                ->setNetAmount($netPrice)
+                ->setTaxAmount($taxAmount)
                 ->setItemId($shipmentFeeId)
                 ->setLineType(Entity\Enum\LineType::ITEM)
                 ->setQuantity(1)
