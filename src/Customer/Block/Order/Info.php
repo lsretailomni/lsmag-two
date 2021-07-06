@@ -183,20 +183,24 @@ class Info extends Template
     }
 
     /**
+     * Get selected shipment method for the order, use the one in magento if available
+     *
      * @return Phrase|string
      */
     public function getShippingDescription()
     {
+        $magentoOrder = $this->getMagOrder();
         $status = $this->getOrder()->getClickAndCollectOrder();
-        $type   = $this->getOrder()->getIdType();
-        if ($type !== DocumentIdType::ORDER) {
-            return '';
+
+        if ($magentoOrder) {
+            return $magentoOrder->getShippingDescription();
         }
+
         if ($status) {
             return __('Click and Collect');
-        } else {
-            return __('Flat Rate - Fixed');
         }
+
+        return '';
     }
 
     /**

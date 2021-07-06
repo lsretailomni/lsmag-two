@@ -78,6 +78,8 @@ class ItemRenderer implements ArgumentInterface
                 if ($this->itemHelper->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                     $discount    = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
                     break;
+                } else {
+                    $line = null;
                 }
             }
         }
