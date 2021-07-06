@@ -8,6 +8,8 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use Magento\Directory\Model\Currency;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
@@ -21,8 +23,7 @@ use Magento\Framework\Filesystem;
 use Magento\Quote\Model\Quote\Item;
 
 /**
- * Class LoyaltyHelper
- * @package Ls\Omni\Helper
+ * Class LoyaltyHelper for handling loyalty points
  */
 class LoyaltyHelper extends AbstractHelper
 {
@@ -65,6 +66,11 @@ class LoyaltyHelper extends AbstractHelper
     public $lsr;
 
     /**
+     * @var Currency
+     */
+    public $currencyHelper;
+
+    /**
      * LoyaltyHelper constructor.
      * @param Context $context
      * @param CustomerFactory $customerFactory
@@ -74,6 +80,7 @@ class LoyaltyHelper extends AbstractHelper
      * @param GroupRepositoryInterface $groupRepository
      * @param CacheHelper $cacheHelper
      * @param LSR $lsr
+     * @param Currency $currencyHelper
      */
     public function __construct(
         Context $context,
@@ -83,7 +90,8 @@ class LoyaltyHelper extends AbstractHelper
         Filesystem $Filesystem,
         GroupRepositoryInterface $groupRepository,
         CacheHelper $cacheHelper,
-        LSR $lsr
+        LSR $lsr,
+        Currency $currencyHelper
     ) {
         $this->customerFactory = $customerFactory;
         $this->customerSession = $customerSession;
@@ -92,6 +100,7 @@ class LoyaltyHelper extends AbstractHelper
         $this->groupRepository = $groupRepository;
         $this->cacheHelper     = $cacheHelper;
         $this->lsr             = $lsr;
+        $this->currencyHelper  = $currencyHelper;
         parent::__construct(
             $context
         );
@@ -455,15 +464,15 @@ class LoyaltyHelper extends AbstractHelper
                     if (!empty($parentSku)) {
                         if (!empty($parentItem)) {
                             $itemsSku[] = $parentSku;
-                            if(!empty($item->getProduct()->getData('uom'))) {
-                                $itemsSku[] = $parentSku.'-'.$item->getProduct()->getData('uom');
+                            if (!empty($item->getProduct()->getData('uom'))) {
+                                $itemsSku[] = $parentSku . '-' . $item->getProduct()->getData('uom');
                             }
                         }
                     }
                 } else {
                     $itemsSku[] = $item->getSku();
-                    if(!empty($item->getProduct()->getData('uom'))) {
-                        $itemsSku[] = $item->getSku().'-'.$item->getProduct()->getData('uom');
+                    if (!empty($item->getProduct()->getData('uom'))) {
+                        $itemsSku[] = $item->getSku() . '-' . $item->getProduct()->getData('uom');
                     }
                 }
             }
@@ -485,8 +494,8 @@ class LoyaltyHelper extends AbstractHelper
                                 $coupons[] = $each;
                             }
                             if ($publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::PRODUCT_GROUP
-                                || $publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::ITEM_CATEGORY
-                                || $publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::SPECIAL_GROUP
+                                || $publishedOfferLine->getLineType() == OfferDiscountLineType::ITEM_CATEGORY
+                                || $publishedOfferLine->getLineType() == OfferDiscountLineType::SPECIAL_GROUP
                             ) {
                                 $coupons[] = $each;
                             }
@@ -592,5 +601,15 @@ class LoyaltyHelper extends AbstractHelper
             LSR::SC_LOYALTY_SHOW_COUPON_OFFERS,
             $this->lsr->getCurrentStoreId()
         );
+    }
+
+    /**
+     * Format value to two decimal places
+     * @param $value
+     * @return float|string
+     */
+    public function formatValue($value)
+    {
+        return $this->currencyHelper->format($value, ['display' => \Zend_Currency::NO_SYMBOL], false);
     }
 }
