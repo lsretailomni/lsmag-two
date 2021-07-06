@@ -94,14 +94,6 @@ class Items extends AbstractItems
     }
 
     /**
-     * @return mixed
-     */
-    public function getShipmentOption()
-    {
-        return $this->coreRegistry->registry('current_shipment_option');
-    }
-
-    /**
      * @param $item
      * @return string
      */

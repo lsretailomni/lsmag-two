@@ -20,29 +20,25 @@ use Magento\Sales\Model\Order\Item;
                 __('Product Name') ?></th>
             <th class="col sku"><?= /* @escapeNotVerified */
                 __('SKU') ?></th>
-            <?php if (!$block->getShipmentOption()) { ?>
-                <th class="col price"><?= /* @escapeNotVerified */
-                    __('Price') ?></th>
-            <?php } ?>
+            <th class="col price"><?= /* @escapeNotVerified */
+                __('Price') ?></th>
             <th class="col qty"><?= /* @escapeNotVerified */
                 __('Qty') ?></th>
-            <?php if (!$block->getShipmentOption()) { ?>
-                <th class="col subtotal"><?= /* @escapeNotVerified */
-                    __('Subtotal') ?></th>
-            <?php } ?>
+            <th class="col subtotal"><?= /* @escapeNotVerified */
+                __('Subtotal') ?></th>
         </tr>
         </thead>
         <?php $items = $block->getItems(); ?>
         <?php $giftMessage = '' ?>
         <?php foreach ($items as $item):
-            if ($item instanceof Item  && $item->getParentItem()) :
+            if ($item instanceof Item && $item->getParentItem()) :
                 continue;
             endif;
             ?>
             <tbody>
             <?php if ($item instanceof Item): ?>
-                <?= $block->getItemHtml($item)?>
-            <?php else:?>
+                <?= $block->getItemHtml($item) ?>
+            <?php else: ?>
                 <?= $block->getCustomItemRenderer($item); ?>
             <?php endif; ?>
             </tbody>
