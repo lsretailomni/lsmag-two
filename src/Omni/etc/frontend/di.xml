@@ -31,9 +31,6 @@
             </argument>
         </arguments>
     </type>
-    <type name="Magento\Quote\Model\Quote\Item">
-        <plugin name="changeAllowProductsBehaviour" type="Ls\Omni\Plugin\Magento\Quote\Model\Quote\ItemPlugin" sortOrder="1" />
-    </type>
     <type name="Magento\ConfigurableProduct\Model\ConfigurableAttributeData">
         <plugin name="ls_omni_attribute_option_data_sort" type="Ls\Omni\Plugin\Product\AttributeData" sortOrder="10" />
     </type>

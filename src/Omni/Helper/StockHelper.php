@@ -3,21 +3,21 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Replication\Model\ResourceModel\ReplStore\Collection;
-use Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Class StockHelper
- * @package Ls\Omni\Helper
+ * Stock related operation helper
  */
 class StockHelper extends AbstractHelper
 {
@@ -34,21 +34,29 @@ class StockHelper extends AbstractHelper
     public $lsr;
 
     /**
+     * @var ItemHelper
+     */
+    public $itemHelper;
+
+    /**
      * StockHelper constructor.
      * @param Context $context
      * @param ProductRepositoryInterface $productRepository
      * @param CollectionFactory $storeCollectionFactory
      * @param LSR $lsr
+     * @param \Ls\Omni\Helper\ItemHelper $itemHelper
      */
     public function __construct(
         Context $context,
         ProductRepositoryInterface $productRepository,
         CollectionFactory $storeCollectionFactory,
-        LSR $lsr
+        LSR $lsr,
+        ItemHelper $itemHelper
     ) {
         $this->productRepository      = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->lsr                    = $lsr;
+        $this->itemHelper             = $itemHelper;
         parent::__construct($context);
     }
 
@@ -214,5 +222,76 @@ class StockHelper extends AbstractHelper
             }
         }
         return $variants;
+    }
+
+    /**
+     * Validate quantity
+     *
+     * @param $qty
+     * @param $item
+     * @param null $quote
+     * @param bool $isRemoveItem
+     * @param bool $throwException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function validateQty($qty, $item, $quote = null, bool $isRemoveItem = false, bool $throwException = true)
+    {
+        if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
+            $storeId = $this->lsr->getActiveWebStore();
+            $uomQty  = $item->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+
+            if (!empty($uomQty)) {
+                $qty = $qty * $uomQty;
+            }
+            list($parentProductSku, $childProductSku) = $this->itemHelper->getComparisonValues(
+                $item->getProductId(),
+                $item->getSku()
+            );
+
+            $stock = $this->getItemStockInStore(
+                $storeId,
+                $parentProductSku,
+                $childProductSku
+            );
+
+            if ($stock) {
+                $itemStock = reset($stock);
+
+                if ($itemStock->getQtyInventory() <= 0) {
+                    if ($isRemoveItem == true) {
+                        $this->deleteItemFromQuote($item, $quote);
+                    }
+                    if ($throwException == true) {
+                        throw new LocalizedException(__(
+                            'Product %1 is not available.',
+                            $item->getName()
+                        ));
+                    }
+                } elseif ($itemStock->getQtyInventory() < $qty) {
+                    if ($isRemoveItem == true) {
+                        $this->deleteItemFromQuote($item, $quote);
+                    }
+                    if ($throwException == true) {
+                        throw new LocalizedException(__(
+                            'Max quantity available for item %2 is %1',
+                            $itemStock->getQtyInventory(),
+                            $item->getName()
+                        ));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Delete an item from quote
+     *
+     * @param $item
+     * @param $quote
+     */
+    public function deleteItemFromQuote($item, $quote)
+    {
+        $quote->removeItem($item->getItemId())->collectTotals()->save();
     }
 }

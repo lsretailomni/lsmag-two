@@ -41,4 +41,8 @@
                 type="Ls\OmniGraphQl\Plugin\Model\Resolver\RemoveCouponFromCartPlugin"
                 sortOrder="1"/>
     </type>
+    <!-- For quantity validation on updating item quantity -->
+    <type name="Magento\QuoteGraphQl\Model\Cart\UpdateCartItem">
+        <plugin name="ls_omnigraphql_validate_qty" type="Ls\OmniGraphQl\Plugin\Model\Cart\UpdateCartItemPlugin" sortOrder="1" />
+    </type>
 </config>
