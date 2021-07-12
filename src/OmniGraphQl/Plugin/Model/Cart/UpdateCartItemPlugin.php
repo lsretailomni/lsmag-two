@@ -36,6 +36,7 @@ class UpdateCartItemPlugin
 
     /**
      * After plugin intercepting update cart item model execute method
+     *
      * @param UpdateCartItem $subject
      * @param $result
      * @param Quote $cart

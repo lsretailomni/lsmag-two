@@ -37,12 +37,13 @@
     </type>
     <!-- Plugin to remove coupon -->
     <type name="Magento\QuoteGraphQl\Model\Resolver\RemoveCouponFromCart">
-        <plugin name="ls_omnigraphql_remove_coupon"
+        <plugin name="ls_omni_graphql_remove_coupon"
                 type="Ls\OmniGraphQl\Plugin\Model\Resolver\RemoveCouponFromCartPlugin"
                 sortOrder="1"/>
     </type>
-    <!-- For quantity validation on updating item quantity -->
+    <!-- To verify stock quantity when updating cart items -->
     <type name="Magento\QuoteGraphQl\Model\Cart\UpdateCartItem">
-        <plugin name="ls_omnigraphql_validate_qty" type="Ls\OmniGraphQl\Plugin\Model\Cart\UpdateCartItemPlugin" sortOrder="1" />
+        <plugin name="ls_omni_graphql_validate_qty" type="Ls\OmniGraphQl\Plugin\Model\Cart\UpdateCartItemPlugin"
+                sortOrder="1"/>
     </type>
 </config>
