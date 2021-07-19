@@ -314,7 +314,7 @@ class BasketHelper extends AbstractHelper
                 $product->getId(),
                 $product->getSku()
             );
-            $qty     = $item->getData('qty');
+            $qty = $item->getData('qty');
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OneListItem())
                 ->setQuantity($qty)
@@ -1145,5 +1145,15 @@ class BasketHelper extends AbstractHelper
     public function setCouponCodeInAdmin($couponCode)
     {
         $this->couponCode = $couponCode;
+    }
+
+    /**
+     * Search criteria builder function can be used in another class
+     *
+     * @return SearchCriteriaBuilder
+     */
+    public function getSearchCriteriaBuilder()
+    {
+        return $this->searchCriteriaBuilder;
     }
 }
