@@ -133,9 +133,10 @@ class Info extends Template
     public function getFormattedAddress($isBillingAddress = false)
     {
         $order        = $this->getOrder();
-        $orderAddress = $order->getShipToAddress();
         if ($isBillingAddress == true) {
             $orderAddress = $order->getContactAddress();
+        }else{
+            $orderAddress = $order->getShipToAddress();
         }
         $address = '';
         if (!empty($orderAddress) && !empty($orderAddress->getCountry())) {
@@ -148,10 +149,9 @@ class Info extends Template
             $address .= $this->getCountryName($orderAddress->getCountry()) ?
                 $this->getCountryName($orderAddress->getCountry()) . '<br/>' : '';
             /** TODO update with Address Phone Number */
-            /** Removing this field to resolve the Omni 4.13 compatibility
-             * $address .= $order->getShipToPhoneNumber() ?
-             * "<a href='tel:" . $order->getShipToPhoneNumber() . "'>" . $order->getShipToPhoneNumber() . '</a>' : '';
-             */
+            $address .= $orderAddress->getPhoneNumber() ?
+             "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>" . $orderAddress->getPhoneNumber() . '</a>' : '';
+
         }
         return $address;
     }

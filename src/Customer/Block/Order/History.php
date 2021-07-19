@@ -172,9 +172,7 @@ class History extends \Magento\Sales\Block\Order\History
      */
     public function getReorderUrl($order)
     {
-        return $order->getDocumentId() ?
-            $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]) :
-            parent::getReorderUrl($order);
+        return $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]);
     }
 
     /**
