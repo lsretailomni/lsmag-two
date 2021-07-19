@@ -19,6 +19,7 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context as TemplateContext;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\OrderRepository;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 
 /**
  * Block being used for various sections on order detail
@@ -210,6 +211,9 @@ class Info extends Template
     }
 
     /**
+     * DEV Notes:
+     * 1st entry is for normal tender type
+     * 2nd entry is specific for Giftcard.
      * @return array
      */
     public function getPaymentDescription()
@@ -220,20 +224,27 @@ class Info extends Template
         $giftCardInfo = array();
         // @codingStandardsIgnoreEnd
         foreach ($paymentLines as $line) {
-            if ($line->getTenderType() == '0') {
-                $methods[] = __('Cash');
-            } elseif ($line->getTenderType() == '1') {
-                $methods[] = __('Card');
-            } elseif ($line->getTenderType() == '2') {
-                $methods[] = __('Coupon');
-            } elseif ($line->getTenderType() == '3') {
-                $methods[] = __('Loyalty Points');
-            } elseif ($line->getTenderType() == '4') {
-                $methods[]       = __('Gift Card');
-                $giftCardInfo[0] = $line->getCardNo();
-                $giftCardInfo[1] = $line->getAmount();
-            } else {
-                $methods[] = __('Unknown');
+            /**
+             * Payments line can include multiple payment types
+             * i-e Refunds etc, but we only need to show Payment Type
+             * whose type == Payment.
+             */
+            if ($line->getType() === PaymentType::PAYMENT) {
+                if ($line->getTenderType() == '0') {
+                    $methods[] = __('Cash');
+                } elseif ($line->getTenderType() == '1') {
+                    $methods[] = __('Card');
+                } elseif ($line->getTenderType() == '2') {
+                    $methods[] = __('Coupon');
+                } elseif ($line->getTenderType() == '3') {
+                    $methods[] = __('Loyalty Points');
+                } elseif ($line->getTenderType() == '4') {
+                    $methods[] = __('Gift Card');
+                    $giftCardInfo[0] = $line->getCardNo();
+                    $giftCardInfo[1] = $line->getAmount();
+                } else {
+                    $methods[] = __('Unknown');
+                }
             }
         }
         //TODO when order edit payment available for offline payment we need to change it.

@@ -8,6 +8,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
+use Ls\Omni\Exception\InvalidEnumException;
+
 class SalesEntryPayment
 {
 
@@ -40,6 +43,11 @@ class SalesEntryPayment
      * @property string $TenderType
      */
     protected $TenderType = null;
+
+    /**
+     * @property PaymentType $Type
+     */
+    protected $Type = null;
 
     /**
      * @param float $Amount
@@ -147,6 +155,34 @@ class SalesEntryPayment
     public function getTenderType()
     {
         return $this->TenderType;
+    }
+
+    /**
+     * @param PaymentType|string $Type
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setType($Type)
+    {
+        if ( ! $Type instanceof PaymentType ) {
+            if ( PaymentType::isValid( $Type ) )
+                $Type = new PaymentType( $Type );
+            elseif ( PaymentType::isValidKey( $Type ) )
+                $Type = new PaymentType( constant( "PaymentType::$Type" ) );
+            elseif ( ! $Type instanceof PaymentType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return PaymentType
+     */
+    public function getType()
+    {
+        return $this->Type;
     }
 
 

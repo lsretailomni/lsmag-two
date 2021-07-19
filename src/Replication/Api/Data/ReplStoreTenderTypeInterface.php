@@ -133,6 +133,17 @@ interface ReplStoreTenderTypeInterface
     public function getName();
 
     /**
+     * @param string $OmniTenderTypeId
+     * @return $this
+     */
+    public function setOmniTenderTypeId($OmniTenderTypeId);
+
+    /**
+     * @return string
+     */
+    public function getOmniTenderTypeId();
+
+    /**
      * @param int $OpenDrawer
      * @return $this
      */

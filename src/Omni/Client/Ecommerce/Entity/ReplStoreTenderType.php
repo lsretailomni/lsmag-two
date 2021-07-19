@@ -67,6 +67,11 @@ class ReplStoreTenderType
     protected $Name = null;
 
     /**
+     * @property string $OmniTenderTypeId
+     */
+    protected $OmniTenderTypeId = null;
+
+    /**
      * @property int $OpenDrawer
      */
     protected $OpenDrawer = null;
@@ -312,6 +317,24 @@ class ReplStoreTenderType
     public function getName()
     {
         return $this->Name;
+    }
+
+    /**
+     * @param string $OmniTenderTypeId
+     * @return $this
+     */
+    public function setOmniTenderTypeId($OmniTenderTypeId)
+    {
+        $this->OmniTenderTypeId = $OmniTenderTypeId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOmniTenderTypeId()
+    {
+        return $this->OmniTenderTypeId;
     }
 
     /**

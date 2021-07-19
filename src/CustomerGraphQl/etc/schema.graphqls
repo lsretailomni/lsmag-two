@@ -31,7 +31,6 @@ type SalesEntry @doc(description: "Sales entry information") {
     document_reg_time: String @doc(description: "Order Registration Time")
     document_id: String @doc(description: "Document Id")
     external_id: String @doc(description: "Magento Order Id")
-    payment_status: String @doc(description: "Order Payment status")
     id_type: String @doc(description: "Order Type")
     line_item_count: String @doc(description: "No of items")
     points_rewarded: String @doc(description: "Loyalty Points Rewarded")

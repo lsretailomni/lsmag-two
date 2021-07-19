@@ -12,19 +12,14 @@ class OrderStatusResponse
 {
 
     /**
-     * @property int $CustomerOrderPaymentStatus
+     * @property ArrayOfOrderLineStatus $Lines
      */
-    protected $CustomerOrderPaymentStatus = null;
+    protected $Lines = null;
 
     /**
-     * @property int $CustomerOrderShippingStatus
+     * @property string $Description
      */
-    protected $CustomerOrderShippingStatus = null;
-
-    /**
-     * @property int $CustomerOrderStatus
-     */
-    protected $CustomerOrderStatus = null;
+    protected $Description = null;
 
     /**
      * @property string $DocumentNo
@@ -32,62 +27,49 @@ class OrderStatusResponse
     protected $DocumentNo = null;
 
     /**
-     * @property string $DocumentType
+     * @property string $ExtCode
      */
-    protected $DocumentType = null;
+    protected $ExtCode = null;
 
     /**
-     * @param int $CustomerOrderPaymentStatus
+     * @property string $OrderStatus
+     */
+    protected $OrderStatus = null;
+
+    /**
+     * @param ArrayOfOrderLineStatus $Lines
      * @return $this
      */
-    public function setCustomerOrderPaymentStatus($CustomerOrderPaymentStatus)
+    public function setLines($Lines)
     {
-        $this->CustomerOrderPaymentStatus = $CustomerOrderPaymentStatus;
+        $this->Lines = $Lines;
         return $this;
     }
 
     /**
-     * @return int
+     * @return ArrayOfOrderLineStatus
      */
-    public function getCustomerOrderPaymentStatus()
+    public function getLines()
     {
-        return $this->CustomerOrderPaymentStatus;
+        return $this->Lines;
     }
 
     /**
-     * @param int $CustomerOrderShippingStatus
+     * @param string $Description
      * @return $this
      */
-    public function setCustomerOrderShippingStatus($CustomerOrderShippingStatus)
+    public function setDescription($Description)
     {
-        $this->CustomerOrderShippingStatus = $CustomerOrderShippingStatus;
+        $this->Description = $Description;
         return $this;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getCustomerOrderShippingStatus()
+    public function getDescription()
     {
-        return $this->CustomerOrderShippingStatus;
-    }
-
-    /**
-     * @param int $CustomerOrderStatus
-     * @return $this
-     */
-    public function setCustomerOrderStatus($CustomerOrderStatus)
-    {
-        $this->CustomerOrderStatus = $CustomerOrderStatus;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCustomerOrderStatus()
-    {
-        return $this->CustomerOrderStatus;
+        return $this->Description;
     }
 
     /**
@@ -109,21 +91,39 @@ class OrderStatusResponse
     }
 
     /**
-     * @param string $DocumentType
+     * @param string $ExtCode
      * @return $this
      */
-    public function setDocumentType($DocumentType)
+    public function setExtCode($ExtCode)
     {
-        $this->DocumentType = $DocumentType;
+        $this->ExtCode = $ExtCode;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getDocumentType()
+    public function getExtCode()
     {
-        return $this->DocumentType;
+        return $this->ExtCode;
+    }
+
+    /**
+     * @param string $OrderStatus
+     * @return $this
+     */
+    public function setOrderStatus($OrderStatus)
+    {
+        $this->OrderStatus = $OrderStatus;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderStatus()
+    {
+        return $this->OrderStatus;
     }
 
 
