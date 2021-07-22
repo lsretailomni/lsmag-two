@@ -14,7 +14,7 @@ use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
-use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -96,9 +96,9 @@ class Data extends AbstractHelper
     public $lsr;
 
     /**
-     * @var ReplicationHelper
+     * @var ReplStoreTenderTypeRepositoryInterface
      */
-    public $replicationHelper;
+    public $replStoreTenderTypeRepository;
 
     /**
      * Data constructor.
@@ -116,6 +116,7 @@ class Data extends AbstractHelper
      * @param DateTime $date
      * @param WriterInterface $configWriter
      * @param DirectoryList $directoryList
+     * @param ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository
      */
     public function __construct(
         Context $context,
@@ -132,22 +133,22 @@ class Data extends AbstractHelper
         DateTime $date,
         WriterInterface $configWriter,
         DirectoryList $directoryList,
-        ReplicationHelper $replicationHelper
+        ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository
     ) {
-        $this->storeRepository       = $storeRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->session               = $session;
-        $this->checkoutSession       = $checkoutSession;
-        $this->messageManager        = $messageManager;
-        $this->priceHelper           = $priceHelper;
-        $this->cartRepository        = $cartRepository;
-        $this->loyaltyHelper         = $loyaltyHelper;
-        $this->cacheHelper           = $cacheHelper;
-        $this->lsr                   = $lsr;
-        $this->date                  = $date;
-        $this->configWriter          = $configWriter;
-        $this->directoryList         = $directoryList;
-        $this->replicationHelper     = $replicationHelper;
+        $this->storeRepository               = $storeRepository;
+        $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
+        $this->session                       = $session;
+        $this->checkoutSession               = $checkoutSession;
+        $this->messageManager                = $messageManager;
+        $this->priceHelper                   = $priceHelper;
+        $this->cartRepository                = $cartRepository;
+        $this->loyaltyHelper                 = $loyaltyHelper;
+        $this->cacheHelper                   = $cacheHelper;
+        $this->lsr                           = $lsr;
+        $this->date                          = $date;
+        $this->configWriter                  = $configWriter;
+        $this->directoryList                 = $directoryList;
+        $this->replStoreTenderTypeRepository = $storeTenderTypeRepository;
         parent::__construct($context);
     }
 
@@ -589,7 +590,7 @@ class Data extends AbstractHelper
     public function getTenderTypesPaymentMapping($order)
     {
         $storeTenderTypes     = [];
-        $storeTenderTypeArray = $this->replicationHelper->getTenderTypes(
+        $storeTenderTypeArray = $this->getTenderTypes(
             $this->lsr->getCurrentStoreId(),
             $order->getStoreId(),
         );
@@ -600,5 +601,26 @@ class Data extends AbstractHelper
         }
 
         return $storeTenderTypes;
+    }
+
+    /**
+     * For getting tender type information
+     *
+     * @return array|null
+     */
+    public function getTenderTypes($storeId, $webStoreId)
+    {
+        $items = null;
+
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('storeId', $webStoreId, 'eq')
+            ->addFilter('scope_id', $storeId, 'eq')->create();
+        try {
+            $items = $this->replStoreTenderTypeRepository->getList($searchCriteria)->getItems();
+
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+
+        return $items;
     }
 }

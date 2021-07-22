@@ -2,7 +2,7 @@
 
 namespace Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
 use \Ls\Omni\Model\System\Source\PaymentOption;

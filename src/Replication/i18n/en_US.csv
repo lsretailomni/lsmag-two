@@ -8,6 +8,11 @@
 "On Demand","On Demand"
 "Batch Job","Batch Job"
 DEFAULT,DEFAULT
+"Payment Methods","Payment Methods"
+"Tender Types","Tender Types"
+Add,Add
+"Gift Card","Gift Card"
+"Loyalty Points","Loyalty Points"
 N/A,N/A
 No,No
 "Cron Listing","Cron Listing"
@@ -41,6 +46,7 @@ No,No
 "Item Price Replication","Item Price Replication"
 "Product Group Replication","Product Group Replication"
 "Store Replication","Store Replication"
+"Store Tender Type","Store Tender Type"
 "Tax Setup","Tax Setup"
 "Unit Of Measure","Unit Of Measure"
 Vendor,Vendor
@@ -267,6 +273,8 @@ State,State
 Street,Street
 TaxGroup,TaxGroup
 "Zip Code","Zip Code"
+"Commerce Service Tender Type Id","Commerce Service Tender Type Id"
+"LS Central Tender Type Id","LS Central Tender Type Id"
 "Business Tax Group","Business Tax Group"
 "Product Tax Group","Product Tax Group"
 "Tax Percent","Tax Percent"

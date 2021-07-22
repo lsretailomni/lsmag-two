@@ -299,8 +299,8 @@ class OrderHelper extends AbstractHelper
         $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
         // @codingStandardsIgnoreEnd
         //TODO change it to $paymentMethod->isOffline() == false when order edit option available for offline payments.
-        $paymentCode = $order->getPayment()->getMethodInstance()->getCode();
-        $tenderTypeId  = $this->getPaymentTenderTypeId($paymentCode);
+        $paymentCode  = $order->getPayment()->getMethodInstance()->getCode();
+        $tenderTypeId = $this->getPaymentTenderTypeId($paymentCode);
 
         $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
 
@@ -338,7 +338,7 @@ class OrderHelper extends AbstractHelper
 
         if ($order->getLsPointsSpent()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-            $pointRate = $this->loyaltyHelper->getPointRate();
+            $pointRate    = $this->loyaltyHelper->getPointRate();
             // @codingStandardsIgnoreStart
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd

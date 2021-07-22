@@ -1053,6 +1053,7 @@ class ReplicationHelper extends AbstractHelper
 
     /**
      * For getting tender type information
+     *
      * @return array|null
      */
     public function getTenderTypes($storeId, $webStoreId)
