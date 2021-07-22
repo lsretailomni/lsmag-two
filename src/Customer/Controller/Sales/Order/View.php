@@ -71,7 +71,7 @@ class View extends \Magento\Sales\Controller\Order\View
                 $order      = $this->getOrder($orderId);
                 $documentId = $order->getDocumentId();
             }
-            if (empty($documentId)) {
+            if (empty($documentId) || !$this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                 return parent::execute();
             }
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);

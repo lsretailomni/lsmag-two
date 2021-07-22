@@ -133,27 +133,33 @@ class Info extends Template
     }
 
     /**
+     * For getting shipping and billing address
+     *
+     * @param false $isBillingAddress
      * @return string
      */
-    public function getFormattedAddress()
+    public function getFormattedAddress($isBillingAddress = false)
     {
-        $order         = $this->getOrder();
-        $shipToAddress = $order->getShipToAddress();
-        $address       = '';
-        if (!empty($shipToAddress) && !empty($shipToAddress->getCountry())) {
+        $order        = $this->getOrder();
+        if ($isBillingAddress == true) {
+            $orderAddress = $order->getContactAddress();
+        }else{
+            $orderAddress = $order->getShipToAddress();
+        }
+        $address = '';
+        if (!empty($orderAddress) && !empty($orderAddress->getCountry())) {
             $address .= $order->getShipToName() ? $order->getShipToName() . '<br/>' : '';
-            $address .= $shipToAddress->getAddress1() ? $shipToAddress->getAddress1() . '<br/>' : '';
-            $address .= $shipToAddress->getAddress2() ? $shipToAddress->getAddress2() . '<br/>' : '';
-            $address .= $shipToAddress->getCity() ? $shipToAddress->getCity() . ', ' : '';
-            $address .= $shipToAddress->getStateProvinceRegion() ? $shipToAddress->getStateProvinceRegion() . ', ' : '';
-            $address .= $shipToAddress->getPostCode() ? $shipToAddress->getPostCode() . '<br/>' : '';
-            $address .= $this->getCountryName($shipToAddress->getCountry()) ?
-                $this->getCountryName($shipToAddress->getCountry()) . '<br/>' : '';
+            $address .= $orderAddress->getAddress1() ? $orderAddress->getAddress1() . '<br/>' : '';
+            $address .= $orderAddress->getAddress2() ? $orderAddress->getAddress2() . '<br/>' : '';
+            $address .= $orderAddress->getCity() ? $orderAddress->getCity() . ', ' : '';
+            $address .= $orderAddress->getStateProvinceRegion() ? $orderAddress->getStateProvinceRegion() . ', ' : '';
+            $address .= $orderAddress->getPostCode() ? $orderAddress->getPostCode() . '<br/>' : '';
+            $address .= $this->getCountryName($orderAddress->getCountry()) ?
+                $this->getCountryName($orderAddress->getCountry()) . '<br/>' : '';
             /** TODO update with Address Phone Number */
-            /** Removing this field to resolve the Omni 4.13 compatibility
-             * $address .= $order->getShipToPhoneNumber() ?
-             * "<a href='tel:" . $order->getShipToPhoneNumber() . "'>" . $order->getShipToPhoneNumber() . '</a>' : '';
-             */
+            $address .= $orderAddress->getPhoneNumber() ?
+             "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>" . $orderAddress->getPhoneNumber() . '</a>' : '';
+
         }
         return $address;
     }
