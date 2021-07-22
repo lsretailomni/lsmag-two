@@ -3,10 +3,10 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\Data as DataHelper;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -78,6 +78,11 @@ class Info extends Template
     public $lsr;
 
     /**
+     * @var DataHelper
+     */
+    public $dataHelper;
+
+    /**
      * Info constructor.
      * @param TemplateContext $context
      * @param Registry $registry
@@ -89,6 +94,7 @@ class Info extends Template
      * @param Proxy $customerSession
      * @param Context $httpContext
      * @param LSR $lsr
+     * @param DataHelper $dataHelper
      * @param array $data
      */
     public function __construct(
@@ -102,6 +108,7 @@ class Info extends Template
         Proxy $customerSession,
         Context $httpContext,
         LSR $lsr,
+        DataHelper $dataHelper,
         array $data = []
     ) {
         $this->coreRegistry          = $registry;
@@ -113,6 +120,7 @@ class Info extends Template
         $this->customerSession       = $customerSession;
         $this->httpContext           = $httpContext;
         $this->lsr                   = $lsr;
+        $this->dataHelper            = $dataHelper;
         parent::__construct($context, $data);
     }
 
@@ -143,8 +151,8 @@ class Info extends Template
                 $this->getCountryName($shipToAddress->getCountry()) . '<br/>' : '';
             /** TODO update with Address Phone Number */
             /** Removing this field to resolve the Omni 4.13 compatibility
-            $address .= $order->getShipToPhoneNumber() ?
-                "<a href='tel:" . $order->getShipToPhoneNumber() . "'>" . $order->getShipToPhoneNumber() . '</a>' : '';
+             * $address .= $order->getShipToPhoneNumber() ?
+             * "<a href='tel:" . $order->getShipToPhoneNumber() . "'>" . $order->getShipToPhoneNumber() . '</a>' : '';
              */
         }
         return $address;
@@ -190,7 +198,7 @@ class Info extends Template
     public function getShippingDescription()
     {
         $magentoOrder = $this->getMagOrder();
-        $status = $this->getOrder()->getClickAndCollectOrder();
+        $status       = $this->getOrder()->getClickAndCollectOrder();
 
         if ($magentoOrder) {
             return $magentoOrder->getShippingDescription();
@@ -204,28 +212,29 @@ class Info extends Template
     }
 
     /**
+     * For getting payment description
+     *
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getPaymentDescription()
     {
-        // @codingStandardsIgnoreStart
-        $paymentLines = $this->getOrder()->getPayments();
-        $methods      = array();
-        $giftCardInfo = array();
-        // @codingStandardsIgnoreEnd
+        $paymentLines      = $this->getOrder()->getPayments();
+        $methods           = [];
+        $giftCardInfo      = [];
+        $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping($this->getOrder());
         foreach ($paymentLines as $line) {
-            if ($line->getTenderType() == '0') {
-                $methods[] = __('Cash');
-            } elseif ($line->getTenderType() == '1') {
-                $methods[] = __('Card');
-            } elseif ($line->getTenderType() == '2') {
-                $methods[] = __('Coupon');
-            } elseif ($line->getTenderType() == '3') {
-                $methods[] = __('Loyalty Points');
-            } elseif ($line->getTenderType() == '4') {
-                $methods[]       = __('Gift Card');
-                $giftCardInfo[0] = $line->getCardNo();
-                $giftCardInfo[1] = $line->getAmount();
+            $tenderTypeId = $line->getTenderType();
+            if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
+                $method    = $tenderTypeMapping[$tenderTypeId];
+                $methods[] = __($method);
+                if (!empty($line->getCardNo())) {
+                    $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                    if ($giftCardTenderId == $tenderTypeId) {
+                        $giftCardInfo[0] = $line->getCardNo();
+                        $giftCardInfo[1] = $line->getAmount();
+                    }
+                }
             } else {
                 $methods[] = __('Unknown');
             }
@@ -234,6 +243,7 @@ class Info extends Template
         if (empty($paymentLines->getSalesEntryPayment())) {
             $methods[] = __('Pay At Store');
         }
+
         return [implode(', ', $methods), $giftCardInfo];
     }
 

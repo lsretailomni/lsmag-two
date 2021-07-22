@@ -14,6 +14,7 @@ use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -95,6 +96,11 @@ class Data extends AbstractHelper
     public $lsr;
 
     /**
+     * @var ReplicationHelper
+     */
+    public $replicationHelper;
+
+    /**
      * Data constructor.
      * @param Context $context
      * @param ReplStoreRepositoryInterface $storeRepository
@@ -125,7 +131,8 @@ class Data extends AbstractHelper
         LSR $lsr,
         DateTime $date,
         WriterInterface $configWriter,
-        DirectoryList $directoryList
+        DirectoryList $directoryList,
+        ReplicationHelper $replicationHelper
     ) {
         $this->storeRepository       = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -140,6 +147,7 @@ class Data extends AbstractHelper
         $this->date                  = $date;
         $this->configWriter          = $configWriter;
         $this->directoryList         = $directoryList;
+        $this->replicationHelper     = $replicationHelper;
         parent::__construct($context);
     }
 
@@ -318,10 +326,10 @@ class Data extends AbstractHelper
                 if ($loyaltyPoints > 0) {
                     $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
                 }
-                $quote                         = $this->cartRepository->get($this->checkoutSession->getQuoteId());
-                $shippingAmount                = $quote->getShippingAddress()->getShippingAmount();
-                $discountAmount                = $basketData->getTotalDiscount();
-                $totalAmount                   = $basketData->getTotalAmount() + $discountAmount + $shippingAmount;
+                $quote          = $this->cartRepository->get($this->checkoutSession->getQuoteId());
+                $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
+                $discountAmount = $basketData->getTotalDiscount();
+                $totalAmount    = $basketData->getTotalAmount() + $discountAmount + $shippingAmount;
 
                 $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount;
                 $combinedDiscountPaymentAmount = $discountAmount + $combinedTotalLoyalGiftCard;
@@ -569,5 +577,28 @@ class Data extends AbstractHelper
             $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
         }
         return $invoiceCreditMemo;
+    }
+
+    /**
+     * Get Tender type id mapping
+     *
+     * @param $order
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getTenderTypesPaymentMapping($order)
+    {
+        $storeTenderTypes     = [];
+        $storeTenderTypeArray = $this->replicationHelper->getTenderTypes(
+            $this->lsr->getCurrentStoreId(),
+            $order->getStoreId(),
+        );
+        if (!empty($storeTenderTypeArray)) {
+            foreach ($storeTenderTypeArray as $storeTenderType) {
+                $storeTenderTypes[$storeTenderType->getOmniTenderTypeId()] = $storeTenderType->getName();
+            }
+        }
+
+        return $storeTenderTypes;
     }
 }

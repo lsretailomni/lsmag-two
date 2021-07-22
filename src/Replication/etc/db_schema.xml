@@ -1269,6 +1269,7 @@
     <column xsi:type="decimal" name="MaximumOverTenderAmount" scale="4" precision="20" nullable="true" comment="MaximumOverTenderAmount"/>
     <column xsi:type="decimal" name="MinimumChangeAmount" scale="4" precision="20" nullable="true" comment="MinimumChangeAmount"/>
     <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
+    <column xsi:type="text" name="OmniTenderTypeId" nullable="true" comment="OmniTenderTypeId"/>
     <column xsi:type="int" name="OpenDrawer" padding="11" nullable="true" comment="OpenDrawer"/>
     <column xsi:type="int" name="ReturnAllowed" padding="11" nullable="true" comment="ReturnAllowed"/>
     <column xsi:type="decimal" name="Rounding" scale="4" precision="20" nullable="true" comment="Rounding"/>
