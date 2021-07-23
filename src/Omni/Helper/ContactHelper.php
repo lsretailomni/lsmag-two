@@ -1581,4 +1581,56 @@ class ContactHelper extends AbstractHelper
     {
         return $this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN);
     }
+
+    /**
+     * Clear current card_id in customer session
+     */
+    public function unsetCardIdFromCustomerSession()
+    {
+        return $this->customerSession->unsetData(LSR::SESSION_CUSTOMER_CARDID);
+    }
+
+    /**
+     * Clear current lsr_id in customer session
+     */
+    public function unsetLsrIdFromCustomerSession()
+    {
+        return $this->customerSession->unsetData(LSR::SESSION_CUSTOMER_LSRID);
+    }
+
+    /**
+     * Clear current security_token in customer session
+     */
+    public function unsetSecurityTokenFromCustomerSession()
+    {
+        return $this->customerSession->unsetData(LSR::SESSION_CUSTOMER_SECURITYTOKEN);
+    }
+
+    /**
+     * Clear current customer_group_id in customer session
+     */
+    public function unsetCustomerGroupIdFromCustomerSession()
+    {
+        return $this->customerSession->unsetData(LSR::SESSION_GROUP_ID);
+    }
+
+    /**
+     * Clear current customer_id in customer session
+     */
+    public function unsetCustomerIdFromCustomerSession()
+    {
+        return $this->customerSession->unsetData(LSR::SESSION_CUSTOMER_ID);
+    }
+
+    /**
+     * Clear all required values from customer session
+     */
+    public function unSetRequiredDataFromCustomerSessions()
+    {
+        $this->unsetCardIdFromCustomerSession();
+        $this->unsetLsrIdFromCustomerSession();
+        $this->unsetSecurityTokenFromCustomerSession();
+        $this->unsetCustomerGroupIdFromCustomerSession();
+        $this->unsetCustomerIdFromCustomerSession();
+    }
 }
