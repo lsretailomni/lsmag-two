@@ -4,25 +4,25 @@
 
 ?>
 <?php /** @var $block \Ls\Customer\Block\Order\Info */ ?>
-<?php $_order = $block->getOrder() ?>
+<?php $_order = $block->getOrder(); ?>
 <div class="block block-order-details-view">
     <div class="block-title">
         <strong><?= /* @escapeNotVerified */
             __('Order Information') ?></strong>
     </div>
     <div class="block-content">
-        <?php if (!$block->getOrder()->getClickAndCollectOrder() && !empty($block->getFormattedAddress())) {
-                ?>
+        <?php if (!$block->getOrder()->getClickAndCollectOrder() && !empty($shippingAddress = $block->getFormattedAddress())) {
+            ?>
             <div class="box box-order-shipping-address">
                 <strong class="box-title"><span><?= /* @escapeNotVerified */
                         __('Shipping Address') ?></span></strong>
                 <div class="box-content">
                     <address><?= /* @escapeNotVerified */
-                        $block->getFormattedAddress() ?></address>
+                        $shippingAddress ?></address>
                 </div>
             </div>
             <?php
-            }
+        }
         if (!empty($block->getShippingDescription())) {
             ?>
             <div class="box box-order-shipping-method">
@@ -36,14 +36,14 @@
             </div>
             <?php
         }
-        if (!empty($block->getFormattedAddress())) {
+        if (!empty($billingAddress = $block->getFormattedAddress(true))) {
             ?>
             <div class="box box-order-billing-address">
                 <strong class="box-title"><span><?= /* @escapeNotVerified */
                         __('Billing Address') ?></span></strong>
                 <div class="box-content">
                     <address><?= /* @escapeNotVerified */
-                        $block->getFormattedAddress() ?></address>
+                        $billingAddress ?></address>
                 </div>
             </div>
             <?php
@@ -59,7 +59,7 @@
                     <?= $block->escapeHtml($block->getPaymentDescription()[0]) ?>
                 </div>
             </div>
-        <?php
+            <?php
         } ?>
     </div>
 </div>

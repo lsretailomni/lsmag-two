@@ -414,6 +414,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const SALE_TYPE_POS = 'POS';
 
+    const MAX_RECENT_ORDER = 5;
+
     /**
      * @var ScopeConfigInterface
      */
