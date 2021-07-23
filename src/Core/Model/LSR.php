@@ -363,6 +363,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Order Management
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
     const LSR_SHIPMENT_ITEM_ID = 'ls_mag/ls_order_management/shipping_item_id';
+    const LSR_SHIPMENT_TAX = 'ls_mag/ls_order_management/shipping_tax';
 
     //Disaster Recovery Enabled/Disabled For Notification
     const LS_DISASTER_RECOVERY_STATUS = 'ls_mag/ls_disaster_recovery/notification';
@@ -410,6 +411,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_VARIANT_ID_ATTRIBUTE_LABEL = 'Variant ID';
 
     const SALE_TYPE_POS = 'POS';
+
+    const MAX_RECENT_ORDER = 5;
 
     /**
      * @var ScopeConfigInterface

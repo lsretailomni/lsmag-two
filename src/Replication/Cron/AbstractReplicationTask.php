@@ -125,11 +125,25 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => ["DealNo", "ItemNo", "LineNo", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => [
+            "DealNo",
+            "ItemNo",
+            "LineNo",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
         "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
         "ls_mag/replication/repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_item_modifier"              => ["nav_id", "VariantCode", "Code", "SubCode", "TriggerCode", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"]
+        "ls_mag/replication/repl_item_modifier"              => [
+            "nav_id",
+            "VariantCode",
+            "Code", "SubCode",
+            "TriggerCode",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
+        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_tax_setup"                  => ["BusinessTaxGroup", "ProductTaxGroup", "scope_id"]
     ];
 
     /** @var Logger */

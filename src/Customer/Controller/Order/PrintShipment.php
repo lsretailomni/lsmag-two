@@ -96,7 +96,6 @@ class PrintShipment extends Action
                 return $this->_redirect('sales/order/history/');
             }
             $this->setCurrentMagOrderInRegistry($response);
-            $this->setShipmentId();
             $this->registry->register('current_shipment_option', true);
             $this->registry->register('hide_shipping_links', false);
         }
@@ -150,16 +149,5 @@ class PrintShipment extends Action
         $order = $this->orderHelper->getOrderByDocumentId($salesEntry);
         $this->registry->unregister('current_mag_order');
         $this->registry->register('current_mag_order', $order);
-    }
-
-    /**
-     * @param $orderId
-     */
-    public function setShipmentId()
-    {
-        $order = $this->registry->registry('current_mag_order');
-        foreach ($order->getShipmentsCollection() as $shipment) {
-            $this->registry->register('current_shipment_id', $shipment->getIncrementId());
-        }
     }
 }

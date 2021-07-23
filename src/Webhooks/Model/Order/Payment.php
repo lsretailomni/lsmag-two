@@ -97,21 +97,19 @@ class Payment
                 $transactionSave->save();
                 try {
                     $this->invoiceSender->send($invoice);
-                    return [
-                        "data" => [
-                            'success' => true,
-                            'message' => 'Order posted successfully and invoice sent to customer for document id #'
-                                . $documentId
-                        ]
-                    ];
+
+                    return $this->helper->outputMessage(
+                        true,
+                        'Order posted successfully and invoice sent to customer for document id #' . $documentId
+                    );
                 } catch (Exception $e) {
-                    $this->logger->error('We can\'t send the invoice email right now for document id #' . $documentId);
-                    return [
-                        "data" => [
-                            'success' => false,
-                            'message' => "We can\'t send the invoice email right now for document id #" . $documentId
-                        ]
-                    ];
+                    $this->logger->error('We can\'t send the invoice email right now for document id #'
+                        . $documentId);
+
+                    return $this->helper->outputMessage(
+                        false,
+                        "We can\'t send the invoice email right now for document id #" . $documentId
+                    );
                 }
             }
 
@@ -122,12 +120,11 @@ class Payment
             return $validateOrder;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return [
-                "data" => [
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]
-            ];
+
+            return $this->helper->outputMessage(
+                false,
+                $e->getMessage()
+            );
         }
     }
 
@@ -155,12 +152,7 @@ class Payment
             $validate = false;
         }
 
-        return [
-            "data" => [
-                'success' => $validate,
-                'message' => $message
-            ]
-        ];
+        return $this->helper->outputMessage($validate, $message);
     }
 
     /**
@@ -179,12 +171,7 @@ class Payment
             $validate = true;
         }
 
-        return [
-            "data" => [
-                'success' => $validate,
-                'message' => $message
-            ]
-        ];
+        return $this->helper->outputMessage($validate, $message);
     }
 
     /**

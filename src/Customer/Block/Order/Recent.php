@@ -14,6 +14,7 @@ use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Framework\Api\SortOrderBuilder;
 
 /**
  * Block being used for recent orders grid
@@ -46,11 +47,17 @@ class Recent extends Template
     public $lsr;
 
     /**
+     * @var SortOrderBuilder
+     */
+    public $sortOrderBuilder;
+
+    /**
      * Recent constructor.
      * @param Context $context
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param SortOrderBuilder $sortOrderBuilder
      * @param Proxy $customerSession
      * @param LSR $LSR
      * @param array $data
@@ -60,6 +67,7 @@ class Recent extends Template
         OrderHelper $orderHelper,
         PriceCurrencyInterface $priceCurrency,
         SearchCriteriaBuilder $searchCriteriaBuilder,
+        SortOrderBuilder $sortOrderBuilder,
         Proxy $customerSession,
         LSR $LSR,
         array $data = []
@@ -68,25 +76,41 @@ class Recent extends Template
         $this->orderHelper           = $orderHelper;
         $this->priceCurrency         = $priceCurrency;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->sortOrderBuilder      = $sortOrderBuilder;
         $this->customerSession       = $customerSession;
         $this->lsr                   = $LSR;
     }
 
     /**
-     * @return array|SalesEntry[]|null
+     * Get recent order history
+     *
+     * @return array|bool|ArrayOfSalesEntry|null
+     * @throws NoSuchEntityException
      */
     public function getOrderHistory()
     {
-        $response = [];
-        $orders   = $this->orderHelper->getCurrentCustomerOrderHistory();
-        if ($orders) {
-            try {
-                $response = $orders->getSalesEntry();
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
+        $customerId = $this->customerSession->getCustomerId();
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            $response = [];
+            $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
+            if ($orders) {
+                try {
+                    $response = $orders;
+                } catch (Exception $e) {
+                    $this->_logger->error($e->getMessage());
+                }
             }
+            return $response;
         }
-        return $response;
+
+        $sortOrder = $this->sortOrderBuilder->setField('created_at')->setDirection('DESC')->create();
+        return $this->orderHelper->getOrders(
+            $this->lsr->getCurrentStoreId(),
+            LSR::MAX_RECENT_ORDER,
+            false,
+            $customerId,
+            $sortOrder
+        );
     }
 
     /**
@@ -123,25 +147,29 @@ class Recent extends Template
      */
     public function getViewUrl($order, $magOrder = null)
     {
-        if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
-            // This condition is added to support viewing of orders created by POS
-            if (!empty($magOrder)) {
-                return $this->getUrl(
-                    'customer/order/view',
-                    [
-                        'order_id' => $order->getId()
-                    ]
-                );
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
+                // This condition is added to support viewing of orders created by POS
+                if (!empty($magOrder)) {
+                    return $this->getUrl(
+                        'customer/order/view',
+                        [
+                            'order_id' => $order->getId()
+                        ]
+                    );
+                }
             }
+
+            return $this->getUrl(
+                'customer/order/view',
+                [
+                    'order_id' => $order->getId(),
+                    'type'     => $order->getIdType()
+                ]
+            );
         }
 
-        return $this->getUrl(
-            'customer/order/view',
-            [
-                'order_id' => $order->getId(),
-                'type'     => $order->getIdType()
-            ]
-        );
+        return $this->getUrl('sales/order/view', ['order_id' => $order->getId()]);
     }
 
     /**
@@ -152,9 +180,7 @@ class Recent extends Template
      */
     public function getReorderUrl($order)
     {
-        return $order->getDocumentId() ?
-            $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]) :
-            parent::getReorderUrl($order);
+        return $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]);
     }
 
     /**

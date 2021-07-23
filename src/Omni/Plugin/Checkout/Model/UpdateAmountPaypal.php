@@ -2,12 +2,14 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Model\Session;
 use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Class UpdateAmountPaypal
- * @package Ls\Omni\Plugin\Checkout\Model
+ * Interceptor to intercept getAmounts method for fixing paypal error on checkout
  */
 class UpdateAmountPaypal
 {
@@ -19,25 +21,33 @@ class UpdateAmountPaypal
     public $checkoutSession;
 
     /**
-     * UpdateAmountPaypal constructor.
+     * LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
+    /**
      * @param Proxy $checkoutSession
+     * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        Proxy $checkoutSession
+        Proxy $checkoutSession,
+        LoyaltyHelper $loyaltyHelper
     ) {
         $this->checkoutSession = $checkoutSession;
+        $this->loyaltyHelper   = $loyaltyHelper;
     }
 
     /**
+     * After plugin to fix cart item and order amounts mismatch
+     *
      * @param $cart
      * @param $result
      * @return mixed
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function afterGetAmounts($cart, $result)
     {
-        $quote         = $this->checkoutSession->getQuote();
-        $paymentMethod = $quote->getPayment()->getMethod();
-
         $paypalMehodList = [
             'payflowpro',
             'payflow_link',
@@ -49,8 +59,13 @@ class UpdateAmountPaypal
             'paypal_express'
         ];
 
+        $quote         = $this->checkoutSession->getQuote();
+        $paymentMethod = $quote->getPayment()->getMethod();
+        $pointRate     = $this->loyaltyHelper->getPointRate();
+        $loyaltyPoints = $pointRate > 0 ? $pointRate * $quote->getLsPointsSpent() : 0;
+
         if (in_array($paymentMethod, $paypalMehodList)) {
-            $result[self::SUBTOTAL] = $quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount();
+            $result[self::SUBTOTAL] -= $loyaltyPoints + $quote->getLsGiftCardAmountUsed();
         }
 
         return $result;

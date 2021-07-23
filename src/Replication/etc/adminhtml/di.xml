@@ -150,7 +150,8 @@
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">ls_replication_repl_discount_validation</argument>
-            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplDiscountValidation</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplDiscountValidation
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplItemCategory\Grid\Collection"
@@ -205,6 +206,14 @@
             <argument name="mainTable" xsi:type="string">ls_replication_repl_loy_vendor_item_mapping</argument>
             <argument name="resourceModel" xsi:type="string">
                 Ls\Replication\Model\ResourceModel\ReplLoyVendorItemMapping
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplTaxSetup\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_tax_setup</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplTaxSetup
             </argument>
         </arguments>
     </virtualType>

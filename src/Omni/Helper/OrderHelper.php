@@ -194,14 +194,20 @@ class OrderHelper extends AbstractHelper
      */
     public function updateShippingAmount($orderLines, $order)
     {
-        $shipmentFeeId = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID);
-        if ($order->getShippingAmount() > 0) {
+        $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
+        $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
+        $shippingAmount     = $order->getShippingAmount();
+        if ($shippingAmount > 0) {
+            $netPriceFormula = 1 + $shipmentTaxPercent / 100;
+            $netPrice        = $this->loyaltyHelper->formatValue($shippingAmount / $netPriceFormula);
+            $taxAmount       = $this->loyaltyHelper->formatValue($shippingAmount - $netPrice);
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
-            $shipmentOrderLine->setPrice($order->getShippingAmount())
-                ->setNetPrice($order->getBaseShippingAmount())
-                ->setNetAmount($order->getBaseShippingAmount())
-                ->setAmount($order->getBaseShippingAmount())
+            $shipmentOrderLine->setPrice($shippingAmount)
+                ->setAmount($shippingAmount)
+                ->setNetPrice($netPrice)
+                ->setNetAmount($netPrice)
+                ->setTaxAmount($taxAmount)
                 ->setItemId($shipmentFeeId)
                 ->setLineType(Entity\Enum\LineType::ITEM)
                 ->setQuantity(1)
@@ -450,7 +456,7 @@ class OrderHelper extends AbstractHelper
             if (!empty($documentId)) {
                 $customerId = $this->customerSession->getCustomerId();
                 $orderList  = $this->orderRepository->getList(
-                    $this->basketHelper->searchCriteriaBuilder->
+                    $this->basketHelper->getSearchCriteriaBuilder()->
                     addFilter('document_id', $documentId, 'eq')->
                     addFilter('customer_id', $customerId, 'eq')->create()
                 )->getItems();
@@ -465,24 +471,52 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Return orders from Magento
+     *
      * @param null $storeId
-     * @return array|OrderInterface|mixed
+     * @param int $pageSize
+     * @param bool $filterOptions
+     * @param int $customerId
+     * @param null $sortOrder
+     * @return OrderInterface[]|null
      */
-    public function getOrders($storeId = null)
-    {
+    public function getOrders(
+        $storeId = null,
+        $pageSize = -1,
+        $filterOptions = true,
+        $customerId = 0,
+        $sortOrder = null
+    ) {
         $orders = null;
         try {
-            $orders = $this->orderRepository->getList(
-                $this->basketHelper->searchCriteriaBuilder
-                    ->addFilter('document_id', null, 'null')
-                    ->addFilter('store_id', $storeId, 'eq')
-                    ->addFilter('status', 'canceled', 'neq')
-                    ->create()
-            )->getItems();
+            $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
+
+            if ($filterOptions == true) {
+                $criteriaBuilder->addFilter('status', 'canceled', 'neq');
+                $criteriaBuilder->addFilter('document_id', null, 'null');
+            }
+            if ($customerId) {
+                $criteriaBuilder->addFilter('customer_id', $customerId, 'eq');
+            }
+            if ($storeId) {
+                $criteriaBuilder = $criteriaBuilder->addFilter('store_id', $storeId, 'eq');
+            }
+            if ($sortOrder) {
+                $criteriaBuilder = $criteriaBuilder->setSortOrders([$sortOrder]);
+            }
+
+            $searchCriteria =
+                $criteriaBuilder->setPageSize($pageSize)
+                    ->create();
+
+            $orders = $this->orderRepository->getList($searchCriteria)->getItems();
+
             return $orders;
+
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+
         return $orders;
     }
 
