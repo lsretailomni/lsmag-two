@@ -42,7 +42,7 @@ class ItemPlugin
      */
     public function afterAddQty(Item $subject, $result)
     {
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && (!$result->getParentItem() || !$result->getId())) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && (!$result->getParentItem())) {
             $this->stockHelper->validateQty($result->getQty(), $result);
         }
 

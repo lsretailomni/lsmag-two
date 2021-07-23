@@ -15,6 +15,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Quote\Model\Quote\Item;
 
 /**
  * Stock related operation helper
@@ -228,56 +229,58 @@ class StockHelper extends AbstractHelper
      * Validate quantity
      *
      * @param $qty
-     * @param $item
+     * @param Item $item
      * @param null $quote
      * @param bool $isRemoveItem
      * @param bool $throwException
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function validateQty($qty, $item, $quote = null, bool $isRemoveItem = false, bool $throwException = true)
+    public function validateQty($qty, Item $item, $quote = null, bool $isRemoveItem = false, bool $throwException = true)
     {
         if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
-            $storeId = $this->lsr->getActiveWebStore();
-            $uomQty  = $item->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+            if (!$item->getHasError()) {
+                $storeId = $this->lsr->getActiveWebStore();
+                $uomQty = $item->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
-            if (!empty($uomQty)) {
-                $qty = $qty * $uomQty;
-            }
-            list($parentProductSku, $childProductSku) = $this->itemHelper->getComparisonValues(
-                $item->getProductId(),
-                $item->getSku()
-            );
+                if (!empty($uomQty)) {
+                    $qty = $qty * $uomQty;
+                }
+                list($parentProductSku, $childProductSku) = $this->itemHelper->getComparisonValues(
+                    $item->getProductId(),
+                    $item->getSku()
+                );
 
-            $stock = $this->getItemStockInStore(
-                $storeId,
-                $parentProductSku,
-                $childProductSku
-            );
+                $stock = $this->getItemStockInStore(
+                    $storeId,
+                    $parentProductSku,
+                    $childProductSku
+                );
 
-            if ($stock) {
-                $itemStock = reset($stock);
+                if ($stock) {
+                    $itemStock = reset($stock);
 
-                if ($itemStock->getQtyInventory() <= 0) {
-                    if ($isRemoveItem == true) {
-                        $this->deleteItemFromQuote($item, $quote);
-                    }
-                    if ($throwException == true) {
-                        throw new LocalizedException(__(
-                            'Product %1 is not available.',
-                            $item->getName()
-                        ));
-                    }
-                } elseif ($itemStock->getQtyInventory() < $qty) {
-                    if ($isRemoveItem == true) {
-                        $this->deleteItemFromQuote($item, $quote);
-                    }
-                    if ($throwException == true) {
-                        throw new LocalizedException(__(
-                            'Max quantity available for item %2 is %1',
-                            $itemStock->getQtyInventory(),
-                            $item->getName()
-                        ));
+                    if ($itemStock->getQtyInventory() <= 0) {
+                        if ($isRemoveItem == true) {
+                            $this->deleteItemFromQuote($item, $quote);
+                        }
+                        if ($throwException == true) {
+                            throw new LocalizedException(__(
+                                'Product %1 is not available.',
+                                $item->getName()
+                            ));
+                        }
+                    } elseif ($itemStock->getQtyInventory() < $qty) {
+                        if ($isRemoveItem == true) {
+                            $this->deleteItemFromQuote($item, $quote);
+                        }
+                        if ($throwException == true) {
+                            throw new LocalizedException(__(
+                                'Max quantity available for item %2 is %1',
+                                $itemStock->getQtyInventory(),
+                                $item->getName()
+                            ));
+                        }
                     }
                 }
             }
