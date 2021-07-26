@@ -29,11 +29,11 @@
             <span><?= $block->getFormattedLoyaltyPoints($_order->getPointsRewarded()); ?></span>
         </div>
         <?php } ?>
-        <?php if (!empty($block->getPaymentDescription()[1])) { ?>
+        <?php if (!empty($gittcardNumber = $block->getPaymentDescription()[1])) { ?>
             <div class="custom-box">
                 <strong class="box-title"><span><?= /* @escapeNotVerified */
                         __('Gift Card Code:') ?></span></strong>
-                <span><?= $block->getPaymentDescription()[1][0]; ?></span>
+                <span><?= $gittcardNumber[0]; ?></span>
             </div>
         <?php } ?>
     </div>

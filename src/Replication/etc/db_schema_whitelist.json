@@ -573,7 +573,8 @@
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_LINKFIELD2": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_LINKFIELD3": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_VALUE": true,
-            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SEQUENCE": true
         }
     },
     "ls_replication_repl_attribute_option_value": {
@@ -1101,7 +1102,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "OmniTenderTypeId": true
         },
         "constraint": {
             "PRIMARY": true

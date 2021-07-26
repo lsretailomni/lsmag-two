@@ -77,6 +77,11 @@ class ReplStoreTenderType extends AbstractModel implements ReplStoreTenderTypeIn
     protected $Name = null;
 
     /**
+     * @property string $OmniTenderTypeId
+     */
+    protected $OmniTenderTypeId = null;
+
+    /**
      * @property int $OpenDrawer
      */
     protected $OpenDrawer = null;
@@ -389,6 +394,26 @@ class ReplStoreTenderType extends AbstractModel implements ReplStoreTenderTypeIn
     public function getName()
     {
         return $this->getData( 'Name' );
+    }
+
+    /**
+     * @param string $OmniTenderTypeId
+     * @return $this
+     */
+    public function setOmniTenderTypeId($OmniTenderTypeId)
+    {
+        $this->setData( 'OmniTenderTypeId', $OmniTenderTypeId );
+        $this->OmniTenderTypeId = $OmniTenderTypeId;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOmniTenderTypeId()
+    {
+        return $this->getData( 'OmniTenderTypeId' );
     }
 
     /**
