@@ -55,7 +55,7 @@ class UpdateCartItemPlugin
     ) {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $item = $cart->getItemById($cartItemId);
-            $this->stockHelper->validateQty($quantity, $item);
+            $this->stockHelper->validateQty($quantity, $item, null, false, true);
         }
 
         return $result;

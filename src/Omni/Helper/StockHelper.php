@@ -226,7 +226,7 @@ class StockHelper extends AbstractHelper
     }
 
     /**
-     * Validate quantity
+     * Validate quantities
      *
      * @param $qty
      * @param Item $item
@@ -236,12 +236,17 @@ class StockHelper extends AbstractHelper
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function validateQty($qty, Item $item, $quote = null, bool $isRemoveItem = false, bool $throwException = true)
-    {
+    public function validateQty(
+        $qty,
+        Item $item,
+        $quote = null,
+        bool $isRemoveItem = false,
+        bool $throwException = false
+    ) {
         if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
             if (!$item->getHasError()) {
                 $storeId = $this->lsr->getActiveWebStore();
-                $uomQty = $item->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+                $uomQty  = $item->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
                 if (!empty($uomQty)) {
                     $qty = $qty * $uomQty;
@@ -264,6 +269,11 @@ class StockHelper extends AbstractHelper
                         if ($isRemoveItem == true) {
                             $this->deleteItemFromQuote($item, $quote);
                         }
+                        $item->setHasError(true);
+                        $item->setMessage(__(
+                            'Product %1 is not available.',
+                            $item->getName()
+                        ));
                         if ($throwException == true) {
                             throw new LocalizedException(__(
                                 'Product %1 is not available.',
@@ -274,6 +284,12 @@ class StockHelper extends AbstractHelper
                         if ($isRemoveItem == true) {
                             $this->deleteItemFromQuote($item, $quote);
                         }
+                        $item->setHasError(true);
+                        $item->setMessage(__(
+                            'Max quantity available for item %2 is %1',
+                            $itemStock->getQtyInventory(),
+                            $item->getName()
+                        ));
                         if ($throwException == true) {
                             throw new LocalizedException(__(
                                 'Max quantity available for item %2 is %1',
@@ -285,6 +301,8 @@ class StockHelper extends AbstractHelper
                 }
             }
         }
+
+        return $item;
     }
 
     /**

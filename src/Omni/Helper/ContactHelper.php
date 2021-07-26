@@ -1453,7 +1453,7 @@ class ContactHelper extends AbstractHelper
         $quote = $this->checkoutSession->getQuote();
         $items = $quote->getAllVisibleItems();
         foreach ($items as $item) {
-            $this->stockHelper->validateQty($item->getQty(), $item, $quote, true, false);
+            $this->stockHelper->validateQty($item->getQty(), $item, $quote, true);
         }
 
         $oneListBasket = $this->getOneListTypeObject(

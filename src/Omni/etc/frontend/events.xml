@@ -20,10 +20,6 @@
     <event name="controller_action_postdispatch_wishlist_index_allcart">
         <observer name="WishlistSaveObserver" instance="Ls\Omni\Observer\WishlistObserver"/>
     </event>
-    <!-- event to verify stock quantity when updating cart items -->
-    <event name="controller_action_postdispatch_checkout_cart_updateItemQty">
-        <observer name="ls_omni_update_item_qty_observer" instance="Ls\Omni\Observer\UpdateItemQtyObserver"/>
-    </event>
     <!-- For Coupon Code -->
     <event name="controller_action_predispatch_checkout_cart_couponPost">
         <observer name="coupon_code" instance="Ls\Omni\Observer\CouponCodeObserver"/>

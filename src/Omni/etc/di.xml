@@ -108,4 +108,9 @@
         <plugin name="changeAllowProductsBehaviour" type="Ls\Omni\Plugin\Magento\Quote\Model\Quote\ItemPlugin"
                 sortOrder="1"/>
     </type>
+    <!-- For update cart item quantity validation -->
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="ls_omni_validate_update_qty" type="Ls\Omni\Plugin\Checkout\Model\CartPlugin"
+                sortOrder="1"/>
+    </type>
 </config>
