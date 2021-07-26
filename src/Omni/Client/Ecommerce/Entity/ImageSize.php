@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ImageSize
+class ImageSize extends Entity
 {
 
     /**

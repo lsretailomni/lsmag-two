@@ -24,7 +24,11 @@
         },
         "index": {
             "LS_REPLICATION_REPL_BARCODE_NAV_ID": true,
-            "LS_REPLICATION_REPL_BARCODE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_BARCODE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_BARCODE_ITEMID": true,
+            "LS_REPLICATION_REPL_BARCODE_PROCESSED": true,
+            "LS_REPLICATION_REPL_BARCODE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_BARCODE_ISDELETED": true
         }
     },
     "ls_replication_repl_currency": {
@@ -55,7 +59,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_CURRENCY_CURRENCYCODE": true,
-            "LS_REPLICATION_REPL_CURRENCY_SCOPE_ID": true
+            "LS_REPLICATION_REPL_CURRENCY_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_CURRENCY_PROCESSED": true,
+            "LS_REPLICATION_REPL_CURRENCY_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_CURRENCY_ISDELETED": true
         }
     },
     "ls_replication_repl_currency_exch_rate": {
@@ -81,7 +88,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_CURRENCYCODE": true,
-            "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_PROCESSED": true,
+            "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_ISDELETED": true
         }
     },
     "ls_replication_repl_extended_variant_value": {
@@ -114,7 +124,10 @@
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_FRAMEWORKCODE": true,
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_ITEMID": true,
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_VALUE": true,
-            "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_PROCESSED": true,
+            "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_ISDELETED": true
         }
     },
     "ls_replication_repl_image_link": {
@@ -142,7 +155,11 @@
         "index": {
             "LS_REPLICATION_REPL_IMAGE_LINK_IMAGEID": true,
             "LS_REPLICATION_REPL_IMAGE_LINK_KEYVALUE": true,
-            "LS_REPLICATION_REPL_IMAGE_LINK_SCOPE_ID": true
+            "LS_REPLICATION_REPL_IMAGE_LINK_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_IMAGE_LINK_TABLENAME": true,
+            "LS_REPLICATION_REPL_IMAGE_LINK_PROCESSED": true,
+            "LS_REPLICATION_REPL_IMAGE_LINK_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_IMAGE_LINK_ISDELETED": true
         }
     },
     "ls_replication_repl_image": {
@@ -170,7 +187,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_IMAGE_NAV_ID": true,
-            "LS_REPLICATION_REPL_IMAGE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_IMAGE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_IMAGE_PROCESSED": true,
+            "LS_REPLICATION_REPL_IMAGE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_IMAGE_ISDELETED": true
         }
     },
     "ls_replication_repl_item_category": {
@@ -194,7 +214,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_CATEGORY_NAV_ID": true,
-            "LS_REPLICATION_REPL_ITEM_CATEGORY_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ITEM_CATEGORY_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_CATEGORY_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_CATEGORY_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_CATEGORY_ISDELETED": true
         }
     },
     "ls_replication_repl_item": {
@@ -251,7 +274,12 @@
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_NAV_ID": true,
-            "LS_REPLICATION_REPL_ITEM_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ITEM_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_ITEMCATEGORYCODE": true,
+            "LS_REPLICATION_REPL_ITEM_PRODUCTGROUPID": true,
+            "LS_REPLICATION_REPL_ITEM_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_ISDELETED": true
         }
     },
     "ls_replication_repl_item_unit_of_measure": {
@@ -282,7 +310,10 @@
         "index": {
             "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_CODE": true,
             "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_ITEMID": true,
-            "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_ISDELETED": true
         }
     },
     "ls_replication_repl_item_variant_registration": {
@@ -314,7 +345,10 @@
         "index": {
             "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ITEMID": true,
             "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_VARIANTID": true,
-            "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ISDELETED": true
         }
     },
     "ls_replication_repl_price": {
@@ -359,7 +393,10 @@
             "LS_REPLICATION_REPL_PRICE_STOREID": true,
             "LS_REPLICATION_REPL_PRICE_QTYPERUNITOFMEASURE": true,
             "LS_REPLICATION_REPL_PRICE_UNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_PRICE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_PRICE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_PRICE_PROCESSED": true,
+            "LS_REPLICATION_REPL_PRICE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_PRICE_ISDELETED": true
         }
     },
     "ls_replication_repl_product_group": {
@@ -384,7 +421,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_PRODUCT_GROUP_NAV_ID": true,
-            "LS_REPLICATION_REPL_PRODUCT_GROUP_SCOPE_ID": true
+            "LS_REPLICATION_REPL_PRODUCT_GROUP_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_PRODUCT_GROUP_PROCESSED": true,
+            "LS_REPLICATION_REPL_PRODUCT_GROUP_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_PRODUCT_GROUP_ISDELETED": true
         }
     },
     "ls_replication_repl_store": {
@@ -451,7 +491,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_UNIT_OF_MEASURE_NAV_ID": true,
-            "LS_REPLICATION_REPL_UNIT_OF_MEASURE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_UNIT_OF_MEASURE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_UNIT_OF_MEASURE_PROCESSED": true,
+            "LS_REPLICATION_REPL_UNIT_OF_MEASURE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_UNIT_OF_MEASURE_ISDELETED": true
         }
     },
     "ls_replication_repl_vendor": {
@@ -484,7 +527,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_VENDOR_NAME": true,
-            "LS_REPLICATION_REPL_VENDOR_SCOPE_ID": true
+            "LS_REPLICATION_REPL_VENDOR_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_VENDOR_PROCESSED": true,
+            "LS_REPLICATION_REPL_VENDOR_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_VENDOR_ISDELETED": true
         }
     },
     "ls_replication_repl_loy_vendor_item_mapping": {
@@ -513,7 +559,10 @@
         "index": {
             "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVMANUFACTURERID": true,
             "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVPRODUCTID": true,
-            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_SCOPE_ID": true
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_PROCESSED": true,
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_ISDELETED": true
         }
     },
     "ls_replication_repl_attribute": {
@@ -539,7 +588,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_ATTRIBUTE_CODE": true,
-            "LS_REPLICATION_REPL_ATTRIBUTE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ATTRIBUTE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_PROCESSED": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_ISDELETED": true
         }
     },
     "ls_replication_repl_attribute_value": {
@@ -573,7 +625,11 @@
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_LINKFIELD2": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_LINKFIELD3": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_VALUE": true,
-            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SEQUENCE": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_PROCESSED": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_ISDELETED": true
         }
     },
     "ls_replication_repl_attribute_option_value": {
@@ -599,7 +655,10 @@
         "index": {
             "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_CODE": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_SEQUENCE": true,
-            "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_PROCESSED": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_ISDELETED": true
         }
     },
     "ls_replication_repl_data_translation": {
@@ -627,7 +686,10 @@
             "LS_REPLICATION_REPL_DATA_TRANSLATION_TRANSLATIONID": true,
             "LS_REPLICATION_REPL_DATA_TRANSLATION_KEY": true,
             "LS_REPLICATION_REPL_DATA_TRANSLATION_LANGUAGECODE": true,
-            "LS_REPLICATION_REPL_DATA_TRANSLATION_SCOPE_ID": true
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_PROCESSED": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_ISDELETED": true
         }
     },
     "ls_replication_repl_data_translation_lang_code": {
@@ -650,7 +712,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_CODE": true,
-            "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_PROCESSED": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_ISDELETED": true
         }
     },
     "ls_replication_repl_hierarchy": {
@@ -679,7 +744,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_NAV_ID": true,
-            "LS_REPLICATION_REPL_HIERARCHY_SCOPE_ID": true
+            "LS_REPLICATION_REPL_HIERARCHY_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_HIERARCHY_PROCESSED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_ISDELETED": true
         }
     },
     "ls_replication_repl_hierarchy_node": {
@@ -709,7 +777,12 @@
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_NODE_NAV_ID": true,
-            "LS_REPLICATION_REPL_HIERARCHY_NODE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_PARENTNODE": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_HIERARCHYCODE": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_PROCESSED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_ISDELETED": true
         }
     },
     "ls_replication_repl_hierarchy_leaf": {
@@ -745,7 +818,12 @@
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_NAV_ID": true,
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_NODEID": true,
-            "LS_REPLICATION_REPL_HIERARCHY_LEAF_SCOPE_ID": true
+            "LS_REPLICATION_REPL_HIERARCHY_LEAF_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_HIERARCHY_LEAF_HIERARCHYCODE": true,
+            "LS_REPLICATION_REPL_HIERARCHY_LEAF_TYPE": true,
+            "LS_REPLICATION_REPL_HIERARCHY_LEAF_PROCESSED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_LEAF_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_LEAF_ISDELETED": true
         }
     },
     "ls_replication_repl_hierarchy_hosp_deal": {
@@ -788,7 +866,10 @@
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_NO": true,
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINENO": true,
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_UNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_SCOPE_ID": true
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_PROCESSED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_ISDELETED": true
         }
     },
     "ls_replication_repl_hierarchy_hosp_deal_line": {
@@ -829,7 +910,10 @@
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ITEMNO": true,
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_LINENO": true,
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_UNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_PROCESSED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ISDELETED": true
         }
     },
     "ls_replication_loy_item": {
@@ -911,7 +995,11 @@
             "LS_REPLICATION_REPL_DISCOUNT_STOREID": true,
             "LS_REPLICATION_REPL_DISCOUNT_VARIANTID": true,
             "LS_REPLICATION_REPL_DISCOUNT_MINIMUMQUANTITY": true,
-            "LS_REPLICATION_REPL_DISCOUNT_SCOPE_ID": true
+            "LS_REPLICATION_REPL_DISCOUNT_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_DISCOUNT_TODATE": true,
+            "LS_REPLICATION_REPL_DISCOUNT_PROCESSED": true,
+            "LS_REPLICATION_REPL_DISCOUNT_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_DISCOUNT_ISDELETED": true
         }
     },
     "ls_replication_repl_discount_validation": {
@@ -969,7 +1057,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAV_ID": true,
-            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_SCOPE_ID": true
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_PROCESSED": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_ISDELETED": true
         }
     },
     "ls_replication_repl_shipping_agent": {
@@ -995,7 +1086,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_SHIPPING_AGENT_NAME": true,
-            "LS_REPLICATION_REPL_SHIPPING_AGENT_SCOPE_ID": true
+            "LS_REPLICATION_REPL_SHIPPING_AGENT_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_SHIPPING_AGENT_PROCESSED": true,
+            "LS_REPLICATION_REPL_SHIPPING_AGENT_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_SHIPPING_AGENT_ISDELETED": true
         }
     },
     "ls_replication_repl_customer": {
@@ -1044,7 +1138,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_CUSTOMER_ACCOUNTNUMBER": true,
-            "LS_REPLICATION_REPL_CUSTOMER_SCOPE_ID": true
+            "LS_REPLICATION_REPL_CUSTOMER_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_CUSTOMER_PROCESSED": true,
+            "LS_REPLICATION_REPL_CUSTOMER_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_CUSTOMER_ISDELETED": true
         }
     },
     "ls_replication_repl_country_code": {
@@ -1068,7 +1165,10 @@
         },
         "index": {
             "LS_REPLICATION_REPL_COUNTRY_CODE_NAME": true,
-            "LS_REPLICATION_REPL_COUNTRY_CODE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_COUNTRY_CODE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_COUNTRY_CODE_PROCESSED": true,
+            "LS_REPLICATION_REPL_COUNTRY_CODE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_COUNTRY_CODE_ISDELETED": true
         }
     },
     "ls_replication_repl_store_tender_type": {
@@ -1101,7 +1201,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "OmniTenderTypeId": true
         },
         "constraint": {
             "PRIMARY": true
@@ -1158,7 +1259,10 @@
             "LS_REPLICATION_REPL_INV_STATUS_ITEMID": true,
             "LS_REPLICATION_REPL_INV_STATUS_VARIANTID": true,
             "LS_REPLICATION_REPL_INV_STATUS_STOREID": true,
-            "LS_REPLICATION_REPL_INV_STATUS_SCOPE_ID": true
+            "LS_REPLICATION_REPL_INV_STATUS_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_INV_STATUS_PROCESSED": true,
+            "LS_REPLICATION_REPL_INV_STATUS_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_INV_STATUS_ISDELETED": true
         }
     },
     "ls_replication_repl_hierarchy_hosp_modifier": {
@@ -1237,7 +1341,10 @@
             "LS_REPLICATION_REPL_ITEM_MODIFIER_SUBCODE": true,
             "LS_REPLICATION_REPL_ITEM_MODIFIER_TRIGGERCODE": true,
             "LS_REPLICATION_REPL_ITEM_MODIFIER_UNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_ISDELETED": true
         }
     },
     "ls_replication_repl_item_recipe": {
@@ -1270,7 +1377,10 @@
             "LS_REPLICATION_REPL_ITEM_RECIPE_ITEMNO": true,
             "LS_REPLICATION_REPL_ITEM_RECIPE_RECIPENO": true,
             "LS_REPLICATION_REPL_ITEM_RECIPE_UNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_ITEM_RECIPE_SCOPE_ID": true
+            "LS_REPLICATION_REPL_ITEM_RECIPE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_ISDELETED": true
         }
     },
     "ls_replication_repl_collection": {
