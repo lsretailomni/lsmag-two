@@ -133,10 +133,10 @@ class Info extends Template
      */
     public function getFormattedAddress($isBillingAddress = false)
     {
-        $order        = $this->getOrder();
+        $order = $this->getOrder();
         if ($isBillingAddress == true) {
             $orderAddress = $order->getContactAddress();
-        }else{
+        } else {
             $orderAddress = $order->getShipToAddress();
         }
         $address = '';
@@ -151,7 +151,7 @@ class Info extends Template
                 $this->getCountryName($orderAddress->getCountry()) . '<br/>' : '';
             /** TODO update with Address Phone Number */
             $address .= $orderAddress->getPhoneNumber() ?
-             "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>" . $orderAddress->getPhoneNumber() . '</a>' : '';
+                "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>" . $orderAddress->getPhoneNumber() . '</a>' : '';
 
         }
         return $address;
@@ -229,7 +229,7 @@ class Info extends Template
              * i-e Refunds etc, but we only need to show Payment Type
              * whose type == Payment.
              */
-            if ($line->getType() === PaymentType::PAYMENT) {
+            if ($line->getType() === PaymentType::PAYMENT || $line->getType() == PaymentType::PRE_AUTHORIZATION) {
                 if ($line->getTenderType() == '0') {
                     $methods[] = __('Cash');
                 } elseif ($line->getTenderType() == '1') {
@@ -239,7 +239,7 @@ class Info extends Template
                 } elseif ($line->getTenderType() == '3') {
                     $methods[] = __('Loyalty Points');
                 } elseif ($line->getTenderType() == '4') {
-                    $methods[] = __('Gift Card');
+                    $methods[]       = __('Gift Card');
                     $giftCardInfo[0] = $line->getCardNo();
                     $giftCardInfo[1] = $line->getAmount();
                 } else {
