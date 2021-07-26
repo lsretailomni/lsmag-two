@@ -227,9 +227,9 @@ class Info extends Template
             /**
              * Payments line can include multiple payment types
              * i-e Refunds etc, but we only need to show Payment Type
-             * whose type == Payment.
+             * whose type == Payment and Pre Authorization
              */
-            if ($line->getType() === PaymentType::PAYMENT || $line->getType() == PaymentType::PRE_AUTHORIZATION) {
+            if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION) {
                 if ($line->getTenderType() == '0') {
                     $methods[] = __('Cash');
                 } elseif ($line->getTenderType() == '1') {
