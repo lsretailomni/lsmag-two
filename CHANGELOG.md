@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.0] - 2021-07-23
+
+### Added
+
+- Added admin configuration to support order cancellation from frontend. [OMNI-5416](https://solutions.lsretail.com/jira/browse/OMNI-5416)
+- Added support for LS Commerce Service v4.20. [OMNI-5461](https://solutions.lsretail.com/jira/browse/OMNI-5461)
+- Added support to allow order cancellation and generating credit memo from LS Central through webhook. [OMNI-5145](https://solutions.lsretail.com/jira/browse/OMNI-5145)
+- Added support to allow shipment creation from LS Central through webhook. [OMNI-5450](https://solutions.lsretail.com/jira/browse/OMNI-5450)
+- Added support for partial shipment based on item + qty's. [OMNI-5450](https://solutions.lsretail.com/jira/browse/OMNI-5450)
+- Added support to notify customers through emails for click and collect orders (ready to pick or collected) from LS Central through webhook. [OMNI-5451](https://solutions.lsretail.com/jira/browse/OMNI-5451)
+- Added support to display order kitchen status in order success page for hospitality store. [OMNI-5456](https://solutions.lsretail.com/jira/browse/OMNI-5456)
+- Added admin configuration to choose tax group for shipping item. [OMNI-5466](https://solutions.lsretail.com/jira/browse/OMNI-5466)
+- Added support to split item total price including tax when sending order to LS Central. [OMNI-5466](https://solutions.lsretail.com/jira/browse/OMNI-5466)
+- Added support to reset replication data for specific store. [OMNI-5446](https://solutions.lsretail.com/jira/browse/OMNI-5446)
+
+
+### Changed
+
+- Rename HospOrderKotStatus to HospOrderStatus. [OMNI-5461](https://solutions.lsretail.com/jira/browse/OMNI-5461)
+- Remove HospitalityMode and replaced with IsHospitality, SalesType for Onelist and Order request to LS Central. [OMNI-5461](https://solutions.lsretail.com/jira/browse/OMNI-5461)
+
+### Bugs/Fixes
+
+- Fixed issue with item lines not appearing on order detail page after posting the order. [OMNI-5473](https://solutions.lsretail.com/jira/browse/OMNI-5473)
+- Fixed issue in customer/checkout session on GraphQl which was causing unexpected behavior on logout. [OMNI-5480](https://solutions.lsretail.com/jira/browse/OMNI-5480)
+- Fixed issue with subtotal values in PayPal module. [OMNI-5472](https://solutions.lsretail.com/jira/browse/OMNI-5472)
+- Fixed issue in order detail page not loading in offline mode. [OMNI-5483](https://solutions.lsretail.com/jira/browse/OMNI-5483)
+- Fixed issue in displaying billing address in order detail page. [OMNI-5483](https://solutions.lsretail.com/jira/browse/OMNI-5483)
+- Fixed issue in recent orders not displaying in offline mode. [OMNI-5483](https://solutions.lsretail.com/jira/browse/OMNI-5483)
+
+
+
 ## [1.11.1] - 2021-06-10
 
 ### Bugs/Fixes
