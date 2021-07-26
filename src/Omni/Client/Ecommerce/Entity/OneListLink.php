@@ -11,7 +11,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\LinkStatus;
 use Ls\Omni\Exception\InvalidEnumException;
 
-class OneListLink
+class OneListLink extends Entity
 {
 
     /**

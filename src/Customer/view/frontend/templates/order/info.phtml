@@ -48,7 +48,7 @@
             </div>
             <?php
         }
-        if (!empty($block->getPaymentDescription()[0])) {
+        if (!empty($paymentMethods = $block->getPaymentDescription()[0])) {
             ?>
             <div class="box box-order-billing-method">
                 <strong class="box-title">
@@ -56,7 +56,7 @@
                     __('Payment Method') ?></span>
                 </strong>
                 <div class="box-content">
-                    <?= $block->escapeHtml($block->getPaymentDescription()[0]) ?>
+                    <?= $block->escapeHtml($paymentMethods) ?>
                 </div>
             </div>
             <?php
