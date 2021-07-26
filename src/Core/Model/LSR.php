@@ -240,6 +240,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SESSION_CHECKOUT_ONE_LIST_CALCULATION = 'one_list_calculation';
     const SESSION_CHECKOUT_COUPON_CODE = 'coupon_code';
     const SESSION_CHECKOUT_CORRECT_STORE_ID = 'correct_store_id';
+    const SESSION_GROUP_ID = 'customer_group_id';
+    const SESSION_CUSTOMER_ID = 'customer_id';
 
     // WORKFLOW
     const W_TYPE = 'T';

@@ -11,4 +11,9 @@
                 type="Ls\CustomerGraphQl\Plugin\UpdateAccount"
                 sortOrder="1"/>
     </type>
+    <type name="Magento\Integration\Api\CustomerTokenServiceInterface">
+        <plugin name="ls_customer_unset_session_values"
+                type="Ls\CustomerGraphQl\Plugin\CustomerTokenServicePlugin"
+                sortOrder="1"/>
+    </type>
 </config>
