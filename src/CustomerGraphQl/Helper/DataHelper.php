@@ -176,7 +176,6 @@ class DataHelper
             'document_reg_time'       => $salesEntry->getDocumentRegTime(),
             'document_id'             => $salesEntry->getCustomerOrderNo(),
             'external_id'             => $salesEntry->getExternalId(),
-            'payment_status'          => $salesEntry->getPaymentStatus(),
             'id_type'                 => $salesEntry->getIdType(),
             'line_item_count'         => $this->formatValue($salesEntry->getLineItemCount()),
             'points_rewarded'         => $this->formatValue($salesEntry->getPointsRewarded()),
