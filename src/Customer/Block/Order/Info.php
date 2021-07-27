@@ -2,12 +2,12 @@
 
 namespace Ls\Customer\Block\Order;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
-use Ls\Omni\Client\Ecommerce\Entity\Order;
-use Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use Ls\Omni\Helper\Data as DataHelper;
-use Ls\Omni\Helper\OrderHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
+use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Helper\Data as DataHelper;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
