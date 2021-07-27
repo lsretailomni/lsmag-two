@@ -1128,6 +1128,14 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * clear quote_id from checkout session
+     */
+    public function unSetQuoteId()
+    {
+        $this->checkoutSession->setQuoteId(null);
+    }
+
+    /**
      * clear required data from customer and checkout sessions
      */
     public function unSetRequiredDataFromCustomerAndCheckoutSessions()
@@ -1137,6 +1145,7 @@ class BasketHelper extends AbstractHelper
         $this->unSetOneListCalculation();
         $this->unsetCouponCode();
         $this->unSetCorrectStoreId();
+        $this->unSetQuoteId();
     }
 
     /**

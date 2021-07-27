@@ -2,11 +2,12 @@
 
 namespace Ls\Customer\Block\Order;
 
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Helper\OrderHelper;
-use \Ls\Omni\Helper\Data as DataHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
+use Ls\Omni\Client\Ecommerce\Entity\Order;
+use Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use Ls\Omni\Helper\Data as DataHelper;
+use Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -140,10 +141,10 @@ class Info extends Template
      */
     public function getFormattedAddress($isBillingAddress = false)
     {
-        $order        = $this->getOrder();
+        $order = $this->getOrder();
         if ($isBillingAddress == true) {
             $orderAddress = $order->getContactAddress();
-        }else{
+        } else {
             $orderAddress = $order->getShipToAddress();
         }
         $address = '';
@@ -158,7 +159,7 @@ class Info extends Template
                 $this->getCountryName($orderAddress->getCountry()) . '<br/>' : '';
             /** TODO update with Address Phone Number */
             $address .= $orderAddress->getPhoneNumber() ?
-             "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>" . $orderAddress->getPhoneNumber() . '</a>' : '';
+                "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>" . $orderAddress->getPhoneNumber() . '</a>' : '';
 
         }
         return $address;
@@ -218,8 +219,9 @@ class Info extends Template
     }
 
     /**
-     * For getting payment description
-     *
+     * DEV Notes:
+     * 1st entry is for normal tender type
+     * 2nd entry is specific for Giftcard.
      * @return array
      * @throws NoSuchEntityException
      */
@@ -230,19 +232,26 @@ class Info extends Template
         $giftCardInfo      = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping($this->getOrder());
         foreach ($paymentLines as $line) {
-            $tenderTypeId = $line->getTenderType();
-            if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
-                $method    = $tenderTypeMapping[$tenderTypeId];
-                $methods[] = __($method);
-                if (!empty($line->getCardNo())) {
-                    $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-                    if ($giftCardTenderId == $tenderTypeId) {
-                        $giftCardInfo[0] = $line->getCardNo();
-                        $giftCardInfo[1] = $line->getAmount();
+            /**
+             * Payments line can include multiple payment types
+             * i-e Refunds etc, but we only need to show Payment Type
+             * whose type == Payment and Pre Authorization
+             */
+            if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION) {
+                $tenderTypeId = $line->getTenderType();
+                if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
+                    $method    = $tenderTypeMapping[$tenderTypeId];
+                    $methods[] = __($method);
+                    if (!empty($line->getCardNo())) {
+                        $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                        if ($giftCardTenderId == $tenderTypeId) {
+                            $giftCardInfo[0] = $line->getCardNo();
+                            $giftCardInfo[1] = $line->getAmount();
+                        }
                     }
+                } else {
+                    $methods[] = __('Unknown');
                 }
-            } else {
-                $methods[] = __('Unknown');
             }
         }
         //TODO when order edit payment available for offline payment we need to change it.
