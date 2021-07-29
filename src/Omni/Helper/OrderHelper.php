@@ -18,6 +18,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
 use Magento\Sales\Model\ResourceModel\Order;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * Useful helper functions for order
@@ -66,6 +67,11 @@ class OrderHelper extends AbstractHelper
     public $tendertypesArray;
 
     /**
+     * @var Json
+     */
+    public $json;
+
+    /**
      * OrderHelper constructor.
      * @param Context $context
      * @param Model\Order $order
@@ -76,6 +82,7 @@ class OrderHelper extends AbstractHelper
      * @param CheckoutSessionProxy $checkoutSession
      * @param LSR $lsr
      * @param Order $orderResourceModel
+     * @param Json $json
      */
     public function __construct(
         Context $context,
@@ -86,7 +93,8 @@ class OrderHelper extends AbstractHelper
         CustomerSessionProxy $customerSession,
         CheckoutSessionProxy $checkoutSession,
         LSR $lsr,
-        Order $orderResourceModel
+        Order $orderResourceModel,
+        Json $json
     ) {
         parent::__construct($context);
         $this->order              = $order;
@@ -97,6 +105,7 @@ class OrderHelper extends AbstractHelper
         $this->checkoutSession    = $checkoutSession;
         $this->lsr                = $lsr;
         $this->orderResourceModel = $orderResourceModel;
+        $this->json               = $json;
     }
 
     /**
@@ -624,7 +633,14 @@ class OrderHelper extends AbstractHelper
         if ($this->tendertypesArray) {
             return $this->tendertypesArray;
         }
-        $paymentTenderTypesArray = $this->lsr->getStoreConfig(LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING);
+        $paymentTenderTypesArray = $this->lsr->getStoreConfig(
+            LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING,
+            $this->lsr->getCurrentStoreId(),
+        );
+
+        if (!is_array($paymentTenderTypesArray)) {
+            $paymentTenderTypesArray = $this->json->unserialize($paymentTenderTypesArray);
+        }
 
         foreach ($paymentTenderTypesArray as $row) {
             $this->tendertypesArray[$row['payment_method']] = $row['tender_type'];
@@ -637,15 +653,16 @@ class OrderHelper extends AbstractHelper
      * Get Tender type id by payment code
      *
      * @param $code
-     * @return mixed
+     * @return int|mixed
      */
     public function getPaymentTenderTypeId($code)
     {
+        $tenderTypeId            = 0;
         $paymentTenderTypesArray = $this->getPaymentTenderMapping();
         if (array_key_exists($code, $paymentTenderTypesArray)) {
-            return $paymentTenderTypesArray[$code];
+            $tenderTypeId = $paymentTenderTypesArray[$code];
         }
 
-        return [];
+        return $tenderTypeId;
     }
 }

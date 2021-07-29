@@ -5,7 +5,6 @@ namespace Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
 
@@ -82,17 +81,13 @@ class TenderTypesColumn extends Select
      * Return payment options array
      *
      * @return array
-     * @throws NoSuchEntityException
      */
     private function getSourceOptions(): array
     {
         $storeTenderTypes     = [];
         $websiteId            = (int)$this->request->getParam('website');
-        $webStoreId           = $this->lsr->getWebsiteConfig(
-            LSR::SC_SERVICE_STORE,
-            $websiteId
-        );
-        $storeTenderTypeArray = $this->helper->getTenderTypes($websiteId, $webStoreId);
+
+        $storeTenderTypeArray = $this->helper->getTenderTypes($websiteId);
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[] = [

@@ -592,7 +592,6 @@ class Data extends AbstractHelper
         $storeTenderTypes     = [];
         $storeTenderTypeArray = $this->getTenderTypes(
             $this->lsr->getCurrentStoreId(),
-            $order->getStoreId(),
         );
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
@@ -606,13 +605,14 @@ class Data extends AbstractHelper
     /**
      * For getting tender type information
      *
+     * @param $storeId
      * @return array|null
      */
-    public function getTenderTypes($storeId, $webStoreId)
+    public function getTenderTypes($storeId)
     {
         $items = null;
 
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('storeId', $webStoreId, 'eq')
+        $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('scope_id', $storeId, 'eq')->create();
         try {
             $items = $this->replStoreTenderTypeRepository->getList($searchCriteria)->getItems();
