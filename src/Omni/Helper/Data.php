@@ -583,11 +583,10 @@ class Data extends AbstractHelper
     /**
      * Get Tender type id mapping
      *
-     * @param $order
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getTenderTypesPaymentMapping($order)
+    public function getTenderTypesPaymentMapping()
     {
         $storeTenderTypes     = [];
         $storeTenderTypeArray = $this->getTenderTypes(

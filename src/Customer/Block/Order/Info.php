@@ -230,7 +230,7 @@ class Info extends Template
         $paymentLines      = $this->getOrder()->getPayments();
         $methods           = [];
         $giftCardInfo      = [];
-        $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping($this->getOrder());
+        $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         foreach ($paymentLines as $line) {
             /**
              * Payments line can include multiple payment types
