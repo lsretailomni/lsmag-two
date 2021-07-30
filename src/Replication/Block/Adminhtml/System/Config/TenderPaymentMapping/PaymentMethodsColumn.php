@@ -7,6 +7,9 @@ use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
 use \Ls\Omni\Model\System\Source\PaymentOption;
 
+/**
+ * payment methods class
+ */
 class PaymentMethodsColumn extends Select
 {
     /**

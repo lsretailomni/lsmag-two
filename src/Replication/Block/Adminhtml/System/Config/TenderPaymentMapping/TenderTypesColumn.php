@@ -8,6 +8,9 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
 
+/**
+ * Tender type class
+ */
 class TenderTypesColumn extends Select
 {
     /**
