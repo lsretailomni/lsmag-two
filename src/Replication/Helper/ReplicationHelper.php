@@ -1054,14 +1054,14 @@ class ReplicationHelper extends AbstractHelper
     /**
      * For getting tender type information
      *
-     * @param $storeId
+     * @param $scopeId
      * @return null|array
      */
-    public function getTenderTypes($storeId)
+    public function getTenderTypes($scopeId)
     {
         $items   = null;
         $filters = [
-            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq']
+            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
         ];
 
         $searchCriteria = $this->buildCriteriaForDirect($filters, -1, true);

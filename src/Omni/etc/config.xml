@@ -36,7 +36,7 @@
                 <tender_type_mapping>
                     <item1>
                         <payment_method>checkmo</payment_method>
-                        <tender_type>0</tender_type>
+                        <tender_type>2</tender_type>
                     </item1>
                     <item2>
                         <payment_method>giftcard</payment_method>

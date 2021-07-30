@@ -62,9 +62,9 @@ class OrderHelper extends AbstractHelper
     public $orderResourceModel;
 
     /**
-     * @var Array
+     * @var array
      */
-    public $tendertypesArray;
+    public $tendertypesArray = [];
 
     /**
      * @var Json
@@ -325,7 +325,6 @@ class OrderHelper extends AbstractHelper
                 ->setAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
             if (!empty($transId)) {
-                $orderPayment->setTenderType($tenderTypeId);
                 $orderPayment->setCardType($ccType);
                 $orderPayment->setCardNumber($cardNumber);
                 $orderPayment->setTokenNumber($transId);
@@ -338,9 +337,9 @@ class OrderHelper extends AbstractHelper
                         $orderPayment->setPaymentType(Entity\Enum\PaymentType::NONE);
                     }
                 }
-            } else {
-                $orderPayment->setTenderType($tenderTypeId);
             }
+
+            $orderPayment->setTenderType($tenderTypeId);
             $orderPayment->setPreApprovedValidDate($preApprovedDate);
             $orderPaymentArray[] = $orderPayment;
         }
@@ -635,7 +634,7 @@ class OrderHelper extends AbstractHelper
         }
         $paymentTenderTypesArray = $this->lsr->getStoreConfig(
             LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING,
-            $this->lsr->getCurrentStoreId(),
+            $this->lsr->getCurrentStoreId()
         );
 
         if (!is_array($paymentTenderTypesArray)) {
@@ -643,7 +642,9 @@ class OrderHelper extends AbstractHelper
         }
 
         foreach ($paymentTenderTypesArray as $row) {
-            $this->tendertypesArray[$row['payment_method']] = $row['tender_type'];
+            if (isset($row['tender_type'])) {
+                $this->tendertypesArray[$row['payment_method']] = $row['tender_type'];
+            }
         }
 
         return $this->tendertypesArray;

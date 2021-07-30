@@ -95,8 +95,6 @@ class TenderTypesColumn extends Select
                     'label' => __($storeTenderType->getName())
                 ];
             }
-
-            return $storeTenderTypes;
         }
 
         return $storeTenderTypes;

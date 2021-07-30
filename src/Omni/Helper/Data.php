@@ -589,9 +589,7 @@ class Data extends AbstractHelper
     public function getTenderTypesPaymentMapping()
     {
         $storeTenderTypes     = [];
-        $storeTenderTypeArray = $this->getTenderTypes(
-            $this->lsr->getCurrentStoreId(),
-        );
+        $storeTenderTypeArray = $this->getTenderTypes($this->lsr->getCurrentStoreId());
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[$storeTenderType->getOmniTenderTypeId()] = $storeTenderType->getName();
@@ -604,15 +602,15 @@ class Data extends AbstractHelper
     /**
      * For getting tender type information
      *
-     * @param $storeId
+     * @param $scopeId
      * @return array|null
      */
-    public function getTenderTypes($storeId)
+    public function getTenderTypes($scopeId)
     {
         $items = null;
 
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('scope_id', $storeId, 'eq')->create();
+            ->addFilter('scope_id', $scopeId, 'eq')->create();
         try {
             $items = $this->replStoreTenderTypeRepository->getList($searchCriteria)->getItems();
 

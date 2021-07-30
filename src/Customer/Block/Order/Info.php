@@ -228,8 +228,7 @@ class Info extends Template
     public function getPaymentDescription()
     {
         $paymentLines      = $this->getOrder()->getPayments();
-        $methods           = [];
-        $giftCardInfo      = [];
+        $methods           = $giftCardInfo = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         foreach ($paymentLines as $line) {
             /**
