@@ -83,7 +83,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
         "ls_replication_repl_product_group"              => ["nav_id", "scope_id"],
         "ls_replication_repl_shipping_agent"             => ["Name", "scope_id"],
         "ls_replication_repl_store"                      => ["nav_id", "scope_id"],
-        "ls_replication_repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
+        "ls_replication_repl_store_tender_type"          => ["TenderTypeId", "scope_id"],
         "ls_replication_repl_unit_of_measure"            => ["nav_id", "scope_id"],
         "ls_replication_repl_vendor"                     => ["Name", "scope_id"],
         "ls_replication_repl_hierarchy_hosp_deal_line"   => ["DealNo", "ItemNo", "LineNo", "UnitOfMeasure", "scope_id"],

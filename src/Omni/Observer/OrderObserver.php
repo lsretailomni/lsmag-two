@@ -112,7 +112,7 @@ class OrderObserver implements ObserverInterface
                     $paymentMethod = $order->getPayment()->getMethodInstance();
                     $transId       = $order->getPayment()->getLastTransId();
                     $check         = $paymentMethod->isOffline();
-                    if($paymentMethod->getCode() === 'free'){
+                    if ($paymentMethod->getCode() === 'free') {
                         $check = true;
                     }
                 }

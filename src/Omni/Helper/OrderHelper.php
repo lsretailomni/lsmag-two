@@ -18,6 +18,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
 use Magento\Sales\Model\ResourceModel\Order;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * Useful helper functions for order
@@ -61,6 +62,16 @@ class OrderHelper extends AbstractHelper
     public $orderResourceModel;
 
     /**
+     * @var array
+     */
+    public $tendertypesArray = [];
+
+    /**
+     * @var Json
+     */
+    public $json;
+
+    /**
      * OrderHelper constructor.
      * @param Context $context
      * @param Model\Order $order
@@ -71,6 +82,7 @@ class OrderHelper extends AbstractHelper
      * @param CheckoutSessionProxy $checkoutSession
      * @param LSR $lsr
      * @param Order $orderResourceModel
+     * @param Json $json
      */
     public function __construct(
         Context $context,
@@ -81,7 +93,8 @@ class OrderHelper extends AbstractHelper
         CustomerSessionProxy $customerSession,
         CheckoutSessionProxy $checkoutSession,
         LSR $lsr,
-        Order $orderResourceModel
+        Order $orderResourceModel,
+        Json $json
     ) {
         parent::__construct($context);
         $this->order              = $order;
@@ -92,6 +105,7 @@ class OrderHelper extends AbstractHelper
         $this->checkoutSession    = $checkoutSession;
         $this->lsr                = $lsr;
         $this->orderResourceModel = $orderResourceModel;
+        $this->json               = $json;
     }
 
     /**
@@ -294,7 +308,8 @@ class OrderHelper extends AbstractHelper
         $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
         // @codingStandardsIgnoreEnd
         //TODO change it to $paymentMethod->isOffline() == false when order edit option available for offline payments.
-        $paymentCode = $order->getPayment()->getMethodInstance()->getCode();
+        $paymentCode  = $order->getPayment()->getMethodInstance()->getCode();
+        $tenderTypeId = $this->getPaymentTenderTypeId($paymentCode);
 
         $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
 
@@ -310,7 +325,6 @@ class OrderHelper extends AbstractHelper
                 ->setAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
             if (!empty($transId)) {
-                $orderPayment->setTenderType('1');
                 $orderPayment->setCardType($ccType);
                 $orderPayment->setCardNumber($cardNumber);
                 $orderPayment->setTokenNumber($transId);
@@ -323,25 +337,16 @@ class OrderHelper extends AbstractHelper
                         $orderPayment->setPaymentType(Entity\Enum\PaymentType::NONE);
                     }
                 }
-            } else {
-                $orderPayment->setTenderType('0');
             }
+
+            $orderPayment->setTenderType($tenderTypeId);
             $orderPayment->setPreApprovedValidDate($preApprovedDate);
             $orderPaymentArray[] = $orderPayment;
         }
 
-        // @codingStandardsIgnoreLine
-        /*
-         * Not Supporting at the moment, so all payment methods will be offline,
-        if($order->getPayment()->getMethodInstance()->getCode() == 'cashondelivery'
-        || $order->getPayment()->getMethodInstance()->getCode() == 'checkmo'){
-            // 0 Mean cash.
-        }
-         *
-         */
-
         if ($order->getLsPointsSpent()) {
-            $pointRate = $this->loyaltyHelper->getPointRate();
+            $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
+            $pointRate    = $this->loyaltyHelper->getPointRate();
             // @codingStandardsIgnoreStart
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
@@ -353,10 +358,11 @@ class OrderHelper extends AbstractHelper
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getLsPointsSpent())
                 ->setPreApprovedValidDate($preApprovedDate)
-                ->setTenderType('3');
+                ->setTenderType($tenderTypeId);
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
         if ($order->getLsGiftCardAmountUsed()) {
+            $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
             // @codingStandardsIgnoreStart
             $orderPaymentGiftCard = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
@@ -369,7 +375,7 @@ class OrderHelper extends AbstractHelper
                 ->setCardNumber($order->getLsGiftCardNo())
                 ->setExternalReference($order->getIncrementId())
                 ->setPreApprovedValidDate($preApprovedDate)
-                ->setTenderType('4');
+                ->setTenderType($tenderTypeId);
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
 
@@ -614,5 +620,50 @@ class OrderHelper extends AbstractHelper
         }
 
         return $salesEntry->getId();
+    }
+
+    /**
+     * Get configuration value for tender type
+     *
+     * @return mixed
+     */
+    public function getPaymentTenderMapping()
+    {
+        if ($this->tendertypesArray) {
+            return $this->tendertypesArray;
+        }
+        $paymentTenderTypesArray = $this->lsr->getStoreConfig(
+            LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING,
+            $this->lsr->getCurrentStoreId()
+        );
+
+        if (!is_array($paymentTenderTypesArray)) {
+            $paymentTenderTypesArray = $this->json->unserialize($paymentTenderTypesArray);
+        }
+
+        foreach ($paymentTenderTypesArray as $row) {
+            if (isset($row['tender_type'])) {
+                $this->tendertypesArray[$row['payment_method']] = $row['tender_type'];
+            }
+        }
+
+        return $this->tendertypesArray;
+    }
+
+    /**
+     * Get Tender type id by payment code
+     *
+     * @param $code
+     * @return int|mixed
+     */
+    public function getPaymentTenderTypeId($code)
+    {
+        $tenderTypeId            = 0;
+        $paymentTenderTypesArray = $this->getPaymentTenderMapping();
+        if (array_key_exists($code, $paymentTenderTypesArray)) {
+            $tenderTypeId = $paymentTenderTypesArray[$code];
+        }
+
+        return $tenderTypeId;
     }
 }

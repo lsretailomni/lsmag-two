@@ -102,5 +102,9 @@
              sortOrder="10"
              resource="Ls_Replication::tax_setup" parent="Ls_Replication::replication_grid_group_second"
              action="ls_repl/grids/taxsetup"/>
+        <add id="Ls_Replication::store_tender_type" title="Store Tender Type" translate="title" module="Ls_Replication"
+             sortOrder="11"
+             resource="Ls_Replication::store_tender_type" parent="Ls_Replication::replication_grid_group_second"
+             action="ls_repl/grids/storetendertype"/>
     </menu>
 </config>

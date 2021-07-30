@@ -122,7 +122,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_product_group"              => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_shipping_agent"             => ["Name", "scope_id"],
         "ls_mag/replication/repl_store"                      => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_store_tender_type"          => ["StoreID", "TenderTypeId", "scope_id"],
+        "ls_mag/replication/repl_store_tender_type"          => ["TenderTypeId", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
         "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => [

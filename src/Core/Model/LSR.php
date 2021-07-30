@@ -330,10 +330,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //LoyaltyPoints
     const LS_LOYALTYPOINTS_SHOW_ON_CART = 'ls_mag/ls_loyaltypoints/cart';
     const LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT = 'ls_mag/ls_loyaltypoints/checkout';
+    const LS_LOYALTYPOINTS_TENDER_TYPE = 'loypoints';
 
     //GiftCard
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
+    const LS_GIFTCARD_TENDER_TYPE = 'giftcard';
 
     //Discount Management
     const LS_DISCOUNT_SHOW_ON_PRODUCT = 'ls_mag/ls_discounts/discount';
@@ -366,6 +368,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
     const LSR_SHIPMENT_ITEM_ID = 'ls_mag/ls_order_management/shipping_item_id';
     const LSR_SHIPMENT_TAX = 'ls_mag/ls_order_management/shipping_tax';
+    const LSR_PAYMENT_TENDER_TYPE_MAPPING = 'ls_mag/ls_order_management/tender_type_mapping';
 
     //Disaster Recovery Enabled/Disabled For Notification
     const LS_DISASTER_RECOVERY_STATUS = 'ls_mag/ls_disaster_recovery/notification';
@@ -469,7 +472,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * In case of notDefault we have to pass the StoreId
      * @param $path
      * @param bool $storeId
-     * @return string
+     * @return string | array
      */
     public function getStoreConfig($path, $storeId = false)
     {
