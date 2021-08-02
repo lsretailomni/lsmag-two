@@ -8,53 +8,53 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RecommendedItem extends LoyItem
+class RecommendedItem
 {
 
     /**
-     * @property float $Rating
+     * @property string $itemNo
      */
-    protected $Rating = null;
+    protected $itemNo = null;
 
     /**
-     * @property string $Reasoning
+     * @property float $lift
      */
-    protected $Reasoning = null;
+    protected $lift = null;
 
     /**
-     * @param float $Rating
+     * @param string $itemNo
      * @return $this
      */
-    public function setRating($Rating)
+    public function setItemNo($itemNo)
     {
-        $this->Rating = $Rating;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getRating()
-    {
-        return $this->Rating;
-    }
-
-    /**
-     * @param string $Reasoning
-     * @return $this
-     */
-    public function setReasoning($Reasoning)
-    {
-        $this->Reasoning = $Reasoning;
+        $this->itemNo = $itemNo;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getReasoning()
+    public function getItemNo()
     {
-        return $this->Reasoning;
+        return $this->itemNo;
+    }
+
+    /**
+     * @param float $lift
+     * @return $this
+     */
+    public function setLift($lift)
+    {
+        $this->lift = $lift;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLift()
+    {
+        return $this->lift;
     }
 
 
