@@ -100,6 +100,11 @@ class OrderLine extends Entity
     protected $UomId = null;
 
     /**
+     * @property boolean $ValidateTax
+     */
+    protected $ValidateTax = null;
+
+    /**
      * @property string $VariantDescription
      */
     protected $VariantDescription = null;
@@ -423,6 +428,24 @@ class OrderLine extends Entity
     public function getUomId()
     {
         return $this->UomId;
+    }
+
+    /**
+     * @param boolean $ValidateTax
+     * @return $this
+     */
+    public function setValidateTax($ValidateTax)
+    {
+        $this->ValidateTax = $ValidateTax;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getValidateTax()
+    {
+        return $this->ValidateTax;
     }
 
     /**

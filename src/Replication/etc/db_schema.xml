@@ -6,7 +6,7 @@
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
     <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="nav_id"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
-    <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
+    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>
     <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="UnitOfMeasure"/>
     <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
@@ -24,8 +24,20 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_BARCODE_NAV_ID">
       <column name="nav_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_BARCODE_ITEMID">
+      <column name="ItemId"/>
+    </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_BARCODE_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_BARCODE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_BARCODE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_BARCODE_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_currency" resource="default" engine="innodb" comment="ReplEcommCurrency">
@@ -58,6 +70,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_currency_exch_rate" resource="default" engine="innodb" comment="ReplEcommCurrencyRate">
     <column xsi:type="int" name="repl_currency_exch_rate_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_currency_exch_rate_id"/>
@@ -83,6 +104,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_extended_variant_value" resource="default" engine="innodb" comment="ReplEcommExtendedVariants">
@@ -123,6 +153,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_image_link" resource="default" engine="innodb" comment="ReplEcommImageLinks">
     <column xsi:type="int" name="repl_image_link_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_image_link_id"/>
@@ -131,7 +170,7 @@
     <column xsi:type="varchar" name="ImageId" length="200" nullable="true" comment="ImageId"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="varchar" name="KeyValue" length="200" nullable="true" comment="KeyValue"/>
-    <column xsi:type="text" name="TableName" nullable="true" comment="TableName"/>
+    <column xsi:type="varchar" name="TableName" length="200" nullable="true" comment="TableName"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
@@ -147,11 +186,23 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_IMAGEID">
       <column name="ImageId"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_TABLENAME">
+      <column name="TableName"/>
+    </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_KEYVALUE">
       <column name="KeyValue"/>
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_image" resource="default" engine="innodb" comment="ReplEcommImages">
@@ -181,6 +232,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_item_category" resource="default" engine="innodb" comment="ReplEcommItemCategories">
     <column xsi:type="int" name="repl_item_category_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_category_id"/>
@@ -205,6 +265,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_CATEGORY_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_CATEGORY_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_CATEGORY_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_CATEGORY_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_item" resource="default" engine="innodb" comment="ReplEcommItems">
     <column xsi:type="int" name="repl_item_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_id"/>
@@ -226,13 +295,13 @@
     <column xsi:type="decimal" name="GrossWeight" scale="4" precision="20" nullable="true" comment="GrossWeight"/>
     <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="nav_id"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
-    <column xsi:type="text" name="ItemCategoryCode" nullable="true" comment="ItemCategoryCode"/>
+    <column xsi:type="varchar" name="ItemCategoryCode" length="200" nullable="true" comment="ItemCategoryCode"/>
     <column xsi:type="text" name="ItemFamilyCode" nullable="true" comment="ItemFamilyCode"/>
     <column xsi:type="int" name="KeyingInPrice" padding="11" nullable="true" comment="KeyingInPrice"/>
     <column xsi:type="int" name="KeyingInQty" padding="11" nullable="true" comment="KeyingInQty"/>
     <column xsi:type="int" name="MustKeyInComment" padding="11" nullable="true" comment="MustKeyInComment"/>
     <column xsi:type="int" name="NoDiscountAllowed" padding="11" nullable="true" comment="NoDiscountAllowed"/>
-    <column xsi:type="text" name="ProductGroupId" nullable="true" comment="ProductGroupId"/>
+    <column xsi:type="varchar" name="ProductGroupId" length="200" nullable="true" comment="ProductGroupId"/>
     <column xsi:type="text" name="PurchUnitOfMeasure" nullable="true" comment="PurchUnitOfMeasure"/>
     <column xsi:type="text" name="SalseUnitOfMeasure" nullable="true" comment="SalseUnitOfMeasure"/>
     <column xsi:type="int" name="ScaleItem" padding="11" nullable="true" comment="ScaleItem"/>
@@ -259,8 +328,23 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_NAV_ID">
       <column name="nav_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_ITEMCATEGORYCODE">
+      <column name="ItemCategoryCode"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_PRODUCTGROUPID">
+      <column name="ProductGroupId"/>
+    </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_item_unit_of_measure" resource="default" engine="innodb" comment="ReplEcommItemUnitOfMeasures">
@@ -295,6 +379,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_item_variant_registration" resource="default" engine="innodb" comment="ReplEcommItemVariantRegistrations">
     <column xsi:type="int" name="repl_item_variant_registration_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_variant_registration_id"/>
@@ -328,6 +421,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_price" resource="default" engine="innodb" comment="ReplEcommPrices">
@@ -382,6 +484,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_product_group" resource="default" engine="innodb" comment="ReplEcommProductGroups">
     <column xsi:type="int" name="repl_product_group_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_product_group_id"/>
@@ -406,6 +517,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRODUCT_GROUP_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRODUCT_GROUP_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRODUCT_GROUP_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRODUCT_GROUP_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_store" resource="default" engine="innodb" comment="ReplEcommStores">
@@ -474,6 +594,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_UNIT_OF_MEASURE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_UNIT_OF_MEASURE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_UNIT_OF_MEASURE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_UNIT_OF_MEASURE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_collection" resource="default" engine="innodb" comment="ReplEcommCollection">
     <column xsi:type="int" name="repl_collection_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_collection_id"/>
@@ -527,6 +656,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDOR_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDOR_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDOR_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDOR_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_loy_vendor_item_mapping" resource="default" engine="innodb" comment="ReplEcommVendorItemMapping">
     <column xsi:type="int" name="repl_loy_vendor_item_mapping_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_loy_vendor_item_mapping_id"/>
@@ -558,6 +696,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_attribute" resource="default" engine="innodb" comment="ReplEcommAttribute">
     <column xsi:type="int" name="repl_attribute_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_id"/>
@@ -583,6 +730,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_attribute_value" resource="default" engine="innodb" comment="ReplEcommAttributeValue">
@@ -626,6 +782,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_attribute_option_value" resource="default" engine="innodb" comment="ReplEcommAttributeOptionValue">
     <column xsi:type="int" name="repl_attribute_option_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_option_value_id"/>
@@ -653,6 +818,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_data_translation" resource="default" engine="innodb" comment="ReplEcommDataTranslation">
@@ -686,6 +860,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_data_translation_lang_code" resource="default" engine="innodb" comment="ReplEcommDataTranslationLangCode">
     <column xsi:type="int" name="repl_data_translation_lang_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_data_translation_lang_code_id"/>
@@ -708,6 +891,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_validation_schedule" resource="default" engine="innodb" comment="ReplEcommValidationSchedule">
@@ -756,17 +948,26 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_hierarchy_node" resource="default" engine="innodb" comment="ReplEcommHierarchyNode">
     <column xsi:type="int" name="repl_hierarchy_node_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_node_id"/>
     <column xsi:type="int" name="ChildrenOrder" padding="11" nullable="true" comment="ChildrenOrder"/>
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
-    <column xsi:type="text" name="HierarchyCode" nullable="true" comment="HierarchyCode"/>
+    <column xsi:type="varchar" name="HierarchyCode" length="200" nullable="true" comment="HierarchyCode"/>
     <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="nav_id"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="ImageId"/>
     <column xsi:type="int" name="Indentation" padding="11" nullable="true" comment="Indentation"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
-    <column xsi:type="text" name="ParentNode" nullable="true" comment="ParentNode"/>
+    <column xsi:type="varchar" name="ParentNode" length="200" nullable="true" comment="ParentNode"/>
     <column xsi:type="int" name="PresentationOrder" padding="11" nullable="true" comment="PresentationOrder"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
@@ -780,18 +981,33 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_hierarchy_node_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_PARENTNODE">
+      <column name="ParentNode"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_HIERARCHYCODE">
+      <column name="HierarchyCode"/>
+    </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_NAV_ID">
       <column name="nav_id"/>
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_hierarchy_leaf" resource="default" engine="innodb" comment="ReplEcommHierarchyLeaf">
     <column xsi:type="int" name="repl_hierarchy_leaf_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_leaf_id"/>
     <column xsi:type="decimal" name="DealPrice" scale="4" precision="20" nullable="true" comment="DealPrice"/>
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
-    <column xsi:type="text" name="HierarchyCode" nullable="true" comment="HierarchyCode"/>
+    <column xsi:type="varchar" name="HierarchyCode" length="200" nullable="true" comment="HierarchyCode"/>
     <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="nav_id"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="ImageId"/>
     <column xsi:type="boolean" name="IsActive" default="0" nullable="true" comment="IsActive"/>
@@ -801,7 +1017,7 @@
     <column xsi:type="text" name="MemberValue" nullable="true" comment="MemberValue"/>
     <column xsi:type="varchar" name="NodeId" length="200" nullable="true" comment="NodeId"/>
     <column xsi:type="int" name="SortOrder" padding="11" nullable="true" comment="SortOrder"/>
-    <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
+    <column xsi:type="varchar" name="Type" length="200" nullable="true" comment="Type"/>
     <column xsi:type="int" name="ValidationPeriod" padding="11" nullable="true" comment="ValidationPeriod"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
@@ -821,8 +1037,23 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_NODEID">
       <column name="NodeId"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_HIERARCHYCODE">
+      <column name="HierarchyCode"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_TYPE">
+      <column name="Type"/>
+    </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_hierarchy_hosp_deal" resource="default" engine="innodb" comment="ReplEcommHierarchyHospDeal">
@@ -869,6 +1100,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_hierarchy_hosp_deal_line" resource="default" engine="innodb" comment="ReplEcommHierarchyHospDealLine">
     <column xsi:type="int" name="repl_hierarchy_hosp_deal_line_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_deal_line_id"/>
@@ -914,6 +1154,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_item_recipe" resource="default" engine="innodb" comment="ReplEcommItemRecipe">
     <column xsi:type="int" name="repl_item_recipe_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_recipe_id"/>
@@ -950,6 +1199,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_item_modifier" resource="default" engine="innodb" comment="ReplEcommItemModifier">
@@ -1008,6 +1266,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_loy_item" resource="default" engine="innodb" comment="ReplEcommFullItem">
     <column xsi:type="int" name="loy_item_id" padding="10" unsigned="false" nullable="false" identity="true" comment="loy_item_id"/>
@@ -1060,7 +1327,7 @@
     <column xsi:type="varchar" name="OfferNo" length="200" nullable="true" comment="OfferNo"/>
     <column xsi:type="int" name="PriorityNo" padding="11" nullable="true" comment="PriorityNo"/>
     <column xsi:type="varchar" name="StoreId" length="200" nullable="true" comment="StoreId"/>
-    <column xsi:type="text" name="ToDate" nullable="true" comment="ToDate"/>
+    <column xsi:type="varchar" name="ToDate" length="200" nullable="true" comment="ToDate"/>
     <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
     <column xsi:type="text" name="UnitOfMeasureId" nullable="true" comment="UnitOfMeasureId"/>
     <column xsi:type="int" name="ValidationPeriodId" padding="11" nullable="true" comment="ValidationPeriodId"/>
@@ -1086,6 +1353,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_OFFERNO">
       <column name="OfferNo"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_TODATE">
+      <column name="ToDate"/>
+    </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_STOREID">
       <column name="StoreId"/>
     </index>
@@ -1097,6 +1367,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_discount_validation" resource="default" engine="innodb" comment="ReplEcommDiscountValidations">
@@ -1156,6 +1435,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_shipping_agent" resource="default" engine="innodb" comment="ReplEcommShippingAgent">
     <column xsi:type="int" name="repl_shipping_agent_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_shipping_agent_id"/>
@@ -1181,6 +1469,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_SHIPPING_AGENT_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_SHIPPING_AGENT_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_SHIPPING_AGENT_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_SHIPPING_AGENT_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
   <table name="ls_replication_repl_customer" resource="default" engine="innodb" comment="ReplEcommMember">
@@ -1231,6 +1528,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_CUSTOMER_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_CUSTOMER_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_CUSTOMER_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_CUSTOMER_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_country_code" resource="default" engine="innodb" comment="ReplEcommCountryCode">
     <column xsi:type="int" name="repl_country_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_country_code_id"/>
@@ -1255,6 +1561,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
   </table>
   <table name="ls_replication_repl_store_tender_type" resource="default" engine="innodb" comment="ReplEcommStoreTenderTypes">
     <column xsi:type="int" name="repl_store_tender_type_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_tender_type_id"/>
@@ -1269,6 +1584,7 @@
     <column xsi:type="decimal" name="MaximumOverTenderAmount" scale="4" precision="20" nullable="true" comment="MaximumOverTenderAmount"/>
     <column xsi:type="decimal" name="MinimumChangeAmount" scale="4" precision="20" nullable="true" comment="MinimumChangeAmount"/>
     <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
+    <column xsi:type="text" name="OmniTenderTypeId" nullable="true" comment="OmniTenderTypeId"/>
     <column xsi:type="int" name="OpenDrawer" padding="11" nullable="true" comment="OpenDrawer"/>
     <column xsi:type="int" name="ReturnAllowed" padding="11" nullable="true" comment="ReturnAllowed"/>
     <column xsi:type="decimal" name="Rounding" scale="4" precision="20" nullable="true" comment="Rounding"/>
@@ -1348,6 +1664,15 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_SCOPE_ID">
       <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ISDELETED">
+      <column name="IsDeleted"/>
     </index>
   </table>
 </schema>

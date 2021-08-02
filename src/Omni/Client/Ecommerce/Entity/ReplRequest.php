@@ -12,6 +12,11 @@ class ReplRequest
 {
 
     /**
+     * @property string $AppId
+     */
+    protected $AppId = null;
+
+    /**
      * @property int $BatchSize
      */
     protected $BatchSize = null;
@@ -40,6 +45,24 @@ class ReplRequest
      * @property string $TerminalId
      */
     protected $TerminalId = null;
+
+    /**
+     * @param string $AppId
+     * @return $this
+     */
+    public function setAppId($AppId)
+    {
+        $this->AppId = $AppId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppId()
+    {
+        return $this->AppId;
+    }
 
     /**
      * @param int $BatchSize

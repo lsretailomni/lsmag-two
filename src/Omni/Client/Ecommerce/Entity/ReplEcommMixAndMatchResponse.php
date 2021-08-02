@@ -14,12 +14,12 @@ class ReplEcommMixAndMatchResponse implements ResponseInterface
 {
 
     /**
-     * @property ReplDiscountResponse $ReplEcommMixAndMatchResult
+     * @property ReplMixMatchResponse $ReplEcommMixAndMatchResult
      */
     protected $ReplEcommMixAndMatchResult = null;
 
     /**
-     * @param ReplDiscountResponse $ReplEcommMixAndMatchResult
+     * @param ReplMixMatchResponse $ReplEcommMixAndMatchResult
      * @return $this
      */
     public function setReplEcommMixAndMatchResult($ReplEcommMixAndMatchResult)
@@ -29,7 +29,7 @@ class ReplEcommMixAndMatchResponse implements ResponseInterface
     }
 
     /**
-     * @return ReplDiscountResponse
+     * @return ReplMixMatchResponse
      */
     public function getReplEcommMixAndMatchResult()
     {
@@ -37,7 +37,7 @@ class ReplEcommMixAndMatchResponse implements ResponseInterface
     }
 
     /**
-     * @return ReplDiscountResponse
+     * @return ReplMixMatchResponse
      */
     public function getResult()
     {

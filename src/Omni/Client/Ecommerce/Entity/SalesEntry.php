@@ -9,7 +9,6 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentStatus;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
 use Ls\Omni\Exception\InvalidEnumException;
@@ -96,11 +95,6 @@ class SalesEntry extends Entity
      * @property int $LineItemCount
      */
     protected $LineItemCount = null;
-
-    /**
-     * @property PaymentStatus $PaymentStatus
-     */
-    protected $PaymentStatus = null;
 
     /**
      * @property float $PointsRewarded
@@ -478,34 +472,6 @@ class SalesEntry extends Entity
     public function getLineItemCount()
     {
         return $this->LineItemCount;
-    }
-
-    /**
-     * @param PaymentStatus|string $PaymentStatus
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setPaymentStatus($PaymentStatus)
-    {
-        if ( ! $PaymentStatus instanceof PaymentStatus ) {
-            if ( PaymentStatus::isValid( $PaymentStatus ) )
-                $PaymentStatus = new PaymentStatus( $PaymentStatus );
-            elseif ( PaymentStatus::isValidKey( $PaymentStatus ) )
-                $PaymentStatus = new PaymentStatus( constant( "PaymentStatus::$PaymentStatus" ) );
-            elseif ( ! $PaymentStatus instanceof PaymentStatus )
-                throw new InvalidEnumException();
-        }
-        $this->PaymentStatus = $PaymentStatus->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return PaymentStatus
-     */
-    public function getPaymentStatus()
-    {
-        return $this->PaymentStatus;
     }
 
     /**
