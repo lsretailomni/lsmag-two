@@ -1644,8 +1644,8 @@ class ReplicationHelper extends AbstractHelper
     public function getAttributeSetId($attributeSetsMechanism, $joiningTableName, $storeId, $identifier)
     {
         $formattedIdentifier = $this->formatAttributeCode($identifier);
-        if ($this->getAttributeSetByName($formattedIdentifier)) {
-            $attributeSetId = $this->getAttributeSetByName($formattedIdentifier);
+        if ($attributeSet = $this->getAttributeSetByName($formattedIdentifier)) {
+            $attributeSetId = $attributeSet;
         } else {
             $attributes     = $this->getRelatedAttributesAssignedToGivenIdentifier(
                 $attributeSetsMechanism,
