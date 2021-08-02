@@ -249,7 +249,6 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "scope_id"
         ],
         "ls_replication_repl_store_tender_type" => [
-            "StoreID",
             "TenderTypeId",
             "scope_id"
         ],
