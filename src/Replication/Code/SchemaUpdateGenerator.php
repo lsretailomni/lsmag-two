@@ -18,80 +18,301 @@ use ReflectionException;
 class SchemaUpdateGenerator implements GeneratorInterface
 {
 
-    /** @var Metadata */
-    protected $metadata;
-
     /** @var array List of Replication Tables with unique field */
     public static $indexerColumnLists = [
-        "ls_replication_repl_attribute"                  => ["Code", "scope_id"],
-        "ls_replication_repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
-        "ls_replication_repl_attribute_value"            => [
+        "ls_replication_repl_attribute" => [
+            "Code",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_attribute_option_value" => [
+            "Code",
+            "Sequence",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_attribute_value" => [
             "Code",
             "LinkField1",
             "LinkField2",
             "LinkField3",
             "Sequence",
-            "scope_id"
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
         ],
-        "ls_replication_repl_barcode"                    => ["nav_id", "scope_id"],
-        "ls_replication_repl_country_code"               => ["Name", "scope_id"],
-        "ls_replication_repl_currency"                   => ["CurrencyCode", "scope_id"],
-        "ls_replication_repl_currency_exch_rate"         => ["CurrencyCode", "scope_id"],
-        "ls_replication_repl_customer"                   => ["AccountNumber", "scope_id"],
-        "ls_replication_repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_replication_repl_data_translation_lang_code" => ["Code", "scope_id"],
-        "ls_replication_repl_discount"                   => [
+        "ls_replication_repl_barcode" => [
+            "nav_id",
+            "ItemId",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_country_code" => [
+            "Name",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_currency" => [
+            "CurrencyCode",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_currency_exch_rate" => [
+            "CurrencyCode",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_customer" => [
+            "AccountNumber",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_data_translation" => [
+            "TranslationId",
+            "Key",
+            "LanguageCode",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_data_translation_lang_code" => [
+            "Code",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_discount" => [
             "ItemId",
             "LoyaltySchemeCode",
             "OfferNo",
+            "ToDate",
             "StoreId",
             "VariantId",
             "MinimumQuantity",
-            "scope_id"
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
         ],
-        "ls_replication_repl_discount_validation"        => ["nav_id", "scope_id"],
-        "ls_replication_repl_extended_variant_value"     => [
+        "ls_replication_repl_discount_validation" => [
+            "nav_id",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_extended_variant_value" => [
             "Code",
             "FrameworkCode",
             "ItemId",
             "Value",
-            "scope_id"
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
         ],
-        "ls_replication_repl_hierarchy"                  => ["nav_id", "scope_id"],
-        "ls_replication_repl_hierarchy_leaf"             => ["nav_id", "NodeId", "scope_id"],
-        "ls_replication_repl_hierarchy_node"             => ["nav_id", "scope_id"],
-        "ls_replication_repl_image"                      => ["nav_id", "scope_id"],
-        "ls_replication_repl_image_link"                 => ["ImageId", "KeyValue", "scope_id"],
-        "ls_replication_repl_item"                       => ["nav_id", "scope_id"],
-        "ls_replication_repl_item_category"              => ["nav_id", "scope_id"],
-        "ls_replication_repl_item_unit_of_measure"       => ["Code", "ItemId", "scope_id"],
-        "ls_replication_repl_item_variant_registration"  => [
+        "ls_replication_repl_hierarchy" => [
+            "nav_id",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_hierarchy_leaf" => [
+            "nav_id",
+            "NodeId",
+            "HierarchyCode",
+            "Type",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_hierarchy_node" => [
+            "ParentNode",
+            "HierarchyCode",
+            "nav_id",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_image" => [
+            "nav_id",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_image_link" => [
+            "ImageId",
+            "TableName",
+            "KeyValue",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_item" => [
+            "nav_id",
+            "ItemCategoryCode",
+            "ProductGroupId",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_item_category" => [
+            "nav_id",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_item_unit_of_measure" => [
+            "Code",
+            "ItemId",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_item_variant_registration" => [
             "ItemId",
             "VariantId",
-            "scope_id"
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
         ],
-        "ls_replication_repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
-        "ls_replication_repl_price"                      => [
+        "ls_replication_repl_loy_vendor_item_mapping" => [
+            "NavManufacturerId",
+            "NavProductId",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_price" => [
             "ItemId",
             "VariantId",
             "StoreId",
             "QtyPerUnitOfMeasure",
             "UnitOfMeasure",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_inv_status" => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_product_group" => [
+            "nav_id",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_shipping_agent" => [
+            "Name",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_store" => [
+            "nav_id",
             "scope_id"
         ],
-        "ls_replication_repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],
-        "ls_replication_repl_product_group"              => ["nav_id", "scope_id"],
-        "ls_replication_repl_shipping_agent"             => ["Name", "scope_id"],
-        "ls_replication_repl_store"                      => ["nav_id", "scope_id"],
-        "ls_replication_repl_store_tender_type"          => ["TenderTypeId", "scope_id"],
-        "ls_replication_repl_unit_of_measure"            => ["nav_id", "scope_id"],
-        "ls_replication_repl_vendor"                     => ["Name", "scope_id"],
-        "ls_replication_repl_hierarchy_hosp_deal_line"   => ["DealNo", "ItemNo", "LineNo", "UnitOfMeasure", "scope_id"],
-        "ls_replication_repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
-        "ls_replication_repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
-        "ls_replication_repl_item_modifier"              => ["nav_id", "VariantCode", "Code", "SubCode", "TriggerCode", "UnitOfMeasure", "scope_id"],
-        "ls_replication_loy_item"                        => ["nav_id"]
+        "ls_replication_repl_store_tender_type" => [
+            "TenderTypeId",
+            "scope_id"
+        ],
+        "ls_replication_repl_unit_of_measure" => [
+            "nav_id",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_vendor" => [
+            "Name",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_hierarchy_hosp_deal_line" => [
+            "DealNo",
+            "ItemNo",
+            "LineNo",
+            "UnitOfMeasure",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_hierarchy_hosp_deal" => [
+            "DealNo",
+            "No",
+            "LineNo",
+            "UnitOfMeasure",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_item_recipe" => [
+            "ItemNo",
+            "RecipeNo",
+            "UnitOfMeasure",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_repl_item_modifier" => [
+            "nav_id",
+            "VariantCode",
+            "Code",
+            "SubCode",
+            "TriggerCode",
+            "UnitOfMeasure",
+            "scope_id",
+            "processed",
+            "is_updated",
+            "IsDeleted"
+        ],
+        "ls_replication_loy_item" => [
+            "nav_id"
+        ]
     ];
+    /** @var Metadata */
+    protected $metadata;
 
     /**
      * SchemaUpdateGenerator constructor.
@@ -108,16 +329,16 @@ class SchemaUpdateGenerator implements GeneratorInterface
      */
     public function generate()
     {
-        $dom               = new DOMDocument('1.0');
+        $dom = new DOMDocument('1.0');
         $dom->formatOutput = true;
-        $schema            = $dom->createElement('schema');
+        $schema = $dom->createElement('schema');
         $schema->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $schema->setAttribute('xsi:noNamespaceSchemaLocation', 'urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd');
         $tables = [];
         foreach ($this->metadata->getOperations() as $operationName => $operation) {
             if (strpos($operationName, 'ReplEcomm') !== false) {
                 $replicationOperation = $this->metadata->getReplicationOperationByName($operation->getName());
-                $tableName            = "ls_replication_" . $replicationOperation->getTableName();
+                $tableName = "ls_replication_" . $replicationOperation->getTableName();
                 $tableIncludedInIndex = (array_key_exists($tableName, self::$indexerColumnLists) ? true : false);
                 if (!in_array($tableName, $tables)) {
                     $table = $dom->createElement('table');
@@ -134,54 +355,54 @@ class SchemaUpdateGenerator implements GeneratorInterface
                     $column->setAttribute('identity', 'true');
                     $column->setAttribute('comment', $replicationOperation->getTableColumnId());
                     $table->appendChild($column);
-                    $extraColumnsArray   = [
+                    $extraColumnsArray = [
                         [
-                            'name'       => 'processed',
+                            'name' => 'processed',
                             'field_type' => 'boolean',
-                            'default'    => '0',
-                            'comment'    => 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied'
+                            'default' => '0',
+                            'comment' => 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied'
                         ],
                         [
-                            'name'       => 'is_updated',
+                            'name' => 'is_updated',
                             'field_type' => 'boolean',
-                            'default'    => '0',
-                            'comment'    => 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables'
+                            'default' => '0',
+                            'comment' => 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables'
                         ],
                         [
-                            'name'       => 'is_failed',
+                            'name' => 'is_failed',
                             'field_type' => 'boolean',
-                            'default'    => '0',
-                            'comment'    => 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables'
+                            'default' => '0',
+                            'comment' => 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables'
                         ],
                         [
-                            'name'       => 'checksum',
+                            'name' => 'checksum',
                             'field_type' => 'text',
-                            'default'    => '',
-                            'comment'    => 'Checksum'
+                            'default' => '',
+                            'comment' => 'Checksum'
                         ],
                         [
-                            'name'       => 'processed_at',
+                            'name' => 'processed_at',
                             'field_type' => 'timestamp',
-                            'default'    => '',
-                            'comment'    => 'Processed At'
+                            'default' => '',
+                            'comment' => 'Processed At'
                         ],
                         [
-                            'name'       => 'created_at',
+                            'name' => 'created_at',
                             'field_type' => 'timestamp',
-                            'default'    => 'CURRENT_TIMESTAMP',
-                            'comment'    => 'Created At'
+                            'default' => 'CURRENT_TIMESTAMP',
+                            'comment' => 'Created At'
                         ],
                         [
-                            'name'       => 'updated_at',
+                            'name' => 'updated_at',
                             'field_type' => 'timestamp',
-                            'default'    => 'CURRENT_TIMESTAMP',
-                            'comment'    => 'Updated At'
+                            'default' => 'CURRENT_TIMESTAMP',
+                            'comment' => 'Updated At'
                         ]
                     ];
-                    $restrictions        = $this->metadata->getRestrictions();
-                    $reflectedEntity     = new ClassReflection($replicationOperation->getOmniEntityFqn());
+                    $restrictions = $this->metadata->getRestrictions();
+                    $reflectedEntity = new ClassReflection($replicationOperation->getOmniEntityFqn());
                     $defaultColumnsArray = $propertyTypes = [];
-                    $simpleTypes         = ['boolean', 'string', 'int', 'float'];
+                    $simpleTypes = ['boolean', 'string', 'int', 'float'];
                     foreach ($reflectedEntity->getProperties() as $property) {
                         $docblock = $property->getDocBlock()->getContents();
                         preg_match('/property\s(:?\w+)\s\$(:?\w+)/m', $docblock, $matches);
@@ -196,8 +417,8 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         }
                     }
                     foreach ($propertyTypes as $raw_name => $type) {
-                        $name    = $raw_name;
-                        $length  = null;
+                        $name = $raw_name;
+                        $length = null;
                         $default = '';
 
                         (array_search($type, $simpleTypes) === false) and ($type = 'string');
@@ -207,7 +428,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
                             $fieldType = 'decimal';
                         } elseif ($type == 'boolean') {
                             $fieldType = 'boolean';
-                            $default   = '0';
+                            $default = '0';
                         } else {
                             $lower_name = strtolower($name);
                             if (strpos($lower_name, 'image64') === false) {
@@ -221,17 +442,17 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         }
 
                         /** OMNI-5424, all indexer columns should be varchar 100 */
-                        if($tableIncludedInIndex){
-                            if(in_array($name,self::$indexerColumnLists[$tableName]) && $fieldType == 'text'){
+                        if ($tableIncludedInIndex) {
+                            if (in_array($name, self::$indexerColumnLists[$tableName]) && $fieldType == 'text') {
                                 $fieldType = 'varchar';
                             }
                         }
 
                         $defaultColumnsArray[] = [
-                            'name'       => $name,
+                            'name' => $name,
                             'field_type' => $fieldType,
-                            'default'    => $default,
-                            'comment'    => $name
+                            'default' => $default,
+                            'comment' => $name
                         ];
                     }
                     $allColumnsArray = array_merge($defaultColumnsArray, $extraColumnsArray);
@@ -245,8 +466,8 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         }
                         if ($columnValue['field_type'] == 'int')
                             $extraColumn->setAttribute('padding', '11');
-                        if($columnValue['field_type'] == 'varchar')
-                            $extraColumn->setAttribute('length',200);
+                        if ($columnValue['field_type'] == 'varchar')
+                            $extraColumn->setAttribute('length', 200);
                         if ($columnValue['default'] != '')
                             $extraColumn->setAttribute('default', $columnValue['default']);
                         if ($columnValue['name'] == 'created_at')
@@ -272,10 +493,10 @@ class SchemaUpdateGenerator implements GeneratorInterface
                      *       <column name="sku"/>
                      *  </index>
                      */
-                    if(array_key_exists($tableName, self::$indexerColumnLists)){
+                    if (array_key_exists($tableName, self::$indexerColumnLists)) {
                         $indexerColumns = self::$indexerColumnLists[$tableName];
-                        if($indexerColumns && !empty($indexerColumns)){
-                            foreach ($indexerColumns as $indexerColumn){
+                        if ($indexerColumns && !empty($indexerColumns)) {
+                            foreach ($indexerColumns as $indexerColumn) {
                                 $referenceId = strtoupper(implode("_", array($tableName, $indexerColumn)));
                                 $indexColumnNode = $dom->createElement('index');
                                 $indexColumnNode->setAttribute('indexType', 'btree');
@@ -306,7 +527,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
         $objectManager = ObjectManager::getInstance();
         /** @var  Reader $dirReader */
         $dirReader = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
-        $basePath  = $dirReader->getModuleDir('', 'Ls_Replication');
+        $basePath = $dirReader->getModuleDir('', 'Ls_Replication');
         return $basePath . "/etc/db_schema.xml";
     }
 }

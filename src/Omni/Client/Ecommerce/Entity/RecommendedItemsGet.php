@@ -14,58 +14,12 @@ class RecommendedItemsGet implements RequestInterface
 {
 
     /**
-     * @property string $userId
-     */
-    protected $userId = null;
-
-    /**
-     * @property string $storeId
-     */
-    protected $storeId = null;
-
-    /**
-     * @property string $items
+     * @property ArrayOfstring $items
      */
     protected $items = null;
 
     /**
-     * @param string $userId
-     * @return $this
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
-     * @param string $storeId
-     * @return $this
-     */
-    public function setStoreId($storeId)
-    {
-        $this->storeId = $storeId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStoreId()
-    {
-        return $this->storeId;
-    }
-
-    /**
-     * @param string $items
+     * @param ArrayOfstring $items
      * @return $this
      */
     public function setItems($items)
@@ -75,7 +29,7 @@ class RecommendedItemsGet implements RequestInterface
     }
 
     /**
-     * @return string
+     * @return ArrayOfstring
      */
     public function getItems()
     {
