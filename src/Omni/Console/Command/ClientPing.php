@@ -39,6 +39,10 @@ class ClientPing extends Command
         // @codingStandardsIgnoreLine
         $ping = new $class();
         $pong = $ping->execute();
-        $this->output->writeln($pong->getResult());
+        if($pong) {
+            $this->output->writeln($pong->getResult());
+        }else{
+            $this->output->writeln("ERROR: Unable to establish connection with Commerce Service");
+        }
     }
 }

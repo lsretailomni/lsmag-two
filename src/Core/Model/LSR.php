@@ -485,6 +485,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Use this where we want to retrieve non-cached value from core_config_data
+     * i-e like in processing crons.
      * @param $path
      * @param string $scope
      * @param int $scopeId

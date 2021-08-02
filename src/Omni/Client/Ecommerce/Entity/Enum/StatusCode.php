@@ -52,6 +52,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode USER_NOT_LOGGED_IN()
  * @$method static StatusCode L_S_KEY_INVALID()
  * @$method static StatusCode L_S_RECOMMEND_SETUP_MISSING()
+ * @$method static StatusCode L_S_RECOMMEND_ERROR()
  * @$method static StatusCode PRIMARY_KEY_DUPLICATION()
  * @$method static StatusCode OBJECT_ID_MISSING()
  * @$method static StatusCode OBJECT_MISSING()
@@ -260,6 +261,8 @@ class StatusCode extends Enum
     public const L_S_KEY_INVALID = 'LSKeyInvalid';
 
     public const L_S_RECOMMEND_SETUP_MISSING = 'LSRecommendSetupMissing';
+
+    public const L_S_RECOMMEND_ERROR = 'LSRecommendError';
 
     public const PRIMARY_KEY_DUPLICATION = 'PrimaryKeyDuplication';
 

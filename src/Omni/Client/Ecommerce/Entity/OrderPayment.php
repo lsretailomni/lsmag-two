@@ -45,6 +45,11 @@ class OrderPayment
     protected $CurrencyFactor = null;
 
     /**
+     * @property boolean $DepositPayment
+     */
+    protected $DepositPayment = null;
+
+    /**
      * @property string $ExternalReference
      */
     protected $ExternalReference = null;
@@ -180,6 +185,24 @@ class OrderPayment
     public function getCurrencyFactor()
     {
         return $this->CurrencyFactor;
+    }
+
+    /**
+     * @param boolean $DepositPayment
+     * @return $this
+     */
+    public function setDepositPayment($DepositPayment)
+    {
+        $this->DepositPayment = $DepositPayment;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDepositPayment()
+    {
+        return $this->DepositPayment;
     }
 
     /**
