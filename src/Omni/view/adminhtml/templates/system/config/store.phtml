@@ -1,95 +1,136 @@
 <script>
-	require([
-		'jquery',
-		'prototype',
-		'mage/validation',
-		'mage/translate'
-	], function ($, p, v, $t) {
-		function fetchStores() {
-			let baseUrl = $('#ls_mag_service_base_url').val();
-			let lsKey = $('#ls_mag_service_ls_key').val();
-			let websiteId = '<?php echo $block->getWebsiteId() ?>';
-			$('#ls_mag_service_base_url').validation();
-			if (!$('#ls_mag_service_base_url').validation('isValid')) {
-				return false;
-			}
-			$.ajax({
-				url: '<?php echo $block->getAjaxUrl(); ?>',
-				type: 'POST',
-				showLoader: true,
-				dataType: 'json',
-				data: {baseUrl: baseUrl, lsKey: lsKey, websiteId: websiteId},
-				complete: function (response) {
-					stores = response.responseJSON.store;
-					hierarchy = response.responseJSON.hierarchy;
-					version = response.responseJSON.version;
-					if (version) {
-						$("#row_ls_mag_service_version .control-value").html(version.service_version);
-						$("#row_ls_mag_service_ls_central_version .control-value").html(version.ls_central_version);
-					}
-					$("#ls_mag_service_selected_store option").remove();
-					$("#ls_mag_service_replicate_hierarchy_code option").remove();
-					$.each(stores, function (i, store) {
-						$('#ls_mag_service_selected_store').append($('<option>', {
-							value: store.value,
-							text: store.label
-						}));
-					});
-					$.each(hierarchy, function (i, val) {
-						$('#ls_mag_service_replicate_hierarchy_code').append($('<option>', {
-							value: val.value,
-							text: val.label
-						}));
-					});
-					alert($t(response.responseJSON.pong));
-				},
-				error: function (xhr, status, errorThrown) {
-					console.log('Error happens. Please try again.');
-				}
-			});
-		}
+    require([
+        'jquery',
+        'prototype',
+        'mage/validation',
+        'mage/translate'
+    ], function ($, p, v, $t) {
+        function fetchStores() {
+            let baseUrl = $('#ls_mag_service_base_url').val();
+            let lsKey = $('#ls_mag_service_ls_key').val();
+            let websiteId = '<?php echo $block->getWebsiteId() ?>';
+            $('#ls_mag_service_base_url').validation();
+            if (!$('#ls_mag_service_base_url').validation('isValid')) {
+                return false;
+            }
+            $.ajax({
+                url: '<?php echo $block->getAjaxUrl(); ?>',
+                type: 'POST',
+                showLoader: true,
+                dataType: 'json',
+                data: {baseUrl: baseUrl, lsKey: lsKey, websiteId: websiteId},
+                complete: function (response) {
+                    stores = response.responseJSON.store;
+                    hierarchy = response.responseJSON.hierarchy;
+                    version = response.responseJSON.version;
+                    if (version) {
+                        $("#row_ls_mag_service_version .control-value").html(version.service_version);
+                        $("#row_ls_mag_service_ls_central_version .control-value").html(version.ls_central_version);
+                    }
+                    $("#ls_mag_service_selected_store option").remove();
+                    $("#ls_mag_service_replicate_hierarchy_code option").remove();
+                    $.each(stores, function (i, store) {
+                        $('#ls_mag_service_selected_store').append($('<option>', {
+                            value: store.value,
+                            text: store.label
+                        }));
+                    });
+                    $.each(hierarchy, function (i, val) {
+                        $('#ls_mag_service_replicate_hierarchy_code').append($('<option>', {
+                            value: val.value,
+                            text: val.label
+                        }));
+                    });
+                    alert($t(response.responseJSON.pong));
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('Error happens. Please try again.');
+                }
+            });
+        }
 
-		function fetchHierarchy() {
-			let baseUrl = $('#ls_mag_service_base_url').val();
-			let lsKey = $('#ls_mag_service_ls_key').val();
-			$('#ls_mag_service_base_url').validation();
-			if (!$('#ls_mag_service_base_url').validation('isValid')) {
-				return false;
-			}
-			let storeId = $('#ls_mag_service_selected_store').val();
-			$.ajax({
-				url: '<?php echo $block->getAjaxHierarchyUrl(); ?>',
-				type: 'POST',
-				showLoader: true,
-				dataType: 'json',
-				data: {baseUrl: baseUrl, storeId: storeId, lsKey: lsKey},
-				complete: function (response) {
-					hierarchies = response.responseJSON.hierarchy;
-					$("#ls_mag_service_replicate_hierarchy_code option").remove();
-					$.each(hierarchies, function (i, hierarchy) {
-						$('#ls_mag_service_replicate_hierarchy_code').append($('<option>', {
-							value: hierarchy.value,
-							text: hierarchy.label
-						}));
-					});
-				},
-				error: function (xhr, status, errorThrown) {
-					console.log('Error happens. Please try again.');
-				}
-			});
-		}
+        function fetchHierarchy() {
+            let baseUrl = $('#ls_mag_service_base_url').val();
+            let lsKey = $('#ls_mag_service_ls_key').val();
+            $('#ls_mag_service_base_url').validation();
+            if (!$('#ls_mag_service_base_url').validation('isValid')) {
+                return false;
+            }
+            let storeId = $('#ls_mag_service_selected_store').val();
+            $.ajax({
+                url: '<?php echo $block->getAjaxHierarchyUrl(); ?>',
+                type: 'POST',
+                showLoader: true,
+                dataType: 'json',
+                data: {baseUrl: baseUrl, storeId: storeId, lsKey: lsKey},
+                complete: function (response) {
+                    hierarchies = response.responseJSON.hierarchy;
+                    $("#ls_mag_service_replicate_hierarchy_code option").remove();
+                    $.each(hierarchies, function (i, hierarchy) {
+                        $('#ls_mag_service_replicate_hierarchy_code').append($('<option>', {
+                            value: hierarchy.value,
+                            text: hierarchy.label
+                        }));
+                    });
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('Error happens. Please try again.');
+                }
+            });
+        }
 
-		$('#ls_mag_service_selected_store').on('change', function () {
-			let storeId = $('#ls_mag_service_selected_store').val();
-			if (storeId == "") {
-				return false;
-			}
-			fetchHierarchy();
-		});
+        function fetchStoreTenderTypes() {
+            let baseUrl = $('#ls_mag_service_base_url').val();
+            let lsKey = $('#ls_mag_service_ls_key').val();
+            $('#ls_mag_service_base_url').validation();
+            if (!$('#ls_mag_service_base_url').validation('isValid')) {
+                return false;
+            }
+            let storeId = $('#ls_mag_service_selected_store').val();
+            let scopeId = '<?php echo $block->getWebsiteId(); ?>';
+            $.ajax({
+                url: '<?php echo $block->getAjaxStoreTenderTypesUrl(); ?>',
+                type: 'POST',
+                showLoader: true,
+                dataType: 'json',
+                data: {baseUrl: baseUrl, storeId: storeId, lsKey: lsKey, scopeId: scopeId},
+                complete: function (response) {
+                    let storeTenderTypes = response.responseJSON.storeTenderTypes;
+                    $("#item1_tender_type option").remove();
+                    $("#item2_tender_type option").remove();
+                    $("#item3_tender_type option").remove();
+                    $.each(storeTenderTypes, function (i, storeTenderType) {
+                        for(let count=1; count<=storeTenderTypes.length; count++) {
+                            let selected = false;
+                            if (storeTenderType.selectedKey === 'item'+count) {
+                                selected = true;
+                            }
+                            $('#item' + count + '_tender_type').append($('<option>', {
+                                value: storeTenderType.value,
+                                text: storeTenderType.label,
+                                selected: selected
+                            }));
+                        }
+                    });
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('Error happens. Please try again.');
+                }
+            });
+        }
 
-		$('#validate_base_url').click(function () {
-			fetchStores();
-		});
-	});
+        $('#ls_mag_service_selected_store').on('change', function () {
+            let storeId = $('#ls_mag_service_selected_store').val();
+            if (storeId == "") {
+                return false;
+            }
+            fetchHierarchy();
+            fetchStoreTenderTypes();
+        });
+
+        $('#validate_base_url').click(function () {
+            fetchStores();
+        });
+    });
 </script>
 <?php echo $block->getButtonHtml(); ?>

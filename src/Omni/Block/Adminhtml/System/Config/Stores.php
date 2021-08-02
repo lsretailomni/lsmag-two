@@ -81,6 +81,14 @@ class Stores extends Field
     }
 
     /**
+     * @return string
+     */
+    public function getAjaxStoreTenderTypesUrl()
+    {
+        return $this->getUrl('omni/system_config/loadTenderType');
+    }
+
+    /**
      * @return mixed
      */
     public function getWebsiteId()

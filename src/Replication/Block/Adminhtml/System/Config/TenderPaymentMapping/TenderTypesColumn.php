@@ -3,6 +3,7 @@
 namespace Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping;
 
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Element\Context;
@@ -21,13 +22,16 @@ class TenderTypesColumn extends Select
     /** @var RequestInterface */
     public $request;
 
+    /** @var Data */
+    public $dataHelper;
+
     /** @var LSR */
     public $lsr;
 
     /**
-     * TenderTypesColumn constructor.
      * @param Context $context
      * @param ReplicationHelper $helper
+     * @param Data $dataHelper
      * @param LSR $lsr
      * @param RequestInterface $request
      * @param array $data
@@ -35,14 +39,16 @@ class TenderTypesColumn extends Select
     public function __construct(
         Context $context,
         ReplicationHelper $helper,
+        Data $dataHelper,
         LSR $lsr,
         RequestInterface $request,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->helper  = $helper;
-        $this->lsr     = $lsr;
-        $this->request = $request;
+        $this->helper     = $helper;
+        $this->dataHelper = $dataHelper;
+        $this->lsr        = $lsr;
+        $this->request    = $request;
     }
 
     /**
@@ -87,10 +93,14 @@ class TenderTypesColumn extends Select
      */
     private function getSourceOptions(): array
     {
-        $storeTenderTypes     = [];
-        $websiteId            = (int)$this->request->getParam('website');
+        $storeTenderTypes = [];
+        $scopeId          = (int)$this->request->getParam('website');
 
-        $storeTenderTypeArray = $this->helper->getTenderTypes($websiteId);
+        $storeTenderTypeArray = $this->helper->getTenderTypes($scopeId);
+        if (empty($storeTenderTypeArray)) {
+            $storeTenderTypeArray = $this->dataHelper->getTenderTypesDirectly($scopeId);
+        }
+        $storeTenderTypes[] = ['value' => '', 'label' => __('Select tender type')];
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[] = [

@@ -31,10 +31,12 @@ class TenderPaymentMapping extends AbstractFieldArray
     {
         $this->addColumn('payment_method', [
             'label'    => __('Payment Methods'),
+            'class'    => 'required-entry',
             'renderer' => $this->getPaymentMethodsRenderer()
         ]);
         $this->addColumn('tender_type', [
             'label'    => __('Tender Types'),
+            'class'    => 'required-entry',
             'renderer' => $this->getTenderTypesRenderer()
         ]);
         $this->_addAfter       = false;

@@ -15,6 +15,8 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -589,7 +591,11 @@ class Data extends AbstractHelper
     public function getTenderTypesPaymentMapping()
     {
         $storeTenderTypes     = [];
-        $storeTenderTypeArray = $this->getTenderTypes($this->lsr->getCurrentStoreId());
+        $scopeId              = $this->lsr->getCurrentStoreId();
+        $storeTenderTypeArray = $this->getTenderTypes($scopeId);
+        if (empty($storeTenderTypeArray)) {
+            $storeTenderTypeArray = $this->getTenderTypesDirectly($scopeId);
+        }
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[$storeTenderType->getOmniTenderTypeId()] = $storeTenderType->getName();
@@ -619,5 +625,50 @@ class Data extends AbstractHelper
         }
 
         return $items;
+    }
+
+    /**
+     * Getting tender types directly through API
+     *
+     * @param $scopeId
+     * @param null $storeId
+     * @param null $baseUrl
+     * @param null $lsKey
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getTenderTypesDirectly($scopeId, $storeId = null, $baseUrl = null, $lsKey = null)
+    {
+        $result = null;
+        if ($baseUrl == null) {
+            $baseUrl = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
+        }
+        if ($storeId == null) {
+            $storeId = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $scopeId);
+        }
+        if ($this->lsr->validateBaseUrl($baseUrl) && $storeId != '') {
+            if ($lsKey == null) {
+                $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
+            }
+            //@codingStandardsIgnoreStart
+            $service_type = new ServiceType(Operation\ReplEcommStoreTenderTypes::SERVICE_TYPE);
+            $url          = OmniService::getUrl($service_type, $baseUrl);
+            $client       = new OmniClient($url, $service_type);
+            $request      = new Operation\ReplEcommStoreTenderTypes();
+            $request->setClient($client);
+            $request->setToken($lsKey);
+            $client->setClassmap($request->getClassMap());
+            $request->getOperationInput()->setReplRequest((new Entity\ReplRequest())->setBatchSize(1000)
+                ->setFullReplication(1)
+                ->setLastKey('')
+                ->setStoreId($storeId));
+            //@codingStandardsIgnoreEnd
+            $result = $request->execute();
+            if ($result != null) {
+                $result = $result->getResult()->getStoreTenderTypes()->getReplStoreTenderType();
+            }
+        }
+
+        return $result;
     }
 }
