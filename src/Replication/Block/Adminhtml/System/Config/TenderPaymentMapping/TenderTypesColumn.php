@@ -3,7 +3,7 @@
 namespace Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping;
 
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Element\Context;
