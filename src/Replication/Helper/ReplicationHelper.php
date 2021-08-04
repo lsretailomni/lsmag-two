@@ -14,6 +14,7 @@ use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
 use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
+use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -212,6 +213,9 @@ class ReplicationHelper extends AbstractHelper
     /** @var ReplTaxSetupRepositoryInterface */
     public $replTaxSetupRepository;
 
+    /** @var ReplStoreTenderTypeRepositoryInterface */
+    public $replStoreTenderTypeRepository;
+
     /**
      * ReplicationHelper constructor.
      * @param Context $context
@@ -250,6 +254,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplExtendedVariantValueRepository $extendedVariantValueRepository
      * @param ReplItemUnitOfMeasure $replItemUomRepository
      * @param ReplTaxSetupRepositoryInterface $replTaxSetupRepository
+     * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
      */
     public function __construct(
         Context $context,
@@ -287,7 +292,8 @@ class ReplicationHelper extends AbstractHelper
         ConfigurableProTypeModel $configurableProTypeModel,
         ReplExtendedVariantValueRepository $extendedVariantValueRepository,
         ReplItemUnitOfMeasure $replItemUomRepository,
-        ReplTaxSetupRepositoryInterface $replTaxSetupRepository
+        ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
+        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -324,6 +330,7 @@ class ReplicationHelper extends AbstractHelper
         $this->extendedVariantValueRepository            = $extendedVariantValueRepository;
         $this->replItemUomRepository                     = $replItemUomRepository;
         $this->replTaxSetupRepository                    = $replTaxSetupRepository;
+        $this->replStoreTenderTypeRepository             = $replStoreTenderTypeRepository;
         parent::__construct(
             $context
         );
@@ -1036,6 +1043,31 @@ class ReplicationHelper extends AbstractHelper
 
         try {
             $items = $this->replTaxSetupRepository->getList($searchCriteria)->getItems();
+
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+
+        return $items;
+    }
+
+    /**
+     * For getting tender type information
+     *
+     * @param $scopeId
+     * @return null|array
+     */
+    public function getTenderTypes($scopeId)
+    {
+        $items   = null;
+        $filters = [
+            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
+        ];
+
+        $searchCriteria = $this->buildCriteriaForDirect($filters, -1, true);
+
+        try {
+            $items = $this->replStoreTenderTypeRepository->getList($searchCriteria)->getItems();
 
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
