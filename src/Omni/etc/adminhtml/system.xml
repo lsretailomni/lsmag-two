@@ -223,6 +223,11 @@
                     <comment>Shipping tax while placing the order</comment>
                     <source_model>Ls\Replication\Block\Adminhtml\System\Config\Tax</source_model>
                 </field>
+                <field id="tender_type_mapping" translate="label" sortOrder="5" showInWebsite="1">
+                    <label>Tender Type Mapping</label>
+                    <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
             </group>
         </section>
         <!-- For shipment Method -->

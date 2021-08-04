@@ -3,9 +3,10 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Helper\Data as DataHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Directory\Model\CountryFactory;
@@ -19,7 +20,6 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context as TemplateContext;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\OrderRepository;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 
 /**
  * Block being used for various sections on order detail
@@ -79,6 +79,11 @@ class Info extends Template
     public $lsr;
 
     /**
+     * @var DataHelper
+     */
+    public $dataHelper;
+
+    /**
      * Info constructor.
      * @param TemplateContext $context
      * @param Registry $registry
@@ -90,6 +95,7 @@ class Info extends Template
      * @param Proxy $customerSession
      * @param Context $httpContext
      * @param LSR $lsr
+     * @param DataHelper $dataHelper
      * @param array $data
      */
     public function __construct(
@@ -103,6 +109,7 @@ class Info extends Template
         Proxy $customerSession,
         Context $httpContext,
         LSR $lsr,
+        DataHelper $dataHelper,
         array $data = []
     ) {
         $this->coreRegistry          = $registry;
@@ -114,6 +121,7 @@ class Info extends Template
         $this->customerSession       = $customerSession;
         $this->httpContext           = $httpContext;
         $this->lsr                   = $lsr;
+        $this->dataHelper            = $dataHelper;
         parent::__construct($context, $data);
     }
 
@@ -215,14 +223,13 @@ class Info extends Template
      * 1st entry is for normal tender type
      * 2nd entry is specific for Giftcard.
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getPaymentDescription()
     {
-        // @codingStandardsIgnoreStart
-        $paymentLines = $this->getOrder()->getPayments();
-        $methods      = array();
-        $giftCardInfo = array();
-        // @codingStandardsIgnoreEnd
+        $paymentLines      = $this->getOrder()->getPayments();
+        $methods           = $giftCardInfo = [];
+        $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         foreach ($paymentLines as $line) {
             /**
              * Payments line can include multiple payment types
@@ -230,18 +237,17 @@ class Info extends Template
              * whose type == Payment and Pre Authorization
              */
             if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION) {
-                if ($line->getTenderType() == '0') {
-                    $methods[] = __('Cash');
-                } elseif ($line->getTenderType() == '1') {
-                    $methods[] = __('Card');
-                } elseif ($line->getTenderType() == '2') {
-                    $methods[] = __('Coupon');
-                } elseif ($line->getTenderType() == '3') {
-                    $methods[] = __('Loyalty Points');
-                } elseif ($line->getTenderType() == '4') {
-                    $methods[]       = __('Gift Card');
-                    $giftCardInfo[0] = $line->getCardNo();
-                    $giftCardInfo[1] = $line->getAmount();
+                $tenderTypeId = $line->getTenderType();
+                if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
+                    $method    = $tenderTypeMapping[$tenderTypeId];
+                    $methods[] = __($method);
+                    if (!empty($line->getCardNo())) {
+                        $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                        if ($giftCardTenderId == $tenderTypeId) {
+                            $giftCardInfo[0] = $line->getCardNo();
+                            $giftCardInfo[1] = $line->getAmount();
+                        }
+                    }
                 } else {
                     $methods[] = __('Unknown');
                 }
@@ -251,6 +257,7 @@ class Info extends Template
         if (empty($paymentLines->getSalesEntryPayment())) {
             $methods[] = __('Pay At Store');
         }
+
         return [implode(', ', $methods), $giftCardInfo];
     }
 

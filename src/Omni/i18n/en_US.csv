@@ -19,6 +19,8 @@ Special,Special
 "No hierarchy code found for the selected store","No hierarchy code found for the selected store"
 "Please select your web store","Please select your web store"
 "No store found for entered omni api url","No store found for entered omni api url"
+"Select tender type","Select tender type"
+"No tender type found","No tender type found"
 "The gift card code %1 is not valid.","The gift card code %1 is not valid."
 "You have successfully cancelled the gift card.","You have successfully cancelled the gift card."
 "The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (%2).","The applied amount %3 is greater than gift card balance amount (%1) or it is greater than order balance (%2)."
@@ -190,6 +192,7 @@ Coupons,Coupons
                         calculate the flat shipment amount and is sent as a separate orderline with the order."
 "Shipping Tax","Shipping Tax"
 "Shipping tax while placing the order","Shipping tax while placing the order"
+"Tender Type Mapping","Tender Type Mapping"
 "Click And Collect","Click And Collect"
 Title,Title
 "Method Name","Method Name"
