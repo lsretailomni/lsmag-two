@@ -184,6 +184,11 @@ class ContactHelper extends AbstractHelper
     public $accountConfirmation;
 
     /**
+     * @var StockHelper
+     */
+    public $stockHelper;
+
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder
@@ -218,6 +223,7 @@ class ContactHelper extends AbstractHelper
      * @param CustomerRegistry $customerRegistry
      * @param Authentication $authentication
      * @param AccountConfirmation $accountConfirmation
+     * @param StockHelper $stockHelper
      */
     public function __construct(
         Context $context,
@@ -252,7 +258,8 @@ class ContactHelper extends AbstractHelper
         DateTime $date,
         CustomerRegistry $customerRegistry,
         Authentication $authentication,
-        AccountConfirmation $accountConfirmation
+        AccountConfirmation $accountConfirmation,
+        StockHelper $stockHelper
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -286,6 +293,7 @@ class ContactHelper extends AbstractHelper
         $this->customerRegistry      = $customerRegistry;
         $this->authentication        = $authentication;
         $this->accountConfirmation   = $accountConfirmation;
+        $this->stockHelper           = $stockHelper;
         parent::__construct(
             $context
         );
@@ -1442,6 +1450,12 @@ class ContactHelper extends AbstractHelper
      */
     public function updateBasketAndWishlistAfterLogin($result)
     {
+        $quote = $this->checkoutSession->getQuote();
+        $items = $quote->getAllVisibleItems();
+        foreach ($items as $item) {
+            $this->stockHelper->validateQty($item->getQty(), $item, $quote, true);
+        }
+
         $oneListBasket = $this->getOneListTypeObject(
             $result->getOneLists()->getOneList(),
             Entity\Enum\ListType::BASKET

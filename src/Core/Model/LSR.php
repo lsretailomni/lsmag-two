@@ -657,11 +657,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * check if inventory lookup is enabled
+     * @param null $storeId
      * @return string
      */
-    public function inventoryLookupBeforeAddToCartEnabled()
+    public function inventoryLookupBeforeAddToCartEnabled($storeId = null)
     {
-        return $this->getStoreConfig(self::SC_CART_CHECK_INVENTORY);
+        //If StoreID is not passed they retrieve it from the global area.
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+
+        return $this->getStoreConfig(self::SC_CART_CHECK_INVENTORY, $storeId);
     }
 
     /**
@@ -744,12 +750,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Check if order cancellation on frontend is enabled or not
-     *
-     * @return bool
+     * @param null $storeId
+     * @return string
      * @throws NoSuchEntityException
      */
-    public function orderCancellationOnFrontendIsEnabled()
+    public function orderCancellationOnFrontendIsEnabled($storeId = null)
     {
-        return $this->getStoreConfig(self::SC_ORDER_CANCELLATION_PATH, $this->getCurrentStoreId());
+        //If StoreID is not passed they retrieve it from the global area.
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+        return $this->getStoreConfig(self::SC_ORDER_CANCELLATION_PATH, $storeId);
     }
 }
