@@ -2,12 +2,15 @@
 /**
  * Recent order template
  *
- * @var \Ls\Customer\Block\Order\Recent $block
- * @var \Magento\Framework\Escaper $escaper
+ * @var Recent $block
+ * @var Escaper $escaper
  */
 
+use \Ls\Customer\Block\Order\Recent;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\Data\Helper\PostHelper;
+use Magento\Framework\Escaper;
 
 ?>
 <div class="block block-dashboard-orders">
@@ -96,7 +99,9 @@ use Magento\Framework\Data\Helper\PostHelper;
                                                 </a>
                                             <?php endif; ?>
                                             <?php if ($magOrder->canCancel() &&
-                                            $block->orderCancellationOnFrontendIsEnabled()): ?>
+                                            $block->orderCancellationOnFrontendIsEnabled() &&
+                                            strtolower($_order->getStatus()) !== strtolower(LSR::LS_STATE_CANCELED)
+                                            ): ?>
                                             <a href="#"
                                                class="action order cancel"
                                                data-post='<?= /* @escapeNotVerified */

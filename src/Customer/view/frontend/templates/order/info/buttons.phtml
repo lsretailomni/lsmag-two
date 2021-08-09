@@ -2,7 +2,8 @@
 // @codingStandardsIgnoreFile
 /** @var  $block Info */
 
-use Ls\Customer\Block\Order\Info;
+use \Ls\Core\Model\LSR;
+use \Ls\Customer\Block\Order\Info;
 use Magento\Framework\Data\Helper\PostHelper;
 
 ?>
@@ -21,7 +22,9 @@ $magOrder = $block->getMagOrder();
                 <span><?= /* @escapeNotVerified */ __('Reorder') ?></span>
             </a>
         <?php endif ?>
-        <?php if ($magOrder->canCancel() && $block->orderCancellationOnFrontendIsEnabled()): ?>
+        <?php if ($magOrder->canCancel() &&
+            $block->orderCancellationOnFrontendIsEnabled() &&
+            strtolower($centralOrder->getStatus()) !== strtolower(LSR::LS_STATE_CANCELED)): ?>
             <a href="#"
                class="action order cancel"
                data-post='<?= /* @escapeNotVerified */
