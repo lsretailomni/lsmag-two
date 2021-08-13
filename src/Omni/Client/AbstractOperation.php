@@ -192,11 +192,11 @@ abstract class AbstractOperation implements OperationInterface
                     $operation_name
                 )
             );
-
+            $seconds = $timeElapsed->s+$timeElapsed->f;
             $this->logger->debug(
                 sprintf(
                     "==== Time Elapsed ==== %s ==== %s ====",
-                    $timeElapsed->format("%h hours %i minutes %s seconds"),
+                    $timeElapsed->format("%i minute(s) ". $seconds." second(s)"),
                     $operation_name
                 )
             );
