@@ -104,6 +104,7 @@ abstract class AbstractOperation implements OperationInterface
             )
         );
         //@codingStandardsIgnoreEnd
+        $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
             $response = $client->{$operation_name}($request_input);
         } catch (SoapFault $e) {
@@ -117,7 +118,8 @@ abstract class AbstractOperation implements OperationInterface
                 $response = null;
             }
         }
-        $this->debugLog($operation_name);
+        $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+        $this->debugLog($operation_name, $requestTime, $responseTime);
         return $response;
     }
     // @codingStandardsIgnoreEnd
@@ -156,21 +158,49 @@ abstract class AbstractOperation implements OperationInterface
     }
 
     /**
+     * Log request, response and time elapsed
+     *
      * @param $operation_name
+     * @param $requestTime
+     * @param $responseTime
      */
-    private function debugLog($operation_name)
+    private function debugLog($operation_name, $requestTime, $responseTime)
     {
         //@codingStandardsIgnoreStart
         $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
         //@codingStandardsIgnoreEnd
         $isEnable = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
+        $timeElapsed = $requestTime->diff($responseTime);
+
         if ($isEnable) {
-            $this->logger->debug("==== REQUEST == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
+            $this->logger->debug(
+                sprintf(
+                    "==== REQUEST ==== %s ==== %s ====",
+                    $requestTime->format("m-d-Y H:i:s.u"),
+                    $operation_name
+                )
+            );
+
             if (!empty($this->getClient()->getLastRequest())) {
                 $this->logger->debug($this->formatXML($this->getClient()->getLastRequest()));
             }
 
-            $this->logger->debug("==== RESPONSE == " . date("Y-m-d H:i:s O") . " == " . $operation_name . " ====");
+            $this->logger->debug(
+                sprintf(
+                    "==== RESPONSE ==== %s ==== %s ====",
+                    $responseTime->format("m-d-Y H:i:s.u"),
+                    $operation_name
+                )
+            );
+            $seconds = $timeElapsed->s+$timeElapsed->f;
+            $this->logger->debug(
+                sprintf(
+                    "==== Time Elapsed ==== %s ==== %s ====",
+                    $timeElapsed->format("%i minute(s) ". $seconds." second(s)"),
+                    $operation_name
+                )
+            );
+
             if (!empty($this->getClient()->getLastResponse())) {
                 $this->logger->debug($this->formatXML($this->getClient()->getLastResponse()));
             }
