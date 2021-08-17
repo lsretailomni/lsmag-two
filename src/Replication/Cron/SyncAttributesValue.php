@@ -98,7 +98,7 @@ class SyncAttributesValue extends ProductCreateTask
     public function processAttributesValue()
     {
         /** Get list of only those Attribute Value whose items are already processed */
-        $filters            = [];
+        $filters            = $values = [];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -133,9 +133,11 @@ class SyncAttributesValue extends ProductCreateTask
                     );
                     $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
                     if ($attribute->getFrontendInput() == 'multiselect') {
-                        $value = $this->replicationHelper->_getOptionIDByCode(
+                        $value = $this->replicationHelper->getAllValuesForGivenMultiSelectAttribute(
+                            $itemId,
+                            $attributeValue->getCode(),
                             $formattedCode,
-                            $attributeValue->getValue()
+                            $this->store->getId()
                         );
                     } elseif ($attribute->getFrontendInput() == 'boolean') {
                         if (strtolower($attributeValue->getValue()) == 'yes') {
@@ -146,6 +148,7 @@ class SyncAttributesValue extends ProductCreateTask
                     } else {
                         $value = $attributeValue->getValue();
                     }
+
                     $product->setData($formattedCode, $value);
                     $product->getResource()->saveAttribute($product, $formattedCode);
                 } catch (Exception $e) {
