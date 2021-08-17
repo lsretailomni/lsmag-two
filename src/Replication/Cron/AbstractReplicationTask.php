@@ -206,6 +206,11 @@ abstract class AbstractReplicationTask
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $lsr = $this->getLsrModel();
+                if ($store->getId() == 0) {
+                    $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+                } else {
+                    $scope = ScopeInterface::SCOPE_STORES;
+                }
                 // Need to check if is_lsr is enabled on each store and only process the relevant store.
                 if ($lsr->isLSR($store->getId())) {
                     $this->rep_helper->updateConfigValue(
@@ -255,7 +260,7 @@ abstract class AbstractReplicationTask
                                 if (count($traversable) > 0) {
                                     foreach ($traversable as $source) {
                                         //TODO need to understand this before we modify it.
-                                        $source->setScope(ScopeInterface::SCOPE_STORES)
+                                        $source->setScope($scope)
                                             ->setScopeId($store->getId());
 
                                         $this->saveSource($properties, $source);
@@ -671,7 +676,15 @@ abstract class AbstractReplicationTask
      */
     public function getAllStores()
     {
-        return $this->getObjectManager()->get('\Magento\Store\Model\StoreManagerInterface')->getStores();
+        $object = $this->getObjectManager()->get('\Magento\Store\Model\StoreManagerInterface');
+        $stores = $object->getStores();
+        if ($object->isSingleStoreMode()) {
+            $store = reset($stores);
+            $store->setId(0);
+            return [$store];
+        } else {
+            return $stores;
+        }
     }
 
     /**

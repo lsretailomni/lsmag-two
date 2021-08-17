@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <config
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Sales\Block\Adminhtml\Order\View">
         <plugin name="addMyButton" type="Ls\Omni\Plugin\Block\Adminhtml\Order\View"/>
     </type>
     <!-- for cancelling the order from admin -->
     <type name="Magento\Sales\Api\OrderManagementInterface">
         <plugin name="ls_omni_around_cancel_order_operation" type="Ls\Omni\Plugin\Order\OrderManagement" sortOrder="1"/>
+    </type>
+    <type name="Magento\Config\Model\Config\Structure\Element\Field">
+        <plugin name="ls_omni_system_config_form_field"
+                type="Ls\Omni\Plugin\Config\Model\Config\Structure\Element\FieldPlugin" sortOrder="1"/>
     </type>
 </config>

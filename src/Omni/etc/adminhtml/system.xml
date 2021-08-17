@@ -13,7 +13,7 @@
                     <label>Version</label>
                     <backend_model>Ls\Omni\Model\System\Backend\ExtensionVersion</backend_model>
                 </field>
-                <field id="base_url" translate="label" type="text" sortOrder="10" showInWebsite="1">
+                <field id="base_url" translate="label" type="text" sortOrder="10" showInWebsite="1" >
                     <label>Service Base URL</label>
                     <validate>required-entry validate-url</validate>
                     <comment>http://lsretail.cloudapp.net/lsomniservice</comment>
