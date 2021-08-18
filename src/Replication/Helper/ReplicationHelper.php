@@ -13,8 +13,8 @@ use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLea
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
-use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -1867,10 +1867,16 @@ class ReplicationHelper extends AbstractHelper
         $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
         /** @var ReplAttributeValue $item */
         foreach ($items->getItems() as $item) {
+            $itemId        = $item->getLinkField1();
             $formattedCode = $this->formatAttributeCode($item->getCode());
             $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
             if ($attribute->getFrontendInput() == 'multiselect') {
-                $value = $this->_getOptionIDByCode($formattedCode, $item->getValue());
+                $value = $this->getAllValuesForGivenMultiSelectAttribute(
+                    $itemId,
+                    $item->getCode(),
+                    $formattedCode,
+                    $storeId
+                );
             } elseif ($attribute->getFrontendInput() == 'boolean') {
                 if (strtolower($item->getValue()) == 'yes') {
                     $value = 1;
