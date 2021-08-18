@@ -83,7 +83,7 @@ class SingleStoreMode extends Value
      */
     public function afterSave()
     {
-        if ($this->isValueChanged()) {
+        if ($this->isValueChanged() && $this->lsr->getStoreManagerObject()->hasSingleStore()) {
             if ($this->getValue() == 1) {
                 $scope_id       = 0;
                 $scope          = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
