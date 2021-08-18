@@ -66,7 +66,7 @@ class SingleStoreMode extends Value
     /**
      * Path that need to be update when single store mode updated
      */
-    public const TABLE_CONFIGS_CORE_CONFIG = [
+    public $tableCoreConfig = [
         LSR::SC_SERVICE_BASE_URL,
         LSR::SC_SERVICE_LS_KEY,
         LSR::SC_SERVICE_LS_CENTRAL_VERSION,
@@ -91,12 +91,12 @@ class SingleStoreMode extends Value
                 $oldScopeConfig = ScopeInterface::SCOPE_WEBSITES;
                 $websites       = $scope;
             } else {
-                $stores   = $this->lsr->getAllStores();
-                $store    = reset($stores);
-                $scope_id = $store->getId();
-                $scope    = ScopeInterface::SCOPE_STORES;
-                $websites = ScopeInterface::SCOPE_WEBSITES;
-                $oldScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+                $stores         = $this->lsr->getAllStores();
+                $store          = reset($stores);
+                $scope_id       = $store->getId();
+                $scope          = ScopeInterface::SCOPE_STORES;
+                $websites       = ScopeInterface::SCOPE_WEBSITES;
+                $oldScope       = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
                 $oldScopeConfig = $oldScope;
             }
 
@@ -118,7 +118,7 @@ class SingleStoreMode extends Value
                     $this->_logger->error($e->getMessage());
                 }
             }
-            foreach (self::TABLE_CONFIGS_CORE_CONFIG as $config) {
+            foreach ($this->tableCoreConfig as $config) {
                 $data = [
                     'scope_id' => $scope_id,
                     'scope'    => $websites
