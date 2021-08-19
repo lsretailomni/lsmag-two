@@ -2,7 +2,6 @@
 
 namespace Ls\Core\Model\Config\Backend;
 
-use Exception;
 use \Ls\Core\Model\LSR;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -84,20 +83,18 @@ class SingleStoreMode extends Value
     public function afterSave()
     {
         if ($this->isValueChanged() && $this->lsr->getStoreManagerObject()->hasSingleStore()) {
+            $stores   = $this->lsr->getAllStores();
+            $store    = reset($stores);
             if ($this->getValue() == 1) {
-                $scope_id       = 0;
-                $scope          = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
-                $oldScope       = ScopeInterface::SCOPE_STORES;
-                $oldScopeConfig = ScopeInterface::SCOPE_WEBSITES;
-                $websites       = $scope;
+                $scopeId  = 0;
+                $oldScopeId = $store->getId();
+                $websites = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+                $oldScope = ScopeInterface::SCOPE_WEBSITES;
             } else {
-                $stores         = $this->lsr->getAllStores();
-                $store          = reset($stores);
-                $scope_id       = $store->getId();
-                $scope          = ScopeInterface::SCOPE_STORES;
-                $websites       = ScopeInterface::SCOPE_WEBSITES;
-                $oldScope       = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
-                $oldScopeConfig = $oldScope;
+                $scopeId  = $store->getId();
+                $oldScopeId = 0;
+                $websites = ScopeInterface::SCOPE_WEBSITES;
+                $oldScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
             }
 
             $connection          = $this->resourceConnection->getConnection(
@@ -105,32 +102,25 @@ class SingleStoreMode extends Value
             );
             $coreConfigTableName = $this->resourceConnection->getTableName('core_config_data');
             $connection->startSetup();
-            foreach (LSR::LS_TABLES as $lsTables) {
-                $tableName = $this->resourceConnection->getTableName($lsTables);
 
-                try {
-                    $data = [
-                        'scope_id' => $scope_id,
-                        'scope'    => $scope
-                    ];
-                    $connection->update($tableName, $data, ['scope = ?' => $oldScope]);
-                } catch (Exception $e) {
-                    $this->_logger->error($e->getMessage());
-                }
-            }
             foreach ($this->tableCoreConfig as $config) {
                 $data = [
-                    'scope_id' => $scope_id,
+                    'scope_id' => $scopeId,
                     'scope'    => $websites
                 ];
-                $connection->update(
-                    $coreConfigTableName,
-                    $data,
-                    [
-                        'path = ?'  => $config,
-                        'scope = ?' => $oldScopeConfig
-                    ]
-                );
+                try {
+                    $connection->update(
+                        $coreConfigTableName,
+                        $data,
+                        [
+                            'path = ?'     => $config,
+                            'scope = ?'    => $oldScope,
+                            'scope_id = ?' => $oldScopeId
+                        ]
+                    );
+                } catch (\Exception $e) {
+                    $this->_logger->error($e->getMessage());
+                }
             }
 
             $connection->endSetup();
