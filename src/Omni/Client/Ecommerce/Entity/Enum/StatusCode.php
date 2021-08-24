@@ -100,9 +100,6 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode NO_ENTRIES_FOUND()
  * @$method static StatusCode MEMBER_ACCOUNT_NOT_FOUND()
  * @$method static StatusCode MEMBER_CARD_NOT_FOUND()
- * @$method static StatusCode NO_ENTRIES_FOUND_2()
- * @$method static StatusCode NO_ENTRIES_FOUND_3()
- * @$method static StatusCode NO_ENTRIES_FOUND_4()
  * @$method static StatusCode CARD_INVALID_IN_USE()
  * @$method static StatusCode CARD_INVALID_STATUS()
  * @$method static StatusCode INVALID_PRINTER_ID()
@@ -357,12 +354,6 @@ class StatusCode extends Enum
     public const MEMBER_ACCOUNT_NOT_FOUND = 'MemberAccountNotFound';
 
     public const MEMBER_CARD_NOT_FOUND = 'MemberCardNotFound';
-
-    public const NO_ENTRIES_FOUND_2 = 'NoEntriesFound2';
-
-    public const NO_ENTRIES_FOUND_3 = 'NoEntriesFound3';
-
-    public const NO_ENTRIES_FOUND_4 = 'NoEntriesFound4';
 
     public const CARD_INVALID_IN_USE = 'CardInvalidInUse';
 

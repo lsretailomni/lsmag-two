@@ -161,7 +161,7 @@ CODE
         $make_request->setParameters([new ParameterGenerator('storeId', null, '')]);
         $make_request->setParameters([new ParameterGenerator('maxKey', null, '')]);
         $make_request->setParameters([new ParameterGenerator('baseUrl', null, '')]);
-
+        $make_request->setParameters([new ParameterGenerator('appId', null, '')]);
         $make_request->setBody(<<<CODE
 \$request = new {$this->operation->getName()}(\$baseUrl);
 \$request->getOperationInput()
@@ -169,7 +169,8 @@ CODE
                                                 ->setFullReplication(\$fullReplication)
                                                 ->setLastKey(\$lastKey)
                                                 ->setMaxKey(\$maxKey)
-                                                ->setStoreId(\$storeId));
+                                                ->setStoreId(\$storeId)
+                                                ->setAppId(\$appId));
 return \$request;
 CODE
         );

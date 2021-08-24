@@ -1589,7 +1589,7 @@
     <column xsi:type="int" name="ReturnAllowed" padding="11" nullable="true" comment="ReturnAllowed"/>
     <column xsi:type="decimal" name="Rounding" scale="4" precision="20" nullable="true" comment="Rounding"/>
     <column xsi:type="int" name="RoundingMethode" padding="11" nullable="true" comment="RoundingMethode"/>
-    <column xsi:type="varchar" name="StoreID" length="200" nullable="true" comment="StoreID"/>
+    <column xsi:type="text" name="StoreID" nullable="true" comment="StoreID"/>
     <column xsi:type="int" name="TenderFunction" padding="11" nullable="true" comment="TenderFunction"/>
     <column xsi:type="varchar" name="TenderTypeId" length="200" nullable="true" comment="TenderTypeId"/>
     <column xsi:type="int" name="ValidOnMobilePOS" padding="11" nullable="true" comment="ValidOnMobilePOS"/>
@@ -1605,9 +1605,6 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_store_tender_type_id"/>
     </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_STOREID">
-      <column name="StoreID"/>
-    </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID">
       <column name="TenderTypeId"/>
     </index>

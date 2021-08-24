@@ -109,7 +109,7 @@ class ReplEcommStoreTenderTypesTask extends AbstractReplicationTask
         $this->data_interface = $data_interface;
     }
 
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '')
+    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
     {
         $request = new ReplEcommStoreTenderTypes($baseUrl);
         $request->getOperationInput()
@@ -117,7 +117,8 @@ class ReplEcommStoreTenderTypesTask extends AbstractReplicationTask
                                                         ->setFullReplication($fullReplication)
                                                         ->setLastKey($lastKey)
                                                         ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId));
+                                                        ->setStoreId($storeId)
+                                                        ->setAppId($appId));
         return $request;
     }
 

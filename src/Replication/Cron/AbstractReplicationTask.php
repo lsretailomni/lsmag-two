@@ -4,11 +4,11 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use IteratorAggregate;
-use \Ls\Core\Helper\Data as LsHelper;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\OperationInterface;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
+use Ls\Core\Helper\Data as LsHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\OperationInterface;
+use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
@@ -164,7 +164,6 @@ abstract class AbstractReplicationTask
     public $recordsRemaining = 0;
     /** @var bool */
     public $cronStatus = false;
-
     /**
      * AbstractReplicationTask constructor.
      * @param ScopeConfigInterface $scope_config
@@ -188,6 +187,8 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Entry point for cron jobs
+     *
      * @param null $storeData
      * @throws NoSuchEntityException
      * @throws ReflectionException
@@ -213,34 +214,30 @@ abstract class AbstractReplicationTask
                         $this->getConfigPathLastExecute(),
                         $store->getId()
                     );
-                    $properties      = $this->getProperties();
-                    $lastKey         = $this->getLastKey($store->getId());
-                    $maxKey          = $this->getMaxKey($store->getId());
-                    $remaining       = INF;
-                    $fullReplication = 1;
-                    $isFirstTime     = $this->isFirstTime($store->getId());
+                    $properties = $this->getProperties();
+
+                    list($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl, $appId) =
+                        $this->getRequiredParamsForMakingRequest($lsr, $store->getId());
+
+                    $isFirstTime = $this->isFirstTime($store->getId());
+
                     if (isset($isFirstTime) && $isFirstTime == 1) {
                         $fullReplication = 0;
+
                         if ($this->isLastKeyAlwaysZero()) {
                             return;
                         }
                     }
-                    $batchSize      = 100;
-                    $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, $store->getId());
-                    if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
-                        $batchSize = $isBatchSizeSet;
-                    }
-                    $isAllStoresItemsSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_ALL_STORES_ITEMS, $store->getId());
-                    if ($isAllStoresItemsSet) {
-                        $webStoreID = '';
-                        if (in_array($this->getConfigPath(), self::$store_id_needed)) {
-                            $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
-                        }
-                    } else {
-                        $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
-                    }
-                    $baseUrl = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store->getId());
-                    $request = $this->makeRequest($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl);
+
+                    $request = $this->makeRequest(
+                        $lastKey,
+                        $fullReplication,
+                        $batchSize,
+                        $webStoreID,
+                        $maxKey,
+                        $baseUrl,
+                        $appId
+                    );
                     try {
                         $response = $request->execute();
                         if (method_exists($response, 'getResult')) {
@@ -675,6 +672,66 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Get Batch Size
+     *
+     * @param $lsr
+     * @param $storeId
+     * @return int|string
+     */
+    public function getBatchSize($lsr, $storeId)
+    {
+        $batchSize      = 100;
+        $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, $storeId);
+        if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
+            $batchSize = $isBatchSizeSet;
+        }
+
+        return $batchSize;
+    }
+
+    /**
+     * Get WebStore ID
+     *
+     * @param $lsr
+     * @param $storeId
+     * @return string
+     */
+    public function getWebStoreId($lsr, $storeId)
+    {
+        $isAllStoresItemsSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_ALL_STORES_ITEMS, $storeId);
+        if ($isAllStoresItemsSet) {
+            $webStoreID = '';
+            if (in_array($this->getConfigPath(), self::$store_id_needed)) {
+                $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+            }
+        } else {
+            $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+        }
+
+        return $webStoreID;
+    }
+
+    /**
+     * This function is overriding in commerce cloud module
+     *
+     * Get full replication and app Id
+     *
+     * @param $lsr
+     * @param $storeId
+     * @return array
+     */
+    public function getRequiredParamsForMakingRequest($lsr, $storeId)
+    {
+        $lastKey    = $this->getLastKey($storeId);
+        $maxKey     = $this->getMaxKey($storeId);
+        $batchSize  = $this->getBatchSize($lsr, $storeId);
+        $webStoreID = $this->getWebStoreId($lsr, $storeId);
+        $baseUrl    = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+
+        return [$lastKey, 1, $batchSize, $webStoreID, $maxKey, $baseUrl, ''];
+    }
+
+    /**
      * @return string
      */
     abstract public function getConfigPath();
@@ -695,15 +752,18 @@ abstract class AbstractReplicationTask
     abstract public function getConfigPathMaxKey();
 
     /**
+     * Making request with required parameters
+     *
      * @param $lastKey
      * @param $fullReplication
      * @param $batchSize
      * @param $storeId
      * @param $maxKey
      * @param $baseUrl
+     * @param $appId
      * @return OperationInterface
      */
-    abstract public function makeRequest($lastKey, $fullReplication, $batchSize, $storeId, $maxKey, $baseUrl);
+    abstract public function makeRequest($lastKey, $fullReplication, $batchSize, $storeId, $maxKey, $baseUrl, $appId);
 
     abstract public function getFactory();
 
