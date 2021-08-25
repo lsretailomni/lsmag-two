@@ -13,8 +13,8 @@ use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLea
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
-use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -1867,10 +1867,16 @@ class ReplicationHelper extends AbstractHelper
         $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
         /** @var ReplAttributeValue $item */
         foreach ($items->getItems() as $item) {
+            $itemId        = $item->getLinkField1();
             $formattedCode = $this->formatAttributeCode($item->getCode());
             $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
             if ($attribute->getFrontendInput() == 'multiselect') {
-                $value = $this->_getOptionIDByCode($formattedCode, $item->getValue());
+                $value = $this->getAllValuesForGivenMultiSelectAttribute(
+                    $itemId,
+                    $item->getCode(),
+                    $formattedCode,
+                    $storeId
+                );
             } elseif ($attribute->getFrontendInput() == 'boolean') {
                 if (strtolower($item->getValue()) == 'yes') {
                     $value = 1;
@@ -2086,5 +2092,41 @@ class ReplicationHelper extends AbstractHelper
         }
 
         return $itemUom;
+    }
+
+    /**
+     * Get all available replicated values for given multiSelect attribute
+     *
+     * @param $itemId
+     * @param $attributeCode
+     * @param $formattedCode
+     * @param $storeId
+     * @return string
+     * @throws LocalizedException
+     */
+    public function getAllValuesForGivenMultiSelectAttribute($itemId, $attributeCode, $formattedCode, $storeId)
+    {
+        $values = [];
+        $filters = [
+            ['field' => 'Code', 'value' => $attributeCode, 'condition_type' => 'eq'],
+            ['field' => 'LinkField1', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+        ];
+        $criteria = $this->buildCriteriaForDirect($filters, -1);
+        $replAttributeValues = $this->replAttributeValueRepositoryInterface->
+        getList($criteria)->getItems();
+
+        foreach ($replAttributeValues as $replValue) {
+            $value = $this->_getOptionIDByCode(
+                $formattedCode,
+                $replValue->getValue()
+            );
+
+            if ($value) {
+                $values[] = $value;
+            }
+        }
+
+        return implode(',', $values);
     }
 }
