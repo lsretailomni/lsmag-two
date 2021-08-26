@@ -20,7 +20,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_BARCODE_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_BARCODE_NAV_ID": true,
@@ -55,7 +56,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_CURRENCY_CURRENCYCODE_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_CURRENCY_CURRENCYCODE": true,
@@ -84,7 +86,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_CURRENCYCODE_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_CURRENCYCODE": true,
@@ -117,7 +120,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_9890E4FED6E4E3EDB3220E8A609C4F1C": true
         },
         "index": {
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_CODE": true,
@@ -150,7 +154,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_IMAGE_LINK_IMAGEID_KEYVALUE_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_IMAGE_LINK_IMAGEID": true,
@@ -183,7 +188,8 @@
             "MediaId": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_IMAGE_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_IMAGE_NAV_ID": true,
@@ -210,7 +216,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_ITEM_CATEGORY_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_CATEGORY_NAV_ID": true,
@@ -270,7 +277,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_ITEM_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_NAV_ID": true,
@@ -305,7 +313,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_CODE_ITEMID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_CODE": true,
@@ -340,7 +349,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_7797FC0A3486B8BDA4E6973CB5D0798F": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ITEMID": true,
@@ -385,7 +395,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_4F9EEF843C48894BFFF7394591578430": true
         },
         "index": {
             "LS_REPLICATION_REPL_PRICE_ITEMID": true,
@@ -417,7 +428,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_PRODUCT_GROUP_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_PRODUCT_GROUP_NAV_ID": true,
@@ -461,7 +473,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_STORE_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_STORE_NAV_ID": true,
@@ -487,7 +500,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_UNIT_OF_MEASURE_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_UNIT_OF_MEASURE_NAV_ID": true,
@@ -523,7 +537,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_VENDOR_NAME_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_VENDOR_NAME": true,
@@ -554,7 +569,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_AAAA6511EEFDFA429EB95E38BCAA3E3D": true
         },
         "index": {
             "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVMANUFACTURERID": true,
@@ -584,7 +600,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_CODE_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_ATTRIBUTE_CODE": true,
@@ -617,7 +634,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_881B1B6243B13AC5C2EC51292F5F8DB7": true
         },
         "index": {
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_CODE": true,
@@ -650,7 +668,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_ATTR_OPT_VAL_CODE_SEQUENCE_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_CODE": true,
@@ -680,7 +699,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_79B1FA1D3B749CC9B91AFEAC5AA06F8C": true
         },
         "index": {
             "LS_REPLICATION_REPL_DATA_TRANSLATION_TRANSLATIONID": true,
@@ -708,7 +728,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_CODE_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_CODE": true,
@@ -740,7 +761,8 @@
             "ValidationScheduleId": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_NAV_ID": true,
@@ -773,7 +795,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_NODE_NAV_ID": true,
@@ -813,7 +836,8 @@
             "SortOrder": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_HIERARCHY_LEAF_NAV_ID_NODEID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_NAV_ID": true,
@@ -859,7 +883,8 @@
             "Type": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_B9BC29C38EAD62DB1502AB9635F4EE48": true
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_DEALNO": true,
@@ -903,7 +928,8 @@
             "MaxSelection": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_D0D9271AA799577875DC221486DEAC7C": true
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_DEALNO": true,
@@ -986,7 +1012,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_BA81CAD5F92CDE0A56741C9E17EFD0C9": true
         },
         "index": {
             "LS_REPLICATION_REPL_DISCOUNT_ITEMID": true,
@@ -1053,7 +1080,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAV_ID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAV_ID": true,
@@ -1082,7 +1110,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_SHIPPING_AGENT_NAME_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_SHIPPING_AGENT_NAME": true,
@@ -1134,7 +1163,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_CUSTOMER_ACCOUNTNUMBER_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_CUSTOMER_ACCOUNTNUMBER": true,
@@ -1161,7 +1191,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_COUNTRY_CODE_NAME_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_COUNTRY_CODE_NAME": true,
@@ -1205,7 +1236,8 @@
             "OmniTenderTypeId": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_STORE_TENDER_TYPE_STOREID": true,
@@ -1253,7 +1285,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_INV_STATUS_ITEMID_VARIANTID_STOREID_SCOPE_ID": true
         },
         "index": {
             "LS_REPLICATION_REPL_INV_STATUS_ITEMID": true,
@@ -1332,7 +1365,8 @@
             "GroupMinSelection": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_74822A85709C483BCDDDC7E26800F045": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_MODIFIER_NAV_ID": true,
@@ -1371,7 +1405,8 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "UNQ_658482CF60AC4CA773D59F8D55AD8586": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_RECIPE_ITEMNO": true,

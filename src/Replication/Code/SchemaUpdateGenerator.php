@@ -18,16 +18,16 @@ use ReflectionException;
 class SchemaUpdateGenerator implements GeneratorInterface
 {
 
-    /** @var array List of Replication Tables with unique field */
+    /** @var array List of Replication Tables indexer for search */
     public static $indexerColumnLists = [
-        "ls_replication_repl_attribute" => [
+        "ls_replication_repl_attribute"                  => [
             "Code",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_attribute_option_value" => [
+        "ls_replication_repl_attribute_option_value"     => [
             "Code",
             "Sequence",
             "scope_id",
@@ -35,7 +35,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_attribute_value" => [
+        "ls_replication_repl_attribute_value"            => [
             "Code",
             "LinkField1",
             "LinkField2",
@@ -46,7 +46,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_barcode" => [
+        "ls_replication_repl_barcode"                    => [
             "nav_id",
             "ItemId",
             "scope_id",
@@ -54,35 +54,35 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_country_code" => [
+        "ls_replication_repl_country_code"               => [
             "Name",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_currency" => [
+        "ls_replication_repl_currency"                   => [
             "CurrencyCode",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_currency_exch_rate" => [
+        "ls_replication_repl_currency_exch_rate"         => [
             "CurrencyCode",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_customer" => [
+        "ls_replication_repl_customer"                   => [
             "AccountNumber",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_data_translation" => [
+        "ls_replication_repl_data_translation"           => [
             "TranslationId",
             "Key",
             "LanguageCode",
@@ -98,7 +98,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_discount" => [
+        "ls_replication_repl_discount"                   => [
             "ItemId",
             "LoyaltySchemeCode",
             "OfferNo",
@@ -111,14 +111,14 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_discount_validation" => [
+        "ls_replication_repl_discount_validation"        => [
             "nav_id",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_extended_variant_value" => [
+        "ls_replication_repl_extended_variant_value"     => [
             "Code",
             "FrameworkCode",
             "ItemId",
@@ -128,14 +128,14 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_hierarchy" => [
+        "ls_replication_repl_hierarchy"                  => [
             "nav_id",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_hierarchy_leaf" => [
+        "ls_replication_repl_hierarchy_leaf"             => [
             "nav_id",
             "NodeId",
             "HierarchyCode",
@@ -145,7 +145,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_hierarchy_node" => [
+        "ls_replication_repl_hierarchy_node"             => [
             "ParentNode",
             "HierarchyCode",
             "nav_id",
@@ -154,14 +154,14 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_image" => [
+        "ls_replication_repl_image"                      => [
             "nav_id",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_image_link" => [
+        "ls_replication_repl_image_link"                 => [
             "ImageId",
             "TableName",
             "KeyValue",
@@ -170,7 +170,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_item" => [
+        "ls_replication_repl_item"                       => [
             "nav_id",
             "ItemCategoryCode",
             "ProductGroupId",
@@ -179,14 +179,14 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_item_category" => [
+        "ls_replication_repl_item_category"              => [
             "nav_id",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_item_unit_of_measure" => [
+        "ls_replication_repl_item_unit_of_measure"       => [
             "Code",
             "ItemId",
             "scope_id",
@@ -194,7 +194,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_item_variant_registration" => [
+        "ls_replication_repl_item_variant_registration"  => [
             "ItemId",
             "VariantId",
             "scope_id",
@@ -202,7 +202,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_loy_vendor_item_mapping" => [
+        "ls_replication_repl_loy_vendor_item_mapping"    => [
             "NavManufacturerId",
             "NavProductId",
             "scope_id",
@@ -210,7 +210,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_price" => [
+        "ls_replication_repl_price"                      => [
             "ItemId",
             "VariantId",
             "StoreId",
@@ -221,7 +221,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_inv_status" => [
+        "ls_replication_repl_inv_status"                 => [
             "ItemId",
             "VariantId",
             "StoreId",
@@ -230,43 +230,43 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_product_group" => [
+        "ls_replication_repl_product_group"              => [
             "nav_id",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_shipping_agent" => [
+        "ls_replication_repl_shipping_agent"             => [
             "Name",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_store" => [
+        "ls_replication_repl_store"                      => [
             "nav_id",
             "scope_id"
         ],
-        "ls_replication_repl_store_tender_type" => [
+        "ls_replication_repl_store_tender_type"          => [
             "TenderTypeId",
             "scope_id"
         ],
-        "ls_replication_repl_unit_of_measure" => [
+        "ls_replication_repl_unit_of_measure"            => [
             "nav_id",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_vendor" => [
+        "ls_replication_repl_vendor"                     => [
             "Name",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_hierarchy_hosp_deal_line" => [
+        "ls_replication_repl_hierarchy_hosp_deal_line"   => [
             "DealNo",
             "ItemNo",
             "LineNo",
@@ -276,7 +276,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_hierarchy_hosp_deal" => [
+        "ls_replication_repl_hierarchy_hosp_deal"        => [
             "DealNo",
             "No",
             "LineNo",
@@ -286,7 +286,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_item_recipe" => [
+        "ls_replication_repl_item_recipe"                => [
             "ItemNo",
             "RecipeNo",
             "UnitOfMeasure",
@@ -295,7 +295,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_item_modifier" => [
+        "ls_replication_repl_item_modifier"              => [
             "nav_id",
             "VariantCode",
             "Code",
@@ -307,9 +307,94 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_loy_item" => [
+        "ls_replication_loy_item"                        => [
             "nav_id"
         ]
+    ];
+
+    /** @var array List of Replication Tables with unique column */
+    private static $uniqueColumnsArray = [
+        "ls_replication_repl_attribute"                  => ["Code", "scope_id"],
+        "ls_replication_repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
+        "ls_replication_repl_attribute_value"            => [
+            "Code",
+            "LinkField1",
+            "LinkField2",
+            "LinkField3",
+            "Sequence",
+            "scope_id"
+        ],
+        "ls_replication_repl_barcode"                    => ["nav_id", "scope_id"],
+        "ls_replication_repl_country_code"               => ["Name", "scope_id"],
+        "ls_replication_repl_currency"                   => ["CurrencyCode", "scope_id"],
+        "ls_replication_repl_currency_exch_rate"         => ["CurrencyCode", "scope_id"],
+        "ls_replication_repl_customer"                   => ["AccountNumber", "scope_id"],
+        "ls_replication_repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_replication_repl_data_translation_lang_code" => ["Code", "scope_id"],
+        "ls_replication_repl_discount"                   => [
+            "ItemId",
+            "LoyaltySchemeCode",
+            "OfferNo",
+            "StoreId",
+            "VariantId",
+            "MinimumQuantity",
+            "scope_id"
+        ],
+        "ls_replication_repl_discount_validation"        => ["nav_id", "scope_id"],
+        "ls_replication_repl_extended_variant_value"     => [
+            "Code",
+            "FrameworkCode",
+            "ItemId",
+            "Value",
+            "scope_id"
+        ],
+        "ls_replication_repl_hierarchy"                  => ["nav_id", "scope_id"],
+        "ls_replication_repl_hierarchy_leaf"             => ["nav_id", "NodeId", "scope_id"],
+        "ls_replication_repl_hierarchy_node"             => ["nav_id", "scope_id"],
+        "ls_replication_repl_image"                      => ["nav_id", "scope_id"],
+        "ls_replication_repl_image_link"                 => ["ImageId", "KeyValue", "scope_id"],
+        "ls_replication_repl_item"                       => ["nav_id", "scope_id"],
+        "ls_replication_repl_item_category"              => ["nav_id", "scope_id"],
+        "ls_replication_repl_item_unit_of_measure"       => ["Code", "ItemId", "scope_id"],
+        "ls_replication_repl_item_variant_registration"  => [
+            "ItemId",
+            "VariantId",
+            "scope_id"
+        ],
+        "ls_replication_repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
+        "ls_replication_repl_price"                      => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
+            "QtyPerUnitOfMeasure",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
+        "ls_replication_repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],
+        "ls_replication_repl_product_group"              => ["nav_id", "scope_id"],
+        "ls_replication_repl_shipping_agent"             => ["Name", "scope_id"],
+        "ls_replication_repl_store"                      => ["nav_id", "scope_id"],
+        "ls_replication_repl_store_tender_type"          => ["TenderTypeId", "scope_id"],
+        "ls_replication_repl_unit_of_measure"            => ["nav_id", "scope_id"],
+        "ls_replication_repl_vendor"                     => ["Name", "scope_id"],
+        "ls_replication_repl_hierarchy_hosp_deal_line"   => [
+            "DealNo",
+            "ItemNo",
+            "LineNo",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
+        "ls_replication_repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
+        "ls_replication_repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
+        "ls_replication_repl_item_modifier"              => [
+            "nav_id",
+            "VariantCode",
+            "Code",
+            "SubCode",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
+        "ls_replication_repl_tax_setup"                  => ["BusinessTaxGroup", "ProductTaxGroup", "scope_id"]
     ];
     /** @var Metadata */
     protected $metadata;
@@ -329,16 +414,16 @@ class SchemaUpdateGenerator implements GeneratorInterface
      */
     public function generate()
     {
-        $dom = new DOMDocument('1.0');
+        $dom               = new DOMDocument('1.0');
         $dom->formatOutput = true;
-        $schema = $dom->createElement('schema');
+        $schema            = $dom->createElement('schema');
         $schema->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $schema->setAttribute('xsi:noNamespaceSchemaLocation', 'urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd');
         $tables = [];
         foreach ($this->metadata->getOperations() as $operationName => $operation) {
             if (strpos($operationName, 'ReplEcomm') !== false) {
                 $replicationOperation = $this->metadata->getReplicationOperationByName($operation->getName());
-                $tableName = "ls_replication_" . $replicationOperation->getTableName();
+                $tableName            = "ls_replication_" . $replicationOperation->getTableName();
                 $tableIncludedInIndex = (array_key_exists($tableName, self::$indexerColumnLists) ? true : false);
                 if (!in_array($tableName, $tables)) {
                     $table = $dom->createElement('table');
@@ -355,54 +440,54 @@ class SchemaUpdateGenerator implements GeneratorInterface
                     $column->setAttribute('identity', 'true');
                     $column->setAttribute('comment', $replicationOperation->getTableColumnId());
                     $table->appendChild($column);
-                    $extraColumnsArray = [
+                    $extraColumnsArray   = [
                         [
-                            'name' => 'processed',
+                            'name'       => 'processed',
                             'field_type' => 'boolean',
-                            'default' => '0',
-                            'comment' => 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied'
+                            'default'    => '0',
+                            'comment'    => 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied'
                         ],
                         [
-                            'name' => 'is_updated',
+                            'name'       => 'is_updated',
                             'field_type' => 'boolean',
-                            'default' => '0',
-                            'comment' => 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables'
+                            'default'    => '0',
+                            'comment'    => 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables'
                         ],
                         [
-                            'name' => 'is_failed',
+                            'name'       => 'is_failed',
                             'field_type' => 'boolean',
-                            'default' => '0',
-                            'comment' => 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables'
+                            'default'    => '0',
+                            'comment'    => 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables'
                         ],
                         [
-                            'name' => 'checksum',
+                            'name'       => 'checksum',
                             'field_type' => 'text',
-                            'default' => '',
-                            'comment' => 'Checksum'
+                            'default'    => '',
+                            'comment'    => 'Checksum'
                         ],
                         [
-                            'name' => 'processed_at',
+                            'name'       => 'processed_at',
                             'field_type' => 'timestamp',
-                            'default' => '',
-                            'comment' => 'Processed At'
+                            'default'    => '',
+                            'comment'    => 'Processed At'
                         ],
                         [
-                            'name' => 'created_at',
+                            'name'       => 'created_at',
                             'field_type' => 'timestamp',
-                            'default' => 'CURRENT_TIMESTAMP',
-                            'comment' => 'Created At'
+                            'default'    => 'CURRENT_TIMESTAMP',
+                            'comment'    => 'Created At'
                         ],
                         [
-                            'name' => 'updated_at',
+                            'name'       => 'updated_at',
                             'field_type' => 'timestamp',
-                            'default' => 'CURRENT_TIMESTAMP',
-                            'comment' => 'Updated At'
+                            'default'    => 'CURRENT_TIMESTAMP',
+                            'comment'    => 'Updated At'
                         ]
                     ];
-                    $restrictions = $this->metadata->getRestrictions();
-                    $reflectedEntity = new ClassReflection($replicationOperation->getOmniEntityFqn());
+                    $restrictions        = $this->metadata->getRestrictions();
+                    $reflectedEntity     = new ClassReflection($replicationOperation->getOmniEntityFqn());
                     $defaultColumnsArray = $propertyTypes = [];
-                    $simpleTypes = ['boolean', 'string', 'int', 'float'];
+                    $simpleTypes         = ['boolean', 'string', 'int', 'float'];
                     foreach ($reflectedEntity->getProperties() as $property) {
                         $docblock = $property->getDocBlock()->getContents();
                         preg_match('/property\s(:?\w+)\s\$(:?\w+)/m', $docblock, $matches);
@@ -417,8 +502,8 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         }
                     }
                     foreach ($propertyTypes as $raw_name => $type) {
-                        $name = $raw_name;
-                        $length = null;
+                        $name    = $raw_name;
+                        $length  = null;
                         $default = '';
 
                         (array_search($type, $simpleTypes) === false) and ($type = 'string');
@@ -428,7 +513,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
                             $fieldType = 'decimal';
                         } elseif ($type == 'boolean') {
                             $fieldType = 'boolean';
-                            $default = '0';
+                            $default   = '0';
                         } else {
                             $lower_name = strtolower($name);
                             if (strpos($lower_name, 'image64') === false) {
@@ -449,10 +534,10 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         }
 
                         $defaultColumnsArray[] = [
-                            'name' => $name,
+                            'name'       => $name,
                             'field_type' => $fieldType,
-                            'default' => $default,
-                            'comment' => $name
+                            'default'    => $default,
+                            'comment'    => $name
                         ];
                     }
                     $allColumnsArray = array_merge($defaultColumnsArray, $extraColumnsArray);
@@ -486,6 +571,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
                     $column->setAttribute('name', $replicationOperation->getTableColumnId());
                     $constraint->appendChild($column);
                     $table->appendChild($constraint);
+
                     //indexer based on the searchable column and add here
                     /**
                      * this will be the final outcome
@@ -497,7 +583,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         $indexerColumns = self::$indexerColumnLists[$tableName];
                         if ($indexerColumns && !empty($indexerColumns)) {
                             foreach ($indexerColumns as $indexerColumn) {
-                                $referenceId = strtoupper(implode("_", array($tableName, $indexerColumn)));
+                                $referenceId     = strtoupper(implode("_", array($tableName, $indexerColumn)));
                                 $indexColumnNode = $dom->createElement('index');
                                 $indexColumnNode->setAttribute('indexType', 'btree');
                                 $indexColumnNode->setAttribute('referenceId', $referenceId);
@@ -506,17 +592,46 @@ class SchemaUpdateGenerator implements GeneratorInterface
                                 $indexColumnNode->appendChild($column);
                                 $table->appendChild($indexColumnNode);
                             }
+
                         }
+
+                        //unique constraint based on the combination of column
+                        /**
+                         * this will be the final outcome
+                         * <constraint xsi:type="unique" referenceId="CATALOG_CATEGORY_PRODUCT_CATEGORY_ID_PRODUCT_ID">
+                         *       <column name="category_id"/>
+                         *       <column name="product_id"/>
+                         *  </constraint>
+                         */
+                        if (array_key_exists($tableName, self::$uniqueColumnsArray)) {
+                            $uniqueColumns = self::$uniqueColumnsArray[$tableName];
+                            if ($uniqueColumns && !empty($uniqueColumns)) {
+                                $uniqueColumnNode = $dom->createElement('constraint');
+                                $uniqueColumnNode->setAttribute('xsi:type', 'unique');
+                                $referenceId = strtoupper(
+                                    implode(
+                                        "_",
+                                        [$tableName, implode('_', array_values($uniqueColumns))]
+                                    ));
+                                $uniqueColumnNode->setAttribute('referenceId', $referenceId);
+                                foreach ($uniqueColumns as $uniqueColumn) {
+                                    $column = $dom->createElement('column');
+                                    $column->setAttribute('name', $uniqueColumn);
+                                    $uniqueColumnNode->appendChild($column);
+                                }
+                            }
+                            $table->appendChild($uniqueColumnNode);
+                        }
+
+                        $schema->appendChild($table);
+                        array_push($tables, $tableName);
                     }
-
-                    $schema->appendChild($table);
-                    array_push($tables, $tableName);
-
                 }
             }
+
+            $dom->appendChild($schema);
+            $dom->save($this->getPath());
         }
-        $dom->appendChild($schema);
-        $dom->save($this->getPath());
     }
 
     /**
@@ -527,7 +642,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
         $objectManager = ObjectManager::getInstance();
         /** @var  Reader $dirReader */
         $dirReader = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
-        $basePath = $dirReader->getModuleDir('', 'Ls_Replication');
+        $basePath  = $dirReader->getModuleDir('', 'Ls_Replication');
         return $basePath . "/etc/db_schema.xml";
     }
 }
