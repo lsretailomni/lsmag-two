@@ -8,6 +8,7 @@ use Laminas\Code\Generator\GeneratorInterface;
 use Laminas\Code\Reflection\ClassReflection;
 use \Ls\Omni\Service\Metadata;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\DB\ExpressionConverter;
 use Magento\Framework\Module\Dir\Reader;
 use ReflectionException;
 
@@ -608,11 +609,12 @@ class SchemaUpdateGenerator implements GeneratorInterface
                             if ($uniqueColumns && !empty($uniqueColumns)) {
                                 $uniqueColumnNode = $dom->createElement('constraint');
                                 $uniqueColumnNode->setAttribute('xsi:type', 'unique');
-                                $referenceId = strtoupper(
-                                    implode(
-                                        "_",
-                                        [$tableName, implode('_', array_values($uniqueColumns))]
-                                    ));
+                                $fields      = implode('_', array_values($uniqueColumns));
+                                $prefix      = 'unq_';
+                                $referenceId = strtoupper(ExpressionConverter::shortenEntityName(
+                                    $tableName . '_' . $fields,
+                                    $prefix
+                                ));
                                 $uniqueColumnNode->setAttribute('referenceId', $referenceId);
                                 foreach ($uniqueColumns as $uniqueColumn) {
                                     $column = $dom->createElement('column');

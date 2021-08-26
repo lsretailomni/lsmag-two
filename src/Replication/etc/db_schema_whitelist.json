@@ -1366,7 +1366,8 @@
         },
         "constraint": {
             "PRIMARY": true,
-            "UNQ_74822A85709C483BCDDDC7E26800F045": true
+            "UNQ_74822A85709C483BCDDDC7E26800F045": true,
+            "UNQ_4FEE9115706A4483708C19C76D8BFE20": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_MODIFIER_NAV_ID": true,

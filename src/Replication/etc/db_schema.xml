@@ -174,7 +174,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_CODE_FRAMEWORKCODE_ITEMID_VALUE_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_9890E4FED6E4E3EDB3220E8A609C4F1C">
       <column name="Code"/>
       <column name="FrameworkCode"/>
       <column name="ItemId"/>
@@ -472,7 +472,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ITEMID_VARIANTID_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_7797FC0A3486B8BDA4E6973CB5D0798F">
       <column name="ItemId"/>
       <column name="VariantId"/>
       <column name="scope_id"/>
@@ -539,7 +539,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_PRICE_ITEMID_VARIANTID_STOREID_QTYPERUNITOFMEASURE_UNITOFMEASURE_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_4F9EEF843C48894BFFF7394591578430">
       <column name="ItemId"/>
       <column name="VariantId"/>
       <column name="StoreId"/>
@@ -755,7 +755,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVMANUFACTURERID_NAVPRODUCTID_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_AAAA6511EEFDFA429EB95E38BCAA3E3D">
       <column name="NavManufacturerId"/>
       <column name="NavProductId"/>
       <column name="scope_id"/>
@@ -850,7 +850,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_CODE_LINKFIELD1_LINKFIELD2_LINKFIELD3_SEQUENCE_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_881B1B6243B13AC5C2EC51292F5F8DB7">
       <column name="Code"/>
       <column name="LinkField1"/>
       <column name="LinkField2"/>
@@ -895,7 +895,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_CODE_SEQUENCE_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ATTR_OPT_VAL_CODE_SEQUENCE_SCOPE_ID">
       <column name="Code"/>
       <column name="Sequence"/>
       <column name="scope_id"/>
@@ -941,7 +941,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_TRANSLATIONID_KEY_LANGUAGECODE_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_79B1FA1D3B749CC9B91AFEAC5AA06F8C">
       <column name="TranslationId"/>
       <column name="Key"/>
       <column name="LanguageCode"/>
@@ -1186,7 +1186,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_DEALNO_NO_LINENO_UNITOFMEASURE_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_B9BC29C38EAD62DB1502AB9635F4EE48">
       <column name="DealNo"/>
       <column name="No"/>
       <column name="LineNo"/>
@@ -1247,7 +1247,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_DEALNO_ITEMNO_LINENO_UNITOFMEASURE_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_D0D9271AA799577875DC221486DEAC7C">
       <column name="DealNo"/>
       <column name="ItemNo"/>
       <column name="LineNo"/>
@@ -1300,7 +1300,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_ITEMNO_RECIPENO_UNITOFMEASURE_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_658482CF60AC4CA773D59F8D55AD8586">
       <column name="ItemNo"/>
       <column name="RecipeNo"/>
       <column name="UnitOfMeasure"/>
@@ -1372,7 +1372,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_NAV_ID_VARIANTCODE_CODE_SUBCODE_UNITOFMEASURE_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_74822A85709C483BCDDDC7E26800F045">
       <column name="nav_id"/>
       <column name="VariantCode"/>
       <column name="Code"/>
@@ -1482,7 +1482,7 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_ISDELETED">
       <column name="IsDeleted"/>
     </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DISCOUNT_ITEMID_LOYALTYSCHEMECODE_OFFERNO_STOREID_VARIANTID_MINIMUMQUANTITY_SCOPE_ID">
+    <constraint xsi:type="unique" referenceId="UNQ_BA81CAD5F92CDE0A56741C9E17EFD0C9">
       <column name="ItemId"/>
       <column name="LoyaltySchemeCode"/>
       <column name="OfferNo"/>
