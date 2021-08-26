@@ -630,10 +630,10 @@ class SchemaUpdateGenerator implements GeneratorInterface
                     }
                 }
             }
-
-            $dom->appendChild($schema);
-            $dom->save($this->getPath());
         }
+
+        $dom->appendChild($schema);
+        $dom->save($this->getPath());
     }
 
     /**
