@@ -670,6 +670,26 @@
       <column name="scope_id"/>
     </constraint>
   </table>
+  <table name="ls_replication_repl_collection" resource="default" engine="innodb" comment="ReplEcommCollection">
+    <column xsi:type="int" name="repl_collection_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_collection_id"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="text" name="ItemId" nullable="true" comment="ItemId"/>
+    <column xsi:type="decimal" name="Quantity" scale="4" precision="20" nullable="true" comment="Quantity"/>
+    <column xsi:type="text" name="UnitOfMeasureId" nullable="true" comment="UnitOfMeasureId"/>
+    <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
+    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_collection_id"/>
+    </constraint>
+  </table>
   <table name="ls_replication_repl_vendor" resource="default" engine="innodb" comment="ReplEcommVendor">
     <column xsi:type="int" name="repl_vendor_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_vendor_id"/>
     <column xsi:type="boolean" name="AllowCustomersToSelectPageSize" default="0" nullable="true" comment="AllowCustomersToSelectPageSize"/>
@@ -982,6 +1002,24 @@
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_CODE_SCOPE_ID">
       <column name="Code"/>
       <column name="scope_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_validation_schedule" resource="default" engine="innodb" comment="ReplEcommValidationSchedule">
+    <column xsi:type="int" name="repl_validation_schedule_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_validation_schedule_id"/>
+    <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
+    <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_validation_schedule_id"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy" resource="default" engine="innodb" comment="ReplEcommHierarchy">
@@ -1743,6 +1781,30 @@
     </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID_SCOPE_ID">
       <column name="TenderTypeId"/>
+      <column name="scope_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_tax_setup" resource="default" engine="innodb" comment="ReplEcommTaxSetup">
+    <column xsi:type="int" name="repl_tax_setup_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_tax_setup_id"/>
+    <column xsi:type="text" name="BusinessTaxGroup" nullable="true" comment="BusinessTaxGroup"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="text" name="ProductTaxGroup" nullable="true" comment="ProductTaxGroup"/>
+    <column xsi:type="decimal" name="TaxPercent" scale="4" precision="20" nullable="true" comment="TaxPercent"/>
+    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_tax_setup_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="UNQ_5E66CF6C226E8E5C1A0496905EFD9174">
+      <column name="BusinessTaxGroup"/>
+      <column name="ProductTaxGroup"/>
       <column name="scope_id"/>
     </constraint>
   </table>

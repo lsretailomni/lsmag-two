@@ -593,41 +593,40 @@ class SchemaUpdateGenerator implements GeneratorInterface
                                 $indexColumnNode->appendChild($column);
                                 $table->appendChild($indexColumnNode);
                             }
-
                         }
-
-                        //unique constraint based on the combination of column
-                        /**
-                         * this will be the final outcome
-                         * <constraint xsi:type="unique" referenceId="CATALOG_CATEGORY_PRODUCT_CATEGORY_ID_PRODUCT_ID">
-                         *       <column name="category_id"/>
-                         *       <column name="product_id"/>
-                         *  </constraint>
-                         */
-                        if (array_key_exists($tableName, self::$uniqueColumnsArray)) {
-                            $uniqueColumns = self::$uniqueColumnsArray[$tableName];
-                            if ($uniqueColumns && !empty($uniqueColumns)) {
-                                $uniqueColumnNode = $dom->createElement('constraint');
-                                $uniqueColumnNode->setAttribute('xsi:type', 'unique');
-                                $fields      = implode('_', array_values($uniqueColumns));
-                                $prefix      = 'unq_';
-                                $referenceId = strtoupper(ExpressionConverter::shortenEntityName(
-                                    $tableName . '_' . $fields,
-                                    $prefix
-                                ));
-                                $uniqueColumnNode->setAttribute('referenceId', $referenceId);
-                                foreach ($uniqueColumns as $uniqueColumn) {
-                                    $column = $dom->createElement('column');
-                                    $column->setAttribute('name', $uniqueColumn);
-                                    $uniqueColumnNode->appendChild($column);
-                                }
-                            }
-                            $table->appendChild($uniqueColumnNode);
-                        }
-
-                        $schema->appendChild($table);
-                        array_push($tables, $tableName);
                     }
+
+                    //unique constraint based on the combination of column
+                    /**
+                     * this will be the final outcome
+                     * <constraint xsi:type="unique" referenceId="CATALOG_CATEGORY_PRODUCT_CATEGORY_ID_PRODUCT_ID">
+                     *       <column name="category_id"/>
+                     *       <column name="product_id"/>
+                     *  </constraint>
+                     */
+                    if (array_key_exists($tableName, self::$uniqueColumnsArray)) {
+                        $uniqueColumns = self::$uniqueColumnsArray[$tableName];
+                        if ($uniqueColumns && !empty($uniqueColumns)) {
+                            $uniqueColumnNode = $dom->createElement('constraint');
+                            $uniqueColumnNode->setAttribute('xsi:type', 'unique');
+                            $fields      = implode('_', array_values($uniqueColumns));
+                            $prefix      = 'unq_';
+                            $referenceId = strtoupper(ExpressionConverter::shortenEntityName(
+                                $tableName . '_' . $fields,
+                                $prefix
+                            ));
+                            $uniqueColumnNode->setAttribute('referenceId', $referenceId);
+                            foreach ($uniqueColumns as $uniqueColumn) {
+                                $column = $dom->createElement('column');
+                                $column->setAttribute('name', $uniqueColumn);
+                                $uniqueColumnNode->appendChild($column);
+                            }
+                        }
+                        $table->appendChild($uniqueColumnNode);
+                    }
+
+                    $schema->appendChild($table);
+                    array_push($tables, $tableName);
                 }
             }
         }
