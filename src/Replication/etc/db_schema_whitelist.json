@@ -1263,8 +1263,7 @@
             "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true,
-            "UNQ_5E66CF6C226E8E5C1A0496905EFD9174": true
+            "PRIMARY": true
         }
     },
     "ls_replication_repl_inv_status": {

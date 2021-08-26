@@ -394,8 +394,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "SubCode",
             "UnitOfMeasure",
             "scope_id"
-        ],
-        "ls_replication_repl_tax_setup"                  => ["BusinessTaxGroup", "ProductTaxGroup", "scope_id"]
+        ]
     ];
     /** @var Metadata */
     protected $metadata;
