@@ -4,7 +4,7 @@
     <system>
         <section id="ls_mag">
             <group id="service">
-                <field id="ls_app_id" translate="label comment" type="text" sortOrder="10" showInWebsite="1">
+                <field id="ls_app_id" translate="label comment" type="text" sortOrder="40" showInWebsite="1">
                     <label>Nav App ID</label>
                     <comment>
                         Add a valid GUID for replication. Use this field only if you are using commerce service on cloud.
