@@ -39,6 +39,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_BARCODE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_BARCODE_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_currency" resource="default" engine="innodb" comment="ReplEcommCurrency">
     <column xsi:type="int" name="repl_currency_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_currency_id"/>
@@ -79,6 +83,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_CURRENCY_CURRENCYCODE_SCOPE_ID">
+      <column name="CurrencyCode"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_currency_exch_rate" resource="default" engine="innodb" comment="ReplEcommCurrencyRate">
     <column xsi:type="int" name="repl_currency_exch_rate_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_currency_exch_rate_id"/>
@@ -114,6 +122,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_CURRENCYCODE_SCOPE_ID">
+      <column name="CurrencyCode"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_extended_variant_value" resource="default" engine="innodb" comment="ReplEcommExtendedVariants">
     <column xsi:type="int" name="repl_extended_variant_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_extended_variant_value_id"/>
@@ -162,6 +174,13 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_9890E4FED6E4E3EDB3220E8A609C4F1C">
+      <column name="Code"/>
+      <column name="FrameworkCode"/>
+      <column name="ItemId"/>
+      <column name="Value"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_image_link" resource="default" engine="innodb" comment="ReplEcommImageLinks">
     <column xsi:type="int" name="repl_image_link_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_image_link_id"/>
@@ -204,6 +223,11 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_IMAGEID_KEYVALUE_SCOPE_ID">
+      <column name="ImageId"/>
+      <column name="KeyValue"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_image" resource="default" engine="innodb" comment="ReplEcommImages">
     <column xsi:type="int" name="repl_image_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_image_id"/>
@@ -241,6 +265,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_IMAGE_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_category" resource="default" engine="innodb" comment="ReplEcommItemCategories">
     <column xsi:type="int" name="repl_item_category_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_category_id"/>
@@ -274,6 +302,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_CATEGORY_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_CATEGORY_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item" resource="default" engine="innodb" comment="ReplEcommItems">
     <column xsi:type="int" name="repl_item_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_id"/>
@@ -346,6 +378,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_unit_of_measure" resource="default" engine="innodb" comment="ReplEcommItemUnitOfMeasures">
     <column xsi:type="int" name="repl_item_unit_of_measure_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_unit_of_measure_id"/>
@@ -388,6 +424,11 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_CODE_ITEMID_SCOPE_ID">
+      <column name="Code"/>
+      <column name="ItemId"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_variant_registration" resource="default" engine="innodb" comment="ReplEcommItemVariantRegistrations">
     <column xsi:type="int" name="repl_item_variant_registration_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_variant_registration_id"/>
@@ -431,6 +472,11 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_7797FC0A3486B8BDA4E6973CB5D0798F">
+      <column name="ItemId"/>
+      <column name="VariantId"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_price" resource="default" engine="innodb" comment="ReplEcommPrices">
     <column xsi:type="int" name="repl_price_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_price_id"/>
@@ -493,6 +539,14 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_4F9EEF843C48894BFFF7394591578430">
+      <column name="ItemId"/>
+      <column name="VariantId"/>
+      <column name="StoreId"/>
+      <column name="QtyPerUnitOfMeasure"/>
+      <column name="UnitOfMeasure"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_product_group" resource="default" engine="innodb" comment="ReplEcommProductGroups">
     <column xsi:type="int" name="repl_product_group_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_product_group_id"/>
@@ -527,6 +581,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRODUCT_GROUP_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_PRODUCT_GROUP_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_store" resource="default" engine="innodb" comment="ReplEcommStores">
     <column xsi:type="int" name="repl_store_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_id"/>
@@ -568,6 +626,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STORE_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_unit_of_measure" resource="default" engine="innodb" comment="ReplEcommUnitOfMeasures">
     <column xsi:type="int" name="repl_unit_of_measure_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_unit_of_measure_id"/>
@@ -603,6 +665,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_UNIT_OF_MEASURE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_UNIT_OF_MEASURE_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_collection" resource="default" engine="innodb" comment="ReplEcommCollection">
     <column xsi:type="int" name="repl_collection_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_collection_id"/>
@@ -665,6 +731,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDOR_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_VENDOR_NAME_SCOPE_ID">
+      <column name="Name"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_loy_vendor_item_mapping" resource="default" engine="innodb" comment="ReplEcommVendorItemMapping">
     <column xsi:type="int" name="repl_loy_vendor_item_mapping_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_loy_vendor_item_mapping_id"/>
@@ -705,6 +775,11 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_AAAA6511EEFDFA429EB95E38BCAA3E3D">
+      <column name="NavManufacturerId"/>
+      <column name="NavProductId"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_attribute" resource="default" engine="innodb" comment="ReplEcommAttribute">
     <column xsi:type="int" name="repl_attribute_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_id"/>
@@ -740,6 +815,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_CODE_SCOPE_ID">
+      <column name="Code"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_attribute_value" resource="default" engine="innodb" comment="ReplEcommAttributeValue">
     <column xsi:type="int" name="repl_attribute_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_value_id"/>
@@ -791,6 +870,14 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_881B1B6243B13AC5C2EC51292F5F8DB7">
+      <column name="Code"/>
+      <column name="LinkField1"/>
+      <column name="LinkField2"/>
+      <column name="LinkField3"/>
+      <column name="Sequence"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_attribute_option_value" resource="default" engine="innodb" comment="ReplEcommAttributeOptionValue">
     <column xsi:type="int" name="repl_attribute_option_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_option_value_id"/>
@@ -828,6 +915,11 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ATTR_OPT_VAL_CODE_SEQUENCE_SCOPE_ID">
+      <column name="Code"/>
+      <column name="Sequence"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_data_translation" resource="default" engine="innodb" comment="ReplEcommDataTranslation">
     <column xsi:type="int" name="repl_data_translation_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_data_translation_id"/>
@@ -869,6 +961,12 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_79B1FA1D3B749CC9B91AFEAC5AA06F8C">
+      <column name="TranslationId"/>
+      <column name="Key"/>
+      <column name="LanguageCode"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_data_translation_lang_code" resource="default" engine="innodb" comment="ReplEcommDataTranslationLangCode">
     <column xsi:type="int" name="repl_data_translation_lang_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_data_translation_lang_code_id"/>
@@ -901,6 +999,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_CODE_SCOPE_ID">
+      <column name="Code"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_validation_schedule" resource="default" engine="innodb" comment="ReplEcommValidationSchedule">
     <column xsi:type="int" name="repl_validation_schedule_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_validation_schedule_id"/>
@@ -957,6 +1059,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy_node" resource="default" engine="innodb" comment="ReplEcommHierarchyNode">
     <column xsi:type="int" name="repl_hierarchy_node_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_node_id"/>
@@ -1002,6 +1108,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy_leaf" resource="default" engine="innodb" comment="ReplEcommHierarchyLeaf">
     <column xsi:type="int" name="repl_hierarchy_leaf_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_leaf_id"/>
@@ -1055,6 +1165,11 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_NAV_ID_NODEID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="NodeId"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy_hosp_deal" resource="default" engine="innodb" comment="ReplEcommHierarchyHospDeal">
     <column xsi:type="int" name="repl_hierarchy_hosp_deal_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_deal_id"/>
@@ -1109,6 +1224,13 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_B9BC29C38EAD62DB1502AB9635F4EE48">
+      <column name="DealNo"/>
+      <column name="No"/>
+      <column name="LineNo"/>
+      <column name="UnitOfMeasure"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy_hosp_deal_line" resource="default" engine="innodb" comment="ReplEcommHierarchyHospDealLine">
     <column xsi:type="int" name="repl_hierarchy_hosp_deal_line_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_deal_line_id"/>
@@ -1163,6 +1285,13 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_D0D9271AA799577875DC221486DEAC7C">
+      <column name="DealNo"/>
+      <column name="ItemNo"/>
+      <column name="LineNo"/>
+      <column name="UnitOfMeasure"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_recipe" resource="default" engine="innodb" comment="ReplEcommItemRecipe">
     <column xsi:type="int" name="repl_item_recipe_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_recipe_id"/>
@@ -1209,6 +1338,12 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_658482CF60AC4CA773D59F8D55AD8586">
+      <column name="ItemNo"/>
+      <column name="RecipeNo"/>
+      <column name="UnitOfMeasure"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_modifier" resource="default" engine="innodb" comment="ReplEcommItemModifier">
     <column xsi:type="int" name="repl_item_modifier_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_modifier_id"/>
@@ -1275,6 +1410,14 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_74822A85709C483BCDDDC7E26800F045">
+      <column name="nav_id"/>
+      <column name="VariantCode"/>
+      <column name="Code"/>
+      <column name="SubCode"/>
+      <column name="UnitOfMeasure"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_loy_item" resource="default" engine="innodb" comment="ReplEcommFullItem">
     <column xsi:type="int" name="loy_item_id" padding="10" unsigned="false" nullable="false" identity="true" comment="loy_item_id"/>
@@ -1377,6 +1520,15 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="UNQ_BA81CAD5F92CDE0A56741C9E17EFD0C9">
+      <column name="ItemId"/>
+      <column name="LoyaltySchemeCode"/>
+      <column name="OfferNo"/>
+      <column name="StoreId"/>
+      <column name="VariantId"/>
+      <column name="MinimumQuantity"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_discount_validation" resource="default" engine="innodb" comment="ReplEcommDiscountValidations">
     <column xsi:type="int" name="repl_discount_validation_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_discount_validation_id"/>
@@ -1444,6 +1596,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAV_ID_SCOPE_ID">
+      <column name="nav_id"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_shipping_agent" resource="default" engine="innodb" comment="ReplEcommShippingAgent">
     <column xsi:type="int" name="repl_shipping_agent_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_shipping_agent_id"/>
@@ -1479,6 +1635,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_SHIPPING_AGENT_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_SHIPPING_AGENT_NAME_SCOPE_ID">
+      <column name="Name"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_customer" resource="default" engine="innodb" comment="ReplEcommMember">
     <column xsi:type="int" name="repl_customer_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_customer_id"/>
@@ -1537,6 +1697,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_CUSTOMER_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_CUSTOMER_ACCOUNTNUMBER_SCOPE_ID">
+      <column name="AccountNumber"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_country_code" resource="default" engine="innodb" comment="ReplEcommCountryCode">
     <column xsi:type="int" name="repl_country_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_country_code_id"/>
@@ -1570,6 +1734,10 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_NAME_SCOPE_ID">
+      <column name="Name"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_store_tender_type" resource="default" engine="innodb" comment="ReplEcommStoreTenderTypes">
     <column xsi:type="int" name="repl_store_tender_type_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_tender_type_id"/>
@@ -1589,7 +1757,7 @@
     <column xsi:type="int" name="ReturnAllowed" padding="11" nullable="true" comment="ReturnAllowed"/>
     <column xsi:type="decimal" name="Rounding" scale="4" precision="20" nullable="true" comment="Rounding"/>
     <column xsi:type="int" name="RoundingMethode" padding="11" nullable="true" comment="RoundingMethode"/>
-    <column xsi:type="varchar" name="StoreID" length="200" nullable="true" comment="StoreID"/>
+    <column xsi:type="text" name="StoreID" nullable="true" comment="StoreID"/>
     <column xsi:type="int" name="TenderFunction" padding="11" nullable="true" comment="TenderFunction"/>
     <column xsi:type="varchar" name="TenderTypeId" length="200" nullable="true" comment="TenderTypeId"/>
     <column xsi:type="int" name="ValidOnMobilePOS" padding="11" nullable="true" comment="ValidOnMobilePOS"/>
@@ -1605,15 +1773,16 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_store_tender_type_id"/>
     </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_STOREID">
-      <column name="StoreID"/>
-    </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID">
       <column name="TenderTypeId"/>
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_SCOPE_ID">
       <column name="scope_id"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID_SCOPE_ID">
+      <column name="TenderTypeId"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_tax_setup" resource="default" engine="innodb" comment="ReplEcommTaxSetup">
     <column xsi:type="int" name="repl_tax_setup_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_tax_setup_id"/>
@@ -1674,5 +1843,11 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_INV_STATUS_ITEMID_VARIANTID_STOREID_SCOPE_ID">
+      <column name="ItemId"/>
+      <column name="VariantId"/>
+      <column name="StoreId"/>
+      <column name="scope_id"/>
+    </constraint>
   </table>
 </schema>
