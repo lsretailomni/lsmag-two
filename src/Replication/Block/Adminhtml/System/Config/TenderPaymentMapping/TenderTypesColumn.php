@@ -94,9 +94,15 @@ class TenderTypesColumn extends Select
     private function getSourceOptions(): array
     {
         $storeTenderTypes = [];
-        $scopeId          = (int)$this->request->getParam('website');
 
-        $storeTenderTypeArray = $this->helper->getTenderTypes($scopeId);
+        $scopeId = (int)$this->request->getParam('website');
+        if ($scopeId == 0 && $this->lsr->getStoreManagerObject()->isSingleStoreMode()) {
+            $stores               = $this->lsr->getAllStores();
+            $store                = reset($stores);
+            $storeTenderTypeArray = $this->helper->getTenderTypes($store->getId());
+        } else {
+            $storeTenderTypeArray = $this->helper->getTenderTypes($scopeId);
+        }
         if (empty($storeTenderTypeArray)) {
             $storeTenderTypeArray = $this->dataHelper->getTenderTypesDirectly($scopeId);
         }

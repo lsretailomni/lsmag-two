@@ -113,4 +113,8 @@
         <plugin name="ls_omni_validate_update_qty" type="Ls\Omni\Plugin\Checkout\Model\CartPlugin"
                 sortOrder="1"/>
     </type>
+    <!-- for fixing single store flat_rate error on checkout adding compatibility with 2.4.3-->
+    <type name="Magento\SalesRule\Model\ResourceModel\Rule\Collection">
+        <plugin name="single_store_flat_rate_checkout_error" type="Ls\Omni\Plugin\Rule\CollectionPlugin" sortOrder="1"/>
+    </type>
 </config>
