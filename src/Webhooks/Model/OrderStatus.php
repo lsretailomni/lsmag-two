@@ -24,6 +24,7 @@ class OrderStatus implements OrderStatusInterface
 
     /**
      * OrderStatus constructor.
+     * @param Status $status
      * @param Logger $logger
      */
     public function __construct(
@@ -47,9 +48,8 @@ class OrderStatus implements OrderStatusInterface
                 'MsgSubject'   => $msgSubject,
                 'MsgDetail'    => $msgDetail,
                 'Lines'        => $lines,
-
             ];
-            $this->logger->info('OrderStatus', $data);
+            $this->logger->info('OrderStatus = ', $data);
             $this->status->process($data);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
