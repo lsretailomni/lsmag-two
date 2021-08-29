@@ -153,8 +153,8 @@ class Payment
     {
         $validate = true;
         $message  = '';
-        if (!$order->getId()) {
-            $message = "The order does not exist or token does not match for document id #" . $documentId;
+        if (empty($order)) {
+            $message = "Order does not exist for document id #" . $documentId;
             $this->logger->error($message);
             $validate = false;
         }
