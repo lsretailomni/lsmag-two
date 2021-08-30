@@ -109,7 +109,7 @@ class ReplEcommMixAndMatchTask extends AbstractReplicationTask
         $this->data_interface = $data_interface;
     }
 
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '')
+    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
     {
         $request = new ReplEcommMixAndMatch($baseUrl);
         $request->getOperationInput()
@@ -117,7 +117,8 @@ class ReplEcommMixAndMatchTask extends AbstractReplicationTask
                                                         ->setFullReplication($fullReplication)
                                                         ->setLastKey($lastKey)
                                                         ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId));
+                                                        ->setStoreId($storeId)
+                                                        ->setAppId($appId));
         return $request;
     }
 

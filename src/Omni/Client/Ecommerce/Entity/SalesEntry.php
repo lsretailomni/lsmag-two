@@ -112,6 +112,11 @@ class SalesEntry extends Entity
     protected $Posted = null;
 
     /**
+     * @property string $RequestedDeliveryDate
+     */
+    protected $RequestedDeliveryDate = null;
+
+    /**
      * @property Address $ShipToAddress
      */
     protected $ShipToAddress = null;
@@ -526,6 +531,24 @@ class SalesEntry extends Entity
     public function getPosted()
     {
         return $this->Posted;
+    }
+
+    /**
+     * @param string $RequestedDeliveryDate
+     * @return $this
+     */
+    public function setRequestedDeliveryDate($RequestedDeliveryDate)
+    {
+        $this->RequestedDeliveryDate = $RequestedDeliveryDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestedDeliveryDate()
+    {
+        return $this->RequestedDeliveryDate;
     }
 
     /**

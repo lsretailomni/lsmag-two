@@ -62,6 +62,11 @@ class OneListItem extends Entity
     protected $IsADeal = null;
 
     /**
+     * @property boolean $IsManualItem
+     */
+    protected $IsManualItem = null;
+
+    /**
      * @property string $ItemCategory
      */
     protected $ItemCategory = null;
@@ -324,6 +329,24 @@ class OneListItem extends Entity
     public function getIsADeal()
     {
         return $this->IsADeal;
+    }
+
+    /**
+     * @param boolean $IsManualItem
+     * @return $this
+     */
+    public function setIsManualItem($IsManualItem)
+    {
+        $this->IsManualItem = $IsManualItem;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsManualItem()
+    {
+        return $this->IsManualItem;
     }
 
     /**

@@ -14,6 +14,11 @@ class ItemsPage implements RequestInterface
 {
 
     /**
+     * @property string $storeId
+     */
+    protected $storeId = null;
+
+    /**
      * @property int $pageSize
      */
     protected $pageSize = null;
@@ -42,6 +47,24 @@ class ItemsPage implements RequestInterface
      * @property boolean $includeDetails
      */
     protected $includeDetails = null;
+
+    /**
+     * @param string $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId)
+    {
+        $this->storeId = $storeId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreId()
+    {
+        return $this->storeId;
+    }
 
     /**
      * @param int $pageSize
