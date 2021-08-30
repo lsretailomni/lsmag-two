@@ -33,20 +33,6 @@
             <ls_order_management>
                 <shipping_item_id>66010</shipping_item_id>
                 <shipping_tax>0.00</shipping_tax>
-                <tender_type_mapping>
-                    <item1>
-                        <payment_method>checkmo</payment_method>
-                        <tender_type>2</tender_type>
-                    </item1>
-                    <item2>
-                        <payment_method>giftcard</payment_method>
-                        <tender_type>4</tender_type>
-                    </item2>
-                    <item3>
-                        <payment_method>loypoints</payment_method>
-                        <tender_type>3</tender_type>
-                    </item3>
-                </tender_type_mapping>
             </ls_order_management>
         </ls_mag>
         <!-- For Click and Collect -->
