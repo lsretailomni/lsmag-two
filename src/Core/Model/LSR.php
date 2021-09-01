@@ -762,4 +762,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
         return $this->getStoreConfig(self::SC_ORDER_CANCELLATION_PATH, $storeId);
     }
+
+    /**
+     * Return store manager object
+     *
+     * @return StoreManagerInterface
+     */
+    public function getStoreManagerObject()
+    {
+
+        return $this->storeManager;
+    }
 }

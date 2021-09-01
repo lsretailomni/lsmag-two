@@ -8,10 +8,10 @@ use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Replication\Logger\OmniLogger;
 use Magento\Framework\App\ObjectManager;
+use Psr\Log\LoggerInterface;
 use SoapFault;
-use Laminas\Log\Logger;
-use Laminas\Log\Writer\Stream;
 
 /**
  * Class AbstractOperation
@@ -55,19 +55,14 @@ abstract class AbstractOperation implements OperationInterface
     public $objectManager;
 
     /**
-     * AbstractOperation constructor.
      * @param ServiceType $service_type
      */
     public function __construct(ServiceType $service_type)
     {
-        $this->service_type = $service_type;
-        //@codingStandardsIgnoreStart
-        $this->writer = new Stream(BP . '/var/log/omniclient.log');
-        $this->logger = new Logger();
-        $this->logger->addWriter($this->writer);
+        $this->service_type  = $service_type;
         $this->objectManager = ObjectManager::getInstance();
-        $this->magentoLogger = $this->objectManager->get('\Psr\Log\LoggerInterface');
-        //@codingStandardsIgnoreEnd
+        $this->logger        = $this->objectManager->get(OmniLogger::class);
+        $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
     }
 
     /**
