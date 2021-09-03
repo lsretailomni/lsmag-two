@@ -3,9 +3,9 @@
 namespace Ls\CommerceCloud\Plugin\Omni;
 
 use Exception;
+use \Ls\CommerceCloud\Helper\Data;
+use \Ls\CommerceCloud\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use \Ls\Omni\Helper\Data;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Interceptor to intercept Data helper
@@ -13,19 +13,45 @@ use Ramsey\Uuid\Uuid;
 class DataPlugin
 {
     /**
+     * @var Data
+     */
+    public $dataHelper;
+
+    /**
+     * @param Data $dataHelper
+     */
+    public function __construct(Data $dataHelper)
+    {
+        $this->dataHelper = $dataHelper;
+    }
+
+    /**
      * After plugin to set app_id and full_replication while fetching tender types
      *
-     * @param Data $subject
+     * @param \Ls\Omni\Helper\Data $subject
      * @param $result
      * @param $baseUrl
      * @param $lsKey
      * @param $storeId
+     * @param $scopeId
      * @return mixed
      * @throws Exception
      */
-    public function afterFormulateTenderTypesRequest(Data $subject, $result, $baseUrl, $lsKey, $storeId)
-    {
-        $appId = Uuid::uuid4()->toString();
+    public function afterFormulateTenderTypesRequest(
+        \Ls\Omni\Helper\Data $subject,
+        $result,
+        $baseUrl,
+        $lsKey,
+        $storeId,
+        $scopeId
+    ) {
+        $centralType = $subject->lsr->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $scopeId);
+
+        if (!$centralType) {
+            return $result;
+        }
+
+        $appId = $this->dataHelper->generateUuid();
         $result->getOperationInput()->setReplRequest(
             (new ReplRequest())
                 ->setBatchSize(1000)

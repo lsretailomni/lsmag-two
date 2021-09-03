@@ -653,7 +653,7 @@ class Data extends AbstractHelper
             if ($lsKey == null) {
                 $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
             }
-            $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId);
+            $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
             $result = $request->execute();
 
             if ($result != null) {
@@ -672,9 +672,10 @@ class Data extends AbstractHelper
      * @param $baseUrl
      * @param $lsKey
      * @param $storeId
+     * @param $scopeId
      * @return Operation\ReplEcommStoreTenderTypes
      */
-    public function formulateTenderTypesRequest($baseUrl, $lsKey, $storeId)
+    public function formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId)
     {
         //@codingStandardsIgnoreStart
         $service_type = new ServiceType(Operation\ReplEcommStoreTenderTypes::SERVICE_TYPE);

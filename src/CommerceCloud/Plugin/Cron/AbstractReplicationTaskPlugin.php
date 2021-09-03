@@ -3,17 +3,30 @@
 namespace Ls\CommerceCloud\Plugin\Cron;
 
 use Exception;
+use \Ls\CommerceCloud\Helper\Data;
 use \Ls\CommerceCloud\Model\LSR;
 use \Ls\Replication\Cron\AbstractReplicationTask;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Interceptor to intercept AbstractReplicationTask
  */
 class AbstractReplicationTaskPlugin
 {
+    /**
+     * @var Data
+     */
+    public $dataHelper;
+
+    /**
+     * @param Data $dataHelper
+     */
+    public function __construct(Data $dataHelper)
+    {
+        $this->dataHelper = $dataHelper;
+    }
+
     /**
      * After plugin to set the respective app_id and full_replication
      *
@@ -39,7 +52,7 @@ class AbstractReplicationTaskPlugin
         );
 
         if (!$appId) {
-            $appId = Uuid::uuid4()->toString();
+            $appId = $this->dataHelper->generateUuid();
             $this->persistAppId($subject, $appId, $storeId);
         }
 
