@@ -205,7 +205,6 @@ abstract class AbstractReplicationTask
         }
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                $this->recordsRemaining = -1;
                 $this->fetchDataGivenStore($store->getId());
             }
         }
@@ -673,8 +672,6 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * This function is overriding in commerce cloud module
-     *
      * Make request Fetch Data for given store
      *
      * @param $storeId
@@ -700,7 +697,6 @@ abstract class AbstractReplicationTask
                 $fullReplication = 0;
 
                 if ($this->isLastKeyAlwaysZero()) {
-                    $this->recordsRemaining = 0;
                     return;
                 }
             }
@@ -718,7 +714,6 @@ abstract class AbstractReplicationTask
             $this->processResponseGivenRequest($request, $storeId);
         } else {
             $this->logger->debug('LS Retail validation failed for store id ' . $storeId);
-            $this->recordsRemaining = 0;
         }
     }
 

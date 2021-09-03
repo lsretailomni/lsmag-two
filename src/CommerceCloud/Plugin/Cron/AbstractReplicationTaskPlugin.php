@@ -50,29 +50,6 @@ class AbstractReplicationTaskPlugin
     }
 
     /**
-     * Around plugin to fetch complete data for one single cron job
-     *
-     * @param AbstractReplicationTask $subject
-     * @param $proceed
-     * @param $storeId
-     * @return bool
-     */
-    public function aroundFetchDataGivenStore(AbstractReplicationTask $subject, $proceed, $storeId)
-    {
-        $centralType = $subject->getLsrModel()->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $storeId);
-
-        if (!$centralType) {
-            return $proceed($storeId);
-        }
-
-        while ($subject->recordsRemaining != 0) {
-            $proceed($storeId);
-        }
-
-        return true;
-    }
-
-    /**
      * Persist app_id for current cron
      *
      * @param $subject
