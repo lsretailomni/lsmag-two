@@ -4,10 +4,11 @@
     <system>
         <section id="ls_mag">
             <group id="service">
-                <field id="ls_app_id" translate="label comment" type="text" sortOrder="40" showInWebsite="1">
-                    <label>Nav App ID</label>
+                <field id="central_type" translate="label comment" type="select" sortOrder="40" showInWebsite="1">
+                    <label>Ls Central Implementation</label>
+                    <source_model>Ls\CommerceCloud\Block\Adminhtml\System\Config\Types</source_model>
                     <comment>
-                        Add a valid GUID for replication. Use this field only if you are using commerce service on cloud.
+                        Ls Central is running as SaaS or on-premise? Please select the appropriate option.
                     </comment>
                 </field>
             </group>

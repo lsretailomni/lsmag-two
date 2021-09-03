@@ -661,7 +661,6 @@ class ClassMap
         		'ProactiveDiscountType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ProactiveDiscountType',
         		'SubLineType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\SubLineType',
         		'HospDeliveryType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\HospDeliveryType',
-        		'HospPaymentType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\HospPaymentType',
         		'KOTStatus' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\KOTStatus',
         		'MaritalStatus' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\MaritalStatus',
         		'MemberPointEntryType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\MemberPointEntryType',

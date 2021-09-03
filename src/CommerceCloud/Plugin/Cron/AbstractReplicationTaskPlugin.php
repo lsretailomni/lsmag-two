@@ -2,8 +2,12 @@
 
 namespace Ls\CommerceCloud\Plugin\Cron;
 
+use Exception;
 use \Ls\CommerceCloud\Model\LSR;
 use \Ls\Replication\Cron\AbstractReplicationTask;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Interceptor to intercept AbstractReplicationTask
@@ -17,18 +21,80 @@ class AbstractReplicationTaskPlugin
      * @param $result
      * @param $lsr
      * @param $storeId
-     * @return array
+     * @return mixed
+     * @throws Exception
      */
     public function afterGetRequiredParamsForMakingRequest(AbstractReplicationTask $subject, $result, $lsr, $storeId)
     {
-        $appId = $lsr->getStoreConfig(LSR::SC_REPLICATION_LS_APP_ID, $storeId);
+        $centralType = $lsr->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $storeId);
 
-        if ($appId) {
-            $result[6] = $appId;
-            $result[1] = 0;
+        if (!$centralType) {
+            return $result;
         }
+
+        $appId = $lsr->getConfigValueFromDb(
+            $subject->getConfigPathAppId(),
+            ScopeInterface::SCOPE_STORES,
+            $storeId
+        );
+
+        if (!$appId) {
+            $appId = Uuid::uuid4()->toString();
+            $this->persistAppId($subject, $appId, $storeId);
+        }
+
+        $result[6] = $appId;
+        $result[1] = 0;
 
         return $result;
     }
 
+    /**
+     * Around plugin to fetch complete data for one single cron job
+     *
+     * @param AbstractReplicationTask $subject
+     * @param $proceed
+     * @param $storeId
+     * @return bool
+     */
+    public function aroundFetchDataGivenStore(AbstractReplicationTask $subject, $proceed, $storeId)
+    {
+        $centralType = $subject->getLsrModel()->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $storeId);
+
+        if (!$centralType) {
+            return $proceed($storeId);
+        }
+
+        while ($subject->recordsRemaining != 0) {
+            $proceed($storeId);
+        }
+
+        return true;
+    }
+
+    /**
+     * Persist app_id for current cron
+     *
+     * @param $subject
+     * @param $appId
+     * @param false $storeId
+     */
+    public function persistAppId($subject, $appId, $storeId = false)
+    {
+        if ($storeId) {
+            $subject->resource_config->saveConfig(
+                $subject->getConfigPathAppId(),
+                $appId,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
+        } else {
+            $subject->resource_config->saveConfig(
+                $subject->getConfigPathAppId(),
+                $appId,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                0
+            );
+        }
+    }
 }

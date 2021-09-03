@@ -61,9 +61,11 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$this->operation->getTableName()}");
         $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$this->operation->getTableName()}");
         $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE',
-            "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
+                                  "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
         $this->class->addConstant('CONFIG_PATH_MAX_KEY',
-            "ls_mag/replication/max_key_{$this->operation->getTableName()}");
+                                  "ls_mag/replication/max_key_{$this->operation->getTableName()}");
+        $this->class->addConstant('CONFIG_PATH_APP_ID',
+                                  "ls_mag/replication/app_id_{$this->operation->getTableName()}");
         $this->createProperty('repository', $this->operation->getRepositoryName());
         $this->createProperty('factory', $this->operation->getFactoryName());
         $this->createProperty('dataInterface', $this->operation->getInterfaceName());
@@ -78,6 +80,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addMethodFromGenerator($this->getConfigPathStatus());
         $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
         $this->class->addMethodFromGenerator($this->getConfigPathMaxKey());
+        $this->class->addMethodFromGenerator($this->getConfigPathAppId());
         $this->class->addMethodFromGenerator($this->getMainEntity());
 
         $content = $this->file->generate();
@@ -125,15 +128,15 @@ class CronJobGenerator extends AbstractGenerator
         $constructor->setName('__construct')
             ->setVisibility(MethodGenerator::FLAG_PUBLIC);
         $constructor->setParameters([
-            new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
-            new ParameterGenerator('resource_config', 'Config'),
-            new ParameterGenerator('logger', 'Logger'),
-            new ParameterGenerator('helper', 'LsHelper'),
-            new ParameterGenerator('repHelper', 'ReplicationHelper'),
-            new ParameterGenerator('factory', $this->operation->getFactoryName()),
-            new ParameterGenerator('repository', $this->operation->getRepositoryName()),
-            new ParameterGenerator('data_interface', $this->operation->getInterfaceName())
-        ]);
+                                        new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
+                                        new ParameterGenerator('resource_config', 'Config'),
+                                        new ParameterGenerator('logger', 'Logger'),
+                                        new ParameterGenerator('helper', 'LsHelper'),
+                                        new ParameterGenerator('repHelper', 'ReplicationHelper'),
+                                        new ParameterGenerator('factory', $this->operation->getFactoryName()),
+                                        new ParameterGenerator('repository', $this->operation->getRepositoryName()),
+                                        new ParameterGenerator('data_interface', $this->operation->getInterfaceName())
+                                    ]);
         $constructor->setBody(<<<CODE
 parent::__construct(\$scope_config, \$resource_config, \$logger, \$helper, \$repHelper);
 \$this->repository = \$repository;
@@ -224,6 +227,19 @@ CODE
             ->setVisibility(MethodGenerator::FLAG_PROTECTED);
         $config_path->setBody(<<<CODE
 return self::CONFIG_PATH_MAX_KEY;
+CODE
+        );
+
+        return $config_path;
+    }
+
+    private function getConfigPathAppId()
+    {
+        $config_path = new MethodGenerator();
+        $config_path->setName('getConfigPathAppId')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
+        $config_path->setBody(<<<CODE
+return self::CONFIG_PATH_APP_ID;
 CODE
         );
 
