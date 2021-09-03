@@ -6,4 +6,10 @@
                 type="Ls\CommerceCloud\Plugin\Cron\AbstractReplicationTaskPlugin"
                 sortOrder="1"/>
     </type>
+
+    <type name="Ls\Omni\Helper\Data">
+        <plugin name="set-app-id-plus-full-replication"
+                type="Ls\CommerceCloud\Plugin\Omni\DataPlugin"
+                sortOrder="1"/>
+    </type>
 </config>
