@@ -3,7 +3,9 @@
 namespace Ls\CommerceCloud\Helper;
 
 use Exception;
+use \Ls\CommerceCloud\Model\LSR;
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -12,6 +14,23 @@ use Ramsey\Uuid\Uuid;
 class Data extends AbstractHelper
 {
     /**
+     * @var LSR
+     */
+    public $commerceCloudLsr;
+
+    /**
+     * @param LSR $commerceCloudLsr
+     * @param Context $context
+     */
+    public function __construct(
+        LSR $commerceCloudLsr,
+        Context $context
+    ) {
+        parent::__construct($context);
+        $this->commerceCloudLsr = $commerceCloudLsr;
+    }
+
+    /**
      * Generate a new uuid using ramsey library
      *
      * @return string
@@ -19,6 +38,14 @@ class Data extends AbstractHelper
      */
     public function generateUuid()
     {
-        return Uuid::uuid4()->toString();
+        $exists = true;
+        $appId  = '';
+
+        while ($exists) {
+            $appId  = Uuid::uuid4()->toString();
+            $exists = $this->commerceCloudLsr->configValueExists($appId);
+        }
+
+        return $appId;
     }
 }

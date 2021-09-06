@@ -40,7 +40,6 @@ class AbstractReplicationTaskPlugin
     public function afterGetRequiredParamsForMakingRequest(AbstractReplicationTask $subject, $result, $lsr, $storeId)
     {
         $centralType = $lsr->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $storeId);
-        $exists      = true;
 
         if (!$centralType) {
             return $result;
@@ -53,11 +52,7 @@ class AbstractReplicationTaskPlugin
         );
 
         if (!$appId) {
-            while ($exists) {
-                $appId  = $this->dataHelper->generateUuid();
-                $exists = $lsr->configValueExists($appId);
-            }
-
+            $appId  = $this->dataHelper->generateUuid();
             $this->persistAppId($subject, $appId, $storeId);
         }
 
