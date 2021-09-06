@@ -117,7 +117,8 @@ class Status
         $sendEmail = false;
         /** @var Order $magOrder */
         if ($magOrder->hasInvoices()) {
-            $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder);
+            $shippingItemId = $this->helper->getShippingItemId();
+            $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
             $this->creditMemo->refund($magOrder, $items, $creditMemoData);
         } elseif (count($magOrder->getAllVisibleItems()) == count($itemsInfo)) {
             $this->orderCancel->cancelOrder($magOrder->getEntityId());

@@ -116,15 +116,13 @@ class Data
         $count         = 0;
         if (!empty($lines)) {
             foreach ($lines as $line) {
-                if ($line['ItemId'] != $this->getShippingItemId()) {
-                        $statusKey                                            = $line['NewStatus'];
-                        $itemInfoArray[$statusKey][$count]['ItemId']          = $line['ItemId'];
-                        $itemInfoArray[$statusKey][$count]['Quantity']        = $line['Quantity'];
-                        $itemInfoArray[$statusKey][$count]['UnitOfMeasureId'] = $line['UnitOfMeasureId'];
-                        $itemInfoArray[$statusKey][$count]['VariantId']       = $line['VariantId'];
-                        $count++;
-                }
-
+                $statusKey                                            = $line['NewStatus'];
+                $itemInfoArray[$statusKey][$count]['ItemId']          = $line['ItemId'];
+                $itemInfoArray[$statusKey][$count]['Quantity']        = $line['Quantity'];
+                $itemInfoArray[$statusKey][$count]['UnitOfMeasureId'] = $line['UnitOfMeasureId'];
+                $itemInfoArray[$statusKey][$count]['VariantId']       = $line['VariantId'];
+                $itemInfoArray[$statusKey][$count]['Amount']          = $line['Amount'];
+                $count++;
             }
         }
 
@@ -230,7 +228,11 @@ class Data
                 if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
                     $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
                     $items[$itemId]['item'] = $orderItem;
-                    $items[$itemId]['qty']  = $skuValues['Quantity'];
+                    if (isset($items[$itemId]['qty'])) {
+                        $items[$itemId]['qty'] += $skuValues['Quantity'];
+                    } else {
+                        $items[$itemId]['qty'] = $skuValues['Quantity'];
+                    }
                     if (array_key_exists('Amount', $skuValues)) {
                         $items[$itemId]['amount'] = $skuValues['Amount'];
                     }

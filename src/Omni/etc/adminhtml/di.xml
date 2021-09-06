@@ -9,4 +9,12 @@
     <type name="Magento\Sales\Api\OrderManagementInterface">
         <plugin name="ls_omni_around_cancel_order_operation" type="Ls\Omni\Plugin\Order\OrderManagement" sortOrder="1"/>
     </type>
+    <!-- for fixing grand total in invoice -->
+    <type name="Magento\Sales\Model\Order\Invoice\Total\Subtotal">
+        <plugin name="ls_omni_order_invoice_subtotal" type="Ls\Omni\Plugin\Order\InvoiceCreditMemo\SubtotalPlugin" sortOrder="1"/>
+    </type>
+    <!-- for fixing subtotal in credit memo -->
+    <type name="Magento\Sales\Model\Order\Creditmemo\Total\Subtotal">
+        <plugin name="ls_omni_order_creditmemo_subtotal" type="Ls\Omni\Plugin\Order\InvoiceCreditMemo\SubtotalPlugin" sortOrder="1"/>
+    </type>
 </config>
