@@ -94,6 +94,12 @@ if (!empty($discountInfo)) {
                     <span class="content"><?= (float) $block->getItem()->getQtyRefunded() ?></span>
                 </li>
             <?php endif; ?>
+            <?php if ($block->getItem()->getQtyInvoiced() > 0): ?>
+                <li class="item">
+                    <span class="title"><?= $block->escapeHtml(__('Invoiced')) ?></span>
+                    <span class="content"><?= (float) $block->getItem()->getQtyInvoiced() ?></span>
+                </li>
+            <?php endif; ?>
         </ul>
     </td>
     <td class="col subtotal" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>">
