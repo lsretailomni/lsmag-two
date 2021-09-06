@@ -47,18 +47,18 @@ class OrderPayment implements OrderPaymentInterface
     /**
      * @inheritdoc
      */
-    public function set($OrderId, $Status, $Amount, $CurrencyCode, $Token, $AuthCode, $Reference, $Lines)
+    public function set($orderId, $status, $amount, $currencyCode, $token, $authCode, $reference, $lines)
     {
         try {
             $data = [
-                'OrderId'      => $OrderId,
-                'Status'       => $Status,
-                'Amount'       => $Amount,
-                'CurrencyCode' => $CurrencyCode,
-                'Token'        => $Token,
-                'AuthCode'     => $AuthCode,
-                'Reference'    => $Reference,
-                'Lines'        => $Lines
+                'OrderId'      => $orderId,
+                'Status'       => $status,
+                'Amount'       => $amount,
+                'CurrencyCode' => $currencyCode,
+                'Token'        => $token,
+                'AuthCode'     => $authCode,
+                'Reference'    => $reference,
+                'Lines'        => $lines
 
             ];
             $this->logger->info('OrderPayment = ', $data);
