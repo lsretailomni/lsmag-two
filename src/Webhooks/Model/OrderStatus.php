@@ -38,16 +38,17 @@ class OrderStatus implements OrderStatusInterface
     /**
      * @inheritdoc
      */
-    public function set($orderId, $cardId, $headerStatus, $msgSubject, $msgDetail, $lines)
+    public function set($orderId, $cardId, $headerStatus, $extOrderStatus, $msgSubject, $msgDetail, $lines)
     {
         try {
             $data = [
-                'OrderId'      => $orderId,
-                'CardId'       => $cardId,
-                'HeaderStatus' => $headerStatus,
-                'MsgSubject'   => $msgSubject,
-                'MsgDetail'    => $msgDetail,
-                'Lines'        => $lines,
+                'OrderId'        => $orderId,
+                'CardId'         => $cardId,
+                'HeaderStatus'   => $headerStatus,
+                'ExtOrderStatus' => $extOrderStatus,
+                'MsgSubject'     => $msgSubject,
+                'MsgDetail'      => $msgDetail,
+                'Lines'          => $lines,
             ];
             $this->logger->info('OrderStatus = ', $data);
             $this->status->process($data);

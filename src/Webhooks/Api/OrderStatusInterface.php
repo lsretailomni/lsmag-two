@@ -13,10 +13,11 @@ interface OrderStatusInterface
      * @param string $OrderId
      * @param string $CardId
      * @param string $HeaderStatus
+     * @param string $ExtOrderStatus
      * @param string $MsgSubject
      * @param string $MsgDetail
      * @param mixed $Lines
      * @return mixed
      */
-    public function set($OrderId, $CardId, $HeaderStatus, $MsgSubject, $MsgDetail, $Lines);
+    public function set($OrderId, $CardId, $HeaderStatus, $ExtOrderStatus, $MsgSubject, $MsgDetail, $Lines);
 }
