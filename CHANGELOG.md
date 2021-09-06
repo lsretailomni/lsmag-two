@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.0] - 2021-09-03
+
+### Added
+
+- Added configurable option in Magento admin to dynamically map LS Central tender type(s) with Magento payment method(s). [OMNI-5430](https://solutions.lsretail.com/jira/browse/OMNI-5430)
+- Added indexer for missing columns in replication tables to reduce fetch time. [OMNI-5460](https://solutions.lsretail.com/jira/browse/OMNI-5460)
+- Added support for multi select attributes for products. [OMNI-5498](https://solutions.lsretail.com/jira/browse/OMNI-5498)
+- Added support for single store mode configuration in Magento. [OMNI-5458](https://solutions.lsretail.com/jira/browse/OMNI-5458)
+- Added support to calculate and log the time LS Central takes to respond to each eCom request. This is helpful for merchants who wants to debug the performance issues. [OMNI-5485](https://solutions.lsretail.com/jira/browse/OMNI-5485)
+
+
+
+### Changed
+
+- Added unique constraints on replication tables to reduce the possibility of crappy data. [OMNI-5496](https://solutions.lsretail.com/jira/browse/OMNI-5496)
+
+### Bugs/Fixes
+
+- Fixed compatibility issues with Laminas Library on Magento 2.4.3. [OMNI-5458](https://solutions.lsretail.com/jira/browse/OMNI-5458)
+- Fixed issue with displaying quantity warning in update basket when a real time inventory check is enabled. [OMNI-5476](https://solutions.lsretail.com/jira/browse/OMNI-5476)
+- Fix issue with displaying payment method information on order detail page. [OMNI-5482](https://solutions.lsretail.com/jira/browse/OMNI-5482)
+- Fixed issue in sending order cancelling request to LS Central on Store front. [OMNI-5489](https://solutions.lsretail.com/jira/browse/OMNI-5489)
+
+
+
 ## [1.12.0] - 2021-07-23
 
 ### Added

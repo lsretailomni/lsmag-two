@@ -1,9 +1,9 @@
-# LS Ecommerce - Magento Integration (V1.12.0)
+# LS Ecommerce - Magento Integration (V1.13.0)
 
 ## Compatibility
-1. Magento Open Source 2.3.5 - 2.4.2
+1. Magento Open Source 2.3.5 - 2.4.3
 2. LS Central 14.02 - 18.x
-3. LS Commerce Service (formerly Omni Server) 4.5.x - 4.20.x
+3. LS Commerce Service (formerly Omni Server) 4.5.x - 4.21.x
 
 ## Installation:
 
@@ -22,7 +22,7 @@ Please visit [ Features ](https://help.lscentral.lsretail.com/Content/LS-Retail/
 To understand more about the LS Commerce Service API's, please visit [ eCommerce API for LS Commerce ](https://help.lscentral.lsretail.com/Content/LS-Retail/LS-eCommerce/LS-eCommerce-APIs/Unified-Commerce-Inferface/Introduction.htm "eCommerce API for LS Commerce") section on our Online Help.
 
 ## Support
-All LS Retail active partners can use [ LS Partner & Customer Portal](https://portal.lsretail.com/ "LS Retail Partner & Customer Portal") to submit the technical support request.
+All LS Retail active partners can use [ LS Retail Portal](https://portal.lsretail.com/ "LS Retail Partner & Customer Portal") to submit the technical support request.
 
 - Partner Portal: https://portal.lsretail.com/
 - https://www.lsretail.com/contact-us

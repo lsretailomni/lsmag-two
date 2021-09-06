@@ -22,6 +22,19 @@
             </argument>
         </arguments>
     </type>
+    <type name="Ls\Replication\Logger\OmniLoggerHandler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Replication\Logger\OmniLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">OmniLoggerHandler</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Ls\Replication\Logger\OmniLoggerHandler</item>
+            </argument>
+        </arguments>
+    </type>
     <preference for="Magento\Catalog\Block\Product\View\Attributes"
                 type="Ls\Replication\Block\Product\View\Attributes"/>
     <!--Replication API Repository Interfaces-->
