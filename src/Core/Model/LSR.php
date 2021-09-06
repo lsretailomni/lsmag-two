@@ -506,6 +506,26 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Check to see if same config value exists already
+     *
+     * @param $value
+     * @return bool
+     */
+    public function configValueExists($value)
+    {
+        $configDataCollection = $this->configDataCollectionFactory->create();
+        $configDataCollection
+            ->addFieldToFilter('value', $value)
+            ->addFieldToFilter('path', ['like' => 'ls_mag/replication/app_id_%']);
+
+        if ($configDataCollection->count() !== 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * This needs to be used only for Websites Scope
      * @param $path
      * @param bool $website_id
