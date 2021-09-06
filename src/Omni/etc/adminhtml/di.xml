@@ -20,4 +20,5 @@
     <!-- for fixing subtotal in credit memo -->
     <type name="Magento\Sales\Model\Order\Creditmemo\Total\Subtotal">
         <plugin name="ls_omni_order_creditmemo_subtotal" type="Ls\Omni\Plugin\Order\InvoiceCreditMemo\SubtotalPlugin" sortOrder="1"/>
+    </type>
 </config>
