@@ -19,6 +19,11 @@ class OrderCheckAvailability implements RequestInterface
     protected $request = null;
 
     /**
+     * @property boolean $shippingOrder
+     */
+    protected $shippingOrder = null;
+
+    /**
      * @param OneList $request
      * @return $this
      */
@@ -34,6 +39,24 @@ class OrderCheckAvailability implements RequestInterface
     public function getRequest()
     {
         return $this->request;
+    }
+
+    /**
+     * @param boolean $shippingOrder
+     * @return $this
+     */
+    public function setShippingOrder($shippingOrder)
+    {
+        $this->shippingOrder = $shippingOrder;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShippingOrder()
+    {
+        return $this->shippingOrder;
     }
 
 

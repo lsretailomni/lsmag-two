@@ -22,6 +22,11 @@ class Store extends Entity
     protected $Images = null;
 
     /**
+     * @property ArrayOfSourcingLocation $SourcingLocations
+     */
+    protected $SourcingLocations = null;
+
+    /**
      * @property ArrayOfStoreHours $StoreHours
      */
     protected $StoreHours = null;
@@ -150,6 +155,24 @@ class Store extends Entity
     public function getImages()
     {
         return $this->Images;
+    }
+
+    /**
+     * @param ArrayOfSourcingLocation $SourcingLocations
+     * @return $this
+     */
+    public function setSourcingLocations($SourcingLocations)
+    {
+        $this->SourcingLocations = $SourcingLocations;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfSourcingLocation
+     */
+    public function getSourcingLocations()
+    {
+        return $this->SourcingLocations;
     }
 
     /**

@@ -106,6 +106,11 @@ class Order extends Entity
     protected $ReceiptNo = null;
 
     /**
+     * @property string $RequestedDeliveryDate
+     */
+    protected $RequestedDeliveryDate = null;
+
+    /**
      * @property Address $ShipToAddress
      */
     protected $ShipToAddress = null;
@@ -487,6 +492,24 @@ class Order extends Entity
     public function getReceiptNo()
     {
         return $this->ReceiptNo;
+    }
+
+    /**
+     * @param string $RequestedDeliveryDate
+     * @return $this
+     */
+    public function setRequestedDeliveryDate($RequestedDeliveryDate)
+    {
+        $this->RequestedDeliveryDate = $RequestedDeliveryDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestedDeliveryDate()
+    {
+        return $this->RequestedDeliveryDate;
     }
 
     /**

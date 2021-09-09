@@ -62,21 +62,23 @@ class StockHelper extends AbstractHelper
     }
 
     /**
+     * Getting items stock in store
+     *
      * @param $storeId
      * @param $parentProductId
      * @param $childProductId
      * @return InventoryResponse[]|null
      */
-    public function getItemStockInStore(
-        $storeId,
-        $parentProductId,
-        $childProductId
-    ) {
-        $response = null;
-        // @codingStandardsIgnoreStart
+    public function getItemStockInStore($storeId, $parentProductId, $childProductId)
+    {
+        if ($this->checkVersion()) {
+            $items[] = ['parent' => $parentProductId, 'child' => $childProductId];
+            return $this->getItemsStockInStoreFromSourcingLocation($storeId, $items);
+        }
+
+        $response  = null;
         $request   = new Operation\ItemsInStockGet();
         $itemStock = new Entity\ItemsInStockGet();
-        // @codingStandardsIgnoreEnd
         if (!empty($parentProductId) && !empty($childProductId)) {
             $itemStock->setItemId($parentProductId)->
             setVariantId($childProductId)->setStoreId($storeId);
@@ -97,14 +99,62 @@ class StockHelper extends AbstractHelper
     }
 
     /**
+     * For sourcing location of inventory
+     *
      * @param $storeId
      * @param $items
-     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStoreGetResponse|ResponseInterface|null
+     * @return InventoryResponse[]|null
      */
-    public function getAllItemsStockInSingleStore(
-        $storeId,
-        $items
-    ) {
+    public function getItemsStockInStoreFromSourcingLocation($storeId, $items)
+    {
+        $response  = null;
+        $request   = new Operation\ItemsInStoreGetEx();
+        $itemStock = new Entity\ItemsInStoreGetEx();
+        $itemStock->setStoreId($storeId);
+        $itemStock->setUseSourcingLocation(true);
+        $itemStock->setLocationId('');
+        foreach ($items as $item) {
+            $inventoryRequest = new Entity\InventoryRequest();
+            $parentProductId  = reset($item);
+            $childProductId   = end($item);
+            if (!empty($parentProductId) && !empty($childProductId)) {
+                $inventoryRequest->setItemId($parentProductId)->setVariantId($childProductId);
+            } else {
+                $inventoryRequest->setItemId($parentProductId);
+            }
+            $inventoryRequestCollection[] = $inventoryRequest;
+        }
+
+        $inventoryRequestArray = new Entity\ArrayOfInventoryRequest();
+        $inventoryRequestArray->setInventoryRequest($inventoryRequestCollection);
+        $itemStock->setItems($inventoryRequestArray);
+        try {
+            $response = $request->execute($itemStock);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        if (!empty($response) &&
+            !empty($response->getItemsInStoreGetExResult()) &&
+            !empty($response->getItemsInStoreGetExResult()->getInventoryResponse())) {
+            return $response->getItemsInStoreGetExResult()->getInventoryResponse();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get items stock in store
+     *
+     * @param $storeId
+     * @param $items
+     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStoreGetResponse|ResponseInterface|null|InventoryResponse[]
+     * @throws NoSuchEntityException
+     */
+    public function getAllItemsStockInSingleStore($storeId, $items)
+    {
+        if ($this->checkVersion()) {
+            return $this->getItemsStockInStoreFromSourcingLocation($storeId, $items);
+        }
         $response = null;
         // @codingStandardsIgnoreStart
         $request                    = new Operation\ItemsInStoreGet();
@@ -135,25 +185,27 @@ class StockHelper extends AbstractHelper
      *
      * @param $simpleProductId
      * @param $parentProductSku
-     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStockGetResponse|ResponseInterface|null
+     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStockGetResponse|ResponseInterface|null|InventoryResponse[]
      * @throws NoSuchEntityException
      */
     public function getAllStoresItemInStock($simpleProductId, $parentProductSku)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+
             $simpleProductSku = '';
-            $response         = null;
-            // @codingStandardsIgnoreStart
-            $request   = new Operation\ItemsInStockGet();
-            $itemStock = new Entity\ItemsInStockGet();
-            // @codingStandardsIgnoreEnd
 
             if (!empty($simpleProductId)) {
                 $simpleProductSku = $this->productRepository->getById($simpleProductId)
                     ->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
             }
-            $itemStock->setItemId($parentProductSku)->
-            setVariantId($simpleProductSku);
+
+            $response = null;
+            // @codingStandardsIgnoreStart
+            $request   = new Operation\ItemsInStockGet();
+            $itemStock = new Entity\ItemsInStockGet();
+            // @codingStandardsIgnoreEnd
+
+            $itemStock->setItemId($parentProductSku)->setVariantId($simpleProductSku);
             try {
                 $response = $request->execute($itemStock);
             } catch (Exception $e) {
@@ -182,16 +234,21 @@ class StockHelper extends AbstractHelper
     }
 
     /**
+     * Get Items in store
+     *
      * @param $storeId
-     * @param $variants
      * @return mixed
+     * @throws NoSuchEntityException
      */
-    public function getItemsInStore(
-        $storeId,
-        $variants
-    ) {
+    public function getItemsInStore($storeId, $variants)
+    {
+        if ($this->checkVersion()) {
+            return $this->getItemsStockInStoreFromSourcingLocation($storeId, $variants);
+        }
+
         $response = [];
         $items    = [];
+
         // @codingStandardsIgnoreStart
         $request      = new Operation\ItemsInStoreGet();
         $itemsInStore = new Entity\ItemsInStoreGet();
@@ -217,7 +274,8 @@ class StockHelper extends AbstractHelper
             }
             if (is_array($inventoryResponseArray->getInventoryResponse())) {
                 foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
-                    $sku                        = $inventoryResponse->getItemId() . '-' . $inventoryResponse->getVariantId();
+                    $sku                        = $inventoryResponse->getItemId() . '-' .
+                        $inventoryResponse->getVariantId();
                     $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
                 }
             }
@@ -314,5 +372,20 @@ class StockHelper extends AbstractHelper
     public function deleteItemFromQuote($item, $quote)
     {
         $quote->removeItem($item->getItemId())->collectTotals()->save();
+    }
+
+    /**
+     * Comparing with commerce service version
+     *
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function checkVersion()
+    {
+        if (version_compare($this->lsr->getOmniVersion(), '4.20', '>')) {
+            return true;
+        }
+
+        return false;
     }
 }
