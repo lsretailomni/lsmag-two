@@ -382,7 +382,7 @@ class StockHelper extends AbstractHelper
      */
     public function checkVersion()
     {
-        if (version_compare($this->lsr->getOmniVersion(), '4.20', '>')) {
+        if (version_compare($this->lsr->getOmniVersion(), '4.21', '>')) {
             return true;
         }
 
