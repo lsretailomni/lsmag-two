@@ -38,14 +38,13 @@ class OrderStatus implements OrderStatusInterface
     /**
      * @inheritdoc
      */
-    public function set($orderId, $cardId, $headerStatus, $extOrderStatus, $msgSubject, $msgDetail, $lines)
+    public function set($orderId, $cardId, $headerStatus, $msgSubject, $msgDetail, $lines)
     {
         try {
             $data = [
                 'OrderId'        => $orderId,
                 'CardId'         => $cardId,
                 'HeaderStatus'   => $headerStatus,
-                'ExtOrderStatus' => $extOrderStatus,
                 'MsgSubject'     => $msgSubject,
                 'MsgDetail'      => $msgDetail,
                 'Lines'          => $lines,
