@@ -47,17 +47,22 @@ class OrderPayment implements OrderPaymentInterface
     /**
      * @inheritdoc
      */
-    public function set($documentId, $status, $token, $amount)
+    public function set($orderId, $status, $amount, $currencyCode, $token, $authCode, $reference, $lines)
     {
         try {
             $data = [
-                'documentId' => $documentId,
-                'status'     => $status,
-                'token'      => $token,
-                'amount'     => $amount
+                'OrderId'      => $orderId,
+                'Status'       => $status,
+                'Amount'       => $amount,
+                'CurrencyCode' => $currencyCode,
+                'Token'        => $token,
+                'AuthCode'     => $authCode,
+                'Reference'    => $reference,
+                'Lines'        => $lines
+
             ];
-            $this->logger->info('orderpayment', $data);
-            if (!empty($documentId)) {
+            $this->logger->info('OrderPayment = ', $data);
+            if (!empty($data['OrderId'])) {
                 return $this->payment->generateInvoice($data);
             }
             return $this->helper->outputMessage(false, 'Document Id is not valid.');

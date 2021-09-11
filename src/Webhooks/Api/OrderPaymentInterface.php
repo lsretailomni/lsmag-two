@@ -9,12 +9,17 @@ namespace Ls\Webhooks\Api;
 interface OrderPaymentInterface
 {
     /**
-     * Set order payment status API
-     * @param string $documentId
-     * @param string $status
-     * @param string $token
-     * @param string $amount
+     * Set order payment
+     *
+     * @param string $OrderId
+     * @param string $Status
+     * @param string $Amount
+     * @param string $CurrencyCode
+     * @param string $Token
+     * @param string $AuthCode
+     * @param string $Reference
+     * @param mixed $Lines
      * @return mixed
      */
-    public function set($documentId, $status, $token, $amount);
+    public function set($OrderId, $Status, $Amount, $CurrencyCode, $Token, $AuthCode, $Reference, $Lines);
 }

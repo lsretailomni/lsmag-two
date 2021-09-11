@@ -60,18 +60,12 @@ class CreditMemo
      */
     public function refund($magOrder, $items, $creditMemoData)
     {
-        $orderId             = $magOrder->getEntityId();
-        $itemsTaxAmountTotal = $creditMemoData['adjustment_negative'];
+        $orderId = $magOrder->getEntityId();
         foreach ($items as $itemData) {
             $item                       = $itemData['item'];
             $orderItemId                = $item->getItemId();
             $itemToCredit[$orderItemId] = ['qty' => $itemData['qty']];
             $creditMemoData['items']    = $itemToCredit;
-            $itemsTaxAmountTotal        += $item->getTaxAmount();
-        }
-
-        if ($itemsTaxAmountTotal > 0) {
-            $creditMemoData['adjustment_negative'] = $itemsTaxAmountTotal;
         }
 
         try {
@@ -111,21 +105,30 @@ class CreditMemo
 
     /**
      * set credit memo parameters
+     *
      * @param $magOrder
+     * @param $itemsInfo
+     * @param $shippingItemId
      * @return array
      */
-    public function setCreditMemoParameters($magOrder)
+    public function setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId)
     {
+        $shippingAmount               = 0;
         $creditMemoData               = [];
         $creditMemoData['do_offline'] = 0;
         $isOffline                    = $magOrder->getPayment()->getMethodInstance()->isOffline();
         if ($isOffline) {
             $creditMemoData['do_offline'] = 1;
         }
-        $creditMemoData['shipping_amount']     = $magOrder->getShippingAmount();
+        foreach ($itemsInfo as $itemLine) {
+            if ($itemLine['ItemId'] == $shippingItemId) {
+                $shippingAmount = $itemLine['Amount'];
+            }
+        }
+        $creditMemoData['shipping_amount']     = $shippingAmount;
         $creditMemoData['adjustment_positive'] = 0;
         $creditMemoData['adjustment_negative'] = 0;
-        $creditMemoData['comment_text']        = 'Refund Item(s) from LS Central';
+        $creditMemoData['comment_text']        = __('REFUNDED ITEM(S) FROM LS CENTRAL THROUGH WEBHOOK');
         $creditMemoData['send_email']          = 1;
         return $creditMemoData;
     }

@@ -56,6 +56,7 @@ class Status
 
     /**
      * Process order status based on webhook call from Ls Central
+     *
      * @param $data
      * @throws InvalidEnumException|NoSuchEntityException
      */
@@ -66,11 +67,10 @@ class Status
             $lines      = $data['Lines'];
             $magOrder   = $this->helper->getOrderByDocumentId($documentId);
             if (!empty($magOrder)) {
-                $salesEntry    = $this->helper->getSalesEntry($documentId);
-                $itemInfoArray = $this->helper->matchLineNumberWithSalesEntry($salesEntry, $lines);
+                $itemInfoArray = $this->helper->mapStatusWithItemLines($lines);
                 if (!empty($itemInfoArray)) {
                     foreach ($itemInfoArray as $status => $itemsInfo) {
-                        $this->checkAndProcessStatus($status, $itemsInfo, $magOrder, $salesEntry);
+                        $this->checkAndProcessStatus($status, $itemsInfo, $magOrder);
                     }
                 }
             }
@@ -79,13 +79,13 @@ class Status
 
     /**
      * Check and process order status
+     *
      * @param $status
      * @param $itemsInfo
      * @param $magOrder
-     * @param $salesEntry
      * @throws NoSuchEntityException
      */
-    public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $salesEntry)
+    public function checkAndProcessStatus($status, $itemsInfo, $magOrder)
     {
         $storeId = $magOrder->getStoreId();
         $items   = $this->helper->getItems($magOrder, $itemsInfo);
@@ -93,12 +93,12 @@ class Status
             $this->cancel($magOrder, $itemsInfo, $items, $storeId);
         }
         if ($status == LSR::LS_STATE_PICKED && $this->helper->isPickupNotifyEnabled($storeId) &&
-            $salesEntry->getClickAndCollectOrder() == true) {
+            $this->helper->isClickAndcollectOrder($magOrder)) {
             $templateId = $this->helper->getPickupTemplate($storeId);
             $this->processSendEmail($magOrder, $items, $templateId);
         }
         if ($status == LSR::LS_STATE_COLLECTED && $this->helper->isCollectedNotifyEnabled($storeId) &&
-            $salesEntry->getClickAndCollectOrder() == true) {
+            $this->helper->isClickAndcollectOrder($magOrder)) {
             $templateId = $this->helper->getCollectedTemplate($storeId);
             $this->processSendEmail($magOrder, $items, $templateId);
         }
@@ -106,6 +106,7 @@ class Status
 
     /**
      * Handling operation regarding cancelling the order
+     *
      * @param $magOrder
      * @param $itemsInfo
      * @param $items
@@ -116,7 +117,8 @@ class Status
         $sendEmail = false;
         /** @var Order $magOrder */
         if ($magOrder->hasInvoices()) {
-            $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder);
+            $shippingItemId = $this->helper->getShippingItemId();
+            $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
             $this->creditMemo->refund($magOrder, $items, $creditMemoData);
         } elseif (count($magOrder->getAllVisibleItems()) == count($itemsInfo)) {
             $this->orderCancel->cancelOrder($magOrder->getEntityId());
@@ -133,6 +135,7 @@ class Status
     }
 
     /** Process click and collect order
+     *
      * @param $magOrder
      * @param $items
      * @param $templateId
