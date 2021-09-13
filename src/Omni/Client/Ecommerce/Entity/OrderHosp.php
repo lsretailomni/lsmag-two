@@ -9,7 +9,7 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\HospDeliveryType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\HospPaymentType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use Ls\Omni\Exception\InvalidEnumException;
 
 class OrderHosp extends Entity
@@ -86,7 +86,7 @@ class OrderHosp extends Entity
     protected $OrderDate = null;
 
     /**
-     * @property HospPaymentType $PaymentType
+     * @property PaymentType $PaymentType
      */
     protected $PaymentType = null;
 
@@ -393,18 +393,18 @@ class OrderHosp extends Entity
     }
 
     /**
-     * @param HospPaymentType|string $PaymentType
+     * @param PaymentType|string $PaymentType
      * @return $this
      * @throws InvalidEnumException
      */
     public function setPaymentType($PaymentType)
     {
-        if ( ! $PaymentType instanceof HospPaymentType ) {
-            if ( HospPaymentType::isValid( $PaymentType ) )
-                $PaymentType = new HospPaymentType( $PaymentType );
-            elseif ( HospPaymentType::isValidKey( $PaymentType ) )
-                $PaymentType = new HospPaymentType( constant( "HospPaymentType::$PaymentType" ) );
-            elseif ( ! $PaymentType instanceof HospPaymentType )
+        if ( ! $PaymentType instanceof PaymentType ) {
+            if ( PaymentType::isValid( $PaymentType ) )
+                $PaymentType = new PaymentType( $PaymentType );
+            elseif ( PaymentType::isValidKey( $PaymentType ) )
+                $PaymentType = new PaymentType( constant( "PaymentType::$PaymentType" ) );
+            elseif ( ! $PaymentType instanceof PaymentType )
                 throw new InvalidEnumException();
         }
         $this->PaymentType = $PaymentType->getValue();
@@ -413,7 +413,7 @@ class OrderHosp extends Entity
     }
 
     /**
-     * @return HospPaymentType
+     * @return PaymentType
      */
     public function getPaymentType()
     {

@@ -1,0 +1,21 @@
+{
+  "name": "lsretail/commerce-cloud",
+  "description": "LS Commerce Cloud",
+  "type": "magento2-module",
+  "license": "proprietary",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "LS Retail",
+      "email": "lsomnikl@lsretail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ls\\CommerceCloud\\": ""
+    },
+    "files": [
+      "registration.php"
+    ]
+  }
+}

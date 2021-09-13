@@ -32,6 +32,8 @@ class ReplEcommValidationScheduleTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_validation_schedule';
 
+    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_validation_schedule';
+
     /**
      * @property ReplValidationScheduleRepository $repository
      */
@@ -109,7 +111,7 @@ class ReplEcommValidationScheduleTask extends AbstractReplicationTask
         $this->data_interface = $data_interface;
     }
 
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '')
+    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
     {
         $request = new ReplEcommValidationSchedule($baseUrl);
         $request->getOperationInput()
@@ -117,7 +119,8 @@ class ReplEcommValidationScheduleTask extends AbstractReplicationTask
                                                         ->setFullReplication($fullReplication)
                                                         ->setLastKey($lastKey)
                                                         ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId));
+                                                        ->setStoreId($storeId)
+                                                        ->setAppId($appId));
         return $request;
     }
 
@@ -139,6 +142,11 @@ class ReplEcommValidationScheduleTask extends AbstractReplicationTask
     public function getConfigPathMaxKey()
     {
         return self::CONFIG_PATH_MAX_KEY;
+    }
+
+    public function getConfigPathAppId()
+    {
+        return self::CONFIG_PATH_APP_ID;
     }
 
     public function getMainEntity()

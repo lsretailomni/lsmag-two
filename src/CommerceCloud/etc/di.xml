@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Ls\Replication\Cron\AbstractReplicationTask">
+        <plugin name="get-respective-app-id-plus-full-replication"
+                type="Ls\CommerceCloud\Plugin\Cron\AbstractReplicationTaskPlugin"
+                sortOrder="1"/>
+    </type>
+
+    <type name="Ls\Omni\Helper\Data">
+        <plugin name="set-app-id-plus-full-replication"
+                type="Ls\CommerceCloud\Plugin\Omni\DataPlugin"
+                sortOrder="1"/>
+    </type>
+</config>

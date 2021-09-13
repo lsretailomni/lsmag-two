@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="ls_mag">
+            <group id="service">
+                <field id="central_type" translate="label comment" type="select" sortOrder="40" showInWebsite="1">
+                    <label>Ls Central Implementation</label>
+                    <source_model>Ls\CommerceCloud\Block\Adminhtml\System\Config\Types</source_model>
+                    <comment>
+                        Ls Central is running as SaaS or on-premise? Please select the appropriate option.
+                    </comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
