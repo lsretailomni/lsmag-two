@@ -32,6 +32,8 @@ class ReplEcommVendorTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_vendor';
 
+    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_vendor';
+
     /**
      * @property ReplVendorRepository $repository
      */
@@ -140,6 +142,11 @@ class ReplEcommVendorTask extends AbstractReplicationTask
     public function getConfigPathMaxKey()
     {
         return self::CONFIG_PATH_MAX_KEY;
+    }
+
+    public function getConfigPathAppId()
+    {
+        return self::CONFIG_PATH_APP_ID;
     }
 
     public function getMainEntity()

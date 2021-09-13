@@ -32,6 +32,8 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_tax_setup';
 
+    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_tax_setup';
+
     /**
      * @property ReplTaxSetupRepository $repository
      */
@@ -140,6 +142,11 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
     public function getConfigPathMaxKey()
     {
         return self::CONFIG_PATH_MAX_KEY;
+    }
+
+    public function getConfigPathAppId()
+    {
+        return self::CONFIG_PATH_APP_ID;
     }
 
     public function getMainEntity()

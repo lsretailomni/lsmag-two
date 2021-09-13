@@ -1,2 +1,4 @@
-"Nav App ID","Nav App ID"
-"Add a valid GUID for replication. Use this field only if you are using commerce service on cloud.","Add a valid GUID for replication. Use this field only if you are using commerce service on cloud."
+SaaS,SaaS
+On-Premise,On-Premise
+"Ls Central Implementation","Ls Central Implementation"
+"Ls Central is running as SaaS or on-premise? Please select the appropriate option.","Ls Central is running as SaaS or on-premise? Please select the appropriate option."
