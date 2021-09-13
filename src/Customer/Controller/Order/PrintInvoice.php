@@ -144,13 +144,14 @@ class PrintInvoice extends Action
     }
 
     /**
-     * Set Invoice Id
+     * Check if order has invoices
+     *
      */
     public function setInvoiceId()
     {
         $order = $this->registry->registry('current_mag_order');
-        foreach ($order->getInvoiceCollection() as $invoice) {
-            $this->registry->register('current_invoice_id', $invoice->getIncrementId());
+        if ($order->hasInvoices()) {
+            $this->registry->register('current_invoice_id', true);
         }
     }
 }

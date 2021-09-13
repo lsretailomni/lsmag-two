@@ -579,6 +579,7 @@ class Data extends AbstractHelper
             $invoiceCreditMemo->setGrandTotal($grandTotalAmount);
             $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
         }
+
         return $invoiceCreditMemo;
     }
 
