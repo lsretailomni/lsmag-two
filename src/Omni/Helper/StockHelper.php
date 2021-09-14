@@ -199,6 +199,11 @@ class StockHelper extends AbstractHelper
                     ->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
             }
 
+            if ($this->checkVersion()) {
+                $items[] = ['parent' => $parentProductSku, 'child' => $simpleProductSku];
+                //return $this->getItemsStockInStoreFromSourcingLocation('', $items);
+            }
+
             $response = null;
             // @codingStandardsIgnoreStart
             $request   = new Operation\ItemsInStockGet();
