@@ -201,7 +201,7 @@ class StockHelper extends AbstractHelper
 
             if ($this->checkVersion()) {
                 $items[] = ['parent' => $parentProductSku, 'child' => $simpleProductSku];
-                //return $this->getItemsStockInStoreFromSourcingLocation('', $items);
+                return $this->getItemsStockInStoreFromSourcingLocation('', $items);
             }
 
             $response = null;
@@ -242,6 +242,7 @@ class StockHelper extends AbstractHelper
      * Get Items in store
      *
      * @param $storeId
+     * @param $variants
      * @return mixed
      * @throws NoSuchEntityException
      */
@@ -296,6 +297,7 @@ class StockHelper extends AbstractHelper
      * @param null $quote
      * @param bool $isRemoveItem
      * @param bool $throwException
+     * @return Item
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
