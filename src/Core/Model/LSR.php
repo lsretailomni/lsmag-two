@@ -155,7 +155,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //check for Data Translation
     const SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO = 'ls_mag/replication/success_repl_data_translation_to_magento';
-    const SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_data_translation_to_magento';
+    const SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE =
+        'ls_mag/replication/last_execute_repl_data_translation_to_magento';
     const SC_STORE_DATA_TRANSLATION_LANG_CODE = 'ls_mag/replication/replicate_data_translation_lang_code';
     const SC_TRANSLATION_ID_ITEM_DESCRIPTION = 'T0000000027-F0000000003';
     const SC_TRANSLATION_ID_HIERARCHY_NODE = 'T0010000921-F0000000004';
@@ -451,10 +452,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public $configDataCollectionFactory;
 
     /**
-     * LSR constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param Data $coreHelper
+     * @param ConfigCollectionFactory $configDataCollectionFactory
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -566,7 +567,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         return $this->validateBaseUrlResponse;
     }
 
-
     /**
      * @return string
      */
@@ -657,8 +657,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * check if inventory lookup is enabled
+     *
      * @param null $storeId
-     * @return string
+     * @return array|string
+     * @throws NoSuchEntityException
      */
     public function inventoryLookupBeforeAddToCartEnabled($storeId = null)
     {
@@ -705,6 +707,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * @param null $storeId
      * @return string
      * @throws NoSuchEntityException
      */
@@ -718,6 +721,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * @param null $storeId
      * @return string
      * @throws NoSuchEntityException
      */

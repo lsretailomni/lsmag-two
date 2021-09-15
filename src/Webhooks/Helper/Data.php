@@ -4,8 +4,6 @@ namespace Ls\Webhooks\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryLine;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\ItemHelper;
@@ -107,45 +105,28 @@ class Data
     }
 
     /**
-     * Match sales entry line with line number
-     * @param $salesEntry
+     * Map item lines with status
+     *
      * @param $lines
      * @return array
      */
-    public function matchLineNumberWithSalesEntry($salesEntry, $lines)
+    public function mapStatusWithItemLines($lines)
     {
         $itemInfoArray = null;
         $count         = 0;
-        if (!empty($salesEntry)) {
-            /** @var SalesEntryLine $salesEntryLine */
-            foreach ($salesEntry->getLines() as $salesEntryLine) {
-                if ($salesEntryLine->getItemId() != $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
-                    $key = array_search($salesEntryLine->getLineNumber(), array_column($lines, 'LineNo'));
-                    if ($key !== false) {
-                        $statusKey                                            = $lines[$key]['NewStatus'];
-                        $itemInfoArray[$statusKey][$count]['ItemId']          = $salesEntryLine->getItemId();
-                        $itemInfoArray[$statusKey][$count]['Quantity']        = $salesEntryLine->getQuantity();
-                        $itemInfoArray[$statusKey][$count]['UnitOfMeasureId'] = $salesEntryLine->getUomId();
-                        $itemInfoArray[$statusKey][$count]['VariantId']       = $salesEntryLine->getVariantId();
-                        $count++;
-                    }
-                }
-
+        if (!empty($lines)) {
+            foreach ($lines as $line) {
+                $statusKey                                            = $line['NewStatus'];
+                $itemInfoArray[$statusKey][$count]['ItemId']          = $line['ItemId'];
+                $itemInfoArray[$statusKey][$count]['Quantity']        = $line['Quantity'];
+                $itemInfoArray[$statusKey][$count]['UnitOfMeasureId'] = $line['UnitOfMeasureId'];
+                $itemInfoArray[$statusKey][$count]['VariantId']       = $line['VariantId'];
+                $itemInfoArray[$statusKey][$count]['Amount']          = $line['Amount'];
+                $count++;
             }
         }
 
         return $itemInfoArray;
-    }
-
-    /**
-     * Get sales entry
-     * @param $documentId
-     * @return SalesEntry|\Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse|\Ls\Omni\Client\ResponseInterface|null
-     * @throws \Ls\Omni\Exception\InvalidEnumException
-     */
-    public function getSalesEntry($documentId)
-    {
-        return $this->orderHelper->getOrderDetailsAgainstId($documentId);
     }
 
     /**
@@ -245,9 +226,16 @@ class Data
             );
             foreach ($itemsInfo as $skuValues) {
                 if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
-                    $variantId == $skuValues['VariantId']) {
+                    $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
                     $items[$itemId]['item'] = $orderItem;
-                    $items[$itemId]['qty']  = $skuValues['Quantity'];
+                    if (isset($items[$itemId]['qty'])) {
+                        $items[$itemId]['qty'] += $skuValues['Quantity'];
+                    } else {
+                        $items[$itemId]['qty'] = $skuValues['Quantity'];
+                    }
+                    if (array_key_exists('Amount', $skuValues)) {
+                        $items[$itemId]['amount'] = $skuValues['Amount'];
+                    }
                 }
             }
         }
@@ -267,11 +255,33 @@ class Data
      * Set status and return order
      * @param $order
      * @param $state
+     * @param $status
      * @return void
      */
     public function updateOrderStatus($order, $state, $status)
     {
         $order->setState($state)->setStatus($status);
+    }
+
+    /**
+     * Return shipping Id
+     *
+     * @return array|string
+     */
+    public function getShippingItemId()
+    {
+        return $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID);
+    }
+
+    /**
+     * Check is click and collect order
+     *
+     * @param $magOrder
+     * @return bool
+     */
+    public function isClickAndcollectOrder($magOrder)
+    {
+        return $magOrder->getShippingMethod() == 'clickandcollect_clickandcollect';
     }
 
     /**

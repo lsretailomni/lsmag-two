@@ -8,7 +8,7 @@ use \Ls\Customer\Block\Order\View;
 <?php /** @var  $block View * */ ?>
 <?php if (!empty($block->getInvoiceId())) {
     $class = 'invoice';
-    $title = 'Invoice # ' . $block->getInvoiceId();
+    $title = 'Invoices';
 } else {
     if (!empty($block->getShipmentOption())) {
         $title = 'Shipments';

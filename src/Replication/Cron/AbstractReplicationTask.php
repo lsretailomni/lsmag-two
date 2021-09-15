@@ -164,7 +164,6 @@ abstract class AbstractReplicationTask
     public $recordsRemaining = 0;
     /** @var bool */
     public $cronStatus = false;
-
     /**
      * AbstractReplicationTask constructor.
      * @param ScopeConfigInterface $scope_config
@@ -188,9 +187,10 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Entry point for cron jobs
+     *
      * @param null $storeData
      * @throws NoSuchEntityException
-     * @throws ReflectionException
      */
     public function execute($storeData = null)
     {
@@ -205,79 +205,7 @@ abstract class AbstractReplicationTask
         }
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                $lsr = $this->getLsrModel();
-                // Need to check if is_lsr is enabled on each store and only process the relevant store.
-                if ($lsr->isLSR($store->getId())) {
-                    $this->rep_helper->updateConfigValue(
-                        $this->rep_helper->getDateTime(),
-                        $this->getConfigPathLastExecute(),
-                        $store->getId()
-                    );
-                    $properties      = $this->getProperties();
-                    $lastKey         = $this->getLastKey($store->getId());
-                    $maxKey          = $this->getMaxKey($store->getId());
-                    $remaining       = INF;
-                    $fullReplication = 1;
-                    $isFirstTime     = $this->isFirstTime($store->getId());
-                    if (isset($isFirstTime) && $isFirstTime == 1) {
-                        $fullReplication = 0;
-                        if ($this->isLastKeyAlwaysZero()) {
-                            return;
-                        }
-                    }
-                    $batchSize      = 100;
-                    $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, $store->getId());
-                    if ($isBatchSizeSet and is_numeric($isBatchSizeSet)) {
-                        $batchSize = $isBatchSizeSet;
-                    }
-                    $isAllStoresItemsSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_ALL_STORES_ITEMS, $store->getId());
-                    if ($isAllStoresItemsSet) {
-                        $webStoreID = '';
-                        if (in_array($this->getConfigPath(), self::$store_id_needed)) {
-                            $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
-                        }
-                    } else {
-                        $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $store->getId());
-                    }
-                    $baseUrl = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store->getId());
-                    $request = $this->makeRequest($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl);
-                    try {
-                        $response = $request->execute();
-                        if (method_exists($response, 'getResult')) {
-                            $result                 = $response->getResult();
-                            $lastKey                = $result->getLastKey();
-                            $maxKey                 = $result->getMaxKey();
-                            $remaining              = $result->getRecordsRemaining();
-                            $this->recordsRemaining = $remaining;
-                            $traversable            = $this->getIterator($result);
-                            if ($traversable != null) {
-                                // @codingStandardsIgnoreLine
-                                if (count($traversable) > 0) {
-                                    foreach ($traversable as $source) {
-                                        //TODO need to understand this before we modify it.
-                                        $source->setScope(ScopeInterface::SCOPE_STORES)
-                                            ->setScopeId($store->getId());
-
-                                        $this->saveSource($properties, $source);
-                                    }
-                                    $this->updateSuccessStatus($store->getId());
-                                }
-                            }
-                            if ($remaining == 0) {
-                                $this->cronStatus = true;
-                            }
-                            $this->persistLastKey($lastKey, $store->getId());
-                            $this->persistMaxKey($maxKey, $store->getId());
-                            $this->rep_helper->updateCronStatus($this->cronStatus, $this->getConfigPathStatus(), $store->getId(), false);
-                        } else {
-                            $this->logger->debug('No result found for ' . get_class($this->getMainEntity()) . '. Please refer omniclient log for details.');
-                        }
-                    } catch (Exception $e) {
-                        $this->logger->debug($e->getMessage());
-                    }
-                } else {
-                    $this->logger->debug('LS Retail validation failed for store id ' . $store->getId());
-                }
+                $this->fetchDataGivenStore($store->getId());
             }
         }
     }
@@ -304,7 +232,12 @@ abstract class AbstractReplicationTask
             $confPath == "ls_mag/replication/repl_attribute_option_value") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT, ($storeId) ?: false, false);
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                ($storeId) ?: false,
+                false
+            );
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_discount") {
@@ -316,7 +249,12 @@ abstract class AbstractReplicationTask
         } elseif ($confPath == "ls_mag/replication/repl_vendor") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_loy_vendor_item_mapping") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE, ($storeId) ?: false, false);
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE,
+                ($storeId) ?: false,
+                false
+            );
         }
     }
 
@@ -433,7 +371,6 @@ abstract class AbstractReplicationTask
             } else {
                 $get_method = "get$field_name_capitalized";
             }
-
 
             if ($notAnArraysObject) {
                 foreach ($source as $keyprop => $valueprop) {
@@ -671,7 +608,170 @@ abstract class AbstractReplicationTask
      */
     public function getAllStores()
     {
-        return $this->getObjectManager()->get('\Magento\Store\Model\StoreManagerInterface')->getStores();
+        return $this->getObjectManager()->get(\Magento\Store\Model\StoreManagerInterface::class)->getStores();
+    }
+
+    /**
+     * Get Batch Size
+     *
+     * @param $lsr
+     * @param $storeId
+     * @return int|string
+     */
+    public function getBatchSize($lsr, $storeId)
+    {
+        $batchSize      = 100;
+        $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, $storeId);
+        if ($isBatchSizeSet && is_numeric($isBatchSizeSet)) {
+            $batchSize = $isBatchSizeSet;
+        }
+
+        return $batchSize;
+    }
+
+    /**
+     * Get WebStore ID
+     *
+     * @param $lsr
+     * @param $storeId
+     * @return string
+     */
+    public function getWebStoreId($lsr, $storeId)
+    {
+        $isAllStoresItemsSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_ALL_STORES_ITEMS, $storeId);
+        if ($isAllStoresItemsSet) {
+            $webStoreID = '';
+            if (in_array($this->getConfigPath(), self::$store_id_needed)) {
+                $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+            }
+        } else {
+            $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+        }
+
+        return $webStoreID;
+    }
+
+    /**
+     * This function is overriding in commerce cloud module
+     *
+     * Get full replication and app Id
+     *
+     * @param $lsr
+     * @param $storeId
+     * @return array
+     */
+    public function getRequiredParamsForMakingRequest($lsr, $storeId)
+    {
+        $lastKey    = $this->getLastKey($storeId);
+        $maxKey     = $this->getMaxKey($storeId);
+        $batchSize  = $this->getBatchSize($lsr, $storeId);
+        $webStoreID = $this->getWebStoreId($lsr, $storeId);
+        $baseUrl    = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+
+        return [$lastKey, 1, $batchSize, $webStoreID, $maxKey, $baseUrl, ''];
+    }
+
+    /**
+     * Make request Fetch Data for given store
+     *
+     * @param $storeId
+     * @throws NoSuchEntityException
+     */
+    public function fetchDataGivenStore($storeId)
+    {
+        $lsr = $this->getLsrModel();
+        // Need to check if is_lsr is enabled on each store and only process the relevant store.
+        if ($lsr->isLSR($storeId)) {
+            $this->rep_helper->updateConfigValue(
+                $this->rep_helper->getDateTime(),
+                $this->getConfigPathLastExecute(),
+                $storeId
+            );
+
+            list($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl, $appId) =
+                $this->getRequiredParamsForMakingRequest($lsr, $storeId);
+
+            $isFirstTime = $this->isFirstTime($storeId);
+
+            if (isset($isFirstTime) && $isFirstTime == 1) {
+                $fullReplication = 0;
+
+                if ($this->isLastKeyAlwaysZero()) {
+                    return;
+                }
+            }
+
+            $request = $this->makeRequest(
+                $lastKey,
+                $fullReplication,
+                $batchSize,
+                $webStoreID,
+                $maxKey,
+                $baseUrl,
+                $appId
+            );
+
+            $this->processResponseGivenRequest($request, $storeId);
+        } else {
+            $this->logger->debug('LS Retail validation failed for store id ' . $storeId);
+        }
+    }
+
+    /**
+     * Use given request and save response
+     *
+     * @param $request
+     * @param $storeId
+     */
+    public function processResponseGivenRequest($request, $storeId)
+    {
+        try {
+            $properties = $this->getProperties();
+            $response = $request->execute();
+
+            if (method_exists($response, 'getResult')) {
+                $result                 = $response->getResult();
+                $lastKey                = $result->getLastKey();
+                $maxKey                 = $result->getMaxKey();
+                $remaining              = $result->getRecordsRemaining();
+                $this->recordsRemaining = $remaining;
+                $traversable            = $this->getIterator($result);
+
+                if ($traversable != null) {
+                    // @codingStandardsIgnoreLine
+                    if (count($traversable) > 0) {
+                        foreach ($traversable as $source) {
+                            //TODO need to understand this before we modify it.
+                            $source->setScope(ScopeInterface::SCOPE_STORES)
+                                ->setScopeId($storeId);
+
+                            $this->saveSource($properties, $source);
+                        }
+                        $this->updateSuccessStatus($storeId);
+                    }
+                }
+
+                if ($remaining == 0) {
+                    $this->cronStatus = true;
+                }
+                $this->persistLastKey($lastKey, $storeId);
+                $this->persistMaxKey($maxKey, $storeId);
+                $this->rep_helper->updateCronStatus(
+                    $this->cronStatus,
+                    $this->getConfigPathStatus(),
+                    $storeId,
+                    false
+                );
+            } else {
+                $this->logger->debug(
+                    'No result found for ' .
+                    get_class($this->getMainEntity()) .
+                    '. Please refer omniclient log for details.'
+                );
+            }
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+        }
     }
 
     /**
@@ -695,15 +795,23 @@ abstract class AbstractReplicationTask
     abstract public function getConfigPathMaxKey();
 
     /**
+     * @return string
+     */
+    abstract public function getConfigPathAppId();
+
+    /**
+     * Making request with required parameters
+     *
      * @param $lastKey
      * @param $fullReplication
      * @param $batchSize
      * @param $storeId
      * @param $maxKey
      * @param $baseUrl
+     * @param $appId
      * @return OperationInterface
      */
-    abstract public function makeRequest($lastKey, $fullReplication, $batchSize, $storeId, $maxKey, $baseUrl);
+    abstract public function makeRequest($lastKey, $fullReplication, $batchSize, $storeId, $maxKey, $baseUrl, $appId);
 
     abstract public function getFactory();
 

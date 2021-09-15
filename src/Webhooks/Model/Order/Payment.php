@@ -65,32 +65,50 @@ class Payment
 
     /**
      * Generate invoice based on webhook call from Ls Central
+     *
      * @param $data
      * @return array[]
      */
     public function generateInvoice($data)
     {
-        $documentId = $data['documentId'];
-        $amount     = $data['amount'];
-        $token      = $data['token'];
+        $documentId     = $data['OrderId'];
+        $lines          = $data['Lines'];
+        $totalAmount    = $data['Amount'];
+        $shippingAmount = 0;
+        $itemsToInvoice = [];
         try {
             $order           = $this->helper->getOrderByDocumentId($documentId);
-            $validateOrder   = $this->validateOrder($order, $amount, $documentId, $token);
+            $validateOrder   = $this->validateOrder($order, $documentId);
             $validateInvoice = false;
             $invoice         = null;
-            if ($validateOrder['data']['success']) {
-                $invoice         = $this->invoiceService->prepareInvoice($order);
+            if ($validateOrder['data']['success'] && $order->canInvoice()) {
+                $items = $this->helper->getItems($order, $lines);
+                foreach ($items as $itemData) {
+                    $item                         = $itemData['item'];
+                    $orderItemId                  = $item->getItemId();
+                    $itemsToInvoice[$orderItemId] = $itemData['qty'];
+                }
+
+                foreach ($lines as $line) {
+                    if ($line['ItemId'] == $this->helper->getShippingItemId()) {
+                        $shippingAmount = $line['Amount'];
+                    }
+                }
+
+                $validateOrder   = $this->validatePayment($order, $totalAmount, $documentId, $shippingAmount);
+                $invoice         = $this->invoiceService->prepareInvoice($order, $itemsToInvoice);
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
             }
-            if ($validateInvoice) {
+            if ($validateInvoice && $validateOrder['data']['success']) {
                 $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
-                $invoice->register();
                 $invoice->getOrder()->setCustomerNoteNotify(false);
                 $invoice->getOrder()->setIsInProcess(true);
-                $invoice->setGrandTotal($amount);
-                $invoice->setBaseGrandTotal($amount);
-                $invoice->getOrder()->setTotalPaid($amount);
-                $invoice->getOrder()->setBaseTotalPaid($amount);
+                $invoice->setShippingAmount($shippingAmount);
+                $invoice->setSubtotal($totalAmount);
+                $invoice->setBaseSubtotal($totalAmount);
+                $invoice->setGrandTotal($totalAmount);
+                $invoice->setBaseGrandTotal($totalAmount);
+                $invoice->register();
                 $order->addCommentToStatusHistory('INVOICED FROM LS CENTRAL THROUGH WEBHOOK', false);
                 $transactionSave = $this->transactionFactory->create()->addObject($invoice)->
                 addObject($invoice->getOrder());
@@ -113,10 +131,6 @@ class Payment
                 }
             }
 
-            $hasInvoices = $this->hasInvoices($order, $documentId);
-            if ($hasInvoices['data']['success']) {
-                return $hasInvoices;
-            }
             return $validateOrder;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
@@ -129,24 +143,39 @@ class Payment
     }
 
     /**
-     * validate order
+     * Validate order
+     *
      * @param $order
-     * @param $amount
      * @param $documentId
-     * @param $token
      * @return array[]
      */
-    public function validateOrder($order, $amount, $documentId, $token)
+    public function validateOrder($order, $documentId)
     {
         $validate = true;
         $message  = '';
-        if (!$order->getId() || $order->getPayment()->getLastTransId() != $token) {
-            $message = "The order does not exist or token does not match for document id #" . $documentId;
+        if (empty($order)) {
+            $message = "Order does not exist for document id #" . $documentId;
             $this->logger->error($message);
             $validate = false;
         }
 
-        if ($order->getGrandTotal() < $amount) {
+        return $this->helper->outputMessage($validate, $message);
+    }
+
+    /**
+     * Validate total amount
+     *
+     * @param $order
+     * @param $amount
+     * @param $documentId
+     * @return array[]
+     */
+    public function validatePayment($order, $amount, $documentId, $shippingAmount)
+    {
+        $validate = true;
+        $message  = '';
+
+        if ($order->getGrandTotal() < $amount && $order->getTotalDue() <= $amount) {
             $message = "Invoice amount is greater than order amount for document id #" . $documentId;
             $this->logger->error($message);
             $validate = false;
@@ -156,26 +185,8 @@ class Payment
     }
 
     /**
-     * check if invoice is already created at magento end
-     * @param $order
-     * @param $documentId
-     * @return array[]
-     */
-    public function hasInvoices($order, $documentId)
-    {
-        $validate = false;
-        $message  = '';
-        if ($order->hasInvoices()) {
-            $message = "Invoice already created for document id #" . $documentId;
-            $this->logger->info($message);
-            $validate = true;
-        }
-
-        return $this->helper->outputMessage($validate, $message);
-    }
-
-    /**
      * validate invoice
+     *
      * @param $invoice
      * @param $documentId
      * @return bool

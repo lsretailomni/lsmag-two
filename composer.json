@@ -13,7 +13,8 @@
     "require": {
         "myclabs/php-enum": "^1.5",
         "sabre/xml": "^1.5",
-        "nabil1337/case-helper": "^0.1.0"
+        "nabil1337/case-helper": "^0.1.0",
+        "ramsey/uuid": "^3.0"
     },
     "suggest": {
         "kiwicommerce/module-cron-scheduler": "^1.0.5"
@@ -26,7 +27,8 @@
             "Ls\\Replication\\": "src/Replication/",
             "Ls\\Customer\\": "src/Customer/",
             "Ls\\CustomerGraphQl\\": "src/CustomerGraphQl/",
-            "Ls\\Webhooks\\": "src/Webhooks/"
+            "Ls\\Webhooks\\": "src/Webhooks/",
+            "Ls\\CommerceCloud\\": "src/CommerceCloud/"
         },
         "files": [
             "src/Core/registration.php",
@@ -35,7 +37,8 @@
             "src/Replication/registration.php",
             "src/Customer/registration.php",
             "src/CustomerGraphQl/registration.php",
-            "src/Webhooks/registration.php"
+            "src/Webhooks/registration.php",
+            "src/CommerceCloud/registration.php"
         ]
     },
     "archive": {

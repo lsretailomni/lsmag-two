@@ -579,6 +579,7 @@ class Data extends AbstractHelper
             $invoiceCreditMemo->setGrandTotal($grandTotalAmount);
             $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
         }
+
         return $invoiceCreditMemo;
     }
 
@@ -640,35 +641,60 @@ class Data extends AbstractHelper
     public function getTenderTypesDirectly($scopeId, $storeId = null, $baseUrl = null, $lsKey = null)
     {
         $result = null;
+
         if ($baseUrl == null) {
             $baseUrl = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
         }
+
         if ($storeId == null) {
             $storeId = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $scopeId);
         }
+
         if ($this->lsr->validateBaseUrl($baseUrl) && $storeId != '') {
             if ($lsKey == null) {
                 $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
             }
-            //@codingStandardsIgnoreStart
-            $service_type = new ServiceType(Operation\ReplEcommStoreTenderTypes::SERVICE_TYPE);
-            $url          = OmniService::getUrl($service_type, $baseUrl);
-            $client       = new OmniClient($url, $service_type);
-            $request      = new Operation\ReplEcommStoreTenderTypes();
-            $request->setClient($client);
-            $request->setToken($lsKey);
-            $client->setClassmap($request->getClassMap());
-            $request->getOperationInput()->setReplRequest((new Entity\ReplRequest())->setBatchSize(1000)
-                ->setFullReplication(1)
-                ->setLastKey('')
-                ->setStoreId($storeId));
-            //@codingStandardsIgnoreEnd
+            $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
             $result = $request->execute();
+
             if ($result != null) {
                 $result = $result->getResult()->getStoreTenderTypes()->getReplStoreTenderType();
             }
         }
 
         return $result;
+    }
+
+    /**
+     * This function is overriding in commerce cloud module
+     *
+     * Formulate Tender Types Request
+     *
+     * @param $baseUrl
+     * @param $lsKey
+     * @param $storeId
+     * @param $scopeId
+     * @return Operation\ReplEcommStoreTenderTypes
+     */
+    public function formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId)
+    {
+        //@codingStandardsIgnoreStart
+        $service_type = new ServiceType(Operation\ReplEcommStoreTenderTypes::SERVICE_TYPE);
+        $url          = OmniService::getUrl($service_type, $baseUrl);
+        $client       = new OmniClient($url, $service_type);
+        $request      = new Operation\ReplEcommStoreTenderTypes();
+        $request->setClient($client);
+        $request->setToken($lsKey);
+        $client->setClassmap($request->getClassMap());
+        $request->getOperationInput()->setReplRequest(
+            (new Entity\ReplRequest())
+                ->setBatchSize(1000)
+                ->setFullReplication(1)
+                ->setLastKey('')
+                ->setStoreId($storeId)
+        );
+        //@codingStandardsIgnoreEnd
+
+        return $request;
     }
 }
