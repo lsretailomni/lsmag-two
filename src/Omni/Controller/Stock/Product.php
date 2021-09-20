@@ -13,6 +13,7 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\PageFactory;
 use Laminas\Json\Json as LaminasJson;
+
 /**
  * Class Product
  * @package Ls\Omni\Controller\Stock
@@ -91,11 +92,15 @@ class Product extends Action
                 $productSku
             );
             if ($response !== null) {
-                foreach ($response->getInventoryResponse() as $each) {
+                if (!is_array($response)) {
+                    $response = $response->getInventoryResponse();
+                }
+                foreach ($response as $each) {
                     if ($each->getQtyInventory() > 0) {
                         $storesNavId[] = $each->getStoreId();
                     }
                 }
+
             }
             $customResponse = $this->stockHelper->getAllStoresFromReplTable(
                 $storesNavId

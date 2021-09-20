@@ -94,10 +94,12 @@ class Store extends Action
             $response = $this->stockHelper->getAllItemsStockInSingleStore($selectedStore, $items);
 
             if ($response) {
-                if (!is_array($response->getInventoryResponse())) {
-                    $response = [$response->getInventoryResponse()];
-                } else {
-                    $response = $response->getInventoryResponse();
+                if (is_object($response)) {
+                    if (!is_array($response->getInventoryResponse())) {
+                        $response = [$response->getInventoryResponse()];
+                    } else {
+                        $response = $response->getInventoryResponse();
+                    }
                 }
 
                 $this->updateStockCollection($response, $stockCollection);
