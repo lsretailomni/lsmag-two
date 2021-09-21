@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\CustomerGraphQl\Observer;
+namespace Ls\Customer\Observer;
 
 use Exception;
 use \Ls\Core\Model\LSR;

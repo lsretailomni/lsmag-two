@@ -301,7 +301,7 @@ class ItemHelper extends AbstractHelper
     {
         try {
             $orderLines    = [];
-            $quoteItemList = $this->cart->getQuote()->getAllVisibleItems();
+            $quoteItemList = $quote->getAllVisibleItems();
 
             if (count($quoteItemList)) {
                 $orderLines = $basketData->getOrderLines()->getOrderLine();

@@ -120,8 +120,13 @@ class SyncAttributesValue extends ProductCreateTask
             /** @var ReplAttributeValue $attributeValue */
             foreach ($collection as $attributeValue) {
                 try {
-                    $itemId         = $attributeValue->getLinkField1();
-                    $product        = $this->productRepository->get($itemId, true, 0);
+                    $itemId    = $attributeValue->getLinkField1();
+                    $variantId = $attributeValue->getLinkField2();
+                    $sku       = $itemId;
+                    if (!empty($variantId)) {
+                        $sku = $sku . '-' . $variantId;
+                    }
+                    $product        = $this->productRepository->get($sku, true, 0);
                     $formattedCode  = $this->replicationHelper->formatAttributeCode(
                         $attributeValue->getCode()
                     );
@@ -135,6 +140,7 @@ class SyncAttributesValue extends ProductCreateTask
                     if ($attribute->getFrontendInput() == 'multiselect') {
                         $value = $this->replicationHelper->getAllValuesForGivenMultiSelectAttribute(
                             $itemId,
+                            $variantId,
                             $attributeValue->getCode(),
                             $formattedCode,
                             $this->store->getId()
@@ -149,8 +155,12 @@ class SyncAttributesValue extends ProductCreateTask
                         $value = $attributeValue->getValue();
                     }
 
+                    $product = $this->productRepository->get($sku, true, 0);
                     $product->setData($formattedCode, $value);
                     $product->getResource()->saveAttribute($product, $formattedCode);
+
+                    $uomCodes = $this->getUomCodesProcessed($itemId);
+
                 } catch (Exception $e) {
                     $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());
@@ -189,5 +199,22 @@ class SyncAttributesValue extends ProductCreateTask
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
+    }
+
+    public function processUomAttributes($uomCodes, $itemId, $sku, $formattedCode, $value)
+    {
+        if (!empty($uomCodes)) {
+            if (count($uomCodes[$itemId]) > 1) {
+                foreach ($uomCodes[$itemId] as $uomCode) {
+                    $baseUnitOfMeasure = $uomCodes[$itemId . '-' . 'BaseUnitOfMeasure'];
+                    if ($baseUnitOfMeasure != $uomCode) {
+                        $skuUom  = $sku . "-" . $uomCode;
+                        $product = $this->productRepository->get($skuUom, true, 0);
+                        $product->setData($formattedCode, $value);
+                        $product->getResource()->saveAttribute($product, $formattedCode);
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\CustomerGraphQl\Plugin;
+namespace Ls\Customer\Plugin\Customer;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ForgotPasswordResponse;
@@ -12,13 +12,11 @@ use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Model\ResourceModel\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\AuthenticationException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
-use Magento\Framework\GraphQl\Exception\GraphQlAuthenticationException;
-use Magento\Framework\GraphQl\Exception\GraphQlInputException;
-use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Customer\Model\AccountManagement as AccountManagementModel;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -76,19 +74,23 @@ class AccountManagement
             $extensionAttributes = $customer->getExtensionAttributes();
             $extensionAttributes->setData('ls_password', $this->contactHelper->encryptPassword($password));
             $customer->setExtensionAttributes($extensionAttributes);
+            if (empty($customer->getStoreId())) {
+                $customer->setStoreId($this->lsr->getCurrentStoreId());
+            }
         }
         return [$customer, $password];
     }
 
     /**
+     * For checking login authentication
+     *
      * @param AccountManagementModel $subject
      * @param callable $proceed
      * @param $username
      * @param $password
      * @return mixed
      * @throws AlreadyExistsException
-     * @throws GraphQlAuthenticationException
-     * @throws GraphQlNoSuchEntityException
+     * @throws AuthenticationException
      * @throws InputException
      * @throws InvalidEnumException
      * @throws InvalidTransitionException
@@ -111,7 +113,7 @@ class AccountManagement
                         && ($search instanceof MemberContact)
                         && !empty($search->getEmail());
                     if (!$found) {
-                        throw new GraphQlNoSuchEntityException(
+                        throw new NoSuchEntityException(
                             __('Sorry! No account found with the provided email address.')
                         );
                     }
@@ -120,7 +122,7 @@ class AccountManagement
                 /** @var  MemberContact $result */
                 $result = $this->contactHelper->login($username, $password);
                 if ($result == false) {
-                    throw new GraphQlAuthenticationException(
+                    throw new AuthenticationException(
                         __('Invalid LS Central login or password.')
                     );
                 }
@@ -150,12 +152,15 @@ class AccountManagement
     }
 
     /**
+     * For resetting password
+     *
      * @param AccountManagementModel $subject
      * @param callable $proceed
      * @param $email
      * @param $resetToken
      * @param $newPassword
-     * @throws GraphQlInputException
+     * @return mixed
+     * @throws InputException
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -174,7 +179,7 @@ class AccountManagement
                 ->loadByEmail($email);
             $result                 = $this->contactHelper->resetPassword($customer, $postParam);
             if (!$result) {
-                throw new GraphQlInputException(__('Cannot set the customer\'s password'));
+                throw new InputException(__('Cannot set the customer\'s password'));
             }
         }
 
@@ -182,6 +187,8 @@ class AccountManagement
     }
 
     /**
+     * Initiate password reset
+     *
      * @param AccountManagementModel $subject
      * @param callable $proceed
      * @param $email
@@ -189,7 +196,6 @@ class AccountManagement
      * @param $websiteId
      * @return mixed
      * @throws AlreadyExistsException
-     * @throws GraphQlNoSuchEntityException
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -230,7 +236,7 @@ class AccountManagement
                         $this->customerResourceModel->save($customer);
                     }
                 } else {
-                    throw new GraphQlNoSuchEntityException(
+                    throw new NoSuchEntityException(
                         __('There is no account found with the provided email/username.')
                     );
 
@@ -242,13 +248,15 @@ class AccountManagement
     }
 
     /**
+     * Change password
+     *
      * @param AccountManagementModel $subject
      * @param callable $proceed
      * @param $customerId
      * @param $currentPassword
      * @param $newPassword
      * @return mixed
-     * @throws GraphQlAuthenticationException
+     * @throws AuthenticationException
      */
     public function aroundChangePasswordById(
         AccountManagementModel $subject,
@@ -262,7 +270,7 @@ class AccountManagement
         $customer                             = $this->customerFactory->create()->load($customerId);
         $result                               = $this->contactHelper->changePassword($customer, $customerEditPost);
         if (empty($result)) {
-            throw new GraphQlAuthenticationException(
+            throw new AuthenticationException(
                 __('You have entered an invalid current password.')
             );
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\CustomerGraphQl\Plugin;
+namespace Ls\Customer\Plugin;
 
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ContactHelper;

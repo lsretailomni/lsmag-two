@@ -2098,21 +2098,23 @@ class ReplicationHelper extends AbstractHelper
      * Get all available replicated values for given multiSelect attribute
      *
      * @param $itemId
+     * @param $variantId
      * @param $attributeCode
      * @param $formattedCode
      * @param $storeId
      * @return string
      * @throws LocalizedException
      */
-    public function getAllValuesForGivenMultiSelectAttribute($itemId, $attributeCode, $formattedCode, $storeId)
+    public function getAllValuesForGivenMultiSelectAttribute($itemId, $variantId, $attributeCode, $formattedCode, $storeId)
     {
-        $values = [];
-        $filters = [
+        $values              = [];
+        $filters             = [
             ['field' => 'Code', 'value' => $attributeCode, 'condition_type' => 'eq'],
             ['field' => 'LinkField1', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'LinkField2', 'value' => $variantId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
         ];
-        $criteria = $this->buildCriteriaForDirect($filters, -1);
+        $criteria            = $this->buildCriteriaForDirect($filters, -1);
         $replAttributeValues = $this->replAttributeValueRepositoryInterface->
         getList($criteria)->getItems();
 

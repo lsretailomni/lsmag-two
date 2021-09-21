@@ -706,7 +706,7 @@ class BasketHelper extends AbstractHelper
     public function getOneListAdmin($customerEmail, $websiteId, $isGuest)
     {
         $list   = null;
-        $cardId = null;
+        $cardId = '';
 
         if (!$isGuest) {
             $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
@@ -1164,5 +1164,15 @@ class BasketHelper extends AbstractHelper
     public function getSearchCriteriaBuilder()
     {
         return $this->searchCriteriaBuilder;
+    }
+
+    /**
+     * Get Repository
+     *
+     * @return CartRepositoryInterface
+     */
+    public function getQuoteRepository()
+    {
+        return $this->quoteRepository;
     }
 }
