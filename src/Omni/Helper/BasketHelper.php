@@ -920,7 +920,8 @@ class BasketHelper extends AbstractHelper
     {
         // @codingStandardsIgnoreStart
         $oneListCalc = $this->getOneListCalculationFromCheckoutSession();
-        if ($oneListCalc == null) {
+
+        if ($oneListCalc == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $this->calculate($this->get());
 
             // calculate updates the session, so we fetch again
