@@ -98,8 +98,9 @@ class CartObserver implements ObserverInterface
           */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
-                $salesQuoteItem = $observer->getItem();
-                if (!empty($salesQuoteItem)) {
+                $salesQuoteItems = $observer->getItems();
+                if (!empty($salesQuoteItems)) {
+                    $salesQuoteItem = reset($salesQuoteItems);
                     $quote = $this->basketHelper->getQuoteRepository()->get($salesQuoteItem->getQuoteId());
                 } else {
                     $quote = $this->checkoutSession->getQuote();

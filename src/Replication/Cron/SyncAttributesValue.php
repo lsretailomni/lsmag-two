@@ -160,6 +160,7 @@ class SyncAttributesValue extends ProductCreateTask
                     $product->getResource()->saveAttribute($product, $formattedCode);
 
                     $uomCodes = $this->getUomCodesProcessed($itemId);
+                    $this->processUomAttributes($uomCodes, $itemId, $sku, $formattedCode, $value, $variantId);
 
                 } catch (Exception $e) {
                     $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
@@ -201,13 +202,24 @@ class SyncAttributesValue extends ProductCreateTask
         return $this->remainingRecords;
     }
 
-    public function processUomAttributes($uomCodes, $itemId, $sku, $formattedCode, $value)
+    /**
+     * Process Uom Attributes
+     *
+     * @param $uomCodes
+     * @param $itemId
+     * @param $sku
+     * @param $formattedCode
+     * @param $value
+     * @param $variantId
+     * @throws NoSuchEntityException
+     */
+    public function processUomAttributes($uomCodes, $itemId, $sku, $formattedCode, $value, $variantId)
     {
         if (!empty($uomCodes)) {
             if (count($uomCodes[$itemId]) > 1) {
+                $baseUnitOfMeasure = $uomCodes[$itemId . '-' . 'BaseUnitOfMeasure'];
                 foreach ($uomCodes[$itemId] as $uomCode) {
-                    $baseUnitOfMeasure = $uomCodes[$itemId . '-' . 'BaseUnitOfMeasure'];
-                    if ($baseUnitOfMeasure != $uomCode) {
+                    if ($baseUnitOfMeasure != $uomCode && !empty($variantId)) {
                         $skuUom  = $sku . "-" . $uomCode;
                         $product = $this->productRepository->get($skuUom, true, 0);
                         $product->setData($formattedCode, $value);

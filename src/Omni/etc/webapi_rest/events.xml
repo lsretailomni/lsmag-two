@@ -5,7 +5,7 @@
     <event name="payment_method_is_active">
         <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
     </event>
-    <event name="sales_quote_item_save_after">
+    <event name="sales_quote_product_add_after">
         <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
     </event>
     <event name="sales_order_place_after">

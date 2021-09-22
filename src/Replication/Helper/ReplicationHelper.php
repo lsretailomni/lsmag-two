@@ -2105,15 +2105,22 @@ class ReplicationHelper extends AbstractHelper
      * @return string
      * @throws LocalizedException
      */
-    public function getAllValuesForGivenMultiSelectAttribute($itemId, $variantId, $attributeCode, $formattedCode, $storeId)
-    {
-        $values              = [];
-        $filters             = [
+    public function getAllValuesForGivenMultiSelectAttribute(
+        $itemId,
+        $variantId,
+        $attributeCode,
+        $formattedCode,
+        $storeId
+    ) {
+        $values  = [];
+        $filters = [
             ['field' => 'Code', 'value' => $attributeCode, 'condition_type' => 'eq'],
             ['field' => 'LinkField1', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'LinkField2', 'value' => $variantId, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq']
         ];
+        if (!empty($variantId)) {
+            $filters [] = ['field' => 'LinkField2', 'value' => $variantId, 'condition_type' => 'eq'];
+        }
         $criteria            = $this->buildCriteriaForDirect($filters, -1);
         $replAttributeValues = $this->replAttributeValueRepositoryInterface->
         getList($criteria)->getItems();
@@ -2125,7 +2132,9 @@ class ReplicationHelper extends AbstractHelper
             );
 
             if ($value) {
-                $values[] = $value;
+                if (!in_array($value, $values)) {
+                    $values[] = $value;
+                }
             }
         }
 
