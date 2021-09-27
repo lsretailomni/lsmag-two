@@ -303,7 +303,7 @@ class ItemHelper extends AbstractHelper
             $orderLines    = [];
             $quoteItemList = $quote->getAllVisibleItems();
 
-            if (count($quoteItemList)) {
+            if (count($quoteItemList) && !empty($basketData)) {
                 $orderLines = $basketData->getOrderLines()->getOrderLine();
             }
 
