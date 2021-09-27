@@ -155,13 +155,19 @@ class SyncAttributesValue extends ProductCreateTask
                         $value = $attributeValue->getValue();
                     }
 
-                    $product = $this->productRepository->get($sku, true, 0);
                     $product->setData($formattedCode, $value);
                     $product->getResource()->saveAttribute($product, $formattedCode);
 
                     $uomCodes = $this->getUomCodesProcessed($itemId);
-                    $this->processUomAttributes($uomCodes, $itemId, $sku, $formattedCode, $value, $variantId);
-
+                    $this->replicationHelper->processUomAttributes(
+                        $uomCodes,
+                        $itemId,
+                        $sku,
+                        $formattedCode,
+                        $value,
+                        $variantId,
+                        $this->productRepository
+                    );
                 } catch (Exception $e) {
                     $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());
@@ -200,33 +206,5 @@ class SyncAttributesValue extends ProductCreateTask
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
-    }
-
-    /**
-     * Process Uom Attributes
-     *
-     * @param $uomCodes
-     * @param $itemId
-     * @param $sku
-     * @param $formattedCode
-     * @param $value
-     * @param $variantId
-     * @throws NoSuchEntityException
-     */
-    public function processUomAttributes($uomCodes, $itemId, $sku, $formattedCode, $value, $variantId)
-    {
-        if (!empty($uomCodes)) {
-            if (count($uomCodes[$itemId]) > 1) {
-                $baseUnitOfMeasure = $uomCodes[$itemId . '-' . 'BaseUnitOfMeasure'];
-                foreach ($uomCodes[$itemId] as $uomCode) {
-                    if ($baseUnitOfMeasure != $uomCode && !empty($variantId)) {
-                        $skuUom  = $sku . "-" . $uomCode;
-                        $product = $this->productRepository->get($skuUom, true, 0);
-                        $product->setData($formattedCode, $value);
-                        $product->getResource()->saveAttribute($product, $formattedCode);
-                    }
-                }
-            }
-        }
     }
 }

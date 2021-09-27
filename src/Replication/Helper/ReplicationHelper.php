@@ -1846,16 +1846,17 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Setting product attributes in the product model
      *
-     * @param ProductInterface $product
      * @param $navId
      * @param $storeId
-     * @return ProductInterface
+     * @param $productRepository
+     * @param null $uomCodes
      * @throws LocalizedException
      */
     public function getProductAttributes(
-        ProductInterface $product,
         $navId,
-        $storeId
+        $storeId,
+        $productRepository,
+        $uomCodes = null
     ) {
         $criteria = $this->buildCriteriaForProductAttributes(
             $navId,
@@ -1867,12 +1868,19 @@ class ReplicationHelper extends AbstractHelper
         $items = $this->replAttributeValueRepositoryInterface->getList($criteria);
         /** @var ReplAttributeValue $item */
         foreach ($items->getItems() as $item) {
-            $itemId        = $item->getLinkField1();
+            $itemId    = $item->getLinkField1();
+            $variantId = $item->getLinkField2();
+            $sku       = $itemId;
+            if (!empty($variantId)) {
+                $sku = $sku . '-' . $variantId;
+            }
+            $product       = $productRepository->get($sku, true, 0);
             $formattedCode = $this->formatAttributeCode($item->getCode());
             $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
             if ($attribute->getFrontendInput() == 'multiselect') {
                 $value = $this->getAllValuesForGivenMultiSelectAttribute(
                     $itemId,
+                    $variantId,
                     $item->getCode(),
                     $formattedCode,
                     $storeId
@@ -1887,13 +1895,22 @@ class ReplicationHelper extends AbstractHelper
                 $value = $item->getValue();
             }
             $product->setData($formattedCode, $value);
+            $product->getResource()->saveAttribute($product, $formattedCode);
+            $this->processUomAttributes(
+                $uomCodes,
+                $itemId,
+                $sku,
+                $formattedCode,
+                $value,
+                $variantId,
+                $productRepository
+            );
             $item->setData('processed_at', $this->getDateTime());
             $item->setData('processed', 1);
             $item->setData('is_updated', 0);
             // @codingStandardsIgnoreLine
             $this->replAttributeValueRepositoryInterface->save($item);
         }
-        return $product;
     }
 
     /**
@@ -2139,5 +2156,40 @@ class ReplicationHelper extends AbstractHelper
         }
 
         return implode(',', $values);
+    }
+
+    /**
+     * Process Uom Attributes
+     *
+     * @param $uomCodes
+     * @param $itemId
+     * @param $sku
+     * @param $formattedCode
+     * @param $value
+     * @param $variantId
+     * @param $productRepository
+     */
+    public function processUomAttributes(
+        $uomCodes,
+        $itemId,
+        $sku,
+        $formattedCode,
+        $value,
+        $variantId,
+        $productRepository
+    ) {
+        if (!empty($uomCodes)) {
+            if (count($uomCodes[$itemId]) > 1) {
+                $baseUnitOfMeasure = $uomCodes[$itemId . '-' . 'BaseUnitOfMeasure'];
+                foreach ($uomCodes[$itemId] as $uomCode) {
+                    if ($baseUnitOfMeasure != $uomCode && !empty($variantId)) {
+                        $skuUom  = $sku . "-" . $uomCode;
+                        $product = $productRepository->get($skuUom, true, 0);
+                        $product->setData($formattedCode, $value);
+                        $product->getResource()->saveAttribute($product, $formattedCode);
+                    }
+                }
+            }
+        }
     }
 }
