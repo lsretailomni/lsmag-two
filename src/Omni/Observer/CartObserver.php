@@ -98,7 +98,13 @@ class CartObserver implements ObserverInterface
           */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
-                $quote      = $this->checkoutSession->getQuote();
+                $salesQuoteItems = $observer->getItems();
+                if (!empty($salesQuoteItems)) {
+                    $salesQuoteItem = reset($salesQuoteItems);
+                    $quote = $this->basketHelper->getQuoteRepository()->get($salesQuoteItem->getQuoteId());
+                } else {
+                    $quote = $this->checkoutSession->getQuote();
+                }
                 $couponCode = $this->basketHelper->getCouponCodeFromCheckoutSession();
                 // This will create one list if not created and will return onelist if its already created.
                 /** @var OneList|null $oneList */

@@ -486,12 +486,7 @@ class ProductCreateTask
                                 $productData->setWeight($item->getGrossWeight());
                                 $productData->setAttributeSetId($productData->getAttributeSetId());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-                                $productData = $this->setProductStatus($productData, $item->getBlockedOnECom());
-                                $product     = $this->replicationHelper->getProductAttributes(
-                                    $productData,
-                                    $item->getNavId(),
-                                    $this->store->getId()
-                                );
+                                $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $productSaved = $this->productRepository->save($product);
@@ -555,11 +550,6 @@ class ProductCreateTask
                                     'is_in_stock'             => ($itemStock > 0) ? 1 : 0,
                                     'qty'                     => $itemStock
                                 ]);
-                                $product = $this->replicationHelper->getProductAttributes(
-                                    $product,
-                                    $item->getNavId(),
-                                    $this->store->getId()
-                                );
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $this->logger->debug('Trying to save product ' . $item->getNavId() . ' in store ' . $store->getName());
@@ -582,6 +572,13 @@ class ProductCreateTask
                                             $uomCodesNotProcessed
                                         );
                                     }
+                                    $uomCodes = $this->getUomCodesProcessed($item->getNavId());
+                                    $this->replicationHelper->getProductAttributes(
+                                        $item->getNavId(),
+                                        $this->store->getId(),
+                                        $this->productRepository,
+                                        $uomCodes
+                                    );
                                     $this->replicationHelper->assignProductToCategories($productSaved, $this->store);
                                 } catch (Exception $e) {
                                     $this->logger->debug($e->getMessage());
@@ -1076,14 +1073,14 @@ class ProductCreateTask
             foreach ($variants as $value) {
                 $itemId = $value->getItemId();
                 try {
-                    $productData            = $this->productRepository->get($itemId, true, $this->store->getId());
+                    $productData             = $this->productRepository->get($itemId, true, $this->store->getId());
                     $associatedSimpleProduct = $this->replicationHelper->getRelatedVariantGivenConfAttributesValues(
                         $productData,
                         $value,
                         $this->store->getId()
                     );
 
-                    foreach($associatedSimpleProduct as $item) {
+                    foreach ($associatedSimpleProduct as $item) {
                         $item = $this->setProductStatus($item, 1);
                         // @codingStandardsIgnoreLine
                         $this->productRepository->save($item);

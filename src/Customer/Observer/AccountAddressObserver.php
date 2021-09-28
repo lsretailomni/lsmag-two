@@ -35,9 +35,9 @@ class AccountAddressObserver implements ObserverInterface
         ManagerInterface $messageManager,
         LSR $lsr
     ) {
-        $this->contactHelper   = $contactHelper;
-        $this->messageManager  = $messageManager;
-        $this->lsr             = $lsr;
+        $this->contactHelper  = $contactHelper;
+        $this->messageManager = $messageManager;
+        $this->lsr            = $lsr;
     }
 
     /**
@@ -53,6 +53,13 @@ class AccountAddressObserver implements ObserverInterface
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             /** @var $customerAddress Address */
             $customerAddress = $observer->getCustomerAddress();
+            if (empty($customerAddress->getCustomer()->getData('lsr_cardid'))) {
+                $customer = $this->contactHelper->getCustomerByEmail($customerAddress->getCustomer()->getEmail());
+                $customerAddress->getCustomer()->setData('lsr_username', $customer->getData('lsr_username'));
+                $customerAddress->getCustomer()->setData('lsr_token', $customer->getData('lsr_token'));
+                $customerAddress->getCustomer()->setData('lsr_id', $customer->getData('lsr_id'));
+                $customerAddress->getCustomer()->setData('lsr_cardid', $customer->getData('lsr_cardid'));
+            }
             // only process if the customer has any valid lsr_username
             if ($customerAddress->getCustomer()->getData('lsr_username')
                 && $customerAddress->getCustomer()->getData('lsr_token')
