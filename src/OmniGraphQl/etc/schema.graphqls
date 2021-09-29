@@ -52,3 +52,30 @@ type Cart {
 type Order {
     document_id: String! @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\Order")
 }
+
+type Query {
+    item_availability (
+     parent_sku: String @doc(description: "Parent item sku if applicable.")
+     sku: String! @doc(description: "Item Sku whose availability is required.")
+    ): ItemAvailabilityOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\Stock\\ItemAvailabilityOutput") @doc(description: "Get list of all the stores where given item is available.")
+}
+
+type ItemAvailabilityOutput {
+    stores: [StoreData] @doc(description: "Array of all stores Data.")
+}
+
+type StoreData {
+    store_id: String @doc(description: "ID of the store.")
+    store_name: String @doc(description: "Name of the store.")
+    click_and_collect_accepted: Boolean @doc(description: "Whether or not click and collect accepted in the store.")
+    latitude: String @doc(description: "Latitude of the store.")
+    longitude: String @doc(description: "Longitude of the store.")
+    phone: String @doc(description: "Phone number of the store.")
+    city: String @doc(description: "City where the store is located.")
+    country: String @doc(description: "Country where the store is located.")
+    county: String @doc(description: "County where the store is located.")
+    state: String @doc(description: "State where the store is located.")
+    zip_code: String @doc(description: "Zip Code where the store is located.")
+    currency_accepted: String @doc(description: "Which currency is accepted in the store.")
+    street: String @doc(description: "Street Address of the store.")
+}

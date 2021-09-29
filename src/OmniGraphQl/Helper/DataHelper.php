@@ -171,4 +171,29 @@ class DataHelper extends AbstractHelper
     {
         return $this->customerSession;
     }
+
+    /**
+     * Format given store data for better understandability
+     *
+     * @param $store
+     * @return array
+     */
+    public function formatStoreData($store)
+    {
+        return [
+            'store_id'                   => $store['nav_id'],
+            'store_name'                 => $store['Name'],
+            'click_and_collect_accepted' => $store['ClickAndCollect'],
+            'latitude'                   => $store['Latitute'],
+            'longitude'                  => $store['Longitude'],
+            'phone'                      => $store['Phone'],
+            'city'                       => $store['City'],
+            'country'                    => $store['Country'],
+            'county'                     => $store['County'],
+            'state'                      => $store['State'],
+            'zip_code'                   => $store['ZipCode'],
+            'currency_accepted'          => $store['Currency'],
+            'street'                     => $store['Street']
+        ];
+    }
 }

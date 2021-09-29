@@ -16,6 +16,7 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Stock related operation helper
@@ -39,25 +40,30 @@ class StockHelper extends AbstractHelper
      */
     public $itemHelper;
 
+    /** @var StoreManagerInterface */
+    public $storeManager;
+
     /**
-     * StockHelper constructor.
      * @param Context $context
      * @param ProductRepositoryInterface $productRepository
      * @param CollectionFactory $storeCollectionFactory
      * @param LSR $lsr
-     * @param \Ls\Omni\Helper\ItemHelper $itemHelper
+     * @param ItemHelper $itemHelper
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Context $context,
         ProductRepositoryInterface $productRepository,
         CollectionFactory $storeCollectionFactory,
         LSR $lsr,
-        ItemHelper $itemHelper
+        ItemHelper $itemHelper,
+        StoreManagerInterface $storeManager
     ) {
         $this->productRepository      = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->lsr                    = $lsr;
         $this->itemHelper             = $itemHelper;
+        $this->storeManager           = $storeManager;
         parent::__construct($context);
     }
 
@@ -225,17 +231,58 @@ class StockHelper extends AbstractHelper
     }
 
     /**
+     * Get given stores information from repl store table
+     *
      * @param $storesNavIds
      * @return Collection
+     * @throws NoSuchEntityException
      */
     public function getAllStoresFromReplTable($storesNavIds)
     {
-        $stores        = $this->storeCollectionFactory->create()->addFieldToFilter('nav_id', ['in' => $storesNavIds]);
+        $stores        = $this->storeCollectionFactory->create()
+            ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
+            ->addFieldToFilter('scope_id', ['eq' => $this->getStoreId()]);
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
+
         if (!$displayStores) {
             $stores->addFieldToFilter('ClickAndCollect', 1);
         }
+
         return $stores;
+    }
+
+    /**
+     * Fetch all stores where given item is in stock and get all store data from stores repl table
+     *
+     * @param $simpleProductId
+     * @param $productSku
+     * @return Collection
+     * @throws NoSuchEntityException
+     */
+    public function fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku)
+    {
+        $storesNavId     = [];
+        $response = $this->getAllStoresItemInStock(
+            $simpleProductId,
+            $productSku
+        );
+
+        if ($response !== null) {
+            if (!is_array($response)) {
+                $response = $response->getInventoryResponse();
+            }
+
+            foreach ($response as $each) {
+                if ($each->getQtyInventory() > 0) {
+                    $storesNavId[] = $each->getStoreId();
+                }
+            }
+
+        }
+
+        return $this->getAllStoresFromReplTable(
+            $storesNavId
+        );
     }
 
     /**
@@ -394,5 +441,14 @@ class StockHelper extends AbstractHelper
         }
 
         return false;
+    }
+
+    /**
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getStoreId()
+    {
+        return $this->storeManager->getStore()->getStoreId();
     }
 }
