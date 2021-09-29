@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Controller\Stock;
 
-use Ls\Omni\Block\Stores\Stores;
+use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Helper\StockHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
@@ -16,8 +16,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Laminas\Json\Json as LaminasJson;
 
 /**
- * Class Product
- * @package Ls\Omni\Controller\Stock
+ * Controller to check given item availability in all stores
  */
 class Product extends Action
 {
