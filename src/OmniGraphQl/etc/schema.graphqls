@@ -78,4 +78,16 @@ type StoreData {
     zip_code: String @doc(description: "Zip Code where the store is located.")
     currency_accepted: String @doc(description: "Which currency is accepted in the store.")
     street: String @doc(description: "Street Address of the store.")
+    store_hours: [StoreHoursData]
+}
+
+type StoreHoursData {
+    day_of_week: String
+    hour_types: [HourType]
+}
+
+type HourType {
+    type: String
+    opening_time: String
+    closing_time: String
 }

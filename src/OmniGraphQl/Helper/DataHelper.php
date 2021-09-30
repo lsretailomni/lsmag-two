@@ -5,6 +5,7 @@ namespace Ls\OmniGraphQl\Helper;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\Data;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
@@ -26,7 +27,6 @@ use Magento\Sales\Api\OrderRepositoryInterface;
  */
 class DataHelper extends AbstractHelper
 {
-
     /**
      * @var ManagerInterface
      */
@@ -64,6 +64,11 @@ class DataHelper extends AbstractHelper
     public $customerSession;
 
     /**
+     * @var Data
+     */
+    public $omniDataHelper;
+
+    /**
      * @param Context $context
      * @param ManagerInterface $eventManager
      * @param BasketHelper $basketHelper
@@ -73,6 +78,7 @@ class DataHelper extends AbstractHelper
      * @param CustomerRepositoryInterface $customerRepository
      * @param CustomerFactory $customerFactory
      * @param Session $customerSession
+     * @param Data $omniDataHelper
      */
     public function __construct(
         Context $context,
@@ -83,7 +89,8 @@ class DataHelper extends AbstractHelper
         OrderRepositoryInterface $orderRepository,
         CustomerRepositoryInterface $customerRepository,
         CustomerFactory $customerFactory,
-        Session $customerSession
+        Session $customerSession,
+        Data $omniDataHelper
     ) {
         parent::__construct($context);
         $this->eventManager          = $eventManager;
@@ -94,6 +101,7 @@ class DataHelper extends AbstractHelper
         $this->customerRepository    = $customerRepository;
         $this->customerFactory       = $customerFactory;
         $this->customerSession       = $customerSession;
+        $this->omniDataHelper        = $omniDataHelper;
     }
 
     /**
@@ -193,7 +201,67 @@ class DataHelper extends AbstractHelper
             'state'                      => $store['State'],
             'zip_code'                   => $store['ZipCode'],
             'currency_accepted'          => $store['Currency'],
-            'street'                     => $store['Street']
+            'street'                     => $store['Street'],
+            'store_hours'                => $this->formatStoreTiming($store['nav_id'])
         ];
+    }
+
+    /**
+     * Format store timing
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function formatStoreTiming($storeId)
+    {
+        $storeHours = $this->omniDataHelper->getStoreHours($storeId);
+        $hours      = [];
+        $i          = 0;
+
+        foreach ($storeHours as $hour) {
+            $hours[$i]['day_of_week'] = $hour['day'];
+            $hours[$i]['hour_types']  = $this->formatHoursAccordingToType($hour);
+            $i++;
+        }
+
+        return $hours;
+    }
+
+    /**
+     * Format hours according to their type
+     *
+     * @param $hour
+     * @return array
+     */
+    public function formatHoursAccordingToType($hour)
+    {
+        $hours = [];
+        $types = ['normal', 'temporary', 'closed'];
+        $i     = 0;
+        foreach ($types as $type) {
+            if (isset($hour[$type])) {
+                if ($type == 'normal') {
+                    foreach ($hour[$type] as $normal) {
+                        $hours[$i]['type'] = $type;
+
+                        if (isset($normal['open'])) {
+                            $hours[$i]['opening_time'] = $normal['open'];
+                        }
+
+                        if (isset($normal['close'])) {
+                            $hours[$i]['closing_time'] = $normal['close'];
+                        }
+                        $i++;
+                    }
+                } else {
+                    $hours[$i]['type']         = $type;
+                    $hours[$i]['opening_time'] = $hour[$type]['open'];
+                    $hours[$i]['closing_time'] = $hour[$type]['close'];
+                    $i++;
+                }
+            }
+        }
+
+        return $hours;
     }
 }
