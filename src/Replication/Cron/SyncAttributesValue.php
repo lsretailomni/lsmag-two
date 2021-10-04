@@ -2,12 +2,12 @@
 
 namespace Ls\Replication\Cron;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplAttributeValue;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Setup\Exception;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 
@@ -120,8 +120,13 @@ class SyncAttributesValue extends ProductCreateTask
             /** @var ReplAttributeValue $attributeValue */
             foreach ($collection as $attributeValue) {
                 try {
-                    $itemId         = $attributeValue->getLinkField1();
-                    $product        = $this->productRepository->get($itemId, true, 0);
+                    $itemId    = $attributeValue->getLinkField1();
+                    $variantId = $attributeValue->getLinkField2();
+                    $sku       = $itemId;
+                    if (!empty($variantId)) {
+                        $sku = $sku . '-' . $variantId;
+                    }
+                    $product        = $this->productRepository->get($sku, true, 0);
                     $formattedCode  = $this->replicationHelper->formatAttributeCode(
                         $attributeValue->getCode()
                     );
@@ -135,6 +140,7 @@ class SyncAttributesValue extends ProductCreateTask
                     if ($attribute->getFrontendInput() == 'multiselect') {
                         $value = $this->replicationHelper->getAllValuesForGivenMultiSelectAttribute(
                             $itemId,
+                            $variantId,
                             $attributeValue->getCode(),
                             $formattedCode,
                             $this->store->getId()
@@ -151,6 +157,17 @@ class SyncAttributesValue extends ProductCreateTask
 
                     $product->setData($formattedCode, $value);
                     $product->getResource()->saveAttribute($product, $formattedCode);
+
+                    $uomCodes = $this->getUomCodesProcessed($itemId);
+                    $this->replicationHelper->processUomAttributes(
+                        $uomCodes,
+                        $itemId,
+                        $sku,
+                        $formattedCode,
+                        $value,
+                        $variantId,
+                        $this->productRepository
+                    );
                 } catch (Exception $e) {
                     $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
                     $this->logger->debug($e->getMessage());

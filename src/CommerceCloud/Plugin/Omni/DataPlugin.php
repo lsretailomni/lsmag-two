@@ -45,7 +45,7 @@ class DataPlugin
         $storeId,
         $scopeId
     ) {
-        $centralType = $subject->lsr->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $scopeId);
+        $centralType = $subject->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $scopeId);
 
         if (!$centralType) {
             return $result;

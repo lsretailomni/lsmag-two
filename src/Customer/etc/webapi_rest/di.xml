@@ -6,11 +6,6 @@
                 type="Ls\Customer\Plugin\Customer\AccountManagement"
                 sortOrder="1"/>
     </type>
-    <type name="Magento\CustomerGraphQl\Model\Customer\SaveCustomer">
-        <plugin name="ls_customer_graphql_update_account"
-                type="Ls\CustomerGraphQl\Plugin\UpdateAccount"
-                sortOrder="1"/>
-    </type>
     <type name="Magento\Integration\Api\CustomerTokenServiceInterface">
         <plugin name="ls_customer_unset_session_values"
                 type="Ls\Customer\Plugin\CustomerTokenServicePlugin"
