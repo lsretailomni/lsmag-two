@@ -149,9 +149,13 @@ class OrderHelper extends AbstractHelper
             $shippingMethod = $order->getShippingMethod(true);
             //TODO work on condition
             $isClickCollect = false;
+            $carrierCode    = '';
+            $method         = '';
 
             if ($shippingMethod !== null) {
-                $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
+                $carrierCode    = $shippingMethod->getData('carrier_code');
+                $method         = $shippingMethod->getData('method');
+                $isClickCollect = $carrierCode == 'clickandcollect';
             }
 
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
@@ -180,6 +184,8 @@ class OrderHelper extends AbstractHelper
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
             } else {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
+                $oneListCalculateResponse->setShippingAgentCode($carrierCode);
+                $oneListCalculateResponse->setShippingAgentServiceCode($method);
             }
             $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
             //For click and collect.
