@@ -219,8 +219,8 @@ class OrderHelper extends AbstractHelper
         $shippingAmount     = $order->getShippingAmount();
         if ($shippingAmount > 0) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
-            $netPrice        = $this->loyaltyHelper->formatValue($shippingAmount / $netPriceFormula);
-            $taxAmount       = $this->loyaltyHelper->formatValue($shippingAmount - $netPrice);
+            $netPrice        = $shippingAmount / $netPriceFormula;
+            $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
             $shipmentOrderLine->setPrice($shippingAmount)
