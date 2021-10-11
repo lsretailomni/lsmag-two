@@ -5,10 +5,11 @@
         <observer name="ls_clickandcollect_add_pickup_info_to_order_page"
                   instance="Ls\Omni\Observer\Adminhtml\BlockObserver"/>
     </event>
-    <event name="sales_model_service_quote_submit_before">
-        <observer name="basket_calculation" instance="Ls\Omni\Observer\Adminhtml\QuoteObserver"/>
-    </event>
     <event name="sales_order_place_after">
         <observer name="order_observer_admin" instance="Ls\Omni\Observer\Adminhtml\OrderObserver"/>
+    </event>
+    <!-- for fixing grand total and base grand total -->
+    <event name="sales_quote_address_collect_totals_after">
+        <observer name="sales_quote_totals_after" instance="Ls\Omni\Observer\Adminhtml\SalesObserver"/>
     </event>
 </config>

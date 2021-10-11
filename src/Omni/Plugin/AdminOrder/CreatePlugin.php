@@ -1,24 +1,20 @@
 <?php
 
-namespace Ls\Omni\Observer\Adminhtml;
+namespace Ls\Omni\Plugin\AdminOrder;
 
-use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
-use \LS\Omni\Helper\ItemHelper;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-use Magento\Quote\Model\Quote;
+use \Ls\Omni\Helper\ItemHelper;
+use Magento\Sales\Model\AdminOrder\Create;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class QuoteObserver
- * @package Ls\Omni\Observer\Adminhtml
+ * Interceptor to create oneList while creating order from admin
  */
-class QuoteObserver implements ObserverInterface
+class CreatePlugin
 {
     /**
      * @var BasketHelper
@@ -46,7 +42,6 @@ class QuoteObserver implements ObserverInterface
     private $data;
 
     /**
-     * QuoteObserver constructor.
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
@@ -68,27 +63,38 @@ class QuoteObserver implements ObserverInterface
     }
 
     /**
-     * @param Observer $observer
-     * @return $this|void
+     * After plugin to create oneList after quote is saved
+     *
+     * @param Create $subject
+     * @param $result
+     * @return mixed
      */
-    // @codingStandardsIgnoreLine
-    public function execute(Observer $observer)
-    {
-        /** @var Quote $quote */
-        $quote = $observer->getEvent()->getQuote();
-        /*
-        * Adding condition to only process if LSR is enabled.
-        */
+    public function afterSaveQuote(
+        Create $subject,
+        $result
+    ) {
+        if (!$subject->getQuote()->getId() || empty($subject->getQuote()->getAllVisibleItems())) {
+            return $result;
+        }
+
+        $quote = $subject->getQuote();
         try {
             if ($this->lsr->isLSR($quote->getStoreId())) {
                 $couponCode = $quote->getCouponCode();
                 // This will create one list if not created and will return onelist if its already created.
                 /** @var OneList|null $oneList */
-                $oneList = $this->basketHelper->getOneListAdmin(
-                    $quote->getCustomerEmail(),
-                    $quote->getStore()->getWebsiteId(),
-                    false
-                );
+                $oneList = $this->basketHelper->getOneListFromCustomerSession();
+
+                if (!$oneList || !$oneList->getCardId() || $quote->getLsOneListId() != $oneList->getId()) {
+                    $oneList = $this->basketHelper->getOneListAdmin(
+                        $quote->getCustomerEmail(),
+                        $quote->getStore()->getWebsiteId(),
+                        false
+                    );
+                    $quote->setLsOneListId($oneList->getId());
+                    $this->basketHelper->quoteRepository->save($quote);
+                }
+
                 $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
                 if (!empty($couponCode)) {
                     $status = $this->basketHelper->setCouponCode($couponCode);
@@ -107,7 +113,7 @@ class QuoteObserver implements ObserverInterface
                 }
                 /** @var Order $basketData */
                 $basketData = $this->basketHelper->update($oneList);
-                $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
+                $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
                 if (!empty($basketData)) {
                     $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
                 }
@@ -121,9 +127,10 @@ class QuoteObserver implements ObserverInterface
                     );
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-        return $this;
+
+        return $result;
     }
 }

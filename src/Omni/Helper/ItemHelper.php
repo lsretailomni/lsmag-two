@@ -19,8 +19,10 @@ use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
 
@@ -67,7 +69,11 @@ class ItemHelper extends AbstractHelper
     public $quoteResourceModel;
 
     /**
-     * ItemHelper constructor.
+     * @var QuoteFactory
+     */
+    public $quoteFactory;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param ReplBarcodeRepository $barcodeRepository
@@ -78,6 +84,7 @@ class ItemHelper extends AbstractHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param Cart $cart
      * @param Quote $quoteResourceModel
+     * @param QuoteFactory $quoteFactory
      */
     public function __construct(
         Context $context,
@@ -89,7 +96,8 @@ class ItemHelper extends AbstractHelper
         Item $itemResourceModel,
         LoyaltyHelper $loyaltyHelper,
         Cart $cart,
-        Quote $quoteResourceModel
+        Quote $quoteResourceModel,
+        QuoteFactory $quoteFactory
     ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -101,6 +109,7 @@ class ItemHelper extends AbstractHelper
         $this->loyaltyHelper         = $loyaltyHelper;
         $this->cart                  = $cart;
         $this->quoteResourceModel    = $quoteResourceModel;
+        $this->quoteFactory          = $quoteFactory;
     }
 
     /**
@@ -290,81 +299,121 @@ class ItemHelper extends AbstractHelper
     }
 
     /**
+     *
+     * Setting prices coming from Central
+     *
+     * @param $quote
+     * @param $basketData
+     * @param int $type
+     */
+    public function setDiscountedPricesForItems($quote, $basketData, $type = 1)
+    {
+        try {
+            $this->compareQuoteItemsWithOrderLinesAndSetRelatedAmounts($quote, $basketData, $type);
+            $this->setGrandTotalGivenQuote($quote, $basketData);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Compare one_list lines with quote_item items and set correct prices
      *
      * @param $quote
-     * @param Order $basketData
+     * @param $basketData
+     * @param int $type
+     * @throws AlreadyExistsException
+     * @throws NoSuchEntityException
      */
-    public function setDiscountedPricesForItems($quote, $basketData)
+    public function compareQuoteItemsWithOrderLinesAndSetRelatedAmounts($quote, $basketData, $type = 1)
     {
-        try {
-            $orderLines    = [];
-            $quoteItemList = $quote->getAllVisibleItems();
+        $orderLines    = [];
+        $quoteItemList = $quote->getAllVisibleItems();
 
-            if (count($quoteItemList) && !empty($basketData)) {
-                $orderLines = $basketData->getOrderLines()->getOrderLine();
-            }
-
-            foreach ($quoteItemList as $quoteItem) {
-                $baseUnitOfMeasure = $quoteItem->getProduct()->getData('uom');
-                list($itemId, $variantId, $uom) = $this->getComparisonValues(
-                    $quoteItem->getProductId(),
-                    $quoteItem->getSku()
-                );
-
-                foreach ($orderLines as $index => $line) {
-                    if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                        $unitPrice = $line->getAmount() / $line->getQuantity();
-                        if ($line->getDiscountAmount() > 0) {
-                            $quoteItem->setCustomPrice($unitPrice);
-                            $quoteItem->setDiscountAmount($line->getDiscountAmount());
-                            $quoteItem->setOriginalCustomPrice($unitPrice);
-                        } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
-                            $quoteItem->setCustomPrice($unitPrice);
-                            $quoteItem->setOriginalCustomPrice($unitPrice);
-                        } else {
-                            $quoteItem->setCustomPrice(null);
-                            $quoteItem->setDiscountAmount(null);
-                            $quoteItem->setOriginalCustomPrice(null);
-                        }
-                        $quoteItem->setTaxAmount($line->getTaxAmount())
-                            ->setBaseTaxAmount($line->getTaxAmount())
-                            ->setPriceInclTax($unitPrice)
-                            ->setBasePriceInclTax($unitPrice)
-                            ->setRowTotal($line->getNetAmount())
-                            ->setBaseRowTotal($line->getNetAmount())
-                            ->setRowTotalInclTax($line->getAmount())
-                            ->setBaseRowTotalInclTax($line->getAmount());
-                        unset($orderLines[$index]);
-                        break;
-                    }
-                }
-                $quoteItem->getProduct()->setIsSuperMode(true);
-                // @codingStandardsIgnoreLine
-                $this->itemResourceModel->save($quoteItem);
-            }
-
-            if ($quote->getId()) {
-                $cartQuote = $this->cart->getQuote();
-
-                if (isset($basketData)) {
-                    $pointDiscount  = $cartQuote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-                    $giftCardAmount = $cartQuote->getLsGiftCardAmountUsed();
-                    $cartQuote->getShippingAddress()->setGrandTotal(
-                        $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
-                    );
-                }
-                $couponCode = $this->checkoutSession->getCouponCode();
-                $cartQuote->setCouponCode($couponCode);
-                $cartQuote->getShippingAddress()->setCouponCode($couponCode);
-                $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
-                $this->quoteResourceModel->save($cartQuote);
-            }
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
+        if (count($quoteItemList) && !empty($basketData)) {
+            $orderLines = $basketData->getOrderLines()->getOrderLine();
         }
+
+        foreach ($quoteItemList as $quoteItem) {
+            $baseUnitOfMeasure = $quoteItem->getProduct()->getData('uom');
+            list($itemId, $variantId, $uom) = $this->getComparisonValues(
+                $quoteItem->getProductId(),
+                $quoteItem->getSku()
+            );
+
+            foreach ($orderLines as $index => $line) {
+                if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                    $unitPrice = $line->getAmount() / $line->getQuantity();
+                    $this->setRelatedAmountsAgainstGivenQuoteItem($line, $quoteItem, $unitPrice, $type);
+                    unset($orderLines[$index]);
+                    break;
+                }
+            }
+            $quoteItem->getProduct()->setIsSuperMode(true);
+            // @codingStandardsIgnoreLine
+            $this->itemResourceModel->save($quoteItem);
+        }
+    }
+
+    /**
+     * Setting grand total in quote_address
+     *
+     * @param $quote
+     * @param $basketData
+     * @throws AlreadyExistsException
+     * @throws NoSuchEntityException
+     */
+    public function setGrandTotalGivenQuote($quote, $basketData)
+    {
+        if ($quote->getId()) {
+            if (isset($basketData)) {
+                $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+                $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+                $quote->getShippingAddress()->setGrandTotal(
+                    $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
+                );
+            }
+            $couponCode = $this->checkoutSession->getCouponCode();
+            $quote->setCouponCode($couponCode);
+            $quote->getShippingAddress()->setCouponCode($couponCode);
+            $quote->setTotalsCollectedFlag(false)->collectTotals();
+            $this->quoteResourceModel->save($quote);
+        }
+    }
+
+    /**
+     * Setting related amounts in each quote_item
+     *
+     * @param $line
+     * @param $quoteItem
+     * @param $unitPrice
+     * @param int $type
+     */
+    public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
+    {
+        if ($line->getDiscountAmount() > 0) {
+            $quoteItem->setCustomPrice($unitPrice);
+            $quoteItem->setDiscountAmount($line->getDiscountAmount());
+            $quoteItem->setOriginalCustomPrice($unitPrice);
+        } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
+            $quoteItem->setCustomPrice($unitPrice);
+            $quoteItem->setOriginalCustomPrice($unitPrice);
+        } else {
+            $quoteItem->setCustomPrice(null);
+            $quoteItem->setDiscountAmount(null);
+            $quoteItem->setOriginalCustomPrice(null);
+        }
+        $rowTotal = $line->getPrice() * $line->getQuantity();
+        $quoteItem->setTaxAmount($line->getTaxAmount())
+            ->setBaseTaxAmount($line->getTaxAmount())
+            ->setPriceInclTax($unitPrice)
+            ->setBasePriceInclTax($unitPrice)
+            ->setRowTotal($type == 1 ? $line->getNetAmount() : $rowTotal)
+            ->setBaseRowTotal($type == 1 ? $line->getNetAmount() : $rowTotal)
+            ->setRowTotalInclTax($type == 1 ? $line->getAmount() : $rowTotal)
+            ->setBaseRowTotalInclTax($type == 1 ? $line->getAmount() : $rowTotal);
     }
 
     /**
