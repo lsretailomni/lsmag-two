@@ -100,7 +100,7 @@ class SyncOrders
                         foreach ($orders as $order) {
                             try {
                                 $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
-                                $basketData = $this->basketHelper->calculateOneListFromOrder($order);
+                                $basketData = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
 
                                 if (!empty($basketData)) {
                                     $request            = $this->orderHelper->prepareOrder($order, $basketData);
