@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Controller\Stock;
 
+use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Helper\StockHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
@@ -15,8 +16,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Laminas\Json\Json as LaminasJson;
 
 /**
- * Class Product
- * @package Ls\Omni\Controller\Stock
+ * Controller to check given item availability in all stores
  */
 class Product extends Action
 {
@@ -84,29 +84,12 @@ class Product extends Action
         $notAvailableNoticeContent = __("This item is only available online.");
         // @codingStandardsIgnoreEnd
         if ($this->getRequest()->isAjax()) {
-            $storesNavId     = [];
             $productSku      = $this->request->getParam('sku');
             $simpleProductId = $this->request->getParam('id');
-            $response        = $this->stockHelper->getAllStoresItemInStock(
-                $simpleProductId,
-                $productSku
-            );
-            if ($response !== null) {
-                if (!is_array($response)) {
-                    $response = $response->getInventoryResponse();
-                }
-                foreach ($response as $each) {
-                    if ($each->getQtyInventory() > 0) {
-                        $storesNavId[] = $each->getStoreId();
-                    }
-                }
 
-            }
-            $customResponse = $this->stockHelper->getAllStoresFromReplTable(
-                $storesNavId
-            );
+            $customResponse = $this->stockHelper->fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku);
 
-            $storesData = $resultPage->getLayout()->createBlock('Ls\Omni\Block\Stores\Stores')
+            $storesData = $resultPage->getLayout()->createBlock(Stores::class)
                 ->setTemplate('Ls_Omni::stores/stores.phtml')
                 ->setData('data', $customResponse)
                 ->toHtml();
