@@ -184,8 +184,9 @@ class OrderHelper extends AbstractHelper
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
             } else {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
-                $oneListCalculateResponse->setShippingAgentCode($carrierCode);
-                $oneListCalculateResponse->setShippingAgentServiceCode($method);
+                //TODO need to fix the length issue once LS Central allow more then 10 characters.
+                $oneListCalculateResponse->setShippingAgentCode(substr($carrierCode,0,10));
+                $oneListCalculateResponse->setShippingAgentServiceCode(substr($method,0,10));
             }
             $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
             //For click and collect.
