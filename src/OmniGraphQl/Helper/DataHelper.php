@@ -20,6 +20,7 @@ use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Useful helper functions for the module
@@ -238,6 +239,10 @@ class DataHelper extends AbstractHelper
         $hours = [];
         $types = ['normal', 'temporary', 'closed'];
         $i     = 0;
+        $hoursFormat   = $this->scopeConfig->getValue(
+            LSR::LS_STORES_OPENING_HOURS_FORMAT,
+            ScopeInterface::SCOPE_STORE
+        );
         foreach ($types as $type) {
             if (isset($hour[$type])) {
                 if ($type == 'normal') {
@@ -245,18 +250,18 @@ class DataHelper extends AbstractHelper
                         $hours[$i]['type'] = $type;
 
                         if (isset($normal['open'])) {
-                            $hours[$i]['opening_time'] = $normal['open'];
+                            $hours[$i]['opening_time'] = date($hoursFormat, strtotime($normal['open']));
                         }
 
                         if (isset($normal['close'])) {
-                            $hours[$i]['closing_time'] = $normal['close'];
+                            $hours[$i]['closing_time'] = date($hoursFormat, strtotime($normal['close']));
                         }
                         $i++;
                     }
                 } else {
                     $hours[$i]['type']         = $type;
-                    $hours[$i]['opening_time'] = $hour[$type]['open'];
-                    $hours[$i]['closing_time'] = $hour[$type]['close'];
+                    $hours[$i]['opening_time'] = date($hoursFormat, strtotime($hour[$type]['open']));
+                    $hours[$i]['closing_time'] = date($hoursFormat, strtotime($hour[$type]['close']));
                     $i++;
                 }
             }
