@@ -16,7 +16,6 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Stock related operation helper
@@ -40,30 +39,26 @@ class StockHelper extends AbstractHelper
      */
     public $itemHelper;
 
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
     /**
-     * @param Context $context
+     * StockHelper constructor.
+     *
+     * @param Context                    $context
      * @param ProductRepositoryInterface $productRepository
-     * @param CollectionFactory $storeCollectionFactory
-     * @param LSR $lsr
-     * @param ItemHelper $itemHelper
-     * @param StoreManagerInterface $storeManager
+     * @param CollectionFactory          $storeCollectionFactory
+     * @param LSR                        $lsr
+     * @param ItemHelper                 $itemHelper
      */
     public function __construct(
         Context $context,
         ProductRepositoryInterface $productRepository,
         CollectionFactory $storeCollectionFactory,
         LSR $lsr,
-        ItemHelper $itemHelper,
-        StoreManagerInterface $storeManager
+        ItemHelper $itemHelper
     ) {
         $this->productRepository      = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->lsr                    = $lsr;
         $this->itemHelper             = $itemHelper;
-        $this->storeManager           = $storeManager;
         parent::__construct($context);
     }
 
@@ -241,7 +236,7 @@ class StockHelper extends AbstractHelper
     {
         $stores        = $this->storeCollectionFactory->create()
             ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
-            ->addFieldToFilter('scope_id', ['eq' => $this->getStoreId()]);
+            ->addFieldToFilter('scope_id', ['eq' => $this->lsr->getCurrentStoreId()]);
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
 
         if (!$displayStores) {
@@ -363,7 +358,7 @@ class StockHelper extends AbstractHelper
                 if (!empty($uomQty)) {
                     $qty = $qty * $uomQty;
                 }
-                list($parentProductSku, $childProductSku) = $this->itemHelper->getComparisonValues(
+                [$parentProductSku, $childProductSku] = $this->itemHelper->getComparisonValues(
                     $item->getProductId(),
                     $item->getSku()
                 );
@@ -441,14 +436,5 @@ class StockHelper extends AbstractHelper
         }
 
         return false;
-    }
-
-    /**
-     * @return mixed
-     * @throws NoSuchEntityException
-     */
-    public function getStoreId()
-    {
-        return $this->storeManager->getStore()->getStoreId();
     }
 }
