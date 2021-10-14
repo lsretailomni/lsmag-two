@@ -112,6 +112,11 @@ class Store extends Entity
     protected $UseDefaultCustomer = null;
 
     /**
+     * @property boolean $UseSourcingLocation
+     */
+    protected $UseSourcingLocation = null;
+
+    /**
      * @property string $WebOmniStaff
      */
     protected $WebOmniStaff = null;
@@ -479,6 +484,24 @@ class Store extends Entity
     public function getUseDefaultCustomer()
     {
         return $this->UseDefaultCustomer;
+    }
+
+    /**
+     * @param boolean $UseSourcingLocation
+     * @return $this
+     */
+    public function setUseSourcingLocation($UseSourcingLocation)
+    {
+        $this->UseSourcingLocation = $UseSourcingLocation;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseSourcingLocation()
+    {
+        return $this->UseSourcingLocation;
     }
 
     /**
