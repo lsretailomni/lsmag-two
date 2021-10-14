@@ -8,12 +8,17 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use Ls\Omni\Exception\InvalidEnumException;
 
 class StoreHours
 {
+
+    /**
+     * @property StoreHourCalendarType $CalendarType
+     */
+    protected $CalendarType = null;
 
     /**
      * @property int $DayOfWeek
@@ -51,11 +56,6 @@ class StoreHours
     protected $StartDate = null;
 
     /**
-     * @property StoreHourType $StoreHourtype
-     */
-    protected $StoreHourtype = null;
-
-    /**
      * @property string $StoreId
      */
     protected $StoreId = null;
@@ -64,6 +64,34 @@ class StoreHours
      * @property StoreHourOpeningType $Type
      */
     protected $Type = null;
+
+    /**
+     * @param StoreHourCalendarType|string $CalendarType
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setCalendarType($CalendarType)
+    {
+        if ( ! $CalendarType instanceof StoreHourCalendarType ) {
+            if ( StoreHourCalendarType::isValid( $CalendarType ) )
+                $CalendarType = new StoreHourCalendarType( $CalendarType );
+            elseif ( StoreHourCalendarType::isValidKey( $CalendarType ) )
+                $CalendarType = new StoreHourCalendarType( constant( "StoreHourCalendarType::$CalendarType" ) );
+            elseif ( ! $CalendarType instanceof StoreHourCalendarType )
+                throw new InvalidEnumException();
+        }
+        $this->CalendarType = $CalendarType->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return StoreHourCalendarType
+     */
+    public function getCalendarType()
+    {
+        return $this->CalendarType;
+    }
 
     /**
      * @param int $DayOfWeek
@@ -189,34 +217,6 @@ class StoreHours
     public function getStartDate()
     {
         return $this->StartDate;
-    }
-
-    /**
-     * @param StoreHourType|string $StoreHourtype
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setStoreHourtype($StoreHourtype)
-    {
-        if ( ! $StoreHourtype instanceof StoreHourType ) {
-            if ( StoreHourType::isValid( $StoreHourtype ) )
-                $StoreHourtype = new StoreHourType( $StoreHourtype );
-            elseif ( StoreHourType::isValidKey( $StoreHourtype ) )
-                $StoreHourtype = new StoreHourType( constant( "StoreHourType::$StoreHourtype" ) );
-            elseif ( ! $StoreHourtype instanceof StoreHourType )
-                throw new InvalidEnumException();
-        }
-        $this->StoreHourtype = $StoreHourtype->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return StoreHourType
-     */
-    public function getStoreHourtype()
-    {
-        return $this->StoreHourtype;
     }
 
     /**
