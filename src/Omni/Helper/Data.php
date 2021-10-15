@@ -204,7 +204,7 @@ class Data extends AbstractHelper
                 $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
                 $currentDayOfWeek = date('w', strtotime($current));
                 foreach ($storeResults as $key => $r) {
-                    if ($r->getCalendarType() == StoreHourCalendarType::OPENING_HOURS) {
+                    if (empty($r->getCalendarType()) || $r->getCalendarType() == StoreHourCalendarType::OPENING_HOURS) {
                         if ($r->getDayOfWeek() == $currentDayOfWeek) {
                             if ($this->checkDateValidity($current, $r)) {
                                 if ($r->getType() == StoreHourOpeningType::NORMAL) {
@@ -226,8 +226,7 @@ class Data extends AbstractHelper
                 }
             }
             return $storeHours;
-        } catch
-        (Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
