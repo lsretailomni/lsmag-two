@@ -5,10 +5,16 @@ namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 use \Ls\Omni\Model\Carrier\Clickandcollect;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
+use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
+/**
+ * Interceptor to interceptor ShippingMethodsOnCart methods
+ */
 class SetShippingMethodsOnCartPlugin
 {
 
@@ -35,7 +41,21 @@ class SetShippingMethodsOnCartPlugin
     }
 
     /**
-     * @inheritdoc
+     * Around plugin to validate cart items stock before setting pickup store for click and collect
+     *
+     * @param $subject
+     * @param callable $proceed
+     * @param Field $field
+     * @param $context
+     * @param ResolveInfo $info
+     * @param array|null $value
+     * @param array|null $args
+     * @return array[]
+     * @throws GraphQlInputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws GraphQlAuthorizationException
+     * @throws GraphQlNoSuchEntityException
      */
     public function aroundResolve(
         $subject,
