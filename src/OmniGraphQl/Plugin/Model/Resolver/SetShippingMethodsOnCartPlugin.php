@@ -13,7 +13,7 @@ use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 /**
- * Interceptor to interceptor ShippingMethodsOnCart methods
+ * Interceptor to intercept ShippingMethodsOnCart methods
  */
 class SetShippingMethodsOnCartPlugin
 {
