@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Observer;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ContactSearchType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ContactSearchType;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;

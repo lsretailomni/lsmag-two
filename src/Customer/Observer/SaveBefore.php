@@ -54,7 +54,7 @@ class SaveBefore implements ObserverInterface
         $parameters = $observer->getEvent()->getDataObject();
         $validation = true;
         if (empty($parameters->getData('password_hash')) && empty($parameters['ls_password'])) {
-            $masterPassword = $this->lsr->getStoreConfig(LSR::MASTER_PASSWORD, $this->lsr->getCurrentStoreId());
+            $masterPassword = $this->lsr->getStoreConfig(LSR::SC_MASTER_PASSWORD, $this->lsr->getCurrentStoreId());
             $parameters->setData('ls_password', $this->contactHelper->encryptPassword($masterPassword));
             $validation = false;
         }

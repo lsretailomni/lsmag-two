@@ -1655,7 +1655,7 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * Update basket data checking after login
+     * Unset basket data checking
      */
     public function unsetBasketUpdateChecking()
     {
