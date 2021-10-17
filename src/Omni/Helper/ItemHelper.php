@@ -310,7 +310,7 @@ class ItemHelper extends AbstractHelper
     {
         try {
             $this->compareQuoteItemsWithOrderLinesAndSetRelatedAmounts($quote, $basketData, $type);
-            $this->setGrandTotalGivenQuote($quote, $basketData);
+            $this->setGrandTotalGivenQuote($quote, $basketData, $type);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -327,7 +327,7 @@ class ItemHelper extends AbstractHelper
      * @throws AlreadyExistsException
      * @throws NoSuchEntityException
      */
-    public function compareQuoteItemsWithOrderLinesAndSetRelatedAmounts($quote, $basketData, $type = 1)
+    public function compareQuoteItemsWithOrderLinesAndSetRelatedAmounts(&$quote, $basketData, $type = 1)
     {
         $orderLines    = [];
         $quoteItemList = $quote->getAllVisibleItems();
@@ -362,10 +362,11 @@ class ItemHelper extends AbstractHelper
      *
      * @param $quote
      * @param $basketData
+     * @param $type
      * @throws AlreadyExistsException
      * @throws NoSuchEntityException
      */
-    public function setGrandTotalGivenQuote($quote, $basketData)
+    public function setGrandTotalGivenQuote(&$quote, $basketData, $type)
     {
         if ($quote->getId()) {
             if (isset($basketData)) {
@@ -378,6 +379,12 @@ class ItemHelper extends AbstractHelper
             $couponCode = $this->checkoutSession->getCouponCode();
             $quote->setCouponCode($couponCode);
             $quote->getShippingAddress()->setCouponCode($couponCode);
+
+            if ($type == 2) {
+                $this->checkoutSession->setData('stopCalcRowTotal', 1);
+            } else {
+                $this->checkoutSession->unsetData('stopCalcRowTotal');
+            }
             $quote->setTotalsCollectedFlag(false)->collectTotals();
             $this->quoteResourceModel->save($quote);
         }

@@ -21,8 +21,12 @@
     <type name="Magento\Sales\Model\Order\Creditmemo\Total\Subtotal">
         <plugin name="ls_omni_order_creditmemo_subtotal" type="Ls\Omni\Plugin\Order\InvoiceCreditMemo\SubtotalPlugin" sortOrder="1"/>
     </type>
-
+    <!-- for creating one_list while creating order from admin -->
     <type name="Magento\Sales\Model\AdminOrder\Create">
-        <plugin name="ls_omni_order_creditmemo_subtotal" type="Ls\Omni\Plugin\AdminOrder\CreatePlugin" sortOrder="1"/>
+        <plugin name="ls_omni_order_admin" type="Ls\Omni\Plugin\AdminOrder\CreatePlugin" sortOrder="1"/>
+    </type>
+    <!-- for fixing row_total while creating order from admin -->
+    <type name="Magento\Quote\Model\Quote\Item\AbstractItem">
+        <plugin name="ls_omni_correct_rowtotal" type="Ls\Omni\Plugin\Quote\Item\AbstractItemPlugin" sortOrder="1"/>
     </type>
 </config>
