@@ -2,6 +2,7 @@
 
 namespace Ls\Customer\Observer;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ContactSearchType;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -57,6 +58,15 @@ class PostLoginObserver implements ObserverInterface
                 $this->contactHelper->setSecurityTokenInCustomerSession(
                     $customer->getData('lsr_token')
                 );
+            }
+            if (empty($this->contactHelper->getBasketUpdateChecking())) {
+                $contact = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
+                    $customer->getEmail(),
+                    ContactSearchType::EMAIL
+                );
+                $this->contactHelper->updateBasketAndWishlistAfterLogin($contact);
+            } else {
+                $this->contactHelper->unsetBasketUpdateChecking();
             }
         }
 

@@ -50,13 +50,14 @@ class SaveAfter implements ObserverInterface
     }
 
     /**
+     * After saving customer
+     *
      * @param Observer $observer
      * @return SaveAfter
      */
     public function execute(Observer $observer)
     {
         try {
-            $userName = '';
             /** @var Customer $customer */
             $customer = $observer->getEvent()->getCustomer();
             if (empty($customer->getData('ls_password'))) {
@@ -74,8 +75,14 @@ class SaveAfter implements ObserverInterface
                 $customer->setData('lsr_username', $userName);
                 $customer->setData('password', $customer->decryptPassword($customer->getData('ls_password')));
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                    $contact    = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
+                        $customer->getEmail(),
+                        Entity\Enum\ContactSearchType::EMAIL
+                    );
                     /** @var Entity\MemberContact $contact */
-                    $contact = $this->contactHelper->contact($customer);
+                    if(empty($contact)) {
+                        $contact = $this->contactHelper->contact($customer);
+                    }
                     if (is_object($contact) && $contact->getId()) {
                         $customer = $this->contactHelper->setCustomerAttributesValues($contact, $customer);
                         $customer->setData('ls_password', null);
