@@ -149,9 +149,13 @@ class OrderHelper extends AbstractHelper
             $shippingMethod = $order->getShippingMethod(true);
             //TODO work on condition
             $isClickCollect = false;
+            $carrierCode    = '';
+            $method         = '';
 
             if ($shippingMethod !== null) {
-                $isClickCollect = $shippingMethod->getData('carrier_code') == 'clickandcollect';
+                $carrierCode    = $shippingMethod->getData('carrier_code');
+                $method         = $shippingMethod->getData('method');
+                $isClickCollect = $carrierCode == 'clickandcollect';
             }
 
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
@@ -180,6 +184,9 @@ class OrderHelper extends AbstractHelper
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
             } else {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
+                //TODO need to fix the length issue once LS Central allow more then 10 characters.
+                $oneListCalculateResponse->setShippingAgentCode(substr($carrierCode,0,10));
+                $oneListCalculateResponse->setShippingAgentServiceCode(substr($method,0,10));
             }
             $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
             //For click and collect.
@@ -213,8 +220,8 @@ class OrderHelper extends AbstractHelper
         $shippingAmount     = $order->getShippingAmount();
         if ($shippingAmount > 0) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
-            $netPrice        = $this->loyaltyHelper->formatValue($shippingAmount / $netPriceFormula);
-            $taxAmount       = $this->loyaltyHelper->formatValue($shippingAmount - $netPrice);
+            $netPrice        = $shippingAmount / $netPriceFormula;
+            $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
             $shipmentOrderLine->setPrice($shippingAmount)

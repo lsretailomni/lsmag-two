@@ -41,11 +41,12 @@ class StockHelper extends AbstractHelper
 
     /**
      * StockHelper constructor.
-     * @param Context $context
+     *
+     * @param Context                    $context
      * @param ProductRepositoryInterface $productRepository
-     * @param CollectionFactory $storeCollectionFactory
-     * @param LSR $lsr
-     * @param \Ls\Omni\Helper\ItemHelper $itemHelper
+     * @param CollectionFactory          $storeCollectionFactory
+     * @param LSR                        $lsr
+     * @param ItemHelper                 $itemHelper
      */
     public function __construct(
         Context $context,
@@ -225,17 +226,58 @@ class StockHelper extends AbstractHelper
     }
 
     /**
+     * Get given stores information from repl store table
+     *
      * @param $storesNavIds
      * @return Collection
+     * @throws NoSuchEntityException
      */
     public function getAllStoresFromReplTable($storesNavIds)
     {
-        $stores        = $this->storeCollectionFactory->create()->addFieldToFilter('nav_id', ['in' => $storesNavIds]);
+        $stores        = $this->storeCollectionFactory->create()
+            ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
+            ->addFieldToFilter('scope_id', ['eq' => $this->lsr->getCurrentStoreId()]);
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
+
         if (!$displayStores) {
             $stores->addFieldToFilter('ClickAndCollect', 1);
         }
+
         return $stores;
+    }
+
+    /**
+     * Fetch all stores where given item is in stock and get all store data from stores repl table
+     *
+     * @param $simpleProductId
+     * @param $productSku
+     * @return Collection
+     * @throws NoSuchEntityException
+     */
+    public function fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku)
+    {
+        $storesNavId     = [];
+        $response = $this->getAllStoresItemInStock(
+            $simpleProductId,
+            $productSku
+        );
+
+        if ($response !== null) {
+            if (!is_array($response)) {
+                $response = $response->getInventoryResponse();
+            }
+
+            foreach ($response as $each) {
+                if ($each->getQtyInventory() > 0) {
+                    $storesNavId[] = $each->getStoreId();
+                }
+            }
+
+        }
+
+        return $this->getAllStoresFromReplTable(
+            $storesNavId
+        );
     }
 
     /**
@@ -316,7 +358,7 @@ class StockHelper extends AbstractHelper
                 if (!empty($uomQty)) {
                     $qty = $qty * $uomQty;
                 }
-                list($parentProductSku, $childProductSku) = $this->itemHelper->getComparisonValues(
+                [$parentProductSku, $childProductSku] = $this->itemHelper->getComparisonValues(
                     $item->getProductId(),
                     $item->getSku()
                 );

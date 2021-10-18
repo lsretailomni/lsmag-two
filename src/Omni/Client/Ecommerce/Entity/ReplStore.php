@@ -102,6 +102,11 @@ class ReplStore
     protected $TaxGroup = null;
 
     /**
+     * @property boolean $UseSourcingLocation
+     */
+    protected $UseSourcingLocation = null;
+
+    /**
      * @property int $UserDefaultCustomerAccount
      */
     protected $UserDefaultCustomerAccount = null;
@@ -443,6 +448,24 @@ class ReplStore
     public function getTaxGroup()
     {
         return $this->TaxGroup;
+    }
+
+    /**
+     * @param boolean $UseSourcingLocation
+     * @return $this
+     */
+    public function setUseSourcingLocation($UseSourcingLocation)
+    {
+        $this->UseSourcingLocation = $UseSourcingLocation;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseSourcingLocation()
+    {
+        return $this->UseSourcingLocation;
     }
 
     /**

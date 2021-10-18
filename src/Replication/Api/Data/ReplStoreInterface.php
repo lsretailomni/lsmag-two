@@ -210,6 +210,17 @@ interface ReplStoreInterface
     public function getTaxGroup();
 
     /**
+     * @param boolean $UseSourcingLocation
+     * @return $this
+     */
+    public function setUseSourcingLocation($UseSourcingLocation);
+
+    /**
+     * @return boolean
+     */
+    public function getUseSourcingLocation();
+
+    /**
      * @param int $UserDefaultCustomerAccount
      * @return $this
      */
