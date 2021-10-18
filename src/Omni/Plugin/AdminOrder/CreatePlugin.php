@@ -78,14 +78,20 @@ class CreatePlugin
         }
 
         $quote = $subject->getQuote();
+        $this->basketHelper->setCorrectStoreIdInCheckoutSession($quote->getStoreId());
         try {
             if ($this->lsr->isLSR($quote->getStoreId())) {
                 $couponCode = $quote->getCouponCode();
                 // This will create one list if not created and will return onelist if its already created.
                 /** @var OneList|null $oneList */
                 $oneList = $this->basketHelper->getOneListFromCustomerSession();
-
-                if (!$oneList || !$oneList->getCardId() || $quote->getLsOneListId() != $oneList->getId()) {
+                $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $quote->getStore()->getWebsiteId());
+                $this->basketHelper->store_id = $webStore;
+                if (!$oneList ||
+                    !$oneList->getCardId() ||
+                    $quote->getLsOneListId() != $oneList->getId() ||
+                    $oneList->getStoreId() != $webStore
+                ) {
                     $oneList = $this->basketHelper->getOneListAdmin(
                         $quote->getCustomerEmail(),
                         $quote->getStore()->getWebsiteId(),
@@ -114,7 +120,7 @@ class CreatePlugin
                 /** @var Order $basketData */
                 $basketData = $this->basketHelper->update($oneList);
                 $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
-                if (!empty($basketData)) {
+                if (!empty($basketData) && method_exists($basketData, 'getPointsRewarded')) {
                     $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
                 }
                 if ($quote->getLsGiftCardAmountUsed() > 0 ||
