@@ -3,7 +3,7 @@
     "description": "LS Ecommerce - Magento Integration",
     "type": "magento2-module",
     "license": "proprietary",
-    "version": "1.13.0",
+    "version": "1.14.1",
     "authors": [
         {
             "name": "LS Retail - Ecommerce Team",
@@ -14,7 +14,7 @@
         "myclabs/php-enum": "^1.5",
         "sabre/xml": "^1.5",
         "nabil1337/case-helper": "^0.1.0",
-        "ramsey/uuid": "^3.0"
+        "ramsey/uuid": "*"
     },
     "suggest": {
         "kiwicommerce/module-cron-scheduler": "^1.0.5"

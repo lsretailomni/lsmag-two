@@ -606,6 +606,7 @@
     <column xsi:type="text" name="State" nullable="true" comment="State"/>
     <column xsi:type="text" name="Street" nullable="true" comment="Street"/>
     <column xsi:type="text" name="TaxGroup" nullable="true" comment="TaxGroup"/>
+    <column xsi:type="boolean" name="UseSourcingLocation" default="0" nullable="true" comment="UseSourcingLocation"/>
     <column xsi:type="int" name="UserDefaultCustomerAccount" padding="11" nullable="true" comment="UserDefaultCustomerAccount"/>
     <column xsi:type="text" name="ZipCode" nullable="true" comment="ZipCode"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>

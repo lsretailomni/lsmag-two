@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.0] - 2021-10-14
+
+### Added
+
+- Added support for LS Central on SaaS and Commerce Service on cloud. [OMNI-5510](https://solutions.lsretail.com/jira/browse/OMNI-5510)
+- Added configurable option in Magento admin panel to choose if LS Central is being used on hybrid or on cloud. [OMNI-5510](https://solutions.lsretail.com/jira/browse/OMNI-5510)
+- Added support to use single sourcing location for inventory in multiple stores. This is helpfull for partners who are using multiple eCommerce stores in LS Central but all are sharing the same inventory sourcing location [OMNI-5517](https://solutions.lsretail.com/jira/browse/OMNI-5517)
+- Added support to replicate attributes per variant for configurable products. [OMNI-5521](https://solutions.lsretail.com/jira/browse/OMNI-5521)
+- Added support to capture partial invoice from LS Central through web hooks. [OMNI-5426](https://solutions.lsretail.com/jira/browse/OMNI-5426)
+- Added support for item availability check on GraphQl interface. [OMNI-5494](https://solutions.lsretail.com/jira/browse/OMNI-5494)
+- Added support to sync shipping agent code and shipping agent service code when sending order information to LS Central. [OMNI-5530](https://solutions.lsretail.com/jira/browse/OMNI-5530)
+
+
+
+### Changed
+
+- Use unique AppID for each replication job per store to support replication counter in LS Central for SaaS. [OMNI-5510](https://solutions.lsretail.com/jira/browse/OMNI-5510)
+
+### Bugs/Fixes
+
+- Fixed issue in basket calculation not sent to LS Central through Magento REST API's. [OMNI-5521](https://solutions.lsretail.com/jira/browse/OMNI-5521)
+- Fixed issue in grand total when generating invoice and credit memo in Magento. [OMNI-5426](https://solutions.lsretail.com/jira/browse/OMNI-5426)
+- Fixed issue in item quantities in order status. [OMNI-5426](https://solutions.lsretail.com/jira/browse/OMNI-5426)
+
+
+
 ## [1.13.0] - 2021-09-03
 
 ### Added

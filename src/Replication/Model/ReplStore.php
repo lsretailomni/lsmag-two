@@ -112,6 +112,11 @@ class ReplStore extends AbstractModel implements ReplStoreInterface, IdentityInt
     protected $TaxGroup = null;
 
     /**
+     * @property boolean $UseSourcingLocation
+     */
+    protected $UseSourcingLocation = null;
+
+    /**
      * @property int $UserDefaultCustomerAccount
      */
     protected $UserDefaultCustomerAccount = null;
@@ -534,6 +539,26 @@ class ReplStore extends AbstractModel implements ReplStoreInterface, IdentityInt
     public function getTaxGroup()
     {
         return $this->getData( 'TaxGroup' );
+    }
+
+    /**
+     * @param boolean $UseSourcingLocation
+     * @return $this
+     */
+    public function setUseSourcingLocation($UseSourcingLocation)
+    {
+        $this->setData( 'UseSourcingLocation', $UseSourcingLocation );
+        $this->UseSourcingLocation = $UseSourcingLocation;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseSourcingLocation()
+    {
+        return $this->getData( 'UseSourcingLocation' );
     }
 
     /**
