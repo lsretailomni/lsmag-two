@@ -2,17 +2,14 @@
 
 namespace Ls\Customer\Observer;
 
-use Exception;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\GraphQl\Exception\GraphQlAlreadyExistsException;
-use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -22,9 +19,6 @@ class SaveBefore implements ObserverInterface
 {
     /** @var ContactHelper */
     private $contactHelper;
-
-    /** @var LoggerInterface */
-    private $logger;
 
     /** @var LSR @var */
     private $lsr;
@@ -58,12 +52,17 @@ class SaveBefore implements ObserverInterface
     public function execute(Observer $observer)
     {
         $parameters = $observer->getEvent()->getDataObject();
-
+        $validation = true;
+        if (empty($parameters->getData('password_hash')) && empty($parameters['ls_password'])) {
+            $masterPassword = $this->lsr->getStoreConfig(LSR::SC_MASTER_PASSWORD, $this->lsr->getCurrentStoreId());
+            $parameters->setData('ls_password', $this->contactHelper->encryptPassword($masterPassword));
+            $validation = false;
+        }
         if (empty($parameters['ls_password'])) {
             return $this;
         }
 
-        if (!empty($parameters['email'])) {
+        if (!empty($parameters['email']) && $validation) {
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                 if ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
                     throw new AlreadyExistsException(
@@ -76,7 +75,9 @@ class SaveBefore implements ObserverInterface
                 }
             }
         } else {
-            throw new InputException(__('Your email address is invalid.'));
+            if ($validation) {
+                throw new InputException(__('Your email address is invalid.'));
+            }
         }
         return $this;
     }

@@ -190,6 +190,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_EXPIRY_DATE_FORMAT = 'ls_mag/loyalty/loyalty_expiry_date_format';
     const SC_LOYALTY_CUSTOMER_USERNAME_PREFIX_PATH = 'ls_mag/loyalty/prefix';
     const SC_ORDER_CANCELLATION_PATH = 'ls_mag/loyalty/allow_order_cancellation';
+    const SC_MASTER_PASSWORD = 'ls_mag/loyalty/master_password';
 
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
