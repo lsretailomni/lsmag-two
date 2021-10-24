@@ -3,6 +3,7 @@
 namespace Ls\Customer\Observer;
 
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ContactSearchType;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -31,6 +32,7 @@ class PostLoginObserver implements ObserverInterface
      * @param Observer $observer
      * @return $this|void
      * @throws LocalizedException
+     * @throws InvalidEnumException
      */
     public function execute(Observer $observer)
     {
@@ -59,7 +61,9 @@ class PostLoginObserver implements ObserverInterface
                     $customer->getData('lsr_token')
                 );
             }
-            if (empty($this->contactHelper->getBasketUpdateChecking())) {
+            if (empty($this->contactHelper->getBasketUpdateChecking()) &&
+                $this->contactHelper->lsr->isLSR($this->contactHelper->lsr->getCurrentStoreId())
+            ) {
                 $contact = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
                     $customer->getEmail(),
                     ContactSearchType::EMAIL
