@@ -34,7 +34,7 @@ class AbstractItemPlugin
     public function afterGetCalculationPriceOriginal(AbstractItem $subject, $result)
     {
         if ($this->checkoutSession->getData('stopCalcRowTotal')) {
-            return $subject->getPrice();
+            return $subject->getBaseOriginalPrice();
         }
 
         return $result;
@@ -50,7 +50,7 @@ class AbstractItemPlugin
     public function afterGetBaseCalculationPriceOriginal(AbstractItem $subject, $result)
     {
         if ($this->checkoutSession->getData('stopCalcRowTotal')) {
-            return $subject->getPrice();
+            return $subject->getBaseOriginalPrice();
         }
 
         return $result;
