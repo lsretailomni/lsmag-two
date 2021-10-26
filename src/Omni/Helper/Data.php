@@ -5,6 +5,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
 use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
@@ -203,22 +204,24 @@ class Data extends AbstractHelper
                 $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
                 $currentDayOfWeek = date('w', strtotime($current));
                 foreach ($storeResults as $key => $r) {
-                    if ($r->getDayOfWeek() == $currentDayOfWeek) {
-                        if ($this->checkDateValidity($current, $r)) {
-                            if ($r->getType() == StoreHourOpeningType::NORMAL) {
-                                $storeHours[$currentDayOfWeek]['normal'][] =
-                                    ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
-                            } elseif ($r->getType() == StoreHourOpeningType::TEMPORARY) {
-                                $storeHours[$currentDayOfWeek]['temporary'] =
-                                    ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
-                            } else {
-                                $storeHours[$currentDayOfWeek]['closed'] =
-                                    ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
+                    if (empty($r->getCalendarType()) || $r->getCalendarType() == StoreHourCalendarType::OPENING_HOURS) {
+                        if ($r->getDayOfWeek() == $currentDayOfWeek) {
+                            if ($this->checkDateValidity($current, $r)) {
+                                if ($r->getType() == StoreHourOpeningType::NORMAL) {
+                                    $storeHours[$currentDayOfWeek]['normal'][] =
+                                        ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
+                                } elseif ($r->getType() == StoreHourOpeningType::TEMPORARY) {
+                                    $storeHours[$currentDayOfWeek]['temporary'] =
+                                        ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
+                                } else {
+                                    $storeHours[$currentDayOfWeek]['closed'] =
+                                        ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
+                                }
+                                $storeHours[$currentDayOfWeek]['day'] = $r->getNameOfDay();
+                                $counter++;
                             }
-                            $storeHours[$currentDayOfWeek]['day'] = $r->getNameOfDay();
-                            $counter++;
+                            unset($storeResults[$key]);
                         }
-                        unset($storeResults[$key]);
                     }
                 }
             }
@@ -655,7 +658,7 @@ class Data extends AbstractHelper
                 $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
             }
             $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
-            $result = $request->execute();
+            $result  = $request->execute();
 
             if ($result != null) {
                 $result = $result->getResult()->getStoreTenderTypes()->getReplStoreTenderType();
