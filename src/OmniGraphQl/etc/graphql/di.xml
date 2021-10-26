@@ -46,4 +46,10 @@
         <plugin name="ls_omni_graphql_validate_qty" type="Ls\OmniGraphQl\Plugin\Model\Cart\UpdateCartItemPlugin"
                 sortOrder="1"/>
     </type>
+    <!-- To validate if click & collect could be used for cart -->
+    <type name="Magento\QuoteGraphQl\Model\Resolver\SetShippingMethodsOnCart">
+        <plugin name="validate_selected_store_click_and_collect"
+                type="Ls\OmniGraphQl\Plugin\Model\Resolver\SetShippingMethodsOnCartPlugin"
+                sortOrder="1"/>
+    </type>
 </config>

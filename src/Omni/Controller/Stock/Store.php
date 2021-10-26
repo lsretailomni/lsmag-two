@@ -2,7 +2,6 @@
 
 namespace Ls\Omni\Controller\Stock;
 
-use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\StockHelper;
 use Magento\Checkout\Model\Session\Proxy;
@@ -72,26 +71,12 @@ class Store extends Action
         if ($this->getRequest()->isAjax()) {
             $selectedStore      = $this->request->getParam('storeid');
             $items              = $this->session->getQuote()->getAllVisibleItems();
-            $stockCollection    = [];
             $notAvailableNotice = __('Please check other stores or remove the not available item(s) from your ');
 
-            foreach ($items as &$item) {
-                $itemQty = $item->getQty();
-                list($parentProductSku, $childProductSku, , , $uomQty) = $this->itemHelper->getComparisonValues(
-                    $item->getProductId(),
-                    $item->getSku()
-                );
-
-                if (!empty($uomQty)) {
-                    $itemQty = $itemQty * $uomQty;
-                }
-                $sku = $item->getSku();
-
-                $stockCollection[] = ['sku' => $sku, 'name' => $item->getName(), 'qty' => $itemQty];
-
-                $item = ['parent' => $parentProductSku, 'child' => $childProductSku];
-            }
-            $response = $this->stockHelper->getAllItemsStockInSingleStore($selectedStore, $items);
+            list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore(
+                $items,
+                $selectedStore
+            );
 
             if ($response) {
                 if (is_object($response)) {
@@ -102,7 +87,7 @@ class Store extends Action
                     }
                 }
 
-                $this->updateStockCollection($response, $stockCollection);
+                $this->stockHelper->updateStockCollection($response, $stockCollection);
                 $result = $result->setData(
                     ['remarks' => $notAvailableNotice, 'stocks' => $stockCollection]
                 );
@@ -115,43 +100,5 @@ class Store extends Action
         }
 
         return $result;
-    }
-
-    /**
-     * Update Stock Collection
-     *
-     * @param $response
-     * @param $stockCollection
-     */
-    public function updateStockCollection($response, &$stockCollection)
-    {
-        foreach ($response as $item) {
-            $actualQty = ceil($item->getQtyInventory());
-            $sku       = $item->getItemId() .
-                (($item->getVariantId()) ? '-' . $item->getVariantId() : '');
-
-            foreach ($stockCollection as &$values) {
-                if (strpos($values['sku'], $sku) === 0) {
-                    if ($actualQty > 0) {
-                        $values['status']  = '1';
-                        $values['display'] = __('This item is available');
-
-                        if ($values['qty'] > $actualQty) {
-                            $values['status']  = '0';
-                            $values['display'] = __(
-                                'You have selected %1 quantity for this item.
-                                 We only have %2 quantity available in stock for this store.
-                                 Please update this item quantity in cart.',
-                                $values['qty'],
-                                $actualQty
-                            );
-                        }
-                    } else {
-                        $values['status']  = '0';
-                        $values['display'] = __('This item is not available');
-                    }
-                }
-            }
-        }
     }
 }

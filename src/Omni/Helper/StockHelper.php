@@ -100,6 +100,38 @@ class StockHelper extends AbstractHelper
     }
 
     /**
+     * Get stock for all the given items in given store
+     *
+     * @param $items
+     * @param $storeId
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getGivenItemsStockInGivenStore($items, $storeId)
+    {
+        $stockCollection = [];
+
+        foreach ($items as &$item) {
+            $itemQty = $item->getQty();
+            list($parentProductSku, $childProductSku, , , $uomQty) = $this->itemHelper->getComparisonValues(
+                $item->getProductId(),
+                $item->getSku()
+            );
+
+            if (!empty($uomQty)) {
+                $itemQty = $itemQty * $uomQty;
+            }
+            $sku = $item->getSku();
+
+            $stockCollection[] = ['sku' => $sku, 'name' => $item->getName(), 'qty' => $itemQty];
+
+            $item = ['parent' => $parentProductSku, 'child' => $childProductSku];
+        }
+
+        return [$this->getAllItemsStockInSingleStore($storeId, $items), $stockCollection];
+    }
+
+    /**
      * For sourcing location of inventory
      *
      * @param $storeId
@@ -410,6 +442,44 @@ class StockHelper extends AbstractHelper
         }
 
         return $item;
+    }
+
+    /**
+     * Update Stock Collection
+     *
+     * @param $response
+     * @param $stockCollection
+     */
+    public function updateStockCollection($response, &$stockCollection)
+    {
+        foreach ($response as $item) {
+            $actualQty = ceil($item->getQtyInventory());
+            $sku       = $item->getItemId() .
+                (($item->getVariantId()) ? '-' . $item->getVariantId() : '');
+
+            foreach ($stockCollection as &$values) {
+                if (strpos($values['sku'], $sku) === 0) {
+                    if ($actualQty > 0) {
+                        $values['status']  = '1';
+                        $values['display'] = __('This item is available');
+
+                        if ($values['qty'] > $actualQty) {
+                            $values['status']  = '0';
+                            $values['display'] = __(
+                                'You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart.',
+                                $values['qty'],
+                                $actualQty
+                            );
+                        }
+                    } else {
+                        $values['status']  = '0';
+                        $values['display'] = __('This item is not available');
+                    }
+                }
+            }
+        }
     }
 
     /**
