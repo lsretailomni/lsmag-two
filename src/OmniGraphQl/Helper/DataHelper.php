@@ -6,6 +6,9 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\StockHelper;
+use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
@@ -16,8 +19,14 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
+use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface;
+use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\Quote\Model\Quote;
+use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Store\Model\ScopeInterface;
@@ -69,6 +78,29 @@ class DataHelper extends AbstractHelper
      */
     public $omniDataHelper;
 
+    /** @var CollectionFactory */
+    public $storeCollectionFactory;
+
+    /**
+     * @var GetCartForUser
+     */
+    public $getCartForUser;
+
+    /**
+     * @var MaskedQuoteIdToQuoteIdInterface
+     */
+    public $maskedQuoteIdToQuoteId;
+
+    /**
+     * @var CartRepositoryInterface
+     */
+    public $cartRepository;
+
+    /**
+     * @var StockHelper
+     */
+    public $stockHelper;
+
     /**
      * @param Context $context
      * @param ManagerInterface $eventManager
@@ -80,6 +112,11 @@ class DataHelper extends AbstractHelper
      * @param CustomerFactory $customerFactory
      * @param Session $customerSession
      * @param Data $omniDataHelper
+     * @param CollectionFactory $storeCollectionFactory
+     * @param GetCartForUser $getCartForUser
+     * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
+     * @param CartRepositoryInterface $cartRepository
+     * @param StockHelper $stockHelper
      */
     public function __construct(
         Context $context,
@@ -91,18 +128,28 @@ class DataHelper extends AbstractHelper
         CustomerRepositoryInterface $customerRepository,
         CustomerFactory $customerFactory,
         Session $customerSession,
-        Data $omniDataHelper
+        Data $omniDataHelper,
+        CollectionFactory $storeCollectionFactory,
+        GetCartForUser $getCartForUser,
+        MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
+        CartRepositoryInterface $cartRepository,
+        StockHelper $stockHelper
     ) {
         parent::__construct($context);
-        $this->eventManager          = $eventManager;
-        $this->basketHelper          = $basketHelper;
-        $this->checkoutSession       = $checkoutSession;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->orderRepository       = $orderRepository;
-        $this->customerRepository    = $customerRepository;
-        $this->customerFactory       = $customerFactory;
-        $this->customerSession       = $customerSession;
-        $this->omniDataHelper        = $omniDataHelper;
+        $this->eventManager           = $eventManager;
+        $this->basketHelper           = $basketHelper;
+        $this->checkoutSession        = $checkoutSession;
+        $this->searchCriteriaBuilder  = $searchCriteriaBuilder;
+        $this->orderRepository        = $orderRepository;
+        $this->customerRepository     = $customerRepository;
+        $this->customerFactory        = $customerFactory;
+        $this->customerSession        = $customerSession;
+        $this->omniDataHelper         = $omniDataHelper;
+        $this->storeCollectionFactory = $storeCollectionFactory;
+        $this->getCartForUser         = $getCartForUser;
+        $this->maskedQuoteIdToQuoteId = $maskedQuoteIdToQuoteId;
+        $this->cartRepository         = $cartRepository;
+        $this->stockHelper            = $stockHelper;
     }
 
     /**
@@ -268,5 +315,74 @@ class DataHelper extends AbstractHelper
         }
 
         return $hours;
+    }
+
+    /**
+     * Get all click and collect supported stores for given scope_id
+     *
+     * @param $scopeId
+     * @return Collection
+     */
+    public function getStores($scopeId)
+    {
+        return $this->storeCollectionFactory
+            ->create()
+            ->addFieldToFilter('scope_id', $scopeId)
+            ->addFieldToFilter('ClickAndCollect', 1);
+    }
+
+    /**
+     * Fetch cart and returns stock
+     *
+     * @param $maskedCartId
+     * @param $userId
+     * @param $scopeId
+     * @param $storeId
+     * @return mixed
+     * @throws GraphQlAuthorizationException
+     * @throws GraphQlInputException
+     * @throws GraphQlNoSuchEntityException
+     * @throws NoSuchEntityException
+     */
+    public function fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId)
+    {
+        // Shopping Cart validation
+        $this->getCartForUser->execute($maskedCartId, $userId, $scopeId);
+
+        $cartId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
+        $cart   = $this->cartRepository->get($cartId);
+
+        $items = $cart->getAllVisibleItems();
+
+        list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
+
+        if ($response) {
+            if (is_object($response)) {
+                if (!is_array($response->getInventoryResponse())) {
+                    $response = [$response->getInventoryResponse()];
+                } else {
+                    $response = $response->getInventoryResponse();
+                }
+            }
+
+            $this->stockHelper->updateStockCollection($response, $stockCollection);
+
+            return $stockCollection;
+        }
+
+        return null;
+    }
+
+    /**
+     * Set pickup store given cart
+     *
+     * @param $cart
+     * @param $pickupStore
+     */
+    public function setPickUpStoreGivenCart(&$cart, $pickupStore)
+    {
+        $cart->setPickupStore($pickupStore);
+
+        $this->cartRepository->save($cart);
     }
 }
