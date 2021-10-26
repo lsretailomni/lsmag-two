@@ -283,6 +283,52 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * Get Order Lines Quote
+     *
+     * @param Quote $quote
+     * @return Entity\ArrayOfOrderLine
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function getOrderLinesQuote(Quote $quote)
+    {
+        // @codingStandardsIgnoreLine
+        $orderLinesArray = new Entity\ArrayOfOrderLine();
+        $quoteItems      = $quote->getAllVisibleItems();
+
+        $itemsArray = [];
+
+        foreach ($quoteItems as $quoteItem) {
+
+            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                $quoteItem->getProductId(),
+                $quoteItem->getSku()
+            );
+
+            // @codingStandardsIgnoreLine
+            $list_item = (new Entity\OrderLine())
+                ->setValidateTax(1)
+                ->setQuantity($quoteItem->getData('qty'))
+                ->setItemId($itemId)
+                ->setId('')
+                ->setVariantId($variantId)
+                ->setUomId($uom)
+                ->setLineType(Entity\Enum\LineType::ITEM)
+                ->setAmount($quoteItem->getRowTotal())
+                ->setNetAmount($quoteItem->getRowTotal())
+                ->setPrice($quoteItem->getPrice())
+                ->setNetPrice($quoteItem->getPrice())
+                ->setTaxAmount($quoteItem->getTaxAmount())
+                ->setDiscountAmount($quoteItem->getDiscountAmount());
+
+            $itemsArray[] = $list_item;
+        }
+        $orderLinesArray->setOrderLine($itemsArray);
+
+        return $orderLinesArray;
+    }
+
+    /**
      * @return Entity\ArrayOfOneListPublishedOffer
      */
     public function _offers()
@@ -953,6 +999,42 @@ class BasketHelper extends AbstractHelper
         $this->setCouponCodeInAdmin($couponCode);
 
         return $this->update($oneList);
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
+     * Formulate Central order request given Magento order
+     *
+     * @param $order
+     * @return Order
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     */
+    public function formulateCentralOrderRequestFromMagentoOrder($order)
+    {
+        // @codingStandardsIgnoreLine
+        $orderEntity   = new Entity\Order();
+        $quote         = $this->cartRepository->get($order->getQuoteId());
+        $websiteId     = $order->getStore()->getWebsiteId();
+        $customerEmail = $order->getCustomerEmail();
+        $webStore      = $this->lsr->getWebsiteConfig(
+            LSR::SC_SERVICE_STORE,
+            $websiteId
+        );
+        $orderEntity->setStoreId($webStore);
+
+        if (!$order->getCustomerIsGuest()) {
+            $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
+
+            if (!empty($customer->getData('lsr_cardid'))) {
+                $orderEntity->setCardId($customer->getData('lsr_cardid'));
+            }
+        }
+        $orderLinesArray = $this->getOrderLinesQuote($quote);
+        $orderEntity->setOrderLines($orderLinesArray);
+
+        return $orderEntity;
     }
 
     /**

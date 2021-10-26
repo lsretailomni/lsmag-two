@@ -30,7 +30,6 @@ class Request extends Action
      */
     public $basketHelper;
 
-
     /**
      * @var LoggerInterface
      */
@@ -49,7 +48,7 @@ class Request extends Action
     /**
      * @var LSR
      */
-    private $lsr;
+    public $lsr;
 
     /**
      * Request constructor.
@@ -94,7 +93,7 @@ class Request extends Action
 
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
-                $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
+                $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
 
                 if (!empty($oneListCalculation)) {
                     $request            = $this->orderHelper->prepareOrder($order, $oneListCalculation);
@@ -111,7 +110,9 @@ class Request extends Action
                         if ($oneList) {
                             $this->basketHelper->delete($oneList);
                         }
-                        $this->messageManager->addSuccessMessage(__('Order request has been sent to LS Central successfully'));
+                        $this->messageManager->addSuccessMessage(
+                            __('Order request has been sent to LS Central successfully')
+                        );
                     }
                 }
 
