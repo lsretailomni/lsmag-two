@@ -2,7 +2,7 @@
 
 namespace Ls\OmniGraphQl\Model\Resolver\Stock;
 
-use Ls\OmniGraphQl\Helper\DataHelper;
+use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
