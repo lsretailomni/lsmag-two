@@ -71,9 +71,9 @@ class LayoutProcessorPlugin
         LayoutProcessor $subject,
         array $jsLayout
     ) {
-        $shippingStep = &$jsLayout['components']['checkout']['children']['steps']['children']['shipping-step'];
-        $billingStep = &$jsLayout['components']['checkout']['children']['steps']['children']['billing-step'];
-        $sideBar = &$jsLayout['components']['checkout']['children']['sidebar'];
+        $shippingStep       = &$jsLayout['components']['checkout']['children']['steps']['children']['shipping-step'];
+        $billingStep        = &$jsLayout['components']['checkout']['children']['steps']['children']['billing-step'];
+        $sideBar            = &$jsLayout['components']['checkout']['children']['sidebar'];
         $shippingAdditional = &$shippingStep['children']['shippingAddress']['children']['shippingAdditional'];
 
         if ($this->data->isCouponsEnabled('checkout') == '0') {
@@ -92,13 +92,14 @@ class LayoutProcessorPlugin
 
         if (isset($shippingAdditional['children'])) {
             $shippingAdditional['children']['select_store'] =
-                ['component' => 'Ls_Omni/js/view/checkout/shipping/select-store'];
+                ['component' => 'Ls_Omni/js/view/checkout/shipping/select-store', 'sortOrder' => 1];
         } else {
             $shippingAdditional =
                 [
-                    'component' => "uiComponent",
+                    'component'   => "uiComponent",
                     'displayArea' => 'shippingAdditional',
-                    'children' => [
+                    'sortOrder' => 1,
+                    'children'    => [
                         'select_store' => [
                             'component' => 'Ls_Omni/js/view/checkout/shipping/select-store'
                         ]
