@@ -107,6 +107,11 @@
                     <label>Allow Order Cancellation on Frontend</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="master_password" translate="label" type="text" sortOrder="12" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Master Password</label>
+                    <comment>Default password for social logins</comment>
+                </field>
             </group>
         </section>
     </system>

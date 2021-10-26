@@ -1475,6 +1475,8 @@ class ContactHelper extends AbstractHelper
                 $oneListWish
             );
         }
+
+        $this->setBasketUpdateChecking();
     }
 
     /**
@@ -1634,6 +1636,30 @@ class ContactHelper extends AbstractHelper
     public function unsetCustomerIdFromCustomerSession()
     {
         return $this->customerSession->unsetData(LSR::SESSION_CUSTOMER_ID);
+    }
+
+    /**
+     * Update basket data checking after login
+     */
+    public function setBasketUpdateChecking()
+    {
+        return $this->customerSession->setData('isBasketUpdate', 1);
+    }
+
+    /**
+     * get basket data checking
+     */
+    public function getBasketUpdateChecking()
+    {
+        return $this->customerSession->getData('isBasketUpdate');
+    }
+
+    /**
+     * Unset basket data checking
+     */
+    public function unsetBasketUpdateChecking()
+    {
+        return $this->customerSession->unsetData('isBasketUpdate');
     }
 
     /**

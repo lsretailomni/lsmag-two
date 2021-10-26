@@ -20,6 +20,7 @@
                 <loyalty_expiry_date_format>jS M, Y h:i A</loyalty_expiry_date_format>
                 <prefix>mc_</prefix>
                 <allow_order_cancellation>0</allow_order_cancellation>
+                <master_password>@Admin0101</master_password>
             </loyalty>
         </ls_mag>
     </default>

@@ -1,0 +1,8 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_save_before">
+        <observer name="ls_customer_save_before" instance="Ls\Customer\Observer\SaveBefore"/>
+    </event>
+    <event name="customer_save_after">
+        <observer name="ls_customer_save_after" instance="Ls\Customer\Observer\SaveAfter"/>
+    </event>
+</config>
