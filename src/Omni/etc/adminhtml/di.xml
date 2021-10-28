@@ -29,4 +29,8 @@
     <type name="Magento\Quote\Model\Quote\Item\AbstractItem">
         <plugin name="ls_omni_correct_rowtotal" type="Ls\Omni\Plugin\Quote\Item\AbstractItemPlugin" sortOrder="1"/>
     </type>
+    <!-- for formatting the loyalty points earned while creating order from admin -->
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Totals\DefaultTotals">
+        <plugin name="ls_omni_format_points_earned" type="Ls\Omni\Plugin\Block\Adminhtml\Order\Create\Totals\DefaultTotalsPlugin" sortOrder="1"/>
+    </type>
 </config>

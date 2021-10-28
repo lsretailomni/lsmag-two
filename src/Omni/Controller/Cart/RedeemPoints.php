@@ -99,7 +99,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             return $this->_goBack();
         }
 
-        $loyaltyPoints = (int)$loyaltyPoints;
+        $loyaltyPoints = (float)$loyaltyPoints;
         try {
             $cartQuote          = $this->cart->getQuote();
             $itemsCount         = $cartQuote->getItemsCount();
