@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 class MassReset extends Action
 {
     /** @var array List of ls tables required to reset */
-    public $ls_tables = [
+    public $lsTables = [
         ['table' => 'ls_replication_repl_item_variant_registration', 'id' => 'ItemId'],
         ['table' => 'ls_replication_repl_extended_variant_value', 'id' => 'ItemId'],
         ['table' => 'ls_replication_repl_price', 'id' => 'ItemId'],
@@ -38,6 +38,7 @@ class MassReset extends Action
      * @var Filter
      */
     public $filter;
+
     /**
      * @var PageFactory
      */
@@ -98,7 +99,7 @@ class MassReset extends Action
                     ->setProcessedAt(null)
                     ->save();
                 // Update all dependent ls tables to processed = 0
-                foreach ($this->ls_tables as $lsTable) {
+                foreach ($this->lsTables as $lsTable) {
                     $lsTableName = $this->resource->getTableName($lsTable['table']);
                     $columnName  = $lsTable['id'];
                     $lsQuery     = 'UPDATE ' . $lsTableName .
