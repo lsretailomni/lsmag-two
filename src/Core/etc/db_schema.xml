@@ -5,16 +5,16 @@
         <column xsi:type="text" name="ls_one_list_id" nullable="true"  comment="Ls One List ID"/>
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
         <column xsi:type="text" name="pickup_store" nullable="true" comment="Pick Up Store"/>
-        <column xsi:type="int" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
-        <column xsi:type="int" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
+        <column xsi:type="float" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
+        <column xsi:type="float" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
         <column xsi:type="text" name="ls_gift_card_no" nullable="true" comment="LS Gift Card No"/>
         <column xsi:type="float" name="ls_gift_card_amount_used" nullable="true" default="0" comment="Ls Gift Card Amount Used"/>
     </table>
     <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
         <column xsi:type="text" name="pickup_store" nullable="true" comment="Pick Up Store"/>
-        <column xsi:type="int" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
-        <column xsi:type="int" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
+        <column xsi:type="float" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
+        <column xsi:type="float" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
         <column xsi:type="text" name="ls_gift_card_no" nullable="true" comment="LS Gift Card No"/>
         <column xsi:type="float" name="ls_gift_card_amount_used" nullable="true" default="0" comment="Ls Gift Card Amount Used"/>
         <column xsi:type="varchar" name="document_id" length="255" nullable="true" comment="Document Id"/>

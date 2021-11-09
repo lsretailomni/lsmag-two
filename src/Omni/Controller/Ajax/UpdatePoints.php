@@ -114,7 +114,7 @@ class UpdatePoints extends Action
         }
         $post          = $this->getRequest()->getContent();
         $postData      = json_decode($post);
-        $loyaltyPoints = (int)$postData->loyaltyPoints;
+        $loyaltyPoints = (float)$postData->loyaltyPoints;
         $isPointValid  = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
         if (!is_numeric($loyaltyPoints) || $loyaltyPoints < 0 || !$isPointValid) {
             $response = [
