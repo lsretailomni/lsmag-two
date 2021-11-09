@@ -1,0 +1,5 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+$updated = $block->getData('updated');
+?>
+<?= $block->escapeHtml(__('A total of %1 record(s) were updated.', $updated));
