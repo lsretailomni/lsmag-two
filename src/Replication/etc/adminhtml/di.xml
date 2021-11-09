@@ -10,13 +10,21 @@
     </type>
     <type name="Magento\Framework\View\Element\Message\MessageConfigurationsPool">
         <arguments>
-            <argument name="configurationsMap" xsi:type="array">chmod
+            <argument name="configurationsMap" xsi:type="array">
                 <item name="cronlinkmessage" xsi:type="array">
                     <item name="renderer" xsi:type="const">
                         \Magento\Framework\View\Element\Message\Renderer\BlockRenderer::CODE
                     </item>
                     <item name="data" xsi:type="array">
                         <item name="template" xsi:type="string">Ls_Replication::cron/cronlinkmessage.phtml</item>
+                    </item>
+                </item>
+                <item name="resetmessage" xsi:type="array">
+                    <item name="renderer" xsi:type="const">
+                        \Magento\Framework\View\Element\Message\Renderer\BlockRenderer::CODE
+                    </item>
+                    <item name="data" xsi:type="array">
+                        <item name="template" xsi:type="string">Ls_Replication::messages/resetmessage.phtml</item>
                     </item>
                 </item>
             </argument>
