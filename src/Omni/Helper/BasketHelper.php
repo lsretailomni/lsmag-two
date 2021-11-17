@@ -279,6 +279,8 @@ class BasketHelper extends AbstractHelper
         $oneList->setItems($items)
             ->setPublishedOffers($this->_offers());
 
+        $this->setOneListInCustomerSession($oneList);
+
         return $oneList;
     }
 
@@ -615,7 +617,6 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * This function is overriding in hospitality module
      * @param Entity\OneList $oneList
      * @return Entity\OneListCalculateResponse|Order
      * @throws InvalidEnumException
@@ -623,7 +624,6 @@ class BasketHelper extends AbstractHelper
      */
     public function update(Entity\OneList $oneList)
     {
-        $this->saveToOmni($oneList);
         return $this->calculate($oneList);
     }
 
@@ -852,33 +852,6 @@ class BasketHelper extends AbstractHelper
         $store_id = $this->getDefaultWebStore();
 
         /**
-         * If its a logged in user then we need to fetch already created one list.
-         */
-        if ($cardId != '') {
-            // @codingStandardsIgnoreLine
-            $request = new Operation\OneListGetByCardId();
-            // @codingStandardsIgnoreLine
-            $entity = new Entity\OneListGetByCardId();
-            $entity->setCardId($cardId)
-                ->setListType(Entity\Enum\ListType::BASKET)
-                ->setIncludeLines(true);
-
-            /** @var Entity\OneListGetByCardIdResponse $response */
-            $response = $request->execute($entity);
-
-            $lists = $response->getOneListGetByCardIdResult()->getOneList();
-            // if we have a list or an array, return it
-            if (!empty($lists)) {
-                if ($lists instanceof Entity\OneList) {
-                    return $lists;
-                } elseif (is_array($lists)) {
-                    # return first list
-                    return array_pop($lists);
-                }
-            }
-        }
-
-        /**
          * only those users who either does not have onelist created or
          * is guest user will come up here so for them lets create a new one.
          * for those lets create new list with no items and the existing offers and coupons
@@ -892,9 +865,13 @@ class BasketHelper extends AbstractHelper
             ->setItems(new Entity\ArrayOfOneListItem())
             ->setPublishedOffers($this->_offers())
             ->setStoreId($store_id);
-
-        return $this->saveToOmni($list);
         // @codingStandardsIgnoreEnd
+
+        if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
+            $list->setSalesType(LSR::SALE_TYPE_POS);
+        }
+
+        return $list;
     }
 
     /**
