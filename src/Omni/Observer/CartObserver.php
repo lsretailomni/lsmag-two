@@ -5,8 +5,6 @@ namespace Ls\Omni\Observer;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
-use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \LS\Omni\Helper\ItemHelper;
@@ -60,7 +58,6 @@ class CartObserver implements ObserverInterface
     public $data;
 
     /**
-     * CartObserver constructor.
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
@@ -88,7 +85,6 @@ class CartObserver implements ObserverInterface
      * @param Observer $observer
      * @return $this|void
      * @throws NoSuchEntityException
-     * @throws InvalidEnumException
      * @throws LocalizedException
      */
     public function execute(Observer $observer)
@@ -101,7 +97,7 @@ class CartObserver implements ObserverInterface
                 $salesQuoteItems = $observer->getItems();
                 if (!empty($salesQuoteItems)) {
                     $salesQuoteItem = reset($salesQuoteItems);
-                    $quote = $this->basketHelper->getQuoteRepository()->get($salesQuoteItem->getQuoteId());
+                    $quote          = $this->basketHelper->getQuoteRepository()->get($salesQuoteItem->getQuoteId());
                 } else {
                     $quote = $this->checkoutSession->getQuote();
                 }
@@ -126,21 +122,7 @@ class CartObserver implements ObserverInterface
                     $quote->setBaseGrandTotal(0);
                     $this->basketHelper->quoteRepository->save($quote);
                 }
-                /** @var Order $basketData */
-                $basketData = $this->basketHelper->update($oneList);
-                $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
-                if (!empty($basketData)) {
-                    $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
-                }
-                if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||
-                    $this->checkoutSession->getQuote()->getLsPointsSpent() > 0) {
-                    $this->data->orderBalanceCheck(
-                        $this->checkoutSession->getQuote()->getLsGiftCardNo(),
-                        $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
-                        $this->checkoutSession->getQuote()->getLsPointsSpent(),
-                        $basketData
-                    );
-                }
+                $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
             }

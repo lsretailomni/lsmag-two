@@ -3,12 +3,12 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Exception\InvalidEnumException;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\Order;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
@@ -92,6 +92,11 @@ class BasketHelper extends AbstractHelper
     public $couponCode;
 
     /**
+     * @var boolean
+     */
+    public $calculateBasket;
+
+    /**
      * @var $data
      */
     public $data;
@@ -165,6 +170,7 @@ class BasketHelper extends AbstractHelper
         $this->quoteResourceModel             = $quoteResourceModel;
         $this->customerFactory                = $customerFactory;
         $this->cartRepository                 = $cartRepository;
+        $this->calculateBasket  = $this->lsr->getPlaceToCalculateBasket();
     }
 
     /**
@@ -627,7 +633,6 @@ class BasketHelper extends AbstractHelper
         return $this->calculate($oneList);
     }
 
-    // @codingStandardsIgnoreLine
 
     /**
      * @param Entity\OneList $list
@@ -666,7 +671,10 @@ class BasketHelper extends AbstractHelper
      */
     public function calculate(Entity\OneList $oneList)
     {
-        // @codingStandardsIgnoreLine
+        if (empty($this->getCouponCode()) && $this->calculateBasket) {
+            return null;
+        }
+
         $storeId = $this->getDefaultWebStore();
         $cardId  = $oneList->getCardId();
 
@@ -1015,6 +1023,55 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * Sending request to Central for basket calculation
+     *
+     * @param $cartId
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function syncBasketWithCentral($cartId)
+    {
+        $oneList = $this->getOneListFromCustomerSession();
+        $quote = $this->quoteRepository->getActive($cartId);
+
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $oneList && $this->getCalculateBasket()) {
+            $this->setCalculateBasket(false);
+            $this->updateBasketAndSaveTotals($oneList, $quote);
+            $this->setCalculateBasket(true);
+        }
+    }
+
+    /**
+     * Updating basket from Central and storing response
+     *
+     * @param $oneList
+     * @param $quote
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function updateBasketAndSaveTotals($oneList, $quote)
+    {
+        $basketData = $this->update($oneList);
+        $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
+
+        if (!empty($basketData) && method_exists($basketData, 'getPointsRewarded')) {
+            $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
+        }
+
+        if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||
+            $this->checkoutSession->getQuote()->getLsPointsSpent() > 0) {
+            $this->data->orderBalanceCheck(
+                $this->checkoutSession->getQuote()->getLsGiftCardNo(),
+                $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
+                $this->checkoutSession->getQuote()->getLsPointsSpent(),
+                $basketData
+            );
+        }
+    }
+
+    /**
      * Get Basket Session Data
      * @return mixed
      */
@@ -1214,6 +1271,26 @@ class BasketHelper extends AbstractHelper
     public function setCouponCodeInAdmin($couponCode)
     {
         $this->couponCode = $couponCode;
+    }
+
+    /**
+     * Setting value in calculateBasket
+     *
+     * @param $value
+     */
+    public function setCalculateBasket($value)
+    {
+        $this->calculateBasket = $value;
+    }
+
+    /**
+     * Getting value of calculateBasket
+     *
+     * @return bool|mixed
+     */
+    public function getCalculateBasket()
+    {
+        return $this->calculateBasket;
     }
 
     /**
