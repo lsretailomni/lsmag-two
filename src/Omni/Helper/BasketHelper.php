@@ -170,7 +170,7 @@ class BasketHelper extends AbstractHelper
         $this->quoteResourceModel             = $quoteResourceModel;
         $this->customerFactory                = $customerFactory;
         $this->cartRepository                 = $cartRepository;
-        $this->calculateBasket  = $this->lsr->getPlaceToCalculateBasket();
+        $this->calculateBasket                = $this->lsr->getPlaceToCalculateBasket();
     }
 
     /**
