@@ -633,7 +633,6 @@ class BasketHelper extends AbstractHelper
         return $this->calculate($oneList);
     }
 
-
     /**
      * @param Entity\OneList $list
      * @return bool|Entity\OneList
