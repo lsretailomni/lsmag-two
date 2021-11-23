@@ -2,6 +2,8 @@
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Model\Carrier\Clickandcollect;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
@@ -29,15 +31,23 @@ class SetShippingMethodsOnCartPlugin
     public $carrierModel;
 
     /**
+     * @var BasketHelper
+     */
+    public $basketHelper;
+
+    /**
      * @param DataHelper $dataHelper
      * @param Clickandcollect $carrierModel
+     * @param BasketHelper $basketHelper
      */
     public function __construct(
         DataHelper $dataHelper,
-        Clickandcollect $carrierModel
+        Clickandcollect $carrierModel,
+        BasketHelper $basketHelper
     ) {
         $this->dataHelper   = $dataHelper;
         $this->carrierModel = $carrierModel;
+        $this->basketHelper = $basketHelper;
     }
 
     /**
@@ -55,7 +65,7 @@ class SetShippingMethodsOnCartPlugin
      * @throws LocalizedException
      * @throws NoSuchEntityException
      * @throws GraphQlAuthorizationException
-     * @throws GraphQlNoSuchEntityException
+     * @throws GraphQlNoSuchEntityException|InvalidEnumException
      */
     public function aroundResolve(
         $subject,
@@ -102,16 +112,18 @@ class SetShippingMethodsOnCartPlugin
             $validForClickAndCollect = true;
         }
         $result = $proceed($field, $context, $info, $value, $args);
-
-        if ($validForClickAndCollect && isset($result['cart']) && isset($result['cart']['model'])) {
+        if (isset($result['cart']) && isset($result['cart']['model'])) {
             $cart = $result['cart']['model'];
-            $this->dataHelper->setPickUpStoreGivenCart($cart, $storeId);
+            $this->basketHelper->syncBasketWithCentral($cart->getId());
+            if ($validForClickAndCollect) {
+                $this->dataHelper->setPickUpStoreGivenCart($cart, $storeId);
 
-            return [
-                'cart' => [
-                    'model' => $cart,
-                ],
-            ];
+                return [
+                    'cart' => [
+                        'model' => $cart,
+                    ],
+                ];
+            }
         }
 
         return $result;

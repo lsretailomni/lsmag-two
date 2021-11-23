@@ -199,6 +199,17 @@
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\TimeFormat</source_model>
                 </field>
             </group>
+            <group id="ls_basket_calculation" translate="label" type="text" sortOrder="90" showInDefault="1"
+                   showInWebsite="0"
+                   showInStore="0">
+                <label>Basket Calculation</label>
+                <field id="place_to_sync" translate="label comment" type="select" sortOrder="3"
+                       showInDefault="1" showInWebsite="0">
+                    <label>Calculate basket at</label>
+                    <comment>Please select the desired area where you want to synchronize basket with Central</comment>
+                    <source_model>Ls\Omni\Block\Adminhtml\System\Config\BasketCalculation</source_model>
+                </field>
+            </group>
             <group id="ls_order_management" translate="label" type="text" sortOrder="90" showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">

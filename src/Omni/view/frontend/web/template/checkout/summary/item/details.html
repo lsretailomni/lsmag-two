@@ -7,14 +7,14 @@
             <strong class="product-item-name" data-bind="html: $parent.name"></strong>
             <div class="cart-price">
                 <!-- ko if: (getDiscountPrice($parent))-->
-                <span class="lsoriginalprice" data-bind="text: getDiscountPrice($parent)"></span><br/>
+                <span class="lsoriginalprice" data-bind="html: getDiscountPrice($parent)"></span><br/>
                 <span class="lsdiscountprice"
-                      data-bind="text: getOriginalPrice($parent)"></span>
-                <span class="lsdiscountamount" data-bind="text: getDiscountAmount($parent)"></span>
+                      data-bind="html: getOriginalPrice($parent)"></span>
+                <span class="lsdiscountamount" data-bind="html: getDiscountAmount($parent)"></span>
                 <!-- /ko -->
                 <!-- ko ifnot:(getDiscountPrice($parent)) -->
                 <span class="lsoriginalprice"
-                      data-bind="text: getOriginalPrice($parent)"></span>
+                      data-bind="html: getOriginalPrice($parent)"></span>
                 <!-- /ko -->
             </div>
             <div class="details-qty">

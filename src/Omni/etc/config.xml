@@ -30,6 +30,9 @@
             <ls_stores>
                 <timeformat>h:i A</timeformat>
             </ls_stores>
+            <ls_basket_calculation>
+                <place_to_sync>0</place_to_sync>
+            </ls_basket_calculation>
             <ls_order_management>
                 <shipping_item_id>66010</shipping_item_id>
                 <shipping_tax>0.00</shipping_tax>
