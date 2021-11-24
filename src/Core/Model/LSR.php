@@ -366,6 +366,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
 
+    //Basket Calculation
+    const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
+
     //Order Management
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
     const LSR_SHIPMENT_ITEM_ID = 'ls_mag/ls_order_management/shipping_item_id';
@@ -777,5 +780,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
 
         return $this->storeManager;
+    }
+
+    /**
+     * Returns configured place to sync basket
+     *
+     * @return mixed
+     */
+    public function getPlaceToCalculateBasket()
+    {
+        return $this->scopeConfig->getValue(
+            self::LS_PLACE_TO_SYNC_BASKET_CALCULATION,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
     }
 }

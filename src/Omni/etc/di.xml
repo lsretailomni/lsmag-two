@@ -117,4 +117,14 @@
     <type name="Magento\SalesRule\Model\ResourceModel\Rule\Collection">
         <plugin name="single_store_flat_rate_checkout_error" type="Ls\Omni\Plugin\Rule\CollectionPlugin" sortOrder="1"/>
     </type>
+    <!-- In order to calculate basket on checkout for guest user -->
+    <type name="Magento\Quote\Api\ShipmentEstimationInterface">
+        <plugin name="calculate_basket"
+                type="Ls\Omni\Plugin\Api\ShipmentEstimationInterfacePlugin"/>
+    </type>
+    <!-- In order to calculate basket on checkout for logged in user -->
+    <type name="Magento\Quote\Api\ShippingMethodManagementInterface">
+        <plugin name="calculate_basket"
+                type="Ls\Omni\Plugin\Api\ShipmentEstimationInterfacePlugin"/>
+    </type>
 </config>
