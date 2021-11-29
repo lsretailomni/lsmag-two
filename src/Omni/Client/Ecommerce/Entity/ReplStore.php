@@ -52,6 +52,11 @@ class ReplStore
     protected $FunctionalityProfile = null;
 
     /**
+     * @property string $HospSalesTypes
+     */
+    protected $HospSalesTypes = null;
+
+    /**
      * @property string $Id
      */
     protected $Id = null;
@@ -268,6 +273,24 @@ class ReplStore
     public function getFunctionalityProfile()
     {
         return $this->FunctionalityProfile;
+    }
+
+    /**
+     * @param string $HospSalesTypes
+     * @return $this
+     */
+    public function setHospSalesTypes($HospSalesTypes)
+    {
+        $this->HospSalesTypes = $HospSalesTypes;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHospSalesTypes()
+    {
+        return $this->HospSalesTypes;
     }
 
     /**

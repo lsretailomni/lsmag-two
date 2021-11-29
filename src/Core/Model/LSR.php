@@ -165,6 +165,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const SC_VERSION_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_version';
 
+    //check for Category
+    const SC_SUCCESS_CRON_TAX_RULES = 'ls_mag/replication/success_repl_tax_rules';
+    const SC_CRON_TAX_RULES_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_tax_rules';
+
     // ENHANCEMENT
     const SC_ENHANCEMENT_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
     const SC_ENHANCEMENT_STORE_UUID_PREFIX = 'ls_mag/cron_enhancement/requests_per_run';

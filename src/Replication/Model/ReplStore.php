@@ -62,6 +62,11 @@ class ReplStore extends AbstractModel implements ReplStoreInterface, IdentityInt
     protected $FunctionalityProfile = null;
 
     /**
+     * @property string $HospSalesTypes
+     */
+    protected $HospSalesTypes = null;
+
+    /**
      * @property string $nav_id
      */
     protected $nav_id = null;
@@ -339,6 +344,26 @@ class ReplStore extends AbstractModel implements ReplStoreInterface, IdentityInt
     public function getFunctionalityProfile()
     {
         return $this->getData( 'FunctionalityProfile' );
+    }
+
+    /**
+     * @param string $HospSalesTypes
+     * @return $this
+     */
+    public function setHospSalesTypes($HospSalesTypes)
+    {
+        $this->setData( 'HospSalesTypes', $HospSalesTypes );
+        $this->HospSalesTypes = $HospSalesTypes;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHospSalesTypes()
+    {
+        return $this->getData( 'HospSalesTypes' );
     }
 
     /**
