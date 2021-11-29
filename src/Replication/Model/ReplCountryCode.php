@@ -22,9 +22,19 @@ class ReplCountryCode extends AbstractModel implements ReplCountryCodeInterface,
     protected $_eventPrefix = 'ls_replication_repl_country_code';
 
     /**
-     * @property string $nav_id
+     * @property ArrayOfTaxItemGroup $TaxItemGroups
      */
-    protected $nav_id = null;
+    protected $TaxItemGroups = null;
+
+    /**
+     * @property string $Code
+     */
+    protected $Code = null;
+
+    /**
+     * @property string $CustomerNo
+     */
+    protected $CustomerNo = null;
 
     /**
      * @property boolean $IsDeleted
@@ -35,6 +45,11 @@ class ReplCountryCode extends AbstractModel implements ReplCountryCodeInterface,
      * @property string $Name
      */
     protected $Name = null;
+
+    /**
+     * @property string $TaxPostGroup
+     */
+    protected $TaxPostGroup = null;
 
     /**
      * @property string $scope
@@ -92,13 +107,33 @@ class ReplCountryCode extends AbstractModel implements ReplCountryCodeInterface,
     }
 
     /**
-     * @param string $nav_id
+     * @param ArrayOfTaxItemGroup $TaxItemGroups
      * @return $this
      */
-    public function setNavId($nav_id)
+    public function setTaxItemGroups($TaxItemGroups)
     {
-        $this->setData( 'nav_id', $nav_id );
-        $this->nav_id = $nav_id;
+        $this->setData( 'TaxItemGroups', $TaxItemGroups );
+        $this->TaxItemGroups = $TaxItemGroups;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfTaxItemGroup
+     */
+    public function getTaxItemGroups()
+    {
+        return $this->getData( 'TaxItemGroups' );
+    }
+
+    /**
+     * @param string $Code
+     * @return $this
+     */
+    public function setCode($Code)
+    {
+        $this->setData( 'Code', $Code );
+        $this->Code = $Code;
         $this->setDataChanges( TRUE );
         return $this;
     }
@@ -106,9 +141,29 @@ class ReplCountryCode extends AbstractModel implements ReplCountryCodeInterface,
     /**
      * @return string
      */
-    public function getNavId()
+    public function getCode()
     {
-        return $this->getData( 'nav_id' );
+        return $this->getData( 'Code' );
+    }
+
+    /**
+     * @param string $CustomerNo
+     * @return $this
+     */
+    public function setCustomerNo($CustomerNo)
+    {
+        $this->setData( 'CustomerNo', $CustomerNo );
+        $this->CustomerNo = $CustomerNo;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerNo()
+    {
+        return $this->getData( 'CustomerNo' );
     }
 
     /**
@@ -149,6 +204,26 @@ class ReplCountryCode extends AbstractModel implements ReplCountryCodeInterface,
     public function getName()
     {
         return $this->getData( 'Name' );
+    }
+
+    /**
+     * @param string $TaxPostGroup
+     * @return $this
+     */
+    public function setTaxPostGroup($TaxPostGroup)
+    {
+        $this->setData( 'TaxPostGroup', $TaxPostGroup );
+        $this->TaxPostGroup = $TaxPostGroup;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxPostGroup()
+    {
+        return $this->getData( 'TaxPostGroup' );
     }
 
     /**
