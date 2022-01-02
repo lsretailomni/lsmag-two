@@ -107,7 +107,7 @@ class StockHelper extends AbstractHelper
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getGivenItemsStockInGivenStore($items, $storeId)
+    public function getGivenItemsStockInGivenStore($items, $storeId = '')
     {
         $stockCollection = [];
 

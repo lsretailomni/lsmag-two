@@ -39,8 +39,8 @@
     <!--<div class="control">-->
     <!--<input class="input-text" type="text" data-bind="datetimepicker: true"  name="pickup_date" id="pickup-date" readonly="true"/>-->
     <!--</div>-->
-    <input type="hidden" id="pickup-store" name="pickup_store" value=""/>
-    <p id="selected-store-msg">You have selected to pick up your order in <span></span> store.</p>
+    <input type="hidden" id="pickup-store" name="pickup_store" data-bind="value: pickStoreId"/>
+    <p id="selected-store-msg">You have selected to pick up your order in <span data-bind="text: pickStoreName"></span> store.</p>
     <div id="map-canvas"></div>
     <div id="popup-modal" style="display:none;">
     </div>
