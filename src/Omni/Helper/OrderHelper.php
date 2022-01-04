@@ -484,7 +484,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * Return orders from Magento
+     * Return orders from Magento which are yet to be sent to Central and are not payment_review and canceled
      *
      * @param null $storeId
      * @param int $pageSize
@@ -505,23 +505,27 @@ class OrderHelper extends AbstractHelper
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
             if ($filterOptions == true) {
-                $criteriaBuilder->addFilter('status', 'canceled', 'neq');
+                $criteriaBuilder->addFilter('status', ['canceled', 'payment_review'], 'nin');
                 $criteriaBuilder->addFilter('document_id', null, 'null');
             }
+
             if ($customerId) {
                 $criteriaBuilder->addFilter('customer_id', $customerId, 'eq');
             }
+
             if ($storeId) {
                 $criteriaBuilder = $criteriaBuilder->addFilter('store_id', $storeId, 'eq');
             }
+
             if ($sortOrder) {
                 $criteriaBuilder = $criteriaBuilder->setSortOrders([$sortOrder]);
             }
 
-            $searchCriteria =
-                $criteriaBuilder->setPageSize($pageSize)
-                    ->create();
+            if ($pageSize != -1) {
+                $criteriaBuilder->setPageSize($pageSize);
+            }
 
+            $searchCriteria = $criteriaBuilder->create();
             $orders = $this->orderRepository->getList($searchCriteria)->getItems();
 
             return $orders;
