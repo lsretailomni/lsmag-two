@@ -215,7 +215,30 @@ abstract class AbstractOperation implements OperationInterface
         $dom->formatOutput       = true;
         $dom->loadXML($xmlString);
 
+        $this->censorPlanTextForGivenTags($dom, ['password', 'Password', 'newPassword', 'oldPassword']);
+
         return "\n" . $dom->saveXML();
+    }
+
+    /**
+     * Censor all required plain text tags in requests and response
+     *
+     * @param $dom
+     * @param $tagNames
+     */
+    private function censorPlanTextForGivenTags(&$dom, $tagNames)
+    {
+        foreach ($tagNames as $tag) {
+            $nodes = $dom->getElementsByTagName($tag);
+
+            for ($i = 0; $i < $nodes->length; $i++) {
+                $current = $nodes->item($i);
+
+                if ($current->nodeValue) {
+                    $current->nodeValue = '****';
+                }
+            }
+        }
     }
 
     protected function isTokenized()
