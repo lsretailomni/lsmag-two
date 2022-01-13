@@ -2056,6 +2056,7 @@ class ReplicationHelper extends AbstractHelper
         $finalCodes = [];
         try {
             $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
+                ->addFilter('isDeleted', 0, 'eq')
                 ->addFilter('scope_id', $storeId, 'eq')->create();
             $sortOrder      = $this->sortOrder->setField('DimensionLogicalOrder')->setDirection(SortOrder::SORT_ASC);
             $searchCriteria->setSortOrders([$sortOrder]);
