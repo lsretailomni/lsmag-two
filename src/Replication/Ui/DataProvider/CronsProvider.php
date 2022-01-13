@@ -334,6 +334,14 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+        if ($cronName == 'repl_tax_rules') {
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_TAX_RULES,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
+            return $fullReplicationStatus;
+        }
         return $fullReplicationStatus;
     }
 }

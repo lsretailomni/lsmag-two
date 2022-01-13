@@ -24,7 +24,6 @@ use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as 
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
-use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
@@ -61,6 +60,9 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
+use Magento\Tax\Api\TaxClassRepositoryInterface;
+use Magento\Tax\Model\ClassModel;
+use Magento\Tax\Model\ClassModelFactory;
 use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
 
 /**
@@ -217,7 +219,16 @@ class ReplicationHelper extends AbstractHelper
     public $replStoreTenderTypeRepository;
 
     /**
-     * ReplicationHelper constructor.
+     * @var TaxClassRepositoryInterface
+     */
+    public $taxClassRepository;
+
+    /**
+     * @var ClassModelFactory
+     */
+    public $classModelFactory;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -255,6 +266,8 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplItemUnitOfMeasure $replItemUomRepository
      * @param ReplTaxSetupRepositoryInterface $replTaxSetupRepository
      * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
+     * @param TaxClassRepositoryInterface $taxClassRepository
+     * @param ClassModelFactory $classModelFactory
      */
     public function __construct(
         Context $context,
@@ -293,7 +306,9 @@ class ReplicationHelper extends AbstractHelper
         ReplExtendedVariantValueRepository $extendedVariantValueRepository,
         ReplItemUnitOfMeasure $replItemUomRepository,
         ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
-        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
+        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
+        TaxClassRepositoryInterface $taxClassRepository,
+        ClassModelFactory $classModelFactory
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -331,6 +346,8 @@ class ReplicationHelper extends AbstractHelper
         $this->replItemUomRepository                     = $replItemUomRepository;
         $this->replTaxSetupRepository                    = $replTaxSetupRepository;
         $this->replStoreTenderTypeRepository             = $replStoreTenderTypeRepository;
+        $this->taxClassRepository                        = $taxClassRepository;
+        $this->classModelFactory                         = $classModelFactory;
         parent::__construct(
             $context
         );
@@ -2192,5 +2209,35 @@ class ReplicationHelper extends AbstractHelper
                 }
             }
         }
+    }
+
+    /**
+     * Get tax_class given name, create if not exists
+     *
+     * @param $name
+     * @return int|string|null
+     * @throws InputException
+     * @throws LocalizedException
+     */
+    public function getTaxClassGivenName($name)
+    {
+        $criteriaBuilder = $this->searchCriteriaBuilder;
+        $criteriaBuilder->addFilter('class_name', $name, 'eq')
+            ->addFilter('class_type', ClassModel::TAX_CLASS_TYPE_PRODUCT, 'eq');
+        $criteria = $criteriaBuilder->create();
+
+        $taxClassList = $this->taxClassRepository->getList($criteria);
+
+        if ($taxClassList->getTotalCount()) {
+            $taxClass = current($taxClassList->getItems());
+        } else {
+            $taxClass = $this->classModelFactory->create();
+            $taxClass->setClassName($name)
+                ->setClassType(ClassModel::TAX_CLASS_TYPE_PRODUCT);
+            $taxClassId = $this->taxClassRepository->save($taxClass);
+            $taxClass   = $this->taxClassRepository->get($taxClassId);
+        }
+
+        return $taxClass;
     }
 }
