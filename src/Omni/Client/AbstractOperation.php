@@ -215,7 +215,10 @@ abstract class AbstractOperation implements OperationInterface
         $dom->formatOutput       = true;
         $dom->loadXML($xmlString);
 
-        $this->censorPlanTextForGivenTags($dom, ['password', 'Password', 'newPassword', 'oldPassword']);
+        $this->censorPlanTextForGivenTags(
+            $dom,
+            ['password', 'Password', 'newPassword', 'oldPassword', 'PasswordResetResult', 'token']
+        );
 
         return "\n" . $dom->saveXML();
     }
