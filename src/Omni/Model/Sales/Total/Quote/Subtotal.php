@@ -53,9 +53,6 @@ class Subtotal
         ShippingAssignmentInterface $shippingAssignment,
         Total $total
     ) {
-        $store            = $quote->getStore();
-        $priceIncludesTax = $this->config->priceIncludesTax($store);
-
         if (!$this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             return $proceed($quote, $shippingAssignment, $total);
         }
