@@ -7,8 +7,9 @@ define([
     'Magento_Checkout/js/model/quote',
     'lsomni/map-loader',
     'lsomni/map',
-    'mage/url'
-], function (Component, ko, $, $t, modal, quote, MapLoader, map, url) {
+    'mage/url',
+    'Magento_Checkout/js/model/shipping-service'
+], function (Component, ko, $, $t, modal, quote, MapLoader, map, url, shippingService) {
     'use strict';
 
     var popUp1 = null;
@@ -20,15 +21,24 @@ define([
         isClickAndCollect: ko.observable(false),
         isSelectStoreVisible: ko.observable(false),
         isMapVisible: ko.observable(false),
+        pickStoreId: ko.observable(null),
+        pickStoreName: ko.observable(null),
 
         initialize: function () {
             var self = this;
             quote.shippingMethod.subscribe(function () {
+                var storeId, storeName;
                 if (quote.shippingMethod().carrier_code == 'clickandcollect') {
                     self.isClickAndCollect(true);
                     var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
-                    if (stores.totalRecords > 1) {
+                    if (stores.totalRecords > 0) {
                         self.isSelectStoreVisible(true);
+                        if (stores.totalRecords === 1) {
+                            storeId = stores.items[0].nav_id;
+                            storeName = stores.items[0].Name;
+                            self.pickStoreId(storeId);
+                            self.pickStoreName(storeName);
+                        }
                     }
                 } else {
                     self.isClickAndCollect(false);
@@ -71,11 +81,8 @@ define([
             };
 
             $('body').on('click', '.apply-store', function () {
-                $('#pickup-store').val($(this).data('id'));
-                $('#selected-store-msg')
-                    .show()
-                    .find('span')
-                    .text($(this).data('name'));
+                self.pickStoreId($(this).data('id'));
+                self.pickStoreName($(this).data('name'));
                 self.isMapVisible(false);
                 if (popUp2) {
                     popUp2.closeModal();
@@ -122,7 +129,8 @@ define([
                             $(".stock-remarks").append("<br/><strong>" + data.remarks + "</strong><br/>");
                         }
                     },
-                    error: function (xhr) { // if any error occurred
+                    error: function (xhr) {
+ // if any error occurred
                         console.log(xhr.statusText + xhr.responseText);
                     }
                 });
@@ -188,12 +196,23 @@ define([
                 };
                 popUp2 = modal(options, $('#popup-modal'));
             }
-            var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
-            var storeInfo = $(stores.storesInfo).find('#store-' + store.nav_id).html();
-            $("#popup-modal").html("").append('<div class="double-btn-container"><button data-id="'
+            var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores),
+                availableStoresOnly = $.parseJSON(window.checkoutConfig.shipping.select_store.available_store_only),
+                storeInfo = $(stores.storesInfo).find('#store-' + store.nav_id).html(),
+                popUpHtml = '<div class="double-btn-container">';
+            if (!availableStoresOnly) {
+                popUpHtml += '<button data-id="'
                 + store.nav_id + '" class="check-store-availability">Check Availability</button><button disabled data-id="'
-                + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button></div><div class="stock-remarks"><div class="custom-loader"></div><ul></ul></div></div><br/>'
-                + '<div class="omni-stores-index "><div class="stores-maps-container"><div class="store-map-plus-info-container info-window">' + storeInfo + '</div></div></div>');
+                + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button>';
+            } else {
+                popUpHtml += '<button data-id="'
+                + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button>';
+            }
+
+            popUpHtml += '</div><div class="stock-remarks"><div class="custom-loader"></div><ul></ul></div></div><br/>'
+            + '<div class="omni-stores-index "><div class="stores-maps-container"><div class="store-map-plus-info-container info-window">' + storeInfo + '</div></div></div>';
+
+            $("#popup-modal").html("").append(popUpHtml);
             $("#popup-modal").modal("openModal");
         }
     });
