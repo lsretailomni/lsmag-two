@@ -106,5 +106,9 @@
              sortOrder="11"
              resource="Ls_Replication::store_tender_type" parent="Ls_Replication::replication_grid_group_second"
              action="ls_repl/grids/storetendertype"/>
+        <add id="Ls_Replication::country_code" title="Country Code" translate="title" module="Ls_Replication"
+             sortOrder="12"
+             resource="Ls_Replication::country_code" parent="Ls_Replication::replication_grid_group_second"
+             action="ls_repl/grids/countrycode"/>
     </menu>
 </config>

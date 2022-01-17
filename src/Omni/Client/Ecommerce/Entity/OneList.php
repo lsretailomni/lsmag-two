@@ -70,6 +70,11 @@ class OneList extends Entity
     protected $SalesType = null;
 
     /**
+     * @property string $ShipToCountryCode
+     */
+    protected $ShipToCountryCode = null;
+
+    /**
      * @property float $ShippingAmount
      */
     protected $ShippingAmount = null;
@@ -305,6 +310,24 @@ class OneList extends Entity
     public function getSalesType()
     {
         return $this->SalesType;
+    }
+
+    /**
+     * @param string $ShipToCountryCode
+     * @return $this
+     */
+    public function setShipToCountryCode($ShipToCountryCode)
+    {
+        $this->ShipToCountryCode = $ShipToCountryCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShipToCountryCode()
+    {
+        return $this->ShipToCountryCode;
     }
 
     /**
