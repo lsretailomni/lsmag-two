@@ -66,6 +66,10 @@
              method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
+        <job name="repl_country_code" instance="Ls\Replication\Cron\ReplEcommCountryCodeTask"
+             method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
         <!-- Less Important-->
         <job name="repl_tax_setup" instance="Ls\Replication\Cron\ReplEcommTaxSetupTask" method="execute">
             <schedule>*/15 * * * *</schedule>
@@ -92,6 +96,9 @@
             <schedule>*/5 * * * *</schedule>
         </job>
         <job name="repl_products" instance="Ls\Replication\Cron\ProductCreateTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="repl_tax_rules" instance="Ls\Replication\Cron\TaxRulesCreateTask" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
         <job name="repl_discount_create" instance="Ls\Replication\Cron\DiscountCreateTask" method="execute">

@@ -100,6 +100,17 @@ interface ReplStoreInterface
     public function getFunctionalityProfile();
 
     /**
+     * @param string $HospSalesTypes
+     * @return $this
+     */
+    public function setHospSalesTypes($HospSalesTypes);
+
+    /**
+     * @return string
+     */
+    public function getHospSalesTypes();
+
+    /**
      * @param string $nav_id
      * @return $this
      */

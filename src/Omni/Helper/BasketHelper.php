@@ -707,6 +707,10 @@ class BasketHelper extends AbstractHelper
                     ->setSalesType(LSR::SALE_TYPE_POS);
             }
 
+            if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
+                $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode());
+            }
+
             /** @var Entity\OneListCalculate $entity */
             if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
                 $offer  = new Entity\OneListPublishedOffer();
@@ -1052,6 +1056,11 @@ class BasketHelper extends AbstractHelper
      */
     public function updateBasketAndSaveTotals($oneList, $quote)
     {
+        if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
+            $country = $quote->getShippingAddress()->getCountryId();
+            $oneList->setShipToCountryCode($country);
+        }
+
         $basketData = $this->update($oneList);
         $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
 

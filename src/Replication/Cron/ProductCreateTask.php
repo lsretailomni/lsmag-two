@@ -474,6 +474,7 @@ class ProductCreateTask
                                     false,
                                     $store->getId()
                                 );
+                                $taxClass = $this->replicationHelper->getTaxClassGivenName($item->getTaxItemGroupId());
                                 $websitesProduct = $productData->getWebsiteIds();
                                 /** Check if item exist in the website and assign it if it doesn't exist*/
                                 if (!in_array($store->getWebsiteId(), $websitesProduct, true)) {
@@ -484,6 +485,7 @@ class ProductCreateTask
                                 $productData->setMetaTitle($item->getDescription());
                                 $productData->setDescription($item->getDetails());
                                 $productData->setWeight($item->getGrossWeight());
+                                $productData->setTaxClassId($taxClass->getClassId());
                                 $productData->setAttributeSetId($productData->getAttributeSetId());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
@@ -502,6 +504,7 @@ class ProductCreateTask
                             } catch (NoSuchEntityException $e) {
                                 /** @var Product $product */
                                 $product = $this->productFactory->create();
+                                $taxClass = $this->replicationHelper->getTaxClassGivenName($item->getTaxItemGroupId());
                                 $product->setStoreId($store->getId());
                                 $product->setWebsiteIds([$store->getWebsiteId()]);
                                 $product->setName($item->getDescription());
@@ -513,6 +516,7 @@ class ProductCreateTask
                                 $product->setVisibility(Visibility::VISIBILITY_BOTH);
                                 $product->setWeight($item->getGrossWeight());
                                 $product->setDescription($item->getDetails());
+                                $product->setTaxClassId($taxClass->getClassId());
                                 $itemPrice = $this->getItemPrice($item->getNavId());
                                 if (isset($itemPrice)) {
                                     $product->setPrice($itemPrice->getUnitPriceInclVat());
