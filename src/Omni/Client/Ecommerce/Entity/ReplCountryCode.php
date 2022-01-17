@@ -12,9 +12,19 @@ class ReplCountryCode
 {
 
     /**
-     * @property string $Id
+     * @property ArrayOfTaxItemGroup $TaxItemGroups
      */
-    protected $Id = null;
+    protected $TaxItemGroups = null;
+
+    /**
+     * @property string $Code
+     */
+    protected $Code = null;
+
+    /**
+     * @property string $CustomerNo
+     */
+    protected $CustomerNo = null;
 
     /**
      * @property boolean $IsDeleted
@@ -27,6 +37,11 @@ class ReplCountryCode
     protected $Name = null;
 
     /**
+     * @property string $TaxPostGroup
+     */
+    protected $TaxPostGroup = null;
+
+    /**
      * @property string $scope
      */
     protected $scope = null;
@@ -37,21 +52,57 @@ class ReplCountryCode
     protected $scope_id = null;
 
     /**
-     * @param string $Id
+     * @param ArrayOfTaxItemGroup $TaxItemGroups
      * @return $this
      */
-    public function setId($Id)
+    public function setTaxItemGroups($TaxItemGroups)
     {
-        $this->Id = $Id;
+        $this->TaxItemGroups = $TaxItemGroups;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfTaxItemGroup
+     */
+    public function getTaxItemGroups()
+    {
+        return $this->TaxItemGroups;
+    }
+
+    /**
+     * @param string $Code
+     * @return $this
+     */
+    public function setCode($Code)
+    {
+        $this->Code = $Code;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getId()
+    public function getCode()
     {
-        return $this->Id;
+        return $this->Code;
+    }
+
+    /**
+     * @param string $CustomerNo
+     * @return $this
+     */
+    public function setCustomerNo($CustomerNo)
+    {
+        $this->CustomerNo = $CustomerNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerNo()
+    {
+        return $this->CustomerNo;
     }
 
     /**
@@ -88,6 +139,24 @@ class ReplCountryCode
     public function getName()
     {
         return $this->Name;
+    }
+
+    /**
+     * @param string $TaxPostGroup
+     * @return $this
+     */
+    public function setTaxPostGroup($TaxPostGroup)
+    {
+        $this->TaxPostGroup = $TaxPostGroup;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxPostGroup()
+    {
+        return $this->TaxPostGroup;
     }
 
     /**
