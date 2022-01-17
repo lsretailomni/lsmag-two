@@ -88,6 +88,8 @@
                 type="Ls\Replication\Model\ReplTaxSetupRepository"/>
     <preference for="Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface"
                 type="Ls\Replication\Model\ReplStoreTenderTypeRepository"/>
+    <preference for="Ls\Replication\Api\ReplCountryCodeRepositoryInterface"
+                type="Ls\Replication\Model\ReplCountryCodeRepository"/>
     <!--Replication API Data Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValue"/>
@@ -127,6 +129,8 @@
                 type="Ls\Replication\Model\ReplTaxSetup"/>
     <preference for="Ls\Replication\Api\Data\ReplStoreTenderTypeInterface"
                 type="Ls\Replication\Model\ReplStoreTenderType"/>
+    <preference for="Ls\Replication\Api\Data\ReplCountryCodeInterface"
+                type="Ls\Replication\Model\ReplCountryCode"/>
     <!--Replication API Search Results Interfaces-->
     <preference for="Ls\Replication\Api\Data\ReplAttributeOptionValueSearchResultsInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueSearchResults"/>
@@ -182,6 +186,8 @@
                 type="Ls\Replication\Model\ReplTaxSetupSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplStoreTenderTypeSearchResultsInterface"
                 type="Ls\Replication\Model\ReplStoreTenderTypeSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplCountryCodeSearchResultsInterface"
+                type="Ls\Replication\Model\ReplCountryCodeSearchResults"/>
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
@@ -262,6 +268,9 @@
                 </item>
                 <item name="ls_repl_grids_store_tender_type_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplStoreTenderType\Grid\Collection
+                </item>
+                <item name="ls_repl_grids_country_code_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplCountryCode\Grid\Collection
                 </item>
             </argument>
         </arguments>

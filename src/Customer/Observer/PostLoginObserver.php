@@ -68,7 +68,9 @@ class PostLoginObserver implements ObserverInterface
                     $customer->getEmail(),
                     ContactSearchType::EMAIL
                 );
-                $this->contactHelper->updateBasketAndWishlistAfterLogin($contact);
+                if (!empty($contact)) {
+                    $this->contactHelper->updateBasketAndWishlistAfterLogin($contact);
+                }
             } else {
                 $this->contactHelper->unsetBasketUpdateChecking();
             }

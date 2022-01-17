@@ -12,15 +12,37 @@ interface ReplCountryCodeInterface
 {
 
     /**
-     * @param string $nav_id
+     * @param ArrayOfTaxItemGroup $TaxItemGroups
      * @return $this
      */
-    public function setNavId($nav_id);
+    public function setTaxItemGroups($TaxItemGroups);
+
+    /**
+     * @return ArrayOfTaxItemGroup
+     */
+    public function getTaxItemGroups();
+
+    /**
+     * @param string $Code
+     * @return $this
+     */
+    public function setCode($Code);
 
     /**
      * @return string
      */
-    public function getNavId();
+    public function getCode();
+
+    /**
+     * @param string $CustomerNo
+     * @return $this
+     */
+    public function setCustomerNo($CustomerNo);
+
+    /**
+     * @return string
+     */
+    public function getCustomerNo();
 
     /**
      * @param boolean $IsDeleted
@@ -43,6 +65,17 @@ interface ReplCountryCodeInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * @param string $TaxPostGroup
+     * @return $this
+     */
+    public function setTaxPostGroup($TaxPostGroup);
+
+    /**
+     * @return string
+     */
+    public function getTaxPostGroup();
 
     /**
      * @param string $scope
