@@ -217,7 +217,7 @@ abstract class AbstractOperation implements OperationInterface
 
         $this->censorPlanTextForGivenTags(
             $dom,
-            ['password', 'Password', 'newPassword', 'oldPassword', 'PasswordResetResult', 'token']
+            ['password', 'Password', 'newPassword', 'oldPassword', 'PasswordResetResult', 'token','SecurityToken']
         );
 
         return "\n" . $dom->saveXML();
