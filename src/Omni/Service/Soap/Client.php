@@ -3,28 +3,24 @@
 namespace Ls\Omni\Service\Soap;
 
 use DOMDocument;
+use Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\ServiceType;
 use Laminas\Http\ClientStatic;
 use Laminas\Soap\Client as LaminasSoapClient;
 use Laminas\Uri\Uri;
+use Magento\Framework\App\ObjectManager;
 
 /**
- * Class Client
- * @package Ls\Omni\Service\Soap
+ * soap client class to read xml
  */
 class Client extends LaminasSoapClient
 {
     /** @var Uri */
     public $URL;
+
     /** @var  ServiceType */
     public $type;
-    /** @var array */
-    public $soap_options = [
-        'cache_wsdl'   => WSDL_CACHE_NONE,
-        'soap_version' => SOAP_1_1,
-        'features'     => SOAP_SINGLE_ELEMENT_ARRAYS
-    ];
 
     /**
      * Client constructor.
@@ -33,10 +29,19 @@ class Client extends LaminasSoapClient
      */
     public function __construct(Uri $uri, ServiceType $type)
     {
-        parent::__construct($uri->toString(), array_merge($this->soap_options));
-
         $this->URL  = $uri;
         $this->type = $type;
+
+        $this->execute();
+    }
+    /**
+     * Get cache helper wsdl options
+     * @return void
+     */
+    public function execute()
+    {
+        $cacheHelper = ObjectManager::getInstance()->get(CacheHelper::class);
+        parent::__construct($this->URL->toString(), $cacheHelper->getWsdlOptions());
     }
 
     /**
