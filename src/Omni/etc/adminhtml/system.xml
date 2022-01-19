@@ -341,7 +341,7 @@
                     <label>Default Zoom</label>
                 </field>
             </group>
-            <group id="checkout" showInDefault="1">
+            <group id="checkout" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Checkout Settings</label>
                 <field id="items_availability" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
                        showInStore="1">
