@@ -233,4 +233,12 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplCountryCode\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_country_code</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplCountryCode
+            </argument>
+        </arguments>
+    </virtualType>
 </config>

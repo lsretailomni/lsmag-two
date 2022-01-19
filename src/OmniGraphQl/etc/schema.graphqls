@@ -116,3 +116,11 @@ type HourType {
     opening_time: String @doc(description: "Opening timing.")
     closing_time: String @doc(description: "Closing timing.")
 }
+
+type CartPrices {
+    vat: CartVat @doc(description: "Tax value.")
+}
+
+type CartVat {
+    amount: Money!
+}

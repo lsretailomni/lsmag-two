@@ -52,4 +52,9 @@
                 type="Ls\OmniGraphQl\Plugin\Model\Resolver\SetShippingMethodsOnCartPlugin"
                 sortOrder="1"/>
     </type>
+    <!-- Plugin that returns the vat for the whole cart   -->
+    <type name="Magento\QuoteGraphQl\Model\Resolver\CartPrices">
+        <plugin name="return_vat" type="Ls\OmniGraphQl\Plugin\Model\Resolver\CartPricesPlugin"
+                sortOrder="1"/>
+    </type>
 </config>

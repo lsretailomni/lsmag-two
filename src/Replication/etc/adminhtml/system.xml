@@ -167,6 +167,14 @@
                     <button_url>ls_repl/deletion/discount</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
+                <field id="tax_rules" translate="label" type="button" sortOrder="6" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Delete Tax Rules &amp; set processed to false</label>
+                    <comment>You cannot recover from this action</comment>
+                    <button_label>Delete !</button_label>
+                    <button_url>ls_repl/deletion/taxrules</button_url>
+                    <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
+                </field>
                 <field id="ls_tables" translate="label" type="button" sortOrder="7" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Truncate all ls_ tables</label>

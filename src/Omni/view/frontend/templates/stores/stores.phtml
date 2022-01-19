@@ -77,7 +77,7 @@ if ($collection->getSize()) : ?>
             $counter++;
         endforeach; ?>
         <?php if ($show) : ?>
-            <script type="text/javascript">// <![CDATA[
+            <script type="text/javascript">
                 var apiKey = '<?php echo $apiKey;?>';
                 var locations = [
                     <?php foreach($collection->getData() as $store) {
@@ -95,7 +95,6 @@ if ($collection->getSize()) : ?>
                         map.singleStoreMap(locations);
                     }
                 );
-                // ]]>
             </script>
         <?php endif; ?>
     </div>
