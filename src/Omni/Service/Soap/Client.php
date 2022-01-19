@@ -3,7 +3,7 @@
 namespace Ls\Omni\Service\Soap;
 
 use DOMDocument;
-use Ls\Omni\Helper\CacheHelper;
+use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\ServiceType;
 use Laminas\Http\ClientStatic;
