@@ -8,13 +8,9 @@ define([
     return function (Component) {
         return Component.extend({
             validateShippingInformation: function () {
-                if (quote.shippingMethod().carrier_code == 'clickandcollect') {
-                    var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
-                    // if ($('#pickup-date').val() == '' || (stores.totalRecords > 1 && $('#pickup-store').val() == '')) {
-                    if (stores.totalRecords > 0 && $('#pickup-store').val() == '') {
-                        this.errorValidationMessage($t('Please provide where (if suitable) you prefer to pick your order.'));
-                        return false;
-                    }
+                if (quote.shippingMethod().carrier_code == 'clickandcollect' && $('#pickup-store').val() == '') {
+                    this.errorValidationMessage($t('Please provide where (if suitable) you prefer to pick your order.'));
+                    return false;
                 }
                 return this._super();
             }

@@ -185,15 +185,15 @@ class DataProvider implements ConfigProviderInterface
         }
 
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
+        list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
 
-        list($response) = $this->stockHelper->getGivenItemsStockInGivenStore(
-            $items
-        );
-        if (is_object($response)) {
-            if (!is_array($response->getInventoryResponse())) {
-                $response = [$response->getInventoryResponse()];
-            } else {
-                $response = $response->getInventoryResponse();
+        if ($response) {
+            if (is_object($response)) {
+                if (!is_array($response->getInventoryResponse())) {
+                    $response = [$response->getInventoryResponse()];
+                } else {
+                    $response = $response->getInventoryResponse();
+                }
             }
 
             $clickNCollectStoresIds = $this->getClickAndCollectStoreIds($storesData);
@@ -241,10 +241,7 @@ class DataProvider implements ConfigProviderInterface
     public function filterClickAndCollectStores(&$response, $clickNCollectStoresIds)
     {
         foreach ($response as $index => $item) {
-            if (!in_array($item->getStoreId(), $clickNCollectStoresIds) ||
-                ceil($item->getQtyInventory()) == 0 ||
-                ceil($item->getQtyInventory()) < 0
-            ) {
+            if (!in_array($item->getStoreId(), $clickNCollectStoresIds)) {
                 unset($response[$index]);
             }
         }
@@ -275,7 +272,6 @@ class DataProvider implements ConfigProviderInterface
                     ceil($responseItem->getQtyInventory()) < $itemQty
                 ) {
                     $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStoreId());
-                    break;
                 }
             }
         }
