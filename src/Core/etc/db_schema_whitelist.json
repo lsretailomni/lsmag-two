@@ -7,7 +7,8 @@
             "ls_points_spent": true,
             "ls_gift_card_no": true,
             "ls_gift_card_amount_used": true,
-            "ls_one_list_id": true
+            "ls_one_list_id": true,
+            "basket_response": true
         }
     },
     "sales_order": {

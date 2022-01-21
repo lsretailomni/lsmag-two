@@ -3,7 +3,6 @@
 namespace Ls\OmniGraphQl\Helper;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StockHelper;
@@ -156,16 +155,13 @@ class DataHelper extends AbstractHelper
      * Setting quote id and ls_one_list in the session and calling the required event
      * @param $quote
      * @return CartInterface|Quote
-     * @throws InvalidEnumException
      * @throws NoSuchEntityException
      * @throws LocalizedException
      */
     public function triggerEventForCartChange($quote)
     {
-        $basketHelper = $this->basketHelper->get($quote->getLsOneListId());
-
-        if ($basketHelper) {
-            $this->basketHelper->setOneListInCustomerSession($basketHelper);
+        if ($quote->getBasketResponse()) {
+            $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($quote->getBasketResponse()));
         }
 
         $this->checkoutSession->setQuoteId($quote->getId());

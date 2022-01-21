@@ -104,7 +104,7 @@ class CartObserver implements ObserverInterface
                 $couponCode = $this->basketHelper->getCouponCodeFromCheckoutSession();
                 // This will create one list if not created and will return onelist if its already created.
                 /** @var OneList|null $oneList */
-                $oneList = $this->basketHelper->get($quote->getLsOneListId());
+                $oneList = $this->basketHelper->get();
                 // add items from the quote to the oneList and return the updated onelist
                 $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
                 if (!empty($couponCode)) {
