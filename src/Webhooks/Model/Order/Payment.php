@@ -73,7 +73,7 @@ class Payment
     {
         $documentId     = $data['OrderId'];
         $lines          = $data['Lines'];
-        $totalAmount    = $data['Amount'];
+        $totalAmount    = 0;
         $shippingAmount = 0;
         $itemsToInvoice = [];
         try {
@@ -87,11 +87,13 @@ class Payment
                     $item                         = $itemData['item'];
                     $orderItemId                  = $item->getItemId();
                     $itemsToInvoice[$orderItemId] = $itemData['qty'];
+                    $totalAmount                  += $itemData['amount'];
                 }
 
                 foreach ($lines as $line) {
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
+                        $totalAmount    += $shippingAmount;
                     }
                 }
 

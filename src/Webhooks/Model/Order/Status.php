@@ -8,6 +8,7 @@ use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Item;
 
 /**
  * class to process status through webhook
@@ -90,6 +91,16 @@ class Status
         $storeId = $magOrder->getStoreId();
         $items   = $this->helper->getItems($magOrder, $itemsInfo);
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
+            if ($magOrder->canCancel()) {
+                $cancelItems = [];
+                foreach ($items as $item) {
+                    if ($item['itemStatus'] == Item::STATUS_PENDING ||
+                        $item['itemStatus'] == Item::STATUS_PARTIAL) {
+                        $cancelItems [] = $item;
+                    }
+                }
+                $this->orderCancel->cancelItems($magOrder, $cancelItems);
+            }
             $this->cancel($magOrder, $itemsInfo, $items, $storeId);
         }
         if ($status == LSR::LS_STATE_PICKED && $this->helper->isPickupNotifyEnabled($storeId) &&
@@ -122,9 +133,6 @@ class Status
             $this->creditMemo->refund($magOrder, $items, $creditMemoData);
         } elseif (count($magOrder->getAllVisibleItems()) == count($itemsInfo)) {
             $this->orderCancel->cancelOrder($magOrder->getEntityId());
-            $sendEmail = true;
-        } else {
-            $this->orderCancel->cancelItems($magOrder, $items);
             $sendEmail = true;
         }
 

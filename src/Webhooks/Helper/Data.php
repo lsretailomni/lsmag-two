@@ -218,7 +218,8 @@ class Data
      */
     public function getItems($order, $itemsInfo)
     {
-        $items = [];
+        $items       = [];
+        $totalAmount = 0;
         foreach ($order->getAllVisibleItems() as $orderItem) {
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $orderItem->getProductId(),
@@ -234,8 +235,10 @@ class Data
                         $items[$itemId]['qty'] = $skuValues['Quantity'];
                     }
                     if (array_key_exists('Amount', $skuValues)) {
-                        $items[$itemId]['amount'] = $skuValues['Amount'];
+                        $totalAmount              += $skuValues['Amount'];
+                        $items[$itemId]['amount'] = $totalAmount;
                     }
+                    $items[$itemId]['itemStatus']  = $orderItem->getStatusId();
                 }
             }
         }
