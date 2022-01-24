@@ -109,8 +109,9 @@ class Discount extends AbstractTotal
         $total->addTotalAmount('grand_total', $paymentDiscount);
         $total->addBaseTotalAmount('discount', $discountAmount);
         $total->addBaseTotalAmount('grand_total', $paymentDiscount);
-        if ($this->basketHelper->getCouponCodeFromCheckoutSession()) {
-            $total->setCouponCode($this->basketHelper->getCouponCodeFromCheckoutSession());
+
+        if ($quote->getCouponCode()) {
+            $total->setCouponCode($quote->getCouponCode());
         }
         return $this;
     }

@@ -253,9 +253,6 @@ class BasketHelper extends AbstractHelper
     public function setOneListQuote(Quote $quote, Entity\OneList $oneList)
     {
         $quoteItems = $quote->getAllVisibleItems();
-        if (count($quoteItems) == 0) {
-            $this->unSetCouponCode();
-        }
 
         // @codingStandardsIgnoreLine
         $items = new Entity\ArrayOfOneListItem();
@@ -514,13 +511,12 @@ class BasketHelper extends AbstractHelper
     public function getCouponCode()
     {
         $quoteCoupon = $this->cart->getQuote()->getCouponCode();
+
         if (!($quoteCoupon == null)) {
             $this->couponCode = $quoteCoupon;
-            $this->setCouponQuote($quoteCoupon);
-            return $quoteCoupon;
-        } else {
-            return $this->couponCode;
         }
+
+        return $this->couponCode;
     }
 
     /**
@@ -619,7 +615,6 @@ class BasketHelper extends AbstractHelper
             $cartQuote->collectTotals();
         }
         $this->quoteResourceModel->save($cartQuote);
-        $this->setCouponCodeInCheckoutSession($couponCode);
     }
 
     /**
@@ -1064,10 +1059,6 @@ class BasketHelper extends AbstractHelper
         $basketData = $this->update($oneList);
         $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
 
-        if (!empty($basketData) && method_exists($basketData, 'getPointsRewarded')) {
-            $this->checkoutSession->getQuote()->setLsPointsEarn($basketData->getPointsRewarded())->save();
-        }
-
         if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||
             $this->checkoutSession->getQuote()->getLsPointsSpent() > 0) {
             $this->data->orderBalanceCheck(
@@ -1137,22 +1128,6 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * @param $couponCode
-     */
-    public function setCouponCodeInCheckoutSession($couponCode)
-    {
-        $this->checkoutSession->setData(LSR::SESSION_CHECKOUT_COUPON_CODE, $couponCode);
-    }
-
-    /**
-     * @return mixed|null
-     */
-    public function getCouponCodeFromCheckoutSession()
-    {
-        return $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_COUPON_CODE);
-    }
-
-    /**
      * @param $memberPoints
      */
     public function setMemberPointsInCheckoutSession($memberPoints)
@@ -1213,14 +1188,6 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * clear coupon code from checkout session
-     */
-    public function unSetCouponCode()
-    {
-        $this->checkoutSession->unsetData(LSR::SESSION_CHECKOUT_COUPON_CODE);
-    }
-
-    /**
      * clear one list calculation from checkout session
      */
     public function unSetOneListCalculation()
@@ -1268,7 +1235,6 @@ class BasketHelper extends AbstractHelper
         $this->unSetMemberPoints();
         $this->unSetOneList();
         $this->unSetOneListCalculation();
-        $this->unsetCouponCode();
         $this->unSetCorrectStoreId();
         $this->unSetQuoteId();
     }

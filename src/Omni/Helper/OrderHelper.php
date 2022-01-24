@@ -160,9 +160,6 @@ class OrderHelper extends AbstractHelper
 
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
             $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
-            if (!empty($this->checkoutSession->getCouponCode())) {
-                $order->setCouponCode($this->checkoutSession->getCouponCode());
-            }
 
             //if the shipping address is empty, we use the contact address as shipping address.
             $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;

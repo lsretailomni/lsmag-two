@@ -94,6 +94,8 @@ class UpdatePoints extends Action
     }
 
     /**
+     * For updating loyalty points amount
+     *
      * @return $this|ResponseInterface|ResultInterface
      */
     public function execute()
@@ -137,7 +139,6 @@ class UpdatePoints extends Action
             $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($orderBalance, $loyaltyPoints);
             if ($isPointsLimitValid) {
                 $quote->setLsPointsSpent($loyaltyPoints);
-                $quote->setCouponCode($this->checkoutSession->getCouponCode());
                 $this->validateQuote($quote);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);

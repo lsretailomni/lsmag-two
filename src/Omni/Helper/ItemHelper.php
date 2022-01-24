@@ -376,9 +376,12 @@ class ItemHelper extends AbstractHelper
                     $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
                 );
             }
-            $couponCode = $this->checkoutSession->getCouponCode();
-            $quote->setCouponCode($couponCode);
+            $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
+
+            if (!empty($basketData) && method_exists($basketData, 'getPointsRewarded')) {
+                $quote->setLsPointsEarn($basketData->getPointsRewarded());
+            }
 
             if ($type == 2) {
                 $this->checkoutSession->setData('stopCalcRowTotal', 1);
