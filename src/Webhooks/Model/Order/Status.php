@@ -93,15 +93,18 @@ class Status
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
             if ($magOrder->canCancel()) {
                 $cancelItems = [];
-                foreach ($items as $item) {
+                foreach ($items as $itemId => $item) {
                     if ($item['itemStatus'] == Item::STATUS_PENDING ||
                         $item['itemStatus'] == Item::STATUS_PARTIAL) {
                         $cancelItems [] = $item;
+                        unset($items[$itemId]);
                     }
                 }
                 $this->orderCancel->cancelItems($magOrder, $cancelItems);
             }
-            $this->cancel($magOrder, $itemsInfo, $items, $storeId);
+            if (!empty($items)) {
+                $this->cancel($magOrder, $itemsInfo, $items, $storeId);
+            }
         }
         if ($status == LSR::LS_STATE_PICKED && $this->helper->isPickupNotifyEnabled($storeId) &&
             $this->helper->isClickAndcollectOrder($magOrder)) {
