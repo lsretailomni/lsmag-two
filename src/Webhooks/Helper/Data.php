@@ -219,12 +219,12 @@ class Data
     public function getItems($order, $itemsInfo)
     {
         $items       = [];
-        $totalAmount = 0;
         foreach ($order->getAllVisibleItems() as $orderItem) {
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $orderItem->getProductId(),
                 $orderItem->getSku()
             );
+            $totalAmount = 0;
             foreach ($itemsInfo as $skuValues) {
                 if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
                     $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
