@@ -596,6 +596,7 @@
     <column xsi:type="text" name="Currency" nullable="true" comment="Currency"/>
     <column xsi:type="text" name="DefaultCustomerAccount" nullable="true" comment="DefaultCustomerAccount"/>
     <column xsi:type="text" name="FunctionalityProfile" nullable="true" comment="FunctionalityProfile"/>
+    <column xsi:type="text" name="HospSalesTypes" nullable="true" comment="HospSalesTypes"/>
     <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="nav_id"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="decimal" name="Latitute" scale="4" precision="20" nullable="true" comment="Latitute"/>
@@ -1705,9 +1706,11 @@
   </table>
   <table name="ls_replication_repl_country_code" resource="default" engine="innodb" comment="ReplEcommCountryCode">
     <column xsi:type="int" name="repl_country_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_country_code_id"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
+    <column xsi:type="text" name="Code" nullable="true" comment="Code"/>
+    <column xsi:type="text" name="CustomerNo" nullable="true" comment="CustomerNo"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="varchar" name="Name" length="200" nullable="true" comment="Name"/>
+    <column xsi:type="text" name="TaxPostGroup" nullable="true" comment="TaxPostGroup"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
