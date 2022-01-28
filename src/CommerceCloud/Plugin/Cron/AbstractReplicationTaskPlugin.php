@@ -44,20 +44,24 @@ class AbstractReplicationTaskPlugin
         if (!$centralType) {
             return $result;
         }
+        $olderCompatibility = $lsr->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_SAAS_COMPATIBILITY, $storeId);
+        if ($olderCompatibility) {
+            $appId = $lsr->getConfigValueFromDb(
+                $subject->getConfigPathAppId(),
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
 
-        $appId = $lsr->getConfigValueFromDb(
-            $subject->getConfigPathAppId(),
-            ScopeInterface::SCOPE_STORES,
-            $storeId
-        );
-
-        if (!$appId) {
-            $appId  = $this->dataHelper->generateUuid();
-            $this->persistAppId($subject, $appId, $storeId);
+            if (!$appId) {
+                $appId = $this->dataHelper->generateUuid();
+                $this->persistAppId($subject, $appId, $storeId);
+            }
+            $result[1] = 0;
+        } else {
+            $appId = $lsr->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_SAAS_APP_ID, $storeId);
         }
 
         $result[6] = $appId;
-        $result[1] = 0;
 
         return $result;
     }

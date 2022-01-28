@@ -74,27 +74,26 @@ class OrderManagement
         $order      = $this->orderRepository->get($id);
         $documentId = $order->getDocumentId();
         $websiteId  = $order->getStore()->getWebsiteId();
+        if (!$order->hasInvoices()) {
+            /**
+             * Adding condition to only process if LSR is enabled.
+             */
+            if ($this->lsr->isLSR($websiteId, 'website')) {
+                if (!empty($documentId)) {
+                    $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
+                    $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+                    $response = $this->orderHelper->orderCancel($documentId, $webStore);
 
-        /**
-         * Adding condition to only process if LSR is enabled.
-         */
-        if ($this->lsr->isLSR($websiteId, 'website')) {
-            if (!empty($documentId)) {
-                $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
-                $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
-                $response = $this->orderHelper->orderCancel($documentId, $webStore);
-
-                if ($response == null) {
-                    $this->formulateException($order);
+                    if ($response == null) {
+                        $this->formulateException($order);
+                    }
+                    $this->basketHelper->unSetCorrectStoreId();
                 }
-                $this->basketHelper->unSetCorrectStoreId();
-
-                return $proceed($id);
             }
+            $this->formulateException($order);
         }
-        $this->formulateException($order);
 
-        return false;
+        return $proceed($id);
     }
 
     /**
