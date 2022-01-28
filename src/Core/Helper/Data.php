@@ -4,6 +4,7 @@ namespace Ls\Core\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\CacheHelper;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
@@ -17,8 +18,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use SoapClient;
 
 /**
- * Class Data
- * @package Ls\Core\Helper
+ * Magento configuration related class
  */
 class Data extends AbstractHelper
 {
@@ -45,13 +45,18 @@ class Data extends AbstractHelper
     private $cacheTypeList;
 
     /**
-     * Data constructor.
+     * @var CacheHelper
+     */
+    private $cacheHelper;
+
+    /**
      * @param Context $context
      * @param StoreManagerInterface $storeManager
      * @param TransportBuilder $transportBuilder
      * @param StateInterface $state
      * @param WriterInterface $configWriter
      * @param TypeListInterface $cacheTypeList
+     * @param CacheHelper $cacheHelper
      */
     public function __construct(
         Context $context,
@@ -59,13 +64,15 @@ class Data extends AbstractHelper
         TransportBuilder $transportBuilder,
         StateInterface $state,
         WriterInterface $configWriter,
-        TypeListInterface $cacheTypeList
+        TypeListInterface $cacheTypeList,
+        CacheHelper $cacheHelper
     ) {
         $this->storeManager      = $storeManager;
         $this->transportBuilder  = $transportBuilder;
         $this->inlineTranslation = $state;
         $this->configWriter      = $configWriter;
         $this->cacheTypeList     = $cacheTypeList;
+        $this->cacheHelper       = $cacheHelper;
         parent::__construct($context);
     }
 
@@ -173,11 +180,8 @@ class Data extends AbstractHelper
             // @codingStandardsIgnoreStart
             $soapClient = new SoapClient(
                 $url . '?singlewsdl',
-                [
-                    'features'       => SOAP_SINGLE_ELEMENT_ARRAYS,
-                    'cache_wsdl'     => WSDL_CACHE_NONE,
-                    'stream_context' => $context
-                ]
+                array_merge(['stream_context' => $context], $this->cacheHelper->getWsdlOptions())
+
             );
             // @codingStandardsIgnoreEnd
             if ($soapClient) {
