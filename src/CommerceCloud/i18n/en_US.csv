@@ -1,4 +1,10 @@
-SaaS,SaaS
+"Newer Odata Implementation","Newer Odata Implementation"
+"Older Implementation","Older Implementation"
 On-Premise,On-Premise
+SaaS,SaaS
 "Ls Central Implementation","Ls Central Implementation"
 "Ls Central is running as SaaS or on-premise? Please select the appropriate option.","Ls Central is running as SaaS or on-premise? Please select the appropriate option."
+"Ls Central Compatibility","Ls Central Compatibility"
+"Newer version utilize Ls Central Saas OData V4","Newer version utilize Ls Central Saas OData V4"
+"Ls Saas App ID","Ls Saas App ID"
+"Add a valid GUID for replication. Generate GUID from here https://www.guidgenerator.com","Add a valid GUID for replication. Generate GUID from here https://www.guidgenerator.com"
