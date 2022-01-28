@@ -5,10 +5,10 @@ namespace Ls\Omni\Helper;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\State;
 
 /**
- * Class CacheHelper
- * @package Ls\Omni\Helper
+ * For implementing magento cache and wsdl cache options
  */
 class CacheHelper extends AbstractHelper
 {
@@ -18,16 +18,30 @@ class CacheHelper extends AbstractHelper
     public $cache;
 
     /**
-     * CacheHelper constructor.
+     * @var State
+     */
+    public $state;
+
+    /** @var array */
+    public $soapOptions = [
+        'cache_wsdl'   => WSDL_CACHE_DISK,
+        'soap_version' => SOAP_1_1,
+        'features'     => SOAP_SINGLE_ELEMENT_ARRAYS
+    ];
+
+    /**
      * @param Context $context
      * @param Type $cache
+     * @param State $state
      */
     public function __construct(
         Context $context,
-        Type $cache
+        Type $cache,
+        State $state
     ) {
         parent::__construct($context);
         $this->cache = $cache;
+        $this->state = $state;
     }
 
     /**
@@ -59,5 +73,17 @@ class CacheHelper extends AbstractHelper
             $tag,
             $lifetime
         );
+    }
+
+    /**
+     * Return Wsdl cache parameter based on mode
+     * @return array
+     */
+    public function getWsdlOptions()
+    {
+        if ($this->state->getMode() == State::MODE_DEVELOPER) {
+            $this->soapOptions['cache_wsdl'] = WSDL_CACHE_NONE;
+        }
+        return $this->soapOptions;
     }
 }
