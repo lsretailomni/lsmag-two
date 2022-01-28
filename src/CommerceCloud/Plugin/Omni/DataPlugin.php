@@ -50,8 +50,12 @@ class DataPlugin
         if (!$centralType) {
             return $result;
         }
-
-        $appId = $this->dataHelper->generateUuid();
+        $olderCompatibility = $subject->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_SAAS_COMPATIBILITY, $scopeId);
+        if ($olderCompatibility) {
+            $appId = $this->dataHelper->generateUuid();
+        } else {
+            $appId = $subject->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_SAAS_APP_ID, $scopeId);
+        }
         $result->getOperationInput()->setReplRequest(
             (new ReplRequest())
                 ->setBatchSize(1000)
