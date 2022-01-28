@@ -218,12 +218,13 @@ class Data
      */
     public function getItems($order, $itemsInfo)
     {
-        $items = [];
+        $items       = [];
         foreach ($order->getAllVisibleItems() as $orderItem) {
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $orderItem->getProductId(),
                 $orderItem->getSku()
             );
+            $totalAmount = 0;
             foreach ($itemsInfo as $skuValues) {
                 if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
                     $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
@@ -234,8 +235,10 @@ class Data
                         $items[$itemId]['qty'] = $skuValues['Quantity'];
                     }
                     if (array_key_exists('Amount', $skuValues)) {
-                        $items[$itemId]['amount'] = $skuValues['Amount'];
+                        $totalAmount              += $skuValues['Amount'];
+                        $items[$itemId]['amount'] = $totalAmount;
                     }
+                    $items[$itemId]['itemStatus']  = $orderItem->getStatusId();
                 }
             }
         }

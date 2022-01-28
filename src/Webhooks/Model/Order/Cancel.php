@@ -75,35 +75,14 @@ class Cancel
     {
         if ($magOrder->canCancel()) {
             foreach ($items as $itemData) {
-                $item = $itemData['item'];
-                $item->setQtyCanceled($itemData['qty']);
+                $item               = $itemData['item'];
+                $cancellationAmount = $itemData['amount'];
+                $item->setQtyCanceled($item->getQtyCanceled() + $itemData['qty']);
                 $this->itemRepository->save($item);
 
-                $magOrder->setSubtotalCanceled($magOrder->getSubtotalCanceled() + $item->getRowTotal());
-                $magOrder->setBaseSubtotalCanceled($magOrder->getBaseSubtotalCanceled() + $item->getRowTotal());
+                $magOrder->setTotalCanceled($magOrder->getTotalCanceled() + $cancellationAmount);
+                $magOrder->setBaseTotalCanceled($magOrder->getBaseTotalCanceled() + $cancellationAmount);
 
-                $magOrder->setTaxCanceled($magOrder->getTaxCanceled() + $item->getRowTotal());
-                $magOrder->setBaseTaxCanceled($magOrder->getBaseTaxCanceled() + $item->getRowTotal());
-
-                $magOrder->setDiscountCanceled($magOrder->getDiscountCanceled() + $item->getRowTotal());
-                $magOrder->setBaseDiscountCanceled($magOrder->getBaseDiscountCanceled() + $item->getRowTotal());
-
-                $magOrder->setTotalCanceled($magOrder->getTotalCanceled() + $item->getRowTotal());
-                $magOrder->setBaseTotalCanceled($magOrder->getBaseTotalCanceled() + $item->getRowTotal());
-
-                $this->helper->getOrderRepository()->save($magOrder);
-            }
-            if (!$magOrder->canCancel()) {
-
-                $magOrder->getPayment()->cancel();
-                $magOrder->setShippingCanceled($magOrder->getShippingAmount());
-                $magOrder->setBaseShippingCanceled($magOrder->getShippingAmount());
-
-                $magOrder->setLsPointsSpent(0);
-                $magOrder->setLsGiftCardAmountUsed(0);
-
-                $this->helper->updateOrderStatus($magOrder, Order::STATE_CANCELED, 'canceled');
-                $magOrder->setTotalCanceled($magOrder->getGrandTotal() - $magOrder->getTotalPaid());
                 $this->helper->getOrderRepository()->save($magOrder);
             }
         }
