@@ -115,11 +115,10 @@ class CartTotalRepository
             /** @var TotalsExtensionInterface $totalsExtension */
             $totalsExtension = $quoteTotals->getExtensionAttributes() ?: $this->totalExtensionFactory->create();
             $totalsExtension->setLoyaltyPoints($pointsConfig);
-            $couponCode = $this->basketHelper->checkoutSession->getCouponCode();
+            $couponCode = $quote->getCouponCode();
             $basketData = $this->basketHelper->getBasketSessionValue();
             if (isset($basketData)) {
                 $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-                $giftCardAmount = $quote->getLsGiftCardAmountUsed();
                 if ($pointDiscount > 0.001) {
                     $quote->setLsPointsDiscount($pointDiscount);
                 }
@@ -128,9 +127,8 @@ class CartTotalRepository
                 if ($amount <= 0) {
                     if (!empty($couponCode)) {
                         $quoteTotals->setCouponCode($couponCode);
-                        $quote->setCouponCode($couponCode);
-                        $quote->setShippingAddress($quote->getShippingAddress())->setCouponCode($couponCode);
-                        $quote->setBillingAddress($quote->getBillingAddress())->setCouponCode($couponCode);
+                        $quote->getShippingAddress()->setCouponCode($couponCode);
+                        $quote->getBillingAddress()->setCouponCode($couponCode);
                     }
                     $quote->getShippingAddress()->setTaxAmount(
                         $basketData->getTotalAmount() - $basketData->getTotalNetAmount()

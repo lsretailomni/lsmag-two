@@ -57,4 +57,14 @@
         <plugin name="return_vat" type="Ls\OmniGraphQl\Plugin\Model\Resolver\CartPricesPlugin"
                 sortOrder="1"/>
     </type>
+
+    <!-- Plugin to set one_list_calculate in checkout_session   -->
+    <type name="Magento\QuoteGraphQl\Model\Resolver\CustomerCart">
+        <plugin name="set_one_list_calculate_in_session" type="Ls\OmniGraphQl\Plugin\Model\Resolver\CartPlugin"
+                sortOrder="1"/>
+    </type>
+    <type name="Magento\QuoteGraphQl\Model\Cart\GetCartForUser">
+        <plugin name="set_one_list_calculate_in_session" type="Ls\OmniGraphQl\Plugin\Model\Resolver\GetCartForUserPlugin"
+                sortOrder="1"/>
+    </type>
 </config>

@@ -84,6 +84,10 @@
         <plugin name="save_ls_one_list_id"
                 type="Ls\Omni\Plugin\Quote\Model\QuoteRepositoryPlugin"/>
     </type>
+    <type name="Magento\Quote\Model\ResourceModel\Quote">
+        <plugin name="save_ls_one_list_id"
+                type="Ls\Omni\Plugin\Quote\Model\QuoteRepositoryPlugin"/>
+    </type>
     <!-- To stop magento for calculating tax -->
     <type name="Magento\Tax\Model\Sales\Total\Quote\Subtotal">
         <plugin name="ls.checkout.cart.tax.subtotal" type="Ls\Omni\Model\Sales\Total\Quote\Subtotal"
