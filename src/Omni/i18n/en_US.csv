@@ -1,5 +1,7 @@
 "Loyalty Points Redeemed","Loyalty Points Redeemed"
 "Gift Card Redeemed ","Gift Card Redeemed "
+"Calculate Real Time","Calculate Real Time"
+"Calculate Once on Checkout","Calculate Once on Checkout"
 "Validate Base URL","Validate Base URL"
 "12 Hours","12 Hours"
 "24 Hours","24 Hours"
@@ -40,13 +42,6 @@ Notice,Notice
 "This item is only available online.","This item is only available online."
 "Please check other stores or remove the not available item(s) from your ","Please check other stores or remove the not available item(s) from your "
 "Oops! Unable to do stock lookup currently.","Oops! Unable to do stock lookup currently."
-"This item is available","This item is available"
-"You have selected %1 quantity for this item.
-                                 We only have %2 quantity available in stock for this store.
-                                 Please update this item quantity in cart.","You have selected %1 quantity for this item.
-                                 We only have %2 quantity available in stock for this store.
-                                 Please update this item quantity in cart."
-"This item is not available","This item is not available"
 "Our Stores","Our Stores"
 "Coupon Code is not valid","Coupon Code is not valid"
 "Coupon Code is not valid for these item(s)","Coupon Code is not valid for these item(s)"
@@ -57,6 +52,15 @@ Notice,Notice
 "The gift card amount ""%1"" or loyalty points ""%2"" are not valid.","The gift card amount ""%1"" or loyalty points ""%2"" are not valid."
 "Coupon discount is exceeding total amount.","Coupon discount is exceeding total amount."
 Save,Save
+"Product %1 is not available.","Product %1 is not available."
+"Max quantity available for item %2 is %1","Max quantity available for item %2 is %1"
+"This item is available","This item is available"
+"You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart.","You have selected %1 quantity for this item.
+                                 We only have %2 quantity available in stock for this store.
+                                 Please update this item quantity in cart."
+"This item is not available","This item is not available"
 "Could not find a cart with ID %1","Could not find a cart with ID %1"
 "The loyalty points '%1' are not valid.","The loyalty points '%1' are not valid."
 "Excl. Tax","Excl. Tax"
@@ -70,6 +74,7 @@ Discount,Discount
 "You are using","You are using"
 "Coupon code successfully removed.","Coupon code successfully removed."
 "You used coupon code ""%1"".","You used coupon code ""%1""."
+points,points
 "Send order to LS Central?","Send order to LS Central?"
 "Send to LS Central","Send to LS Central"
 "Flat No/House No/Building No","Flat No/House No/Building No"
@@ -77,8 +82,6 @@ Discount,Discount
 "Cart %1 doesn't contain products","Cart %1 doesn't contain products"
 "Cart isn't assigned to correct store","Cart isn't assigned to correct store"
 "Could not delete coupon code","Could not delete coupon code"
-"Product that you are trying to add is not available.","Product that you are trying to add is not available."
-"Max quantity available for this item is %1","Max quantity available for this item is %1"
 "Order could not be canceled from LS Central. Try again later.","Order could not be canceled from LS Central. Try again later."
 "Make Check payable to:","Make Check payable to:"
 "Send Check to:","Send Check to:"
@@ -145,6 +148,7 @@ Close,Close
 "Your points are successfully redeemed.","Your points are successfully redeemed."
 "contains %1 quantity","contains %1 quantity"
 cart,cart
+"We are afraid click and collect is not available for this order.","We are afraid click and collect is not available for this order."
 "Please provide where (if suitable) you prefer to pick your order.","Please provide where (if suitable) you prefer to pick your order."
 Configuration,Configuration
 Version,Version
@@ -183,6 +187,9 @@ Coupons,Coupons
                         page. Set value to -1 to display all products."
 "Stores Listing","Stores Listing"
 "Opening Hours Time Format","Opening Hours Time Format"
+"Basket Calculation","Basket Calculation"
+"Calculate basket at","Calculate basket at"
+"Please select the desired area where you want to synchronize basket with Central","Please select the desired area where you want to synchronize basket with Central"
 "Order Management","Order Management"
 "Magento Order Number Prefix","Magento Order Number Prefix"
 "Maximum Length 5 Characters","Maximum Length 5 Characters"
@@ -208,6 +215,7 @@ Title,Title
 "Default Latitude","Default Latitude"
 "Default Longitude","Default Longitude"
 "Default Zoom","Default Zoom"
+"Show only those stores where all cart items are available","Show only those stores where all cart items are available"
 "LS eCommerce Cache","LS eCommerce Cache"
 "LS eCommerce cache for storing the response objects","LS eCommerce cache for storing the response objects"
 "GiftCard Redeemed","GiftCard Redeemed"

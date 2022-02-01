@@ -47,6 +47,9 @@
                 <!-- This needs to be replaced on Production-->
                 <maps_api_key></maps_api_key>
             </general>
+            <checkout>
+                <items_availability>0</items_availability>
+            </checkout>
         </omni_clickandcollect>
         <carriers>
             <clickandcollect>

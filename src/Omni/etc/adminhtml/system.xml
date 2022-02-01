@@ -341,6 +341,14 @@
                     <label>Default Zoom</label>
                 </field>
             </group>
+            <group id="checkout" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Checkout Settings</label>
+                <field id="items_availability" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Show only those stores where all cart items are available</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>
