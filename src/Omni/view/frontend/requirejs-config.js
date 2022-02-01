@@ -18,9 +18,6 @@ var config = {
             'Magento_Checkout/js/view/shipping': {
                 'Ls_Omni/js/view/plugin/shipping': true
             },
-            'Magento_Checkout/js/model/shipping-service': {
-                'Ls_Omni/js/model/plugin/shipping-service': true
-            },
             'Magento_Swatches/js/swatch-renderer': {
                 'Ls_Omni/js/model/swatch-uomswitch': true
             },
