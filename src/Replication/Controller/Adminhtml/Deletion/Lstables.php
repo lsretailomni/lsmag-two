@@ -3,7 +3,7 @@
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use Exception;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
