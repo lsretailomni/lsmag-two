@@ -64,17 +64,20 @@ class DataAssignObserver implements ObserverInterface
             $this->basketHelper->getBasketSessionValue(),
             false
         );
+
         if ($errorMessage) {
             throw new ValidatorException($errorMessage);
         }
         $order = $observer->getOrder();
 
         $order->setPickupDate($quote->getPickupDate());
+
         if ($quote->getPickupStore()) {
             $order->setPickupStore($quote->getPickupStore());
         }
-        if (!empty($this->checkoutSession->getCouponCode())) {
-            $order->setCouponCode($this->checkoutSession->getCouponCode());
+
+        if (!empty($quote->getCouponCode())) {
+            $order->setCouponCode($quote->getCouponCode());
         }
 
         $order->setLsPointsSpent($loyaltyPointsSpent);
@@ -82,6 +85,7 @@ class DataAssignObserver implements ObserverInterface
 
         $order->setLsGiftCardAmountUsed($giftCardAmountUsed);
         $order->setLsGiftCardNo($giftCardNo);
+
         return $this;
     }
 }

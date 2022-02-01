@@ -111,7 +111,6 @@ class UpdateGiftCard extends Action
 
         /** @var Json $resultJson */
         $resultJson            = $this->resultJsonFactory->create();
-        $base_currency         = $this->checkoutSession->getQuote()->getBaseCurrencyCode();
         $post                  = $this->getRequest()->getContent();
         $postData              = json_decode($post);
         $giftCardNo            = $postData->gift_card_no;
@@ -136,7 +135,6 @@ class UpdateGiftCard extends Action
             ];
             $quote->setLsGiftCardNo($giftCardNo);
             $quote->setLsGiftCardAmountUsed($giftCardAmount);
-            $quote->setCouponCode($this->checkoutSession->getCouponCode());
             $this->validateQuote($quote);
             $quote->collectTotals();
             $this->cartRepository->save($quote);

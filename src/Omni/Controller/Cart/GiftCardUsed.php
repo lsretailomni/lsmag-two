@@ -169,7 +169,6 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
                 $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->collectTotals();
                 $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
-                $cartQuote->setCouponCode($this->_checkoutSession->getCouponCode())->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($giftCardAmount) {

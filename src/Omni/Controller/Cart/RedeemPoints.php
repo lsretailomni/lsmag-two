@@ -82,7 +82,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
     }
 
     /**
-     * Initialize coupon
+     * Add or remove loyalty points from cart page
      *
      * @return Redirect
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -116,7 +116,6 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             if ($itemsCount && $isPointValid && $isPointsLimitValid) {
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
                 $cartQuote->setLsPointsSpent($loyaltyPoints)->collectTotals();
-                $cartQuote->setCouponCode($this->_checkoutSession->getCouponCode())->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($loyaltyPoints) {
