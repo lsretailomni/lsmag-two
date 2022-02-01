@@ -14,6 +14,11 @@ class OrderCancel implements RequestInterface
 {
 
     /**
+     * @property ArrayOfint $lineNo
+     */
+    protected $lineNo = null;
+
+    /**
      * @property string $orderId
      */
     protected $orderId = null;
@@ -27,6 +32,24 @@ class OrderCancel implements RequestInterface
      * @property string $userId
      */
     protected $userId = null;
+
+    /**
+     * @param ArrayOfint $lineNo
+     * @return $this
+     */
+    public function setLineNo($lineNo)
+    {
+        $this->lineNo = $lineNo;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfint
+     */
+    public function getLineNo()
+    {
+        return $this->lineNo;
+    }
 
     /**
      * @param string $orderId

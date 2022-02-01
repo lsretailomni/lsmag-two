@@ -334,8 +334,8 @@ class DataTranslationTask
             ['field' => 'main_table.LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
             [
                 'field'          => 'main_table.TranslationId',
-                'value'          => LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION,
-                'condition_type' => 'eq'
+                'value'          => LSR::SC_TRANSLATION_ID_ITEM_HTML . ',' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION,
+                'condition_type' => 'in'
             ],
             ['field' => 'main_table.text', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'main_table.key', 'value' => true, 'condition_type' => 'notnull']
@@ -356,10 +356,15 @@ class DataTranslationTask
                 $sku         = $dataTranslation->getKey();
                 $productData = $this->productRepository->get($sku, true, $storeId);
                 if (isset($productData)) {
-                    $productData->setMetaTitle($dataTranslation->getText());
-                    $productData->setName($dataTranslation->getText());
-                    // @codingStandardsIgnoreLine
-                    $this->productResourceModel->saveAttribute($productData, 'name');
+                    if ($dataTranslation->getTranslationId() == LSR::SC_TRANSLATION_ID_ITEM_HTML) {
+                        $productData->setDescription($dataTranslation->getText());
+                        $this->productResourceModel->saveAttribute($productData, 'description');
+                    } else {
+                        $productData->setMetaTitle($dataTranslation->getText());
+                        $productData->setName($dataTranslation->getText());
+                        // @codingStandardsIgnoreLine
+                        $this->productResourceModel->saveAttribute($productData, 'name');
+                    }
                 }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());

@@ -6,6 +6,7 @@ namespace Ls\Replication\Code;
 use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Core\Helper\Data as LsHelper;
+use Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Cron\AbstractReplicationTask;
@@ -56,16 +57,24 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addUse($this->operation->getRepositoryInterfaceFqn(), $this->operation->getRepositoryName());
         $this->class->addUse($this->operation->getFactoryFqn());
         $this->class->addUse($this->operation->getInterfaceFqn());
-
-        $this->class->addConstant('JOB_CODE', $this->operation->getJobId());
-        $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$this->operation->getTableName()}");
-        $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$this->operation->getTableName()}");
+        //Doing for those jobs where we have identical table and we want to use the same db table but different cron job.
+        if ($this->operation->getJobName() == "ReplEcommHtmlTranslationTask") {
+            $tableName = LSR::SC_ITEM_HTML_JOB_CODE;
+            $jobCode = 'replication_'.$tableName;
+        } else {
+            $tableName = $this->operation->getTableName();
+            $jobCode   = $this->operation->getJobId();
+        }
+        $this->class->addConstant('JOB_CODE', $jobCode);
+        $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$tableName}");
+        $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$tableName}");
         $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE',
-                                  "ls_mag/replication/last_execute_{$this->operation->getTableName()}");
+            "ls_mag/replication/last_execute_{$tableName}");
         $this->class->addConstant('CONFIG_PATH_MAX_KEY',
-                                  "ls_mag/replication/max_key_{$this->operation->getTableName()}");
+            "ls_mag/replication/max_key_{$tableName}");
         $this->class->addConstant('CONFIG_PATH_APP_ID',
-                                  "ls_mag/replication/app_id_{$this->operation->getTableName()}");
+            "ls_mag/replication/app_id_{$tableName}");
+
         $this->createProperty('repository', $this->operation->getRepositoryName());
         $this->createProperty('factory', $this->operation->getFactoryName());
         $this->createProperty('dataInterface', $this->operation->getInterfaceName());
@@ -128,15 +137,15 @@ class CronJobGenerator extends AbstractGenerator
         $constructor->setName('__construct')
             ->setVisibility(MethodGenerator::FLAG_PUBLIC);
         $constructor->setParameters([
-                                        new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
-                                        new ParameterGenerator('resource_config', 'Config'),
-                                        new ParameterGenerator('logger', 'Logger'),
-                                        new ParameterGenerator('helper', 'LsHelper'),
-                                        new ParameterGenerator('repHelper', 'ReplicationHelper'),
-                                        new ParameterGenerator('factory', $this->operation->getFactoryName()),
-                                        new ParameterGenerator('repository', $this->operation->getRepositoryName()),
-                                        new ParameterGenerator('data_interface', $this->operation->getInterfaceName())
-                                    ]);
+            new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
+            new ParameterGenerator('resource_config', 'Config'),
+            new ParameterGenerator('logger', 'Logger'),
+            new ParameterGenerator('helper', 'LsHelper'),
+            new ParameterGenerator('repHelper', 'ReplicationHelper'),
+            new ParameterGenerator('factory', $this->operation->getFactoryName()),
+            new ParameterGenerator('repository', $this->operation->getRepositoryName()),
+            new ParameterGenerator('data_interface', $this->operation->getInterfaceName())
+        ]);
         $constructor->setBody(<<<CODE
 parent::__construct(\$scope_config, \$resource_config, \$logger, \$helper, \$repHelper);
 \$this->repository = \$repository;
