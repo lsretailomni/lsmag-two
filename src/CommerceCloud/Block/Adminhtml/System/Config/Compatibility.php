@@ -5,9 +5,9 @@ namespace Ls\CommerceCloud\Block\Adminhtml\System\Config;
 use Magento\Framework\Data\OptionSourceInterface;
 
 /**
- * Source_Model for central type configuration field
+ * Source_Model for central type compatibility field
  */
-class Types implements OptionSourceInterface
+class Compatibility implements OptionSourceInterface
 {
     /**
      * Options available
@@ -17,8 +17,8 @@ class Types implements OptionSourceInterface
     public function toOptionArray()
     {
         return [
-            ['value' => 0, 'label' => __('On-Premise')],
-            ['value' => 1, 'label' => __('SaaS')]
+            ['value' => 0, 'label' => __('Newer Odata Implementation')],
+            ['value' => 1, 'label' => __('Older Implementation')]
         ];
     }
 }

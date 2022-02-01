@@ -4,7 +4,7 @@
     <default>
         <ls_mag>
             <service>
-                <central_type>1</central_type>
+                <central_type>0</central_type>
             </service>
         </ls_mag>
     </default>
