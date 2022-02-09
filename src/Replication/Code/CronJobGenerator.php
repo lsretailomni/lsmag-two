@@ -6,7 +6,6 @@ namespace Ls\Replication\Code;
 use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Core\Helper\Data as LsHelper;
-use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Cron\AbstractReplicationTask;
@@ -57,10 +56,9 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addUse($this->operation->getRepositoryInterfaceFqn(), $this->operation->getRepositoryName());
         $this->class->addUse($this->operation->getFactoryFqn());
         $this->class->addUse($this->operation->getInterfaceFqn());
-        //Doing for those jobs where we have identical table and we want to use the same db table but different cron job.
-        if ($this->operation->getJobName() == "ReplEcommHtmlTranslationTask") {
-            $tableName = LSR::SC_ITEM_HTML_JOB_CODE;
-            $jobCode = 'replication_'.$tableName;
+        $tableName = $this->operation->getIdenticalTableCronJob($this->operation->getName());
+        if ($tableName) {
+            $jobCode   = 'replication_' . $tableName;
         } else {
             $tableName = $this->operation->getTableName();
             $jobCode   = $this->operation->getJobId();
