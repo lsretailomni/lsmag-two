@@ -16,7 +16,8 @@ class BasketCalculation implements OptionSourceInterface
     {
         return [
             ['value' => '0', 'label' => __('Calculate Real Time')],
-            ['value' => '1', 'label' => __('Calculate Once on Checkout')]
+            ['value' => '1', 'label' => __('Calculate Once on Checkout')],
+            ['value' => '2', 'label' => __('Calculate Real Time & Once on Checkout')]
         ];
     }
 }

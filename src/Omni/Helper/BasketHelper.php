@@ -665,7 +665,7 @@ class BasketHelper extends AbstractHelper
      */
     public function calculate(Entity\OneList $oneList)
     {
-        if (empty($this->getCouponCode()) && $this->calculateBasket) {
+        if (empty($this->getCouponCode()) && $this->calculateBasket == 1) {
             return null;
         }
 
