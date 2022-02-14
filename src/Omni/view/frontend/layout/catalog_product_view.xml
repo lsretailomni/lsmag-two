@@ -24,6 +24,11 @@
                template="Ls_Omni::product/view/availability.phtml"
                ifconfig="ls_mag/one_list/product_availability"/>
 
+        <block class="Ls\Omni\Block\Product\View\View"
+               name="ls.omni.product.return.policy"
+               template="Ls_Omni::product/view/returnpolicy.phtml"
+               ifconfig="ls_mag/return_policy/show_return_policy"/>
+
         <referenceContainer name="product.info.extrahint">
             <block class="Ls\Omni\Block\Product\View\Discount\Proactive"
                    name="ls.omni.product.discount.proactive"

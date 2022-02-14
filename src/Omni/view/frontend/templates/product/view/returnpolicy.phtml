@@ -1,0 +1,23 @@
+<?php
+// @codingStandardsIgnoreFile
+use \Ls\Omni\Block\Product\View\View;
+
+/** @var $block View */
+$_product = $block->getProduct();
+?>
+<?php if ($block->isValid()) : ?>
+    <div class="return-policy-container">
+        <a href="javascript:void()"
+           class="return-policy"><?php echo __('Return Policy') ?></a>
+    </div>
+    <div id="ls-return-policy"></div>
+
+    <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "lsomni/return-policy": {}
+        }
+    }
+
+    </script>
+<?php endif; ?>
