@@ -415,27 +415,31 @@ class AttributesCreateTask
                 $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
                 if (empty($existingOptions)) {
                     foreach ($value as $eachVariantValue) {
-                        $this->eavSetupFactory->create()
-                            ->addAttributeOption(
-                                [
-                                    'values'       => $eachVariantValue,
-                                    'attribute_id' => $this->getAttributeIdByCode($formattedCode)
-                                ]
-                            );
+                        if (isset($eachVariantValue)) {
+                            $this->eavSetupFactory->create()
+                                ->addAttributeOption(
+                                    [
+                                        'values'       => $eachVariantValue,
+                                        'attribute_id' => $this->getAttributeIdByCode($formattedCode)
+                                    ]
+                                );
+                        }
                     }
                 } elseif (!empty($value)) {
                     foreach ($value as $k => $v) {
                         foreach ($v as $logicalOrder => $optionValue) {
-                            if (!in_array($optionValue, $existingOptions, true)) {
-                                $this->eavSetupFactory->create()
-                                    ->addAttributeOption(
-                                        [
-                                            'values'       => $v,
-                                            'attribute_id' => $this->getAttributeIdByCode($formattedCode)
-                                        ]
-                                    );
-                            } else {
-                                $this->updateVariantLogicalOrderByLabel($formattedCode, $v);
+                            if (isset($optionValue)) {
+                                if (!in_array($optionValue, $existingOptions, true)) {
+                                    $this->eavSetupFactory->create()
+                                        ->addAttributeOption(
+                                            [
+                                                'values'       => $v,
+                                                'attribute_id' => $this->getAttributeIdByCode($formattedCode)
+                                            ]
+                                        );
+                                } else {
+                                    $this->updateVariantLogicalOrderByLabel($formattedCode, $v);
+                                }
                             }
                         }
                     }
@@ -619,7 +623,7 @@ class AttributesCreateTask
                             $this->eavSetupFactory->create()->addAttributeOption($data);
                         } catch (Exception $e) {
                             $this->logger->debug("Update attribute - $attributeCode failed with exception : "
-                                . $e->getMessage());
+                                                 . $e->getMessage());
                         }
                     }
                 }
