@@ -95,6 +95,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         'ls_mag/replication/product_assignment_to_category_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
     const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_STORE = 'ls_mag/replication/manual_cron_grid_default_store';
+    const SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST = 'ls_mag/replication/identical_table_web_service_list';
     const SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM = 'ls_mag/replication/attribute_sets_mechanism';
 
     //Attribute Set
@@ -159,9 +160,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         'ls_mag/replication/last_execute_repl_data_translation_to_magento';
     const SC_STORE_DATA_TRANSLATION_LANG_CODE = 'ls_mag/replication/replicate_data_translation_lang_code';
     const SC_TRANSLATION_ID_ITEM_DESCRIPTION = 'T0000000027-F0000000003';
+    const SC_TRANSLATION_ID_ITEM_HTML = 'T0010001410-F0000000020';
     const SC_TRANSLATION_ID_HIERARCHY_NODE = 'T0010000921-F0000000004';
     const SC_TRANSLATION_ID_ATTRIBUTE = 'T0010000784-F0000000005';
     const SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE = 'T0010000785-F0000000003';
+    const SC_ITEM_HTML_JOB_CODE = 'repl_html_translation';
 
     const SC_VERSION_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_version';
 

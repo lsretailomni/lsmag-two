@@ -36,6 +36,7 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName CHECK_STATUS_TIMER()
  * @$method static FeatureFlagName TERMS_AND_CONDITION_U_R_L()
  * @$method static FeatureFlagName TERMS_AND_CONDITION_VERSION()
+ * @$method static FeatureFlagName OPEN_GATE()
  * @$method static FeatureFlagName ENABLE_PLATFORM_PAYMENT()
  * @$method static FeatureFlagName PLATFORM_PAYMENT_CURRENCY_CODE()
  * @$method static FeatureFlagName PLATFORM_PAYMENT_COUNTRY_CODE()
@@ -102,6 +103,8 @@ class FeatureFlagName extends Enum
     public const TERMS_AND_CONDITION_U_R_L = 'TermsAndConditionURL';
 
     public const TERMS_AND_CONDITION_VERSION = 'TermsAndConditionVersion';
+
+    public const OPEN_GATE = 'OpenGate';
 
     public const ENABLE_PLATFORM_PAYMENT = 'EnablePlatformPayment';
 

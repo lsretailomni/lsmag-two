@@ -20,6 +20,11 @@
                     <source_model>Ls\Replication\Model\System\Source\MagStore</source_model>
                     <comment>Select the default store for manual cron grid</comment>
                 </field>
+                <field id="identical_table_web_service_list" translate="label" type="text" sortOrder="1" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Web Service List</label>
+                    <comment>Add comma seperated service name where we have identical table and we want to use the same db table but different cron job.</comment>
+                </field>
                 <field id="replicate_all_stores_items" translate="label" type="select" sortOrder="0" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Replicate All Stores Items</label>

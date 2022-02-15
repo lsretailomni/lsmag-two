@@ -87,7 +87,7 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     protected $Type = null;
 
     /**
-     * @property int $ValidationPeriod
+     * @property string $ValidationPeriod
      */
     protected $ValidationPeriod = null;
 
@@ -407,7 +407,7 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     }
 
     /**
-     * @param int $ValidationPeriod
+     * @param string $ValidationPeriod
      * @return $this
      */
     public function setValidationPeriod($ValidationPeriod)
@@ -419,7 +419,7 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getValidationPeriod()
     {

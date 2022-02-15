@@ -80,7 +80,7 @@ class ReplHierarchyLeaf
     protected $Type = null;
 
     /**
-     * @property int $ValidationPeriod
+     * @property string $ValidationPeriod
      */
     protected $ValidationPeriod = null;
 
@@ -339,7 +339,7 @@ class ReplHierarchyLeaf
     }
 
     /**
-     * @param int $ValidationPeriod
+     * @param string $ValidationPeriod
      * @return $this
      */
     public function setValidationPeriod($ValidationPeriod)
@@ -349,7 +349,7 @@ class ReplHierarchyLeaf
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getValidationPeriod()
     {

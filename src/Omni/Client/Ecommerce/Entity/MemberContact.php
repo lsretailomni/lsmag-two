@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\Gender;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\MaritalStatus;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\SendEmail;
 use Ls\Omni\Exception\InvalidEnumException;
 
 class MemberContact extends Entity
@@ -59,6 +60,16 @@ class MemberContact extends Entity
      * @property string $AlternateId
      */
     protected $AlternateId = null;
+
+    /**
+     * @property string $AuthenticationId
+     */
+    protected $AuthenticationId = null;
+
+    /**
+     * @property string $Authenticator
+     */
+    protected $Authenticator = null;
 
     /**
      * @property string $BirthDay
@@ -119,6 +130,11 @@ class MemberContact extends Entity
      * @property string $Password
      */
     protected $Password = null;
+
+    /**
+     * @property SendEmail $SendReceiptByEMail
+     */
+    protected $SendReceiptByEMail = null;
 
     /**
      * @property string $UserName
@@ -285,6 +301,42 @@ class MemberContact extends Entity
     public function getAlternateId()
     {
         return $this->AlternateId;
+    }
+
+    /**
+     * @param string $AuthenticationId
+     * @return $this
+     */
+    public function setAuthenticationId($AuthenticationId)
+    {
+        $this->AuthenticationId = $AuthenticationId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthenticationId()
+    {
+        return $this->AuthenticationId;
+    }
+
+    /**
+     * @param string $Authenticator
+     * @return $this
+     */
+    public function setAuthenticator($Authenticator)
+    {
+        $this->Authenticator = $Authenticator;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthenticator()
+    {
+        return $this->Authenticator;
     }
 
     /**
@@ -521,6 +573,34 @@ class MemberContact extends Entity
     public function getPassword()
     {
         return $this->Password;
+    }
+
+    /**
+     * @param SendEmail|string $SendReceiptByEMail
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setSendReceiptByEMail($SendReceiptByEMail)
+    {
+        if ( ! $SendReceiptByEMail instanceof SendEmail ) {
+            if ( SendEmail::isValid( $SendReceiptByEMail ) )
+                $SendReceiptByEMail = new SendEmail( $SendReceiptByEMail );
+            elseif ( SendEmail::isValidKey( $SendReceiptByEMail ) )
+                $SendReceiptByEMail = new SendEmail( constant( "SendEmail::$SendReceiptByEMail" ) );
+            elseif ( ! $SendReceiptByEMail instanceof SendEmail )
+                throw new InvalidEnumException();
+        }
+        $this->SendReceiptByEMail = $SendReceiptByEMail->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return SendEmail
+     */
+    public function getSendReceiptByEMail()
+    {
+        return $this->SendReceiptByEMail;
     }
 
     /**
