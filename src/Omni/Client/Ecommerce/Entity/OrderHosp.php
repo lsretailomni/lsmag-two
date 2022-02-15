@@ -9,7 +9,6 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\HospDeliveryType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use Ls\Omni\Exception\InvalidEnumException;
 
 class OrderHosp extends Entity
@@ -44,6 +43,11 @@ class OrderHosp extends Entity
      * @property string $CardId
      */
     protected $CardId = null;
+
+    /**
+     * @property string $Comment
+     */
+    protected $Comment = null;
 
     /**
      * @property HospDeliveryType $DeliveryType
@@ -84,11 +88,6 @@ class OrderHosp extends Entity
      * @property string $OrderDate
      */
     protected $OrderDate = null;
-
-    /**
-     * @property PaymentType $PaymentType
-     */
-    protected $PaymentType = null;
 
     /**
      * @property string $PickupTime
@@ -236,6 +235,24 @@ class OrderHosp extends Entity
     public function getCardId()
     {
         return $this->CardId;
+    }
+
+    /**
+     * @param string $Comment
+     * @return $this
+     */
+    public function setComment($Comment)
+    {
+        $this->Comment = $Comment;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->Comment;
     }
 
     /**
@@ -390,34 +407,6 @@ class OrderHosp extends Entity
     public function getOrderDate()
     {
         return $this->OrderDate;
-    }
-
-    /**
-     * @param PaymentType|string $PaymentType
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setPaymentType($PaymentType)
-    {
-        if ( ! $PaymentType instanceof PaymentType ) {
-            if ( PaymentType::isValid( $PaymentType ) )
-                $PaymentType = new PaymentType( $PaymentType );
-            elseif ( PaymentType::isValidKey( $PaymentType ) )
-                $PaymentType = new PaymentType( constant( "PaymentType::$PaymentType" ) );
-            elseif ( ! $PaymentType instanceof PaymentType )
-                throw new InvalidEnumException();
-        }
-        $this->PaymentType = $PaymentType->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return PaymentType
-     */
-    public function getPaymentType()
-    {
-        return $this->PaymentType;
     }
 
     /**

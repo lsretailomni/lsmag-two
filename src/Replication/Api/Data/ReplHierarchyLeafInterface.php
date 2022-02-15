@@ -155,13 +155,13 @@ interface ReplHierarchyLeafInterface
     public function getType();
 
     /**
-     * @param int $ValidationPeriod
+     * @param string $ValidationPeriod
      * @return $this
      */
     public function setValidationPeriod($ValidationPeriod);
 
     /**
-     * @return int
+     * @return string
      */
     public function getValidationPeriod();
 

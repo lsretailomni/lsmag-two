@@ -471,7 +471,8 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true,
-            "UseSourcingLocation": true
+            "UseSourcingLocation": true,
+            "HospSalesTypes": true
         },
         "constraint": {
             "PRIMARY": true,
@@ -1189,7 +1190,10 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "Code": true,
+            "CustomerNo": true,
+            "TaxPostGroup": true
         },
         "constraint": {
             "PRIMARY": true,

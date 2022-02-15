@@ -3,6 +3,7 @@
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -99,12 +100,26 @@ class Lstables extends Action
 
         if ($jobName != '' && $storeId != '') {
             $replicationTableName = 'ls_replication_' . $jobName;
-            $replicationTableName = $this->resource->getTableName($replicationTableName);
-
-            try {
-                $connection->delete($replicationTableName, ['scope_id = ?' => $storeId]);
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
+            if ($jobName == LSR::SC_ITEM_HTML_JOB_CODE) {
+                $replicationTableName = 'ls_replication_repl_data_translation';
+                try {
+                    $connection->delete(
+                        $replicationTableName,
+                        [
+                            'TranslationId = ?' => LSR::SC_TRANSLATION_ID_ITEM_HTML,
+                            'scope_id = ?'      => $storeId
+                        ]
+                    );
+                } catch (Exception $e) {
+                    $this->logger->debug($e->getMessage());
+                }
+            } else {
+                $replicationTableName = $this->resource->getTableName($replicationTableName);
+                try {
+                    $connection->delete($replicationTableName, ['scope_id = ?' => $storeId]);
+                } catch (Exception $e) {
+                    $this->logger->debug($e->getMessage());
+                }
             }
 
             foreach (self::TABLE_CONFIGS as $config) {

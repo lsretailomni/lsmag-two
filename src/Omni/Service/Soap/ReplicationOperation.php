@@ -3,6 +3,7 @@
 namespace Ls\Omni\Service\Soap;
 
 use \Ls\Core\Code\AbstractGenerator;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\ObjectManagerInterface;
@@ -529,5 +530,22 @@ class ReplicationOperation extends Operation
     public function getSearchFactoryFqn()
     {
         return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, $this->getSearchFactory());
+    }
+
+    /**
+     * Doing for those jobs where we have identical table and we want to use the same db table but different cron job.
+     *
+     * @param $jobName
+     * @return array|false|string|string[]
+     */
+    public function getIdenticalTableCronJob($jobName)
+    {
+        $lsr                           = ObjectManager::getInstance()->get(LSR::class);
+        $identicalTableCroJobList      = $lsr->getStoreConfig(LSR::SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST);
+        $identicalTableCroJobListArray = explode(',', $identicalTableCroJobList);
+        if (in_array($jobName, $identicalTableCroJobListArray)) {
+            return strtolower(str_replace('Ecomm_', '', $this->case_helper->toSnakeCase($jobName)));
+        }
+        return false;
     }
 }

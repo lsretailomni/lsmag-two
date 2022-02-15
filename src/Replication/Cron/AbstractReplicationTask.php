@@ -78,6 +78,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_currency_exch_rate"         => ["CurrencyCode", "scope_id"],
         "ls_mag/replication/repl_customer"                   => ["AccountNumber", "scope_id"],
         "ls_mag/replication/repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_mag/replication/repl_html_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
         "ls_mag/replication/repl_data_translation_lang_code" => ["Code", "scope_id"],
         "ls_mag/replication/repl_discount"                   => [
             "ItemId",
