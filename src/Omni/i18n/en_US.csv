@@ -1,8 +1,8 @@
 "Loyalty Points Redeemed","Loyalty Points Redeemed"
 "Gift Card Redeemed ","Gift Card Redeemed "
-"Calculate Real Time","Calculate Real Time"
-"Calculate Once on Checkout","Calculate Once on Checkout"
-"Calculate Real Time & Once on Checkout","Calculate Real Time & Once on Checkout"
+"Every Cart Update","Every Cart Update"
+"Once on Checkout","Once on Checkout"
+"Every Cart Update and On Checkout","Every Cart Update and On Checkout"
 "Validate Base URL","Validate Base URL"
 "12 Hours","12 Hours"
 "24 Hours","24 Hours"
@@ -135,11 +135,19 @@ Hours,Hours
 "Gift Card Code:","Gift Card Code:"
 "Check Balance","Check Balance"
 Reset,Reset
+"* Required Fields","* Required Fields"
+"Enter Gift Card Code","Enter Gift Card Code"
+"Your balance is: ","Your balance is: "
+"Gift Card Expiry Date","Gift Card Expiry Date"
 "See Details","See Details"
 Edit,Edit
 Remove,Remove
+"Edit item","Edit item"
+"Remove item","Remove item"
 "Cancel coupon","Cancel coupon"
 "Enter Gift Card","Enter Gift Card"
+"Enter Gift Card Amount","Enter Gift Card Amount"
+"Enter points to redeem","Enter points to redeem"
 "Place Order","Place Order"
 Items,Items
 Close,Close
