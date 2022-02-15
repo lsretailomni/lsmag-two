@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.0] - 2022-02-07
+
+### Added
+
+- Added configurable option in Magento admin panel to minimize unnecessary basket calculation requests to LS Central and sync basket once on checkout. [OMNI-5532](https://solutions.lsretail.com/jira/browse/OMNI-5532)
+- Added support to calculate cross-border VAT from LS Central. [OMNI-5541](https://solutions.lsretail.com/jira/browse/OMNI-5541)
+- Added support to replicate VAT/TAX rules in Magento for offline calculation (When connection to LS Central is down). [OMNI-5545](https://solutions.lsretail.com/jira/browse/OMNI-5545)  
+- Added support for click & collect queries and mutation through the GraphQl interface. [OMNI-5493](https://solutions.lsretail.com/jira/browse/OMNI-5493)  
+- Added configurable option in Magento admin panel to show only those stores for click and collect on checkout where all items are available. [OMNI-5398](https://solutions.lsretail.com/jira/browse/OMNI-5398)
+- Added support to restrict orders from sending to LS Central which are in 'pending_review' status. [OMNI-5546](https://solutions.lsretail.com/jira/browse/OMNI-5546)
+- Added support to signup and login using social media platforms. [OMNI-5499](https://solutions.lsretail.com/jira/browse/OMNI-5499)
+- Added support to encrypt sensitive information when logging requests and responses in omniclient.log. [OMNI-5555](https://solutions.lsretail.com/jira/browse/OMNI-5555)
+- Added support to cache WSDL configuration based on Magento mode (default and production). It will be WSDL_CACHE_NONE for developer mode. [OMNI-5556](https://solutions.lsretail.com/jira/browse/OMNI-5556)
+- Added support to reset specific item(s) from the Magento admin panel for reprocessing. [OMNI-5513](https://solutions.lsretail.com/jira/browse/OMNI-5513)
+- Added support to partially cancel items from LS Central through webhooks. [OMNI-5558](https://solutions.lsretail.com/jira/browse/OMNI-5558)
+
+
+
+### Changed
+
+- Use single AppID for all replication jobs per store to support replication counter in LS Central for SaaS. [OMNI-5547](https://solutions.lsretail.com/jira/browse/OMNI-5547)
+
+### Bugs/Fixes
+
+- Fixed issue in the session lost on GraphQl by storing basket calculation response in Magento quote tables. [OMNI-5559](https://solutions.lsretail.com/jira/browse/OMNI-5559)
+- Fixed issues with order totals for orders which were created during downtime and created through the Magento admin panel. [OMNI-5474](https://solutions.lsretail.com/jira/browse/OMNI-5474)
+- Fixed issue in formatting loyalty points when creating order from Magento admin panel. [OMNI-5538](https://solutions.lsretail.com/jira/browse/OMNI-5538)
+- Fixed issue in VAT amount not returning on GraphQl interface. [OMNI-5557](https://solutions.lsretail.com/jira/browse/OMNI-5557)
+
+
+
 ## [1.14.0] - 2021-10-14
 
 ### Added
