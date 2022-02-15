@@ -37,22 +37,30 @@ class Status
     private $notify;
 
     /**
+     * @var Payment
+     */
+    private $payment;
+
+    /**
      * Status constructor.
      * @param Data $helper
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
      * @param Notify $notify
+     * @param Payment $payment
      */
     public function __construct(
         Data $helper,
         OrderCancel $orderCancel,
         CreditMemo $creditMemo,
-        Notify $notify
+        Notify $notify,
+        Payment $payment
     ) {
         $this->helper      = $helper;
         $this->orderCancel = $orderCancel;
         $this->creditMemo  = $creditMemo;
         $this->notify      = $notify;
+        $this->payment     = $payment;
     }
 
     /**
@@ -71,7 +79,7 @@ class Status
                 $itemInfoArray = $this->helper->mapStatusWithItemLines($lines);
                 if (!empty($itemInfoArray)) {
                     foreach ($itemInfoArray as $status => $itemsInfo) {
-                        $this->checkAndProcessStatus($status, $itemsInfo, $magOrder);
+                        $this->checkAndProcessStatus($status, $itemsInfo, $magOrder, $data);
                     }
                 }
             }
@@ -84,15 +92,20 @@ class Status
      * @param $status
      * @param $itemsInfo
      * @param $magOrder
+     * @param $data
      * @throws NoSuchEntityException
      */
-    public function checkAndProcessStatus($status, $itemsInfo, $magOrder)
+    public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $data)
     {
-        $storeId = $magOrder->getStoreId();
-        $items   = $this->helper->getItems($magOrder, $itemsInfo);
+        $storeId                = $magOrder->getStoreId();
+        $items                  = $this->helper->getItems($magOrder, $itemsInfo);
+        $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
+        $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
+
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
             if ($magOrder->canCancel()) {
                 $cancelItems = [];
+
                 foreach ($items as $itemId => $item) {
                     if ($item['itemStatus'] == Item::STATUS_PENDING ||
                         $item['itemStatus'] == Item::STATUS_PARTIAL) {
@@ -102,19 +115,34 @@ class Status
                 }
                 $this->orderCancel->cancelItems($magOrder, $cancelItems);
             }
+
             if (!empty($items)) {
                 $this->cancel($magOrder, $itemsInfo, $items, $storeId);
             }
         }
-        if ($status == LSR::LS_STATE_PICKED && $this->helper->isPickupNotifyEnabled($storeId) &&
-            $this->helper->isClickAndcollectOrder($magOrder)) {
-            $templateId = $this->helper->getPickupTemplate($storeId);
-            $this->processSendEmail($magOrder, $items, $templateId);
+
+        if ($status == LSR::LS_STATE_PICKED && $isClickAndCollectOrder) {
+            if ($this->helper->isPickupNotifyEnabled($storeId)) {
+                $templateId = $this->helper->getPickupTemplate($storeId);
+                $this->processSendEmail($magOrder, $items, $templateId);
+            }
         }
-        if ($status == LSR::LS_STATE_COLLECTED && $this->helper->isCollectedNotifyEnabled($storeId) &&
-            $this->helper->isClickAndcollectOrder($magOrder)) {
-            $templateId = $this->helper->getCollectedTemplate($storeId);
-            $this->processSendEmail($magOrder, $items, $templateId);
+
+        if ($status == LSR::LS_STATE_COLLECTED && $isClickAndCollectOrder) {
+            if ($this->helper->isCollectedNotifyEnabled($storeId)) {
+                $templateId = $this->helper->getCollectedTemplate($storeId);
+                $this->processSendEmail($magOrder, $items, $templateId);
+            }
+
+            if ($isOffline) {
+                $this->payment->generateInvoice($data);
+            }
+        }
+
+        if ($status == LSR::LS_STATE_SHIPPED) {
+            if ($isOffline) {
+                $this->payment->generateInvoice($data);
+            }
         }
     }
 
