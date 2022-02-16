@@ -40,6 +40,9 @@ use Ls\Omni\Block\Product\View\View;
                     <span><?= /* @escapeNotVerified */
                         $buttonTitle ?></span>
                 </button>
+                <?php if ($isEnableCheck) : ?>
+                    <?= $block->getBlockHtml('ls.omni.product.return.policy'); ?>
+                <?php endif; ?>
                 <?= $block->getChildHtml('', true) ?>
             </div>
         </div>

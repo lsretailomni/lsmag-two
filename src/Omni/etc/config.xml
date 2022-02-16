@@ -9,6 +9,9 @@
                 <advanced>0</advanced>
                 <timeout>10</timeout>
             </service>
+            <return_policy>
+            <show_return_policy>0</show_return_policy>
+            </return_policy>
             <ls_loyaltypoints>
                 <cart>1</cart>
                 <checkout>1</checkout>
