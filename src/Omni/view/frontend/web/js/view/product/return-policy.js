@@ -3,8 +3,10 @@ define([
     'mage/validation',
     'mage/url',
     'ko',
-    'Magento_Ui/js/modal/modal'
-], function ($, _, url, ko, modal) {
+    'Magento_Ui/js/modal/modal',
+    'Magento_Ui/js/modal/alert',
+    'mage/translate'
+], function ($, _, url, ko, modal, alert, $t) {
     'use strict';
 
     function initializer(config, node) {
@@ -28,9 +30,18 @@ define([
                         $('body').loader('hide');
                     },
                     success: function (data) {
-                        if (data!=null) {
-                            $('#ls-return-policy').append(data);
+                        if (data != null && data != '') {
+                            $('#ls-return-policy').html(data);
                             getPopUp(data).openModal();
+                        } else {
+                            alert({
+                                title: $t("Not Found"),
+                                content: $t("Return Policy not found"),
+                                actions: {
+                                    always: function () {
+                                    }
+                                }
+                            });
                         }
                     },
                     error: function (xhr) { // if error occured
