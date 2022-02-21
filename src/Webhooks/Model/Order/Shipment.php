@@ -10,6 +10,8 @@ use Magento\Sales\Model\Order\Shipment\TrackFactory;
 use Magento\Sales\Api\Data\ShipmentCommentCreationInterface;
 use Magento\Shipping\Helper\Data as ShippingHelper;
 use \Ls\Webhooks\Helper\Data;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Sales\Api\ShipmentRepositoryInterface;
 
 /**
  * class to create shipment through webhook
@@ -52,6 +54,16 @@ class Shipment
     private $shippingHelper;
 
     /**
+     * @var ShipmentRepositoryInterface
+     */
+    private $shipmentRepository;
+
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    protected $searchCriteriaBuilder;
+
+    /**
      * Shipment constructor.
      * @param ShipOrderInterface $shipOrderInterface
      * @param ShipmentItemCreationInterface $shipmentItemCreationInterface
@@ -68,7 +80,9 @@ class Shipment
         TrackFactory $trackFactory,
         ShipmentCommentCreationInterface $shipmentCommentCreation,
         Data $helper,
-        ShippingHelper $shippingHelper
+        ShippingHelper $shippingHelper,
+        ShipmentRepositoryInterface $shipmentRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder
     ) {
         $this->shipOrderInterface            = $shipOrderInterface;
         $this->shipmentItemCreationInterface = $shipmentItemCreationInterface;
@@ -77,6 +91,8 @@ class Shipment
         $this->shipmentCommentCreation       = $shipmentCommentCreation;
         $this->helper                        = $helper;
         $this->shippingHelper                = $shippingHelper;
+        $this->shipmentRepository            = $shipmentRepository;
+        $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
     }
 
     /**
@@ -132,6 +148,19 @@ class Shipment
 
                 $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId);
             }
+        } else {
+            $tracksCollection = $magOrder->getTracksCollection();
+            $oldTrackNumber      = $data['oldTrackingId'];
+
+            foreach ($tracksCollection->getItems() as $track) {
+
+                if($track->getTrackNumber() == $oldTrackNumber) {
+                    $track->setTrackNumber($trackingId);
+                    $track->save();
+                }
+            }
+
+            $magOrder->save();
         }
 
         return $this->helper->outputShipmentMessage(
