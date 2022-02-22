@@ -366,6 +366,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
+    const RETURN_POLICY_CACHE = 'LS_RETURN_POLICY_';
 
     // Date format to be used in fetching the data.
     const DATE_FORMAT = 'Y-m-d';

@@ -163,7 +163,6 @@ class LSRecommend extends AbstractHelper
         // @codingStandardsIgnoreEnd
     }
 
-
     /**
      * @param Entity\ArrayOfRecommendedItem $recommendedProducts
      * @return ProductInterface[]|null
