@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Service\InvoiceService;
@@ -122,6 +123,12 @@ class Payment
                         true,
                         'Order posted successfully and invoice sent to customer for document id #' . $documentId
                     );
+
+                    if($order->getShippingMethod() == "clickandcollect_clickandcollect") {
+                        $newState = Order::STATE_COMPLETE;
+                        $order->setState($newState)->setStatus($newState);
+                        $order->save();
+                    }
                 } catch (Exception $e) {
                     $this->logger->error('We can\'t send the invoice email right now for document id #'
                         . $documentId);
