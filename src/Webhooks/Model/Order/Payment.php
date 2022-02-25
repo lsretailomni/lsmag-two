@@ -119,16 +119,18 @@ class Payment
                 try {
                     $this->invoiceSender->send($invoice);
 
-                    return $this->helper->outputMessage(
-                        true,
-                        'Order posted successfully and invoice sent to customer for document id #' . $documentId
-                    );
-
                     if($order->getShippingMethod() == "clickandcollect_clickandcollect") {
                         $newState = Order::STATE_COMPLETE;
                         $order->setState($newState)->setStatus($newState);
                         $order->save();
                     }
+
+                    return $this->helper->outputMessage(
+                        true,
+                        'Order posted successfully and invoice sent to customer for document id #' . $documentId
+                    );
+
+
                 } catch (Exception $e) {
                     $this->logger->error('We can\'t send the invoice email right now for document id #'
                         . $documentId);
