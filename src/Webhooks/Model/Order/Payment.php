@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
+use Magento\InventoryInStorePickupSales\Model\Order\CreateShippingDocument;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Order\Invoice;
@@ -54,7 +55,8 @@ class Payment
         InvoiceService $invoiceService,
         TransactionFactory $transactionFactory,
         InvoiceSender $invoiceSender,
-        Data $helper
+        Data $helper,
+        CreateShippingDocument $createShippingDocument
     ) {
 
         $this->logger             = $logger;
@@ -62,6 +64,8 @@ class Payment
         $this->transactionFactory = $transactionFactory;
         $this->invoiceSender      = $invoiceSender;
         $this->helper             = $helper;
+        $this->createShippingDocument = $createShippingDocument;
+
     }
 
     /**
@@ -120,9 +124,7 @@ class Payment
                     $this->invoiceSender->send($invoice);
 
                     if($order->getShippingMethod() == "clickandcollect_clickandcollect") {
-                        $newState = Order::STATE_COMPLETE;
-                        $order->setState($newState)->setStatus($newState);
-                        $order->save();
+                        $this->createShippingDocument->execute($order);
                     }
 
                     return $this->helper->outputMessage(
