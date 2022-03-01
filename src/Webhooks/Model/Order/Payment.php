@@ -48,7 +48,8 @@ class Payment
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
      * @param InvoiceSender $invoiceSender
-     * @param Data $helper
+     * @param Data $helper,
+     * @param CreateShippingDocument $createShippingDocument
      */
     public function __construct(
         Logger $logger,
@@ -59,12 +60,12 @@ class Payment
         CreateShippingDocument $createShippingDocument
     ) {
 
-        $this->logger             = $logger;
-        $this->invoiceService     = $invoiceService;
-        $this->transactionFactory = $transactionFactory;
-        $this->invoiceSender      = $invoiceSender;
-        $this->helper             = $helper;
-        $this->createShippingDocument = $createShippingDocument;
+        $this->logger                   = $logger;
+        $this->invoiceService           = $invoiceService;
+        $this->transactionFactory       = $transactionFactory;
+        $this->invoiceSender            = $invoiceSender;
+        $this->helper                   = $helper;
+        $this->createShippingDocument   = $createShippingDocument;
 
     }
 
