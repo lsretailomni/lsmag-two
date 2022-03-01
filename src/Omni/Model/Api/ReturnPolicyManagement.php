@@ -4,8 +4,7 @@ namespace Ls\Omni\Model\Api;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Api\ReturnPolicyManagementInterface;
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfReturnPolicy;
-use Ls\Omni\Client\Ecommerce\Entity\ReturnPolicy;
+use \Ls\Omni\Client\Ecommerce\Entity\ReturnPolicy;
 use \Ls\Omni\Client\Ecommerce\Entity\ReturnPolicyGet;
 use \Ls\Omni\Client\Ecommerce\Entity\ReturnPolicyGetResponse;
 use \Ls\Omni\Client\ResponseInterface;
@@ -13,7 +12,7 @@ use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Client\Ecommerce\Operation\ReturnPolicyGet as ReturnPolicyGetOperation;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\Exception\NoSuchEntityException;
-use \Psr\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class for managing return policy related text
@@ -88,7 +87,9 @@ class ReturnPolicyManagement implements ReturnPolicyManagementInterface
             if ($response == false) {
                 $responseArray = $this->getReturnPolicyFromService($itemId, $variantId, $storeId);
                 $responseText  = reset($responseArray);
-                $response      = $responseText->getReturnPolicyHTML();
+                if (!empty($responseText)) {
+                    $response = $responseText->getReturnPolicyHTML();
+                }
                 $this->cacheHelper->persistContentInCache(
                     $cacheKey,
                     $response,
@@ -118,6 +119,10 @@ class ReturnPolicyManagement implements ReturnPolicyManagementInterface
         }
         $entity   = $this->getPrivacyPolicyEntity($itemId, $variantId, $storeId);
         $response = $this->returnPolicyOperation->execute($entity);
+        if (empty($response->getReturnPolicyGetResult()->getReturnPolicy())) {
+            $entity   = $this->getPrivacyPolicyEntity("", "", $storeId);
+            $response = $this->returnPolicyOperation->execute($entity);
+        }
 
         return $response ? $response->getReturnPolicyGetResult()->getReturnPolicy() : $response;
     }
