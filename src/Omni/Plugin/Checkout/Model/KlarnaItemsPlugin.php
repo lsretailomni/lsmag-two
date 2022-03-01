@@ -95,7 +95,11 @@ class KlarnaItemsPlugin
                     $item['tax_rate'] = $this->dataConverter->toApiFloat($items[$item['reference']]['tax_rate']);
                 }
                 if (array_key_exists('reference', $item)) {
-                    $item['unit_price']   = $this->dataConverter->toApiFloat($items[$item['reference']]['unit_price']);
+                    if ($this->klarnaConfig->isSeparateTaxLine($singleItem->getStore())) {
+                        $item['unit_price'] = $this->dataConverter->toApiFloat($items[$item['reference']]['unit_price']);
+                    } else {
+                        $item['unit_price'] = $this->dataConverter->toApiFloat($items[$item['reference']]['row_total']);
+                    }
                     $item['total_amount'] = $this->dataConverter->toApiFloat($items[$item['reference']] ['row_total']);
                 }
                 $itemsArray[] = $item;

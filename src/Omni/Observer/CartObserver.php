@@ -114,6 +114,7 @@ class CartObserver implements ObserverInterface
                     $quote->setGrandTotal(0);
                     $quote->setBaseGrandTotal(0);
                     $this->basketHelper->quoteRepository->save($quote);
+                    $this->basketHelper->setOneListCalculationInCheckoutSession(null);
                 }
                 $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
             } catch (Exception $e) {
