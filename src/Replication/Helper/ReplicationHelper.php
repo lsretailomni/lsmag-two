@@ -1691,6 +1691,7 @@ class ReplicationHelper extends AbstractHelper
      * @throws InputException
      * @throws NoSuchEntityException
      * @throws StateException
+     * @throws LocalizedException
      */
     public function getAttributeSetId($attributeSetsMechanism, $joiningTableName, $storeId, $identifier)
     {
