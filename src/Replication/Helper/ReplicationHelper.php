@@ -1792,6 +1792,7 @@ class ReplicationHelper extends AbstractHelper
      * @throws InputException
      * @throws NoSuchEntityException
      * @throws StateException
+     * @throws LocalizedException
      */
     public function createAttributeSetAndGroupsAndReturnAttributeSetId($itemCategoryCode, array $attributes)
     {
@@ -1819,6 +1820,13 @@ class ReplicationHelper extends AbstractHelper
         foreach ($attributes as $type => $types) {
             foreach ($types as $attribute) {
                 $formattedCode = $this->formatAttributeCode($attribute);
+
+                $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+
+                if (!$attribute->getId()) {
+                    continue;
+                }
+
                 if ($type == 'soft') {
                     $this->attributeManagement->assign(
                         Product::ENTITY,
@@ -1896,6 +1904,11 @@ class ReplicationHelper extends AbstractHelper
             $product       = $productRepository->get($sku, true, 0);
             $formattedCode = $this->formatAttributeCode($item->getCode());
             $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+
+            if (!$attribute->getId()) {
+                continue;
+            }
+
             if ($attribute->getFrontendInput() == 'multiselect') {
                 $value = $this->getAllValuesForGivenMultiSelectAttribute(
                     $itemId,
