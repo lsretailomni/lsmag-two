@@ -47,12 +47,12 @@ class OrderShipment implements OrderShipmentInterface
     /**
      * @inheritdoc
      */
-    public function set($OrderId, $OldTrackingId, $TrackingId, $TrackingUrl, $Provider, $Service, $Lines)
+    public function set($OrderId, $ShipmentId, $TrackingId, $TrackingUrl, $Provider, $Service, $Lines)
     {
         try {
             $data = [
                 'orderId'          => $OrderId,
-                'oldTrackingId'    => $OldTrackingId,
+                'shipmentId'       => $ShipmentId,
                 'trackingId'       => $TrackingId,
                 'shipmentProvider' => $Provider,
                 'service'          => $Service,

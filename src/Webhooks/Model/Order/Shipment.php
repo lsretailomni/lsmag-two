@@ -105,10 +105,14 @@ class Shipment
     {
         $orderId         = $data['orderId'];
         $trackingId      = $data['trackingId'];
+        $shippingId      = $data['shipmentId'];
+
         $magOrder        = $this->helper->getOrderByDocumentId($orderId);
+        $successMsg      = '';
         $shipmentItems   = [];
         $shipmentDetails = [];
-        if ($magOrder->canShip()) {
+        $shipmentCollection = $magOrder->getTracksCollection();
+        if ($magOrder->canShip() && !$this->getShipmentExists($shipmentCollection,$shippingId)) { //if shipment not exists create shipment
             $items    = $this->helper->getItems($magOrder, $data['lines']);
             $shipItem = [];
             foreach ($items as $itemData) {
@@ -147,16 +151,16 @@ class Shipment
                 );
 
                 $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId);
+                $successMsg = "Shipment posted successfully.";
             }
-        } else {
-            $tracksCollection = $magOrder->getTracksCollection();
-            $oldTrackNumber      = $data['oldTrackingId'];
+        } else { //if shipment exists update tracking number
 
-            foreach ($tracksCollection->getItems() as $track) {
+            foreach ($shipmentCollection->getItems() as $shipment) {
 
-                if($track->getTrackNumber() == $oldTrackNumber) {
-                    $track->setTrackNumber($trackingId);
-                    $track->save();
+                if($shipment->getShippingId() == $shippingId) {
+                    $successMsg = "Tracking Id Updated successfully.";
+                    $shipment->setTrackNumber($trackingId);
+                    $shipment->save();
                 }
             }
 
@@ -165,8 +169,26 @@ class Shipment
 
         return $this->helper->outputShipmentMessage(
             true,
+            $successMsg,
             $shipmentDetails
         );
+    }
+
+    /** Get Shipment exists status based on shipment Id from Central
+     * @param $shipmentCollection
+     * @param $shipmentId
+     * @return bool
+     */
+    public function getShipmentExists($shipmentCollection,$shipmentId)
+    {
+        $shipmentExists = false;
+        foreach ($shipmentCollection->getItems() as $shipment) {
+            if($shipment->getShipmentId() == $shipmentId) {
+                $shipmentExists = true;
+            }
+        }
+
+        return $shipmentExists;
     }
 
     /** Get shipment details

@@ -306,14 +306,18 @@ class Data
     /**
      * Return message to Ls Central
      * @param $status
+     * @param $successMsg
      * @param $message
      * @return array[]
      */
-    public function outputShipmentMessage($status, $message)
+
+    public function outputShipmentMessage($status, $successMsg, $message)
     {
+
         return [
             "data" => [
                 'success'      => $status,
+                'message'      => $successMsg,
                 'trackingInfo' => $message
             ]
         ];
