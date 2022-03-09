@@ -131,4 +131,5 @@
         <plugin name="calculate_basket"
                 type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin"/>
     </type>
+    <preference for="Ls\Omni\Api\ReturnPolicyManagementInterface" type="Ls\Omni\Model\Api\ReturnPolicyManagement"/>
 </config>

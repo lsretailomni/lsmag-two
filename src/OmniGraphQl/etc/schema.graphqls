@@ -63,6 +63,11 @@ type Query {
      cart_id: String! @doc(description: "Valid cart Id.")
      store_id: String! @doc(description: "Click and collect store where stock needs to be checked.")
     ): CartItemsAvailabilityInStoreOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\Stock\\CartItemsAvailabilityInStoreOutput") @doc(description: "Get stock information for each item in the cart.")
+    return_policy (
+         item_id: String @doc(description: "Get return policy of particular item.")
+         variant_id: String @doc(description: "Get return policy of particular variant.")
+         store_id: String @doc(description: "Get return policy based on store.")
+        ): ReturnPolicyOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\ReturnPolicyOutput") @doc(description: "Get return policy output")
 }
 
 type CartItemsAvailabilityInStoreOutput {
@@ -123,4 +128,8 @@ type CartPrices {
 
 type CartVat {
     amount: Money!
+}
+
+type ReturnPolicyOutput {
+    text: String @doc(description: "Return policy output text")
 }

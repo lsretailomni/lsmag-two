@@ -222,7 +222,7 @@
                     <validate>validate-length maximum-length-5 validate-no-html-tags validate-sequence-number</validate>
                 </field>
                 <field id="shipping_item_id" translate="label comment" type="text" sortOrder="2"
-                       showInDefault="1" showInWebsite="1" >
+                       showInDefault="1" showInWebsite="1">
                     <label>Shipping Charge Item Id</label>
                     <comment>Please make sure this item Id is the same as set in LS Central. This value is used to
                         calculate the flat shipment amount and is sent as a separate orderline with the order.
@@ -238,6 +238,17 @@
                     <label>Tender Type Mapping</label>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+            <group id="return_policy" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Return Policy</label>
+                <field id="show_return_policy" translate="label" type="select" sortOrder="1" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Return Policy</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Show a link in product detail page for return policy</comment>
                 </field>
             </group>
         </section>
