@@ -20,4 +20,5 @@ Qty,Qty
 "Order Cancelled Notification","Order Cancelled Notification"
 "Email template For Order Cancellation","Email template For Order Cancellation"
 "Shipment posted successfully.","Shipment posted successfully."
-"Tracking Id Updated successfully.","Tracking Id Updated successfully."
+"Tracking Id updated successfully.","Tracking Id updated successfully."
+"Tracking Id update failed.","Tracking Id update failed."

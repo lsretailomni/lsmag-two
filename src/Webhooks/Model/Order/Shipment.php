@@ -111,8 +111,7 @@ class Shipment
         $successMsg      = '';
         $shipmentItems   = [];
         $shipmentDetails = [];
-        $shipmentCollection = $magOrder->getTracksCollection();
-        if ($magOrder->canShip() && !$this->getShipmentExists($shipmentCollection,$shippingId)) { //if shipment not exists create shipment
+        if ($magOrder->canShip() && !$this->getShipmentExists($orderId,$shippingId)) { //if shipment not exists create shipment
             $items    = $this->helper->getItems($magOrder, $data['lines']);
             $shipItem = [];
             foreach ($items as $itemData) {
@@ -150,21 +149,13 @@ class Shipment
                     [$shipmentTracks]
                 );
 
-                $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId);
+                $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId, $shippingId);
                 $successMsg = "Shipment posted successfully.";
             }
         } else { //if shipment exists update tracking number
 
-            foreach ($shipmentCollection->getItems() as $shipment) {
+            $successMsg = ($this->updateTrackingId($orderId,$shippingId, $trackingId)) ? "Tracking Id updated successfully.":"Tracking Id update failed";
 
-                if($shipment->getShippingId() == $shippingId) {
-                    $successMsg = "Tracking Id Updated successfully.";
-                    $shipment->setTrackNumber($trackingId);
-                    $shipment->save();
-                }
-            }
-
-            $magOrder->save();
         }
 
         return $this->helper->outputShipmentMessage(
@@ -175,13 +166,15 @@ class Shipment
     }
 
     /** Get Shipment exists status based on shipment Id from Central
-     * @param $shipmentCollection
+     * @param $orderId
      * @param $shipmentId
      * @return bool
      */
-    public function getShipmentExists($shipmentCollection,$shipmentId)
+    public function getShipmentExists($orderId,$shipmentId)
     {
-        $shipmentExists = false;
+        $magOrder           = $this->helper->getOrderByDocumentId($orderId);
+        $shipmentCollection = $magOrder->getTracksCollection();
+        $shipmentExists     = false;
         foreach ($shipmentCollection->getItems() as $shipment) {
             if($shipment->getShipmentId() == $shipmentId) {
                 $shipmentExists = true;
@@ -191,22 +184,49 @@ class Shipment
         return $shipmentExists;
     }
 
+    /** Update central tracking Id
+     * @param $orderId
+     * @param $shippingId
+     * @param $trackingId
+     * @return boolean
+     */
+    public function updateTrackingId($orderId,$shippingId, $trackingId)
+    {
+        $magOrder           = $this->helper->getOrderByDocumentId($orderId);
+        $shipmentCollection = $magOrder->getTracksCollection();
+        $status = false;
+        foreach ($shipmentCollection->getItems() as $shipment) {
+
+            if($shipment->getShippingId() == $shippingId) {
+                $shipment->setTrackNumber($trackingId);
+                $shipment->save();
+                $status = true;
+            }
+        }
+
+        return $status;
+    }
+
     /** Get shipment details
      * @param $magOrder
      * @param $shipmentId
      * @return array
      */
-    public function getShipmentDetailsByOrder($magOrder, $shipmentId)
+    public function getShipmentDetailsByOrder($magOrder, $shipmentId, $shippingId)
     {
         $trackDataArray  = [];
         $trackData       = [];
         $shipmentDetails = $magOrder->getTracksCollection();
         foreach ($shipmentDetails->getItems() as $trackInfo) {
+            echo $shipmentId ."==". $trackInfo->getParentId();
             if ($shipmentId == $trackInfo->getParentId()) {
                 $trackData ['trackingId']       = $trackInfo->getTrackNumber();
                 $trackData ['trackingUrl']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
                 $trackData ['shipmentProvider'] = $trackInfo->getCarrierCode();
                 $trackData ['service']          = $trackInfo->getTitle();
+
+                $trackInfo->setShippingId($shippingId);
+                $trackInfo->save();
             }
             $trackDataArray [] = $trackData;
         }
