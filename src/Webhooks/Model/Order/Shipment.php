@@ -225,6 +225,7 @@ class Shipment
                 $trackData ['shipmentProvider'] = $trackInfo->getCarrierCode();
                 $trackData ['service']          = $trackInfo->getTitle();
 
+                //Sync LS central shipping Id to shipment track
                 $trackInfo->setShippingId($shippingId);
                 $trackInfo->save();
             }
