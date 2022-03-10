@@ -218,7 +218,6 @@ class Shipment
         $trackData       = [];
         $shipmentDetails = $magOrder->getTracksCollection();
         foreach ($shipmentDetails->getItems() as $trackInfo) {
-            echo $shipmentId ."==". $trackInfo->getParentId();
             if ($shipmentId == $trackInfo->getParentId()) {
                 $trackData ['trackingId']       = $trackInfo->getTrackNumber();
                 $trackData ['trackingUrl']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
