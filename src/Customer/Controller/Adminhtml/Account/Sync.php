@@ -74,6 +74,7 @@ class Sync extends Action
         $resultRedirect->setPath('customer/index/edit', ['id' => $customerId]);
         try {
             $customer = $this->customerRegistry->retrieve($customerId);
+            $this->lsr->setStoreId($customer->getStoreId());
             if ($this->lsr->isLSR($customer->getData('website_id'))) {
                 $contact = $this->contactHelper->syncCustomerAndAddress($customer);
                 if ($contact) {
