@@ -253,9 +253,14 @@ class Info extends Template
                 }
             }
         }
-        //TODO when order edit payment available for offline payment we need to change it.
+
+        $methods = array_unique($methods);
         if (empty($paymentLines->getSalesEntryPayment())) {
-            $methods[] = __('Pay At Store');
+            $magOrder = $this->getMagOrder();
+            if ($magOrder != null) {
+                $magPaymentMethod = $this->getMagOrder()->getPayment()->getMethodInstance()->getTitle();
+                $methods[]        = $magPaymentMethod;
+            }
         }
 
         return [implode(', ', $methods), $giftCardInfo];
