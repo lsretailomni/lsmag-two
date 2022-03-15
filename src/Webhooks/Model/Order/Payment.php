@@ -6,6 +6,8 @@ use Exception;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
+use Magento\InventoryInStorePickupSales\Model\Order\CreateShippingDocument;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Service\InvoiceService;
@@ -46,21 +48,25 @@ class Payment
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
      * @param InvoiceSender $invoiceSender
-     * @param Data $helper
+     * @param Data $helper,
+     * @param CreateShippingDocument $createShippingDocument
      */
     public function __construct(
         Logger $logger,
         InvoiceService $invoiceService,
         TransactionFactory $transactionFactory,
         InvoiceSender $invoiceSender,
-        Data $helper
+        Data $helper,
+        CreateShippingDocument $createShippingDocument
     ) {
 
-        $this->logger             = $logger;
-        $this->invoiceService     = $invoiceService;
-        $this->transactionFactory = $transactionFactory;
-        $this->invoiceSender      = $invoiceSender;
-        $this->helper             = $helper;
+        $this->logger                   = $logger;
+        $this->invoiceService           = $invoiceService;
+        $this->transactionFactory       = $transactionFactory;
+        $this->invoiceSender            = $invoiceSender;
+        $this->helper                   = $helper;
+        $this->createShippingDocument   = $createShippingDocument;
+
     }
 
     /**
@@ -118,10 +124,16 @@ class Payment
                 try {
                     $this->invoiceSender->send($invoice);
 
+                    if($order->getShippingMethod() == "clickandcollect_clickandcollect") {
+                        $this->createShippingDocument->execute($order);
+                    }
+
                     return $this->helper->outputMessage(
                         true,
                         'Order posted successfully and invoice sent to customer for document id #' . $documentId
                     );
+
+
                 } catch (Exception $e) {
                     $this->logger->error('We can\'t send the invoice email right now for document id #'
                         . $documentId);
