@@ -623,7 +623,7 @@ class AttributesCreateTask
                             $this->eavSetupFactory->create()->addAttributeOption($data);
                         } catch (Exception $e) {
                             $this->logger->debug("Update attribute - $attributeCode failed with exception : "
-                                                 . $e->getMessage());
+                                . $e->getMessage());
                         }
                     }
                 }
@@ -814,10 +814,14 @@ class AttributesCreateTask
             $option->setSortOrder(0);
             $option->setIsDefault(false);
 
-            $this->attributeOptionManagement->add(
-                LSR::LS_UOM_ATTRIBUTE,
-                $option
-            );
+            try {
+                $this->attributeOptionManagement->add(
+                    LSR::LS_UOM_ATTRIBUTE,
+                    $option
+                );
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
         }
     }
 

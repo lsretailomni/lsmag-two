@@ -107,7 +107,7 @@ class MassReset extends Action
                     if ($columnName == 'KeyValue') {
                         $lsQuery .= $columnName . ' like "%' . $item->getNavId() . '%"';
                     } else {
-                        $lsQuery .= $columnName . '=' . $item->getNavId() . '';
+                        $lsQuery .= $columnName . '=\'' . $item->getNavId() . '\'';
                     }
                     try {
                         $connection->query($lsQuery);
