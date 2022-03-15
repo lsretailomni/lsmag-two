@@ -5,14 +5,15 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchyLeaf;
-use Magento\Framework\DataObject;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\StateException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Model\ScopeInterface;
 
 /**
- * Cron class to work on Hierarchy leaf changes
+ * Class SyncItemUpdates
+ * @package Ls\Replication\Cron
  */
 class SyncItemUpdates extends ProductCreateTask
 {
@@ -22,9 +23,6 @@ class SyncItemUpdates extends ProductCreateTask
     /** @var int */
     public $remainingRecords;
 
-    /**
-     * @inheritDoc
-     */
     public function execute($storeData = null)
     {
         if (!empty($storeData) && $storeData instanceof StoreInterface) {
@@ -38,40 +36,25 @@ class SyncItemUpdates extends ProductCreateTask
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $cronCategoryCheck              = $this->lsr->getConfigValueFromDb(
-                        LSR::SC_SUCCESS_CRON_CATEGORY,
-                        ScopeInterface::SCOPE_STORES,
-                        $store->getId()
-                    );
-
-                    if ($cronCategoryCheck == 1) {
-                        $this->logger->debug('Running SyncItemUpdates Task for store ' . $this->store->getName());
-                        $this->replicationHelper->updateConfigValue(
-                            $this->replicationHelper->getDateTime(),
-                            LSR::SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE,
-                            $this->store->getId()
-                        );
-                        $hierarchyCode = $this->lsr->getStoreConfig(
-                            LSR::SC_REPLICATION_HIERARCHY_CODE,
-                            $this->store->getId()
-                        );
-                        if (!empty($hierarchyCode)) {
-                            $itemAssignmentCount = $this->caterItemAssignmentToCategories();
-                            $this->caterHierarchyLeafRemoval($hierarchyCode);
-                            if ($itemAssignmentCount == 0) {
-                                $this->cronStatus = true;
-                            }
-                        } else {
-                            $this->logger->debug('Hierarchy Code not defined in the configuration.');
+                    $this->logger->debug('Running SyncItemUpdates Task for store ' . $this->store->getName());
+                    $this->replicationHelper->updateConfigValue(
+                        $this->replicationHelper->getDateTime(),
+                        LSR::SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE, $this->store->getId());
+                    $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE,
+                        $this->store->getId());
+                    if (!empty($hierarchyCode)) {
+                        $itemAssignmentCount = $this->caterItemAssignmentToCategories();
+                        $this->caterHierarchyLeafRemoval($hierarchyCode);
+                        if ($itemAssignmentCount == 0) {
+                            $this->cronStatus = true;
                         }
-
-                        $this->replicationHelper->updateCronStatus(
-                            $this->cronStatus,
-                            LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
-                            $this->store->getId()
-                        );
-                        $this->logger->debug('End SyncItemUpdates Task for store ' . $this->store->getName());
+                    } else {
+                        $this->logger->debug('Hierarchy Code not defined in the configuration.');
                     }
+
+                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
+                        $this->store->getId());
+                    $this->logger->debug('End SyncItemUpdates Task for store ' . $this->store->getName());
                 }
                 $this->lsr->setStoreId(null);
             }
@@ -79,12 +62,12 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
-     * Execute Manually
-     *
      * @param null $storeData
-     * @return array|int[]
+     * @return array
+     * @throws CouldNotSaveException
      * @throws InputException
      * @throws LocalizedException
+     * @throws StateException
      */
     public function executeManually($storeData = null)
     {
@@ -94,17 +77,14 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
-     * Cater Item assignment to Categories
-     *
-     * @return int
+     * @return mixed
      */
     public function caterItemAssignmentToCategories()
     {
         $assignProductToCategoryBatchSize = $this->replicationHelper->getProductCategoryAssignmentBatchSize();
 
         $filters = [
-            ['field' => 'Type', 'value' => 'Deal', 'condition_type' => 'neq'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'Type', 'value' => 'Deal', 'condition_type' => 'neq']
         ];
 
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -141,8 +121,6 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
-     * Cater hierarchy leaf removal
-     *
      * @param $hierarchyCode
      * @return mixed
      */
@@ -203,10 +181,8 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
-     * Is category exist
-     *
      * @param $nav_id
-     * @return false|DataObject
+     * @return bool|\Magento\Framework\DataObject
      * @throws LocalizedException
      */
     public function isCategoryExist($nav_id)
@@ -223,18 +199,13 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
-     * Get remaining records
-     *
      * @param $storeData
      * @return int
      */
     public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
-            $filters = [
-                ['field' => 'Type', 'value' => 'Deal', 'condition_type' => 'neq'],
-                ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
-            ];
+            $filters = [];
             $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,
                 -1

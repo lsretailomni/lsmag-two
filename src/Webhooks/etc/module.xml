@@ -4,7 +4,6 @@
     <module name="Ls_Webhooks">
         <sequence>
             <module name="Ls_Omni"/>
-            <module name="Magento_InventoryInStorePickupSales" />
         </sequence>
     </module>
 </config>

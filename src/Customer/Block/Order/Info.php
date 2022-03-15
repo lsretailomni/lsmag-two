@@ -219,6 +219,22 @@ class Info extends Template
     }
 
     /**
+     * Return Requested Delivery Date
+     *
+     * @return string|null
+     */
+    public function getRequestedDeliveryDate()
+    {
+        $format = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
+        $requestedDeliveryDate = $this->getOrder()->getRequestedDeliveryDate();
+        if($requestedDeliveryDate!='0001-01-01T00:00:00') {
+            return $this->orderHelper->getDateTimeObject()->date($format, $this->getOrder()->getRequestedDeliveryDate());
+        }
+
+        return null;
+    }
+
+    /**
      * DEV Notes:
      * 1st entry is for normal tender type
      * 2nd entry is specific for Giftcard.

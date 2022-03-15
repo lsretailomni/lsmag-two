@@ -5,6 +5,7 @@
         <column xsi:type="blob" name="basket_response" nullable="true"  comment="One List Calculate Response"/>
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
         <column xsi:type="text" name="pickup_store" nullable="true" comment="Pick Up Store"/>
+        <column xsi:type="varchar" name="pickup_date_timeslot" nullable="true" comment="Pick Up Date Time Slot"/>
         <column xsi:type="float" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
         <column xsi:type="float" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
         <column xsi:type="text" name="ls_gift_card_no" nullable="true" comment="LS Gift Card No"/>
@@ -13,6 +14,7 @@
     <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
         <column xsi:type="text" name="pickup_store" nullable="true" comment="Pick Up Store"/>
+        <column xsi:type="varchar" name="pickup_date_timeslot" nullable="true" comment="Pick Up Date Time Slot"/>
         <column xsi:type="float" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
         <column xsi:type="float" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
         <column xsi:type="text" name="ls_gift_card_no" nullable="true" comment="LS Gift Card No"/>

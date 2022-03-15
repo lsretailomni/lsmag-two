@@ -36,5 +36,12 @@
                 <span><?= $gittcardNumber[0]; ?></span>
             </div>
         <?php } ?>
+        <?php if (!empty($requestedDeliveryDate = $block->getRequestedDeliveryDate())) { ?>
+            <div class="custom-box">
+                <strong class="box-title"><span><?= /* @escapeNotVerified */
+                        __('Requested Delivery Date:') ?></span></strong>
+                <span><?= $requestedDeliveryDate; ?></span>
+            </div>
+        <?php } ?>
     </div>
 </div>

@@ -814,14 +814,10 @@ class AttributesCreateTask
             $option->setSortOrder(0);
             $option->setIsDefault(false);
 
-            try {
-                $this->attributeOptionManagement->add(
-                    LSR::LS_UOM_ATTRIBUTE,
-                    $option
-                );
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
+            $this->attributeOptionManagement->add(
+                LSR::LS_UOM_ATTRIBUTE,
+                $option
+            );
         }
     }
 

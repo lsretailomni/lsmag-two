@@ -164,7 +164,7 @@ abstract class AbstractOperation implements OperationInterface
         //@codingStandardsIgnoreStart
         $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
         //@codingStandardsIgnoreEnd
-        $isEnable = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
+        $isEnable    = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
         $timeElapsed = $requestTime->diff($responseTime);
 
         if ($isEnable) {
@@ -187,11 +187,11 @@ abstract class AbstractOperation implements OperationInterface
                     $operation_name
                 )
             );
-            $seconds = $timeElapsed->s+$timeElapsed->f;
+            $seconds = $timeElapsed->s + $timeElapsed->f;
             $this->logger->debug(
                 sprintf(
                     "==== Time Elapsed ==== %s ==== %s ====",
-                    $timeElapsed->format("%i minute(s) ". $seconds." second(s)"),
+                    $timeElapsed->format("%i minute(s) " . $seconds . " second(s)"),
                     $operation_name
                 )
             );
@@ -217,7 +217,7 @@ abstract class AbstractOperation implements OperationInterface
 
         $this->censorPlanTextForGivenTags(
             $dom,
-            ['password', 'Password', 'newPassword', 'oldPassword', 'PasswordResetResult', 'token','SecurityToken']
+            ['password', 'Password', 'newPassword', 'oldPassword', 'PasswordResetResult', 'token', 'SecurityToken']
         );
 
         return "\n" . $dom->saveXML();

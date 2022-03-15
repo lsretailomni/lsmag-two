@@ -1609,13 +1609,11 @@ class ReplicationHelper extends AbstractHelper
             $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId(), $store);
             if (!empty($categoryIds)) {
                 $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $categoryIds));
-            } else {
-                $hierarchyLeaf->setData('is_failed', 1);
+                $hierarchyLeaf->setData('processed_at', $this->getDateTime());
+                $hierarchyLeaf->setData('processed', 1);
+                $hierarchyLeaf->setData('is_updated', 0);
+                $this->replHierarchyLeafRepository->save($hierarchyLeaf);
             }
-            $hierarchyLeaf->setData('processed_at', $this->getDateTime());
-            $hierarchyLeaf->setData('processed', 1);
-            $hierarchyLeaf->setData('is_updated', 0);
-            $this->replHierarchyLeafRepository->save($hierarchyLeaf);
         }
         if (!empty($resultantCategoryIds)) {
             try {
