@@ -193,7 +193,8 @@ class Shipment
      * @param $orderId
      * @param $lsCentralShippingId
      * @param $trackingId
-     * @return boolean
+     * @return bool
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
     public function updateTrackingId($orderId,$lsCentralShippingId, $trackingId)
     {
