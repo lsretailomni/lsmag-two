@@ -35,7 +35,7 @@
         <column xsi:type="varchar" name="document_id" length="255" nullable="true" comment="Document Id"/>
     </table>
     <table name="sales_shipment_track" resource="default" engine="innodb" comment="Sales Shipment Track">
-        <column xsi:type="varchar" name="shipping_id" length="255" nullable="true" comment="Shipping Id"/>
+        <column xsi:type="varchar" name="ls_central_shipping_id" length="255" nullable="true" comment="LS Central Shipping Id"/>
     </table>
     <table name="cron_schedule" resource="default" engine="innodb" comment="Cron Schedule">
         <column xsi:type="varchar" name="parameters" length="100" nullable="true" comment="Accept parameters from the specific job types"/>

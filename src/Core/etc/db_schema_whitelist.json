@@ -45,7 +45,7 @@
     },
     "sales_shipment_track": {
         "column": {
-            "shipping_id": true
+            "ls_central_shipping_id": true
         }
     },
     "cron_schedule": {

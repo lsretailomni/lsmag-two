@@ -103,15 +103,15 @@ class Shipment
      */
     public function createShipment($data)
     {
-        $orderId         = $data['orderId'];
-        $trackingId      = $data['trackingId'];
-        $shippingId      = $data['shipmentId'];
+        $orderId                    = $data['orderId'];
+        $trackingId                 = $data['trackingId'];
+        $lsCentralShippingId        = $data['lsCentralShippingId'];
 
-        $magOrder        = $this->helper->getOrderByDocumentId($orderId);
-        $successMsg      = '';
-        $shipmentItems   = [];
-        $shipmentDetails = [];
-        if ($magOrder->canShip() && !$this->getShipmentExists($orderId,$shippingId)) { //if shipment not exists create shipment
+        $magOrder                   = $this->helper->getOrderByDocumentId($orderId);
+        $statusMsg                  = '';
+        $shipmentItems              = [];
+        $shipmentDetails            = [];
+        if ($magOrder->canShip() && !$this->getShipmentExists($orderId,$lsCentralShippingId)) { //if shipment not exists create shipment
             $items    = $this->helper->getItems($magOrder, $data['lines']);
             $shipItem = [];
             foreach ($items as $itemData) {
@@ -149,18 +149,18 @@ class Shipment
                     [$shipmentTracks]
                 );
 
-                $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId, $shippingId);
-                $successMsg = "Shipment posted successfully.";
+                $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId);
+                $statusMsg = "Shipment posted successfully.";
             }
         } else { //if shipment exists update tracking number
 
-            $successMsg = ($this->updateTrackingId($orderId,$shippingId, $trackingId)) ? "Tracking Id updated successfully.":"Tracking Id update failed";
+            $statusMsg = ($this->updateTrackingId($orderId,$lsCentralShippingId, $trackingId)) ? "Tracking Id updated successfully.":"Tracking Id update failed";
 
         }
 
         return $this->helper->outputShipmentMessage(
             true,
-            $successMsg,
+            $statusMsg,
             $shipmentDetails
         );
     }
@@ -186,18 +186,18 @@ class Shipment
 
     /** Update central tracking Id
      * @param $orderId
-     * @param $shippingId
+     * @param $lsCentralShippingId
      * @param $trackingId
      * @return boolean
      */
-    public function updateTrackingId($orderId,$shippingId, $trackingId)
+    public function updateTrackingId($orderId,$lsCentralShippingId, $trackingId)
     {
         $magOrder           = $this->helper->getOrderByDocumentId($orderId);
         $shipmentCollection = $magOrder->getTracksCollection();
         $status = false;
         foreach ($shipmentCollection->getItems() as $shipment) {
 
-            if($shipment->getShippingId() == $shippingId) {
+            if($shipment->getLsCentralShippingId() == $lsCentralShippingId) {
                 $shipment->setTrackNumber($trackingId);
                 $shipment->save();
                 $status = true;
@@ -207,12 +207,13 @@ class Shipment
         return $status;
     }
 
-    /** Get shipment details
+    /**
      * @param $magOrder
      * @param $shipmentId
+     * @param $lsCentralShippingId
      * @return array
      */
-    public function getShipmentDetailsByOrder($magOrder, $shipmentId, $shippingId)
+    public function getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId)
     {
         $trackDataArray  = [];
         $trackData       = [];
@@ -225,7 +226,7 @@ class Shipment
                 $trackData ['service']          = $trackInfo->getTitle();
 
                 //Sync LS central shipping Id to shipment track
-                $trackInfo->setShippingId($shippingId);
+                $trackInfo->setLsCentralShippingId($lsCentralShippingId);
                 $trackInfo->save();
             }
             $trackDataArray [] = $trackData;
