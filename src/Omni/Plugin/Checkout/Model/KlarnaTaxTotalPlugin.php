@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+use \Ls\Core\Model\LSR;
 use Klarna\Core\Exception;
 use Klarna\Core\Helper\KlarnaConfig;
 use Klarna\Kp\Model\Api\Request\Builder;
@@ -24,15 +25,23 @@ class KlarnaTaxTotalPlugin
     private $klarnaConfig;
 
     /**
+     * @var LSR
+     */
+    private $lsr;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param KlarnaConfig $klarnaConfig
+     * @param LSR $lsr
      */
     public function __construct(
         StoreManagerInterface $storeManager,
-        KlarnaConfig $klarnaConfig
+        KlarnaConfig $klarnaConfig,
+        LSR $lsr
     ) {
-        $this->storeManager   = $storeManager;
-        $this->klarnaConfig   = $klarnaConfig;
+        $this->storeManager = $storeManager;
+        $this->klarnaConfig = $klarnaConfig;
+        $this->lsr          = $lsr;
     }
 
     /**
@@ -48,8 +57,10 @@ class KlarnaTaxTotalPlugin
         Builder $subject,
         $amount
     ) {
-        if ($this->klarnaConfig->isSeparateTaxLine($this->storeManager->getStore())) {
-            return 0;
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            if ($this->klarnaConfig->isSeparateTaxLine($this->storeManager->getStore())) {
+                return 0;
+            }
         }
     }
 }

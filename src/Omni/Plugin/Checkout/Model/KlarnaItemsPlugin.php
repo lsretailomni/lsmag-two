@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+use \Ls\Core\Model\LSR;
 use Klarna\Core\Api\BuilderInterface;
 use Klarna\Core\Helper\KlarnaConfig;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -36,21 +37,29 @@ class KlarnaItemsPlugin
     private $klarnaConfig;
 
     /**
+     * @var LSR
+     */
+    private $lsr;
+
+    /**
      * @param DataConverter $dataConverter
      * @param StoreManagerInterface $storeManager
      * @param Calculation $taxCalculation
      * @param KlarnaConfig $klarnaConfig
+     * @param LSR $lsr
      */
     public function __construct(
         DataConverter $dataConverter,
         StoreManagerInterface $storeManager,
         Calculation $taxCalculation,
-        KlarnaConfig $klarnaConfig
+        KlarnaConfig $klarnaConfig,
+        LSR $lsr
     ) {
         $this->dataConverter  = $dataConverter;
         $this->storeManager   = $storeManager;
         $this->taxCalculation = $taxCalculation;
         $this->klarnaConfig   = $klarnaConfig;
+        $this->lsr            = $lsr;
     }
 
     /**
@@ -67,45 +76,47 @@ class KlarnaItemsPlugin
         callable $proceed,
         BuilderInterface $checkout
     ) {
-        $object = $checkout->getObject();
-        $items  = $itemsArray = [];
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            $object = $checkout->getObject();
+            $items  = $itemsArray = [];
 
-        foreach ($object->getAllVisibleItems() as $singleItem) {
-            if ($checkout->getRequest()) {
-                $data = $checkout->getRequest()->toArray();
-            }
-            if ($this->klarnaConfig->isSeparateTaxLine($singleItem->getStore())) {
-                $items[$singleItem->getSku()] ['unit_price'] = $singleItem->getRowTotal();
-            } else {
-                $items[$singleItem->getSku()] ['unit_price'] = $singleItem->getPrice();
-            }
-            $items[$singleItem->getSku()] ['row_total'] = $singleItem->getRowTotal();
-            if (!$this->klarnaConfig->isSeparateTaxLine($singleItem->getStore())) {
-                $product                                   = $singleItem->getProduct();
-                $items[$singleItem->getSku()] ['tax_rate'] = $this->getTaxPercentage(
-                    $product,
-                    $data['purchase_country']
-                );
-            }
-        }
-        $checkout->setTaxUnitPrice(0);
-        if ($checkout->getItems()) {
-            foreach ($checkout->getItems() as $item) {
-                if (!empty($item['total_tax_amount'])) {
-                    $item['tax_rate'] = $this->dataConverter->toApiFloat($items[$item['reference']]['tax_rate']);
+            foreach ($object->getAllVisibleItems() as $singleItem) {
+                if ($checkout->getRequest()) {
+                    $data = $checkout->getRequest()->toArray();
                 }
-                if (array_key_exists('reference', $item)) {
-                    if ($this->klarnaConfig->isSeparateTaxLine($singleItem->getStore())) {
-                        $item['unit_price'] = $this->dataConverter->toApiFloat($items[$item['reference']]['unit_price']);
-                    } else {
-                        $item['unit_price'] = $this->dataConverter->toApiFloat($items[$item['reference']]['row_total']);
+                if ($this->klarnaConfig->isSeparateTaxLine($singleItem->getStore())) {
+                    $items[$singleItem->getSku()] ['unit_price'] = $singleItem->getRowTotal();
+                } else {
+                    $items[$singleItem->getSku()] ['unit_price'] = $singleItem->getPrice();
+                }
+                $items[$singleItem->getSku()] ['row_total'] = $singleItem->getRowTotal();
+                if (!$this->klarnaConfig->isSeparateTaxLine($singleItem->getStore())) {
+                    $product                                   = $singleItem->getProduct();
+                    $items[$singleItem->getSku()] ['tax_rate'] = $this->getTaxPercentage(
+                        $product,
+                        $data['purchase_country']
+                    );
+                }
+            }
+            $checkout->setTaxUnitPrice(0);
+            if ($checkout->getItems()) {
+                foreach ($checkout->getItems() as $item) {
+                    if (!empty($item['total_tax_amount'])) {
+                        $item['tax_rate'] = $this->dataConverter->toApiFloat($items[$item['reference']]['tax_rate']);
                     }
-                    $item['total_amount'] = $this->dataConverter->toApiFloat($items[$item['reference']] ['row_total']);
+                    if (array_key_exists('reference', $item)) {
+                        if ($this->klarnaConfig->isSeparateTaxLine($singleItem->getStore())) {
+                            $item['unit_price'] = $this->dataConverter->toApiFloat($items[$item['reference']]['unit_price']);
+                        } else {
+                            $item['unit_price'] = $this->dataConverter->toApiFloat($items[$item['reference']]['row_total']);
+                        }
+                        $item['total_amount'] = $this->dataConverter->toApiFloat($items[$item['reference']] ['row_total']);
+                    }
+                    $itemsArray[] = $item;
                 }
-                $itemsArray[] = $item;
-            }
-            if (!empty($itemsArray)) {
-                $checkout->setItems($itemsArray);
+                if (!empty($itemsArray)) {
+                    $checkout->setItems($itemsArray);
+                }
             }
         }
         return $proceed($checkout);
