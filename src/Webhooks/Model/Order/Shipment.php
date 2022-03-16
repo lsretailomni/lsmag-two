@@ -82,7 +82,8 @@ class Shipment
         Data $helper,
         ShippingHelper $shippingHelper,
         ShipmentRepositoryInterface $shipmentRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        LoggerInterface $logger
     ) {
         $this->shipOrderInterface            = $shipOrderInterface;
         $this->shipmentItemCreationInterface = $shipmentItemCreationInterface;
@@ -93,6 +94,7 @@ class Shipment
         $this->shippingHelper                = $shippingHelper;
         $this->shipmentRepository            = $shipmentRepository;
         $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
+        $this->logger = $logger;
     }
 
     /**
@@ -108,6 +110,7 @@ class Shipment
         $lsCentralShippingId        = $data['lsCentralShippingId'];
 
         $magOrder                   = $this->helper->getOrderByDocumentId($orderId);
+        $status                     = false;
         $statusMsg                  = '';
         $shipmentItems              = [];
         $shipmentDetails            = [];
@@ -150,16 +153,18 @@ class Shipment
                 );
 
                 $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId);
+                $status = true;
                 $statusMsg = "Shipment posted successfully.";
             }
         } else { //if shipment exists update tracking number
 
-            $statusMsg = ($this->updateTrackingId($orderId,$lsCentralShippingId, $trackingId)) ? "Tracking Id updated successfully.":"Tracking Id update failed";
+            $status     = $this->updateTrackingId($orderId,$lsCentralShippingId, $trackingId);
+            $statusMsg  = ($status) ? "Tracking Id updated successfully.":"Tracking Id update failed";
 
         }
 
         return $this->helper->outputShipmentMessage(
-            true,
+            $status,
             $statusMsg,
             $shipmentDetails
         );
@@ -195,14 +200,22 @@ class Shipment
         $magOrder           = $this->helper->getOrderByDocumentId($orderId);
         $shipmentCollection = $magOrder->getTracksCollection();
         $status = false;
-        foreach ($shipmentCollection->getItems() as $shipment) {
+        try {
+            foreach ($shipmentCollection->getItems() as $shipment) {
 
-            if($shipment->getLsCentralShippingId() == $lsCentralShippingId) {
-                $shipment->setTrackNumber($trackingId);
-                $shipment->save();
-                $status = true;
+                if($shipment->getLsCentralShippingId() == $lsCentralShippingId) {
+                    $shipment->setTrackNumber($trackingId);
+                    $shipment->save();
+                    $status = true;
+                }
             }
+        } catch (\Exception $e) {
+            $this->logger->critical($e);
+            throw new \Magento\Framework\Exception\CouldNotSaveException(
+            __('Could not update Tracking Id, see error log for details')
+            );
         }
+
 
         return $status;
     }
