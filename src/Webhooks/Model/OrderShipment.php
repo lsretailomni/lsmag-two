@@ -51,12 +51,12 @@ class OrderShipment implements OrderShipmentInterface
     {
         try {
             $data = [
-                'orderId'          => $OrderId,
-                'shipmentId'       => $ShipmentId,
-                'trackingId'       => $TrackingId,
-                'shipmentProvider' => $Provider,
-                'service'          => $Service,
-                'lines'            => $Lines,
+                'orderId'                   => $OrderId,
+                'lsCentralShippingId'       => $ShipmentId,
+                'trackingId'                => $TrackingId,
+                'shipmentProvider'          => $Provider,
+                'service'                   => $Service,
+                'lines'                     => $Lines,
 
             ];
             $this->logger->info('OrderShipment', $data);
