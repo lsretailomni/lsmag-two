@@ -181,8 +181,15 @@ class Info extends Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        if ($this->getOrder()) {
-            $this->pageConfig->getTitle()->set(__('%1 # %2', $this->getOrder()->getIdType(), $this->getOrder()->getId()));
+        $order = $this->getOrder();
+        if ($order) {
+            $orderId = $order->getCustomerOrderNo() ?: $order->getId();
+            if (!empty($order->getCustomerOrderNo())) {
+                $type = __('Order');
+            } else {
+                $type = $order->getIdType();
+            }
+            $this->pageConfig->getTitle()->set(__('%1 # %2', $type, $orderId));
         }
     }
     // @codingStandardsIgnoreEnd
