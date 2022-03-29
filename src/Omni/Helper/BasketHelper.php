@@ -665,7 +665,8 @@ class BasketHelper extends AbstractHelper
      */
     public function calculate(Entity\OneList $oneList)
     {
-        if (empty($this->getCouponCode()) && $this->calculateBasket == 1) {
+        if (empty($this->getCouponCode()) && $this->calculateBasket == 1
+            && empty($this->getOneListCalculationFromCheckoutSession())) {
             return null;
         }
 
@@ -1031,7 +1032,7 @@ class BasketHelper extends AbstractHelper
     public function syncBasketWithCentral($cartId)
     {
         $oneList = $this->getOneListFromCustomerSession();
-        $quote = $this->quoteRepository->getActive($cartId);
+        $quote   = $this->quoteRepository->getActive($cartId);
 
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $oneList && $this->getCalculateBasket()) {
             $this->setCalculateBasket(false);
