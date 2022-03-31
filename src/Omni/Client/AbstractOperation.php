@@ -98,6 +98,7 @@ abstract class AbstractOperation implements OperationInterface
                 ['http' => ['header' => "$header: {$this->token}", 'timeout' => floatval($lsr->getOmniTimeout())]]
             )
         );
+        $client->setLocation($client->getWSDL());
         //@codingStandardsIgnoreEnd
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
