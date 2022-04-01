@@ -12,8 +12,7 @@ use Magento\Framework\View\Element\Template;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class Stores
- * @package Ls\Omni\Block\Stores
+ * Stores page block class
  */
 class Stores extends Template
 {
@@ -40,6 +39,7 @@ class Stores extends Template
     public $lsr;
 
     /**
+     * Stores Constructor.
      * @param Template\Context $context
      * @param CollectionFactory $replStoreCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
