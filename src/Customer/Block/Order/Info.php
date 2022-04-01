@@ -293,7 +293,10 @@ class Info extends Template
      */
     public function getPrintUrl(SalesEntry $order)
     {
-        return $order ? $this->getUrl('customer/order/print', ['order_id' => $order->getId()]) : '';
+        return $order ? $this->getUrl(
+            'customer/order/print',
+            ['order_id' => $order->getId(), 'type' => $order->getIdType()]
+        ) : '';
     }
 
     /**
