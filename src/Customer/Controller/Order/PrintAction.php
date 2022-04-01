@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Controller\Order;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\ResponseInterface;
