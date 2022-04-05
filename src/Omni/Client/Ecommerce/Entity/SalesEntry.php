@@ -805,6 +805,40 @@ class SalesEntry extends Entity
         return $this->TotalNetAmount;
     }
 
+    /**
+     * @param boolean $HasReturnSale
+     * @return $this
+     */
+    public function setHasReturnSale($HasReturnSale)
+    {
+        $this->HasReturnSale = $HasReturnSale;
+        return $this;
+    }
 
+    /**
+     * @return boolean
+     */
+    public function getHasReturnSale()
+    {
+        return $this->HasReturnSale;
+    }
+
+    /**
+     * @param boolean $ReturnSale
+     * @return $this
+     */
+    public function setReturnSale($ReturnSale)
+    {
+        $this->ReturnSale = $ReturnSale;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getReturnSale()
+    {
+        return $this->ReturnSale;
+    }
 }
 
