@@ -93,7 +93,7 @@ class Link extends Current
                 return '';
             }
 
-            if ($this->getKey() == "Creditmemos" && !($order->hasCreditmemos())) {
+            if ($this->getKey() == "Creditmemos" && !($this->orderHelper->hasReturnSale($this->getOrder()->getId()))) {
                 return '';
             }
 

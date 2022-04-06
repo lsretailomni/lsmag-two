@@ -6,6 +6,8 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -15,6 +17,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Registry;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
 use Magento\Sales\Model\ResourceModel\Order;
@@ -94,7 +97,8 @@ class OrderHelper extends AbstractHelper
         CheckoutSessionProxy $checkoutSession,
         LSR $lsr,
         Order $orderResourceModel,
-        Json $json
+        Json $json,
+        Registry $registry
     ) {
         parent::__construct($context);
         $this->order              = $order;
@@ -106,6 +110,8 @@ class OrderHelper extends AbstractHelper
         $this->lsr                = $lsr;
         $this->orderResourceModel = $orderResourceModel;
         $this->json               = $json;
+        $this->registry          = $registry;
+
     }
 
     /**
@@ -414,6 +420,17 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Validate order have return sale or not
+     * @param $order
+     * @return mixed
+     */
+    public function hasReturnSale($orderId)
+    {
+        $response = $this->setCurrentOrderInRegistry($orderId);
+        return $response->getHasReturnSale();
+    }
+
+    /**
      * This function is overriding in hospitality module
      * @param $docId
      * @param string $type
@@ -431,6 +448,7 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($order);
+            print_r($response);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -449,6 +467,27 @@ class OrderHelper extends AbstractHelper
             return true;
         }
         return false;
+    }
+
+    /**
+     * Set currentOrder into registry
+     *
+     * @param $orderId
+     * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
+     * @throws InvalidEnumException
+     */
+    public function setCurrentOrderInRegistry($orderId)
+    {
+        $response = $this->getOrderDetailsAgainstId($orderId);
+        return $response;
+    }
+
+    /**
+     * @param $order
+     */
+    public function setOrderInRegistry($order)
+    {
+        $this->registry->register('current_order', $order);
     }
 
     /**
