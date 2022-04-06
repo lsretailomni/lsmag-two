@@ -93,6 +93,10 @@ class Link extends Current
                 return '';
             }
 
+            if ($this->getKey() == "Creditmemos" && !($order->hasCreditmemos())) {
+                return '';
+            }
+
             if ($this->hasKey()
                 && method_exists($this->getOrder(), 'has' . $this->getKey())
                 && !$this->getOrder()->{'has' . $this->getKey()}()
