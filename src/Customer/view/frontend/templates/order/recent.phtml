@@ -61,6 +61,9 @@ use Magento\Framework\Escaper;
                             </thead>
                             <tbody>
                             <?php foreach ($_orders as $i => $_order):
+                                if(!$_order->getHasReturnSale() && $_order->getReturnSale()){
+                                    continue;
+                                }
                                 $magOrder = $block->getOrderByDocumentId($_order);
                                 ?>
                                 <tr>
