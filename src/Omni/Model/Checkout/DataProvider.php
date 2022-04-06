@@ -151,7 +151,8 @@ class DataProvider implements ConfigProviderInterface
                     'pickup_date_timeslots' => [
                         'options'           => $this->checkoutSession->getStorePickupHours(),
                         'enabled'           => $enabled,
-                        'current_web_store' => $this->lsr->getActiveWebStore()
+                        'current_web_store' => $this->lsr->getActiveWebStore(),
+                        'store_type' => 0
                     ]
                 ]
             ];

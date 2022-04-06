@@ -15,7 +15,13 @@ define([
             this.showAdditionalOption = ko.computed(function () {
                 var method = quote.shippingMethod();
                 if (method && method['carrier_code'] !== undefined) {
+                    if (method['carrier_code'] === 'clickandcollect' &&
+                        window.checkoutConfig.shipping.pickup_date_timeslots.store_type == 1) {
                         return true;
+                    }
+                    if (window.checkoutConfig.shipping.pickup_date_timeslots.store_type == 0) {
+                        return true;
+                    }
                 }
                 return false;
             }, this);
