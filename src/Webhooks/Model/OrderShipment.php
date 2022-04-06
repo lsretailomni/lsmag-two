@@ -47,15 +47,16 @@ class OrderShipment implements OrderShipmentInterface
     /**
      * @inheritdoc
      */
-    public function set($orderId, $trackingId, $shipmentProvider, $service, $lines)
+    public function set($OrderId, $ShipmentId, $TrackingId, $TrackingUrl, $Provider, $Service, $Lines)
     {
         try {
             $data = [
-                'orderId'          => $orderId,
-                'trackingId'       => $trackingId,
-                'shipmentProvider' => $shipmentProvider,
-                'service'          => $service,
-                'lines'            => $lines,
+                'orderId'                   => $OrderId,
+                'lsCentralShippingId'       => $ShipmentId,
+                'trackingId'                => $TrackingId,
+                'shipmentProvider'          => $Provider,
+                'service'                   => $Service,
+                'lines'                     => $Lines,
 
             ];
             $this->logger->info('OrderShipment', $data);

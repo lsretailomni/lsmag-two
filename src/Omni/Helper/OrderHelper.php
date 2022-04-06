@@ -184,6 +184,7 @@ class OrderHelper extends AbstractHelper
                 //TODO need to fix the length issue once LS Central allow more then 10 characters.
                 $oneListCalculateResponse->setShippingAgentCode(substr($carrierCode,0,10));
                 $oneListCalculateResponse->setShippingAgentServiceCode(substr($method,0,10));
+                $oneListCalculateResponse->setShippingStatus(Entity\Enum\ShippingStatus::NOT_YET_SHIPPED);
             }
             $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
             //For click and collect.
