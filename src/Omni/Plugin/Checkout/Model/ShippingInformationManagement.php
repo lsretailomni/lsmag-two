@@ -38,8 +38,8 @@ class ShippingInformationManagement
         LSR $lsr
     ) {
         $this->quoteRepository = $quoteRepository;
-        $this->dateTime = $dateTime;
-        $this->lsr = $lsr;
+        $this->dateTime        = $dateTime;
+        $this->lsr             = $lsr;
     }
 
     /**
@@ -69,7 +69,13 @@ class ShippingInformationManagement
             $pickupDateTimeslot = $this->dateTime->date(
                 $pickupDateFormat . ' ' . $pickupTimeFormat,
                 strtotime($pickupDateTimeslot));
+        } elseif (!empty($pickupDate)) {
+            $pickupDateFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
+            $pickupDateTimeslot = $this->dateTime->date(
+                $pickupDateFormat,
+                strtotime($pickupDate));
         }
+
         $quote->setPickupDateTimeslot($pickupDateTimeslot);
     }
 }
