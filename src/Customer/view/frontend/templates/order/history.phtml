@@ -45,10 +45,10 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                         <tr>
                             <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
                                 class="col id"><?= /* @escapeNotVerified */
-                                $_order->getId() ?></td>
+                                $_order->getCustomerOrderNo() ? $_order->getCustomerOrderNo() : $_order->getId() ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
                                 class="col date">
-                                <span style="display:none;"><?= strtotime($_order->getDocumentRegTime())?></span>
+                                <span style="display:none;"><?= strtotime($_order->getDocumentRegTime()) ?></span>
                                 <?= /* @escapeNotVerified */
                                 $block->getFormattedDate($_order->getDocumentRegTime()) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
@@ -82,20 +82,21 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                     <?php if ($magOrder->canCancel() &&
                                     $block->orderCancellationOnFrontendIsEnabled() &&
                                     strtolower($_order->getStatus()) !== strtolower(LSR::LS_STATE_CANCELED)
-                                    ): ?>
-                                        <a href="#"
-                                           class="action order cancel"
-                                           data-post='<?= /* @escapeNotVerified */
-                                           $this->helper(PostHelper::class)->getPostData(
-                                               $block->getCancelUrl($magOrder, $_order),
-                                               [
-                                                   'confirmation' => 1,
-                                                   'confirmationMessage' => __('Do you wish to cancel this order?')
-                                               ]
-                                           ) ?>'>
-                                            <span><?= /* @escapeNotVerified */ __('Cancel') ?></span>
-                                        </a>
-                                    <?php endif; ?>
+                                ): ?>
+                                    <a href="#"
+                                       class="action order cancel"
+                                       data-post='<?= /* @escapeNotVerified */
+                                       $this->helper(PostHelper::class)->getPostData(
+                                           $block->getCancelUrl($magOrder, $_order),
+                                           [
+                                               'confirmation'        => 1,
+                                               'confirmationMessage' => __('Do you wish to cancel this order?')
+                                           ]
+                                       ) ?>'>
+                                        <span><?= /* @escapeNotVerified */
+                                            __('Cancel') ?></span>
+                                    </a>
+                                <?php endif; ?>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -177,28 +178,28 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
         </div>
     <?php } ?>
     <script type="text/javascript">
-        require(['jquery', 'Ls_Core/js/datatables.min'], function($, $t){
-            $(document).ready(function() {
-                $('#my-orders-table thead tr').clone(true).appendTo( '#my-orders-table thead' );
-                $('#my-orders-table thead tr:eq(1) th').each( function (i) {
+        require(['jquery', 'Ls_Core/js/datatables.min'], function ($, $t) {
+            $(document).ready(function () {
+                $('#my-orders-table thead tr').clone(true).appendTo('#my-orders-table thead');
+                $('#my-orders-table thead tr:eq(1) th').each(function (i) {
                     var title = $(this).text();
-                    $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
 
-                    $( 'input', this ).on( 'keyup change', function () {
-                        if ( table.column(i).search() !== this.value ) {
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
                             table
                                 .column(i)
-                                .search( this.value )
+                                .search(this.value)
                                 .draw();
                         }
-                    } );
-                } );
+                    });
+                });
                 var table = $('#my-orders-table').DataTable({
                     order: [[1, 'desc']],
                     orderCellsTop: true
                 });
                 $('#my-orders-table-container').show();
-            } );
+            });
         })
     </script>
 <?php

@@ -181,8 +181,15 @@ class Info extends Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        if ($this->getOrder()) {
-            $this->pageConfig->getTitle()->set(__('%1 # %2', $this->getOrder()->getIdType(), $this->getOrder()->getId()));
+        $order = $this->getOrder();
+        if ($order) {
+            $orderId = $order->getCustomerOrderNo() ?: $order->getId();
+            if (!empty($order->getCustomerOrderNo())) {
+                $type = __('Order');
+            } else {
+                $type = $order->getIdType();
+            }
+            $this->pageConfig->getTitle()->set(__('%1 # %2', $type, $orderId));
         }
     }
     // @codingStandardsIgnoreEnd
@@ -269,9 +276,14 @@ class Info extends Template
                 }
             }
         }
-        //TODO when order edit payment available for offline payment we need to change it.
+
+        $methods = array_unique($methods);
         if (empty($paymentLines->getSalesEntryPayment())) {
-            $methods[] = __('Pay At Store');
+            $magOrder = $this->getMagOrder();
+            if ($magOrder != null) {
+                $magPaymentMethod = $this->getMagOrder()->getPayment()->getMethodInstance()->getTitle();
+                $methods[]        = $magPaymentMethod;
+            }
         }
 
         return [implode(', ', $methods), $giftCardInfo];

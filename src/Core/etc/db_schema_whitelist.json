@@ -45,6 +45,11 @@
             "document_id": true
         }
     },
+    "sales_shipment_track": {
+        "column": {
+            "ls_central_shipping_id": true
+        }
+    },
     "cron_schedule": {
         "column": {
             "parameters": true
