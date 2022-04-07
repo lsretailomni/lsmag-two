@@ -90,6 +90,10 @@ class LayoutProcessorPlugin
             unset($billingStep['children']['payment']['children']['afterMethods']['children']['gift-card']);
         }
 
+        if (!($this->lsr->isPickupTimeslotsEnabled() && $this->lsr->isLSR($this->lsr->getCurrentStoreId()))) {
+            unset($jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']['shippingAdditional']['children']['ls-pickup-additional-options-wrapper']);
+        }
+
         if (isset($shippingAdditional['children'])) {
             $shippingAdditional['children']['select_store'] =
                 ['component' => 'Ls_Omni/js/view/checkout/shipping/select-store', 'sortOrder' => 1];

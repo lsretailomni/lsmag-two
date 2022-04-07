@@ -12,6 +12,7 @@ use Magento\Shipping\Helper\Data as ShippingHelper;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Sales\Api\ShipmentRepositoryInterface;
+use \Ls\Webhooks\Logger\Logger;
 
 /**
  * class to create shipment through webhook
@@ -83,7 +84,7 @@ class Shipment
         ShippingHelper $shippingHelper,
         ShipmentRepositoryInterface $shipmentRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        LoggerInterface $logger
+        Logger $logger
     ) {
         $this->shipOrderInterface            = $shipOrderInterface;
         $this->shipmentItemCreationInterface = $shipmentItemCreationInterface;

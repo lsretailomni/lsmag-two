@@ -70,7 +70,9 @@ class DataAssignObserver implements ObserverInterface
         }
         $order = $observer->getOrder();
 
-        $order->setPickupDate($quote->getPickupDate());
+        if ($quote->getPickupDateTimeslot()) {
+            $order->setPickupDateTimeslot($quote->getPickupDateTimeslot());
+        }
 
         if ($quote->getPickupStore()) {
             $order->setPickupStore($quote->getPickupStore());
