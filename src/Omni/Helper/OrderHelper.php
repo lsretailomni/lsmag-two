@@ -463,16 +463,15 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreStart
         $returnRequest = new Operation\SalesEntryGetReturnSales();
         $returnOrder   = new Entity\SalesEntryGetReturnSales();
-        $returnOrder->setEntryId($docId);
-        $returnOrder->setType($type);
+        $returnOrder->setReceiptNo($docId);
+        //$returnOrder->setType($type);
         // @codingStandardsIgnoreEnd
         try {
             $response = $returnRequest->execute($returnOrder);
-            print_r($response);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getSalesEntryGetResult() : $response;
+        return $response ? $response->getSalesEntryGetReturnSalesResult() : $response;
     }
 
     /**
@@ -483,6 +482,24 @@ class OrderHelper extends AbstractHelper
     {
         $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         $orderCardId = $order->getCardId();
+        if ($cardId == $orderCardId) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $order
+     * @return bool
+     */
+    public function isAuthorizedForReturnOrder($order)
+    {
+        $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        foreach ($order as $ordItem) {
+            $orderCardId = $ordItem->getCardId();
+            break;
+        }
+
         if ($cardId == $orderCardId) {
             return true;
         }
