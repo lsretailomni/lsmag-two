@@ -426,9 +426,11 @@ class OrderHelper extends AbstractHelper
      */
     public function hasReturnSale($orderId)
     {
-        $response = $this->setCurrentOrderInRegistry($orderId);
-        return $response->getHasReturnSale();
+        $this->setCurrentOrderInRegistry($orderId);
+        $order = $this->getOrder();
+        return $order->getHasReturnSale();
     }
+
 
     /**
      * This function is overriding in hospitality module
@@ -448,6 +450,24 @@ class OrderHelper extends AbstractHelper
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($order);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getSalesEntryGetResult() : $response;
+    }
+
+
+    public function getReturnDetailsAgainstId($docId)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $returnRequest = new Operation\SalesEntryGetReturnSales();
+        $returnOrder   = new Entity\SalesEntryGetReturnSales();
+        $returnOrder->setEntryId($docId);
+        $returnOrder->setType($type);
+        // @codingStandardsIgnoreEnd
+        try {
+            $response = $returnRequest->execute($returnOrder);
             print_r($response);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -479,6 +499,9 @@ class OrderHelper extends AbstractHelper
     public function setCurrentOrderInRegistry($orderId)
     {
         $response = $this->getOrderDetailsAgainstId($orderId);
+        if ($response) {
+            $this->setOrderInRegistry($response);
+        }
         return $response;
     }
 
@@ -488,6 +511,16 @@ class OrderHelper extends AbstractHelper
     public function setOrderInRegistry($order)
     {
         $this->registry->register('current_order', $order);
+    }
+
+    /**
+     * Retrieve current order model instance
+     *
+     * @return SalesEntry
+     */
+    public function getOrder()
+    {
+        return $this->registry->registry('current_order');
     }
 
     /**
