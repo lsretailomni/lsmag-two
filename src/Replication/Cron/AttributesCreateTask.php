@@ -623,7 +623,7 @@ class AttributesCreateTask
                             $this->eavSetupFactory->create()->addAttributeOption($data);
                         } catch (Exception $e) {
                             $this->logger->debug("Update attribute - $attributeCode failed with exception : "
-                                                 . $e->getMessage());
+                                . $e->getMessage());
                         }
                     }
                 }

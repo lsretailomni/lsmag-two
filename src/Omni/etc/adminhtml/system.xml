@@ -240,6 +240,41 @@
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                 </field>
             </group>
+            <group id="delivery_pickup_date_time" translate="label" type="text" sortOrder="90" showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Delivery and Pickup Date Management</label>
+                <field id="pickup_date_time_slot" translate="label" type="select" sortOrder="6" showInDefault="1"
+                       showInWebsite="1">
+                    <label>Show Pick up/Delivery Date and Time Slots</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="pickup_time_interval" translate="label" type="text" sortOrder="6" showInDefault="1"
+                       showInWebsite="1">
+                    <depends>
+                        <field id="ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot">1</field>
+                    </depends>
+                    <label>Time Interval</label>
+                    <comment>Time interval between pickup/delivery slots in minutes</comment>
+                </field>
+                <field id="pickup_date_format" translate="label" type="text" sortOrder="7" showInDefault="1"
+                       showInWebsite="1">
+                    <depends>
+                        <field id="ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot">1</field>
+                    </depends>
+                    <label>Pickup/Delivery Date Format</label>
+                    <comment>Date format for pickup and delivery date</comment>
+                </field>
+                <field id="pickup_time_format" translate="label" type="select" sortOrder="8" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <depends>
+                        <field id="ls_mag/hospitality/pickup_date_time_slot">1</field>
+                    </depends>
+                    <label>Pickup/Delivery Time Format</label>
+                    <source_model>Ls\Omni\Block\Adminhtml\System\Config\TimeFormat</source_model>
+                </field>
+            </group>
             <group id="return_policy" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
                    showInStore="1">
                 <label>Return Policy</label>

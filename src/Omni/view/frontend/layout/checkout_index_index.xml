@@ -16,6 +16,51 @@
                             <item name="children" xsi:type="array">
                                 <item name="steps" xsi:type="array">
                                     <item name="children" xsi:type="array">
+                                        <item name="shipping-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="shippingAddress" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="shippingAdditional" xsi:type="array">
+                                                            <item name="component" xsi:type="string">uiComponent</item>
+                                                            <item name="displayArea" xsi:type="string">shippingAdditional</item>
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="ls-pickup-additional-options-wrapper" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Ls_Omni/js/view/checkout/shipping/pickup-date-time-block</item>
+                                                                    <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                                    <item name="sortOrder" xsi:type="string">2</item>
+                                                                    <item name="children" xsi:type="array">
+                                                                        <item name="shipping-option" xsi:type="array">
+                                                                            <item name="component" xsi:type="string">uiComponent</item>
+                                                                            <item name="displayArea" xsi:type="string">additionalShippingOptionField</item>
+                                                                            <item name="children" xsi:type="array">
+                                                                                <item name="pickup-date" xsi:type="array">
+                                                                                    <item name="component" xsi:type="string">Ls_Omni/js/view/checkout/shipping/pickup-date-options</item>
+                                                                                    <item name="config" xsi:type="array">
+                                                                                        <item name="customScope" xsi:type="string">shippingOptionSelect</item>
+                                                                                        <item name="id" xsi:type="string">pickup-date</item>
+                                                                                        <item name="template" xsi:type="string">ui/form/field</item>
+                                                                                        <item name="elementTmpl" xsi:type="string">ui/form/element/select</item>
+                                                                                    </item>
+                                                                                    <item name="dataScope" xsi:type="string">shippingOptionSelect.pickup-date</item>
+                                                                                    <item name="label" xsi:type="string" translate="true">Requested Delivery Date</item>
+                                                                                    <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                                                    <item name="visible" xsi:type="boolean">true</item>
+                                                                                    <item name="validation" xsi:type="array">
+                                                                                        <item name="required-entry" xsi:type="boolean">true</item>
+                                                                                        <item name="validate-no-empty" xsi:type="boolean">true</item>
+                                                                                    </item>
+                                                                                    <item name="sortOrder" xsi:type="number">0</item>
+                                                                                </item>
+                                                                            </item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
                                         <item name="billing-step" xsi:type="array">
                                             <item name="children" xsi:type="array">
                                                 <item name="payment" xsi:type="array">
