@@ -90,8 +90,7 @@ class PrintAction extends Action
 
         if ($this->request->getParam('order_id')) {
             $orderId  = $this->request->getParam('order_id');
-            $type     = $this->request->getParam('type');
-            $response = $this->setCurrentOrderInRegistry($orderId, $type);
+            $response = $this->setCurrentOrderInRegistry($orderId);
 
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
@@ -108,13 +107,12 @@ class PrintAction extends Action
      * Set currentOrder into registry
      *
      * @param $orderId
-     * @param $type
      * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
      * @throws InvalidEnumException
      */
-    public function setCurrentOrderInRegistry($orderId, $type)
+    public function setCurrentOrderInRegistry($orderId)
     {
-        $response = $this->orderHelper->getOrderDetailsAgainstId($orderId, $type);
+        $response = $this->orderHelper->getOrderDetailsAgainstId($orderId);
 
         if ($response) {
             $this->setOrderInRegistry($response);
