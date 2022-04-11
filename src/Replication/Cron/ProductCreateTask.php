@@ -1772,12 +1772,19 @@ class ProductCreateTask
     private function validateVariant($attributesCode, $value)
     {
         $isVariantContainNull = false;
-        $d1                   = (($value->getVariantDimension1()) ?: '');
-        $d2                   = (($value->getVariantDimension2()) ?: '');
-        $d3                   = (($value->getVariantDimension3()) ?: '');
-        $d4                   = (($value->getVariantDimension4()) ?: '');
-        $d5                   = (($value->getVariantDimension5()) ?: '');
-        $d6                   = (($value->getVariantDimension6()) ?: '');
+        $variantDimension1    = $value->getVariantDimension1();
+        $variantDimension2    = $value->getVariantDimension2();
+        $variantDimension3    = $value->getVariantDimension3();
+        $variantDimension4    = $value->getVariantDimension4();
+        $variantDimension5    = $value->getVariantDimension5();
+        $variantDimension6    = $value->getVariantDimension6();
+
+        $d1 = (($variantDimension1 != '' && $variantDimension1 != null) ? $variantDimension1 : '');
+        $d2 = (($variantDimension2 != '' && $variantDimension2 != null) ? $variantDimension2 : '');
+        $d3 = (($variantDimension3 != '' && $variantDimension3 != null) ? $variantDimension3 : '');
+        $d4 = (($variantDimension4 != '' && $variantDimension4 != null) ? $variantDimension4 : '');
+        $d5 = (($variantDimension5 != '' && $variantDimension5 != null) ? $variantDimension5 : '');
+        $d6 = (($variantDimension6 != '' && $variantDimension6 != null) ? $variantDimension6 : '');
 
         /** Check if all configurable attributes have value or not. */
         foreach ($attributesCode as $keyCode => $valueCode) {
