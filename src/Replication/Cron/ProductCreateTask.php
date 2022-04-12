@@ -1018,22 +1018,24 @@ class ProductCreateTask
                 $itemData             = $this->_getItem($item);
                 $productVariants      = $this->getNewOrUpdatedProductVariants(-1, $item);
                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item);
-                $totalUomCodes        = $this->replicationHelper->getUomCodes(
-                    $itemData->getNavId(),
-                    $this->store->getId()
-                );
-                if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
-                    $productVariants = $this->getProductVariants($itemData->getNavId());
-                }
-                if (!empty($productVariants) || count($totalUomCodes[$itemData->getNavId()]) > 1) {
-                    $this->createConfigurableProducts(
-                        $productData,
-                        $itemData,
-                        $itemBarcodes,
-                        $productVariants,
-                        $totalUomCodes,
-                        $uomCodesNotProcessed
+                if (!empty($itemData)) {
+                    $totalUomCodes = $this->replicationHelper->getUomCodes(
+                        $itemData->getNavId(),
+                        $this->store->getId()
                     );
+                    if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
+                        $productVariants = $this->getProductVariants($itemData->getNavId());
+                    }
+                    if (!empty($productVariants) || count($totalUomCodes[$itemData->getNavId()]) > 1) {
+                        $this->createConfigurableProducts(
+                            $productData,
+                            $itemData,
+                            $itemBarcodes,
+                            $productVariants,
+                            $totalUomCodes,
+                            $uomCodesNotProcessed
+                        );
+                    }
                 }
             } catch (Exception $e) {
                 $this->logger->debug('Problem with sku: ' . $item . ' in ' . __METHOD__);
@@ -1702,12 +1704,19 @@ class ProductCreateTask
         $productV->setStatus(Status::STATUS_ENABLED);
         $productV->setTypeId(Type::TYPE_SIMPLE);
         if ($value) {
-            $d1 = (($value->getVariantDimension1()) ?: '');
-            $d2 = (($value->getVariantDimension2()) ?: '');
-            $d3 = (($value->getVariantDimension3()) ?: '');
-            $d4 = (($value->getVariantDimension4()) ?: '');
-            $d5 = (($value->getVariantDimension5()) ?: '');
-            $d6 = (($value->getVariantDimension6()) ?: '');
+            $variantDimension1 = $value->getVariantDimension1();
+            $variantDimension2 = $value->getVariantDimension2();
+            $variantDimension3 = $value->getVariantDimension3();
+            $variantDimension4 = $value->getVariantDimension4();
+            $variantDimension5 = $value->getVariantDimension5();
+            $variantDimension6 = $value->getVariantDimension6();
+
+            $d1 = (($variantDimension1 != '' && $variantDimension1 != null) ? $variantDimension1 : '');
+            $d2 = (($variantDimension2 != '' && $variantDimension2 != null) ? $variantDimension2 : '');
+            $d3 = (($variantDimension3 != '' && $variantDimension3 != null) ? $variantDimension3 : '');
+            $d4 = (($variantDimension4 != '' && $variantDimension4 != null) ? $variantDimension4 : '');
+            $d5 = (($variantDimension5 != '' && $variantDimension5 != null) ? $variantDimension5 : '');
+            $d6 = (($variantDimension6 != '' && $variantDimension6 != null) ? $variantDimension6 : '');
         }
         foreach ($attributesCode as $keyCode => $valueCode) {
             if ($valueCode == LSR::LS_UOM_ATTRIBUTE) {
