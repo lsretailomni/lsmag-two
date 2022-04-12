@@ -10,6 +10,9 @@ use Magento\Sales\Model\Order\Shipment\TrackFactory;
 use Magento\Sales\Api\Data\ShipmentCommentCreationInterface;
 use Magento\Shipping\Helper\Data as ShippingHelper;
 use \Ls\Webhooks\Helper\Data;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Sales\Api\ShipmentRepositoryInterface;
+use \Ls\Webhooks\Logger\Logger;
 
 /**
  * class to create shipment through webhook
@@ -52,6 +55,16 @@ class Shipment
     private $shippingHelper;
 
     /**
+     * @var ShipmentRepositoryInterface
+     */
+    private $shipmentRepository;
+
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    protected $searchCriteriaBuilder;
+
+    /**
      * Shipment constructor.
      * @param ShipOrderInterface $shipOrderInterface
      * @param ShipmentItemCreationInterface $shipmentItemCreationInterface
@@ -68,7 +81,10 @@ class Shipment
         TrackFactory $trackFactory,
         ShipmentCommentCreationInterface $shipmentCommentCreation,
         Data $helper,
-        ShippingHelper $shippingHelper
+        ShippingHelper $shippingHelper,
+        ShipmentRepositoryInterface $shipmentRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        Logger $logger
     ) {
         $this->shipOrderInterface            = $shipOrderInterface;
         $this->shipmentItemCreationInterface = $shipmentItemCreationInterface;
@@ -77,6 +93,9 @@ class Shipment
         $this->shipmentCommentCreation       = $shipmentCommentCreation;
         $this->helper                        = $helper;
         $this->shippingHelper                = $shippingHelper;
+        $this->shipmentRepository            = $shipmentRepository;
+        $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
+        $this->logger = $logger;
     }
 
     /**
@@ -87,12 +106,16 @@ class Shipment
      */
     public function createShipment($data)
     {
-        $orderId         = $data['orderId'];
-        $trackingId      = $data['trackingId'];
-        $magOrder        = $this->helper->getOrderByDocumentId($orderId);
-        $shipmentItems   = [];
-        $shipmentDetails = [];
-        if ($magOrder->canShip()) {
+        $orderId                    = $data['orderId'];
+        $trackingId                 = $data['trackingId'];
+        $lsCentralShippingId        = $data['lsCentralShippingId'];
+
+        $magOrder                   = $this->helper->getOrderByDocumentId($orderId);
+        $status                     = false;
+        $statusMsg                  = '';
+        $shipmentItems              = [];
+        $shipmentDetails            = [];
+        if ($magOrder->canShip() && !$this->getShipmentExists($orderId,$lsCentralShippingId)) { //if shipment not exists create shipment
             $items    = $this->helper->getItems($magOrder, $data['lines']);
             $shipItem = [];
             foreach ($items as $itemData) {
@@ -130,22 +153,82 @@ class Shipment
                     [$shipmentTracks]
                 );
 
-                $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId);
+                $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId);
+                $status = true;
+                $statusMsg = "Shipment posted successfully.";
             }
+        } else { //if shipment exists update tracking number
+
+            $status     = $this->updateTrackingId($orderId,$lsCentralShippingId, $trackingId);
+            $statusMsg  = ($status) ? "Tracking Id updated successfully.":"Tracking Id update failed";
+
         }
 
         return $this->helper->outputShipmentMessage(
-            true,
+            $status,
+            $statusMsg,
             $shipmentDetails
         );
     }
 
-    /** Get shipment details
+    /** Get Shipment exists status based on shipment Id from Central
+     * @param $orderId
+     * @param $shipmentId
+     * @return bool
+     */
+    public function getShipmentExists($orderId,$shipmentId)
+    {
+        $magOrder           = $this->helper->getOrderByDocumentId($orderId);
+        $shipmentCollection = $magOrder->getTracksCollection();
+        $shipmentExists     = false;
+        foreach ($shipmentCollection->getItems() as $shipment) {
+            if($shipment->getShipmentId() == $shipmentId) {
+                $shipmentExists = true;
+            }
+        }
+
+        return $shipmentExists;
+    }
+
+    /** Update central tracking Id
+     * @param $orderId
+     * @param $lsCentralShippingId
+     * @param $trackingId
+     * @return bool
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     */
+    public function updateTrackingId($orderId,$lsCentralShippingId, $trackingId)
+    {
+        $magOrder           = $this->helper->getOrderByDocumentId($orderId);
+        $shipmentCollection = $magOrder->getTracksCollection();
+        $status = false;
+        try {
+            foreach ($shipmentCollection->getItems() as $shipment) {
+
+                if($shipment->getLsCentralShippingId() == $lsCentralShippingId) {
+                    $shipment->setTrackNumber($trackingId);
+                    $shipment->save();
+                    $status = true;
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->critical($e);
+            throw new \Magento\Framework\Exception\CouldNotSaveException(
+            __('Could not update Tracking Id, see error log for details')
+            );
+        }
+
+
+        return $status;
+    }
+
+    /**
      * @param $magOrder
      * @param $shipmentId
+     * @param $lsCentralShippingId
      * @return array
      */
-    public function getShipmentDetailsByOrder($magOrder, $shipmentId)
+    public function getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId)
     {
         $trackDataArray  = [];
         $trackData       = [];
@@ -156,6 +239,10 @@ class Shipment
                 $trackData ['trackingUrl']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
                 $trackData ['shipmentProvider'] = $trackInfo->getCarrierCode();
                 $trackData ['service']          = $trackInfo->getTitle();
+
+                //Sync LS central shipping Id to shipment track
+                $trackInfo->setLsCentralShippingId($lsCentralShippingId);
+                $trackInfo->save();
             }
             $trackDataArray [] = $trackData;
         }
