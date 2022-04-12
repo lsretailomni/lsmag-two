@@ -11,7 +11,7 @@ interface OrderShipmentInterface
     /**
      * Set order shipment API
      * @param string $OrderId
-     * @param string $ShipmentId
+     * @param string $ShipmentNo
      * @param string $TrackingId
      * @param string $TrackingUrl
      * @param string $Provider
@@ -19,5 +19,5 @@ interface OrderShipmentInterface
      * @param mixed $Lines
      * @return mixed
      */
-    public function set($OrderId, $ShipmentId, $TrackingId, $TrackingUrl, $Provider, $Service, $Lines);
+    public function set($OrderId, $ShipmentNo, $TrackingId, $TrackingUrl, $Provider, $Service, $Lines);
 }
