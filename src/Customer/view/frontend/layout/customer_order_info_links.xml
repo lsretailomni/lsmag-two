@@ -31,7 +31,7 @@
                 <block class="Ls\Customer\Block\Order\Link" name="sales.order.info.links.creditmemo">
                     <arguments>
                         <argument name="key" xsi:type="string">Creditmemos</argument>
-                        <argument name="path" xsi:type="string">customer/order/returns</argument>
+                        <argument name="path" xsi:type="string">customer/order/creditmemo</argument>
                         <argument name="label" xsi:type="string" translate="true">Refunds</argument>
                     </arguments>
                 </block>

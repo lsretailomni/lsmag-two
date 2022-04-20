@@ -40,7 +40,7 @@ $magOrder = $block->getMagOrder();
             </a>
         <?php endif; ?>
         <a class="action order print"
-           href="<?= /* @escapeNotVerified */ $block->getPrintUrl($centralOrder) ?>"
+           href="<?php/* @escapeNotVerified echo $block->getPrintUrl($centralOrder) */    ?>"
            onclick="this.target='_blank';">
             <span><?= /* @escapeNotVerified */ __('Print Order') ?></span>
         </a>

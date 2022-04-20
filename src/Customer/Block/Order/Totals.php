@@ -5,10 +5,12 @@ namespace Ls\Customer\Block\Order;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Ls\OmniGraphQl\Model\Resolver\Order;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use \Ls\Omni\Helper\OrderHelper;
 
 /**
  * Class Totals
@@ -25,6 +27,11 @@ class Totals extends Template
      * @var PriceCurrencyInterface
      */
     public $priceCurrency;
+
+    /**
+     * @var OrderHelper
+     */
+    public $orderHelper;
 
     /**
      * @var LoyaltyHelper
@@ -51,6 +58,7 @@ class Totals extends Template
      * @param PriceCurrencyInterface $priceCurrency
      * @param LoyaltyHelper $loyaltyHelper
      * @param LSR $lsr
+     * @param OrderHelper $orderHelper
      * @param array $data
      */
     public function __construct(
@@ -59,12 +67,14 @@ class Totals extends Template
         PriceCurrencyInterface $priceCurrency,
         LoyaltyHelper $loyaltyHelper,
         LSR $lsr,
+        OrderHelper $orderHelper,
         array $data = []
     ) {
-        $this->priceCurrency = $priceCurrency;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->coreRegistry  = $registry;
-        $this->lsr           = $lsr;
+        $this->priceCurrency     = $priceCurrency;
+        $this->loyaltyHelper     = $loyaltyHelper;
+        $this->coreRegistry      = $registry;
+        $this->lsr               = $lsr;
+        $this->orderHelper       = $orderHelper;
         parent::__construct($context, $data);
     }
 
@@ -104,18 +114,15 @@ class Totals extends Template
      */
     public function getTotalNetAmount()
     {
-        $total = $this->getOrder()->getTotalNetAmount();
-        return $total;
+        return $this->orderHelper->getParameterValues($this->getOrder(),"TotalNetAmount");
     }
 
     /**
-     * @return float
+     * @return mixed
      */
     public function getGrandTotal()
     {
-        $total = $this->getOrder()->getTotalAmount();
-
-        return $total;
+        return $this->orderHelper->getParameterValues($this->getOrder(),"TotalAmount");
     }
 
     /**
@@ -133,8 +140,7 @@ class Totals extends Template
      */
     public function getTotalDiscount()
     {
-        $total = $this->getOrder()->getTotalDiscount();
-        return $total;
+        return $this->orderHelper->getParameterValues($this->getOrder(),"TotalDiscount");
     }
 
     /**
@@ -142,7 +148,7 @@ class Totals extends Template
      */
     public function getShipmentChargeLineFee()
     {
-        $orderLines = $this->getOrder()->getLines();
+        $orderLines = $this->getLines();
         $fee        = 0;
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
@@ -172,7 +178,7 @@ class Totals extends Template
     public function getLoyaltyGiftCardInfo()
     {
         // @codingStandardsIgnoreStart
-        $paymentLines = $this->getOrder()->getPayments();
+        $paymentLines = $this->getOrderPayments();
         $methods      = [];
         $giftCardInfo = [];
         $loyaltyInfo  = [];
@@ -195,6 +201,23 @@ class Totals extends Template
             }
         }
         return [implode(', ', $methods), $giftCardInfo, $loyaltyInfo];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLines()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(),"Lines");
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getOrderPayments()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(),"Payments");
     }
 
     /**

@@ -37,6 +37,10 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName TERMS_AND_CONDITION_U_R_L()
  * @$method static FeatureFlagName TERMS_AND_CONDITION_VERSION()
  * @$method static FeatureFlagName OPEN_GATE()
+ * @$method static FeatureFlagName CLOSE_GATE()
+ * @$method static FeatureFlagName PRIVACY_POLICY_U_R_L()
+ * @$method static FeatureFlagName PRIVACY_POLICY_VERSION()
+ * @$method static FeatureFlagName SHOW_CUSTOMER_SURVEY()
  * @$method static FeatureFlagName ENABLE_PLATFORM_PAYMENT()
  * @$method static FeatureFlagName PLATFORM_PAYMENT_CURRENCY_CODE()
  * @$method static FeatureFlagName PLATFORM_PAYMENT_COUNTRY_CODE()
@@ -44,12 +48,20 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName GOOGLE_PAY_ALLOWED_AUTH_METHODS_JSON()
  * @$method static FeatureFlagName GOOGLE_PAY_ALLOWED_CARD_NETWORKS_JSON()
  * @$method static FeatureFlagName GOOGLE_PAY_MERCHANT_NAME()
+ * @$method static FeatureFlagName CARD_PAYMENT_METHOD()
+ * @$method static FeatureFlagName LS_PAY_SERVICE_IP_ADDRESS()
+ * @$method static FeatureFlagName LS_PAY_SERVICE_PORT()
+ * @$method static FeatureFlagName LS_PAY_PLUGIN_ID()
  * @$method static FeatureFlagName AUDKENNI_BASE_U_R_L()
  * @$method static FeatureFlagName AUDKENNI_CLIENT_ID()
  * @$method static FeatureFlagName AUDKENNI_REDIRECT_U_R_L()
  * @$method static FeatureFlagName AUDKENNI_SECRET()
  * @$method static FeatureFlagName AUDKENNI_MESSAGE_TO_USER()
  * @$method static FeatureFlagName AUDKENNI_LOGIN_ENABLED()
+ * @$method static FeatureFlagName GOOGLE_LOGIN_ENABLED()
+ * @$method static FeatureFlagName GOOGLE_IOS_CLIENT_ID()
+ * @$method static FeatureFlagName FACEBOOK_LOGIN_ENABLED()
+ * @$method static FeatureFlagName APPLE_LOGIN_ENABLED()
  */
 class FeatureFlagName extends Enum
 {
@@ -106,6 +118,14 @@ class FeatureFlagName extends Enum
 
     public const OPEN_GATE = 'OpenGate';
 
+    public const CLOSE_GATE = 'CloseGate';
+
+    public const PRIVACY_POLICY_U_R_L = 'PrivacyPolicyURL';
+
+    public const PRIVACY_POLICY_VERSION = 'PrivacyPolicyVersion';
+
+    public const SHOW_CUSTOMER_SURVEY = 'ShowCustomerSurvey';
+
     public const ENABLE_PLATFORM_PAYMENT = 'EnablePlatformPayment';
 
     public const PLATFORM_PAYMENT_CURRENCY_CODE = 'PlatformPaymentCurrencyCode';
@@ -120,6 +140,14 @@ class FeatureFlagName extends Enum
 
     public const GOOGLE_PAY_MERCHANT_NAME = 'GooglePayMerchantName';
 
+    public const CARD_PAYMENT_METHOD = 'CardPaymentMethod';
+
+    public const LS_PAY_SERVICE_IP_ADDRESS = 'LsPayServiceIpAddress';
+
+    public const LS_PAY_SERVICE_PORT = 'LsPayServicePort';
+
+    public const LS_PAY_PLUGIN_ID = 'LsPayPluginId';
+
     public const AUDKENNI_BASE_U_R_L = 'AudkenniBaseURL';
 
     public const AUDKENNI_CLIENT_ID = 'AudkenniClientId';
@@ -131,6 +159,14 @@ class FeatureFlagName extends Enum
     public const AUDKENNI_MESSAGE_TO_USER = 'AudkenniMessageToUser';
 
     public const AUDKENNI_LOGIN_ENABLED = 'AudkenniLoginEnabled';
+
+    public const GOOGLE_LOGIN_ENABLED = 'GoogleLoginEnabled';
+
+    public const GOOGLE_IOS_CLIENT_ID = 'GoogleIosClientId';
+
+    public const FACEBOOK_LOGIN_ENABLED = 'FacebookLoginEnabled';
+
+    public const APPLE_LOGIN_ENABLED = 'AppleLoginEnabled';
 
 
 }

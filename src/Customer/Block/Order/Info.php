@@ -143,9 +143,9 @@ class Info extends Template
     {
         $order = $this->getOrder();
         if ($isBillingAddress == true) {
-            $orderAddress = $order->getContactAddress();
+            $orderAddress = $this->orderHelper->getParameterValues($order,"ContactAddress");
         } else {
-            $orderAddress = $order->getShipToAddress();
+            $orderAddress = $this->orderHelper->getParameterValues($order,"ShipToAddress");
         }
         $address = '';
         if (!empty($orderAddress) && !empty($orderAddress->getCountry())) {
@@ -181,10 +181,14 @@ class Info extends Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $order = $this->getOrder();
+        $order           = $this->getOrder();
+        $customerOrderNo = null;
         if ($order) {
-            $orderId = $order->getCustomerOrderNo() ?: $order->getId();
-            if (!empty($order->getCustomerOrderNo())) {
+
+            $orderId = $this->orderHelper->getParameterValues($order,"CustomerOrderNo") ?: $this->orderHelper->getParameterValues($order,"Id");
+            $customerOrderNo = $this->orderHelper->getParameterValues($order,"CustomerOrderNo");
+
+            if (!empty($customerOrderNo)) {
                 $type = __('Order');
             } else {
                 $type = $order->getIdType();
@@ -205,6 +209,27 @@ class Info extends Template
     }
 
     /**
+     * @return mixed
+     */
+    public function getOrderStatus()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(),"Status");
+    }
+
+    public function getClickAndCollectOrder()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(),"ClickAndCollectOrder");
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDocRegistraionTime()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(),"DocumentRegTime");
+    }
+
+    /**
      * Get selected shipment method for the order, use the one in magento if available
      *
      * @return Phrase|string
@@ -212,7 +237,7 @@ class Info extends Template
     public function getShippingDescription()
     {
         $magentoOrder = $this->getMagOrder();
-        $status       = $this->getOrder()->getClickAndCollectOrder();
+        $status       = $this->getClickAndCollectOrder();
 
         if ($magentoOrder) {
             return $magentoOrder->getShippingDescription();
@@ -234,7 +259,7 @@ class Info extends Template
      */
     public function getPaymentDescription()
     {
-        $paymentLines      = $this->getOrder()->getPayments();
+        $paymentLines      = $this->getOrderPayments();
         $methods           = $giftCardInfo = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         foreach ($paymentLines as $line) {
@@ -274,6 +299,14 @@ class Info extends Template
     }
 
     /**
+     * @return mixed
+     */
+    public function getOrderPayments()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(),"Payments");
+    }
+
+    /**
      * @param $points
      * @return string
      */
@@ -295,10 +328,10 @@ class Info extends Template
     /**
      * Formulating order printing url
      *
-     * @param SalesEntry $order
+     * @param $order
      * @return string
      */
-    public function getPrintUrl(SalesEntry $order)
+    public function getPrintUrl($order)
     {
         return $order ? $this->getUrl('customer/order/print', ['order_id' => $order->getId()]) : '';
     }

@@ -25,6 +25,11 @@ class SalesEntryPayment
     protected $CardNo = null;
 
     /**
+     * @property string $CardType
+     */
+    protected $CardType = null;
+
+    /**
      * @property string $CurrencyCode
      */
     protected $CurrencyCode = null;
@@ -83,6 +88,24 @@ class SalesEntryPayment
     public function getCardNo()
     {
         return $this->CardNo;
+    }
+
+    /**
+     * @param string $CardType
+     * @return $this
+     */
+    public function setCardType($CardType)
+    {
+        $this->CardType = $CardType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardType()
+    {
+        return $this->CardType;
     }
 
     /**

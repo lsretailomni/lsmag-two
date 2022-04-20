@@ -10,6 +10,7 @@ use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Invoice;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Block being used for order detail links
@@ -38,12 +39,15 @@ class Link extends Current
         Context $context,
         DefaultPathInterface $defaultPath,
         OrderHelper $orderHelper,
+        StoreManagerInterface $storeManager,
         Registry $registry,
         array $data = []
     ) {
         parent::__construct($context, $defaultPath, $data);
         $this->_registry   = $registry;
+        $this->context = $context;
         $this->orderHelper = $orderHelper;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -73,7 +77,8 @@ class Link extends Current
      */
     public function getHref()
     {
-        return $this->getUrl($this->getPath(), ['order_id' => $this->getOrder()->getId()]);
+        $orderId = $this->orderHelper->getParameterValues($this->getOrder(),"Id");
+        return $this->getUrl($this->getPath(), ['order_id' => $orderId]);
     }
 
     /**
@@ -83,6 +88,7 @@ class Link extends Current
      */
     protected function _toHtml()
     {
+        $orderId = $this->orderHelper->getParameterValues($this->getOrder(),"Id");
         $order = $this->getMagOrder();
         if (!empty($order)) {
             if ($this->getKey() == "Invoices" && !($order->hasInvoices())) {
@@ -93,7 +99,7 @@ class Link extends Current
                 return '';
             }
 
-            if ($this->getKey() == "Creditmemos" && !($this->orderHelper->hasReturnSale($this->getOrder()->getId()))) {
+            if ($this->getKey() == "Creditmemos" && !strpos($this->getCurrentUrl(),"creditmemo") && !($this->orderHelper->hasReturnSale($orderId))) {
                 return '';
             }
 
@@ -107,5 +113,13 @@ class Link extends Current
         } else {
             return '';
         }
+    }
+
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getCurrentUrl() {
+        return $this->storeManager->getStore()->getCurrentUrl();
     }
 }

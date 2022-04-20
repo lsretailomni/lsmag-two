@@ -298,6 +298,26 @@ class OrderHelper extends AbstractHelper
         return $omniAddress;
     }
 
+
+    /**
+     * @param $orderObj
+     * @param $param
+     * @return mixed
+     */
+    public function getParameterValues($orderObj, $param)
+    {
+        $getParam = 'get'.$param;
+        if(!property_exists($orderObj,$param)) {
+            foreach ($orderObj as $order) {
+                $value = $order->$getParam();
+            }
+        } else {
+            $value = $orderObj->$getParam();
+        }
+
+        return $value;
+    }
+
     /**
      * @param Model\Order $order
      * @param $cardId
@@ -428,7 +448,7 @@ class OrderHelper extends AbstractHelper
     {
         $this->setCurrentOrderInRegistry($orderId);
         $order = $this->getOrder();
-        return $order->getHasReturnSale();
+        return $this->getParameterValues($this->getOrder(),"HasReturnSale");
     }
 
 
@@ -713,10 +733,11 @@ class OrderHelper extends AbstractHelper
     {
         // This is to support backward compatibility of Omni
         if (version_compare($this->lsr->getOmniVersion(), '4.6.0', '>')) {
-            return $salesEntry->getCustomerOrderNo();
+            $customerOrderNo = $this->getParameterValues($salesEntry,"CustomerOrderNo");
+            return $customerOrderNo;
         }
 
-        return $salesEntry->getId();
+        return $this->getParameterValues($salesEntry,"Id");
     }
 
     /**

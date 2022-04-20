@@ -95,6 +95,11 @@ class SalesEntryLine extends Entity
     protected $StoreId = null;
 
     /**
+     * @property string $StoreName
+     */
+    protected $StoreName = null;
+
+    /**
      * @property float $TaxAmount
      */
     protected $TaxAmount = null;
@@ -410,6 +415,24 @@ class SalesEntryLine extends Entity
     public function getStoreId()
     {
         return $this->StoreId;
+    }
+
+    /**
+     * @param string $StoreName
+     * @return $this
+     */
+    public function setStoreName($StoreName)
+    {
+        $this->StoreName = $StoreName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreName()
+    {
+        return $this->StoreName;
     }
 
     /**
