@@ -78,7 +78,7 @@ class SyncPrice extends ProductCreateTask
                                 }
                                 $productData = $this->productRepository->get($sku, true, $this->store->getId());
                                 if (isset($productData)) {
-                                    if ($replPrice->getQtyPerUnitOfMeasure() == 0) {
+                                    if (empty($replPrice->getUnitOfMeasure())) {
                                         $baseUnitOfMeasure = $productData->getData('uom');
                                         $itemPriceCount    = $this->getItemPriceCount($replPrice->getItemId());
                                         $productData->setPrice($replPrice->getUnitPriceInclVat());

@@ -469,12 +469,17 @@ class ProductCreateTask
                         /** @var ReplItem $item */
                         foreach ($items->getItems() as $item) {
                             try {
-                                $productData     = $this->productRepository->get(
+                                $taxClass    = null;
+                                $productData = $this->productRepository->get(
                                     $item->getNavId(),
                                     false,
                                     $store->getId()
                                 );
-                                $taxClass = $this->replicationHelper->getTaxClassGivenName($item->getTaxItemGroupId());
+                                if (!empty($item->getTaxItemGroupId())) {
+                                    $taxClass = $this->replicationHelper->getTaxClassGivenName(
+                                        $item->getTaxItemGroupId()
+                                    );
+                                }
                                 $websitesProduct = $productData->getWebsiteIds();
                                 /** Check if item exist in the website and assign it if it doesn't exist*/
                                 if (!in_array($store->getWebsiteId(), $websitesProduct, true)) {
@@ -485,7 +490,9 @@ class ProductCreateTask
                                 $productData->setMetaTitle($item->getDescription());
                                 $productData->setDescription($item->getDetails());
                                 $productData->setWeight($item->getGrossWeight());
-                                $productData->setTaxClassId($taxClass->getClassId());
+                                if (!empty($taxClass)) {
+                                    $productData->setTaxClassId($taxClass->getClassId());
+                                }
                                 $productData->setAttributeSetId($productData->getAttributeSetId());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
@@ -504,7 +511,11 @@ class ProductCreateTask
                             } catch (NoSuchEntityException $e) {
                                 /** @var Product $product */
                                 $product = $this->productFactory->create();
-                                $taxClass = $this->replicationHelper->getTaxClassGivenName($item->getTaxItemGroupId());
+                                if (!empty($item->getTaxItemGroupId())) {
+                                    $taxClass = $this->replicationHelper->getTaxClassGivenName(
+                                        $item->getTaxItemGroupId()
+                                    );
+                                }
                                 $product->setStoreId($store->getId());
                                 $product->setWebsiteIds([$store->getWebsiteId()]);
                                 $product->setName($item->getDescription());
@@ -516,7 +527,9 @@ class ProductCreateTask
                                 $product->setVisibility(Visibility::VISIBILITY_BOTH);
                                 $product->setWeight($item->getGrossWeight());
                                 $product->setDescription($item->getDetails());
-                                $product->setTaxClassId($taxClass->getClassId());
+                                if (!empty($taxClass)) {
+                                    $product->setTaxClassId($taxClass->getClassId());
+                                }
                                 $itemPrice = $this->getItemPrice($item->getNavId());
                                 if (isset($itemPrice)) {
                                     $product->setPrice($itemPrice->getUnitPriceInclVat());
@@ -1005,22 +1018,24 @@ class ProductCreateTask
                 $itemData             = $this->_getItem($item);
                 $productVariants      = $this->getNewOrUpdatedProductVariants(-1, $item);
                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item);
-                $totalUomCodes        = $this->replicationHelper->getUomCodes(
-                    $itemData->getNavId(),
-                    $this->store->getId()
-                );
-                if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
-                    $productVariants = $this->getProductVariants($itemData->getNavId());
-                }
-                if (!empty($productVariants) || count($totalUomCodes[$itemData->getNavId()]) > 1) {
-                    $this->createConfigurableProducts(
-                        $productData,
-                        $itemData,
-                        $itemBarcodes,
-                        $productVariants,
-                        $totalUomCodes,
-                        $uomCodesNotProcessed
+                if (!empty($itemData)) {
+                    $totalUomCodes = $this->replicationHelper->getUomCodes(
+                        $itemData->getNavId(),
+                        $this->store->getId()
                     );
+                    if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
+                        $productVariants = $this->getProductVariants($itemData->getNavId());
+                    }
+                    if (!empty($productVariants) || count($totalUomCodes[$itemData->getNavId()]) > 1) {
+                        $this->createConfigurableProducts(
+                            $productData,
+                            $itemData,
+                            $itemBarcodes,
+                            $productVariants,
+                            $totalUomCodes,
+                            $uomCodesNotProcessed
+                        );
+                    }
                 }
             } catch (Exception $e) {
                 $this->logger->debug('Problem with sku: ' . $item . ' in ' . __METHOD__);
@@ -1689,12 +1704,19 @@ class ProductCreateTask
         $productV->setStatus(Status::STATUS_ENABLED);
         $productV->setTypeId(Type::TYPE_SIMPLE);
         if ($value) {
-            $d1 = (($value->getVariantDimension1()) ?: '');
-            $d2 = (($value->getVariantDimension2()) ?: '');
-            $d3 = (($value->getVariantDimension3()) ?: '');
-            $d4 = (($value->getVariantDimension4()) ?: '');
-            $d5 = (($value->getVariantDimension5()) ?: '');
-            $d6 = (($value->getVariantDimension6()) ?: '');
+            $variantDimension1 = $value->getVariantDimension1();
+            $variantDimension2 = $value->getVariantDimension2();
+            $variantDimension3 = $value->getVariantDimension3();
+            $variantDimension4 = $value->getVariantDimension4();
+            $variantDimension5 = $value->getVariantDimension5();
+            $variantDimension6 = $value->getVariantDimension6();
+
+            $d1 = (($variantDimension1 != '' && $variantDimension1 != null) ? $variantDimension1 : '');
+            $d2 = (($variantDimension2 != '' && $variantDimension2 != null) ? $variantDimension2 : '');
+            $d3 = (($variantDimension3 != '' && $variantDimension3 != null) ? $variantDimension3 : '');
+            $d4 = (($variantDimension4 != '' && $variantDimension4 != null) ? $variantDimension4 : '');
+            $d5 = (($variantDimension5 != '' && $variantDimension5 != null) ? $variantDimension5 : '');
+            $d6 = (($variantDimension6 != '' && $variantDimension6 != null) ? $variantDimension6 : '');
         }
         foreach ($attributesCode as $keyCode => $valueCode) {
             if ($valueCode == LSR::LS_UOM_ATTRIBUTE) {
@@ -1733,11 +1755,11 @@ class ProductCreateTask
             $itemStock = $this->getInventoryStatus($item->getNavId(), $this->webStoreId, null);
         }
         $productV->setStockData([
-                                    'use_config_manage_stock' => 1,
-                                    'is_in_stock'             => ($itemStock > 0) ? 1 : 0,
-                                    'is_qty_decimal'          => 0,
-                                    'qty'                     => $itemStock
-                                ]);
+            'use_config_manage_stock' => 1,
+            'is_in_stock'             => ($itemStock > 0) ? 1 : 0,
+            'is_qty_decimal'          => 0,
+            'qty'                     => $itemStock
+        ]);
         try {
             /** @var ProductInterface $productSaved */
             // @codingStandardsIgnoreStart
@@ -1759,12 +1781,19 @@ class ProductCreateTask
     private function validateVariant($attributesCode, $value)
     {
         $isVariantContainNull = false;
-        $d1                   = (($value->getVariantDimension1()) ?: '');
-        $d2                   = (($value->getVariantDimension2()) ?: '');
-        $d3                   = (($value->getVariantDimension3()) ?: '');
-        $d4                   = (($value->getVariantDimension4()) ?: '');
-        $d5                   = (($value->getVariantDimension5()) ?: '');
-        $d6                   = (($value->getVariantDimension6()) ?: '');
+        $variantDimension1    = $value->getVariantDimension1();
+        $variantDimension2    = $value->getVariantDimension2();
+        $variantDimension3    = $value->getVariantDimension3();
+        $variantDimension4    = $value->getVariantDimension4();
+        $variantDimension5    = $value->getVariantDimension5();
+        $variantDimension6    = $value->getVariantDimension6();
+
+        $d1 = (($variantDimension1 != '' && $variantDimension1 != null) ? $variantDimension1 : '');
+        $d2 = (($variantDimension2 != '' && $variantDimension2 != null) ? $variantDimension2 : '');
+        $d3 = (($variantDimension3 != '' && $variantDimension3 != null) ? $variantDimension3 : '');
+        $d4 = (($variantDimension4 != '' && $variantDimension4 != null) ? $variantDimension4 : '');
+        $d5 = (($variantDimension5 != '' && $variantDimension5 != null) ? $variantDimension5 : '');
+        $d6 = (($variantDimension6 != '' && $variantDimension6 != null) ? $variantDimension6 : '');
 
         /** Check if all configurable attributes have value or not. */
         foreach ($attributesCode as $keyCode => $valueCode) {
