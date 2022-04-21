@@ -4,18 +4,21 @@
 
 /** @var Items $block */
 $order = $block->getMagOrder();
+$centralOrder = $block->getOrder();
 
 use \Ls\Customer\Block\Order\Items;
 use Magento\Sales\Model\Order\Item;
-
 ?>
 <div class="actions-toolbar">
-    <a href="<?php echo $block->escapeUrl($block->getPrintAllCreditmemosUrl($order)) ?>"
+    <a href="<?php echo $block->escapeUrl($block->getPrintAllRefundsUrl($centralOrder)) ?>"
        class="action print"
        target="_blank"
        rel="noopener">
-        <span><?= $block->escapeHtml(__('Print All Refunds')) ?></span>
+        <span><?= $block->escapeHtml(__('Print Refund')) ?></span>
     </a>
+</div>
+<div class="order-title">
+    <strong><?= $block->escapeHtml(__('Refund #')) ?><?= $block->escapeHtml($block->getRefundId($centralOrder)) ?> </strong>
 </div>
 <div class="table-wrapper order-items">
     <table class="data table table-order-items" id="my-orders-table" summary="<?= /* @escapeNotVerified */

@@ -349,7 +349,15 @@ class Info extends Template
      */
     public function getPrintUrl($order)
     {
-        return $order ? $this->getUrl('customer/order/print', ['order_id' => $order->getId()]) : '';
+        $typeId = $this->orderHelper->getParameterValues($order,"IdType");
+        $orderId = $this->getRequest()->getParam('order_id');
+        return $order ? $this->getUrl(
+            'customer/order/print',
+            [
+                'order_id' => $orderId,
+                'type'     => $typeId
+            ]
+        ) : '';
     }
 
     /**
@@ -360,7 +368,8 @@ class Info extends Template
      */
     public function getReorderUrl($order)
     {
-        return $order ? $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]) : '';
+        $orderId = $this->getRequest()->getParam('order_id');
+        return $order ? $this->getUrl('sales/order/reorder', ['order_id' => $orderId]) : '';
     }
 
     /**

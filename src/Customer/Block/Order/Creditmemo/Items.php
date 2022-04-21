@@ -3,6 +3,7 @@
 namespace Ls\Customer\Block\Order\Creditmemo;
 
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Items\AbstractItems;
@@ -35,24 +36,32 @@ class Items extends AbstractItems
     private $itemCollection;
 
     /**
+     * @var OrderHelper
+     */
+    public $orderHelper;
+
+    /**
      * Items constructor.
      * @param Context $context
      * @param Registry $registry
      * @param LSR $lsr
+     * @param CollectionFactory $itemCollectionFactory
+     * @param OrderHelper $orderHelper
      * @param array $data
-     * @param CollectionFactory|null $itemCollectionFactory
      */
     public function __construct(
         Context $context,
         Registry $registry,
         LSR $lsr,
         CollectionFactory $itemCollectionFactory,
+        OrderHelper $orderHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->coreRegistry          = $registry;
         $this->lsr                   = $lsr;
         $this->itemCollectionFactory = $itemCollectionFactory;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -113,6 +122,31 @@ class Items extends AbstractItems
     public function getCustomItemRenderer($item)
     {
         return $this->getChildBlock("custom_order_item_renderer")->setData("item", $item)->toHtml();
+    }
+
+    /**
+     * @param $order
+     * @return mixed
+     */
+    public function getRefundId($order)
+    {
+        return $this->orderHelper->getParameterValues($order,"Id");
+    }
+
+    /**
+     * @param $order
+     * @return string
+     */
+    public function getPrintAllRefundsUrl($order)
+    {
+        $orderId = $this->getRequest()->getParam('order_id');
+        $idType  = $this->orderHelper->getParameterValues($order,"IdType");
+        return $this->getUrl('*/*/printRefunds',
+            [
+                'order_id' => $orderId,
+                'type'     => $idType
+            ]
+        );
     }
 
     /**

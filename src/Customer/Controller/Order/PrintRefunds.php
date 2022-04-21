@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Controller\Order;
 
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\ResponseInterface;
@@ -19,9 +19,9 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Controller being used for customer order print action
+ * Controller being used for customer order print shipment
  */
-class PrintAction extends Action
+class PrintRefunds extends Action
 {
     /**
      * @var ManagerInterface
@@ -96,12 +96,18 @@ class PrintAction extends Action
             if (empty($type)) {
                 $type = DocumentIdType::ORDER;
             }
+
             $response = $this->setCurrentOrderInRegistry($orderId, $type);
 
-            if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
+            if ($response === null || !$this->orderHelper->isAuthorizedForReturnOrder($response)) {
                 return $this->_redirect('sales/order/history/');
             }
+
+            $this->setCurrentMagOrderReturnInRegistry($response);
+
             $this->registry->register('current_invoice_option', false);
+            $this->registry->register('current_shipment_option', false);
+            $this->registry->register('hide_shipping_links', true);
         }
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -118,7 +124,7 @@ class PrintAction extends Action
      */
     public function setCurrentOrderInRegistry($orderId, $type)
     {
-        $response = $this->orderHelper->getOrderDetailsAgainstId($orderId, $type);
+        $response = $this->orderHelper->getReturnDetailsAgainstId($orderId, $type);
 
         if ($response) {
             $this->setOrderInRegistry($response);
@@ -133,5 +139,36 @@ class PrintAction extends Action
     public function setOrderInRegistry($order)
     {
         $this->registry->register('current_order', $order);
+    }
+
+    /**
+     * Get respective magento order given Central sales entry Object
+     *
+     * @param $salesEntry
+     */
+    public function setCurrentMagOrderReturnInRegistry($salesEntry)
+    {
+        $order = $this->orderHelper->getOrderByDocumentId($salesEntry);
+        $this->registry->register('current_mag_order', $order);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function hideShippingLinks()
+    {
+        return $this->registry->registry('hide_shipping_links');
+    }
+
+    /**
+     * Get respective magento order given Central sales entry Object
+     *
+     * @param $salesEntry
+     */
+    public function setCurrentMagOrderInRegistry($salesEntry)
+    {
+        $order = $this->orderHelper->getOrderByDocumentId($salesEntry);
+        $this->registry->unregister('current_mag_order');
+        $this->registry->register('current_mag_order', $order);
     }
 }
