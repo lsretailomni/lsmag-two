@@ -41,7 +41,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\Backend\Media\EntryConverterPool;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
-use Magento\Catalog\Model\Product\Gallery\UpdateHandler;
+use Magento\Catalog\Model\Product\Gallery\UpdateHandlerFactory;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ProductRepository\MediaGalleryProcessor;
@@ -181,9 +181,9 @@ class ProductCreateTask
     public $mediaGalleryProcessor;
 
     /**
-     * @var UpdateHandler
+     * @var UpdateHandlerFactory
      */
-    public $updateHandler;
+    public $updateHandlerFactory;
     /**
      * @var EntryConverterPool
      */
@@ -236,7 +236,11 @@ class ProductCreateTask
     public $attributeSetGroupFactory;
 
     /**
-     * ProductCreateTask constructor.
+     * @var Product\Media\Config
+     */
+    public $mediaConfig;
+
+    /**
      * @param Config $eavConfig
      * @param ConfigurableProTypeModel $configurable
      * @param Attribute $attribute
@@ -271,7 +275,7 @@ class ProductCreateTask
      * @param CollectionFactory $collectionFactory
      * @param ReplImageLinkCollectionFactory $replImageLinkCollectionFactory
      * @param MediaGalleryProcessor $mediaGalleryProcessor
-     * @param UpdateHandler $updateHandler
+     * @param UpdateHandlerFactory $updateHandlerFactory
      * @param EntryConverterPool $entryConverterPool
      * @param Factory $optionsFactory
      * @param AttributeManagement $attributeManagement
@@ -280,51 +284,53 @@ class ProductCreateTask
      * @param EavAttributeCollectionFactory $eavAttributeCollectionFactory
      * @param ReplItemVendorCollectionFactory $replItemVendorCollectionFactory
      * @param GroupFactory $attributeSetGroupFactory
+     * @param Product\Media\Config $mediaConfig
      */
     public function __construct(
-        Config $eavConfig,
-        Configurable $configurable,
-        Attribute $attribute,
-        ProductInterfaceFactory $productInterfaceFactory,
-        ProductRepositoryInterface $productRepository,
-        ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry,
-        ImageContentFactory $imageContent,
-        ReplItemRepository $itemRepository,
-        ReplItemVariantRegistrationRepository $replItemVariantRegistrationRepository,
-        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
-        ReplBarcodeRepository $replBarcodeRepository,
-        ReplPriceRepository $replPriceRepository,
-        ReplItemUnitOfMeasure $replItemUnitOfMeasureRepository,
-        ReplInvStatusRepository $replInvStatusRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
-        LoyaltyHelper $loyaltyHelper,
-        ReplicationHelper $replicationHelper,
-        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
-        ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface,
-        Logger $logger,
-        LSR $LSR,
-        ReplInvStatusCollectionFactory $replInvStatusCollectionFactory,
-        ReplPriceCollectionFactory $replPriceCollectionFactory,
-        ReplItemUomCollectionFactory $replItemUomCollectionFactory,
-        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
-        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
+        Config                                       $eavConfig,
+        Configurable                                 $configurable,
+        Attribute                                    $attribute,
+        ProductInterfaceFactory                      $productInterfaceFactory,
+        ProductRepositoryInterface                   $productRepository,
+        ProductAttributeMediaGalleryEntryInterface   $attributeMediaGalleryEntry,
+        ImageContentFactory                          $imageContent,
+        ReplItemRepository                           $itemRepository,
+        ReplItemVariantRegistrationRepository        $replItemVariantRegistrationRepository,
+        ReplHierarchyLeafRepository                  $replHierarchyLeafRepository,
+        ReplBarcodeRepository                        $replBarcodeRepository,
+        ReplPriceRepository                          $replPriceRepository,
+        ReplItemUnitOfMeasure                        $replItemUnitOfMeasureRepository,
+        ReplInvStatusRepository                      $replInvStatusRepository,
+        SearchCriteriaBuilder                        $searchCriteriaBuilder,
+        ReplImageLinkRepositoryInterface             $replImageLinkRepositoryInterface,
+        LoyaltyHelper                                $loyaltyHelper,
+        ReplicationHelper                            $replicationHelper,
+        ReplAttributeValueRepositoryInterface        $replAttributeValueRepositoryInterface,
+        ReplLoyVendorItemMappingRepositoryInterface  $replVendorItemMappingRepositoryInterface,
+        Logger                                       $logger,
+        LSR                                          $LSR,
+        ReplInvStatusCollectionFactory               $replInvStatusCollectionFactory,
+        ReplPriceCollectionFactory                   $replPriceCollectionFactory,
+        ReplItemUomCollectionFactory                 $replItemUomCollectionFactory,
+        ReplHierarchyLeafCollectionFactory           $replHierarchyLeafCollectionFactory,
+        ReplAttributeValueCollectionFactory          $replAttributeValueCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
-        StockRegistryInterface $stockRegistry,
-        CategoryRepositoryInterface $categoryRepository,
-        CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
-        CollectionFactory $collectionFactory,
-        ReplImageLinkCollectionFactory $replImageLinkCollectionFactory,
-        MediaGalleryProcessor $mediaGalleryProcessor,
-        UpdateHandler $updateHandler,
-        EntryConverterPool $entryConverterPool,
-        Factory $optionsFactory,
-        AttributeManagement $attributeManagement,
-        AttributeGroupRepositoryInterface $attributeGroupRepository,
-        ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory,
-        EavAttributeCollectionFactory $eavAttributeCollectionFactory,
-        ReplItemVendorCollectionFactory $replItemVendorCollectionFactory,
-        GroupFactory $attributeSetGroupFactory
+        StockRegistryInterface                       $stockRegistry,
+        CategoryRepositoryInterface                  $categoryRepository,
+        CategoryLinkRepositoryInterface              $categoryLinkRepositoryInterface,
+        CollectionFactory                            $collectionFactory,
+        ReplImageLinkCollectionFactory               $replImageLinkCollectionFactory,
+        MediaGalleryProcessor                        $mediaGalleryProcessor,
+        UpdateHandlerFactory                         $updateHandlerFactory,
+        EntryConverterPool                           $entryConverterPool,
+        Factory                                      $optionsFactory,
+        AttributeManagement                          $attributeManagement,
+        AttributeGroupRepositoryInterface            $attributeGroupRepository,
+        ReplItemUnitOfMeasureSearchResultsFactory    $replItemUnitOfMeasureSearchResultsFactory,
+        EavAttributeCollectionFactory                $eavAttributeCollectionFactory,
+        ReplItemVendorCollectionFactory              $replItemVendorCollectionFactory,
+        GroupFactory                                 $attributeSetGroupFactory,
+        Product\Media\Config                         $mediaConfig
     ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
@@ -360,7 +366,7 @@ class ProductCreateTask
         $this->categoryRepository                        = $categoryRepository;
         $this->replImageLinkCollectionFactory            = $replImageLinkCollectionFactory;
         $this->mediaGalleryProcessor                     = $mediaGalleryProcessor;
-        $this->updateHandler                             = $updateHandler;
+        $this->updateHandlerFactory                      = $updateHandlerFactory;
         $this->entryConverterPool                        = $entryConverterPool;
         $this->optionsFactory                            = $optionsFactory;
         $this->attributeManagement                       = $attributeManagement;
@@ -369,6 +375,7 @@ class ProductCreateTask
         $this->eavAttributeCollectionFactory             = $eavAttributeCollectionFactory;
         $this->replItemVendorCollectionFactory           = $replItemVendorCollectionFactory;
         $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
+        $this->mediaConfig                               = $mediaConfig;
     }
 
     /**

@@ -1286,7 +1286,7 @@ class ContactHelper extends AbstractHelper
                 $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
                 if (!empty($password)) {
                     $customerPost['password'] = $password;
-                    $resetCode                = $this->forgotPassword($customer->getEmail());
+                    $resetCode                = $this->forgotPassword($customer);
                     $customer->setData('lsr_resetcode', $resetCode);
                     $this->resetPassword($customer, $customerPost);
                     $customer->setData('lsr_resetcode', null);
