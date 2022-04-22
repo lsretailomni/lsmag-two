@@ -6,6 +6,7 @@ use Laminas\Json\Json;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Helper\StockHelper;
+use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\ConfigProviderInterface;
@@ -58,6 +59,11 @@ class DataProvider implements ConfigProviderInterface
     public $stockHelper;
 
     /**
+     * @var StoreHelper
+     */
+    public $storeHelper;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
@@ -73,7 +79,8 @@ class DataProvider implements ConfigProviderInterface
         PageFactory $resultPageFactory,
         LSR $lsr,
         Session $checkoutSession,
-        StockHelper $stockHelper
+        StockHelper $stockHelper,
+        StoreHelper $storeHelper
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
@@ -82,6 +89,7 @@ class DataProvider implements ConfigProviderInterface
         $this->lsr                    = $lsr;
         $this->checkoutSession        = $checkoutSession;
         $this->stockHelper            = $stockHelper;
+        $this->storeHelper            = $storeHelper;
     }
 
     /**
@@ -125,15 +133,26 @@ class DataProvider implements ConfigProviderInterface
             $stores['storesInfo'] = $storesData;
             $encodedStores        = Json::encode($stores);
 
+            $enabled = $this->lsr->isPickupTimeslotsEnabled();
+            if (empty($this->checkoutSession->getStorePickupHours())) {
+                $enabled = 0;
+            }
+
             $config                    = [
                 'shipping' => [
-                    'select_store' => [
+                    'select_store'          => [
                         'maps_api_key'         => $mapsApiKey,
                         'lat'                  => (float)$defaultLatitude,
                         'lng'                  => (float)$defaultLongitude,
                         'zoom'                 => (int)$defaultZoom,
                         'stores'               => $encodedStores,
                         'available_store_only' => $this->availableStoresOnlyEnabled()
+                    ],
+                    'pickup_date_timeslots' => [
+                        'options'           => $this->checkoutSession->getStorePickupHours(),
+                        'enabled'           => $enabled,
+                        'current_web_store' => $this->lsr->getActiveWebStore(),
+                        'store_type' => 0
                     ]
                 ]
             ];
@@ -175,17 +194,34 @@ class DataProvider implements ConfigProviderInterface
      */
     public function getStores()
     {
-        $storesData = $this->storeCollectionFactory
+        $storeHoursArray = [];
+        $storesData      = $this->storeCollectionFactory
             ->create()
             ->addFieldToFilter('scope_id', $this->getStoreId())
             ->addFieldToFilter('ClickAndCollect', 1);
+
+        $allStores = $this->storeHelper->getAllStores($this->lsr->getCurrentStoreId());
+        foreach ($allStores as $store) {
+            if ($store->getIsClickAndCollect() || $store->getIsWebStore()) {
+                $storeHoursArray[$store->getId()] = $this->storeHelper->formatDateTimeSlotsValues(
+                    $store->getStoreHours()
+                );
+            }
+        }
+
+        if (!empty($storeHoursArray)) {
+            $this->checkoutSession->setStorePickupHours($storeHoursArray);
+        }
 
         if (!$this->availableStoresOnlyEnabled()) {
             return $storesData;
         }
 
+        $storeHoursArray = [];
+
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
         list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
+
 
         if ($response) {
             if (is_object($response)) {

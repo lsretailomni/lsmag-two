@@ -8,7 +8,8 @@
             "ls_gift_card_no": true,
             "ls_gift_card_amount_used": true,
             "ls_one_list_id": true,
-            "basket_response": true
+            "basket_response": true,
+            "pickup_date_timeslot": true
         }
     },
     "sales_order": {
@@ -19,7 +20,8 @@
             "ls_points_spent": true,
             "ls_gift_card_no": true,
             "ls_gift_card_amount_used": true,
-            "document_id": true
+            "document_id": true,
+            "pickup_date_timeslot": true
         }
     },
     "sales_invoice": {
@@ -41,6 +43,11 @@
     "sales_order_grid": {
         "column": {
             "document_id": true
+        }
+    },
+    "sales_shipment_track": {
+        "column": {
+            "ls_central_shipping_id": true
         }
     },
     "cron_schedule": {

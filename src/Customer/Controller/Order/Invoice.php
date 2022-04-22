@@ -90,7 +90,8 @@ class Invoice extends Action
 
         if ($this->request->getParam('order_id')) {
             $orderId  = $this->request->getParam('order_id');
-            $response = $this->setCurrentOrderInRegistry($orderId);
+            $type     = $this->request->getParam('type');
+            $response = $this->setCurrentOrderInRegistry($orderId, $type);
 
             if ($response === null || !$this->orderHelper->isAuthorizedForOrder($response)) {
                 return $this->_redirect('sales/order/history/');
@@ -109,12 +110,13 @@ class Invoice extends Action
      * Set currentOrder into registry
      *
      * @param $orderId
+     * @param $type
      * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
      * @throws InvalidEnumException
      */
-    public function setCurrentOrderInRegistry($orderId)
+    public function setCurrentOrderInRegistry($orderId, $type)
     {
-        $response = $this->orderHelper->getOrderDetailsAgainstId($orderId);
+        $response = $this->orderHelper->getOrderDetailsAgainstId($orderId, $type);
         if ($response) {
             $this->setOrderInRegistry($response);
         }

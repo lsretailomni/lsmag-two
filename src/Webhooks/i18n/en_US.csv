@@ -19,3 +19,6 @@ Qty,Qty
 "Email template For Order Collected","Email template For Order Collected"
 "Order Cancelled Notification","Order Cancelled Notification"
 "Email template For Order Cancellation","Email template For Order Cancellation"
+"Shipment posted successfully.","Shipment posted successfully."
+"Tracking Id updated successfully.","Tracking Id updated successfully."
+"Tracking Id update failed.","Tracking Id update failed."

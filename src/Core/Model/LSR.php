@@ -223,6 +223,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
     const SC_PAYMENT_OPTION = 'carriers/clickandcollect/payment_option';
 
+    //Delivery and pickup time options
+    const PICKUP_TIMESLOTS_ENABLED = 'ls_mag/delivery_pickup_date_time/pickup_date_time_slot';
+    const PICKUP_TIME_INTERVAL = 'ls_mag/delivery_pickup_date_time/pickup_time_interval';
+    const PICKUP_DATE_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_date_format';
+    const PICKUP_TIME_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_time_format';
+
     // CUSTOM CONFIGURATION PATHS
     const CONFIG_REPLICATION_JOBS = 'ls_mag/replication/jobs';
     const CONFIG_CONFIGDATA_WATCHES = 'ls_mag/configdata/watches';
@@ -800,6 +806,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         return $this->scopeConfig->getValue(
             self::LS_PLACE_TO_SYNC_BASKET_CALCULATION,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
+    }
+
+
+    /**
+     * Return pickup and delivery option is enabled or not
+     *
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function isPickupTimeslotsEnabled()
+    {
+        return $this->scopeConfig->getValue(
+            self::PICKUP_TIMESLOTS_ENABLED,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->storeManager->getStore()->getWebsiteId()
         );
     }
 }

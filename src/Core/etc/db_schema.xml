@@ -5,6 +5,7 @@
         <column xsi:type="blob" name="basket_response" nullable="true"  comment="One List Calculate Response"/>
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
         <column xsi:type="text" name="pickup_store" nullable="true" comment="Pick Up Store"/>
+        <column xsi:type="varchar" name="pickup_date_timeslot" nullable="true" comment="Pick Up Date Time Slot"/>
         <column xsi:type="float" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
         <column xsi:type="float" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
         <column xsi:type="text" name="ls_gift_card_no" nullable="true" comment="LS Gift Card No"/>
@@ -13,6 +14,7 @@
     <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
         <column xsi:type="text" name="pickup_store" nullable="true" comment="Pick Up Store"/>
+        <column xsi:type="varchar" name="pickup_date_timeslot" nullable="true" comment="Pick Up Date Time Slot"/>
         <column xsi:type="float" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
         <column xsi:type="float" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
         <column xsi:type="text" name="ls_gift_card_no" nullable="true" comment="LS Gift Card No"/>
@@ -33,6 +35,9 @@
     </table>
     <table name="sales_order_grid" resource="sales" engine="innodb" comment="Sales Flat Order Grid">
         <column xsi:type="varchar" name="document_id" length="255" nullable="true" comment="Document Id"/>
+    </table>
+    <table name="sales_shipment_track" resource="default" engine="innodb" comment="Sales Shipment Track">
+        <column xsi:type="varchar" name="ls_central_shipping_id" length="255" nullable="true" comment="LS Central Shipping Id"/>
     </table>
     <table name="cron_schedule" resource="default" engine="innodb" comment="Cron Schedule">
         <column xsi:type="varchar" name="parameters" length="100" nullable="true" comment="Accept parameters from the specific job types"/>

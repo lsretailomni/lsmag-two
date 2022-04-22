@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.0] - 2022-03-07
+
+### Added
+
+- Added support for QR code ordering for Hospitality stores. [OMNI-5590](https://solutions.lsretail.com/jira/browse/OMNI-5590)
+- Added support to send the QR code location information as part of order comments to LS Central. [OMNI-5561](https://solutions.lsretail.com/jira/browse/OMNI-5561)
+- Added support to create/update shipment in Magento from LS Central through Webhook. This is now supported for both Backoffice and POS. [OMNI-5564](https://solutions.lsretail.com/jira/browse/OMNI-5564)
+- Added support to create invoices in Magento through webhooks (from LS Central) for orders placed using offline payment methods. [OMNI-5469](https://solutions.lsretail.com/jira/browse/OMNI-5469)
+- Added support to display return policy from LS Central on the product detail page. [OMNI-5477](https://solutions.lsretail.com/jira/browse/OMNI-5469)
+- Added support to get return policy from LS Central on graphql Interface. [OMNI-5477](https://solutions.lsretail.com/jira/browse/OMNI-5469)
+- Added support to close/complete the click & collect orders in Magento through webhooks (from LS Central) when items are marked as collected from POS. [OMNI-5478](https://solutions.lsretail.com/jira/browse/OMNI-5478)
+- Added support to replicate and translate Item Description (Item HTML) in multiple languages from LS Central. [OMNI-5479](https://solutions.lsretail.com/jira/browse/OMNI-5479)
+- Added new configuration in Magento Admin panel to calculate basket both in real-time and on checkout for cross border VAT calculation. [OMNI-5560](https://solutions.lsretail.com/jira/browse/OMNI-5560)
+- Added WSDL location to support connectivity with SSL secure server. [OMNI-5577](https://solutions.lsretail.com/jira/browse/OMNI-5577)
+
+
+
+
+
+### Bugs/Fixes
+
+- Fixed issue in removing duplicate payment method entries on the frontend for customer order detail page. [OMNI-5581](https://solutions.lsretail.com/jira/browse/OMNI-5581)
+- Fixed issue in updating or deleting items from cart when 'calculate once on checkout' option is enabled for calculation. [OMNI-5584](https://solutions.lsretail.com/jira/browse/OMNI-5584)
+- Fixed issue with empty TaxItemGroupId as a part of product replication. [OMNI-5584](https://solutions.lsretail.com/jira/browse/OMNI-5584)
+- Fixed issue in duplicate store entries on store listing page in case of multistore. [OMNI-5584](https://solutions.lsretail.com/jira/browse/OMNI-5584)
+- Fixed issue in handling crappy/invalid data by adding additional checks for attributes and variants. [OMNI-5569](https://solutions.lsretail.com/jira/browse/OMNI-5569)
+- Fixed issues while resetting individual items in Magento for reprocessing. [OMNI-5573](https://solutions.lsretail.com/jira/browse/OMNI-5573)
+- Fixed issues while adding same UoM in multiple websites. [OMNI-5573](https://solutions.lsretail.com/jira/browse/OMNI-5573)
+- Fixed issues while syncing item updates on multiple stores. [OMNI-5573](https://solutions.lsretail.com/jira/browse/OMNI-5573) 
+- Fixed issue with Klarna payment method. [OMNI-5577](https://solutions.lsretail.com/jira/browse/OMNI-5577)
+- Fixed issue of discount amount still shows up in cart total after removing all items from the cart. [OMNI-5577](https://solutions.lsretail.com/jira/browse/OMNI-5577)
+- Fix issue in displaying customer order number on order history and recent order section once the order is posted in LS Central.  [OMNI-5586](https://solutions.lsretail.com/jira/browse/OMNI-5586)
+
+
+
 ## [1.15.0] - 2022-02-07
 
 ### Added

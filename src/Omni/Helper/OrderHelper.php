@@ -9,6 +9,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -72,7 +73,11 @@ class OrderHelper extends AbstractHelper
     public $json;
 
     /**
-     * OrderHelper constructor.
+     * @var DateTime
+     */
+    public $dateTime;
+
+    /**
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
@@ -83,6 +88,7 @@ class OrderHelper extends AbstractHelper
      * @param LSR $lsr
      * @param Order $orderResourceModel
      * @param Json $json
+     * @param DateTime $dateTime
      */
     public function __construct(
         Context $context,
@@ -94,7 +100,8 @@ class OrderHelper extends AbstractHelper
         CheckoutSessionProxy $checkoutSession,
         LSR $lsr,
         Order $orderResourceModel,
-        Json $json
+        Json $json,
+        DateTime $dateTime
     ) {
         parent::__construct($context);
         $this->order              = $order;
@@ -106,6 +113,7 @@ class OrderHelper extends AbstractHelper
         $this->lsr                = $lsr;
         $this->orderResourceModel = $orderResourceModel;
         $this->json               = $json;
+        $this->dateTime           = $dateTime;
     }
 
     /**
@@ -182,8 +190,15 @@ class OrderHelper extends AbstractHelper
             } else {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
                 //TODO need to fix the length issue once LS Central allow more then 10 characters.
-                $oneListCalculateResponse->setShippingAgentCode(substr($carrierCode,0,10));
-                $oneListCalculateResponse->setShippingAgentServiceCode(substr($method,0,10));
+                $oneListCalculateResponse->setShippingAgentCode(substr($carrierCode, 0, 10));
+                $oneListCalculateResponse->setShippingAgentServiceCode(substr($method, 0, 10));
+                $oneListCalculateResponse->setShippingStatus(Entity\Enum\ShippingStatus::NOT_YET_SHIPPED);
+            }
+            $pickupDateTimeslot = $order->getPickupDateTimeslot();
+            if (!empty($pickupDateTimeslot)) {
+                $dateTimeFormat = "Y-m-d\T" . "H:i:00";
+                $pickupDateTime = $this->dateTime->date($dateTimeFormat, $pickupDateTimeslot);
+                $oneListCalculateResponse->setRequestedDeliveryDate($pickupDateTime);
             }
             $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
             //For click and collect.
@@ -523,7 +538,7 @@ class OrderHelper extends AbstractHelper
             }
 
             $searchCriteria = $criteriaBuilder->create();
-            $orders = $this->orderRepository->getList($searchCriteria)->getItems();
+            $orders         = $this->orderRepository->getList($searchCriteria)->getItems();
 
             return $orders;
 
@@ -673,5 +688,16 @@ class OrderHelper extends AbstractHelper
         }
 
         return $tenderTypeId;
+    }
+
+
+    /**
+     * Return date time
+     *
+     * @return DateTime
+     */
+    public function getDateTimeObject()
+    {
+        return $this->dateTime;
     }
 }

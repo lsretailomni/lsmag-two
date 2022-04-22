@@ -73,7 +73,12 @@ class Link extends Current
      */
     public function getHref()
     {
-        return $this->getUrl($this->getPath(), ['order_id' => $this->getOrder()->getId()]);
+        return $this->getUrl($this->getPath(),
+            [
+                'order_id' => $this->getOrder()->getId(),
+                'type'     => $this->getOrder()->getIdType()
+            ]
+        );
     }
 
     /**

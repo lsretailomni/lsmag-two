@@ -12,8 +12,7 @@ use Magento\Framework\View\Element\Template;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class Stores
- * @package Ls\Omni\Block\Stores
+ * Stores page block class
  */
 class Stores extends Template
 {
@@ -35,11 +34,17 @@ class Stores extends Template
     public $logger;
 
     /**
-     * Stores constructor.
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
+     * Stores Constructor.
      * @param Template\Context $context
      * @param CollectionFactory $replStoreCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param Data $storeHoursHelper
+     * @param LSR $lsr
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -47,11 +52,13 @@ class Stores extends Template
         CollectionFactory $replStoreCollectionFactory,
         ScopeConfigInterface $scopeConfig,
         Data $storeHoursHelper,
+        LSR $lsr,
         LoggerInterface $logger
     ) {
         $this->replStoreFactory = $replStoreCollectionFactory;
         $this->scopeConfig      = $scopeConfig;
         $this->storeHoursHelper = $storeHoursHelper;
+        $this->lsr              = $lsr;
         $this->logger           = $logger;
         parent::__construct($context);
     }
@@ -62,7 +69,10 @@ class Stores extends Template
     public function getStores()
     {
         try {
-            $collection = $this->replStoreFactory->create()->addFieldToFilter('IsDeleted', 0);
+            $collection = $this->replStoreFactory->create()
+                ->addFieldToFilter('IsDeleted', 0)
+                ->addFieldToFilter('scope_id', $this->lsr->getCurrentStoreId());
+
             return $collection;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
