@@ -98,10 +98,9 @@ class SyncAttributesValue extends ProductCreateTask
     public function processAttributesValue()
     {
         /** Get list of only those Attribute Value whose items are already processed */
-        $filters            = [];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-            $filters,
+            [['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']],
             $attributeBatchSize,
             false
         );
@@ -190,9 +189,8 @@ class SyncAttributesValue extends ProductCreateTask
     {
         if (!$this->remainingRecords) {
             /** Get list of only those attribute value whose items are already processed */
-            $filters    = [];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-                $filters
+                [['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']],
             );
             $collection = $this->replAttributeValueCollectionFactory->create();
             $this->replicationHelper->setCollectionPropertiesPlusJoinSku(

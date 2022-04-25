@@ -41,4 +41,8 @@
     <event name="sales_quote_address_collect_totals_after">
         <observer name="sales_quote_totals_after" instance="Ls\Omni\Observer\SalesObserver"/>
     </event>
+    <!-- event for adding item to cart from requisition list -->
+    <event name="controller_action_postdispatch_requisition_list_item_addtocart">
+        <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
+    </event>
 </config>

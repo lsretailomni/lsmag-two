@@ -7,7 +7,6 @@ use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\Collection;
-use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -154,11 +153,11 @@ class SyncImages extends ProductCreateTask
     }
 
     /**
-     * @param ReplImageLinkSearchResults $imagesToUpdate
-     * @param ProductInterface $productData
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws StateException
+     * Process Media Gallery Images
+     *
+     * @param $imagesToUpdate
+     * @param $productData
+     * @return void
      */
     public function processMediaGalleryImages($imagesToUpdate, $productData)
     {
@@ -181,7 +180,9 @@ class SyncImages extends ProductCreateTask
                     $productData,
                     $encodedImages
                 );
-                $this->updateHandler->execute($productData);
+                $this->updateHandlerFactory->create()->execute($productData);
+
+                $this->removeNoSelection($productData);
             } catch (Exception $e) {
                 $this->logger->debug(
                     'Problem while converting the images or Gallery CreateHandler in : ' . __METHOD__
@@ -247,6 +248,35 @@ class SyncImages extends ProductCreateTask
     }
 
     /**
+     * Remove no selection
+     *
+     * @param $productData
+     * @return void
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function removeNoSelection($productData)
+    {
+        $customProduct   = $this->productRepository->get($productData->getSku(), true, $this->store->getId(), true);
+        $mediaAttributes = $this->mediaConfig->getMediaAttributeCodes();
+        $saveMe          = false;
+
+        foreach ($mediaAttributes as $mediaAttrCode) {
+            if ($customProduct->getData($mediaAttrCode) == 'no_selection' && $mediaAttrCode != 'swatch_image') {
+                $saveMe = true;
+                $customProduct->unsetData($mediaAttrCode);
+            }
+        }
+
+        if ($saveMe) {
+            $this->logger->debug(
+                'Fixed no_selection issue for images of product : '. $customProduct->getSku()
+            );
+            $this->updateHandlerFactory->create()->execute($customProduct);
+        }
+    }
+
+    /**
      * This function is overriding in hospitality module
      * @param false $totalCount
      * @return Collection
@@ -279,6 +309,7 @@ class SyncImages extends ProductCreateTask
             'Item'
         );
         $collection->getSelect()->order('main_table.processed ASC');
+
         return $collection;
     }
 }

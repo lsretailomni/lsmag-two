@@ -101,6 +101,15 @@ class MembershipInfo extends Template implements TabInterface
     {
         try {
             $data            = $this->_backendSession->getCustomerData();
+
+            if (!isset($data['account']['email']) || !isset($data['account']['website_id'])) {
+                return [
+                    'lsr_id'       => '',
+                    'lsr_cardid'   => '',
+                    'lsr_username' => ''
+                ];
+            }
+
             $customerDetails = $this->customerRegistry->retrieveByEmail($data['account']['email'], $data['account']['website_id']);
             return [
                 'lsr_id'       => $customerDetails->getData('lsr_id'),
