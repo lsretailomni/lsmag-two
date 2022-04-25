@@ -3,109 +3,204 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="ls_mag">
-            <group id="replication" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
+            <group id="replication"
+                   translate="label"
+                   type="text"
+                   sortOrder="2"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
                 <label>Replication</label>
-                <field id="replicate_data_translation_lang_code" translate="label" type="select" sortOrder="0"
-                       showInDefault="0"
-                       showInWebsite="0" showInStore="1">
-                    <label>Data Translation Language Code</label>
-                    <source_model>Ls\Replication\Model\System\Source\LanguageCode</source_model>
-                    <comment>Select the data translation language code</comment>
-                </field>
-                <field id="manual_cron_grid_default_store" translate="label" type="select" sortOrder="0"
+                <field id="replicate_all_stores_items"
+                       translate="label"
+                       type="select"
+                       sortOrder="10"
                        showInDefault="1"
-                       showInWebsite="0" showInStore="0">
-                    <label>Manual Cron Grid Default Store</label>
-                    <source_model>Ls\Replication\Model\System\Source\MagStore</source_model>
-                    <comment>Select the default store for manual cron grid</comment>
-                </field>
-                <field id="identical_table_web_service_list" translate="label" type="text" sortOrder="1" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
-                    <label>Web Service List</label>
-                    <comment>Add comma seperated service name where we have identical table and we want to use the same db table but different cron job.</comment>
-                </field>
-                <field id="replicate_all_stores_items" translate="label" type="select" sortOrder="0" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Replicate All Stores Items</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable if you want to replicate all the stores items</comment>
                 </field>
-                <field id="default_batch_size" translate="label" type="text" sortOrder="1" showInDefault="1"
-                       showInWebsite="0" showInStore="0">
+                <field id="replicate_data_translation_lang_code"
+                       translate="label"
+                       type="select"
+                       sortOrder="20"
+                       showInDefault="0"
+                       showInWebsite="0"
+                       showInStore="1">
+                    <label>Data Translation Language Code</label>
+                    <source_model>Ls\Replication\Model\System\Source\LanguageCode</source_model>
+                    <comment>Select the data translation language code</comment>
+                </field>
+                <field id="manual_cron_grid_default_store"
+                       translate="label"
+                       type="select"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Manual Cron Grid Default Store</label>
+                    <source_model>Ls\Replication\Model\System\Source\MagStore</source_model>
+                    <comment>Select the default store for manual cron grid</comment>
+                </field>
+                <field id="attribute_sets_mechanism"
+                       translate="label"
+                       type="select"
+                       sortOrder="40"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Create attribute sets on the basis of</label>
+                    <source_model>Ls\Replication\Block\Adminhtml\System\Config\AttributeSets</source_model>
+                </field>
+                <field id="identical_table_web_service_list"
+                       translate="label"
+                       type="text"
+                       sortOrder="50"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Web Service List</label>
+                    <comment>Add comma seperated service name where we have identical table and we want to use the same db table but different cron job.</comment>
+                </field>
+                <field id="default_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="60"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Default Batch Size</label>
                     <comment>Records Requested on Replication Jobs</comment>
                 </field>
-                <field id="product_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="product_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="70"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Product Batch Size</label>
                     <comment>Product batch size can be increase or decrease from here</comment>
                 </field>
-                <field id="product_attribute_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="product_attribute_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="80"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Product Attribute Batch Size</label>
                     <comment>Attribute batch size can be increase or decrease from here</comment>
                 </field>
-                <field id="discount_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="discount_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="90"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Product Discount Batch Size</label>
                     <comment>Discount Batch Size</comment>
                 </field>
-                <field id="product_inventory_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="product_inventory_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="100"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Product Inventory Batch Size</label>
                     <comment>Inventory Batch Size</comment>
                 </field>
-                <field id="product_prices_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="product_prices_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="110"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Product Prices Batch Size</label>
                     <comment>Product Prices Batch Size</comment>
                 </field>
-                <field id="product_images_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="product_images_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="120"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Product Images Batch Size</label>
                     <comment>Product Images Batch Size</comment>
                 </field>
-                <field id="product_barcode_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="product_barcode_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="130"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Product Barcode Batch Size</label>
                     <comment>Product Barcode Batch Size</comment>
                 </field>
 
-                <field id="variant_batch_size" translate="label" type="text" sortOrder="2" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="variant_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="140"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Variant Batch Size</label>
                     <comment>Variant Batch Size to Process Variant</comment>
                 </field>
-                <field id="product_assignment_to_category_batch_size" translate="label" type="text" sortOrder="2"
-                       showInDefault="40"
-                       showInWebsite="0" showInStore="0">
+                <field id="product_assignment_to_category_batch_size"
+                       translate="label"
+                       type="text"
+                       sortOrder="150"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Product Assignment to Category Batch Size</label>
                     <comment>Product Assignment to Category Batch Size</comment>
                 </field>
-                <field id="attribute_sets_mechanism" translate="label" type="select" sortOrder="10" showInDefault="40"
-                       showInWebsite="0" showInStore="0">
-                    <label>Create attribute sets on the basis of</label>
-                    <source_model>Ls\Replication\Block\Adminhtml\System\Config\AttributeSets</source_model>
-                </field>
             </group>
-            <group id="one_list" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1"
+            <group id="one_list"
+                   translate="label"
+                   type="text"
+                   sortOrder="3"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
                 <label>Item Availability</label>
-                <field id="availability_check" translate="label" type="select" sortOrder="10" showInDefault="1"
-                       showInWebsite="1" showInStore="0">
+                <field id="availability_check"
+                       translate="label"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="0">
                     <label>Availability Check</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable/Disable basket availability check when adding products to the cart</comment>
                 </field>
-                <field id="product_availability" translate="label" type="select" sortOrder="10" showInDefault="1"
+                <field id="product_availability"
+                       translate="label"
+                       type="select"
+                       sortOrder="20"
+                       showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
                     <label>Product Availability in Stores</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Show a link in product detail page for product availability</comment>
                 </field>
-                <field id="display_stores" translate="label" type="select" sortOrder="10" showInDefault="1"
+                <field id="display_stores"
+                       translate="label"
+                       type="select"
+                       sortOrder="30"
+                       showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
                     <label>Display Stores</label>
@@ -116,72 +211,117 @@
                     </depends>
                 </field>
             </group>
-            <group id="restore_database" translate="label" type="text" sortOrder="100" showInDefault="1"
-                   showInWebsite="0" showInStore="0">
+            <group id="restore_database"
+                   translate="label"
+                   type="text"
+                   sortOrder="100"
+                   showInDefault="1"
+                   showInWebsite="0"
+                   showInStore="0">
                 <label>Restore Database</label>
                 <comment>
                     <![CDATA[
                 In case of Multi store setup, this will reset data for all the stores in the Magento database.
                 ]]>
                 </comment>
-                <field id="orders" translate="label" type="button" sortOrder="1" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="orders"
+                       translate="label"
+                       type="button"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Orders</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/order</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="customers" translate="label" type="button" sortOrder="2" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="customers"
+                       translate="label"
+                       type="button"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Customers</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/customer</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="products" translate="label" type="button" sortOrder="3" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="products"
+                       translate="label"
+                       type="button"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Products &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/product</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="categories" translate="label" type="button" sortOrder="4" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="categories"
+                       translate="label"
+                       type="button"
+                       sortOrder="40"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Categories &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/category</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="attributes" translate="label" type="button" sortOrder="5" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="attributes"
+                       translate="label"
+                       type="button"
+                       sortOrder="50"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Attributes &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/attribute</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="discounts" translate="label" type="button" sortOrder="6" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="discounts"
+                       translate="label"
+                       type="button"
+                       sortOrder="60"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Discounts &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/discount</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="tax_rules" translate="label" type="button" sortOrder="6" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="tax_rules"
+                       translate="label"
+                       type="button"
+                       sortOrder="70"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Delete Tax Rules &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
                     <button_url>ls_repl/deletion/taxrules</button_url>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\DeleteDatabtn</frontend_model>
                 </field>
-                <field id="ls_tables" translate="label" type="button" sortOrder="7" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="ls_tables"
+                       translate="label"
+                       type="button"
+                       sortOrder="80"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Truncate all ls_ tables</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Truncate !</button_label>
