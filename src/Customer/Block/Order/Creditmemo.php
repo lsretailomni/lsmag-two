@@ -109,6 +109,7 @@ class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
     }
 
     /**
+     * Get Invoice tab url
      * @param object $order
      * @return string
      */
@@ -118,6 +119,7 @@ class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
     }
 
     /**
+     * Get Shipment tab url
      * @param object $order
      * @return string
      */
@@ -127,29 +129,12 @@ class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
     }
 
     /**
+     * Get Order view tab url
      * @param object $order
      * @return string
      */
     public function getViewUrl($order): string
     {
         return $this->getUrl('*/*/view', ['order_id' => $order->getId()]);
-    }
-
-    /**
-     * @param object $creditmemo
-     * @return string
-     */
-    public function getPrintCreditmemoUrl($creditmemo): string
-    {
-        return $this->getUrl('*/*/printCreditmemo', ['creditmemo_id' => $creditmemo->getId()]);
-    }
-
-    /**
-     * @param object $order
-     * @return string
-     */
-    public function getPrintAllCreditmemosUrl($order): string
-    {
-        return $this->getUrl('*/*/printCreditmemo', ['order_id' => $order->getId()]);
     }
 }
