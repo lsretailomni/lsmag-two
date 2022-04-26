@@ -19,7 +19,7 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Controller being used for customer order print shipment
+ * Controller being used for customer order print refunds
  */
 class PrintRefunds extends Action
 {

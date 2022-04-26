@@ -143,9 +143,9 @@ class Info extends Template
     {
         $order = $this->getOrder();
         if ($isBillingAddress == true) {
-            $orderAddress = $this->orderHelper->getParameterValues($order,"ContactAddress");
+            $orderAddress = $order->getContactAddress();
         } else {
-            $orderAddress = $this->orderHelper->getParameterValues($order,"ShipToAddress");
+            $orderAddress = $order->getShipToAddress();
         }
         $address = '';
         if (!empty($orderAddress) && !empty($orderAddress->getCountry())) {
@@ -181,14 +181,10 @@ class Info extends Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $order           = $this->getOrder();
-        $customerOrderNo = null;
+        $order = $this->getOrder();
         if ($order) {
-
-            $orderId = $this->orderHelper->getParameterValues($order,"CustomerOrderNo") ?: $this->orderHelper->getParameterValues($order,"Id");
-            $customerOrderNo = $this->orderHelper->getParameterValues($order,"CustomerOrderNo");
-
-            if (!empty($customerOrderNo)) {
+            $orderId = $order->getCustomerOrderNo() ?: $order->getId();
+            if (!empty($order->getCustomerOrderNo())) {
                 $type = __('Order');
             } else {
                 $type = $order->getIdType();
@@ -209,27 +205,6 @@ class Info extends Template
     }
 
     /**
-     * @return mixed
-     */
-    public function getOrderStatus()
-    {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"Status");
-    }
-
-    public function getClickAndCollectOrder()
-    {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"ClickAndCollectOrder");
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDocRegistraionTime()
-    {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"DocumentRegTime");
-    }
-
-    /**
      * Get selected shipment method for the order, use the one in magento if available
      *
      * @return Phrase|string
@@ -237,7 +212,7 @@ class Info extends Template
     public function getShippingDescription()
     {
         $magentoOrder = $this->getMagOrder();
-        $status       = $this->getClickAndCollectOrder();
+        $status       = $this->getOrder()->getClickAndCollectOrder();
 
         if ($magentoOrder) {
             return $magentoOrder->getShippingDescription();
@@ -275,7 +250,7 @@ class Info extends Template
      */
     public function getPaymentDescription()
     {
-        $paymentLines      = $this->getOrderPayments();
+        $paymentLines      = $this->getOrder()->getPayments();
         $methods           = $giftCardInfo = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         foreach ($paymentLines as $line) {
@@ -315,14 +290,6 @@ class Info extends Template
     }
 
     /**
-     * @return mixed
-     */
-    public function getOrderPayments()
-    {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"Payments");
-    }
-
-    /**
      * @param $points
      * @return string
      */
@@ -344,19 +311,12 @@ class Info extends Template
     /**
      * Formulating order printing url
      *
-     * @param $order
+     * @param SalesEntry $order
      * @return string
      */
-    public function getPrintUrl($order)
+    public function getPrintUrl(SalesEntry $order)
     {
-
-        $typeId = $this->orderHelper->getParameterValues($order,"IdType");
-        $orderId = $this->getRequest()->getParam('order_id');
-        return $order ? $this->getUrl(
-            'customer/order/print',
-            ['order_id' => $order->getId(), 'type' => $order->getIdType()]
-
-        ) : '';
+        return $order ? $this->getUrl('customer/order/print', ['order_id' => $order->getId()]) : '';
     }
 
     /**
@@ -367,8 +327,7 @@ class Info extends Template
      */
     public function getReorderUrl($order)
     {
-        $orderId = $this->getRequest()->getParam('order_id');
-        return $order ? $this->getUrl('sales/order/reorder', ['order_id' => $orderId]) : '';
+        return $order ? $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]) : '';
     }
 
     /**

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/CommerceCloud" isTestSource="false" packagePrefix="Ls\CommerceCloud\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Core" isTestSource="false" packagePrefix="Ls\Core\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Customer" isTestSource="false" packagePrefix="Ls\Customer\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/CustomerGraphQl" isTestSource="false" packagePrefix="Ls\CustomerGraphQl\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Omni" isTestSource="false" packagePrefix="Ls\Omni\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/OmniGraphQl" isTestSource="false" packagePrefix="Ls\OmniGraphQl\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Replication" isTestSource="false" packagePrefix="Ls\Replication\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Webhooks" isTestSource="false" packagePrefix="Ls\Webhooks\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

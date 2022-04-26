@@ -49,7 +49,7 @@ class SyncLsCentral extends GenericButton implements ButtonProviderInterface
         $data       = [];
         if ($customerId) {
             $customer = $this->customerRegistry->retrieve($customerId);
-            if (empty($customer->getData('lsr_id')) && !empty($customer->getData('lsr_username'))) {
+            if (empty($customer->getData('lsr_id')) || empty($customer->getData('lsr_username'))) {
                 $message = __('Send customer to LS Central?');
                 $data    = [
                     'label'      => __('Save to LS Central'),

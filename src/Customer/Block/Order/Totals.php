@@ -6,6 +6,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Ls\OmniGraphQl\Model\Resolver\Order;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
@@ -144,14 +145,20 @@ class Totals extends Template
     }
 
     /**
-     * @return float|int
+     * Get Shipment charge line fee
+     *
+     * @return float|int|null
+     * @throws NoSuchEntityException
      */
     public function getShipmentChargeLineFee()
     {
         $orderLines = $this->getLines();
         $fee        = 0;
         foreach ($orderLines as $key => $line) {
-            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
+            if ($line->getItemId() == $this->lsr->getStoreConfig(
+                    LSR::LSR_SHIPMENT_ITEM_ID,
+                    $this->lsr->getCurrentStoreId()
+                )) {
                 $fee = $line->getAmount();
                 break;
             }

@@ -90,7 +90,7 @@ class PrintAction extends Action
         $response = null;
 
         if ($this->request->getParam('order_id')) {
-            $orderId  = $this->request->getParam('order_id');
+            $orderId = $this->request->getParam('order_id');
             $type    = $this->request->getParam('type');
 
             if (empty($type)) {
@@ -113,6 +113,7 @@ class PrintAction extends Action
      * Set currentOrder into registry
      *
      * @param $orderId
+     * @param $type
      * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
      * @throws InvalidEnumException
      */
