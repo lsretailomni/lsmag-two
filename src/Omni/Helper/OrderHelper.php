@@ -79,6 +79,9 @@ class OrderHelper extends AbstractHelper
      * @var DateTime
      */
     public $dateTime;
+    /**
+     * @var Registry 
+     */
     private Registry $registry;
 
     /**
@@ -227,6 +230,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Update shippping amount to shipment order line
      * @param $orderLines
      * @param $order
      * @return mixed
@@ -258,6 +262,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Set shipment line properties
      * @param $orderLine
      * @param $order
      */
@@ -458,8 +463,9 @@ class OrderHelper extends AbstractHelper
 
     /**
      * Validate order have return sale or not
-     * @param $order
+     * @param $orderId
      * @return mixed
+     * @throws InvalidEnumException
      */
     public function hasReturnSale($orderId)
     {
@@ -634,7 +640,7 @@ class OrderHelper extends AbstractHelper
         try {
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
-            if ($filterOptions == true) {
+            if ($filterOptions) {
                 $criteriaBuilder->addFilter('status', ['canceled', 'payment_review'], 'nin');
                 $criteriaBuilder->addFilter('document_id', null, 'null');
             }
@@ -656,9 +662,7 @@ class OrderHelper extends AbstractHelper
             }
 
             $searchCriteria = $criteriaBuilder->create();
-            $orders         = $this->orderRepository->getList($searchCriteria)->getItems();
-
-            return $orders;
+            $orders = $this->orderRepository->getList($searchCriteria)->getItems();
 
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -668,6 +672,8 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Get active web store details
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -677,6 +683,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Error handler
      * @param $order
      * @throws AlreadyExistsException
      */
@@ -694,6 +701,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Setting Adyen payment gateway parameters
      * @param $adyenResponse
      * @param $order
      * @return OrderInterface|mixed
@@ -768,6 +776,7 @@ class OrderHelper extends AbstractHelper
      * Get configuration value for tender type
      *
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getPaymentTenderMapping()
     {
@@ -797,6 +806,7 @@ class OrderHelper extends AbstractHelper
      *
      * @param $code
      * @return int|mixed
+     * @throws NoSuchEntityException
      */
     public function getPaymentTenderTypeId($code)
     {
@@ -808,7 +818,6 @@ class OrderHelper extends AbstractHelper
 
         return $tenderTypeId;
     }
-
 
     /**
      * Return date time
