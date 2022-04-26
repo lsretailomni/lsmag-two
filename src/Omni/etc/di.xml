@@ -142,4 +142,9 @@
                 type="Ls\Omni\Plugin\Checkout\Model\KlarnaTaxTotalPlugin"/>
     </type>
     <preference for="Ls\Omni\Api\ReturnPolicyManagementInterface" type="Ls\Omni\Model\Api\ReturnPolicyManagement"/>
+    <!-- Display Central Shipping Id -->
+    <type name="Magento\Shipping\Model\Order\Track">
+        <plugin name="display_central_shipping_id"
+                type="Ls\Omni\Plugin\Order\TrackPlugin"/>
+    </type>
 </config>
