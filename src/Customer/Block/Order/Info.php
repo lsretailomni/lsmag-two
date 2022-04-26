@@ -139,13 +139,13 @@ class Info extends Template
      * @param false $isBillingAddress
      * @return string
      */
-    public function getFormattedAddress($isBillingAddress = false)
+    public function getFormattedAddress(bool $isBillingAddress = false)
     {
         $order = $this->getOrder();
-        if ($isBillingAddress == true) {
-            $orderAddress = $this->orderHelper->getParameterValues($order,"ContactAddress");
+        if ($isBillingAddress) {
+            $orderAddress = $this->orderHelper->getParameterValues($order, "ContactAddress");
         } else {
-            $orderAddress = $this->orderHelper->getParameterValues($order,"ShipToAddress");
+            $orderAddress = $this->orderHelper->getParameterValues($order, "ShipToAddress");
         }
         $address = '';
         if (!empty($orderAddress) && !empty($orderAddress->getCountry())) {
@@ -159,13 +159,15 @@ class Info extends Template
                 $this->getCountryName($orderAddress->getCountry()) . '<br/>' : '';
             /** TODO update with Address Phone Number */
             $address .= $orderAddress->getPhoneNumber() ?
-                "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>" . $orderAddress->getPhoneNumber() . '</a>' : '';
+                "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>"
+                . $orderAddress->getPhoneNumber() . '</a>' : '';
 
         }
         return $address;
     }
 
     /**
+     * Get country name by country code
      * @param $countryCode
      * @return string
      */
@@ -209,24 +211,33 @@ class Info extends Template
     }
 
     /**
+     * To fetch Status value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
      * @return mixed
      */
     public function getOrderStatus()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"Status");
-    }
-
-    public function getClickAndCollectOrder()
-    {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"ClickAndCollectOrder");
+        return $this->orderHelper->getParameterValues($this->getOrder(), "Status");
     }
 
     /**
+     * To fetch ClickAndCollectOrder value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
+     * @return mixed
+     */
+    public function getClickAndCollectOrder()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(), "ClickAndCollectOrder");
+    }
+
+    /**
+     * To fetch DocumentRegTime value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
      * @return string|null
      */
     public function getDocRegistraionTime()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"DocumentRegTime");
+        return $this->orderHelper->getParameterValues($this->getOrder(), "DocumentRegTime");
     }
 
     /**
@@ -259,8 +270,11 @@ class Info extends Template
     {
         $format = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
         $requestedDeliveryDate = $this->getOrder()->getRequestedDeliveryDate();
-        if($requestedDeliveryDate!='0001-01-01T00:00:00') {
-            return $this->orderHelper->getDateTimeObject()->date($format, $this->getOrder()->getRequestedDeliveryDate());
+        if ($requestedDeliveryDate!='0001-01-01T00:00:00') {
+            return $this->orderHelper->getDateTimeObject()->date(
+                $format,
+                $this->getOrder()->getRequestedDeliveryDate()
+            );
         }
 
         return null;
@@ -315,25 +329,28 @@ class Info extends Template
     }
 
     /**
-     * @return mixed
+     * To fetch Payments value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
+     * @return string|null
      */
     public function getOrderPayments()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"Payments");
+        return $this->orderHelper->getParameterValues($this->getOrder(), "Payments");
     }
 
     /**
+     * Format loyalty points
      * @param $points
      * @return string
      */
     public function getFormattedLoyaltyPoints($points)
     {
-        $points = number_format((float)$points, 2, '.', '');
-        return $points;
+        return number_format((float)$points, 2, '.', '');
     }
 
     /**
-     * @param $points
+     * Format gift card price
+     * @param $giftCardAmount
      * @return string
      */
     public function getGiftCardFormattedPrice($giftCardAmount)
@@ -350,12 +367,11 @@ class Info extends Template
     public function getPrintUrl($order)
     {
 
-        $typeId = $this->orderHelper->getParameterValues($order,"IdType");
+        $typeId = $this->orderHelper->getParameterValues($order, "IdType");
         $orderId = $this->getRequest()->getParam('order_id');
         return $order ? $this->getUrl(
             'customer/order/print',
             ['order_id' => $order->getId(), 'type' => $order->getIdType()]
-
         ) : '';
     }
 
@@ -402,6 +418,7 @@ class Info extends Template
     }
 
     /**
+     * Get current magento order in registry
      * @return mixed
      */
     public function getMagOrder()

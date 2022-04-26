@@ -120,6 +120,7 @@ class Creditmemo extends Action
     }
 
     /**
+     * Set LS Central sales entry Object to registry
      * @param $order
      */
     public function setOrderInRegistry($order)

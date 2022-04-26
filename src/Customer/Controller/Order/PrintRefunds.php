@@ -83,7 +83,6 @@ class PrintRefunds extends Action
      * @inheritDoc
      *
      * @return \Magento\Framework\App\ResponseInterface|ResultInterface|Page
-     * @throws InvalidEnumException
      */
     public function execute()
     {
@@ -109,18 +108,15 @@ class PrintRefunds extends Action
             $this->registry->register('current_shipment_option', false);
             $this->registry->register('hide_shipping_links', true);
         }
-        /** @var Page $resultPage */
-        $resultPage = $this->resultPageFactory->create();
-
-        return $resultPage;
+        return $this->resultPageFactory->create();
     }
 
     /**
      * Set currentOrder into registry
      *
      * @param $orderId
+     * @param $type
      * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
-     * @throws InvalidEnumException
      */
     public function setCurrentOrderInRegistry($orderId, $type)
     {
@@ -134,6 +130,7 @@ class PrintRefunds extends Action
     }
 
     /**
+     * Set LS Central sales entry Object to registry
      * @param $order
      */
     public function setOrderInRegistry($order)
@@ -153,6 +150,7 @@ class PrintRefunds extends Action
     }
 
     /**
+     * Get hide shipping links flag
      * @return mixed
      */
     public function hideShippingLinks()

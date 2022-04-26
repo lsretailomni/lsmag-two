@@ -84,6 +84,8 @@ class Items extends AbstractItems
     }
 
     /**
+     * Fetch Lines node from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node.
      * @return mixed
      */
     public function getLines()
@@ -100,6 +102,7 @@ class Items extends AbstractItems
     }
 
     /**
+     * Get current central order from registry.
      * @return mixed
      */
     public function getOrder()
@@ -108,6 +111,7 @@ class Items extends AbstractItems
     }
 
     /**
+     * Get current magento order from registry
      * @return mixed
      */
     public function getMagOrder()
@@ -116,6 +120,7 @@ class Items extends AbstractItems
     }
 
     /**
+     * Get custom order item renderer
      * @param $item
      * @return string
      */
@@ -125,6 +130,7 @@ class Items extends AbstractItems
     }
 
     /**
+     * Get Id value from SalesEntryGetReturnSalesResult response
      * @param $order
      * @return mixed
      */
@@ -134,6 +140,7 @@ class Items extends AbstractItems
     }
 
     /**
+     * Generate Print Refund Url
      * @param $order
      * @return string
      */
