@@ -5,7 +5,6 @@ namespace Ls\Customer\Block\Order;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Ls\OmniGraphQl\Model\Resolver\Order;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Registry;
@@ -15,7 +14,7 @@ use \Ls\Omni\Helper\OrderHelper;
 
 /**
  * Class Totals
- * @package Ls\Customer\Block\Order
+ *  Ls\Customer\Block\Order
  */
 class Totals extends Template
 {
@@ -95,8 +94,7 @@ class Totals extends Template
      */
     public function getFormattedPrice($amount)
     {
-        $price = $this->priceCurrency->format($amount, false, 2);
-        return $price;
+        return $this->priceCurrency->format($amount, false, 2);
     }
 
     /**
@@ -106,24 +104,27 @@ class Totals extends Template
     {
         $grandTotal     = $this->getGrandTotal();
         $totalNetAmount = $this->getTotalNetAmount();
-        $totalTax       = $grandTotal - $totalNetAmount;
-        return $totalTax;
+        return ($grandTotal - $totalNetAmount);
     }
 
     /**
+     * To fetch TotalNetAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
      * @return mixed
      */
     public function getTotalNetAmount()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"TotalNetAmount");
+        return $this->orderHelper->getParameterValues($this->getOrder(), "TotalNetAmount");
     }
 
     /**
+     * To fetch TotalAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
      * @return mixed
      */
     public function getGrandTotal()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"TotalAmount");
+        return $this->orderHelper->getParameterValues($this->getOrder(), "TotalAmount");
     }
 
     /**
@@ -131,17 +132,17 @@ class Totals extends Template
      */
     public function getTotalAmount()
     {
-        $total = $this->getGrandTotal() - $this->giftCardAmount - $this->loyaltyPointAmount;
-
-        return $total;
+        return $this->getGrandTotal() - $this->giftCardAmount - $this->loyaltyPointAmount;
     }
 
     /**
+     * To fetch TotalDiscount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
      * @return mixed
      */
     public function getTotalDiscount()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"TotalDiscount");
+        return $this->orderHelper->getParameterValues($this->getOrder(), "TotalDiscount");
     }
 
     /**
@@ -156,9 +157,9 @@ class Totals extends Template
         $fee        = 0;
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(
-                    LSR::LSR_SHIPMENT_ITEM_ID,
-                    $this->lsr->getCurrentStoreId()
-                )) {
+                LSR::LSR_SHIPMENT_ITEM_ID,
+                $this->lsr->getCurrentStoreId()
+            )) {
                 $fee = $line->getAmount();
                 break;
             }
@@ -168,6 +169,7 @@ class Totals extends Template
 
     /**
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getSubtotal()
     {
@@ -181,6 +183,7 @@ class Totals extends Template
 
     /**
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getLoyaltyGiftCardInfo()
     {
@@ -215,7 +218,7 @@ class Totals extends Template
      */
     public function getLines()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"Lines");
+        return $this->orderHelper->getParameterValues($this->getOrder(), "Lines");
     }
 
 
@@ -224,12 +227,13 @@ class Totals extends Template
      */
     public function getOrderPayments()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(),"Payments");
+        return $this->orderHelper->getParameterValues($this->getOrder(), "Payments");
     }
 
     /**
-     * @param $loyaltyAmount
+     * @param $loyaltyPoints
      * @return float|int
+     * @throws NoSuchEntityException
      */
     public function convertLoyaltyPointsToAmount($loyaltyPoints)
     {

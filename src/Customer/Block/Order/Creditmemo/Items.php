@@ -88,7 +88,7 @@ class Items extends AbstractItems
      */
     public function getLines()
     {
-        if(!property_exists($this->getOrder(),"Lines")) {
+        if (!property_exists($this->getOrder(), "Lines")) {
             foreach ($this->getOrder() as $order) {
                 $linesObj = $order->getLines();
             }
@@ -119,7 +119,7 @@ class Items extends AbstractItems
      * @param $item
      * @return string
      */
-    public function getCustomItemRenderer($item)
+    public function getCustomItemRenderer($item): string
     {
         return $this->getChildBlock("custom_order_item_renderer")->setData("item", $item)->toHtml();
     }
@@ -130,18 +130,19 @@ class Items extends AbstractItems
      */
     public function getRefundId($order)
     {
-        return $this->orderHelper->getParameterValues($order,"Id");
+        return $this->orderHelper->getParameterValues($order, "Id");
     }
 
     /**
      * @param $order
      * @return string
      */
-    public function getPrintAllRefundsUrl($order)
+    public function getPrintAllRefundsUrl($order): string
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        $idType  = $this->orderHelper->getParameterValues($order,"IdType");
-        return $this->getUrl('*/*/printRefunds',
+        $idType  = $this->orderHelper->getParameterValues($order, "IdType");
+        return $this->getUrl(
+            '*/*/printRefunds',
             [
                 'order_id' => $orderId,
                 'type'     => $idType

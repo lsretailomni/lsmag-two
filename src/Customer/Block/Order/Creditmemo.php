@@ -1,18 +1,12 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 namespace Ls\Customer\Block\Order;
 
 use Magento\Customer\Model\Context;
+use Magento\Payment\Helper\Data;
 
 /**
  * Sales order view block
  *
- * @api
- * @author      Magento Core Team <core@magentocommerce.com>
- * @since 100.0.2
  */
 class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
 {
@@ -27,7 +21,7 @@ class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
     protected $httpContext;
 
     /**
-     * @var \Magento\Payment\Helper\Data
+     * @var Data
      */
     protected $_paymentHelper;
 
@@ -35,14 +29,14 @@ class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\App\Http\Context $httpContext
-     * @param \Magento\Payment\Helper\Data $paymentHelper
+     * @param Data $paymentHelper
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\App\Http\Context $httpContext,
-        \Magento\Payment\Helper\Data $paymentHelper,
+        Data $paymentHelper,
         array $data = []
     ) {
         $this->_paymentHelper = $paymentHelper;
@@ -53,6 +47,7 @@ class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
 
     /**
      * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareLayout()
     {
@@ -135,7 +130,7 @@ class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
      * @param object $order
      * @return string
      */
-    public function getViewUrl($order)
+    public function getViewUrl($order): string
     {
         return $this->getUrl('*/*/view', ['order_id' => $order->getId()]);
     }
@@ -144,7 +139,7 @@ class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
      * @param object $creditmemo
      * @return string
      */
-    public function getPrintCreditmemoUrl($creditmemo)
+    public function getPrintCreditmemoUrl($creditmemo): string
     {
         return $this->getUrl('*/*/printCreditmemo', ['creditmemo_id' => $creditmemo->getId()]);
     }
@@ -153,7 +148,7 @@ class Creditmemo extends \Magento\Sales\Block\Order\Creditmemo\Items
      * @param object $order
      * @return string
      */
-    public function getPrintAllCreditmemosUrl($order)
+    public function getPrintAllCreditmemosUrl($order): string
     {
         return $this->getUrl('*/*/printCreditmemo', ['order_id' => $order->getId()]);
     }

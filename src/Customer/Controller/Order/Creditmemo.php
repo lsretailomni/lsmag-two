@@ -2,8 +2,7 @@
 
 namespace Ls\Customer\Controller\Order;
 
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetReturnSales;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetReturnSaleResponse ;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetReturnSaleResponse;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\OrderHelper;
@@ -91,7 +90,7 @@ class Creditmemo extends Action
         if ($this->request->getParam('order_id')) {
             $orderId  = $this->request->getParam('order_id');
             $type     = $this->request->getParam('type');
-            $response = $this->setCurrentOrderInRegistry($orderId,$type);
+            $response = $this->setCurrentOrderInRegistry($orderId);
 
             if ($response === null || !$this->orderHelper->isAuthorizedForReturnOrder($response)) {
                 return $this->_redirect('sales/order/history/');
@@ -100,10 +99,7 @@ class Creditmemo extends Action
             $this->setPrintShipmentOption();
             $this->registry->register('hide_shipping_links', true);
         }
-        /** @var Page $resultPage */
-        $resultPage = $this->resultPageFactory->create();
-
-        return $resultPage;
+        return $this->resultPageFactory->create();
     }
 
     /**
