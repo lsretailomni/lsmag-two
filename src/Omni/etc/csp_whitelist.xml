@@ -3,7 +3,13 @@
     <policies>
         <policy id="style-src">
             <values>
-                <value id="fontawesome" type="host">*.fontawesome.com</value>
+                <value id="fontawesome1" type="host">*.fontawesome.com</value>
+                <value id="googleapis" type="host">*.googleapis.com</value>
+                <value id="fontawesome2" type="host">*.cloudflare.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
                 <value id="googleapis" type="host">*.googleapis.com</value>
             </values>
         </policy>
@@ -14,7 +20,8 @@
         </policy>
         <policy id="font-src">
             <values>
-                <value id="fontawesome" type="host">*.fontawesome.com</value>
+                <value id="fontawesome1" type="host">*.cloudflare.com</value>
+                <value id="fontawesome2" type="host">*.fontawesome.com</value>
                 <value id="gstatic" type="host">*.gstatic.com</value>
             </values>
         </policy>
