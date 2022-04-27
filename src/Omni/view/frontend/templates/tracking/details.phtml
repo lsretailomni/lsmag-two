@@ -1,16 +1,13 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $block Template */
 //phpcs:disable Magento2.Files.LineLength.MaxExceeded
 
+use Magento\Framework\View\Element\Template;
+
 $parentBlock = $block->getParentBlock();
-$track = $block->getData('track');
-$email = $block->getData('storeSupportEmail');
-$fields = [
+$track       = $block->getData('track');
+$email       = $block->getData('storeSupportEmail');
+$fields      = [
     'Status' => 'getStatus',
     'Signed by' => 'getSignedby',
     'Delivered to' => 'getDeliveryLocation',
