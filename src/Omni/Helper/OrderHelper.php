@@ -543,6 +543,7 @@ class OrderHelper extends AbstractHelper
      */
     public function isAuthorizedForReturnOrder($order): bool
     {
+        $orderCardId = null;
         $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         foreach ($order as $ordItem) {
             $orderCardId = $ordItem->getCardId();
@@ -578,7 +579,9 @@ class OrderHelper extends AbstractHelper
      */
     public function setOrderInRegistry($order)
     {
-        $this->registry->register('current_order', $order);
+        if (!$this->registry->registry('current_order')) {
+            $this->registry->register('current_order', $order);
+        }
     }
 
     /**
