@@ -80,7 +80,7 @@ class OrderHelper extends AbstractHelper
      */
     public $dateTime;
     /**
-     * @var Registry 
+     * @var Registry
      */
     private Registry $registry;
 
@@ -552,6 +552,7 @@ class OrderHelper extends AbstractHelper
         if ($cardId == $orderCardId) {
             return true;
         }
+
         return false;
     }
 
