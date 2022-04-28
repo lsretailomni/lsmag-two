@@ -371,7 +371,10 @@ class Info extends Template
         $orderId = $this->getRequest()->getParam('order_id');
         return $order ? $this->getUrl(
             'customer/order/print',
-            ['order_id' => $orderId, 'type' => $typeId]
+            [
+                'order_id' => $orderId,
+                'type' => $typeId
+            ]
         ) : '';
     }
 

@@ -2,13 +2,12 @@
 
 namespace Ls\Customer\Controller\Order;
 
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetReturnSaleResponse;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Request\Http;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Message\ManagerInterface;
@@ -80,8 +79,7 @@ class Creditmemo extends Action
     /**
      * @inheritDoc
      *
-     * @return \Magento\Framework\App\ResponseInterface|ResultInterface|Page
-     * @throws InvalidEnumException
+     * @return ResponseInterface|ResultInterface|Page
      */
     public function execute()
     {
@@ -103,11 +101,10 @@ class Creditmemo extends Action
     }
 
     /**
-     * Set currentOrder into registry
+     * Set current order into registry
      *
      * @param $orderId
-     * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
-     * @throws InvalidEnumException
+     * @return ArrayOfSalesEntry|null
      */
     public function setCurrentOrderInRegistry($orderId)
     {
