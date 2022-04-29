@@ -18,7 +18,9 @@ use Magento\Sales\Model\Order\Item;
     </a>
 </div>
 <?php foreach ($block->getSalesReturnEntires($centralOrder) as $salesEntryItem) : ?>
-
+<?php if(!(float) $salesEntryItem->getTotalAmount()) :?>
+    <?php continue; ?>
+<?php endif ?>
 <div class="order-title">
     <strong><?= $block->escapeHtml(__('Refund #')) ?><?= $block->escapeHtml($block->getRefundId($salesEntryItem)) ?> </strong>
 </div>
