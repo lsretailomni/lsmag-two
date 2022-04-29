@@ -386,8 +386,7 @@ class Info extends Template
      */
     public function getReorderUrl($order)
     {
-        $orderId = $this->getRequest()->getParam('order_id');
-        return $order ? $this->getUrl('sales/order/reorder', ['order_id' => $orderId]) : '';
+        return $order ? $this->getUrl('sales/order/reorder', ['order_id' => $order->getId()]) : '';
     }
 
     /**
