@@ -45,6 +45,17 @@ interface LoyItemInterface
     public function getLocations();
 
     /**
+     * @param ArrayOfItemModifier $Modifiers
+     * @return $this
+     */
+    public function setModifiers($Modifiers);
+
+    /**
+     * @return ArrayOfItemModifier
+     */
+    public function getModifiers();
+
+    /**
      * @param ArrayOfPrice $Prices
      * @return $this
      */
@@ -54,6 +65,17 @@ interface LoyItemInterface
      * @return ArrayOfPrice
      */
     public function getPrices();
+
+    /**
+     * @param ArrayOfItemRecipe $Recipes
+     * @return $this
+     */
+    public function setRecipes($Recipes);
+
+    /**
+     * @return ArrayOfItemRecipe
+     */
+    public function getRecipes();
 
     /**
      * @param ArrayOfUnitOfMeasure $UnitOfMeasures

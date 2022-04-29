@@ -27,9 +27,19 @@ class LoyItem extends Entity
     protected $Locations = null;
 
     /**
+     * @property ArrayOfItemModifier $Modifiers
+     */
+    protected $Modifiers = null;
+
+    /**
      * @property ArrayOfPrice $Prices
      */
     protected $Prices = null;
+
+    /**
+     * @property ArrayOfItemRecipe $Recipes
+     */
+    protected $Recipes = null;
 
     /**
      * @property ArrayOfUnitOfMeasure $UnitOfMeasures
@@ -196,6 +206,24 @@ class LoyItem extends Entity
     }
 
     /**
+     * @param ArrayOfItemModifier $Modifiers
+     * @return $this
+     */
+    public function setModifiers($Modifiers)
+    {
+        $this->Modifiers = $Modifiers;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfItemModifier
+     */
+    public function getModifiers()
+    {
+        return $this->Modifiers;
+    }
+
+    /**
      * @param ArrayOfPrice $Prices
      * @return $this
      */
@@ -211,6 +239,24 @@ class LoyItem extends Entity
     public function getPrices()
     {
         return $this->Prices;
+    }
+
+    /**
+     * @param ArrayOfItemRecipe $Recipes
+     * @return $this
+     */
+    public function setRecipes($Recipes)
+    {
+        $this->Recipes = $Recipes;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfItemRecipe
+     */
+    public function getRecipes()
+    {
+        return $this->Recipes;
     }
 
     /**

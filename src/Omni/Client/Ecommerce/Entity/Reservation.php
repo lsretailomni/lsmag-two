@@ -52,6 +52,11 @@ class Reservation extends Entity
     protected $Location = null;
 
     /**
+     * @property int $NoOfPerson
+     */
+    protected $NoOfPerson = null;
+
+    /**
      * @property string $Reference
      */
     protected $Reference = null;
@@ -233,6 +238,24 @@ class Reservation extends Entity
     public function getLocation()
     {
         return $this->Location;
+    }
+
+    /**
+     * @param int $NoOfPerson
+     * @return $this
+     */
+    public function setNoOfPerson($NoOfPerson)
+    {
+        $this->NoOfPerson = $NoOfPerson;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNoOfPerson()
+    {
+        return $this->NoOfPerson;
     }
 
     /**

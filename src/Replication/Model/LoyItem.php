@@ -37,9 +37,19 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     protected $Locations = null;
 
     /**
+     * @property ArrayOfItemModifier $Modifiers
+     */
+    protected $Modifiers = null;
+
+    /**
      * @property ArrayOfPrice $Prices
      */
     protected $Prices = null;
+
+    /**
+     * @property ArrayOfItemRecipe $Recipes
+     */
+    protected $Recipes = null;
 
     /**
      * @property ArrayOfUnitOfMeasure $UnitOfMeasures
@@ -262,6 +272,26 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     }
 
     /**
+     * @param ArrayOfItemModifier $Modifiers
+     * @return $this
+     */
+    public function setModifiers($Modifiers)
+    {
+        $this->setData( 'Modifiers', $Modifiers );
+        $this->Modifiers = $Modifiers;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfItemModifier
+     */
+    public function getModifiers()
+    {
+        return $this->getData( 'Modifiers' );
+    }
+
+    /**
      * @param ArrayOfPrice $Prices
      * @return $this
      */
@@ -279,6 +309,26 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     public function getPrices()
     {
         return $this->getData( 'Prices' );
+    }
+
+    /**
+     * @param ArrayOfItemRecipe $Recipes
+     * @return $this
+     */
+    public function setRecipes($Recipes)
+    {
+        $this->setData( 'Recipes', $Recipes );
+        $this->Recipes = $Recipes;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfItemRecipe
+     */
+    public function getRecipes()
+    {
+        return $this->getData( 'Recipes' );
     }
 
     /**

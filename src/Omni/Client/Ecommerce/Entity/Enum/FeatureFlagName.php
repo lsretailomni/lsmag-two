@@ -41,6 +41,7 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName PRIVACY_POLICY_U_R_L()
  * @$method static FeatureFlagName PRIVACY_POLICY_VERSION()
  * @$method static FeatureFlagName SHOW_CUSTOMER_SURVEY()
+ * @$method static FeatureFlagName ADD_CARD_BEFORE_SHOPPING()
  * @$method static FeatureFlagName ENABLE_PLATFORM_PAYMENT()
  * @$method static FeatureFlagName PLATFORM_PAYMENT_CURRENCY_CODE()
  * @$method static FeatureFlagName PLATFORM_PAYMENT_COUNTRY_CODE()
@@ -125,6 +126,8 @@ class FeatureFlagName extends Enum
     public const PRIVACY_POLICY_VERSION = 'PrivacyPolicyVersion';
 
     public const SHOW_CUSTOMER_SURVEY = 'ShowCustomerSurvey';
+
+    public const ADD_CARD_BEFORE_SHOPPING = 'AddCardBeforeShopping';
 
     public const ENABLE_PLATFORM_PAYMENT = 'EnablePlatformPayment';
 
