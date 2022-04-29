@@ -14,17 +14,19 @@ use Magento\Sales\Model\Order\Item;
        class="action print"
        target="_blank"
        rel="noopener">
-        <span><?= $block->escapeHtml(__('Print Refund')) ?></span>
+        <span><?= $block->escapeHtml(__('Print All Refunds')) ?></span>
     </a>
 </div>
+<?php foreach ($block->getSalesReturnEntires($centralOrder) as $salesEntryItem) : ?>
+
 <div class="order-title">
-    <strong><?= $block->escapeHtml(__('Refund #')) ?><?= $block->escapeHtml($block->getRefundId($centralOrder)) ?> </strong>
+    <strong><?= $block->escapeHtml(__('Refund #')) ?><?= $block->escapeHtml($block->getRefundId($salesEntryItem)) ?> </strong>
 </div>
 <div class="table-wrapper order-items">
     <table class="data table table-order-items" id="my-orders-table" summary="<?= /* @escapeNotVerified */
-    __('Items Ordered') ?>">
+    __('Items Refunded') ?>">
         <caption class="table-caption"><?= /* @escapeNotVerified */
-            __('Items Ordered') ?></caption>
+            __('Items Refunded') ?></caption>
         <thead>
         <tr>
             <th class="col name"><?= /* @escapeNotVerified */
@@ -39,7 +41,7 @@ use Magento\Sales\Model\Order\Item;
                 __('Subtotal') ?></th>
         </tr>
         </thead>
-        <?php $items = $block->getItems(); ?>
+        <?php $items = $block->getItems($salesEntryItem); ?>
         <?php $giftMessage = '' ?>
         <?php foreach ($items as $item):
             if ($item instanceof Item && $item->getParentItem()) :
@@ -55,7 +57,8 @@ use Magento\Sales\Model\Order\Item;
             </tbody>
         <?php endforeach; ?>
         <tfoot>
-        <?= $block->getChildHtml('custom_order_totals') ?>
+        <?= $block->getChildBlock('custom_order_totals')->setData("items",$salesEntryItem)->toHtml(); ?>
         </tfoot>
     </table>
 </div>
+<?php endforeach; ?>

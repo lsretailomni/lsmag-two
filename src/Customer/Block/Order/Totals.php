@@ -5,12 +5,14 @@ namespace Ls\Customer\Block\Order;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer;
 
 /**
  * Class Totals
@@ -89,6 +91,16 @@ class Totals extends Template
     }
 
     /**
+     * Get items.
+     *
+     * @return array|null
+     */
+    public function getItems()
+    {
+        return $this->getData('items');
+    }
+
+    /**
      * @param $amount
      * @return float
      */
@@ -114,7 +126,8 @@ class Totals extends Template
      */
     public function getTotalNetAmount()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "TotalNetAmount");
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        return $this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount");
     }
 
     /**
@@ -124,7 +137,8 @@ class Totals extends Template
      */
     public function getGrandTotal()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "TotalAmount");
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        return $this->orderHelper->getParameterValues($lineItemObj, "TotalAmount");
     }
 
     /**
@@ -142,7 +156,8 @@ class Totals extends Template
      */
     public function getTotalDiscount()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "TotalDiscount");
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        return $this->orderHelper->getParameterValues($lineItemObj, "TotalDiscount");
     }
 
     /**
@@ -218,7 +233,8 @@ class Totals extends Template
      */
     public function getLines()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "Lines");
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        return $this->orderHelper->getParameterValues($lineItemObj, "Lines");
     }
 
 
@@ -227,7 +243,8 @@ class Totals extends Template
      */
     public function getOrderPayments()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "Payments");
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        return $this->orderHelper->getParameterValues($lineItemObj, "Payments");
     }
 
     /**

@@ -66,12 +66,12 @@ class Items extends AbstractItems
 
     /**
      * Get orderLines either using magento order or central order object
-     *
-     * @return mixed
+     * @param $salesEntryItem
+     * @return array
      */
-    public function getItems()
+    public function getItems($salesEntryItem)
     {
-        $orderLines = $this->getLines();
+        $orderLines = $this->getLines($salesEntryItem);
         $orderLinesArr = [];
         $this->getChildBlock("custom_order_item_renderer")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {
@@ -86,19 +86,12 @@ class Items extends AbstractItems
     /**
      * Fetch Lines node from SalesEntryGetResult or SalesEntryGetReturnSalesResult
      * depending on the structure of SalesEntry node.
+     * @param $salesEntryItem
      * @return mixed
      */
-    public function getLines()
+    public function getLines($salesEntryItem)
     {
-        if (!property_exists($this->getOrder(), "Lines")) {
-            foreach ($this->getOrder() as $order) {
-                $linesObj = $order->getLines();
-            }
-        } else {
-            $linesObj = $this->getOrder()->getLines();
-        }
-
-        return $linesObj;
+        return $this->orderHelper->getParameterValues($salesEntryItem, "Lines");
     }
 
     /**
@@ -155,6 +148,16 @@ class Items extends AbstractItems
                 'type'     => $idType
             ]
         );
+    }
+
+    /**
+     * Get Sales Return Entry details
+     * @param $centralOrder
+     * @return mixed
+     */
+    public function getSalesReturnEntires($centralOrder)
+    {
+        return $centralOrder->getSalesEntry();
     }
 
     /**
