@@ -57,6 +57,11 @@ class OneListItem extends Entity
     protected $Image = null;
 
     /**
+     * @property boolean $Immutable
+     */
+    protected $Immutable = null;
+
+    /**
      * @property boolean $IsADeal
      */
     protected $IsADeal = null;
@@ -311,6 +316,24 @@ class OneListItem extends Entity
     public function getImage()
     {
         return $this->Image;
+    }
+
+    /**
+     * @param boolean $Immutable
+     * @return $this
+     */
+    public function setImmutable($Immutable)
+    {
+        $this->Immutable = $Immutable;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getImmutable()
+    {
+        return $this->Immutable;
     }
 
     /**

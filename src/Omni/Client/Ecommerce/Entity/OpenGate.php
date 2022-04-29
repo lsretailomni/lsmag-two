@@ -39,6 +39,11 @@ class OpenGate implements RequestInterface
     protected $exitWithoutShopping = null;
 
     /**
+     * @property boolean $isEntering
+     */
+    protected $isEntering = null;
+
+    /**
      * @param string $qrCode
      * @return $this
      */
@@ -126,6 +131,24 @@ class OpenGate implements RequestInterface
     public function getExitWithoutShopping()
     {
         return $this->exitWithoutShopping;
+    }
+
+    /**
+     * @param boolean $isEntering
+     * @return $this
+     */
+    public function setIsEntering($isEntering)
+    {
+        $this->isEntering = $isEntering;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsEntering()
+    {
+        return $this->isEntering;
     }
 
 

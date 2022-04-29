@@ -11,7 +11,7 @@
             __('Order Information') ?></strong>
     </div>
     <div class="block-content">
-        <?php if (!$block->getOrder()->getClickAndCollectOrder() && !empty($shippingAddress = $block->getFormattedAddress())) {
+        <?php if (!$block->getClickAndCollectOrder() && !empty($shippingAddress = $block->getFormattedAddress())) {
             ?>
             <div class="box box-order-shipping-address">
                 <strong class="box-title"><span><?= /* @escapeNotVerified */

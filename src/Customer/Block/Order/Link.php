@@ -7,9 +7,9 @@ use Magento\Framework\App\DefaultPathInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Html\Link\Current;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Invoice;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Block being used for order detail links
@@ -27,10 +27,21 @@ class Link extends Current
     public $orderHelper;
 
     /**
+     * @var Context
+     */
+    private Context $context;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private StoreManagerInterface $storeManager;
+
+    /**
      * Link constructor.
      * @param Context $context
      * @param DefaultPathInterface $defaultPath
      * @param OrderHelper $orderHelper
+     * @param StoreManagerInterface $storeManager
      * @param Registry $registry
      * @param array $data
      */
@@ -38,12 +49,15 @@ class Link extends Current
         Context $context,
         DefaultPathInterface $defaultPath,
         OrderHelper $orderHelper,
+        StoreManagerInterface $storeManager,
         Registry $registry,
         array $data = []
     ) {
         parent::__construct($context, $defaultPath, $data);
         $this->_registry   = $registry;
+        $this->context = $context;
         $this->orderHelper = $orderHelper;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -67,27 +81,35 @@ class Link extends Current
     }
 
     /**
+     * Get order view URL
      * @inheritdoc
      *
      * @return string
      */
     public function getHref()
     {
-        return $this->getUrl($this->getPath(),
+        $orderId = $this->getRequest()->getParam('order_id');
+        $type = $this->orderHelper->getParameterValues($this->getOrder(), "IdType");
+
+        return $this->getUrl(
+            $this->getPath(),
             [
-                'order_id' => $this->getOrder()->getId(),
-                'type'     => $this->getOrder()->getIdType()
+                'order_id' => $orderId,
+                'type'     => $type
             ]
         );
     }
 
     /**
+     * Generate order view page tabs.
      * @inheritdoc
      *
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     protected function _toHtml()
     {
+        $orderId = $this->orderHelper->getParameterValues($this->getOrder(), "Id");
         $order = $this->getMagOrder();
         if (!empty($order)) {
             if ($this->getKey() == "Invoices" && !($order->hasInvoices())) {
@@ -95,6 +117,12 @@ class Link extends Current
             }
 
             if ($this->getKey() == "Shipments" && !($order->hasShipments())) {
+                return '';
+            }
+
+            if ($this->getKey() == "Creditmemos" && !strpos($this->getCurrentUrl(), "creditmemo")
+                && !($this->orderHelper->hasReturnSale($orderId))
+            ) {
                 return '';
             }
 
@@ -108,5 +136,15 @@ class Link extends Current
         } else {
             return '';
         }
+    }
+
+    /**
+     * Get current store URL
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getCurrentUrl()
+    {
+        return $this->storeManager->getStore()->getCurrentUrl();
     }
 }

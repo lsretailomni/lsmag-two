@@ -37,6 +37,11 @@ class ActivityRequest
     protected $Email = null;
 
     /**
+     * @property string $GroupNo
+     */
+    protected $GroupNo = null;
+
+    /**
      * @property string $Location
      */
     protected $Location = null;
@@ -80,6 +85,21 @@ class ActivityRequest
      * @property string $ReservationNo
      */
     protected $ReservationNo = null;
+
+    /**
+     * @property string $SetGroupReservation
+     */
+    protected $SetGroupReservation = null;
+
+    /**
+     * @property string $Token
+     */
+    protected $Token = null;
+
+    /**
+     * @property float $UnitPrice
+     */
+    protected $UnitPrice = null;
 
     /**
      * @param string $ActivityTime
@@ -169,6 +189,24 @@ class ActivityRequest
     public function getEmail()
     {
         return $this->Email;
+    }
+
+    /**
+     * @param string $GroupNo
+     * @return $this
+     */
+    public function setGroupNo($GroupNo)
+    {
+        $this->GroupNo = $GroupNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGroupNo()
+    {
+        return $this->GroupNo;
     }
 
     /**
@@ -331,6 +369,60 @@ class ActivityRequest
     public function getReservationNo()
     {
         return $this->ReservationNo;
+    }
+
+    /**
+     * @param string $SetGroupReservation
+     * @return $this
+     */
+    public function setSetGroupReservation($SetGroupReservation)
+    {
+        $this->SetGroupReservation = $SetGroupReservation;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSetGroupReservation()
+    {
+        return $this->SetGroupReservation;
+    }
+
+    /**
+     * @param string $Token
+     * @return $this
+     */
+    public function setToken($Token)
+    {
+        $this->Token = $Token;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->Token;
+    }
+
+    /**
+     * @param float $UnitPrice
+     * @return $this
+     */
+    public function setUnitPrice($UnitPrice)
+    {
+        $this->UnitPrice = $UnitPrice;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getUnitPrice()
+    {
+        return $this->UnitPrice;
     }
 
 

@@ -6,6 +6,8 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -16,6 +18,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Registry;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
 use Magento\Sales\Model\ResourceModel\Order;
@@ -78,6 +81,11 @@ class OrderHelper extends AbstractHelper
     public $dateTime;
 
     /**
+     * @var Registry
+     */
+    public Registry $registry;
+
+    /**
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
@@ -88,6 +96,7 @@ class OrderHelper extends AbstractHelper
      * @param LSR $lsr
      * @param Order $orderResourceModel
      * @param Json $json
+     * @param Registry $registry
      * @param DateTime $dateTime
      */
     public function __construct(
@@ -101,6 +110,7 @@ class OrderHelper extends AbstractHelper
         LSR $lsr,
         Order $orderResourceModel,
         Json $json,
+        Registry $registry,
         DateTime $dateTime
     ) {
         parent::__construct($context);
@@ -113,6 +123,7 @@ class OrderHelper extends AbstractHelper
         $this->lsr                = $lsr;
         $this->orderResourceModel = $orderResourceModel;
         $this->json               = $json;
+        $this->registry           = $registry;
         $this->dateTime           = $dateTime;
     }
 
@@ -220,6 +231,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Update shippping amount to shipment order line
      * @param $orderLines
      * @param $order
      * @return mixed
@@ -251,6 +263,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Set shipment line properties
      * @param $orderLine
      * @param $order
      */
@@ -305,6 +318,27 @@ class OrderHelper extends AbstractHelper
             ->setPhoneNumber($magentoAddress->getTelephone());
 
         return $omniAddress;
+    }
+
+
+    /**
+     * Fetch node values based on the parameter passed
+     * @param $orderObj
+     * @param $param
+     * @return mixed
+     */
+    public function getParameterValues($orderObj, $param)
+    {
+        $getParam = 'get'.$param;
+        if (!property_exists($orderObj, $param)) {
+            foreach ($orderObj as $order) {
+                $value = $order->$getParam();
+            }
+        } else {
+            $value = $orderObj->$getParam();
+        }
+
+        return $value;
     }
 
     /**
@@ -429,6 +463,20 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Validate order have return sale or not
+     * @param $orderId
+     * @return mixed
+     * @throws InvalidEnumException
+     */
+    public function hasReturnSale($orderId)
+    {
+        $this->setCurrentOrderInRegistry($orderId);
+        $order = $this->getOrder();
+        return $this->getParameterValues($this->getOrder(), "HasReturnSale");
+    }
+
+
+    /**
      * This function is overriding in hospitality module
      * @param $docId
      * @param string $type
@@ -452,7 +500,30 @@ class OrderHelper extends AbstractHelper
         return $response ? $response->getSalesEntryGetResult() : $response;
     }
 
+
     /**
+     * Get sales return details
+     * @param $docId
+     * @return Entity\ArrayOfSalesEntry|Entity\SalesEntryGetReturnSalesResponse|ResponseInterface|null
+     */
+    public function getReturnDetailsAgainstId($docId)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $returnRequest = new Operation\SalesEntryGetReturnSales();
+        $returnOrder   = new Entity\SalesEntryGetReturnSales();
+        $returnOrder->setReceiptNo($docId);
+        // @codingStandardsIgnoreEnd
+        try {
+            $response = $returnRequest->execute($returnOrder);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getSalesEntryGetReturnSalesResult() : $response;
+    }
+
+    /**
+     * Validate if the order using CardId
      * @param $order
      * @return bool
      */
@@ -464,6 +535,64 @@ class OrderHelper extends AbstractHelper
             return true;
         }
         return false;
+    }
+
+    /**
+     * Validate the order using CardId
+     * @param $order
+     * @return bool
+     */
+    public function isAuthorizedForReturnOrder($order): bool
+    {
+        $orderCardId = null;
+        $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        foreach ($order as $ordItem) {
+            $orderCardId = $ordItem->getCardId();
+            break;
+        }
+
+        if ($cardId == $orderCardId) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Set currentOrder into registry
+     *
+     * @param $orderId
+     * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
+     * @throws InvalidEnumException
+     */
+    public function setCurrentOrderInRegistry($orderId)
+    {
+        $response = $this->getOrderDetailsAgainstId($orderId);
+        if ($response) {
+            $this->setOrderInRegistry($response);
+        }
+        return $response;
+    }
+
+    /**
+     * Set LS Central order details in registry.
+     * @param $order
+     */
+    public function setOrderInRegistry($order)
+    {
+        if (!$this->registry->registry('current_order')) {
+            $this->registry->register('current_order', $order);
+        }
+    }
+
+    /**
+     * Retrieve current order model instance
+     *
+     * @return SalesEntry
+     */
+    public function getOrder()
+    {
+        return $this->registry->registry('current_order');
     }
 
     /**
@@ -516,7 +645,7 @@ class OrderHelper extends AbstractHelper
         try {
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
-            if ($filterOptions == true) {
+            if ($filterOptions) {
                 $criteriaBuilder->addFilter('status', ['canceled', 'payment_review'], 'nin');
                 $criteriaBuilder->addFilter('document_id', null, 'null');
             }
@@ -538,9 +667,7 @@ class OrderHelper extends AbstractHelper
             }
 
             $searchCriteria = $criteriaBuilder->create();
-            $orders         = $this->orderRepository->getList($searchCriteria)->getItems();
-
-            return $orders;
+            $orders = $this->orderRepository->getList($searchCriteria)->getItems();
 
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -550,6 +677,8 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Get active web store details
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -559,6 +688,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Error handler
      * @param $order
      * @throws AlreadyExistsException
      */
@@ -576,6 +706,7 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Setting Adyen payment gateway parameters
      * @param $adyenResponse
      * @param $order
      * @return OrderInterface|mixed
@@ -639,16 +770,18 @@ class OrderHelper extends AbstractHelper
     {
         // This is to support backward compatibility of Omni
         if (version_compare($this->lsr->getOmniVersion(), '4.6.0', '>')) {
-            return $salesEntry->getCustomerOrderNo();
+            $customerOrderNo = $this->getParameterValues($salesEntry, "CustomerOrderNo");
+            return $customerOrderNo;
         }
 
-        return $salesEntry->getId();
+        return $this->getParameterValues($salesEntry, "Id");
     }
 
     /**
      * Get configuration value for tender type
      *
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getPaymentTenderMapping()
     {
@@ -678,6 +811,7 @@ class OrderHelper extends AbstractHelper
      *
      * @param $code
      * @return int|mixed
+     * @throws NoSuchEntityException
      */
     public function getPaymentTenderTypeId($code)
     {
@@ -689,7 +823,6 @@ class OrderHelper extends AbstractHelper
 
         return $tenderTypeId;
     }
-
 
     /**
      * Return date time
