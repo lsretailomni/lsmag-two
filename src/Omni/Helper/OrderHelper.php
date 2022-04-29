@@ -79,10 +79,11 @@ class OrderHelper extends AbstractHelper
      * @var DateTime
      */
     public $dateTime;
+
     /**
      * @var Registry
      */
-    private Registry $registry;
+    public Registry $registry;
 
     /**
      * @param Context $context
