@@ -50,6 +50,11 @@ class OrderPayment
     protected $DepositPayment = null;
 
     /**
+     * @property string $EFTCardType
+     */
+    protected $EFTCardType = null;
+
+    /**
      * @property string $ExternalReference
      */
     protected $ExternalReference = null;
@@ -203,6 +208,24 @@ class OrderPayment
     public function getDepositPayment()
     {
         return $this->DepositPayment;
+    }
+
+    /**
+     * @param string $EFTCardType
+     * @return $this
+     */
+    public function setEFTCardType($EFTCardType)
+    {
+        $this->EFTCardType = $EFTCardType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEFTCardType()
+    {
+        return $this->EFTCardType;
     }
 
     /**

@@ -139,13 +139,13 @@ class Info extends Template
      * @param false $isBillingAddress
      * @return string
      */
-    public function getFormattedAddress($isBillingAddress = false)
+    public function getFormattedAddress(bool $isBillingAddress = false)
     {
         $order = $this->getOrder();
-        if ($isBillingAddress == true) {
-            $orderAddress = $order->getContactAddress();
+        if ($isBillingAddress) {
+            $orderAddress = $this->orderHelper->getParameterValues($order, "ContactAddress");
         } else {
-            $orderAddress = $order->getShipToAddress();
+            $orderAddress = $this->orderHelper->getParameterValues($order, "ShipToAddress");
         }
         $address = '';
         if (!empty($orderAddress) && !empty($orderAddress->getCountry())) {
@@ -159,13 +159,15 @@ class Info extends Template
                 $this->getCountryName($orderAddress->getCountry()) . '<br/>' : '';
             /** TODO update with Address Phone Number */
             $address .= $orderAddress->getPhoneNumber() ?
-                "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>" . $orderAddress->getPhoneNumber() . '</a>' : '';
+                "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>"
+                . $orderAddress->getPhoneNumber() . '</a>' : '';
 
         }
         return $address;
     }
 
     /**
+     * Get country name by country code
      * @param $countryCode
      * @return string
      */
@@ -181,10 +183,14 @@ class Info extends Template
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $order = $this->getOrder();
+        $order           = $this->getOrder();
+        $customerOrderNo = null;
         if ($order) {
-            $orderId = $order->getCustomerOrderNo() ?: $order->getId();
-            if (!empty($order->getCustomerOrderNo())) {
+
+            $orderId = $this->orderHelper->getParameterValues($order,"CustomerOrderNo") ?: $this->orderHelper->getParameterValues($order,"Id");
+            $customerOrderNo = $this->orderHelper->getParameterValues($order,"CustomerOrderNo");
+
+            if (!empty($customerOrderNo)) {
                 $type = __('Order');
             } else {
                 $type = $order->getIdType();
@@ -205,6 +211,36 @@ class Info extends Template
     }
 
     /**
+     * To fetch Status value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
+     * @return mixed
+     */
+    public function getOrderStatus()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(), "Status");
+    }
+
+    /**
+     * To fetch ClickAndCollectOrder value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
+     * @return mixed
+     */
+    public function getClickAndCollectOrder()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(), "ClickAndCollectOrder");
+    }
+
+    /**
+     * To fetch DocumentRegTime value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
+     * @return string|null
+     */
+    public function getDocRegistraionTime()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(), "DocumentRegTime");
+    }
+
+    /**
      * Get selected shipment method for the order, use the one in magento if available
      *
      * @return Phrase|string
@@ -212,7 +248,7 @@ class Info extends Template
     public function getShippingDescription()
     {
         $magentoOrder = $this->getMagOrder();
-        $status       = $this->getOrder()->getClickAndCollectOrder();
+        $status       = $this->getClickAndCollectOrder();
 
         if ($magentoOrder) {
             return $magentoOrder->getShippingDescription();
@@ -234,8 +270,11 @@ class Info extends Template
     {
         $format = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
         $requestedDeliveryDate = $this->getOrder()->getRequestedDeliveryDate();
-        if($requestedDeliveryDate!='0001-01-01T00:00:00') {
-            return $this->orderHelper->getDateTimeObject()->date($format, $this->getOrder()->getRequestedDeliveryDate());
+        if ($requestedDeliveryDate!='0001-01-01T00:00:00') {
+            return $this->orderHelper->getDateTimeObject()->date(
+                $format,
+                $this->getOrder()->getRequestedDeliveryDate()
+            );
         }
 
         return null;
@@ -250,7 +289,7 @@ class Info extends Template
      */
     public function getPaymentDescription()
     {
-        $paymentLines      = $this->getOrder()->getPayments();
+        $paymentLines      = $this->getOrderPayments();
         $methods           = $giftCardInfo = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         foreach ($paymentLines as $line) {
@@ -290,17 +329,28 @@ class Info extends Template
     }
 
     /**
+     * To fetch Payments value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
+     * depending on the structure of SalesEntry node
+     * @return string|null
+     */
+    public function getOrderPayments()
+    {
+        return $this->orderHelper->getParameterValues($this->getOrder(), "Payments");
+    }
+
+    /**
+     * Format loyalty points
      * @param $points
      * @return string
      */
     public function getFormattedLoyaltyPoints($points)
     {
-        $points = number_format((float)$points, 2, '.', '');
-        return $points;
+        return number_format((float)$points, 2, '.', '');
     }
 
     /**
-     * @param $points
+     * Format gift card price
+     * @param $giftCardAmount
      * @return string
      */
     public function getGiftCardFormattedPrice($giftCardAmount)
@@ -311,14 +361,19 @@ class Info extends Template
     /**
      * Formulating order printing url
      *
-     * @param SalesEntry $order
+     * @param $order
      * @return string
      */
-    public function getPrintUrl(SalesEntry $order)
+    public function getPrintUrl($order)
     {
+        $typeId = $this->orderHelper->getParameterValues($order, "IdType");
+        $orderId = $this->getRequest()->getParam('order_id');
         return $order ? $this->getUrl(
             'customer/order/print',
-            ['order_id' => $order->getId(), 'type' => $order->getIdType()]
+            [
+                'order_id' => $orderId,
+                'type' => $typeId
+            ]
         ) : '';
     }
 
@@ -364,6 +419,7 @@ class Info extends Template
     }
 
     /**
+     * Get current magento order in registry
      * @return mixed
      */
     public function getMagOrder()

@@ -1,0 +1,66 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var Items $block */
+$order = $block->getMagOrder();
+$centralOrder = $block->getOrder();
+
+use \Ls\Customer\Block\Order\Items;
+use Magento\Sales\Model\Order\Item;
+?>
+<div class="actions-toolbar">
+    <a href="<?php echo $block->escapeUrl($block->getPrintAllRefundsUrl($centralOrder)) ?>"
+       class="action print"
+       target="_blank"
+       rel="noopener">
+        <span><?= $block->escapeHtml(__('Print All Refunds')) ?></span>
+    </a>
+</div>
+<?php foreach ($block->getSalesReturnEntires($centralOrder) as $salesEntryItem) : ?>
+<?php if(!(float) $salesEntryItem->getTotalAmount()) :?>
+    <?php continue; ?>
+<?php endif ?>
+<div class="order-title">
+    <strong><?= $block->escapeHtml(__('Refund #')) ?><?= $block->escapeHtml($block->getRefundId($salesEntryItem)) ?> </strong>
+</div>
+<div class="table-wrapper order-items">
+    <table class="data table table-order-items" id="my-orders-table" summary="<?= /* @escapeNotVerified */
+    __('Items Refunded') ?>">
+        <caption class="table-caption"><?= /* @escapeNotVerified */
+            __('Items Refunded') ?></caption>
+        <thead>
+        <tr>
+            <th class="col name"><?= /* @escapeNotVerified */
+                __('Product Name') ?></th>
+            <th class="col sku"><?= /* @escapeNotVerified */
+                __('SKU') ?></th>
+            <th class="col price"><?= /* @escapeNotVerified */
+                __('Price') ?></th>
+            <th class="col qty"><?= /* @escapeNotVerified */
+                __('Qty') ?></th>
+            <th class="col subtotal"><?= /* @escapeNotVerified */
+                __('Subtotal') ?></th>
+        </tr>
+        </thead>
+        <?php $items = $block->getItems($salesEntryItem); ?>
+        <?php $giftMessage = '' ?>
+        <?php foreach ($items as $item):
+            if ($item instanceof Item && $item->getParentItem()) :
+                continue;
+            endif;
+            ?>
+            <tbody>
+            <?php if ($item instanceof Item): ?>
+                <?= $block->getItemHtml($item) ?>
+            <?php else: ?>
+                <?= $block->getCustomItemRenderer($item); ?>
+            <?php endif; ?>
+            </tbody>
+        <?php endforeach; ?>
+        <tfoot>
+        <?= $block->getChildBlock('custom_order_totals')->setData("items",$salesEntryItem)->toHtml(); ?>
+        </tfoot>
+    </table>
+</div>
+<?php endforeach; ?>

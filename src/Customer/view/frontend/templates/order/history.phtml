@@ -40,6 +40,9 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                     </thead>
                     <tbody>
                     <?php foreach ($_orders as $_order):
+                        if(!$_order->getHasReturnSale() && $_order->getReturnSale()){
+                            continue;
+                        }
                         $magOrder = $block->getOrderByDocumentId($_order);
                         ?>
                         <tr>

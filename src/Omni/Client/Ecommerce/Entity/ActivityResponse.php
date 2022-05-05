@@ -27,6 +27,11 @@ class ActivityResponse extends Entity
     protected $ErrorString = null;
 
     /**
+     * @property int $GroupLineNo
+     */
+    protected $GroupLineNo = null;
+
+    /**
      * @property string $ItemNo
      */
     protected $ItemNo = null;
@@ -108,6 +113,24 @@ class ActivityResponse extends Entity
     public function getErrorString()
     {
         return $this->ErrorString;
+    }
+
+    /**
+     * @param int $GroupLineNo
+     * @return $this
+     */
+    public function setGroupLineNo($GroupLineNo)
+    {
+        $this->GroupLineNo = $GroupLineNo;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGroupLineNo()
+    {
+        return $this->GroupLineNo;
     }
 
     /**

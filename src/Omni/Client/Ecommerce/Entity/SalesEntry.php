@@ -67,6 +67,11 @@ class SalesEntry extends Entity
     protected $ContactName = null;
 
     /**
+     * @property string $CreateAtStoreId
+     */
+    protected $CreateAtStoreId = null;
+
+    /**
      * @property string $CustomerId
      */
     protected $CustomerId = null;
@@ -87,9 +92,19 @@ class SalesEntry extends Entity
     protected $ExternalId = null;
 
     /**
+     * @property boolean $HasReturnSale
+     */
+    protected $HasReturnSale = null;
+
+    /**
      * @property DocumentIdType $IdType
      */
     protected $IdType = null;
+
+    /**
+     * @property int $LineCount
+     */
+    protected $LineCount = null;
 
     /**
      * @property int $LineItemCount
@@ -115,6 +130,11 @@ class SalesEntry extends Entity
      * @property string $RequestedDeliveryDate
      */
     protected $RequestedDeliveryDate = null;
+
+    /**
+     * @property boolean $ReturnSale
+     */
+    protected $ReturnSale = null;
 
     /**
      * @property Address $ShipToAddress
@@ -362,6 +382,24 @@ class SalesEntry extends Entity
     }
 
     /**
+     * @param string $CreateAtStoreId
+     * @return $this
+     */
+    public function setCreateAtStoreId($CreateAtStoreId)
+    {
+        $this->CreateAtStoreId = $CreateAtStoreId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreateAtStoreId()
+    {
+        return $this->CreateAtStoreId;
+    }
+
+    /**
      * @param string $CustomerId
      * @return $this
      */
@@ -434,6 +472,24 @@ class SalesEntry extends Entity
     }
 
     /**
+     * @param boolean $HasReturnSale
+     * @return $this
+     */
+    public function setHasReturnSale($HasReturnSale)
+    {
+        $this->HasReturnSale = $HasReturnSale;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHasReturnSale()
+    {
+        return $this->HasReturnSale;
+    }
+
+    /**
      * @param DocumentIdType|string $IdType
      * @return $this
      * @throws InvalidEnumException
@@ -459,6 +515,24 @@ class SalesEntry extends Entity
     public function getIdType()
     {
         return $this->IdType;
+    }
+
+    /**
+     * @param int $LineCount
+     * @return $this
+     */
+    public function setLineCount($LineCount)
+    {
+        $this->LineCount = $LineCount;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineCount()
+    {
+        return $this->LineCount;
     }
 
     /**
@@ -549,6 +623,24 @@ class SalesEntry extends Entity
     public function getRequestedDeliveryDate()
     {
         return $this->RequestedDeliveryDate;
+    }
+
+    /**
+     * @param boolean $ReturnSale
+     * @return $this
+     */
+    public function setReturnSale($ReturnSale)
+    {
+        $this->ReturnSale = $ReturnSale;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getReturnSale()
+    {
+        return $this->ReturnSale;
     }
 
     /**
