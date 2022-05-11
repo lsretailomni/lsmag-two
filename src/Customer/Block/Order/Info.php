@@ -270,7 +270,8 @@ class Info extends Template
     {
         $format = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
         $requestedDeliveryDate = $this->getOrder()->getRequestedDeliveryDate();
-        if ($requestedDeliveryDate!='0001-01-01T00:00:00') {
+
+        if ($requestedDeliveryDate && $requestedDeliveryDate != '0001-01-01T00:00:00') {
             return $this->orderHelper->getDateTimeObject()->date(
                 $format,
                 $this->getOrder()->getRequestedDeliveryDate()
@@ -425,5 +426,28 @@ class Info extends Template
     public function getMagOrder()
     {
         return $this->coreRegistry->registry('current_mag_order');
+    }
+
+    /**
+     * Can show click and collect yes/no on order view frontend
+     *
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function canShowClickAndCollect()
+    {
+        return $this->lsr->getCurrentIndustry($this->_storeManager->getStore()->getId())
+            === LSR::LS_INDUSTRY_VALUE_RETAIL;
+    }
+
+    /**
+     * Can show requested delivery date on order view frontend
+     *
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function canShowRequestedDeliveryDate()
+    {
+        return $this->lsr->isPickupTimeslotsEnabled();
     }
 }
