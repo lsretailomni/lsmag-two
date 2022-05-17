@@ -466,11 +466,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public $validateBaseUrlResponse = null;
 
-    /**
-     * @var null
-     */
-    public $validateBaseUrlStore = null;
-
     /** @var ConfigCollectionFactory */
     public $configDataCollectionFactory;
 
@@ -570,10 +565,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isLSR($store_id = false, $scope = false)
     {
-        if ($store_id && isset($this->validateBaseUrlStore) && $this->validateBaseUrlStore == $store_id) {
-            if (isset($this->validateBaseUrlResponse)) {
-                return $this->validateBaseUrlResponse;
-            }
+        if (isset($this->validateBaseUrlResponse)) {
+            return $this->validateBaseUrlResponse;
         }
 
         if ($scope == 'website') {
@@ -588,8 +581,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         } else {
             $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl);
         }
-
-        $this->validateBaseUrlStore = $store_id;
 
         return $this->validateBaseUrlResponse;
     }

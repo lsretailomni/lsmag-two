@@ -65,7 +65,7 @@ class SyncInventory extends ProductCreateTask
                                     $sku               = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
                                     $checkIsNotVariant = false;
                                 }
-                                $this->updateInventory($sku, $replInvStatus);
+                                $this->replicationHelper->updateInventory($sku, $replInvStatus);
                                 $uomCodes = $this->getUomCodesProcessed($replInvStatus->getItemId());
                                 if (!empty($uomCodes)) {
                                     if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
@@ -75,7 +75,7 @@ class SyncInventory extends ProductCreateTask
                                         foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
                                             if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) && empty($variants)) {
                                                 $skuUom = $sku . "-" . $uomCode;
-                                                $this->updateInventory($skuUom, $replInvStatus);
+                                                $this->replicationHelper->updateInventory($skuUom, $replInvStatus);
                                             }
                                         }
                                     }
@@ -120,28 +120,6 @@ class SyncInventory extends ProductCreateTask
         $this->execute($storeData);
         $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
-    }
-
-    /**
-     * @param $sku
-     * @param $replInvStatus
-     * @throws NoSuchEntityException
-     */
-    private function updateInventory($sku, $replInvStatus)
-    {
-        try {
-            $stockItem = $this->stockRegistry->getStockItemBySku($sku);
-            if (isset($stockItem)) {
-                // @codingStandardsIgnoreStart
-                $stockItem->setQty($replInvStatus->getQuantity());
-                $stockItem->setIsInStock(($replInvStatus->getQuantity() > 0) ? 1 : 0);
-                $this->stockRegistry->updateStockItemBySku($sku, $stockItem);
-                // @codingStandardsIgnoreEnd
-            }
-        } catch (Exception $e) {
-            $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
-            $this->logger->debug($e->getMessage());
-        }
     }
 
     /**

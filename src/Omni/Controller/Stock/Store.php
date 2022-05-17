@@ -87,7 +87,7 @@ class Store extends Action
                     }
                 }
 
-                $this->stockHelper->updateStockCollection($response, $stockCollection);
+                $stockCollection = $this->stockHelper->updateStockCollection($response, $stockCollection);
                 $result = $result->setData(
                     ['remarks' => $notAvailableNotice, 'stocks' => $stockCollection]
                 );
