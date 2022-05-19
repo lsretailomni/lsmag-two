@@ -11,6 +11,8 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Catalog\Pricing\Price\FinalPrice;
+use Magento\Catalog\Pricing\Price\RegularPrice;
 use Magento\Checkout\Model\Cart;
 use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
@@ -309,6 +311,20 @@ class BasketHelper extends AbstractHelper
                 $quoteItem->getProductId(),
                 $quoteItem->getSku()
             );
+            $priceIncTax = $discount = $discountPercentage = null;
+            $product = $this->productRepository->get($quoteItem->getSku());
+            $displayRegularPrice = $product->getPriceInfo()->getPrice(
+                RegularPrice::PRICE_CODE
+            )->getAmount()->getValue();
+            $displayFinalPrice = $product->getPriceInfo()->getPrice(
+                FinalPrice::PRICE_CODE
+            )->getAmount()->getValue();
+
+            if ($displayFinalPrice < $displayRegularPrice) {
+                $priceIncTax = $displayRegularPrice;
+                $discount = $displayRegularPrice - $displayFinalPrice;
+                $discountPercentage = ($discount / $priceIncTax) * 100;
+            }
 
             // @codingStandardsIgnoreLine
             $list_item = (new Entity\OrderLine())
@@ -319,12 +335,13 @@ class BasketHelper extends AbstractHelper
                 ->setVariantId($variantId)
                 ->setUomId($uom)
                 ->setLineType(Entity\Enum\LineType::ITEM)
-                ->setAmount($quoteItem->getRowTotal())
+                ->setAmount($quoteItem->getRowTotalInclTax())
                 ->setNetAmount($quoteItem->getRowTotal())
-                ->setPrice($quoteItem->getPrice())
+                ->setPrice($priceIncTax ?? $quoteItem->getPriceInclTax())
                 ->setNetPrice($quoteItem->getPrice())
                 ->setTaxAmount($quoteItem->getTaxAmount())
-                ->setDiscountAmount($quoteItem->getDiscountAmount());
+                ->setDiscountAmount($quoteItem->getDiscountAmount())
+                ->setDiscountPercent($discountPercentage);
 
             $itemsArray[] = $list_item;
         }

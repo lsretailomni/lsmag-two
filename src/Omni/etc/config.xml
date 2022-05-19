@@ -84,6 +84,17 @@
             </ls_payment_method_pay_at_store>
         </payment>
         <tax>
+            <display>
+                <type>2</type>
+            </display>
+            <cart_display>
+                <price>2</price>
+                <subtotal>2</subtotal>
+            </cart_display>
+            <sales_display>
+                <price>2</price>
+                <subtotal>2</subtotal>
+            </sales_display>
             <calculation>
                 <apply_tax_on>1</apply_tax_on>
                 <price_includes_tax>1</price_includes_tax>
