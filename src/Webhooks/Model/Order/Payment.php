@@ -7,7 +7,6 @@ use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
 use Magento\InventoryInStorePickupSales\Model\Order\CreateShippingDocument;
-use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Service\InvoiceService;
@@ -48,7 +47,7 @@ class Payment
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
      * @param InvoiceSender $invoiceSender
-     * @param Data $helper,
+     * @param Data $helper ,
      * @param CreateShippingDocument $createShippingDocument
      */
     public function __construct(
@@ -60,13 +59,12 @@ class Payment
         CreateShippingDocument $createShippingDocument
     ) {
 
-        $this->logger                   = $logger;
-        $this->invoiceService           = $invoiceService;
-        $this->transactionFactory       = $transactionFactory;
-        $this->invoiceSender            = $invoiceSender;
-        $this->helper                   = $helper;
-        $this->createShippingDocument   = $createShippingDocument;
-
+        $this->logger                 = $logger;
+        $this->invoiceService         = $invoiceService;
+        $this->transactionFactory     = $transactionFactory;
+        $this->invoiceSender          = $invoiceSender;
+        $this->helper                 = $helper;
+        $this->createShippingDocument = $createShippingDocument;
     }
 
     /**
@@ -79,7 +77,7 @@ class Payment
     {
         $documentId     = $data['OrderId'];
         $lines          = $data['Lines'];
-        $totalAmount    = 0;
+        $totalAmount    = $data['Amount'];
         $shippingAmount = 0;
         $itemsToInvoice = [];
         try {
@@ -93,13 +91,11 @@ class Payment
                     $item                         = $itemData['item'];
                     $orderItemId                  = $item->getItemId();
                     $itemsToInvoice[$orderItemId] = $itemData['qty'];
-                    $totalAmount                  += $itemData['amount'];
                 }
 
                 foreach ($lines as $line) {
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
-                        $totalAmount    += $shippingAmount;
                     }
                 }
 
@@ -124,7 +120,7 @@ class Payment
                 try {
                     $this->invoiceSender->send($invoice);
 
-                    if($order->getShippingMethod() == "clickandcollect_clickandcollect") {
+                    if ($order->getShippingMethod() == "clickandcollect_clickandcollect") {
                         $this->createShippingDocument->execute($order);
                     }
 
