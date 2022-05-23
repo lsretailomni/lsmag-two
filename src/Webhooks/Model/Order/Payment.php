@@ -75,13 +75,18 @@ class Payment
      */
     public function generateInvoice($data)
     {
-        $documentId     = $data['OrderId'];
-        $lines          = $data['Lines'];
-        $totalAmount    = $data['Amount'];
+        $documentId = $data['OrderId'];
+        $lines      = $data['Lines'];
+        if (array_key_exists('Amount', $data)) {
+            $totalAmount = $data['Amount'];
+        } else {
+            $totalAmount = 0;
+        }
         $shippingAmount = 0;
         $itemsToInvoice = [];
         try {
             $order           = $this->helper->getOrderByDocumentId($documentId);
+            $isOffline       = $order->getPayment()->getMethodInstance()->isOffline();
             $validateOrder   = $this->validateOrder($order, $documentId);
             $validateInvoice = false;
             $invoice         = null;
@@ -91,11 +96,25 @@ class Payment
                     $item                         = $itemData['item'];
                     $orderItemId                  = $item->getItemId();
                     $itemsToInvoice[$orderItemId] = $itemData['qty'];
+                    if ($isOffline) {
+                        $totalAmount += $itemData['amount'];
+                    }
                 }
 
                 foreach ($lines as $line) {
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
+                        if ($isOffline) {
+                            $totalAmount += $shippingAmount;
+                        }
+                    }
+                }
+                if ($isOffline && !$order->hasInvoices()) {
+                    if ($order->getLsGiftCardAmountUsed() > 0) {
+                        $totalAmount = $totalAmount - $order->getLsGiftCardAmountUsed();
+                    }
+                    if ($order->getLsPointsSpent() > 0) {
+                        $totalAmount = $totalAmount - ($order->getLsPointsSpent() * $this->helper->getPointRate());
                     }
                 }
 

@@ -4,8 +4,11 @@ namespace Ls\Webhooks\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data as OmniHelper;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -55,7 +58,11 @@ class Data
     public $itemHelper;
 
     /**
-     * Data constructor.
+     * @var LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
+    /**
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -63,6 +70,7 @@ class Data
      * @param LSR $lsr
      * @param OmniHelper $omniHelper
      * @param ItemHelper $itemHelper
+     * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
         Logger $logger,
@@ -71,7 +79,8 @@ class Data
         OrderHelper $orderHelper,
         LSR $lsr,
         OmniHelper $omniHelper,
-        ItemHelper $itemHelper
+        ItemHelper $itemHelper,
+        LoyaltyHelper $loyaltyHelper
     ) {
 
         $this->logger                = $logger;
@@ -81,6 +90,7 @@ class Data
         $this->lsr                   = $lsr;
         $this->omniHelper            = $omniHelper;
         $this->itemHelper            = $itemHelper;
+        $this->loyaltyHelper         = $loyaltyHelper;
     }
 
     /**
@@ -218,7 +228,7 @@ class Data
      */
     public function getItems($order, $itemsInfo)
     {
-        $items       = [];
+        $items = [];
         foreach ($order->getAllVisibleItems() as $orderItem) {
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $orderItem->getProductId(),
@@ -238,7 +248,7 @@ class Data
                         $totalAmount              += $skuValues['Amount'];
                         $items[$itemId]['amount'] = $totalAmount;
                     }
-                    $items[$itemId]['itemStatus']  = $orderItem->getStatusId();
+                    $items[$itemId]['itemStatus'] = $orderItem->getStatusId();
                 }
             }
         }
@@ -321,5 +331,16 @@ class Data
                 'trackingInfo' => $trackingInfo
             ]
         ];
+    }
+
+    /**
+     * Get point rate
+     *
+     * @return float|GetPointRateResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
+     */
+    public function getPointRate()
+    {
+        return $this->loyaltyHelper->getPointRate();
     }
 }
