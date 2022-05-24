@@ -7,7 +7,6 @@ use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
 use Magento\InventoryInStorePickupSales\Model\Order\CreateShippingDocument;
-use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Service\InvoiceService;
@@ -48,7 +47,7 @@ class Payment
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
      * @param InvoiceSender $invoiceSender
-     * @param Data $helper,
+     * @param Data $helper ,
      * @param CreateShippingDocument $createShippingDocument
      */
     public function __construct(
@@ -60,13 +59,12 @@ class Payment
         CreateShippingDocument $createShippingDocument
     ) {
 
-        $this->logger                   = $logger;
-        $this->invoiceService           = $invoiceService;
-        $this->transactionFactory       = $transactionFactory;
-        $this->invoiceSender            = $invoiceSender;
-        $this->helper                   = $helper;
-        $this->createShippingDocument   = $createShippingDocument;
-
+        $this->logger                 = $logger;
+        $this->invoiceService         = $invoiceService;
+        $this->transactionFactory     = $transactionFactory;
+        $this->invoiceSender          = $invoiceSender;
+        $this->helper                 = $helper;
+        $this->createShippingDocument = $createShippingDocument;
     }
 
     /**
@@ -77,13 +75,18 @@ class Payment
      */
     public function generateInvoice($data)
     {
-        $documentId     = $data['OrderId'];
-        $lines          = $data['Lines'];
-        $totalAmount    = 0;
+        $documentId = $data['OrderId'];
+        $lines      = $data['Lines'];
+        if (array_key_exists('Amount', $data)) {
+            $totalAmount = $data['Amount'];
+        } else {
+            $totalAmount = 0;
+        }
         $shippingAmount = 0;
         $itemsToInvoice = [];
         try {
             $order           = $this->helper->getOrderByDocumentId($documentId);
+            $isOffline       = $order->getPayment()->getMethodInstance()->isOffline();
             $validateOrder   = $this->validateOrder($order, $documentId);
             $validateInvoice = false;
             $invoice         = null;
@@ -93,13 +96,25 @@ class Payment
                     $item                         = $itemData['item'];
                     $orderItemId                  = $item->getItemId();
                     $itemsToInvoice[$orderItemId] = $itemData['qty'];
-                    $totalAmount                  += $itemData['amount'];
+                    if ($isOffline) {
+                        $totalAmount += $itemData['amount'];
+                    }
                 }
 
                 foreach ($lines as $line) {
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
-                        $totalAmount    += $shippingAmount;
+                        if ($isOffline) {
+                            $totalAmount += $shippingAmount;
+                        }
+                    }
+                }
+                if ($isOffline && !$order->hasInvoices()) {
+                    if ($order->getLsGiftCardAmountUsed() > 0) {
+                        $totalAmount = $totalAmount - $order->getLsGiftCardAmountUsed();
+                    }
+                    if ($order->getLsPointsSpent() > 0) {
+                        $totalAmount = $totalAmount - ($order->getLsPointsSpent() * $this->helper->getPointRate());
                     }
                 }
 
@@ -124,7 +139,7 @@ class Payment
                 try {
                     $this->invoiceSender->send($invoice);
 
-                    if($order->getShippingMethod() == "clickandcollect_clickandcollect") {
+                    if ($order->getShippingMethod() == "clickandcollect_clickandcollect") {
                         $this->createShippingDocument->execute($order);
                     }
 

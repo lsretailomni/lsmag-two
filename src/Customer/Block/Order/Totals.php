@@ -3,16 +3,16 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Framework\DataObject;
+use \Ls\Omni\Helper\Data as DataHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use \Ls\Omni\Helper\OrderHelper;
-use Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer;
 
 /**
  * Class Totals
@@ -54,13 +54,18 @@ class Totals extends Template
     public $lsr;
 
     /**
-     * Totals constructor.
+     * @var DataHelper
+     */
+    public $dataHelper;
+
+    /**
      * @param Context $context
      * @param Registry $registry
      * @param PriceCurrencyInterface $priceCurrency
      * @param LoyaltyHelper $loyaltyHelper
      * @param LSR $lsr
      * @param OrderHelper $orderHelper
+     * @param DataHelper $dataHelper
      * @param array $data
      */
     public function __construct(
@@ -70,13 +75,15 @@ class Totals extends Template
         LoyaltyHelper $loyaltyHelper,
         LSR $lsr,
         OrderHelper $orderHelper,
+        DataHelper $dataHelper,
         array $data = []
     ) {
-        $this->priceCurrency     = $priceCurrency;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->coreRegistry      = $registry;
-        $this->lsr               = $lsr;
-        $this->orderHelper       = $orderHelper;
+        $this->priceCurrency = $priceCurrency;
+        $this->loyaltyHelper = $loyaltyHelper;
+        $this->coreRegistry  = $registry;
+        $this->lsr           = $lsr;
+        $this->orderHelper   = $orderHelper;
+        $this->dataHelper    = $dataHelper;
         parent::__construct($context, $data);
     }
 
@@ -172,9 +179,9 @@ class Totals extends Template
         $fee        = 0;
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(
-                LSR::LSR_SHIPMENT_ITEM_ID,
-                $this->lsr->getCurrentStoreId()
-            )) {
+                    LSR::LSR_SHIPMENT_ITEM_ID,
+                    $this->lsr->getCurrentStoreId()
+                )) {
                 $fee = $line->getAmount();
                 break;
             }
@@ -203,26 +210,31 @@ class Totals extends Template
     public function getLoyaltyGiftCardInfo()
     {
         // @codingStandardsIgnoreStart
-        $paymentLines = $this->getOrderPayments();
-        $methods      = [];
-        $giftCardInfo = [];
-        $loyaltyInfo  = [];
-        // @codingStandardsIgnoreEnd
+        $paymentLines      = $this->getOrderPayments();
+        $methods           = [];
+        $giftCardInfo      = [];
+        $loyaltyInfo       = [];
+        $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         foreach ($paymentLines as $line) {
-            if ($line->getTenderType() == '0') {
-                $methods[] = __('Cash');
-            } elseif ($line->getTenderType() == '1') {
-                $methods[] = __('Card');
-            } elseif ($line->getTenderType() == '2') {
-                $methods[] = __('Coupon');
-            } elseif ($line->getTenderType() == '3') {
-                $methods[]                = __('Loyalty Points');
-                $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getAmount());
-            } elseif ($line->getTenderType() == '4') {
-                $methods[]            = __('Gift Card');
-                $this->giftCardAmount = $line->getAmount();
-            } else {
-                $methods[] = __('Unknown');
+            if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
+                || $line->getType() === PaymentType::NONE) {
+                $tenderTypeId = $line->getTenderType();
+                if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
+                    $method    = $tenderTypeMapping[$tenderTypeId];
+                    $methods[] = __($method);
+                    if (!empty($line->getCardNo())) {
+                        $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                        if ($giftCardTenderId == $tenderTypeId) {
+                            $this->giftCardAmount = $line->getAmount();
+                        }
+                    }
+                    $loyaltyTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
+                    if ($loyaltyTenderId == $tenderTypeId) {
+                        $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getAmount());
+                    }
+                } else {
+                    $methods[] = __('Unknown');
+                }
             }
         }
         return [implode(', ', $methods), $giftCardInfo, $loyaltyInfo];
