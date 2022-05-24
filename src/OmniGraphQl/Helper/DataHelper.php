@@ -366,9 +366,7 @@ class DataHelper extends AbstractHelper
                 }
             }
 
-            $this->stockHelper->updateStockCollection($response, $stockCollection);
-
-            return $stockCollection;
+            return $this->stockHelper->updateStockCollection($response, $stockCollection);
         }
 
         return null;

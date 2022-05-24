@@ -57,8 +57,8 @@ define([
         onUpdate: function (value) {
             var pickupTimSlot = $("[name='pickup-timeslot']");
             var values = window.checkoutConfig.shipping.pickup_date_timeslots.options;
-            pickupTimSlot.html('');
             $.each(values, function (index, val) {
+                pickupTimSlot.empty();
                 $.each(val, function (i, v) {
                     if (i == value) {
                         $.each(v, function (index, value) {

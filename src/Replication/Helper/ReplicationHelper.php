@@ -11,6 +11,7 @@ use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
@@ -20,6 +21,7 @@ use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
@@ -57,6 +59,9 @@ use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
+use Magento\InventoryApi\Api\SourceItemsSaveInterface;
+use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
@@ -228,6 +233,24 @@ class ReplicationHelper extends AbstractHelper
      */
     public $classModelFactory;
 
+    /** @var ReplInvStatusRepository */
+    public $replInvStatusRepository;
+
+    /**
+     * @var SourceItemsSaveInterface
+     */
+    public $sourceItemsSaveInterface;
+
+    /**
+     * @var SourceItemInterfaceFactory
+     */
+    public $sourceItemFactory;
+
+    /**
+     * @var DefaultSourceProviderInterfaceFactory
+     */
+    public $defaultSourceProviderFactory;
+
     /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -268,6 +291,10 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
      * @param TaxClassRepositoryInterface $taxClassRepository
      * @param ClassModelFactory $classModelFactory
+     * @param ReplInvStatusRepository $replInvStatusRepository
+     * @param SourceItemsSaveInterface $sourceItemsSaveInterface
+     * @param SourceItemInterfaceFactory $sourceItemFactory
+     * @param DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
      */
     public function __construct(
         Context $context,
@@ -308,7 +335,11 @@ class ReplicationHelper extends AbstractHelper
         ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
         ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
         TaxClassRepositoryInterface $taxClassRepository,
-        ClassModelFactory $classModelFactory
+        ClassModelFactory $classModelFactory,
+        ReplInvStatusRepository $replInvStatusRepository,
+        SourceItemsSaveInterface $sourceItemsSaveInterface,
+        SourceItemInterfaceFactory $sourceItemFactory,
+        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -348,6 +379,10 @@ class ReplicationHelper extends AbstractHelper
         $this->replStoreTenderTypeRepository             = $replStoreTenderTypeRepository;
         $this->taxClassRepository                        = $taxClassRepository;
         $this->classModelFactory                         = $classModelFactory;
+        $this->replInvStatusRepository                   = $replInvStatusRepository;
+        $this->sourceItemsSaveInterface                  = $sourceItemsSaveInterface;
+        $this->sourceItemFactory                         = $sourceItemFactory;
+        $this->defaultSourceProviderFactory              = $defaultSourceProviderFactory;
         parent::__construct(
             $context
         );
@@ -733,7 +768,7 @@ class ReplicationHelper extends AbstractHelper
      * @param boolean $excludeDeleted
      * @return SearchCriteria
      */
-    public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, $excludeDeleted = true)
+public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, $excludeDeleted = true)
     {
         $attr_processed = $this->filterBuilder->setField('main_table.processed')
             ->setValue('0')
@@ -2255,5 +2290,72 @@ class ReplicationHelper extends AbstractHelper
         }
 
         return $taxClass;
+    }
+
+    /**
+     * Getting inventory information for the item/variant
+     *
+     * @param $itemId
+     * @param $storeId
+     * @param $scopeId
+     * @param $variantId
+     * @return float|int
+     */
+    public function getInventoryStatus($itemId, $storeId, $scopeId, $variantId = null)
+    {
+        $qty     = 0;
+        $filters = [
+            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
+        ];
+
+        if (isset($variantId)) {
+            $filters[] = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
+        } else {
+            $filters[] = ['field' => 'VariantId', 'value' => true, 'condition_type' => 'null'];
+        }
+        $searchCriteria = $this->buildCriteriaForDirect($filters, 1);
+        /** @var ReplInvStatusRepository $inventoryStatus */
+        $inventoryStatus = $this->replInvStatusRepository->getList($searchCriteria)->getItems();
+
+        if (!empty($inventoryStatus)) {
+            try {
+                $inventoryStatus = reset($inventoryStatus);
+                /** @var ReplInvStatus $inventoryStatus */
+                $qty = $inventoryStatus->getQuantity();
+            } catch (Exception $e) {
+                $this->_logger->debug($e->getMessage());
+                $inventoryStatus->setData('is_failed', 1);
+            }
+            $inventoryStatus->addData(['is_updated' => 0, 'processed_at' => $this->getDateTime(), 'processed' => 1]);
+            $this->replInvStatusRepository->save($inventoryStatus);
+        }
+
+        return $qty;
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
+     * Update inventory
+     *
+     * @param $sku
+     * @param $replInvStatus
+     * @throws NoSuchEntityException
+     */
+    public function updateInventory($sku, $replInvStatus)
+    {
+        try {
+            $sourceItem = $this->sourceItemFactory->create();
+            $sourceItem->setSourceCode($this->defaultSourceProviderFactory->create()->getCode());
+            $sourceItem->setSku($sku);
+            $sourceItem->setQuantity($replInvStatus->getQuantity());
+            $sourceItem->setStatus(($replInvStatus->getQuantity() > 0) ? 1 : 0);
+            $this->sourceItemsSaveInterface->execute([$sourceItem]);
+        } catch (Exception $e) {
+            $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
+            $this->_logger->debug($e->getMessage());
+        }
     }
 }

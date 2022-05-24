@@ -568,7 +568,11 @@ class ProductCreateTask
                                 if (isset($itemBarcodes[$item->getNavId()])) {
                                     $product->setCustomAttribute('barcode', $itemBarcodes[$item->getNavId()]);
                                 }
-                                $itemStock = $this->getInventoryStatus($item->getNavId(), $storeId);
+                                $itemStock = $this->replicationHelper->getInventoryStatus(
+                                    $item->getNavId(),
+                                    $storeId,
+                                    $this->store->getId()
+                                );
                                 $product->setStockData([
                                     'use_config_manage_stock' => 1,
                                     'is_in_stock'             => ($itemStock > 0) ? 1 : 0,
@@ -1503,47 +1507,6 @@ class ProductCreateTask
     }
 
     /**
-     * Getting inventory information for the item/variant
-     *
-     * @param $itemId
-     * @param $storeId
-     * @param null $variantId
-     * @return float|int
-     */
-    public function getInventoryStatus($itemId, $storeId, $variantId = null)
-    {
-        $qty     = 0;
-        $filters = [
-            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
-        ];
-        if (isset($variantId)) {
-            $filters[] = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
-        } else {
-            $filters[] = ['field' => 'VariantId', 'value' => true, 'condition_type' => 'null'];
-        }
-        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
-        /** @var ReplInvStatusRepository $inventoryStatus */
-        $inventoryStatus = $this->replInvStatusRepository->getList($searchCriteria)->getItems();
-        if (!empty($inventoryStatus)) {
-            try {
-                $inventoryStatus = reset($inventoryStatus);
-                /** @var ReplInvStatus $inventoryStatus */
-                $qty = $inventoryStatus->getQuantity();
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-                $inventoryStatus->setData('is_failed', 1);
-            }
-            $inventoryStatus->setData('is_updated', 0);
-            $inventoryStatus->setData('processed_at', $this->replicationHelper->getDateTime());
-            $inventoryStatus->setData('processed', 1);
-            $this->replInvStatusRepository->save($inventoryStatus);
-        }
-        return $qty;
-    }
-
-    /**
      * Formulate name for the variant
      *
      * @param $value
@@ -1753,13 +1716,21 @@ class ProductCreateTask
             $productV->setCustomAttribute('barcode', $itemBarcodes[$sku]);
         }
         if ($value) {
-            $itemStock = $this->getInventoryStatus($value->getItemId(), $this->webStoreId, $value->getVariantId());
-
+            $itemStock = $this->replicationHelper->getInventoryStatus(
+                $value->getItemId(),
+                $this->webStoreId,
+                $this->store->getId(),
+                $value->getVariantId()
+            );
             if ($value->getVariantId()) {
                 $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
             }
         } else {
-            $itemStock = $this->getInventoryStatus($item->getNavId(), $this->webStoreId, null);
+            $itemStock = $this->replicationHelper->getInventoryStatus(
+                $item->getNavId(),
+                $this->webStoreId,
+                $this->store->getId()
+            );
         }
         $productV->setStockData([
             'use_config_manage_stock' => 1,
