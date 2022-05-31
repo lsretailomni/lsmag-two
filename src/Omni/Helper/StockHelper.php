@@ -100,6 +100,8 @@ class StockHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get stock for all the given items in given store
      *
      * @param $items
@@ -132,6 +134,8 @@ class StockHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * For sourcing location of inventory
      *
      * @param $storeId
@@ -449,8 +453,9 @@ class StockHelper extends AbstractHelper
      *
      * @param $response
      * @param $stockCollection
+     * @return mixed
      */
-    public function updateStockCollection($response, &$stockCollection)
+    public function updateStockCollection($response, $stockCollection)
     {
         foreach ($response as $item) {
             $actualQty = ceil($item->getQtyInventory());
@@ -480,6 +485,8 @@ class StockHelper extends AbstractHelper
                 }
             }
         }
+
+        return $stockCollection;
     }
 
     /**

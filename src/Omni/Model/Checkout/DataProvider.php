@@ -195,29 +195,29 @@ class DataProvider implements ConfigProviderInterface
     public function getStores()
     {
         $storeHoursArray = [];
-        $storesData      = $this->storeCollectionFactory
+        $storesData = $this->storeCollectionFactory
             ->create()
             ->addFieldToFilter('scope_id', $this->getStoreId())
             ->addFieldToFilter('ClickAndCollect', 1);
 
-        $allStores = $this->storeHelper->getAllStores($this->lsr->getCurrentStoreId());
-        foreach ($allStores as $store) {
-            if ($store->getIsClickAndCollect() || $store->getIsWebStore()) {
-                $storeHoursArray[$store->getId()] = $this->storeHelper->formatDateTimeSlotsValues(
-                    $store->getStoreHours()
-                );
+        if ($this->lsr->isPickupTimeslotsEnabled()) {
+            $allStores = $this->storeHelper->getAllStores($this->lsr->getCurrentStoreId());
+            foreach ($allStores as $store) {
+                if ($store->getIsClickAndCollect() || $store->getIsWebStore()) {
+                    $storeHoursArray[$store->getId()] = $this->storeHelper->formatDateTimeSlotsValues(
+                        $store->getStoreHours()
+                    );
+                }
             }
-        }
 
-        if (!empty($storeHoursArray)) {
-            $this->checkoutSession->setStorePickupHours($storeHoursArray);
+            if (!empty($storeHoursArray)) {
+                $this->checkoutSession->setStorePickupHours($storeHoursArray);
+            }
         }
 
         if (!$this->availableStoresOnlyEnabled()) {
             return $storesData;
         }
-
-        $storeHoursArray = [];
 
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
         list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
