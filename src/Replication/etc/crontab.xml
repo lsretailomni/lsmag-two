@@ -132,7 +132,7 @@
             <schedule>*/5 * * * *</schedule>
         </job>
     </group>
-    <group id="flat_replication">
+    <group id="reset">
         <!-- To run everyday to get the best data of the day -->
         <job name="repl_inv_status_reset" instance="Ls\Replication\Cron\ResetReplInvStatusTask" method="execute">
             <schedule>0 0 * * *</schedule>

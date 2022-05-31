@@ -187,8 +187,8 @@ class Info extends Template
         $customerOrderNo = null;
         if ($order) {
 
-            $orderId = $this->orderHelper->getParameterValues($order,"CustomerOrderNo") ?: $this->orderHelper->getParameterValues($order,"Id");
-            $customerOrderNo = $this->orderHelper->getParameterValues($order,"CustomerOrderNo");
+            $orderId         = $this->orderHelper->getParameterValues($order, "CustomerOrderNo") ?: $this->orderHelper->getParameterValues($order, "Id");
+            $customerOrderNo = $this->orderHelper->getParameterValues($order, "CustomerOrderNo");
 
             if (!empty($customerOrderNo)) {
                 $type = __('Order');
@@ -268,7 +268,7 @@ class Info extends Template
      */
     public function getRequestedDeliveryDate()
     {
-        $format = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
+        $format                = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
         $requestedDeliveryDate = $this->getOrder()->getRequestedDeliveryDate();
 
         if ($requestedDeliveryDate && $requestedDeliveryDate != '0001-01-01T00:00:00') {
@@ -299,7 +299,8 @@ class Info extends Template
              * i-e Refunds etc, but we only need to show Payment Type
              * whose type == Payment and Pre Authorization
              */
-            if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION) {
+            if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
+                || $line->getType() === PaymentType::NONE) {
                 $tenderTypeId = $line->getTenderType();
                 if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
                     $method    = $tenderTypeMapping[$tenderTypeId];
@@ -367,13 +368,13 @@ class Info extends Template
      */
     public function getPrintUrl($order)
     {
-        $typeId = $this->orderHelper->getParameterValues($order, "IdType");
+        $typeId  = $this->orderHelper->getParameterValues($order, "IdType");
         $orderId = $this->getRequest()->getParam('order_id');
         return $order ? $this->getUrl(
             'customer/order/print',
             [
                 'order_id' => $orderId,
-                'type' => $typeId
+                'type'     => $typeId
             ]
         ) : '';
     }
