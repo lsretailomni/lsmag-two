@@ -4,13 +4,11 @@ namespace Ls\Omni\Model;
 
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Controller\Cart\CouponPost;
+use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\UrlInterface;
 
-/**
- * Class SetCouponData
- * @package Ls\Omni\Model
- */
 class SetCouponData
 {
     /** @var BasketHelper */
@@ -23,7 +21,6 @@ class SetCouponData
     public $url;
 
     /**
-     * SetCouponData constructor.
      * @param BasketHelper $basketHelper
      * @param RedirectFactory $redirectFactory
      * @param UrlInterface $url
@@ -38,8 +35,19 @@ class SetCouponData
         $this->url             = $url;
     }
 
+    /**
+     * Around execute
+     *
+     * @param CouponPost $subject
+     * @param callable $proceed
+     * @return Redirect
+     * @throws NoSuchEntityException
+     */
     public function aroundExecute(CouponPost $subject, callable $proceed)
     {
+        if (!$this->basketHelper->lsr->isEnabled()) {
+            return $proceed();
+        }
         // redirect to basket
         $redirect = $this->redirectFactory->create();
         return $redirect->setUrl($this->url->getUrl('checkout/cart/index'));

@@ -5,9 +5,16 @@
         <section id="ls_mag">
             <tab>ls_retail</tab>
             <resource>Ls_Core::config</resource>
-            <group id="webhooks" translate="label" type="text" sortOrder="90" showInDefault="1"
+            <group id="webhooks"
+                   translate="label"
+                   type="text"
+                   sortOrder="160"
+                   showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Webhooks Configuration</label>
                 <field id="notification_pickup" translate="label" type="select" sortOrder="1" showInDefault="1"
                        showInWebsite="1">

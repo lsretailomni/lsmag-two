@@ -4,8 +4,8 @@
  * @var  Ls\Omni\ViewModel\CouponsViewModel $viewModel
  */
 $viewModel = $block->getData("view_model");
-if ($viewModel->isCouponsEnabled() == "1") :
-    ?>
+?>
+<?php if ($viewModel->isCouponsEnabled() == "1"): ?>
     <div class="block discount" id="block-discount"
          data-mage-init='{"collapsible":{"openedState": "active", "saveState": false}}'>
         <div class="title" data-role="title">
@@ -77,6 +77,10 @@ if ($viewModel->isCouponsEnabled() == "1") :
             });
         });
     </script>
-<?php
-endif;
-?>
+
+<?php elseif (!$viewModel->isModuleEnabled()): ?>
+    <?= $this->getLayout()
+        ->createBlock('Magento\Checkout\Block\Cart\Coupon')
+        ->setTemplate('Magento_Checkout::cart/coupon.phtml')
+        ->toHtml(); ?>
+<?php endif; ?>
