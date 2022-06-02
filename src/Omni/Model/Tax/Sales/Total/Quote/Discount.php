@@ -99,6 +99,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
     }
 
     /**
+     * Discount collect
+     *
      * @param Quote $quote
      * @param ShippingAssignmentInterface $shippingAssignment
      * @param Total $total
@@ -110,7 +112,9 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         ShippingAssignmentInterface $shippingAssignment,
         Total $total
     ) {
-        if (!$this->basketHelper->lsr->isEnabled()) {
+        $lsr = $this->basketHelper->getLsrModel();
+
+        if (!$lsr->isLSR($lsr->getCurrentStoreId())) {
             return parent::collect($quote, $shippingAssignment, $total);
         }
         $total->setData('discount_description', ''); //For fixing explode issue on graph ql
@@ -132,6 +136,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
     }
 
     /**
+     * Discount Fetch
+     *
      * @param Quote $quote
      * @param Total $total
      * @return array|null
@@ -139,7 +145,9 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      */
     public function fetch(Quote $quote, Total $total)
     {
-        if (!$this->basketHelper->lsr->isEnabled()) {
+        $lsr = $this->basketHelper->getLsrModel();
+
+        if ($lsr->isLSR($lsr->getCurrentStoreId())) {
             return parent::fetch($quote, $total);
         }
 

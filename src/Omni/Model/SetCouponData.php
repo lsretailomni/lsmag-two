@@ -45,7 +45,9 @@ class SetCouponData
      */
     public function aroundExecute(CouponPost $subject, callable $proceed)
     {
-        if (!$this->basketHelper->lsr->isEnabled()) {
+        $lsr = $this->basketHelper->getLsrModel();
+
+        if (!$lsr->isLSR($lsr->getCurrentStoreId())) {
             return $proceed();
         }
         // redirect to basket

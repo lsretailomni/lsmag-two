@@ -3,6 +3,9 @@
 /**
  * @var  Ls\Omni\ViewModel\CouponsViewModel $viewModel
  */
+
+use Magento\Checkout\Block\Cart\Coupon;
+
 $viewModel = $block->getData("view_model");
 ?>
 <?php if ($viewModel->isCouponsEnabled() == "1"): ?>
@@ -80,7 +83,7 @@ $viewModel = $block->getData("view_model");
 
 <?php elseif (!$viewModel->isModuleEnabled()): ?>
     <?= $this->getLayout()
-        ->createBlock('Magento\Checkout\Block\Cart\Coupon')
+        ->createBlock(Coupon::class)
         ->setTemplate('Magento_Checkout::cart/coupon.phtml')
         ->toHtml(); ?>
 <?php endif; ?>
