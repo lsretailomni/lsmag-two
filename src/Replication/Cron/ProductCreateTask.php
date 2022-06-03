@@ -1583,6 +1583,7 @@ class ProductCreateTask
         $productData->setMetaTitle($name);
         $productData->setDescription($item->getDetails());
         $productData->setWeight($item->getGrossWeight());
+
         if (!empty($uomCode)) {
             $productData->setCustomAttribute("uom", $uomCode->getCode());
             $productData->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
@@ -1597,8 +1598,11 @@ class ProductCreateTask
 
         if ($value) {
             $productData->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
+
+            //Set variant status as per BlockedOnEcom status of each variant
+            $productData = $this->setProductStatus($productData, $value->getBlockedOnECom());
         }
-        $productData->setStatus(Status::STATUS_ENABLED);
+
         try {
             // @codingStandardsIgnoreLine
             $productSaved = $this->productRepository->save($productData);
@@ -1671,7 +1675,12 @@ class ProductCreateTask
         }
         $productV->setAttributeSetId($configProduct->getAttributeSetId());
         $productV->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-        $productV->setStatus(Status::STATUS_ENABLED);
+
+        //Set variant status as per BlockedOnEcom status of each variant
+        if ($value) {
+            $productV = $this->setProductStatus($productV, $value->getBlockedOnECom());
+        }
+
         $productV->setTypeId(Type::TYPE_SIMPLE);
         if ($value) {
             $variantDimension1 = $value->getVariantDimension1();

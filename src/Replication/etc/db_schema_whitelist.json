@@ -331,6 +331,7 @@
             "FrameworkCode": true,
             "IsDeleted": true,
             "ItemId": true,
+            "BlockedOnECom": true,
             "VariantDimension1": true,
             "VariantDimension2": true,
             "VariantDimension3": true,
