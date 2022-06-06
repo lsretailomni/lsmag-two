@@ -4,58 +4,16 @@ namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
-use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Helper\Data as DataHelper;
-use \Ls\Omni\Helper\OrderHelper;
-use Magento\Customer\Model\Session\Proxy;
-use Magento\Directory\Model\CountryFactory;
-use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\App\Http\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
-use Magento\Framework\Pricing\Helper\Data;
-use Magento\Framework\Registry;
-use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Element\Template\Context as TemplateContext;
 use Magento\Sales\Api\Data\OrderInterface;
-use Magento\Sales\Model\OrderRepository;
 
 /**
  * Block being used for various sections on order detail
  */
-class Info extends Template
+class Info extends AbstractOrderBlock
 {
-    /**
-     * @var CountryFactory
-     */
-    public $countryFactory;
-
-    /**
-     * @var Data
-     */
-    public $priceHelper;
-
-    /**
-     * @var Order Repository
-     */
-    public $orderRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var Proxy
-     */
-    public $customerSession;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
     /**
      * @var string
      */
@@ -64,68 +22,8 @@ class Info extends Template
     // @codingStandardsIgnoreEnd
 
     /**
-     * Core registry
+     * Get payment info html
      *
-     * @var Registry
-     */
-    public $coreRegistry = null;
-
-    /**
-     * @var Context
-     */
-    public $httpContext;
-
-    /** @var LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var DataHelper
-     */
-    public $dataHelper;
-
-    /**
-     * Info constructor.
-     * @param TemplateContext $context
-     * @param Registry $registry
-     * @param CountryFactory $countryFactory
-     * @param Data $priceHelper
-     * @param OrderRepository $orderRepository
-     * @param OrderHelper $orderHelper
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param Proxy $customerSession
-     * @param Context $httpContext
-     * @param LSR $lsr
-     * @param DataHelper $dataHelper
-     * @param array $data
-     */
-    public function __construct(
-        TemplateContext $context,
-        Registry $registry,
-        CountryFactory $countryFactory,
-        Data $priceHelper,
-        OrderRepository $orderRepository,
-        OrderHelper $orderHelper,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        Proxy $customerSession,
-        Context $httpContext,
-        LSR $lsr,
-        DataHelper $dataHelper,
-        array $data = []
-    ) {
-        $this->coreRegistry          = $registry;
-        $this->countryFactory        = $countryFactory;
-        $this->priceHelper           = $priceHelper;
-        $this->orderRepository       = $orderRepository;
-        $this->orderHelper           = $orderHelper;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->customerSession       = $customerSession;
-        $this->httpContext           = $httpContext;
-        $this->lsr                   = $lsr;
-        $this->dataHelper            = $dataHelper;
-        parent::__construct($context, $data);
-    }
-
-    /**
      * @return string
      */
     public function getPaymentInfoHtml()
@@ -178,7 +76,7 @@ class Info extends Template
     }
 
     /**
-     * @return void
+     * @inheritDoc
      */
     // @codingStandardsIgnoreStart
     protected function _prepareLayout()
@@ -203,11 +101,12 @@ class Info extends Template
     /**
      * Retrieve current order model instance
      *
-     * @return SalesEntry
+     * @param $all
+     * @return false|mixed|null
      */
-    public function getOrder()
+    public function getOrder($all = false)
     {
-        return $this->coreRegistry->registry('current_order');
+        return $this->orderHelper->getOrder($all);
     }
 
     /**
@@ -342,11 +241,21 @@ class Info extends Template
 
     /**
      * Format loyalty points
-     * @param $points
      * @return string
      */
-    public function getFormattedLoyaltyPoints($points)
+    public function getFormattedLoyaltyPoints()
     {
+        $orderTransactions = $this->getOrder(true);
+        $points = 0;
+
+        if (!is_array($orderTransactions)) {
+            $orderTransactions = [$orderTransactions];
+        }
+
+        foreach ($orderTransactions as $transaction) {
+            $points += (float) $transaction->getPointsRewarded();
+        }
+
         return number_format((float)$points, 2, '.', '');
     }
 
@@ -418,15 +327,6 @@ class Info extends Template
     public function orderCancellationOnFrontendIsEnabled()
     {
         return $this->lsr->orderCancellationOnFrontendIsEnabled();
-    }
-
-    /**
-     * Get current magento order in registry
-     * @return mixed
-     */
-    public function getMagOrder()
-    {
-        return $this->coreRegistry->registry('current_mag_order');
     }
 
     /**

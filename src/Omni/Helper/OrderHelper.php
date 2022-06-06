@@ -8,6 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
+use Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -464,17 +465,21 @@ class OrderHelper extends AbstractHelper
 
     /**
      * Validate order have return sale or not
-     * @param $orderId
+     *
      * @return mixed
-     * @throws InvalidEnumException
      */
-    public function hasReturnSale($orderId)
+    public function hasReturnSale($orderTransactions)
     {
-        $this->setCurrentOrderInRegistry($orderId);
-        $order = $this->getOrder();
-        return $this->getParameterValues($this->getOrder(), "HasReturnSale");
-    }
+        $hasReturnSale = false;
 
+        foreach ($orderTransactions as $transaction) {
+            if ($hasReturnSale = $this->getParameterValues($transaction, "HasReturnSale")) {
+                break;
+            }
+        }
+
+        return $hasReturnSale;
+    }
 
     /**
      * This function is overriding in hospitality module
@@ -500,11 +505,34 @@ class OrderHelper extends AbstractHelper
         return $response ? $response->getSalesEntryGetResult() : $response;
     }
 
+    /**
+     * Get sales order by order id
+     *
+     * @param $docId
+     * @return SalesEntry[]|Entity\SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
+     */
+    public function getSalesOrderByOrderId($docId)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request = new Operation\SalesEntryGetSalesByOrderId();
+        $order   = new Entity\SalesEntryGetSalesByOrderId();
+        $order->setOrderId($docId);
+        // @codingStandardsIgnoreEnd
+        try {
+            $response = $request->execute($order);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response && $response->getSalesEntryGetSalesByOrderIdResult() ?
+            $response->getSalesEntryGetSalesByOrderIdResult()->getSalesEntry() : $response;
+    }
 
     /**
      * Get sales return details
+     *
      * @param $docId
-     * @return Entity\ArrayOfSalesEntry|Entity\SalesEntryGetReturnSalesResponse|ResponseInterface|null
+     * @return SalesEntry[]|Entity\SalesEntryGetReturnSalesResponse|ResponseInterface|null
      */
     public function getReturnDetailsAgainstId($docId)
     {
@@ -519,7 +547,8 @@ class OrderHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getSalesEntryGetReturnSalesResult() : $response;
+        return $response && $response->getSalesEntryGetReturnSalesResult() ?
+            $response->getSalesEntryGetReturnSalesResult()->getSalesEntry() : $response;
     }
 
     /**
@@ -530,6 +559,7 @@ class OrderHelper extends AbstractHelper
     public function isAuthorizedForOrder($order)
     {
         $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $order = $this->getOrder();
         $orderCardId = $order->getCardId();
         if ($cardId == $orderCardId) {
             return true;
@@ -559,18 +589,26 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * Set currentOrder into registry
+     * This function is overriding in hospitality module
      *
-     * @param $orderId
-     * @return SalesEntry|SalesEntryGetResponse|ResponseInterface|null
+     * Fetch Order
+     *
+     * @param $docId
+     * @param $type
+     * @return SalesEntry|SalesEntry[]|SalesEntryGetResponse|SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
      * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
-    public function setCurrentOrderInRegistry($orderId)
+    public function fetchOrder($docId, $type)
     {
-        $response = $this->getOrderDetailsAgainstId($orderId);
-        if ($response) {
-            $this->setOrderInRegistry($response);
+        if (version_compare($this->lsr->getOmniVersion(), '2022.5.1', '>=') &&
+            $type == DocumentIdType::RECEIPT
+        ) {
+            $response = $this->getSalesOrderByOrderId($docId);
+        } else {
+            $response = $this->getOrderDetailsAgainstId($docId, $type);
         }
+
         return $response;
     }
 
@@ -580,19 +618,62 @@ class OrderHelper extends AbstractHelper
      */
     public function setOrderInRegistry($order)
     {
-        if (!$this->registry->registry('current_order')) {
-            $this->registry->register('current_order', $order);
+        if (!$this->getGivenValueFromRegistry('current_order')) {
+            $this->registerGivenValueInRegistry('current_order', $order);
         }
+    }
+
+    /**
+     * Get respective magento order given Central sales entry Object
+     *
+     * @param $salesEntry
+     */
+    public function setCurrentMagOrderInRegistry($salesEntry)
+    {
+        $order = $this->getOrderByDocumentId($salesEntry);
+        $this->registerGivenValueInRegistry('current_mag_order', $order);
+    }
+
+    /**
+     * Register given value in registry
+     *
+     * @param $key
+     * @param $value
+     * @return void
+     */
+    public function registerGivenValueInRegistry($key, $value)
+    {
+        if ($this->registry->registry($key)) {
+            $this->registry->unregister($key);
+        }
+
+        $this->registry->register($key, $value);
+    }
+
+    /**
+     * Get given value from registry
+     *
+     * @param $key
+     * @return mixed|null
+     */
+    public function getGivenValueFromRegistry($key)
+    {
+        return $this->registry->registry($key);
     }
 
     /**
      * Retrieve current order model instance
      *
-     * @return SalesEntry
+     * @param $all
+     * @return false|mixed|null
      */
-    public function getOrder()
+    public function getOrder($all = false)
     {
-        return $this->registry->registry('current_order');
+        if ($all) {
+            return $this->registry->registry('current_order');
+        }
+        return is_array($this->registry->registry('current_order')) ?
+            current($this->registry->registry('current_order')) : $this->registry->registry('current_order');
     }
 
     /**

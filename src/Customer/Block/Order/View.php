@@ -2,16 +2,7 @@
 
 namespace Ls\Customer\Block\Order;
 
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use Magento\Framework\Registry;
-use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Element\Template\Context;
-
-/**
- * Class View
- * @package Ls\Customer\Block\Order
- */
-class View extends Template
+class View extends AbstractOrderBlock
 {
     /**
      * @var string
@@ -21,28 +12,8 @@ class View extends Template
     // @codingStandardsIgnoreEnd
 
     /**
-     * Core registry
+     * Get Payment info html
      *
-     * @var Registry
-     */
-    public $coreRegistry = null;
-
-    /**
-     * View constructor.
-     * @param Context $context
-     * @param Registry $registry
-     * @param array $data
-     */
-    public function __construct(
-        Context $context,
-        Registry $registry,
-        array $data = []
-    ) {
-        $this->coreRegistry = $registry;
-        parent::__construct($context, $data);
-    }
-
-    /**
      * @return string
      */
     public function getPaymentInfoHtml()
@@ -51,56 +22,48 @@ class View extends Template
     }
 
     /**
-     * Retrieve current order model instance
+     * Get Invoice Id
      *
-     * @return SalesEntry
-     */
-    public function getOrder()
-    {
-        return $this->coreRegistry->registry('current_order');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMagOrder()
-    {
-        return $this->coreRegistry->registry('current_mag_order');
-    }
-
-    /**
      * @return mixed
      */
     public function getInvoiceId()
     {
-        return $this->coreRegistry->registry('current_invoice_id');
+        return $this->orderHelper->getGivenValueFromRegistry('current_invoice_id');
     }
 
     /**
+     * Get Invoice option
+     *
      * @return mixed
      */
     public function getInvoiceOption()
     {
-        return $this->coreRegistry->registry('current_invoice_option');
+        return $this->orderHelper->getGivenValueFromRegistry('current_invoice_option');
     }
 
     /**
+     * Get shipment option
+     *
      * @return mixed
      */
     public function getShipmentOption()
     {
-        return $this->coreRegistry->registry('current_shipment_option');
+        return $this->orderHelper->getGivenValueFromRegistry('current_shipment_option');
     }
 
     /**
+     * Get hide Shipping links
+     *
      * @return mixed
      */
     public function hideShippingLinks()
     {
-        return $this->coreRegistry->registry('hide_shipping_links');
+        return $this->orderHelper->getGivenValueFromRegistry('hide_shipping_links');
     }
 
     /**
+     * Get print all invoices url
+     *
      * @param object $order
      * @return string
      */
@@ -110,11 +73,62 @@ class View extends Template
     }
 
     /**
+     * Get print all shipment url
+     *
      * @param object $order
      * @return string
      */
     public function getPrintAllShipmentUrl($order)
     {
         return $this->getUrl('*/*/printShipment', ['order_id' => $order->getDocumentId()]);
+    }
+
+    /**
+     * Generate Print Refund Url
+     * @return string
+     */
+    public function getPrintAllRefundsUrl(): string
+    {
+        $orderId = $this->getRequest()->getParam('order_id');
+        $idType  = $this->getRequest()->getParam('type');
+        return $this->getUrl(
+            '*/*/printRefunds',
+            [
+                'order_id' => $orderId,
+                'type'     => $idType
+            ]
+        );
+    }
+
+    /**
+     * Get Title and html class based on current detail
+     *
+     * @return array
+     */
+    public function getTitleAndClassBasedOnDetail()
+    {
+        $detail = $this->orderHelper->getGivenValueFromRegistry('current_detail');
+        $title = $class = '';
+
+        switch ($detail) {
+            case 'order':
+                $title = __('Items Ordered');
+                $class = 'ordered';
+                break;
+            case 'shipment':
+                $title = __('Shipments');
+                $class = 'shipments';
+                break;
+            case 'invoice':
+                $title = __('Invoices');
+                $class = 'invoices';
+                break;
+            case 'creditmemo':
+                $title = __('Refunds');
+                $class = 'refunds';
+                break;
+        }
+
+        return [$title, $class];
     }
 }

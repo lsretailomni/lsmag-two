@@ -36,11 +36,5 @@
                    template="Ls_Customer::order/useful_info.phtml" after="custom_order_view"/>
             <block class="Ls\Customer\Block\Order\Info" as="info" name="sales.order.info" after="custom.order.info"/>
         </referenceContainer>
-
-        <referenceBlock name="sales.order.items.renderers.default" template="Ls_Customer::order/item/renderer/default.phtml">
-            <arguments>
-                <argument name="view_model" xsi:type="object">Ls\Customer\ViewModel\ItemRenderer</argument>
-            </arguments>
-        </referenceBlock>
     </body>
 </page>
