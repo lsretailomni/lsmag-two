@@ -3,6 +3,7 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -277,13 +278,11 @@ class Info extends AbstractOrderBlock
      */
     public function getPrintUrl($order)
     {
-        $typeId  = $this->orderHelper->getParameterValues($order, "IdType");
-        $orderId = $this->getRequest()->getParam('order_id');
         return $order ? $this->getUrl(
             'customer/order/print',
             [
-                'order_id' => $orderId,
-                'type'     => $typeId
+                'order_id' => $order->getCustomerOrderNo() ?: $order->getId(),
+                'type'     => $order->getCustomerOrderNo() ? DocumentIdType::ORDER : $order->getIdType()
             ]
         ) : '';
     }

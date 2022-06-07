@@ -78,30 +78,6 @@ if (!empty($discountInfo)) {
                     <span class="content"><?= (float)$block->getItem()->getQtyOrdered() ?></span>
                 </li>
             <?php endif; ?>
-            <?php if ($block->getItem()->getQtyShipped() > 0): ?>
-                <li class="item">
-                    <span class="title"><?= $escaper->escapeHtml(__('Shipped')) ?></span>
-                    <span class="content"><?= (float)$block->getItem()->getQtyShipped() ?></span>
-                </li>
-            <?php endif; ?>
-            <?php if ($block->getItem()->getQtyCanceled() > 0): ?>
-                <li class="item">
-                    <span class="title"><?= $escaper->escapeHtml(__('Canceled')) ?></span>
-                    <span class="content"><?= (float)$block->getItem()->getQtyCanceled() ?></span>
-                </li>
-            <?php endif; ?>
-            <?php if ($block->getItem()->getQtyRefunded() > 0): ?>
-                <li class="item">
-                    <span class="title"><?= $escaper->escapeHtml(__('Refunded')) ?></span>
-                    <span class="content"><?= (float)$block->getItem()->getQtyRefunded() ?></span>
-                </li>
-            <?php endif; ?>
-            <?php if ($block->getItem()->getQtyInvoiced() > 0): ?>
-                <li class="item">
-                    <span class="title"><?= $escaper->escapeHtml(__('Invoiced')) ?></span>
-                    <span class="content"><?= (float)$block->getItem()->getQtyInvoiced() ?></span>
-                </li>
-            <?php endif; ?>
         </ul>
     </td>
     <td class="col subtotal" data-th="<?= $escaper->escapeHtml(__('Subtotal')) ?>">

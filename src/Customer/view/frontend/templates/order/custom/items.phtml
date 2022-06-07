@@ -1,0 +1,45 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var Items $block */
+$order = $block->getMagOrder();
+
+use \Ls\Customer\Block\Order\Custom\Items;
+use Magento\Sales\Model\Order\Item;
+
+?>
+<div class="table-wrapper order-items">
+    <table class="data table table-order-items"
+           id="my-orders-table"
+           summary="<?= /* @noEscape */ __('Items Ordered') ?>">
+        <caption class="table-caption"><?= /* @noEscape */ __('Items Ordered') ?></caption>
+        <thead>
+        <tr>
+            <th class="col name"><?= /* @noEscape */ __('Product Name') ?></th>
+            <th class="col sku"><?= /* @noEscape */ __('SKU') ?></th>
+            <th class="col price"><?= /* @noEscape */ __('Price') ?></th>
+            <th class="col qty"><?= /* @noEscape */ __('Qty') ?></th>
+            <th class="col subtotal"><?= /* @noEscape */ __('Subtotal') ?></th>
+        </tr>
+        </thead>
+        <?php $items = $block->getItems(); ?>
+        <?php $giftMessage = '' ?>
+        <?php foreach ($items as $item):
+            if ($item instanceof Item && $item->getParentItem()) :
+                continue;
+            endif;
+            ?>
+            <tbody>
+            <?php if ($item instanceof Item): ?>
+                <?= /* @noEscape */ $block->getItemHtml($item) ?>
+            <?php else: ?>
+                <?= /* @noEscape */ $block->getCustomItemRenderer($item); ?>
+            <?php endif; ?>
+            </tbody>
+        <?php endforeach; ?>
+        <tfoot>
+        <?= /* @noEscape */ $block->getChildHtml('custom_order_totals') ?>
+        </tfoot>
+    </table>
+</div>
