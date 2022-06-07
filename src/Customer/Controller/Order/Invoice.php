@@ -41,7 +41,7 @@ class Invoice extends AbstractOrderController implements HttpGetActionInterface
     {
         $order = $this->orderHelper->getGivenValueFromRegistry('current_mag_order');
 
-        if ($order->hasInvoices()) {
+        if (!empty($order) && $order->hasInvoices()) {
             $this->orderHelper->registerGivenValueInRegistry('current_invoice_id', true);
         }
     }
