@@ -5,13 +5,8 @@ namespace Ls\Replication\Block\Adminhtml\System\Config;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
-/**
- * Class DeleteDatabtn
- * @package Ls\Replication\Block\Adminhtml\System\Config
- */
 class DeleteDatabtn extends Field
 {
-
     /**
      * @return $this
      */
@@ -35,18 +30,21 @@ class DeleteDatabtn extends Field
     }
 
     /**
+     * Get Element Html
+     *
      * @param AbstractElement $element
      * @return string
      */
     public function _getElementHtml(AbstractElement $element)
     {
+        $scopeId      = $this->_request->getParam('store');
         $originalData = $element->getOriginalData();
         $buttonLabel  = $originalData['button_label'];
         $buttonUrl    = $originalData['button_url'];
         $this->addData(
             [
                 'button_label' => __($buttonLabel),
-                'button_url'   => $this->getUrl($buttonUrl),
+                'button_url'   => $this->getUrl($buttonUrl, ['store' => $scopeId]),
                 'html_id'      => $element->getHtmlId(),
             ]
         );

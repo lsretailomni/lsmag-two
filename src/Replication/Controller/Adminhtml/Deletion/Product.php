@@ -4,55 +4,16 @@ namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Catalog\Api\AttributeSetRepositoryInterface;
-use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class Product Deletion
  */
-class Product extends Action
+class Product extends AbstractReset
 {
-    /** @var Logger */
-    public $logger;
-
-    /** @var ResourceConnection */
-    public $resource;
-
-    /** @var LSR */
-    public $lsr;
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /**
-     * @var AttributeSetRepositoryInterface
-     */
-    public $attributeSetRepository;
-
-    /** @var array List of ls tables required in products */
-    public $ls_tables = [
-        "ls_replication_repl_item",
-        "ls_replication_repl_item_variant_registration",
-        "ls_replication_repl_price",
-        "ls_replication_repl_barcode",
-        "ls_replication_repl_inv_status",
-        "ls_replication_repl_hierarchy_leaf",
-        "ls_replication_repl_attribute_value",
-        "ls_replication_repl_image_link",
-        "ls_replication_repl_item_unit_of_measure",
-        "ls_replication_repl_loy_vendor_item_mapping",
-        "ls_replication_repl_item_modifier",
-        "ls_replication_repl_item_recipe",
-        "ls_replication_repl_hierarchy_hosp_deal",
-        "ls_replication_repl_hierarchy_hosp_deal_line"
-    ];
-
     /** @var array List of all the Catalog Product tables */
-    public $catalog_products_tables = [
+    public const CATALOG_PRODUCT_TABLES = [
         "catalog_product_bundle_option",
         "catalog_product_bundle_option_value",
         "catalog_product_bundle_price_index",
@@ -150,134 +111,157 @@ class Product extends Action
         "sequence_product"
     ];
 
+    public const DEPENDENT_CRONS = [
+        LSR::SC_SUCCESS_CRON_PRODUCT,
+        LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
+        LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,
+        LSR::SC_SUCCESS_CRON_ITEM_IMAGES,
+        LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
+        LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
+        LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
+    ];
+
     // @codingStandardsIgnoreStart
     /** @var array */
     protected $_publicActions = ['product'];
     // @codingStandardsIgnoreEnd
 
     /**
-     * Product constructor.
-     * @param ResourceConnection $resource
-     * @param Logger $logger
-     * @param Context $context
-     * @param LSR $LSR
-     * @param ReplicationHelper $replicationHelper
-     * @param AttributeSetRepositoryInterface $attributeSetRepository
-     */
-    public function __construct(
-        ResourceConnection $resource,
-        Logger $logger,
-        Context $context,
-        LSR $LSR,
-        ReplicationHelper $replicationHelper,
-        AttributeSetRepositoryInterface $attributeSetRepository
-    ) {
-        $this->resource               = $resource;
-        $this->logger                 = $logger;
-        $this->lsr                    = $LSR;
-        $this->replicationHelper      = $replicationHelper;
-        $this->attributeSetRepository = $attributeSetRepository;
-        parent::__construct($context);
-    }
-
-    /**
      * Remove products
      *
-     * @return void
+     * @return ResponseInterface
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
-        // @codingStandardsIgnoreStart
-        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
-        foreach ($this->catalog_products_tables as $catalogTable) {
-            $tableName = $this->resource->getTableName($catalogTable);
-            try {
-                if ($connection->isTableExists($tableName)) {
-                    $connection->truncateTable($tableName);
-                }
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
+        $scopeId = $this->_request->getParam('store');
+        $where   = [];
+
+        if ($scopeId != '') {
+            $websiteId        = $this->replicationHelper->getWebsiteIdGivenStoreId($scopeId);
+            $childCollection  = $this->replicationHelper->getProductCollectionGivenWebsiteId($websiteId);
+            $parentCollection = $this->replicationHelper->getGivenColumnsFromGivenCollection($childCollection, ['sku']);
+            $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                $this->replicationHelper->getGivenTableName('catalog_product_entity'),
+                ['sku IN (?)' => $parentCollection->getSelect()]
+            );
+            $where = [
+                'scope_id = ?' => $scopeId
+            ];
+        } else {
+            $connection = $this->replicationHelper->getConnection();
+            $connection->startSetup();
+            foreach (self::CATALOG_PRODUCT_TABLES as $catalogTable) {
+                $tableName = $this->replicationHelper->getGivenTableName($catalogTable);
+                $this->replicationHelper->truncateGivenTable($tableName);
             }
+            $connection->endSetup();
+            $this->clearRequiredMediaDirectories();
+            $this->deleteAllAttributeSets();
         }
         // Remove the url keys from url_rewrite table
-        $this->replicationHelper->resetUrlRewriteByType('product');
-        $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
-        $mediaDirectory        = $this->replicationHelper->getMediaPathtoStore();
-        $catalogMediaDirectory = $mediaDirectory . "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
-        $mediaTmpDirectory     = $mediaDirectory . "tmp". DIRECTORY_SEPARATOR. "catalog" . DIRECTORY_SEPARATOR . "product" . DIRECTORY_SEPARATOR;
-        try {
-            $this->replicationHelper->removeDirectory($catalogMediaDirectory);
-            $this->replicationHelper->removeDirectory($mediaTmpDirectory);
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
+        $this->replicationHelper->resetUrlRewriteByType('product', $scopeId);
+        // Update all dependent ls tables to not processed
+        $this->updateAllDependentLsTables($where);
+        // Reset Data Translation Table for product name
+        $this->updateDataTranslationTables($where);
+        $this->replicationHelper->updateAllGivenCronStatus(self::DEPENDENT_CRONS, $scopeId);
+        $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
 
+        return $this->_redirect('adminhtml/system_config/edit/section/ls_mag', ['store' => $scopeId]);
+    }
+
+    /**
+     * Clear required media directories
+     *
+     * @return void
+     */
+    public function clearRequiredMediaDirectories()
+    {
+        $mediaDirectory        = $this->replicationHelper->getMediaPathtoStore();
+        $catalogMediaDirectory = sprintf(
+            '%scatalog%sproduct%s',
+            $mediaDirectory,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR
+        );
+        $mediaTmpDirectory     = sprintf(
+            '%stmp%scatalog%sproduct%s',
+            $mediaDirectory,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR
+        );
+        $this->replicationHelper->removeDirectory($catalogMediaDirectory);
+        $this->replicationHelper->removeDirectory($mediaTmpDirectory);
+    }
+
+    /**
+     * Delete All Attribute Sets
+     *
+     * @return void
+     */
+    public function deleteAllAttributeSets()
+    {
         $filters      = [
             ['field' => 'attribute_set_name', 'value' => 'ls_%', 'condition_type' => 'like'],
             ['field' => 'entity_type_id', 'value' => 4, 'condition_type' => 'eq']
         ];
         $criteria     = $this->replicationHelper->buildCriteriaForDirect($filters, -1, false);
-        $searchResult = $this->attributeSetRepository->getList($criteria);
+        $searchResult = $this->replicationHelper->attributeSetRepository->getList($criteria);
         foreach ($searchResult->getItems() as $attributeSet) {
             try {
-                $this->attributeSetRepository->deleteById($attributeSet->getAttributeSetId());
+                $this->replicationHelper->attributeSetRepository->deleteById($attributeSet->getAttributeSetId());
             } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
+                $this->replicationHelper->_logger->debug($e->getMessage());
             }
         }
+    }
 
-        // Update all dependent ls tables to not processed
-        foreach ($this->ls_tables as $lsTable) {
-            $lsTableName = $this->resource->getTableName($lsTable);
-            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
-            try {
-                $connection->query($lsQuery);
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
+    /**
+     * Update All dependent ls tables
+     *
+     * @param $where
+     * @return void
+     */
+    public function updateAllDependentLsTables($where)
+    {
+        foreach (self::LS_ITEM_RELATED_TABLES as $lsTable) {
+            $lsTableName = $this->replicationHelper->getGivenTableName($lsTable);
+            $this->replicationHelper->updateGivenTableDataGivenConditions(
+                $lsTableName,
+                [
+                    'processed' => 0,
+                    'is_updated' => 0,
+                    'is_failed' => 0,
+                    'processed_at' => null
+                ],
+                $where
+            );
         }
+    }
 
-        // @codingStandardsIgnoreEnd
-        // Reset Data Translation Table for product name
-        $lsTableName = $this->resource->getTableName("ls_replication_repl_data_translation");
-        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
-            processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION . '"';
-        try {
-            $connection->query($lsQuery);
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
-
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_PRODUCT
+    /**
+     * Update data translation tables
+     *
+     * @param $where
+     * @return void
+     */
+    public function updateDataTranslationTables($where)
+    {
+        $where['TranslationId = ?'] = LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION;
+        $lsTableName                = $this->replicationHelper->getGivenTableName(
+            'ls_replication_repl_data_translation'
         );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY
+        $this->replicationHelper->updateGivenTableDataGivenConditions(
+            $lsTableName,
+            [
+                'processed' => 0,
+                'is_updated' => 0,
+                'is_failed' => 0,
+                'processed_at' => null
+            ],
+            $where
         );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_PRODUCT_PRICE
-        );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_ITEM_IMAGES
-        );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_ITEM_UPDATES
-        );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE
-        );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
-        );
-        $this->messageManager->addSuccessMessage(__('Products deleted successfully.'));
-        $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
     }
 }
