@@ -5,7 +5,7 @@ namespace Ls\Customer\Block\Order;
 use DateTime;
 use Exception;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session\Proxy;

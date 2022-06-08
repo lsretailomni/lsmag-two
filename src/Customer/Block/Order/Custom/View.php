@@ -2,7 +2,7 @@
 
 namespace Ls\Customer\Block\Order\Custom;
 
-use Ls\Customer\Block\Order\AbstractOrderBlock;
+use \Ls\Customer\Block\Order\AbstractOrderBlock;
 
 class View extends AbstractOrderBlock
 {
