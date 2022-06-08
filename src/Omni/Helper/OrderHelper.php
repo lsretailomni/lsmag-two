@@ -8,7 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
-use Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -320,7 +320,6 @@ class OrderHelper extends AbstractHelper
 
         return $omniAddress;
     }
-
 
     /**
      * Fetch node values based on the parameter passed

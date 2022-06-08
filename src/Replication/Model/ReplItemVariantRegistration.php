@@ -22,6 +22,16 @@ class ReplItemVariantRegistration extends AbstractModel implements ReplItemVaria
     protected $_eventPrefix = 'ls_replication_repl_item_variant_registration';
 
     /**
+     * @property int $BlockedOnECom
+     */
+    protected $BlockedOnECom = null;
+
+    /**
+     * @property int $BlockedOnPos
+     */
+    protected $BlockedOnPos = null;
+
+    /**
      * @property string $FrameworkCode
      */
     protected $FrameworkCode = null;
@@ -124,6 +134,46 @@ class ReplItemVariantRegistration extends AbstractModel implements ReplItemVaria
     public function getIdentities()
     {
         return [ self::CACHE_TAG . '_' . $this->getId() ];
+    }
+
+    /**
+     * @param int $BlockedOnECom
+     * @return $this
+     */
+    public function setBlockedOnECom($BlockedOnECom)
+    {
+        $this->setData( 'BlockedOnECom', $BlockedOnECom );
+        $this->BlockedOnECom = $BlockedOnECom;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlockedOnECom()
+    {
+        return $this->getData( 'BlockedOnECom' );
+    }
+
+    /**
+     * @param int $BlockedOnPos
+     * @return $this
+     */
+    public function setBlockedOnPos($BlockedOnPos)
+    {
+        $this->setData( 'BlockedOnPos', $BlockedOnPos );
+        $this->BlockedOnPos = $BlockedOnPos;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlockedOnPos()
+    {
+        return $this->getData( 'BlockedOnPos' );
     }
 
     /**
