@@ -37,6 +37,6 @@ abstract class AbstractReset extends Action
         ReplicationHelper $replicationHelper
     ) {
         parent::__construct($context);
-        $this->replicationHelper      = $replicationHelper;
+        $this->replicationHelper = $replicationHelper;
     }
 }
